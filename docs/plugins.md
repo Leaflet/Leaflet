@@ -3839,7 +3839,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/yagajs/leaflet-ng2">YAGA leaflet-ng2</a>
 		</td><td>
-			Granular integration into Angular2/4.
+			Granular integration into Angular2/4. <a href="https://leaflet-ng2.yagajs.org/latest/examples"> demo </a>.
 		</td><td>
 			<a href="https://github.com/yagajs">YAGA Development Team</a>
 		</td>
