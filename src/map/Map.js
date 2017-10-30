@@ -722,6 +722,8 @@ export var Map = Evented.extend({
 			this._containerId = undefined;
 		}
 
+		this._stop();
+
 		DomUtil.remove(this._mapPane);
 
 		if (this._clearControlPos) {
@@ -1627,7 +1629,9 @@ export var Map = Evented.extend({
 	_onZoomTransitionEnd: function () {
 		if (!this._animatingZoom) { return; }
 
-		DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		if (this._mapPane) {
+			DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		}
 
 		this._animatingZoom = false;
 
