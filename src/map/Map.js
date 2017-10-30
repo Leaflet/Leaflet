@@ -1365,7 +1365,7 @@ export var Map = Evented.extend({
 		};
 
 		if (e.type !== 'keypress') {
-			var isMarker = (target.options && 'icon' in target.options);
+			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
