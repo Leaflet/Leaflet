@@ -722,6 +722,10 @@ export var Map = Evented.extend({
 			this._containerId = undefined;
 		}
 
+		if (this._locationWatchId !== undefined) {
+			this.stopLocate();
+		}
+
 		this._stop();
 
 		DomUtil.remove(this._mapPane);
