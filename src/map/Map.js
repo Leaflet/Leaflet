@@ -722,6 +722,12 @@ export var Map = Evented.extend({
 			this._containerId = undefined;
 		}
 
+		if (this._locationWatchId !== undefined) {
+			this.stopLocate();
+		}
+
+		this._stop();
+
 		DomUtil.remove(this._mapPane);
 
 		if (this._clearControlPos) {
@@ -1363,7 +1369,7 @@ export var Map = Evented.extend({
 		};
 
 		if (e.type !== 'keypress') {
-			var isMarker = (target.options && 'icon' in target.options);
+			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
@@ -1627,7 +1633,9 @@ export var Map = Evented.extend({
 	_onZoomTransitionEnd: function () {
 		if (!this._animatingZoom) { return; }
 
-		DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		if (this._mapPane) {
+			DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		}
 
 		this._animatingZoom = false;
 

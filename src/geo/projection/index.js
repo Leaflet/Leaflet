@@ -16,7 +16,7 @@
  * Only accepts actual `L.Point` instances, not arrays.
 
  * Note that the projection instances do not inherit from Leafet's `Class` object,
- * and can't be instantiated. Also, new classes can't inherit from them, 
+ * and can't be instantiated. Also, new classes can't inherit from them,
  * and methods can't be added to them with the `include` function.
 
  */
