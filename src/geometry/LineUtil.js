@@ -240,3 +240,39 @@ export function _flat(latlngs) {
 	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
 	return isFlat(latlngs);
 }
+
+
+// @function calculateAntimeridianLat (latLngA: LatLng, latLngB: latLng)
+// Returns the calculated latitude where a line drawn between
+// two Latitude/Longitude points will cross the antimeridian.
+export function calculateAntimeridianLat(latLngA, latLngB) {
+	// Ensure that the latiude A is less than latidue B. This will allow the
+	// crossing point to be calculated based on the purportional similarity of
+	// right triangles.
+	if (latLngA.lat > latLngB.lat) {
+		var temp = latLngA;
+		latLngA = latLngB;
+		latLngB = temp;
+	}
+
+	var A = 360 - Math.abs(latLngA.lng - latLngB.lng);
+	var B = latLngB.lat - latLngA.lat;
+	var a = Math.abs(180 - Math.abs(latLngA.lng));
+
+	return latLngA.lat + ((B * a) / A);
+}
+
+// @function isCrossAntimeridian(latLngA: LatLng, latLngB: LatLng)
+// Returns true if the line between the two points will cross either
+// the prime meridian (Greenwich) or its antimeridian (International Date Line)
+export function isCrossMeridian(latLngA, latLngB) {
+	// Returns true if the signs are not the same.
+	return sign(latLngA.lng) * sign(latLngB.lng) < 0;
+}
+
+// @function sign(Number)
+// Returns NaN for non-numbers, 0 for nulls, -1 for negative numbers,
+// 1 for positive numbers
+export function sign(x) {
+	return typeof x === 'number' ? x ? x < 0 ? -1 : 1 : 0 : NaN;
+}

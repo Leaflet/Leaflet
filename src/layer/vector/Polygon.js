@@ -173,10 +173,75 @@ export var Polygon = Polyline.extend({
 
 		// also check if it's on polygon stroke
 		return inside || Polyline.prototype._containsPoint.call(this, p, true);
+	},
+
+	// Creates the rings used to render the latlngs.
+	_createRings: function (latlngs, rings, projectedBounds) {
+		var len = latlngs.length;
+		rings.push([]);
+
+		for (var i = 0; i < len; i++) {
+			// Because this is a polygon, there will always be a comparison latlng
+			var compareLatLng = this._getCompareLatLng(i, len, latlngs);
+
+			this._pushLatLng(rings[rings.length - 1], projectedBounds, latlngs[i]);
+
+			// Check to see if the ring should be broken.
+			if (this._isBreakRing(compareLatLng, latlngs[i])) {
+				var secondMeridianLatLng = this._breakRing(latlngs[i], compareLatLng,
+					rings, projectedBounds);
+
+				this._startNextRing(rings, projectedBounds, secondMeridianLatLng, i === len - 1);
+			}
+		}
+
+		// Join the last two rings if needed.
+		this._joinLastRing(rings, latlngs);
+	},
+
+	// Starts a new ring if needed and adds the second meridian point to the
+	// correct ring.
+	_startNextRing: function (rings, projectedBounds, secondMeridianLatLng, isLastLatLng) {
+		var ring;
+		if (!isLastLatLng) {
+			ring = [];
+			rings.push(ring);
+			this._pushLatLng(ring, projectedBounds, secondMeridianLatLng);
+		} else {
+			// If this is the last latlng, don't bother starting a new ring.
+			// instead, join the last meridian point to the first point, to connect
+			// the shape correctly.
+			ring = rings[0];
+			ring.unshift(this._map.latLngToLayerPoint(secondMeridianLatLng));
+			projectedBounds.extend(ring[0]);
+		}
+	},
+
+	// returns the latlng to compare the current latlng to.
+	_getCompareLatLng: function (i, len, latlngs) {
+		return (i + 1 < len) ? latlngs[i + 1] : latlngs[0];
+	},
+
+	// Joins the last ring to the first if they were accidently disconnected by
+	// crossing the anti-meridian
+	_joinLastRing: function (rings, latlngs) {
+		var firstRing = rings[0];
+		var lastRing = rings[rings.length - 1];
+
+		// If both either the first or last latlng cross the meridian immediately, then
+		// they have accidently been split by turning one ring into mulitiple.
+		// Rejoin them.
+		if (rings.length > 1 && (firstRing.length === 2 || lastRing.length === 2) &&
+			 !LineUtil.isCrossMeridian(latlngs[0], latlngs[latlngs.length - 1])) {
+			var len = lastRing.length;
+			for (var i = 0; i < len; i++) {
+				firstRing.unshift(lastRing.pop());
+			}
+			// Remove the empty ring.
+			rings.pop();
+		}
 	}
-
 });
-
 
 // @factory L.polygon(latlngs: LatLng[], options?: Polyline options)
 export function polygon(latlngs, options) {
