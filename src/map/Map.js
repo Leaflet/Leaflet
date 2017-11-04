@@ -1413,7 +1413,7 @@ export var Map = Evented.extend({
 	// private methods for getting map state
 
 	_getMapPanePos: function () {
-		return DomUtil.getPosition(this._mapPane) || new Point(0, 0);
+		return this._mapPane ? DomUtil.getPosition(this._mapPane) : new Point(0, 0);
 	},
 
 	_moved: function () {
