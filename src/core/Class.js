@@ -112,7 +112,7 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 };
 
 function checkDeprecatedMixinEvents(includes) {
-	if (!L || !L.Mixin) { return; }
+	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
 
 	includes = Util.isArray(includes) ? includes : [includes];
 
