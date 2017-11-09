@@ -3537,6 +3537,15 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/briannaAndCo/Leaflet.Antimeridian">Leaflet.Antimeridian</a>
+		</td><td>
+			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the Internation Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
+		</td><td>
+			<a href="https://github.com/briannaAndCo">Brianna Landon</a>
+		</td>
+	</tr>
 </table>
 
 
