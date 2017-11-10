@@ -1008,4 +1008,13 @@ describe('GridLayer', function () {
 			}).to.throwError('Attempted to load an infinite number of tiles');
 		});
 	});
+
+	it("doesn't call map's getZoomScale method with null after _invalidateAll method was called", function () {
+		map.setView([0, 0], 0);
+		var grid = L.gridLayer().addTo(map);
+		var wrapped = sinon.spy(map, 'getZoomScale');
+		grid._invalidateAll();
+		grid.redraw();
+		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);
+	});
 });
