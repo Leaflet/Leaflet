@@ -509,7 +509,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	// @method invalidateSize(options: Zoom/Pan options): this
+	// @method invalidateSize(options: Zoom/pan options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
 	// pan by default. If `options.pan` is `false`, panning will not occur.
