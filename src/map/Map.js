@@ -1608,8 +1608,8 @@ export var Map = Evented.extend({
 	},
 
 	_animateZoom: function (center, zoom, startAnim, noUpdate) {
-        if(!this._mapPane) { return; }
-        
+        if(!this._mapPane) return;
+
 		if (startAnim) {
 			this._animatingZoom = true;
 
