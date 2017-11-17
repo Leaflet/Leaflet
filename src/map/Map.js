@@ -1167,7 +1167,7 @@ export var Map = Evented.extend({
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
-		if (noMoveStart !== true) {
+		if (!noMoveStarte) {
 			this.fire('movestart');
 		}
 		return this;
