@@ -80,5 +80,17 @@ describe('Path', function () {
 			}, 300);
 		});
 
+		it('it should return tolerance with stroke', function () {
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			var layer = path.addTo(map);
+			expect(path._clickTolerance()).to.equal(path.options.weight / 2);
+		});
+
+		it('it should return zero tolerance without stroke', function () {
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			var layer = path.addTo(map);
+			path.options.stroke = false;
+			expect(path._clickTolerance()).to.equal(0);
+		});
 	});
 });
