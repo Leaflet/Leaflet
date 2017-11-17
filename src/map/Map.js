@@ -1142,7 +1142,7 @@ export var Map = Evented.extend({
 
 		var zoomChanged = this._zoom !== zoom;
 		this
-			._moveStart(zoomChanged)
+			._moveStart(zoomChanged, false)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
@@ -1603,7 +1603,7 @@ export var Map = Evented.extend({
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true)
+			    ._moveStart(true, false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
