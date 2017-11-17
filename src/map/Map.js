@@ -425,7 +425,7 @@ export var Map = Evented.extend({
 			}
 		}
 
-		this._moveStart(true);
+		this._moveStart(true, options.noMoveStart);
 
 		frame.call(this);
 		return this;
@@ -1159,7 +1159,7 @@ export var Map = Evented.extend({
 		}
 	},
 
-	_moveStart: function (zoomChanged) {
+	_moveStart: function (zoomChanged, noMoveStart) {
 		// @event zoomstart: Event
 		// Fired when the map zoom is about to change (e.g. before zoom animation).
 		// @event movestart: Event
@@ -1167,7 +1167,10 @@ export var Map = Evented.extend({
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
-		return this.fire('movestart');
+		if (noMoveStart !== true) {
+			this.fire('movestart');
+		}
+		return this;
 	},
 
 	_move: function (center, zoom, data) {
