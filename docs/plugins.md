@@ -2896,7 +2896,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 		<td>
 			<a href="https://github.com/ardhi/Leaflet.MousePosition">Leaflet.MousePosition</a>
 		</td><td>
-			A simple MousePosition control that displays geographic coordinates of the mouse pointer, as it is moved about the map
+			A simple MousePosition control that displays geographic coordinates of the mouse pointer, as it is moved about the map (<a href="https://obama.github.io/Leaflet.MousePosition/">demo</a>)
 		</td><td>
 			<a href="https://github.com/ardhi">Ardhi Lukianto</a>
 		</td>
