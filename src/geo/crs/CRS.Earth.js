@@ -24,10 +24,9 @@ export var Earth = Util.extend({}, CRS, {
 		var rad = Math.PI / 180,
 		    lat1 = latlng1.lat * rad,
 		    lat2 = latlng2.lat * rad,
-		    dLat = (latlng2.lat - latlng1.lat) * rad,
-		    dLon = (latlng2.lng - latlng1.lng) * rad,
-		    a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		        Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2),
+		    sinDLat = Math.sin((latlng2.lat - latlng1.lat) * rad / 2),
+		    sinDLon = Math.sin((latlng2.lng - latlng1.lng) * rad / 2),
+		    a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
 		    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return this.R * c;
 	}
