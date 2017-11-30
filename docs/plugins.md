@@ -223,15 +223,6 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
-		</td><td>
-			Adding WMTS services (GUGiK Poland)(<a href="https://github.com/GeoportalPL/leaflet.projwmts/">demo</a>).
-		</td><td>
-			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="https://github.com/mylen/leaflet.TileLayer.WMTS">leaflet.TileLayer.WMTS</a>
 		</td><td>Add WMTS (IGN) layering for leaflet.
 		</td><td>
@@ -348,7 +339,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
+		</td><td>
+			Adding WMTS services (GUGiK Poland).
+		</td><td>
+			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
+		</td>
+	</tr>
 </table>
 
 
