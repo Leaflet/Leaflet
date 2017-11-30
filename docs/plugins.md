@@ -223,6 +223,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
+		</td><td>
+			Adding WMTS services (GUGiK Poland)(<a href="https://github.com/GeoportalPL/leaflet.projwmts/">demo</a>).
+		</td><td>
+			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/mylen/leaflet.TileLayer.WMTS">leaflet.TileLayer.WMTS</a>
 		</td><td>Add WMTS (IGN) layering for leaflet.
 		</td><td>
@@ -540,15 +549,6 @@ The following plugins change the way that tile or image layers are displayed in 
 			Provides UTF-8 Grid support for Leaflet >= 1.0.  Includes basic mouseover support plus ability to highlight feature from UTFGrid on hover (<a href="https://consbio.github.io/Leaflet.UTFGrid/">demo</a>).
 		</td><td>
 			<a href="https://github.com/brendan-ward">Brendan Ward</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
-		</td><td>
-			Adding WMTS services (<a href="https://github.com/GeoportalPL/leaflet.projwmts/">demo</a>).
-		</td><td>
-			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
 		</td>
 	</tr>
 </table>
