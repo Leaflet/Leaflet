@@ -3109,6 +3109,15 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/geoloep">Geoloep</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/idawave/Leaflet.DraggableEnhancer">L.DraggableEnhancer</a>
+		</td><td>
+			Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if the map container's parent has predefined handlers like "_event.preventDefault_' attached to a "_mousemove_" event for example.
+		</td><td>
+			<a href="https://github.com/idawave">Vincent Dechandon</a>
+		</td>
+	</tr>
 </table>
 
 
