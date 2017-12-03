@@ -3114,7 +3114,7 @@ These plugins extend Leaflet event handling.
 		<td>
 			<a href="https://github.com/idawave/Leaflet.DraggableEnhancer">L.DraggableEnhancer</a>
 		</td><td>
-			Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if the map container's parent has predefined handlers like "_event.preventDefault_' attached to a "_mousemove_" event for example.
+			Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if one of the map container's parents has predefined handlers like "event.stopPropagation()' attached to a "mousemove" event for example.
 		</td><td>
 			<a href="https://github.com/idawave">Vincent Dechandon</a>
 		</td>
