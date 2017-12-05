@@ -57,7 +57,7 @@
 .leaflet-container.leaflet-touch-drag {
 	-ms-touch-action: pinch-zoom;
 	}
-.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+.leaflet-container.leaflet-touch-drag {
 	-ms-touch-action: none;
 	touch-action: none;
 }
