@@ -202,7 +202,10 @@ export var ImageOverlay = Layer.extend({
 			this._updateZIndex();
 		}
 
-		if (wasElementSupplied) { return; }
+		if (wasElementSupplied) {
+			this._url = img.src;
+			return;
+		}
 
 		img.src = this._url;
 		img.alt = this.options.alt;
