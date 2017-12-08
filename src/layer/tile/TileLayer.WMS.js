@@ -80,7 +80,10 @@ export var TileLayerWMS = TileLayer.extend({
 
 		options = setOptions(this, options);
 
-		wmsParams.width = wmsParams.height = options.tileSize * (options.detectRetina && retina ? 2 : 1);
+        var retina = options.detectRetina && retina ? 2 : 1;
+        var tileSize = this.getTileSize();
+        wmsParams.width = tileSize.x * retina;
+        wmsParams.height = tileSize.y * retina;
 
 		this.wmsParams = wmsParams;
 	},
