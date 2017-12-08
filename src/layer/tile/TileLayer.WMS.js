@@ -80,10 +80,10 @@ export var TileLayerWMS = TileLayer.extend({
 
 		options = setOptions(this, options);
 
-        var retina = options.detectRetina && retina ? 2 : 1;
-        var tileSize = this.getTileSize();
-        wmsParams.width = tileSize.x * retina;
-        wmsParams.height = tileSize.y * retina;
+		var realRetina = options.detectRetina && retina ? 2 : 1;
+		var tileSize = this.getTileSize();
+		wmsParams.width = tileSize.x * realRetina;
+		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
 	},
@@ -102,17 +102,17 @@ export var TileLayerWMS = TileLayer.extend({
 	getTileUrl: function (coords) {
 
 		var tileBounds = this._tileCoordsToNwSe(coords),
-		    crs = this._crs,
-		    bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
-		    min = bounds.min,
-		    max = bounds.max,
-		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
-		    [min.y, min.x, max.y, max.x] :
-		    [min.x, min.y, max.x, max.y]).join(','),
+		crs = this._crs,
+		bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
+		min = bounds.min,
+		max = bounds.max,
+		bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
+			[min.y, min.x, max.y, max.x] :
+			[min.x, min.y, max.x, max.y]).join(','),
 		url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 		return url +
-			getParamString(this.wmsParams, url, this.options.uppercase) +
-			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
+            getParamString(this.wmsParams, url, this.options.uppercase) +
+            (this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
