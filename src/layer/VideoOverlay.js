@@ -50,7 +50,13 @@ export var VideoOverlay = ImageOverlay.extend({
 		vid.onloadeddata = Util.bind(this.fire, this, 'load');
 
 		if (wasElementSupplied) {
-			this._url = vid.src;
+			var sourceElements = vid.getElementsByTagName('source');
+			var sources = [];
+			for (var j = 0; j < sourceElements.length; j++) {
+				sources.push(sourceElements[j].src);
+			}
+
+			this._url = (sourceElements.length > 0) ? sources : [vid.src];
 			return;
 		}
 
