@@ -3623,6 +3623,18 @@ The following plugins use external services to calculate driving or walking rout
     			<a href="https://github.com/BKGiser">Jack Good</a>
     		</td>
     	</tr>
+    <tr>
+    	<td>
+    		<a href="https://github.com/skedgo/leaflet.tripgo.routing">Leaflet TripGo routing</a>
+    	</td>
+    	<td>
+    		The <b>TripGo</b> mobility platform let’s you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
+    		TripGo leaflet's plugin motivation is to provide an easy way to include it's functionality in an external platform. 
+    	</td>
+    	<td>
+    		<a href="http://skedgo.com/">SkedGo</a>
+    	</td>
+    </tr>
 </table>
 
 
