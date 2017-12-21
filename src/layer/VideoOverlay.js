@@ -49,7 +49,16 @@ export var VideoOverlay = ImageOverlay.extend({
 		// Fired when the video has finished loading the first frame
 		vid.onloadeddata = Util.bind(this.fire, this, 'load');
 
-		if (wasElementSupplied) { return; }
+		if (wasElementSupplied) {
+			var sourceElements = vid.getElementsByTagName('source');
+			var sources = [];
+			for (var j = 0; j < sourceElements.length; j++) {
+				sources.push(sourceElements[j].src);
+			}
+
+			this._url = (sourceElements.length > 0) ? sources : [vid.src];
+			return;
+		}
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
