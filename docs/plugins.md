@@ -1490,6 +1490,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://webkid.io">webkid</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Oliv/leaflet-polycolor">leaflet-polycolor</a>
+		</td>
+		<td>
+			Color each polyline segment. (<a href='https://oliv.github.io/leaflet-polycolor/'>demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/Oliv">Olivier Gasc</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3629,7 +3640,7 @@ The following plugins use external services to calculate driving or walking rout
     	</td>
     	<td>
     		The <b>TripGo</b> mobility platform let’s you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
-    		TripGo leaflet's plugin motivation is to provide an easy way to include it's functionality in an external platform. 
+    		TripGo leaflet's plugin motivation is to provide an easy way to include it's functionality in an external platform.
     	</td>
     	<td>
     		<a href="http://skedgo.com/">SkedGo</a>
