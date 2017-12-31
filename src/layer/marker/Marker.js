@@ -203,8 +203,9 @@ export var Marker = Layer.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			if (options.alt) {
-				icon.alt = options.alt;
+
+			if (icon.tagName === 'IMG') {
+				icon.alt = options.alt || '';
 			}
 		}
 
