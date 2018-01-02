@@ -101,8 +101,8 @@ Happy coding!
 
 ### Using RollupJS
 
-The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
-But normally, Leaflet is loaded in a web browser as just one javascript file.
+The source JavaScript code for Leaflet is a few dozen files, in the `src/` directory.
+But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
 In order to create this file, run `npm run rollup` or `yarn run rollup`.
 
