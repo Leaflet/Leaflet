@@ -942,6 +942,14 @@ These plugins create useful overlays from scratch, no loading required.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/dj0001/Leaflet.Sun">Leaflet.Sun</a>
+		</td><td>Get sunset or sunrise at map click. <a href="https://dj0001.github.io/Leaflet.Sun">Demo</a>
+		</td><td>
+			<a href="https://github.com/dj0001">DJ</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/cloudybay/leaflet.latlng-graticule">leaflet.latlng-graticule</a>
 		</td>
 		<td>
