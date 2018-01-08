@@ -145,7 +145,7 @@ Point.prototype = {
 		return this;
 	},
 
-	// @method ceil(): Point
+	// @method trunc(): Point
 	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
 	trunc: function () {
 		return this.clone()._trunc();
