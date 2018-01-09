@@ -27,14 +27,14 @@ Leaflet Changelog
 * Add `typeof` check to `checkDeprecatedMixinEvents` ([#5901](https://github.com/Leaflet/Leaflet/issues/5901) by [murb](https://github.com/murb))
 * Optimize images ([#5936](https://github.com/Leaflet/Leaflet/issues/5936) by [grischard](https://github.com/grischard))
 * Add `addTo` static function to `L.Handler` class ([#5930](https://github.com/Leaflet/Leaflet/issues/5930) by [cherniavskii](https://github.com/cherniavskii))
-* Add ability to pass `HTMLImageElement` to `L.ImageOverlay` and `L.VideoOverlay` ([#5948](https://github.com/Leaflet/Leaflet/issues/5948) by [ronikar](https://github.com/ronikar))
+* `L.ImageOverlay` accepts `ImageElement` ([#5948](https://github.com/Leaflet/Leaflet/issues/5948) by [ronikar](https://github.com/ronikar))
 
 ### Bug fixes
 
+* Fix adding CSS classes in `L.VideoOverlay`, which caused map crash in IE8 ([#5731](https://github.com/Leaflet/Leaflet/issues/5731) by [Dzwiedzminator](https://github.com/Dzwiedzminator) and [#5785](https://github.com/Leaflet/Leaflet/issues/5785) by [cherniavskii](https://github.com/cherniavskii))
 * No inertia if drag is stopped before ending the drag ([#5690](https://github.com/Leaflet/Leaflet/issues/5690) by [perliedman](https://github.com/perliedman))
 * Remove tiles from the `_tiles` cache when they're aborted ([#5634](https://github.com/Leaflet/Leaflet/issues/5634) by [oliverheilig](https://github.com/oliverheilig))
 * Use same condition for adding as well as removing double tap listener ([#5598](https://github.com/Leaflet/Leaflet/issues/5598) by [perliedman](https://github.com/perliedman))
-* Fix adding css classes to `L.VideoOverlay` ([#5731](https://github.com/Leaflet/Leaflet/issues/5731) by [Dzwiedzminator](https://github.com/Dzwiedzminator) and [#5785](https://github.com/Leaflet/Leaflet/issues/5785) by [cherniavskii](https://github.com/cherniavskii))
 * Correctly wrap tile coordinate bounds ([#5715](https://github.com/Leaflet/Leaflet/issues/5715) by [perliedman](https://github.com/perliedman))
 * Fix `L.TileLayer` infinite error loop ([#5783](https://github.com/Leaflet/Leaflet/issues/5783) by [cherniavskii](https://github.com/cherniavskii))
 * Fix map not rendering when images have max-height ([#5778](https://github.com/Leaflet/Leaflet/issues/5778) by [idanen](https://github.com/idanen))
