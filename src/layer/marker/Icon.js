@@ -54,6 +54,9 @@ export var Icon = Class.extend({
 	 * @option popupAnchor: Point = null
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
 	 *
+	 * @option tooltipAnchor: Point = null
+	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
+	 *
 	 * @option shadowUrl: String = null
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
 	 *
