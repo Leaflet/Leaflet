@@ -136,7 +136,7 @@ export var ImageOverlay = Layer.extend({
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
 	setBounds: function (bounds) {
-		this._bounds = bounds;
+		this._bounds = toLatLngBounds(bounds);
 
 		if (this._map) {
 			this._reset();
@@ -179,9 +179,12 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_initImage: function () {
-		var img = this._image = DomUtil.create('img',
-				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '') +
-				 (this.options.className || ''));
+		var wasElementSupplied = this._url.tagName === 'IMG';
+		var img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
+
+		DomUtil.addClass(img, 'leaflet-image-layer');
+		if (this._zoomAnimated) { DomUtil.addClass(img, 'leaflet-zoom-animated'); }
+		if (this.options.className) { DomUtil.addClass(img, this.options.className); }
 
 		img.onselectstart = Util.falseFn;
 		img.onmousemove = Util.falseFn;
@@ -197,6 +200,11 @@ export var ImageOverlay = Layer.extend({
 
 		if (this.options.zIndex) {
 			this._updateZIndex();
+		}
+
+		if (wasElementSupplied) {
+			this._url = img.src;
+			return;
 		}
 
 		img.src = this._url;

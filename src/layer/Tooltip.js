@@ -20,7 +20,7 @@ import * as DomUtil from '../dom/DomUtil';
  * marker.bindTooltip("my tooltip text").openTooltip();
  * ```
  * Note about tooltip offset. Leaflet takes two options in consideration
- * for computing tooltip offseting:
+ * for computing tooltip offsetting:
  * - the `offset` Tooltip option: it defaults to [0, 0], and it's specific to one tooltip.
  *   Add a positive x offset to move the tooltip to the right, and a positive y offset to
  *   move it to the bottom. Negatives will move to the left and top.
@@ -46,7 +46,7 @@ export var Tooltip = DivOverlay.extend({
 		// @option direction: String = 'auto'
 		// Direction where to open the tooltip. Possible values are: `right`, `left`,
 		// `top`, `bottom`, `center`, `auto`.
-		// `auto` will dynamicaly switch between `right` and `left` according to the tooltip
+		// `auto` will dynamically switch between `right` and `left` according to the tooltip
 		// position on the map.
 		direction: 'auto',
 
@@ -310,7 +310,7 @@ Layer.include({
 	},
 
 	// @method openTooltip(latlng?: LatLng): this
-	// Opens the bound tooltip at the specificed `latlng` or at the default tooltip anchor if no `latlng` is passed.
+	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (layer, latlng) {
 		if (!(layer instanceof Layer)) {
 			latlng = layer;

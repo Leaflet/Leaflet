@@ -69,7 +69,7 @@ export var FeatureGroup = LayerGroup.extend({
 	},
 
 	// @method bringToBack(): this
-	// Brings the layer group to the top of all other layers
+	// Brings the layer group to the back of all other layers
 	bringToBack: function () {
 		return this.invoke('bringToBack');
 	},

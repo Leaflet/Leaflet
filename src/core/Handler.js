@@ -47,3 +47,11 @@ export var Handler = Class.extend({
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
 });
+
+// @section There is static function which can be called without instantiating L.Handler:
+// @function addTo(map: Map, name: String): this
+// Adds a new Handler to the given map with the given name.
+Handler.addTo = function (map, name) {
+	map.addHandler(name, this);
+	return this;
+};

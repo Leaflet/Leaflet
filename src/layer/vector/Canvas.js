@@ -294,8 +294,8 @@ export var Canvas = Renderer.extend({
 
 		var p = layer._point,
 		    ctx = this._ctx,
-		    r = layer._radius,
-		    s = (layer._radiusY || r) / r;
+		    r = Math.max(Math.round(layer._radius), 1),
+		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
 
 		this._drawnLayers[layer._leaflet_id] = layer;
 
@@ -416,7 +416,7 @@ export var Canvas = Renderer.extend({
 			prev.next = next;
 		} else if (next) {
 			// Update first entry unless this is the
-			// signle entry
+			// single entry
 			this._drawFirst = next;
 		}
 
@@ -444,7 +444,7 @@ export var Canvas = Renderer.extend({
 			next.prev = prev;
 		} else if (prev) {
 			// Update last entry unless this is the
-			// signle entry
+			// single entry
 			this._drawLast = prev;
 		}
 

@@ -425,7 +425,7 @@ export var Map = Evented.extend({
 			}
 		}
 
-		this._moveStart(true);
+		this._moveStart(true, options.noMoveStart);
 
 		frame.call(this);
 		return this;
@@ -463,10 +463,15 @@ export var Map = Evented.extend({
 	// @method setMinZoom(zoom: Number): this
 	// Sets the lower limit for the available zoom levels (see the [minZoom](#map-minzoom) option).
 	setMinZoom: function (zoom) {
+		var oldZoom = this.options.minZoom;
 		this.options.minZoom = zoom;
 
-		if (this._loaded && this.getZoom() < this.options.minZoom) {
-			return this.setZoom(zoom);
+		if (this._loaded && oldZoom !== zoom) {
+			this.fire('zoomlevelschange');
+
+			if (this.getZoom() < this.options.minZoom) {
+				return this.setZoom(zoom);
+			}
 		}
 
 		return this;
@@ -475,10 +480,15 @@ export var Map = Evented.extend({
 	// @method setMaxZoom(zoom: Number): this
 	// Sets the upper limit for the available zoom levels (see the [maxZoom](#map-maxzoom) option).
 	setMaxZoom: function (zoom) {
+		var oldZoom = this.options.maxZoom;
 		this.options.maxZoom = zoom;
 
-		if (this._loaded && (this.getZoom() > this.options.maxZoom)) {
-			return this.setZoom(zoom);
+		if (this._loaded && oldZoom !== zoom) {
+			this.fire('zoomlevelschange');
+
+			if (this.getZoom() > this.options.maxZoom) {
+				return this.setZoom(zoom);
+			}
 		}
 
 		return this;
@@ -499,7 +509,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	// @method invalidateSize(options: Zoom/Pan options): this
+	// @method invalidateSize(options: Zoom/pan options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
 	// pan by default. If `options.pan` is `false`, panning will not occur.
@@ -672,8 +682,7 @@ export var Map = Evented.extend({
 		this.fire('locationfound', data);
 	},
 
-	// TODO handler.addTo
-	// TODO Appropiate docs section?
+	// TODO Appropriate docs section?
 	// @section Other Methods
 	// @method addHandler(name: String, HandlerClass: Function): this
 	// Adds a new `Handler` to the map, given its name and constructor function.
@@ -708,9 +717,15 @@ export var Map = Evented.extend({
 		} catch (e) {
 			/*eslint-disable */
 			this._container._leaflet_id = undefined;
-			/*eslint-enable */
+			/* eslint-enable */
 			this._containerId = undefined;
 		}
+
+		if (this._locationWatchId !== undefined) {
+			this.stopLocate();
+		}
+
+		this._stop();
 
 		DomUtil.remove(this._mapPane);
 
@@ -1090,7 +1105,7 @@ export var Map = Evented.extend({
 		// Pane for `GridLayer`s and `TileLayer`s
 		this.createPane('tilePane');
 		// @pane overlayPane: HTMLElement = 400
-		// Pane for vector overlays (`Path`s), like `Polyline`s and `Polygon`s
+		// Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s
 		this.createPane('shadowPane');
 		// @pane shadowPane: HTMLElement = 500
 		// Pane for overlay shadows (e.g. `Marker` shadows)
@@ -1099,7 +1114,7 @@ export var Map = Evented.extend({
 		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
 		// @pane tooltipPane: HTMLElement = 650
-		// Pane for tooltip.
+		// Pane for `Tooltip`s.
 		this.createPane('tooltipPane');
 		// @pane popupPane: HTMLElement = 700
 		// Pane for `Popup`s.
@@ -1126,7 +1141,7 @@ export var Map = Evented.extend({
 
 		var zoomChanged = this._zoom !== zoom;
 		this
-			._moveStart(zoomChanged)
+			._moveStart(zoomChanged, false)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
@@ -1143,7 +1158,7 @@ export var Map = Evented.extend({
 		}
 	},
 
-	_moveStart: function (zoomChanged) {
+	_moveStart: function (zoomChanged, noMoveStart) {
 		// @event zoomstart: Event
 		// Fired when the map zoom is about to change (e.g. before zoom animation).
 		// @event movestart: Event
@@ -1151,7 +1166,10 @@ export var Map = Evented.extend({
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
-		return this.fire('movestart');
+		if (!noMoveStart) {
+			this.fire('movestart');
+		}
+		return this;
 	},
 
 	_move: function (center, zoom, data) {
@@ -1353,9 +1371,9 @@ export var Map = Evented.extend({
 		};
 
 		if (e.type !== 'keypress') {
-			var isMarker = (target.options && 'icon' in target.options);
+			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
-					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
+				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
@@ -1514,7 +1532,7 @@ export var Map = Evented.extend({
 
 	_tryAnimatedPan: function (center, options) {
 		// difference between the new and current centers in pixels
-		var offset = this._getCenterOffset(center)._floor();
+		var offset = this._getCenterOffset(center)._trunc();
 
 		// don't animate too far unless animate: true specified in options
 		if ((options && options.animate) !== true && !this.getSize().contains(offset)) { return false; }
@@ -1584,7 +1602,7 @@ export var Map = Evented.extend({
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true)
+			    ._moveStart(true, false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
@@ -1592,6 +1610,8 @@ export var Map = Evented.extend({
 	},
 
 	_animateZoom: function (center, zoom, startAnim, noUpdate) {
+		if (!this._mapPane) { return; }
+
 		if (startAnim) {
 			this._animatingZoom = true;
 
@@ -1617,7 +1637,9 @@ export var Map = Evented.extend({
 	_onZoomTransitionEnd: function () {
 		if (!this._animatingZoom) { return; }
 
-		DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		if (this._mapPane) {
+			DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		}
 
 		this._animatingZoom = false;
 

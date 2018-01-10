@@ -91,7 +91,7 @@ export var TouchZoom = Handler.extend({
 		}
 
 		if (!this._moved) {
-			map._moveStart(true);
+			map._moveStart(true, false);
 			this._moved = true;
 		}
 

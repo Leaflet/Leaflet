@@ -40,18 +40,13 @@ export function on(obj, types, fn, context) {
 var eventsKey = '_leaflet_events';
 
 // @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
-// Removes a previously added listener function. If no function is specified,
-// it will remove all the listeners of that particular DOM event from the element.
+// Removes a previously added listener function.
 // Note that if you passed a custom context to on, you must pass the same
 // context to `off` in order to remove the listener.
 
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
-
-// @alternative
-// @function off(el: HTMLElement): this
-// Removes all known event listeners
 export function off(obj, types, fn, context) {
 
 	if (typeof types === 'object') {
@@ -136,7 +131,8 @@ function removeOne(obj, type, fn, context) {
 	if (Browser.pointer && type.indexOf('touch') === 0) {
 		removePointerListener(obj, type, id);
 
-	} else if (Browser.touch && (type === 'dblclick') && removeDoubleTapListener) {
+	} else if (Browser.touch && (type === 'dblclick') && removeDoubleTapListener &&
+	           !(Browser.pointer && Browser.chrome)) {
 		removeDoubleTapListener(obj, id);
 
 	} else if ('removeEventListener' in obj) {
@@ -208,7 +204,7 @@ export function preventDefault(e) {
 	return this;
 }
 
-// @function stop(ev): this
+// @function stop(ev: DOMEvent): this
 // Does `stopPropagation` and `preventDefault` at the same time.
 export function stop(e) {
 	preventDefault(e);
@@ -226,9 +222,11 @@ export function getMousePosition(e, container) {
 
 	var rect = container.getBoundingClientRect();
 
+	var scaleX = rect.width / container.offsetWidth || 1;
+	var scaleY = rect.height / container.offsetHeight || 1;
 	return new Point(
-		e.clientX - rect.left - container.clientLeft,
-		e.clientY - rect.top - container.clientTop);
+		e.clientX / scaleX - rect.left - container.clientLeft,
+		e.clientY / scaleY - rect.top - container.clientTop);
 }
 
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),

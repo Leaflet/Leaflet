@@ -7,7 +7,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
 
 /*
  * @class Rectangle
- * @aka L.Retangle
+ * @aka L.Rectangle
  * @inherits Polygon
  *
  * A class for drawing rectangle overlays on a map. Extends `Polygon`.

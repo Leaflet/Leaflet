@@ -37,6 +37,11 @@ export var android = userAgentContains('android');
 // @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
+/* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
+var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
+// @property androidStock: Boolean; `true` for the Android stock browser (i.e. not Chrome)
+export var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
+
 // @property opera: Boolean; `true` for the Opera browser
 export var opera = !!window.opera;
 

@@ -231,8 +231,8 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 
 	for (var i = 0, len = coords.length, latlng; i < len; i++) {
 		latlng = levelsDeep ?
-				coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng) :
-				(_coordsToLatLng || coordsToLatLng)(coords[i]);
+			coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng) :
+			(_coordsToLatLng || coordsToLatLng)(coords[i]);
 
 		latlngs.push(latlng);
 	}
@@ -245,8 +245,8 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 export function latLngToCoords(latlng, precision) {
 	precision = typeof precision === 'number' ? precision : 6;
 	return latlng.alt !== undefined ?
-			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
-			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
+		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
+		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
 }
 
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
@@ -270,8 +270,8 @@ export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 
 export function getFeature(layer, newGeometry) {
 	return layer.feature ?
-			Util.extend({}, layer.feature, {geometry: newGeometry}) :
-			asFeature(newGeometry);
+		Util.extend({}, layer.feature, {geometry: newGeometry}) :
+		asFeature(newGeometry);
 }
 
 // @function asFeature(geojson: Object): Object
@@ -314,7 +314,7 @@ CircleMarker.include(PointToGeoJSON);
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
 	toGeoJSON: function (precision) {
-		var multi = !LineUtil._flat(this._latlngs);
+		var multi = !LineUtil.isFlat(this._latlngs);
 
 		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
@@ -330,8 +330,8 @@ Polyline.include({
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
 	toGeoJSON: function (precision) {
-		var holes = !LineUtil._flat(this._latlngs),
-		    multi = holes && !LineUtil._flat(this._latlngs[0]);
+		var holes = !LineUtil.isFlat(this._latlngs),
+		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
 		var coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
 

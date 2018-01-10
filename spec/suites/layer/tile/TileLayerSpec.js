@@ -204,7 +204,7 @@ describe('TileLayer', function () {
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
 
-			kittenLayer = kittenLayerFactory();
+			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
 			counts = {
 				tileload: 0,
@@ -214,12 +214,12 @@ describe('TileLayer', function () {
 			};
 
 			kittenLayer.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -274,9 +274,9 @@ describe('TileLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-	// 				map.on('_frame', function () {
-	// 					console.log('frame', counts);
-	// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});

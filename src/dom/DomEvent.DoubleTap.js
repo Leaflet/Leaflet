@@ -5,9 +5,9 @@ import {_pointersCount} from './DomEvent.Pointer';
  * Extends the event handling code with double tap support for mobile browsers.
  */
 
-var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'pointerdown' : 'touchstart',
-    _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend',
-    _pre = '_leaflet_';
+var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'pointerdown' : 'touchstart';
+var _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend';
+var _pre = '_leaflet_';
 
 // inspired by Zepto touch code by Thomas Fuchs
 export function addDoubleTapListener(obj, handler, id) {

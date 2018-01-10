@@ -172,7 +172,7 @@ export var GridLayer = Layer.extend({
 		DomUtil.remove(this._container);
 		map._removeZoomLimit(this);
 		this._container = null;
-		this._tileZoom = null;
+		this._tileZoom = undefined;
 	},
 
 	// @method bringToFront: this
@@ -261,7 +261,7 @@ export var GridLayer = Layer.extend({
 	// @section Extension methods
 	// Layers extending `GridLayer` shall reimplement the following method.
 	// @method createTile(coords: Object, done?: Function): HTMLElement
-	// Called only internally, must be overriden by classes extending `GridLayer`.
+	// Called only internally, must be overridden by classes extending `GridLayer`.
 	// Returns the `HTMLElement` corresponding to the given `coords`. If the `done` callback
 	// is specified, it must be called when the tile has finished loading and drawing.
 	createTile: function () {
@@ -466,7 +466,7 @@ export var GridLayer = Layer.extend({
 		}
 		this._removeAllTiles();
 
-		this._tileZoom = null;
+		this._tileZoom = undefined;
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -676,7 +676,10 @@ export var GridLayer = Layer.extend({
 
 				if (!this._isValidTile(coords)) { continue; }
 
-				if (!this._tiles[this._tileCoordsToKey(coords)]) {
+				var tile = this._tiles[this._tileCoordsToKey(coords)];
+				if (tile) {
+					tile.current = true;
+				} else {
 					queue.push(coords);
 				}
 			}
@@ -728,26 +731,26 @@ export var GridLayer = Layer.extend({
 		return this._tileCoordsToBounds(this._keyToTileCoords(key));
 	},
 
-	// converts tile coordinates to its geographical bounds
-	_tileCoordsToBounds: function (coords) {
-
+	_tileCoordsToNwSe: function (coords) {
 		var map = this._map,
 		    tileSize = this.getTileSize(),
-
 		    nwPoint = coords.scaleBy(tileSize),
 		    sePoint = nwPoint.add(tileSize),
-
 		    nw = map.unproject(nwPoint, coords.z),
-		    se = map.unproject(sePoint, coords.z),
-		    bounds = new LatLngBounds(nw, se);
-
-		if (!this.options.noWrap) {
-			map.wrapLatLngBounds(bounds);
-		}
-
-		return bounds;
+		    se = map.unproject(sePoint, coords.z);
+		return [nw, se];
 	},
 
+	// converts tile coordinates to its geographical bounds
+	_tileCoordsToBounds: function (coords) {
+		var bp = this._tileCoordsToNwSe(coords),
+		    bounds = new LatLngBounds(bp[0], bp[1]);
+
+		if (!this.options.noWrap) {
+			bounds = this._map.wrapLatLngBounds(bounds);
+		}
+		return bounds;
+	},
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
 		return coords.x + ':' + coords.y + ':' + coords.z;
@@ -765,6 +768,12 @@ export var GridLayer = Layer.extend({
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
+		// Cancels any pending http requests associated with the tile
+		// unless we're on Android's stock browser,
+		// see https://github.com/Leaflet/Leaflet/issues/137
+		if (!Browser.androidStock) {
+			tile.el.setAttribute('src', Util.emptyImageUrl);
+		}
 		DomUtil.remove(tile.el);
 
 		delete this._tiles[key];

@@ -122,11 +122,18 @@ describe('GridLayer', function () {
 	});
 
 	describe('#createTile', function () {
+		var grid;
 
 		beforeEach(function () {
 			// Simpler sizes to test.
 			div.style.width = '512px';
 			div.style.height = '512px';
+
+			map.remove();
+			map = L.map(div);
+			map.setView([0, 0], 10);
+
+			grid = L.gridLayer();
 		});
 
 		afterEach(function () {
@@ -136,12 +143,7 @@ describe('GridLayer', function () {
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', function (done) {
-			map.remove();
-			map = L.map(div);
-			map.setView([0, 0], 10);
-
-			var grid = L.gridLayer(),
-			    count = 0,
+			var count = 0,
 			    loadCount = 0;
 			grid.createTile = function (coords) {
 				count++;
@@ -159,6 +161,58 @@ describe('GridLayer', function () {
 			};
 			grid.on('load', onLoad);
 			map.addLayer(grid);
+		});
+
+		describe('when done() is called with an error parameter', function () {
+			var keys;
+
+			beforeEach(function () {
+				keys = [];
+				grid.createTile = function (coords, done) {
+					var tile = document.createElement('div');
+					keys.push(this._tileCoordsToKey(coords));
+					done('error', tile);
+					return tile;
+				};
+			});
+
+			it('does not raise tileload events', function (done) {
+				var tileLoadRaised = sinon.spy();
+				grid.on('tileload', tileLoadRaised);
+				grid.on('tileerror', function () {
+					if (keys.length === 4) {
+						expect(tileLoadRaised.notCalled).to.be(true);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('raises tileerror events', function (done) {
+				var tileErrorRaised = sinon.spy();
+				grid.on('tileerror', function () {
+					tileErrorRaised();
+					if (keys.length === 4) {
+						expect(tileErrorRaised.callCount).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('does not add the .leaflet-tile-loaded class to tile elements', function (done) {
+				var count = 0;
+				grid.on('tileerror', function (e) {
+					if (!L.DomUtil.hasClass(e.tile, 'leaflet-tile-loaded')) {
+						count++;
+					}
+					if (keys.length === 4) {
+						expect(count).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
 		});
 
 	});
@@ -341,12 +395,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -545,7 +599,7 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 
-// 			grid.on('tileload tileunload tileloadstart load', logTiles);
+			// grid.on('tileload tileunload tileloadstart load', logTiles);
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -553,7 +607,7 @@ describe('GridLayer', function () {
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
-// 				grid.on('load', logTiles);
+				// grid.on('load', logTiles);
 				grid.on('load', function () {
 
 					// We're one frame into the zoom animation, there are
@@ -618,7 +672,7 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
 
-// 			grid.on('tileload tileunload load', logTiles);
+			// grid.on('tileload tileunload load', logTiles);
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -626,11 +680,11 @@ describe('GridLayer', function () {
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
-// 				grid.on('load', logTiles);
+				// grid.on('load', logTiles);
 				grid.on('load', function () {
 
 					grid.off('load');
-// 					grid.on('load', logTiles);
+					// grid.on('load', logTiles);
 
 					// We're one frame into the zoom animation, there are
 					// 16 tiles for z11 plus 4 tiles for z10 covering the
@@ -717,12 +771,14 @@ describe('GridLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-// 				map.on('_frame', function () {
-// 					console.log('frame', counts);
-// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});
+
+			grid.options.keepBuffer = 0;
 
 			map.addLayer(grid).setView(mad, 12);
 			clock.tick(250);
@@ -756,12 +812,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -953,4 +1009,12 @@ describe('GridLayer', function () {
 		});
 	});
 
+	it("doesn't call map's getZoomScale method with null after _invalidateAll method was called", function () {
+		map.setView([0, 0], 0);
+		var grid = L.gridLayer().addTo(map);
+		var wrapped = sinon.spy(map, 'getZoomScale');
+		grid._invalidateAll();
+		grid.redraw();
+		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);
+	});
 });

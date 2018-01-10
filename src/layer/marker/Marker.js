@@ -36,6 +36,18 @@ export var Marker = Layer.extend({
 		// Whether the marker is draggable with mouse/touch or not.
 		draggable: false,
 
+		// @option autoPan: Boolean = false
+		// Set it to `true` if you want the map to do panning animation when marker hits the edges.
+		autoPan: false,
+
+		// @option autoPanPadding: Point = Point(50, 50)
+		// Equivalent of setting both top left and bottom right autopan padding to the same value.
+		autoPanPadding: [50, 50],
+
+		// @option autoPanSpeed: Number = 10
+		// Number of pixels the map should move by.
+		autoPanSpeed: 10,
+
 		// @option keyboard: Boolean = true
 		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
@@ -166,7 +178,7 @@ export var Marker = Layer.extend({
 
 	update: function () {
 
-		if (this._icon) {
+		if (this._icon && this._map) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
 		}
@@ -191,8 +203,9 @@ export var Marker = Layer.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			if (options.alt) {
-				icon.alt = options.alt;
+
+			if (icon.tagName === 'IMG') {
+				icon.alt = options.alt || '';
 			}
 		}
 

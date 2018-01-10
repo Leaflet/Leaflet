@@ -130,9 +130,9 @@ Leaflet handles the `options` property in a special way: options available for a
     
     var instance = new MyCubeClass('Blue');
     
-    console.log(instance.options.width);
-    console.log(instance.options.height);
-    console.log(instance.options.depth);
+    console.log(instance.options.width); // Outputs "1", parent class default
+    console.log(instance.options.height); // Outputs "1", parent class default
+    console.log(instance.options.depth); // Outputs "1"
 
 
 It's quite common for child classes to run the parent's constructor, and then their own constructor. In Leaflet this is achieved using `L.Class.addInitHook()`. This method can be used to "hook" initialization functions that run right after the class' `initialize()`, for example:

@@ -21,6 +21,10 @@ import {toLatLngBounds} from './LatLngBounds';
  * map.panTo({lat: 50, lng: 30});
  * map.panTo(L.latLng(50, 30));
  * ```
+ *
+ * Note that `LatLng` does not inherit from Leafet's `Class` object,
+ * which means new classes can't inherit from it, and new methods
+ * can't be added to it with the `include` function.
  */
 
 export function LatLng(lat, lng, alt) {
@@ -45,7 +49,7 @@ export function LatLng(lat, lng, alt) {
 
 LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
-	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overriden by setting `maxMargin` to a small number.
+	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
 		if (!obj) { return false; }
 
@@ -67,7 +71,7 @@ LatLng.prototype = {
 	},
 
 	// @method distanceTo(otherLatLng: LatLng): Number
-	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](http://en.wikipedia.org/wiki/Haversine_formula).
+	// Returns the distance (in meters) to the given `LatLng` calculated using the [Spherical Law of Cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines).
 	distanceTo: function (other) {
 		return Earth.distance(this, toLatLng(other));
 	},
