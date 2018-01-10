@@ -950,6 +950,14 @@ These plugins create useful overlays from scratch, no loading required.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/dj0001/Leaflet.timezones">Leaflet.timezones</a>
+		</td><td>Overlay timezones on a Leaflet Earth map. <a href="https://dj0001.github.io/Leaflet.timezones">Demo</a>
+		</td><td>
+			<a href="https://github.com/dj0001">DJ</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/cloudybay/leaflet.latlng-graticule">leaflet.latlng-graticule</a>
 		</td>
 		<td>
