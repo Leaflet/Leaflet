@@ -51,6 +51,7 @@ describe('DomUtil', function () {
 			var map = L.map(div).setView([0, 0], 0);
 
 			expect(L.DomUtil.getMapContainer(el)).to.eql(null);
+			expect(L.DomUtil.getMapContainer('not-an-element')).to.eql(null);
 		});
 	});
 

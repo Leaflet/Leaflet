@@ -84,7 +84,7 @@ describe("Map.Drag", function () {
 			fieldset.style.width = fieldset.style.height = '600px';
 			fieldset.style.top = fieldset.style.left = 0;
 			fieldset.style.position = 'absolute';
-			fieldset.disabled = 'true';
+			fieldset.disabled = true;
 			document.body.appendChild(fieldset);
 
 			var containerTemp = container.cloneNode();
