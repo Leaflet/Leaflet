@@ -51,8 +51,11 @@ export var Icon = Class.extend({
 	 * will be aligned so that this point is at the marker's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
-	 * @option popupAnchor: Point = null
+	 * @option popupAnchor: Point = [0, 0]
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
+	 *
+	 * @option tooltipAnchor: Point = [0, 0]
+	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
 	 *
 	 * @option shadowUrl: String = null
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
@@ -69,6 +72,11 @@ export var Icon = Class.extend({
 	 * @option className: String = ''
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
+
+	options: {
+		popupAnchor: [0, 0],
+		tooltipAnchor: [0, 0],
+	},
 
 	initialize: function (options) {
 		setOptions(this, options);
