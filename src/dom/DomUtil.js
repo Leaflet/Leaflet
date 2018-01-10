@@ -41,6 +41,23 @@ export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
+// @function getMapContainer(id: String|HTMLElement): HTMLElement
+// Returns the HTML Element of the map container that the passed Element
+// is part of
+export function getMapContainer(id) {
+	var el = get(id);
+
+	while (el && !hasClass(el, 'leaflet-container')) {
+		el = el.parentNode;
+
+		if (el.nodeType !== 1) {
+			return null;
+		}
+	}
+
+	return el;
+}
+
 // @function getStyle(el: HTMLElement, styleAttrib: String): String
 // Returns the value for a certain style attribute on an element,
 // including computed values or values set through CSS.

@@ -23,6 +23,37 @@ describe('DomUtil', function () {
 		});
 	});
 
+	describe('#getMapContainer', function () {
+		it('gets map container if given argument is within a Leaflet map container', function () {
+			var div = document.createElement('div');
+			div.style.width = div.style.height = '600px';
+			div.style.top = div.style.left = 0;
+			div.style.position = 'absolute';
+			document.body.appendChild(div);
+
+			var map = L.map(div).setView([0, 0], 0);
+
+			var marker = new L.Marker([0, 0], {
+				draggable: true
+			});
+			map.addLayer(marker);
+
+			expect(L.DomUtil.getMapContainer(marker._icon)).to.eql(div);
+		});
+
+		it('returns null if element is not within a Leaflet map container', function () {
+			var div = document.createElement('div');
+			div.style.width = div.style.height = '600px';
+			div.style.top = div.style.left = 0;
+			div.style.position = 'absolute';
+			document.body.appendChild(div);
+
+			var map = L.map(div).setView([0, 0], 0);
+
+			expect(L.DomUtil.getMapContainer(el)).to.eql(null);
+		});
+	});
+
 	describe('#addClass, #removeClass, #hasClass', function () {
 		it('has defined class for test element', function () {
 			el.className = 'bar foo baz ';

@@ -76,7 +76,44 @@ describe("Map.Drag", function () {
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
 			mouse.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up().moveBy(256, 32, 200);
+		});
+
+		it("change the center of the map when inside a disabled Fieldset", function (done) {
+			var fieldset = document.createElement('fieldset');
+			fieldset.style.width = fieldset.style.height = '600px';
+			fieldset.style.top = fieldset.style.left = 0;
+			fieldset.style.position = 'absolute';
+			fieldset.disabled = 'true';
+			document.body.appendChild(fieldset);
+
+			var containerTemp = container.cloneNode();
+			fieldset.appendChild(containerTemp);
+
+			var map = new L.Map(containerTemp, {
+				dragging: true,
+				inertia: false
+			});
+			map.setView([0, 0], 1);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					expect(center.lat).to.be.within(21.9430, 21.9431);
+					expect(center.lng).to.be(-180);
+					expect(zoom).to.be(1);
+
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.wait(100).moveTo(200, 200, 0)
+				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up().moveBy(256, 32, 200);
 		});
 
 		it("does not change the center of the map when mouse is moved less than the drag threshold", function (done) {
