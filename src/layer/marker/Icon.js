@@ -73,6 +73,11 @@ export var Icon = Class.extend({
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
+	options: {
+		popupAnchor: [0, 0],
+		tooltipAnchor: [0, 0],
+	},
+
 	initialize: function (options) {
 		setOptions(this, options);
 	},
