@@ -72,6 +72,7 @@ Leaflet Changelog
 * Clean up and document event propagation properties ([#5880](https://github.com/Leaflet/Leaflet/issues/5880) by [perliedman](https://github.com/perliedman))
 * Update building instructions ([#5911](https://github.com/Leaflet/Leaflet/issues/5911) by [shadeland](https://github.com/shadeland))
 * Document `mouseup` event for interactive `L.Layer` ([#5941](https://github.com/Leaflet/Leaflet/issues/5941) by [germansokolov13](https://github.com/germansokolov13))
+* Document `L.Icon`'s `tooltipAnchor` option, update `tooltipAnchor` and `popupAnchor` default values docs ([#5989](https://github.com/Leaflet/Leaflet/issues/5989) by [cherniavskii](https://github.com/cherniavskii))
 
 ### ES6 / Rollup
 
