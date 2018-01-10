@@ -51,10 +51,10 @@ export var Icon = Class.extend({
 	 * will be aligned so that this point is at the marker's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
-	 * @option popupAnchor: Point = null
+	 * @option popupAnchor: Point = [0, 0]
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
 	 *
-	 * @option tooltipAnchor: Point = null
+	 * @option tooltipAnchor: Point = [0, 0]
 	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
 	 *
 	 * @option shadowUrl: String = null
