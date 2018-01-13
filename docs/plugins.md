@@ -896,6 +896,14 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 			<a href="https://github.com/BenjaminVadant/">Benjamin VADANT</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dj0001/Leaflet.mytrack">Leaflet.mytrack</a>
+		</td><td>Track my way on a map and download it. <a href="https://dj0001.github.io/Leaflet.mytrack">Demo</a>
+		</td><td>
+			<a href="https://github.com/dj0001">DJ</a>
+		</td>
+	</tr>
 </table>
 
 
