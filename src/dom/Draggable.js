@@ -114,7 +114,7 @@ export var Draggable = Evented.extend({
 
 		var first = e.touches ? e.touches[0] : e;
 
-		this._startPoint = new Point(first.clientX, first.clientY);
+		this._startPoint = DomEvent.getMousePosition(first, this._dragStartTarget, true);
 
 		DomEvent.on(document, MOVE[e.type], this._onMove, this);
 		DomEvent.on(document, END[e.type], this._onUp, this);
@@ -134,7 +134,7 @@ export var Draggable = Evented.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    newPoint = new Point(first.clientX, first.clientY),
+		    newPoint = DomEvent.getMousePosition(first, this._dragStartTarget, true),
 		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
