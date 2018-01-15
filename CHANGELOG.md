@@ -3,7 +3,7 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.3.0 (2018-01-10)
+## 1.3.0 (2018-01-15)
 
 ### API changes
 
@@ -76,9 +76,9 @@ Leaflet Changelog
 
 ### ES6 / Rollup
 
+* Tweak `legacy` option in rollup config - now Leaflet works in IE again ([#5929](https://github.com/Leaflet/Leaflet/issues/5929) by [IvanSanchez](https://github.com/IvanSanchez))
 * Remove warning alert in watch bundle ([#5714](https://github.com/Leaflet/Leaflet/issues/5714) by [perliedman](https://github.com/perliedman))
 * New rollup config signature ([#5812](https://github.com/Leaflet/Leaflet/issues/5812) by [iH8](https://github.com/iH8))
-* Tweak `legacy` option in rollup config ([#5929](https://github.com/Leaflet/Leaflet/issues/5929) by [IvanSanchez](https://github.com/IvanSanchez))
 
 
 ## 1.2.0 (2017-08-08)
