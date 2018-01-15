@@ -12,7 +12,7 @@ Documentation for the release process of Leaflet.
     * [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
     * files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
 8. Update API docs:
-    * run `jake docs`
+    * run `npm run docs`
     * Copy the built docs from `dist/reference-X.Y.Z.html` to `docs/reference-X.Y.Z.html`
     * Update the built docs header to use Jekyll style; see commit [11d716f0964d8bc0d058ca09e9ba8003451b4b8d](https://github.com/Leaflet/Leaflet/commit/11d716f0964d8bc0d058ca09e9ba8003451b4b8d) as reference for the needed changes
     * Commit the new docs to the release branch
@@ -22,7 +22,8 @@ Documentation for the release process of Leaflet.
     * Run `npm run integrity` or simply `node ./build/integrity.js` if you're not on Debian
     * Copy the hashes and update `integrity_hash_css`, `integrity_hash_source` and `integrity_hash_uglified` in `docs/_config.yml`; commit changes to the release branch
 11. Update link to latest release in `docs/download.html`, and commit to the release branch
-12. Update `latest_leaflet_version` in `docs/_config.yml` and commit to the release branch
-13. Update the "Latest news" section in `docs/index.html` and commit to the release branch
-14. If it looks like everything is good at this point, merge the release branch into `master`
-15. Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
+12. Add link to new version reference in `docs/reference-versions.html`, and commit to the release branch
+13. Update `latest_leaflet_version` in `docs/_config.yml` and commit to the release branch
+14. Update the announcement section in `docs/index.html` and commit to the release branch
+15. If it looks like everything is good at this point, merge the release branch into `master`
+16. Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
