@@ -1531,7 +1531,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/JackZouShao/leaflet-marker-drection">leaflet-marker-drection</a>
 		</td>
 		<td>
-			display the path and the direction of the marker. (<a href='https://jackzoushao.github.io/leaflet-marker-drection/examples/marker-drection.html/'>demo</a>)
+			display the path and the direction of the marker. (<a href='https://jackzoushao.github.io/leaflet-marker-drection/examples/marker-drection.html'>demo</a>)
 		</td>
 		<td>
 			<a href="https://github.com/JackZouShao">Jack Zou</a>
