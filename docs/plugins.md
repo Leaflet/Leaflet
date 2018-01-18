@@ -3398,6 +3398,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/ka7eh">Kaveh Karimi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-blurred-location/">leaflet-blurred-image</a>
+		</td>
+		<td>
+			A Leaflet-based interface for selecting a "blurred" or low-resolution location, to preserve privacy. <a href="https://publiclab.github.io/leaflet-blurred-location/examples/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/publiclab">Public Lab</a>
+		</td>
+	</tr>
 </table>
 
 
