@@ -3,6 +3,13 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.3.1 (2018-01-18)
+
+### Bug fixes
+
+* Fix `L.TileLayer`regression, which caused incorrect tile URLs ([#6006](https://github.com/Leaflet/Leaflet/issues/6006) by [ghybs](https://github.com/ghybs))
+
+
 ## 1.3.0 (2018-01-15)
 
 ### API changes
