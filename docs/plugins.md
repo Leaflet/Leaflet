@@ -1042,6 +1042,7 @@ The following plugins provide new ways of displaying overlay data information.
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<te
 	<tr>
 		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
@@ -1523,6 +1524,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 		<td>
 			<a href="https://github.com/Oliv">Olivier Gasc</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/JackZouShao/leaflet-marker-drection">leaflet-marker-drection</a>
+		</td>
+		<td>
+			display the path and the direction of the marker. (<a href='https://jackzoushao.github.io/leaflet-marker-drection/examples/marker-drection.html/'>demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/JackZouShao">Jack Zou</a>
 		</td>
 	</tr>
 </table>
