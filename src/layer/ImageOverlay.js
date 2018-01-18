@@ -41,6 +41,10 @@ export var ImageOverlay = Layer.extend({
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
 		crossOrigin: false,
 
+		// @option crossOriginCredentials: Boolean = false
+		// If true, the image will have its crossOrigin attribute set to 'use-credentials'. This is needed if you want to access image pixel data.
+		crossOriginCredentials: false,
+
 		// @option errorOverlayUrl: String = ''
 		// URL to the overlay image to show in place of the overlay that failed to load.
 		errorOverlayUrl: '',
@@ -196,6 +200,10 @@ export var ImageOverlay = Layer.extend({
 
 		if (this.options.crossOrigin) {
 			img.crossOrigin = '';
+		}
+
+		if (this.options.crossOriginCredentials) {
+			img.crossOrigin = 'use-credentials';
 		}
 
 		if (this.options.zIndex) {

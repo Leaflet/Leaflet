@@ -75,7 +75,11 @@ export var TileLayer = GridLayer.extend({
 
 		// @option crossOrigin: Boolean = false
 		// If true, all tiles will have their crossOrigin attribute set to ''. This is needed if you want to access tile pixel data.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option crossOriginCredentials: Boolean = false
+		// If true, all tiles will have their crossOrigin attribute set to 'use-credentials'. This is needed if you want to access tile pixel data.
+		crossOriginCredentials: false
 	},
 
 	initialize: function (url, options) {
@@ -133,6 +137,10 @@ export var TileLayer = GridLayer.extend({
 
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
+		}
+
+		if (this.options.crossOriginCredentials) {
+			tile.crossOrigin = 'use-credentials';
 		}
 
 		/*
