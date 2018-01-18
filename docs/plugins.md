@@ -1042,7 +1042,6 @@ The following plugins provide new ways of displaying overlay data information.
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-	<te
 	<tr>
 		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
