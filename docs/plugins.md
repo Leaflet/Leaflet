@@ -1536,6 +1536,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/JackZouShao">Jack Zou</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bbecquet/Leaflet.RotatedMarker">Leaflet Rotated Marker</a>
+		</td>
+		<td>
+			Enables rotation of marker icons in Leaflet. (<a href='http://bbecquet.github.io/Leaflet.RotatedMarker/example.html'>Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
+		</td>
+	</tr>
 </table>
 
 
