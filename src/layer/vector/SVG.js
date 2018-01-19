@@ -80,6 +80,7 @@ export var SVG = Renderer.extend({
 
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
+		if (this._map._panAnim && this._map._panAnim._inProgress) { return; }
 
 		Renderer.prototype._update.call(this);
 
