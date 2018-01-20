@@ -37,13 +37,11 @@ export var ImageOverlay = Layer.extend({
 		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
-		// @option crossOrigin: Boolean = false
-		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
+		// @option crossOrigin: String = false
+		// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		// Any false value other than '' will omit the crossOrigin attribute from the image.
 		crossOrigin: false,
-
-		// @option crossOriginCredentials: Boolean = false
-		// If true, the image will have its crossOrigin attribute set to 'use-credentials'. This is needed if you want to access image pixel data.
-		crossOriginCredentials: false,
 
 		// @option errorOverlayUrl: String = ''
 		// URL to the overlay image to show in place of the overlay that failed to load.
@@ -198,12 +196,8 @@ export var ImageOverlay = Layer.extend({
 		img.onload = Util.bind(this.fire, this, 'load');
 		img.onerror = Util.bind(this._overlayOnError, this, 'error');
 
-		if (this.options.crossOrigin) {
-			img.crossOrigin = '';
-		}
-
-		if (this.options.crossOriginCredentials) {
-			img.crossOrigin = 'use-credentials';
+		if (this.options.crossOrigin || this.options.crossOrigin === '') {
+			img.crossOrigin = this.options.crossOrigin;
 		}
 
 		if (this.options.zIndex) {

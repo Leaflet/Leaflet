@@ -73,13 +73,11 @@ export var TileLayer = GridLayer.extend({
 		// If `true` and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
 		detectRetina: false,
 
-		// @option crossOrigin: Boolean = false
-		// If true, all tiles will have their crossOrigin attribute set to ''. This is needed if you want to access tile pixel data.
-		crossOrigin: false,
-
-		// @option crossOriginCredentials: Boolean = false
-		// If true, all tiles will have their crossOrigin attribute set to 'use-credentials'. This is needed if you want to access tile pixel data.
-		crossOriginCredentials: false
+		// @option crossOrigin: String = false
+		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		// Any false value other than '' will omit the crossOrigin attribute from the images.
+		crossOrigin: false
 	},
 
 	initialize: function (url, options) {
@@ -135,12 +133,8 @@ export var TileLayer = GridLayer.extend({
 		DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile));
 		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile));
 
-		if (this.options.crossOrigin) {
-			tile.crossOrigin = '';
-		}
-
-		if (this.options.crossOriginCredentials) {
-			tile.crossOrigin = 'use-credentials';
+		if (this.options.crossOrigin || this.options.crossOrigin === '') {
+			tile.crossOrigin = this.options.crossOrigin;
 		}
 
 		/*
