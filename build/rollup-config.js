@@ -3,8 +3,9 @@
 import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
 import gitRev from 'git-rev-sync'
+import pkg from '../package.json'
 
-let version = require('../package.json').version;
+let {version} = pkg;
 let release;
 
 // Skip the git branch+rev in the banner when doing a release build
@@ -23,15 +24,33 @@ const banner = `/* @preserve
  */
 `;
 
+const outro = `var oldL = window.L;
+function noConflict() {
+	window.L = oldL;
+	return this;
+}
+
+// Always export us to window global (see #2364)
+window.L = exports;`;
+
 export default {
 	input: 'src/Leaflet.js',
-	output: {
-		file: 'dist/leaflet-src.js',
-		format: 'umd',
-		name: 'L',
-		banner: banner,
-		sourcemap: true
-	},
+	output: [
+		{
+			file: pkg.main,
+			format: 'umd',
+			name: 'L',
+			banner: banner,
+			outro: outro,
+			sourcemap: true
+		},
+		{
+			file: pkg.module,
+			format: 'es',
+			banner: banner,
+			sourcemap: true
+		}
+	],
 	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
 		release ? json() : rollupGitVersion()
