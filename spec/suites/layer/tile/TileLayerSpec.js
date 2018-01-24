@@ -455,4 +455,27 @@ describe('TileLayer', function () {
 			});
 		}
 	});
+
+	describe('#setUrl', function () {
+		it('fires only one load event', function (done) {
+			var layer = L.tileLayer(placeKitten).addTo(map);
+			var counts = {
+				load: 0,
+				tileload: 0
+			};
+			map.setView([0, 0], 1);
+
+			layer.on('tileload load', function (e) {
+				counts[e.type]++;
+			});
+
+			layer.setUrl(placeKitten);
+
+			setTimeout(function () {
+				expect(counts.load).to.equal(1);
+				expect(counts.tileload).to.equal(8);
+				done();
+			}, 250);
+		});
+	});
 });
