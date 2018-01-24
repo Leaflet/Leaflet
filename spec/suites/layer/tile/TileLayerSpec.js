@@ -428,9 +428,6 @@ describe('TileLayer', function () {
 			div = document.createElement('div');
 			div.style.width = '400px';
 			div.style.height = '400px';
-			// div.style.visibility = 'hidden';
-
-			// document.body.appendChild(div);
 
 			map = L.map(div).setView([0, 0], 2);
 		});
