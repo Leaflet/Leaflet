@@ -25,7 +25,7 @@ const banner = `/* @preserve
 `;
 
 const outro = `var oldL = window.L;
-function noConflict() {
+exports.noConflict = function() {
 	window.L = oldL;
 	return this;
 }
