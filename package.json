@@ -36,7 +36,9 @@
   ],
   "scripts": {
     "docs": "./build/docs.js",
-    "test": "karma start ./spec/karma.conf.js",
+    "pretest": "npm run lint && npm run lint-spec",
+    "test": "npm run test-nolint",
+    "test-nolint": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src",
