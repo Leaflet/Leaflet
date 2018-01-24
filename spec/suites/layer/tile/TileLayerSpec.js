@@ -176,7 +176,6 @@ describe('TileLayer', function () {
 		if (div) {
 			document.body.removeChild(div);
 		}
-		// document.body.removeChild(div);
 	});
 
 	function kittenLayerFactory(options) {
