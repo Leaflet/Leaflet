@@ -173,11 +173,22 @@ describe('TileLayer', function () {
 	});
 
 	afterEach(function () {
-		document.body.removeChild(div);
+		if (div) {
+			document.body.removeChild(div);
+		}
 	});
 
 	function kittenLayerFactory(options) {
 		return L.tileLayer(placeKitten, options || {});
+	}
+
+	function eachImg(layer, callback) {
+		var imgtags = layer._container.children[0].children;
+		for (var i in imgtags) {
+			if (imgtags[i].tagName === 'IMG') {
+				callback(imgtags[i]);
+			}
+		}
 	}
 
 	describe("number of kittens loaded", function () {
@@ -299,15 +310,6 @@ describe('TileLayer', function () {
 			map = L.map(div).setView([0, 0], 2);
 		});
 
-		function eachImg(layer, callback) {
-			var imgtags = layer._container.children[0].children;
-			for (var i in imgtags) {
-				if (imgtags[i].tagName === 'IMG') {
-					callback(imgtags[i]);
-				}
-			}
-		}
-
 		it('replaces {y} with y coordinate', function () {
 			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 
@@ -418,5 +420,39 @@ describe('TileLayer', function () {
 			});
 		});
 
+	});
+
+	describe('options', function () {
+
+		beforeEach(function () {
+			div = document.createElement('div');
+			div.style.width = '400px';
+			div.style.height = '400px';
+
+			map = L.map(div).setView([0, 0], 2);
+		});
+
+		afterEach(function () {
+			map = null;
+			div = null;
+		});
+
+		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
+		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
+		testCrossOriginValue(true, '');
+		testCrossOriginValue('anonymous', 'anonymous');
+		testCrossOriginValue('use-credentials', 'use-credentials');
+
+		function testCrossOriginValue(crossOrigin, expectedValue) {
+			it('uses crossOrigin value ' + crossOrigin, function () {
+				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+					crossOrigin: crossOrigin
+				}).addTo(map);
+
+				eachImg(layer, function (img) {
+					expect(img.getAttribute('crossorigin')).to.be(expectedValue);
+				});
+			});
+		}
 	});
 });
