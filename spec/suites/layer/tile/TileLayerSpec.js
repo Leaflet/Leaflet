@@ -204,7 +204,7 @@ describe('TileLayer', function () {
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
 
-			kittenLayer = kittenLayerFactory();
+			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
 			counts = {
 				tileload: 0,
@@ -377,5 +377,46 @@ describe('TileLayer', function () {
 				expect(['q', 'r', 's'].indexOf(img.src[7]) >= 0).to.eql(true);
 			});
 		});
+
+		it('uses zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/3/1/1.png',
+				'http://example.com/3/1/2.png',
+				'http://example.com/3/2/1.png',
+				'http://example.com/3/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+		it('uses negative zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/-1/1/1.png',
+				'http://example.com/-1/1/2.png',
+				'http://example.com/-1/2/1.png',
+				'http://example.com/-1/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
 	});
 });

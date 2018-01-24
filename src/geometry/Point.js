@@ -18,6 +18,10 @@ import {isArray, formatNum} from '../core/Util';
  * map.panBy([200, 300]);
  * map.panBy(L.point(200, 300));
  * ```
+ *
+ * Note that `Point` does not inherit from Leafet's `Class` object,
+ * which means new classes can't inherit from it, and new methods
+ * can't be added to it with the `include` function.
  */
 
 export function Point(x, y, round) {
@@ -26,6 +30,10 @@ export function Point(x, y, round) {
 	// @property y: Number; The `y` coordinate of the point
 	this.y = (round ? Math.round(y) : y);
 }
+
+var trunc = Math.trunc || function (v) {
+	return v > 0 ? Math.floor(v) : Math.ceil(v);
+};
 
 Point.prototype = {
 
@@ -134,6 +142,18 @@ Point.prototype = {
 	_ceil: function () {
 		this.x = Math.ceil(this.x);
 		this.y = Math.ceil(this.y);
+		return this;
+	},
+
+	// @method trunc(): Point
+	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
+	trunc: function () {
+		return this.clone()._trunc();
+	},
+
+	_trunc: function () {
+		this.x = trunc(this.x);
+		this.y = trunc(this.y);
 		return this;
 	},
 

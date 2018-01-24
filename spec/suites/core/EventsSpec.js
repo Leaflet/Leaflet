@@ -565,6 +565,37 @@ describe('Events', function () {
 			expect(spy1.callCount).to.eql(0);
 			expect(spy2.callCount).to.eql(1);
 		});
+
+		it('sets target, sourceTarget and layer correctly', function () {
+			var obj = new L.Evented(),
+			    parent = new L.Evented(),
+			    spy1 = sinon.spy(),
+			    spy2 = sinon.spy();
+
+			/* register without context */
+			obj.on('test2', spy1);
+			parent.on('test2', spy2);
+
+			obj.addEventParent(parent);
+
+			/* Should be called once */
+			obj.fire('test2', null, true);
+
+			expect(spy1.calledWith({
+				type: 'test2',
+				target: obj,
+				sourceTarget: obj
+			})).to.be.ok();
+			expect(spy2.calledWith({
+				type: 'test2',
+				target: parent,
+				// layer should be deprecated in the future
+				// in favor of sourceTarget
+				layer: obj,
+				sourceTarget: obj,
+				propagatedFrom: obj
+			})).to.be.ok();
+		});
 	});
 
 	describe('#listens', function () {

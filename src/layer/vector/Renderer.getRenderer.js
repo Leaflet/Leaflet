@@ -1,6 +1,6 @@
 import {Map} from '../../map/Map';
-import {Canvas, canvas} from './Canvas';
-import {SVG, svg} from './SVG';
+import {canvas} from './Canvas';
+import {svg} from './SVG';
 
 Map.include({
 	// @namespace Map; @method getRenderer(layer: Path): Renderer
@@ -14,10 +14,7 @@ Map.include({
 		var renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
 
 		if (!renderer) {
-			// @namespace Map; @option preferCanvas: Boolean = false
-			// Whether `Path`s should be rendered on a `Canvas` renderer.
-			// By default, all `Path`s are rendered in a `SVG` renderer.
-			renderer = this._renderer = (this.options.preferCanvas && canvas()) || svg();
+			renderer = this._renderer = this._createRenderer();
 		}
 
 		if (!this.hasLayer(renderer)) {
@@ -33,9 +30,16 @@ Map.include({
 
 		var renderer = this._paneRenderers[name];
 		if (renderer === undefined) {
-			renderer = (SVG && svg({pane: name})) || (Canvas && canvas({pane: name}));
+			renderer = this._createRenderer({pane: name});
 			this._paneRenderers[name] = renderer;
 		}
 		return renderer;
+	},
+
+	_createRenderer: function (options) {
+		// @namespace Map; @option preferCanvas: Boolean = false
+		// Whether `Path`s should be rendered on a `Canvas` renderer.
+		// By default, all `Path`s are rendered in a `SVG` renderer.
+		return (this.options.preferCanvas && canvas(options)) || svg(options);
 	}
 });

@@ -30,9 +30,9 @@ export default {
 		format: 'umd',
 		name: 'L',
 		banner: banner,
-		sourcemap: true,
-		legacy: true // Needed to create files loadable by IE8
+		sourcemap: true
 	},
+	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
 		release ? json() : rollupGitVersion()
 	]

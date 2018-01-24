@@ -40,18 +40,13 @@ export function on(obj, types, fn, context) {
 var eventsKey = '_leaflet_events';
 
 // @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
-// Removes a previously added listener function. If no function is specified,
-// it will remove all the listeners of that particular DOM event from the element.
+// Removes a previously added listener function.
 // Note that if you passed a custom context to on, you must pass the same
 // context to `off` in order to remove the listener.
 
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
-
-// @alternative
-// @function off(el: HTMLElement): this
-// Removes all known event listeners
 export function off(obj, types, fn, context) {
 
 	if (typeof types === 'object') {

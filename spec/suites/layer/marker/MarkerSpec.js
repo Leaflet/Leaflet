@@ -190,6 +190,21 @@ describe("Marker", function () {
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
 		});
+
+		it("sets the alt attribute to an empty string when no alt text is passed", function () {
+			var marker = L.marker([0, 0], {icon: icon1});
+			map.addLayer(marker);
+			var icon = marker._icon;
+			expect(icon.hasAttribute('alt')).to.be(true);
+			expect(icon.alt).to.be('');
+		});
+
+		it("doesn't set the alt attribute for DivIcons", function () {
+			var marker = L.marker([0, 0], {icon: L.divIcon(), alt: 'test'});
+			map.addLayer(marker);
+			var icon = marker._icon;
+			expect(icon.hasAttribute('alt')).to.be(false);
+		});
 	});
 
 	describe("#setLatLng", function () {
