@@ -168,6 +168,7 @@ describe('ImageOverlay', function () {
 		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
 		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
 		testCrossOriginValue(true, '');
+		testCrossOriginValue('', '');
 		testCrossOriginValue('anonymous', 'anonymous');
 		testCrossOriginValue('use-credentials', 'use-credentials');
 
