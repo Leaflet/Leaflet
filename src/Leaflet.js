@@ -1,6 +1,5 @@
 
-import {version} from '../package.json';
-export {version};
+// Version is now already exported by "index.js" file.
 
 // Directly use the "index.js" file for normal ES module
 export * from './index';

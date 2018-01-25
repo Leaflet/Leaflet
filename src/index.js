@@ -1,10 +1,9 @@
 
-// Cannot directly import version from package.json, because standard module loaders
-// do not understand JSON.
-// We could use a similar workaround as d3, which builds a dedicated module out of package.json using json2module
-// https://www.npmjs.com/package/json2module
+// Cannot directly import version from package.json, because other module loaders may not understand JSON.
+// Using version2module custom script, adapted from d3's json2module, because the latter exports everything from
+// package.json file, which is not Tree Shakable by webpack when exports are in the same file.
 // import {version} from '../package.json';
-// export {version};
+export {default as version} from './version';
 
 // control
 export * from './control/index';
