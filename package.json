@@ -16,6 +16,7 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-rollup-preprocessor": "^5.0.1",
     "karma-safari-launcher": "~1.0.0",
+    "karma-sinon": "^1.0.5",
     "leafdoc": "^1.4.1",
     "mocha": "^3.1.0",
     "phantomjs-prebuilt": "^2.1.12",
@@ -24,6 +25,7 @@
     "rollup-plugin-git-version": "0.2.1",
     "rollup-plugin-json": "^2.1.0",
     "rollup-watch": "^4.3.1",
+    "sinon": "^1.6.0",
     "source-map": "^0.5.6",
     "ssri": "^4.1.2",
     "uglify-js": "~3.0.26"

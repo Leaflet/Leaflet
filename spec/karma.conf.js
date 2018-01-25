@@ -6,7 +6,6 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
-		"spec/sinon.js",
 		"spec/expect.js",
 
 		"src/Leaflet.js",
@@ -27,6 +26,7 @@ module.exports = function (config) {
 		plugins: [
 			'karma-rollup-preprocessor',
 			'karma-mocha',
+			'karma-sinon',
 			'karma-coverage',
 			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
@@ -34,7 +34,7 @@ module.exports = function (config) {
 			'karma-firefox-launcher'],
 
 		// frameworks to use
-		frameworks: ['mocha'],
+		frameworks: ['mocha', 'sinon'],
 
 		// list of files / patterns to load in the browser
 		files: files,
