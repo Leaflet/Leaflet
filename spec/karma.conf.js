@@ -6,10 +6,7 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
-		"spec/expect.js",
-
 		"src/Leaflet.js",
-
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -27,6 +24,7 @@ module.exports = function (config) {
 			'karma-rollup-preprocessor',
 			'karma-mocha',
 			'karma-sinon',
+			'karma-expect',
 			'karma-coverage',
 			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
@@ -34,7 +32,7 @@ module.exports = function (config) {
 			'karma-firefox-launcher'],
 
 		// frameworks to use
-		frameworks: ['mocha', 'sinon'],
+		frameworks: ['mocha', 'sinon', 'expect'],
 
 		// list of files / patterns to load in the browser
 		files: files,
