@@ -68,9 +68,8 @@ please consider submitting another pull request with the corresponding [document
 
 ### Setting up the Build System
 
-The Leaflet build system uses [Node](http://nodejs.org/).
-To set up the Leaflet build system, install [NodeJS](https://nodejs.org/en/).
-Note, that on Ubuntu/Debian you may need to [create a `node` symlink for nodejs package](https://stackoverflow.com/a/18130296).
+The Leaflet build system uses [NodeJS](http://nodejs.org/).
+To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
 Then run the following commands in the project root to install dependencies:
 
 ```
