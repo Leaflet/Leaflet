@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // This script calculates the integrity hashes of the files in dist/ , and
 // **overwrites** the values in the documentation.
 

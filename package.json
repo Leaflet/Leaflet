@@ -35,7 +35,7 @@
     "!dist/leaflet.zip"
   ],
   "scripts": {
-    "docs": "./build/docs.js",
+    "docs": "node ./build/docs.js",
     "pretest": "npm run lint && npm run lint-spec",
     "test": "npm run test-nolint",
     "test-nolint": "karma start ./spec/karma.conf.js",
@@ -47,7 +47,7 @@
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
-    "integrity": "./build/integrity.js"
+    "integrity": "node ./build/integrity.js"
   },
   "eslintConfig": {
     "root": true,
