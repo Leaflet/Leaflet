@@ -842,7 +842,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_tileReady: function (coords, err, tile) {
-		if (!this._map) { return; }
+		if (!this._map || tile.getAttribute('src') === Util.emptyImageUrl) { return; }
 
 		if (err) {
 			// @event tileerror: TileErrorEvent
