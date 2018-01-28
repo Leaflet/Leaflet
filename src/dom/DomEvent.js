@@ -61,7 +61,7 @@ export function off(obj, types, fn, context) {
 		}
 	} else {
 		for (var j in obj[eventsKey]) {
-			removeOne(obj, j, obj[eventsKey][j]);
+			removeOne(obj, j);
 		}
 		delete obj[eventsKey];
 	}
@@ -122,9 +122,14 @@ function addOne(obj, type, fn, context) {
 }
 
 function removeOne(obj, type, fn, context) {
-
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
-	    handler = obj[eventsKey] && obj[eventsKey][id];
+	var id;
+	if (!fn) {
+		id = type;
+		type = type.split(/\d/)[0];
+	} else {
+		id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	}
+	var handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
