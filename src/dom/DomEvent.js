@@ -48,23 +48,30 @@ var eventsKey = '_leaflet_events';
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
-export function off(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
-		for (var type in types) {
+// @alternative
+// @function off(el: HTMLElement): this
+// Removes all previously added listeners from given HTMLElement
+export function off(obj, types, fn, context) {
+	var type;
+	if (arguments.length === 1) {
+		for (var id in obj[eventsKey]) {
+			type = id.split(/\d/)[0];
+			removeOne(obj, type, null, null, id);
+		}
+		delete obj[eventsKey];
+
+	} else if (typeof types === 'object') {
+		for (type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
-	} else if (types) {
+
+	} else {
 		types = Util.splitWords(types);
 
 		for (var i = 0, len = types.length; i < len; i++) {
 			removeOne(obj, types[i], fn, context);
 		}
-	} else {
-		for (var j in obj[eventsKey]) {
-			removeOne(obj, j, obj[eventsKey][j]);
-		}
-		delete obj[eventsKey];
 	}
 
 	return this;
@@ -127,10 +134,9 @@ function addOne(obj, type, fn, context) {
 	obj[eventsKey][id] = handler;
 }
 
-function removeOne(obj, type, fn, context) {
-
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
-	    handler = obj[eventsKey] && obj[eventsKey][id];
+function removeOne(obj, type, fn, context, id) {
+	id = id || type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	var handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
