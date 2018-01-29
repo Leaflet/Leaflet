@@ -1,27 +1,8 @@
 
-import {version} from '../package.json';
-export {version};
+// Version is now already exported by "index.js" file.
 
-// control
-export * from './control/index';
-
-// core
-export * from './core/index';
-
-// dom
-export * from './dom/index';
-
-// geometry
-export * from './geometry/index';
-
-// geo
-export * from './geo/index';
-
-// layer
-export * from './layer/index';
-
-// map
-export * from './map/index';
+// Directly use the "index.js" file for normal ES module
+export * from './index';
 
 // misc
 

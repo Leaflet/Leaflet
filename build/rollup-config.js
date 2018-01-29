@@ -1,21 +1,7 @@
 // Config file for running Rollup in "normal" mode (non-watch)
 
-import rollupGitVersion from 'rollup-plugin-git-version'
-import json from 'rollup-plugin-json'
-import gitRev from 'git-rev-sync'
-
-let version = require('../package.json').version;
-let release;
-
-// Skip the git branch+rev in the banner when doing a release build
-if (process.env.NODE_ENV === 'release') {
-	release = true;
-} else {
-	release = false;
-	const branch = gitRev.branch();
-	const rev = gitRev.short();
-	version += '+' + branch + '.' + rev;
-}
+// Make sure to run `npm run prerollup` script before executing rollup, so that the "src/version.js" file is created.
+import version from '../src/version';
 
 const banner = `/* @preserve
  * Leaflet ${version}, a JS library for interactive maps. http://leafletjs.com
@@ -32,8 +18,5 @@ export default {
 		banner: banner,
 		sourcemap: true
 	},
-	legacy: true, // Needed to create files loadable by IE8
-	plugins: [
-		release ? json() : rollupGitVersion()
-	]
+	legacy: true // Needed to create files loadable by IE8
 };
