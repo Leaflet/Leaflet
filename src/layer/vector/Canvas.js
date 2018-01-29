@@ -68,6 +68,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_destroyContainer: function () {
+		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
 		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
