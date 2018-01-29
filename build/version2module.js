@@ -30,7 +30,7 @@ console.log('version2module: ' + version);
 
 // Adapted from json2module
 var exports = [
-		'export default "' + version + '";',
+		'export default \'' + version + '\';',
 		''
 ];
 var content = exports.join(os.EOL);

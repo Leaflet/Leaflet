@@ -40,17 +40,19 @@
   "scripts": {
     "docs": "jake docs",
     "test-jake": "jake test",
+    "pretest": "npm run version2module",
     "test": "jake test",
     "build-jake": "jake build",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src; eslint spec/suites",
     "lintfix": "eslint src --fix; eslint spec/suites --fix; ",
-    "prerollup": "node build/version2module",
+    "prerollup": "npm run version2module",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
-    "integrity": "nodejs ./build/integrity.js"
+    "integrity": "nodejs ./build/integrity.js",
+    "version2module": "node build/version2module"
   },
   "eslintConfig": {
     "root": true,
