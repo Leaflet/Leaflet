@@ -975,6 +975,17 @@ These plugins create useful overlays from scratch, no loading required.
 			<a href="https://github.com/cloudybay/">CloudyBay</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://github.com/GEOF-OSGL/Leaflet.EdgeScaleBar">Leaflet.EdgeScaleBar</a>
+		</td>
+		<td>
+			Creates scale bars along top and right edge of a map in the Web Mercator projection..<a href="http://geof-osgl.github.io/Leaflet.EdgeScaleBar/">Demo</a>.
+		</td>
+		<td>
+			<a href="http://github.com/GEOF-OSGL">Dražen Tutić, Ana Kuveždić Divjak</a>
+		</td>
+	</tr>
 </table>
 
 
