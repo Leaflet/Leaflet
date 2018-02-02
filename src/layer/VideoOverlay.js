@@ -62,6 +62,7 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
+		vid.style['objectFit'] = 'fill';
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		for (var i = 0; i < this._url.length; i++) {
