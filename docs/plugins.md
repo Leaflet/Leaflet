@@ -1558,6 +1558,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://wbkd.github.io/leaflet-truesize/">Leaflet Truesize</a>
+		</td>
+		<td>
+			A plugin for creating projection aware draggable polygons and polylines.
+		</td>
+		<td>
+			<a href="https://webkid.io">webkid</a>
+		</td>
+	</tr>
 </table>
 
 
