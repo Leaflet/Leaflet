@@ -68,8 +68,9 @@ please consider submitting another pull request with the corresponding [document
 
 ### Setting up the Build System
 
-The Leaflet build system uses [Node](http://nodejs.org/), and the [Jake](http://jakejs.com/) Javascript build tool.
-To set up the Leaflet build system, install Node then run the following commands in the project root to install dependencies:
+The Leaflet build system uses [NodeJS](http://nodejs.org/).
+To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
+Then run the following commands in the project root to install dependencies:
 
 ```
 npm install
@@ -125,13 +126,13 @@ install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
 then run:
 
 ```
-npm run test
+npm test
 ```
 
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-npm run test -- --ff --chrome --safari --ie
+npm test -- --browsers Firefox,Chrome,Safari,IE
 ```
 
 To run the tests in a browser manually, open `spec/index.html`.
@@ -141,7 +142,7 @@ To run the tests in a browser manually, open `spec/index.html`.
 To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
 
 ```
-npm run test -- --cov
+npm test -- --cov
 ```
 
 After that, open `coverage/<environment>/index.html` in a browser to see the report.
