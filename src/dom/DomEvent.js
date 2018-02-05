@@ -57,11 +57,15 @@ export function off(obj, types, fn, context) {
 		types = Util.splitWords(types);
 
 		for (var i = 0, len = types.length; i < len; i++) {
-			removeOne(obj, types[i], fn, context);
+			// Adds the possibility of only the type being specified.
+			for (var key in obj[eventsKey]) {
+				removeOne(obj, types[i], obj[eventsKey][key], context);
+			}
 		}
 	} else {
 		for (var j in obj[eventsKey]) {
-			removeOne(obj, j, obj[eventsKey][j]);
+			console.log(j.replace(/\d/g, ''));
+			removeOne(obj, j.replace(/\d/g, ''), obj[eventsKey][j]);
 		}
 		delete obj[eventsKey];
 	}
@@ -110,6 +114,7 @@ function addOne(obj, type, fn, context) {
 					filterClick(e, originalHandler);
 				};
 			}
+
 			obj.addEventListener(type, handler, false);
 		}
 
@@ -124,7 +129,7 @@ function addOne(obj, type, fn, context) {
 function removeOne(obj, type, fn, context) {
 
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
-	    handler = obj[eventsKey] && obj[eventsKey][id];
+	handler = obj[eventsKey] || obj[eventsKey][id]; // Switched from AND to OR -> Otherwise, if NOT specified would abort.
 
 	if (!handler) { return this; }
 
@@ -143,7 +148,7 @@ function removeOne(obj, type, fn, context) {
 		} else {
 			obj.removeEventListener(
 				type === 'mouseenter' ? 'mouseover' :
-				type === 'mouseleave' ? 'mouseout' : type, handler, false);
+				type === 'mouseleave' ? 'mouseout' : type, fn, false);
 		}
 
 	} else if ('detachEvent' in obj) {
