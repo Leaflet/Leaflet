@@ -180,7 +180,7 @@ export function template(str, data) {
 // Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
 export function isArray(obj) {
 	return typeof obj === 'object' && obj !== null && obj.length >= 0;
-	// return (Object.prototype.toString.call(obj) === '[object Array]');
+	// return Object.prototype.toString.call(obj) === '[object Array]';
 }
 
 // @function indexOf(array: Array, el: Object): Number
