@@ -179,9 +179,9 @@ export function template(str, data) {
 // @function isArray(obj): Boolean
 // Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
 export function isArray(obj) {
-	return obj != void 0 && obj.length >= 0 && typeof obj === 'object';
+	return obj != null && obj.length >= 0 && typeof obj === 'object';
 	//return (Object.prototype.toString.call(obj) === '[object Array]');
-};
+}
 
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
