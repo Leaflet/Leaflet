@@ -163,7 +163,7 @@ export var Canvas = Renderer.extend({
 
 		delete layer._order;
 
-		delete this._layers[L.stamp(layer)];
+		delete this._layers[Util.stamp(layer)];
 
 		this._requestRedraw(layer);
 	},
