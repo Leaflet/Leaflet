@@ -509,6 +509,42 @@ export var Map = Evented.extend({
 		return this;
 	},
 
+	// @method panInside(latlng: LatLng, padding?: Number, options?: panTo options): this
+	// Pans the map the minimum amount to make the `latlng` visible. If the
+	// `padding` parameter is supplied, `latlng` will be placed this far
+	// from the edge.
+	// If `latlng` is already within the (optionally padded) display bounds,
+	// the map will not be panned.
+	panInside: function (latlng, padding, options) {
+		padding = padding || 0;
+
+		var center = this.getCenter(),
+		    pixelCenter = this.project(center),
+		    pixelPoint = this.project(latlng),
+		    pixelBounds = this.getPixelBounds(),
+		    paddedBounds = pixelBounds.getSize().subtract([padding, padding]),
+		    halfPaddedSize = pixelBounds.getSize().divideBy(2).subtract([padding, padding]);
+
+		if (!paddedBounds.contains(pixelPoint)) {
+			this._enforcingBounds = true;
+
+			var diff = pixelCenter.subtract(pixelPoint),
+			    newCenter = L.point(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
+			if (Math.abs(diff.x) > halfPaddedSize.x) {
+				newCenter.x = pixelCenter.x - diff.x;
+				newCenter.x += halfPaddedSize.x * (diff.x > 0 ? 1 : -1);
+			}
+			if (Math.abs(diff.y) > halfPaddedSize.y) {
+				newCenter.y = pixelCenter.y - diff.y;
+				newCenter.y += halfPaddedSize.y * (diff.y > 0 ? 1 : -1);
+			}
+			this.panTo(this.unproject(newCenter), options);
+
+			this._enforcingBounds = false;
+		}
+		return this;
+	},
+
 	// @method invalidateSize(options: Zoom/pan options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
