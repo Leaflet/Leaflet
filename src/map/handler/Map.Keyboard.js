@@ -79,7 +79,7 @@ export var Keyboard = Handler.extend({
 
 		var body = document.body,
 		    docEl = document.documentElement,
-		    top = body.scrollTop || docEl.scrollTop,
+		    top = body.scrollTop || docEl.scrollTop || window.pageYOffset,
 		    left = body.scrollLeft || docEl.scrollLeft;
 
 		this._map._container.focus();
