@@ -225,8 +225,11 @@ export function getMousePosition(e, container) {
 	var scaleX = rect.width / container.offsetWidth || 1;
 	var scaleY = rect.height / container.offsetHeight || 1;
 	return new Point(
-		e.clientX / scaleX - rect.left - container.clientLeft,
-		e.clientY / scaleY - rect.top - container.clientTop);
+		// rect.left/top values are in page scale (like clientX/Y),
+		// whereas clientLeft/Top (border width) values are the original values (before CSS scale applies).
+		(e.clientX - rect.left) / scaleX - container.clientLeft,
+		(e.clientY - rect.top) / scaleY - container.clientTop
+	);
 }
 
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),
