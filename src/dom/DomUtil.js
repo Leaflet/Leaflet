@@ -319,3 +319,12 @@ export function restoreOutline() {
 	_outlineStyle = undefined;
 	DomEvent.off(window, 'keydown', restoreOutline);
 }
+
+// @function getSizedParentNode(el: HTMLElement)
+// Finds the closest parent node which size (width and height) is not null.
+export function getSizedParentNode(element) {
+	do {
+		element = element.parentNode;
+	} while ((!element.offsetWidth || !element.offsetHeight) && element !== document.body);
+	return element;
+}

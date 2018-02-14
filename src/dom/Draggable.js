@@ -3,7 +3,6 @@ import * as Browser from '../core/Browser';
 import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
-import {Point} from '../geometry/Point';
 
 /*
  * @class Draggable
@@ -112,9 +111,12 @@ export var Draggable = Evented.extend({
 		// Fired when a drag is about to start.
 		this.fire('down');
 
-		var first = e.touches ? e.touches[0] : e;
+		var first = e.touches ? e.touches[0] : e,
+		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
-		this._startPoint = new Point(first.clientX, first.clientY);
+		// The re-positioning will be affected by CSS scale.
+		// In order to re-position as per the user drag, make sure all point measurements compensate for this scale.
+		this._startPoint = DomEvent.getMousePosition(first, sizedParent);
 
 		DomEvent.on(document, MOVE[e.type], this._onMove, this);
 		DomEvent.on(document, END[e.type], this._onUp, this);
@@ -134,7 +136,8 @@ export var Draggable = Evented.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    newPoint = new Point(first.clientX, first.clientY),
+		    sizedParent = DomUtil.getSizedParentNode(this._element),
+		    newPoint = DomEvent.getMousePosition(first, sizedParent),
 		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
