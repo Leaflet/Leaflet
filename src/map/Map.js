@@ -515,31 +515,42 @@ export var Map = Evented.extend({
 	// from the edge.
 	// If `latlng` is already within the (optionally padded) display bounds,
 	// the map will not be panned.
-	panInside: function (latlng, padding, options) {
-		padding = padding || 0;
+	panInside: function (latlng, options) {
+		options = options || {};
 
-		var center = this.getCenter(),
+		var paddingTL = L.point(options.paddingTopLeft || options.padding || [0, 0]),
+		    paddingBR = L.point(options.paddingBottomRight || options.padding || [0, 0]),
+		    center = this.getCenter(),
 		    pixelCenter = this.project(center),
 		    pixelPoint = this.project(latlng),
 		    pixelBounds = this.getPixelBounds(),
-		    paddedBounds = pixelBounds.getSize().subtract([padding, padding]),
-		    halfPaddedSize = pixelBounds.getSize().divideBy(2).subtract([padding, padding]);
+		    halfPixelBounds = pixelBounds.getSize().divideBy(2),
+		    paddedBounds = L.bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
-
 			var diff = pixelCenter.subtract(pixelPoint),
-			    newCenter = L.point(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
-			if (Math.abs(diff.x) > halfPaddedSize.x) {
+			    newCenter = toPoint(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
+			//			    borderX = (diff.x > 0 ? paddedBounds.min.x : paddedBounds.max.x),
+			//			    borderY = (diff.y > 0 ? paddedBounds.min.y : paddedBounds.max.y);
+
+			if (pixelPoint.x < paddedBounds.min.x || pixelPoint.x > paddedBounds.max.x) {
 				newCenter.x = pixelCenter.x - diff.x;
-				newCenter.x += halfPaddedSize.x * (diff.x > 0 ? 1 : -1);
+				if (diff.x > 0) {
+					newCenter.x += halfPixelBounds.x - paddingTL.x;
+				} else {
+					newCenter.x -= halfPixelBounds.x - paddingBR.x;
+				}
 			}
-			if (Math.abs(diff.y) > halfPaddedSize.y) {
+			if (pixelPoint.y < paddedBounds.min.y || pixelPoint.y > paddedBounds.max.y) {
 				newCenter.y = pixelCenter.y - diff.y;
-				newCenter.y += halfPaddedSize.y * (diff.y > 0 ? 1 : -1);
+				if (diff.y > 0) {
+					newCenter.y += halfPixelBounds.y - paddingTL.y;
+				} else {
+					newCenter.y -= halfPixelBounds.y - paddingBR.y;
+				}
 			}
 			this.panTo(this.unproject(newCenter), options);
-
 			this._enforcingBounds = false;
 		}
 		return this;
