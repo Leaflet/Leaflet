@@ -518,21 +518,19 @@ export var Map = Evented.extend({
 	panInside: function (latlng, options) {
 		options = options || {};
 
-		var paddingTL = L.point(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = L.point(options.paddingBottomRight || options.padding || [0, 0]),
+		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
+		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 		    center = this.getCenter(),
 		    pixelCenter = this.project(center),
 		    pixelPoint = this.project(latlng),
 		    pixelBounds = this.getPixelBounds(),
 		    halfPixelBounds = pixelBounds.getSize().divideBy(2),
-		    paddedBounds = L.bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
+		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
 			var diff = pixelCenter.subtract(pixelPoint),
 			    newCenter = toPoint(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
-			//			    borderX = (diff.x > 0 ? paddedBounds.min.x : paddedBounds.max.x),
-			//			    borderY = (diff.y > 0 ? paddedBounds.min.y : paddedBounds.max.y);
 
 			if (pixelPoint.x < paddedBounds.min.x || pixelPoint.x > paddedBounds.max.x) {
 				newCenter.x = pixelCenter.x - diff.x;
