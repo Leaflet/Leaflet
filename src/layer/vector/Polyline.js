@@ -84,7 +84,7 @@ export var Polyline = Path.extend({
 		return !this._latlngs.length;
 	},
 
-	// @method closestLayerPoint: Point
+	// @method closestLayerPoint(p: Point): Point
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint: function (p) {
 		var minDistance = Infinity,
