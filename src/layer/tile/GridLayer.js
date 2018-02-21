@@ -366,7 +366,7 @@ export var GridLayer = Layer.extend({
 
 		for (var z in this._levels) {
 			var zn = Number(z);
-			if (this._levels[z].el.children.length || zn== zoom) {
+			if (this._levels[z].el.children.length || zn === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - zn);
 				this._onUpdateLevel(z);
 			} else {
