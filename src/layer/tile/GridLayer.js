@@ -365,12 +365,13 @@ export var GridLayer = Layer.extend({
 		if (zoom === undefined) { return undefined; }
 
 		for (var z in this._levels) {
-			if (this._levels[z].el.children.length || z == zoom) {
-				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+			var zn = Number(z);
+			if (this._levels[z].el.children.length || zn== zoom) {
+				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - zn);
 				this._onUpdateLevel(z);
 			} else {
 				DomUtil.remove(this._levels[z].el);
-				this._removeTilesAtZoom(z);
+				this._removeTilesAtZoom(zn);
 				this._onRemoveLevel(z);
 				delete this._levels[z];
 			}
