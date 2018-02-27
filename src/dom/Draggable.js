@@ -3,6 +3,7 @@ import * as Browser from '../core/Browser';
 import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
+import {Point} from '../geometry/Point';
 
 /*
  * @class Draggable
@@ -114,9 +115,10 @@ export var Draggable = Evented.extend({
 		var first = e.touches ? e.touches[0] : e,
 		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
-		// The re-positioning will be affected by CSS scale.
-		// In order to re-position as per the user drag, make sure all point measurements compensate for this scale.
-		this._startPoint = DomEvent.getMousePosition(first, sizedParent);
+		this._startPoint = new Point(first.clientX, first.clientY);
+
+		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
+		this._parentScale = DomUtil.getScale(sizedParent);
 
 		DomEvent.on(document, MOVE[e.type], this._onMove, this);
 		DomEvent.on(document, END[e.type], this._onUp, this);
@@ -136,12 +138,16 @@ export var Draggable = Evented.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    sizedParent = DomUtil.getSizedParentNode(this._element),
-		    newPoint = DomEvent.getMousePosition(first, sizedParent),
-		    offset = newPoint.subtract(this._startPoint);
+		    offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
+
+		// We assume that the parent container's position, border and scale do not change for the duration of the drag.
+		// Therefore there is no need to account for the position and border (they are eliminated by the subtraction)
+		// and we can use the cached value for the scale.
+		offset.x /= this._parentScale.x;
+		offset.y /= this._parentScale.y;
 
 		DomEvent.preventDefault(e);
 
