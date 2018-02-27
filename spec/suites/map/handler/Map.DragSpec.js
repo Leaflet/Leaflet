@@ -114,10 +114,10 @@ describe("Map.Drag", function () {
 				});
 				var mouse = hand.growFinger('mouse');
 
-				// We move scaleX * 5 pixels first to overcome the 3-pixel threshold of
+				// We move 5 pixels first to overcome the 3-pixel threshold of
 				// L.Draggable.
 				mouse.wait(100).moveTo(200, 200, 0)
-					.down().moveBy(scaleX * 5, scaleY * 0, 20).moveBy(scaleX * 256, scaleY * 32, 200).up();
+					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 200).up();
 			});
 		});
 

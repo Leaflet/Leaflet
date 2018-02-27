@@ -86,7 +86,7 @@ describe("Marker.Drag", function () {
 				var toucher = hand.growFinger('mouse');
 
 				toucher.wait(100).moveTo(scaleX * 300, scaleY * 280, 0)
-					.down().moveBy(scaleX * 5, scaleY * 0, 20).moveBy(scaleX * 256, scaleY * 32, 1000).wait(100).up().wait(100);
+					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 1000).wait(100).up().wait(100);
 			});
 		});
 
