@@ -3,6 +3,7 @@ import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
+import {getScale} from './DomUtil';
 
 /*
  * @namespace DomEvent
@@ -220,15 +221,14 @@ export function getMousePosition(e, container) {
 		return new Point(e.clientX, e.clientY);
 	}
 
-	var rect = container.getBoundingClientRect();
+	var scale = getScale(container),
+	    offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
 
-	var scaleX = rect.width / container.offsetWidth || 1;
-	var scaleY = rect.height / container.offsetHeight || 1;
 	return new Point(
-		// rect.left/top values are in page scale (like clientX/Y),
+		// offset.left/top values are in page scale (like clientX/Y),
 		// whereas clientLeft/Top (border width) values are the original values (before CSS scale applies).
-		(e.clientX - rect.left) / scaleX - container.clientLeft,
-		(e.clientY - rect.top) / scaleY - container.clientTop
+		(e.clientX - offset.left) / scale.x - container.clientLeft,
+		(e.clientY - offset.top) / scale.y - container.clientTop
 	);
 }
 
