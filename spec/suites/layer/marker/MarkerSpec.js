@@ -330,4 +330,16 @@ describe("Marker", function () {
 		});
 
 	});
+
+	describe('removal', function () {
+		it('should call destroyIcon', function () {
+			var marker = new L.Marker([0, 0], {icon: icon1});
+			map.addLayer(marker);
+
+			sinon.spy(icon1, 'destroyIcon');
+
+			expect(icon1.destroyIcon.calledOnce);
+
+		});
+	});
 });

@@ -261,6 +261,10 @@ export var Marker = Layer.extend({
 			});
 		}
 
+		if (this.options.icon) {
+			this.options.icon.destroyIcon();
+		}
+
 		DomUtil.remove(this._icon);
 		this.removeInteractiveTarget(this._icon);
 

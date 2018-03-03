@@ -144,6 +144,12 @@ export var Icon = Class.extend({
 
 	_getIconUrl: function (name) {
 		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+	},
+
+	// @method destroyIcon(): void
+	// Called internally when an icon is removed
+	destroyIcon: function () {
+		// default implementation does nothing
 	}
 });
 
