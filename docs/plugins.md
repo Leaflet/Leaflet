@@ -1055,6 +1055,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/zhuang-hao-ming/Leaflet.RoughCanvas">Leaflet.RoughCanvas</a>
+		</td><td>
+			Leaflet.RoughCanvas renders hand-drawn, sketch style vector map(polyline, polygon, geojson).
+		</td><td>
+			<a href="https://github.com/zhuang-hao-ming/">haoming</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
 		</td><td>
 			Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis,
