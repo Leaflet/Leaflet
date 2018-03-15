@@ -215,7 +215,7 @@ export function stop(e) {
 // @function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
 // Gets normalized mouse position from a DOM event relative to the
 // `container` or to the whole page if not specified.
-export function getMousePosition(e, container) {
+export function getMousePosition(e, container, abs) {
 	if (!container) {
 		return new Point(e.clientX, e.clientY);
 	}
@@ -224,9 +224,9 @@ export function getMousePosition(e, container) {
 
 	var scaleX = rect.width / container.offsetWidth || 1;
 	var scaleY = rect.height / container.offsetHeight || 1;
-	return new Point(
-		e.clientX / scaleX - rect.left - container.clientLeft,
-		e.clientY / scaleY - rect.top - container.clientTop);
+	var localX = (e.clientX - rect.left) / scaleX;
+	var localY = (e.clientY - rect.top) / scaleY;
+	return abs ? new Point(localX + rect.left, localY + rect.top) : new Point(localX, localY);
 }
 
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),

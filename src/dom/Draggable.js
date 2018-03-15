@@ -3,7 +3,6 @@ import * as Browser from '../core/Browser';
 import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
-import {Point} from '../geometry/Point';
 
 /*
  * @class Draggable
@@ -44,7 +43,8 @@ export var Draggable = Evented.extend({
 		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
-		clickTolerance: 3
+		clickTolerance: 3,
+		mapContainer: undefined
 	},
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
@@ -114,7 +114,7 @@ export var Draggable = Evented.extend({
 
 		var first = e.touches ? e.touches[0] : e;
 
-		this._startPoint = new Point(first.clientX, first.clientY);
+		this._startPoint = DomEvent.getMousePosition(first, this.options.mapContainer, true);
 
 		DomEvent.on(document, MOVE[e.type], this._onMove, this);
 		DomEvent.on(document, END[e.type], this._onUp, this);
@@ -134,7 +134,7 @@ export var Draggable = Evented.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    newPoint = new Point(first.clientX, first.clientY),
+		    newPoint = DomEvent.getMousePosition(first, this.options.mapContainer, true),
 		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }

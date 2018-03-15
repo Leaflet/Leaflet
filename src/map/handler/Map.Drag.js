@@ -58,7 +58,9 @@ export var Drag = Handler.extend({
 		if (!this._draggable) {
 			var map = this._map;
 
-			this._draggable = new Draggable(map._mapPane, map._container);
+			this._draggable = new Draggable(map._mapPane, map._container, false, {
+				mapContainer: map._container
+			});
 
 			this._draggable.on({
 				dragstart: this._onDragStart,
