@@ -116,8 +116,8 @@ export var Draggable = Evented.extend({
 
 		this._startPoint = new Point(first.clientX, first.clientY);
 
-		DomEvent.on(document, MOVE[e.type], this._onMove, this);
-		DomEvent.on(document, END[e.type], this._onUp, this);
+		DomEvent.on(DomUtil.getMapContainer(this._element), MOVE[e.type], this._onMove, this);
+		DomEvent.on(DomUtil.getMapContainer(this._element), END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -202,8 +202,8 @@ export var Draggable = Evented.extend({
 		}
 
 		for (var i in MOVE) {
-			DomEvent.off(document, MOVE[i], this._onMove, this);
-			DomEvent.off(document, END[i], this._onUp, this);
+			DomEvent.off(DomUtil.getMapContainer(this._element), MOVE[i], this._onMove, this);
+			DomEvent.off(DomUtil.getMapContainer(this._element), END[i], this._onUp, this);
 		}
 
 		DomUtil.enableImageDrag();
