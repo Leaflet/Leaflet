@@ -2399,6 +2399,17 @@ These plugins help users select either overlays or areas in the map.
 			<a href="http://pezzo.org">Sandro Pibia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mkong0216/leaflet-shades/"> Leaflet-Shades </a>
+		</td>
+		<td>
+			A draggable and resizable rectangle for selecting an area on a map and creating a gray overlay in unselected areas (<a href="https://mkong0216.github.io/leaflet-shades/examples">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/mkong0216"> Mandy Kong </a>
+		</td>
+	</tr>
 </table>
 
 
