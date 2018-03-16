@@ -76,7 +76,7 @@ L.Control.Layers = L.Control.extend({
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
 
-		var form = this._form = L.DomUtil.create('form', className + '-list');
+		var form = this._form = L.DomUtil.create('div', className + '-list');
 
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
