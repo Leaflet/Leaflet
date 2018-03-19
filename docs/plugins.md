@@ -3115,6 +3115,16 @@ These plugins extend Leaflet event handling.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/elmarquis/Leaflet.GestureHandling/">Leaflet.GestureHandling</a>
+		</td><td>
+		Brings the basic functionality of Google Maps Gesture Handling into Leaflet. Prevents users from getting trapped on the map when scrolling a long page.
+			<a href="https://elmarquis.github.io/Leaflet.GestureHandling/examples/"> Demo</a>
+		</td><td>
+			<a href="https://github.com/elmarquis">Andy Marquis</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/CliffCloud/Leaflet.Sleep">L.Sleep</a>
 		</td><td>
 			Avoid unwanted scroll capturing.
