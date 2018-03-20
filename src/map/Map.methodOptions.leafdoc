@@ -105,4 +105,7 @@ Equivalent of setting both top left and bottom right padding to the same value.
 @option maxZoom: Number = null
 The maximum possible zoom to use.
 
+@option zoomOffset: Number = null
+The zoom level will be offset by this value, eg. use -1 to zoom out after
+setting the view to fit bounds.
 
