@@ -212,6 +212,15 @@ Ready-to-go basemaps, with little or no configuration at all.
         	<a href="https://github.com/SuperMap">SuperMap</a>
         </td>
     </tr>
+	<tr>
+        <td>
+        	<a href="https://github.com/MIERUNE/Leaflet.TileLayer.MIERUNE">Leaflet.TileLayer.Mierune</a>
+        </td><td>
+			Displays tiles from <a href="https://mierune.co.jp/tile.html">Mierune map</a>. (<a href="https://tile.mierune.co.jp">Demo</a>)
+        </td><td>
+        	<a href="https://github.com/MIERUNE">Mierune</a>
+        </td>
+    </tr>
 </table>
 
 
