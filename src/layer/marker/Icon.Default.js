@@ -26,7 +26,7 @@ export var IconDefault = Icon.extend({
 		iconSize:    [25, 41],
 		iconAnchor:  [12, 41],
 		popupAnchor: [1, -34],
-		tooltipAnchor: [16, -28],
+		tooltipAnchor: [0, -28],
 		shadowSize:  [41, 41]
 	},
 

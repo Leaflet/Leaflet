@@ -132,7 +132,8 @@ export var Tooltip = DivOverlay.extend({
 	_adjustPan: function () {},
 
 	_setPosition: function (pos) {
-		var map = this._map,
+		var addX, addY,
+		    map = this._map,
 		    container = this._container,
 		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
 		    tooltipPoint = map.layerPointToContainerPoint(pos),
@@ -143,18 +144,24 @@ export var Tooltip = DivOverlay.extend({
 		    anchor = this._getAnchor();
 
 		if (direction === 'top') {
-			pos = pos.add(toPoint(-tooltipWidth / 2 + offset.x, -tooltipHeight + offset.y + anchor.y, true));
+			addX = -tooltipWidth / 2;
+			addY = -tooltipHeight + anchor.y - anchor.x;
 		} else if (direction === 'bottom') {
-			pos = pos.subtract(toPoint(tooltipWidth / 2 - offset.x, -offset.y, true));
+			addX = -tooltipWidth / 2;
+			addY = 0 + anchor.y + anchor.x;
 		} else if (direction === 'center') {
-			pos = pos.subtract(toPoint(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y, true));
+			addX = -tooltipWidth / 2;
+			addY = -tooltipHeight / 2;
 		} else if (direction === 'right' || direction === 'auto' && tooltipPoint.x < centerPoint.x) {
 			direction = 'right';
-			pos = pos.add(toPoint(offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y, true));
+			addX = 0 + anchor.x;
+			addY = -tooltipHeight / 2 + anchor.y;
 		} else {
 			direction = 'left';
-			pos = pos.subtract(toPoint(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y, true));
+			addX = -tooltipWidth - anchor.x;
+			addY = -tooltipHeight / 2 + anchor.y;
 		}
+		pos = pos.add(toPoint(addX + offset.x, addY + offset.y, true));
 
 		DomUtil.removeClass(container, 'leaflet-tooltip-right');
 		DomUtil.removeClass(container, 'leaflet-tooltip-left');
