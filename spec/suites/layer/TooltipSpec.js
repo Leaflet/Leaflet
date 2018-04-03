@@ -149,7 +149,7 @@ describe('Tooltip', function () {
 
 		layer.bindTooltip('A tooltip that should be displayed on the center', {permanent: true, direction: 'center', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 150, 180);  // Marker is on the map center, which is 400px large.
+		happen.at('click', 200, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -288,4 +288,3 @@ describe('Tooltip', function () {
 	});
 
 });
-
