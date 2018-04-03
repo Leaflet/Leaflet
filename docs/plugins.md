@@ -1301,6 +1301,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/elfalem">elfalem</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/lifeeka/leaflet.bezier">Leaflet.bezier</a>
+		</td><td>
+			This plugin draw a Bézier line between two point with an animated flight object.
+		</td><td>
+			<a href="https://github.com/spmsupun">Supun Praneeth</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/MAD-GooZe/Leaflet.Arc">Leaflet.Arc</a>
