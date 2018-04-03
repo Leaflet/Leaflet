@@ -1305,7 +1305,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/lifeeka/leaflet.bezier">Leaflet.bezier</a>
 		</td><td>
-			This plugin draw a Bézier line between two point with an animated flight object.
+			Draws a Bézier line between two points with an animated flight object.
 		</td><td>
 			<a href="https://github.com/spmsupun">Supun Praneeth</a>
 		</td>
