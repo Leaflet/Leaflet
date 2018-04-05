@@ -161,6 +161,8 @@ export var Canvas = Renderer.extend({
 			this._drawFirst = next;
 		}
 
+		delete this._drawnLayers[layer._leaflet_id];
+
 		delete layer._order;
 
 		delete this._layers[Util.stamp(layer)];
