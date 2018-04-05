@@ -128,6 +128,12 @@ export var GridLayer = Layer.extend({
 		// from `minNativeZoom` level and auto-scaled.
 		minNativeZoom: undefined,
 
+		// @option zoomSnap: Number = 1
+		// Define what zoom levels are supported by the tile server.
+		// By default, the zoom level snaps to the nearest integer; lower values
+		// (e.g. `0.5` or `0.1`) allow for greater granularity.
+		zoomSnap: 1,
+
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
 		// GridLayer will only be displayed once at low zoom levels. Has no
@@ -544,7 +550,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = this._clampZoom(Math.round(zoom));
+		var tileZoom = this._clampZoom(Math.round(zoom / this.options.zoomSnap) * this.options.zoomSnap);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
 			tileZoom = undefined;
