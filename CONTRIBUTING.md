@@ -36,7 +36,7 @@ here are some tips for creating a helpful report that will make fixing it much e
 
  * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
  * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet playground](http://playground-leaflet.rhcloud.com/)).
+ * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](http://leafletjs.com/edit.html)).
  * Check whether the bug can be reproduced in **other browsers**.
  * Check if the bug occurs in the stable version, master, or both.
  * *Bonus tip:* if the bug only appears in the master version but the stable version is fine,
