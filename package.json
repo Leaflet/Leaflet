@@ -7,6 +7,7 @@
     "eslint-config-mourner": "^2.0.1",
     "git-rev-sync": "^1.8.0",
     "happen": "~0.3.2",
+    "husky": "^0.15.0-rc.13",
     "karma": "^1.3.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "~1.1.1",
@@ -18,6 +19,7 @@
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
     "leafdoc": "^1.4.1",
+    "lint-staged": "^7.0.4",
     "mocha": "^3.1.0",
     "phantomjs-prebuilt": "^2.1.12",
     "prosthetic-hand": "^1.3.1",
@@ -91,6 +93,17 @@
       "wrap-iife": 0,
       "key-spacing": 0,
       "consistent-return": 0
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "npm run lint"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
     }
   },
   "repository": {
