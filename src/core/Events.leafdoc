@@ -79,6 +79,8 @@ Error code (if applicable).
 @inherits Event
 @property layer: Layer
 The layer that was added or removed.
+@property layerType: String
+The name of the layer.
 
 @miniclass LayersControlEvent (Event objects)
 @inherits Event
