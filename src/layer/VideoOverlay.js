@@ -32,7 +32,11 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		// @option loop: Boolean = true
 		// Whether the video will loop back to the beginning when played.
-		loop: true
+		loop: true,
+
+		// @option saveAspectRatio: Boolean = true
+		// Whether the video will save aspect ratio after the projection.
+		saveAspectRatio: true
 	},
 
 	_initImage: function () {
@@ -62,7 +66,7 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
-		vid.style['objectFit'] = 'fill';
+		if (!this.options.saveAspectRatio && vid.style.hasOwnProperty('objectFit')) { vid.style['objectFit'] = 'fill'; }
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		for (var i = 0; i < this._url.length; i++) {
