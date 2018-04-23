@@ -656,7 +656,7 @@ export var Map = Evented.extend({
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),
-		    bounds = latlng.toBounds(pos.coords.accuracy),
+		    bounds = latlng.toBounds(pos.coords.accuracy * 2),
 		    options = this._locateOptions;
 
 		if (options.setView) {
