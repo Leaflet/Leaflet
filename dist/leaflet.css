@@ -632,5 +632,11 @@
 .leaflet-tooltip-right:before {
 	left: 0;
 	margin-left: -12px;
-	border-right-color: #fff;
+	/*border-right-color: #fff;*/
 	}
+.leaflet-tooltip-hide {
+	display: none;
+}
+.leaflet-tooltip-clear {
+	text-shadow: 0px 0px 4px white;
+}
