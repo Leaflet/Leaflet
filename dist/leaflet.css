@@ -617,7 +617,7 @@
 	margin-left: -6px;
 }
 .leaflet-tooltip-right {
-	margin-left: 6px;
+	/*margin-left: 6px;*/
 }
 .leaflet-tooltip-left:before,
 .leaflet-tooltip-right:before {
@@ -639,4 +639,9 @@
 }
 .leaflet-tooltip-clear {
 	text-shadow: 0px 0px 4px white;
+	white-space : nowrap;
+	position: absolute;
+	padding: 6px;
+	user-select: none;
+	pointer-events: none;
 }
