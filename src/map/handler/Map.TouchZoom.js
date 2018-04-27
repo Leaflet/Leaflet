@@ -55,6 +55,8 @@ export var TouchZoom = Handler.extend({
 
 		this._moved = false;
 		this._zooming = true;
+		L.DomUtil.addClass(this._map.getContainer(), 'leaflet-zoom-anim');
+		L.DomUtil.addClass(this._map.getContainer(), 'leaflet-touching');
 
 		map._stop();
 
@@ -109,6 +111,8 @@ export var TouchZoom = Handler.extend({
 			return;
 		}
 
+		L.DomUtil.removeClass(this._map.getContainer(), 'leaflet-touching');
+		L.DomUtil.removeClass(this._map.getContainer(), 'leaflet-zoom-anim');
 		this._zooming = false;
 		Util.cancelAnimFrame(this._animRequest);
 
