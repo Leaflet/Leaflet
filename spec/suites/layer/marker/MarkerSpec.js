@@ -340,8 +340,8 @@ describe("Marker", function () {
 
 			map.removeLayer(marker);
 
-			expect(destroyIconSpy.calledOnce).to.be.equal(true);
-			expect(destroyShadowSpy.calledOnce).to.be.equal(true);
+			expect(destroyIconSpy.calledOnce).to.equal(true);
+			expect(destroyShadowSpy.calledOnce).to.equal(true);
 		});
 	});
 });
