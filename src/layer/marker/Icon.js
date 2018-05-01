@@ -146,10 +146,16 @@ export var Icon = Class.extend({
 		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	},
 
-	// @method destroyIcon(): void
-	// Called internally when an icon is removed
+	// @method destroyIcon(icon:HTMLElement): void
+	// Called internally by [Marker](#Marker) when its icon is removed
+	// You can override this to perform your own cleanup actions
 	destroyIcon: function () {
-		// default implementation does nothing
+	},
+
+	// @method destroyShadow(shadow:HTMLElement): void
+	// Called internally by [Marker](#Marker) when its shadow is removed
+	// You can override this to perform your own cleanup actions
+	destroyShadow: function () {
 	}
 });
 

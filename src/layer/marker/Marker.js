@@ -177,7 +177,6 @@ export var Marker = Layer.extend({
 	},
 
 	update: function () {
-
 		if (this._icon && this._map) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
@@ -261,9 +260,7 @@ export var Marker = Layer.extend({
 			});
 		}
 
-		if (this.options.icon) {
-			this.options.icon.destroyIcon();
-		}
+		this.options.icon.destroyIcon(this._icon);
 
 		DomUtil.remove(this._icon);
 		this.removeInteractiveTarget(this._icon);
@@ -273,6 +270,7 @@ export var Marker = Layer.extend({
 
 	_removeShadow: function () {
 		if (this._shadow) {
+			this.options.icon.destroyShadow(this._icon);
 			DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;

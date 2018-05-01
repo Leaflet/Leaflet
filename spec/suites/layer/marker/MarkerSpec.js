@@ -334,12 +334,14 @@ describe("Marker", function () {
 	describe('removal', function () {
 		it('should call destroyIcon', function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
+			var destroyIconSpy = sinon.spy(icon1, 'destroyIcon');
+			var destroyShadowSpy = sinon.spy(icon1, 'destroyShadow');
 			map.addLayer(marker);
 
-			sinon.spy(icon1, 'destroyIcon');
+			map.removeLayer(marker);
 
-			expect(icon1.destroyIcon.calledOnce);
-
+			expect(destroyIconSpy.calledOnce).to.be.equal(true);
+			expect(destroyShadowSpy.calledOnce).to.be.equal(true);
 		});
 	});
 });
