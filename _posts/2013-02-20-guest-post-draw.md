@@ -42,7 +42,7 @@ Leaflet.draw is very simple to drop into you Leaflet application. The following 
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers
@@ -117,7 +117,7 @@ Jacob Toye
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers
