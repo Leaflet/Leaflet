@@ -34,7 +34,7 @@ title: Grid coordinates
 		zoom: 1
 	});
 
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: "CartoDB"
 	}).addTo(map);
 
