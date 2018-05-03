@@ -6,11 +6,11 @@ title: Leaflet Developer Blog Atom Feed
 
 	<title>Leaflet Dev Blog</title>
 
-	<link href="http://leafletjs.com/atom.xml" rel="self"/>
-	<link href="http://leafletjs.com"/>
+	<link href="https://leafletjs.com/atom.xml" rel="self"/>
+	<link href="https://leafletjs.com"/>
 
 	<updated>{{ site.time | date_to_xmlschema }}</updated>
-	<id>http://leafletjs.com/</id>
+	<id>https://leafletjs.com/</id>
 
 	<author>
 		<name>Vladimir Agafonkin</name>
@@ -19,9 +19,9 @@ title: Leaflet Developer Blog Atom Feed
 	{% for post in site.posts %}
 	<entry>
 		<title>{{ post.title }}</title>
-		<link href="http://leafletjs.com{{ post.url }}"/>
+		<link href="https://leafletjs.com{{ post.url }}"/>
 		<updated>{{ post.date | date_to_xmlschema }}</updated>
-		<id>http://leafletjs.com{{ post.id }}</id>
+		<id>https://leafletjs.com{{ post.id }}</id>
 		<content type="html">{{ post.content | xml_escape }}</content>
 	</entry>
 	{% endfor %}
