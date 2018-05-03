@@ -214,7 +214,7 @@ Before this, the zoom level of the map could be only an integer number (`0`, `1`
 but now you can use fractional numbers like `1.5` or `1.25`.
 
 Fractional zoom is disabled by default. To enable it, use the
-[map's `zoomSnap` option](https://leafletjs.com//reference-1.0.3.html#map-zoomsnap).
+[map's `zoomSnap` option](https://leafletjs.com/reference-1.0.3.html#map-zoomsnap).
 The `zoomSnap` option has a default value of `1` (which means that the zoom level
 of the map can be `0`, `1`, `2`, and so on).
 
@@ -245,12 +245,12 @@ a pinch-zoom gesture on a touchscreen.
 `zoomSnap` can be set to zero. This means that Leaflet will <strong>not</strong>
 snap the zoom level.
 
-There is another important map option related to `zoomSnap`: [the `zoomDelta` option](https://leafletjs.com//reference-1.0.3.html#map-zoomdelta).
+There is another important map option related to `zoomSnap`: [the `zoomDelta` option](https://leafletjs.com/reference-1.0.3.html#map-zoomdelta).
 This controls how many zoom levels to zoom in/out when using the zoom buttons
-(from the default [`L.Control.Zoom`](https://leafletjs.com//reference-1.0.3.html#control-zoom))
+(from the default [`L.Control.Zoom`](https://leafletjs.com/reference-1.0.3.html#control-zoom))
 or the `+`/`-` keys in your keyboard.
 
-For the mousewheel zoom, the [`wheelPxPerZoomLevel`](https://leafletjs.com//reference-1.0.3.html#map-wheelpxperzoomlevel)
+For the mousewheel zoom, the [`wheelPxPerZoomLevel`](https://leafletjs.com/reference-1.0.3.html#map-wheelpxperzoomlevel)
 option controls how fast the mousewheel zooms in our out.
 
 Here is an example with `zoomSnap` set to zero:
