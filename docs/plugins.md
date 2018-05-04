@@ -488,6 +488,15 @@ The following plugins change the way that tile or image layers are displayed in 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/ronikar/Leaflet.DistortableVideo">Leaflet.DistortableVideo</a>
+		</td><td>
+			Enable users to scale, rotate, and distort videos on Leaflet maps.  (<a href='https://ronikar.github.io/Leaflet.DistortableVideo/examples/'>demo</a>).
+		</td><td>
+			<a href="https://github.com/ronikar">Roni Karilkar</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/IvanSanchez/Leaflet.ImageOverlay.Rotated">Leaflet.ImageOverlay.Rotate</a>
 		</td><td>
 			Displays rotated, scaled and skewed (but not rubbersheeted) ImageOverlays, given three control points. (<a href='http://ivansanchez.github.io/Leaflet.ImageOverlay.Rotated/demo.html'>demo</a>).
