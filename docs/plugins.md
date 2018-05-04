@@ -3989,7 +3989,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/IjzerenHein/famous-map">famous-map</a>
 		</td><td>
-			Integrate Leaflet in applications made with the <a href='famo.us'>famo.us</a> web framework.
+			Integrate Leaflet in applications made with the <a href='http://famo.us'>famo.us</a> web framework.
 		</td><td>
 			<a href="http://www.gloey.nl">Hein Rutjes</a>
 		</td>
