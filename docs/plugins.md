@@ -1832,7 +1832,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 		<td>
 			<a href="https://github.com/Leaflet/Leaflet.heat">Leaflet.heat</a>
 		</td><td>
-			A tiny, simple and fast Leaflet heatmap plugin. Uses <a href='https://github.com/mourner/simpleheat'>simpleheat</a> under the hood, additionally clustering points into a grid for performance. (<a href='http://leaflet.github.io/Leaflet.heat/demo'>Demo</a>)
+			A tiny, simple and fast Leaflet heatmap plugin. Uses <a href='https://github.com/mourner/simpleheat'>simpleheat</a> under the hood, additionally clustering points into a grid for performance. (<a href='https://leaflet.github.io/Leaflet.heat/demo'>Demo</a>)
 
 		</td><td>
 			<a href="https://github.com/mourner">Vladimir Agafonkin</a>
@@ -3354,7 +3354,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/Leaflet/Leaflet.toolbar">Leaflet.toolbar</a>
 		</td>
 		<td>
-			Flexible, extensible toolbars for Leaflet maps. View an example <a href="http://leaflet.github.io/Leaflet.toolbar/examples/popup.html">here</a>.
+			Flexible, extensible toolbars for Leaflet maps. View an example <a href="https://leaflet.github.io/Leaflet.toolbar/examples/popup.html">here</a>.
 		</td>
 		<td>
 			<a href="https://github.com/manleyjster">Justin Manley</a>
@@ -3989,7 +3989,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/IjzerenHein/famous-map">famous-map</a>
 		</td><td>
-			Integrate Leaflet in applications made with the <a href='famo.us'>famo.us</a> web framework.
+			Integrate Leaflet in applications made with the <a href='http://famo.us'>famo.us</a> web framework.
 		</td><td>
 			<a href="http://www.gloey.nl">Hein Rutjes</a>
 		</td>

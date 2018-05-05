@@ -55,7 +55,7 @@ Let's have a look at a simple map locked at zoom zero:
 Notice that the "whole earth" is just one image, 256 pixels wide and 256 pixels high:
 
 <div class='tiles' style='text-align: center'>
-<img src="http://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
 </div>
 
 Just to be clear: the earth is not a square. Rather, the earth is shaped like [a weird potato](https://commons.wikimedia.org/wiki/File:GRACE_globe_animation.gif) that can be approximated to [something similar to a sphere](https://en.wikipedia.org/wiki/Geoid).
@@ -93,17 +93,17 @@ simpler, and allows Leaflet (and other map libraries) to be fast.
 For now, let's just ***assume*** that the world is a square:
 
 <div class='tiles' style='text-align: center'>
-<img src="http://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
 </div>
 
 When we represent the world at zoom level **zero**, it's 256 pixels wide and high. When we go into zoom level **one**, it doubles its width and height, and can be represented by four 256-pixel-by-256-pixel images:
 
 <div class='tiles' style='text-align: center'>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/1/0/0.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/1/1/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/1/0/0.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/1/1/0.png" class="bordered-img" alt=""/>
 </div>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/1/0/1.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/1/1/1.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/1/0/1.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/1/1/1.png" class="bordered-img" alt=""/>
 </div>
 </div>
 
@@ -111,30 +111,30 @@ At each zoom level, each tile is divided in four, and its size (length of the ed
 
 <table><tr><td>
 <div class='tiles small' style='text-align: center'>
-<img src="http://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
 </div>
 </td><td>
 <div class='tiles small' style='text-align: center'>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/1/0/0.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/1/1/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/1/0/0.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/1/1/0.png" class="bordered-img" alt=""/>
 </div>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/1/0/1.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/1/1/1.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/1/0/1.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/1/1/1.png" class="bordered-img" alt=""/>
 </div>
 </div>
 </td><td>
 <div class='tiles small' style='text-align: center'>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/2/0/0.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/1/0.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/2/0.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/3/0.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/2/0/0.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/1/0.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/2/0.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/3/0.png" class="bordered-img" alt=""/>
 </div>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/2/0/1.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/1/1.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/2/1.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/3/1.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/2/0/1.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/1/1.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/2/1.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/3/1.png" class="bordered-img" alt=""/>
 </div>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/2/0/2.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/1/2.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/2/2.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/3/2.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/2/0/2.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/1/2.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/2/2.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/3/2.png" class="bordered-img" alt=""/>
 </div>
 <div>
-<img src="http://a.basemaps.cartocdn.com/light_all/2/0/3.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/1/3.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/2/3.png" class="bordered-img" alt=""/><img src="http://a.basemaps.cartocdn.com/light_all/2/3/3.png" class="bordered-img" alt=""/>
+<img src="https://a.basemaps.cartocdn.com/light_all/2/0/3.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/1/3.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/2/3.png" class="bordered-img" alt=""/><img src="https://a.basemaps.cartocdn.com/light_all/2/3/3.png" class="bordered-img" alt=""/>
 </div>
 </div>
 </td></tr>
