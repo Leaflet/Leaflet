@@ -221,6 +221,16 @@ Ready-to-go basemaps, with little or no configuration at all.
         	<a href="https://github.com/MIERUNE">Mierune</a>
         </td>
     </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rzoller/Leaflet.TileLayer.Swiss">Leaflet.TileLayer.Swiss</a>
+		</td><td>
+			Displays national maps of Switzerland using WMTS services of swisstopo.
+			<a href="https://rzoller.ch/Leaflet.TileLayer.Swiss/examples/basic.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/rzoller">Roman Zoller</a>
+		</td>
+	</tr>
 </table>
 
 
