@@ -732,6 +732,10 @@ export var Map = Evented.extend({
 		if (this._clearControlPos) {
 			this._clearControlPos();
 		}
+		if (this._resizeRequest) {
+			Util.cancelAnimFrame(this._resizeRequest);
+			this._resizeRequest = null;
+		}
 
 		this._clearHandlers();
 
