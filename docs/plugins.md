@@ -2172,13 +2172,22 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/manleyjster">Justin Manley</a>
 		</td>
 	</tr>
-<tr>
+        <tr>
 		<td>
 			<a href="https://github.com/kklimczak/Leaflet.Pin">Leaflet.Pin</a>
 		</td><td>
 			Enable attaching of markers to other layers during draw or edit features with Leaflet.Draw.
 		</td><td>
 			<a href="https://github.com/kklimczak">Konrad Klimczak</a>
+		</td>
+	</tr>
+        <tr>
+		<td>
+			<a href="https://github.com/tcoupin/leaflet-paintpolygon">L.Control.PaintPolygon</a>
+		</td><td>
+			Draw yours polygons with a circle brush like Paint[brush]. Includes turf.js dependencies.
+		</td><td>
+			<a href="https://github.com/tcoupin">Thibault Coupin</a>
 		</td>
 	</tr>
 </table>
