@@ -96,7 +96,7 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJSCustom'],
+		browsers: getBrowsers(),
 
 		customLaunchers: {
 			'PhantomJSCustom': {
@@ -124,3 +124,46 @@ module.exports = function (config) {
 		singleRun: true
 	});
 };
+
+
+// Use browser(s) as specified in command arguments.
+function getBrowsers() {
+	var browsers = [];
+
+	// Test in each specified browser, if multiple.
+	// Note: use twice the special argument `--` after `npm test` so that arguments are passed to the downstream `test-nolint` script.
+	// e.g. `npm test -- -- --ff`
+	// or directly: `npm run test-nolint -- --ff`
+	// Currently available:
+	// - Chrome
+	// - ChromeCanary
+	// - Firefox
+	// - Opera
+	// - Safari (only Mac)
+	// - PhantomJS
+	// - IE (only Windows)
+	if (isArgv('--chrome')) {
+		browsers.push('Chrome');
+	}
+	if (isArgv('--safari')) {
+		browsers.push('Safari');
+	}
+	if (isArgv('--ff')) {
+		browsers.push('Firefox');
+	}
+	if (isArgv('--ie')) {
+		browsers.push('IE');
+	}
+
+	// If none is specified, use PhantomJS by default.
+	// But do not add it if at least another browser is specified, so that we can launch browsers individually.
+	if (!browsers.length) {
+		browsers.push('PhantomJSCustom');
+	}
+
+	return browsers;
+}
+
+function isArgv(optName) {
+	return process.argv.indexOf(optName) !== -1;
+}
