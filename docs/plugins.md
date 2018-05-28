@@ -2456,6 +2456,17 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/mkong0216"> Mandy Kong </a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/olanaso/Leaflet-Select-Polygons">Leaflet-Select-Polygons </a>
+		</td>
+		<td>
+		Leaflet-Select-Polygons allows the selection of several polygons and also adjusts the base map view 
+		</td>
+		<td>
+			<a href="https://github.com/olanaso">Erick S Escalante Olano </a>
+		</td>
+	</tr>
 </table>
 
 
