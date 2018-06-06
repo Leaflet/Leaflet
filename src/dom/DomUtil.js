@@ -208,11 +208,16 @@ export function testProp(props) {
 export function setTransform(el, offset, scale) {
 	var pos = offset || new Point(0, 0);
 
+	//Here we need to get rotate value, if it exists, not rewrite it by new tranform value
+	var rotateRegexp = /(rotate)(\(.*(?:deg\)))/g; //regex to match rotateZ(...deg)
+	var rotate = rotateRegexp.exec(el.style[L.DomUtil.TRANSFORM]);
+
 	el.style[TRANSFORM] =
 		(Browser.ie3d ?
 			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
-		(scale ? ' scale(' + scale + ')' : '');
+			(rotate ? ' ' + rotate : '') +
+			(scale ? ' scale(' + scale + ')' : '');
 }
 
 // @function setPosition(el: HTMLElement, position: Point)
