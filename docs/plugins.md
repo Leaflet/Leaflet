@@ -4088,6 +4088,16 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://bitbucket.org/terrayazilim/leaflet.jsf">Leaflet.jsf</a>
+		</td><td>
+			Comprehensive Java Server Faces(JSF) Component/Wrapper for Leaflet.
+		</td><td>
+			<a href="http://terrayazilim.com.tr">Terra SI LLC.</a>
+			<a href="https://bitbucket.org/terrayazilim">M.Çağrı Tepebaşılı</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/themrleon/JSF2Leaf">JSF2Leaf</a>
 		</td><td>
 			A JavaServer Faces wrapper for Leaflet.
