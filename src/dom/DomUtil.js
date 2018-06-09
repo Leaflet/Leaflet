@@ -209,7 +209,7 @@ export function setTransform(el, offset, scale) {
 	var pos = offset || new Point(0, 0);
 
 	//Here we need to get rotate value, if it exists, not rewrite it by new tranform value
-	var rotateRegexp = /(rotate)(\(.*(?:deg\)))/g; //regex to match rotateZ(...deg)
+	var rotateRegexp = /(rotate.*)(\(.*(?:deg\)))/g; //regex to match rotate*(...deg)
 	var rotate = rotateRegexp.exec(el.style[L.DomUtil.TRANSFORM]);
 
 	el.style[TRANSFORM] =
