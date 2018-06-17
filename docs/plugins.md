@@ -4168,6 +4168,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/KoRiGaN/Vue2Leaflet">Vue2Leaflet</a>
+		</td><td>
+			<a href="https://github.com/KoRiGaN/Vue2Leaflet">Vue2Leaflet</a> is a JavaScript library for the <a href="https://vuejs.org/">Vue.js</a> framework that wraps Leaflet, making it easy to create reactive maps.
+		</td><td>
+			<a href="https://github.com/KoRiGaN">Mickaël KoRiGaN</a>
+		</td>
+	</tr>
 </table>
 
 
