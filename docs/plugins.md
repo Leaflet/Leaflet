@@ -2456,6 +2456,15 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/mkong0216"> Mandy Kong </a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/zakjan/leaflet-lasso">leaflet-lasso</a>
+		</td><td>
+			True lasso selection plugin
+		</td><td>
+			<a href="https://github.com/zakjan">Jan Zak</a>
+		</td>
+	</tr>
 </table>
 
 
