@@ -754,7 +754,7 @@ describe('GridLayer', function () {
 							expect(counts.tileload).to.be(32);
 							// No tile should be unloaded yet.
 							expect(counts.tileunload).to.be(0);
-							
+
 							// Wait for a frame for next _updateOpacity to prune
 							// all 16 tiles from z11 which are now covered by the
 							// 4 central active tiles of z10.
