@@ -892,29 +892,41 @@ describe('GridLayer', function () {
 			// clock.tick(250);
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
 		it("Loads map, moves forth and back by 512 px, keepBuffer = 0", function (done) {
 
-			grid.on('load', function () {
+			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				grid.on('load', function () {
+				grid.once('load', function () {
 					expect(counts.tileloadstart).to.be(28);
 					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(12);
 
-					grid.off('load');
-					grid.on('load', function () {
-						expect(counts.tileloadstart).to.be(40);
-						expect(counts.tileload).to.be(40);
-						expect(counts.tileunload).to.be(24);
-						done();
+					// Wait for a frame to let _updateOpacity starting
+					// It will prune the 12 tiles outside the new bounds.
+					// PhantomJS has Browser.any3d === false, so it actually
+					// does not perform the fade animation and does not need
+					// this rAF, but it does not harm either.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileunload).to.be(12);
+
+						grid.once('load', function () {
+							expect(counts.tileloadstart).to.be(40);
+							expect(counts.tileload).to.be(40);
+
+							// Wait an extra frame for the tile pruning to happen.
+							L.Util.requestAnimFrame(function () {
+								expect(counts.tileunload).to.be(24);
+								done();
+							});
+						});
+
+						map.panBy([-512, -512], {animate: false});
+						clock.tick(250);
 					});
-
-					map.panBy([-512, -512], {animate: false});
-					clock.tick(250);
 				});
 
 				map.panBy([512, 512], {animate: false});
