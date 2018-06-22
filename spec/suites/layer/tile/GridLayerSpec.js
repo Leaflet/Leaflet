@@ -710,51 +710,76 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
 
+			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
+			clock.tick(1);
+			// Date.now() is 1.
+
 			// grid.on('tileload tileunload load', logTiles);
 
-			grid.on('load', function () {
-				expect(counts.tileloadstart).to.be(16);
+			grid.once('load', function () {
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				// grid.on('load', logTiles);
-				grid.on('load', function () {
-
-					grid.off('load');
-					// grid.on('load', logTiles);
-
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z11 plus 4 tiles for z10 covering the
-					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.be(20);
-					expect(counts.tileload).to.be(20);
-					expect(counts.tileunload).to.be(0);
-
-
+				// Wait for a frame to let _updateOpacity starting.
+				L.Util.requestAnimFrame(function () {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
 					clock.tick(300);
-					L.Util.requestAnimFrame(function () {
-						expect(counts.tileunload).to.be(16);
+					// At 251ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
+					// Date.now() is 301.
 
-						// The next 'load' event happens when the zoom anim is
-						// complete, and triggers loading of all the z10 tiles.
-						grid.on('load', function () {
-							expect(counts.tileloadstart).to.be(32);
+					grid.once('load', function () {
+						expect(counts.tileload).to.be(20);
+						// No tile should be unloaded yet.
+						expect(counts.tileunload).to.be(0);
+
+						// Wait > 250msec for the zoom animation to complete,
+						// which triggers the tile pruning, but there are no
+						// tiles to prune yet (z11 tiles are all in bounds).
+						clock.tick(300);
+						// Date.now() is 601.
+
+						// At the end of the animation, all 16 tiles from z10
+						// are loading.
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(20);
+
+						// Now that the zoom animation is complete,
+						// the grid is ready to fire a new "load" event
+						// on next frame, so prepare its listener now.
+						// During that frame, _updateOpacity will flag the 4
+						// central tiles from z10 as "active", since we are now
+						// > 200ms after the first "load" event fired.
+						grid.once('load', function () {
 							expect(counts.tileload).to.be(32);
-							done();
+							// No tile should be unloaded yet.
+							expect(counts.tileunload).to.be(0);
+							
+							// Wait for a frame for next _updateOpacity to prune
+							// all 16 tiles from z11 which are now covered by the
+							// 4 central active tiles of z10.
+							L.Util.requestAnimFrame(function () {
+								expect(counts.tileunload).to.be(16);
+								done();
+							});
 						});
-
 					});
 				});
 
 				map.setZoom(10, {animate: true});
-				clock.tick(250);
+				// Animation (and new tiles loading) starts after 1 frame.
+				L.Util.requestAnimFrame(function () {
+					// We're one frame into the zoom animation, there are
+					// 16 tiles for z11 plus 4 tiles for z10 covering the
+					// bounds at the *beginning* of the zoom-*out* anim
+					expect(counts.tileloadstart).to.be(20);
+				});
 			});
 
 			map.addLayer(grid).setView([0, 0], 11);
-			clock.tick(250);
+			// The first setView does not animated, therefore it starts loading tiles immediately.
+			// 16 tiles from z10 being loaded.
+			expect(counts.tileloadstart).to.be(16);
 		});
 
 		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
