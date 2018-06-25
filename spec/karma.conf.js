@@ -90,6 +90,7 @@ module.exports = function (config) {
 
 		// Start these browsers, currently available:
 		// - Chrome
+		// - ChromeNoSandbox - used only in Travis CI - see https://docs.travis-ci.com/user/chrome
 		// - ChromeCanary
 		// - Firefox
 		// - Opera
@@ -109,6 +110,10 @@ module.exports = function (config) {
 						}
 					}
 				}
+			},
+			'ChromeNoSandbox': {
+				base: 'Chrome',
+				flags: ['--no-sandbox']
 			}
 		},
 
