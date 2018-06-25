@@ -2,9 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - node
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
 addons:
   artifacts:
     paths:
@@ -26,7 +23,7 @@ env:
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
   - npm test
-  - npm run test-nolint -- --browsers ChromeNoSandbox
+  - xvfb-run --server-args="-screen 0 1280x1024x16" npm run test-nolint -- --browsers ChromeNoSandbox
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
