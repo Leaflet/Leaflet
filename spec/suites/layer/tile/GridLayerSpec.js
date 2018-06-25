@@ -893,54 +893,103 @@ describe('GridLayer', function () {
 			counts = undefined;
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
 		it("Loads map, moves forth by 512 px, keepBuffer = 0", function (done) {
 
-			grid.on('load', function () {
+			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
+			clock.tick(1);
+			// Date.now() is 1.
+
+			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				grid.on('load', function () {
-					expect(counts.tileloadstart).to.be(28);
-					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(12);
-					done();
+				// Wait for a frame to let _updateOpacity starting.
+				L.Util.requestAnimFrame(function () {
+
+					// Wait > 250msec for the tile fade-in animation to complete,
+					// which triggers the tile pruning
+					clock.tick(300);
+					// At 251ms, the pruneTile from the end of the setView tiles fade-in animation executes.
+					// Date.now() is 301.
+
+					grid.once('load', function () {
+						// Since there is no animation requested,
+						// We directly jump to the target position.
+						// => 12 new tiles, total = 16 + 12 = 28 tiles.
+						expect(counts.tileloadstart).to.be(28);
+						expect(counts.tileload).to.be(28);
+
+						// Wait for a frame to let _updateOpacity starting
+						// It will prune the 12 tiles outside the new bounds.
+						// PhantomJS has Browser.any3d === false, so it actually
+						// does not perform the fade animation and does not need
+						// this rAF, but it does not harm either.
+						L.Util.requestAnimFrame(function () {
+							expect(counts.tileunload).to.be(12);
+							done();
+						});
+					});
+
+					// Move up 512px => 2 tile rows => 2*4 = 8 new tiles (V and M).
+					// Move right 512px => 2 tile columns => 2*4 = 4 new tiles (H) + 4 new tiles (M) in common with vertical pan.
+					// Total = 8 + 8 - 4 = 12 new tiles.
+					// ..VVMM
+					// ..VVMM
+					// OOXXHH // O = Old tile, X = Old tile still visible.
+					// OOXXHH
+					// OOOO
+					// OOOO
+					map.panBy([512, 512], {animate: false});
+					// clock.tick(250);
+
 				});
-
-				map.panBy([512, 512], {animate: false});
-				clock.tick(250);
 			});
 
 			grid.options.keepBuffer = 0;
 
+			// 800px width * 600px height => 4 tiles horizontally * 4 tiles vertically = 16 tiles
 			map.addLayer(grid).setView([0, 0], 10);
-			clock.tick(250);
+			// clock.tick(250);
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
 		it("Loads map, moves forth and back by 512 px, keepBuffer = 0", function (done) {
 
-			grid.on('load', function () {
+			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				grid.on('load', function () {
+				grid.once('load', function () {
 					expect(counts.tileloadstart).to.be(28);
 					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(12);
 
-					grid.off('load');
-					grid.on('load', function () {
-						expect(counts.tileloadstart).to.be(40);
-						expect(counts.tileload).to.be(40);
-						expect(counts.tileunload).to.be(24);
-						done();
+					// Wait for a frame to let _updateOpacity starting
+					// It will prune the 12 tiles outside the new bounds.
+					// PhantomJS has Browser.any3d === false, so it actually
+					// does not perform the fade animation and does not need
+					// this rAF, but it does not harm either.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileunload).to.be(12);
+
+						grid.once('load', function () {
+							expect(counts.tileloadstart).to.be(40);
+							expect(counts.tileload).to.be(40);
+
+							// Wait an extra frame for the tile pruning to happen.
+							L.Util.requestAnimFrame(function () {
+								expect(counts.tileunload).to.be(24);
+								done();
+							});
+						});
+
+						map.panBy([-512, -512], {animate: false});
+						clock.tick(250);
 					});
-
-					map.panBy([-512, -512], {animate: false});
-					clock.tick(250);
 				});
 
 				map.panBy([512, 512], {animate: false});
