@@ -2,8 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - node
-before_script:
-  - export DISPLAY=:99.0
 addons:
   artifacts:
     paths:
