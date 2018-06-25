@@ -25,7 +25,7 @@ env:
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
   - npm test
-  - npm test -- --ff
+  - npm run test-nolint -- --browsers Firefox
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
