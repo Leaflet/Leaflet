@@ -10,7 +10,7 @@ Some of the geolocation methods for `Map` take in an `options` parameter. This
 is a plain javascript object with the following optional components:
 
 @option watch: Boolean = false
-If `true`, starts continous watching of location changes (instead of detecting it
+If `true`, starts continuous watching of location changes (instead of detecting it
 once) using W3C `watchPosition` method. You can later stop watching using
 `map.stopLocate()` method.
 

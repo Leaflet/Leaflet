@@ -141,4 +141,46 @@ describe('ImageOverlay', function () {
 			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
+
+	// For tests that do not actually need to append the map container to the document.
+	// This saves PhantomJS memory.
+	describe('_image2', function () {
+		var c, map, overlay;
+		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+		var bounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+
+		// Create map and overlay for each test
+		beforeEach(function () {
+			c = document.createElement('div');
+			c.style.width = '400px';
+			c.style.height = '400px';
+			map = new L.Map(c);
+			map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initialized
+		});
+
+		// Clean up after each test run
+		afterEach(function () {
+			map.removeLayer(overlay);
+			overlay = null;
+			map = null;
+		});
+
+		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
+		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
+		testCrossOriginValue(true, '');
+		testCrossOriginValue('', '');
+		testCrossOriginValue('anonymous', 'anonymous');
+		testCrossOriginValue('use-credentials', 'use-credentials');
+
+		function testCrossOriginValue(crossOrigin, expectedValue) {
+			it('uses crossOrigin option value ' + crossOrigin, function () {
+				overlay = L.imageOverlay(blankUrl, bounds, {
+					crossOrigin: crossOrigin
+				});
+				map.addLayer(overlay);
+
+				expect(overlay._image.getAttribute('crossorigin')).to.be(expectedValue);
+			});
+		}
+	});
 });

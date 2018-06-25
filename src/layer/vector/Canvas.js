@@ -68,6 +68,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_destroyContainer: function () {
+		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
 		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
@@ -160,9 +161,11 @@ export var Canvas = Renderer.extend({
 			this._drawFirst = next;
 		}
 
+		delete this._drawnLayers[layer._leaflet_id];
+
 		delete layer._order;
 
-		delete this._layers[L.stamp(layer)];
+		delete this._layers[Util.stamp(layer)];
 
 		this._requestRedraw(layer);
 	},
@@ -184,7 +187,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_updateDashArray: function (layer) {
-		if (layer.options.dashArray) {
+		if (typeof layer.options.dashArray === 'string') {
 			var parts = layer.options.dashArray.split(','),
 			    dashArray = [],
 			    i;
@@ -192,6 +195,8 @@ export var Canvas = Renderer.extend({
 				dashArray.push(Number(parts[i]));
 			}
 			layer.options._dashArray = dashArray;
+		} else {
+			layer.options._dashArray = layer.options.dashArray;
 		}
 	},
 

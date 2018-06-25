@@ -41,8 +41,8 @@ Leaflet.draw is very simple to drop into you Leaflet application. The following 
 	var map = L.map('map').setView([175.30867, -37.77914], 13);
 
 	// add an OpenStreetMap tile layer
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers
@@ -96,14 +96,14 @@ I've had a great time implementing this plugin. I hope you enjoy using it. If yo
 Cheers,
 Jacob Toye
 
-<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/lib/leaflet/leaflet.css" />
-<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.css" />
+<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" />
+<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
 <!--[if lte IE 8]>
-	<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/lib/leaflet/leaflet.ie.css" />
-	<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.ie.css" />
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.ie.css" />
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/leaflet.draw.ie.css" />
 <![endif]-->
-<script src="http://leaflet.github.com/Leaflet.draw/libs/leaflet/leaflet.js"></script>
-<script src="http://leaflet.github.com/Leaflet.draw/leaflet.draw.js"></script>
+<script src="https://leaflet.github.io/Leaflet.draw/libs/leaflet/leaflet.js"></script>
+<script src="https://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
 
 <style>
 	.leaflet-bar {
@@ -116,8 +116,8 @@ Jacob Toye
 	var map = L.map('map').setView([-37.77914, 175.30867], 16);
 
 	// add an OpenStreetMap tile layer
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers

@@ -37,8 +37,10 @@ export var ImageOverlay = Layer.extend({
 		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
-		// @option crossOrigin: Boolean = false
-		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
+		// @option crossOrigin: Boolean|String = false
+		// Whether the crossOrigin attribute will be added to the image.
+		// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
 		crossOrigin: false,
 
 		// @option errorOverlayUrl: String = ''
@@ -179,9 +181,12 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_initImage: function () {
-		var img = this._image = DomUtil.create('img',
-			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated ' : '') +
-			 (this.options.className || ''));
+		var wasElementSupplied = this._url.tagName === 'IMG';
+		var img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
+
+		DomUtil.addClass(img, 'leaflet-image-layer');
+		if (this._zoomAnimated) { DomUtil.addClass(img, 'leaflet-zoom-animated'); }
+		if (this.options.className) { DomUtil.addClass(img, this.options.className); }
 
 		img.onselectstart = Util.falseFn;
 		img.onmousemove = Util.falseFn;
@@ -191,12 +196,17 @@ export var ImageOverlay = Layer.extend({
 		img.onload = Util.bind(this.fire, this, 'load');
 		img.onerror = Util.bind(this._overlayOnError, this, 'error');
 
-		if (this.options.crossOrigin) {
-			img.crossOrigin = '';
+		if (this.options.crossOrigin || this.options.crossOrigin === '') {
+			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
 		}
 
 		if (this.options.zIndex) {
 			this._updateZIndex();
+		}
+
+		if (wasElementSupplied) {
+			this._url = img.src;
+			return;
 		}
 
 		img.src = this._url;

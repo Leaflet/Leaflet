@@ -79,6 +79,48 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 		});
 
+		describe("in CSS scaled container", function () {
+			var scaleX = 2;
+			var scaleY = 1.5;
+
+			beforeEach(function () {
+				container.style.webkitTransformOrigin = 'top left';
+				container.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
+			});
+
+			afterEach(function () {
+				container.style.webkitTransformOrigin = '';
+				container.style.webkitTransform = '';
+			});
+
+			it("change the center of the map, compensating for CSS scale", function (done) {
+				var map = new L.Map(container, {
+				    dragging: true,
+				    inertia: false
+				});
+				map.setView([0, 0], 1);
+
+				var hand = new Hand({
+					timing: 'fastframe',
+					onStop: function () {
+						var center = map.getCenter();
+						var zoom = map.getZoom();
+						expect(center.lat).to.be.within(21.9430, 21.9431);
+						expect(center.lng).to.be(-180);
+						expect(zoom).to.be(1);
+
+						done();
+					}
+				});
+				var mouse = hand.growFinger('mouse');
+
+				// We move 5 pixels first to overcome the 3-pixel threshold of
+				// L.Draggable.
+				mouse.wait(100).moveTo(200, 200, 0)
+					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 200).up();
+			});
+		});
+
 		it("does not change the center of the map when mouse is moved less than the drag threshold", function (done) {
 			var map = new L.Map(container, {
 				dragging: true,

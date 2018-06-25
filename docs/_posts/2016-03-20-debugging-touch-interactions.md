@@ -75,7 +75,7 @@ f2.wait(100).moveTo(350, 200, 0)
 	.down().wait(500).moveBy(-200, 0, 1000).wait(500).up().wait(500);
 </code></pre>
 
-You can check this in the [live prosthetic-hand demos](http://leaflet.github.io/prosthetic-hand/demos/).
+You can check this in the [live prosthetic-hand demos](https://leaflet.github.io/prosthetic-hand/demos/).
 
 The prosthetic-hand library is not perfect, and some types of events only work in some browsers, but it can help trigger mouse/touch/pointer events in a repeatable way, with adjustable timing, allowing developers to keep both hands at the debugger. The timing modes allow granular control of the events fired, allowing to run less iterations of the code for the same gesture, which in turn means a simpler, better understanding of what's going on.
 

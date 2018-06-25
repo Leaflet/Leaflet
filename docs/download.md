@@ -12,11 +12,11 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.2.0/leaflet.zip">Leaflet 1.2.0</a></td>
-		<td>Stable version, released on August 8, 2017.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.3.1/leaflet.zip">Leaflet 1.3.1</a></td>
+		<td>Stable version, released on January 18, 2018.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.2-dev</a></td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.3-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
 	</tr>
 	<tr>
@@ -89,11 +89,10 @@ which installs easily and works well across all major platforms.
 Here are the steps to set it up:
 
  1. [Download and install Node](http://nodejs.org)
- 2. Run the following commands in the command line:
+ 2. Run the following command in the command line:
 
- <pre><code>npm install -g jake
-npm install</code></pre>
+ <pre><code>npm install</code></pre>
 
-Now that you have everything installed, run `jake build` inside the Leaflet directory.
+Now that you have everything installed, run `npm run build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 
