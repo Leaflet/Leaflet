@@ -68,6 +68,7 @@ export var SVG = Renderer.extend({
 		DomEvent.off(this._container);
 		delete this._container;
 		delete this._rootGroup;
+		delete this._svgSize;
 	},
 
 	_onZoomStart: function () {

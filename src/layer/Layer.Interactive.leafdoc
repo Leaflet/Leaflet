@@ -23,6 +23,9 @@ Fired when the user double-clicks (or double-taps) the layer.
 @event mousedown: MouseEvent
 Fired when the user pushes the mouse button on the layer.
 
+@event mouseup: MouseEvent
+Fired when the user releases the mouse button pushed on the layer.
+
 @event mouseover: MouseEvent
 Fired when the mouse enters the layer.
 

@@ -224,6 +224,7 @@ describe("Map", function () {
 		it("respects the 'inside' parameter", function () {
 			var container = map.getContainer();
 			container.style.height = height;
+			container.style.width = '1024px'; // Make sure the width is defined for browsers other than PhantomJS (in particular Firefox).
 			document.body.appendChild(container);
 			expect(map.getBoundsZoom(wideBounds, false, padding)).to.be.equal(17);
 			expect(map.getBoundsZoom(wideBounds, true, padding)).to.be.equal(20);

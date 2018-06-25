@@ -10,7 +10,7 @@
 			marker = L.marker([0, 0]);
 		});
 		describe("when a Marker is added to multiple FeatureGroups ", function () {
-			it("e.layer should be the Marker", function () {
+			it("e.propagatedFrom should be the Marker", function () {
 				var fg1 = L.featureGroup(),
 				    fg2 = L.featureGroup();
 
@@ -21,13 +21,13 @@
 				    wasClicked2;
 
 				fg2.on('click', function (e) {
-					expect(e.layer).to.be(marker);
+					expect(e.propagatedFrom).to.be(marker);
 					expect(e.target).to.be(fg2);
 					wasClicked2 = true;
 				});
 
 				fg1.on('click', function (e) {
-					expect(e.layer).to.be(marker);
+					expect(e.propagatedFrom).to.be(marker);
 					expect(e.target).to.be(fg1);
 					wasClicked1 = true;
 				});

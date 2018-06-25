@@ -20,10 +20,10 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
     L.TileLayer.Kitten = L.TileLayer.extend({
         getTileUrl: function(coords) {
             var i = Math.ceil( Math.random() * 4 );
-            return "http://placekitten.com/256/256?image=" + i;
+            return "https://placekitten.com/256/256?image=" + i;
         },
         getAttribution: function() {
-            return "<a href='http://placekitten.com/attribution.html'>PlaceKitten</a>"
+            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
         }
     });
 
@@ -46,10 +46,10 @@ For the KittenLayer, you should create a file like `L.KittenLayer.js` with:
     L.TileLayer.Kitten = L.TileLayer.extend({
         getTileUrl: function(coords) {
             var i = Math.ceil( Math.random() * 4 );
-            return "http://placekitten.com/256/256?image=" + i;
+            return "https://placekitten.com/256/256?image=" + i;
         },
         getAttribution: function() {
-            return "<a href='http://placekitten.com/attribution.html'>PlaceKitten</a>"
+            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
         }
     });
 

@@ -203,8 +203,9 @@ export var Marker = Layer.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			if (options.alt) {
-				icon.alt = options.alt;
+
+			if (icon.tagName === 'IMG') {
+				icon.alt = options.alt || '';
 			}
 		}
 
@@ -348,11 +349,11 @@ export var Marker = Layer.extend({
 	},
 
 	_getPopupAnchor: function () {
-		return this.options.icon.options.popupAnchor || [0, 0];
+		return this.options.icon.options.popupAnchor;
 	},
 
 	_getTooltipAnchor: function () {
-		return this.options.icon.options.tooltipAnchor || [0, 0];
+		return this.options.icon.options.tooltipAnchor;
 	}
 });
 

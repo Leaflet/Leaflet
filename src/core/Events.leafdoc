@@ -21,7 +21,16 @@ The base event object. All other event objects contain these properties too.
 @property type: String
 The event type (e.g. `'click'`).
 @property target: Object
-The object that fired the event.
+The object that fired the event. For propagated events, the last object in
+the propagation chain that fired the event.
+@property sourceTarget: Object
+The object that originally fired the event. For non-propagated events, this will
+be the same as the `target`.
+@property propagatedFrom: Object
+For propagated events, the last object that propagated the event to its
+event parent.
+@property layer: Object
+**Deprecated.** The same as `propagatedFrom`.
 
 
 @miniclass KeyboardEvent (Event objects)
