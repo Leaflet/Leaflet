@@ -2456,13 +2456,26 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/mkong0216"> Mandy Kong </a>
 		</td>
 	</tr>
-	<tr>
+  <tr>
 		<td>
 			<a href="https://github.com/zakjan/leaflet-lasso">leaflet-lasso</a>
-		</td><td>
+		</td>
+		<td>
 			True lasso selection plugin
-		</td><td>
+		</td>
+		<td>
 			<a href="https://github.com/zakjan">Jan Zak</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/olanaso/Leaflet-Select-Polygons">Leaflet-Select-Polygons</a>
+		</td>
+		<td>
+			Leaflet-Select-Polygons allows the selection of several polygons and also adjusts the base map view (<a href="https://olanaso.github.io/Leaflet-Select-Polygons/">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/olanaso">Erick S Escalante Olano</a>
 		</td>
 	</tr>
 </table>
