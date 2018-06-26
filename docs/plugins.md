@@ -2018,7 +2018,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 		<td>
 			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
 		</td><td>
-			Geometry Management for Leaflet 1.0 and higher. Draw, Edit, Cut, Drag and Snap Markers, Circles, Polylines, Polygons, LayerGroups and geoJSON. Supports holes in polygons, snapping, canvas mode and more. (<a href="https://leafletpm.now.sh">Demo</a>)
+			Geometry Management for Leaflet 1.0 and higher. Draw, Edit, Cut, Drag and Snap Layers like Markers, Circles, Rectangles, Polylines, Polygons, LayerGroups, geoJSON, MultiPolygons, MultiLineStrings. Supports holes in polygons, snapping, canvas mode and more. (<a href="https://leafletpm.now.sh">Demo</a>)
 		</td><td>
 			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
 		</td>
@@ -2456,15 +2456,26 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/mkong0216"> Mandy Kong </a>
 		</td>
 	</tr>
+  <tr>
+		<td>
+			<a href="https://github.com/zakjan/leaflet-lasso">leaflet-lasso</a>
+		</td>
+		<td>
+			True lasso selection plugin
+		</td>
+		<td>
+			<a href="https://github.com/zakjan">Jan Zak</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/olanaso/Leaflet-Select-Polygons">Leaflet-Select-Polygons </a>
+			<a href="https://github.com/olanaso/Leaflet-Select-Polygons">Leaflet-Select-Polygons</a>
 		</td>
 		<td>
-		Leaflet-Select-Polygons allows the selection of several polygons and also adjusts the base map view 
+			Leaflet-Select-Polygons allows the selection of several polygons and also adjusts the base map view (<a href="https://olanaso.github.io/Leaflet-Select-Polygons/">demo</a>)
 		</td>
 		<td>
-			<a href="https://github.com/olanaso">Erick S Escalante Olano </a>
+			<a href="https://github.com/olanaso">Erick S Escalante Olano</a>
 		</td>
 	</tr>
 </table>
@@ -3972,6 +3983,15 @@ Ease your development integrating Leaflet into a development framework or automa
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/ghybs/leaflet-defaulticon-compatibility">leaflet-defaulticon-compatibility</a>
+		</td><td>
+			Retrieve all Leaflet Default Icon options from CSS, in particular all icon images URL's, to improve compatibility with bundlers and frameworks that modify URL's in CSS. In particular for webpack (with style-, css-, file- and url-loader's), Rails Asset Pipeline and Django pipeline. Should solve all use cases linked to <a href="https://github.com/Leaflet/Leaflet/issues/4968">issue Leaflet/Leaflet #4968</a>. <a href="https://ghybs.github.io/leaflet-defaulticon-compatibility/webpack-demo.html">Demo with webpack</a> (and <a href="https://ghybs.github.io/leaflet-defaulticon-compatibility/webpack-demo.html?demo=no-plugin">without this plugin</a>).
+		</td><td>
+			<a href="https://github.com/ghybs">ghybs</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/moklick/generator-leaflet">Leaflet Yeoman Generator</a>
 		</td><td>
 			Yeoman generator that scaffolds out a basic Leaflet map application.
@@ -4099,6 +4119,16 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://bitbucket.org/terrayazilim/leaflet.jsf">Leaflet.jsf</a>
+		</td><td>
+			Comprehensive Java Server Faces(JSF) Component/Wrapper for Leaflet.
+		</td><td>
+			<a href="http://terrayazilim.com.tr">Terra SI LLC.</a>
+			<a href="https://bitbucket.org/terrayazilim">M.Çağrı Tepebaşılı</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/themrleon/JSF2Leaf">JSF2Leaf</a>
 		</td><td>
 			A JavaServer Faces wrapper for Leaflet.
@@ -4167,6 +4197,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			It populates a leaflet map from a configuration object, can also creates zoom, layers, attribution and           draw controls. <a href="https://gherardovarando.github.io/leaflet-map-builder/"> demo </a>.
 		</td><td>
 			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/KoRiGaN/Vue2Leaflet">Vue2Leaflet</a>
+		</td><td>
+			<a href="https://github.com/KoRiGaN/Vue2Leaflet">Vue2Leaflet</a> is a JavaScript library for the <a href="https://vuejs.org/">Vue.js</a> framework that wraps Leaflet, making it easy to create reactive maps.
+		</td><td>
+			<a href="https://github.com/KoRiGaN">Mickaël KoRiGaN</a>
 		</td>
 	</tr>
 </table>
