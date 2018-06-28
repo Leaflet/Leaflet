@@ -208,8 +208,14 @@ export function testProp(props) {
 export function setTransform(el, offset, scale) {
 	var pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] =
-		(Browser.ie3d ?
+	el.style.willChange = scale !== 1 ? 'auto' : 'transform';
+	el.style[L.DomUtil.TRANSFORM] =
+		// Based on https://github.com/Leaflet/Leaflet/pull/5354:
+		// We don't want to use `translate3d` for webkit since it causes the
+		// white lines issue (tile's gaps) while panning or zooming:
+		// https://bugs.chromium.org/p/chromium/issues/detail?id=600120#c15
+		// This issue does not appear on mobile devices.
+		(!Browser.mobile && (Browser.ie3d || Browser.webkit3d) ?
 			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
 		(scale ? ' scale(' + scale + ')' : '');
