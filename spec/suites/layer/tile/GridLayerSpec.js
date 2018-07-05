@@ -849,6 +849,7 @@ describe('GridLayer', function () {
 			// animation happen concurrently, we have only a single
 			// "load" event that is fired by the end of the animation.
 			grid.once('load', function () {
+				console.log('first load z10 tiles');
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
 
@@ -871,6 +872,7 @@ describe('GridLayer', function () {
 					grid.once('load', function () {
 						expect(counts.tileloadstart).to.be(32);
 						expect(counts.tileload).to.be(32);
+						console.log('last load, unload z10 tiles');
 						expect(counts.tileunload).to.be(16);
 						done();
 					});
@@ -889,6 +891,7 @@ describe('GridLayer', function () {
 			map.addLayer(grid).setView([0, 0], 11);
 			// The first setView does not animated, therefore it starts loading tiles immediately.
 			// 16 tiles from z10 being loaded.
+			console.log('first setView, loading z10 tiles');
 			expect(counts.tileloadstart).to.be(16);
 		});
 
