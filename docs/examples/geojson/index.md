@@ -13,7 +13,7 @@ title: Using GeoJSON with Leaflet
 
 <p>According to <a href="https://tools.ietf.org/html/rfc7946">GeoJSON Specification (RFC 7946)</a>:</p>
 
-<blockquote>GeoJSON is a format for encoding a variety of geographic data structures […]. A GeoJSON object may represent a region of space (a Geometry), a spatially bounded entity (a Feature), or a list of Features (a FeatureCollection). GeoJSON supports the following geometry types: Point LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a Geometry object and additional properties, and a FeatureCollection contains a list of Features.</blockquote>
+<blockquote>GeoJSON is a format for encoding a variety of geographic data structures […]. A GeoJSON object may represent a region of space (a Geometry), a spatially bounded entity (a Feature), or a list of Features (a FeatureCollection). GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a Geometry object and additional properties, and a FeatureCollection contains a list of Features.</blockquote>
 
 <p>Leaflet supports all of the GeoJSON types above, but <a href="https://tools.ietf.org/html/rfc7946#section-3.2">Features</a> and <a href="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an example of a simple GeoJSON feature:</p>
 
