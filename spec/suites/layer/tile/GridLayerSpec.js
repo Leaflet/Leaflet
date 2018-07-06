@@ -679,60 +679,6 @@ describe('GridLayer', function () {
 			// At 1ms, first pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		// Similar to previous test but without using sinon.useFakeTimers, in order to avoid having to remain too close to how
-		// the tiles animation work internally, but remain at a more external level.
-		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11, not faking time", function (done) {
-
-			// Restore setTimeout normal behaviour.
-			clock.restore();
-
-			grid.once('load', function () {
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
-
-				// Wait for the end of the fade-in animation.
-				setTimeout(function () {
-					grid.once('load', function () {
-						expect(counts.tileload).to.be(32);
-
-						// We're one frame into the zoom animation,
-						// so GridLayer._setView with noPrune === undefined is not called yet
-						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.be(0);
-
-						// Wait 250msec for the fade-in animation to complete,
-						// which triggers the tile pruning.
-						// Unfortunately this is also the duration of the zoom in
-						// animation, which prevents pruning during it.
-						// Therefore we do not have any intermediate state where
-						// the 12 'outside' tiles from z10 are pruned,
-						// but we directly arrive at the end of both animations,
-						// when all 16 tiles from z11 are active and all 16 tiles
-						// from z10 can be pruned.
-						setTimeout(function () {
-							expect(counts.tileunload).to.be(16);
-							done();
-						}, 250);
-					});
-
-					map.setZoom(11, {animate: true});
-					// Animation (and new tiles loading) starts after 1 frame.
-					L.Util.requestAnimFrame(function () {
-						// 16 extra tiles from z11 being loaded. Total 16 + 16 = 32.
-						expect(counts.tileloadstart).to.be(32);
-					});
-				}, 250);
-			});
-
-			map.addLayer(grid).setView([0, 0], 10);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.be(16);
-			// First pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
-		});
-
 		it("Loads 32, unloads 16 tiles zooming in 10-18", function (done) {
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -817,62 +763,6 @@ describe('GridLayer', function () {
 								done();
 							});
 						});
-					});
-				});
-
-				map.setZoom(10, {animate: true});
-				// Animation (and new tiles loading) starts after 1 frame.
-				L.Util.requestAnimFrame(function () {
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z11 plus 4 tiles for z10 covering the
-					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.be(20);
-				});
-			});
-
-			map.addLayer(grid).setView([0, 0], 11);
-			// The first setView does not animated, therefore it starts loading tiles immediately.
-			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.be(16);
-		});
-
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		// Similar to previous test but without using sinon.useFakeTimers, in order to avoid having to remain too close to how
-		// the tiles animation work internally, but remain at a more external level.
-		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10, not faking time", function (done) {
-
-			// Restore setTimeout normal behaviour.
-			clock.restore();
-
-			// In this version, since the zoom-out and the tiles fade-in
-			// animation happen concurrently, we have only a single
-			// "load" event that is fired by the end of the animation.
-			grid.once('load', function () {
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
-
-				// At the beginning of the zoom-out animation, only 4 tiles
-				// of z10 start loading, and since in these tests they load
-				// in 1 frame, they are ready before the animation starts
-				// loading other tiles. Therefore they already fire a "load"
-				// event now.
-				grid.once('load', function () {
-					expect(counts.tileload).to.be(20);
-					expect(counts.tileloadstart).to.be(20);
-					expect(counts.tileunload).to.be(0);
-
-					// By the end of the animation, the rest of the z10 tiles
-					// are ready, hence they fire a new "load" event.
-					// When that happens, the 4 z10 central tiles have already
-					// completed their fade-in animation, hence are flagged as
-					// "active", and the 16 z11 tiles can be pruned all at once
-					// by the last _setView of the animation.
-					grid.once('load', function () {
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(32);
-						expect(counts.tileunload).to.be(16);
-						done();
 					});
 				});
 
