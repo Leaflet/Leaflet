@@ -579,6 +579,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/brendan-ward">Brendan Ward</a>
 		</td>
 	</tr>
+	<tr>
+        	<td>
+        		<a href="https://github.com/dayjournal/Leaflet.Control.Opacity">Leaflet.Control.Opacity</a>
+        	</td><td>
+			Make multiple tile layers transparent. (<a href="https://dayjournal.github.io/Leaflet.Control.Opacity">demo</a>)
+        	</td><td>
+        		<a href="https://day-journal.com">Yasunori Kirimoto</a>
+        	</td>
+    	</tr>
 </table>
 
 
