@@ -3558,6 +3558,15 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jjimenezshaw/Leaflet.Control.Resizer">Leaflet.Control.Resizer</a>
+		</td><td>
+			Control to resize your map on the right or bottom side. See <a href="https://jjimenezshaw.github.io/Leaflet.Control.Resizer/examples/basic.html">demo</a>
+		</td><td>
+			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
+		</td>
+	</tr>
 </table>
 
 
