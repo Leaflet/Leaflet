@@ -18,7 +18,7 @@ npm run-script build
 
 echo "Creating git tag v$VERSION..."
 
-git add dist/leaflet-src.js dist/leaflet.js dist/leaflet-src.js.map dist/leaflet.js.map -f
+git add dist/leaflet-src.js dist/leaflet.js dist/leaflet-src.esm.js dist/leaflet-src.js.map dist/leaflet.js.map dist/leaflet-src.esm.js.map -f
 
 git commit -m "v$VERSION"
 
