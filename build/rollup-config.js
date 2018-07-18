@@ -24,6 +24,15 @@ const banner = `/* @preserve
  */
 `;
 
+const outro = `var oldL = window.L;
+exports.noConflict = function() {
+	window.L = oldL;
+	return this;
+}
+
+// Always export us to window global (see #2364)
+window.L = exports;`;
+
 export default {
 	input: 'src/Leaflet.js',
 	output: [
@@ -32,8 +41,8 @@ export default {
 			format: 'umd',
 			name: 'L',
 			banner: banner,
-			sourcemap: true,
-      exports: 'named'
+			outro: outro,
+			sourcemap: true
 		},
 		{
 			file: pkg.module,

@@ -1,5 +1,14 @@
 var json = require('rollup-plugin-json');
 
+const outro = `var oldL = window.L;
+exports.noConflict = function() {
+	window.L = oldL;
+	return this;
+}
+
+// Always export us to window global (see #2364)
+window.L = exports;`;
+
 // Karma configuration
 module.exports = function (config) {
 
@@ -57,6 +66,7 @@ module.exports = function (config) {
 			],
 			format: 'umd',
 			name: 'L',
+			outro: outro
 		},
 
 		// test results reporter to use

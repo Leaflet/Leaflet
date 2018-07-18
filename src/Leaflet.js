@@ -1,17 +1,27 @@
-import * as exports from './index';
 
-export * from './index';
+import {version} from '../package.json';
+export {version};
 
-var oldL = window.L;
-export function noConflict() {
-  window.L = oldL;
-  return this;
-}
+// control
+export * from './control/index';
 
-// Always export us to window global (see #2364)
-window.L = exports;
+// core
+export * from './core/index';
+
+// dom
+export * from './dom/index';
+
+// geometry
+export * from './geometry/index';
+
+// geo
+export * from './geo/index';
+
+// layer
+export * from './layer/index';
+
+// map
+export * from './map/index';
 
 import {freeze} from './core/Util';
 Object.freeze = freeze;
-
-export default exports;
