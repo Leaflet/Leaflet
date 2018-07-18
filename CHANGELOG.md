@@ -3,6 +3,12 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.3.3 (2018-07-18)
+
+### Bug fixes
+
+* Remove `module` field from `package.json` ([#6239](https://github.com/Leaflet/Leaflet/issues/6239))
+
 ## 1.3.2 (2018-07-17)
 
 ### Improvements
