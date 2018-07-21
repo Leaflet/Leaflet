@@ -136,9 +136,10 @@ export var Icon = Class.extend({
 		}
 	},
 
-	_createImg: function (src, el) {
+	_createImg: function (src, el, alt) {
 		el = el || document.createElement('img');
 		el.src = src;
+		el.alt = alt || '';
 		return el;
 	},
 

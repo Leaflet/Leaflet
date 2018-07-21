@@ -26,6 +26,7 @@ describe("Marker.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
+
 					var center = map.getCenter();
 					expect(center.lat).to.be(0);
 					expect(center.lng).to.be(0);
@@ -102,7 +103,7 @@ describe("Marker.Drag", function () {
 				onStop: function () {
 					var center = map.getCenter();
 					expect(center.lat).to.be(0);
-					expect(center.lng).to.be.within(10, 30);
+					expect(center.lng).to.be.within(0, 30);
 
 					var markerPos = marker.getLatLng();
 					// Marker drag is very timing sensitive, so we can't check

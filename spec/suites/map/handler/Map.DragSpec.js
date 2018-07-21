@@ -248,7 +248,7 @@ describe("Map.Drag", function () {
 				onStop: function () {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
-					happen.click(marker._icon);
+					happen.click(marker._button);
 					expect(markerDragSpy.called).to.be(true);
 					expect(mapDragSpy.called).to.be(false);
 					expect(clickSpy.called).to.be(false);

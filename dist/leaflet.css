@@ -247,6 +247,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	pointer-events: auto;
 	}
 
+.leaflet-marker-button {
+	padding: 0;
+	border: 0;
+	}
+
 /* visual tweaks */
 
 .leaflet-container {
@@ -277,9 +282,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 	border-radius: 4px;
 	}
-.leaflet-bar a,
-.leaflet-bar a:hover {
+.leaflet-bar button,
+.leaflet-bar button:hover {
 	background-color: #fff;
+	border: none;
 	border-bottom: 1px solid #ccc;
 	width: 26px;
 	height: 26px;
@@ -289,40 +295,40 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	text-decoration: none;
 	color: black;
 	}
-.leaflet-bar a,
+.leaflet-bar button,
 .leaflet-control-layers-toggle {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
 	}
-.leaflet-bar a:hover {
+.leaflet-bar button:hover {
 	background-color: #f4f4f4;
 	}
-.leaflet-bar a:first-child {
+.leaflet-bar button:first-child {
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	}
-.leaflet-bar a:last-child {
+.leaflet-bar button:last-child {
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom: none;
 	}
-.leaflet-bar a.leaflet-disabled {
+.leaflet-bar button.leaflet-disabled {
 	cursor: default;
 	background-color: #f4f4f4;
 	color: #bbb;
 	}
 
-.leaflet-touch .leaflet-bar a {
+.leaflet-touch .leaflet-bar button {
 	width: 30px;
 	height: 30px;
 	line-height: 30px;
 	}
-.leaflet-touch .leaflet-bar a:first-child {
+.leaflet-touch .leaflet-bar button:first-child {
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 	}
-.leaflet-touch .leaflet-bar a:last-child {
+.leaflet-touch .leaflet-bar button:last-child {
 	border-bottom-left-radius: 2px;
 	border-bottom-right-radius: 2px;
 	}
@@ -396,7 +402,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-default-icon-path {
 	background-image: url(images/marker-icon.png);
 	}
-
 
 /* attribution and scale controls */
 
@@ -507,7 +512,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	color: #333;
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 	}
-.leaflet-container a.leaflet-popup-close-button {
+.leaflet-container button.leaflet-popup-close-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -522,7 +527,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font-weight: bold;
 	background: transparent;
 	}
-.leaflet-container a.leaflet-popup-close-button:hover {
+.leaflet-container button.leaflet-popup-close-button:hover {
 	color: #999;
 	}
 .leaflet-popup-scrolled {

@@ -159,7 +159,7 @@ describe("Marker", function () {
 			} else {
 				expect(marker._icon.src).to.contain('marker-icon.png');
 			}
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode.parentNode).to.be(map._panes.markerPane);
 		});
 
 		it("changes an image to a DivIcon", function () {
@@ -173,7 +173,7 @@ describe("Marker", function () {
 			expect(oldIcon.parentNode).to.be(null);
 
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode.parentNode).to.be(map._panes.markerPane);
 		});
 
 		it("reuses the icon/shadow when changing icon", function () {
@@ -187,7 +187,7 @@ describe("Marker", function () {
 			expect(oldIcon).to.be(marker._icon);
 			expect(oldShadow).to.be(marker._shadow);
 
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode.parentNode).to.be(map._panes.markerPane);
 			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
 		});
 
@@ -196,7 +196,7 @@ describe("Marker", function () {
 			map.addLayer(marker);
 			var icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(true);
-			expect(icon.alt).to.be('');
+			expect(icon.alt).to.be('Location');
 		});
 
 		it("doesn't set the alt attribute for DivIcons", function () {
