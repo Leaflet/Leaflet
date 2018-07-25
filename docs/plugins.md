@@ -203,6 +203,14 @@ Ready-to-go basemaps, with little or no configuration at all.
 		</td>
 	</tr>
 	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.MapkitMutant">L.MapkitMutant</a>
+		</td><td>
+			Displays Apple's MapkitJS basemaps.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>	</tr>
+	<tr>
         <td>
         	<a href="https://supermap.github.io/supermap-leaflet">SuperMap Leaflet</a>
         </td><td>
