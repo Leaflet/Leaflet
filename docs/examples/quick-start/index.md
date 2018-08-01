@@ -63,6 +63,8 @@ Make sure all the code is called after the `div` and `leaflet.js` inclusion. Tha
 
 It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. You can try replacing `mapbox.streets` with `mapbox.satellite`, and see what happens. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd suggest Mapbox though, it looks beautiful).
 
+Whenever using anything based on OpenStreetMap, an *attribution* is obligatory as per the [copyright notice](https://www.openstreetmap.org/copyright). Most other tile providers (such as [MapBox](https://www.mapbox.com/help/how-attribution-works/), [Stamen](http://maps.stamen.com/) or [Thunderforest](https://www.thunderforest.com/terms/)) require an attribution as well. Make sure to give credit where credit is due.
+
 
 ### Markers, circles and polygons
 
