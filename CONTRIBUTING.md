@@ -165,10 +165,11 @@ If you need to make edits in a local repository to see how it looks in the proce
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
  2. Run `gem install jekyll`.
  3. Enter the directory where you cloned the Leaflet repository
- 4. Make sure you are in the `master` branch by running `git checkout master`
- 5. Enter the documentation subdirectory by running `cd docs`
- 6. Run `jekyll serve --watch`.
- 7. Open `localhost:4000` in your web browser.
+ 4. Run `bundle install`
+ 5. Make sure you are in the `master` branch by running `git checkout master`
+ 6. Enter the documentation subdirectory by running `cd docs`
+ 7. Run `jekyll serve --watch`.
+ 8. Open `localhost:4000` in your web browser.
 
 Now any file changes will be updated when you reload pages automatically.
 After committing the changes, just send a pull request.
