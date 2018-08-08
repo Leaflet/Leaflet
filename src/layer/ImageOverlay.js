@@ -53,7 +53,7 @@ export var ImageOverlay = Layer.extend({
 
 		// @option className: String = ''
 		// A custom class name to assign to the image. Empty by default.
-		className: '',
+		className: ''
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)

@@ -75,7 +75,7 @@ export var Icon = Class.extend({
 
 	options: {
 		popupAnchor: [0, 0],
-		tooltipAnchor: [0, 0],
+		tooltipAnchor: [0, 0]
 	},
 
 	initialize: function (options) {
