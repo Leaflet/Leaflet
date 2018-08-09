@@ -210,6 +210,7 @@
 .leaflet-grab {
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
+	cursor:         grab;
 	}
 .leaflet-crosshair,
 .leaflet-crosshair .leaflet-interactive {
