@@ -188,7 +188,7 @@ export var Canvas = Renderer.extend({
 
 	_updateDashArray: function (layer) {
 		if (typeof layer.options.dashArray === 'string') {
-			var parts = layer.options.dashArray.split(','),
+			var parts = layer.options.dashArray.split(/[, ]+/),
 			    dashArray = [],
 			    i;
 			for (i = 0; i < parts.length; i++) {
