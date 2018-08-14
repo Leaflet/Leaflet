@@ -1643,6 +1643,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://webkid.io">webkid</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.RepeatedMarkers">Leaflet.RepeatedMarkers</a>
+		</td>
+		<td>
+			Displays markers when wrapping around the globe, once every 360 degrees of longitude (<a href="https://ivansanchez.gitlab.io/Leaflet.RepeatedMarkers/demo.html">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>
+	</tr>
 </table>
 
 
