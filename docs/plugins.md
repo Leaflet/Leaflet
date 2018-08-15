@@ -555,7 +555,7 @@ The following plugins change the way that tile or image layers are displayed in 
 		<td>
 			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.GL">Leaflet.TileLayer.GL</a>
 		</td><td>
-			Applies custom WebGL shaders to each tile in a tilelayer. Demos: <a href="http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-mandelbrot.html">Mandelbrot set</a>, <a href="http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-antitoner.html">manipulate tile colours</a>, <a href="http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-floow.html">elevation with terrain-RBG tiles</a>.
+			Applies custom WebGL shaders to each tile in a tilelayer (<a href="https://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/repl.html">demo</a>).
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
