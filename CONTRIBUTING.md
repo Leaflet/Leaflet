@@ -19,7 +19,6 @@ You can help the project tremendously by discovering and [reporting bugs](#repor
 helping others on [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet),
 [GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
 and [GitHub issues](https://github.com/Leaflet/Leaflet/issues);
-showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com);
 tweeting to [@LeafletJS](http://twitter.com/LeafletJS);
 and spreading the word about Leaflet among your colleagues and friends.
 
@@ -55,8 +54,7 @@ So bugfixes, performance optimizations and small improvements that don't add a l
 are much more likely to get accepted quickly.
 
 Before sending a pull request with a new feature, check if it's been discussed before already
-(either on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
-or [Leaflet UserVoice](http://leaflet.uservoice.com/)),
+on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
 and ask yourself two questions:
 
  1. Are you sure that this new feature is important enough to justify its presence in the Leaflet core?
