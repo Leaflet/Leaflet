@@ -18,7 +18,7 @@ import * as Browser from '../core/Browser';
 // @property TRANSFORM: String
 // Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
 export var TRANSFORM = testProp(
-	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+	['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
 // webkitTransition comes first because some browser versions that drop vendor prefix don't do
 // the same for the transitionend event, in particular the Android 4.1 stock browser
