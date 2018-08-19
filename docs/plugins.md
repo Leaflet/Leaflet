@@ -1042,7 +1042,7 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="http://geojason.info/leaflet-vector-layers/">Leaflet Vector Layers</a>
+			<a href="http://jasonsanford.github.io/leaflet-vector-layers/">Leaflet Vector Layers</a>
 		</td><td>
 			Allows to easily create vector layers from a number of geo web services, such as ArcGIS Server, Arc2Earth, GeoIQ, CartoDB and GIS Cloud.
 		</td><td>
