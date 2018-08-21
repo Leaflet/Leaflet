@@ -215,6 +215,15 @@ export var Marker = Layer.extend({
 			icon.tabIndex = '0';
 		}
 
+		if (options.markerAttributes) {
+			// Add custom HTML attributes for Marker icon.
+			for (var item in options.markerAttributes) {
+				var attr = document.createAttribute(item);
+				attr.value = options.markerAttributes[item];
+				icon.setAttributeNode(attr);
+			}
+		}
+
 		this._icon = icon;
 
 		if (options.riseOnHover) {
