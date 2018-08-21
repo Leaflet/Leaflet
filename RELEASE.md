@@ -27,3 +27,4 @@ Documentation for the release process of Leaflet.
 14. Update the announcement section in `docs/index.html` and commit to the release branch
 15. If it looks like everything is good at this point, merge the release branch into `master`
 16. Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
+17. Post an announcement comment in [thread #6295](https://github.com/Leaflet/Leaflet/issues/6295)
