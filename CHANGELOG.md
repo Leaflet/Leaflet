@@ -3,6 +3,30 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.3.4 (2018-08-21)
+
+### Improvements
+
+* Reset max-width and max-height styles for tiles in custom panes ([#6255](https://github.com/Leaflet/Leaflet/issues/6255) by [jerekshoe](https://github.com/jerekshoe))
+* Add unprefixed `cursor: grab` style ([#6281](https://github.com/Leaflet/Leaflet/issues/6281) by [Malvoz](https://github.com/Malvoz))
+* Remove legacy prefixed styles, add unprefixed styles ([#6282](https://github.com/Leaflet/Leaflet/issues/6282) by [Malvoz](https://github.com/Malvoz))
+
+### Bug fixes
+
+* Move set/getAttribute('src') calls from `GridLayer` into `TileLayer` ([#6264](https://github.com/Leaflet/Leaflet/issues/6264) by [IvanSanchez](https://github.com/IvanSanchez))
+* Support comma- or space-separated strings in `Canvas` `dashArray` option ([#6277](https://github.com/Leaflet/Leaflet/issues/6277) by [IvanSanchez](https://github.com/IvanSanchez))
+* Remove trailing commas to avoid crashes in some IE browsers ([#6279](https://github.com/Leaflet/Leaflet/issues/6279) by [helbling](https://github.com/helbling))
+* Fixed capitalization of `webkitTransform` property, which broke transformations on certain Webkit browsers ([#6290](https://github.com/Leaflet/Leaflet/issues/6290) by [tuckergordon](https://github.com/tuckergordon))
+
+### Docs & Web Site
+
+* Document `zoomControl` map option ([#6254](https://github.com/Leaflet/Leaflet/issues/6254) by [IvanSanchez](https://github.com/IvanSanchez))
+* Explicitly note attribution obligation ([#6261](https://github.com/Leaflet/Leaflet/issues/6261) by [pietervdvn](https://github.com/pietervdvn))
+* Minor fixes of `ImageOverlay` docs ([#6266](https://github.com/Leaflet/Leaflet/issues/6266) by [jgravois](https://github.com/jgravois))
+* Add Edge to the list of supported browsers ([#6270](https://github.com/Leaflet/Leaflet/issues/6270) by [matkoniecz](https://github.com/matkoniecz))
+* Remove references to Leaflet UserVoice page ([#6291](https://github.com/Leaflet/Leaflet/issues/6291) by [zstadler](https://github.com/zstadler))
+* Reword docstrings for draggable markers ([#6296](https://github.com/Leaflet/Leaflet/issues/6296) by [IvanSanchez](https://github.com/IvanSanchez))
+
 ## 1.3.3 (2018-07-18)
 
 ### Bug fixes
