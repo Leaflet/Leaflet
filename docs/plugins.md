@@ -3557,13 +3557,13 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/route360/Leaflet.CondensedAttribution">Leaflet.CondensedAttribution</a>
+			<a href="https://github.com/targomo/Leaflet.CondensedAttribution">Leaflet.CondensedAttribution</a>
 		</td>
 		<td>
 			An attribution plugin that makes long attributes visible on hover
 		</td>
 		<td>
-			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
+			<a href="http://www.targomo.com/">Targomo GmbH</a>
 		</td>
 	</tr>
 	<tr>
@@ -3841,11 +3841,11 @@ The following plugins use external services to calculate driving or walking rout
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/route360/r360-js">Route360°</a>
+			<a href="https://github.com/route360/r360-js">Targomo JS</a>
 		</td><td>
-			Route360° visualizes the area which is reachable from a set of starting points in a given time and gives detailed routing information (walk, bike, car and <b>public transportation</b>) to targets.
+			Targomo visualizes the area which is reachable from a set of starting points in a given time and gives detailed routing information (walk, bike, car and <b>public transportation</b>) to targets.
 		</td><td>
-			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
+			<a href="http://www.targomo.com/">Targomo GmbH</a>
 		</td>
 	</tr>
 
