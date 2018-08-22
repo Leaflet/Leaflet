@@ -64,7 +64,9 @@ export var Tooltip = DivOverlay.extend({
 
 		// @option opacity: Number = 0.9
 		// Tooltip container opacity.
-		opacity: 0.9
+		opacity: 0.9,
+		clear :false,
+		level:7
 	},
 
 	onAdd: function (map) {
@@ -121,12 +123,18 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_initLayout: function () {
-		var prefix = 'leaflet-tooltip',
-		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
-
+		var prefix = this.options.clear ? 'leaflet-tooltip-clear' : 'leaflet-tooltip',
+		className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 		this._contentNode = this._container = DomUtil.create('div', className);
 	},
-
+	_hideTooltip : function () {
+		var container = this._container;
+		DomUtil.addClass(container, 'leaflet-tooltip-hide');
+	},
+	_showTooltip : function () {
+		var container = this._container;
+		DomUtil.removeClass(container, 'leaflet-tooltip-hide');
+	},
 	_updateLayout: function () {},
 
 	_adjustPan: function () {},
@@ -179,6 +187,11 @@ export var Tooltip = DivOverlay.extend({
 
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		if (e.zoom <= this.options.level) {
+			this._hideTooltip();
+		} else {
+			this._showTooltip();
+		}
 		this._setPosition(pos);
 	},
 
