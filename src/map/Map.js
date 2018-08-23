@@ -1649,6 +1649,9 @@ export var Map = Evented.extend({
 
 		this._move(this._animateToCenter, this._animateToZoom);
 
+		this._animateToCenter = null;
+		this._animateToZoom = null;
+
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
 		Util.requestAnimFrame(function () {
 			this._moveEnd(true);
