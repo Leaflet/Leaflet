@@ -251,7 +251,9 @@ export var Marker = Layer.extend({
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			// If the Marker is being added to a pane other than the default 'markerPane', the shadow should go there, too.
+			var shadowPane = options.pane === 'markerPane' ? 'shadowPane' : options.pane;
+			this.getPane(shadowPane).appendChild(this._shadow);
 		}
 	},
 
