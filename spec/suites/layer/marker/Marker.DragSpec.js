@@ -119,5 +119,36 @@ describe("Marker.Drag", function () {
 			toucher.wait(100).moveTo(300, 280, 0)
 				.down().moveBy(5, 0, 20).moveBy(290, 32, 1000).wait(100).up().wait(100);
 		});
+
+		it("should not exceeds maxBounds if set and autoPan is enabled", function (done) {
+			var marker = new L.Marker([0, 0], {
+				draggable: true,
+				autoPan: true
+			});
+			map.setMaxBounds(map.getBounds());
+			map.addLayer(marker);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					var center = map.getCenter();
+					expect(center.lat).to.be(0);
+					expect(center.lng).to.be(0);
+
+					var markerPos = marker.getLatLng();
+					// Marker drag is very timing sensitive, so we can't check
+					// exact values here, just verify that the drag is in the
+					// right ballpark
+					expect(markerPos.lat).to.be.within(-50, -30);
+					expect(markerPos.lng).to.be.within(400, 450);
+
+					done();
+				}
+			});
+			var toucher = hand.growFinger('mouse');
+
+			toucher.wait(100).moveTo(300, 280, 0)
+				.down().moveBy(5, 0, 20).moveBy(290, 32, 1000).wait(100).up().wait(100);
+		});
 	});
 });
