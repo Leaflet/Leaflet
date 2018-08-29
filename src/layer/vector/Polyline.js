@@ -172,6 +172,21 @@ export var Polyline = Path.extend({
 		return this.redraw();
 	},
 
+	// @method setLastLatLng(latlng: LatLng, latlngs? LatLng[]): this
+	// Modifies the last point of the polyline to be the specified point.
+	// By default, adds to the first ring of the polyline in case of a
+	// multi-polyline, but can be overridden by passing a specific ring as a
+	// LatLng array (that you can earlier access with
+	// [`getLatLngs`](#polyline-getlatlngs)).
+	setLastLatLng: function (latlng, latlngs) {
+		latlngs = latlngs || this._defaultShape();
+		latlng = toLatLng(latlng);
+		latlngs.pop();
+		latlngs.push(latlng);
+		this._bounds.extend(latlng);
+		return this.redraw();
+	},
+
 	_setLatLngs: function (latlngs) {
 		this._bounds = new LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
