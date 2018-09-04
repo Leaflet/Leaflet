@@ -1412,11 +1412,12 @@ These plugins provide new markers or news ways of converting abstract data into 
                 </td>
         </tr>
 	<tr>
+	<tr>
 		<td>
-			<a href="https://github.com/wwwouaiebe/leaflet.marker.pin">leaflet.marker.pin</a>
+			<a href="https://github.com/wwwouaiebe/leaflet.TravelNotes">leaflet.TravelNotes</a>
 		</td>
 		<td>
-			Pins are markers that can be added and edited on the map by the end user. <a href="http://wwwouaiebe.github.io/leaflet.marker.pin/">Demo</a>.
+			Editable markers and routing engine for leaflet. The routing engine have plugins for Mapbox, GraphHopper and OSRM and can be used for car, bike or pedestrian route. <a href="https://wwwouaiebe.github.io/leaflet.TravelNotes/?lng=en">Demo</a>.
 		</td>
 		<td>
 			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
@@ -3880,6 +3881,17 @@ The following plugins use external services to calculate driving or walking rout
     		<a href="http://skedgo.com/">SkedGo</a>
     	</td>
     </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wwwouaiebe/leaflet.TravelNotes">leaflet.TravelNotes</a>
+		</td>
+		<td>
+			Editable markers and routing engine for leaflet. The routing engine have plugins for Mapbox, GraphHopper and OSRM and can be used for car, bike or pedestrian route. <a href="https://wwwouaiebe.github.io/leaflet.TravelNotes/?lng=en">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
+		</td>
+	</tr>
 </table>
 
 
