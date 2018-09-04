@@ -90,8 +90,6 @@ export var Canvas = Renderer.extend({
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		this._drawnLayers = {};
-
 		Renderer.prototype._update.call(this);
 
 		var b = this._bounds,
@@ -160,8 +158,6 @@ export var Canvas = Renderer.extend({
 		} else {
 			this._drawFirst = next;
 		}
-
-		delete this._drawnLayers[layer._leaflet_id];
 
 		delete layer._order;
 
@@ -274,8 +270,6 @@ export var Canvas = Renderer.extend({
 
 		if (!len) { return; }
 
-		this._drawnLayers[layer._leaflet_id] = layer;
-
 		ctx.beginPath();
 
 		for (i = 0; i < len; i++) {
@@ -301,8 +295,6 @@ export var Canvas = Renderer.extend({
 		    ctx = this._ctx,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
-
-		this._drawnLayers[layer._leaflet_id] = layer;
 
 		if (s !== 1) {
 			ctx.save();
