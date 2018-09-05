@@ -214,9 +214,10 @@ function timeoutDefer(fn) {
 	return window.setTimeout(fn, timeToCall);
 }
 
-export var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
+function noop() {}
+export var requestFn = window ? (window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer) : noop;
+export var cancelFn = window ? (window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); }) : noop;
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to
