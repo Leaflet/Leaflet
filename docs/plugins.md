@@ -741,6 +741,15 @@ Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector t
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/jkuebart/Leaflet.VectorTileLayer/">Leaflet.VectorTileLayer</a>
+		</td><td>
+			A Leaflet layer for displaying vector tiles. Very similar to <a href="https://github.com/IvanSanchez/Leaflet.VectorGrid">Leaflet.VectorGrid</a> except for styling: a single style can be specified for all layers while VectorGrid requires knowing layer names in advance. For Leaflet 1.0.0.
+		</td><td>
+			<a href="https://gitlab.com/jkuebart/">Joachim Kuebart</a>
+		</td>
+	</tr>
 </table>
 
 
