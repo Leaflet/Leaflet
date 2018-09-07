@@ -702,7 +702,7 @@ The following plugins change the way that tile layers are loaded into the map.
 
 ### Vector tiles
 
-Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector tiles</a>.
+Plugins to display [vector tiles](https://github.com/mapbox/vector-tile-spec).
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1420,7 +1420,6 @@ These plugins provide new markers or news ways of converting abstract data into 
                         <a href="https://github.com/powerpan">Johannes Rudolph</a>
                 </td>
         </tr>
-	<tr>
 	<tr>
 		<td>
 			<a href="https://github.com/wwwouaiebe/leaflet.TravelNotes">leaflet.TravelNotes</a>
