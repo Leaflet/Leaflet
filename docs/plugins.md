@@ -524,6 +524,15 @@ The following plugins change the way that tile or image layers are displayed in 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/xtk93x/Leaflet.TileLayer.ColorFilter">Leaflet.TileLayer.ColorFilter</a>
+		</td><td>
+			A simple and lightweight Leaflet plugin to apply CSS filters on map tiles (<a href="https://xtk93x.github.io/Leaflet.TileLayer.ColorFilter/">demo</a>).
+		</td><td>
+			<a href="https://github.com/xtk93x">Cláudio Kawakani</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/frogcat/leaflet-tilelayer-mask">Leaflet.TileLayer.Mask</a>
 		</td><td>
 			A TileLayer with mask effect (<a href="http://frogcat.github.io/leaflet-tilelayer-mask/default/">demo</a>)
