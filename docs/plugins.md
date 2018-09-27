@@ -1005,6 +1005,15 @@ These plugins create useful overlays from scratch, no loading required.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/bill-chadwick/Leaflet.MetricGrid">L.MetricGrid</a>
+		</td><td>
+			A general purpose Metric Grid overlay for Leaflet with ready defined British and Irish Grids.
+		</td><td>
+			<a href="https://github.com/bill-chadwick">Bill Chadwick</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/joergdietrich/Leaflet.Terminator">Leaflet.Terminator</a>
 		</td><td>Overlay day and night regions on a map.
 		</td><td>
