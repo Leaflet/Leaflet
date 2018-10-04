@@ -21,6 +21,7 @@ This file just defines the order of the classes in the docs.
 @class Circle
 @class CircleMarker
 @class SVG
+@class SvgOverlay
 @class Canvas
 
 @class LayerGroup

@@ -13,6 +13,7 @@ export {GeoJSON, geoJSON, geoJson};
 
 export {ImageOverlay, imageOverlay} from './ImageOverlay';
 export {VideoOverlay, videoOverlay} from './VideoOverlay';
+export {SvgOverlay, svgOverlay} from './SvgOverlay';
 
 export {DivOverlay} from './DivOverlay';
 export {Popup, popup} from './Popup';
