@@ -392,6 +392,12 @@ h3.tagline {
 	background-size: 106px;
 }
 
+.logo-openstreetmap {
+	background-position: 50% -796px;
+	width: 160px;
+	height: 56px;
+}
+
 .features {
 	-webkit-column-count: 3;
 	-moz-column-count: 3;
