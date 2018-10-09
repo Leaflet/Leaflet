@@ -30,6 +30,8 @@ bodyclass: download-page
 Note that the master version can contain incompatible changes,
 so please read the changelog carefully when upgrading to it.
 
+[Get notified of new Leaflet releases](https://github.com/Leaflet/Leaflet/issues/6295)
+
 ### Using a Hosted Version of Leaflet
 
 The latest stable Leaflet release is available on several CDN's &mdash; to start using
