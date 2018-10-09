@@ -735,6 +735,7 @@ describe("Map", function () {
 			// Now notifying the map that the container size has changed,
 			// it should return new values and correctly position coordinates
 			map.invalidateSize();
+			
 			expect(map.getSize().x).to.equal(600);
 			expect(map.latLngToContainerPoint(center).x).to.equal(300);
 		});
