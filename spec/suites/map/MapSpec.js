@@ -710,6 +710,34 @@ describe("Map", function () {
 
 			expect(spy.called).to.be.ok();
 		});
+
+		it("correctly adjusts for new container size when view is set during map initialization (#6165)", function () {
+			// Use a newly initialized map
+			map.remove();
+
+			var center = [0, 0];
+
+			// The edge case is only if view is set directly during map initialization
+			map = L.map(container, {
+				center: center,
+				zoom: 0
+			});
+
+			// Change the container size
+			container.style.width = '600px';
+
+			// The map should not be aware yet of container size change,
+			// otherwise the next invalidateSize will not be able to
+			// compute the size difference
+			expect(map.getSize().x).to.equal(100);
+			expect(map.latLngToContainerPoint(center).x).to.equal(50);
+
+			// Now notifying the map that the container size has changed,
+			// it should return new values and correctly position coordinates
+			map.invalidateSize();
+			expect(map.getSize().x).to.equal(600);
+			expect(map.latLngToContainerPoint(center).x).to.equal(300);
+		});
 	});
 
 	describe('#flyTo', function () {
