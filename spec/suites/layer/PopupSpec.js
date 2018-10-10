@@ -295,9 +295,9 @@ describe('Popup', function () {
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
 
-	describe("autoPan option should pan into visibility", function () {
+	describe("autoPan option should pan popup into visibility", function () {
 
-		// Helper function which calcultes the offset of the map-container & popup-container in pixel
+		// Helper function which calculates the offset of the map-container & popup-container in pixel
 		function getPopupOffset(map, popup) {
 			var mapOffset = map._container.getBoundingClientRect().top;
 			var popupOffset = popup._container.getBoundingClientRect().top;
