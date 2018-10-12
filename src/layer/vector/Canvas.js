@@ -312,6 +312,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_fillStroke: function (ctx, layer) {
+    ctx.save();
 		var options = layer.options;
 
 		if (options.fill) {
@@ -331,6 +332,7 @@ export var Canvas = Renderer.extend({
 			ctx.lineJoin = options.lineJoin;
 			ctx.stroke();
 		}
+    ctx.restore();
 	},
 
 	// Canvas obviously doesn't have mouse events for individual drawn objects,
