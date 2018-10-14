@@ -26,8 +26,9 @@ script:
   - xvfb-run --server-args="-screen 0 1280x1024x16" npm run test-nolint -- --browsers Firefox
 after_success:
   - npm run build
-  - npm run test-server-import
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
   - NAME=$TRAVIS_BRANCH
   - '[[ $TRAVIS_PULL_REQUEST != ''false'' ]] && NAME=$TRAVIS_PULL_REQUEST'
   - '[[ -n $TRAVIS_TAG ]] && NAME=$TRAVIS_TAG'
+before_deploy:
+- npm run test-server-import
