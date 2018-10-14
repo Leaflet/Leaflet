@@ -41,6 +41,13 @@ export default {
 			format: 'umd',
 			name: 'L',
 			banner: banner,
+			// Do not execute any Leaflet code in server environment.
+			// See https://github.com/Leaflet/Leaflet/issues/6331
+			intro: `
+if (typeof window === 'undefined') {
+  return;
+}
+`,
 			outro: outro,
 			sourcemap: true
 		},
