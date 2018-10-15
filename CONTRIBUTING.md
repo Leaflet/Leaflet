@@ -130,8 +130,10 @@ npm test
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-npm test -- --browsers Firefox,Chrome,Safari,IE
+npm test -- -- --browsers Firefox,Chrome,Safari,IE
 ```
+
+(Note: the doubling of "`--`" [special option](https://docs.npmjs.com/cli/run-script#description) is [important](https://github.com/Leaflet/Leaflet/pull/6166#issuecomment-390959903))
 
 To run the tests in a browser manually, open `spec/index.html`.
 
