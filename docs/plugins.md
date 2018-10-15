@@ -1007,7 +1007,7 @@ These plugins create useful overlays from scratch, no loading required.
 		<td>
 			<a href="https://github.com/bill-chadwick/Leaflet.MetricGrid">Leaflet.MetricGrid</a>
 		</td><td>
-			A general purpose Metric Grid overlay for Leaflet with ready defined UTM, British and Irish Grids.
+			A general purpose Metric Grid overlay for Leaflet with ready defined UTM, British and Irish Grids. Demos: <a href="http://htmlpreview.github.com/?https://github.com/bill-chadwick/Leaflet.MetricGrid/blob/master/example.html">British & Irish</a> , <a href="http://htmlpreview.github.com/?https://github.com/bill-chadwick/Leaflet.MetricGrid/blob/master/swiss_example.html"> Swiss</a> , <a href="http://htmlpreview.github.com/?https://github.com/bill-chadwick/Leaflet.MetricGrid/blob/master/utm_example.html">UTM</a> . 
 		</td><td>
 			<a href="https://github.com/bill-chadwick">Bill Chadwick</a>
 		</td>
