@@ -2320,6 +2320,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/iosphere">iosphere</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/linghuam/Leaflet.TrackPlayBack">leaflet.TrackPlayBack</a>
+		</td>
+		<td>
+			A leaflet track-playback plugin, can display and dynamically play tracks. <a href="https://linghuam.github.io/Leaflet.TrackPlayBack/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/linghuam">linghuam</a>
+		</td>
+	</tr>
 </table>
 
 
