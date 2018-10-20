@@ -1631,6 +1631,9 @@ export var Map = Evented.extend({
 			this._animateToZoom = zoom;
 
 			if (duration) {
+				if (typeof (duration) === 'number') {
+					duration = duration + 's';
+				}
 				this._zoomStyle = document.createElement('style');
 				this._zoomStyle.innerHTML = '.leaflet-zoom-anim .leaflet-zoom-animated {' +
 					'-webkit-transition: -webkit-transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
@@ -1650,7 +1653,8 @@ export var Map = Evented.extend({
 			zoom: zoom,
 			noUpdate: noUpdate
 		});
-		var zoomLimit = duration ? duration.match(/([\\.0-9]+)s$/)[1] * 1000 : 250;
+
+		var zoomLimit = duration ? duration.match(/([\\.0-9]+)s?$/)[1] * 1000 : 250;
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
 		setTimeout(Util.bind(this._onZoomTransitionEnd, this), zoomLimit);
 	},
