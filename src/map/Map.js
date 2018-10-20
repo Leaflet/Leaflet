@@ -181,6 +181,11 @@ export var Map = Evented.extend({
 		center = this._limitCenter(toLatLng(center), zoom, this.options.maxBounds);
 		options = options || {};
 
+		if (options.zoom && options.zoom.animate && options.zoom.duration) {
+			options.animate = options.zoom.animate;
+			options.duration = options.zoom.duration;
+		}
+
 		this._stop();
 
 		if (this._loaded && !options.reset && options !== true) {
@@ -192,7 +197,7 @@ export var Map = Evented.extend({
 
 			// try animating pan or zoom
 			var moved = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
+				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom, options.duration) :
 				this._tryAnimatedPan(center, options.pan);
 
 			if (moved) {
@@ -1609,13 +1614,13 @@ export var Map = Evented.extend({
 		Util.requestAnimFrame(function () {
 			this
 			    ._moveStart(true, false)
-			    ._animateZoom(center, zoom, true);
+			    ._animateZoom(center, zoom, true, false, options.duration);
 		}, this);
 
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, startAnim, noUpdate) {
+	_animateZoom: function (center, zoom, startAnim, noUpdate, duration) {
 		if (!this._mapPane) { return; }
 
 		if (startAnim) {
@@ -1625,7 +1630,17 @@ export var Map = Evented.extend({
 			this._animateToCenter = center;
 			this._animateToZoom = zoom;
 
+			if (duration) {
+				this._zoomStyle = document.createElement('style');
+				this._zoomStyle.innerHTML = '.leaflet-zoom-anim .leaflet-zoom-animated {' +
+					'-webkit-transition: -webkit-transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
+					'-moz-transition:    -moz-transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
+					'transition:         transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
+					'}';
+				this._panes.mapPane.appendChild(this._zoomStyle);
+			}
 			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+
 		}
 
 		// @event zoomanim: ZoomAnimEvent
@@ -1635,9 +1650,9 @@ export var Map = Evented.extend({
 			zoom: zoom,
 			noUpdate: noUpdate
 		});
-
+		var zoomLimit = duration ? duration.match(/([\\.0-9]+)s$/)[1] * 1000 : 250;
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
+		setTimeout(Util.bind(this._onZoomTransitionEnd, this), zoomLimit);
 	},
 
 	_onZoomTransitionEnd: function () {
@@ -1648,6 +1663,7 @@ export var Map = Evented.extend({
 		}
 
 		this._animatingZoom = false;
+		if (this._zoomStyle) { this._zoomStyle.innerHTML = ''; }
 
 		this._move(this._animateToCenter, this._animateToZoom);
 
