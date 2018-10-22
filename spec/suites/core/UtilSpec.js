@@ -73,6 +73,12 @@ describe('Util', function () {
 
 			expect(id2).not.to.eql(id);
 		});
+
+		it("pass undefined as prop, returns object with id", function () {
+			var id = L.Util.stamp(undefined);
+
+			expect(typeof id).to.eql("number");
+		});
 	});
 
 	describe('#falseFn', function () {

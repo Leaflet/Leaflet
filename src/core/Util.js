@@ -56,6 +56,7 @@ export var lastId = 0;
 // Returns the unique ID of an object, assigning it one if it doesn't have it.
 export function stamp(obj) {
 	/*eslint-disable */
+	if (!obj) obj = {};
 	obj._leaflet_id = obj._leaflet_id || ++lastId;
 	return obj._leaflet_id;
 	/* eslint-enable */
