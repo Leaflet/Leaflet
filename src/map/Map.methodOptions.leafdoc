@@ -50,6 +50,8 @@ current view. If `true`, the map will attempt animating zoom disregarding where
 zoom origin is. Setting `false` will make it always reset the view completely
 without animation.
 
+@option duration: Number = 0.25
+Duration of animated panning, in seconds.
 
 
 
