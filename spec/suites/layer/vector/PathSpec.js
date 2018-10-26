@@ -3,15 +3,63 @@ describe('Path', function () {
 	// The following two tests are skipped, as the ES6-ifycation of Leaflet
 	// means that L.Path is no longer visible.
 	describe('#bringToBack', function () {
+
+		var c, map;
+
+		beforeEach(function () {
+			c = document.createElement('div');
+			c.style.width = '400px';
+			c.style.height = '400px';
+			map = new L.Map(c);
+			map.setView(new L.LatLng(0, 0), 0);
+			document.body.appendChild(c);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(c);
+		});
 		it('is a no-op for layers not on a map', function () {
 			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			expect(path.bringToBack()).to.equal(path);
+		});
+
+		it('is a no-op for layers no longer in a LayerGroup', function () {
+			var group = new L.LayerGroup().addTo(map);
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+
+			group.clearLayers();
+
 			expect(path.bringToBack()).to.equal(path);
 		});
 	});
 
 	describe('#bringToFront', function () {
+
+		var c, map;
+
+		beforeEach(function () {
+			c = document.createElement('div');
+			c.style.width = '400px';
+			c.style.height = '400px';
+			map = new L.Map(c);
+			map.setView(new L.LatLng(0, 0), 0);
+			document.body.appendChild(c);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(c);
+		});
 		it('is a no-op for layers not on a map', function () {
 			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			expect(path.bringToFront()).to.equal(path);
+		});
+
+		it('is a no-op for layers no longer in a LayerGroup', function () {
+			var group = new L.LayerGroup().addTo(map);
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+
+			group.clearLayers();
+
 			expect(path.bringToFront()).to.equal(path);
 		});
 	});
