@@ -150,6 +150,7 @@ export function setClass(el, name) {
 // Returns the element's class.
 export function getClass(el) {
 	// Check if the element is an SVGElementInstance and use the correspondingElement instead
+	// (Required for SVG elements in IE11.)
 	if (el.correspondingElement) {
 		el = el.correspondingElement;
 	}
