@@ -192,7 +192,7 @@ export var Canvas = Renderer.extend({
 				dashValue = Number(parts[i]);
 				// Ignore dash array containing invalid lengths
 				if (isNaN(dashValue)) { return; }
-				dashArray.push();
+				dashArray.push(dashValue);
 			}
 			layer.options._dashArray = dashArray;
 		} else {
