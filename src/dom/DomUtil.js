@@ -87,7 +87,7 @@ export function empty(el) {
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
 	var parent = el.parentNode;
-	if (parent.lastChild !== el) {
+	if (parent && parent.lastChild !== el) {
 		parent.appendChild(el);
 	}
 }
@@ -96,7 +96,7 @@ export function toFront(el) {
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
 	var parent = el.parentNode;
-	if (parent.firstChild !== el) {
+	if (parent && parent.firstChild !== el) {
 		parent.insertBefore(el, parent.firstChild);
 	}
 }
