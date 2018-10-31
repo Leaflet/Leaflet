@@ -388,6 +388,7 @@ export var GridLayer = Layer.extend({
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
 
+			this._setZoomTransition(this._map._animateZoomDuration);
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
 			// force the browser to consider the newly added element for transition
@@ -594,6 +595,16 @@ export var GridLayer = Layer.extend({
 			DomUtil.setTransform(level.el, translate, scale);
 		} else {
 			DomUtil.setPosition(level.el, translate);
+		}
+	},
+
+	_setZoomTransition : function (duration) {
+		var transition = '';
+		if (duration) {
+			transition = 'transform ' + duration / 1000 + 's cubic-bezier(0,0,0.25,1)';
+		}
+		for (var i in this._levels) {
+			this._levels[i].el.style.transition = transition;
 		}
 	},
 

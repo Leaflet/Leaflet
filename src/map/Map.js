@@ -181,6 +181,7 @@ export var Map = Evented.extend({
 		center = this._limitCenter(toLatLng(center), zoom, this.options.maxBounds);
 		options = options || {};
 
+		// FIXME : 具合が悪い
 		if (options.zoom && options.zoom.animate && options.zoom.duration) {
 			options.animate = options.zoom.animate;
 			options.duration = options.zoom.duration;
@@ -1629,19 +1630,8 @@ export var Map = Evented.extend({
 			// remember what center/zoom to set after animation
 			this._animateToCenter = center;
 			this._animateToZoom = zoom;
+			this._animateZoomDuration = duration;
 
-			if (duration) {
-				if (typeof (duration) === 'number') {
-					duration = duration + 's';
-				}
-				this._zoomStyle = document.createElement('style');
-				this._zoomStyle.innerHTML = '.leaflet-zoom-anim .leaflet-zoom-animated {' +
-					'-webkit-transition: -webkit-transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
-					'-moz-transition:    -moz-transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
-					'transition:         transform ' + duration + ' cubic-bezier(0,0,0.25,1);' +
-					'}';
-				this._panes.mapPane.appendChild(this._zoomStyle);
-			}
 			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		}
@@ -1654,9 +1644,10 @@ export var Map = Evented.extend({
 			noUpdate: noUpdate
 		});
 
-		var zoomLimit = duration ? duration.match(/([\\.0-9]+)s?$/)[1] * 1000 : 250;
+		var zoomEndTime = duration ? parseFloat(duration) : 250;
+
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(Util.bind(this._onZoomTransitionEnd, this), zoomLimit);
+		setTimeout(Util.bind(this._onZoomTransitionEnd, this), zoomEndTime);
 	},
 
 	_onZoomTransitionEnd: function () {
@@ -1667,7 +1658,7 @@ export var Map = Evented.extend({
 		}
 
 		this._animatingZoom = false;
-		if (this._zoomStyle) { this._zoomStyle.innerHTML = ''; }
+		this._animateZoomDuration = false;
 
 		this._move(this._animateToCenter, this._animateToZoom);
 
