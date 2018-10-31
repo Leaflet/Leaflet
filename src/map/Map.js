@@ -181,7 +181,6 @@ export var Map = Evented.extend({
 		center = this._limitCenter(toLatLng(center), zoom, this.options.maxBounds);
 		options = options || {};
 
-		// FIXME : 具合が悪い
 		if (options.zoom && options.zoom.animate && options.zoom.duration) {
 			options.animate = options.zoom.animate;
 			options.duration = options.zoom.duration;
