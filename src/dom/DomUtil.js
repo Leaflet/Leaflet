@@ -149,6 +149,11 @@ export function setClass(el, name) {
 // @function getClass(el: HTMLElement): String
 // Returns the element's class.
 export function getClass(el) {
+	// Check if the element is an SVGElementInstance and use the correspondingElement instead
+	// (Required for linked SVG elements in IE11.)
+	if (el.correspondingElement) {
+		el = el.correspondingElement;
+	}
 	return el.className.baseVal === undefined ? el.className : el.className.baseVal;
 }
 
