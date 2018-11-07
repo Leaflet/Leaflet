@@ -3858,6 +3858,15 @@ The following plugins use external services to calculate driving or walking rout
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/traffordDataLab/leaflet.reachability">Leaflet.Reachability</a>
+		</td><td>
+			Show areas of reachability based on time or distance for different modes of travel using the <a href="https://openrouteservice.org/documentation/#/reference/isochrones">openrouteservice isochrones API</a>.
+		</td><td>
+			<a href="https://github.com/traffordDataLab">Trafford Data Lab</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://www.liedman.net/leaflet-routing-machine/">Leaflet Routing Machine</a>
 		</td><td>
 			Control for route search with via points, displaying itinerary and alternative routes. Uses
