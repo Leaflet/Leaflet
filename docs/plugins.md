@@ -4152,6 +4152,15 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/Asymmetrik/ngx-leaflet">ngx-leaflet</a>
+		</td><td>
+			Leaflet components and extensions for <a href="https://angular.io/">Angular.io</a>.
+		</td><td>
+			<a href="https://asymmetrik.com/">Asymmetrik, Ltd.</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/tombatossals/angular-leaflet-directive">Angular Leaflet directive</a>
 		</td><td>
 			Integrate Leaflet in applications made with the <a href='http://angularjs.org/'>AngularJS</a> web framework.
