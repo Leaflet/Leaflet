@@ -91,10 +91,12 @@ export var Circle = CircleMarker.extend({
 			this._radiusY = p.y - top.y;
 
 		} else {
-			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+			var latlngx = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+			var latlngy = crs.unproject(crs.project(this._latlng).subtract([0, this._mRadius]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
-			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+			this._radius = this._point.x - map.latLngToLayerPoint(latlngx).x;
+			this._radiusY = map.latLngToLayerPoint(latlngy).y - this._point.y;
 		}
 
 		this._updateBounds();
