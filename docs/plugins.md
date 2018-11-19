@@ -3021,7 +3021,7 @@ Display two maps at once. One of them might be a different size and zoom level, 
 	</tr>
 	<tr>
 		<td>
-			<a href="http://jieter.github.io/Leaflet.layerscontrol-minimap/">Leaflet.layerscontrol-minimap</a>
+			<a href="https://github.com/jieter/Leaflet.layerscontrol-minimap">Leaflet.layerscontrol-minimap</a>
 		</td><td>
 			Extends the default Leaflet layers control with synced minimaps.
 		</td><td>
