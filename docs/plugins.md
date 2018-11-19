@@ -1869,6 +1869,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			<a href="https://github.com/ghybs">ghybs</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ZijingPeng/leaflet-tooltip-layout">leaflet-tooltip-layout</a>
+		</td><td>
+			A plugin to avoid tooltips overlapping and make it easier to find out the relationship between each tooltip and marker. <a href="https://zijingpeng.github.io/overlapping-avoided-tooltip/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/ZijingPeng">Zijing Peng</a>
+		</td>
+	</tr>
 </table>
 
 ### Heatmaps
