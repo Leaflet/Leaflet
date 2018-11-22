@@ -156,6 +156,58 @@ Point.prototype = {
 		this.y = trunc(this.y);
 		return this;
 	},
+	
+	// @method normalize(thickness:Number): Point
+	// 将(0,0)点和当前点之间的线段缩放为指定的长度
+	normalize:function (thickness){
+		return this.clone()._normalize(thickness);
+	},
+	
+	_normalize:function (thickness){
+		var len = this.distanceTo(L.point(0,0));
+		if(len==0)return L.point(0,0);
+		this.x = this.x/len * thickness;
+		this.y = this.y/len * thickness;
+		return this;
+	},
+	
+	// @method interpolate(point:Point,offset:Number): Point
+	// 返回当前点与指定点之间的插值点，offset为返回点到当前点的距离，
+	// 为负数则为射线反方向上的点
+	interpolate:function(point,offset){
+		var pt = point.subtract(this);
+		pt._normalize(1);
+		return L.point(this.x+pt.x*offset,this.y+pt.y*offset);
+	},
+	
+	// @method polar(len:Number,angle:Number): Point
+	// 将一对极坐标转换为笛卡尔坐标
+	polar:function(len,angle){
+		var x = len * Math.sin(angle);
+		var y = len * Math.cos(angle);
+		return L.point(x,y);
+	},
+	
+	// @method toPorlar(): Object
+	// 将当前点到指定点的向量转换为一对极坐标{len:len,angle:angle}
+	toPorlar:function(point){
+		var len = this.distanceTo(point);
+		var pt = point.subtract(this).normalize(1);
+		var angle = Math.asin(pt.y);
+		if(pt.x>=0 && pt.y>=0){//第一象限
+			//不需要变
+		}
+		else if(pt.x<0 && pt.y>=0){//第二象限
+			angle = Math.PI - angle;
+		}
+		else if(pt.x<=0 && pt.y<0){//第三象限
+			angle = Math.PI -angle;
+		}
+		else if(pt.x>0 && pt.y<0){//第四象限
+			angle = Math.PI*2 + angle;
+		}
+		return {len:len,angle:angle};
+	},
 
 	// @method distanceTo(otherPoint: Point): Number
 	// Returns the cartesian distance between the current and the given points.
