@@ -30,6 +30,14 @@ describe('Circle', function () {
 			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
 			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
 		});
+
+		it('should return approximate bounds when not added to the map', function () {
+			circle = L.circle([50, 30], {radius: 200});
+
+			var bounds = circle.getBounds();
+			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720), 0.00145);
+			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279), 0.00145);
+		});
 	});
 
 	describe('Legacy factory', function () {
