@@ -56,10 +56,10 @@ export var Circle = CircleMarker.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
 	getBounds: function () {
-		// when the map instance has not been set we fall back
-		// to approximated bounds from the center point
+		// when the map instance has not been set we calculate
+		// the bounds with LatLng.toBounds
 		if (!this._map) {
-			return this.getLatLng().toBounds(this.getRadius());
+			return this.getLatLng().toBounds(this.getRadius() * 2);
 		}
 
 		var half = [this._radius, this._radiusY || this._radius];
