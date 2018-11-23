@@ -31,7 +31,7 @@ describe('Circle', function () {
 			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
 		});
 
-		it('should return bounds event when not added to the map', function () {
+		it('should return bounds even when not added to the map', function () {
 			circle = L.circle([50, 30], {radius: 200});
 
 			var bounds = circle.getBounds();
