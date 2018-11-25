@@ -1,6 +1,5 @@
 import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
-import {toLatLngBounds} from './LatLngBounds';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -27,7 +26,7 @@ import {toLatLngBounds} from './LatLngBounds';
  * can't be added to it with the `include` function.
  */
 
-export function LatLng(lat, lng, alt) {
+export function LatLng(lat, lng, alt, crs) {
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
@@ -45,6 +44,11 @@ export function LatLng(lat, lng, alt) {
 	if (alt !== undefined) {
 		this.alt = +alt;
 	}
+
+	// @property crs: CRS
+	// CRS wich will be used to perform the `distanceTo`, `wrap`, `toBounds` functions (optional)
+	// Defaults to `Earth`
+	this.crs = crs || Earth;
 }
 
 LatLng.prototype = {
@@ -73,34 +77,29 @@ LatLng.prototype = {
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Spherical Law of Cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines).
 	distanceTo: function (other) {
-		return Earth.distance(this, toLatLng(other));
+		return this.crs.distance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
-		return Earth.wrapLatLng(this);
+		return this.crs.wrapLatLng(this);
 	},
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
 	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
 	toBounds: function (sizeInMeters) {
-		var latAccuracy = 180 * sizeInMeters / 40075017,
-		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
-
-		return toLatLngBounds(
-		        [this.lat - latAccuracy, this.lng - lngAccuracy],
-		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
+		return this.crs.extendLatLng(this, sizeInMeters);
 	},
 
 	clone: function () {
-		return new LatLng(this.lat, this.lng, this.alt);
+		return new LatLng(this.lat, this.lng, this.alt, this.crs);
 	}
 };
 
 
 
-// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
+// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number, crs?: CRS): LatLng
 // Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
 
 // @alternative
@@ -109,9 +108,9 @@ LatLng.prototype = {
 
 // @alternative
 // @factory L.latLng(coords: Object): LatLng
-// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+// Expects an plain object of the form `{lat: Number, lng: Number, alt?: Number, crs?: CRS}` instead.
 
-export function toLatLng(a, b, c) {
+export function toLatLng(a, b, c, d) {
 	if (a instanceof LatLng) {
 		return a;
 	}
@@ -128,10 +127,10 @@ export function toLatLng(a, b, c) {
 		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
-		return new LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
+		return new LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt, a.crs);
 	}
 	if (b === undefined) {
 		return null;
 	}
-	return new LatLng(a, b, c);
+	return new LatLng(a, b, c, d);
 }
