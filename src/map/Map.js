@@ -1674,7 +1674,7 @@ export var Map = Evented.extend({
 		}
 
 		// @event zoomanim: ZoomAnimEvent
-		// Fired on every frame of a zoom animation
+		// Fired at least once per zoom animation. For continous zoom, like pinch zooming, fired once per frame during zoom.
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
