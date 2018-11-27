@@ -1116,6 +1116,17 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://www.windy.com">Windy.com</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/barryhunter/Leaflet.GeographPhotos">Leaflet.GeographPhotos</a>
+		</td>
+		<td>
+			Display Geographical-Photos from Geograph Britian and Ireland in a interactive overlay, using their API.
+		</td>
+		<td>
+			<a href="https://github.com/barryhunter/">Barry Hunter</a>
+		</td>
+	</tr>
 </table>
 
 
