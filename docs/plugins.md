@@ -3961,6 +3961,15 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/traffordDataLab/leaflet.reachability">Leaflet.Reachability</a>
+		</td><td>
+			Show areas of reachability based on time or distance for different modes of travel using the <a href="https://openrouteservice.org/documentation/#/reference/isochrones">openrouteservice isochrones API</a>.
+		</td><td>
+			<a href="https://github.com/traffordDataLab">Trafford Data Lab</a>
+		</td>
+	</tr>
 </table>
 
 
