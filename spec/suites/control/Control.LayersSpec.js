@@ -257,7 +257,7 @@ describe("Control.Layers", function () {
 
 			expect(div.clientHeight).to.be.greaterThan(0); // Make sure first that the map container has a height, otherwise this test is useless.
 			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
-			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
+			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
 		});
 		it('becomes scrollable if necessary when too many layers are added while it is already on map', function () {
 			var layersCtrl = L.control.layers(null, null, {collapsed: false}),
@@ -272,7 +272,7 @@ describe("Control.Layers", function () {
 			map = L.map(div);
 
 			layersCtrl.addTo(map);
-			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(false);
+			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(false);
 
 			for (; i < 20; i += 1) {
 				// Default text size: 12px => 12 * 20 = 240px height (not even considering padding/margin).
@@ -280,7 +280,7 @@ describe("Control.Layers", function () {
 			}
 
 			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
-			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
+			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
 		});
 	});
 

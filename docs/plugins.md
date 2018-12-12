@@ -1116,6 +1116,17 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://www.windy.com">Windy.com</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/barryhunter/Leaflet.GeographPhotos">Leaflet.GeographPhotos</a>
+		</td>
+		<td>
+			Display Geographical-Photos from Geograph Britian and Ireland in a interactive overlay, using their API.
+		</td>
+		<td>
+			<a href="https://github.com/barryhunter/">Barry Hunter</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1539,6 +1550,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/triedeti/Leaflet.streetlabels">Leaflet.streetlabels</a>
+		</td>
+		<td>
+			A Leaflet plugin to show labels following the paths of polylines. An extension of yakitoritabetai Leaflet.LabelTextCollision (<a href="https://triedeti.github.io/Leaflet.streetlabels/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/triedeti">Triede TI</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/ggolikov/Leaflet.Viewpoint">Leaflet.Viewpoint</a>
 		</td>
 		<td>
@@ -1681,6 +1703,18 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nuclearsecrecy/Leaflet.greatCircle">Leaflet.greatCircle</a>
+		</td>
+		<td>
+			A wrapper class for the Leaflet.js Polygon object that draws true "great circles" (showing true geodesic, spherical paths) that wrap around the Earth (<a href="https://nuclearsecrecy.github.io/Leaflet.greatCircle/example/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/nuclearsecrecy/">Alex Wellerstein</a>
+		</td>
+	</tr>
+
 </table>
 
 
@@ -1855,6 +1889,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			A simple plugin to create Feature Groups that add their child layers into a parent group. Typical usage is to switch them through L.Control.Layers to dynamically add/remove groups of markers from Leaflet.markercluster. <a href="http://ghybs.github.io/Leaflet.FeatureGroup.SubGroup/examples/subGroup-markercluster-controlLayers-realworld.388.html">Demo</a>.
 		</td><td>
 			<a href="https://github.com/ghybs">ghybs</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ZijingPeng/leaflet-tooltip-layout">leaflet-tooltip-layout</a>
+		</td><td>
+			A plugin to avoid tooltips overlapping and make it easier to find out the relationship between each tooltip and marker. <a href="https://zijingpeng.github.io/overlapping-avoided-tooltip/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/ZijingPeng">Zijing Peng</a>
 		</td>
 	</tr>
 </table>
@@ -2318,6 +2361,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			A Leaflet plugin for drawing gradients along polylines.
 		</td><td>
 			<a href="https://github.com/iosphere">iosphere</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/linghuam/Leaflet.TrackPlayBack">leaflet.TrackPlayBack</a>
+		</td>
+		<td>
+			A leaflet track-playback plugin, can display and dynamically play tracks. <a href="https://linghuam.github.io/Leaflet.TrackPlayBack/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/linghuam">linghuam</a>
 		</td>
 	</tr>
 </table>
@@ -2998,7 +3052,7 @@ Display two maps at once. One of them might be a different size and zoom level, 
 	</tr>
 	<tr>
 		<td>
-			<a href="http://jieter.github.io/Leaflet.layerscontrol-minimap/">Leaflet.layerscontrol-minimap</a>
+			<a href="https://github.com/jieter/Leaflet.layerscontrol-minimap">Leaflet.layerscontrol-minimap</a>
 		</td><td>
 			Extends the default Leaflet layers control with synced minimaps.
 		</td><td>
@@ -3918,6 +3972,15 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/traffordDataLab/leaflet.reachability">Leaflet.Reachability</a>
+		</td><td>
+			Show areas of reachability based on time or distance for different modes of travel using the <a href="https://openrouteservice.org/documentation/#/reference/isochrones">openrouteservice isochrones API</a>.
+		</td><td>
+			<a href="https://github.com/traffordDataLab">Trafford Data Lab</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -4137,6 +4200,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			Integrate Leaflet in applications made with the <a href='http://famo.us'>famo.us</a> web framework.
 		</td><td>
 			<a href="http://www.gloey.nl">Hein Rutjes</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Asymmetrik/ngx-leaflet">ngx-leaflet</a>
+		</td><td>
+			Leaflet components and extensions for <a href="https://angular.io/">Angular.io</a>.
+		</td><td>
+			<a href="https://asymmetrik.com/">Asymmetrik, Ltd.</a>
 		</td>
 	</tr>
 	<tr>
