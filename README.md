@@ -1,4 +1,6 @@
-<img width="600" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" alt="Leaflet" />
+[![Build Status](https://travis-ci.org/Leaflet/Leaflet.svg?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
+<br>
+<p align="center"><img width="600" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" alt="Leaflet" /></p>
 
 Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
 Weighing just about 37 KB of gzipped JS code, it has all the mapping [features][] most developers ever need.
@@ -18,8 +20,6 @@ If you want to **get involved** with Leaflet development, check out the [contrib
 Let's make the best mapping library that will ever exist,
 and push the limits of what's possible with online maps!
 
-[![Build Status](https://travis-ci.org/Leaflet/Leaflet.svg?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
-
  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
  [features]: http://leafletjs.com/#features
  [plugins]: http://leafletjs.com/plugins.html
@@ -29,4 +29,3 @@ and push the limits of what's possible with online maps!
  [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
  [download page]: http://leafletjs.com/download.html
-
