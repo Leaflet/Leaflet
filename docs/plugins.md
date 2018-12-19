@@ -3483,6 +3483,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/easymountain/Leaflet.GeojsonLayerSwitcher">Leaflet.GeojsonLayerSwitcher</a>
+		</td>
+		<td>
+			Allows to navigate between GeoJSON layers, select some, and return selection.
+		</td>
+		<td>
+			<a href="https://github.com/easymountain">Easy-Mountain</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/turbo87/leaflet-sidebar/">leaflet-sidebar</a>
 		</td><td>
 			A responsive sidebar plugin.
