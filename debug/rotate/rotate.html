@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 	<script src="../vector/route.js"></script>
 
@@ -142,7 +141,7 @@
 		});
 
 
-		var map = L.map('map', {rotate: true})
+		var map = L.map('map', {rotate: true, touchRotate: true})
 				.setView([55, 10], 0)
 				.addLayer(osm)
 				.addLayer(path);

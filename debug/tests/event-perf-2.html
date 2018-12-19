@@ -9,14 +9,13 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script type="text/javascript" src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
 
     <div id="map"></div>
 
-    <script type="text/javascript">
+    <script>
         /*
 
             Can be used to profile performance of event system.
@@ -25,8 +24,8 @@
             profiler and examine times for _on, _off and fire.
 
         */
-        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
         var map = L.map('map')
@@ -41,6 +40,18 @@
             clicks++;
         });
 
+        function getRandomLatLng(llbounds) {
+            var s = llbounds.getSouth(),
+                n = llbounds.getNorth(),
+                w = llbounds.getWest(),
+                e = llbounds.getEast();
+
+            return L.latLng(
+                s + (Math.random() * (n - s)),
+                w + (Math.random() * (e - w))
+            )
+        }
+
         function shuffleMarkers() {
             var marker;
             if (markerArr.length > 2000) {
@@ -48,7 +59,7 @@
                 marker = markerArr.splice(i, 1)[0];
                 markers.removeLayer(marker);
             } else {
-                marker = L.marker(getRandomLatLng(map))
+                marker = L.marker(getRandomLatLng(map.getBounds()))
                     .on('mouseover', function() {
                         marker.setZIndexOffset(10000);
                     })

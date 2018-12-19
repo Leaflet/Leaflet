@@ -1,3 +1,10 @@
+
+import {Control} from './Control';
+import {Map} from '../map/Map';
+import * as Util from '../core/Util';
+import * as DomEvent from '../dom/DomEvent';
+import * as DomUtil from '../dom/DomUtil';
+
 /*
  * @class Control.Attribution
  * @aka L.Control.Attribution
@@ -6,7 +13,7 @@
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-L.Control.Attribution = L.Control.extend({
+export var Attribution = Control.extend({
 	// @section
 	// @aka Control.Attribution options
 	options: {
@@ -18,17 +25,15 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	initialize: function (options) {
-		L.setOptions(this, options);
+		Util.setOptions(this, options);
 
 		this._attributions = {};
 	},
 
 	onAdd: function (map) {
 		map.attributionControl = this;
-		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
-		if (L.DomEvent) {
-			L.DomEvent.disableClickPropagation(this._container);
-		}
+		this._container = DomUtil.create('div', 'leaflet-control-attribution');
+		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
 		for (var i in map._layers) {
@@ -106,19 +111,19 @@ L.Control.Attribution = L.Control.extend({
 // @section Control options
 // @option attributionControl: Boolean = true
 // Whether a [attribution control](#control-attribution) is added to the map by default.
-L.Map.mergeOptions({
+Map.mergeOptions({
 	attributionControl: true
 });
 
-L.Map.addInitHook(function () {
+Map.addInitHook(function () {
 	if (this.options.attributionControl) {
-		new L.Control.Attribution().addTo(this);
+		new Attribution().addTo(this);
 	}
 });
 
 // @namespace Control.Attribution
 // @factory L.control.attribution(options: Control.Attribution options)
 // Creates an attribution control.
-L.control.attribution = function (options) {
-	return new L.Control.Attribution(options);
+export var attribution = function (options) {
+	return new Attribution(options);
 };

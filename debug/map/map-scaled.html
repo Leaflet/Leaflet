@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		#wrapper {
+			transform: scale(.5, .25); /* scaleX0 = .5 ; scaleY0 = .25 */
+			transform-origin: 0 0;
+			padding: 40px 100px; /* displayed padding-top = scaleY0 * 40px = 10px ; displayed padding-left = scaleX0 * 100px = 50px */
+		}
+		#map {
+			width: 400px;
+			height: 300px;
+			transform: scale(3, 8); /* scaleX = .5 * 3 = 1.5 ; scaleY = .25 * 8 = 2 */
+			transform-origin: 0 0;
+			border-width: 30px 70px; /* displayed border-top-width = scaleY * 30px = 60px ; displayed border-left-width = scaleX * 70px = 105px */
+		}
+	</style>
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="wrapper">
+		<div id="map"></div>
+	</div>
+
+	<script>
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+		var mapContainer = map.getContainer();
+
+		var marker = L.marker([50.5, 30.51], {
+			draggable: true
+		}).addTo(map);
+
+		map.on('drag', function (event) {
+			console.log('map:');
+			console.log(L.DomEvent.getMousePosition(event.originalEvent, mapContainer));
+		});
+		marker.on('drag', function (event) {
+			console.log('marker:');
+			console.log(L.DomEvent.getMousePosition(event.originalEvent, mapContainer));
+		});
+	</script>
+</body>
+</html>

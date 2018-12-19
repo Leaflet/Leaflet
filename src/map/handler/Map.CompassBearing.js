@@ -1,10 +1,15 @@
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Util from '../../core/Util';
+
 /*
  * L.Map.CompassBearing will rotate the map according to a smartphone's compass.
  */
 
-L.Map.CompassBearing = L.Handler.extend({
+Map.CompassBearing = Handler.extend({
 
-	initialize: function(map) {
+	initialize: function (map) {
 		if (!window.DeviceOrientationEvent) {
 			this._capable = false;
 			return;
@@ -12,22 +17,22 @@ L.Map.CompassBearing = L.Handler.extend({
 		this._capable = true;
 		this._map = map;
 
-		this._throttled = L.Util.throttle(this._onDeviceOrientation, 1000, this);
+		this._throttled = Util.throttle(this._onDeviceOrientation, 1000, this);
 	},
 
 	addHooks: function () {
 		if (this._capable && this._map._rotate) {
-			L.DomEvent.on(window, 'deviceorientation', this._throttled, this);
+			DomEvent.on(window, 'deviceorientation', this._throttled, this);
 		}
 	},
 
 	removeHooks: function () {
 		if (this._capable && this._map._rotate) {
-			L.DomEvent.off(window, 'deviceorientation', this._throttled, this);
+			DomEvent.off(window, 'deviceorientation', this._throttled, this);
 		}
 	},
 
-	_onDeviceOrientation: function(event) {
+	_onDeviceOrientation: function (event) {
 		if (event.alpha !== null) {
 			this._map.setBearing(event.alpha - window.orientation);
 		}
@@ -37,4 +42,4 @@ L.Map.CompassBearing = L.Handler.extend({
 // @section Handlers
 // @property compassBearing: Handler
 // Compass bearing handler.
-L.Map.addInitHook('addHandler', 'compassBearing', L.Map.CompassBearing);
+Map.addInitHook('addHandler', 'compassBearing', Map.CompassBearing);

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Leaflet edit</title>
+    </head>
+    <body>
+        <script>
+
+            var config = {
+                provider: 'plunker',
+                title: 'Leaflet',
+                description: "Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 37 KB of gzipped JS code, it has all the mapping features most developers ever need.",
+                html: '<div id="leaflet"></div>',
+                cssFile: 'https://unpkg.com/leaflet/dist/leaflet.css',
+                css: 'body {\n\tmargin: 0;\n}\nhtml, body, #leaflet {\n\theight: 100%\n}',
+                jsFile: 'https://unpkg.com/leaflet/dist/leaflet-src.js',
+                js: "var map = new L.Map('leaflet', {\n\tlayers: [\n\t\tnew L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
+            };
+
+            var hash = location.hash.substr(1);
+
+            if (hash) {
+                hash.split(';').forEach(function (str) {
+                    var arg = str.split(':');
+                    config[arg[0]] = arg[1];
+                });
+            }
+
+            if (config.version) {
+                if (config.version === 'master') {
+                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/master/leaflet.css',
+                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/master/leaflet-src.js'
+                } else {
+                    config.cssFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet.css`
+                    config.jsFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet-src.js`
+                }
+
+            }
+
+            function createForm (action) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', action);
+                form.createInput = function (name, value) {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', name);
+                    input.setAttribute('value', value);
+                    this.appendChild(input);
+                };
+                document.body.appendChild(form);
+                return form;
+            }
+
+            var form;
+
+            if (config.provider === 'plunker') {
+                form = createForm('https://plnkr.co/edit/?p=preview');
+                form.createInput('description', config.description);
+                form.createInput('files[index.html]', `<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>Leaflet</title>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<link type="text/css" rel="stylesheet" href="${config.cssFile}" />\n\t\t<link type="text/css" rel="stylesheet" href="style.css" />\n\t</head>\n\t<body>\n\t\t${config.html}\n\t\t<script src="${config.jsFile}"><\/script>\n\t\t<script src="script.js"><\/script>\n\t</body>\n</html>`);
+                form.createInput('files[style.css]', config.css);
+                form.createInput('files[script.js]', config.js);
+                form.createInput('tags[0]', 'leaflet');
+                form.createInput('tags[1]', 'map');
+                form.createInput('tags[2]', 'gis');
+                form.createInput('private', false);
+            }
+
+            if (config.provider === 'codepen') {
+                form = createForm('https://codepen.io/pen/define');
+                form.createInput('data', JSON.stringify({
+                    title: config.title,
+                    description: config.description,
+                    private: false, 
+                    tags: ["leaflet", "map", "gis"],
+                    editors: "001",
+                    layout: "top",
+                    head: '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+                    html: config.html,
+                    css: config.css,
+                    css_external: config.cssFile,
+                    js: config.js,
+                    js_external: config.jsFile
+                }));
+            }
+
+            if (config.provider === 'jsfiddle') {
+                form = createForm('http://jsfiddle.net/api/post/library/pure/');
+                form.createInput('title', config.title);
+                form.createInput('description', config.description);
+                form.createInput('resources', `${config.cssFile},${config.jsFile}`);
+                form.createInput('html', config.html);
+                form.createInput('css', config.css);
+                form.createInput('js', config.js);
+                form.createInput('panel_html', 0);
+                form.createInput('panel_css', 0);
+                form.createInput('panel_js', 0);
+                form.createInput('dtd', 'html');
+                form.createInput('normalize_css', 'no');
+                form.createInput('wrap', 'b');
+            }
+
+            if (form instanceof HTMLFormElement) {
+                form.submit();
+            }
+
+        </script>
+    </body>
+</html>

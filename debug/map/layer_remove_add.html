@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script type="text/javascript" src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -17,21 +16,18 @@
     <div id="map"></div>
     <button id="removeAdd">Remove and Add Layer</button>
 
-    <script type="text/javascript">
+    <script>
         map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
 
-        L.Icon.Default.imagePath = 'http://cdn.leafletjs.com/leaflet-0.7.3/images';
-
-
-        var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    			attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     		}).addTo(map);
 
         L.DomUtil.get('removeAdd').onclick = function() {
-            map.removeLayer(tileLayer);
+            map.removeLayer(osm);
 
             setTimeout(function() {
-                map.addLayer(tileLayer);
+                map.addLayer(osm);
             }, 1000);
 
 

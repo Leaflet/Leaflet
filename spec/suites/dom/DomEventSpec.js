@@ -5,7 +5,7 @@ describe('DomEvent', function () {
 		if (document.createEvent) {
 			var e = document.createEvent('MouseEvents');
 			e.initMouseEvent('click', true, true, window,
-					0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			return el.dispatchEvent(e);
 		} else if (el.fireEvent) {
 			return el.fireEvent('onclick');
@@ -60,6 +60,11 @@ describe('DomEvent', function () {
 
 			expect(type).to.eql('click');
 		});
+
+		it('is chainable', function () {
+			var res = L.DomEvent.addListener(el, 'click', function () {});
+			expect(res.addListener).to.be.a('function');
+		});
 	});
 
 	describe('#removeListener', function () {
@@ -72,6 +77,11 @@ describe('DomEvent', function () {
 			simulateClick(el);
 
 			expect(listener.called).to.not.be.ok();
+		});
+
+		it('is chainable', function () {
+			var res = L.DomEvent.removeListener(el, 'click', function () {});
+			expect(res.removeListener).to.be.a('function');
 		});
 	});
 

@@ -253,21 +253,16 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
-	it("is opened when tapping on touch", function () {
-		var oldTouch = L.Browser.touch;
-		L.Browser.touch = true;
+	it.skipIfNotTouch("is opened when tapping on touch", function () {
 		var layer = new L.Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 		happen.click(layer._icon);
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		L.Browser.touch = oldTouch;
 	});
 
-	it("is closed if not permanent when clicking on the map elsewhere on touch", function () {
-		var oldTouch = L.Browser.touch;
-		L.Browser.touch = true;
+	it.skipIfNotTouch("is closed if not permanent when clicking on the map elsewhere on touch", function () {
 		var layer = new L.Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
@@ -275,7 +270,6 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 		happen.click(map._container);
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
-		L.Browser.touch = oldTouch;
 	});
 
 
@@ -285,6 +279,12 @@ describe('Tooltip', function () {
 			done();
 		});
 		map.openTooltip('Tooltip', center);
+	});
+
+	it("can call closeTooltip while not on the map", function () {
+		var layer = new L.Marker(center);
+		layer.bindTooltip('Tooltip', {interactive: true});
+		layer.closeTooltip();
 	});
 
 });

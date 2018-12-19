@@ -1,3 +1,7 @@
+import {LatLng} from '../LatLng';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
+
 /*
  * @namespace Projection
  * @projection L.Projection.Mercator
@@ -5,11 +9,11 @@
  * Elliptical Mercator projection — more complex than Spherical Mercator. Takes into account that Earth is a geoid, not a perfect sphere. Used by the EPSG:3395 CRS.
  */
 
-L.Projection.Mercator = {
+export var Mercator = {
 	R: 6378137,
 	R_MINOR: 6356752.314245179,
 
-	bounds: L.bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
+	bounds: new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
 	project: function (latlng) {
 		var d = Math.PI / 180,
@@ -22,7 +26,7 @@ L.Projection.Mercator = {
 		var ts = Math.tan(Math.PI / 4 - y / 2) / Math.pow((1 - con) / (1 + con), e / 2);
 		y = -r * Math.log(Math.max(ts, 1E-10));
 
-		return new L.Point(latlng.lng * d * r, y);
+		return new Point(latlng.lng * d * r, y);
 	},
 
 	unproject: function (point) {
@@ -40,6 +44,6 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, point.x * d / r);
+		return new LatLng(phi * d, point.x * d / r);
 	}
 };

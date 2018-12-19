@@ -9,20 +9,26 @@
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
 	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
 
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
 
+{% unless page.customMapContainer == "true" %}
 	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
 		#map {
-			width:600px;
+			width: 600px;
 			height: 400px;
 		}
 	</style>
+{% endunless %}
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
-<div id='map'></div>
+{% unless page.customMapContainer == "true" %}<div id='map'></div>{% endunless %}
 
 {{ content }}
 

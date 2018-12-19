@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -19,10 +18,10 @@
 	<div id="map"></div>
 	<button id="populate">Populate with 100 more markers</button><div id='perf'></div>
 
-	<script type="text/javascript">
+	<script>
 
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
 		var map = L.map('map')
@@ -35,12 +34,23 @@
 			return function(ev) { document.getElementById('perf').innerHTML = ('Event on marker ' + i + ': ' + ev.type); }
 		}
 
+		function getRandomLatLng(llbounds) {
+			var s = llbounds.getSouth(),
+			    n = llbounds.getNorth(),
+			    w = llbounds.getWest(),
+			    e = llbounds.getEast();
+
+			return L.latLng(
+				s + (Math.random() * (n - s)),
+				w + (Math.random() * (e - w))
+			)
+		}
 
 		function populate() {
 			var start = performance ? performance.now() : 0;
 
 			for (var i = 0; i < 100; i++) {
-				L.marker(getRandomLatLng(map)).addTo(markers).on('dblclick', getEventHandler(i));
+				L.marker(getRandomLatLng(map.getBounds())).addTo(markers).on('dblclick', getEventHandler(i));
 			}
 
 			var end = performance ? performance.now() : 0;

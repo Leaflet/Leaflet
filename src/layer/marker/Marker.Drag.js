@@ -1,3 +1,10 @@
+import {Handler} from '../../core/Handler';
+import * as DomUtil from '../../dom/DomUtil';
+import {Draggable} from '../../dom/Draggable';
+import {toBounds} from '../../geometry/Bounds';
+import {toPoint} from '../../geometry/Point';
+import {requestAnimFrame, cancelAnimFrame} from '../../core/Util';
+
 /*
  * L.Handler.MarkerDrag is used internally by L.Marker to make the markers draggable.
  */
@@ -13,10 +20,10 @@
  * ```
  *
  * @property dragging: Handler
- * Marker dragging handler (by both mouse and touch).
+ * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-L.Handler.MarkerDrag = L.Handler.extend({
+export var MarkerDrag = Handler.extend({
 	initialize: function (marker) {
 		this._marker = marker;
 	},
@@ -25,32 +32,70 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		var icon = this._marker._icon;
 
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(icon, icon, true);
+			this._draggable = new Draggable(icon, icon, true);
 		}
 
 		this._draggable.on({
 			dragstart: this._onDragStart,
+			predrag: this._onPreDrag,
 			drag: this._onDrag,
 			dragend: this._onDragEnd
 		}, this).enable();
 
-		L.DomUtil.addClass(icon, 'leaflet-marker-draggable');
+		DomUtil.addClass(icon, 'leaflet-marker-draggable');
 	},
 
 	removeHooks: function () {
 		this._draggable.off({
 			dragstart: this._onDragStart,
+			predrag: this._onPreDrag,
 			drag: this._onDrag,
 			dragend: this._onDragEnd
 		}, this).disable();
 
 		if (this._marker._icon) {
-			L.DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
+			DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
 		}
 	},
 
 	moved: function () {
 		return this._draggable && this._draggable._moved;
+	},
+
+	_adjustPan: function (e) {
+		var marker = this._marker,
+		    map = marker._map,
+		    speed = this._marker.options.autoPanSpeed,
+		    padding = this._marker.options.autoPanPadding,
+		    iconPos = DomUtil.getPosition(marker._icon),
+		    bounds = map.getPixelBounds(),
+		    origin = map.getPixelOrigin();
+
+		var panBounds = toBounds(
+			bounds.min._subtract(origin).add(padding),
+			bounds.max._subtract(origin).subtract(padding)
+		);
+
+		if (!panBounds.contains(iconPos)) {
+			// Compute incremental movement
+			var movement = toPoint(
+				(Math.max(panBounds.max.x, iconPos.x) - panBounds.max.x) / (bounds.max.x - panBounds.max.x) -
+				(Math.min(panBounds.min.x, iconPos.x) - panBounds.min.x) / (bounds.min.x - panBounds.min.x),
+
+				(Math.max(panBounds.max.y, iconPos.y) - panBounds.max.y) / (bounds.max.y - panBounds.max.y) -
+				(Math.min(panBounds.min.y, iconPos.y) - panBounds.min.y) / (bounds.min.y - panBounds.min.y)
+			).multiplyBy(speed);
+
+			map.panBy(movement, {animate: false});
+
+			this._draggable._newPos._add(movement);
+			this._draggable._startPos._add(movement);
+
+			DomUtil.setPosition(marker._icon, this._draggable._newPos);
+			this._onDrag(e);
+
+			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
+		}
 	},
 
 	_onDragStart: function () {
@@ -66,34 +111,43 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .closePopup()
 		    .fire('movestart')
 		    .fire('dragstart');
-		if (this._marker._map._rotate){
+		if (this._marker._map._rotate) {
 			this._draggable.updateMapBearing(this._marker._map._bearing);
+		}
+	},
+
+	_onPreDrag: function (e) {
+		if (this._marker.options.autoPan) {
+			cancelAnimFrame(this._panRequest);
+			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
 		}
 	},
 
 	_onDrag: function (e) {
 		var marker = this._marker,
-		    rotated_marker = marker.options.rotation || marker.options.rotateWithView,
+		    rotatedMarker = marker.options.rotation || marker.options.rotateWithView,
 		    shadow = marker._shadow,
-		    iconPos = L.DomUtil.getPosition(marker._icon);
+		    iconPos = DomUtil.getPosition(marker._icon);
 
 		// update shadow position
-		if (!rotated_marker && shadow) {
-			L.DomUtil.setPosition(shadow, iconPos);
+		if (!rotatedMarker && shadow) {
+			DomUtil.setPosition(shadow, iconPos);
 		}
-
 		if (marker._map._rotate) {
 			// Reverse calculation from mapPane coordinates to rotatePane coordinates
 			iconPos = marker._map.mapPanePointToRotatedPoint(iconPos);
 		}
-		latlng = marker._map.layerPointToLatLng(iconPos);
+		var latlng = marker._map.layerPointToLatLng(iconPos);
 
 		marker._latlng = latlng;
 		e.latlng = latlng;
 		e.oldLatLng = this._oldLatLng;
 
-		if (rotated_marker) marker.setLatLng(latlng); // use `setLatLng` to presisit rotation. low efficiency
-		else marker.fire('move', e); // `setLatLng` will trig 'move' event. we imitate here.
+		if (rotatedMarker) {
+			marker.setLatLng(latlng); // use `setLatLng` to presisit rotation. low efficiency
+		} else {
+			marker.fire('move', e); // `setLatLng` will trig 'move' event. we imitate here.
+		}
 
 		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
@@ -106,6 +160,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		// Fired when the user stops dragging the marker.
 
 		this._marker.update();
+		cancelAnimFrame(this._panRequest);
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).

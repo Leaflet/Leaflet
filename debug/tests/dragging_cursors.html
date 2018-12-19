@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 
 		<link rel="stylesheet" href="../css/screen.css" />
-		<script type="text/javascript" src="../../build/deps.js"></script>
 		<script src="../leaflet-include.js"></script>
 	</head>
 	<body>
@@ -25,9 +24,9 @@
 		<div>Map dragging disabled:</div>
 		<div id="map2" style="height: 300px;width: 400px; float:left;"></div>
 
-		<script type="text/javascript">
+		<script>
 			function addLayerAndMarkers(map) {
-				var layer = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				var layer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom : 18
 				}).addTo(map);
 

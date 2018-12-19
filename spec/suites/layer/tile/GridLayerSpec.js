@@ -122,11 +122,18 @@ describe('GridLayer', function () {
 	});
 
 	describe('#createTile', function () {
+		var grid;
 
 		beforeEach(function () {
 			// Simpler sizes to test.
 			div.style.width = '512px';
 			div.style.height = '512px';
+
+			map.remove();
+			map = L.map(div);
+			map.setView([0, 0], 10);
+
+			grid = L.gridLayer();
 		});
 
 		afterEach(function () {
@@ -136,12 +143,7 @@ describe('GridLayer', function () {
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', function (done) {
-			map.remove();
-			map = L.map(div);
-			map.setView([0, 0], 10);
-
-			var grid = L.gridLayer(),
-			    count = 0,
+			var count = 0,
 			    loadCount = 0;
 			grid.createTile = function (coords) {
 				count++;
@@ -159,6 +161,58 @@ describe('GridLayer', function () {
 			};
 			grid.on('load', onLoad);
 			map.addLayer(grid);
+		});
+
+		describe('when done() is called with an error parameter', function () {
+			var keys;
+
+			beforeEach(function () {
+				keys = [];
+				grid.createTile = function (coords, done) {
+					var tile = document.createElement('div');
+					keys.push(this._tileCoordsToKey(coords));
+					done('error', tile);
+					return tile;
+				};
+			});
+
+			it('does not raise tileload events', function (done) {
+				var tileLoadRaised = sinon.spy();
+				grid.on('tileload', tileLoadRaised);
+				grid.on('tileerror', function () {
+					if (keys.length === 4) {
+						expect(tileLoadRaised.notCalled).to.be(true);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('raises tileerror events', function (done) {
+				var tileErrorRaised = sinon.spy();
+				grid.on('tileerror', function () {
+					tileErrorRaised();
+					if (keys.length === 4) {
+						expect(tileErrorRaised.callCount).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('does not add the .leaflet-tile-loaded class to tile elements', function (done) {
+				var count = 0;
+				grid.on('tileerror', function (e) {
+					if (!L.DomUtil.hasClass(e.tile, 'leaflet-tile-loaded')) {
+						count++;
+					}
+					if (keys.length === 4) {
+						expect(count).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
 		});
 
 	});
@@ -232,7 +286,7 @@ describe('GridLayer', function () {
 			});
 		});
 
-		describe("when a tilelayer is removed from a map", function () {
+		describe("when a gridlayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [
 					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
@@ -264,6 +318,57 @@ describe('GridLayer', function () {
 		});
 	});
 
+
+	describe("min/maxNativeZoom option", function () {
+		it("calls createTile() with maxNativeZoom when map zoom is larger", function (done) {
+			map.setView([0, 0], 10);
+
+			var grid = L.gridLayer({
+				maxNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
+		});
+
+		it("calls createTile() with minNativeZoom when map zoom is smaller", function (done) {
+			map.setView([0, 0], 3);
+
+			var grid = L.gridLayer({
+				minNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
+		});
+	});
+
 	describe("number of 256px tiles loaded in synchronous non-animated grid @800x600px", function () {
 		var clock, grid, counts;
 
@@ -290,12 +395,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -494,46 +599,84 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 
-// 			grid.on('tileload tileunload tileloadstart load', logTiles);
+			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
+			clock.tick(1);
+			// Date.now() is 1.
 
-			grid.on('load', function () {
-				expect(counts.tileloadstart).to.be(16);
+			// grid.on('tileload tileunload tileloadstart load loading', logTiles);
+
+			// Use "once" to automatically detach the listener,
+			// and avoid removing the above logTiles
+			// (which would happen when calling "grid.off('load')").
+			grid.once('load', function () {
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-// 				grid.on('load', logTiles);
-				grid.on('load', function () {
-
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z10 plus 16 tiles for z11 covering the
-					// bounds at the *end* of the zoom-*in* anim
-					expect(counts.tileloadstart).to.be(32);
-					expect(counts.tileload).to.be(32);
-					expect(counts.tileunload).to.be(0);
-
+				// Wait for a frame to let _updateOpacity starting.
+				L.Util.requestAnimFrame(function () {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
 					clock.tick(300);
+					// At 251ms, the pruneTile from the end of the z10 tiles fade-in animation executes.
+					// Date.now() is 301.
 
-					// After the zoom-in, the 'outside' 12 tiles (not the 4
-					// at the center, still in bounds) have been unloaded.
-					expect(counts.tileunload).to.be(12);
-
-					L.Util.requestAnimFrame(function () {
-						expect(counts.tileloadstart).to.be(32);
+					grid.once('load', function () {
 						expect(counts.tileload).to.be(32);
-						expect(counts.tileunload).to.be(16);
-						done();
-					});
-				});
 
-				map.setZoom(11, {animate: true});
-				clock.tick(250);
+						// We're one frame into the zoom animation,
+						// so GridLayer._setView with noPrune === undefined is not called yet
+						// No tile should be unloaded yet.
+						expect(counts.tileunload).to.be(0);
+
+						// Wait > 250msec for the zoom animation to complete,
+						// which triggers the tile pruning
+						// Animated zoom takes 1 frame + 250ms before firing "zoom" event
+						// => GridLayer._resetView => GridLayer._setView => _pruneTiles
+						// However, this "load" event callback executes synchronously,
+						// i.e. _tileReady still did not have a chance to prepare the
+						// setTimeout(250) for pruning after the end of the fade-in animation.
+						clock.tick(300);
+						// At 301 + 250 = 551ms, the pruneTile from the end of the zoom animation executes.
+						// It unloads the 'outside' 12 tiles from z10, but not the 4 tiles in the center,
+						// since _updateOpacity did not have a chance yet to flag the 16 new z11 tiles as "active".
+						expect(counts.tileunload).to.be(12);
+						// Date.now() is 601.
+
+						// Wait for a frame to let _updateOpacity starting
+						// + _tileReady to be able to prepare its setTimeout(250)
+						// for pruning after the end of the fade-in animation.
+						// Since we are already > 200ms since the 'load' event fired,
+						// _updateOpacity should directly set the current tiles as "active",
+						// so the remaining 4 tiles from z10 can then be pruned.
+						// However we have skipped any pruning from _updateOpacity,
+						// so we will have to rely on the setTimeout from _tileReady.
+						L.Util.requestAnimFrame(function () {
+							// Wait > 250msec for the tile fade-in animation to complete,
+							// which triggers the tile pruning
+							clock.tick(300);
+							// At 851ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
+							// It unloads the remaining 4 tiles from z10.
+							expect(counts.tileunload).to.be(16);
+							// Date.now() is 901.
+							done();
+						});
+					});
+
+					map.setZoom(11, {animate: true});
+					// Animation (and new tiles loading) starts after 1 frame.
+					L.Util.requestAnimFrame(function () {
+						// 16 extra tiles from z11 being loaded. Total 16 + 16 = 32.
+						expect(counts.tileloadstart).to.be(32);
+					});
+
+				});
 			});
 
 			map.addLayer(grid).setView([0, 0], 10);
-			clock.tick(250);
+			// The first setView does not animated, therefore it starts loading tiles immediately.
+			// 16 tiles from z10 being loaded.
+			expect(counts.tileloadstart).to.be(16);
+			// At 1ms, first pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
 		});
 
 		it("Loads 32, unloads 16 tiles zooming in 10-18", function (done) {
@@ -567,51 +710,76 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
 
-// 			grid.on('tileload tileunload load', logTiles);
+			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
+			clock.tick(1);
+			// Date.now() is 1.
 
-			grid.on('load', function () {
-				expect(counts.tileloadstart).to.be(16);
+			// grid.on('tileload tileunload load', logTiles);
+
+			grid.once('load', function () {
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-// 				grid.on('load', logTiles);
-				grid.on('load', function () {
-
-					grid.off('load');
-// 					grid.on('load', logTiles);
-
-					// We're one frame into the zoom animation, there are
-					// 16 tiles for z11 plus 4 tiles for z10 covering the
-					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.be(20);
-					expect(counts.tileload).to.be(20);
-					expect(counts.tileunload).to.be(0);
-
-
+				// Wait for a frame to let _updateOpacity starting.
+				L.Util.requestAnimFrame(function () {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
 					clock.tick(300);
-					L.Util.requestAnimFrame(function () {
-						expect(counts.tileunload).to.be(16);
+					// At 251ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
+					// Date.now() is 301.
 
-						// The next 'load' event happens when the zoom anim is
-						// complete, and triggers loading of all the z10 tiles.
-						grid.on('load', function () {
-							expect(counts.tileloadstart).to.be(32);
+					grid.once('load', function () {
+						expect(counts.tileload).to.be(20);
+						// No tile should be unloaded yet.
+						expect(counts.tileunload).to.be(0);
+
+						// Wait > 250msec for the zoom animation to complete,
+						// which triggers the tile pruning, but there are no
+						// tiles to prune yet (z11 tiles are all in bounds).
+						clock.tick(300);
+						// Date.now() is 601.
+
+						// At the end of the animation, all 16 tiles from z10
+						// are loading.
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(20);
+
+						// Now that the zoom animation is complete,
+						// the grid is ready to fire a new "load" event
+						// on next frame, so prepare its listener now.
+						// During that frame, _updateOpacity will flag the 4
+						// central tiles from z10 as "active", since we are now
+						// > 200ms after the first "load" event fired.
+						grid.once('load', function () {
 							expect(counts.tileload).to.be(32);
-							done();
-						});
+							// No tile should be unloaded yet.
+							expect(counts.tileunload).to.be(0);
 
+							// Wait for a frame for next _updateOpacity to prune
+							// all 16 tiles from z11 which are now covered by the
+							// 4 central active tiles of z10.
+							L.Util.requestAnimFrame(function () {
+								expect(counts.tileunload).to.be(16);
+								done();
+							});
+						});
 					});
 				});
 
 				map.setZoom(10, {animate: true});
-				clock.tick(250);
+				// Animation (and new tiles loading) starts after 1 frame.
+				L.Util.requestAnimFrame(function () {
+					// We're one frame into the zoom animation, there are
+					// 16 tiles for z11 plus 4 tiles for z10 covering the
+					// bounds at the *beginning* of the zoom-*out* anim
+					expect(counts.tileloadstart).to.be(20);
+				});
 			});
 
 			map.addLayer(grid).setView([0, 0], 11);
-			clock.tick(250);
+			// The first setView does not animated, therefore it starts loading tiles immediately.
+			// 16 tiles from z10 being loaded.
+			expect(counts.tileloadstart).to.be(16);
 		});
 
 		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
@@ -666,12 +834,14 @@ describe('GridLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-// 				map.on('_frame', function () {
-// 					console.log('frame', counts);
-// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});
+
+			grid.options.keepBuffer = 0;
 
 			map.addLayer(grid).setView(mad, 12);
 			clock.tick(250);
@@ -705,12 +875,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -723,54 +893,103 @@ describe('GridLayer', function () {
 			counts = undefined;
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
 		it("Loads map, moves forth by 512 px, keepBuffer = 0", function (done) {
 
-			grid.on('load', function () {
+			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
+			clock.tick(1);
+			// Date.now() is 1.
+
+			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				grid.on('load', function () {
-					expect(counts.tileloadstart).to.be(28);
-					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(12);
-					done();
+				// Wait for a frame to let _updateOpacity starting.
+				L.Util.requestAnimFrame(function () {
+
+					// Wait > 250msec for the tile fade-in animation to complete,
+					// which triggers the tile pruning
+					clock.tick(300);
+					// At 251ms, the pruneTile from the end of the setView tiles fade-in animation executes.
+					// Date.now() is 301.
+
+					grid.once('load', function () {
+						// Since there is no animation requested,
+						// We directly jump to the target position.
+						// => 12 new tiles, total = 16 + 12 = 28 tiles.
+						expect(counts.tileloadstart).to.be(28);
+						expect(counts.tileload).to.be(28);
+
+						// Wait for a frame to let _updateOpacity starting
+						// It will prune the 12 tiles outside the new bounds.
+						// PhantomJS has Browser.any3d === false, so it actually
+						// does not perform the fade animation and does not need
+						// this rAF, but it does not harm either.
+						L.Util.requestAnimFrame(function () {
+							expect(counts.tileunload).to.be(12);
+							done();
+						});
+					});
+
+					// Move up 512px => 2 tile rows => 2*4 = 8 new tiles (V and M).
+					// Move right 512px => 2 tile columns => 2*4 = 4 new tiles (H) + 4 new tiles (M) in common with vertical pan.
+					// Total = 8 + 8 - 4 = 12 new tiles.
+					// ..VVMM
+					// ..VVMM
+					// OOXXHH // O = Old tile, X = Old tile still visible.
+					// OOXXHH
+					// OOOO
+					// OOOO
+					map.panBy([512, 512], {animate: false});
+					// clock.tick(250);
+
 				});
-
-				map.panBy([512, 512], {animate: false});
-				clock.tick(250);
 			});
 
 			grid.options.keepBuffer = 0;
 
+			// 800px width * 600px height => 4 tiles horizontally * 4 tiles vertically = 16 tiles
 			map.addLayer(grid).setView([0, 0], 10);
-			clock.tick(250);
+			// clock.tick(250);
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
 		it("Loads map, moves forth and back by 512 px, keepBuffer = 0", function (done) {
 
-			grid.on('load', function () {
+			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off('load');
 
-				grid.on('load', function () {
+				grid.once('load', function () {
 					expect(counts.tileloadstart).to.be(28);
 					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(12);
 
-					grid.off('load');
-					grid.on('load', function () {
-						expect(counts.tileloadstart).to.be(40);
-						expect(counts.tileload).to.be(40);
-						expect(counts.tileunload).to.be(24);
-						done();
+					// Wait for a frame to let _updateOpacity starting
+					// It will prune the 12 tiles outside the new bounds.
+					// PhantomJS has Browser.any3d === false, so it actually
+					// does not perform the fade animation and does not need
+					// this rAF, but it does not harm either.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileunload).to.be(12);
+
+						grid.once('load', function () {
+							expect(counts.tileloadstart).to.be(40);
+							expect(counts.tileload).to.be(40);
+
+							// Wait an extra frame for the tile pruning to happen.
+							L.Util.requestAnimFrame(function () {
+								expect(counts.tileunload).to.be(24);
+								done();
+							});
+						});
+
+						map.panBy([-512, -512], {animate: false});
+						clock.tick(250);
 					});
-
-					map.panBy([-512, -512], {animate: false});
-					clock.tick(250);
 				});
 
 				map.panBy([512, 512], {animate: false});
@@ -886,6 +1105,28 @@ describe('GridLayer', function () {
 		});
 	});
 
+	describe("Sanity checks for infinity", function () {
+		it("Throws error on map center at plus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([Infinity, Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
 
+		it("Throws error on map center at minus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([-Infinity, -Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
+	});
 
+	it("doesn't call map's getZoomScale method with null after _invalidateAll method was called", function () {
+		map.setView([0, 0], 0);
+		var grid = L.gridLayer().addTo(map);
+		var wrapped = sinon.spy(map, 'getZoomScale');
+		grid._invalidateAll();
+		grid.redraw();
+		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);
+	});
 });

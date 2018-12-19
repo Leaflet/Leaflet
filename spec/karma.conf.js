@@ -1,12 +1,21 @@
+var json = require('rollup-plugin-json');
+
+const outro = `var oldL = window.L;
+exports.noConflict = function() {
+	window.L = oldL;
+	return this;
+}
+
+// Always export us to window global (see #2364)
+window.L = exports;`;
+
 // Karma configuration
 module.exports = function (config) {
 
-	var libSources = require(__dirname + '/../build/build.js').getFiles();
+// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
-		"spec/sinon.js",
-		"spec/expect.js"
-	].concat(libSources, [
+		"src/Leaflet.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -14,14 +23,25 @@ module.exports = function (config) {
 		"spec/suites/**/*.js",
 		"dist/*.css",
 		{pattern: "dist/images/*.png", included: false, serve: true}
-	]);
+	];
+
+	var preprocessors = {};
+
+	if (config.cov) {
+		preprocessors['src/**/*.js'] = ['coverage'];
+	}
+
+	preprocessors['src/Leaflet.js'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
 
 		plugins: [
+			'karma-rollup-preprocessor',
 			'karma-mocha',
+			'karma-sinon',
+			'karma-expect',
 			'karma-coverage',
 			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
@@ -29,7 +49,7 @@ module.exports = function (config) {
 			'karma-firefox-launcher'],
 
 		// frameworks to use
-		frameworks: ['mocha'],
+		frameworks: ['mocha', 'sinon', 'expect'],
 
 		// list of files / patterns to load in the browser
 		files: files,
@@ -38,9 +58,22 @@ module.exports = function (config) {
 		},
 		exclude: [],
 
+		// Rollup the ES6 Leaflet sources into just one file, before tests
+		preprocessors: preprocessors,
+		rollupPreprocessor: {
+			plugins: [
+				json()
+			],
+			format: 'umd',
+			name: 'L',
+			outro: outro
+		},
+
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: ['dots'],
+		reporters: config.cov ? ['dots', 'coverage'] : ['dots'],
+
+		coverageReporter: config.cov ? {type : 'html', dir : 'coverage/'} : null,
 
 		// web server port
 		port: 9876,

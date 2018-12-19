@@ -44,6 +44,14 @@ describe("Point", function () {
 	describe('#floor', function () {
 		it('returns a new point with floored coordinates', function () {
 			expect(new L.Point(50.56, 30.123).floor()).to.eql(new L.Point(50, 30));
+			expect(new L.Point(-50.56, -30.123).floor()).to.eql(new L.Point(-51, -31));
+		});
+	});
+
+	describe('#trunc', function () {
+		it('returns a new point with truncated coordinates', function () {
+			expect(new L.Point(50.56, 30.123).trunc()).to.eql(new L.Point(50, 30));
+			expect(new L.Point(-50.56, -30.123).trunc()).to.eql(new L.Point(-50, -30));
 		});
 	});
 
@@ -82,6 +90,7 @@ describe("Point", function () {
 	describe('#toString', function () {
 		it('formats a string out of point coordinates', function () {
 			expect(new L.Point(50, 30) + '').to.eql('Point(50, 30)');
+			expect(new L.Point(50.1234567, 30.1234567) + '').to.eql('Point(50.123457, 30.123457)');
 		});
 	});
 

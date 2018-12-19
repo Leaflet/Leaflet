@@ -1,17 +1,23 @@
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Util from '../../core/Util';
+import * as DomUtil from '../../dom/DomUtil';
+
 /*
  * L.Handler.TouchGestures is both TouchZoom plus TouchRotate.
  */
 
 // @namespace Map
 // @section Interaction Options
-L.Map.mergeOptions({
+Map.mergeOptions({
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
 	// and then bounce back when pinch-zooming.
 	bounceAtZoomLimits: true
 });
 
-L.Map.TouchGestures = L.Handler.extend({
+export var TouchGestures = Handler.extend({
 
 	initialize: function (map) {
 		this._map = map;
@@ -20,11 +26,11 @@ L.Map.TouchGestures = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	_onTouchStart: function (e) {
@@ -63,11 +69,10 @@ L.Map.TouchGestures = L.Handler.extend({
 
 		map.stop();
 
-		L.DomEvent
-		    .on(document, 'touchmove', this._onTouchMove, this)
-		    .on(document, 'touchend', this._onTouchEnd, this);
+		DomEvent.on(document, 'touchmove', this._onTouchMove, this);
+		DomEvent.on(document, 'touchend', this._onTouchEnd, this);
 
-		L.DomEvent.preventDefault(e);
+		DomEvent.preventDefault(e);
 	},
 
 	_onTouchMove: function (e) {
@@ -82,11 +87,11 @@ L.Map.TouchGestures = L.Handler.extend({
 
 		if (this._rotating) {
 			var theta = Math.atan(vector.x / vector.y);
-			var bearingDelta = (theta - this._startTheta) * L.DomUtil.RAD_TO_DEG;
+			var bearingDelta = (theta - this._startTheta) * DomUtil.RAD_TO_DEG;
 			if (vector.y < 0) { bearingDelta += 180; }
 			if (bearingDelta) {
-				/// TODO: The pivot should be the last touch point, but zoomAnimation manages to
-				///   overwrite the rotate pane position. Maybe related to #3529.
+				// TODO: The pivot should be the last touch point, but zoomAnimation manages to
+				// overwrite the rotate pane position. Maybe related to #3529.
 				map.setBearing(this._startBearing - bearingDelta);
 			}
 		}
@@ -108,7 +113,7 @@ L.Map.TouchGestures = L.Handler.extend({
 				delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
 				if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
 
-				var alpha = -map.getBearing() * L.DomUtil.DEG_TO_RAD;
+				var alpha = -map.getBearing() * DomUtil.DEG_TO_RAD;
 
 				this._center = map.unproject(map.project(this._pinchStartLatLng).subtract(delta.rotate(alpha)));
 			}
@@ -120,12 +125,12 @@ L.Map.TouchGestures = L.Handler.extend({
 			this._moved = true;
 		}
 
-		L.Util.cancelAnimFrame(this._animRequest);
+		Util.cancelAnimFrame(this._animRequest);
 
-		var moveFn = L.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
-		this._animRequest = L.Util.requestAnimFrame(moveFn, this, true);
+		var moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
+		this._animRequest = Util.requestAnimFrame(moveFn, this, true);
 
-		L.DomEvent.preventDefault(e);
+		DomEvent.preventDefault(e);
 	},
 
 	_onTouchEnd: function () {
@@ -136,11 +141,10 @@ L.Map.TouchGestures = L.Handler.extend({
 
 		this._zooming = false;
 		this._rotating = false;
-		L.Util.cancelAnimFrame(this._animRequest);
+		Util.cancelAnimFrame(this._animRequest);
 
-		L.DomEvent
-		    .off(document, 'touchmove', this._onTouchMove)
-		    .off(document, 'touchend', this._onTouchEnd);
+		DomEvent.off(document, 'touchmove', this._onTouchMove);
+		DomEvent.off(document, 'touchend', this._onTouchEnd);
 
 		if (this.zoom) {
 			// Pinch updates GridLayers' levels only when snapZoom is off, so snapZoom becomes noUpdate.
@@ -156,4 +160,4 @@ L.Map.TouchGestures = L.Handler.extend({
 // @section Handlers
 // @property touchGestures: Handler
 // Touch gestures handler.
-L.Map.addInitHook('addHandler', 'touchGestures', L.Map.TouchGestures);
+Map.addInitHook('addHandler', 'touchGestures', TouchGestures);

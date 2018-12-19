@@ -6,12 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.0-rc3</strong>.</p>
-
-<p>Docs for 0.7 are <a href='reference.html'>available here</a>.
-
-Docs for 0.6 are available <a href="https://github.com/Leaflet/Leaflet/archive/gh-pages-0.6.zip">in the source form</a> (see <a href="https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md#improving-documentation">instructions for running docs</a>).</p>
-
+<p>This reference reflects <strong>Leaflet 1.0.0</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
 			<h4>Map</h4>
@@ -693,13 +688,13 @@ for the first time).</td>
 	<tr id='map-zoom'>
 		<td><code><b>zoom</b>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired repeteadly during any change in zoom level, including zoom
+		<td>Fired repeatedly during any change in zoom level, including zoom
 and fly animations.</td>
 	</tr>
 	<tr id='map-move'>
 		<td><code><b>move</b>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired repeteadly during any movement of the map, including pan and
+		<td>Fired repeatedly during any movement of the map, including pan and
 fly animations.</td>
 	</tr>
 	<tr id='map-zoomend'>
@@ -825,7 +820,7 @@ for a second (also called long press).</td>
 	</tr>
 	<tr id='map-keypress'>
 		<td><code><b>keypress</b>
-		<td><code><a href='#event'>Event</a></code></td>
+		<td><code><a href='#keyboardevent'>KeyboardEvent</a></code></td>
 		<td>Fired when the user presses a key from the keyboard while the map is focused.</td>
 	</tr>
 	<tr id='map-preclick'>
@@ -1125,7 +1120,7 @@ pan by default.</p>
 </td>
 	</tr>
 	<tr id='map-flyto'>
-		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;Zoom/Pan options&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the view of the map (geographical center and zoom) performing a smooth
 pan-zoom animation.</p>
@@ -2109,7 +2104,7 @@ panning inertia).</td>
 		<td><code><b>icon</b></code></td>
 		<td><code><a href='#icon'>Icon</a></code>
 		<td><code>*</code></td>
-		<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon. Set to new <code>L.Icon.Default()</code> by default.</td>
+		<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon. If not specified, a new <a href="#icon-default"><code>L.Icon.Default</code></a> is used.</td>
 	</tr>
 	<tr id='marker-draggable'>
 		<td><code><b>draggable</b></code></td>
@@ -2921,13 +2916,25 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
+	<tr id='popup-closeonclick'>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>*</code></td>
+		<td>Set it if you want to override the default behavior of the popup closing when user clicks
+on the map. Defaults to the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option.</td>
+	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you want to override the default behavior of
-the popup closing when user clicks the map (set globally by
-the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</td>
+the popup closing when another popup is opened.</td>
+	</tr>
+	<tr id='popup-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom CSS class name to assign to the popup.</td>
 	</tr>
 </tbody></table>
 
@@ -2956,19 +2963,6 @@ the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</t
 		<td><code>Point(0, 7)</code></td>
 		<td>The offset of the popup position. Useful to control the anchor
 of the popup when opening it on some overlays.</td>
-	</tr>
-	<tr id='popup-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code>
-		<td><code>true</code></td>
-		<td>Whether to animate the popup on zoom. Disable it if you have
-problems with Flash content inside popups.</td>
-	</tr>
-	<tr id='popup-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code>
-		<td><code>&#x27;&#x27;</code></td>
-		<td>A custom CSS class name to assign to the popup.</td>
 	</tr>
 	<tr id='popup-pane'>
 		<td><code><b>pane</b></code></td>
@@ -3600,13 +3594,6 @@ position on the map.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='tooltip-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code>
-		<td><code>true</code></td>
-		<td>Whether to animate the popup on zoom. Disable it if you have
-problems with Flash content inside popups.</td>
-	</tr>
 	<tr id='tooltip-classname'>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code>
@@ -4041,7 +4028,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 
 
-<pre><code class="lang-js">L.tileLayer(&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}&#39;, {foo: &#39;bar&#39;}).addTo(map);
+<pre><code class="lang-js">L.tileLayer(&#39;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}&#39;, {foo: &#39;bar&#39;}).addTo(map);
 </code></pre>
 
 
@@ -4237,7 +4224,8 @@ from <code>maxNativeZoom</code> level and auto-scaled.</td>
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
-GridLayer will only be displayed once at low zoom levels.</td>
+GridLayer will only be displayed once at low zoom levels. Has no
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 	</tr>
 	<tr id='tilelayer-pane'>
 		<td><code><b>pane</b></code></td>
@@ -4504,7 +4492,7 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 	</tr>
 	<tr id='tilelayer-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
-		<td><code>String</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
 	</tr>
@@ -5117,7 +5105,8 @@ from <code>maxNativeZoom</code> level and auto-scaled.</td>
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
-GridLayer will only be displayed once at low zoom levels.</td>
+GridLayer will only be displayed once at low zoom levels. Has no
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 	</tr>
 	<tr id='tilelayer-wms-pane'>
 		<td><code><b>pane</b></code></td>
@@ -5389,7 +5378,7 @@ callback is called when the tile has been loaded.</p>
 	</tr>
 	<tr id='tilelayer-wms-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
-		<td><code>String</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
 	</tr>
@@ -6028,7 +6017,7 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='imageoverlay-setopacity'>
-		<td><code><b>setOpacity</b>()</nobr></code></td>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the opacity of the overlay.</p>
 </td>
@@ -7043,9 +7032,9 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 <pre><code class="lang-js">// create a red polyline from an array of LatLng points
 var latlngs = [
-    [-122.68, 45.51],
-    [-122.43, 37.77],
-    [-118.2, 34.04]
+    [45.51, -122.68],
+    [37.77, -122.43],
+    [34.04, -118.2]
 ];
 var polyline = L.polyline(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polyline
@@ -7054,12 +7043,12 @@ map.fitBounds(polyline.getBounds());
 <p>You can also pass a multi-dimensional array to represent a <code>MultiPolyline</code> shape:</p>
 <pre><code class="lang-js">// create a red polyline from an array of arrays of LatLng points
 var latlngs = [
-    [[-122.68, 45.51],
-     [-122.43, 37.77],
-     [-118.2, 34.04]],
-    [[-73.91, 40.78],
-     [-87.62, 41.83],
-     [-96.72, 32.76]]
+    [[45.51, -122.68],
+     [37.77, -122.43],
+     [34.04, -118.2]],
+    [[40.78, -73.91],
+     [41.83, -87.62],
+     [32.76, -96.72]]
 ];
 </code></pre>
 
@@ -7872,25 +7861,25 @@ Note that points you pass when creating a polygon shouldn&#39;t have an addition
 
 
 <pre><code class="lang-js">// create a red polygon from an array of LatLng points
-var latlngs = [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]];
+var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
 var polygon = L.polygon(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polygon
 map.fitBounds(polygon.getBounds());
 </code></pre>
 <p>You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:</p>
 <pre><code class="lang-js">var latlngs = [
-  [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-  [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+  [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+  [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
 ];
 </code></pre>
 <p>Additionally, you can pass a multi-dimensional array to represent a MultiPolygon shape.</p>
 <pre><code class="lang-js">var latlngs = [
   [ // first polygon
-    [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-    [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+    [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+    [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
   ],
   [ // second polygon
-    [[-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38]]
+    [[41, -111.03],[45, -111.04],[45, -104.05],[41, -104.05]]
   ]
 ];
 </code></pre>
@@ -11304,6 +11293,33 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#renderer'>Renderer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='svg-update'>
+		<td><code><b>update</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the renderer updates its bounds, center and zoom, for example when
+its map has moved</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -11759,7 +11775,7 @@ not display properly in some edge cases.</p>
 
 <p>Use Canvas by default for all paths in the map:</p>
 <pre><code class="lang-js">var map = L.map(&#39;map&#39;, {
-    renderer: L.canvas();
+    renderer: L.canvas()
 });
 </code></pre>
 <p>Use a Canvas renderer with extra padding for specific vector geometries:</p>
@@ -11865,6 +11881,33 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#renderer'>Renderer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='canvas-update'>
+		<td><code><b>update</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the renderer updates its bounds, center and zoom, for example when
+its map has moved</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -12854,7 +12897,14 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</div>
 </div>
 
-</section><h2 id='featuregroup'>FeatureGroup</h2><p>Extended <a href="#layergroup"><code>LayerGroup</code></a> that also has mouse events (propagated from members of the group) and a shared bindPopup method.</p>
+</section><h2 id='featuregroup'>FeatureGroup</h2><p>Extended <a href="#layergroup"><code>LayerGroup</code></a> that makes it easier to do the same thing to all its member layers:</p>
+<ul>
+<li><a href="#layer-bindpopup"><code>bindPopup</code></a> binds a popup to all of the layers at once (likewise with <a href="#layer-bindtooltip"><code>bindTooltip</code></a>)</li>
+<li>Events are propagated to the <a href="#featuregroup"><code>FeatureGroup</code></a>, so if the group has an event
+handler, it will handle events from any of the layers. This includes mouse events
+and custom events.</li>
+<li>Has <code>layeradd</code> and <code>layerremove</code> events</li>
+</ul>
 
 <section>
 <h3 id='featuregroup-example'>Usage example</h3>
@@ -12867,7 +12917,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 <pre><code class="lang-js">L.featureGroup([marker1, marker2, polyline])
     .bindPopup(&#39;Hello world!&#39;)
-    .on(&#39;click&#39;, function() { alert(&#39;Clicked on a group!&#39;); })
+    .on(&#39;click&#39;, function() { alert(&#39;Clicked on a member of the group!&#39;); })
     .addTo(map);
 </code></pre>
 
@@ -12934,9 +12984,33 @@ properties. The event might can optionally be propagated to event parents.</p>
 </div>
 
 </section><section>
-<h3 id=''>Events</h3>
+<h3 id='featuregroup-event'>Events</h3>
+
+<section >
 
 
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='featuregroup-layeradd'>
+		<td><code><b>layeradd</b>
+		<td><code><a href='#layerevent'>LayerEvent</a></code></td>
+		<td>Fired when a layer is added to this <a href="#featuregroup"><code>FeatureGroup</code></a></td>
+	</tr>
+	<tr id='featuregroup-layerremove'>
+		<td><code><b>layerremove</b>
+		<td><code><a href='#layerevent'>LayerEvent</a></code></td>
+		<td>Fired when a layer is removed from this <a href="#featuregroup"><code>FeatureGroup</code></a></td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -13062,7 +13136,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	<tr id='featuregroup-bringtoback'>
 		<td><code><b>bringToBack</b>()</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Brings the layer group to the top of all other layers</p>
+		<td><p>Brings the layer group to the back of all other layers</p>
 </td>
 	</tr>
 	<tr id='featuregroup-getbounds'>
@@ -13493,7 +13567,7 @@ GeoJSON data and display it on the map. Extends <a href="#featuregroup"><code>Fe
 
 
 
-<pre><code class="lang-js">L.geoJson(data, {
+<pre><code class="lang-js">L.geoJSON(data, {
     style: function (feature) {
         return {color: feature.properties.color};
     }
@@ -13524,7 +13598,7 @@ GeoJSON data and display it on the map. Extends <a href="#featuregroup"><code>Fe
 	<tr id='geojson-l-geojson'>
 		<td><code><b>L.geoJSON</b>(<nobr>&lt;Object&gt;</nobr> <i>geojson?</i>, <nobr>&lt;<a href='#geojson-option'>GeoJSON options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td>Creates a GeoJSON layer. Optionally accepts an object in
-<a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map
+<a href="https://tools.ietf.org/html/rfc7946">GeoJSON format</a> to display on the map
 (you can alternatively add it later with <code>addData</code> method) and an <code>options</code> object.</td>
 	</tr>
 </tbody></table>
@@ -13638,6 +13712,37 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#featuregroup'>FeatureGroup</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='geojson-layeradd'>
+		<td><code><b>layeradd</b>
+		<td><code><a href='#layerevent'>LayerEvent</a></code></td>
+		<td>Fired when a layer is added to this <a href="#featuregroup"><code>FeatureGroup</code></a></td>
+	</tr>
+	<tr id='geojson-layerremove'>
+		<td><code><b>layerremove</b>
+		<td><code><a href='#layerevent'>LayerEvent</a></code></td>
+		<td>Fired when a layer is removed from this <a href="#featuregroup"><code>FeatureGroup</code></a></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -13768,7 +13873,7 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 	<tr id='geojson-bringtoback'>
 		<td><code><b>bringToBack</b>()</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Brings the layer group to the top of all other layers</p>
+		<td><p>Brings the layer group to the back of all other layers</p>
 </td>
 	</tr>
 	<tr id='geojson-getbounds'>
@@ -14425,7 +14530,8 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
-GridLayer will only be displayed once at low zoom levels.</td>
+GridLayer will only be displayed once at low zoom levels. Has no
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 	</tr>
 	<tr id='gridlayer-pane'>
 		<td><code><b>pane</b></code></td>
@@ -14628,7 +14734,7 @@ GridLayer will only be displayed once at low zoom levels.</td>
 	</tr>
 	<tr id='gridlayer-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
-		<td><code>String</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
 	</tr>
@@ -15664,7 +15770,7 @@ overlap if their intersection is an area.</p>
 });
 L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
 </code></pre>
-<p><code>L.Icon.Default</code> extends <a href="#icon"><code>L.Icon</code></a> and is the blue icon Leaflet uses for markers by default.</p>
+<p><a href="#icon-default"><code>L.Icon.Default</code></a> extends <a href="#icon"><code>L.Icon</code></a> and is the blue icon Leaflet uses for markers by default.</p>
 
 
 
@@ -16244,6 +16350,42 @@ properties. The event might can optionally be propagated to event parents.</p>
 </section></div>
 	</div>
 </div>
+
+</section><span id='icon-default'></span>
+
+<section>
+<h3 id='icon-default-option'>Icon.Default</h3>
+
+<section >
+
+
+
+<div class='section-comments'>A trivial subclass of <a href="#icon"><code>Icon</code></a>, represents the icon to use in <a href="#marker"><code>Marker</code></a>s when
+no icon is specified. Points to the blue marker image distributed with Leaflet
+releases.
+In order to change the default icon, just change the properties of <code>L.Icon.Default.prototype.options</code>
+(which is a set of <a href="#icon-option"><code>Icon options</code></a>).</div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-default-imagepath'>
+		<td><code><b>imagePath</b></code></td>
+		<td><code>String</code>
+		<td><code></code></td>
+		<td><a href="#icon-default"><code>L.Icon.Default</code></a> will try to auto-detect the absolute location of the
+blue icon images. If you are placing these images in a non-standard
+way, set this option to point to the right absolute path.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
 
 </section><h2 id='divicon'>DivIcon</h2><p>Represents a lightweight icon for markers that uses a simple <code>&lt;div&gt;</code>
 element instead of an image. Inherits from <a href="#icon"><code>Icon</code></a> but ignores the <code>iconUrl</code> and shadow options.</p>
@@ -17209,7 +17351,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</div>
 </div>
 
-</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
+</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="https://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
 
 <section>
 <h3 id='control-layers-example'>Usage example</h3>
@@ -20567,18 +20709,18 @@ pixel coordinates for a particular zoom. For example, it returns
 	<tr id='crs-zoom'>
 		<td><code><b>zoom</b>(<nobr>&lt;Number&gt;</nobr> <i>scale</i>)</nobr></code></td>
 		<td><code>Number</code></td>
-		<td><p>Inverse of <code>scale()</code>, returns the zoom level correspondingto a scale
+		<td><p>Inverse of <code>scale()</code>, returns the zoom level corresponding to a scale
 factor of <code>scale</code>.</p>
 </td>
 	</tr>
 	<tr id='crs-getprojectedbounds'>
-		<td><code><b>getProjectedBounds</b>(<i>zoom</i>)</nobr></code></td>
+		<td><code><b>getProjectedBounds</b>(<nobr>&lt;Number&gt;</nobr> <i>zoom</i>)</nobr></code></td>
 		<td><code><a href='#bounds'>Bounds</a></code></td>
 		<td><p>Returns the projection&#39;s bounds scaled and transformed for the provided <code>zoom</code>.</p>
 </td>
 	</tr>
 	<tr id='crs-distance'>
-		<td><code><b>distance</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng1</i>)</nobr></code></td>
+		<td><code><b>distance</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng1</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng2</i>)</nobr></code></td>
 		<td><code>Number</code></td>
 		<td><p>Returns the distance between two geographical coordinates.</p>
 </td>
@@ -20618,14 +20760,14 @@ CRS&#39;s <code>wrapLat</code> and <code>wrapLng</code> properties, if they are 
 	<tr id='crs-wraplng'>
 		<td><code><b>wrapLng</b>
 		<td><code>Number[]</code></td>
-		<td>An array of two numbers defining whether the longitude coordinate axis
-wraps around a given range and how. Defaults to <code>[-180, 180]</code> in most
-geographical CRSs.</td>
+		<td>An array of two numbers defining whether the longitude (horizontal) coordinate
+axis wraps around a given range and how. Defaults to <code>[-180, 180]</code> in most
+geographical CRSs. If <code>undefined</code>, the longitude axis does not wrap around.</td>
 	</tr>
 	<tr id='crs-wraplat'>
 		<td><code><b>wrapLat</b>
 		<td><code>Number[]</code></td>
-		<td>Like <code>wrapLng</code>, but for the latitude axis.</td>
+		<td>Like <code>wrapLng</code>, but for the latitude (vertical) axis.</td>
 	</tr>
 	<tr id='crs-infinite'>
 		<td><code><b>infinite</b>
@@ -20749,9 +20891,29 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 </div>
 
 </section><section>
-<h3 id=''>Events</h3>
+<h3 id='renderer-event'>Events</h3>
+
+<section >
 
 
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='renderer-update'>
+		<td><code><b>update</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the renderer updates its bounds, center and zoom, for example when
+its map has moved</td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -21201,6 +21363,64 @@ information about the event. For example:</p>
 </section>
 
 
+</section><span id='keyboardevent'></span>
+
+<section>
+<h3 id='keyboardevent-property'>KeyboardEvent</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='keyboardevent-originalevent'>
+		<td><code><b>originalEvent</b>
+		<td><code>DOMEvent</code></td>
+		<td>The original <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">DOM <a href="#keyboardevent"><code>KeyboardEvent</code></a></a> that triggered this Leaflet event.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Properties inherited from <a href='#event'>Event</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='keyboardevent-type'>
+		<td><code><b>type</b>
+		<td><code>String</code></td>
+		<td>The event type (e.g. <code>&#39;click&#39;</code>).</td>
+	</tr>
+	<tr id='keyboardevent-target'>
+		<td><code><b>target</b>
+		<td><code>Object</code></td>
+		<td>The object that fired the event.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><span id='mouseevent'></span>
 
 <section>
@@ -21235,8 +21455,8 @@ information about the event. For example:</p>
 	</tr>
 	<tr id='mouseevent-originalevent'>
 		<td><code><b>originalEvent</b>
-		<td><code>DOM MouseEvent</code></td>
-		<td>The original <a href="https://developer.mozilla.org/docs/Web/API/MouseEvent">DOM mouse event</a> fired by the browser.</td>
+		<td><code>DOMEvent</code></td>
+		<td>The original <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent">DOM <a href="#mouseevent"><code>MouseEvent</code></a></a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent">DOM <code>TouchEvent</code></a> that triggered this Leaflet event.</td>
 	</tr>
 </tbody></table>
 
@@ -22017,13 +22237,6 @@ information about the event. For example:</p>
 		<td>The offset of the popup position. Useful to control the anchor
 of the popup when opening it on some overlays.</td>
 	</tr>
-	<tr id='divoverlay-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code>
-		<td><code>true</code></td>
-		<td>Whether to animate the popup on zoom. Disable it if you have
-problems with Flash content inside popups.</td>
-	</tr>
 	<tr id='divoverlay-classname'>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code>
@@ -22499,12 +22712,12 @@ var Leaflet = L.noConflict();
 
 
 	<div class="footer">
-		<p>© 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+		<p>© 2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 	</div>
 
 	</div>
 
-	<script src="http://leafletjs.com/docs/js/docs.js"></script>
+	<script src="https://leafletjs.com/docs/js/docs.js"></script>
 	<script>
 	hljs.configure({tabReplace: '    '});
 	hljs.initHighlightingOnLoad();

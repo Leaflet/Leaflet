@@ -8,20 +8,20 @@
 </head>
 <body>
 	<div id="mocha"></div>
-	<script src="expect.js"></script>
-	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
-	<script type="text/javascript" src="../node_modules/happen/happen.js"></script>
-	<script type="text/javascript" src="../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
-	<script type="text/javascript" src="sinon.js"></script>
+	<script src="../node_modules/expect.js/index.js"></script>
+	<script src="../node_modules/mocha/mocha.js"></script>
+	<script src="../node_modules/happen/happen.js"></script>
+	<script src="../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+	<script src="../node_modules/sinon/pkg/sinon.js"></script>
 
 	<!-- source files -->
 	<script>
 		// Trick Leaflet into believing we have a touchscreen (for Chrome)
 		if (window.Touch) { window.ontouchstart = function(){} };
 	</script>
-	<script type="text/javascript" src="../build/deps.js"></script>
+<!-- 	<script src="../build/deps.js"></script> -->
 
-	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
+	<script src="../dist/leaflet-src.js"></script>
 
 	<script>
 		mocha.setup({
@@ -32,70 +32,71 @@
 
 	<!-- spec files -->
 
-	<script type="text/javascript" src="suites/SpecHelper.js"></script>
+	<script src="suites/SpecHelper.js"></script>
 
 	<!-- /control -->
-	<script type="text/javascript" src="suites/control/ControlSpec.js"></script>
-	<script type="text/javascript" src="suites/control/Control.LayersSpec.js"></script>
-	<script type="text/javascript" src="suites/control/Control.ScaleSpec.js"></script>
-	<script type="text/javascript" src="suites/control/Control.AttributionSpec.js"></script>
+	<script src="suites/control/ControlSpec.js"></script>
+	<script src="suites/control/Control.LayersSpec.js"></script>
+	<script src="suites/control/Control.ScaleSpec.js"></script>
+	<script src="suites/control/Control.AttributionSpec.js"></script>
 
 	<!-- /core -->
-	<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
-	<script type="text/javascript" src="suites/core/ClassSpec.js"></script>
-	<script type="text/javascript" src="suites/core/EventsSpec.js"></script>
+	<script src="suites/core/UtilSpec.js"></script>
+	<script src="suites/core/ClassSpec.js"></script>
+	<script src="suites/core/EventsSpec.js"></script>
 
 	<!-- /geometry -->
-	<script type="text/javascript" src="suites/geometry/PointSpec.js"></script>
-	<script type="text/javascript" src="suites/geometry/BoundsSpec.js"></script>
-	<script type="text/javascript" src="suites/geometry/TransformationSpec.js"></script>
-	<script type="text/javascript" src="suites/geometry/LineUtilSpec.js"></script>
-	<script type="text/javascript" src="suites/geometry/PolyUtilSpec.js"></script>
+	<script src="suites/geometry/PointSpec.js"></script>
+	<script src="suites/geometry/BoundsSpec.js"></script>
+	<script src="suites/geometry/TransformationSpec.js"></script>
+	<script src="suites/geometry/LineUtilSpec.js"></script>
+	<script src="suites/geometry/PolyUtilSpec.js"></script>
 
 	<!-- /geo -->
-	<script type="text/javascript" src="suites/geo/LatLngSpec.js"></script>
-	<script type="text/javascript" src="suites/geo/LatLngBoundsSpec.js"></script>
-	<script type="text/javascript" src="suites/geo/ProjectionSpec.js"></script>
+	<script src="suites/geo/LatLngSpec.js"></script>
+	<script src="suites/geo/LatLngBoundsSpec.js"></script>
+	<script src="suites/geo/ProjectionSpec.js"></script>
 
 	<!-- /dom -->
-	<script type="text/javascript" src="suites/dom/DomEventSpec.js"></script>
-	<script type="text/javascript" src="suites/dom/DomUtilSpec.js"></script>
+	<script src="suites/dom/DomEventSpec.js"></script>
+	<script src="suites/dom/DomUtilSpec.js"></script>
 
 	<!-- /layer -->
-	<script type="text/javascript" src="suites/layer/FeatureGroupSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/GeoJSONSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/ImageOverlaySpec.js"></script>
-	<script type="text/javascript" src="suites/layer/LayerGroupSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/PopupSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/TooltipSpec.js"></script>
+	<script src="suites/layer/FeatureGroupSpec.js"></script>
+	<script src="suites/layer/GeoJSONSpec.js"></script>
+	<script src="suites/layer/ImageOverlaySpec.js"></script>
+	<script src="suites/layer/LayerGroupSpec.js"></script>
+	<script src="suites/layer/PopupSpec.js"></script>
+	<script src="suites/layer/TooltipSpec.js"></script>
 
 	<!-- /layer/tile -->
-	<script type="text/javascript" src="suites/layer/tile/GridLayerSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/tile/TileLayerSpec.js"></script>
+	<script src="suites/layer/tile/GridLayerSpec.js"></script>
+	<script src="suites/layer/tile/TileLayerSpec.js"></script>
 
 	<!-- /layer/marker/ -->
-	<script type="text/javascript" src="suites/layer/marker/MarkerSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/marker/Icon.DefaultSpec.js"></script>
+	<script src="suites/layer/marker/MarkerSpec.js"></script>
+	<script src="suites/layer/marker/Marker.DragSpec.js"></script>
+	<script src="suites/layer/marker/Icon.DefaultSpec.js"></script>
 
 	<!-- /layer/vector/ -->
-	<script type="text/javascript" src="suites/layer/vector/CircleSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/CircleMarkerSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/PathSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/PolygonSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/PolylineSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/PolylineGeometrySpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/CanvasSpec.js"></script>
+	<script src="suites/layer/vector/CircleSpec.js"></script>
+	<script src="suites/layer/vector/CircleMarkerSpec.js"></script>
+	<script src="suites/layer/vector/PathSpec.js"></script>
+	<script src="suites/layer/vector/PolygonSpec.js"></script>
+	<script src="suites/layer/vector/PolylineSpec.js"></script>
+	<script src="suites/layer/vector/PolylineGeometrySpec.js"></script>
+	<script src="suites/layer/vector/CanvasSpec.js"></script>
 
 	<!-- /map -->
-	<script type="text/javascript" src="suites/map/MapSpec.js"></script>
+	<script src="suites/map/MapSpec.js"></script>
 
 	<!-- /map/handler -->
-	<script type="text/javascript" src="suites/map/handler/Map.DragSpec.js"></script>
-	<script type="text/javascript" src="suites/map/handler/Map.TouchZoomSpec.js"></script>
-	<script type="text/javascript" src="suites/map/handler/Map.ContainerMutationSpec.js"></script>
+	<script src="suites/map/handler/Map.DragSpec.js"></script>
+	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
+	<script src="suites/map/handler/Map.KeyboardSpec.js"></script>
 
 	<!-- /geo/crs -->
-	<script type="text/javascript" src="suites/geo/CRSSpec.js"></script>
+	<script src="suites/geo/CRSSpec.js"></script>
 
 	<script>
 		(window.mochaPhantomJS || window.mocha).run();

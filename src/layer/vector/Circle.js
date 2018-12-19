@@ -1,3 +1,11 @@
+import {CircleMarker} from './CircleMarker';
+import {Path} from './Path';
+import * as Util from '../../core/Util';
+import {toLatLng} from '../../geo/LatLng';
+import {LatLngBounds} from '../../geo/LatLngBounds';
+import {Earth} from '../../geo/crs/CRS.Earth';
+
+
 /*
  * @class Circle
  * @aka L.Circle
@@ -10,19 +18,19 @@
  * @example
  *
  * ```js
- * L.circle([50.5, 30.5], 200).addTo(map);
+ * L.circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
  */
 
-L.Circle = L.CircleMarker.extend({
+export var Circle = CircleMarker.extend({
 
 	initialize: function (latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = L.extend({}, legacyOptions, {radius: options});
+			options = Util.extend({}, legacyOptions, {radius: options});
 		}
-		L.setOptions(this, options);
-		this._latlng = L.latLng(latlng);
+		Util.setOptions(this, options);
+		this._latlng = toLatLng(latlng);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
@@ -50,12 +58,12 @@ L.Circle = L.CircleMarker.extend({
 	getBounds: function () {
 		var half = [this._radius, this._radiusY || this._radius];
 
-		return new L.LatLngBounds(
+		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
 			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	setStyle: L.Path.prototype.setStyle,
+	setStyle: Path.prototype.setStyle,
 
 	_project: function () {
 
@@ -64,9 +72,9 @@ L.Circle = L.CircleMarker.extend({
 		    map = this._map,
 		    crs = map.options.crs;
 
-		if (crs.distance === L.CRS.Earth.distance) {
+		if (crs.distance === Earth.distance) {
 			var d = Math.PI / 180,
-			    latR = (this._mRadius / L.CRS.Earth.R) / d,
+			    latR = (this._mRadius / Earth.R) / d,
 			    top = map.project([lat + latR, lng]),
 			    bottom = map.project([lat - latR, lng]),
 			    p = top.add(bottom).divideBy(2),
@@ -79,8 +87,8 @@ L.Circle = L.CircleMarker.extend({
 			}
 
 			this._point = p.subtract(map.getPixelOrigin());
-			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR]).x), 1);
-			this._radiusY = Math.max(Math.round(p.y - top.y), 1);
+			this._radius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
+			this._radiusY = p.y - top.y;
 
 		} else {
 			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
@@ -100,6 +108,6 @@ L.Circle = L.CircleMarker.extend({
 // @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
 // Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
 // Do not use in new applications or plugins.
-L.circle = function (latlng, options, legacyOptions) {
-	return new L.Circle(latlng, options, legacyOptions);
-};
+export function circle(latlng, options, legacyOptions) {
+	return new Circle(latlng, options, legacyOptions);
+}

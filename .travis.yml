@@ -1,12 +1,14 @@
 sudo: false
 language: node_js
-node_js: stable
+node_js:
+  - node
 addons:
   artifacts:
     paths:
     - dist
     target_paths:
     - content/leaflet/${NAME}
+  firefox: latest
 env:
   global:
   - ARTIFACTS_BUCKET=leafletjs-cdn
@@ -19,6 +21,9 @@ env:
       XW1hzORAtSpTgTKkQwel5gRMDy6SotzeSRsVV2jQCn46VIMx8G/J5nOI+ImL
       yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
+script:
+  - npm test
+  - xvfb-run --server-args="-screen 0 1280x1024x16" npm run test-nolint -- --browsers Firefox
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..

@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
 	<link rel="stylesheet" href="../css/screen.css" />
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -14,8 +13,8 @@
 
 	<script src="route.js"></script>
 	<script>
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
 		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {

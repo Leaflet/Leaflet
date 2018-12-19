@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
+
+        var markerAutoPan = new L.Marker([0, -10], {
+            draggable: true,
+            autoPan: true,
+            title: 'AutoPan'
+        });
+
+        map.addLayer(markerAutoPan);
+        markerAutoPan.bindPopup("AutoPan");
+
+
+        var markerDraggable = new L.Marker([0, 10], {
+            title: 'Draggable'
+        });
+
+        map.addLayer(markerDraggable);
+        markerDraggable.bindPopup("Draggable");
+        markerDraggable.dragging.enable();
+
+        var poly = new L.Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
+        map.addLayer(poly);
+        poly.bindPopup("Polygon");
+
+
+        markerDraggable.on('click', function(e) {
+            console.log('markerDraggable click');
+        });
+        markerAutoPan.on('click', function(e) {
+            console.log('markerAutoPan click');
+        })
+        map.on('click', function(e) {
+            console.log('map click');
+        });
+
+        poly.on('click', function(e) {
+            console.log('poly click');
+        });
+
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    		}).addTo(map);
+    </script>
+</body>
+</html>

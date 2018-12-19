@@ -17,3 +17,6 @@ bower.json
 component.json
 debug/local/
 Gemfile.lock
+package-lock.json
+yarn.lock
+*.log

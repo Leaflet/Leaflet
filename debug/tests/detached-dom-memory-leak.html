@@ -5,12 +5,11 @@
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../css/screen.css" />
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 	<script>
 	var map,
 		mapDiv,
-		osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+		osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
 
 	var recreateMap = function(){

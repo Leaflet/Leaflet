@@ -70,6 +70,71 @@ describe("CRS.EPSG3857", function () {
 			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).lng).to.eql(20);
 			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).alt).to.eql(1234);
 		});
+	});
+
+	describe('#wrapLatLngBounds', function () {
+		it("does not wrap bounds between -180 and 180 longitude", function () {
+
+			var bounds1 = L.latLngBounds([-10, -10], [10, 10]);
+			var bounds2 = L.latLngBounds([-80, -180], [-70, -170]);
+			var bounds3 = L.latLngBounds([70, 170], [80, 180]);
+
+			bounds1 = crs.wrapLatLngBounds(bounds1);
+			bounds2 = crs.wrapLatLngBounds(bounds2);
+			bounds3 = crs.wrapLatLngBounds(bounds3);
+
+			expect(bounds1.getSouth()).to.eql(-10);
+			expect(bounds1.getWest()).to.eql(-10);
+			expect(bounds1.getNorth()).to.eql(10);
+			expect(bounds1.getEast()).to.eql(10);
+
+			expect(bounds2.getSouth()).to.eql(-80);
+			expect(bounds2.getWest()).to.eql(-180);
+			expect(bounds2.getNorth()).to.eql(-70);
+			expect(bounds2.getEast()).to.eql(-170);
+
+			expect(bounds3.getSouth()).to.eql(70);
+			expect(bounds3.getWest()).to.eql(170);
+			expect(bounds3.getNorth()).to.eql(80);
+			expect(bounds3.getEast()).to.eql(180);
+
+		});
+
+		it("wraps bounds when center longitude is less than -180", function () {
+			var bounds1 = L.latLngBounds([0, -185], [10, -170]);
+			var bounds2 = L.latLngBounds([0, -190], [10, -175]);
+
+			bounds1 = crs.wrapLatLngBounds(bounds1);
+			bounds2 = crs.wrapLatLngBounds(bounds2);
+
+			expect(bounds1.getSouth()).to.eql(0);
+			expect(bounds1.getWest()).to.eql(-185);
+			expect(bounds1.getNorth()).to.eql(10);
+			expect(bounds1.getEast()).to.eql(-170);
+
+			expect(bounds2.getSouth()).to.eql(0);
+			expect(bounds2.getWest()).to.eql(170);
+			expect(bounds2.getNorth()).to.eql(10);
+			expect(bounds2.getEast()).to.eql(185);
+		});
+
+		it("wraps bounds when center longitude is larger than +180", function () {
+			var bounds1 = L.latLngBounds([0, 185], [10, 170]);
+			var bounds2 = L.latLngBounds([0, 190], [10, 175]);
+
+			bounds1 = crs.wrapLatLngBounds(bounds1);
+			bounds2 = crs.wrapLatLngBounds(bounds2);
+
+			expect(bounds1.getSouth()).to.eql(0);
+			expect(bounds1.getWest()).to.eql(170);
+			expect(bounds1.getNorth()).to.eql(10);
+			expect(bounds1.getEast()).to.eql(185);
+
+			expect(bounds2.getSouth()).to.eql(0);
+			expect(bounds2.getWest()).to.eql(-185);
+			expect(bounds2.getNorth()).to.eql(10);
+			expect(bounds2.getEast()).to.eql(-170);
+		});
 
 	});
 

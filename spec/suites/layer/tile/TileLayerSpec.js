@@ -173,11 +173,22 @@ describe('TileLayer', function () {
 	});
 
 	afterEach(function () {
-		document.body.removeChild(div);
+		if (div) {
+			document.body.removeChild(div);
+		}
 	});
 
 	function kittenLayerFactory(options) {
 		return L.tileLayer(placeKitten, options || {});
+	}
+
+	function eachImg(layer, callback) {
+		var imgtags = layer._container.children[0].children;
+		for (var i in imgtags) {
+			if (imgtags[i].tagName === 'IMG') {
+				callback(imgtags[i]);
+			}
+		}
 	}
 
 	describe("number of kittens loaded", function () {
@@ -204,7 +215,7 @@ describe('TileLayer', function () {
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
 
-			kittenLayer = kittenLayerFactory();
+			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
 			counts = {
 				tileload: 0,
@@ -214,12 +225,12 @@ describe('TileLayer', function () {
 			};
 
 			kittenLayer.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -274,9 +285,9 @@ describe('TileLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-	// 				map.on('_frame', function () {
-	// 					console.log('frame', counts);
-	// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});
@@ -298,15 +309,6 @@ describe('TileLayer', function () {
 
 			map = L.map(div).setView([0, 0], 2);
 		});
-
-		function eachImg(layer, callback) {
-			var imgtags = layer._container.children[0].children;
-			for (var i in imgtags) {
-				if (imgtags[i].tagName === 'IMG') {
-					callback(imgtags[i]);
-				}
-			}
-		}
 
 		it('replaces {y} with y coordinate', function () {
 			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
@@ -376,6 +378,105 @@ describe('TileLayer', function () {
 			eachImg(layer, function (img) {
 				expect(['q', 'r', 's'].indexOf(img.src[7]) >= 0).to.eql(true);
 			});
+		});
+
+		it('uses zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/3/1/1.png',
+				'http://example.com/3/1/2.png',
+				'http://example.com/3/2/1.png',
+				'http://example.com/3/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+		it('uses negative zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/-1/1/1.png',
+				'http://example.com/-1/1/2.png',
+				'http://example.com/-1/2/1.png',
+				'http://example.com/-1/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+	});
+
+	describe('options', function () {
+
+		beforeEach(function () {
+			div = document.createElement('div');
+			div.style.width = '400px';
+			div.style.height = '400px';
+
+			map = L.map(div).setView([0, 0], 2);
+		});
+
+		afterEach(function () {
+			map = null;
+			div = null;
+		});
+
+		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
+		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
+		testCrossOriginValue(true, '');
+		testCrossOriginValue('', '');
+		testCrossOriginValue('anonymous', 'anonymous');
+		testCrossOriginValue('use-credentials', 'use-credentials');
+
+		function testCrossOriginValue(crossOrigin, expectedValue) {
+			it('uses crossOrigin value ' + crossOrigin, function () {
+				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+					crossOrigin: crossOrigin
+				}).addTo(map);
+
+				eachImg(layer, function (img) {
+					expect(img.getAttribute('crossorigin')).to.be(expectedValue);
+				});
+			});
+		}
+	});
+
+	describe('#setUrl', function () {
+		it('fires only one load event', function (done) {
+			var layer = L.tileLayer(placeKitten).addTo(map);
+			var counts = {
+				load: 0,
+				tileload: 0
+			};
+			map.setView([0, 0], 1);
+
+			layer.on('tileload load', function (e) {
+				counts[e.type]++;
+			});
+
+			layer.setUrl(placeKitten);
+
+			setTimeout(function () {
+				expect(counts.load).to.equal(1);
+				expect(counts.tileload).to.equal(8);
+				done();
+			}, 250);
 		});
 	});
 });

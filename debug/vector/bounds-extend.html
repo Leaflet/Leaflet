@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script type="text/javascript" src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -16,7 +15,7 @@
     <button onclick="boundsExtendLatLng()">Extend the bounds of the center rectangle with the lower left marker</button>
     <script src="route.js"></script>
     <script>
-        var osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             osm = new L.TileLayer(osmUrl, {maxZoom: 18});
 
         var latLng = new L.LatLng(54.18815548107151, -7.657470703124999);

@@ -55,6 +55,9 @@ happen.at = function (what, x, y, props) {
 // We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
 it.skipInPhantom = L.Browser.any3d ? it : it.skip;
 
+// Viceversa: some tests we want only to run in browsers without CSS animations.
+it.skipInNonPhantom = L.Browser.any3d ? it.skip : it;
+
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = window.TouchEvent ? it : it.skip;
 

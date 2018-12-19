@@ -23,12 +23,11 @@
 
 		var map = new L.Map('map', {
 			zoom: 15,
+			zoomSnap: 0.25,
 			layers: [osm],
 			rotate: true,
 			touchRotate: true
 		});
-
-		map.compassBearing.enable();
 
 		function logEvent(e) { console.log(e.type); }
 
@@ -45,13 +44,16 @@
 // 		map.on('locationerror', logEvent);
 // 		map.on('locationfound', logEvent);
 		map.on('locationfound', resetHeading);
-
-		window.setInterval( function(){
 			map.locate({
 				setView: true,
 				enableHighAccuracy: true
 				});
-		}, 10000);
+		// window.setInterval( function(){
+		// 	map.locate({
+		// 		setView: true,
+		// 		enableHighAccuracy: true
+		// 		});
+		// }, 10000);
 
 	</script>
 </body>

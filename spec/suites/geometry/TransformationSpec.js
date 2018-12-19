@@ -28,4 +28,14 @@ describe("Transformation", function () {
 			expect(t.untransform(new L.Point(12, 64))).to.eql(new L.Point(10, 20));
 		});
 	});
+
+	describe('#constructor', function () {
+		it("allows an array property for a", function () {
+			var t2 = L.transformation([1, 2, 3, 4]);
+			expect(t._a).to.eql(t2._a);
+			expect(t._b).to.eql(t2._b);
+			expect(t._c).to.eql(t2._c);
+			expect(t._d).to.eql(t2._d);
+		});
+	});
 });

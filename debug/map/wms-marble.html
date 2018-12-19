@@ -7,14 +7,13 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
 
 	<div id="map" style="width: 1024px; height: 440px; border: 1px solid #ccc"></div>
 
-	<script type="text/javascript">
+	<script>
 		var map = new L.Map('map', {crs: L.CRS.EPSG4326});
 
 		var bluemarble = new L.TileLayer.WMS("http://maps.opengeo.org/geowebcache/service/wms", {

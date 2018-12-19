@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 	<style>
 		.mapcontainer {
@@ -65,7 +64,7 @@
 		<div id="map6" class="map"></div>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 		var mapopts =  {
 			center: [35, -122],
 			zoom : 5
@@ -82,8 +81,8 @@
 		CASE 1: no opacity set on any layers
 		**********/
 		// OSM Basemap
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 		var osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map1);
 

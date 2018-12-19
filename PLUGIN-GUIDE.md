@@ -23,7 +23,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 
 ### Repository
 
-The best place to put your Leaflet plugin to is a separate [GitHub](http://github.com) repository.
+The best place to put your Leaflet plugin is a separate [GitHub](http://github.com) repository.
 If you create a collection of plugins for different uses,
 don't put them in one repo &mdash;
 it's usually easier to work with small, self-contained plugins in individual repositories.
@@ -45,7 +45,7 @@ after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
 
-The next thing you need to have is a descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
+The next thing you need to have is a [good `README.md`](https://github.com/noffle/art-of-readme) in the root of the repo (or a link to a website with a similar content).
 At a minimum it should contain the following items:
 
 - name of the plugin
@@ -148,7 +148,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "main": "my-plugin.js",
   "author": "You",
   "license": "IST",
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0"
   }
 }
@@ -205,7 +205,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 }, window));
 ```
 
-Now your plugin is available as an AMD and CommonJS module and can used used in module loaders like Browserify and RequireJS.
+Now your plugin is available as an AMD and CommonJS module and can be used in module loaders like Browserify and RequireJS.
 
 
 ## Adding to the plugins list
