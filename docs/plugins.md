@@ -2487,6 +2487,15 @@ Plugins that search for overlays and enhance how to display information about th
 			<a href="https://github.com/yafred">YaFred</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/adriankwiat/Leaflet.Streetview">Leaflet.Streetview</a>
+		</td><td>
+			Plugin to display Google Street View on Leaflet map.
+		</td><td>
+			<a href="https://github.com/adriankwiat">Adrian Kwiatkowski</a>
+		</td>
+	</tr>
 </table>
 
 
