@@ -671,7 +671,7 @@ export var GridLayer = Layer.extend({
 
 		// _update just loads more tiles. If the tile zoom level differs too much
 		// from the map's, let _setView reset levels and prune old tiles.
-		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, map.getZoom()); return; }
+		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); return; }
 
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
