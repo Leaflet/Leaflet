@@ -1800,6 +1800,15 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Igor-Vladyka/leaflet.motion">leaflet.motion</a>
+		</td><td>
+			Adds simple motion to your polilyne with marker in a head on line (<a href='https://igor-vladyka.github.io/leaflet.motion/'>demo</a>)
+		</td><td>
+			<a href="https://github.com/Igor-Vladyka/">Igor Vladyka</a>,
+		</td>
+	</tr>
 	</table>
 
 
