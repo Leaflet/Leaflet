@@ -58,14 +58,7 @@ Notice that the "whole earth" is just one image, 256 pixels wide and 256 pixels 
 <img src="https://a.basemaps.cartocdn.com/light_all/0/0/0.png" class="bordered-img" alt=""/>
 </div>
 
-Just to be clear: the earth is not a square. Rather, the earth is shaped like [a weird potato](https://commons.wikimedia.org/wiki/File:GRACE_globe_animation.gif) that can be approximated to [something similar to a sphere](https://en.wikipedia.org/wiki/Geoid).
-
-<div class='tiles legend' style='text-align: center'>
-<a title="By NASA/JPL/University of Texas Center for Space Research. (http://photojournal.jpl.nasa.gov/catalog/PIA12146) [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AGRACE_globe_animation.gif"><img width="256" alt="GRACE globe animation" src="https://upload.wikimedia.org/wikipedia/commons/7/78/GRACE_globe_animation.gif"/>
-<br/>
-Potato earth image by NASA/JPL/University of Texas Center for Space Research</a>
-with help of the <a href='https://en.wikipedia.org/wiki/Gravity_Recovery_and_Climate_Experiment'>GRACE satellites</a>.
-</div>
+Just to be clear: the earth is not a square. Rather, the earth has an irregular shape that can be approximated to [something similar to a sphere](https://en.wikipedia.org/wiki/Geoid).
 
 So we *assume* that the earth is mosly round. To make it flat, we put an imaginary cylinder around, unroll it, and cut it so it looks square:
 
