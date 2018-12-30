@@ -12,8 +12,8 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.3.4/leaflet.zip">Leaflet 1.3.4</a></td>
-		<td>Stable version, released on August 21, 2018.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.4.0/leaflet.zip">Leaflet 1.4.0</a></td>
+		<td>Stable version, released on December 30, 2018.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.3-dev</a></td>
