@@ -605,6 +605,15 @@ The following plugins change the way that tile or image layers are displayed in 
         		<a href="https://day-journal.com">Yasunori Kirimoto</a>
         	</td>
     	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ihmeuw/leaflet.tilelayer.glcolorscale">Leaflet.TileLayer.GLColorScale</a>
+		</td><td>
+			TileLayer that uses WebGL to colorize floating-point pixels according to a specified color scale (<a href="https://ihmeuw.github.io/leaflet.tilelayer.glcolorscale/demo/">demo</a>).
+		</td><td>
+			<a href="https://github.com/davschne">David Schneider</a>
+		</td>
+	</tr>
 </table>
 
 
