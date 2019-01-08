@@ -1130,7 +1130,7 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/barryhunter/Leaflet.GeographPhotos">Leaflet.GeographPhotos</a>
 		</td>
 		<td>
-			Display Geographical-Photos from Geograph Britian and Ireland in a interactive overlay, using their API.
+			Display Geographical-Photos from Geograph Britain and Ireland in an interactive overlay, using their API.
 		</td>
 		<td>
 			<a href="https://github.com/barryhunter/">Barry Hunter</a>
@@ -1160,7 +1160,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/zhuang-hao-ming/Leaflet.RoughCanvas">Leaflet.RoughCanvas</a>
 		</td><td>
-			Leaflet.RoughCanvas renders hand-drawn, sketch style vector map(polyline, polygon, geojson).
+			Leaflet.RoughCanvas renders hand-drawn, sketch style vector map (polyline, polygon, geojson).
 		</td><td>
 			<a href="https://github.com/zhuang-hao-ming/">haoming</a>
 		</td>
@@ -1453,7 +1453,7 @@ These plugins provide new markers or news ways of converting abstract data into 
                 <td>
                         <a href="https://github.com/PowerPan/leaflet-ais-tracksymbol-search">leaflet-ais-tracksymbol-search</a>
                 </td><td>
-                        Adds a Seach Box for your Leaflet Map and Your [leaflet-ais-trackymbol](https://github.com/PowerPan/leaflet-ais-tracksymbol)
+                        Adds a Search Box for your Leaflet Map and Your [leaflet-ais-trackymbol](https://github.com/PowerPan/leaflet-ais-tracksymbol)
                 </td><td>
                         <a href="https://github.com/powerpan">Johannes Rudolph</a>
                 </td>
@@ -1639,7 +1639,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/sybri/Leaflet.SpeechBubble/">Leaflet.SpeechBubble</a>
 		</td>
 		<td>
-			Popup a speech bubble with the arrow that follow points,layer, markers ...
+			Popup a speech bubble with the arrow that follow points, layer, markers ...
 			 (<a href="https://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
 		</td>
 		<td>
@@ -1813,7 +1813,7 @@ These plugins animate markers or some geometries. See also [geometries with time
 		<td>
 			<a href="https://github.com/Igor-Vladyka/leaflet.motion">leaflet.motion</a>
 		</td><td>
-			Adds simple motion to your polilyne with marker in a head on line (<a href='https://igor-vladyka.github.io/leaflet.motion/'>demo</a>)
+			Adds simple motion to your polyline with marker in a head on line (<a href='https://igor-vladyka.github.io/leaflet.motion/'>demo</a>)
 		</td><td>
 			<a href="https://github.com/Igor-Vladyka/">Igor Vladyka</a>,
 		</td>
@@ -2078,7 +2078,7 @@ Powerful multi-purpose libraries for data visualization.
 		<td>
 			<a href="https://github.com/react-map/leaflet.migrationLayer">leaflet.migrationLayer</a>
 		</td><td>
-			leafet.migrationLayer is used to show migration data such as population,flight,vehicle,traffic and so on.Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
+			leafet.migrationLayer is used to show migration data such as population, flight, vehicle, traffic and so on. Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
 		</td><td>
 			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
@@ -2217,7 +2217,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 		<td>
 			<a href="https://github.com/yohanboniface/Leaflet.Editable">Leaflet.Editable</a>
 		</td><td>
-			Lightweight fully customisable and controlable drawing/editing plugin.
+			Lightweight fully customisable and controllable drawing/editing plugin.
 		</td><td>
 			<a href="http://yohanboniface.me/">Yohan Boniface</a>
 		</td>
@@ -2556,7 +2556,7 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/stefanocudini/leaflet-geojson-selector">Leaflet GeoJSON Selector</a>
 		</td>
 		<td>
-			Leaflet Control for selection from GeoJSON feature in a interactive list and map(<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
+			Leaflet Control for selection from GeoJSON feature in an interactive list and map (<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
 		</td>
 		<td>
 			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
@@ -2645,7 +2645,7 @@ The following plugins enhance or extend `L.Control.Layers`.
 		<td>
 			<a href="https://github.com/aebadirad/Leaflet.AutoLayers">Leaflet.AutoLayers</a>
 		</td><td>
-			Automatically pull layers from multiple mapservers and organize/search them with user controlled overlay zindex management.
+			Automatically pull layers from multiple mapservers and organize/search them with user controlled overlay zIndex management.
 		</td><td>
 			<a href="https://github.com/aebadirad">Alex Ebadirad</a>
 		</td>
@@ -2893,7 +2893,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 		<td>
 			<a href="https://github.com/pwldp/leaflet.viewcenter">Leaflet.viewcenter</a>
 		</td><td>
-			A simple control that adds a button to change view and zoom to predefinied values in options.
+			A simple control that adds a button to change view and zoom to predefined values in options.
 		</td><td>
 			<a href="https://github.com/pwldp/">Dariusz Pawlak</a>
 		</td>
@@ -3009,9 +3009,9 @@ Allows display of the map in full-screen mode.
 		<td>
 			<a href="https://github.com/mapbox/Leaflet.fullscreen">Leaflet.fullscreen</a>
 		</td><td>
-			A fullscreen button control by mapbox
+			A fullscreen button control by Mapbox
 		</td><td>
-			<a href="https://github.com/mapbox">mapbox</a>
+			<a href="https://github.com/mapbox">Mapbox</a>
 		</td>
 	</tr>
 	<tr>
@@ -3983,8 +3983,8 @@ The following plugins use external services to calculate driving or walking rout
     		<a href="https://github.com/skedgo/leaflet.tripgo.routing">Leaflet TripGo routing</a>
     	</td>
     	<td>
-    		The <b>TripGo</b> mobility platform let’s you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
-    		TripGo leaflet's plugin motivation is to provide an easy way to include it's functionality in an external platform.
+    		The <b>TripGo</b> mobility platform lets you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
+    		TripGo Leaflet's plugin motivation is to provide an easy way to include its functionality in an external platform.
     	</td>
     	<td>
     		<a href="http://skedgo.com/">SkedGo</a>
