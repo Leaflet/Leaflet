@@ -2105,6 +2105,18 @@ Powerful multi-purpose libraries for data visualization.
             <a href="https://github.com/danwild">Dan Wild</a>
         </td>
     </tr>
+	 <tr>
+        <td>
+    		<a href="https://github.com/locknono/leaflet-partition">leaflet-partition</a>
+    	</td>
+    	<td>
+            Divide the area into parts in different ways such as voronoi(triangulation) and hexagonal tiling.
+            <a href="https://locknono.github.io/leaflet-partition/">Basic demo</a>
+        </td>
+        <td>
+            <a href="https://github.com/locknono">locknono</a>
+        </td>
+    </tr>
 </table>
 
 
