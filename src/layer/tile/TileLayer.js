@@ -9,12 +9,12 @@ import * as DomUtil from '../../dom/DomUtil';
  * @class TileLayer
  * @inherits GridLayer
  * @aka L.TileLayer
- * Used to load and display tile layers on the map. Extends `GridLayer`.
+ * Used to load and display tile layers on the map. Note that most tile servers require attribution, which you can set under `Layer`. Extends `GridLayer`.
  *
  * @example
  *
  * ```js
- * L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+ * L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map);
  * ```
  *
  * @section URL template

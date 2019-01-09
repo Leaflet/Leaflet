@@ -13,7 +13,7 @@ In Leaflet, a "layer" is anything that moves with the map. In contraposition to 
 
 Map handlers are a new concept in Leaflet 1.0, and their function is to process DOM events from the browser (like `click`, `dblclick` or `mousewheel`) and change the state of the map.
 
-Handlers are relatively simple: they just need a `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
+Handlers are relatively simple: they just need an `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
 
 	L.CustomHandler = L.Handler.extend({
 		addHooks: function() {
@@ -97,4 +97,4 @@ If your custom control consists of more than one HTML element (like `L.Control.Z
 
 ## Publishing your plugin
 
-If you have understood everything so far, you're ready to make som Leaflet plugins! But make sure to read the [`PLUGIN-GUIDE.md` file](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md), as it contains some tips and good practices about naming and publishing your plugin.
+If you have understood everything so far, you're ready to make some Leaflet plugins! But make sure to read the [`PLUGIN-GUIDE.md` file](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md), as it contains some tips and good practices about naming and publishing your plugin.

@@ -511,6 +511,51 @@ export var Map = Evented.extend({
 		return this;
 	},
 
+	// @method panInside(latlng: LatLng, options?: options): this
+	// Pans the map the minimum amount to make the `latlng` visible. Use
+	// `padding`, `paddingTopLeft` and `paddingTopRight` options to fit
+	// the display to more restricted bounds, like [`fitBounds`](#map-fitbounds).
+	// If `latlng` is already within the (optionally padded) display bounds,
+	// the map will not be panned.
+	panInside: function (latlng, options) {
+		options = options || {};
+
+		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
+		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
+		    center = this.getCenter(),
+		    pixelCenter = this.project(center),
+		    pixelPoint = this.project(latlng),
+		    pixelBounds = this.getPixelBounds(),
+		    halfPixelBounds = pixelBounds.getSize().divideBy(2),
+		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
+
+		if (!paddedBounds.contains(pixelPoint)) {
+			this._enforcingBounds = true;
+			var diff = pixelCenter.subtract(pixelPoint),
+			    newCenter = toPoint(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
+
+			if (pixelPoint.x < paddedBounds.min.x || pixelPoint.x > paddedBounds.max.x) {
+				newCenter.x = pixelCenter.x - diff.x;
+				if (diff.x > 0) {
+					newCenter.x += halfPixelBounds.x - paddingTL.x;
+				} else {
+					newCenter.x -= halfPixelBounds.x - paddingBR.x;
+				}
+			}
+			if (pixelPoint.y < paddedBounds.min.y || pixelPoint.y > paddedBounds.max.y) {
+				newCenter.y = pixelCenter.y - diff.y;
+				if (diff.y > 0) {
+					newCenter.y += halfPixelBounds.y - paddingTL.y;
+				} else {
+					newCenter.y -= halfPixelBounds.y - paddingBR.y;
+				}
+			}
+			this.panTo(this.unproject(newCenter), options);
+			this._enforcingBounds = false;
+		}
+		return this;
+	},
+
 	// @method invalidateSize(options: Zoom/pan options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
@@ -1629,7 +1674,7 @@ export var Map = Evented.extend({
 		}
 
 		// @event zoomanim: ZoomAnimEvent
-		// Fired on every frame of a zoom animation
+		// Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,

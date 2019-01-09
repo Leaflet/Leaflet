@@ -186,9 +186,13 @@ export var Canvas = Renderer.extend({
 		if (typeof layer.options.dashArray === 'string') {
 			var parts = layer.options.dashArray.split(/[, ]+/),
 			    dashArray = [],
+			    dashValue,
 			    i;
 			for (i = 0; i < parts.length; i++) {
-				dashArray.push(Number(parts[i]));
+				dashValue = Number(parts[i]);
+				// Ignore dash array containing invalid lengths
+				if (isNaN(dashValue)) { return; }
+				dashArray.push(dashValue);
 			}
 			layer.options._dashArray = dashArray;
 		} else {
@@ -400,6 +404,9 @@ export var Canvas = Renderer.extend({
 
 	_bringToFront: function (layer) {
 		var order = layer._order;
+
+		if (!order) { return; }
+
 		var next = order.next;
 		var prev = order.prev;
 
@@ -428,6 +435,9 @@ export var Canvas = Renderer.extend({
 
 	_bringToBack: function (layer) {
 		var order = layer._order;
+
+		if (!order) { return; }
+
 		var next = order.next;
 		var prev = order.prev;
 

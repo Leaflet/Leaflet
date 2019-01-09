@@ -152,13 +152,13 @@ export var Layers = Control.extend({
 	// Expand the control container if collapsed.
 	expand: function () {
 		DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
-		this._form.style.height = null;
+		this._section.style.height = null;
 		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
-		if (acceptableHeight < this._form.clientHeight) {
-			DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
-			this._form.style.height = acceptableHeight + 'px';
+		if (acceptableHeight < this._section.clientHeight) {
+			DomUtil.addClass(this._section, 'leaflet-control-layers-scrollbar');
+			this._section.style.height = acceptableHeight + 'px';
 		} else {
-			DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
+			DomUtil.removeClass(this._section, 'leaflet-control-layers-scrollbar');
 		}
 		this._checkDisabledLayers();
 		return this;
@@ -182,7 +182,7 @@ export var Layers = Control.extend({
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(container);
 
-		var form = this._form = DomUtil.create('form', className + '-list');
+		var section = this._section = DomUtil.create('section', className + '-list');
 
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
@@ -210,11 +210,11 @@ export var Layers = Control.extend({
 			this.expand();
 		}
 
-		this._baseLayersList = DomUtil.create('div', className + '-base', form);
-		this._separator = DomUtil.create('div', className + '-separator', form);
-		this._overlaysList = DomUtil.create('div', className + '-overlays', form);
+		this._baseLayersList = DomUtil.create('div', className + '-base', section);
+		this._separator = DomUtil.create('div', className + '-separator', section);
+		this._overlaysList = DomUtil.create('div', className + '-overlays', section);
 
-		container.appendChild(form);
+		container.appendChild(section);
 	},
 
 	_getLayer: function (id) {

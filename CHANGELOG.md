@@ -3,6 +3,38 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.4.0 (2018-12-30)
+
+### API changes
+
+* Add new `Map.panInside` method ([#6054](https://github.com/Leaflet/Leaflet/pull/6054) by [daverayment](https://github.com/daverayment))
+
+### Improvements
+
+* Remove unused `_drawnLayers` object ([#6324](https://github.com/Leaflet/Leaflet/pull/6324) by [ud09](https://github.com/ud09))
+* Avoid unnecessary redrawing in `TileLayer.setUrl()` when URL does not change ([#6313](https://github.com/Leaflet/Leaflet/pull/6313) by [JackNeus](https://github.com/JackNeus))
+* Use `section` instead of `form` in layers control ([#6380](https://github.com/Leaflet/Leaflet/pull/6380) by [hundekoerper](https://github.com/hundekoerper))
+* Add IE11 linked SVG elements support to `DomUtil.getClass` function ([#6366](https://github.com/Leaflet/Leaflet/pull/6366) by [Schleuse](https://github.com/Schleuse))
+
+### Bug fixes
+
+* Set internal flags at beginning of map initialization ([#6362](https://github.com/Leaflet/Leaflet/pull/6362) by [ghybs](https://github.com/ghybs))
+* Guard against layers no longer attached to a map in `bringToFront/Back()` ([#6389](https://github.com/Leaflet/Leaflet/pull/6389) by [perliedman](https://github.com/perliedman))
+* Fix `autoPan` option when popup content gets updated while a panning animation is running ([#6365](https://github.com/Leaflet/Leaflet/pull/6365) by [Schleuse](https://github.com/Schleuse))
+* Ignore dash arrays with non-numeric entries in canvas ([#6387](https://github.com/Leaflet/Leaflet/pull/6387) by [perliedman](https://github.com/perliedman))
+
+### Docs & Web Site
+
+* Remove additional `<tr>` ([#6334](https://github.com/Leaflet/Leaflet/pull/6334) by [mgred](https://github.com/mgred))
+* Fix command to run test with karma options ([#6363](https://github.com/Leaflet/Leaflet/pull/6363) by [ghybs](https://github.com/ghybs))
+* Add OSM logo to "Trusted by the best" section ([#6360](https://github.com/Leaflet/Leaflet/pull/6360) by [astv99](https://github.com/astv99))
+* Fix typos ([#6398](https://github.com/Leaflet/Leaflet/pull/6398) by [HarryMaher](https://github.com/HarryMaher))
+* Make it clear zoomanim is not always fired on every frame ([#6388](https://github.com/Leaflet/Leaflet/pull/6388) by [perliedman](https://github.com/perliedman))
+* Add copyright references to code examples ([#6439](https://github.com/Leaflet/Leaflet/pull/6439) by [jbelien](https://github.com/jbelien))
+* Fix insecure content error ([#6442](https://github.com/Leaflet/Leaflet/pull/6442) by [tambry](https://github.com/tambry))
+* Remove incorrect Earth GIF ([#6326](https://github.com/Leaflet/Leaflet/pull/6326) by [Vincentdecursay](https://github.com/Vincentdecursay))
+* Fix duplicated sentence in SVG section ([#6448](https://github.com/Leaflet/Leaflet/pull/6448) by [patrickdemers6](https://github.com/patrickdemers6))
+
 ## 1.3.4 (2018-08-21)
 
 ### Improvements
