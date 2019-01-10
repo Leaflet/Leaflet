@@ -614,6 +614,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/davschne">David Schneider</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/valkenburg/Leaflet.Control.DetailLevel">Leaflet.Control.DetailLevel</a>
+		</td><td>
+			Display tiles at higher-than-retina (hdpi) resolutions, by real-time modification of the zoomOffset. Useful for mapping sources which drastically change map style between different zoom levels. Increasing the zoomOffset by too much does slow down the browser, as the number of displayed tiles grows exponentially with the zoomOffset.  (<a href='https://valkenburg.github.io/Leaflet.Control.DetailLevel/demo.html'>demo</a>).
+		</td><td>
+			<a href="https://github.com/valkenburg">Wessel Valkenburg</a>
+		</td>
+	</tr>
 </table>
 
 
