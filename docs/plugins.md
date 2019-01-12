@@ -1791,6 +1791,15 @@ These plugins animate markers or some geometries. See also [geometries with time
 	</tr>
 	<tr>
 		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.Path.DashFlow">Leaflet.Path.DashFlow</a>
+		</td><td>
+			Animates the dashArray of lines and circles, creating a basic flow effect. (<a href="https://ivansanchez.gitlab.io/Leaflet.Path.DashFlow/demo.html">Demo</a>.
+		</td><td>
+			<a href="https://gitlab.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/rubenspgcavalcante/leaflet-ant-path">Leaflet.AntPath</a>
 		</td><td>
 			Leaflet.AntPath put a flux animation (like ants walking) into a Polyline.
