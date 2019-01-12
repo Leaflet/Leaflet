@@ -739,8 +739,9 @@ export var Map = Evented.extend({
 
 		var handler = this[name] = new HandlerClass(this);
 
-		if(index == undefined || index >= this._handlers.length)
+		if (index === undefined || index >= this._handlers.length) {
 		    index = this._handlers.length;
+		}
 
 		this._handlers.splice(index, 0, handler);
 
