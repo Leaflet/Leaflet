@@ -731,14 +731,18 @@ export var Map = Evented.extend({
 
 	// TODO Appropriate docs section?
 	// @section Other Methods
-	// @method addHandler(name: String, HandlerClass: Function): this
+	// @method addHandler(name: String, HandlerClass: Function, index: Number): this
 	// Adds a new `Handler` to the map, given its name and constructor function.
-	addHandler: function (name, HandlerClass) {
+	// Optional handler index may be speficied.
+	addHandler: function (name, HandlerClass, index) {
 		if (!HandlerClass) { return this; }
 
 		var handler = this[name] = new HandlerClass(this);
 
-		this._handlers.push(handler);
+		if(index == undefined || index >= this._handlers.length)
+		    index = this._handlers.length;
+
+		this._handlers.splice(index, 0, handler);
 
 		if (this.options[name]) {
 			handler.enable();
