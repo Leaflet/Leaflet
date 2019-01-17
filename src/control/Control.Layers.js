@@ -305,7 +305,7 @@ export var Layers = Control.extend({
 	},
 
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
-	_createRadioElement: function (name, checked) {
+	_createRadioElement: function (name, checked, container) {
 
 		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' +
 				name + '"' + (checked ? ' checked="checked"' : '') + '/>';
@@ -313,21 +313,29 @@ export var Layers = Control.extend({
 		var radioFragment = document.createElement('div');
 		radioFragment.innerHTML = radioHtml;
 
+		if (container) {
+			container.appendChild(radioFragment.firstChild);
+		}
+
 		return radioFragment.firstChild;
 	},
 
 	_addItem: function (obj) {
-		var label = document.createElement('label'),
-		    checked = this._map.hasLayer(obj.layer),
-		    input;
+		var container = obj.overlay ? this._overlaysList : this._baseLayersList,
+		label = L.DomUtil.create('label'),
+		// Helps from preventing layer control flicker when checkboxes are disabled
+		// https://github.com/Leaflet/Leaflet/issues/2771
+		holder = L.DomUtil.create('div', '', label),
+		checked = this._map.hasLayer(obj.layer),
+		name,
+		input = {};
 
 		if (obj.overlay) {
-			input = document.createElement('input');
+			input = L.DomUtil.create('input', 'leaflet-control-layers-selector', holder);
 			input.type = 'checkbox';
-			input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
-			input = this._createRadioElement('leaflet-base-layers', checked);
+			input = this._createRadioElement('leaflet-base-layers', checked, holder);
 		}
 
 		this._layerControlInputs.push(input);
@@ -335,18 +343,9 @@ export var Layers = Control.extend({
 
 		DomEvent.on(input, 'click', this._onInputClick, this);
 
-		var name = document.createElement('span');
+		name = L.DomUtil.create('span', '', holder);
 		name.innerHTML = ' ' + obj.name;
 
-		// Helps from preventing layer control flicker when checkboxes are disabled
-		// https://github.com/Leaflet/Leaflet/issues/2771
-		var holder = document.createElement('div');
-
-		label.appendChild(holder);
-		holder.appendChild(input);
-		holder.appendChild(name);
-
-		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
 
 		this._checkDisabledLayers();
