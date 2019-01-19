@@ -327,7 +327,7 @@ export var Layers = Control.extend({
 			input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
-			input = this._createRadioElement('leaflet-base-layers', checked);
+			input = this._createRadioElement('leaflet-base-layers_' + Util.stamp(this), checked);
 		}
 
 		this._layerControlInputs.push(input);
