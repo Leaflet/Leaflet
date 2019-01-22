@@ -1847,6 +1847,17 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ggolikov/Leaflet.Snow">Leaflet.Snow</a>
+		</td>
+		<td>
+			Customizable WebGL snow animation for Leaflet. Useful for weather maps. (<a href="https://ggolikov.github.io/Leaflet.Snow/">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/ggolikov">Grigory Golikov</a>
+		</td>
+	</tr>
 	</table>
 
 
