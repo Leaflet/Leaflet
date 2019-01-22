@@ -63,7 +63,7 @@ export var Marker = Layer.extend({
 		// @option pane: String = 'markerPane'
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
-		
+
 		// @option pane: String = 'shadowPane'
 		// `Map pane` where the markers shadow will be added.
 		shadowPane: 'shadowPane',
