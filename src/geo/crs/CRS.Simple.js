@@ -32,5 +32,7 @@ export var Simple = Util.extend({}, CRS, {
 		return Math.sqrt(dx * dx + dy * dy);
 	},
 
-	infinite: true
+	infinite: true,
+
+	minZoom: -Infinity
 });
