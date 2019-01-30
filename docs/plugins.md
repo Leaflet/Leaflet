@@ -623,6 +623,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/valkenburg">Wessel Valkenburg</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-multispectral">Leaflet.Multispectral</a>
+		</td><td>
+			Provides multispectral channel manipulation and processing tools (such as NDVI or other remote sensing methods) for Leaflet image layers using pure client-side JavaScript. It uses `image-sequencer` via an ImageOverlay `filter()` function. (<a href='https://publiclab.github.io/leaflet-multispectral/'>demo</a>).
+		</td><td>
+			<a href="https://publiclab.org">Public Lab</a>
+		</td>
+	</tr>
 </table>
 
 
