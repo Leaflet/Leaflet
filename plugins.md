@@ -1395,7 +1395,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://gitlab.com/IvanSanchez/Leaflet.GLMarkers">Leaflet.GLMarkers</a>
 		</td><td>
-			Display thousands of markers with custom WebGL shaders, optionally animated. (<a href='http://https://ivansanchez.gitlab.io/Leaflet.GLMarkers/demo/repl.html'>demo</a>)
+			Display thousands of markers with custom WebGL shaders, optionally animated. (<a href='https://ivansanchez.gitlab.io/Leaflet.GLMarkers/demo/repl.html'>demo</a>)
 		</td><td>
 			<a href="https://gitlab.com/IvanSanchez">Iván Sánchez Ortega</a>
 		</td>
