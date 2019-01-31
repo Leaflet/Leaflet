@@ -4521,6 +4521,34 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="https://github.com/Lapizistik">Klaus Stein</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			Leaflet Extensions for <a href="https://www.joomla.org/">Joomla! (3.x)</a>
+		</td><td>
+			<ul>
+                            <li>
+                                <strong>Agosm: </strong><br />
+                                Joomla Module not only for showing Markers on a OpenStreetMap Map.<br />
+                                <a href="https://github.com/astridx/pkg_agosms">Gibhub</a><br />
+                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosm/">Joomla Extension Directory</a><br />
+                            </li>
+                            <li>
+                                <strong>Aggpxtrack: </strong><br />
+                                Joomla Custom Field for dispaying a GPX Track on a Map - you can choose an OpenStreetMap or GoogleMaps. With much options. For example: One option is an elevation profil.<br />
+                                <a href="https://github.com/astridx/pkg_aggpxtrack">Gibhub</a><br />
+                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/aggpxtrack/">Joomla Extension Directory</a><br />
+                            </li>
+                            <li>
+                                <strong>Agosmmapwithmarker: </strong><br />
+                                Custom field for show a map with a marker in frond end - always the right card for the content. You can enter the address in backend.<br />
+                                <a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
+                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
+                            </li>
+                        </ul>
+		</td><td>
+			<a href="https://github.com/astridx">Astrid Günther</a>
+		</td>
+	</tr>
 </table>
 
 
