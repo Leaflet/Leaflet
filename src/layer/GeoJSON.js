@@ -193,7 +193,7 @@ export function geometryToLayer(geojson, options) {
 
 	case 'Polygon':
 	case 'MultiPolygon':
-		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
+		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng, 4);
 		return new Polygon(latlngs, options);
 
 	case 'GeometryCollection':
@@ -222,17 +222,22 @@ export function coordsToLatLng(coords) {
 	return new LatLng(coords[1], coords[0], coords[2]);
 }
 
-// @function coordsToLatLngs(coords: Array, levelsDeep?: Number, coordsToLatLng?: Function): Array
+// @function coordsToLatLngs(coords: Array, levelsDeep?: Number, coordsToLatLng?: Function, minCoords?: Number): Array
 // Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array.
 // `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 // Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
+// `minCoords` specifies the minimum number of coordinates required in an array (it is used for validating polygons, which required at least 4 points).
+export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng, minCoords) {
 	var latlngs = [];
 
 	for (var i = 0, len = coords.length, latlng; i < len; i++) {
-		latlng = levelsDeep ?
-			coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng) :
-			(_coordsToLatLng || coordsToLatLng)(coords[i]);
+		if (levelsDeep) {
+			latlng = coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng, minCoords);
+		} else if (minCoords && coords.length < minCoords) {
+			throw new Error('Invalid GeoJSON object.');
+		} else {
+			latlng = (_coordsToLatLng || coordsToLatLng)(coords[i]);
+		}
 
 		latlngs.push(latlng);
 	}
