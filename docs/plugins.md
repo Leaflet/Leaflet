@@ -2397,6 +2397,7 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/svitkin">Sol Vitkin</a>
 		</td>
 	</tr>
+	<tr>
 		<td>
 			<a href="https://github.com/socib/Leaflet.TimeDimension">Leaflet.TimeDimension</a>
 		</td>
