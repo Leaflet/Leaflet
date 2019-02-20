@@ -2388,6 +2388,16 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/svitkin/leaflet-timeline-slider/">Leaflet.timelineSlider</a>
+		</td>
+		<td>
+			Leaflet plugin that creates a customizable timeline slider with user designed functionality. Original implementation of timeline at https://codepen.io/trevanhetzel/pen/rOVrGK.
+		</td>
+		<td>
+			<a href="https://github.com/svitkin">Sol Vitkin</a>
+		</td>
+	</tr>
+		<td>
 			<a href="https://github.com/socib/Leaflet.TimeDimension">Leaflet.TimeDimension</a>
 		</td>
 		<td>
