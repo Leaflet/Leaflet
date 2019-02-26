@@ -2088,7 +2088,7 @@ panning inertia).</td>
 	</div>
 </div>
 
-</section><h2 id='marker'>Marker</h2><p>L.Marker is used to display clickable/draggable icons on the map. Extends <a href="#layer"><code>Layer</code></a>.</p>
+</section><h2 id='marker'>Marker</h2><p>L.marker is used to display clickable/draggable icons on the map. Extends <a href="#layer"><code>Layer</code></a>.</p>
 
 <section>
 <h3 id='marker-example'>Usage example</h3>
@@ -17520,7 +17520,7 @@ releases.
 In order to customize the default icon, just change the properties of <code>L.Icon.Default.prototype.options</code>
 (which is a set of <a href="#icon-option"><code>Icon options</code></a>).
 If you want to <em>completely</em> replace the default icon, override the
-<code>L.Marker.prototype.options.icon</code> with your own icon instead.</div>
+<code>L.marker.prototype.options.icon</code> with your own icon instead.</div>
 
 <table><thead>
 	<tr>
@@ -20209,7 +20209,7 @@ Inherits all methods, options and events from <a href="#evented"><code>L.Evented
 
 
 
-<pre><code class="lang-js">var layer = L.Marker(latlng).addTo(map);
+<pre><code class="lang-js">var layer = L.marker(latlng).addTo(map);
 layer.addTo(map);
 layer.remove();
 </code></pre>
