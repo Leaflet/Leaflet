@@ -368,6 +368,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/geotiff/georaster-layer-for-leaflet">GeoRasterLayer</a>
+		</td><td>
+			Display small and large GeoTIFF files with configurable resolution.  Built for simplicity and performance.  Integrates with <a href="https://geoblaze.io/">GeoBlaze</a>, a JavaScript raster analysis library.  See the <a href="https://geotiff.github.io/georaster-layer-for-leaflet-example/">demo</a>.
+		</td><td>
+			<a href="https://github.com/DanielJDufour">Daniel J. Dufour</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
 		</td><td>
 			Adding WMTS services (GUGiK Poland).
