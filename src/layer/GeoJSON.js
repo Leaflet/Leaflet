@@ -46,6 +46,26 @@ export var GeoJSON = FeatureGroup.extend({
 	 * }
 	 * ```
 	 *
+	 * @option lineStringToLayer: Function = *
+	 * A `Function` defining how GeoJSON lineStrings spawn Leaflet layers. It is internally
+	 * called when data is added, passing the GeoJSON lineString feature and its `LatLngs`.
+	 * The default is to spawn a default `Polyline`:
+	 * ```js
+	 * function(geoJsonLineString, latlngs) {
+	 * 	return L.Polyline(latlng);
+	 * }
+	 * ```
+	 *
+	 * @option polygonToLayer: Function = *
+	 * A `Function` defining how GeoJSON polygons spawn Leaflet layers. It is internally
+	 * called when data is added, passing the GeoJSON polygon feature and its `LatLngs`.
+	 * The default is to spawn a default `Polygon`:
+	 * ```js
+	 * function(geoJsonPolygon, latlngs) {
+	 * 	return L.Polygon(latlng);
+	 * }
+	 * ```
+	 *
 	 * @option style: Function = *
 	 * A `Function` defining the `Path options` for styling GeoJSON lines and polygons,
 	 * called internally when data is added.
@@ -167,6 +187,8 @@ export function geometryToLayer(geojson, options) {
 	    coords = geometry ? geometry.coordinates : null,
 	    layers = [],
 	    pointToLayer = options && options.pointToLayer,
+	    lineStringToLayer = options && options.lineStringToLayer,
+	    polygonToLayer = options && options.polygonToLayer,
 	    _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng,
 	    latlng, latlngs, i, len;
 
@@ -189,12 +211,12 @@ export function geometryToLayer(geojson, options) {
 	case 'LineString':
 	case 'MultiLineString':
 		latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
-		return new Polyline(latlngs, options);
+		return lineStringToLayer ? lineStringToLayer(geojson, latlngs) : new Polyline(latlngs, options);
 
 	case 'Polygon':
 	case 'MultiPolygon':
 		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
-		return new Polygon(latlngs, options);
+		return polygonToLayer ? polygonToLayer(geojson, latlngs) : new Polygon(latlngs, options);
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
