@@ -35,7 +35,7 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
 
 {% include frame.html url="kittenlayer.html" %}
 
-Normally, `getTileLayer()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and generates a tile URL from them. In our example, we ignore those and simply use a random number to get a different kitten every time.
+Normally, `getTileUrl()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and generates a tile URL from them. In our example, we ignore those and simply use a random number to get a different kitten every time.
 
 ### Splitting away the plugin code
 
