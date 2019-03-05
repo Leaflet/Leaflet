@@ -216,7 +216,7 @@ export function setTransform(el, offset, scale) {
 	el.style[TRANSFORM] =
 		(Browser.ie3d ?
 			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
-			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
+			'translate(' + pos.x + 'px,' + pos.y + 'px)') +
 		(scale ? ' scale(' + scale + ')' : '');
 }
 
