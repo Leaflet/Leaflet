@@ -932,6 +932,15 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/ATran31/Leaflet-GeoSSE">Leaflet GeoSSE</a>
+		</td><td>
+			Add realtime data to a Leaflet map using server sent events.
+		</td><td>
+			<a href="https://github.com/ATran31/">An Tran</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/perliedman/leaflet-realtime">Leaflet Realtime</a>
 		</td><td>
 			Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
