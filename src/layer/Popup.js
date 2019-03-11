@@ -526,8 +526,11 @@ Layer.include({
 	},
 
 	_onKeyPress: function (e) {
-		if (e.originalEvent.keyCode === 13) {
+		var keyCode = e.originalEvent.keyCode;
+		if (keyCode === 13) {
 			this._openPopup(e);
+		} else if (keyCode === 27) {
+			this.closePopup();
 		}
 	}
 });

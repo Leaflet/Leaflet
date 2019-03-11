@@ -295,6 +295,19 @@ describe('Popup', function () {
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
 
+	it("can close a open popup with esc keypress when marker has focus", function () {
+		var layer = new L.Marker([55.8, 37.6]).addTo(map);
+		var popup = layer.bindPopup("layer popup").openPopup();
+
+		expect(popup.isPopupOpen()).to.be(true);
+
+		happen.keypress(layer._icon, {
+			keyCode: 27
+		});
+
+		expect(popup.isPopupOpen()).to.be(false);
+	});
+
 	describe("autoPan option should pan popup into visibility", function () {
 
 		// Helper function which calculates the offset of the map-container & popup-container in pixel
