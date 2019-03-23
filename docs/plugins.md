@@ -4052,7 +4052,7 @@ The following plugins use external services to calculate driving or walking rout
     	</tr>
     <tr>
     	<td>
-    		<a href="https://github.com/skedgo/leaflet.tripgo.routing">Leaflet TripGo routing</a>
+    		<a href="https://github.com/skedgo/tripkit-leaflet">Leaflet TripGo routing</a>
     	</td>
     	<td>
     		The <b>TripGo</b> mobility platform lets you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
