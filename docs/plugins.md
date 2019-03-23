@@ -4397,7 +4397,7 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
-			<a href="http://www.ember-leaflet.com/">ember-leaflet</a>
+			<a href="https://miguelcobain.github.io/ember-leaflet/">ember-leaflet</a>
 		</td><td>
 			Easy and declarative mapping for <a href="http://emberjs.com/">Ember.js</a> using Leaflet.
 		</td><td>
