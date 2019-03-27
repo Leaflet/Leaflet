@@ -1741,6 +1741,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/nuclearsecrecy/">Alex Wellerstein</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iDerekLi/Leaflet.CustomLayer">Leaflet.CustomLayer</a>
+		</td>
+		<td>
+			A Leaflet plugin L.CustomLayer - fully custom Layer.
+		</td>
+		<td>
+			<a href="https://github.com/iDerekLi/">Derek Li</a>
+		</td>
+	</tr>
 
 </table>
 
