@@ -1176,6 +1176,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/i]Li/Leaflet.CustomLayer">Leaflet.CustomLayer</a>
+		</td>
+		<td>
+			A Leaflet plugin L.CustomLayer - fully custom Layer.
+		</td>
+		<td>
+			<a href="https://github.com/iDerekLi/">Derek Li</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/zhuang-hao-ming/Leaflet.RoughCanvas">Leaflet.RoughCanvas</a>
 		</td><td>
 			Leaflet.RoughCanvas renders hand-drawn, sketch style vector map (polyline, polygon, geojson).
@@ -1739,17 +1750,6 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 		<td>
 			<a href="https://github.com/nuclearsecrecy/">Alex Wellerstein</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/iDerekLi/Leaflet.CustomLayer">Leaflet.CustomLayer</a>
-		</td>
-		<td>
-			A Leaflet plugin L.CustomLayer - fully custom Layer.
-		</td>
-		<td>
-			<a href="https://github.com/iDerekLi/">Derek Li</a>
 		</td>
 	</tr>
 
