@@ -1176,7 +1176,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/i]Li/Leaflet.CustomLayer">Leaflet.CustomLayer</a>
+			<a href="https://github.com/iDerekLi/Leaflet.CustomLayer">Leaflet.CustomLayer</a>
 		</td>
 		<td>
 			A Leaflet plugin L.CustomLayer - fully custom Layer.
