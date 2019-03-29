@@ -4532,6 +4532,15 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="https://github.com/Lapizistik">Klaus Stein</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://wp-mapit.phpwebdev.in">WP MapIt</a>
+		</td><td>
+			Easy to use, WordPress Map plugin based on Open Street Map and Leaflet with custom markers images, descriptions and links.
+		</td><td>
+			<a href="http://phpwebdev.in/">Chandni Patel</a>
+		</td>
+	</tr>
 </table>
 
 
