@@ -57,7 +57,7 @@ Check out [this excellent guide](http://switch2osm.org/serving-tiles/).
 
 There's a number of services that allow you to do this easily,
 notably [MapBox](https://www.mapbox.com/), [CartoDB](http://cartodb.com/) and [GIS Cloud](http://www.giscloud.com/).
-If you want to make tiles on your own, probably the easiest way is using [TileMill](https://www.mapbox.com/tilemill/).
+If you want to make tiles on your own, probably the easiest way is using [TileMill](https://tilemill-project.github.io/tilemill/).
 TileMill can export your map as a single [.mbtiles](https://www.mapbox.com/developers/mbtiles/) file, which can be copied to a webserver and accessed by Leaflet with [a small PHP script](https://github.com/infostreams/mbtiles-php).
 Alternatively, you can [extract](https://github.com/mapbox/mbutil) the tiled images from the .mbtiles database and place them directly on your webserver with absolutely no server-side dependencies.
 
