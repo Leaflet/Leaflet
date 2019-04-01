@@ -114,8 +114,8 @@ export function falseFn() { return false; }
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
 export function formatNum(num, digits) {
-	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
-	return Math.round(num * pow) / pow;
+	digits = (digits === undefined ? 6 : digits);
+	return +(Math.round(num + ('e+' + digits)) + ('e-' + digits));
 }
 
 // @function trim(str: String): String
