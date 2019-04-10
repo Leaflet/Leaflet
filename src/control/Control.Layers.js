@@ -306,9 +306,9 @@ export var Layers = Control.extend({
 
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
 	_createRadioElement: function (name, checked) {
-
+		var radioGroupName = name + '-' + Util.stamp(this);
 		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' +
-				name + '"' + (checked ? ' checked="checked"' : '') + '/>';
+				radioGroupName + '"' + (checked ? ' checked="checked"' : '') + '/>';
 
 		var radioFragment = document.createElement('div');
 		radioFragment.innerHTML = radioHtml;
