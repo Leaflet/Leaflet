@@ -64,6 +64,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#user-interface">User interface</a></li>
 			<li><a href="#printexport">Print/export</a></li>
 			<li><a href="#geolocation">Geolocation</a></li>
+			<li><a href="#spotlight">Spotlight</a></li>
 		</ul>
 	</div>
 	<div class="toc-col">
@@ -3511,6 +3512,15 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/idawave/Leaflet.DraggableEnhancer">L.DraggableEnhancer</a>
 		</td><td>
 			Modify the default L.Draggable handler (responsible for map panning, ...) to make it work properly if one of the map container's parents has predefined handlers like "event.stopPropagation()' attached to a "mousemove" event for example.
+		</td><td>
+			<a href="https://github.com/idawave">Vincent Dechandon</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iboates/leaflet-spotlight">L.Spotlight</a>
+		</td><td>
+			Dynamically highlight features near the mouse cursor with a customizable shape
 		</td><td>
 			<a href="https://github.com/idawave">Vincent Dechandon</a>
 		</td>
