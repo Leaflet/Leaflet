@@ -3515,6 +3515,15 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/idawave">Vincent Dechandon</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iboates/leaflet-spotlight">L.Spotlight</a>
+		</td><td>
+			Dynamically highlight features near the mouse cursor with a customizable shape
+		</td><td>
+			<a href="https://github.com/iboates">Isaac Boates/a>
+		</td>
+	</tr>
 </table>
 
 
