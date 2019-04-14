@@ -80,6 +80,12 @@ describe("L.Marker#toGeoJSON", function () {
 			type: 'Point',
 			coordinates: [20.123, 10.123, 30.123]
 		});
+
+		marker = new L.Marker({lng: -1.4837191022531273, lat: 43.49222084042808});
+		expect(marker.toGeoJSON(18).geometry).to.eql({
+			type: 'Point',
+			coordinates: [-1.4837191022531273, 43.49222084042808]
+		});
 	});
 });
 
