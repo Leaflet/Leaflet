@@ -1,5 +1,6 @@
 import {Icon} from './Icon';
 import {toPoint as point} from '../../geometry/Point';
+import {empty} from '../../dom/DomUtil';
 
 /*
  * @class DivIcon
@@ -45,7 +46,7 @@ export var DivIcon = Icon.extend({
 		    options = this.options;
 
 		if (options.html instanceof Element) {
-			div.innerHTML = '';
+			empty(div);
 			div.appendChild(options.html);
 		} else {
 			div.innerHTML = options.html !== false ? options.html : '';
