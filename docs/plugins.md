@@ -64,7 +64,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#user-interface">User interface</a></li>
 			<li><a href="#printexport">Print/export</a></li>
 			<li><a href="#geolocation">Geolocation</a></li>
-			<li><a href="#spotlight">Spotlight</a></li>
 		</ul>
 	</div>
 	<div class="toc-col">
