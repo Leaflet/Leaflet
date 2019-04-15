@@ -4550,6 +4550,15 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="http://phpwebdev.in/">Chandni Patel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://community.mybb.com/mods.php?action=view&pid=1238">ABP Usermap MyBB</a>
+		</td><td>
+		A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers
+		</td><td>
+			<a href="https://gitlab.com/AnoBug">CrazyCat</a>
+		</td>
+	</tr>
 </table>
 
 
