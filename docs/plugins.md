@@ -3521,7 +3521,7 @@ These plugins extend Leaflet event handling.
 		</td><td>
 			Dynamically highlight features near the mouse cursor with a customizable shape
 		</td><td>
-			<a href="https://github.com/iboates">Isaac Boates/a>
+			<a href="https://github.com/iboates">Isaac Boates</a>
 		</td>
 	</tr>
 </table>
