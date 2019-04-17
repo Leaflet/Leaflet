@@ -97,7 +97,7 @@ description="Leaflet can help you display videos somewhere on the map."
 
 ***
 
-The following tutorials cover how to create plugins for Leaflet, and are intended only for developers experienced in Javascript:
+The following tutorials cover how to create plugins for Leaflet, and are intended only for developers experienced in JavaScript:
 
 
 {% include tutorial_link.html
