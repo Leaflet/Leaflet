@@ -16,7 +16,7 @@ bodyclass: download-page
 		<td>Stable version, released on December 30, 2018.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.3-dev</a></td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.5-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
 	</tr>
 	<tr>
