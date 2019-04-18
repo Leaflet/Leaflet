@@ -434,7 +434,7 @@ Layer.include({
 			latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
 		}
 
-		if (this._popup && this._map) {
+		if (this._popup && this._map && this._popup._hasContentFor(layer)) {
 			// set popup source to this layer
 			this._popup._source = layer;
 

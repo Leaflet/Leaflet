@@ -328,7 +328,7 @@ Layer.include({
 			latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
 		}
 
-		if (this._tooltip && this._map) {
+		if (this._tooltip && this._map && this._tooltip._hasContentFor(layer)) {
 
 			// set tooltip source to this layer
 			this._tooltip._source = layer;

@@ -175,6 +175,10 @@ export var DivOverlay = Layer.extend({
 		this.fire('contentupdate');
 	},
 
+	_hasContentFor: function (layer) {
+		return typeof this._content !== 'function' || this._content(layer || this);
+	},
+
 	_updatePosition: function () {
 		if (!this._map) { return; }
 
