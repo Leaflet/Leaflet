@@ -339,7 +339,9 @@ export var Marker = Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		DomUtil.setOpacity(this._icon, opacity);
+		if (this._icon) {
+			DomUtil.setOpacity(this._icon, opacity);
+		}
 
 		if (this._shadow) {
 			DomUtil.setOpacity(this._shadow, opacity);
