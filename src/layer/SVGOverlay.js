@@ -9,12 +9,12 @@ import * as Util from '../core/Util';
  *
  * Used to load, display and provide DOM access to an SVG file over specific bounds of the map. Extends `ImageOverlay`.
  *
- * An SVG overlay uses the [`<svg>`](https://developer.mozilla.org/docs/Web/SVG/Element/svg) element
+ * An SVG overlay uses the [`<svg>`](https://developer.mozilla.org/docs/Web/SVG/Element/svg) element.
  *
  * @example
  *
  * ```js
- * var element = '<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png" height="200" width="200"/></svg>,
+ * var element = '<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png" height="200" width="200"/></svg>',
  * 		 elementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
  * L.svgOverlay(element, elementBounds).addTo(map);
  * ```
