@@ -1,4 +1,5 @@
 import {Layer} from './Layer';
+import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
@@ -156,6 +157,38 @@ export var DivOverlay = Layer.extend({
 			DomUtil.toBack(this._container);
 		}
 		return this;
+	},
+
+	_prepareOpen: function (parent, layer, latlng) {
+		if (!(layer instanceof Layer)) {
+			latlng = layer;
+			layer = parent;
+		}
+
+		if (layer instanceof FeatureGroup) {
+			for (var id in parent._layers) {
+				layer = parent._layers[id];
+				break;
+			}
+		}
+
+		if (!latlng) {
+			if (layer.getCenter) {
+				latlng = layer.getCenter();
+			} else if (layer.getLatLng) {
+				latlng = layer.getLatLng();
+			} else {
+				throw new Error('Unable to get source layer LatLng.');
+			}
+		}
+
+		// set overlay source to this layer
+		this._source = layer;
+
+		// update the overlay (content, layout, ect...)
+		this.update();
+
+		return latlng;
 	},
 
 	_updateContent: function () {

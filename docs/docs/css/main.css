@@ -12,6 +12,7 @@ html, body, input, select, button, textarea, table {
 body {
 	line-height: 1.5;
 	color: #333;
+	background-color: white;
 }
 
 p {

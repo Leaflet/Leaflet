@@ -1,12 +1,12 @@
 ---
 name: Support
-about: I need support with Leaflet
+about: If you have a "How to" question, please use StackOverflow or StackExchange.
 
 ---
 
 --------------^ Click "Preview" tab for a nicer view!
 
-We use GitHub as an issue tracker.
+We use GitHub as an issue tracker and **do not provide support here**.
 For usage and support questions, please check out resources below:
 
 1. Read Leaflet documentation: https://leafletjs.com

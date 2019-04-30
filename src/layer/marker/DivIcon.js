@@ -1,5 +1,6 @@
 import {Icon} from './Icon';
 import {toPoint as point} from '../../geometry/Point';
+import {empty} from '../../dom/DomUtil';
 
 /*
  * @class DivIcon
@@ -29,8 +30,9 @@ export var DivIcon = Icon.extend({
 		// iconAnchor: (Point),
 		// popupAnchor: (Point),
 
-		// @option html: String = ''
-		// Custom HTML code to put inside the div element, empty by default.
+		// @option html: String|HTMLElement = ''
+		// Custom HTML code to put inside the div element, empty by default. Alternatively,
+		// an instance of `HTMLElement`.
 		html: false,
 
 		// @option bgPos: Point = [0, 0]
@@ -44,7 +46,12 @@ export var DivIcon = Icon.extend({
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
-		div.innerHTML = options.html !== false ? options.html : '';
+		if (options.html instanceof Element) {
+			empty(div);
+			div.appendChild(options.html);
+		} else {
+			div.innerHTML = options.html !== false ? options.html : '';
+		}
 
 		if (options.bgPos) {
 			var bgPos = point(options.bgPos);

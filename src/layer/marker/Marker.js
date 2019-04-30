@@ -160,6 +160,12 @@ export var Marker = Layer.extend({
 		return this.update();
 	},
 
+	// @method getIcon: Icon
+	// Returns the current icon used by the marker
+	getIcon: function () {
+		return this.options.icon;
+	},
+
 	// @method setIcon(icon: Icon): this
 	// Changes the marker icon.
 	setIcon: function (icon) {
@@ -339,7 +345,9 @@ export var Marker = Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		DomUtil.setOpacity(this._icon, opacity);
+		if (this._icon) {
+			DomUtil.setOpacity(this._icon, opacity);
+		}
 
 		if (this._shadow) {
 			DomUtil.setOpacity(this._shadow, opacity);

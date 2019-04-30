@@ -145,10 +145,10 @@ export var GeoJSON = FeatureGroup.extend({
 	},
 
 	_setLayerStyle: function (layer, style) {
-		if (typeof style === 'function') {
-			style = style(layer.feature);
-		}
 		if (layer.setStyle) {
+			if (typeof style === 'function') {
+				style = style(layer.feature);
+			}
 			layer.setStyle(style);
 		}
 	}

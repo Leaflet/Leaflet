@@ -2388,6 +2388,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/svitkin/leaflet-timeline-slider/">Leaflet.timelineSlider</a>
+		</td>
+		<td>
+			Leaflet plugin that creates a customizable timeline slider with user designed functionality. Original implementation of timeline at https://codepen.io/trevanhetzel/pen/rOVrGK.
+		</td>
+		<td>
+			<a href="https://github.com/svitkin">Sol Vitkin</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/socib/Leaflet.TimeDimension">Leaflet.TimeDimension</a>
 		</td>
 		<td>
@@ -3504,6 +3515,15 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/idawave">Vincent Dechandon</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iboates/leaflet-spotlight">L.Spotlight</a>
+		</td><td>
+			Dynamically highlight features near the mouse cursor with a customizable shape
+		</td><td>
+			<a href="https://github.com/iboates">Isaac Boates</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3750,7 +3770,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/publiclab/leaflet-blurred-location/">leaflet-blurred-image</a>
+			<a href="https://github.com/publiclab/leaflet-blurred-location/">leaflet-blurred-location</a>
 		</td>
 		<td>
 			A Leaflet-based interface for selecting a "blurred" or low-resolution location, to preserve privacy. <a href="https://publiclab.github.io/leaflet-blurred-location/examples/">Demo</a>.
@@ -4041,7 +4061,7 @@ The following plugins use external services to calculate driving or walking rout
     	</tr>
     <tr>
     	<td>
-    		<a href="https://github.com/skedgo/leaflet.tripgo.routing">Leaflet TripGo routing</a>
+    		<a href="https://github.com/skedgo/tripkit-leaflet">Leaflet TripGo routing</a>
     	</td>
     	<td>
     		The <b>TripGo</b> mobility platform lets you create apps providing seamless and personalised door-to-door trips using any public, private or commercial mode of transport.
@@ -4386,7 +4406,7 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
-			<a href="http://www.ember-leaflet.com/">ember-leaflet</a>
+			<a href="https://miguelcobain.github.io/ember-leaflet/">ember-leaflet</a>
 		</td><td>
 			Easy and declarative mapping for <a href="http://emberjs.com/">Ember.js</a> using Leaflet.
 		</td><td>
@@ -4523,32 +4543,50 @@ The following plugins integrate Leaflet into third party services or websites.
 	</tr>
 	<tr>
 		<td>
-			Leaflet Extensions for <a href="https://www.joomla.org/">Joomla! (3.x)</a>
+			<a href="http://wp-mapit.phpwebdev.in">WP MapIt</a>
 		</td><td>
-			<ul>
-                            <li>
-                                <strong>Agosm: </strong><br />
-                                Joomla Module not only for showing Markers on a OpenStreetMap Map.<br />
-                                <a href="https://github.com/astridx/pkg_agosms">Gibhub</a><br />
-                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosm/">Joomla Extension Directory</a><br />
-                            </li>
-                            <li>
-                                <strong>Aggpxtrack: </strong><br />
-                                Joomla Custom Field for dispaying a GPX Track on a Map - you can choose an OpenStreetMap or GoogleMaps. With much options. For example: One option is an elevation profil.<br />
-                                <a href="https://github.com/astridx/pkg_aggpxtrack">Gibhub</a><br />
-                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/aggpxtrack/">Joomla Extension Directory</a><br />
-                            </li>
-                            <li>
-                                <strong>Agosmmapwithmarker: </strong><br />
-                                Custom field for show a map with a marker in frond end - always the right card for the content. You can enter the address in backend.<br />
-                                <a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
-                                <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
-                            </li>
-                        </ul>
+			Easy to use, WordPress Map plugin based on Open Street Map and Leaflet with custom markers images, descriptions and links.
 		</td><td>
-			<a href="https://github.com/astridx">Astrid Günther</a>
+			<a href="http://phpwebdev.in/">Chandni Patel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://community.mybb.com/mods.php?action=view&pid=1238">ABP Usermap MyBB</a>
+		</td><td>
+		A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers
+		</td><td>
+			<a href="https://gitlab.com/AnoBug">CrazyCat</a>
+		</td>
+	</tr>
+  <tr>
+		<td>
+      Leaflet Extensions for <a href="https://www.joomla.org/">Joomla! (3.x)</a>
+		</td><td>
+			<ul>
+        <li>
+          <strong>Agosm: </strong><br />
+          Joomla Module not only for showing Markers on a OpenStreetMap Map.<br />
+          <a href="https://github.com/astridx/pkg_agosms">Gibhub</a><br />
+          <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosm/">Joomla Extension Directory</a><br />
+        </li>
+        <li>
+            <strong>Aggpxtrack: </strong><br />
+            Joomla Custom Field for dispaying a GPX Track on a Map - you can choose an OpenStreetMap or GoogleMaps. With much options. For example: One option is an elevation profil.<br />
+            <a href="https://github.com/astridx/pkg_aggpxtrack">Gibhub</a><br />
+            <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/aggpxtrack/">Joomla Extension Directory</a><br />
+        </li>
+        <li>
+            <strong>Agosmmapwithmarker: </strong><br />
+            Custom field for show a map with a marker in frond end - always the right card for the content. You can enter the address in backend.<br />
+            <a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
+            <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
+        </li>
+    </ul>
+		</td><td>
+			<a href="https://github.com/astridx">Astrid Günther</a>
+    </td>
+  </tr>
 </table>
 
 
