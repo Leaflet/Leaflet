@@ -4,7 +4,6 @@ import * as DomUtil from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
-import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import {Path} from './vector/Path';
 
@@ -418,28 +417,8 @@ Layer.include({
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (layer, latlng) {
-		if (!(layer instanceof Layer)) {
-			latlng = layer;
-			layer = this;
-		}
-
-		if (layer instanceof FeatureGroup) {
-			for (var id in this._layers) {
-				layer = this._layers[id];
-				break;
-			}
-		}
-
-		if (!latlng) {
-			latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
-		}
-
 		if (this._popup && this._map) {
-			// set popup source to this layer
-			this._popup._source = layer;
-
-			// update the popup (content, layout, ect...)
-			this._popup.update();
+			latlng = this._popup._prepareOpen(this, layer, latlng);
 
 			// open the popup on the map
 			this._map.openPopup(this._popup, latlng);

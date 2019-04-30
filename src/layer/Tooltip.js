@@ -4,7 +4,6 @@ import {DivOverlay} from './DivOverlay';
 import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
-import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -312,29 +311,8 @@ Layer.include({
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (layer, latlng) {
-		if (!(layer instanceof Layer)) {
-			latlng = layer;
-			layer = this;
-		}
-
-		if (layer instanceof FeatureGroup) {
-			for (var id in this._layers) {
-				layer = this._layers[id];
-				break;
-			}
-		}
-
-		if (!latlng) {
-			latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
-		}
-
 		if (this._tooltip && this._map) {
-
-			// set tooltip source to this layer
-			this._tooltip._source = layer;
-
-			// update the tooltip (content, layout, ect...)
-			this._tooltip.update();
+			latlng = this._tooltip._prepareOpen(this, layer, latlng);
 
 			// open the tooltip on the map
 			this._map.openTooltip(this._tooltip, latlng);
