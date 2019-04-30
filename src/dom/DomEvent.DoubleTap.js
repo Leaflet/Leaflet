@@ -50,6 +50,7 @@ export function addDoubleTapListener(obj, handler, id) {
 				touch = newTouch;
 			}
 			touch.type = 'dblclick';
+			touch.button = 0;
 			handler(touch);
 			last = null;
 		}
