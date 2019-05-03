@@ -14,7 +14,7 @@ import * as Util from '../core/Util';
  * @example
  *
  * ```js
- * var layer = L.Marker(latlng).addTo(map);
+ * var layer = L.marker(latlng).addTo(map);
  * layer.addTo(map);
  * layer.remove();
  * ```
