@@ -94,8 +94,6 @@
 	-moz-user-select: none;
 	}
 
-.leaflet-pane         { z-index: 400; }
-
 .leaflet-tile-pane    { z-index: 200; }
 .leaflet-overlay-pane { z-index: 400; }
 .leaflet-shadow-pane  { z-index: 500; }
