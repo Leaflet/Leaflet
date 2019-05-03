@@ -5,7 +5,6 @@ Contributing to Leaflet
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
- 5. [Code Coverage](#code-coverage)
  6. [Improving Documentation](#improving-documentation)
  7. [Code of Conduct](#code-of-conduct)
  8. [Thank You](#thank-you)
@@ -136,17 +135,6 @@ npm test -- -- --browsers Firefox,Chrome,Safari,IE
 (Note: the doubling of "`--`" [special option](https://docs.npmjs.com/cli/run-script#description) is [important](https://github.com/Leaflet/Leaflet/pull/6166#issuecomment-390959903))
 
 To run the tests in a browser manually, open `spec/index.html`.
-
-## Code Coverage
-
-To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
-
-```
-npm test -- --cov
-```
-
-After that, open `coverage/<environment>/index.html` in a browser to see the report.
-From there you can click through folders/files to get details on their individual coverage.
 
 ## Improving Documentation
 
