@@ -64,9 +64,11 @@ module.exports = function (config) {
 			plugins: [
 				json()
 			],
-			format: 'umd',
-			name: 'L',
-			outro: outro
+			output: {
+				format: 'umd',
+				name: 'L',
+				outro: outro
+			}
 		},
 
 		// test results reporter to use
