@@ -27,10 +27,6 @@ module.exports = function (config) {
 
 	var preprocessors = {};
 
-	if (config.cov) {
-		preprocessors['src/**/*.js'] = ['coverage'];
-	}
-
 	preprocessors['src/Leaflet.js'] = ['rollup'];
 
 	config.set({
@@ -42,7 +38,6 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-coverage',
 			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
@@ -64,16 +59,16 @@ module.exports = function (config) {
 			plugins: [
 				json()
 			],
-			format: 'umd',
-			name: 'L',
-			outro: outro
+			output: {
+				format: 'umd',
+				name: 'L',
+				outro: outro
+			}
 		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: config.cov ? ['dots', 'coverage'] : ['dots'],
-
-		coverageReporter: config.cov ? {type : 'html', dir : 'coverage/'} : null,
+		reporters: ['dots'],
 
 		// web server port
 		port: 9876,
