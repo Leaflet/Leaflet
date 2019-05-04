@@ -3,6 +3,8 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.5.0
+
 ## 1.4.0 (2018-12-30)
 
 ### API changes
