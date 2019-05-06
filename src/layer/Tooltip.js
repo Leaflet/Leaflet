@@ -118,16 +118,10 @@ export var Tooltip = DivOverlay.extend({
 		var events = DivOverlay.prototype.getEvents.call(this);
 
 		if (!this.options.permanent) {
-			events.preclick = this._close;
+			events.preclick = this.close;
 		}
 
 		return events;
-	},
-
-	_close: function () {
-		if (this._map) {
-			this._map.closeTooltip(this);
-		}
 	},
 
 	_initLayout: function () {
@@ -230,11 +224,8 @@ Map.include({
 	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
 	// Creates a tooltip with the specified content and options and open it.
 	openTooltip: function (tooltip, latlng, options) {
-		tooltip = this._initOverlay(Tooltip, tooltip, latlng, options);
-
-		if (!this.hasLayer(tooltip)) {
-			this.addLayer(tooltip);
-		}
+		this._initOverlay(Tooltip, tooltip, latlng, options)
+		  .openOn(this);
 
 		return this;
 	},
@@ -242,7 +233,8 @@ Map.include({
 	// @method closeTooltip(tooltip: Tooltip): this
 	// Closes the tooltip given as parameter.
 	closeTooltip: function (tooltip) {
-		return this.removeLayer(tooltip);
+		tooltip.close();
+		return this;
 	}
 
 });
@@ -320,9 +312,8 @@ Layer.include({
 	openTooltip: function (latlng) {
 		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
 			// open the tooltip on the map
-			this._map.openTooltip(this._tooltip, latlng);
+			this._tooltip.openOn(this._map);
 		}
-
 		return this;
 	},
 
@@ -330,9 +321,8 @@ Layer.include({
 	// Closes the tooltip bound to this layer if it is open.
 	closeTooltip: function () {
 		if (this._tooltip) {
-			this._tooltip._close();
+			return this._tooltip.close();
 		}
-		return this;
 	},
 
 	// @method toggleTooltip(): this
@@ -340,7 +330,7 @@ Layer.include({
 	toggleTooltip: function () {
 		if (this._tooltip) {
 			if (this._tooltip._map) {
-				this.closeTooltip();
+				this._tooltip.close();
 			} else {
 				this.openTooltip();
 			}

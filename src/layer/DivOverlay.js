@@ -38,6 +38,28 @@ export var DivOverlay = Layer.extend({
 		this._source = source;
 	},
 
+	// @method openOn(map: Map): this
+	// Adds the overlay to the map.
+	// Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
+	openOn: function (map) {
+		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
+		if (!map.hasLayer(this)) {
+			map.addLayer(this);
+		}
+		return this;
+	},
+
+	// @method close(): this
+	// Closes the overlay.
+	// Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
+	// and `layer.closePopup()`/`.closeTooltip()`.
+	close: function () {
+		if (this._map) {
+			this._map.removeLayer(this);
+		}
+		return this;
+	},
+
 	onAdd: function (map) {
 		this._zoomAnimated = map._zoomAnimated;
 
