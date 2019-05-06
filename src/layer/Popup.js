@@ -4,7 +4,6 @@ import * as DomUtil from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
-import * as Util from '../core/Util';
 import {Path} from './vector/Path';
 
 /*
@@ -321,24 +320,19 @@ Map.include({
 	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
 	// Creates a popup with the specified content and options and opens it in the given point on a map.
 	openPopup: function (popup, latlng, options) {
-		if (!(popup instanceof Popup)) {
-			popup = new Popup(options).setContent(popup);
+		popup = this._initOverlay(Popup, popup, latlng, options);
+
+		if (!this.hasLayer(popup)) {
+			if (this._popup && this._popup.options.autoClose) {
+				this.closePopup();
+			}
+
+			this._popup = popup;
+			this.addLayer(popup);
 		}
 
-		if (latlng) {
-			popup.setLatLng(latlng);
-		}
+		return this;
 
-		if (this.hasLayer(popup)) {
-			return this;
-		}
-
-		if (this._popup && this._popup.options.autoClose) {
-			this.closePopup();
-		}
-
-		this._popup = popup;
-		return this.addLayer(popup);
 	},
 
 	// @method closePopup(popup?: Popup): this
@@ -378,18 +372,7 @@ Layer.include({
 	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
-
-		if (content instanceof Popup) {
-			Util.setOptions(content, options);
-			this._popup = content;
-			content._source = this;
-		} else {
-			if (!this._popup || options) {
-				this._popup = new Popup(options, this);
-			}
-			this._popup.setContent(content);
-		}
-
+		this._popup = this._initOverlay(Popup, this._popup, content, options);
 		if (!this._popupHandlersAdded) {
 			this.on({
 				click: this._openPopup,
