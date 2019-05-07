@@ -4597,6 +4597,15 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="https://github.com/astridx">Astrid Günther</a>
     </td>
   </tr>
+  <tr>
+	<td>
+		<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
+	</td><td>
+		Simple plugin for adding Facebook like button as a control.			
+	  </td><td>
+		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+	</td>
+  </tr>
 </table>
 
 
