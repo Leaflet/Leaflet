@@ -3,6 +3,9 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.5.1 (2019-05-08)
+* Fix module export regression ([#6647](https://github.com/Leaflet/Leaflet/pull/6647) by [cherniavskii](https://github.com/cherniavskii))
+
 ## 1.5.0 (2019-05-08)
 
 ### API changes
