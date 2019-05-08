@@ -132,6 +132,36 @@ describe('Popup', function () {
 		expect(group._popup._contentNode.innerHTML).to.be("I'm marker 2.");
 	});
 
+	it("it should close a popup when has no content with a FeatureGroup", function () {
+		var marker1 = new L.Marker(center);
+		var marker2 = new L.Marker([54.6, 38.2]);
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+
+		marker1.description = "I'm marker 1.";
+		marker2.description = undefined;
+
+		group.bindPopup(function (layer) {
+			return layer.description;
+		});
+
+		map.options.closePopupOnClick = true;
+
+		// toggle popup on marker1
+		group.fire('click', {
+			latlng: center,
+			layer: marker1
+		});
+		expect(map.hasLayer(group._popup)).to.be.ok();
+		expect(group._popup._contentNode.innerHTML).to.be("I'm marker 1.");
+
+		// toggle popup on marker2
+		group.fire('click', {
+			latlng: [54.6, 38.2],
+			layer: marker2
+		});
+		expect(map.hasLayer(group._popup)).not.to.be.ok();
+	});
+
 	it("should use a function for popup content when a source is passed to Popup", function () {
 		var marker = new L.Marker(center).addTo(map);
 		L.popup({}, marker);

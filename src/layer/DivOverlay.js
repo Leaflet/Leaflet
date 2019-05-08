@@ -179,6 +179,15 @@ export var DivOverlay = Layer.extend({
 			this._source = source;
 		}
 
+		if (typeof this._content === 'function' && !this._content(source)) {
+			// no content for overlay
+
+			if (this._map) { // close if already opened
+				this._map.removeLayer(this);
+			}
+			return;
+		}
+
 		if (!latlng) {
 			if (source.getCenter) {
 				latlng = source.getCenter();
