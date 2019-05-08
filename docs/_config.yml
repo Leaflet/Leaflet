@@ -5,11 +5,11 @@ markdown: kramdown
 kramdown:
   entity_output: as_input
 
-latest_leaflet_version: 1.5.0
+latest_leaflet_version: 1.5.1
 
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
 integrity_hash_css: "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-integrity_hash_source: "sha512-7Yh/0Xxfcb+mpGIYFHV3qBN2G+KMNXGMKqUNUNwLFA8+LqaQIT+84GN7WUOpwa6elFljpH2kgcxRoOcsjHf/gQ=="
-integrity_hash_uglified: "sha512-3Wcxp7F9bV2pl+MBgrL6Pz7AJASLpemmQPIiPA0lDs3ImF0z4JuuMIBPeirLbgIuhfH2gJyGWZjvm6M+Zr7L6Q=="
+integrity_hash_source: "sha512-mAT70YlAZkXM0DXsPxGQyghI/S+WXRUm3XeOcT8hb/JG65MsLBshD8nc6okRVD5iCVnJH/AY9WR/mRr8u4JFLQ=="
+integrity_hash_uglified: "sha512-m/IsCzcjugdWmU+o7MIi2baMzxranuwj9uJY88W40OvD9aVf3wfl/QnLhdS0Z+VQUheZkM6weHxjEANi8Of5+w=="
