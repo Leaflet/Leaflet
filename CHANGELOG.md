@@ -3,7 +3,7 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.5.0 (2019-05-05)
+## 1.5.0 (2019-05-08)
 
 ### API changes
 * Add `keepAspectRatio` option to `VideoOverlay` ([#6038](https://github.com/Leaflet/Leaflet/pull/6038) by [ronikar](https://github.com/ronikar))
@@ -16,16 +16,16 @@ Leaflet Changelog
 * Update attribution link to HTTPS ([#6593](https://github.com/Leaflet/Leaflet/pull/6593) by [WillSelway](https://github.com/WillSelway)) 
 * Make `DivIcon` `html` option accept Element ([#6571](https://github.com/Leaflet/Leaflet/pull/6571) by [oscar-sensornet](https://github.com/oscar-sensornet)) 
 * Microoptimize `GeoJSON._setLayerStyle` ([#6616](https://github.com/Leaflet/Leaflet/pull/6616) by [johnd0e](https://github.com/johnd0e)) 
+* Reuse `openPopup` and `openTooltip` code ([#6613](https://github.com/Leaflet/Leaflet/pull/6613) by [johnd0e](https://github.com/johnd0e)) 
 
 ### Bug fixes
 * Fix `Control.Layers` radio buttons when using multiple maps ([#6483](https://github.com/Leaflet/Leaflet/pull/6483) by [jjimenezshaw](https://github.com/jjimenezshaw)) 
 * Explicitly remove controls from the map on map unload ([#6488](https://github.com/Leaflet/Leaflet/pull/6488) by [IvanSanchez](https://github.com/IvanSanchez)) 
-* Update `Polyline`'s `_pxBounds` when their stroke weight changes ([#6516](https://github.com/Leaflet/Leaflet/pull/6516) by [IvanSanchez](https://github.com/IvanSanchez)) 
+* Fixed a bug where mouseover on Canvas-rendered polylines acted inconsistently ([#6516](https://github.com/Leaflet/Leaflet/pull/6516) by [IvanSanchez](https://github.com/IvanSanchez)) 
 * Prevent tiles highlighting in IE11 ([#6570](https://github.com/Leaflet/Leaflet/pull/6570) by [VictorVelarde](https://github.com/VictorVelarde)) 
 * Fix `L.Util.formatNum` rounding precision ([#6587](https://github.com/Leaflet/Leaflet/pull/6587) by [inkstak](https://github.com/inkstak)) 
-* Check if `Marker`'s icon isn't `null` before setting its opacity ([#6610](https://github.com/Leaflet/Leaflet/pull/6610) by [charlie67](https://github.com/charlie67)) 
+* Fix crash, when setting opacity on `Marker` without icon ([#6610](https://github.com/Leaflet/Leaflet/pull/6610) by [charlie67](https://github.com/charlie67)) 
 * Make synthetic `dblclick` event relate to left mouse button ([#6628](https://github.com/Leaflet/Leaflet/pull/6628) by [IvanSanchez](https://github.com/IvanSanchez)) 
-* Reuse `openPopup` and `openTooltip` code ([#6613](https://github.com/Leaflet/Leaflet/pull/6613) by [johnd0e](https://github.com/johnd0e)) 
 
 ### Docs & Web Site
 * Minor spelling corrections in Docs/Tutorials ([#6464](https://github.com/Leaflet/Leaflet/pull/6464) by [ilyankou](https://github.com/ilyankou)) 
