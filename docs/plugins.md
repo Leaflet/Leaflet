@@ -3798,6 +3798,30 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-environmental-layers">leaflet-environmental-layers
+			</a>
+		</td>
+		<td>
+			Collection of different environmental map layers in an easy to use Leaflet library <a href="https://publiclab.github.io/leaflet-environmental-layers/example/index.html#3/43.00/-46.26/BL2">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/publiclab">Public Lab</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-blurred-location-display">leaflet-blurred-location-display
+			</a>
+		</td>
+		<td>
+			Cleverly dispays "blurred" locations using color-coded heatmap and color-coded markers while fetching data from remote API <a href="https://publiclab.github.io/leaflet-blurred-location-display/examples/HumanReadableBlurring.html">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/publiclab">Public Lab</a>
+		</td>
+	</tr>
 </table>
 
 
