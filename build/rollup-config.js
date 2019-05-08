@@ -42,7 +42,8 @@ export default {
 			name: 'L',
 			banner: banner,
 			outro: outro,
-			sourcemap: true
+			sourcemap: true,
+			esModule: false,
 		},
 		{
 			file: 'dist/leaflet-src.esm.js',

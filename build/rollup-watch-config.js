@@ -20,7 +20,8 @@ export default {
 		format: 'umd',
 		name: 'L',
 		banner: banner,
-		sourcemap: true
+		sourcemap: true,
+		esModule: false,
 	},
 	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
