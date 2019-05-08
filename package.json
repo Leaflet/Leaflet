@@ -13,7 +13,7 @@
     "karma-firefox-launcher": "~1.1.0",
     "karma-mocha": "^1.3.0",
     "karma-phantomjs-launcher": "^1.0.4",
-    "karma-rollup-preprocessor": "^7.0.0",
+    "karma-rollup-preprocessor": "^5.0.1",
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
     "leafdoc": "^1.4.1",
