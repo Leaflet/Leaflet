@@ -11,5 +11,5 @@ latest_leaflet_version: 1.5.1
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
 integrity_hash_css: "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-integrity_hash_source: "sha512-EFi8yuDw392eBmIzjnNoGLziX1pP5dz+9k8w6wiRIpQ7hbGSGzQUXW9VXHqDRVT89YPQOmL3gdPpSleHssHI+A=="
-integrity_hash_uglified: "sha512-QmdX+mhjSoAeGIzXOEkj1s13NHADZEhGqz4UqNxDZAnMeaOtzoPkcgOQYOkp0vE4FPWWEbmNtXcMGryjcRSZSA=="
+integrity_hash_source: "sha512-eldJj3obVsCO9Tlrj/J8AFrrTFD4+sN8d9HdwKAqZuSgHloWOm6IzetLy1uQnwh9qLssrY3TAgIJQfjPfQJxHQ=="
+integrity_hash_uglified: "sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
