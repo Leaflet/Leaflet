@@ -7603,9 +7603,12 @@ An SVG overlay uses the <a href="https://developer.mozilla.org/docs/Web/SVG/Elem
 
 
 
-<pre><code class="lang-js">var element = &#39;&lt;svg width=&quot;200&quot; height=&quot;200&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;&lt;image xlink:href=&quot;https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png&quot; height=&quot;200&quot; width=&quot;200&quot;/&gt;&lt;/svg&gt;&#39;,
-         elementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
-L.svgOverlay(element, elementBounds).addTo(map);
+<pre><code class="lang-js">var svgElement = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, &quot;svg&quot;);
+svgElement.setAttribute(&#39;xmlns&#39;, &quot;http://www.w3.org/2000/svg&quot;);
+svgElement.setAttribute(&#39;viewBox&#39;, &quot;0 0 200 200&quot;);
+svgElement.innerHTML = &#39;&lt;rect width=&quot;200&quot; height=&quot;200&quot;/&gt;&lt;rect x=&quot;75&quot; y=&quot;23&quot; width=&quot;50&quot; height=&quot;50&quot; style=&quot;fill:red&quot;/&gt;&lt;rect x=&quot;75&quot; y=&quot;123&quot; width=&quot;50&quot; height=&quot;50&quot; style=&quot;fill:#0013ff&quot;/&gt;&#39;;
+var svgElementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
+L.svgOverlay(svgElement, svgElementBounds).addTo(map);
 </code></pre>
 
 
