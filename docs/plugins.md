@@ -1,4 +1,4 @@
----
+﻿---
 layout: v2
 title: Plugins
 bodyclass: plugins-page
@@ -1752,6 +1752,19 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iDerekLi/">Derek Li</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/harrishudson/Leaflet.zoomSVG">Leaflet.zoomSVG</a>
+		</td>
+		<td>
+			A Leaflet SVG Renderer that does not re-project or redraw features 
+upon map zoom change. No external dependencies.
+		</td>
+		<td>
+			<a href="https://github.com/harrishudson/">Harris Hudson</a>
+		</td>
+	</tr>
+
 </table>
 
 
