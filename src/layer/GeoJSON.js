@@ -127,9 +127,13 @@ export var GeoJSON = FeatureGroup.extend({
 		return this.addLayer(layer);
 	},
 
-	// @method resetStyle( <Path> layer ): this
+	// @method resetStyle( <Path> layer? ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
+	// If `layer` is omitted, the style of all features in the current layer is reset.
 	resetStyle: function (layer) {
+		if (layer === undefined) {
+			return this.eachLayer(this.resetStyle, this);
+		}
 		// reset any custom styles
 		layer.options = Util.extend({}, layer.defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
