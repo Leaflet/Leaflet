@@ -2,6 +2,10 @@ sudo: false
 language: node_js
 node_js:
   - node
+before_install:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+before_script:
+  - "export DISPLAY=:99.0"
 addons:
   artifacts:
     paths:
@@ -23,7 +27,6 @@ env:
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
   - npm test
-  - xvfb-run --server-args="-screen 0 1280x1024x16" npm run test-nolint -- --browsers Firefox
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..

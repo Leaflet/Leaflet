@@ -38,7 +38,6 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-phantomjs-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
 			'karma-firefox-launcher'],
@@ -89,24 +88,10 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJSCustom'],
-
-		customLaunchers: {
-			'PhantomJSCustom': {
-				base: 'PhantomJS',
-				flags: ['--load-images=true'],
-				options: {
-					onCallback: function (data) {
-						if (data.render) {
-							page.render(data.render);
-						}
-					}
-				}
-			}
-		},
+		browsers: ['Firefox'],
 
 		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 5000,
+		captureTimeout: 10000,
 
 		// Workaround for PhantomJS random DISCONNECTED error
 		browserDisconnectTimeout: 10000, // default 2000
