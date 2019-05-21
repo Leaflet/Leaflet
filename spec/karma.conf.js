@@ -88,7 +88,21 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['Firefox'],
+		browsers: ['FirefoxHeadless'],
+
+		customLaunchers: {
+                        'FirefoxHeadless': {
+                                base: 'Firefox',
+                                flags: ['--headless'],
+                                options: {
+                                        onCallback: function (data) {
+                                                if (data.render) {
+                                                        page.render(data.render);
+                                                }
+                                        }
+                                }
+                        }
+                },
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 10000,
