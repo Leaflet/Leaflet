@@ -1260,7 +1260,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.Awesome-Markers</a>
 		</td><td>
-			Colorful, iconic &amp; retina-proof markers based on the Font Awesome icons/Twitter Bootstrap icons
+			Colorful, iconic &amp; retina-proof markers based on the Font Awesome icons/Twitter Bootstrap icons.
 		</td><td>
 			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
 		</td>
@@ -1269,9 +1269,18 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/coryasilva/Leaflet.ExtraMarkers">Leaflet.Extra-Markers</a>
 		</td><td>
-			Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support
+			Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support.
 		</td><td>
 			<a href="http://www.corysilva.com">Cory Silva</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ilyankou/Leaflet.IconMaterial">Leaflet.IconMaterial</a>
+		</td><td>
+			Another shameless copy of Awesome-Markers, but this time with Material Icons on an SVG marker whose fill and outline colors can be set using hex/rgba values.
+		</td><td>
+			<a href="https://github.com/ilyankou">Ilya Ilyankou</a>
 		</td>
 	</tr>
 	<tr>
