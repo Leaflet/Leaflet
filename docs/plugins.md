@@ -2962,6 +2962,17 @@ Change the way the user can interactively move around the map.
 			<a href="https://github.com/unbam">Masashi Takeshita</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/will4906/leaflet.zoompanel">Leaflet.ZoomPanel</a>
+		</td>
+		<td>
+			A Zoom Control Panel Of Leaflet. <a href="https://will4906.github.io/leaflet-zoompanel/">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/will4906/">Shuhua Huang</a>
+		</td>
+	</tr>
 </table>
 
 
