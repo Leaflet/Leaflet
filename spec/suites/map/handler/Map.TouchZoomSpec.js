@@ -1,4 +1,6 @@
 describe("Map.TouchZoom", function () {
+	const fingerType = L.Browser.pointer ? 'pointer' : 'touch';
+
 	it.skipIfNotTouch("Increases zoom when pinching out", function (done) {
 		var container = document.createElement('div');
 		container.style.width = container.style.height = '600px';
@@ -30,8 +32,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(fingerType);
+		var f2 = hand.growFinger(fingerType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -72,8 +74,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(fingerType);
+		var f2 = hand.growFinger(fingerType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
