@@ -710,6 +710,35 @@ describe("Map", function () {
 
 			expect(spy.called).to.be.ok();
 		});
+
+		it("correctly adjusts for new container size when view is set during map initialization (#6165)", function () {
+			// Use a newly initialized map
+			map.remove();
+
+			var center = [0, 0];
+
+			// The edge case is only if view is set directly during map initialization
+			map = L.map(container, {
+				center: center,
+				zoom: 0
+			});
+
+			// Change the container size
+			container.style.width = '600px';
+
+			// The map should not be aware yet of container size change,
+			// otherwise the next invalidateSize will not be able to
+			// compute the size difference
+			expect(map.getSize().x).to.equal(100);
+			expect(map.latLngToContainerPoint(center).x).to.equal(50);
+
+			// Now notifying the map that the container size has changed,
+			// it should return new values and correctly position coordinates
+			map.invalidateSize();
+
+			expect(map.getSize().x).to.equal(600);
+			expect(map.latLngToContainerPoint(center).x).to.equal(300);
+		});
 	});
 
 	describe('#flyTo', function () {
@@ -1005,6 +1034,98 @@ describe("Map", function () {
 		});
 
 	});
+
+
+	describe("#panInside", function () {
+		var center,
+		    tl,
+		    tlPix;
+
+		beforeEach(function () {
+			var container = map.getContainer();
+			container.style.height = container.style.width = "500px";
+			document.body.appendChild(container);
+			map.setView(L.latLng([53.0, 0.15]), 12, {animate: false});
+			center = map.getCenter();
+			tl = map.getBounds().getNorthWest();
+			tlPix = map.getPixelBounds().min;
+		});
+
+		afterEach(function () {
+			document.body.removeChild(map.getContainer());
+		});
+
+		it("does not pan the map when the target is within bounds", function () {
+			map.panInside(tl, {animate:false});
+			expect(center).to.equal(map.getCenter());
+		});
+
+		it("pans the map when padding is provided and the target is within the border area", function () {
+			var padding = [40, 20],
+			    p = tlPix.add([30, 0]),	// Top-left
+			    distanceMoved;
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
+			expect(distanceMoved.equals(L.point([-10, -20]))).to.eql(true);
+
+			tlPix = map.getPixelBounds().min;
+			p = [map.getPixelBounds().max.x - 10, map.getPixelBounds().min.y];	// Top-right
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
+			expect(distanceMoved.equals(L.point([30, -20]))).to.eql(true);
+
+			tlPix = map.getPixelBounds().min;
+			p = [map.getPixelBounds().min.x + 35, map.getPixelBounds().max.y];	// Bottom-left
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
+			expect(distanceMoved.equals(L.point([-5, 20]))).to.eql(true);
+
+			tlPix = map.getPixelBounds().min;
+			p = [map.getPixelBounds().max.x - 15, map.getPixelBounds().max.y]; // Bottom-right
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
+			expect(distanceMoved.equals(L.point([25, 20]))).to.eql(true);
+		});
+
+		it("supports different padding values for each border", function () {
+			var p = tlPix.add([40, 0]),	// Top-Left
+			    distanceMoved,
+			    opts = {paddingTL: [60, 20], paddingBR: [10, 10]};
+			map.panInside(map.unproject(p), opts);
+			expect(center).to.equal(map.getCenter());
+
+			var br = map.getPixelBounds().max;	// Bottom-Right
+			map.panInside(map.unproject(L.point(br.x - 20, br.y)), opts);
+			expect(center).to.not.equal(map.getCenter);
+		});
+
+		it("pans on both X and Y axes when the target is outside of the view area and both the point's coords are outside the bounds", function () {
+			var p = map.unproject(tlPix.subtract([200, 200]));
+			map.panInside(p, {animate: false});
+			expect(map.getBounds().contains(p)).to.be(true);
+			expect(map.getCenter().lng).to.not.eql(center.lng);
+			expect(map.getCenter().lat).to.not.eql(center.lat);
+		});
+
+		it("pans only on the Y axis when the target's X coord is within bounds but the Y is not", function () {
+			var p = L.latLng(tl.lat + 5, tl.lng);
+			map.panInside(p, {animate: false});
+			expect(map.getBounds().contains(p)).to.be(true);
+			var dx = Math.abs(map.getCenter().lng - center.lng);
+			expect(dx).to.be.lessThan(1.0E-9);
+			expect(map.getCenter().lat).to.not.eql(center.lat);
+		});
+
+		it("pans only on the X axis when the target's Y coord is within bounds but the X is not", function () {
+			var p = L.latLng(tl.lat, tl.lng - 5);
+			map.panInside(p, 0, {animate: false});
+			expect(map.getBounds().contains(p)).to.be(true);
+			expect(map.getCenter().lng).to.not.eql(center.lng);
+			var dy = map.getCenter().lat - center.lat;
+			expect(dy).to.be.lessThan(1.0E-9);
+		});
+	});
+
 
 	describe('#DOM events', function () {
 

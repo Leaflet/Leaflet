@@ -18,7 +18,7 @@ import * as Browser from '../core/Browser';
 // @property TRANSFORM: String
 // Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
 export var TRANSFORM = testProp(
-	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+	['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
 // webkitTransition comes first because some browser versions that drop vendor prefix don't do
 // the same for the transitionend event, in particular the Android 4.1 stock browser
@@ -87,7 +87,7 @@ export function empty(el) {
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
 	var parent = el.parentNode;
-	if (parent.lastChild !== el) {
+	if (parent && parent.lastChild !== el) {
 		parent.appendChild(el);
 	}
 }
@@ -96,7 +96,7 @@ export function toFront(el) {
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
 	var parent = el.parentNode;
-	if (parent.firstChild !== el) {
+	if (parent && parent.firstChild !== el) {
 		parent.insertBefore(el, parent.firstChild);
 	}
 }
@@ -149,6 +149,11 @@ export function setClass(el, name) {
 // @function getClass(el: HTMLElement): String
 // Returns the element's class.
 export function getClass(el) {
+	// Check if the element is an SVGElementInstance and use the correspondingElement instead
+	// (Required for linked SVG elements in IE11.)
+	if (el.correspondingElement) {
+		el = el.correspondingElement;
+	}
 	return el.className.baseVal === undefined ? el.className : el.className.baseVal;
 }
 

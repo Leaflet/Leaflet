@@ -32,22 +32,6 @@ export var Marker = Layer.extend({
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
 
-		// @option draggable: Boolean = false
-		// Whether the marker is draggable with mouse/touch or not.
-		draggable: false,
-
-		// @option autoPan: Boolean = false
-		// Set it to `true` if you want the map to do panning animation when marker hits the edges.
-		autoPan: false,
-
-		// @option autoPanPadding: Point = Point(50, 50)
-		// Equivalent of setting both top left and bottom right autopan padding to the same value.
-		autoPanPadding: [50, 50],
-
-		// @option autoPanSpeed: Number = 10
-		// Number of pixels the map should move by.
-		autoPanSpeed: 10,
-
 		// @option keyboard: Boolean = true
 		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
@@ -80,10 +64,32 @@ export var Marker = Layer.extend({
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
 
+		// @option pane: String = 'shadowPane'
+		// `Map pane` where the markers shadow will be added.
+		shadowPane: 'shadowPane',
+
 		// @option bubblingMouseEvents: Boolean = false
 		// When `true`, a mouse event on this marker will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: false
+		bubblingMouseEvents: false,
+
+		// @section Draggable marker options
+		// @option draggable: Boolean = false
+		// Whether the marker is draggable with mouse/touch or not.
+		draggable: false,
+
+		// @option autoPan: Boolean = false
+		// Whether to pan the map when dragging this marker near its edge or not.
+		autoPan: false,
+
+		// @option autoPanPadding: Point = Point(50, 50)
+		// Distance (in pixels to the left/right and to the top/bottom) of the
+		// map edge to start panning the map.
+		autoPanPadding: [50, 50],
+
+		// @option autoPanSpeed: Number = 10
+		// Number of pixels the map should pan by.
+		autoPanSpeed: 10
 	},
 
 	/* @section
@@ -152,6 +158,12 @@ export var Marker = Layer.extend({
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
+	},
+
+	// @method getIcon: Icon
+	// Returns the current icon used by the marker
+	getIcon: function () {
+		return this.options.icon;
 	},
 
 	// @method setIcon(icon: Icon): this
@@ -249,7 +261,7 @@ export var Marker = Layer.extend({
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			this.getPane(options.shadowPane).appendChild(this._shadow);
 		}
 	},
 
@@ -333,7 +345,9 @@ export var Marker = Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		DomUtil.setOpacity(this._icon, opacity);
+		if (this._icon) {
+			DomUtil.setOpacity(this._icon, opacity);
+		}
 
 		if (this._shadow) {
 			DomUtil.setOpacity(this._shadow, opacity);

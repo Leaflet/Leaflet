@@ -70,7 +70,7 @@ You may have noticed that we used the `new` keyword for creating LeafIcon instan
 		return new L.Icon(options);
 	};
 
-You can do the same with your classes too. OK, lets finally put some markers with these icons on the map:
+You can do the same with your classes too. OK, let's finally put some markers with these icons on the map:
 
 	L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map).bindPopup("I am a green leaf.");
 	L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");

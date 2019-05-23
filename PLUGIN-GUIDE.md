@@ -155,7 +155,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
 ```
 
 If possible, do not commit your minified files (e.g. `dist`) to a repo; this can
-lead to confussion when trying to debug the wrong file. Instead, use `npm` to
+lead to confusion when trying to debug the wrong file. Instead, use `npm` to
 trigger a build/minification just before publishing your package with a
 [`prepublish` script](https://docs.npmjs.com/misc/scripts#common-uses), for example:
 

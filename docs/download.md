@@ -12,11 +12,11 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.3.1/leaflet.zip">Leaflet 1.3.1</a></td>
-		<td>Stable version, released on January 18, 2018.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.5.1/leaflet.zip">Leaflet 1.5.1</a></td>
+		<td>Stable version, released on May 8, 2019.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.3-dev</a></td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.6-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
 	</tr>
 	<tr>
@@ -29,6 +29,8 @@ bodyclass: download-page
 
 Note that the master version can contain incompatible changes,
 so please read the changelog carefully when upgrading to it.
+
+[Get notified of new Leaflet releases](https://github.com/Leaflet/Leaflet/issues/6295)
 
 ### Using a Hosted Version of Leaflet
 

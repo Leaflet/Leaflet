@@ -45,7 +45,7 @@ export default {
 			sourcemap: true
 		},
 		{
-			file: pkg.module,
+			file: 'dist/leaflet-src.esm.js',
 			format: 'es',
 			banner: banner,
 			sourcemap: true

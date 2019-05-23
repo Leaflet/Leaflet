@@ -5,7 +5,6 @@ Contributing to Leaflet
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
- 5. [Code Coverage](#code-coverage)
  6. [Improving Documentation](#improving-documentation)
  7. [Code of Conduct](#code-of-conduct)
  8. [Thank You](#thank-you)
@@ -19,7 +18,6 @@ You can help the project tremendously by discovering and [reporting bugs](#repor
 helping others on [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet),
 [GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
 and [GitHub issues](https://github.com/Leaflet/Leaflet/issues);
-showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com);
 tweeting to [@LeafletJS](http://twitter.com/LeafletJS);
 and spreading the word about Leaflet among your colleagues and friends.
 
@@ -55,8 +53,7 @@ So bugfixes, performance optimizations and small improvements that don't add a l
 are much more likely to get accepted quickly.
 
 Before sending a pull request with a new feature, check if it's been discussed before already
-(either on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
-or [Leaflet UserVoice](http://leaflet.uservoice.com/)),
+on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
 and ask yourself two questions:
 
  1. Are you sure that this new feature is important enough to justify its presence in the Leaflet core?
@@ -132,21 +129,12 @@ npm test
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-npm test -- --browsers Firefox,Chrome,Safari,IE
+npm test -- -- --browsers Firefox,Chrome,Safari,IE
 ```
+
+(Note: the doubling of "`--`" [special option](https://docs.npmjs.com/cli/run-script#description) is [important](https://github.com/Leaflet/Leaflet/pull/6166#issuecomment-390959903))
 
 To run the tests in a browser manually, open `spec/index.html`.
-
-## Code Coverage
-
-To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
-
-```
-npm test -- --cov
-```
-
-After that, open `coverage/<environment>/index.html` in a browser to see the report.
-From there you can click through folders/files to get details on their individual coverage.
 
 ## Improving Documentation
 
@@ -165,10 +153,11 @@ If you need to make edits in a local repository to see how it looks in the proce
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
  2. Run `gem install jekyll`.
  3. Enter the directory where you cloned the Leaflet repository
- 4. Make sure you are in the `master` branch by running `git checkout master`
- 5. Enter the documentation subdirectory by running `cd docs`
- 6. Run `jekyll serve --watch`.
- 7. Open `localhost:4000` in your web browser.
+ 4. Run `bundle install`
+ 5. Make sure you are in the `master` branch by running `git checkout master`
+ 6. Enter the documentation subdirectory by running `cd docs`
+ 7. Run `jekyll serve --watch`.
+ 8. Open `localhost:4000` in your web browser.
 
 Now any file changes will be updated when you reload pages automatically.
 After committing the changes, just send a pull request.

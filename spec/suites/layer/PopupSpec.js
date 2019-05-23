@@ -295,6 +295,56 @@ describe('Popup', function () {
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
 
+	describe("autoPan option should pan popup into visibility", function () {
+
+		// Helper function which calculates the offset of the map-container & popup-container in pixel
+		function getPopupOffset(map, popup) {
+			var mapOffset = map._container.getBoundingClientRect().top;
+			var popupOffset = popup._container.getBoundingClientRect().top;
+			return popupOffset - mapOffset;
+		}
+
+		it("should not pan map to show popup content if autoPan is disabled", function (done) {
+			map.on('popupopen', function (e) {
+				var popupTopOffset = getPopupOffset(map, e.popup);
+				expect(popupTopOffset).to.be.below(0, "The upper edge of the popup should not be visible");
+				done();
+			});
+			map.openPopup('<div style="height: 400px;"></div>', L.latLng(58.4, 37.6), {
+				autoPan: false
+			});
+		});
+
+		it("should pan map to show popup content if autoPan is enabled", function (done) {
+			map.on('popupopen', function (e) {
+				var popupTopOffset = getPopupOffset(map, e.popup);
+				expect(popupTopOffset).to.be(10, "The upper edge of the popup have a padding of 10");
+				done();
+			});
+			map.openPopup('<div style="height: 400px;"></div>', L.latLng(58.4, 37.6), {
+				autoPan: true,
+				autoPanPadding: L.point(10, 10)
+			});
+		});
+
+		it("should pan map to show popup content if autoPan is enabled even when animating", function (done) {
+			map.on('popupopen', function (e) {
+				var popupTopOffset = getPopupOffset(map, e.popup);
+				expect(popupTopOffset).to.be(10);
+				done();
+			});
+
+			map.panTo([55.8, 40.7], {
+				animate: true,
+				duration: 1
+			});
+
+			map.openPopup('<div style="height: 400px;"></div>', L.latLng(58.4, 37.6), {
+				autoPan: true,
+				autoPanPadding: L.point(10, 10)
+			});
+		});
+	});
 });
 
 describe("L.Map#openPopup", function () {
