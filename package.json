@@ -28,6 +28,7 @@
     "uglify-js": "~3.5.10"
   },
   "main": "dist/leaflet-src.js",
+  "module": "dist/leaflet-src.esm.js",
   "style": "dist/leaflet.css",
   "files": [
     "dist",
