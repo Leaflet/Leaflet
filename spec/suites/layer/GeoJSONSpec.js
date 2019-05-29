@@ -471,3 +471,44 @@ describe("L.LayerGroup#toGeoJSON", function () {
 		});
 	});
 });
+
+describe("Overriding #toGeoJSON formatting", function () {
+	it("is possible to overwrite output of #toGeoJSON coordinates", function () {
+		var marker = new L.Marker([-1.4837191022531273, 43.49222084042808]),
+		    layerGroup = new L.LayerGroup([marker]);
+
+		expect(layerGroup.toGeoJSON()).to.eql({
+			type: 'FeatureCollection',
+			features: [{
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'Point',
+					coordinates: [43.492221, -1.483719]
+				}
+			}]
+		});
+
+		L.GeoJSON.latLngToCoords = function (latlng, precision) {
+			if (typeof precision === 'number') {
+				return latlng.alt !== undefined ?
+					[L.Util.formatNum(latlng.lng, precision), L.Util.formatNum(latlng.lat, precision), L.Util.formatNum(latlng.alt, precision)] :
+					[L.Util.formatNum(latlng.lng, precision), L.Util.formatNum(latlng.lat, precision)];
+			} else {
+				return latlng.alt !== undefined ? [latlng.lng, latlng.lat, latlng.alt] : [latlng.lng, latlng.lat];
+			}
+		};
+
+		expect(layerGroup.toGeoJSON()).to.eql({
+			type: 'FeatureCollection',
+			features: [{
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'Point',
+					coordinates: [43.49222084042808, -1.4837191022531273]
+				}
+			}]
+		});
+	});
+});
