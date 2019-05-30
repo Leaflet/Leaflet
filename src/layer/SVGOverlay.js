@@ -29,6 +29,7 @@ export var SVGOverlay = ImageOverlay.extend({
 
 		DomUtil.addClass(el, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(el, 'leaflet-zoom-animated'); }
+		if (this.options.className) { DomUtil.addClass(el, this.options.className); }
 
 		el.onselectstart = Util.falseFn;
 		el.onmousemove = Util.falseFn;

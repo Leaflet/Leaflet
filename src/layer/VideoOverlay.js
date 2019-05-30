@@ -46,6 +46,7 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		DomUtil.addClass(vid, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(vid, 'leaflet-zoom-animated'); }
+		if (this.options.className) { DomUtil.addClass(vid, this.options.className); }
 
 		vid.onselectstart = Util.falseFn;
 		vid.onmousemove = Util.falseFn;
