@@ -803,6 +803,15 @@ The following plugins provide new ways of loading overlay data (GIS vector data)
 Load your own data from various GIS formats.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/windycom/leaflet-kml">leaflet-kml</a>
+		</td><td>
+			Loads &amp; displays KML
+		</td><td>
+			<a href="https://github.com/windycom">Windyx</a>
+		</td>
+	</tr>
     <tr>
 		<td>
 			<a href="https://github.com/mapbox/leaflet-omnivore">leaflet-omnivore</a>
