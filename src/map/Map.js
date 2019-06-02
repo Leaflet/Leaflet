@@ -203,7 +203,7 @@ export var Map = Evented.extend({
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(center, zoom);
+		this._resetView(center, zoom, options.pan);
 
 		return this;
 	},
@@ -1181,7 +1181,8 @@ export var Map = Evented.extend({
 	// private methods that modify map state
 
 	// @section Map state change events
-	_resetView: function (center, zoom) {
+	_resetView: function (center, zoom, options) {
+		options = options || {};
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		var loading = !this._loaded;
@@ -1192,7 +1193,7 @@ export var Map = Evented.extend({
 
 		var zoomChanged = this._zoom !== zoom;
 		this
-			._moveStart(zoomChanged, false)
+			._moveStart(zoomChanged, options.noMoveStart || false)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
