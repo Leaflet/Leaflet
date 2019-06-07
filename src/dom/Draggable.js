@@ -112,7 +112,7 @@ export var Draggable = Evented.extend({
 		// Fired when a drag is about to start.
 		this.fire('down');
 
-		var first = e.touches ? e.touches[0] : e,
+		var first = e.touches && e.touches.length > 0 ? e.touches[0] : e,
 		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
 		this._startPoint = new Point(first.clientX, first.clientY);
