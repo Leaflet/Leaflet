@@ -732,6 +732,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/robertomlsoares">Roberto Soares</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/allartk/leaflet.offline">leaflet.offline</a>
+		</td><td>
+			Allow tiles to be stored in an database for offline access. Original plugin.<a href="http://allartk.github.io/leaflet.offline/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/allartk">Allart Kooiman</a>
+		</td>
+	</tr>
 </table>
 
 
