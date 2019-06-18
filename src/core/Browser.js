@@ -113,6 +113,22 @@ export var mobileGecko = mobile && gecko;
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
 export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
+// @property passiveEvents: Boolean
+// `true` for browsers that support passive events.
+export var passiveEvents = (function () {
+	var supportsPassiveOption = false;
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function() {
+				supportsPassiveOption = true;
+			}
+		});
+		var noop = function () {};
+		window.addEventListener('testPassiveEventSupport', noop, opts);
+		window.removeEventListener('testPassiveEventSupport', noop, opts);
+	} catch (e) {}
+	return supportsPassiveOption;
+});
 
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
