@@ -1,3 +1,4 @@
+import * as Util from './Util';
 import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
@@ -119,13 +120,12 @@ export var passiveEvents = (function () {
 	var supportsPassiveOption = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {
-			get: function() {
+			get: function () {
 				supportsPassiveOption = true;
 			}
 		});
-		var noop = function () {};
-		window.addEventListener('testPassiveEventSupport', noop, opts);
-		window.removeEventListener('testPassiveEventSupport', noop, opts);
+		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
+		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
 	} catch (e) {}
 	return supportsPassiveOption;
 });
