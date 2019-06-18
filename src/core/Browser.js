@@ -126,7 +126,9 @@ export var passiveEvents = (function () {
 		});
 		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
 		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
-	} catch (e) {}
+	} catch (e) {
+		// Errors can safely be ignored since this is only a browser support test.
+	}
 	return supportsPassiveOption;
 });
 
