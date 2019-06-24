@@ -94,7 +94,7 @@ function addOne(obj, type, fn, context) {
 	} else if ('addEventListener' in obj) {
 
 		if (type === 'mousewheel') {
-			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
+			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
 
 		} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 			handler = function (e) {
@@ -139,7 +139,7 @@ function removeOne(obj, type, fn, context) {
 	} else if ('removeEventListener' in obj) {
 
 		if (type === 'mousewheel') {
-			obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
+			obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
 
 		} else {
 			obj.removeEventListener(
