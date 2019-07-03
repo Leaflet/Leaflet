@@ -123,14 +123,14 @@ describe('Util', function () {
 			var spy = sinon.spy(),
 			    foo = {};
 
-			L.Util.requestAnimFrame(spy);
+			var id = L.Util.requestAnimFrame(spy);
 
 			L.Util.requestAnimFrame(function () {
 				expect(this).to.eql(foo);
 				done();
 			}, foo);
 
-			L.Util.cancelAnimFrame(spy);
+			L.Util.cancelAnimFrame(id);
 		});
 	});
 

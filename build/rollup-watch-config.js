@@ -2,6 +2,7 @@
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
 
 import rollupGitVersion from 'rollup-plugin-git-version'
+import resolve from 'rollup-plugin-node-resolve'
 import gitRev from 'git-rev-sync'
 
 const branch = gitRev.branch();
@@ -24,6 +25,9 @@ export default {
 	},
 	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
-		rollupGitVersion()
+		rollupGitVersion(),
+		resolve({
+			browser: true
+		})
 	]
 };

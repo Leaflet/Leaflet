@@ -4,6 +4,9 @@
  * Various utility functions, used by Leaflet internally.
  */
 
+export {requestFn, cancelFn, requestAnimFrame, cancelAnimFrame} from './Browser';
+export {bind, falseFn} from './BrowserCommon';
+
 export var freeze = Object.freeze;
 Object.freeze = function (obj) { return obj; };
 
@@ -30,23 +33,6 @@ export var create = Object.create || (function () {
 		return new F();
 	};
 })();
-
-// @function bind(fn: Function, …): Function
-// Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
-// Has a `L.bind()` shortcut.
-export function bind(fn, obj) {
-	var slice = Array.prototype.slice;
-
-	if (fn.bind) {
-		return fn.bind.apply(fn, slice.call(arguments, 1));
-	}
-
-	var args = slice.call(arguments, 2);
-
-	return function () {
-		return fn.apply(obj, args.length ? args.concat(slice.call(arguments)) : arguments);
-	};
-}
 
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
@@ -106,10 +92,6 @@ export function wrapNum(x, range, includeMax) {
 	    d = max - min;
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 }
-
-// @function falseFn(): Function
-// Returns a function which always returns `false`.
-export function falseFn() { return false; }
 
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
@@ -196,46 +178,3 @@ export function indexOf(array, el) {
 // Used as a hack to free memory from unused images on WebKit-powered
 // mobile devices (by setting image `src` to this string).
 export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
-// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-
-function getPrefixed(name) {
-	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
-}
-
-var lastTime = 0;
-
-// fallback for IE 7-8
-function timeoutDefer(fn) {
-	var time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
-
-	lastTime = time + timeToCall;
-	return window.setTimeout(fn, timeToCall);
-}
-
-export var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
-
-// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
-// Schedules `fn` to be executed when the browser repaints. `fn` is bound to
-// `context` if given. When `immediate` is set, `fn` is called immediately if
-// the browser doesn't have native support for
-// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
-// otherwise it's delayed. Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn, context, immediate) {
-	if (immediate && requestFn === timeoutDefer) {
-		fn.call(context);
-	} else {
-		return requestFn.call(window, bind(fn, context));
-	}
-}
-
-// @function cancelAnimFrame(id: Number): undefined
-// Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
-export function cancelAnimFrame(id) {
-	if (id) {
-		cancelFn.call(window, id);
-	}
-}

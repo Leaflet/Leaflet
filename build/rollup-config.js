@@ -2,6 +2,7 @@
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
+import resolve from 'rollup-plugin-node-resolve'
 import gitRev from 'git-rev-sync'
 import pkg from '../package.json'
 
@@ -53,6 +54,9 @@ export default {
 	],
 	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
+		resolve({
+			browser: true
+		})
 	]
 };

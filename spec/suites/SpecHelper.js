@@ -59,11 +59,10 @@ it.skipInPhantom = L.Browser.any3d ? it : it.skip;
 it.skipInNonPhantom = L.Browser.any3d ? it.skip : it;
 
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = window.TouchEvent ? it : it.skip;
+it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
 
 // A couple of tests need the browser to be pointer-capable
-it.skipIfNotEdge = window.PointerEvent ? it : it.skip;
-
+it.skipIfNotEdge = L.Browser.pointer ? it : it.skip;
 
 function takeScreenshot(path) {
 	window.top.callPhantom({'render': path || 'screenshot.png'});

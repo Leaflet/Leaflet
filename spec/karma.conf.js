@@ -1,4 +1,5 @@
 var json = require('rollup-plugin-json');
+var resolve = require('rollup-plugin-node-resolve');
 
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
@@ -57,6 +58,9 @@ module.exports = function (config) {
 		preprocessors: preprocessors,
 		rollupPreprocessor: {
 			plugins: [
+				resolve({
+					browser: true
+				}),
 				json()
 			],
 			format: 'umd',
