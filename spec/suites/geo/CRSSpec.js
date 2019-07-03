@@ -230,7 +230,7 @@ describe("CRS", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
 			var zoom = 2.5;
 			var scale = crs.scale(zoom);
-			expect(crs.zoom(scale)).to.eql(zoom);
+			expect(crs.zoom(scale)).to.be.almostEqual(zoom, 0.000001);
 		});
 	});
 });

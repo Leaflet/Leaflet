@@ -24,6 +24,11 @@ if (!Array.prototype.map) {
 	};
 }
 
+expect.Assertion.prototype.almostEqual = function (expected, delta) {
+	delta = delta || 1e-4;
+	expect(this.obj).to.be.within(expected - delta, expected + delta);
+};
+
 expect.Assertion.prototype.near = function (expected, delta) {
 	delta = delta || 1;
 	expect(this.obj.x).to
