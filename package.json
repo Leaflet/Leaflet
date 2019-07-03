@@ -55,8 +55,12 @@
     "integrity": "node ./build/integrity.js"
   },
   "mocha": {
-    "file": [
+    "ui": "leaflet-bdd",
+    "require":  [
       "./spec/ServerHelper.js",
+      "./spec/ui.js"
+    ],
+    "file": [
       "./spec/suites/SpecHelper.js"
     ],
     "spec": [

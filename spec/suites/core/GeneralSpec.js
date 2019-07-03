@@ -1,6 +1,4 @@
 describe('General', function () {
-	it.skipInNode = L.Browser.node ? it.skip : it;
-
 	it.skipInNode('noConflict', function () {
 		var leaflet = L;
 

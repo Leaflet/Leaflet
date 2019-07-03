@@ -16,7 +16,6 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
-		"src/Leaflet.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -66,6 +65,16 @@ module.exports = function (config) {
 			format: 'umd',
 			name: 'L',
 			outro: outro
+		},
+
+		client: {
+			mocha: {
+				require: [
+					require.resolve('../src/Leaflet.js'),
+					require.resolve('./ui.js')
+				],
+				ui: 'leaflet-bdd'
+			}
 		},
 
 		// test results reporter to use
