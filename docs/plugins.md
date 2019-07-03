@@ -13,7 +13,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 <div id="toc" class="clearfix">
 	<div class="toc-col">
 		<h4>Tile &amp; image layers</h4>
-
 		<ul>
 			<li> <a href='#basemap-providers'>Basemap providers</a></li>
 			<li> <a href='#basemap-formats'>Basemap formats</a></li>
@@ -22,9 +21,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li> <a href='#tile-load'>Tile load</a></li>
 			<li> <a href='#vector-tiles'>Vector tiles</a></li>
 		</ul>
-
 		<h4>Overlay data</h4>
-
 		<ul>
 			<li> <a href='#overlay-data-formats'>Overlay data formats</a></li>
 			<li> <a href='#dynamiccustom-data-loading'>Dynamic data loading</a></li>
@@ -33,7 +30,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</ul>
 	</div>
 	<div class="toc-col">
-
 		<h4>Overlay Display</h4>
 		<ul>
 			<li><a href="#markers--renderers">Markers &amp; renderers</a></li>
@@ -2025,7 +2021,6 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="http://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html">heatmap.js</a>
 		</td><td>
 			JavaScript Library for HTML5 canvas based heatmaps.
-
 			Its Leaflet layer implementation supports large datasets because it is tile based and uses a quadtree index to store the data.
 		</td><td>
 			<a href="https://github.com/pa7">Patrick Wied</a>
@@ -2036,7 +2031,6 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="https://github.com/dpiccone/leaflet-div-heatmap">Leaflet divHeatmap</a>
 		</td><td>
 			Lightweight and versatile heatmap layer based on CSS3 and divIcons
-
 		</td><td>
 			<a href="https://github.com/dpiccone">Daniele Piccone</a>
 		</td>
@@ -2046,7 +2040,6 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a>
 		</td><td>
 			High performance Javascript heatmap plugin using WebGL.
-
 		</td><td>
 			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
 		</td>
@@ -2056,7 +2049,6 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="https://github.com/Leaflet/Leaflet.heat">Leaflet.heat</a>
 		</td><td>
 			A tiny, simple and fast Leaflet heatmap plugin. Uses <a href='https://github.com/mourner/simpleheat'>simpleheat</a> under the hood, additionally clustering points into a grid for performance. (<a href='https://leaflet.github.io/Leaflet.heat/demo'>Demo</a>)
-
 		</td><td>
 			<a href="https://github.com/mourner">Vladimir Agafonkin</a>
 		</td>
@@ -2257,7 +2249,6 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/scripter-co">Nathan Mahdavi</a>
 		</td>
 	</tr>
-
 	<tr>
 		<td>
 			<a href="https://github.com/tkrajina/leaflet-editable-polyline">Leaflet.Editable.Polyline</a>
@@ -3500,7 +3491,6 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
-
 	<tr>
 	        <td>
 	            <a href="https://github.com/MazeMap/Leaflet.VisualClick">Leaflet.VisualClick</a>
@@ -3606,7 +3596,6 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td><td>
 			<a href="https://github.com/ahalota/">Anika Halota</a>
 		</td>
-
 	</tr>
 	<tr>
 		<td>
@@ -4067,7 +4056,6 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
 		</td>
 	</tr>
-
 	<tr>
 		<td>
 			<a href="https://github.com/StephanGeorg/leaflet-routeboxer">Leaflet RouteBoxer</a>
@@ -4077,7 +4065,6 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.nearest.place/">Nearest!</a>
 		</td>
 	</tr>
-
 	<tr>
     		<td>
     			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
