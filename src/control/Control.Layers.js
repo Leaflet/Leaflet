@@ -425,7 +425,7 @@ export var Layers = Control.extend({
 
 
 // @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
-// Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
+// Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 export var layers = function (baseLayers, overlays, options) {
 	return new Layers(baseLayers, overlays, options);
 };
