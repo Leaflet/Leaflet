@@ -2081,11 +2081,11 @@ Powerful multi-purpose libraries for data visualization.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/giscience/geogrid.js">geogrid.js</a>
+			<a href="https://github.com/mocnik-science/geogrid.js">geogrid.js</a>
 		</td><td>
-			Displays data aggregated by the ISEA3H discrete global grid system.  The data can, e.g., be delived by using <a href="https://github.com/giscience/measures-rest">Measures REST</a> (a framework to deliver data aggregated by the grid) or <a href="https://github.com/giscience/geogrid">geogrid</a> (a library for handling the grid in case that you want to aggregate data manually).
+			Displays data aggregated by the ISEA3H discrete global grid system.  The data can, e.g., be delived by using <a href="https://github.com/mocnik-science/geogrid">geogrid</a> (a library for handling the grid in case that you want to aggregate data manually) or <a href="https://github.com/giscience/measures-rest">Measures REST</a> (a framework to deliver data aggregated by the grid).
 		</td><td>
-			<a href="http://www.mocnik-science.net">F.-B. Mocnik,</a><br><a href="http://www.geog.uni-heidelberg.de/gis/index_en.html">GIScience Research Group,<br>Heidelberg University</a>
+			<a href="http://www.mocnik-science.net">F.-B. Mocnik,</a><br>GIScience Research Group,<br>Heidelberg University
 		</td>
 	</tr>
 	<tr>
