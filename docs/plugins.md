@@ -2474,6 +2474,15 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/GIScience/Leaflet.Heightgraph">Leaflet.Heightgraph</a>
+		</td><td>
+			Inspired by Leaflet.Elevation this Leaflet plugin allows you to view interactive height profiles stored as GeoJSON featuring the handy ability to visualize arbitrary segments (e.g. surface types or steepness categories) with customized colors stored as properties within the GeoJSON itself.
+		</td><td>
+			<a href="https://github.com/GIScience/Leaflet.Heightgraph">Robin Boldt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/iosphere/Leaflet.hotline">Leaflet.hotline</a>
 		</td><td>
 			A Leaflet plugin for drawing gradients along polylines.
