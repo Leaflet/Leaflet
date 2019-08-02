@@ -60,7 +60,7 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', Util.throttle(this._onMouseMove, 32, this), this);
+		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
 
