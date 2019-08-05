@@ -1103,6 +1103,15 @@ These plugins create useful overlays from scratch, no loading required.
 			<a href="http://github.com/GEOF-OSGL">Dražen Tutić, Ana Kuveždić Divjak</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/leaflet.maidenhead">Leaflet.Maidenhead</a>
+		</td><td>
+			An implementation of the <a href="https://en.wikipedia.org/wiki/Maidenhead_Locator_System">Maidenhead Locator System grid</a> (<a href="https://ivansanchez.gitlab.io/leaflet.maidenhead/demo.html">(demo)</a>).
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
 </table>
 
 
