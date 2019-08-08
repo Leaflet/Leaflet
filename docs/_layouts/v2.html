@@ -17,6 +17,11 @@
 	<meta itemprop="image" content="https://leafletjs.com/docs/images/logo.png">
 	{% endif %}
 
+	{% if page.redirect_to %}
+	<link rel="canonical" href="{{ page.redirect_to }}"/>
+	<meta http-equiv="refresh" content="0;url={{ page.redirect_to }}" />
+	{% endif %}
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
