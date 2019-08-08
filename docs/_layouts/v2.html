@@ -27,6 +27,9 @@
 
 	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css" />
 	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
+	{% if page.title == 'Documentation' %}
+	<link rel="stylesheet" href="{{ root }}docs/css/reference.css" />
+	{% endif %}
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
 
@@ -117,27 +120,6 @@
 </nav>
 
 <script>
-	hljs.configure({tabReplace: '    '});
-	hljs.initHighlighting();
-
-	(function () {
-		if (document.body.className.indexOf('api-page') !== -1) {
-			var headers = document.getElementsByTagName('h2');
-
-			for (var i = 0, len = headers.length; i < len; i++) {
-				if (headers[i].id) {
-					headers[i].onclick = function(e) {
-						if (e.offsetX < 0) {
-							window.location.hash = '#' + this.id;
-						}
-					};
-				}
-			}
-		}
-	})();
-</script>
-
-<script>
 	var _gaq = _gaq || [];
 	_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
 	_gaq.push([ '_trackPageview' ]);
@@ -155,5 +137,8 @@
 </script>
 
 <script src="{{ root }}docs/js/docs.js"></script>
+{% if page.title == 'Documentation' %}
+<script src="{{ root }}docs/js/docs.js"></script>
+{% endif %}
 </body>
 </html>
