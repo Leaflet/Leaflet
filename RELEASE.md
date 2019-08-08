@@ -12,8 +12,8 @@ Documentation for the release process of Leaflet.
   - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
 - [ ] Update API docs:
   - [ ] run `npm run docs`
-  - [ ] Copy the built docs from `dist/reference-X.Y.Z.html` to `docs/reference-X.Y.Z.html`
-  - [ ] Update the built docs header to use Jekyll style; see commit [11d716f0964d8bc0d058ca09e9ba8003451b4b8d](https://github.com/Leaflet/Leaflet/commit/11d716f0964d8bc0d058ca09e9ba8003451b4b8d) as reference for the needed changes
+  - [ ] Copy the built docs from `dist/reference-X.Y.Z.html` to `docs/reference-X.Y.Z.html`, remove content before first and after second "CUT HERE" comment
+  - [ ] Insert YAML front matter, see old `docs/reference-X.Y.Z.html` for reference
   - [ ] Commit the new docs to the release branch
 - [ ] Update `docs/reference.html` to redirect to the new version and commit the change to the release branch
 - [ ] Update integrity hashes:
