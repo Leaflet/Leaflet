@@ -22,7 +22,7 @@ Documentation for the release process of Leaflet.
   - [ ] Copy the hashes and update `integrity_hash_css`, `integrity_hash_source` and `integrity_hash_uglified` in `docs/_config.yml`; commit changes to the release branch
 - [ ] Update link to latest release in `docs/download.html`, and commit to the release branch
 - [ ] Add link to new version reference in `docs/reference-versions.html`, and commit to the release branch
-- [ ] Update `latest_leaflet_version` in `docs/_config.yml` and commit to the release branch
+- [ ] Update `latest_leaflet_version` (and possibly `latest_leaflet_reference`) in `docs/_config.yml` and commit to the release branch
 - [ ] Update the announcement section in `docs/index.html` and commit to the release branch
 - [ ] If it looks like everything is good at this point, merge the release branch into `master`
 - [ ] Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
