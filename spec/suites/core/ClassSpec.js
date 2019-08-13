@@ -117,6 +117,22 @@ describe("Class", function () {
 			expect(K2.prototype.options.foo).to.eql('bar');
 		});
 
+		it("does not reuse original props.options", function () {
+			var props = {options: {}};
+			var K = L.Class.extend(props);
+
+			expect(K.prototype.options).not.to.be(props.options);
+		});
+
+		it("does not replace source props.options object", function () {
+			var K1 = L.Class.extend({options: {}});
+			var opts = {};
+			var props = {options: opts};
+			K1.extend(props);
+
+			expect(props.options).to.be(opts);
+		});
+
 		it("adds constructor hooks correctly", function () {
 			var spy1 = sinon.spy();
 
