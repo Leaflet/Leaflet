@@ -6,6 +6,7 @@ kramdown:
   entity_output: as_input
 
 latest_leaflet_version: 1.5.1
+latest_leaflet_reference: 1.5.0
 
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
