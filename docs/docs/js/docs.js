@@ -5,48 +5,49 @@ tocCopy.id = 'toc-copy';
 var toc = document.querySelector('#toc');
 
 if (toc) {
-  tocCopy.innerHTML = toc.innerHTML;
-  document.getElementsByClassName('container')[0].appendChild(tocCopy);
+	tocCopy.innerHTML = toc.innerHTML;
+	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-  var menus = document.querySelectorAll('#toc-copy ul');
+	var menus = document.querySelectorAll('#toc-copy ul');
+	var i;
 
-  for (var i = 0; i < menus.length; i++) {
-    menus[i].addEventListener('mouseover', function() {
-      this.previousElementSibling.classList.add('hover')
-    });
+	for (i = 0; i < menus.length; i++) {
+		menus[i].addEventListener('mouseover', function () {
+			this.previousElementSibling.classList.add('hover');
+		});
 
-    menus[i].addEventListener('mouseout', function() {
-      this.previousElementSibling.classList.remove('hover')
-    });
-  }
+		menus[i].addEventListener('mouseout', function () {
+			this.previousElementSibling.classList.remove('hover');
+		});
+	}
 
-  var labels = document.querySelectorAll('#toc-copy h4');
+	var labels = document.querySelectorAll('#toc-copy h4');
 
-  for (var i = 0; i < labels.length; i++) {
-    labels[i].addEventListener('click', function() {
-      this.classList.toggle('active')
-    });
-  }
+	for (i = 0; i < labels.length; i++) {
+		labels[i].addEventListener('click', function () {
+			this.classList.toggle('active');
+		});
+	}
 
-  tocCopy.addEventListener('click', function(e) {
-    if (e.target.nodeName != 'H4') {
-      this.classList.toggle('active');
-    }
-  });
+	tocCopy.addEventListener('click', function (e) {
+		if (e.target.nodeName !== 'H4') {
+			this.classList.toggle('active');
+		}
+	});
 
-  var scrollPos = function scrollPos () {
-    var scroll = window.scrollY;
+	var scrollPos = function scrollPos() {
+		var scroll = window.scrollY;
 
-    if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
-      document.body.classList.add('scrolled');
-    } else {
-      document.body.classList.remove('scrolled');
-    }
-  }
+		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
+			document.body.classList.add('scrolled');
+		} else {
+			document.body.classList.remove('scrolled');
+		}
+	};
 
-  scrollPos();
+	scrollPos();
 
-  window.addEventListener('scroll', function(e) {
-    scrollPos();
-  });
+	window.addEventListener('scroll', function () {
+		scrollPos();
+	});
 }
