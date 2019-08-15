@@ -3621,6 +3621,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/nickpeihl/leaflet-sidebar-v2/">leaflet-sidebar-v2</a>
+		</td><td>
+			A responsive, tabbed sidebar with HTML & JS API.
+			Compatible with old (0.7) and current leaflet.
+		</td><td>
+			<a href="https://github.com/noerw/">Norwin Roosen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/turbo87/leaflet-sidebar/">leaflet-sidebar</a>
 		</td><td>
 			A responsive sidebar plugin.
