@@ -236,8 +236,14 @@ export var TileLayer = GridLayer.extend({
 
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
+					var coords = this._tiles[i].coords;
 					DomUtil.remove(tile);
 					delete this._tiles[i];
+					// @event tileabort: TileEvent
+					// Fired when a tile was loading but is now not wanted.
+					this.fire('tileabort', {
+						tile: tile,
+						coords: coords });
 				}
 			}
 		}
