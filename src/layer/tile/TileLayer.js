@@ -243,7 +243,8 @@ export var TileLayer = GridLayer.extend({
 					// Fired when a tile was loading but is now not wanted.
 					this.fire('tileabort', {
 						tile: tile,
-						coords: coords });
+						coords: coords
+					});
 				}
 			}
 		}
