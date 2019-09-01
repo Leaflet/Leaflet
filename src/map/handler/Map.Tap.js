@@ -124,7 +124,10 @@ export var Tap = Handler.extend({
 		        e.clientX, e.clientY,
 		        false, false, false, false, 0, null);
 
-		e.target.dispatchEvent(simulatedEvent);
+		// Dispatch the event from the map container object rather than e.target,
+		// since e.target is incorrectly specified when the map is contained within
+		// a shadow DOM.
+		this._map._container.dispatchEvent(simulatedEvent);
 	}
 });
 
