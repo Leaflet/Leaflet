@@ -1628,6 +1628,7 @@ export var Map = Evented.extend({
 	},
 
 	_destroyAnimProxy: function () {
+		this.off('load moveend', this._setTransform, this);
 		DomUtil.remove(this._proxy);
 		delete this._proxy;
 	},
