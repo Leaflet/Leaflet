@@ -102,6 +102,9 @@ export var Path = Layer.extend({
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
+		if (typeof style === 'undefined') {
+			style = {};
+		}
 		Util.setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
