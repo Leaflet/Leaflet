@@ -287,7 +287,10 @@ export var Marker = Layer.extend({
 	},
 
 	_setPos: function (pos) {
-		DomUtil.setPosition(this._icon, pos);
+
+		if (this._icon) {
+			DomUtil.setPosition(this._icon, pos);
+		}
 
 		if (this._shadow) {
 			DomUtil.setPosition(this._shadow, pos);
