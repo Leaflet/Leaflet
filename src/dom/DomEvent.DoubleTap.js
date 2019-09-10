@@ -22,7 +22,7 @@ export function addDoubleTapListener(obj, handler, id) {
 			if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
 			count = _pointersCount;
 		} else {
-			count = e.touches.length;
+			count = e.touches ? e.touches.length : 1;
 		}
 
 		if (count > 1) { return; }
