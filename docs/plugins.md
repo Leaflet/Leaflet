@@ -1177,7 +1177,7 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
 		</td>
 		<td>
-			Animated satellite radar overlays for Leaflet. API.
+			Animated satellite weather radar overlays for Leaflet. 
 		</td>
 		<td>
 			<a href="https://github.com/rwev/">rwev</a>
