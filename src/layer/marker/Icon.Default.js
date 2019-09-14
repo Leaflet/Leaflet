@@ -43,6 +43,8 @@ export var IconDefault = Icon.extend({
 	},
 
 	_detectIconPath: function () {
+		var regex = /^url\(["']?((?:[^\\"]+\/)+)marker-icon(?:-2x)?.*\.png["']?\)/;
+		var matches = null;
 		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
 		var path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
@@ -52,7 +54,8 @@ export var IconDefault = Icon.extend({
 		if (path === null || path.indexOf('url') !== 0) {
 			path = '';
 		} else {
-			path = path.replace(/^url\(["']?/, '').replace(/marker-icon\.png["']?\)$/, '');
+			matches = path.match(regex);
+			path = matches[1];
 		}
 
 		return path;
