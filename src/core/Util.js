@@ -5,7 +5,11 @@
  */
 
 export var freeze = Object.freeze;
-Object.freeze = function (obj) { return obj; };
+try {
+	Object.freeze = function (obj) { return obj; };
+} catch (e) {
+	// eslint-disable-next-line no-empty
+}
 
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
