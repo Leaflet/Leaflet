@@ -85,8 +85,7 @@ function addOne(obj, type, fn, context) {
 		// Needs DomEvent.Pointer.js
 		addPointerListener(obj, type, handler, id);
 
-	} else if (Browser.touch && (type === 'dblclick') && addDoubleTapListener &&
-	           !(Browser.pointer && Browser.chrome)) {
+	} else if (Browser.touch && (type === 'dblclick') && addDoubleTapListener) {
 		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
 		// See #5180
 		addDoubleTapListener(obj, handler, id);
