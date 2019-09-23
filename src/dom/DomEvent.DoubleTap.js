@@ -27,7 +27,7 @@ export function addDoubleTapListener(obj, handler, id) {
 		var oe = e.originalEvent;
 
 		if (Browser.pointer) {
-			if (browserFiresNativeDblClick(e) || (oe && oe.sourceCapabilities.firesTouchEvents)) { return; }
+			if (browserFiresNativeDblClick(e) && (oe && oe.sourceCapabilities.firesTouchEvents)) { return; }
 			count = _pointersCount;
 		} else {
 			count = e.touches.length;
@@ -48,7 +48,7 @@ export function addDoubleTapListener(obj, handler, id) {
 
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
-				if (browserFiresNativeDblClick(e) || (oe && oe.sourceCapabilities.firesTouchEvents)) { return; }
+				if (browserFiresNativeDblClick(e) && (oe && oe.sourceCapabilities.firesTouchEvents)) { return; }
 				// work around .type being readonly with MSPointer* events
 				var newTouch = {},
 				    prop, i;
