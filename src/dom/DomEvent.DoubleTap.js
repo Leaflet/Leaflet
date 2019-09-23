@@ -16,6 +16,12 @@ function browserFiresNativeDblClick(e) {
 	return (Browser.ie || e.pointerType === 'mouse');
 }
 
+function browserNeedsAManualDblClick(e) {
+	var oe = e.originalEvent;
+
+	return (L.Browser.Touch && (oe && oe.sourceCapabilities.firesTouchEvents));
+}
+
 // inspired by Zepto touch code by Thomas Fuchs
 export function addDoubleTapListener(obj, handler, id) {
 	var last, touch,
@@ -24,12 +30,12 @@ export function addDoubleTapListener(obj, handler, id) {
 
 	function onTouchStart(e) {
 		var count;
-		var oe = e.originalEvent;
 
 		if (Browser.pointer) {
-			if (browserFiresNativeDblClick(e) && (oe && oe.sourceCapabilities.firesTouchEvents)) { return; }
+			if (browserFiresNativeDblClick(e)) { return; }
 			count = _pointersCount;
 		} else {
+			if (!browserNeedsAManualDblClick(e)) { return; }
 			count = e.touches.length;
 		}
 
