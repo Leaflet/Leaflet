@@ -44,9 +44,11 @@ export function addDoubleTapListener(obj, handler, id) {
 	}
 
 	function onTouchEnd(e) {
+		var oe = e.originalEvent;
+
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
-				if (browserFiresNativeDblClick(e)) { return; }
+				if (browserFiresNativeDblClick(e) || (oe && !oe.sourceCapabilities.firesTouchEvents)) { return; }
 				// work around .type being readonly with MSPointer* events
 				var newTouch = {},
 				    prop, i;
