@@ -2605,6 +2605,15 @@ Plugins that search for overlays and enhance how to display information about th
 			<a href="https://github.com/yafred">YaFred</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/slutske22/leaflet-popup-modifier">leaflet-popup-modifier</a>
+		</td><td>
+			Allows user to edit the contents of a popup, or use the popup to remove its source marker.
+		</td><td>
+			<a href="https://github.com/slutske22">Slutske22</a>
+		</td>
+	</tr>
 </table>
 
 
