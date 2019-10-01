@@ -1,5 +1,6 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
+import {any3d} from '../../core/Browser';
 
 /*
  * L.Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
@@ -29,7 +30,7 @@ export var DoubleClickZoom = Handler.extend({
 	_onDoubleClick: function (e) {
 		var map = this._map,
 		    oldZoom = map.getZoom(),
-		    delta = map.options.zoomDelta,
+		    delta = any3d ? map.options.zoomDelta : 1,
 		    zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 
 		if (map.options.doubleClickZoom === 'center') {
