@@ -1103,6 +1103,15 @@ These plugins create useful overlays from scratch, no loading required.
 			<a href="http://github.com/GEOF-OSGL">Dražen Tutić, Ana Kuveždić Divjak</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/leaflet.maidenhead">Leaflet.Maidenhead</a>
+		</td><td>
+			An implementation of the <a href="https://en.wikipedia.org/wiki/Maidenhead_Locator_System">Maidenhead Locator System grid</a> (<a href="https://ivansanchez.gitlab.io/leaflet.maidenhead/demo.html">(demo)</a>).
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1170,6 +1179,17 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 		</td>
 		<td>
 			<a href="https://github.com/barryhunter/">Barry Hunter</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
+		</td>
+		<td>
+			Animated satellite weather radar overlays for Leaflet. 
+		</td>
+		<td>
+			<a href="https://github.com/rwev/">rwev</a>
 		</td>
 	</tr>
 </table>
@@ -2232,9 +2252,9 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
+			<a href="https://github.com/geoman-io/leaflet-geoman">Leaflet-Geoman</a>
 		</td><td>
-			Geometry Management for Leaflet 1.0 and higher. Draw, Edit, Cut, Drag and Snap Layers like Markers, Circles, Rectangles, Polylines, Polygons, LayerGroups, geoJSON, MultiPolygons, MultiLineStrings. Supports holes in polygons, snapping, canvas mode and more. (<a href="https://leafletpm.now.sh">Demo</a>)
+			⭐ Geometry Management for Leaflet 1.0 and higher. Draw, Edit, Cut, Drag and Snap Layers like Markers, Circles, Rectangles, Polylines, Polygons, LayerGroups, geoJSON, MultiPolygons, MultiLineStrings. Supports holes in polygons, snapping, canvas mode and more. (<a href="https://geoman.io/leaflet-geoman">Demo</a>)
 		</td><td>
 			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
 		</td>
@@ -2474,6 +2494,15 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/GIScience/Leaflet.Heightgraph">Leaflet.Heightgraph</a>
+		</td><td>
+			Inspired by Leaflet.Elevation this Leaflet plugin allows you to view interactive height profiles stored as GeoJSON featuring the handy ability to visualize arbitrary segments (e.g. surface types or steepness categories) with customized colors stored as properties within the GeoJSON itself.
+		</td><td>
+			<a href="https://github.com/boldtrn">Robin Boldt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/iosphere/Leaflet.hotline">Leaflet.hotline</a>
 		</td><td>
 			A Leaflet plugin for drawing gradients along polylines.
@@ -2603,6 +2632,15 @@ Plugins that search for overlays and enhance how to display information about th
 			Removes the need to move the map to be able to see the content of the popup.
 		</td><td>
 			<a href="https://github.com/yafred">YaFred</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/slutske22/leaflet-popup-modifier">leaflet-popup-modifier</a>
+		</td><td>
+			Allows user to edit the contents of a popup, or use the popup to remove its source marker.
+		</td><td>
+			<a href="https://github.com/slutske22">Slutske22</a>
 		</td>
 	</tr>
 </table>
@@ -2857,6 +2895,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			Adds new L.Control.ActiveLayers with functionality to get currently active layers on the map.
 		</td><td>
 			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Kanahiro/Leaflet.Control.Appearance">Leaflet.Control.Appearance</a>
+		</td><td>
+			Extend of Control.Layers, can control Appearances of Layers - color, opacity and able to remove a overlay layer. <a href="https://github.com/Kanahiro/Leaflet.Control.Appearance">Example</a>
+		</td><td>
+			<a href="https://www.labo288.site/">Kanahiro Iguchi</a>
 		</td>
 	</tr>
 </table>
@@ -3342,6 +3389,15 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
 		</td>
 	</tr>
+    	<tr>
+		<td>
+			<a href="https://github.com/tinjaw/Leaflet-Copy-Coordinates-Control">Leaflet Copy Coordinates Control</a>
+		</td><td>
+			Works with Leaflet to capture mouseclicks on a map and display the associated coordinates with an easy way to copy them. (Derived from original work by zimmicz. Forked mainly to provide npm functionality.)
+		</td><td>
+			<a href="https://github.com/tinjaw">Chaim Krause</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/mahmoodvcs/Leaflet.NACCoordinates">Leaflet.NACCoordinates</a>
@@ -3617,6 +3673,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td>
 		<td>
 			<a href="https://github.com/easymountain">Easy-Mountain</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nickpeihl/leaflet-sidebar-v2/">leaflet-sidebar-v2</a>
+		</td><td>
+			A responsive, tabbed sidebar with HTML & JS API.
+			Compatible with old (0.7) and current leaflet.
+		</td><td>
+			<a href="https://github.com/noerw/">Norwin Roosen</a>
 		</td>
 	</tr>
 	<tr>
@@ -4619,7 +4685,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	<td>
 		<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
 	</td><td>
-		Simple plugin for adding Facebook like button as a control.			
+		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
 		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
 	</td>

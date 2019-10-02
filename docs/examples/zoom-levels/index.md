@@ -238,7 +238,7 @@ This controls how many zoom levels to zoom in/out when using the zoom buttons
 or the `+`/`-` keys in your keyboard.
 
 For the mousewheel zoom, the [`wheelPxPerZoomLevel`](/reference.html#map-wheelpxperzoomlevel)
-option controls how fast the mousewheel zooms in our out.
+option controls how fast the mousewheel zooms in or out.
 
 Here is an example with `zoomSnap` set to zero:
 

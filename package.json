@@ -1,6 +1,7 @@
 {
   "name": "leaflet",
   "version": "1.5.1",
+  "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -36,14 +37,13 @@
   ],
   "scripts": {
     "docs": "node ./build/docs.js",
-    "pretest": "npm run lint && npm run lint-spec",
+    "pretest": "npm run lint",
     "test": "npm run test-nolint",
     "test-nolint": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
-    "lint": "eslint src",
-    "lint-spec": "eslint spec/suites",
-    "lintfix": "eslint src --fix; eslint spec/suites --fix;",
+    "lint": "eslint src spec/suites docs/docs/js",
+    "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
