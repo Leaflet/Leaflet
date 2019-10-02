@@ -4646,6 +4646,15 @@ The following plugins integrate Leaflet into third party services or websites.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://wordpress.org/plugins/map-block-leaflet/">Map Block Leaflet</a>
+		</td><td>
+			A Block for the New WordPress Block Editor based on Leaflet, it allow add and custom maps from a visual interface.
+		</td><td>
+			<a href="https://goiblas.com/">Jesús Olazagoitia</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://community.mybb.com/mods.php?action=view&pid=1238">ABP Usermap MyBB</a>
 		</td><td>
 		A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers
