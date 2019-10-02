@@ -2879,6 +2879,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			<a href="https://github.com/vogdb">vogdb</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Kanahiro/Leaflet.Control.Appearance">Leaflet.Control.Appearance</a>
+		</td><td>
+			Extend of Control.Layers, can control Appearances of Layers - color, opacity and able to remove a overlay layer. <a href="https://github.com/Kanahiro/Leaflet.Control.Appearance">Example</a>
+		</td><td>
+			<a href="https://www.labo288.site/">Kanahiro Iguchi</a>
+		</td>
+	</tr>
 </table>
 
 
