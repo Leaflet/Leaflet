@@ -3362,6 +3362,15 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
 		</td>
 	</tr>
+    	<tr>
+		<td>
+			<a href="https://github.com/tinjaw/Leaflet-Copy-Coordinates-Control">Leaflet Copy Coordinates Control</a>
+		</td><td>
+			Works with Leaflet to capture mouseclicks on a map and display the associated coordinates with an easy way to copy them. (Derived from original work by zimmicz. Forked mainly to provide npm functionality.)
+		</td><td>
+			<a href="https://github.com/tinjaw">Chaim Krause</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/mahmoodvcs/Leaflet.NACCoordinates">Leaflet.NACCoordinates</a>
@@ -4649,7 +4658,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	<td>
 		<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
 	</td><td>
-		Simple plugin for adding Facebook like button as a control.			
+		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
 		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
 	</td>
