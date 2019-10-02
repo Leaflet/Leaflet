@@ -36,6 +36,7 @@
     "!dist/leaflet.zip"
   ],
   "scripts": {
+    "postinstall": "npm run build",
     "docs": "node ./build/docs.js",
     "pretest": "npm run lint",
     "test": "npm run test-nolint",
