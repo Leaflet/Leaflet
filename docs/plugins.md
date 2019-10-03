@@ -3127,7 +3127,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/makinacorpus/Leaflet.View">Leaflet.RestoreView</a>
+			<a href="https://github.com/makinacorpus/Leaflet.RestoreView">Leaflet.RestoreView</a>
 		</td><td>
 			Stores and restores map view using localStorage.
 		</td><td>
