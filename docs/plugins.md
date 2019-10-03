@@ -3127,7 +3127,8 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/makinacorpus/Leaflet.RestoreView">Leaflet.RestoreView</a>
+			<a href="https://github.com/makinacorpus/Leaflet.
+				 View">Leaflet.RestoreView</a>
 		</td><td>
 			Stores and restores map view using localStorage.
 		</td><td>
@@ -3141,6 +3142,17 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			Plugin for persisting map state and browsing history through the URL hash.
 		</td><td>
 			<a href="https://github.com/mlevans">Michael Lawrence Evans</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rwev/leaflet-view-meta">leaflet-view-meta</a>
+		</td>
+		<td>
+			Plugin control that displays and persists map view meta-data, center and boundary coordinates to URL for precise sharing and view reconstruction. 
+		</td>
+		<td>
+			<a href="https://github.com/rwev">rwev</a>
 		</td>
 	</tr>
 </table>
