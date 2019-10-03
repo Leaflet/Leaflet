@@ -3360,6 +3360,18 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/gokertanrisever">Goker Tanrisever</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rwev/leaflet-reticle">leaflet-reticle</a>
+		</td>
+		<td>
+			Leaflet control adding a centering reticle consisting of independently calculated latitude and longitude scales.
+		</td>
+		<td>
+			<a href="https://github.com/rwev">rwev</a>
+		</td>
+	</tr>
+	
 </table>
 
 
