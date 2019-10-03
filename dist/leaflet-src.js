@@ -1,5 +1,5 @@
 /* @preserve
- * Leaflet 1.5.1+master.633c626, a JS library for interactive maps. http://leafletjs.com
+ * Leaflet 1.5.1+master.33ed6a2, a JS library for interactive maps. http://leafletjs.com
  * (c) 2010-2019 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
@@ -9,7 +9,7 @@
 	(factory((global.L = {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "1.5.1+master.633c6265";
+var version = "1.5.1+master.33ed6a27";
 
 /*
  * @namespace Util
@@ -2153,23 +2153,27 @@ var _pre = '_leaflet_';
 // inspired by Zepto touch code by Thomas Fuchs
 function addDoubleTapListener(obj, handler, id) {
 	var last, touch$$1,
-	    doubleTap = false,
-	    delay = 250;
+		doubleTap = false,
+		delay = 250;
 
 	function onTouchStart(e) {
 		var count;
 
 		if (pointer) {
-			if ((!edge) || e.pointerType === 'mouse') { return; }
+			if ((!edge) || e.pointerType === 'mouse') {
+				return;
+			}
 			count = _pointersCount;
 		} else {
 			count = e.touches.length;
 		}
 
-		if (count > 1) { return; }
+		if (count > 1) {
+			return;
+		}
 
 		var now = Date.now(),
-		    delta = now - (last || now);
+			delta = now - (last || now);
 
 		touch$$1 = e.touches ? e.touches[0] : e;
 		doubleTap = (delta > 0 && delta <= delay);
@@ -2179,10 +2183,12 @@ function addDoubleTapListener(obj, handler, id) {
 	function onTouchEnd(e) {
 		if (doubleTap && !touch$$1.cancelBubble) {
 			if (pointer) {
-				if ((!edge) || e.pointerType === 'mouse') { return; }
+				if ((!edge) || e.pointerType === 'mouse') {
+					return;
+				}
 				// work around .type being readonly with MSPointer* events
 				var newTouch = {},
-				    prop, i;
+					prop, i;
 
 				for (i in touch$$1) {
 					prop = touch$$1[i];
@@ -2201,8 +2207,8 @@ function addDoubleTapListener(obj, handler, id) {
 	obj[_pre + _touchend + id] = onTouchEnd;
 	obj[_pre + 'dblclick' + id] = handler;
 
-	obj.addEventListener(_touchstart, onTouchStart, passiveEvents ? {passive: false} : false);
-	obj.addEventListener(_touchend, onTouchEnd, passiveEvents ? {passive: false} : false);
+	obj.addEventListener(_touchstart, onTouchStart, {passive: true});
+	obj.addEventListener(_touchend, onTouchEnd, {passive: true});
 
 	// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
 	// the browser doesn't fire touchend/pointerup events but does fire
@@ -2215,11 +2221,11 @@ function addDoubleTapListener(obj, handler, id) {
 
 function removeDoubleTapListener(obj, id) {
 	var touchstart = obj[_pre + _touchstart + id],
-	    touchend = obj[_pre + _touchend + id],
-	    dblclick = obj[_pre + 'dblclick' + id];
+		touchend = obj[_pre + _touchend + id],
+		dblclick = obj[_pre + 'dblclick' + id];
 
-	obj.removeEventListener(_touchstart, touchstart, passiveEvents ? {passive: false} : false);
-	obj.removeEventListener(_touchend, touchend, passiveEvents ? {passive: false} : false);
+	obj.removeEventListener(_touchstart, touchstart, {passive: true});
+	obj.removeEventListener(_touchend, touchend, {passive: true});
 	if (!edge) {
 		obj.removeEventListener('dblclick', dblclick, false);
 	}

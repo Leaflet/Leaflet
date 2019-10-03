@@ -40,7 +40,7 @@
     "pretest": "npm run lint",
     "test": "npm run test-nolint",
     "test-nolint": "karma start ./spec/karma.conf.js",
-    "build": "npm run rollup && npm run uglify",
+    "build": "npm run rollup",
     "release": "./build/publish.sh",
     "lint": "eslint src spec/suites docs/docs/js",
     "lintfix": "npm run lint -- --fix",
