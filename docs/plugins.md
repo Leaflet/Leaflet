@@ -3143,6 +3143,17 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			<a href="https://github.com/mlevans">Michael Lawrence Evans</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rwev/leaflet-view-meta">leaflet-view-meta</a>
+		</td>
+		<td>
+			Plugin control that displays and persists map view meta-data, center and boundary coordinates to URL for precise sharing and view reconstruction. 
+		</td>
+		<td>
+			<a href="https://github.com/rwev">rwev</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3348,6 +3359,18 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/gokertanrisever">Goker Tanrisever</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rwev/leaflet-reticle">leaflet-reticle</a>
+		</td>
+		<td>
+			Leaflet control adding a centering reticle consisting of independently calculated latitude and longitude scales.
+		</td>
+		<td>
+			<a href="https://github.com/rwev">rwev</a>
+		</td>
+	</tr>
+	
 </table>
 
 
