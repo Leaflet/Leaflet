@@ -74,6 +74,18 @@ export var Map = Evented.extend({
 		// or `L.Canvas` by default depending on browser support.
 		renderer: undefined,
 
+		// @option gradients: []
+		// SVG gradient definitions
+		// [{
+		// 	name: 'red-to-green',
+		// 	direction: 'up',
+		// 	stops: [
+		// 		{offset: 0, color: 'red'},
+		// 		{offset: 100, color: 'green'},
+		// 	]
+		// }]
+		gradients: [],
+
 
 		// @section Animation Options
 		// @option zoomAnimation: Boolean = true
@@ -151,6 +163,10 @@ export var Map = Evented.extend({
 
 		if (options.center && options.zoom !== undefined) {
 			this.setView(toLatLng(options.center), options.zoom, {reset: true});
+		}
+
+		if (options.gradients) {
+			this.gradients = options.gradients;
 		}
 
 		this.callInitHooks();

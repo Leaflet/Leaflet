@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var map = L.map('map', {
+			gradients: [
+				{
+					name: 'red-to-green',
+					direction: 'up',
+					stops: [
+						{offset: 0, color: 'red'},
+						{offset: 100, color: 'green'},
+					]
+				},
+				{
+					name: 'multiple-steps',
+					direction: 'right',
+					stops: [
+						{offset: 0, color: 'red'},
+						{offset: 50, color: 'black'},
+						{offset: 100, color: 'blue'},
+					]
+				}
+			]
+		});
+		
+		map.setView([51.505, -0.09], 13);
+
+		var circle = L.circle([51.508, -0.11], 500, {gradient: 'red-to-green', fillOpacity: 1, color: '#f03', opacity: 0.7})
+			.bindPopup("I am a circle.")
+			.addTo(map);
+
+		var polygon = L.polygon([
+			[51.509, -0.08],
+			[51.503, -0.06],
+			[51.51,  -0.047]], {fillOpacity: 0.5, gradient: 'multiple-steps'})
+			.bindPopup("I am a polygon.")
+			.addTo(map);
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}).addTo(map);
+
+	</script>
+</body>
+</html>
