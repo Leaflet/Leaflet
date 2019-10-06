@@ -1181,8 +1181,8 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/barryhunter/">Barry Hunter</a>
 		</td>
 	</tr>
-  <tr>
-    <td>
+        <tr>
+                <td>
   		<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
 		</td>
 		<td>
@@ -1190,8 +1190,8 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 		</td>
 		<td>
 			<a href="https://github.com/rwev/">rwev</a>
-    </td>
-  </tr>
+                </td>
+        </tr>
 	<tr>
 		<td>
 			<a href="https://github.com/publiclab/leaflet-environmental-layers">leaflet-environmental-layers
