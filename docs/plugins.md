@@ -1181,15 +1181,27 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/barryhunter/">Barry Hunter</a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
+        <tr>
+                <td>
+  		<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
 		</td>
 		<td>
 			Animated satellite weather radar overlays for Leaflet. 
 		</td>
 		<td>
 			<a href="https://github.com/rwev/">rwev</a>
+                </td>
+        </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-environmental-layers">leaflet-environmental-layers
+			</a>
+		</td>
+		<td>
+			Collection of different environmental map layers in an easy to use Leaflet library <a href="https://publiclab.github.io/leaflet-environmental-layers/example/index.html#3/43.00/-46.26/BL2">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
 </table>
@@ -3903,6 +3915,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			Control to resize your map on the right or bottom side. See <a href="https://jjimenezshaw.github.io/Leaflet.Control.Resizer/examples/basic.html">demo</a>
 		</td><td>
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/leaflet-blurred-location-display">leaflet-blurred-location-display
+			</a>
+		</td>
+		<td>
+			Cleverly dispays "blurred" locations using color-coded heatmap and color-coded markers while fetching data from remote API <a href="https://publiclab.github.io/leaflet-blurred-location-display/examples/HumanReadableBlurring.html">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
 </table>
