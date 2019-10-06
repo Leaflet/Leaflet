@@ -37,18 +37,18 @@ To understand how zoom levels work, first we need a basic introduction to <i>geo
 
 Let's have a look at a simple map locked at zoom zero:
 
-```
 	var map = L.map('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});
 
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
+
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
 	map.setView([0, 0], 0);
-```
 
 {% include frame.html url="example-zero.html" %}
 
@@ -151,7 +151,6 @@ we can see how the scale factor <b>doubles</b>. The following example uses
 [javascript timeouts](https://developer.mozilla.org/docs/Web/API/WindowTimers/setTimeout)
 to  do this automatically:
 
-```
 	L.control.scale().addTo(map);
 
 	setInterval(function(){
@@ -160,7 +159,6 @@ to  do this automatically:
 			map.setView([60, 0]);
 		}, 2000);
 	}, 4000);
-```
 
 {% include frame.html url="example-scale.html" %}
 
@@ -176,14 +174,12 @@ will set the zoom level of `map` to `0`.
 
 This example again uses timeouts to alternate between zoom levels `0` and `1` automatically:
 
-```
 	setInterval(function(){
 		map.setZoom(0);
 		setTimeout(function(){
 			map.setZoom(1);
 		}, 2000);
 	}, 4000);
-```
 
 {% include frame.html url="example-setzoom.html" %}
 
@@ -219,11 +215,9 @@ If you set a value of `0.1`, the valid zoom levels of the map will be `0`, `0.1`
 
 The following example uses a `zoomSnap` value of `0.25`:
 
-```
 	var map = L.map('map', {
 		zoomSnap: 0.25
 	});
-```
 
 {% include frame.html url="example-fractional.html" %}
 
@@ -244,16 +238,14 @@ This controls how many zoom levels to zoom in/out when using the zoom buttons
 or the `+`/`-` keys in your keyboard.
 
 For the mousewheel zoom, the [`wheelPxPerZoomLevel`](/reference.html#map-wheelpxperzoomlevel)
-option controls how fast the mousewheel zooms in our out.
+option controls how fast the mousewheel zooms in or out.
 
 Here is an example with `zoomSnap` set to zero:
 
-```
 	var map = L.map('map', {
 		zoomDelta: 0.25,
 		zoomSnap: 0
 	});
-```
 
 Try the following, and see how the zoom level changes:
 

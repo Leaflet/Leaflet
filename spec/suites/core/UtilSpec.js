@@ -86,9 +86,6 @@ describe('Util', function () {
 			expect(L.Util.formatNum(13.12325555, 3)).to.eql(13.123);
 			expect(L.Util.formatNum(13.12325555)).to.eql(13.123256);
 			expect(L.Util.formatNum(13.12325555, 0)).to.eql(13);
-			expect(L.Util.formatNum(1.005, 2)).to.eql(1.01);
-			expect(L.Util.formatNum(1.555, 2)).to.eql(1.56);
-			expect(L.Util.formatNum(-1.4837191022531273, 18)).to.eql(-1.4837191022531273);
 		});
 	});
 

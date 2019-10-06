@@ -14,9 +14,12 @@ import * as Util from '../core/Util';
  * @example
  *
  * ```js
- * var element = '<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png" height="200" width="200"/></svg>',
- * 		 elementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
- * L.svgOverlay(element, elementBounds).addTo(map);
+ * var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+ * svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+ * svgElement.setAttribute('viewBox', "0 0 200 200");
+ * svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
+ * var svgElementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
+ * L.svgOverlay(svgElement, svgElementBounds).addTo(map);
  * ```
  */
 
@@ -26,6 +29,7 @@ export var SVGOverlay = ImageOverlay.extend({
 
 		DomUtil.addClass(el, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(el, 'leaflet-zoom-animated'); }
+		if (this.options.className) { DomUtil.addClass(el, this.options.className); }
 
 		el.onselectstart = Util.falseFn;
 		el.onmousemove = Util.falseFn;

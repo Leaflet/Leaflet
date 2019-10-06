@@ -16,10 +16,9 @@ title: Custom Icons Tutorial
 	// Layers in this pane are non-interactive and do not obscure mouse/touch events
 	map.getPane('labels').style.pointerEvents = 'none';
 
+	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 

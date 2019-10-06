@@ -47,7 +47,7 @@ Leaflet has a very handy shortcut for zooming the map view to the detected locat
 Here we specify 16 as the maximum zoom when setting the map view automatically. As soon as the user agrees to share its location and it's detected by the browser, the map will set the view to it. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the `locationfound` and `locationerror` events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to `locationfound` event before the `locateAndSetView` call:
 
 	function onLocationFound(e) {
-		var radius = e.accuracy / 2;
+		var radius = e.accuracy;
 
 		L.marker(e.latlng).addTo(map)
 			.bindPopup("You are within " + radius + " meters from this point").openPopup();

@@ -60,8 +60,8 @@ export function addDoubleTapListener(obj, handler, id) {
 	obj[_pre + _touchend + id] = onTouchEnd;
 	obj[_pre + 'dblclick' + id] = handler;
 
-	obj.addEventListener(_touchstart, onTouchStart, false);
-	obj.addEventListener(_touchend, onTouchEnd, false);
+	obj.addEventListener(_touchstart, onTouchStart, Browser.passiveEvents ? {passive: false} : false);
+	obj.addEventListener(_touchend, onTouchEnd, Browser.passiveEvents ? {passive: false} : false);
 
 	// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
 	// the browser doesn't fire touchend/pointerup events but does fire
@@ -77,8 +77,8 @@ export function removeDoubleTapListener(obj, id) {
 	    touchend = obj[_pre + _touchend + id],
 	    dblclick = obj[_pre + 'dblclick' + id];
 
-	obj.removeEventListener(_touchstart, touchstart, false);
-	obj.removeEventListener(_touchend, touchend, false);
+	obj.removeEventListener(_touchstart, touchstart, Browser.passiveEvents ? {passive: false} : false);
+	obj.removeEventListener(_touchend, touchend, Browser.passiveEvents ? {passive: false} : false);
 	if (!Browser.edge) {
 		obj.removeEventListener('dblclick', dblclick, false);
 	}

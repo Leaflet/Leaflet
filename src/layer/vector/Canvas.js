@@ -60,7 +60,7 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', Util.throttle(this._onMouseMove, 32, this), this);
+		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
 
@@ -370,10 +370,15 @@ export var Canvas = Renderer.extend({
 			DomUtil.removeClass(this._container, 'leaflet-interactive');
 			this._fireEvent([layer], e, 'mouseout');
 			this._hoveredLayer = null;
+			this._mouseHoverThrottled = false;
 		}
 	},
 
 	_handleMouseHover: function (e, point) {
+		if (this._mouseHoverThrottled) {
+			return;
+		}
+
 		var layer, candidateHoveredLayer;
 
 		for (var order = this._drawFirst; order; order = order.next) {
@@ -396,6 +401,11 @@ export var Canvas = Renderer.extend({
 		if (this._hoveredLayer) {
 			this._fireEvent([this._hoveredLayer], e);
 		}
+
+		this._mouseHoverThrottled = true;
+		setTimeout(L.bind(function () {
+			this._mouseHoverThrottled = false;
+		}, this), 32);
 	},
 
 	_fireEvent: function (layers, e, type) {

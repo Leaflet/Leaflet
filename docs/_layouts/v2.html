@@ -10,11 +10,16 @@
 	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
-	<meta property="og:image" content="https://leafletjs.com/docs/images/logo.png" />
+	<meta property="og:image" content="{{ root }}docs/images/logo.png" />
 
 	<meta itemprop="name" content="Leaflet">
 	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
-	<meta itemprop="image" content="https://leafletjs.com/docs/images/logo.png">
+	<meta itemprop="image" content="{{ root }}docs/images/logo.png">
+	{% endif %}
+
+	{% if page.redirect_to %}
+	<link rel="canonical" href="{{ page.redirect_to }}"/>
+	<meta http-equiv="refresh" content="0;url={{ page.redirect_to }}" />
 	{% endif %}
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +32,9 @@
 
 	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css" />
 	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
+	{% if page.title == 'Documentation' %}
+	<link rel="stylesheet" href="{{ root }}docs/css/reference.css" />
+	{% endif %}
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
 
@@ -73,7 +81,7 @@
 		{% if page.title == 'Documentation' %}
 			<span>Docs</span>
 		{% else %}
-			<a href="{{ root }}reference-{{ site.latest_leaflet_version }}.html">Docs</a>
+			<a href="{{ root }}reference-{{ site.latest_leaflet_reference }}.html">Docs</a>
 		{% endif %}
 	</li>
 	<li>
@@ -105,7 +113,7 @@
 {{ content }}
 
 <div class="footer">
-	<p>&copy; 2017 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+	<p>&copy; 2010–2019 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 </div>
 
 </div>
@@ -115,27 +123,6 @@
   <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.png" width="46" /></a>
   <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.png" width="46" /></a>
 </nav>
-
-<script>
-	hljs.configure({tabReplace: '    '});
-	hljs.initHighlighting();
-
-	(function () {
-		if (document.body.className.indexOf('api-page') !== -1) {
-			var headers = document.getElementsByTagName('h2');
-
-			for (var i = 0, len = headers.length; i < len; i++) {
-				if (headers[i].id) {
-					headers[i].onclick = function(e) {
-						if (e.offsetX < 0) {
-							window.location.hash = '#' + this.id;
-						}
-					};
-				}
-			}
-		}
-	})();
-</script>
 
 <script>
 	var _gaq = _gaq || [];
@@ -155,5 +142,8 @@
 </script>
 
 <script src="{{ root }}docs/js/docs.js"></script>
+{% if page.title == 'Documentation' %}
+<script src="{{ root }}docs/js/reference.js"></script>
+{% endif %}
 </body>
 </html>

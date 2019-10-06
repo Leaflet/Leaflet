@@ -8,8 +8,8 @@ title: Watermark control
 		zoom: 1
 	});
 
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-		attribution: "CartoDB"
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
 	}).addTo(map);
 
 	L.Control.Watermark = L.Control.extend({

@@ -1,3 +1,4 @@
+import * as Util from './Util';
 import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
@@ -113,6 +114,23 @@ export var mobileGecko = mobile && gecko;
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
 export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
+// @property passiveEvents: Boolean
+// `true` for browsers that support passive events.
+export var passiveEvents = (function () {
+	var supportsPassiveOption = false;
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function () {
+				supportsPassiveOption = true;
+			}
+		});
+		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
+		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
+	} catch (e) {
+		// Errors can safely be ignored since this is only a browser support test.
+	}
+	return supportsPassiveOption;
+});
 
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
