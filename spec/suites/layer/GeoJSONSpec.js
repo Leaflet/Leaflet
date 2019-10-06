@@ -53,6 +53,36 @@ describe("L.GeoJSON", function () {
 			expect(layer.options.color).to.be('chocolate');
 		});
 
+		it('should reset init options of all child layers', function () {
+			var feature = {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
+				}
+			};
+			var feature2 = {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates:[[-3.35, 50.38], [-3.38, 50.38]]
+				}
+			};
+			var geojson = L.geoJSON([feature, feature2], {weight: 7, color: 'chocolate'});
+			geojson.setStyle({weight: 22, color: 'coral'});
+			var layer = geojson.getLayers()[0];
+			expect(layer.options.weight).to.be(22);
+			expect(layer.options.color).to.be('coral');
+			var layer2 = geojson.getLayers()[1];
+			expect(layer2.options.weight).to.be(22);
+			expect(layer2.options.color).to.be('coral');
+			geojson.resetStyle(); // Should apply to all layers
+			expect(layer.options.weight).to.be(7);
+			expect(layer.options.color).to.be('chocolate');
+			expect(layer2.options.weight).to.be(7);
+			expect(layer2.options.color).to.be('chocolate');
+		});
+
 	});
 
 });
