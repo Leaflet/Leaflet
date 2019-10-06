@@ -317,7 +317,7 @@ Map.include({
 	// Creates a popup with the specified content and options and opens it in the given point on a map.
 	openPopup: function (popup, latlng, options) {
 		if (!(popup instanceof Popup)) {
-			popup = new Popup(options).setContent(popup);
+			popup = new Popup(options).setContent(popup._content);
 		}
 
 		if (latlng) {
