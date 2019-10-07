@@ -53,6 +53,8 @@
 .leaflet-container .leaflet-tile {
 	max-width: none !important;
 	max-height: none !important;
+	width: auto;
+	padding: 0;
 	}
 
 .leaflet-container.leaflet-touch-zoom {
