@@ -91,7 +91,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Leaflet/Leaflet.git"
+    "url": "git://github.com/Sithion/Leaflet.git"
   },
   "keywords": [
     "gis",
