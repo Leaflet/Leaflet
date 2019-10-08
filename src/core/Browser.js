@@ -93,7 +93,7 @@ export var msPointer = !window.PointerEvent && window.MSPointerEvent;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-export var pointer = !!(window.PointerEvent || msPointer) && !userAgentContains('iphone');
+export var pointer = !!(window.PointerEvent || msPointer) && !userAgentContains('iphone') && !userAgentContains('ipad');
 
 // @property touch: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
@@ -101,7 +101,7 @@ export var pointer = !!(window.PointerEvent || msPointer) && !userAgentContains(
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
 export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
-		(window.DocumentTouch && document instanceof window.DocumentTouch));
+	(window.DocumentTouch && document instanceof window.DocumentTouch));
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
 export var mobileOpera = mobile && opera;
