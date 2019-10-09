@@ -23,7 +23,7 @@ For Leaflet, this can only mean very good things &mdash; much more time on Leafl
 You can check out the [detailed changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#07-dev-master) of what's already done over the recent months for 0.7 (about 90 improvements and bugfixes), but I'd like to mention some highlights:
 
 * Added the ability to **upscale tiles** to higher zoom levels (e.g. have zoom 19-20 when the source has 18 max).
-* Added support for **IE11 touch devices**. MS unexpectedly broke their pointer API compatibility between Developer Preview and final IE11 release, and we eventually rewrote quite a bit of code to make everything work smoothly across all IE versions (both dekstop & mobile), fixing a bunch of IE10 bugs along the way as well.
+* Added support for **IE11 touch devices**. MS unexpectedly broke their pointer API compatibility between Developer Preview and final IE11 release, and we eventually rewrote quite a bit of code to make everything work smoothly across all IE versions (both desktop & mobile), fixing a bunch of IE10 bugs along the way as well.
 * Officially **dropped IE6 support** (nobody cares anyway) and cleaned up/fixed IE7-8 styles.
 * Dropped the need for **IE conditional comment** when including Leaflet, making the snippet much simpler &mdash; all IE7/8-specific styles got simplified and moved to the main `leaflet.css` file.
 * Fixed an **obscure iOS7 memory leak** that crashed Safari when you tried to create several thousands of layers (e.g. markers for clustering). I still don't understand why it happens, but we managed to fix it with a bit of trickery.
@@ -46,7 +46,7 @@ While it's an ambitious plan and it may take more than one stable release, finis
 
 Another direction I'd like to focus on after releasing 0.7 is **website and documentation improvements**. First, Leaflet is begging for **more step-by-step tutorials** (with more advanced features like custom layers, custom controls, etc.), and I'd love to do a docs/tutorials sprint some time in future. Second, the presentation could be significantly improved &mdash; adding a prominent visual **showcase** or app gallery, making Leaflet users more prominent with some logos and quotes/testimonials, and updating the layout/design for a more stylish, clean look, etc.
 
-Hope that gives a good glimpse of the stuff to expect from Leafet in near future, and don't hesitate to ask any questions in comments &mdash; I'll be happy to answer!
+Hope that gives a good glimpse of the stuff to expect from Leaflet in near future, and don't hesitate to ask any questions in comments &mdash; I'll be happy to answer!
 
 Grab the CDN links or downloads for the new release on the [download page](../../../download.html) as always. Be sure to try it out on your apps and report any regressions so that we can patch them up immediately. And lets make some nice Twitter buzz about the release as usual!
 
