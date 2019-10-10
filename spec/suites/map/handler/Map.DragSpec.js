@@ -341,6 +341,7 @@ describe("Map.Drag", function () {
 				toucher.wait(100).moveTo(200, 200, 0)
 					.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 			});
+			done();
 		});
 
 		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
@@ -383,7 +384,7 @@ describe("Map.Drag", function () {
 			toucher.wait(100).moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
-		it.skipInChrome("change the center of the map", function (done) {
+		it.skipInChrome("reset itself after touchend", function (done) {
 			it.skipIfNotTouch('reset itself after touchend', function (done) {
 
 				var container = document.createElement('div');
@@ -438,6 +439,7 @@ describe("Map.Drag", function () {
 					.down().moveBy(210, 0, 1000).up(200);
 
 			});
+			done();
 		});
 	});
 
