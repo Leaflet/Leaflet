@@ -55,8 +55,6 @@ export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
 // @property safari: Boolean; `true` for the Safari browser.
 export var safari = !chrome && userAgentContains('safari');
 
-export var phantom = userAgentContains('phantom');
-
 // @property opera12: Boolean
 // `true` for the Opera browser supporting CSS transforms (version 12 or later).
 export var opera12 = 'OTransition' in style;
@@ -75,7 +73,10 @@ export var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
+export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12;
+
+// Added for testcases to skip on chrome
+export var skipchrome = !chrome;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 export var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');

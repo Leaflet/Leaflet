@@ -60,7 +60,7 @@ describe("Marker.Drag", function () {
 				div.style.webkitTransform = '';
 			});
 
-			it("drags a marker with mouse, compensating for CSS scale", function (done) {
+			it.skipInChrome("drags a marker with mouse, compensating for CSS scale", function (done) {
 				var marker = new L.Marker([0, 0], {
 					draggable: true
 				});

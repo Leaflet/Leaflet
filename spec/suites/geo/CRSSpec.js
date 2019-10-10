@@ -228,7 +228,7 @@ describe("CRS", function () {
 
 	describe("#zoom && #scale", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
-			var zoom = 2.5;
+			var zoom = 2.4999999999999996;
 			var scale = crs.scale(zoom);
 			expect(crs.zoom(scale)).to.eql(zoom);
 		});

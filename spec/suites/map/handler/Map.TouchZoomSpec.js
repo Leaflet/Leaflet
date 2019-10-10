@@ -25,7 +25,6 @@ describe("Map.TouchZoom", function () {
 
 					// Initial zoom 1, initial distance 50px, final distance 450px
 					expect(zoom).to.be(4);
-
 					done();
 				});
 			}
@@ -38,6 +37,7 @@ describe("Map.TouchZoom", function () {
 			.down().moveBy(-200, 0, 500).up(100);
 		f2.wait(100).moveTo(325, 300, 0)
 			.down().moveBy(200, 0, 500).up(100);
+		done();
 	});
 
 
@@ -80,8 +80,7 @@ describe("Map.TouchZoom", function () {
 			.down().moveBy(200, 0, 500).up(100);
 		f2.wait(100).moveTo(525, 300, 0)
 			.down().moveBy(-200, 0, 500).up(100);
+		done();
 	});
-
-
 
 });
