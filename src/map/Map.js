@@ -734,6 +734,10 @@ export var Map = Evented.extend({
 	// @method addHandler(name: String, HandlerClass: Function, index: Number): this
 	// Adds a new `Handler` to the map, given its name and constructor function.
 	// Optional handler index may be speficied.
+	// When handler index is specified the handler is inserted at specified position in the `_handlers` array.
+	// This enables to control the order in which handlers are removed when the map is being destroyed.
+	// Some handlers may need to be removed prior to not cause any errors in the code.
+	// When index is not specified the handler is added to the end of the `_handlers` array.
 	addHandler: function (name, HandlerClass, index) {
 		if (!HandlerClass) { return this; }
 
