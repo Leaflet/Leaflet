@@ -247,5 +247,8 @@ export function toLatLngBounds(a, b) {
 	if (a instanceof LatLngBounds) {
 		return a;
 	}
+	if (a.getSouthWest && a.getNorthEast) {
+		return new LatLngBounds(a.getSouthWest(), a.getNorthEast());	
+	}
 	return new LatLngBounds(a, b);
 }
