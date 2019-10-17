@@ -1599,6 +1599,12 @@ export var Map = Evented.extend({
 		return true;
 	},
 
+	_setTransform: function () {
+		var c = this.getCenter(),
+		  z = this.getZoom();
+		DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
+	},
+
 	_createAnimProxy: function () {
 
 		var proxy = this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
@@ -1616,16 +1622,13 @@ export var Map = Evented.extend({
 			}
 		}, this);
 
-		this.on('load moveend', function () {
-			var c = this.getCenter(),
-			    z = this.getZoom();
-			DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
-		}, this);
+		this.on('load moveend', this._setTransform, this);
 
 		this._on('unload', this._destroyAnimProxy, this);
 	},
 
 	_destroyAnimProxy: function () {
+		this.off('load moveend', this._setTransform, this);
 		DomUtil.remove(this._proxy);
 		delete this._proxy;
 	},
