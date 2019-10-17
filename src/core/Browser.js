@@ -93,7 +93,8 @@ export var msPointer = !window.PointerEvent && window.MSPointerEvent;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-export var pointer = !!(window.PointerEvent || msPointer) && !userAgentContains('iphone');
+export var pointer = !!(window.PointerEvent || msPointer) && !userAgentContains('iphone') && 
+    		!(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 // @property touch: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
