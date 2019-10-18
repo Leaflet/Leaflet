@@ -31,6 +31,21 @@ describe("L.GeoJSON", function () {
 			layer.addData(geojsonEmpty);
 			expect(layer.getLayers().length).to.eql(0);
 		});
+
+		it("makes default marker inherit group options if explicitly requested", function () {
+			// Check first that it does not inherit group options by default
+			var options = {
+				customOption: "My Custom Option"
+			};
+			var layer = new L.GeoJSON(null, options);
+			layer.addData(geojson);
+			expect(layer.getLayers()[0].options.customOption).to.equal(undefined);
+
+			// Now make it inherit group options
+			layer.options.markersInheritOptions = true;
+			layer.addData(geojson);
+			expect(layer.getLayers()[1].options.customOption).to.eql(options.customOption);
+		});
 	});
 
 	describe('resetStyle', function () {
