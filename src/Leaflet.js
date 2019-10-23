@@ -2,25 +2,25 @@
 import {version} from '../package.json';
 export {version};
 
-// control
+// Control
 export * from './control/index';
 
-// core
+// Core
 export * from './core/index';
 
-// dom
+// Dom
 export * from './dom/index';
 
-// geometry
+// Geometry
 export * from './geometry/index';
 
-// geo
+// Geo
 export * from './geo/index';
 
-// layer
+// Layer
 export * from './layer/index';
 
-// map
+// Map
 export * from './map/index';
 
 import {freeze} from './core/Util';
