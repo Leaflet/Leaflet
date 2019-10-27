@@ -1681,7 +1681,7 @@ export var Map = Evented.extend({
 
 			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
-		
+
 		// @section Other Events
 		// @event zoomanim: ZoomAnimEvent
 		// Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
