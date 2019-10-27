@@ -2438,6 +2438,15 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/tcoupin">Thibault Coupin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sagarpreet-chadha/Leaflet-Craft">Leaflet-Craft</a>
+		</td><td>
+			Extends Leaflet.FreeDraw and gives extended features like Undo-Redo, deleting markers,dynamic area calculation of polygons ,various hooks/events and in-build control bars, etc.
+		</td><td>
+			<a href="https://github.com/sagarpreet-chadha">Sagarpreet Chadha</a>
+		</td>
+	</tr>
 </table>
 
 
