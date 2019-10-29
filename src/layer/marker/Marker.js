@@ -302,7 +302,7 @@ export var Marker = Layer.extend({
 	},
 
 	_updateZIndex: function (offset) {
-		if(this._icon)
+		if (this._icon)
 			this._icon.style.zIndex = this._zIndex + offset;
 	},
 
