@@ -311,6 +311,7 @@ var PointToGeoJSON = {
 };
 
 // @namespace Marker
+// @section Other methods
 // @method toGeoJSON(precision?: Number): Object
 // `precision` is the number of decimal places for coordinates.
 // The default value is 6 places.
