@@ -3,6 +3,36 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.6.0
+
+### API changes
+
+* `GeoJSON.resetStyle` - allow invocation without an argument ([#6663](https://github.com/Leaflet/Leaflet/pull/6663) by [joukewitteveen](https://github.com/joukewitteveen))
+* Add new `markersInheritOptions` option to `L.GeoJSON` ([#6866](https://github.com/Leaflet/Leaflet/pull/6866) by [ghybs](https://github.com/ghybs))
+
+### Improvements
+
+* Use passive event listeners ([#6694](https://github.com/Leaflet/Leaflet/pull/6694) by [danielkorte](https://github.com/danielkorte))
+* Add `oldLatLng` coordinates to `L.CircleMarker` `move` event ([#6719](https://github.com/Leaflet/Leaflet/pull/6719) by [errnesto](https://github.com/errnesto))
+* Add tests ([#6839](https://github.com/Leaflet/Leaflet/pull/6839), [#6841](https://github.com/Leaflet/Leaflet/pull/6841) by [ghybs](https://github.com/ghybs))
+* Add test case to ensure scientific notation is formatted correctly ([#6877](https://github.com/Leaflet/Leaflet/pull/6877) by [desean1625](https://github.com/desean1625))
+
+### Bug fixes
+* Fix performance issue with `L.Util.formatNum` ([#6668](https://github.com/Leaflet/Leaflet/pull/6668) by [cherniavskii](https://github.com/cherniavskii))
+* Respect `className` option in `SVGOverlay` and `VideoOverlay` ([#6679](https://github.com/Leaflet/Leaflet/pull/6679) by [IvanSanchez](https://github.com/IvanSanchez))
+* Cancel the canvas `mousehover` throttle on `mouseout` ([#6749](https://github.com/Leaflet/Leaflet/pull/6749) by [IvanSanchez](https://github.com/IvanSanchez))
+* Check for style being passed in `L.Path.setStyle` ([#6728](https://github.com/Leaflet/Leaflet/pull/6728) by [TheRealTorreySmith](https://github.com/TheRealTorreySmith))
+* Fix `dblclick` event when both Pointer Events and Touch Events are available ([#6855](https://github.com/Leaflet/Leaflet/pull/6855) by [filcab](https://github.com/filcab))
+* Properly unbind animation proxy events when removing map ([#6867](https://github.com/Leaflet/Leaflet/pull/6867) by [ghybs](https://github.com/ghybs))
+* Fix race condition in `Marker` when icon is not present ([#6794](https://github.com/Leaflet/Leaflet/pull/6794) by [BenTalagan](https://github.com/BenTalagan))
+
+### Docs & Web Site
+
+* Update SvgOverlay code example ([#6658](https://github.com/Leaflet/Leaflet/pull/6658) by [cherniavskii](https://github.com/cherniavskii))
+* Fix mobile locate accuracy snippet ([#6693](https://github.com/Leaflet/Leaflet/pull/6693) by [ghybs](https://github.com/ghybs))
+* Fix broken accordions ([#6770](https://github.com/Leaflet/Leaflet/pull/6770) by [mbachner](https://github.com/mbachner))
+* Fix misleading `L.Marker` docs sections ([#6871](https://github.com/Leaflet/Leaflet/pull/6871) by [chloe-mc](https://github.com/chloe-mc))
+
 ## 1.5.1 (2019-05-08)
 * Fix module export regression ([#6647](https://github.com/Leaflet/Leaflet/pull/6647) by [cherniavskii](https://github.com/cherniavskii))
 
