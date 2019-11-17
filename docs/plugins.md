@@ -1782,6 +1782,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/henrythasler/Leaflet.Geodesic">Leaflet.Geodesic</a>
+		</td><td>
+			Draw geodesic lines and circles. A geodesic line is the shortest path between two given points on the earth surface. It uses Vincenty's formulae for highest precision and distance calculation. Written in Typescript and available via CDN. <a href="https://blog.cyclemap.link/Leaflet.Geodesic/complex-interactive.html">Demo</a>
+		</td><td>
+			<a href="https://github.com/henrythasler">Henry Thasler</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/nuclearsecrecy/Leaflet.greatCircle">Leaflet.greatCircle</a>
 		</td>
 		<td>
@@ -4094,15 +4103,6 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		</td>
 		<td>
 			<a href="https://github.com/w8r">Alexander Milevski</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/henrythasler/Leaflet.Geodesic">Leaflet.Geodesic</a>
-		</td><td>
-			Draw geodesic (poly)lines. A geodesic line is the shortest path between two given positions on the earth surface. and You can also calculate the exact distance between two given points on the map.
-		</td><td>
-			<a href="https://github.com/henrythasler">Henry Thasler</a>
 		</td>
 	</tr>
 	<tr>
