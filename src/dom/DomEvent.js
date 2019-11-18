@@ -81,7 +81,7 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (Browser.pointer && type.indexOf('touch') === 0) {
+	if ((Browser.pointer || Browser.edge) && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
 		addPointerListener(obj, type, handler, id);
 
