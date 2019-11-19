@@ -98,3 +98,16 @@ Here are the steps to set it up:
 Now that you have everything installed, run `npm run build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 
+##### Known issues building with docker
+If you are building from a ubuntu docker container and are getting the error:
+
+```
+ERROR [phantomjs.launcher]: /Leaflet/node_modules/phantomjs-prebuilt/lib/phantom/bin/
+phantomjs: error while loading shared libraries: libfontconfig.so.1: cannot open shared object file: No such file
+ or directory
+```
+ 
+install the following dependency:
+ 
+ ``sudo apt-get install libfontconfig``
+
