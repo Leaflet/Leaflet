@@ -36,8 +36,9 @@ Let's display our states data on a map with a custom Mapbox style for nice grays
 	var mapboxAccessToken = {your access token here};
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
-		id: 'mapbox.light',
+	L.tileLayer('https://api.mapbox.com/styles/v1/{account}/{styleId}/tiles/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
+		account: 'mapbox',
+		styleId: 'light-v10',
 		attribution: ...
 	}).addTo(map);
 
