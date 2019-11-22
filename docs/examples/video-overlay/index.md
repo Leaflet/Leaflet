@@ -29,9 +29,8 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('https://api.mapbox.com/styles/v1/{account}/{styleId/tiles/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
-		account: 'mapbox',
-		styleId: 'satellite-v9',
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+		id: 'mapbox/satellite-v9',
 		attribution: ...
 	}).addTo(map);
 
