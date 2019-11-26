@@ -194,7 +194,11 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 
     // attach your plugin to the global 'L' variable
     if (typeof window !== 'undefined' && window.L) {
-        window.L.YourPlugin = factory(L);
+        var leafletInstance = window.L;
+        leafletInstance.YourPlugin = leafletInstance.Class.Extend(factory(L));
+    } else {
+      var errorMessage = 'A reference to Leaflet is not available for <your plugin>. Try reordering your script tags.'
+      throw new Error(errorMessage);
     }
 }(function (L) {
     var MyLeafletPlugin = {};
