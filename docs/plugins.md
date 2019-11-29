@@ -1272,6 +1272,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/slutske22/leaflet-arrowheads">Leaflet-arrowheads</a>
+		</td><td>
+			Allows user to quickly draw arrowheads on polylines for vector visualization.
+		</td><td>
+			<a href="https://github.com/slutske22">Slutske22</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/leaflet-extras/leaflet.sprite">Leaflet.Sprite</a>
 		</td><td>
 			Use sprite based icons in your markers.
