@@ -584,7 +584,7 @@ export var Map = Evented.extend({
 		var newSize = this.getSize(),
 		    oldCenter = oldSize.divideBy(2).round(),
 		    newCenter = newSize.divideBy(2).round(),
-		    offset = oldCenter.subtract(newCenter);
+		    offset = newCenter.subtract(oldCenter);
 
 		if (!offset.x && !offset.y) { return this; }
 
