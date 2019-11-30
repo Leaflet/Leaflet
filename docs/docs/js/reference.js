@@ -1,7 +1,3 @@
-/* global hljs */
-hljs.configure({tabReplace: '    '});
-hljs.initHighlighting();
-
 if (document.body.className.indexOf('api-page') !== -1) {
 
 	var elems = document.querySelectorAll('h2, h3, h4, tr');

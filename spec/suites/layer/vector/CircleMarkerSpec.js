@@ -50,4 +50,34 @@
 			});
 		});
 	});
+
+	describe("#setLatLng", function () {
+		var map;
+
+		beforeEach(function () {
+			map = L.map(document.createElement('div'));
+			map.setView([0, 0], 1);
+		});
+
+		it("fires a move event", function () {
+
+			var marker = new L.CircleMarker([0, 0]);
+			map.addLayer(marker);
+
+			var beforeLatLng = marker._latlng;
+			var afterLatLng = new L.LatLng(1, 2);
+
+			var eventArgs = null;
+			marker.on('move', function (e) {
+				eventArgs = e;
+			});
+
+			marker.setLatLng(afterLatLng);
+
+			expect(eventArgs).to.not.be(null);
+			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
+			expect(eventArgs.latlng).to.be(afterLatLng);
+			expect(marker.getLatLng()).to.be(afterLatLng);
+		});
+	});
 });

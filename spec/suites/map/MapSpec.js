@@ -70,6 +70,19 @@ describe("Map", function () {
 			expect(spy.called).to.not.be.ok();
 		});
 
+		it("does not throw if removed during animation", function () {
+			var container = document.createElement('div'),
+			    map = new L.Map(container).setView([0, 0], 1);
+
+			// Force creation of animation proxy,
+			// otherwise browser checks disable it
+			map._createAnimProxy();
+
+			// #6775 Remove the map in the middle of the animation
+			map.on("zoom", map.remove);
+			map.setZoom(2);
+		});
+
 		it("throws error if container is reused by other instance", function () {
 			var container = document.createElement('div'),
 			    map = L.map(container),
