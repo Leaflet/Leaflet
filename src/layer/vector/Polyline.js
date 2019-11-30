@@ -160,7 +160,7 @@ export var Polyline = Path.extend({
 		return this._bounds;
 	},
 
-	// @method addLatLng(latlng: LatLng, latlngs? LatLng[]): this
+	// @method addLatLng(latlng: LatLng, latlngs?: LatLng[]): this
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
