@@ -1,6 +1,6 @@
 import {Class} from './Class';
 
-var _Dictionary = Class.extend({
+var _DictionarySparse = Class.extend({
 	initialize: function () {
 		this.map = {};
 		this.ordering = [];
@@ -36,15 +36,34 @@ var _Dictionary = Class.extend({
 			delegate.call(ctx, element);
 		}, this);
 
+	},
+
+	getValuesAsArray: function () {
+		var values = [];
+		this.ordering.forEach(function (k) {
+			values.push(this.map[k]);
+		}, this);
+		return values;
 	}
+
+
 });
+
+
 
 // Check if map gets implemented nativly (ecma6 implementation)
 // otherwise use slower onw implementation
 export function Dictionary() {
-	if (window.Map) {
-		return new Map();
+	if (window.Map && window.Map.prototype.values) {
+		var map = new Map();
+
+		// Add own getValuesAsArray function
+		map.__proto__.getValuesAsArray = function () {
+			return Array.from(this.values());
+		};
+
+		return map;
 	} else {
-		return new _Dictionary();
+		return new _DictionarySparse();
 	}
 }

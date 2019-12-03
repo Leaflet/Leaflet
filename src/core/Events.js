@@ -145,6 +145,14 @@ export var Events = {
 
 		var fullId = this._getListenerFullId(fn, context);
 
+		// Get the event first to set it to noop incase this function was
+		// called in fire.
+		var listener = listeners.get(fullId);
+
+		if (listener) {
+			listener.fn = Util.falseFn;
+		}
+
 		if (listeners) {
 			listeners.delete(fullId);
 		}
@@ -165,9 +173,12 @@ export var Events = {
 
 		// Call every listener
 		if (this._events) {
-			var listeners = this._events.get(type);
+			var dict = this._events.get(type);
 
-			if (listeners) {
+			if (dict) {
+
+				var listeners = dict.getValuesAsArray();
+
 				this._firingCount = (this._firingCount + 1) || 1;
 				listeners.forEach(function (l) {
 					l.fn.call(l.ctx || this, event);
