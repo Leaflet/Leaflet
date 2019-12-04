@@ -33,9 +33,9 @@ export var DoubleClickZoom = Handler.extend({
 		    zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 
 		if (map.options.doubleClickZoom === 'center') {
-			map.setZoom(zoom);
+			map.setZoom(zoom, null, 'user.doubleclickzoom');
 		} else {
-			map.setZoomAround(e.containerPoint, zoom);
+			map.setZoomAround(e.containerPoint, zoom, null, 'user.doubleclickzoom');
 		}
 	}
 });
