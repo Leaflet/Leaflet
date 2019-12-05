@@ -130,7 +130,7 @@ export var passiveEvents = (function () {
 		// Errors can safely be ignored since this is only a browser support test.
 	}
 	return supportsPassiveOption;
-});
+}());
 
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
