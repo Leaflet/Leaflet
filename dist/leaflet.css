@@ -143,6 +143,13 @@
 .leaflet-left {
 	left: 0;
 	}
+.leaflet-center {
+	width: 100%;
+	}
+.leaflet-center.leaflet-top,
+.leaflet-center.leaflet-bottom {
+	text-align: center;
+	}
 .leaflet-control {
 	float: left;
 	clear: both;
@@ -162,7 +169,12 @@
 .leaflet-right .leaflet-control {
 	margin-right: 10px;
 	}
-
+.leaflet-center .leaflet-control {
+	display: inline-block;
+	margin: inherit auto;
+	text-align: initial;
+	float: none;
+	}
 
 /* zoom and fade animations */
 
