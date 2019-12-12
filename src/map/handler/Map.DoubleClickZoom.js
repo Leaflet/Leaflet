@@ -29,10 +29,10 @@ export var DoubleClickZoom = Handler.extend({
 
 	_onDoubleClick: function (e) {
 		var map = this._map,
-			oldZoom = map.getZoom(),
-			zoomDelta = map.options.zoomDelta,
-		    delta = any3d ? zoomDelta : Math.max(1, zoomDelta),
-		    zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
+		oldZoom = map.getZoom(),
+		zoomDelta = map.options.zoomDelta,
+		delta = any3d ? zoomDelta : Math.max(1, zoomDelta),
+		zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 
 		if (map.options.doubleClickZoom === 'center') {
 			map.setZoom(zoom);
