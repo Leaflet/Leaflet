@@ -1204,6 +1204,18 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mwasil/Leaflet.Rainviewer">Leaflet.Rainviewer
+			</a>
+		</td>
+		<td>
+			Plugin for RainViewer radar data API <a href="https://mwasil.github.io/Leaflet.Rainviewer/demo/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
+		</td>
+	</tr>
 </table>
 
 
