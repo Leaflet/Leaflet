@@ -2307,7 +2307,6 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/scripter-co">Nathan Mahdavi</a>
 		</td>
 	</tr>
-
 	<tr>
 		<td>
 			<a href="https://github.com/tkrajina/leaflet-editable-polyline">Leaflet.Editable.Polyline</a>
@@ -2438,7 +2437,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/manleyjster">Justin Manley</a>
 		</td>
 	</tr>
-        <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/kklimczak/Leaflet.Pin">Leaflet.Pin</a>
 		</td><td>
@@ -2447,7 +2446,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/kklimczak">Konrad Klimczak</a>
 		</td>
 	</tr>
-        <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/tcoupin/leaflet-paintpolygon">L.Control.PaintPolygon</a>
 		</td><td>
@@ -2463,6 +2462,15 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			Extends Leaflet.FreeDraw and gives extended features like Undo-Redo, deleting markers,dynamic area calculation of polygons ,various hooks/events and in-build control bars, etc.
 		</td><td>
 			<a href="https://github.com/sagarpreet-chadha">Sagarpreet Chadha</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Lemaf/leaflet-polyline-segment-edit">Leaflet.SegmentEdit</a>
+		</td><td>
+			An extension to Leaflet.draw to allow editing large polylines one chunk at the time.
+		</td><td>
+			<a href="https://github.com/Lemaf">Lemaf</a>
 		</td>
 	</tr>
 </table>
