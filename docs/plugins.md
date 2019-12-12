@@ -13,7 +13,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 <div id="toc" class="clearfix">
 	<div class="toc-col">
 		<h4>Tile &amp; image layers</h4>
-
 		<ul>
 			<li> <a href='#basemap-providers'>Basemap providers</a></li>
 			<li> <a href='#basemap-formats'>Basemap formats</a></li>
@@ -22,9 +21,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li> <a href='#tile-load'>Tile load</a></li>
 			<li> <a href='#vector-tiles'>Vector tiles</a></li>
 		</ul>
-
 		<h4>Overlay data</h4>
-
 		<ul>
 			<li> <a href='#overlay-data-formats'>Overlay data formats</a></li>
 			<li> <a href='#dynamiccustom-data-loading'>Dynamic data loading</a></li>
@@ -33,7 +30,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</ul>
 	</div>
 	<div class="toc-col">
-
 		<h4>Overlay Display</h4>
 		<ul>
 			<li><a href="#markers--renderers">Markers &amp; renderers</a></li>
@@ -82,7 +78,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<hr>
 		<a href="#develop-your-own">Develop your own</a>
 	</div>
-
 </div>
 
 
@@ -3638,7 +3633,6 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
-
 	<tr>
 	        <td>
 	            <a href="https://github.com/MazeMap/Leaflet.VisualClick">Leaflet.VisualClick</a>
@@ -3694,13 +3688,6 @@ These plugins extend Leaflet event handling.
 
 
 
-
-
-
-
-
-
-
 ### User interface
 
 Buttons, sliders, toolbars, sidebars, and panels.
@@ -3744,7 +3731,6 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td><td>
 			<a href="https://github.com/ahalota/">Anika Halota</a>
 		</td>
-
 	</tr>
 	<tr>
 		<td>
@@ -4218,7 +4204,6 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
 		</td>
 	</tr>
-
 	<tr>
 		<td>
 			<a href="https://github.com/StephanGeorg/leaflet-routeboxer">Leaflet RouteBoxer</a>
@@ -4228,7 +4213,6 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.nearest.place/">Nearest!</a>
 		</td>
 	</tr>
-
 	<tr>
     		<td>
     			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
