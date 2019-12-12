@@ -2217,7 +2217,7 @@ Powerful multi-purpose libraries for data visualization.
 		<td>
 			<a href="https://github.com/react-map/leaflet.migrationLayer">leaflet.migrationLayer</a>
 		</td><td>
-			leafet.migrationLayer is used to show migration data such as population, flight, vehicle, traffic and so on. Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
+			leaflet.migrationLayer is used to show migration data such as population, flight, vehicle, traffic and so on. Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
 		</td><td>
 			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
@@ -2921,7 +2921,7 @@ The following plugins enhance or extend `L.Control.Layers`.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/bambrikii/leaflet-layer-tree-plugin">Leafet.LayerTreePlugin</a>
+			<a href="https://github.com/bambrikii/leaflet-layer-tree-plugin">Leaflet.LayerTreePlugin</a>
 		</td><td>
 			Leaflet control allows to switch layers on and off, display them in a tree-like way (<a href="http://rawgit.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm">demo</a>).
 		</td><td>

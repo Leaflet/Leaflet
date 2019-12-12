@@ -16,7 +16,7 @@ import * as Util from '../../core/Util';
  * CRS not defined by default, take a look at the
  * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
  *
- * Note that the CRS instances do not inherit from Leafet's `Class` object,
+ * Note that the CRS instances do not inherit from Leaflet's `Class` object,
  * and can't be instantiated. Also, new classes can't inherit from them,
  * and methods can't be added to them with the `include` function.
  */

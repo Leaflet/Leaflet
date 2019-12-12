@@ -15,7 +15,7 @@
  * The inverse of `project`. Projects a 2D point into a geographical location.
  * Only accepts actual `L.Point` instances, not arrays.
 
- * Note that the projection instances do not inherit from Leafet's `Class` object,
+ * Note that the projection instances do not inherit from Leaflet's `Class` object,
  * and can't be instantiated. Also, new classes can't inherit from them,
  * and methods can't be added to them with the `include` function.
 

@@ -12,7 +12,7 @@ Rejoice, everyone &mdash; after 4.5 months of development with [26 contributors 
 
 As always, you can find CDN links and downloads for the new release on the [download page](../../../download.html).
 
-The huge detailed list of changes is documented in the [changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md). Be sure to read the "Breaking Changes" part of it before upgrading to avoid any issues! The [API reference](../../../reference.html) was updated to accomodate all the changes too.
+The huge detailed list of changes is documented in the [changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md). Be sure to read the "Breaking Changes" part of it before upgrading to avoid any issues! The [API reference](../../../reference.html) was updated to accommodate all the changes too.
 
 In other news, [Leaflet repository](https://github.com/Leaflet/Leaflet) has moved to [its own GitHub organization](https://github.com/Leaflet), along with the two of the most important plugins &mdash; [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) and [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw). As some of you have noticed, this is one of the clues to a really nice upcoming announcement about Leaflet future &mdash; stay tuned. :)
 

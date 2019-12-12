@@ -16771,7 +16771,7 @@ bounds = L.latLngBounds(corner1, corner2);
 ]);
 </code></pre>
 <p>Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners <em>outside</em> the [-180, 180] degrees longitude range.
-Note that <a href="#latlngbounds"><code>LatLngBounds</code></a> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that <a href="#latlngbounds"><code>LatLngBounds</code></a> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -16960,7 +16960,7 @@ Negative values will retract the bounds.</p>
 <pre><code class="lang-js">map.panBy([200, 300]);
 map.panBy(L.point(200, 300));
 </code></pre>
-<p>Note that <code>Point</code> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+<p>Note that <code>Point</code> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -17162,7 +17162,7 @@ bounds = L.bounds(p1, p2);
 <p>All Leaflet methods that accept <a href="#bounds"><code>Bounds</code></a> objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
 <pre><code class="lang-js">otherBounds.intersects([[10, 10], [40, 60]]);
 </code></pre>
-<p>Note that <code>Bounds</code> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+<p>Note that <code>Bounds</code> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -21443,7 +21443,7 @@ Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not a
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location.
 Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.
-Note that the projection instances do not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that the projection instances do not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 and can&#39;t be instantiated. Also, new classes can&#39;t inherit from them,
 and methods can&#39;t be added to them with the <code>include</code> function.</p>
 </td>
@@ -21696,7 +21696,7 @@ coordinates in other units for <a href="https://en.wikipedia.org/wiki/Web_Map_Se
 Leaflet defines the most usual CRSs by default. If you want to use a
 CRS not defined by default, take a look at the
 <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.
-Note that the CRS instances do not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that the CRS instances do not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 and can&#39;t be instantiated. Also, new classes can&#39;t inherit from them,
 and methods can&#39;t be added to them with the <code>include</code> function.</td>
 	</tr>
@@ -22381,17 +22381,17 @@ event parent.</td>
 	<tr id='mouseevent-latlng'>
 		<td><code><b>latlng</b>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td>The geographical point where the mouse event occured.</td>
+		<td>The geographical point where the mouse event occurred.</td>
 	</tr>
 	<tr id='mouseevent-layerpoint'>
 		<td><code><b>layerPoint</b>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map layer.</td>
 	</tr>
 	<tr id='mouseevent-containerpoint'>
 		<td><code><b>containerPoint</b>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map сontainer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.</td>
 	</tr>
 	<tr id='mouseevent-originalevent'>
 		<td><code><b>originalEvent</b>
