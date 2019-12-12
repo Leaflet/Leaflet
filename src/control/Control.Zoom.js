@@ -69,14 +69,16 @@ export var Zoom = Control.extend({
 	},
 
 	_zoomIn: function (e) {
-		var delta = any3d ? this._map.options.zoomDelta : 1;
+		var zoomDelta = this._map.options.zoomDelta;
+		var delta = any3d ? zoomDelta : Math.max(1, zoomDelta);
 		if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
 			this._map.zoomIn(delta * (e.shiftKey ? 3 : 1));
 		}
 	},
 
 	_zoomOut: function (e) {
-		var delta = any3d ? this._map.options.zoomDelta : 1;
+		var zoomDelta = this._map.options.zoomDelta;
+		var delta = any3d ? zoomDelta : Math.max(1, zoomDelta);
 		if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
 			this._map.zoomOut(delta * (e.shiftKey ? 3 : 1));
 		}
