@@ -106,7 +106,7 @@ export var Path = Layer.extend({
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
 			if (this.options.stroke && style && style.hasOwnProperty('weight')) {
-				this._updateBounds();
+				this._project();
 			}
 		}
 		return this;
