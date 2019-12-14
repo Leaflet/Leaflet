@@ -226,12 +226,12 @@ Ready-to-go basemaps, with little or no configuration at all.
     </tr>
 	<tr>
 		<td>
-			<a href="https://github.com/rzoller/Leaflet.TileLayer.Swiss">Leaflet.TileLayer.Swiss</a>
+			<a href="https://github.com/rkaravia/Leaflet.TileLayer.Swiss">Leaflet.TileLayer.Swiss</a>
 		</td><td>
-			Displays national maps of Switzerland using WMTS services of swisstopo.
-			<a href="https://rzoller.ch/Leaflet.TileLayer.Swiss/examples/basic.html">Demo</a>.
+			Displays national maps of Switzerland using map tiles from Swisstopo.
+			<a href="https://leaflet-tilelayer-swiss.karavia.ch/">Demo</a>.
 		</td><td>
-			<a href="https://github.com/rzoller">Roman Zoller</a>
+			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
 </table>
