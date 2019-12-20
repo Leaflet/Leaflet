@@ -1378,6 +1378,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/rowanwins/Leaflet.SvgShapeMarkers">Leaflet.SvgShapeMarkers</a>
+		</td><td>
+			Adds support for additional SVG marker types such as triangles, diamonds and squares.
+		</td><td>
+			<a href="https://github.com/rowanwins/">Rowan Winsemius</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/teastman/Leaflet.pattern">Leaflet.pattern</a>
 		</td><td>
 			Add support for pattern fills on Paths.
@@ -1412,6 +1421,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="http://wiki.openstreetmap.org/wiki/Geojson_CSS">Geojson CSS</a> implementation for Leaflet.
 		</td><td>
 			<a href="https://github.com/albburtsev/">Alexander Burtsev</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rowanwins/leaflet-simplestyle">leaflet-simplestyle</a>
+		</td><td>
+			Extends L.geoJSON to support the <a href="https://github.com/mapbox/simplestyle-spec">simple style</a> spec.
+		</td><td>
+			<a href="https://github.com/rowanwins/">Rowan Winsemius</a>
 		</td>
 	</tr>
 	<tr>
