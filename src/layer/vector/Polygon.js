@@ -131,14 +131,18 @@ export var Polygon = Polyline.extend({
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
 			for (const lyr in this._eventParents) {
-				this._eventParents[lyr].closeTooltip();
+				if (this._eventParents[lyr].getTooltip()) {
+					this._eventParents[lyr].closeTooltip();
+				}
 			}
 			return;
 		}
 
 		for (const lyr in this._eventParents) {
-			if (!this._eventParents[lyr].isTooltipOpen()) {
-				this._eventParents[lyr].openTooltip();
+			if (this._eventParents[lyr].getTooltip()) {
+				if (!this._eventParents[lyr].isTooltipOpen()) {
+					this._eventParents[lyr].openTooltip();
+				}
 			}
 		}
 		if (this.options.noClip) {
