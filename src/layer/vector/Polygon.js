@@ -138,10 +138,10 @@ export var Polygon = Polyline.extend({
 			return;
 		}
 
-		for (var lyr in this._eventParents) {
-			if (this._eventParents[lyr].getTooltip()) {
-				if (!this._eventParents[lyr].isTooltipOpen()) {
-					this._eventParents[lyr].openTooltip();
+		for (var lyr2 in this._eventParents) {
+			if (this._eventParents[lyr2].getTooltip()) {
+				if (!this._eventParents[lyr2].isTooltipOpen()) {
+					this._eventParents[lyr2].openTooltip();
 				}
 			}
 		}
