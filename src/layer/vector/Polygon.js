@@ -130,7 +130,7 @@ export var Polygon = Polyline.extend({
 
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
-			for (const lyr in this._eventParents) {
+			for (var lyr in this._eventParents) {
 				if (this._eventParents[lyr].getTooltip()) {
 					this._eventParents[lyr].closeTooltip();
 				}
@@ -138,7 +138,7 @@ export var Polygon = Polyline.extend({
 			return;
 		}
 
-		for (const lyr in this._eventParents) {
+		for (var lyr in this._eventParents) {
 			if (this._eventParents[lyr].getTooltip()) {
 				if (!this._eventParents[lyr].isTooltipOpen()) {
 					this._eventParents[lyr].openTooltip();
