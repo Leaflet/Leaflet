@@ -72,7 +72,7 @@ describe("Map", function () {
 
 		it("does not throw if removed during animation", function () {
 			var container = document.createElement('div'),
-			    map = new L.Map(container).setView([0, 0], 1);
+			    map = new L.Map(container).setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
 
 			// Force creation of animation proxy,
 			// otherwise browser checks disable it
