@@ -4382,6 +4382,18 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/louh">Lou Huang</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://sjaakpriester.nl/software/leaflet-search">Leaflet-search</a>
+		</td>
+		<td>
+			A Search Control with autocomplete/suggest capabilities. Supports Nominatim, GeoNames, Here, TomTom, and
+			Kadaster (Netherlands).
+		</td>
+		<td>
+			<a href="https://sjaakpriester.nl">Sjaak Priester</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -4795,6 +4807,15 @@ The following plugins integrate Leaflet into third party services or websites.
 		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
 		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+	</td>
+  </tr>
+  <tr>
+	<td>
+		<a href="https://sjaakpriester.nl/software/locator">Yii2-locator</a>
+	</td><td>
+		Leaflet widget for <a href="https://www.yiiframework.com/">Yii2 PHP Framework</a>.
+	  </td><td>
+		<a href="https://sjaakpriester.nl">Sjaak Priester</a>
 	</td>
   </tr>
 </table>
