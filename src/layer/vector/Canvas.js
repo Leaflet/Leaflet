@@ -406,7 +406,7 @@ export var Canvas = Renderer.extend({
 		}
 
 		this._mouseHoverThrottled = true;
-		setTimeout(L.bind(function () {
+		setTimeout(Util.bind(function () {
 			this._mouseHoverThrottled = false;
 		}, this), 32);
 	},
