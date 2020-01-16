@@ -1,0 +1,9 @@
+---
+layout: v2
+---
+
+<h2>Redirecting...</h2>
+<a href="{{ page.redirect_to }}">Click here if you are not redirected.</a>
+<script>
+location = '{{ page.redirect_to }}' + (location.hash || '');
+</script>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../css/screen.css" />
+	<script src="../leaflet-include.js"></script>
+	<script>
+	var map,
+		mapDiv,
+		osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+
+	var recreateMap = function(){
+		// destroy previous map and div
+
+		if(map) map.remove();	// This will destroy all DOM childs from layers and controls
+		if(mapDiv) mapDiv.parentNode.removeChild(mapDiv); // This will destroy the map div
+
+		// create new map div
+		var randomDivId = 'mapId' + new Date().getTime();
+		mapDiv = document.createElement('div');
+		mapDiv.id = randomDivId;
+		mapDiv.style.height = '200px';
+		mapDiv.style.width = '200px';
+		document.getElementsByTagName('body')[0].appendChild(mapDiv);
+		// attach map to div
+		map = L.map(randomDivId).setView([51.505, -0.09], 13);
+		map.addLayer(osm);
+	};
+
+	var interval = null;
+	function start(){
+		interval = window.setInterval(recreateMap, 200);
+	}
+
+	function stop() {
+		window.clearInterval(interval);
+	}
+
+	</script>
+</head>
+<body>
+
+This page will destroy and recreate a map div lots of times. Developer tools shall not display a memory leak.
+
+<div>
+<button onclick='recreateMap();'>Once</button>
+<button onclick='start();'>Start</button>
+<button onclick='stop();'>Stop</button>
+</div>
+
+</body>
+</html>

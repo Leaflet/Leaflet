@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<button id="populate">Populate with 10 markers</button>
+
+	<script>
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			latlng = new L.LatLng(50.5, 30.51);
+
+		var map = new L.Map('map');
+		map.addLayer(osm);
+
+		var	bounds = new L.LatLngBounds(
+			new L.LatLng(40.71222,-74.22655),
+			new L.LatLng(40.77394,-74.12544));
+
+		map.fitBounds(bounds);
+
+		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
+			opacity: 0.5,
+			interactive: true,
+			attribution: '&copy; A.B.B Corp.'
+		});
+		map.addLayer(overlay);
+
+		overlay.on('dblclick',function (e) {
+			console.log('Double click on image.');
+		});
+
+	</script>
+</body>
+</html>

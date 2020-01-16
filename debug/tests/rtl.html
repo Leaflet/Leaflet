@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+	<style>
+	body {
+		direction: rtl;
+	}
+</style>
+</head>
+<body>
+
+	<p>Click the map to place a popup at the mouse location</p>
+	<div id="map"></div>
+
+	<script>
+
+		var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		});
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+		map.on('click', function(e) {
+			L.popup().setLatLng(e.latlng).setContent('Hello').openOn(map);
+		});
+	</script>
+</body>
+</html>

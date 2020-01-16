@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<button id="foo">Click to add layer, then zoom out or in</button>
+
+	<script>
+
+	var map = new L.Map('map', { center: new L.LatLng(45.50144, -122.67599), zoom: 4 });
+
+	var demoUrl='http://server.arcgisonline.com/ArcGIS/rest/services/Demographics/USA_Average_Household_Size/MapServer/tile/{z}/{y}/{x}';
+	var demoMap = new L.TileLayer(demoUrl, { maxZoom: 19, attribution: 'Tiles: &copy; Esri' });
+
+	map.addLayer(demoMap);
+
+	document.getElementById('foo').addEventListener('click', function() {
+		var topoUrl='http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
+	var topoMap = new L.TileLayer(topoUrl, { maxZoom: 19, attribution: 'Tiles: &copy; Esri' });
+	map.addLayer(topoMap);
+	topoMap.bringToBack();
+	});
+	</script>
+</body>
+</html>

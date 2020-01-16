@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+
+	<script>
+		// Trick Leaflet into believing we have a touchscreen (for Chrome)
+		if (window.Touch) { window.ontouchstart = function(){} };
+	</script>
+
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<script src="../leaflet-include.js"></script>
+
+	<script src="../../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+	<meta charset="utf-8">
+	<title>Leaflet test for pinch-zoom-without-bounce</title>
+	<style>
+		#map {
+			position:absolute;
+			top: 50px;
+			bottom: 0;
+			left:0;
+			right:0;
+		}
+		body {margin:0; padding: 0}
+	</style>
+</head>
+<body>
+
+	This is an automated test for <a href='https://github.com/Leaflet/Leaflet/issues/3530'>#3530</a>.
+
+	<div>
+		<button onclick='resetMap()'>reset</button>
+		<button onclick='pinchAndPanL()' >⌐¬</button>
+		<button onclick='pinchAndPanV()' >∧</button>
+		<button onclick='pinchAndPanII()'>||</button>
+	</div>
+
+  <div id='map'></div>
+
+
+  <script>
+
+	var myCenter = new L.LatLng(63.41, 10.41);
+	var map = new L.Map('map', {
+		center: myCenter,
+		zoom: 15,
+		minZoom: 1,
+// 		maxZoom: 16,
+		bounceAtZoomLimits: false
+	});
+
+	//In any map, set minZoom and/or maxZoom, plus bounceAtZoomLimits to false.
+
+	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+	}).addTo(map);
+
+	var marker = L.marker(myCenter);
+	map.addLayer(marker);
+
+	var marker2 = L.marker( map.containerPointToLatLng([200, 50]) ).addTo(map);
+
+
+	console.log('marker 2 is at: ', map.containerPointToLatLng([200, 50]) );
+
+//     map.on('move', function(ev){
+// 		console.log('map move event A ', map._lastCenter, map._zoom, map._pixelOrigin);
+// 		console.log('map move event B ', map.getCenter());
+//     });
+
+
+// 	var hand = new Hand({timing: 'minimal'});
+	var hand = new Hand({timing: 'frame'});
+	var f1 = hand.growFinger('touch');
+	var f2 = hand.growFinger('touch');
+
+	function resetMap() {
+		map.setView(myCenter, 15);
+	}
+
+
+	function pinchAndPanL() {
+		hand.sync(1000);
+		f1.wait(200).moveTo(150, 300, 0)
+			.down()
+			.moveBy( -50, 0, 1500)
+// 			.moveBy(  -1, 0, 1500)
+			.moveBy( -50, 0, 1500)
+			.moveBy(0, 100, 1500)
+			.wait(1500)
+			.up();
+		f2.wait(200).moveTo(250, 300, 0)
+			.down()
+			.moveBy( 50, 0, 1500)
+// 			.moveBy(  1, 0, 1500)
+			.moveBy( 50, 0, 1500)
+			.moveBy(0, 100, 1500)
+			.wait(1500)
+			.up();
+	};
+
+	function pinchAndPanV() {
+		hand.sync(1000);
+
+		var center =
+
+		f1.wait(200).moveTo(175, 100, 0)
+			.down()
+			.moveBy(-100, 300, 500)
+			.wait(2500)
+			.up();
+		f2.wait(200).moveTo(225, 100, 0)
+			.down()
+			.moveBy( 100, 300, 500)
+			.wait(2500)
+			.up();
+	};
+
+	function pinchAndPanII() {
+		hand.sync(5);
+		f1.wait(200).moveTo(175, 100, 0)
+			.down()
+			.moveBy(0, 300, 5000)
+			.wait(1500)
+			.up();
+		f2.wait(200).moveTo(225, 100, 0)
+			.down()
+			.moveBy(0, 300, 5000)
+			.wait(1500)
+			.up();
+	};
+
+
+
+
+	map.on('mousedown mouseup zoomend', function(ev){
+// 		console.log('L: ', performance.now(), JSON.stringify(ev.originalEvent));
+		console.log('L: ', performance.now(), ev.type);
+	});
+
+// 	L.DomEvent.on(map._container, 'touchstart touchend touchmove', function(ev){
+// 		console.log('T: ', performance.now(), ev.type, ev.touches.length, ev.changedTouches.length, ev);
+// 	});
+
+
+// 	pinchAndPanL();
+	pinchAndPanV();
+// 	pinchAndPanII();
+
+	</script>
+</body>
+</html>

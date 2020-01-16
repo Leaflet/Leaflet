@@ -1,51 +1,49 @@
+import {LatLng} from '../LatLng';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
 
-L.Projection.Mercator = {
-	MAX_LATITUDE: 85.0840591556,
+/*
+ * @namespace Projection
+ * @projection L.Projection.Mercator
+ *
+ * Elliptical Mercator projection — more complex than Spherical Mercator. Assumes that Earth is an ellipsoid. Used by the EPSG:3395 CRS.
+ */
 
-	R_MINOR: 6356752.3142,
-	R_MAJOR: 6378137,
+export var Mercator = {
+	R: 6378137,
+	R_MINOR: 6356752.314245179,
 
-	project: function (latlng) { // (LatLng) -> Point
-		var d = L.LatLng.DEG_TO_RAD,
-			max = this.MAX_LATITUDE,
-			lat = Math.max(Math.min(max, latlng.lat), -max),
-			r = this.R_MAJOR,
-			r2 = this.R_MINOR,
-			x = latlng.lng * d * r,
-			y = lat * d,
-			tmp = r2 / r,
-			eccent = Math.sqrt(1.0 - tmp * tmp),
-			con = eccent * Math.sin(y);
+	bounds: new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
-		con = Math.pow((1 - con) / (1 + con), eccent * 0.5);
+	project: function (latlng) {
+		var d = Math.PI / 180,
+		    r = this.R,
+		    y = latlng.lat * d,
+		    tmp = this.R_MINOR / r,
+		    e = Math.sqrt(1 - tmp * tmp),
+		    con = e * Math.sin(y);
 
-		var ts = Math.tan(0.5 * ((Math.PI * 0.5) - y)) / con;
-		y = -r2 * Math.log(ts);
+		var ts = Math.tan(Math.PI / 4 - y / 2) / Math.pow((1 - con) / (1 + con), e / 2);
+		y = -r * Math.log(Math.max(ts, 1E-10));
 
-		return new L.Point(x, y);
+		return new Point(latlng.lng * d * r, y);
 	},
 
-	unproject: function (point, unbounded) { // (Point, Boolean) -> LatLng
-		var d = L.LatLng.RAD_TO_DEG,
-			r = this.R_MAJOR,
-			r2 = this.R_MINOR,
-			lng = point.x * d / r,
-			tmp = r2 / r,
-			eccent = Math.sqrt(1 - (tmp * tmp)),
-			ts = Math.exp(- point.y / r2),
-			phi = (Math.PI / 2) - 2 * Math.atan(ts),
-			numIter = 15,
-			tol = 1e-7,
-			i = numIter,
-			dphi = 0.1,
-			con;
+	unproject: function (point) {
+		var d = 180 / Math.PI,
+		    r = this.R,
+		    tmp = this.R_MINOR / r,
+		    e = Math.sqrt(1 - tmp * tmp),
+		    ts = Math.exp(-point.y / r),
+		    phi = Math.PI / 2 - 2 * Math.atan(ts);
 
-		while ((Math.abs(dphi) > tol) && (--i > 0)) {
-			con = eccent * Math.sin(phi);
-			dphi = (Math.PI / 2) - 2 * Math.atan(ts * Math.pow((1.0 - con) / (1.0 + con), 0.5 * eccent)) - phi;
+		for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
+			con = e * Math.sin(phi);
+			con = Math.pow((1 - con) / (1 + con), e / 2);
+			dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, unbounded);
+		return new LatLng(phi * d, point.x * d / r);
 	}
 };

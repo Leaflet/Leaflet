@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script>
+
+	var map = L.map('map').setView( [50, 50], 10);
+	var marker = L.marker([50, 50], {draggable: true}).addTo(map);
+
+	setTimeout(function() {
+		map.removeLayer(marker);
+	}, 3000);
+
+	</script>
+</body>
+</html>

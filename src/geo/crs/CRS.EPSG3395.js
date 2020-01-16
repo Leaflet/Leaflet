@@ -1,14 +1,20 @@
+import {Earth} from './CRS.Earth';
+import {Mercator} from '../projection/Projection.Mercator';
+import {toTransformation} from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
 
-L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
+/*
+ * @namespace CRS
+ * @crs L.CRS.EPSG3395
+ *
+ * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
+ */
+export var EPSG3395 = Util.extend({}, Earth, {
 	code: 'EPSG:3395',
-
-	projection: L.Projection.Mercator,
+	projection: Mercator,
 
 	transformation: (function () {
-		var m = L.Projection.Mercator,
-			r = m.R_MAJOR,
-			r2 = m.R_MINOR;
-
-		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r2), 0.5);
+		var scale = 0.5 / (Math.PI * Mercator.R);
+		return toTransformation(scale, 0.5, -scale, 0.5);
 	}())
 });

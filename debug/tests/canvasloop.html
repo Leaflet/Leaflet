@@ -1,0 +1,38 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <link rel="stylesheet" href="../css/screen.css" />
+
+
+        <script src="../leaflet-include.js"></script>
+    </head>
+    <body>
+
+        <div id="map"></div>
+
+
+        <script>
+            //Init a map, and attempt a locate.
+            var map = L.map('map', {
+                center: [39.84, -96.591],
+                zoom: 4,
+                preferCanvas: true
+            }).locate();
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var vanillaLayer = new L.LayerGroup();
+            map.addLayer(vanillaLayer);
+
+            map.on('moveend',function(e) {
+                console.log('moveend fired.')
+            });
+
+            //For experiments using setRadius
+            var marker = L.circleMarker(map.getCenter(),{radius:30}).addTo(vanillaLayer);
+        </script>
+
+    </body>
+</html>

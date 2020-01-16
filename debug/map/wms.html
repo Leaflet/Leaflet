@@ -4,23 +4,23 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
 
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
 
-	<script type="text/javascript">
+	<script>
 		var map = new L.Map('map');
-	
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
-	
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+			osm2 = L.tileLayer(osmUrl, {attribution: osmAttrib});
+
 		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 			layers: 'nexrad-n0r-900913',
 			format: 'image/png',
@@ -30,8 +30,10 @@
 		});
 
 		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
-		
-		map.addLayer(cloudmade).addLayer(nexrad).fitBounds(bounds);
+
+		map.addLayer(osm).addLayer(nexrad).fitBounds(bounds);
+
+		L.control.layers({"CM": osm, "CM2": osm2}, {"NexRad": nexrad}).addTo(map);
 	</script>
 </body>
 </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <script src="../leaflet-include.js"></script>
+
+  <meta charset="utf-8">
+  <title>Leaflet test for event adding/firing/removing performance</title>
+</head>
+<body>
+  <script>
+
+  function benchmark(name, fn, setup) {
+    //warmup
+    for (var i = 0; i < 100; i++) {
+      if (setup) {
+        setup();
+      }
+      fn();
+    }
+
+    var t = 0;
+    for (var i = 0; i < 100; i++) {
+      if (setup) {
+        setup();
+      }
+      var t0 = performance.now();
+      fn();
+      t += performance.now() - t0;
+    }
+    console.log(name, (t / 100) + ' ms/run');
+  }
+
+  var fn = function (e) {called += e.count;},
+    fns = [],
+    called = 0;
+  for (var p = 0; p < 1000; p++) {
+    fns.push((function(p) { return function(e) { called += p;}; }));
+  }
+  benchmark('Adding same fn', function() {
+    var obj = new L.Evented();
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      obj.on('test', fn);
+    }
+  });
+
+  benchmark('Adding different fn', function() {
+    var obj = new L.Evented();
+    var fn = function () {};
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      obj.on('test', fns[p]);
+    }
+  });
+
+  var obj = new L.Evented();
+  var fn = function () {};
+  var t0 = performance.now();
+  for (var p = 0; p < 1000; p++) {
+    obj.on('test', (function(p) { return function() { var x = 2 + p; }})(p));
+  }
+  benchmark('Fire', function() {
+    for (var p = 0; p < 1000; p++) {
+      obj.fire('test');
+    }
+  });
+
+  benchmark('Off', function() {
+    var obj = new L.Evented();
+    var fn = function () {};
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      obj.on('test', fns[p]);
+    }
+  }, function() {
+    fns = [];
+    var obj = new L.Evented();
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      var fn = (function(p) { return function() { var x = 2 + p; }})(p);
+      fns.push(fn);
+      obj.on('test', fn);
+    }
+  });
+
+  </script>
+</body>
+</html>

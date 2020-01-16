@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+    <div id="map"></div>
+    <button id="populate">Populate with 10 markers</button>
+
+    <script>
+
+var map = L.map('map').setView([36.9, -95.4], 5);
+map.on('contextmenu', function (e) {
+    alert('The map has been right-clicked');
+});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+
+
+var exampleGeoJSON = {
+    type: 'Polygon',
+    coordinates: [
+        [
+            [-90.0, 35.0],
+            [-90.0, 45.0],
+            [-100.0, 45.0],
+            [-100.0, 35.0]
+        ]
+    ]
+};
+
+var geoJsonLayer = L.geoJson(exampleGeoJSON, {
+    onEachFeature: function (feature, layer) {
+        layer.on('contextmenu', function (e) {
+            alert('The GeoJSON layer has been clicked');
+        });
+    }
+}).addTo(map);
+
+var marker = L.marker([36, -95]).addTo(map);
+marker.bindPopup('Right-click me <br> to test contextmenu <br> event capture').openPopup();
+
+
+    </script>
+</body>
+</html>

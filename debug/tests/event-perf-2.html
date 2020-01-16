@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        /*
+
+            Can be used to profile performance of event system.
+            Start the test, start CPU profiler. Slowly move the
+            mouse around over the map for 20 seconds or so, stop
+            profiler and examine times for _on, _off and fire.
+
+        */
+        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+        var map = L.map('map')
+                .setView([50.5, 30.51], 15)
+                .addLayer(osm);
+
+        var markers = new L.FeatureGroup().addTo(map),
+            markerArr = [];
+
+        var clicks = 0;
+        markers.on('click', function(e) {
+            clicks++;
+        });
+
+        function getRandomLatLng(llbounds) {
+            var s = llbounds.getSouth(),
+                n = llbounds.getNorth(),
+                w = llbounds.getWest(),
+                e = llbounds.getEast();
+
+            return L.latLng(
+                s + (Math.random() * (n - s)),
+                w + (Math.random() * (e - w))
+            )
+        }
+
+        function shuffleMarkers() {
+            var marker;
+            if (markerArr.length > 2000) {
+                var i = Math.floor(Math.random() * markerArr.length);
+                marker = markerArr.splice(i, 1)[0];
+                markers.removeLayer(marker);
+            } else {
+                marker = L.marker(getRandomLatLng(map.getBounds()))
+                    .on('mouseover', function() {
+                        marker.setZIndexOffset(10000);
+                    })
+                    .on('mouseout', function() {
+                        marker.setZIndexOffset(0);
+                    })
+                    .addTo(markers);
+                markerArr.push(marker);
+            }
+        }
+
+        while (markerArr.length < 2000) {
+            shuffleMarkers();    
+        }
+
+        setInterval(shuffleMarkers, 20);
+    </script>
+</body>
+</html>

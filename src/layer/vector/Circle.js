@@ -1,94 +1,113 @@
+import {CircleMarker} from './CircleMarker';
+import {Path} from './Path';
+import * as Util from '../../core/Util';
+import {toLatLng} from '../../geo/LatLng';
+import {LatLngBounds} from '../../geo/LatLngBounds';
+import {Earth} from '../../geo/crs/CRS.Earth';
+
+
 /*
- * L.Circle is a circle overlay (with a certain radius in meters).
+ * @class Circle
+ * @aka L.Circle
+ * @inherits CircleMarker
+ *
+ * A class for drawing circle overlays on a map. Extends `CircleMarker`.
+ *
+ * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion).
+ *
+ * @example
+ *
+ * ```js
+ * L.circle([50.5, 30.5], {radius: 200}).addTo(map);
+ * ```
  */
 
-L.Circle = L.Path.extend({
-	initialize: function (latlng, radius, options) {
-		L.Path.prototype.initialize.call(this, options);
+export var Circle = CircleMarker.extend({
 
-		this._latlng = latlng;
-		this._mRadius = radius;
+	initialize: function (latlng, options, legacyOptions) {
+		if (typeof options === 'number') {
+			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
+			options = Util.extend({}, legacyOptions, {radius: options});
+		}
+		Util.setOptions(this, options);
+		this._latlng = toLatLng(latlng);
+
+		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
+
+		// @section
+		// @aka Circle options
+		// @option radius: Number; Radius of the circle, in meters.
+		this._mRadius = this.options.radius;
 	},
 
-	options: {
-		fill: true
-	},
-
-	setLatLng: function (latlng) {
-		this._latlng = latlng;
-		return this.redraw();
-	},
-
+	// @method setRadius(radius: Number): this
+	// Sets the radius of a circle. Units are in meters.
 	setRadius: function (radius) {
 		this._mRadius = radius;
 		return this.redraw();
 	},
 
-	projectLatlngs: function () {
-		var lngRadius = this._getLngRadius(),
-			latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius, true),
-			point2 = this._map.latLngToLayerPoint(latlng2);
-
-		this._point = this._map.latLngToLayerPoint(this._latlng);
-		this._radius = Math.max(Math.round(this._point.x - point2.x), 1);
-	},
-
-	getBounds: function () {
-		var map = this._map,
-			delta = this._radius * Math.cos(Math.PI / 4),
-			point = map.project(this._latlng),
-			swPoint = new L.Point(point.x - delta, point.y + delta),
-			nePoint = new L.Point(point.x + delta, point.y - delta),
-			zoom = map.getZoom(),
-			sw = map.unproject(swPoint, zoom, true),
-			ne = map.unproject(nePoint, zoom, true);
-
-		return new L.LatLngBounds(sw, ne);
-	},
-	
-	getLatLng: function () {
-		return this._latlng;
-	},
-
-	getPathString: function () {
-		var p = this._point,
-			r = this._radius;
-
-		if (this._checkIfEmpty()) {
-			return '';
-		}
-
-		if (L.Browser.svg) {
-			return "M" + p.x + "," + (p.y - r) +
-					"A" + r + "," + r + ",0,1,1," +
-					(p.x - 0.1) + "," + (p.y - r) + " z";
-		} else {
-			p._round();
-			r = Math.round(r);
-			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
-		}
-	},
-	
+	// @method getRadius(): Number
+	// Returns the current radius of a circle. Units are in meters.
 	getRadius: function () {
 		return this._mRadius;
 	},
 
-	_getLngRadius: function () {
-		var equatorLength = 40075017,
-			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
+	// @method getBounds(): LatLngBounds
+	// Returns the `LatLngBounds` of the path.
+	getBounds: function () {
+		var half = [this._radius, this._radiusY || this._radius];
 
-		return (this._mRadius / hLength) * 360;
+		return new LatLngBounds(
+			this._map.layerPointToLatLng(this._point.subtract(half)),
+			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	_checkIfEmpty: function () {
-		if (!this._map) {
-			return false;
-		}
-		var vp = this._map._pathViewport,
-			r = this._radius,
-			p = this._point;
+	setStyle: Path.prototype.setStyle,
 
-		return p.x - r > vp.max.x || p.y - r > vp.max.y ||
-			p.x + r < vp.min.x || p.y + r < vp.min.y;
+	_project: function () {
+
+		var lng = this._latlng.lng,
+		    lat = this._latlng.lat,
+		    map = this._map,
+		    crs = map.options.crs;
+
+		if (crs.distance === Earth.distance) {
+			var d = Math.PI / 180,
+			    latR = (this._mRadius / Earth.R) / d,
+			    top = map.project([lat + latR, lng]),
+			    bottom = map.project([lat - latR, lng]),
+			    p = top.add(bottom).divideBy(2),
+			    lat2 = map.unproject(p).lat,
+			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
+			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+
+			if (isNaN(lngR) || lngR === 0) {
+				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
+			}
+
+			this._point = p.subtract(map.getPixelOrigin());
+			this._radius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
+			this._radiusY = p.y - top.y;
+
+		} else {
+			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+
+			this._point = map.latLngToLayerPoint(this._latlng);
+			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+		}
+
+		this._updateBounds();
 	}
 });
+
+// @factory L.circle(latlng: LatLng, options?: Circle options)
+// Instantiates a circle object given a geographical point, and an options object
+// which contains the circle radius.
+// @alternative
+// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
+// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
+// Do not use in new applications or plugins.
+export function circle(latlng, options, legacyOptions) {
+	return new Circle(latlng, options, legacyOptions);
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script>
+		var map = L.map('map', {
+			center: [20, 20],
+			zoom: 3,
+			preferCanvas: true
+		});
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			minZoom: 1,
+			maxZoom: 17,
+			label: 'open street map'
+		}).addTo(map);
+		var points = [
+                        [0, 0],
+                        [0, 42],
+                        [42, 42],
+                        [0, 0]
+                ];
+                L.polygon([points, []], {dashArray: '5, 5'}).addTo(map);
+                L.circleMarker([42, 0], {color: 'red'}).addTo(map);
+	</script>
+
+</body>
+</html>

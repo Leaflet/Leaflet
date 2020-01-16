@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet tile debug</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    #outer {
+        position: absolute;
+        width: calc(2*256px + 600px);
+        height: calc(2*256px + 400px);
+        border: 10px solid rgba(0, 0, 255, 0.4);
+        background-color: transparent;
+    }
+    #middle, #map {
+        position: absolute;
+        margin: calc(266px - 10px);
+        width: 600px;
+        height: 400px;
+        border: 10px solid transparent;
+    }
+    #middle {
+        pointer-events: none;
+        z-index: 1000;
+        border-color: rgba(0, 255, 0, 0.4);
+    }
+    #map {
+        overflow: visible;
+    }
+    button {
+        width: 40px;
+        text-align: center;
+        margin-right: 5px;
+    }
+    .grid {
+        border: red 1px solid;
+        line-height: 256px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    #stats {
+        position: absolute;
+        z-index: 1000;
+        width: 300px;
+        right: 0;
+        top: 10px;
+        bottom: 0;
+    }
+    #zoomtable td {
+        height: 40px;
+    }
+    .diag {
+        margin-bottom: 20px;
+    }
+    tr:nth-child(odd) {
+        background-color: #eee;
+    }
+    </style>
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+    <div id="outer"></div>
+    <div id="middle"></div>
+    <div id="map"></div>
+
+    <div id="stats">
+        <div class="diag">
+            <div><button id="dc">DC</button>(flyTo)</div>
+            <div><button id="sf">SF</button>(setView)</div>
+            <div><button id="trd">TRD</button>(flyTo)</div>
+            <div><button id="lnd">LND</button>(fract. zoom)</div>
+            <div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+            <div><button id="mad">MAD</button>(fitBounds)</div>
+            <div><button id="nul">NUL</button>(image overlay)</div>
+            <div><button id="stop">stop</button></div>
+        </div>
+
+        <table id="zoomtable" class="diag">
+            <tr><td>on movestart</td><td id='movestart' width=230></td></tr>
+            <tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
+            <tr><td>on move</td><td id='move'></td></tr>
+            <tr><td>on moveend</td><td id='moveend'></td></tr>
+            <tr><td>on zoomend</td><td id='zoomend'></td></tr>
+            <tr><td>on grid load</td><td id='load'></td></tr>
+        </table>
+
+        <table>
+            <tr>
+                <th>event</th>
+                <th>Grid</th>
+                <th>Positron</th>
+            </tr>
+            <tr>
+                <td>tileloadstart</td>
+                <td id='grid-tileloadstart'></td>
+                <td id='positron-tileloadstart'></td>
+            </tr>
+            <tr>
+                <td>tileload</td>
+                <td id='grid-tileload'></td>
+                <td id='positron-tileload'></td>
+            </tr>
+            <tr>
+                <td>tileerror</td>
+                <td id='grid-tileerror'></td>
+                <td id='positron-tileerror'></td>
+            </tr>
+            <tr>
+                <td>tileunload</td>
+                <td id='grid-tileunload'></td>
+                <td id='positron-tileunload'></td>
+            </tr>
+            <tr>
+                <td>visible</td>
+                <td id='grid-visible'></td>
+                <td id='positron-visible'></td>
+            </tr>
+            <tr>
+                <td>grid load</td>
+                <td id='grid-load'></td>
+                <td id='positron-load'></td>
+            </tr>
+        </table>
+        <button id="reset">reset</button>
+    </div>
+
+    <script>
+
+        var kyiv = [50.5, 30.5],
+            lnd = [51.51, -0.12],
+            sf = [37.77, -122.42],
+            dc = [38.91, -77.04],
+            trd = [63.41, 10.41],
+            madBounds = [[40.70, -4.19], [40.12, -3.31]],
+            mad = [40.40, -3.7];
+
+        var map = L.map('map', {
+            // zoomSnap: 0,
+            // zoomAnimation: false,
+            fadeAnimation: false
+        }).setView(dc, 16);
+
+        var gridCounts = {},
+            positronCounts = {},
+            gridLoadData = {};
+
+        resetCounter();
+
+        var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        });
+
+        var grid = L.gridLayer({
+            attribution: 'Grid Layer',
+            tileSize: L.point(256, 256)
+        });
+
+        grid.createTile = function (coords) {
+            var tile = L.DomUtil.create('div', 'grid');
+            var indexStr = [coords.x, coords.y, coords.z].join(', ');
+            if (!(indexStr in gridLoadData)) {
+                gridLoadData[indexStr] = 0;
+            }
+            tile.innerHTML = ++gridLoadData[indexStr];
+
+            // double tile loading alert
+            // if (gridLoadData[indexStr] > 1) {
+                // alert(indexStr);
+            // }
+
+            // more tile loadings -> more red grid tile
+            tile.style.backgroundColor = 'rgba(255,0,0,' + (gridLoadData[indexStr] - 1) / 5 + ')';
+            return tile;
+        };
+
+        grid.on('tileload tileunload tileerror tileloadstart load', function(ev){
+            document.getElementById('grid-' + ev.type).innerHTML = ++gridCounts[ev.type];
+            document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;
+        });
+
+        positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
+            document.getElementById('positron-' + ev.type).innerHTML = ++positronCounts[ev.type];
+            document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+        });
+
+        map.addLayer(positron);
+        map.addLayer(grid);
+
+        var marker1 = L.marker(kyiv).addTo(map),
+            marker2 = L.marker(lnd).addTo(map),
+            marker3 = L.marker(dc).addTo(map),
+            marker4 = L.marker(sf).addTo(map),
+            marker5 = L.marker(trd).addTo(map),
+            marker6 = L.marker(mad).addTo(map);
+
+        var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
+
+        document.getElementById('dc').onclick   = function () { map.flyTo(dc,  7, {duration: 40}); };
+        document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 40, animate: true}); };
+        document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 40}); };
+        document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25, {duration: 40}); };
+        document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25, {duration: 40}); };
+        document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
+        document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10, {duration: 40}); };
+        document.getElementById('stop').onclick = function () { map.stop(); };
+
+        document.getElementById('reset').onclick = function () {
+            resetCounter();
+        }
+
+        function attachMoveEvent(name) {
+            map.on(name, function(){
+                document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
+            });
+        }
+
+        attachMoveEvent('movestart');
+        attachMoveEvent('zoomstart');
+        attachMoveEvent('move');
+        attachMoveEvent('moveend');
+        attachMoveEvent('zoomend');
+
+        positron.on('load', function(){
+            document.getElementById('load').innerHTML = map.getCenter() + ' z' + map.getZoom();
+        });
+
+        function resetCounter() {
+            var fields = ['tileload', 'tileerror', 'tileloadstart', 'tileunload', 'load', 'visible'];
+
+            for (var i = 0; i < fields.length; i++) {
+                gridCounts[fields[i]] = 0;
+                positronCounts[fields[i]] = 0;
+                document.getElementById('positron-' + fields[i]).innerHTML = 0;
+                document.getElementById('grid-' + fields[i]).innerHTML = 0;
+            }
+        };
+    </script>
+</body>
+</html>

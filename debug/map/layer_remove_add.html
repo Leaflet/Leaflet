@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+    <div id="map"></div>
+    <button id="removeAdd">Remove and Add Layer</button>
+
+    <script>
+        map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
+
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    		}).addTo(map);
+
+        L.DomUtil.get('removeAdd').onclick = function() {
+            map.removeLayer(osm);
+
+            setTimeout(function() {
+                map.addLayer(osm);
+            }, 1000);
+
+
+        };
+    </script>
+</body>
+</html>

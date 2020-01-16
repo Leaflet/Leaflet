@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var geojson = {
+			"type": "Polygon",
+			"coordinates": [[
+				[5.4931640625, 51.781435604431195],
+				[0.9008789062499999, 53.35710874569601],
+				[-2.30712890625, 51.795027225829145],
+				[2.8125, 49.109837790524416],
+				[5.4931640625, 51.781435604431195]
+			]]
+		};
+
+		var map = L.map('map').setView([50.5, 0], 5);
+
+		var OSM_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+		var OSM_BlackAndWhite = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		});
+
+		L.control.layers({
+			'OSM': OSM_Mapnik,
+			'OSM BW': OSM_BlackAndWhite
+		}, {
+			'Circle': L.circle([53, 4], 111111).addTo(map),
+			'Polygon': L.polygon([[48, -3], [50, -4], [52, 4]]),
+			'GeoJSON': L.geoJson(geojson),
+		}, {
+			collapsed: false
+		}).addTo(map);
+	</script>
+</body>
+</html>

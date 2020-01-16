@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Leaflet Spec Runner</title>
+	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
+	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css">
+</head>
+<body>
+	<div id="mocha"></div>
+	<script src="../node_modules/expect.js/index.js"></script>
+	<script src="../node_modules/mocha/mocha.js"></script>
+	<script src="../node_modules/happen/happen.js"></script>
+	<script src="../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+	<script src="../node_modules/sinon/pkg/sinon.js"></script>
+
+	<!-- source files -->
+	<script>
+		// Trick Leaflet into believing we have a touchscreen (for Chrome)
+		if (window.Touch) { window.ontouchstart = function(){} };
+	</script>
+<!-- 	<script src="../build/deps.js"></script> -->
+
+	<script src="../dist/leaflet-src.js"></script>
+
+	<script>
+		mocha.setup({
+			ui: 'bdd',
+			ignoreLeaks: true
+		});
+	</script>
+
+	<!-- spec files -->
+
+	<script src="suites/SpecHelper.js"></script>
+
+	<!-- /control -->
+	<script src="suites/control/ControlSpec.js"></script>
+	<script src="suites/control/Control.LayersSpec.js"></script>
+	<script src="suites/control/Control.ScaleSpec.js"></script>
+	<script src="suites/control/Control.AttributionSpec.js"></script>
+
+	<!-- /core -->
+	<script src="suites/core/UtilSpec.js"></script>
+	<script src="suites/core/ClassSpec.js"></script>
+	<script src="suites/core/EventsSpec.js"></script>
+
+	<!-- /geometry -->
+	<script src="suites/geometry/PointSpec.js"></script>
+	<script src="suites/geometry/BoundsSpec.js"></script>
+	<script src="suites/geometry/TransformationSpec.js"></script>
+	<script src="suites/geometry/LineUtilSpec.js"></script>
+	<script src="suites/geometry/PolyUtilSpec.js"></script>
+
+	<!-- /geo -->
+	<script src="suites/geo/LatLngSpec.js"></script>
+	<script src="suites/geo/LatLngBoundsSpec.js"></script>
+	<script src="suites/geo/ProjectionSpec.js"></script>
+
+	<!-- /dom -->
+	<script src="suites/dom/DomEventSpec.js"></script>
+	<script src="suites/dom/DomUtilSpec.js"></script>
+
+	<!-- /layer -->
+	<script src="suites/layer/FeatureGroupSpec.js"></script>
+	<script src="suites/layer/GeoJSONSpec.js"></script>
+	<script src="suites/layer/ImageOverlaySpec.js"></script>
+	<script src="suites/layer/LayerGroupSpec.js"></script>
+	<script src="suites/layer/PopupSpec.js"></script>
+	<script src="suites/layer/TooltipSpec.js"></script>
+
+	<!-- /layer/tile -->
+	<script src="suites/layer/tile/GridLayerSpec.js"></script>
+	<script src="suites/layer/tile/TileLayerSpec.js"></script>
+
+	<!-- /layer/marker/ -->
+	<script src="suites/layer/marker/MarkerSpec.js"></script>
+	<script src="suites/layer/marker/Marker.DragSpec.js"></script>
+	<script src="suites/layer/marker/Icon.DefaultSpec.js"></script>
+
+	<!-- /layer/vector/ -->
+	<script src="suites/layer/vector/CircleSpec.js"></script>
+	<script src="suites/layer/vector/CircleMarkerSpec.js"></script>
+	<script src="suites/layer/vector/PathSpec.js"></script>
+	<script src="suites/layer/vector/PolygonSpec.js"></script>
+	<script src="suites/layer/vector/PolylineSpec.js"></script>
+	<script src="suites/layer/vector/PolylineGeometrySpec.js"></script>
+	<script src="suites/layer/vector/CanvasSpec.js"></script>
+
+	<!-- /map -->
+	<script src="suites/map/MapSpec.js"></script>
+
+	<!-- /map/handler -->
+	<script src="suites/map/handler/Map.DragSpec.js"></script>
+	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
+	<script src="suites/map/handler/Map.KeyboardSpec.js"></script>
+
+	<!-- /geo/crs -->
+	<script src="suites/geo/CRSSpec.js"></script>
+
+	<script>
+		(window.mochaPhantomJS || window.mocha).run();
+	</script>
+</body>
+</html>

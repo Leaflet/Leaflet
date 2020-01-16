@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+	<style>
+	</style>
+</head>
+<body>
+
+	The opacity of the "toner" layer should pulse nicely, even when dragging/zooming the map around with new tiles.
+	<div id="map" class="map"></div>
+
+	<script>
+		var mapopts =  {
+			center: [35, -122],
+			zoom : 5
+		};
+
+		var map = L.map('map', mapopts);
+
+		var watercolorUrl = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg';
+		var watercolor = L.tileLayer(watercolorUrl, {maxZoom: 18, attribution: 'Map by Stamen, map data OpenStreetMap'}).addTo(map);
+
+		var tonerUrl = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
+		var toner = L.tileLayer(tonerUrl, {maxZoom: 18, attribution: ''}).addTo(map);
+
+		window.setInterval(function(){
+			// Sine function, phase shifts one radian every sec.
+			var opacity = 0.6 + 0.4 * Math.sin(Date.now() / 1000);
+			toner.setOpacity(opacity);
+		}, 200);
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+---
+root: "../../../"
+layout: v2
+post: true
+bodyclass: post-page
+---
+
+<p><a href="../../../blog.html">&larr; Back to the list of blog posts</a></p>
+
+<h2>{{ page.title }}</h2>
+
+<p class="post-meta">Posted on {{ page.date | date_to_long_string }} by <a href="{{ page.authorsite }}">{{ page.author }}</a></p>
+
+{{ content }}
+
+<div id="disqus_thread"></div>
+
+<script>
+	var disqus_shortname = 'leafletjs';
+//	var disqus_developer = 1;
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+

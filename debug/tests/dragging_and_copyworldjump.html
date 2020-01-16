@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Leaflet debug page</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script src="../leaflet-include.js"></script>
+	</head>
+	<body>
+		<p>
+			On the left Map dragging and worldCopyJump are enabled during initialisation.<br>
+			On the right Map worldCopyJump is enabled. Dragging is enabled by clicking the button.
+		</p>
+		<button id="foo">
+			Click to enable dragging on the right map, then dragging around and watch copying
+		</button><br>
+		<div id="map1" style="height: 300px;width: 400px; float:left;"></div>
+		<div id="map2" style="height: 300px;width: 400px; float:left; margin-left: 10px;"></div>
+		<div style="clear:both"></div>
+
+
+		<script>
+			function addLayerAndMarker(map) {
+				var layer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					maxZoom : 18
+				}).addTo(map);
+
+				var marker = L.marker([50.5, 30.5]).addTo(map);
+
+			}
+			var map1 = new L.Map('map1', {
+				center : new L.LatLng(45.50144, -122.67599),
+				zoom : 0,
+				dragging : true,
+				worldCopyJump : true
+			});
+			var map2 = new L.Map('map2', {
+				center : new L.LatLng(45.50144, -122.67599),
+				zoom : 0,
+				dragging : false,
+				worldCopyJump : true
+			});
+			document.getElementById("foo").addEventListener('click', function() {
+				map2.dragging.enable();
+			});
+
+			addLayerAndMarker(map1);
+			addLayerAndMarker(map2);
+
+		</script>
+	</body>
+</html>

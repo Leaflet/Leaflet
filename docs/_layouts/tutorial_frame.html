@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
+	<title>{{ title }}Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
+	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
+
+{% unless page.customMapContainer == "true" %}
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
+{% endunless %}
+	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
+</head>
+<body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
+
+{% unless page.customMapContainer == "true" %}<div id='map'></div>{% endunless %}
+
+{{ content }}
+
+</body>
+</html>

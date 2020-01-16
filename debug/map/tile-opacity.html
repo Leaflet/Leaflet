@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script>
+		var map = new L.Map('map');
+		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+			layers: 'nexrad-n0r-900913',
+			format: 'image/png',
+			transparent: true,
+			attribution: "Weather data &copy; 2011 IEM Nexrad",
+			opacity: 0.4
+		});
+
+		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
+
+		map.addLayer(nexrad).fitBounds(bounds);
+	</script>
+</body>
+</html>

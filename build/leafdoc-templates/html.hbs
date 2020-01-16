@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ title }}</title>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="../docs/docs/css/normalize.css" />
+	<link rel="stylesheet" href="../docs/docs/css/main.css" />
+	<link rel="stylesheet" href="../docs/docs/css/reference.css" />
+	<script src="../docs/docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="../docs/docs/highlight/styles/github-gist.css" />
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script>
+</head>
+<body class='api-page'>
+	<div class='container'>
+
+	<!-- CUT HERE FOR docs/reference-*.html -->
+
+	<h2>Leaflet API reference</h2>
+	<div id="toc" class="clearfix">
+		<div class="toc-col map-col">
+			<h4>Map</h4>
+			<ul>
+				<li><a href="#map-example">Usage example</a></li>
+				<li><a href="#map-factory">Creation</a></li>
+				<li><a href="#map-option">Options</a></li>
+				<li><a href="#map-event">Events</a></li>
+			</ul>
+			<h4>Map Methods</h4>
+			<ul>
+				<li><a href="#map-methods-for-modifying-map-state">Modifying map state</a></li>
+				<li><a href="#map-methods-for-getting-map-state">Getting map state</a></li>
+				<li><a href="#map-methods-for-layers-and-controls">Layers and controls</a></li>
+				<li><a href="#map-conversion-methods">Conversion methods</a></li>
+				<li><a href="#map-other-methods">Other methods</a></li>
+			</ul>
+			<h4>Map Misc</h4>
+			<ul>
+				<li><a href="#map-property">Properties</a></li>
+				<li><a href="#map-pane">Panes</a></li>
+			</ul>
+		</div>
+		<div class="toc-col">
+			<h4>UI Layers</h4>
+			<ul>
+				<li><a href="#marker">Marker</a></li>
+				<li><a href="#popup">Popup</a></li>
+				<li><a href="#tooltip">Tooltip</a></li>
+			</ul>
+			<h4>Raster Layers</h4>
+			<ul>
+				<li><a href="#tilelayer">TileLayer</a></li>
+				<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+				<li><a href="#imageoverlay">ImageOverlay</a></li>
+				<li><a href="#videooverlay">VideoOverlay</a></li>
+			</ul>
+			<h4>Vector Layers</h4>
+			<ul>
+				<li><a href="#path">Path</a></li>
+				<li><a href="#polyline">Polyline</a></li>
+				<li><a href="#polygon">Polygon</a></li>
+				<li><a href="#rectangle">Rectangle</a></li>
+				<li><a href="#circle">Circle</a></li>
+				<li><a href="#circlemarker">CircleMarker</a></li>
+				<li><a href="#svgoverlay">SVGOverlay</a></li>
+				<li><a href="#svg">SVG</a></li>
+				<li><a href="#canvas">Canvas</a></li>
+			</ul>
+		</div>
+		<div class="toc-col">
+			<h4>Other Layers</h4>
+			<ul>
+				<li><a href="#layergroup">LayerGroup</a></li>
+				<li><a href="#featuregroup">FeatureGroup</a></li>
+				<li><a href="#geojson">GeoJSON</a></li>
+				<li><a href="#gridlayer">GridLayer</a></li>
+			</ul>
+			<h4>Basic Types</h4>
+			<ul>
+				<li><a href="#latlng">LatLng</a></li>
+				<li><a href="#latlngbounds">LatLngBounds</a></li>
+				<li><a href="#point">Point</a></li>
+				<li><a href="#bounds">Bounds</a></li>
+				<li><a href="#icon">Icon</a></li>
+				<li><a href="#divicon">DivIcon</a></li>
+			</ul>
+			<h4>Controls</h4>
+			<ul>
+				<li><a href="#control-zoom">Zoom</a></li>
+				<li><a href="#control-attribution">Attribution</a></li>
+				<li><a href="#control-layers">Layers</a></li>
+				<li><a href="#control-scale">Scale</a></li>
+			</ul>
+		</div>
+		<div class="toc-col">
+<!-- 			<h4>Shared Methods</h4> -->
+<!-- 			<ul> -->
+<!-- 				<li><a href="#evented">Event</a></li> -->
+<!-- 				<li><a href="#layers">Layer</a></li> -->
+<!-- 				<li><a href="#popup">Popup</a></li> -->
+<!-- 			</ul> -->
+			<h4>Utility</h4>
+			<ul>
+				<li><a href="#browser">Browser</a></li>
+				<li><a href="#util">Util</a></li>
+				<li><a href="#transformation">Transformation</a></li>
+				<li><a href="#lineutil">LineUtil</a></li>
+				<li><a href="#polyutil">PolyUtil</a></li>
+			</ul>
+			<h4>DOM Utility</h4>
+			<ul>
+				<li><a href="#domevent">DomEvent</a></li>
+				<li><a href="#domutil">DomUtil</a></li>
+				<li><a href="#posanimation">PosAnimation</a></li>
+				<li><a href="#draggable">Draggable</a></li>
+			</ul>
+		</div>
+		<div class="toc-col last-col">
+			<h4>Base Classes</h4>
+			<ul>
+				<li><a href="#class">Class</a></li>
+				<li><a href="#evented">Evented</a></li>
+				<li><a href="#layer">Layer</a></li>
+				<li><a href="#interactive-layer">Interactive layer</a></li>
+				<li><a href="#control">Control</a></li>
+				<li><a href="#handler">Handler</a></li>
+				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
+				<li><a href="#projection">Projection</a></li>
+				<li><a href="#crs">CRS</a></li>
+				<li><a href="#renderer">Renderer</a></li>
+			</ul>
+
+			<h4>Misc</h4>
+			<ul>
+				<li><a href="#event-objects">Event objects</a></li>
+ 				<li><a href="#global-switches">global switches</a></li>
+				<li><a href="#noconflict">noConflict</a></li>
+				<li><a href="#version">version</a></li>
+			</ul>
+		</div>
+	</div>
+
+	{{{ body }}}
+
+	<!-- CUT HERE FOR docs/reference-*.html -->
+
+	</div>
+
+	<script src="../docs/docs/js/docs.js"></script>
+	<script src="../docs/docs/js/reference.js"></script>
+
+</body></html>

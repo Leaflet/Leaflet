@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width,initial-scale=1 maximum-scale=1.0 user-scalable=0">
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<div >
+		<form method="get">Click in field then scroll map (in up/left direction) to see shift of map tiles.
+			<fieldset><label for="textField">Name</label>:
+				<input id="textField" name="textField" type="text" value="">
+			</fieldset>
+		</form>
+		Bug tested to occur on: Safari on Mac (Tested in 5.1.7), iPad/iPhone 5.1.1., Android 4 Browser. Hack is in L.Browser.chrome and TileLayer._addTile
+
+</div>
+	<script>
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		//Disable the hack fix
+		L.Browser.chrome = true;
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+	</script>
+</body>
+</html>

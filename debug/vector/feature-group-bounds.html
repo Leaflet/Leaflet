@@ -4,7 +4,6 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
@@ -16,42 +15,38 @@
 	<button onclick="geojsonLayerBounds();">Show GeoJSON layer bounds</button>
 	<button onclick="featureGroupBounds();">Show feature group bounds</button>
 
-	<script type="text/javascript" src="geojson-sample.js"></script>
-	<script type="text/javascript">
+	<script src="geojson-sample.js"></script>
+	<script>
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			rectangle,
 			featureGroup;
 
 		var map = new L.Map('map', {
 			center: new L.LatLng(0.78, 102.37),
 			zoom: 7,
-			layers: [cloudmade]
+			layers: [osm]
 		});
 
-		var geojson = new L.GeoJSON();
+		var geojson = L.geoJson(geojsonSample, {
 
-		/* points are rendered as markers by default, but you can change this:
+			style: function (feature) {
+				return {color: feature.properties.color};
+			},
 
-		var geojson = new L.GeoJSON(null, {
-			pointToLayer: function(latlng) { return new L.CircleMarker(latlng); }
-		});
-		*/
+			onEachFeature: function (feature, layer) {
+				var popupText = 'geometry type: ' + feature.geometry.type;
 
-		geojson.on('featureparse', function(e) {
-			// you can style features depending on their properties, etc.
-			var popupText = 'geometry type: ' + e.geometryType;
+				if (feature.properties.color) {
+					popupText += '<br/>color: ' + feature.properties.color
+				}
 
-			if (e.layer.setStyle && e.properties && e.properties.color) {
-				e.layer.setStyle({color: e.properties.color});
-				popupText += '<br/>color: ' + e.properties.color;
+				layer.bindPopup(popupText);
 			}
-			e.layer.bindPopup(popupText);
 		});
 
-		geojson.addGeoJSON(geojsonSample);
 		geojson.addLayer(new L.Marker(new L.LatLng(2.745530718801952, 105.194091796875)))
 
 		var eye1 = new L.Marker(new L.LatLng(-0.7250783020332547, 101.8212890625));

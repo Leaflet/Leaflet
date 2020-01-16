@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+	<style>
+	#map {
+		width: 600px;
+		height: 400px;
+	}
+	button {
+		min-width: 3em;
+		text-align: center;
+	}
+	</style>
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<div style="position: absolute; left: 620px; top: 10px; z-index: 500">
+		<div><button id="dc">DC</button>(flyTo)</div>
+		<div><button id="sf">SF</button>(setView, 5 sec)</div>
+		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+		<div><button id="lnd">LND</button>(fract. zoom)</div>
+		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+		<div><button id="mad">MAD</button>(fitBounds)</div>
+		<div><button id="nul">NUL</button>(image overlay)</div>
+		<div><button id="stop">stop</button></div>
+		<table>
+		<tr><td>on movestart</td><td id='movestart'></td></tr>
+		<tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
+		<tr><td>on move</td><td id='move'></td></tr>
+		<tr><td>on moveend</td><td id='moveend'></td></tr>
+		<tr><td>on zoomend</td><td id='zoomend'></td></tr>
+		<tr><td>on grid load</td><td id='load'></td></tr>
+	</div>
+
+	<script>
+
+		var kyiv = [50.5, 30.5],
+			lnd = [51.51, -0.12],
+			sf = [37.77, -122.42],
+			dc = [38.91, -77.04],
+			trd = [63.41, 10.41],
+			madBounds = [[40.70, -4.19], [40.12, -3.31]],
+			mad = [40.40, -3.7];
+
+		var map = L.map('map', {
+            zoomSnap: 0.25
+        }).setView(dc, 14);
+
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+		}).addTo(map);
+
+		var path = new L.Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);
+
+		var marker1 = L.marker(kyiv).addTo(map),
+			marker2 = L.marker(lnd).addTo(map),
+			marker3 = L.marker(dc).addTo(map),
+			marker4 = L.marker(sf).addTo(map),
+			marker5 = L.marker(trd).addTo(map),
+			marker6 = L.marker(mad).addTo(map);
+
+		var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
+
+		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  4); };
+		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
+		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 20}); };
+		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
+		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
+		document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10); };
+		document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
+		document.getElementById('stop').onclick = function () { map.stop(); };
+
+		function logEvent(e) { console.log(e.type); }
+
+		function attachMoveEvent(name) {
+			map.on(name, function(){
+				document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
+			});
+		}
+
+		attachMoveEvent('movestart');
+		attachMoveEvent('zoomstart');
+		attachMoveEvent('move');
+		attachMoveEvent('moveend');
+		attachMoveEvent('zoomend');
+
+		positron.on('load', function(){
+			document.getElementById('load').innerHTML = map.getCenter() + ' z' + map.getZoom();
+		});
+
+	</script>
+</body>
+</html>
