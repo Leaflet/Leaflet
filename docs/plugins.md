@@ -370,6 +370,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 		</td><td>
 			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
 		</td>
+    </tr>
+    <tr>
+		<td>
+			<a href="https://github.com/lipatoff/leaflet-canvas-markers">Leaflet-canvas-markers</a>
+		</td><td>
+			Adding all images to the Canvas. And you can create a direction arrow just by pointing to the previous waypoint. See the <a href="https://lipatoff.github.io/leaflet-canvas-markers/">Live Demo</a> or watch <a href="https://www.npmjs.com/package/leaflet-canvas-markers">npm</a>
+		</td><td>
+			<a href="https://github.com/lipatoff">Dmitrii Lipatov</a>
+		</td>
 	</tr>
 </table>
 
