@@ -10,7 +10,9 @@ title: Video Overlay Tutorial
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/satellite-v9'
+		id: 'mapbox/satellite-v9',
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
