@@ -441,7 +441,7 @@ export var Map = Evented.extend({
 		return this.flyTo(target.center, target.zoom, options);
 	},
 
-	// @method setMaxBounds(bounds: Bounds): this
+	// @method setMaxBounds(bounds: LatLngBounds): this
 	// Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
