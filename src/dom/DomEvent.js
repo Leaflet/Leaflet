@@ -111,7 +111,7 @@ function addOne(obj, type, fn, context) {
 					filterClick(e, originalHandler);
 				};
 			}
-			obj.addEventListener(type, handler, false);
+			obj.addEventListener(type, handler, Browser.passiveEvents ? {passive: false} : false);
 		}
 
 	} else if ('attachEvent' in obj) {
