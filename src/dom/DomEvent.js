@@ -96,6 +96,9 @@ function addOne(obj, type, fn, context) {
 		if (type === 'mousewheel') {
 			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
 
+		} else if ((type === 'touchstart') || (type === 'touchend')) {
+			obj.addEventListener(type, handler, Browser.passiveEvents ? {passive: false} : false);
+
 		} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 			handler = function (e) {
 				e = e || window.event;
@@ -111,7 +114,7 @@ function addOne(obj, type, fn, context) {
 					filterClick(e, originalHandler);
 				};
 			}
-			obj.addEventListener(type, handler, Browser.passiveEvents ? {passive: false} : false);
+			obj.addEventListener(type, handler, false);
 		}
 
 	} else if ('attachEvent' in obj) {
