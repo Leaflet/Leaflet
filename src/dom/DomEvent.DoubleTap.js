@@ -9,6 +9,14 @@ var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'point
 var _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend';
 var _pre = '_leaflet_';
 
+function browserFiresNativeDblClick(e) {
+	// See https://github.com/w3c/pointerevents/issues/171
+	if (Browser.edge || Browser.safari) {
+		return e.pointerType === 'mouse'; // fire native dblclick for mouse
+	}
+	return true; // other browsers fire native dblclick for any pointer type
+}
+
 // inspired by Zepto touch code by Thomas Fuchs
 export function addDoubleTapListener(obj, handler, id) {
 	var last, touch,
@@ -19,7 +27,7 @@ export function addDoubleTapListener(obj, handler, id) {
 		var count;
 
 		if (Browser.pointer) {
-			if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
+			if (browserFiresNativeDblClick(e)) { return; }
 			count = _pointersCount;
 		} else {
 			count = e.touches.length;
@@ -38,7 +46,7 @@ export function addDoubleTapListener(obj, handler, id) {
 	function onTouchEnd(e) {
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
-				if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
+				if (browserFiresNativeDblClick(e)) { return; }
 				// work around .type being readonly with MSPointer* events
 				var newTouch = {},
 				    prop, i;
