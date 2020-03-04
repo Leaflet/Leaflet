@@ -106,12 +106,7 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);
 
 		} else {
-			if (type === 'click' && Browser.android) {
-				handler = function (e) {
-					filterClick(e, originalHandler);
-				};
-			}
-			obj.addEventListener(type, handler, false);
+			obj.addEventListener(type, originalHandler, false);
 		}
 
 	} else if ('attachEvent' in obj) {
@@ -284,27 +279,6 @@ export function isExternalTarget(el, e) {
 		return false;
 	}
 	return (related !== el);
-}
-
-var lastClick;
-
-// this is a horrible workaround for a bug in Android where a single touch triggers two click events
-function filterClick(e, handler) {
-	var timeStamp = (e.timeStamp || (e.originalEvent && e.originalEvent.timeStamp)),
-	    elapsed = lastClick && (timeStamp - lastClick);
-
-	// are they closer together than 500ms yet more than 100ms?
-	// Android typically triggers them ~300ms apart while multiple listeners
-	// on the same event should be triggered far faster;
-	// or check if click is simulated on the element, and if it is, reject any non-simulated events
-
-	if ((elapsed && elapsed > 100 && elapsed < 500) || (e.target._simulatedClick && !e._simulated)) {
-		stop(e);
-		return;
-	}
-	lastClick = timeStamp;
-
-	handler(e);
 }
 
 // @function addListener(…): this
