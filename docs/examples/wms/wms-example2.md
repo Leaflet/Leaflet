@@ -9,8 +9,8 @@ title: WMS example
 		zoom: 3
 	});
 
-	var wmsLayer = L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-		layers: 'nasa:bluemarble'
+	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		layers: 'SRTM30-Colored-Hillshade'
 	}).addTo(map);
 
 </script>

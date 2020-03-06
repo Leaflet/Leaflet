@@ -10,25 +10,25 @@ title: WMS example
 	});
 
 	var basemaps = {
-		Countries: L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-			layers: 'ne:ne_10m_admin_0_countries'
+		Topography: L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+			layers: 'TOPO-WMS'
 		}),
 
-		Boundaries: L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-			layers: 'ne:ne_10m_admin_0_boundary_lines_land'
+		Places: L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+			layers: 'OSM-Overlay-WMS'
 		}),
 
-		'Countries, then boundaries': L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-			layers: 'ne:ne_10m_admin_0_countries,ne:ne_10m_admin_0_boundary_lines_land'
+		'Topography, then places': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+			layers: 'TOPO-WMS,OSM-Overlay-WMS'
 		}),
 
-		'Boundaries, then countries': L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-			layers: 'ne:ne_10m_admin_0_boundary_lines_land,ne:ne_10m_admin_0_countries'
+		'Places, then topography': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+			layers: 'OSM-Overlay-WMS,TOPO-WMS'
 		})
 	};
 
 	L.control.layers(basemaps, {}, {collapsed: false}).addTo(map);
 
-	basemaps.Countries.addTo(map);
+	basemaps.Topography.addTo(map);
 
 </script>
