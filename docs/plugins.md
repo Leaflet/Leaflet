@@ -2123,7 +2123,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			High performance Javascript heatmap plugin using WebGL.
 
 		</td><td>
-			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
+			<a href="http://ursudio.com/webgl-heatmap-leaflet/">Benjamin J DeLong</a>
 		</td>
 	</tr>
 	<tr>
@@ -4701,7 +4701,7 @@ The following plugins integrate Leaflet into third party services or websites.
 			Interactive and flexible shortcode to create multiple maps in posts and pages,
 			and to add multiple markers on those maps.
 		</td><td>
-			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
+			<a href="https://bozdoz.com/projects/leaflet-map">Benjamin J DeLong</a>
 		</td>
 	</tr>
 	<tr>
