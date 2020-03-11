@@ -1083,10 +1083,6 @@ iframe[src*='youtube.com'] {
 	max-width: 100% !important;
 }
 
-#disqus_thread {
-	margin-top: 3em;
-}
-
 .no-break {
 	display: inline-block;
 	width: 100%;
