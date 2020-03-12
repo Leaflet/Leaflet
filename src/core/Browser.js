@@ -32,7 +32,7 @@ export var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 export var webkit = userAgentContains('webkit');
 
 // @property android: Boolean
-// `true` for any browser running on an Android platform.
+// **Deprecated.** `true` for any browser running on an Android platform.
 export var android = userAgentContains('android');
 
 // @property android23: Boolean; **Deprecated.** `true` for browsers running on Android 2 or Android 3.
