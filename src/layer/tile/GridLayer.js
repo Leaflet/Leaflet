@@ -797,7 +797,7 @@ export var GridLayer = Layer.extend({
 
 		// without this hack, tiles disappear after zoom on Chrome for Android
 		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (Browser.android && !Browser.android23) {
+		if (Browser.android) {
 			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
