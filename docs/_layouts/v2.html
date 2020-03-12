@@ -64,46 +64,22 @@
 
 <ul class="nav">
 	<li>
-		{% if page.title == nil %}
-			<span>Overview</span>
-		{% else %}
-			<a href="{{ root }}index.html">Overview</a>
-		{% endif %}
+		<a href="{{ root }}index.html" {% if page.title == nil %} class="active" {% endif %}>Overview</a>
 	</li>
 	<li>
-		{% if page.title == 'Tutorials' %}
-			<span>Tutorials</span>
-		{% else %}
-			<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
-		{% endif %}
+		<a href="{{ root }}examples.html" {% if page.title == 'Tutorials' %} class="active" {% endif %}>Tutorials</a>
 	</li>
 	<li>
-		{% if page.title == 'Documentation' %}
-			<span>Docs</span>
-		{% else %}
-			<a href="{{ root }}reference-{{ site.latest_leaflet_reference }}.html">Docs</a>
-		{% endif %}
+		<a href="{{ root }}reference-{{ site.latest_leaflet_reference }}.html" {% if page.title == 'Documentation' %} class="active" {% endif %}>Docs</a>
 	</li>
 	<li>
-		{% if page.title == 'Download' %}
-			<span>Download</span>
-		{% else %}
-			<a href="{{ root }}download.html">Download</a>
-		{% endif %}
+		<a href="{{ root }}download.html" {% if page.title == 'Download' %} class="active" {% endif %}>Download</a>
 	</li>
 	<li>
-		{% if page.title == 'Plugins' %}
-			<span>Plugins</span>
-		{% else %}
-			<a href="{{ root }}plugins.html">Plugins</a>
-		{% endif %}
+		<a href="{{ root }}plugins.html" {% if page.title == 'Plugins' %} class="active" {% endif %}>Plugins</a>
 	</li>
 	<li>
-		{% if page.title == 'Blog' %}
-			<span>Blog</span>
-		{% else %}
-			<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
-		{% endif %}
+		<a href="{{ root }}blog.html" {% if page.layout == "post" or page.title == 'Blog' %} class="active" {% endif %}>Blog</a>
 	</li>
 </ul>
 

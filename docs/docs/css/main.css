@@ -2,7 +2,7 @@
 /* general styles */
 
 html, body, input, select, button, textarea, table {
-	font-size: 100%;
+	font-size: 18px;
 	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -11,8 +11,8 @@ html, body, input, select, button, textarea, table {
 
 body {
 	line-height: 1.5;
-	color: #333;
-	background-color: white;
+	color: rgba(0, 0, 0, 0.85);
+	background-color: #e6f3e3;
 }
 
 p {
@@ -20,11 +20,16 @@ p {
 }
 
 a, a span.hljs-string {
-	color: #1EB300;
+	color: #2d851b;
+	text-decoration: none;
 }
 
-a:hover, a:focus {
+a:hover {
 	color: #160;
+}
+
+a, a:active {
+	outline: none;
 }
 
 hr {
@@ -64,11 +69,11 @@ table th {
 }
 
 table td {
-	color: #666;
+	color: rgba(0, 0, 0, 0.8);
 }
 
 table td:first-child {
-	color: #777;
+	color: rgba(0, 0, 0, 0.8)
 }
 
 table td:last-child {
@@ -105,7 +110,7 @@ h2:first-child {
 }
 
 h2:target {
-	color: #1EB300;
+	color: #2d851b;
 }
 
 h3 {
@@ -131,12 +136,19 @@ h4 {
 
 .container {
 	max-width: 54em;
-	padding: 0 6em 1.5em;
+	padding: 0 6em 0;
 	margin: 0 auto;
 }
+
 .footer {
-	margin-top: 50px;
+	margin-top: 70px;
 	color: #777;
+	font-size: 16px;
+}
+
+.footer p {
+	margin-top: 12px;
+	margin-bottom: 12px;
 }
 
 
@@ -199,12 +211,25 @@ h3.tagline {
 .nav li {
 	display: inline-block;
 	padding: .333em .5em;
-	color: #999;
 }
 
 .nav li a {
 	font-weight: 400;
 	text-decoration: none;
+}
+
+.nav li a:hover::after, .nav li a.active::after {
+	content: "";
+	display: block;
+	height: 2px;
+}
+
+.nav li a:hover::after, .nav li a.active:hover::after {
+	background-color: #160;
+}
+
+.nav li a.active::after {
+	background-color: #2d851b;
 }
 
 .ext-links {
@@ -215,7 +240,7 @@ h3.tagline {
 
 .ext-link {
 	display: block;
-	opacity: 0.5;
+	opacity: 0.7;
 	-webkit-animation: fadein 1s;
 	animation: fadein 1s;
 }
@@ -239,7 +264,7 @@ h3.tagline {
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 .container pre code {
-	font-size: 14px;
+	font-size: 16px;
 	padding: .75em 1em;
 	border-radius: 5px;
 	white-space: pre;
@@ -253,11 +278,11 @@ h3.tagline {
 	border: 1px solid #ccc;
 }
 .container .map:focus {
-	border-color: #999;
+	color: rgba(0, 0, 0, 0.6);
 }
 
 .quiet {
-	color: #999;
+	color: rgba(0, 0, 0, 0.6);
 }
 
 
@@ -435,7 +460,7 @@ h3.tagline {
 	float: left;
 	width: 130px;
 	line-height: 1.6;
-	color: #999;
+	color: rgba(0, 0, 0, 0.6);
 	font-size: 18px;
 }
 .post-info {
@@ -490,7 +515,7 @@ table.plugins td:first-child a {
 	transition: border-color .25s ease;
 }
 .api-page #toc ~ h2:target {
-	border-color: #1EB300;
+	border-color: #2d851b;
 }
 .api-page h2:first-child {
 	border: none;
@@ -758,10 +783,10 @@ table.plugins td:first-child a {
 /* API docs - tables */
 
 .api-page table td {
-	color: #666;
+	color: rgba(0, 0, 0, 0.8);
 }
 .api-page table td:first-child {
-	color: #777;
+	color: rgba(0, 0, 0, 0.8);
 }
 .api-page table td:last-child {
 	color: black;
@@ -771,7 +796,7 @@ table.plugins td:first-child a {
 	white-space: pre-wrap;
 }
 .api-page table td code i {
-	color: #9a9;
+	color: rgba(0, 0, 0, 0.6);
 }
 .api-page table td code b {
 	color: black;
@@ -779,7 +804,7 @@ table.plugins td:first-child a {
 }
 .api-page table td,
 .api-page table th {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .api-page p {
@@ -1075,7 +1100,7 @@ tr:target {
 }
 
 .post-meta {
-	color: #888;
+	color: rgba(0, 0, 0, 0.6);
 	margin-top: -1em;
 }
 
