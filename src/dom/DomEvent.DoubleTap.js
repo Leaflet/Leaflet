@@ -1,5 +1,4 @@
 import * as Browser from '../core/Browser';
-import {_pointersCount} from './DomEvent.Pointer';
 
 /*
  * Extends the event handling code with double tap support for mobile browsers.
@@ -16,16 +15,13 @@ export function addDoubleTapListener(obj, handler, id) {
 	    delay = 250;
 
 	function onTouchStart(e) {
-		var count;
 
 		if (Browser.pointer) {
+			if (!e.isPrimary) { return; }
 			if (e.pointerType === 'mouse') { return; } // mouse fires native dblclick
-			count = _pointersCount;
-		} else {
-			count = e.touches.length;
+		} else if (e.touches.length > 1) {
+			return;
 		}
-
-		if (count > 1) { return; }
 
 		var now = Date.now(),
 		    delta = now - (last || now);
