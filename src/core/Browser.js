@@ -35,7 +35,7 @@ export var webkit = userAgentContains('webkit');
 // `true` for any browser running on an Android platform.
 export var android = userAgentContains('android');
 
-// @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
+// @property android23: Boolean; **Deprecated.** `true` for browsers running on Android 2 or Android 3.
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
 /* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
