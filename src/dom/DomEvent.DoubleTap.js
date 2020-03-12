@@ -16,16 +16,13 @@ export function addDoubleTapListener(obj, handler, id) {
 	    delay = 250;
 
 	function onTouchStart(e) {
-		var count;
 
 		if (Browser.pointer) {
+			if (!e.isPrimary) { return; }
 			if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
-			count = _pointersCount;
 		} else {
-			count = e.touches.length;
+			if (e.touches.length > 1) { return; }
 		}
-
-		if (count > 1) { return; }
 
 		var now = Date.now(),
 		    delta = now - (last || now);
