@@ -106,10 +106,7 @@ export var TileLayer = GridLayer.extend({
 			options.subdomains = options.subdomains.split('');
 		}
 
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.android) {
-			this.on('tileunload', this._onTileRemove);
-		}
+		this.on('tileunload', this._onTileRemove);
 	},
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this
