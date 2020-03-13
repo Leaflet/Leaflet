@@ -4,7 +4,6 @@ import * as DomEvent from '../../dom/DomEvent';
 import {Point} from '../../geometry/Point';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import * as Browser from '../../core/Browser';
 
 
 /*
@@ -15,12 +14,11 @@ import * as Browser from '../../core/Browser';
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option tap: Boolean
+	// @option tap: Boolean = false
+	// **Deprecated**.
 	// Enables mobile hacks for supporting instant taps (fixing 200ms click
 	// delay on iOS/Android) and touch holds (fired as `contextmenu` events).
-	// This is legacy option, by default enabled in mobile Safari only
-	// (because we still need `contextmenu` simulation for iOS).
-	tap: Browser.safari && Browser.mobile,
+	tap: false,
 
 	// @option tapTolerance: Number = 15
 	// The max number of pixels a user can shift his finger during touch
@@ -132,5 +130,6 @@ export var Tap = Handler.extend({
 
 // @section Handlers
 // @property tap: Handler
+// **Deprecated**.
 // Mobile touch hacks (quick tap and touch hold) handler.
 Map.addInitHook('addHandler', 'tap', Tap);
