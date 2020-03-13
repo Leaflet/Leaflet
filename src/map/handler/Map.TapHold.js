@@ -16,9 +16,9 @@ var tapHoldDelay = 600;
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option tapHold: Boolean = true
-	// Enables simulation of `contextmenu` event for mobile Safari.
-	tapHold: true,
+	// @option tapHold: Boolean
+	// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
+	tapHold: Browser.touchNative && Browser.safari && Browser.mobile,
 
 	// @option tapTolerance: Number = 15
 	// The max number of pixels a user can shift his finger during touch
@@ -93,7 +93,5 @@ export var TapHold = Handler.extend({
 
 // @section Handlers
 // @property tapHold: Handler
-// Long tap handler to simulate `contextmenu` event in mobile Safari.
-if (Browser.touch && Browser.safari && Browser.mobile) {
-	Map.addInitHook('addHandler', 'tapHold', TapHold);
-}
+// Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
+Map.addInitHook('addHandler', 'tapHold', TapHold);
