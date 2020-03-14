@@ -89,7 +89,7 @@ function addOne(obj, type, fn, context) {
 	           !(Browser.pointer && Browser.chrome)) {
 		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
 		// See #5180
-		addDoubleTapListener(obj, handler, id);
+		addDoubleTapListener(obj, handler);
 
 	} else if ('addEventListener' in obj) {
 
@@ -132,7 +132,7 @@ function removeOne(obj, type, fn, context) {
 
 	} else if (Browser.touch && (type === 'dblclick') && removeDoubleTapListener &&
 	           !(Browser.pointer && Browser.chrome)) {
-		removeDoubleTapListener(obj, id);
+		removeDoubleTapListener(obj, handler);
 
 	} else if ('removeEventListener' in obj) {
 
