@@ -19,22 +19,22 @@ var _pointerDocListener = false;
 // Provides a touch events wrapper for (ms)pointer events.
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
-export function addPointerListener(obj, type, handler, id) {
+export function addPointerListener(obj, type, handler) {
 	if (type === 'touchstart') {
-		_addPointerStart(obj, handler, id);
+		_addPointerStart(obj, type, handler);
 
 	} else if (type === 'touchmove') {
-		_addPointerMove(obj, handler, id);
+		_addPointerMove(obj, type, handler);
 
 	} else if (type === 'touchend') {
-		_addPointerEnd(obj, handler, id);
+		_addPointerEnd(obj, type, handler);
 	}
 
 	return this;
 }
 
-export function removePointerListener(obj, type, id) {
-	var handler = obj['_leaflet_' + type + id];
+export function removePointerListener(obj, type, handler) {
+	handler = handler[type];
 
 	if (type === 'touchstart') {
 		obj.removeEventListener(POINTER_DOWN, handler, false);
@@ -50,8 +50,8 @@ export function removePointerListener(obj, type, id) {
 	return this;
 }
 
-function _addPointerStart(obj, handler, id) {
-	var onDown = Util.bind(function (e) {
+function _addPointerStart(obj, type, handler) {
+	handler.onDown = Util.bind(function (e) {
 		if (e.pointerType !== 'mouse' && e.MSPOINTER_TYPE_MOUSE && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
 			// In IE11, some touch events needs to fire for form controls, or
 			// the controls will stop working. We keep a whitelist of tag names that
@@ -66,8 +66,7 @@ function _addPointerStart(obj, handler, id) {
 		_handlePointer(e, handler);
 	});
 
-	obj['_leaflet_touchstart' + id] = onDown;
-	obj.addEventListener(POINTER_DOWN, onDown, false);
+	obj.addEventListener(POINTER_DOWN, handler.onDown, false);
 
 	// need to keep track of what pointers and how many are active to provide e.touches emulation
 	if (!_pointerDocListener) {
@@ -105,25 +104,23 @@ function _handlePointer(e, handler) {
 	handler(e);
 }
 
-function _addPointerMove(obj, handler, id) {
-	var onMove = function (e) {
+function _addPointerMove(obj, type, handler) {
+	handler.onMove = function (e) {
 		// don't fire touch moves when mouse isn't down
 		if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) { return; }
 
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_touchmove' + id] = onMove;
-	obj.addEventListener(POINTER_MOVE, onMove, false);
+	obj.addEventListener(POINTER_MOVE, handler.onMove, false);
 }
 
-function _addPointerEnd(obj, handler, id) {
-	var onUp = function (e) {
+function _addPointerEnd(obj, type, handler) {
+	handler.onUp = function (e) {
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_touchend' + id] = onUp;
-	obj.addEventListener(POINTER_UP, onUp, false);
-	obj.addEventListener(POINTER_CANCEL, onUp, false);
+	obj.addEventListener(POINTER_UP, handler.onUp, false);
+	obj.addEventListener(POINTER_CANCEL, handler.onUp, false);
 }
 
