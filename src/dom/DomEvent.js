@@ -135,7 +135,7 @@ function removeOne(obj, type, fn, context) {
 	if (!handler) { return this; }
 
 	if (Browser.pointer && type.indexOf('touch') === 0) {
-		removePointerListener(obj, type, id);
+		removePointerListener(obj, type, handler);
 
 	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
 		removeDoubleTapListener(obj, id);
