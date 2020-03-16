@@ -100,8 +100,7 @@ export var pointer = !!(window.PointerEvent || msPointer);
 // This does not necessarily mean that the browser is running in a computer with
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
-export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
-		(window.DocumentTouch && document instanceof window.DocumentTouch));
+export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window || window.TouchEvent);
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
 export var mobileOpera = mobile && opera;
