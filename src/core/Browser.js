@@ -102,8 +102,7 @@ export var pointer = !webkit && !!(window.PointerEvent || msPointer);
 // touch events.
 // Note: also `true` for Windows mobile devices where touch is implemented with pointer events only.
 export var touch = !window.L_NO_TOUCH && ('ontouchstart' in window ||
-		(msPointer && navigator.msMaxTouchPoints) ||
-		(window.DocumentTouch && document instanceof window.DocumentTouch));
+		(msPointer && navigator.msMaxTouchPoints));
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
 export var mobileOpera = mobile && opera;
