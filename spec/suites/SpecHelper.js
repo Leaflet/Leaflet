@@ -60,7 +60,7 @@ it.skipIfNo3d = L.Browser.any3d ? it : it.skip;
 it.skipIf3d = L.Browser.any3d ? it.skip : it;
 
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = (L.Browser.touch || L.Browser.pointer) ? it : it.skip;
+it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
 
 // ATM Leaflet prefers pointer events even for touch (see #7077)
 var touchEventType = L.Browser.pointer ? 'pointer' : 'touch'; // eslint-disable-line no-unused-vars
