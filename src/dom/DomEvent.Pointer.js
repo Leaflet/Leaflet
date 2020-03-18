@@ -55,15 +55,14 @@ export function removePointerListener(obj, type, id) {
 
 function _addPointerStart(obj, handler, id) {
 	var onDown = Util.bind(function (e) {
-		if (e.pointerType !== 'mouse' && e.MSPOINTER_TYPE_MOUSE && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
+		if (e.pointerType !== (e.MSPOINTER_TYPE_MOUSE || 'mouse')) {
 			// In IE11, some touch events needs to fire for form controls, or
 			// the controls will stop working. We keep a whitelist of tag names that
 			// need these events. For other target tags, we prevent default on the event.
-			if (TAG_WHITE_LIST.indexOf(e.target.tagName) < 0) {
-				DomEvent.preventDefault(e);
-			} else {
+			if (Browser.ie && TAG_WHITE_LIST.indexOf(e.target.tagName)) {
 				return;
 			}
+			DomEvent.preventDefault(e);
 		}
 
 		_handlePointer(e, handler);
@@ -113,7 +112,9 @@ function _handlePointer(e, handler) {
 function _addPointerMove(obj, handler, id) {
 	var onMove = function (e) {
 		// don't fire touch moves when mouse isn't down
-		if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) { return; }
+		if ((e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) && e.buttons === 0) {
+			return;
+		}
 
 		_handlePointer(e, handler);
 	};
