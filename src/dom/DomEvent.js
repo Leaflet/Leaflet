@@ -70,6 +70,13 @@ export function off(obj, types, fn, context) {
 	return this;
 }
 
+function browserFiresNativeDblClick() {
+	// See https://github.com/w3c/pointerevents/issues/171
+	if (Browser.pointer) {
+		return !(Browser.edge || Browser.safari);
+	}
+}
+
 function addOne(obj, type, fn, context) {
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
 
@@ -85,10 +92,7 @@ function addOne(obj, type, fn, context) {
 		// Needs DomEvent.Pointer.js
 		addPointerListener(obj, type, handler, id);
 
-	} else if (Browser.touch && (type === 'dblclick') && addDoubleTapListener &&
-	           !(Browser.pointer && Browser.chrome)) {
-		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
-		// See #5180
+	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
 		addDoubleTapListener(obj, handler, id);
 
 	} else if ('addEventListener' in obj) {
@@ -130,8 +134,7 @@ function removeOne(obj, type, fn, context) {
 	if (Browser.pointer && type.indexOf('touch') === 0) {
 		removePointerListener(obj, type, id);
 
-	} else if (Browser.touch && (type === 'dblclick') && removeDoubleTapListener &&
-	           !(Browser.pointer && Browser.chrome)) {
+	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
 		removeDoubleTapListener(obj, id);
 
 	} else if ('removeEventListener' in obj) {

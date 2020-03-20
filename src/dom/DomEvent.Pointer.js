@@ -16,9 +16,6 @@ var TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'];
 var _pointers = {};
 var _pointerDocListener = false;
 
-// DomEvent.DoubleTap needs to know about this
-export var _pointersCount = 0;
-
 // Provides a touch events wrapper for (ms)pointer events.
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
@@ -86,7 +83,6 @@ function _addPointerStart(obj, handler, id) {
 
 function _globalPointerDown(e) {
 	_pointers[e.pointerId] = e;
-	_pointersCount++;
 }
 
 function _globalPointerMove(e) {
@@ -97,7 +93,6 @@ function _globalPointerMove(e) {
 
 function _globalPointerUp(e) {
 	delete _pointers[e.pointerId];
-	_pointersCount--;
 }
 
 function _handlePointer(e, handler) {
