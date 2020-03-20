@@ -79,9 +79,7 @@ export function removeDoubleTapListener(obj, id) {
 
 	obj.removeEventListener(_touchstart, touchstart, Browser.passiveEvents ? {passive: false} : false);
 	obj.removeEventListener(_touchend, touchend, Browser.passiveEvents ? {passive: false} : false);
-	if (!Browser.edge) {
-		obj.removeEventListener('dblclick', dblclick, false);
-	}
+	obj.removeEventListener('dblclick', dblclick, false);
 
 	return this;
 }

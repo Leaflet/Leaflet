@@ -47,7 +47,7 @@ export var androidStock = android && userAgentContains('Google') && webkitVer < 
 export var opera = !!window.opera;
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-export var chrome = userAgentContains('chrome');
+export var chrome = !edge && userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
