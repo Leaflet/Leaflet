@@ -4797,6 +4797,15 @@ The following plugins integrate Leaflet into third party services or websites.
 		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
 	</td>
   </tr>
+  <tr>
+	<td>
+		<a href="https://github.com/alexboia/WP-Trip-Summary/">WP-Trip-Summary</a>
+	</td><td>
+		A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
+	  </td><td>
+		<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
+	</td>
+  </tr>
 </table>
 
 
