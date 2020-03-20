@@ -59,7 +59,7 @@ function _addPointerStart(obj, handler, id) {
 			// In IE11, some touch events needs to fire for form controls, or
 			// the controls will stop working. We keep a whitelist of tag names that
 			// need these events. For other target tags, we prevent default on the event.
-			if (Browser.ie && TAG_WHITE_LIST.indexOf(e.target.tagName)) {
+			if (Browser.ie && TAG_WHITE_LIST.indexOf(e.target.tagName) >= 0) {
 				return;
 			}
 			DomEvent.preventDefault(e);
@@ -132,4 +132,3 @@ function _addPointerEnd(obj, handler, id) {
 	obj.addEventListener(POINTER_UP, onUp, false);
 	obj.addEventListener(POINTER_CANCEL, onUp, false);
 }
-
