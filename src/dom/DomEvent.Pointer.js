@@ -71,11 +71,11 @@ function _addPointerStart(obj, handler, id) {
 
 	// need to keep track of what pointers and how many are active to provide e.touches emulation
 	if (!_pointerDocListener) {
-		// we listen documentElement as any drags that end by moving the touch off the screen get fired there
-		document.documentElement.addEventListener(POINTER_DOWN, _globalPointerDown, true);
-		document.documentElement.addEventListener(POINTER_MOVE, _globalPointerMove, true);
-		document.documentElement.addEventListener(POINTER_UP, _globalPointerUp, true);
-		document.documentElement.addEventListener(POINTER_CANCEL, _globalPointerUp, true);
+		// we listen document as any drags that end by moving the touch off the screen get fired there
+		document.addEventListener(POINTER_DOWN, _globalPointerDown, true);
+		document.addEventListener(POINTER_MOVE, _globalPointerMove, true);
+		document.addEventListener(POINTER_UP, _globalPointerUp, true);
+		document.addEventListener(POINTER_CANCEL, _globalPointerUp, true);
 
 		_pointerDocListener = true;
 	}
