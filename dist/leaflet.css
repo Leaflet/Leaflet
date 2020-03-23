@@ -24,6 +24,7 @@
 	   -moz-user-select: none;
 	        user-select: none;
 	  -webkit-user-drag: none;
+	  -webkit-touch-callout: none; /* #6865 */
 	}
 /* Prevents IE11 from highlighting tiles in blue */
 .leaflet-tile::selection {
