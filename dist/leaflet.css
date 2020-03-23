@@ -163,6 +163,11 @@
 	margin-right: 10px;
 	}
 
+/* iOS-specific: prevent selection on drag/hold (#6872) */
+
+.leaflet-control a {
+	-webkit-user-select: none;
+	}
 
 /* zoom and fade animations */
 
