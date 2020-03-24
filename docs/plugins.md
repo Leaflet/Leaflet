@@ -2146,6 +2146,17 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="https://github.com/spacemansteve">Steve McDonald</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sanchezweezer/Leaflet.SmoothPolygons">Leaflet.SmoothPolygons</a>
+		</td><td>
+			A simple and fast [Leaflet](http://leafletjs.com) canvas smooth polygons plugin.
+            Uses [paperJS](http://paperjs.org/) under the hood to draw paths on canvas.
+            [Demo](https://sanchezweezer.github.io/Leaflet.SmoothPolygons/docs/)
+		</td><td>
+			<a href="https://github.com/sanchezweezer">Sanchez Weezer</a>
+		</td>
+	</tr>
 </table>
 
 
