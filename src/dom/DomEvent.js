@@ -82,8 +82,8 @@ function addOne(obj, type, fn, context) {
 
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
-	var handler = function (e) {
-		return fn.call(context || obj, e || window.event);
+	var handler = function (e, originalType) {
+		return fn.call(context || obj, e || window.event, originalType);
 	};
 
 	var originalHandler = handler;
@@ -107,7 +107,7 @@ function addOne(obj, type, fn, context) {
 			handler = function (e) {
 				e = e || window.event;
 				if (isExternalTarget(obj, e)) {
-					originalHandler(e);
+					originalHandler(e, type);
 				}
 			};
 			obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);

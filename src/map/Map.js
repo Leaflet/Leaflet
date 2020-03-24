@@ -1384,10 +1384,10 @@ export var Map = Evented.extend({
 		return targets;
 	},
 
-	_handleDOMEvent: function (e) {
+	_handleDOMEvent: function (e, originalType) {
 		if (!this._loaded || DomEvent.skipped(e)) { return; }
 
-		var type = e.type;
+		var type = originalType || e.type;
 
 		if (type === 'mousedown' || type === 'keypress' || type === 'keyup' || type === 'keydown') {
 			// prevents outline when clicking on keyboard-focusable element
