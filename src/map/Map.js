@@ -1375,13 +1375,13 @@ export var Map = Evented.extend({
 		}
 	},
 
-	_handleDOMEvent: function (e) {
+	_handleDOMEvent: function (e, originalType) {
 		var el = (e.target || e.srcElement);
 		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
 			return;
 		}
 
-		var type = e.type;
+		var type = originalType || e.type;
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element

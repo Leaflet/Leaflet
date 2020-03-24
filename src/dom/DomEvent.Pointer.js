@@ -15,6 +15,12 @@ var pEvent = {
 	touchend    : POINTER_UP,
 	touchcancel : POINTER_CANCEL
 };
+var tEvent = {
+	POINTER_DOWN  : 'touchstart',
+	POINTER_MOVE  : 'touchmove',
+	POINTER_UP    : 'touchend',
+	POINTER_CANCEL:	'touchcancel'
+};
 var handle = {
 	touchstart  : _onPointerStart,
 	touchmove   : _handlePointer,
@@ -76,7 +82,7 @@ function _handlePointer(handler, e) {
 	}
 	e.changedTouches = [e];
 
-	handler(e);
+	handler(e, tEvent[e.type]);
 }
 
 function _onPointerStart(handler, e) {
