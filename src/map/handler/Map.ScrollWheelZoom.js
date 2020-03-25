@@ -30,18 +30,23 @@ Map.mergeOptions({
 
 export var ScrollWheelZoom = Handler.extend({
 	addHooks: function () {
-		DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = DomEvent.getWheelDelta(e);
 
+		// detect gesture
+		if (e.deltaMode === e.DOM_DELTA_PIXEL) {
+			return;
+		}
+
+		var delta = e.deltaY;
 		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;

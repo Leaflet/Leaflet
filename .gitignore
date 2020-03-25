@@ -20,3 +20,5 @@ Gemfile.lock
 package-lock.json
 yarn.lock
 *.log
+*.swp
+
