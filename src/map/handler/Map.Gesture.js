@@ -3,24 +3,21 @@ import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-/*
- *import * as Browser from '../../core/Browser';
- */
 
 /*
- * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * L.Handler.Gesture is used by L.Map to add gesture based pan and zoom on toupad based devices.
  */
 
 // @namespace Map
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option gesture: Boolean|String = *
+	// @option touchpad: Boolean|String = *
 	// Whether the map can be zoomed and panned by two finger gesture. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers except for old Androids.
-	gesture: true,
+	touchpad: true,
 
 	// @option resetTimeout: Integer
 	// Sets the snap timeout after the zoom gesture ends.
@@ -30,35 +27,34 @@ Map.mergeOptions({
 	// Sets the zoom multiplier when doing the zoom gesture.
 	zoomMultiplier: -0.05,
 
-	// @option bounceAtZoomLimits: Boolean = true
+	// @option bounceAtGestureLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
 	// and then bounce back when pinch-zooming.
-	bounceAtZoomLimits: true
+	bounceAtGestureLimits: true
 });
 
 export var Gesture = Handler.extend({
 	addHooks: function () {
-		console.log('adding gesture hook');
 		DomUtil.addClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'wheel', this._onGestureStart, this);
 	},
 
 	removeHooks: function () {
-		console.log('removing gesture hook');
 		DomUtil.removeClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'wheel', this._onGestureStart, this);
 	},
 
 	_onGestureStart: function (e) {
-		DomEvent.preventDefault(e);
-
 		if (e.deltaMode === e.DOM_DELTA_PIXEL) {
+			DomEvent.preventDefault(e);
+
 			var map = this._map;
 			if (e.ctrlKey) {
 				// touchpad two finger zoom
+
 				this._zoom = map.getZoom() + e.deltaY * this._map.options.zoomMultiplier;
 
-				if (!map.options.bounceAtZoomLimits && (
+				if (!map.options.bounceAtGestureLimits && (
 					(this._zoom < map.getMinZoom() && e.deltaY > 0) ||
 					(this._zoom > map.getMaxZoom() && e.deltaY < 0))) {
 					this._zoom = map._limitZoom(this._zoom);
@@ -82,6 +78,7 @@ export var Gesture = Handler.extend({
 				this._timer = setTimeout(Util.bind(this._zoomSnap, this), this._map.options.resetTimeout);
 			} else {
 				// touchpad two finger scroll
+
 				map.panBy([e.deltaX, e.deltaY], {animate: false});
 			}
 		}
@@ -99,7 +96,7 @@ export var Gesture = Handler.extend({
 });
 
 // @section Handlers
-// @property touchZoom: Handler
-// Touch zoom handler.
-Map.addInitHook('addHandler', 'gesture', Gesture);
+// @property Gesture: Handler
+// Gesture touchpad pan zoom handler.
+Map.addInitHook('addHandler', 'touchpad', Gesture);
 
