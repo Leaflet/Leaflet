@@ -2633,6 +2633,17 @@ Plugins that search for overlays and enhance how to display information about th
 			</td>
           </tr>
 	<tr>
+        <td>
+            <a href="https://github.com/luka1199/Leaflet.AnimatedSearchBox">Leaflet.AnimatedSearchBox</a>
+        </td>
+		<td>
+            Provides a simple and animated search box for Leaflet.
+        </td>
+		<td>
+		    <a href="https://github.com/luka1199/">Luka Steinbach</a>
+		</td>
+    </tr>
+	<tr>
 		<td>
 			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
 		</td><td>
