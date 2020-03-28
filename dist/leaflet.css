@@ -166,7 +166,7 @@
 
 /* iOS-specific: prevent selection on drag/hold (#6872) */
 
-.leaflet-control a {
+.leaflet-control:first-child {
 	-webkit-user-select: none;
 	}
 
