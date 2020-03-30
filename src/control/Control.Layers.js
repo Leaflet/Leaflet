@@ -1,7 +1,6 @@
 
 import {Control} from './Control';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -187,24 +186,17 @@ export var Layers = Control.extend({
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
-			if (!Browser.android) {
-				DomEvent.on(container, {
-					mouseenter: this.expand,
-					mouseleave: this.collapse
-				}, this);
-			}
+			DomEvent.on(container, {
+				mouseenter: this.expand,
+				mouseleave: this.collapse
+			}, this);
 		}
 
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
 
-		if (Browser.touch) {
-			DomEvent.on(link, 'click', DomEvent.stop);
-			DomEvent.on(link, 'click', this.expand, this);
-		} else {
-			DomEvent.on(link, 'focus', this.expand, this);
-		}
+		DomEvent.on(link, 'click', DomEvent.preventDefault);
 
 		if (!collapsed) {
 			this.expand();
