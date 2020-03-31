@@ -1,5 +1,4 @@
 import * as DomEvent from './DomEvent';
-import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
 
 /*
@@ -51,7 +50,7 @@ export function removePointerListener(obj, type, id) {
 }
 
 function _addPointerStart(obj, handler, id) {
-	var onDown = Util.bind(function (e) {
+	var onDown = function (e) {
 		if (e.pointerType !== (e.MSPOINTER_TYPE_MOUSE || 'mouse')) {
 			// In IE11, some touch events needs to fire for form controls, or
 			// the controls will stop working. We keep a whitelist of tag names that
@@ -63,7 +62,7 @@ function _addPointerStart(obj, handler, id) {
 		}
 
 		_handlePointer(e, handler);
-	});
+	};
 
 	obj['_leaflet_touchstart' + id] = onDown;
 	obj.addEventListener(POINTER_DOWN, onDown, false);
