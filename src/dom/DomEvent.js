@@ -80,7 +80,7 @@ function browserFiresNativeDblClick() {
 var mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
-	mousewheel: 'onwheel' in window && 'wheel'
+	wheel: !('onwheel' in window) && 'mousewheel'
 };
 
 function addOne(obj, type, fn, context) {
@@ -173,9 +173,9 @@ export function stopPropagation(e) {
 }
 
 // @function disableScrollPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants).
+// Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
 export function disableScrollPropagation(el) {
-	addOne(el, 'mousewheel', stopPropagation);
+	addOne(el, 'wheel', stopPropagation);
 	return this;
 }
 
@@ -236,7 +236,7 @@ var wheelPxFactor =
 	Browser.gecko ? window.devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
-// Gets normalized wheel delta from a mousewheel DOM event, in vertical
+// Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
