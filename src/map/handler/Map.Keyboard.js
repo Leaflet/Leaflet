@@ -84,7 +84,7 @@ export var Keyboard = Handler.extend({
 
 		this._map._container.focus();
 
-		window.scrollTo(left, top);
+		window && window.scrollTo(left, top);
 	},
 
 	_onFocus: function () {

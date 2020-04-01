@@ -44,7 +44,7 @@ var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10);
 export var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
 // @property opera: Boolean; `true` for the Opera browser
-export var opera = !!window.opera;
+export var opera = !!window && !!window.opera;
 
 // @property chrome: Boolean; `true` for the Chrome browser.
 export var chrome = !edge && userAgentContains('chrome');
@@ -75,7 +75,7 @@ export var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
+export var any3d = !!window && !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 export var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
@@ -89,18 +89,18 @@ export var mobileWebkit3d = mobile && webkit3d;
 
 // @property msPointer: Boolean
 // `true` for browsers implementing the Microsoft touch events model (notably IE10).
-export var msPointer = !window.PointerEvent && window.MSPointerEvent;
+export var msPointer = !!window && !window.PointerEvent && window.MSPointerEvent;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-export var pointer = !!(window.PointerEvent || msPointer);
+export var pointer = !!window && !!(window.PointerEvent || msPointer);
 
 // @property touch: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
 // This does not necessarily mean that the browser is running in a computer with
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
-export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
+export var touch = !!window && !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
 		(window.DocumentTouch && document instanceof window.DocumentTouch));
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
@@ -112,7 +112,7 @@ export var mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
-export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+export var retina = !!window && (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
 // @property passiveEvents: Boolean
 // `true` for browsers that support passive events.
@@ -124,8 +124,8 @@ export var passiveEvents = (function () {
 				supportsPassiveOption = true;
 			}
 		});
-		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
-		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
+		!!window && window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
+		!!window && window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
 	} catch (e) {
 		// Errors can safely be ignored since this is only a browser support test.
 	}

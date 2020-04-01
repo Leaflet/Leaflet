@@ -83,7 +83,7 @@ function addOne(obj, type, fn, context) {
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
 	var handler = function (e) {
-		return fn.call(context || obj, e || window.event);
+		return fn.call(context || obj, e || window && window.event);
 	};
 
 	var originalHandler = handler;
@@ -105,7 +105,7 @@ function addOne(obj, type, fn, context) {
 
 		} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 			handler = function (e) {
-				e = e || window.event;
+				e = e || window && window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
@@ -235,9 +235,10 @@ export function getMousePosition(e, container) {
 
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),
 // and Firefox scrolls device pixels, not CSS pixels
+var devicePixelRatio = window && window.devicePixelRatio || 1;
 var wheelPxFactor =
-	(Browser.win && Browser.chrome) ? 2 * window.devicePixelRatio :
-	Browser.gecko ? window.devicePixelRatio : 1;
+	(Browser.win && Browser.chrome) ? 2 * devicePixelRatio :
+	Browser.gecko ? devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a mousewheel DOM event, in vertical
