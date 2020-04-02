@@ -3568,10 +3568,10 @@ Show the geographical coordinates under the mouse cursor in different ways.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/edihasaj/leaflet-coord-projection">Leaflet.coordProjection</a>
+			<a href="https://github.com/edihasaj/leaflet-coord-projection">Leaflet.CoordProjection</a>
 		</td>
 		<td>
-			Show coordinates on mousemove and displays it based on given projection (<a href="https://edihasaj.github.io/leaflet-coord-projection/">Demo</a>)
+			Shows coordinates on mouse move and displays it based on given projection (<a href="https://edihasaj.github.io/leaflet-coord-projection/">Demo</a>)
 		</td>
 		<td>
 			<a href="https://https://github.com/edihasaj">Edi Hasaj</a>
