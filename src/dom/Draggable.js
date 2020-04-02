@@ -92,8 +92,6 @@ export var Draggable = Evented.extend({
 		// under some circumstances, see #3666.
 		if (e._simulated || !this._enabled) { return; }
 
-		this._moved = false;
-
 		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
 		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
@@ -230,6 +228,7 @@ export var Draggable = Evented.extend({
 		}
 
 		this._moving = false;
+		this._moved = false;
 		Draggable._dragging = false;
 	}
 
