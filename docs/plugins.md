@@ -3574,7 +3574,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			Shows coordinates on mouse move and displays it based on given projection (<a href="https://edihasaj.github.io/leaflet-coord-projection/">Demo</a>)
 		</td>
 		<td>
-			<a href="https://https://github.com/edihasaj">Edi Hasaj</a>
+			<a href="https://github.com/edihasaj">Edi Hasaj</a>
 		</td>
 	</tr>
 </table>
