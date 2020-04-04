@@ -4,7 +4,7 @@ import * as Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 import {getScale} from './DomUtil';
-
+var window;
 /*
  * @namespace DomEvent
  * Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
@@ -235,7 +235,7 @@ export function getMousePosition(e, container) {
 
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),
 // and Firefox scrolls device pixels, not CSS pixels
-var devicePixelRatio = window && window.devicePixelRatio || 1;
+var devicePixelRatio = !!window && window.devicePixelRatio || 1;
 var wheelPxFactor =
 	(Browser.win && Browser.chrome) ? 2 * devicePixelRatio :
 	Browser.gecko ? devicePixelRatio : 1;

@@ -2,7 +2,7 @@ import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
-
+var document;
 /*
  * @namespace DomUtil
  *
@@ -196,8 +196,10 @@ function _setOpacityIE(el, value) {
 // that is a valid style name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 export function testProp(props) {
-	var style = document.documentElement.style;
-
+	var style = {};
+	if (document) {
+		style = document.documentElement.style;
+	}
 	for (var i = 0; i < props.length; i++) {
 		if (props[i] in style) {
 			return props[i];
@@ -258,7 +260,7 @@ export function getPosition(el) {
 export var disableTextSelection;
 export var enableTextSelection;
 var _userSelect;
-if ('onselectstart' in document) {
+if (!!document && 'onselectstart' in document) {
 	disableTextSelection = function () {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
@@ -271,7 +273,10 @@ if ('onselectstart' in document) {
 
 	disableTextSelection = function () {
 		if (userSelectProperty) {
-			var style = document.documentElement.style;
+			var style = {};
+			if (document) {
+				style = document.documentElement.style;
+			}
 			_userSelect = style[userSelectProperty];
 			style[userSelectProperty] = 'none';
 		}

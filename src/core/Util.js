@@ -3,7 +3,7 @@
  *
  * Various utility functions, used by Leaflet internally.
  */
-
+var window;
 export var freeze = Object.freeze;
 Object.freeze = function (obj) { return obj; };
 

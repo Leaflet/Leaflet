@@ -1,7 +1,7 @@
 {
-  "name": "leaflet",
-  "version": "1.6.0",
-  "homepage": "https://leafletjs.com/",
+  "name": "@vchangal/leaflet",
+  "version": "1.6.2",
+  "homepage": "https://github.com/vchangal/Leaflet#readme",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -95,13 +95,21 @@
       ]
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Leaflet/Leaflet.git"
-  },
   "keywords": [
     "gis",
     "map"
   ],
-  "license": "BSD-2-Clause"
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "author": "vchangal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vchangal/Leaflet.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vchangal/Leaflet/issues"
+  }
 }

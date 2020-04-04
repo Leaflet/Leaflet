@@ -15,17 +15,20 @@ import {svgCreate} from '../layer/vector/SVG.Util';
  * }
  * ```
  */
-
-var style = document.documentElement.style;
+var window, document, navigator;
+var style = {};
+if (document) {
+	style = document.documentElement.style;
+}
 
 // @property ie: Boolean; `true` for all Internet Explorer versions (not Edge).
-export var ie = 'ActiveXObject' in window;
+export var ie = !!window && 'ActiveXObject' in window;
 
 // @property ielt9: Boolean; `true` for Internet Explorer versions less than 9.
-export var ielt9 = ie && !document.addEventListener;
+export var ielt9 = ie && !!document && !document.addEventListener;
 
 // @property edge: Boolean; `true` for the Edge web browser.
-export var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
+export var edge = !!navigator && 'msLaunchUri' in navigator && !('documentMode' in document);
 
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
@@ -39,7 +42,7 @@ export var android = userAgentContains('android');
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
 /* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
-var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
+var webkitVer = (!navigator) ? 0 : parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
 // @property androidStock: Boolean; `true` for the Android stock browser (i.e. not Chrome)
 export var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
@@ -62,13 +65,13 @@ export var phantom = userAgentContains('phantom');
 export var opera12 = 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
-export var win = navigator.platform.indexOf('Win') === 0;
+export var win = !!navigator && navigator.platform.indexOf('Win') === 0;
 
 // @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
 export var ie3d = ie && ('transition' in style);
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
-export var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
+export var webkit3d = !!window && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
 
 // @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
 export var gecko3d = 'MozPerspective' in style;
@@ -135,12 +138,12 @@ export var passiveEvents = (function () {
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
 export var canvas = (function () {
-	return !!document.createElement('canvas').getContext;
+	return !!document && !!document.createElement('canvas').getContext;
 }());
 
 // @property svg: Boolean
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
-export var svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
+export var svg = !!document && !!(document.createElementNS && svgCreate('svg').createSVGRect);
 
 // @property vml: Boolean
 // `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
@@ -161,5 +164,5 @@ export var vml = !svg && (function () {
 
 
 function userAgentContains(str) {
-	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
+	return !!navigator && navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
