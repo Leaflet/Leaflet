@@ -47,8 +47,8 @@ export function get(id) {
 export function getStyle(el, style) {
 	var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
 
-	if ((!value || value === 'auto') && document.defaultView) {
-		var css = document.defaultView.getComputedStyle(el, null);
+	if ((!value || value === 'auto') && window) {
+		var css = window.getComputedStyle(el, null);
 		value = css ? css[style] : null;
 	}
 	return value === 'auto' ? null : value;
