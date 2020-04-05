@@ -2,7 +2,10 @@ import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
-var document;
+var isServerSide = false;
+if (typeof document === 'undefined') {
+	isServerSide = true;
+}
 /*
  * @namespace DomUtil
  *
@@ -38,7 +41,7 @@ export var TRANSITION_END =
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
 export function get(id) {
-	return typeof id === 'string' ? document.getElementById(id) : id;
+	return !isServerSide && typeof id === 'string' ? document.getElementById(id) : id;
 }
 
 // @function getStyle(el: HTMLElement, styleAttrib: String): String
@@ -197,7 +200,7 @@ function _setOpacityIE(el, value) {
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 export function testProp(props) {
 	var style = {};
-	if (document) {
+	if (!isServerSide) {
 		style = document.documentElement.style;
 	}
 	for (var i = 0; i < props.length; i++) {
@@ -260,7 +263,7 @@ export function getPosition(el) {
 export var disableTextSelection;
 export var enableTextSelection;
 var _userSelect;
-if (!!document && 'onselectstart' in document) {
+if (!isServerSide && 'onselectstart' in document) {
 	disableTextSelection = function () {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
@@ -274,7 +277,7 @@ if (!!document && 'onselectstart' in document) {
 	disableTextSelection = function () {
 		if (userSelectProperty) {
 			var style = {};
-			if (document) {
+			if (!isServerSide) {
 				style = document.documentElement.style;
 			}
 			_userSelect = style[userSelectProperty];
@@ -282,7 +285,7 @@ if (!!document && 'onselectstart' in document) {
 		}
 	};
 	enableTextSelection = function () {
-		if (userSelectProperty) {
+		if (userSelectProperty && !isServerSide) {
 			document.documentElement.style[userSelectProperty] = _userSelect;
 			_userSelect = undefined;
 		}
@@ -335,7 +338,7 @@ export function restoreOutline() {
 export function getSizedParentNode(element) {
 	do {
 		element = element.parentNode;
-	} while ((!element.offsetWidth || !element.offsetHeight) && element !== document.body);
+	} while (!isServerSide && (!element.offsetWidth || !element.offsetHeight) && element !== document.body);
 	return element;
 }
 

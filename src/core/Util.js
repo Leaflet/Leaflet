@@ -3,7 +3,11 @@
  *
  * Various utility functions, used by Leaflet internally.
  */
-var window;
+
+var isServerSide = false;
+if (typeof window === 'undefined') {
+	isServerSide = true;
+}
 export var freeze = Object.freeze;
 Object.freeze = function (obj) { return obj; };
 
@@ -219,8 +223,8 @@ function noop() {
 
 }
 
-export var requestFn = (!window) ? noop : window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = (!window) ? noop : window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+export var requestFn = (isServerSide) ? noop : window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
+export var cancelFn = (isServerSide) ? noop : window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
 		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
