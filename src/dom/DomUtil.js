@@ -2,7 +2,10 @@ import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
-
+var isBrowser = true;
+if (typeof window === 'undefined') {
+	isBrowser = false;
+}
 /*
  * @namespace DomUtil
  *
@@ -38,6 +41,9 @@ export var TRANSITION_END =
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
 export function get(id) {
+	if (!isBrowser) {
+		return '';
+	}
 	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
@@ -196,8 +202,10 @@ function _setOpacityIE(el, value) {
 // that is a valid style name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 export function testProp(props) {
-	var style = document.documentElement.style;
-
+	var style = {};
+	if (isBrowser) {
+		style = document.documentElement.style;
+	}
 	for (var i = 0; i < props.length; i++) {
 		if (props[i] in style) {
 			return props[i];
@@ -258,7 +266,7 @@ export function getPosition(el) {
 export var disableTextSelection;
 export var enableTextSelection;
 var _userSelect;
-if ('onselectstart' in document) {
+if (isBrowser && 'onselectstart' in document) {
 	disableTextSelection = function () {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};

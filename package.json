@@ -89,7 +89,7 @@
       "consistent-return": 0,
       "no-unused-expressions": [
         "error",
-        { 
+        {
           "allowShortCircuit": true
         }
       ]
