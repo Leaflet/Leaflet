@@ -1,9 +1,9 @@
 // Config file for running Rollup in "normal" mode (non-watch)
 
-import rollupGitVersion from 'rollup-plugin-git-version'
-import json from 'rollup-plugin-json'
-import gitRev from 'git-rev-sync'
-import pkg from '../package.json'
+import rollupGitVersion from 'rollup-plugin-git-version';
+import json from 'rollup-plugin-json';
+import gitRev from 'git-rev-sync';
+import pkg from '../package.json';
 
 let {version} = pkg;
 let release;
@@ -24,6 +24,31 @@ const banner = `/* @preserve
  */
 `;
 
+const outro = `
+
+var oldL;
+if(typeof window !== "undefined"){
+	oldL = window.L;
+}else {
+	oldL = global.L;
+}
+exports.noConflict = function() {
+	if(typeof window !== "undefined"){
+		window.L = oldL;
+	}else{
+		global.L = oldL;
+
+	}
+	return this;
+}
+// Always export us to window global (see #2364)
+	if(typeof window !== "undefined"){
+		window.L = exports;
+	}else{
+		global.L = exports;
+	}
+`;
+
 export default {
 	input: 'src/Leaflet.js',
 	output: [
@@ -31,6 +56,7 @@ export default {
 			file: pkg.main,
 			format: 'umd',
 			name: 'L',
+			outro: outro,
 			banner: banner,
 			sourcemap: true
 		},

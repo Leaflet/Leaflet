@@ -3,10 +3,9 @@
  *
  * Various utility functions, used by Leaflet internally.
  */
-
-var isServerSide = false;
+var isBrowser = true;
 if (typeof window === 'undefined') {
-	isServerSide = true;
+	isBrowser = false;
 }
 export var freeze = Object.freeze;
 Object.freeze = function (obj) { return obj; };
@@ -204,7 +203,7 @@ export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA
 // inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 function getPrefixed(name) {
-	if (!window) { return ''; }
+	if (!isBrowser) { return ''; }
 	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
 }
 
@@ -218,14 +217,21 @@ function timeoutDefer(fn) {
 	lastTime = time + timeToCall;
 	return window.setTimeout(fn, timeToCall);
 }
-
 function noop() {
-
+	//
+}
+var _requestFn = noop;
+if (isBrowser) {
+	_requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
+}
+var _cancelFn = noop;
+if (isBrowser) {
+	_cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+	getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 }
 
-export var requestFn = (isServerSide) ? noop : window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = (isServerSide) ? noop : window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
+export var requestFn = _requestFn;
+export var cancelFn = _cancelFn;
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to

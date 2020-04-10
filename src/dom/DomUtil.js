@@ -2,9 +2,9 @@ import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
-var isServerSide = false;
-if (typeof document === 'undefined') {
-	isServerSide = true;
+var isBrowser = true;
+if (typeof window === 'undefined') {
+	isBrowser = false;
 }
 /*
  * @namespace DomUtil
@@ -41,7 +41,10 @@ export var TRANSITION_END =
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
 export function get(id) {
-	return !isServerSide && typeof id === 'string' ? document.getElementById(id) : id;
+	if (!isBrowser) {
+		return '';
+	}
+	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
 // @function getStyle(el: HTMLElement, styleAttrib: String): String
@@ -200,7 +203,7 @@ function _setOpacityIE(el, value) {
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 export function testProp(props) {
 	var style = {};
-	if (!isServerSide) {
+	if (isBrowser) {
 		style = document.documentElement.style;
 	}
 	for (var i = 0; i < props.length; i++) {
@@ -263,7 +266,7 @@ export function getPosition(el) {
 export var disableTextSelection;
 export var enableTextSelection;
 var _userSelect;
-if (!isServerSide && 'onselectstart' in document) {
+if (isBrowser && 'onselectstart' in document) {
 	disableTextSelection = function () {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
