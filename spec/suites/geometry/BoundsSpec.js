@@ -74,7 +74,27 @@ describe('Bounds', function () {
 	describe('#intersects', function () {
 		it('returns true if bounds intersect', function () {
 			expect(a.intersects(b)).to.be(true);
-			expect(a.intersects(new L.Bounds(new L.Point(100, 100), new L.Point(120, 120)))).to.eql(false);
+		});
+		it('two bounds intersect if they have at least one point in common', function () {
+			expect(a.intersects(new L.Bounds(new L.Point(14, 12), new L.Point(6, 5)))).to.be(true);
+		});
+		it('returns false if bounds not intersect', function () {
+		  expect(a.intersects(new L.Bounds(new L.Point(100, 100), new L.Point(120, 120)))).to.eql(false);
+		});
+	});
+
+	describe('#overlaps', function () {
+		it('returns true if bounds overlaps', function () {
+			expect(a.overlaps(b)).to.be(true);
+		});
+		it('two bounds overlaps if their intersection is an area', function () {
+			// point in common
+			expect(a.overlaps(new L.Bounds(new L.Point(14, 12), new L.Point(6, 5)))).to.be(false);
+			// matching boundary
+			expect(a.overlaps(new L.Bounds(new L.Point(30, 12), new L.Point(35, 25)))).to.be(false);
+		});
+		it('returns false if bounds not overlaps', function () {
+			expect(a.overlaps(new L.Bounds(new L.Point(100, 100), new L.Point(120, 120)))).to.eql(false);
 		});
 	});
 
