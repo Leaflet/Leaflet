@@ -77,6 +77,12 @@ function browserFiresNativeDblClick() {
 	}
 }
 
+var mouseSubst = {
+	mouseenter: 'mouseover',
+	mouseleave: 'mouseout',
+	wheel: !('onwheel' in window) && 'mousewheel'
+};
+
 function addOne(obj, type, fn, context) {
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
 
@@ -97,20 +103,17 @@ function addOne(obj, type, fn, context) {
 
 	} else if ('addEventListener' in obj) {
 
-		if (type === 'mousewheel') {
-			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
+		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
+			obj.addEventListener(mouseSubst[type] || type, handler, Browser.passiveEvents ? {passive: false} : false);
 
-		} else if ((type === 'touchstart') || (type === 'touchend')) {
-			obj.addEventListener(type, handler, Browser.passiveEvents ? {passive: false} : false);
-
-		} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+		} else if (type === 'mouseenter' || type === 'mouseleave') {
 			handler = function (e) {
 				e = e || window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
 			};
-			obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);
+			obj.addEventListener(mouseSubst[type], handler, false);
 
 		} else {
 			obj.addEventListener(type, originalHandler, false);
@@ -139,14 +142,7 @@ function removeOne(obj, type, fn, context) {
 
 	} else if ('removeEventListener' in obj) {
 
-		if (type === 'mousewheel') {
-			obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
-
-		} else {
-			obj.removeEventListener(
-				type === 'mouseenter' ? 'mouseover' :
-				type === 'mouseleave' ? 'mouseout' : type, handler, false);
-		}
+		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
 	} else if ('detachEvent' in obj) {
 		obj.detachEvent('on' + type, handler);
@@ -177,9 +173,9 @@ export function stopPropagation(e) {
 }
 
 // @function disableScrollPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants).
+// Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
 export function disableScrollPropagation(el) {
-	addOne(el, 'mousewheel', stopPropagation);
+	addOne(el, 'wheel', stopPropagation);
 	return this;
 }
 
@@ -240,7 +236,7 @@ var wheelPxFactor =
 	Browser.gecko ? window.devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
-// Gets normalized wheel delta from a mousewheel DOM event, in vertical
+// Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
