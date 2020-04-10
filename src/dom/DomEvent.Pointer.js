@@ -26,8 +26,8 @@ export function addPointerListener(obj, type, handler, id) {
 	} else if (type === 'touchmove') {
 		_addPointerMove(obj, handler, id);
 
-	} else if (type === 'touchend') {
-		_addPointerEnd(obj, handler, id);
+	} else if (type === 'touchend' || type === 'touchcancel') {
+		_addPointerEnd(obj, type, handler, id);
 	}
 
 	return this;
@@ -44,6 +44,8 @@ export function removePointerListener(obj, type, id) {
 
 	} else if (type === 'touchend') {
 		obj.removeEventListener(POINTER_UP, handler, false);
+
+	} else if (type === 'touchcancel') {
 		obj.removeEventListener(POINTER_CANCEL, handler, false);
 	}
 
@@ -118,12 +120,11 @@ function _addPointerMove(obj, handler, id) {
 	obj.addEventListener(POINTER_MOVE, onMove, false);
 }
 
-function _addPointerEnd(obj, handler, id) {
+function _addPointerEnd(obj, type, handler, id) {
 	var onUp = function (e) {
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_touchend' + id] = onUp;
-	obj.addEventListener(POINTER_UP, onUp, false);
-	obj.addEventListener(POINTER_CANCEL, onUp, false);
+	obj['_leaflet_' + type + id] = onUp;
+	obj.addEventListener(type === 'touchend' ? POINTER_UP : POINTER_CANCEL, onUp, false);
 }
