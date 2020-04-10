@@ -220,13 +220,13 @@ function timeoutDefer(fn) {
 function noop() {
 	//
 }
-export var _requestFn = noop;
+var _requestFn = noop;
 if (isBrowser) {
 	_requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
 }
-export var _cancelFn = noop;
+var _cancelFn = noop;
 if (isBrowser) {
-	_requestFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+	_cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
 	getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 }
 

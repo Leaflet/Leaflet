@@ -1,6 +1,6 @@
 {
   "name": "@vchangal/leaflet",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "homepage": "https://github.com/vchangal/Leaflet#readme",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
