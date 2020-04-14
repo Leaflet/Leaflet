@@ -146,7 +146,11 @@ export var GridLayer = Layer.extend({
 
 		// @option keepBuffer: Number = 2
 		// When panning the map, keep this many rows and columns of tiles before unloading them.
-		keepBuffer: 2
+		keepBuffer: 2,
+
+		// @option usedLevelForFractional: String = 'round'|'ceil'
+		// Determin which level (upper or lower) image to use for the fractional level.
+		usedLevelForFractional: 'round'
 	},
 
 	initialize: function (options) {
@@ -543,8 +547,21 @@ export var GridLayer = Layer.extend({
 		return zoom;
 	},
 
+	_usedZoom: function(zoom) {
+		var options = this.options;
+		if (options.usedLevelForFractional === 'round') {
+			return this._clampZoom(Math.round(zoom));
+		}
+		else if (options.usedLevelForFractional === 'ceil') {
+			return this._clampZoom(Math.ceil(zoom));
+		}
+		else {
+			return this._clampZoom(Math.round(zoom));
+		}
+	},
+
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = this._clampZoom(Math.round(zoom));
+		var tileZoom = this._usedZoom(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
 			tileZoom = undefined;
