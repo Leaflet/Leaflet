@@ -14,6 +14,17 @@ describe("Icon.Default", function () {
 		document.body.removeChild(div);
 	});
 
+	it("detect icon images path", function () {
+		var origPath = L.Icon.Default.imagePath; // set in after.js
+		expect(origPath).to.be.ok();
+		delete L.Icon.Default.imagePath;
+		var marker = new L.Marker([0, 0]);
+
+		expect(L.Icon.Default.imagePath).to.not.be.ok();
+		marker.addTo(map);
+		expect(L.Icon.Default.imagePath).to.equal(document.location.origin + origPath);
+	});
+
 	it("icon measures 25x41px", function () {
 		var img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
