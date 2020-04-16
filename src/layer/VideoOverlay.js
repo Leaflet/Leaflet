@@ -37,7 +37,11 @@ export var VideoOverlay = ImageOverlay.extend({
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
 		// Relevant for supported browsers. Browser compatibility- https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
-		keepAspectRatio: true
+		keepAspectRatio: true,
+
+		// @option muted: Boolean = false
+		// Whether the video starts on mute when loaded.
+		muted: false
 	},
 
 	_initImage: function () {
@@ -71,6 +75,7 @@ export var VideoOverlay = ImageOverlay.extend({
 		if (!this.options.keepAspectRatio && vid.style.hasOwnProperty('objectFit')) { vid.style['objectFit'] = 'fill'; }
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
+		vid.muted = !!this.options.muted;
 		for (var i = 0; i < this._url.length; i++) {
 			var source = DomUtil.create('source');
 			source.src = this._url[i];
