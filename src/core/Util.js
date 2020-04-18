@@ -111,10 +111,11 @@ export function wrapNum(x, range, includeMax) {
 // Returns a function which always returns `false`.
 export function falseFn() { return false; }
 
-// @function formatNum(num: Number, digits?: Number): Number
-// Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
-export function formatNum(num, digits) {
-	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
+// @function formatNum(num: Number, precision?: Number): Number
+// Returns the number `num` rounded with specified `precision`.
+// The default `precision` value is 6 decimal places.
+export function formatNum(num, precision) {
+	var pow = Math.pow(10, precision === undefined ? 6 : precision);
 	return Math.round(num * pow) / pow;
 }
 
