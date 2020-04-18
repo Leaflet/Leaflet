@@ -517,24 +517,22 @@ describe("L.LayerGroup#toGeoJSON", function () {
 	});
 });
 describe("L.GeoJSON functions", function () {
-	it("L.GeoJSON.latLngToCoords", function () {
-		var arrLatLng = [-1.4837191022531273, 43.49222084042808];
-		var arrLngLat = [arrLatLng[1], arrLatLng[0]];
-		var latLng = L.latLng(arrLatLng);
+	var arrLatLng, arrLngLat, latLng;
 
-		expect(L.GeoJSON.latLngToCoords(latLng)).to.eql([43.492221, -1.483719]);
-		expect(L.GeoJSON.latLngToCoords(latLng, 0)).to.eql([43, -1]);
-		expect(L.GeoJSON.latLngToCoords(latLng, null)).to.eql(arrLngLat);
+	beforeEach(function () {
+		arrLatLng = [-1.4837191022531273, 43.49222084042808, 50];
+		arrLngLat = [arrLatLng[1], arrLatLng[0]];
+		latLng = L.latLng(arrLatLng);
 	});
-	
-	it("L.GeoJSON.coordsToLatLngs", function () {
-		var arrEN = [-1.4837191022531273, 43.49222084042808];
-		var arrNE = [arrLatLng[1], arrLatLng[0]];
-		var coordEN = L.latLng(arrEN);
 
-		expect(L.GeoJSON.coordsToLatLngs(coordEN)).to.eql([43.492221, -1.483719]);
-		expect(L.GeoJSON.coordsToLatLngs(coordEN, 0)).to.eql([43, -1]);
-		expect(L.GeoJSON.coordsToLatLngs(coordEN, null)).to.eql(arrNE);
+	it("L.GeoJSON.latLngToCoords", function () {
+		expect(L.GeoJSON.latLngToCoords(latLng)).to.eql([43.492221, -1.483719, 50]);
+		expect(L.GeoJSON.latLngToCoords(latLng, 0)).to.eql([43, -1, 50]);
+	});
+
+	it("L.GeoJSON.coordsToLatLngs", function () {
+		expect(L.GeoJSON.latLngToCoords(latLng)).to.eql([43.492221, -1.483719, 50]);
+		expect(L.GeoJSON.latLngToCoords(latLng, 0)).to.eql([43, -1, 50]);
 	});
 
 });
