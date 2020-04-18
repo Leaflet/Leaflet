@@ -253,7 +253,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 	return latlngs;
 }
 
-// @function latLngToCoords(latlng: LatLng, precision?: Number): Array
+// @function latLngToCoords(latlng: LatLng, precision?: Number|false): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngToCoords(latlng, precision) {
@@ -262,7 +262,7 @@ export function latLngToCoords(latlng, precision) {
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
 }
 
-// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean, precision?: Number): Array
+// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean, precision?: Number|false): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
@@ -313,13 +313,13 @@ var PointToGeoJSON = {
 
 // @namespace Marker
 // @section Other methods
-// @method toGeoJSON(precision?: Number): Object
+// @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
 Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker
-// @method toGeoJSON(precision?: Number): Object
+// @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
 Circle.include(PointToGeoJSON);
@@ -327,7 +327,7 @@ CircleMarker.include(PointToGeoJSON);
 
 
 // @namespace Polyline
-// @method toGeoJSON(precision?: Number): Object
+// @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
@@ -344,7 +344,7 @@ Polyline.include({
 });
 
 // @namespace Polygon
-// @method toGeoJSON(precision?: Number): Object
+// @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
@@ -381,7 +381,7 @@ LayerGroup.include({
 		});
 	},
 
-	// @method toGeoJSON(precision?: Number): Object
+	// @method toGeoJSON(precision?: Number|false): Object
 	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	toGeoJSON: function (precision) {
