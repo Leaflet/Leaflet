@@ -516,3 +516,45 @@ describe("L.LayerGroup#toGeoJSON", function () {
 		});
 	});
 });
+
+describe.only("L.GeoJSON functions", function () {
+	var geojson = {
+		type: 'Feature',
+		properties: {},
+		geometry: {
+			type: 'Point',
+			coordinates: [20, 10, 5]
+		}
+	}, geojsonEmpty = {
+		type: 'Feature',
+		properties: {},
+		geometry: null
+	};
+
+	it("L.GeoJSON.geometryToLayer geometry type-Point", function () {
+		var expected = {
+			options: {},
+			_latlng: {lat: 10, lng: 20, alt: 5},
+			_initHooksCalled: true
+		};
+
+		expect(L.GeoJSON.geometryToLayer(geojson)).to.eql(expected);
+		expect(L.GeoJSON.geometryToLayer(geojsonEmpty)).to.eql(null);
+
+	});
+
+	it("L.GeoJSON.geometryToLayer geometry type-MultiPoint", function () {
+		var geoJsonMultiPoint = {
+			type: 'Feature',
+			properties: {},
+			geometry: {
+				type: 'MultiPoint',
+				coordinates: [[20, 10, 5], [30, 20, 4]]
+			}
+		};
+		var multiLayer = L.GeoJSON.geometryToLayer(geoJsonMultiPoint);
+
+		// layers will have value equal to size of co-ordinates
+		expect(Object.keys(multiLayer._layers).length).to.eql(2);
+	});
+});
