@@ -179,9 +179,6 @@ export var Layers = Control.extend({
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
 
-		DomEvent.disableClickPropagation(container);
-		DomEvent.disableScrollPropagation(container);
-
 		var section = this._section = DomUtil.create('section', className + '-list');
 
 		if (collapsed) {
