@@ -1845,6 +1845,19 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iDerekLi/">Derek Li</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/liubingreat/leaflet-CanvasMarker">leaflet-CanvasMarker</a>
+		</td>
+		<td>
+			A Leaflet plugin display markers and labels on canvas.
+			(<a href="http://180.76.171.45:8080/leaflet-canvas-marker/example/demo.html">demo</a>).
+			(<a href="http://180.76.171.45:8080/leaflet-canvas-marker/example/label-demo.html">label-demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/liubingreat/">liubingreat</a>
+		</td>
+	</tr>
 </table>
 
 
