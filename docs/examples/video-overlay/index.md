@@ -29,9 +29,11 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
-		id: 'mapbox.satellite',
-		attribution: ...
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+		id: 'mapbox/satellite-v9',
+		attribution: ...,
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:
@@ -106,7 +108,7 @@ This allows us to build custom interfaces. For example, we can build a small sub
 		var MyPlayControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '⏵';
+				button.innerHTML = '▶️';
 				L.DomEvent.on(button, 'click', function () {
 					videoOverlay.getElement().play();
 				});

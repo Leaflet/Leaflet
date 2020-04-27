@@ -41,11 +41,11 @@ The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/
 @miniclass MouseEvent (Event objects)
 @inherits Event
 @property latlng: LatLng
-The geographical point where the mouse event occured.
+The geographical point where the mouse event occurred.
 @property layerPoint: Point
-Pixel coordinates of the point where the mouse event occured relative to the map layer.
+Pixel coordinates of the point where the mouse event occurred relative to the map layer.
 @property containerPoint: Point
-Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
+Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.
 @property originalEvent: DOMEvent
 The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) that triggered this Leaflet event.
 

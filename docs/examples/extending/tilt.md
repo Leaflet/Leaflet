@@ -39,8 +39,15 @@ title: Tilt handler
 		
 		_tilt: function(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-			this._map.panBy( L.point( ev.gamma, ev.beta ) );
-			document.getElementById('info').innerHTML = ev.gamma + ',' + ev.beta;
+			var info;
+			var offset = L.point(ev.gamma, ev.beta)
+			if (offset) {
+				this._map.panBy(offset);
+				info = ev.gamma + ',' + ev.beta;
+			} else {
+				info = 'Device orientation not detected'
+			}
+			document.getElementById('info').innerHTML = info
 		}
 	});
 	

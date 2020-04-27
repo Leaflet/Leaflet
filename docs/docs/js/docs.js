@@ -1,3 +1,6 @@
+/* global hljs */
+hljs.configure({tabReplace: '    '});
+hljs.initHighlighting();
 
 var tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';

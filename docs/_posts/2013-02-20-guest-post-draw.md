@@ -12,7 +12,7 @@ _This is a guest post from Jacob Toye, an active Leaflet contributor and also th
 
 Upon release the immediate response from the Leaflet community was very positive. It became clear that the next step would be progressing this tool to a state where users could edit and delete shapes in addition to creating them. This is ultimately what Leaflet.draw 0.2 set out to do.
 
-After a few months of off and on development, with most of this spare time kindy sponsored by my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 -- your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps. :)
+After a few months of off and on development, with most of this spare time kindly sponsored by my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 -- your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps. :)
 
 _Note from Vladimir: the polyline/polygon editing functionality from Leaflet core has been moved into this plugin where it fits much better. The plugin in turn has moved into [Leaflet organization on GitHub](https://github.com/Leaflet) and is now officially supported by the Leaflet development team. Note that version 0.2 currently depends on Leaflet master (in-progress development version) to work._
 

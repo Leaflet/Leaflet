@@ -289,11 +289,11 @@ export var Layers = Control.extend({
 		// @namespace Map
 		// @section Layer events
 		// @event baselayerchange: LayersControlEvent
-		// Fired when the base layer is changed through the [layer control](#control-layers).
+		// Fired when the base layer is changed through the [layers control](#control-layers).
 		// @event overlayadd: LayersControlEvent
-		// Fired when an overlay is selected through the [layer control](#control-layers).
+		// Fired when an overlay is selected through the [layers control](#control-layers).
 		// @event overlayremove: LayersControlEvent
-		// Fired when an overlay is deselected through the [layer control](#control-layers).
+		// Fired when an overlay is deselected through the [layers control](#control-layers).
 		// @namespace Control.Layers
 		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :

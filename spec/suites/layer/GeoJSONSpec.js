@@ -31,6 +31,21 @@ describe("L.GeoJSON", function () {
 			layer.addData(geojsonEmpty);
 			expect(layer.getLayers().length).to.eql(0);
 		});
+
+		it("makes default marker inherit group options if explicitly requested", function () {
+			// Check first that it does not inherit group options by default
+			var options = {
+				customOption: "My Custom Option"
+			};
+			var layer = new L.GeoJSON(null, options);
+			layer.addData(geojson);
+			expect(layer.getLayers()[0].options.customOption).to.equal(undefined);
+
+			// Now make it inherit group options
+			layer.options.markersInheritOptions = true;
+			layer.addData(geojson);
+			expect(layer.getLayers()[1].options.customOption).to.eql(options.customOption);
+		});
 	});
 
 	describe('resetStyle', function () {
@@ -51,6 +66,36 @@ describe("L.GeoJSON", function () {
 			geojson.resetStyle(layer);
 			expect(layer.options.weight).to.be(7);
 			expect(layer.options.color).to.be('chocolate');
+		});
+
+		it('should reset init options of all child layers', function () {
+			var feature = {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
+				}
+			};
+			var feature2 = {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates:[[-3.35, 50.38], [-3.38, 50.38]]
+				}
+			};
+			var geojson = L.geoJSON([feature, feature2], {weight: 7, color: 'chocolate'});
+			geojson.setStyle({weight: 22, color: 'coral'});
+			var layer = geojson.getLayers()[0];
+			expect(layer.options.weight).to.be(22);
+			expect(layer.options.color).to.be('coral');
+			var layer2 = geojson.getLayers()[1];
+			expect(layer2.options.weight).to.be(22);
+			expect(layer2.options.color).to.be('coral');
+			geojson.resetStyle(); // Should apply to all layers
+			expect(layer.options.weight).to.be(7);
+			expect(layer.options.color).to.be('chocolate');
+			expect(layer2.options.weight).to.be(7);
+			expect(layer2.options.color).to.be('chocolate');
 		});
 
 	});

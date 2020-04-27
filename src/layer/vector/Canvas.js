@@ -236,7 +236,10 @@ export var Canvas = Renderer.extend({
 			var size = bounds.getSize();
 			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
 		} else {
+			this._ctx.save();
+			this._ctx.setTransform(1, 0, 0, 1, 0, 0);
 			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
+			this._ctx.restore();
 		}
 	},
 
@@ -345,8 +348,10 @@ export var Canvas = Renderer.extend({
 
 		for (var order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
-			if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
-				clickedLayer = layer;
+			if (layer.options.interactive && layer._containsPoint(point)) {
+				if (!(e.type === 'click' || e.type !== 'preclick') || !this._map._draggableMoved(layer)) {
+					clickedLayer = layer;
+				}
 			}
 		}
 		if (clickedLayer)  {
@@ -403,7 +408,7 @@ export var Canvas = Renderer.extend({
 		}
 
 		this._mouseHoverThrottled = true;
-		setTimeout(L.bind(function () {
+		setTimeout(Util.bind(function () {
 			this._mouseHoverThrottled = false;
 		}, this), 32);
 	},

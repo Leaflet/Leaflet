@@ -91,7 +91,7 @@ Rectangle is a convenient shortcut for creating rectangular area layers. You cou
 
 #### Icon API
 
-[Icon][] API was improved to be simpler and more flexible, and the changes are not backwards-compatible too (the old code can be updated very quickly though). Check out the updated [Custom Icons tutorial](../../../examples/custom-icons.html), or head straigt to the [API docs](../../../reference.html#icon).
+[Icon][] API was improved to be simpler and more flexible, and the changes are not backwards-compatible too (the old code can be updated very quickly though). Check out the updated [Custom Icons tutorial](../../../examples/custom-icons.html), or head straight to the [API docs](../../../reference.html#icon).
 
 #### Control API
 
@@ -99,7 +99,7 @@ Custom Controls are much easier to create now --- checkout the [API docs](../../
 
 #### Better Events API
 
-[Aaron King][] brough some improvements to [event methods](../../../reference.html#events). `on` and `off` methods can now accept multiple event types at once as a string space-separated types:
+[Aaron King][] brought some improvements to [event methods](../../../reference.html#events). `on` and `off` methods can now accept multiple event types at once as a string space-separated types:
 
 	map.on('click dblclick moveend', doStuff);
 
@@ -127,7 +127,7 @@ You may think that Leaflet is unbelievably fast already, but this version brings
  * Box shadows on controls were replaced with simple borders on mobile devices to improve performance.
  * Vector layers won't flicker after each panning on iOS now.
 
-In addition, there are several usability improvents not already mentioned:
+In addition, there are several usability improvements not already mentioned:
 
  * Panning now works even if there are markers under the cursor (helps on crowded maps).
  * Popup appearance is slightly improved.
@@ -143,11 +143,11 @@ Here's [a full list of bugfixes](https://github.com/Leaflet/Leaflet/blob/master/
 
 Besides the GeoJSON and Icon changes mentioned above, here's a [list of potentially breaking changes](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#other-breaking-api-changes) --- read it carefully when updating your code (shouldn't take much time though).
 
-Download options for Leaflet 0.4 (including the actual download, the CDN-hosted version, and intructions for building manually) are listed on the [download page](../../../download.html).
+Download options for Leaflet 0.4 (including the actual download, the CDN-hosted version, and instructions for building manually) are listed on the [download page](../../../download.html).
 
 ### Code Stats
 
-I'm still commited to keeping Leaflet as small and lightweight as possible. Here's a breakdown of the current size of the library:
+I'm still committed to keeping Leaflet as small and lightweight as possible. Here's a breakdown of the current size of the library:
 
  * JavaScript: **27 KB** minified and gzipped (102 KB minified, 176 KB in source, 7578 lines of code)
  * CSS: **1.8 KB** gzipped (8 KB, 377 lines of code)
@@ -155,7 +155,7 @@ I'm still commited to keeping Leaflet as small and lightweight as possible. Here
 
 ### Documentation Update
 
-Until now, Leaflet API reference was incomplete. But for this release, enourmous effort was put into making it 100% complete, up-to-date and generally the best API reference page you've ever seen. All remaining classes, methods, options, events and properties were carefully documented and more code examples added, and the docs will always be kept up-to-date from now on.
+Until now, Leaflet API reference was incomplete. But for this release, enormous effort was put into making it 100% complete, up-to-date and generally the best API reference page you've ever seen. All remaining classes, methods, options, events and properties were carefully documented and more code examples added, and the docs will always be kept up-to-date from now on.
 
 Besides, the design of the page was significantly improved --- with better colors, font, spacing, hyphenation, manually adjusted column widths, etc. --- lots of detail to make it beautiful and easy to read.
 
@@ -181,7 +181,7 @@ Since the previous release, Leaflet got adopted by many great companies, includi
 
 ### Thank You
 
-I'd like to thank all the awesome people that helped Leaflet becoming what it is now --- contributed code, reported bugs, used Leaflet on their websites, told collegues about it, talked about it on conferences, etc. Keep up the great work!
+I'd like to thank all the awesome people that helped Leaflet becoming what it is now --- contributed code, reported bugs, used Leaflet on their websites, told colleagues about it, talked about it on conferences, etc. Keep up the great work!
 
 Special thanks go to [Dave Leaver][] for his inspiring contributions including improved zoom animation and the state-of-the-art clustering plugin, and [Jason Sanford][] for his friendly support (and setting up the Leaflet CDN among other things).
 
