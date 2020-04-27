@@ -215,7 +215,8 @@ describe("Map", function () {
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
 		});
 
-		it("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
+		// fixme: https://github.com/Leaflet/Leaflet/pull/5204#issuecomment-619405358
+		it.skip("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
 			var container = map.getContainer();
 			container.style.height = 369;
 			container.style.width = 1048;
@@ -233,6 +234,7 @@ describe("Map", function () {
 			map.setZoom(16);
 			var boundsZoom = map.getBoundsZoom(bounds, false, padding);
 			crsMock.restore();
+			crsMock.verify(); // ensure that latLngToPoint was called with expected args
 			expect(boundsZoom).to.eql(9); // result expected for EPSG:25833
 		});
 
