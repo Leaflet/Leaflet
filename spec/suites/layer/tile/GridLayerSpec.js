@@ -1,4 +1,3 @@
-
 describe('GridLayer', function () {
 
 	var div, map;
@@ -15,6 +14,7 @@ describe('GridLayer', function () {
 	});
 
 	afterEach(function () {
+		map.remove();
 		document.body.removeChild(div);
 	});
 
@@ -129,20 +129,14 @@ describe('GridLayer', function () {
 			div.style.width = '512px';
 			div.style.height = '512px';
 
-			map.remove();
-			map = L.map(div);
 			map.setView([0, 0], 10);
 
 			grid = L.gridLayer();
 		});
 
-		afterEach(function () {
-			div.style.width = '800px';
-			div.style.height = '600px';
-		});
-
 		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', function (done) {
+			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
 			var count = 0,
 			    loadCount = 0;
 			grid.createTile = function (coords) {
@@ -237,12 +231,14 @@ describe('GridLayer', function () {
 	});
 
 	describe("#getMaxZoom, #getMinZoom", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 1);
+		});
+
 		describe("when a tilelayer is added to a map with no other layers", function () {
 			it("has the same zoomlevels as the tilelayer", function () {
 				var maxZoom = 10,
 				    minZoom = 5;
-
-				map.setView([0, 0], 1);
 
 				L.gridLayer({
 					maxZoom: maxZoom,
@@ -256,8 +252,6 @@ describe('GridLayer', function () {
 
 		describe("accessing a tilelayer's properties", function () {
 			it('provides a container', function () {
-				map.setView([0, 0], 1);
-
 				var layer = L.gridLayer().addTo(map);
 				expect(layer.getContainer()).to.be.ok();
 			});
@@ -265,8 +259,6 @@ describe('GridLayer', function () {
 
 		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
-				map.setView([0, 0], 1);
-
 				L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map);
 				expect(map.getMinZoom()).to.be(10);
 				expect(map.getMaxZoom()).to.be(15);
@@ -294,26 +286,24 @@ describe('GridLayer', function () {
 					L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
 					L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
 				];
-				map.whenReady(function () {
-					expect(map.getMinZoom()).to.be(0);
-					expect(map.getMaxZoom()).to.be(25);
+				expect(map.getMinZoom()).to.be(0);
+				expect(map.getMaxZoom()).to.be(25);
 
-					map.removeLayer(tiles[0]);
-					expect(map.getMinZoom()).to.be(0);
-					expect(map.getMaxZoom()).to.be(25);
+				map.removeLayer(tiles[0]);
+				expect(map.getMinZoom()).to.be(0);
+				expect(map.getMaxZoom()).to.be(25);
 
-					map.removeLayer(tiles[3]);
-					expect(map.getMinZoom()).to.be(5);
-					expect(map.getMaxZoom()).to.be(20);
+				map.removeLayer(tiles[3]);
+				expect(map.getMinZoom()).to.be(5);
+				expect(map.getMaxZoom()).to.be(20);
 
-					map.removeLayer(tiles[2]);
-					expect(map.getMinZoom()).to.be(5);
-					expect(map.getMaxZoom()).to.be(10);
+				map.removeLayer(tiles[2]);
+				expect(map.getMinZoom()).to.be(5);
+				expect(map.getMaxZoom()).to.be(10);
 
-					map.removeLayer(tiles[1]);
-					expect(map.getMinZoom()).to.be(0);
-					expect(map.getMaxZoom()).to.be(Infinity);
-				});
+				map.removeLayer(tiles[1]);
+				expect(map.getMinZoom()).to.be(0);
+				expect(map.getMaxZoom()).to.be(Infinity);
 			});
 		});
 	});
