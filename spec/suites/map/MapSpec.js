@@ -231,7 +231,9 @@ describe("Map", function () {
 
 			var padding = L.point(-50, -50);
 			map.setZoom(16);
-			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(9);
+			var boundsZoom = map.getBoundsZoom(bounds, false, padding);
+			crsMock.restore();
+			expect(boundsZoom).to.eql(9); // result expected for EPSG:25833
 		});
 
 		it("respects the 'inside' parameter", function () {
