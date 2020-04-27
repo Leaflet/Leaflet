@@ -215,27 +215,36 @@ describe("Map", function () {
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
 		});
 
-		// fixme: https://github.com/Leaflet/Leaflet/pull/5204#issuecomment-619405358
-		it.skip("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
+		it("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
 			var container = map.getContainer();
 			container.style.height = 369;
 			container.style.width = 1048;
 			document.body.appendChild(container);
-			var bounds = L.latLngBounds(L.latLng([62.18475569507688, 6.926335173954951]), L.latLng([62.140483526511694, 6.923933370740089]));
 
-			// The following coordinates are bounds projected with proj4leaflet crs = EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs
-			var projectedSE = L.point(7800503.059925064, 6440062.353052008);
-			var projectedNW = L.point(7801987.203481699, 6425186.447901004);
-			var crsMock = sinon.mock(map.options.crs);
-			crsMock.expects("project").withArgs(bounds.getNorthWest()).returns(projectedNW);
-			crsMock.expects("project").withArgs(bounds.getSouthEast()).returns(projectedSE);
-
-			var padding = L.point(-50, -50);
 			map.setZoom(16);
+			var bounds = L.latLngBounds(
+				[62.18475569507688, 6.926335173954951],
+				[62.140483526511694, 6.923933370740089]);
+			var padding = L.point(-50, -50);
+
+			// control case: default crs
 			var boundsZoom = map.getBoundsZoom(bounds, false, padding);
+			expect(boundsZoom).to.eql(9);
+
+			// test case: EPSG:25833 (mocked, for somplicity)
+			// The following coordinates are bounds projected with proj4leaflet crs = EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs
+			var crsMock = sinon.mock(map.options.crs);
+			crsMock.expects("latLngToPoint")
+				.withExactArgs(bounds.getNorthWest(), 16)
+				.returns(L.point(7800503.059925064, 6440062.353052008));
+			crsMock.expects("latLngToPoint")
+				.withExactArgs(bounds.getSouthEast(), 16)
+				.returns(L.point(7801987.203481699, 6425186.447901004));
+			boundsZoom = map.getBoundsZoom(bounds, false, padding);
 			crsMock.restore();
+
 			crsMock.verify(); // ensure that latLngToPoint was called with expected args
-			expect(boundsZoom).to.eql(9); // result expected for EPSG:25833
+			expect(boundsZoom).to.eql(7); // result expected for EPSG:25833
 		});
 
 		it("respects the 'inside' parameter", function () {
