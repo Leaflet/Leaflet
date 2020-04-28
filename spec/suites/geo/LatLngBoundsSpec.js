@@ -89,9 +89,11 @@ describe('LatLngBounds', function () {
 		it('returns true if properly set up', function () {
 			expect(a.isValid()).to.be.ok();
 		});
+
 		it('returns false if is invalid', function () {
 			expect(c.isValid()).to.not.be.ok();
 		});
+
 		it('returns true if extended', function () {
 			c.extend([0, 0]);
 			expect(c.isValid()).to.be.ok();
@@ -108,35 +110,30 @@ describe('LatLngBounds', function () {
 		it('returns a proper bbox south value', function () {
 			expect(a.getSouth()).to.eql(14);
 		});
-
 	});
 
 	describe('#getEast', function () {
 		it('returns a proper bbox east value', function () {
 			expect(a.getEast()).to.eql(40);
 		});
-
 	});
 
 	describe('#getNorth', function () {
 		it('returns a proper bbox north value', function () {
 			expect(a.getNorth()).to.eql(30);
 		});
-
 	});
 
 	describe('#toBBoxString', function () {
 		it('returns a proper left,bottom,right,top bbox', function () {
 			expect(a.toBBoxString()).to.eql("12,14,40,30");
 		});
-
 	});
 
 	describe('#getNorthWest', function () {
 		it('returns a proper north-west LatLng', function () {
 			expect(a.getNorthWest()).to.eql(new L.LatLng(a.getNorth(), a.getWest()));
 		});
-
 	});
 
 	describe('#getSouthEast', function () {
@@ -182,9 +179,9 @@ describe('LatLngBounds', function () {
 		it('returns true if overlaps the given bounds', function () {
 			expect(a.overlaps([[16, 20], [50, 60]])).to.eql(true);
 		});
+
 		it('returns false if just touches the boundary of the given bounds', function () {
 			expect(a.overlaps([[25, 40], [55, 50]])).to.eql(false);
 		});
 	});
-
 });

@@ -40,7 +40,6 @@ describe("Map.TouchZoom", function () {
 			.down().moveBy(200, 0, 500).up(100);
 	});
 
-
 	it.skipIfNotTouch("Decreases zoom when pinching in", function (done) {
 		var container = document.createElement('div');
 		container.style.width = container.style.height = '600px';
@@ -81,7 +80,4 @@ describe("Map.TouchZoom", function () {
 		f2.wait(100).moveTo(525, 300, 0)
 			.down().moveBy(-200, 0, 500).up(100);
 	});
-
-
-
 });

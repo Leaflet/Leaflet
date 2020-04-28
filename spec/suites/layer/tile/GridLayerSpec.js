@@ -1,5 +1,4 @@
 describe('GridLayer', function () {
-
 	var div, map;
 
 	beforeEach(function () {
@@ -44,7 +43,6 @@ describe('GridLayer', function () {
 	});
 
 	it('positions tiles correctly with wrapping and bounding', function () {
-
 		map.setView([0, 0], 1);
 
 		var tiles = [];
@@ -308,7 +306,6 @@ describe('GridLayer', function () {
 		});
 	});
 
-
 	describe("min/maxNativeZoom option", function () {
 		it("calls createTile() with maxNativeZoom when map zoom is larger", function (done) {
 			map.setView([0, 0], 10);
@@ -404,7 +401,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 8 tiles zoom 1", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(8);
 				expect(counts.tileload).to.be(8);
@@ -417,7 +413,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 5 tiles zoom 0", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(5);
 				expect(counts.tileload).to.be(5);
@@ -430,7 +425,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 16 tiles zoom 10", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -445,7 +439,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -469,7 +462,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -492,9 +484,7 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 
-
 		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -512,16 +502,12 @@ describe('GridLayer', function () {
 				clock.tick(250);
 			});
 
-
 			map.addLayer(grid).setView([0, 0], 18);
 			clock.tick(250);
 		});
-
 	});
 
-
 	describe("number of 256px tiles loaded in synchronous animated grid @800x600px", function () {
-
 		var clock, grid, counts;
 
 		beforeEach(function () {
@@ -567,7 +553,6 @@ describe('GridLayer', function () {
 			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
 		}
 
-
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
 		function runFrames(n) {
 			return _runFrames(n)();
@@ -588,7 +573,6 @@ describe('GridLayer', function () {
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
-
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -699,7 +683,6 @@ describe('GridLayer', function () {
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
-
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -773,7 +756,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
-
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -803,7 +785,6 @@ describe('GridLayer', function () {
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 290, unloads 275 tiles on MAD-TRD flyTo()", function (done) {
-
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
@@ -886,7 +867,6 @@ describe('GridLayer', function () {
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
 		it("Loads map, moves forth by 512 px, keepBuffer = 0", function (done) {
-
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -934,7 +914,6 @@ describe('GridLayer', function () {
 					// OOOO
 					map.panBy([512, 512], {animate: false});
 					// clock.tick(250);
-
 				});
 			});
 
@@ -948,7 +927,6 @@ describe('GridLayer', function () {
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
 		it("Loads map, moves forth and back by 512 px, keepBuffer = 0", function (done) {
-
 			grid.once('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -993,7 +971,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads map, moves forth and back by 512 px, default keepBuffer", function (done) {
-
 			var spy = sinon.spy();
 
 			grid.on('load', function () {
@@ -1028,7 +1005,6 @@ describe('GridLayer', function () {
 
 	describe("nowrap option", function () {
 		it("When false, uses same coords at zoom 0 for all tiles", function (done) {
-
 			var grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),
@@ -1050,7 +1026,6 @@ describe('GridLayer', function () {
 		});
 
 		it("When true, uses different coords at zoom level 0 for all tiles", function (done) {
-
 			var grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),
@@ -1072,7 +1047,6 @@ describe('GridLayer', function () {
 		});
 
 		it("When true and with bounds, loads just one tile at zoom level 0", function (done) {
-
 			var grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),

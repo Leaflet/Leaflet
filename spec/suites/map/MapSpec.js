@@ -305,7 +305,6 @@ describe("Map", function () {
 			});
 			map.setView(center, 18, {animate: false});
 		});
-
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {
@@ -380,7 +379,6 @@ describe("Map", function () {
 	}
 
 	describe("#addLayer", function () {
-
 		it("calls layer.onAdd immediately if the map is ready", function () {
 			var layer = layerSpy();
 			map.setView([0, 0], 0);
@@ -994,7 +992,6 @@ describe("Map", function () {
 		});
 	});
 
-
 	describe('#fitBounds after layers set', function () {
 		var center = L.latLng(22, 33),
 		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122)),
@@ -1022,7 +1019,6 @@ describe("Map", function () {
 		});
 
 	});
-
 
 	describe("#panInside", function () {
 		var center,
@@ -1108,9 +1104,7 @@ describe("Map", function () {
 		});
 	});
 
-
 	describe('#DOM events', function () {
-
 		beforeEach(function () {
 			container.style.width = '400px';
 			container.style.height = '400px';
@@ -1253,7 +1247,6 @@ describe("Map", function () {
 			});
 			happen.click(layer._icon);
 		});
-
 	});
 
 	describe('#getScaleZoom && #getZoomScale', function () {

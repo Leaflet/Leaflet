@@ -1,10 +1,9 @@
 describe('PolylineGeometry', function () {
+	var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
 
-	var c = document.createElement('div');
-	c.style.width = '400px';
-	c.style.height = '400px';
-	var map = new L.Map(c);
-	map.setView(new L.LatLng(55.8, 37.6), 6);
+	after(function () {
+		map.remove();
+	});
 
 	describe("#distanceTo", function () {
 		it("calculates distances to points", function () {

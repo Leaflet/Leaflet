@@ -1,5 +1,4 @@
 describe("Class", function () {
-
 	describe("#extend", function () {
 		var Klass,
 		    constructor,
@@ -170,7 +169,6 @@ describe("Class", function () {
 			expect(spy1.called).to.be.ok();
 		});
 	});
-
 
 	describe("#include", function () {
 		var Klass;

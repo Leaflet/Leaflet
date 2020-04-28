@@ -1,7 +1,5 @@
 describe('Events', function () {
-
 	describe('#fireEvent', function () {
-
 		it('fires all listeners added through #addEventListener', function () {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
@@ -382,7 +380,6 @@ describe('Events', function () {
 	});
 
 	describe('#on, #off & #fire', function () {
-
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
@@ -650,5 +647,4 @@ describe('Events', function () {
 			expect(spy.called).to.be(true);
 		});
 	});
-
 });

@@ -212,6 +212,7 @@ describe("CRS.Simple", function () {
 		it("returns coords as is", function () {
 			expect(crs.wrapLatLng(new L.LatLng(270, 400)).equals(new L.LatLng(270, 400))).to.be(true);
 		});
+
 		it("wraps coords if configured", function () {
 			var crs = L.extend({}, L.CRS.Simple, {
 				wrapLng: [-200, 200],

@@ -19,6 +19,7 @@ describe("Marker", function () {
 	});
 
 	afterEach(function () {
+		map.remove();
 		document.body.removeChild(div);
 	});
 
@@ -328,6 +329,5 @@ describe("Marker", function () {
 			});
 			happen.mousemove(marker._icon);
 		});
-
 	});
 });
