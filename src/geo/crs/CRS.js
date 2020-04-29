@@ -112,7 +112,7 @@ export var CRS = {
 		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
-		return new LatLng(lat, lng, alt);
+		return new LatLng(lat, lng, alt, this);
 	},
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
@@ -131,8 +131,8 @@ export var CRS = {
 
 		var sw = bounds.getSouthWest(),
 		    ne = bounds.getNorthEast(),
-		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
-		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
+		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift, undefined, this),
+		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift, undefined, this);
 
 		return new LatLngBounds(newSw, newNe);
 	}

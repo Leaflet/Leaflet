@@ -1,5 +1,6 @@
 import {CRS} from './CRS';
 import * as Util from '../../core/Util';
+import {toLatLngBounds} from '../LatLngBounds';
 
 /*
  * @namespace CRS
@@ -29,5 +30,16 @@ export var Earth = Util.extend({}, CRS, {
 		    a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
 		    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return this.R * c;
+	},
+
+	// @method extendLatLng(latLng: LatLng, sizeInMeters: Number): LatLngBounds
+	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
+	extendLatLng: function (latLng, sizeInMeters) {
+		var latAccuracy = 180 * sizeInMeters / 40075017,
+		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * latLng.lat);
+
+		return toLatLngBounds(
+			[latLng.lat - latAccuracy, latLng.lng - lngAccuracy],
+			[latLng.lat + latAccuracy, latLng.lng + lngAccuracy]);
 	}
 });

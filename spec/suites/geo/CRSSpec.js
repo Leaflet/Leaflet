@@ -221,6 +221,16 @@ describe("CRS.Simple", function () {
 			expect(crs.wrapLatLng(new L.LatLng(300, -250))).nearLatLng(new L.LatLng(-100, 150));
 		});
 	});
+
+	describe("extendLatLng", function () {
+		it("should extend a given LatLng by the number of units in all directions", function () {
+			var bounds = crs.extendLatLng(new L.LatLng(100, 100), 50);
+			expect(bounds.getNorth()).to.be(125);
+			expect(bounds.getEast()).to.be(125);
+			expect(bounds.getSouth()).to.be(75);
+			expect(bounds.getWest()).to.be(75);
+		});
+	});
 });
 
 describe("CRS", function () {
@@ -264,6 +274,8 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 });
 
 describe("CRS.Earth", function () {
+	var crs = L.CRS.Earth;
+
 	describe("#distance", function () {
 		// Test values from http://rosettacode.org/wiki/Haversine_formula,
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
@@ -271,6 +283,15 @@ describe("CRS.Earth", function () {
 		// and that sounds serious.
 		var p1 = L.latLng(36.12, -86.67);
 		var p2 = L.latLng(33.94, -118.40);
-		expect(L.CRS.Earth.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		expect(crs.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+	});
+
+	describe("extendLatLng", function () {
+		it("should extend a given LatLng by half of the number of meters in all directions", function () {
+			var bounds = crs.extendLatLng(new L.LatLng(50, 30), 400);
+
+			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
+			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
+		});
 	});
 });

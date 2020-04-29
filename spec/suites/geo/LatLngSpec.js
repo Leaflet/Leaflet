@@ -29,6 +29,15 @@ describe('LatLng', function () {
 			expect(b.alt).to.eql(-50);
 		});
 
+		it('has a default crs of earth', function () {
+			var a = new L.LatLng(25, 74, 50);
+			expect(a.crs).to.eql(L.CRS.Earth);
+		});
+
+		it('sets crs', function () {
+			var a = new L.LatLng(25, 74, 50, L.CRS.Simple);
+			expect(a.crs).to.eql(L.CRS.Simple);
+		});
 	});
 
 	describe('#equals', function () {
@@ -112,6 +121,21 @@ describe('LatLng', function () {
 			expect(L.latLng(50, 30, 100)).to.eql(new L.LatLng(50, 30, 100));
 		});
 
+		it('accepts crs as fourth parameter', function () {
+			var latLng = new L.LatLng(25, 74, 50, L.CRS.Simple);
+			expect(latLng.crs).to.eql(L.CRS.Simple);
+		});
+
+		it('accepts an object with crs', function () {
+			var latLng = L.latLng({
+				lat: 25,
+				lng: 74,
+				alt: 50,
+				crs: L.CRS.Simple
+			});
+			expect(latLng.crs).to.eql(L.CRS.Simple);
+		});
+
 		it('accepts an object with alt', function () {
 			expect(L.latLng({lat: 50, lng: 30, alt: 100})).to.eql(new L.LatLng(50, 30, 100));
 			expect(L.latLng({lat: 50, lon: 30, alt: 100})).to.eql(new L.LatLng(50, 30, 100));
@@ -121,12 +145,13 @@ describe('LatLng', function () {
 	describe('#clone', function () {
 
 		it('should clone attributes', function () {
-			var a = new L.LatLng(50.5, 30.5, 100);
+			var a = new L.LatLng(50.5, 30.5, 100, L.CRS.Simple);
 			var b = a.clone();
 
 			expect(b.lat).to.equal(50.5);
 			expect(b.lng).to.equal(30.5);
 			expect(b.alt).to.equal(100);
+			expect(b.crs).to.equal(L.CRS.Simple);
 		});
 
 		it('should create another reference', function () {
@@ -135,7 +160,6 @@ describe('LatLng', function () {
 
 			expect(a === b).to.be(false);
 		});
-
 	});
 
 });
