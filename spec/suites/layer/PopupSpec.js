@@ -224,7 +224,7 @@ describe('Popup', function () {
 			L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 		});
 
-		it.skipInNonPhantom("non-any3d browsers", function () {
+		it.skipIf3d("non-any3d browsers", function () {
 			marker1.bindPopup('Popup').addTo(map);
 			marker1.openPopup();
 			var defaultLeft = parseInt(marker1._popup._container.style.left, 10);
@@ -245,7 +245,7 @@ describe('Popup', function () {
 			expect(offsetBottom + offset.y).to.eql(defaultBottom);
 		});
 
-		it.skipInPhantom("any3d browsers", function () {
+		it.skipIfNo3d("any3d browsers", function () {
 			marker1.bindPopup('Popup').addTo(map);
 			marker1.openPopup();
 			var defaultLeft = marker1._popup._container._leaflet_pos.x;

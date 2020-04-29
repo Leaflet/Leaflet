@@ -210,9 +210,8 @@ describe("Map", function () {
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19);
 		});
 
-		it.skipInPhantom("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
+		it.skipIfNo3d("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
 			container.style.height = height;
-			expect(L.Browser.any3d).to.be.ok(); // precondition
 			map.options.zoomSnap = 0.5;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
 			map.options.zoomSnap = 0.2;
@@ -816,8 +815,7 @@ describe("Map", function () {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it.skipInNonPhantom('zoomIn ignores the zoomDelta option on non-any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.not.be.ok(); // precondition
+		it.skipIf3d('zoomIn ignores the zoomDelta option on non-any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.once('zoomend', function () {
@@ -828,8 +826,7 @@ describe("Map", function () {
 			map.zoomIn(null, {animate: false});
 		});
 
-		it.skipInPhantom('zoomIn respects the zoomDelta option on any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.be.ok(); // precondition
+		it.skipIfNo3d('zoomIn respects the zoomDelta option on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -841,8 +838,7 @@ describe("Map", function () {
 			map.zoomIn(null, {animate: false});
 		});
 
-		it.skipInPhantom('zoomOut respects the zoomDelta option on any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.be.ok(); // precondition
+		it.skipIfNo3d('zoomOut respects the zoomDelta option on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -854,8 +850,7 @@ describe("Map", function () {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it.skipInPhantom('zoomIn snaps to zoomSnap on any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.be.ok(); // precondition
+		it.skipIfNo3d('zoomIn snaps to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', function () {
@@ -866,8 +861,7 @@ describe("Map", function () {
 			map.zoomIn(0.22, {animate: false});
 		});
 
-		it.skipInPhantom('zoomOut snaps to zoomSnap on any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.be.ok(); // precondition
+		it.skipIfNo3d('zoomOut snaps to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', function () {
@@ -910,8 +904,7 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
-		it.skipInPhantom('Snaps zoom to zoomSnap on any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.be.ok(); // precondition
+		it.skipIfNo3d('Snaps zoom to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2.75);
@@ -921,8 +914,7 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
-		it.skipInNonPhantom('Ignores zoomSnap on non-any3d browsers', function (done) {
-			expect(L.Browser.any3d).to.not.be.ok(); // precondition
+		it.skipIf3d('Ignores zoomSnap on non-any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2);

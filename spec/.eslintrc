@@ -14,7 +14,6 @@
     "expect": false,
     "sinon": false,
     "happen": false,
-    "Hand": false,
-    "takeScreenshot"
+    "Hand": false
   }
 }

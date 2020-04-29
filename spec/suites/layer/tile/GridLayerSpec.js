@@ -572,7 +572,7 @@ describe('GridLayer', function () {
 
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
+		it.skipIfNo3d("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -682,7 +682,7 @@ describe('GridLayer', function () {
 
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
+		it.skipIfNo3d("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -784,7 +784,7 @@ describe('GridLayer', function () {
 
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 290, unloads 275 tiles on MAD-TRD flyTo()", function (done) {
+		it.skipIfNo3d("Loads 290, unloads 275 tiles on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
