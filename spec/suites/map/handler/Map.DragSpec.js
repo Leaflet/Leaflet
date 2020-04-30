@@ -341,7 +341,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var toucher = hand.growFinger('touch');
+			var toucher = hand.growFinger(touchEventType);
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -374,7 +374,7 @@ describe("Map.Drag", function () {
 				}
 			});
 
-			var toucher = hand.growFinger('touch');
+			var toucher = hand.growFinger(touchEventType);
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// L.Draggable. This should result in a click and not a drag.
@@ -420,8 +420,8 @@ describe("Map.Drag", function () {
 				}
 			});
 
-			var f1 = hand.growFinger('touch');
-			var f2 = hand.growFinger('touch');
+			var f1 = hand.growFinger(touchEventType);
+			var f2 = hand.growFinger(touchEventType);
 
 			hand.sync(5);
 			f1.wait(100).moveTo(275, 300, 0)

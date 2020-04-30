@@ -30,8 +30,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -71,8 +71,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
