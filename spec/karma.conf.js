@@ -92,6 +92,12 @@ module.exports = function (config) {
 		browsers: ['PhantomJSCustom'],
 
 		customLaunchers: {
+			'Chrome1280x1024': {
+				base: 'ChromeHeadless',
+				// increased viewport is required for some tests (TODO fix tests)
+				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
+				flags: ['--window-size=1280,1024']
+			},
 			'PhantomJSCustom': {
 				base: 'PhantomJS',
 				flags: ['--load-images=true'],
