@@ -1391,8 +1391,7 @@ export var Map = Evented.extend({
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			DomUtil.
-			(e.target || e.srcElement);
+			DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
 		this._fireDOMEvent(e, type);
