@@ -1378,7 +1378,7 @@ export var Map = Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e) && this.listens(type, true)) {
 			targets = [this];
 		}
 		return targets;
@@ -1418,6 +1418,10 @@ export var Map = Evented.extend({
 		targets = (targets || []).concat(this._findEventTargets(e, type));
 
 		if (!targets.length) { return; }
+
+		if (e._simulated && e._originalEvent) {
+			DomEvent.preventDefault(e._originalEvent);
+		}
 
 		var target = targets[0];
 		if (type === 'contextmenu' && target.listens(type, true)) {

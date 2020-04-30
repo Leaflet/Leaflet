@@ -38,8 +38,6 @@ export var Tap = Handler.extend({
 	_onDown: function (e) {
 		if (!e.touches) { return; }
 
-		DomEvent.preventDefault(e);
-
 		this._fireClick = true;
 
 		// don't simulate click or track longpress if more than 1 touch
@@ -68,7 +66,7 @@ export var Tap = Handler.extend({
 			}
 		}, this), 1000);
 
-		this._simulateEvent('mousedown', first);
+		this._simulateEvent('mousedown', first, e);
 
 		DomEvent.on(document, {
 			touchmove: this._onMove,
@@ -93,7 +91,7 @@ export var Tap = Handler.extend({
 				DomUtil.removeClass(el, 'leaflet-active');
 			}
 
-			this._simulateEvent('mouseup', first);
+			this._simulateEvent('mouseup', first, e);
 
 			// simulate click if the touch didn't move too much
 			if (this._isTapValid()) {
@@ -109,13 +107,14 @@ export var Tap = Handler.extend({
 	_onMove: function (e) {
 		var first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
-		this._simulateEvent('mousemove', first);
+		this._simulateEvent('mousemove', first, e);
 	},
 
-	_simulateEvent: function (type, e) {
+	_simulateEvent: function (type, e, originalEvent) {
 		var simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent._simulated = true;
+		simulatedEvent._originalEvent = originalEvent;
 		e.target._simulatedClick = true;
 
 		simulatedEvent.initMouseEvent(
