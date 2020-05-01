@@ -1,3 +1,4 @@
+/* eslint no-extend-native: 0 */
 if (!Array.prototype.map) {
 	Array.prototype.map = function (fun) {
 		"use strict";
@@ -49,7 +50,7 @@ happen.at = function (what, x, y, props) {
 		screenY: y,
 		which: 1,
 		button: 0
-	}, props || {}));
+	}, props || {}));
 };
 
 // We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
