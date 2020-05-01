@@ -17,8 +17,8 @@
 
 	<!-- source files -->
 	<script>
-		// Trick Leaflet into believing we have a touchscreen (for Chrome)
-		if (window.Touch) { window.ontouchstart = function(){} };
+		// Trick Leaflet into believing we have a touchscreen (for desktop)
+		if (window.TouchEvent) { window.ontouchstart = function(){} };
 	</script>
 
 	<script src="../dist/leaflet-src.js"></script>

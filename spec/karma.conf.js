@@ -15,6 +15,7 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
+		"spec/before.js",
 		"src/Leaflet.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
@@ -100,6 +101,27 @@ module.exports = function (config) {
 				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
 				flags: ['--window-size=1280,1024']
 			},
+			'FirefoxPointer': {
+				base: 'FirefoxHeadless',
+			        prefs: {
+					'dom.w3c_pointer_events.enabled': true,
+					'dom.w3c_touch_events.enabled': 0
+			        }
+			},
+			'FirefoxTouch': {
+				base: 'FirefoxHeadless',
+			        prefs: {
+					'dom.w3c_pointer_events.enabled': false,
+					'dom.w3c_touch_events.enabled': 1
+			        }
+			},
+			'FirefoxPointerTouch': {
+				base: 'FirefoxHeadless',
+			        prefs: {
+					'dom.w3c_pointer_events.enabled': true,
+					'dom.w3c_touch_events.enabled': 1
+			        }
+			},
 			'PhantomJSCustom': {
 				base: 'PhantomJS',
 				flags: ['--load-images=true'],
@@ -113,8 +135,10 @@ module.exports = function (config) {
 			}
 		},
 
+		concurrency: 1,
+
 		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 5000,
+		captureTimeout: 10000,
 
 		// Workaround for PhantomJS random DISCONNECTED error
 		browserDisconnectTimeout: 10000, // default 2000

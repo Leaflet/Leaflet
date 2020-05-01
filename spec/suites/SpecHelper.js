@@ -66,3 +66,6 @@ it.skipIfNotTouch = (L.Browser.touch || L.Browser.pointer) ? it : it.skip;
 var touchEventType = L.Browser.pointer ? 'pointer' : 'touch'; // eslint-disable-line no-unused-vars
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
+
+console.log('L.Browser.pointer', L.Browser.pointer);
+console.log('L.Browser.touch', L.Browser.touch);
