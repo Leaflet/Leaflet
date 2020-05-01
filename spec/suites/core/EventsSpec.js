@@ -6,8 +6,8 @@ describe('Events', function () {
 			    spy2 = sinon.spy(),
 			    spy3 = sinon.spy(),
 			    spy4 = sinon.spy(),
-			    spy5 = sinon.spy(),
-			    spy6 = sinon.spy();
+			    spy5 = sinon.spy();
+			    // spy6 = sinon.spy();
 
 			obj.addEventListener('test', spy1);
 			obj.addEventListener('test', spy2);
@@ -39,12 +39,12 @@ describe('Events', function () {
 			    ctx2 = new L.Class(),
 			    count = {one: 0, two: 0, three: 0, four: 0};
 
-			function listener1(e) {
+			function listener1() {
 				count.one++;
 				expect(count.two).to.eql(0);
 			}
 
-			function listener2(e) {
+			function listener2() {
 				count.two++;
 				expect(count.one).to.eql(1);
 				expect(count.three).to.eql(0);
@@ -57,7 +57,7 @@ describe('Events', function () {
 				}
 			}
 
-			function listener3(e) {
+			function listener3() {
 				count.three++;
 				expect(count.two).to.eql(3);
 				expect(count.four).to.eql(0);
@@ -68,7 +68,7 @@ describe('Events', function () {
 				}
 			}
 
-			function listener4(e) {
+			function listener4() {
 				count.four++;
 				expect(count.three).to.eql(2);
 			}
@@ -285,7 +285,6 @@ describe('Events', function () {
 		it('correctly removes all listeners if given no fn', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
-			    foo = {},
 			    foo2 = {},
 			    foo3 = {};
 
@@ -313,7 +312,6 @@ describe('Events', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
-			    spy3 = sinon.spy(),
 			    foo = {};
 
 			/* without context */
@@ -597,8 +595,7 @@ describe('Events', function () {
 
 	describe('#listens', function () {
 		it('is false if there is no event handler', function () {
-			var obj = new L.Evented(),
-			    spy = sinon.spy();
+			var obj = new L.Evented();
 
 			expect(obj.listens('test')).to.be(false);
 		});

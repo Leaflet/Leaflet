@@ -61,7 +61,7 @@ describe('Canvas', function () {
 
 		it("DOM events fired on canvas polygon are propagated only once to the map even when two layers contains the event", function () {
 			var spy = sinon.spy();
-			var layer2 = L.polygon(latLngs).addTo(map);
+			L.polygon(latLngs).addTo(map); // layer 2
 			map.on("click", spy);
 			happen.at('click', 50, 50);
 			expect(spy.callCount).to.eql(1);
@@ -72,7 +72,7 @@ describe('Canvas', function () {
 			var preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
-			layer.once('preclick', function (e) {
+			layer.once('preclick', function () {
 				expect(clickSpy.called).to.be(false);
 			});
 			happen.at('click', 50, 50);  // Click on the layer.
@@ -126,7 +126,7 @@ describe('Canvas', function () {
 
 	describe('#dashArray', function () {
 		it('can add polyline with dashArray', function () {
-			var layer = L.polygon(latLngs, {
+			L.polygon(latLngs, {
 				dashArray: "5,5"
 			}).addTo(map);
 		});

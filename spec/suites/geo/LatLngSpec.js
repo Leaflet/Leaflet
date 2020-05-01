@@ -12,7 +12,7 @@ describe('LatLng', function () {
 
 		it('throws an error if invalid lat or lng', function () {
 			expect(function () {
-				var a = new L.LatLng(NaN, NaN);
+				L.latLng(NaN, NaN);
 			}).to.throwError();
 		});
 

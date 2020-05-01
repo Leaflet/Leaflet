@@ -26,7 +26,6 @@ describe("Transformation", function () {
 		});
 
 		it('assumes a scale of 1 if not specified', function () {
-			var p2 = t.transform(p);
 			expect(t.untransform(new L.Point(12, 64))).to.eql(new L.Point(10, 20));
 		});
 	});

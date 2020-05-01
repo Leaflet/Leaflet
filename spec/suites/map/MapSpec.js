@@ -571,8 +571,8 @@ describe("Map", function () {
 		describe("when a tile layer is removed from a map and it had greater zoom level coverage than the remainding layer", function () {
 			it("fires a zoomlevelschange event", function () {
 				map.setView([0, 0], 0);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 				var spy = sinon.spy(),
-				    tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
 				    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
 
 				map.on("zoomlevelschange", spy);
@@ -619,8 +619,8 @@ describe("Map", function () {
 		});
 
 		it("calls the provided function with the provided context", function () {
-			var t1 = L.tileLayer("{z}{x}{y}").addTo(map),
-			    spy = sinon.spy();
+			var spy = sinon.spy();
+			L.tileLayer("{z}{x}{y}").addTo(map);
 
 			map.eachLayer(spy, map);
 
@@ -986,8 +986,7 @@ describe("Map", function () {
 
 	describe('#fitBounds after layers set', function () {
 		var center = L.latLng(22, 33),
-		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122)),
-		    boundsCenter = bounds.getCenter();
+		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
 
 		beforeEach(function () {
 			// fitBounds needs a map container with non-null area
@@ -1059,7 +1058,6 @@ describe("Map", function () {
 
 		it("supports different padding values for each border", function () {
 			var p = tlPix.add([40, 0]),	// Top-Left
-			    distanceMoved,
 			    opts = {paddingTL: [60, 20], paddingBR: [10, 10]};
 			map.panInside(map.unproject(p), opts);
 			expect(center).to.equal(map.getCenter());

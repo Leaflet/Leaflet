@@ -79,8 +79,8 @@ describe("Control.Layers", function () {
 
 		it("when an included layer is added or removed from the map, it's (un)checked", function () {
 			var baseLayer = L.tileLayer(),
-			    overlay = L.marker([0, 0]),
-			    layers = L.control.layers({"Baselayer": baseLayer}, {"Overlay": overlay}).addTo(map);
+			    overlay = L.marker([0, 0]);
+			L.control.layers({"Baselayer": baseLayer}, {"Overlay": overlay}).addTo(map);
 
 			function isChecked() {
 				return !!(map._container.querySelector('.leaflet-control-layers-overlays input').checked);
@@ -178,12 +178,12 @@ describe("Control.Layers", function () {
 
 	describe("is created with an expand link", function ()  {
 		it("when collapsed", function () {
-			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			L.control.layers(null, null, {collapsed: true}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 
 		it("when not collapsed", function () {
-			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 	});
@@ -222,7 +222,7 @@ describe("Control.Layers", function () {
 		});
 
 		it('does not collapse when map is clicked', function () {
-			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 			happen.click(map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
@@ -281,7 +281,7 @@ describe("Control.Layers", function () {
 			var markerB = L.marker([0, 1]).addTo(map);
 			var markerA = L.marker([0, 0]).addTo(map);
 
-			var layersCtrl = L.control.layers({
+			L.control.layers({
 				'Base One': baseLayerOne,
 				'Base Two': baseLayerTwo
 			}, {
@@ -305,7 +305,7 @@ describe("Control.Layers", function () {
 			var markerB = L.marker([0, 1]).addTo(map);
 			var markerC = L.marker([0, 2]).addTo(map);
 
-			var layersCtrl = L.control.layers({
+			L.control.layers({
 				'Base Two': baseLayerTwo,
 				'Base One': baseLayerOne
 			}, {
@@ -331,7 +331,7 @@ describe("Control.Layers", function () {
 			var markerB = L.marker([0, 1], {customOption: 100}).addTo(map);
 			var markerC = L.marker([0, 2], {customOption: 101}).addTo(map);
 
-			var layersCtrl = L.control.layers({
+			L.control.layers({
 				'Base One': baseLayerOne,
 				'Base Two': baseLayerTwo
 			}, {

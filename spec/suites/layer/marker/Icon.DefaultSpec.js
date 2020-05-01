@@ -1,12 +1,12 @@
 describe("Icon.Default", function () {
-	var div, map, marker;
+	var div, map;
 
 	beforeEach(function () {
 		div = document.createElement('div');
 		div.style.height = '100px';
 		document.body.appendChild(div);
 		map = L.map(div).setView([0, 0], 0);
-		marker = new L.Marker([0, 0]).addTo(map);
+		L.marker([0, 0]).addTo(map);
 	});
 
 	afterEach(function () {

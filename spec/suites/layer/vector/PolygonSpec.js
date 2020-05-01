@@ -169,7 +169,7 @@ describe('Polygon', function () {
 					[[0, 0], [10, 0], [10, 10], [0, 10]]
 				];
 				var layer = new L.Polygon(latlngs);
-				var center = layer.getCenter();
+				layer.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 

@@ -1,3 +1,4 @@
+/* eslint no-new: 0 */
 describe("Class", function () {
 	describe("#extend", function () {
 		var Klass,
@@ -122,7 +123,7 @@ describe("Class", function () {
 			Klass.addInitHook(spy1);
 			Klass.addInitHook('bar', 1, 2, 3);
 
-			var a = new Klass();
+			new Klass();
 
 			expect(spy1.called).to.be.ok();
 			expect(method.calledWith(1, 2, 3));
@@ -137,7 +138,7 @@ describe("Class", function () {
 			Klass.addInitHook(spy1);
 			Klass2.addInitHook(spy2);
 
-			var a = new Klass2();
+			new Klass2();
 
 			expect(spy1.called).to.be.ok();
 			expect(spy2.called).to.be.ok();
@@ -152,7 +153,7 @@ describe("Class", function () {
 			Klass.addInitHook(spy1);
 			Klass2.addInitHook(spy2);
 
-			var a = new Klass();
+			new Klass();
 
 			expect(spy1.called).to.be.ok();
 			expect(spy2.called).to.eql(false);
@@ -164,7 +165,7 @@ describe("Class", function () {
 			Klass.addInitHook(spy1);
 
 			var Klass2 = Klass.extend({});
-			var a = new Klass2();
+			new Klass2();
 
 			expect(spy1.called).to.be.ok();
 		});

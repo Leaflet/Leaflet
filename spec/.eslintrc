@@ -1,6 +1,5 @@
 {
   "rules": {
-    "no-unused-vars": 0,
     "quotes": 0,
     "no-shadow": 0,
     "no-irregular-whitespace": 0,

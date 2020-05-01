@@ -105,7 +105,7 @@ describe('GridLayer', function () {
 				delete tiles[grid._tileCoordsToKey(e.coords)];
 			});
 
-			grid.on('load', function (e) {
+			grid.on('load', function () {
 				if (Object.keys(tiles).length === 1) {
 					expect(Object.keys(tiles)).to.eql(['0:0:0']);
 					grid.off();
@@ -137,11 +137,11 @@ describe('GridLayer', function () {
 			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
 			var count = 0,
 			    loadCount = 0;
-			grid.createTile = function (coords) {
+			grid.createTile = function () {
 				count++;
 				return document.createElement('div');
 			};
-			var onLoad = function (e) {
+			var onLoad = function () {
 				expect(count).to.eql(4);
 				count = 0;
 				loadCount++;
@@ -545,6 +545,7 @@ describe('GridLayer', function () {
 		});
 
 		// Debug helper
+		/*
 		function logTiles(ev) {
 			var pending = 0;
 			for (var key in grid._tiles) {
@@ -552,6 +553,7 @@ describe('GridLayer', function () {
 			}
 			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
 		}
+		*/
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
 		function runFrames(n) {

@@ -134,7 +134,7 @@ describe('Popup', function () {
 
 	it("should use a function for popup content when a source is passed to Popup", function () {
 		var marker = new L.Marker(center).addTo(map);
-		var popup = L.popup({}, marker);
+		L.popup({}, marker);
 
 		marker.description = "I am a marker.";
 
@@ -470,7 +470,7 @@ describe('L.Layer#_popup', function () {
 	});
 
 	it('does not throw is popup is inmediately closed', function (done) {
-		map.on('popupopen', function (ev) {
+		map.on('popupopen', function () {
 			marker.closePopup();
 		});
 

@@ -134,7 +134,7 @@ describe('Polyline', function () {
 		it('throws error if not yet added to map', function () {
 			expect(function () {
 				var polyline = new L.Polyline([[0, 0], [0, 0.090]]);
-				var center = polyline.getCenter();
+				polyline.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 

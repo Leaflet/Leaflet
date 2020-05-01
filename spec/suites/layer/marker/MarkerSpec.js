@@ -1,6 +1,5 @@
 describe("Marker", function () {
 	var map,
-	    spy,
 	    div,
 	    icon1,
 	    icon2;
@@ -140,7 +139,6 @@ describe("Marker", function () {
 			map.addLayer(marker);
 
 			marker.setIcon(new L.DivIcon());
-			var afterIcon = marker._icon;
 
 			expect(marker._icon.innerHTML).to.not.contain('Inner1Text');
 		});

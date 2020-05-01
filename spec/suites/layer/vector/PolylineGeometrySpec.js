@@ -35,8 +35,6 @@ describe('PolylineGeometry', function () {
 
 describe('LineUtil', function () {
 	describe('#isFlat', function () {
-		var layer = L.polyline([]);
-
 		it('should return true for an array of LatLngs', function () {
 			expect(L.LineUtil.isFlat([L.latLng([0, 0])])).to.be(true);
 		});

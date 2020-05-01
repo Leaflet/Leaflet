@@ -2,10 +2,6 @@ describe('Tooltip', function () {
 	var c, map,
 	    center = [55.8, 37.6];
 
-	function p2ll(x, y) {
-		return map.layerPointToLatLng([x, y]);
-	}
-
 	beforeEach(function () {
 		c = document.createElement('div');
 		c.style.width = '400px';
