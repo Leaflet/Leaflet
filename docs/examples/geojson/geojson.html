@@ -16,7 +16,9 @@ title: Using GeoJSON with Leaflet
 
 	L.tileLayer(MB_URL, {
 		attribution: MB_ATTR,
-		id: 'mapbox.light'
+		id: 'mapbox/light-v9',
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 	var baseballIcon = L.icon({

@@ -1,0 +1,98 @@
+h2 {
+    margin-top: 2em;
+}
+
+h3 {
+    margin-top: 1em;
+    margin-bottom: .5em;
+}
+
+div.accordion {
+    width: 100%;
+/* 		overflow: hidden; */
+}
+
+div.accordion-overflow {
+    width: 100%;
+    overflow: hidden;
+}
+
+label,
+section > h4 {
+    display: block;
+    font-weight: 500;
+    margin: 1em 0 0.25em;
+}
+
+label {
+    cursor: pointer;
+}
+
+div.accordion > div.accordion-overflow > div.accordion-content {
+    max-height: 0;
+    display: none;
+}
+
+div.accordion.collapsed > div.accordion-overflow > div.accordion-content {
+    animation-duration: 0.4s;
+    animation-name: collapse;
+/* 		height: 0; */
+    max-height: 0;
+    display: block;
+    overflow: hidden;
+}
+
+div.accordion.expanded > div.accordion-overflow > div.accordion-content {
+    animation-duration: 0.4s;
+    animation-name: expand;
+/* 		height: auto; */
+    max-height: none;
+    display: block;
+}
+
+@keyframes collapse {
+    0% { max-height: 100vh; }
+    100% { max-height: 0; }
+}
+
+@keyframes expand {
+    0% { max-height: 0; }
+    100% { max-height: 100vh; }
+}
+
+/*	div.accordion > div.accordion-content {
+    transition: max-height 0.4s ease-out 0s;
+}*/
+
+div.accordion.expanded > label > span.expander {
+    transform: rotate(90deg);
+}
+
+div.accordion > label > span.expander {
+    transition: transform 0.4s ease-out 0s;
+    display: inline-block;
+    font-size: 12px;
+}
+
+
+table {
+    margin-bottom: 0;
+}
+
+/* 	Markdown renders some spurious <p>s inside the table cells */
+td > p {
+    margin:0;
+}
+
+/* 	This just looks bad (with the current grey headers for sections which Vlad doesn't really like, so might have to change this) */
+section.collapsable > div.section-comments > p {
+    margin:0;
+}
+
+div.section-comments {
+    margin-bottom: 0.5em;
+}
+
+section.collapsable pre {
+    margin:0;
+}

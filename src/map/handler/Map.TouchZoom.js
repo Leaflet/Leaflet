@@ -112,8 +112,8 @@ export var TouchZoom = Handler.extend({
 		this._zooming = false;
 		Util.cancelAnimFrame(this._animRequest);
 
-		DomEvent.off(document, 'touchmove', this._onTouchMove);
-		DomEvent.off(document, 'touchend', this._onTouchEnd);
+		DomEvent.off(document, 'touchmove', this._onTouchMove, this);
+		DomEvent.off(document, 'touchend', this._onTouchEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {

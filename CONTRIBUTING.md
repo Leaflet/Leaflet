@@ -11,7 +11,7 @@ Contributing to Leaflet
 
 ## Getting Involved
 
-Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist.
+Third-party patches are absolutely essential in our quest to create the best mapping library that will ever exist.
 However, they're not the only way to get involved with Leaflet development.
 You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs);
 [improving documentation](#improving-documentation);
@@ -150,13 +150,13 @@ Once it gets merged, the changes will immediately appear on the website.
 
 If you need to make edits in a local repository to see how it looks in the process, do the following:
 
- 1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
+ 1. [Install Ruby](http://www.ruby-lang.org/en/) if you don't have it yet.
  2. Run `gem install jekyll`.
  3. Enter the directory where you cloned the Leaflet repository
- 4. Run `bundle install`
- 5. Make sure you are in the `master` branch by running `git checkout master`
- 6. Enter the documentation subdirectory by running `cd docs`
- 7. Run `jekyll serve --watch`.
+ 4. Make sure you are in the `master` branch by running `git checkout master`
+ 5. Enter the documentation subdirectory by running `cd docs`
+ 6. Run `bundle install`
+ 7. Run `jekyll serve --watch` (if you have a Gem::LoadError error run `bundle exec jekyll serve --watch` instead)
  8. Open `localhost:4000` in your web browser.
 
 Now any file changes will be updated when you reload pages automatically.
