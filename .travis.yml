@@ -22,7 +22,7 @@ env:
       yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
-  - npm test -- -- --browsers PhantomJSCustom,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch
+  - npm test -- -- --browsers PhantomJSCustom,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch --reporters dots
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
