@@ -39,6 +39,7 @@ module.exports = function (config) {
 			'karma-sinon',
 			'karma-expect',
 			'karma-phantomjs-launcher',
+			'karma-edge-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
 			'karma-firefox-launcher'],
