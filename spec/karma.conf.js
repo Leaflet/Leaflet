@@ -40,6 +40,7 @@ module.exports = function (config) {
 			'karma-expect',
 			'karma-phantomjs-launcher',
 			'karma-edge-launcher',
+			'karma-ie-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
 			'karma-firefox-launcher'],
