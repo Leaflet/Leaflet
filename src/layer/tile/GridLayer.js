@@ -365,6 +365,7 @@ export var GridLayer = Layer.extend({
 		if (zoom === undefined) { return undefined; }
 
 		for (var z in this._levels) {
+			z = Number(z);
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
 				this._onUpdateLevel(z);
@@ -461,7 +462,7 @@ export var GridLayer = Layer.extend({
 	_invalidateAll: function () {
 		for (var z in this._levels) {
 			DomUtil.remove(this._levels[z].el);
-			this._onRemoveLevel(z);
+			this._onRemoveLevel(Number(z));
 			delete this._levels[z];
 		}
 		this._removeAllTiles();
