@@ -1,10 +1,29 @@
 describe('ImageOverlay', function () {
+	var c, map;
+	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+
+	beforeEach(function () {
+		c = document.createElement('div');
+		c.style.width = '400px';
+		c.style.height = '400px';
+		document.body.appendChild(c);
+		map = new L.Map(c);
+		map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initilized
+	});
+
+	afterEach(function () {
+		map.remove();
+		map = null;
+		document.body.removeChild(c);
+	});
+
 	describe('#setStyle', function () {
 		it('sets opacity', function () {
 			var overlay = L.imageOverlay().setStyle({opacity: 0.5});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
+
 	describe('#setBounds', function () {
 		it('sets bounds', function () {
 			var bounds = new L.LatLngBounds(
@@ -14,22 +33,17 @@ describe('ImageOverlay', function () {
 			expect(overlay._bounds).to.equal(bounds);
 		});
 	});
+
 	describe("_image", function () {
-		var c, map, overlay;
+		var overlay;
+
 		// Url for testing errors
 		var errorUrl = 'data:image/false;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAT1JREFUOI2dk79qwlAUxr9zcKmxbyAWh0IIDqJrcchkX6ODrn2TDAWRPEkyKKVzBxHJkKFoySP0mlLhnA5NbIgmpf6my73n+853/xFKRLY9UJEpAy6Am2x6q8xLYZ73omhVrKd88DocNpvGPBHwUDYtIiL+9X7/2EmS9GiQiUMC7urER1RfLGPGnSRJGQCyzidiy/Nged6pAdHoo9XyAIAj2x78FfscBEw3jtNnFZn+V5zDIhPOTvsiFHAZv1d1SYIuXyrOaQDYArg9t3gIw1qxML81lHlJFQZfQVBrwKoLFuZ5VUHlO8ggVZ97UbQSEf9cwSEMq7ehOrPjeE0A8N5uXxnLCkA0qs2cIcBzM03vu7vdJwNAJ0lSy5hxVZJy51wMFH5jzsZx+iwyUcBlkS7wc9qsuiBV347jdbH+G/fth7AzHdiJAAAAAElFTkSuQmCC';
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
-		// Create map and overlay for each test
+		// Create overlay for each test
 		beforeEach(function () {
-			c = document.createElement('div');
-			c.style.width = '400px';
-			c.style.height = '400px';
-			document.body.appendChild(c);
-			map = new L.Map(c);
-			map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initilized
-
-			overlay = L.imageOverlay(blankUrl, [[40.712216, -74.22655], [40.773941, -74.12544]], {
+			overlay = L.imageOverlay(blankUrl, imageBounds, {
 				errorOverlayUrl: errorUrl,
 				className: 'my-custom-image-class'
 			});
@@ -43,10 +57,8 @@ describe('ImageOverlay', function () {
 
 		// Clean up after each test run
 		afterEach(function () {
-			document.body.removeChild(c);
 			map.removeLayer(overlay);
 			overlay = null;
-			map = null;
 		});
 
 		function raiseImageEvent(event) {
@@ -71,6 +83,7 @@ describe('ImageOverlay', function () {
 				raiseImageEvent('error');
 				expect(errorRaised.called).to.be(true);
 			});
+
 			it('should change the image to errorOverlayUrl', function () {
 				raiseImageEvent('error');
 				expect(overlay._url).to.be(errorUrl);
@@ -86,28 +99,6 @@ describe('ImageOverlay', function () {
 	});
 
 	describe('#setZIndex', function () {
-
-		var div, map;
-		var corner1 = L.latLng(40.712, -74.227),
-		corner2 = L.latLng(40.774, -74.125),
-		bounds = L.latLngBounds(corner1, corner2);
-
-		beforeEach(function () {
-			div = document.createElement('div');
-			div.style.width = '800px';
-			div.style.height = '600px';
-			div.style.visibility = 'hidden';
-
-			document.body.appendChild(div);
-
-			map = L.map(div);
-			map.setView([0, 0], 1);	// view needs to be set so when layer is added it is initilized
-		});
-
-		afterEach(function () {
-			document.body.removeChild(div);
-		});
-
 		it('sets the z-index of the image', function () {
 			var overlay = L.imageOverlay();
 			overlay.setZIndex(10);
@@ -115,7 +106,7 @@ describe('ImageOverlay', function () {
 		});
 
 		it('should update the z-index of the image if it has allready been added to the map', function () {
-			var overlay = L.imageOverlay('', bounds);
+			var overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('1');
 
@@ -124,14 +115,14 @@ describe('ImageOverlay', function () {
 		});
 
 		it('should set the z-index of the image when it is added to the map', function () {
-			var overlay = L.imageOverlay('', bounds);
+			var overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('10');
 		});
 
 		it('should use the z-index specified in options', function () {
-			var overlay = L.imageOverlay('', bounds, {zIndex: 20});
+			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('20');
 		});
@@ -145,25 +136,8 @@ describe('ImageOverlay', function () {
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
 	describe('_image2', function () {
-		var c, map, overlay;
+		var overlay;
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-		var bounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
-
-		// Create map and overlay for each test
-		beforeEach(function () {
-			c = document.createElement('div');
-			c.style.width = '400px';
-			c.style.height = '400px';
-			map = new L.Map(c);
-			map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initialized
-		});
-
-		// Clean up after each test run
-		afterEach(function () {
-			map.removeLayer(overlay);
-			overlay = null;
-			map = null;
-		});
 
 		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
 		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
@@ -174,7 +148,7 @@ describe('ImageOverlay', function () {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it('uses crossOrigin option value ' + crossOrigin, function () {
-				overlay = L.imageOverlay(blankUrl, bounds, {
+				overlay = L.imageOverlay(blankUrl, imageBounds, {
 					crossOrigin: crossOrigin
 				});
 				map.addLayer(overlay);

@@ -9,6 +9,7 @@ addons:
     target_paths:
     - content/leaflet/${NAME}
   firefox: latest
+  chrome: stable
 env:
   global:
   - ARTIFACTS_BUCKET=leafletjs-cdn
@@ -22,8 +23,7 @@ env:
       yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
-  - npm test
-  - xvfb-run --server-args="-screen 0 1280x1024x16" npm run test-nolint -- --browsers Firefox
+  - npm test -- -- --browsers PhantomJSCustom,Chrome1280x1024,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch --reporters dots
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..

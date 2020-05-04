@@ -102,6 +102,7 @@ describe('DomEvent', function () {
 			el.removeChild(child);
 		});
 	});
+
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
 			L.DomEvent.addListener(el, 'click', L.DomEvent.preventDefault);

@@ -1,5 +1,4 @@
 describe("Map.Keyboard", function () {
-
 	const KEYCODE_LOWERCASE_A = 65;
 	const KEYCODE_ARROW_LEFT = 37;
 	const KEYCODE_ARROW_UP = 38;

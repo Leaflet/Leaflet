@@ -212,6 +212,7 @@ describe("CRS.Simple", function () {
 		it("returns coords as is", function () {
 			expect(crs.wrapLatLng(new L.LatLng(270, 400)).equals(new L.LatLng(270, 400))).to.be(true);
 		});
+
 		it("wraps coords if configured", function () {
 			var crs = L.extend({}, L.CRS.Simple, {
 				wrapLng: [-200, 200],
@@ -230,7 +231,8 @@ describe("CRS", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
 			var zoom = 2.5;
 			var scale = crs.scale(zoom);
-			expect(crs.zoom(scale)).to.eql(zoom);
+			var zoom2 = crs.zoom(scale);
+			expect(L.Util.formatNum(zoom2)).to.eql(zoom);
 		});
 	});
 });

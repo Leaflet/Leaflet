@@ -1,5 +1,4 @@
 describe("L.GeoJSON", function () {
-
 	describe("addData", function () {
 		var geojson = {
 			type: 'Feature',
@@ -49,7 +48,6 @@ describe("L.GeoJSON", function () {
 	});
 
 	describe('resetStyle', function () {
-
 		it('should reset init options', function () {
 			var feature = {
 				type: 'Feature',
@@ -97,9 +95,7 @@ describe("L.GeoJSON", function () {
 			expect(layer2.options.weight).to.be(7);
 			expect(layer2.options.color).to.be('chocolate');
 		});
-
 	});
-
 });
 
 describe("L.Marker#toGeoJSON", function () {
