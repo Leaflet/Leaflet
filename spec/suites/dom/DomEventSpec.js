@@ -37,6 +37,16 @@ describe('DomEvent', function () {
 			expect(listener2.called).to.be.ok();
 		});
 
+		it('adds a listener when passed an event map', function () {
+			var listener = sinon.spy();
+
+			L.DomEvent.addListener(el, {click: listener});
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+		});
+
 		it('binds "this" to the given context', function () {
 			var obj = {foo: 'bar'},
 			    result;
@@ -48,6 +58,17 @@ describe('DomEvent', function () {
 			simulateClick(el);
 
 			expect(result).to.eql(obj);
+		});
+
+		it('binds "this" to the given context when passed an event map', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.addListener(el, {click: listener}, ctx);
+
+			happen.click(el);
+
+			sinon.assert.calledOn(listener, ctx);
 		});
 
 		it('passes an event object to the listener', function () {
@@ -77,6 +98,86 @@ describe('DomEvent', function () {
 			simulateClick(el);
 
 			expect(listener.called).to.not.be.ok();
+		});
+
+		it('removes a previously added listener when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener};
+
+			L.DomEvent.addListener(el, events);
+			L.DomEvent.removeListener(el, events);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('removes listener added with context', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.addListener(el, 'click', listener, ctx);
+			L.DomEvent.removeListener(el, 'click', listener, ctx);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('removes listener added with context when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener},
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.addListener(el, events, ctx);
+			L.DomEvent.removeListener(el, events, ctx);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('only removes listener when proper context specified', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.addListener(el, 'click', listener);
+			L.DomEvent.removeListener(el, 'click', listener, ctx);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+
+			listener = sinon.spy();
+			L.DomEvent.addListener(el, 'click', listener, ctx);
+			L.DomEvent.removeListener(el, 'click', listener);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+		});
+
+		it('only removes listener when proper context specified when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener},
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.addListener(el, events);
+			L.DomEvent.removeListener(el, events, ctx);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+
+			listener = sinon.spy();
+			   events = {click: listener};
+
+			L.DomEvent.addListener(el, events, ctx);
+			L.DomEvent.removeListener(el, events);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
 		});
 
 		it('is chainable', function () {
