@@ -50,31 +50,47 @@ var eventsKey = '_leaflet_events';
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 
 // @alternative
+// @function off(el: HTMLElement, types: String): this
+// Removes all previously added listeners of given types.
+
+// @alternative
 // @function off(el: HTMLElement): this
 // Removes all previously added listeners from given HTMLElement
 export function off(obj, types, fn, context) {
-	var type;
+
 	if (arguments.length === 1) {
-		for (var id in obj[eventsKey]) {
-			type = id.split(/\d/)[0];
-			removeOne(obj, type, null, null, id);
-		}
+		batchRemove(obj);
 		delete obj[eventsKey];
 
 	} else if (types && typeof types === 'object') {
-		for (type in types) {
+		for (var type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
 
 	} else {
 		types = Util.splitWords(types);
 
-		for (var i = 0, len = types.length; i < len; i++) {
-			removeOne(obj, types[i], fn, context);
+		if (arguments.length === 2) {
+			batchRemove(obj, function (type) {
+				return Util.indexOf(types, type) !== -1;
+			});
+		} else {
+			for (var i = 0, len = types.length; i < len; i++) {
+				removeOne(obj, types[i], fn, context);
+			}
 		}
 	}
 
 	return this;
+}
+
+function batchRemove(obj, filterFn) {
+	for (var id in obj[eventsKey]) {
+		var type = id.split(/\d/)[0];
+		if (!filterFn || filterFn(type)) {
+			removeOne(obj, type, null, null, id);
+		}
+	}
 }
 
 var mouseSubst = {

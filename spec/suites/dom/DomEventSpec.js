@@ -207,12 +207,33 @@ describe('DomEvent', function () {
 			expect(listenerB.called).to.not.be.ok();
 		});
 
-		it('throws when types is undefined/null/false', function () {
+		it('only removes specified listeners type', function () {
+			var listenerClick = sinon.spy(),
+			listenerDblClick = sinon.spy();
+
+			L.DomEvent.on(el, 'click', listenerClick);
+			L.DomEvent.on(el, 'dblclick', listenerDblClick);
+			L.DomEvent.off(el, 'click');
+			happen.click(el);
+			happen.dblclick(el);
+
+			sinon.assert.notCalled(listenerClick);
+			sinon.assert.called(listenerDblClick);
+		});
+
+		it('throws when types/fn are undefined/null/false', function () {
 			expect(L.DomEvent.off).withArgs(el, undefined)
 				.to.throwException();
 			expect(L.DomEvent.off).withArgs(el, null)
 				.to.throwException();
 			expect(L.DomEvent.off).withArgs(el, false)
+				.to.throwException();
+
+			expect(L.DomEvent.off).withArgs(el, 'click', undefined)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, 'click', null)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, 'click', false)
 				.to.throwException();
 		});
 
