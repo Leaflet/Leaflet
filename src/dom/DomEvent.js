@@ -23,7 +23,7 @@ import {getScale} from './DomUtil';
 // Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 export function on(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
+	if (types && typeof types === 'object') {
 		for (var type in types) {
 			addOne(obj, type, types[type], fn);
 		}
@@ -54,22 +54,24 @@ var eventsKey = '_leaflet_events';
 // Removes all previously added listeners from given HTMLElement
 export function off(obj, types, fn, context) {
 	var type;
-	if (typeof types === 'object') {
-		for (type in types) {
-			removeOne(obj, type, types[type], fn);
-		}
-	} else if (types) {
-		types = Util.splitWords(types);
-
-		for (var i = 0, len = types.length; i < len; i++) {
-			removeOne(obj, types[i], fn, context);
-		}
-	} else {
+	if (arguments.length === 1) {
 		for (var id in obj[eventsKey]) {
 			type = id.split(/\d/)[0];
 			removeOne(obj, type, null, null, id);
 		}
 		delete obj[eventsKey];
+
+	} else if (types && typeof types === 'object') {
+		for (type in types) {
+			removeOne(obj, type, types[type], fn);
+		}
+
+	} else {
+		types = Util.splitWords(types);
+
+		for (var i = 0, len = types.length; i < len; i++) {
+			removeOne(obj, types[i], fn, context);
+		}
 	}
 
 	return this;
