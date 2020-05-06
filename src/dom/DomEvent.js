@@ -135,7 +135,7 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(type, originalHandler, false);
 		}
 
-	} else if ('attachEvent' in obj) {
+	} else {
 		obj.attachEvent('on' + type, handler);
 	}
 
@@ -159,7 +159,7 @@ function removeOne(obj, type, fn, context, id) {
 
 		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
-	} else if ('detachEvent' in obj) {
+	} else {
 		obj.detachEvent('on' + type, handler);
 	}
 

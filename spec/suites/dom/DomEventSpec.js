@@ -11,6 +11,20 @@ describe('DomEvent', function () {
 		document.body.removeChild(el);
 	});
 
+	describe('#arguments check', function () {
+		it('throws when el is not HTMLElement', function () {
+			expect(L.DomEvent.on).withArgs({}, 'click', L.Util.falseFn)
+				.to.throwException();
+			expect(L.DomEvent.disableScrollPropagation).withArgs({})
+				.to.throwException();
+			expect(L.DomEvent.disableClickPropagation).withArgs({})
+				.to.throwException();
+			expect(L.DomEvent.getMousePosition).withArgs({clientX: 0, clientY: 0}, {})
+				.to.throwException();
+			// .off and .isExternalTarget do not throw atm
+		});
+	});
+
 	describe('#on (addListener)', function () {
 		it('throws when types/fn are undefined/null/false', function () {
 			expect(L.DomEvent.on).withArgs(el, undefined, L.Util.falseFn)
