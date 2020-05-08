@@ -62,9 +62,13 @@ module.exports = function (config) {
 			plugins: [
 				json()
 			],
-			format: 'umd',
-			name: 'L',
-			outro: outro
+			output: {
+				format: 'umd',
+				name: 'L',
+				outro: outro,
+				legacy: true, // Needed to create files loadable by IE8
+				freeze: false,
+			},
 		},
 
 		// test results reporter to use
