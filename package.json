@@ -28,7 +28,7 @@
     "rollup-plugin-json": "^4.0.0",
     "sinon": "^7.5.0",
     "ssri": "^6.0.1",
-    "uglify-js": "~3.5.10"
+    "uglify-js": "^3.9.2"
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
