@@ -144,12 +144,12 @@ describe('Canvas', function () {
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
 
-		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+		expect(canvas._layers).to.have.property(layerId);
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
 		L.Util.requestAnimFrame(function () {
-			expect(canvas._layers.hasOwnProperty(layerId)).to.be(false);
+			expect(canvas._layers).to.not.have.property(layerId);
 			done();
 		}, this);
 	});
@@ -159,14 +159,14 @@ describe('Canvas', function () {
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
 
-		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+		expect(canvas._layers).to.have.property(layerId);
 
 		map.removeLayer(layer);
 		map.addLayer(layer);
-		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
 		L.Util.requestAnimFrame(function () {
-			expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+			expect(canvas._layers).to.have.property(layerId);
 			done();
 		}, this);
 	});

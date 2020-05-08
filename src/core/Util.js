@@ -130,7 +130,7 @@ export function splitWords(str) {
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
-	if (!obj.hasOwnProperty('options')) {
+	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
 	for (var i in options) {
