@@ -164,7 +164,7 @@ export var Draggable = Evented.extend({
 			this._lastTarget = e.target || e.srcElement;
 			// IE and Edge do not give the <use> element, so fetch it
 			// if necessary
-			if ((window.SVGElementInstance) && (this._lastTarget instanceof SVGElementInstance)) {
+			if (window.SVGElementInstance && this._lastTarget instanceof window.SVGElementInstance) {
 				this._lastTarget = this._lastTarget.correspondingUseElement;
 			}
 			DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
