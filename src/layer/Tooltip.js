@@ -1,7 +1,7 @@
 
 import * as Browser from '../core/Browser';
 import {DivOverlay} from './DivOverlay';
-import {FeatureGroup} from './FeatureGroup';
+import {LayerGroup} from './LayerGroup';
 import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
@@ -267,7 +267,7 @@ Layer.include({
 
 		this._initTooltipInteractions();
 
-		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this) && !(this instanceof FeatureGroup)) {
+		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this) && !(this instanceof LayerGroup)) {
 			this.openTooltip();
 		}
 
@@ -301,7 +301,7 @@ Layer.include({
 			if (Browser.touch) {
 				events.click = this._openTooltip;
 			}
-		} else if (!(this instanceof FeatureGroup)) {
+		} else if (!(this instanceof LayerGroup)) {
 			events.add = this._openTooltip;
 		}
 		this[onOff](events);
