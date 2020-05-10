@@ -206,6 +206,7 @@ describe('Tooltip', function () {
 		var group = new L.FeatureGroup();
 		group.bindTooltip("hello", {permanent: true});
 		group.addTo(map);
+		expect(group._tooltip._container).to.be(undefined);
 
 		var marker1 = new L.Marker([55.8, 37.6]);
 		marker1.addTo(group);
@@ -221,6 +222,7 @@ describe('Tooltip', function () {
 	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip after add to map", function () {
 		var group = new L.FeatureGroup().addTo(map);
 		group.bindTooltip("hello", {permanent: true});
+		expect(group._tooltip._container).to.be(undefined);
 
 		var marker1 = new L.Marker([55.8, 37.6]);
 		marker1.addTo(group);
