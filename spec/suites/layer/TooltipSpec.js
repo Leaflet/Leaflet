@@ -184,6 +184,55 @@ describe('Tooltip', function () {
 		expect(group._tooltip._container.innerHTML).to.be("I'm marker 2.");
 	});
 
+	it("it should use a tooltip with a string as content with a FeatureGroup", function () {
+		var marker1 = new L.Marker([55.8, 37.6]);
+		var marker2 = new L.Marker([54.6, 38.2]);
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+
+		group.bindTooltip("hello");
+
+		// toggle popup on marker1
+		happen.mouseover(marker1._icon, {relatedTarget: map._container});
+		expect(map.hasLayer(group._tooltip)).to.be(true);
+		expect(group._tooltip._container.innerHTML).to.be("hello");
+
+		// toggle popup on marker2
+		happen.mouseover(marker2._icon, {relatedTarget: map._container});
+		expect(map.hasLayer(group._tooltip)).to.be(true);
+		expect(group._tooltip._container.innerHTML).to.be("hello");
+	});
+
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip before add to map", function () {
+		var group = new L.FeatureGroup();
+		group.bindTooltip("hello", {permanent: true});
+		group.addTo(map);
+
+		var marker1 = new L.Marker([55.8, 37.6]);
+		marker1.addTo(group);
+		expect(map.hasLayer(marker1._tooltip)).to.be(true);
+		expect(marker1._tooltip._container.innerHTML).to.be("hello");
+
+		var marker2 = new L.Marker([55.8, 37.6]);
+		marker2.addTo(group);
+		expect(map.hasLayer(marker2._tooltip)).to.be(true);
+		expect(marker2._tooltip._container.innerHTML).to.be("hello");
+	});
+
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip after add to map", function () {
+		var group = new L.FeatureGroup().addTo(map);
+		group.bindTooltip("hello", {permanent: true});
+
+		var marker1 = new L.Marker([55.8, 37.6]);
+		marker1.addTo(group);
+		expect(map.hasLayer(marker1._tooltip)).to.be(true);
+		expect(marker1._tooltip._container.innerHTML).to.be("hello");
+
+		var marker2 = new L.Marker([55.8, 37.6]);
+		marker2.addTo(group);
+		expect(map.hasLayer(marker2._tooltip)).to.be(true);
+		expect(marker2._tooltip._container.innerHTML).to.be("hello");
+	});
+
 	it("opens on polygon mouseover and close on mouseout", function () {
 		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 

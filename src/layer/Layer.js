@@ -99,6 +99,16 @@ export var Layer = Evented.extend({
 		this._map = map;
 		this._zoomAnimated = map._zoomAnimated;
 
+		if (this._eventParents) {
+			for (var parentId in this._eventParents) {
+				var parent = this._eventParents[parentId];
+				if (parent._tooltip && parent._tooltip.options.permanent) {
+					this.bindTooltip(parent._tooltip._content,
+						               parent._tooltip.options);
+				}
+			}
+		}
+
 		if (this.getEvents) {
 			var events = this.getEvents();
 			map.on(events, this);
