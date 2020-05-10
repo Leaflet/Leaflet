@@ -202,7 +202,7 @@ describe('Tooltip', function () {
 		expect(group._tooltip._container.innerHTML).to.be("hello");
 	});
 
-	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip before add to map", function () {
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip string before add to map", function () {
 		var group = new L.FeatureGroup();
 		group.bindTooltip("hello", {permanent: true});
 		group.addTo(map);
@@ -219,7 +219,26 @@ describe('Tooltip', function () {
 		expect(marker2._tooltip._container.innerHTML).to.be("hello");
 	});
 
-	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip after add to map", function () {
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip container before add to map", function () {
+		var group = new L.FeatureGroup();
+		var container = L.DomUtil.create("div");
+
+		group.bindTooltip(container, {permanent: true});
+		group.addTo(map);
+
+		var marker1 = new L.Marker([55.8, 37.6]);
+		marker1.addTo(group);
+		expect(map.hasLayer(marker1._tooltip)).to.be(true);
+		expect(marker1._tooltip._container.innerHTML).to.be(container.outerHTML);
+
+		var marker2 = new L.Marker([55.8, 37.6]);
+		marker2.addTo(group);
+		expect(map.hasLayer(marker2._tooltip)).to.be(true);
+		expect(marker2._tooltip._container.innerHTML).to.be(container.outerHTML);
+	});
+
+
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip string after add to map", function () {
 		var group = new L.FeatureGroup().addTo(map);
 		group.bindTooltip("hello", {permanent: true});
 		expect(group._tooltip._container).to.be(undefined);
@@ -233,6 +252,22 @@ describe('Tooltip', function () {
 		marker2.addTo(group);
 		expect(map.hasLayer(marker2._tooltip)).to.be(true);
 		expect(marker2._tooltip._container.innerHTML).to.be("hello");
+	});
+
+	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip container after add to map", function () {
+		var container = L.DomUtil.create("div");
+		var group = new L.FeatureGroup().addTo(map);
+		group.bindTooltip(container, {permanent: true});
+
+		var marker1 = new L.Marker([55.8, 37.6]);
+		marker1.addTo(group);
+		expect(map.hasLayer(marker1._tooltip)).to.be(true);
+		expect(marker1._tooltip._container.innerHTML).to.be(container.outerHTML);
+
+		var marker2 = new L.Marker([55.8, 37.6]);
+		marker2.addTo(group);
+		expect(map.hasLayer(marker2._tooltip)).to.be(true);
+		expect(marker2._tooltip._container.innerHTML).to.be(container.outerHTML);
 	});
 
 	it("opens on polygon mouseover and close on mouseout", function () {
