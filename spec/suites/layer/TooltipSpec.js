@@ -202,6 +202,24 @@ describe('Tooltip', function () {
 		expect(group._tooltip._container.innerHTML).to.be("hello");
 	});
 
+	it("it should use a permanent tooltip with a function as content with a FeatureGroup", function () {
+		var marker1 = new L.Marker([55.8, 37.6], {description: "I'm marker 1."});
+		var marker2 = new L.Marker([54.6, 38.2], {description: "I'm marker 2."});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+
+		group.bindTooltip(function (layer) {
+			return layer.options.description;
+		}, {permanent: true});
+
+		// toggle popup on marker1
+		expect(map.hasLayer(marker1._tooltip)).to.be(true);
+		expect(marker1._tooltip._container.innerHTML).to.be("I'm marker 1.");
+
+		// toggle popup on marker2
+		expect(map.hasLayer(marker2._tooltip)).to.be(true);
+		expect(marker2._tooltip._container.innerHTML).to.be("I'm marker 2.");
+	});
+
 	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip string before add to map", function () {
 		var group = new L.FeatureGroup();
 		group.bindTooltip("hello", {permanent: true});
@@ -236,7 +254,6 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(marker2._tooltip)).to.be(true);
 		expect(marker2._tooltip._container.innerHTML).to.be(container.outerHTML);
 	});
-
 
 	it("permanent opened tooltips for layers inside a FeatureGroup with binded tooltip string after add to map", function () {
 		var group = new L.FeatureGroup().addTo(map);

@@ -267,8 +267,14 @@ Layer.include({
 
 		this._initTooltipInteractions();
 
-		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this) && !(this instanceof LayerGroup)) {
-			this.openTooltip();
+		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
+			if (!(this instanceof LayerGroup)) {
+				this.openTooltip();
+			} else {
+				this.eachLayer(function (layer) {
+					layer.bindTooltip(content, options);
+				});
+			}
 		}
 
 		return this;
