@@ -559,7 +559,7 @@ describe("L.GeoJSON functions", function () {
 				type: 'Point',
 				coordinates: [100, 100],
 			},
-		});
+		}));
 	});
 
 });
