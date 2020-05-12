@@ -548,18 +548,18 @@ describe("L.GeoJSON functions", function () {
 		};
 
 		// Test Feature
-		expect(L.GeoJSON.asFeature(feature).to.eql(feature));
+		expect(L.GeoJSON.asFeature(feature)).to.eql(feature);
 		// Test Feature Collection
-		expect(L.GeoJSON.asFeature(featureCollection).to.eql(featureCollection));
+		expect(L.GeoJSON.asFeature(featureCollection)).to.eql(featureCollection);
 		// Test Non-feature (i.e. geometry)
-		expect(L.GeoJSON.asFeature(nonFeature).to.eql({
+		expect(L.GeoJSON.asFeature(nonFeature)).to.eql({
 			type: 'Feature',
 			properties: {},
 			geometry: {
 				type: 'Point',
 				coordinates: [100, 100],
 			},
-		}));
+		});
 	});
 
 });
