@@ -361,8 +361,8 @@ describe("L.Polygon (multi) #toGeoJSON", function () {
 describe("L.LayerGroup#toGeoJSON", function () {
 	it("returns a 2D FeatureCollection object", function () {
 		var marker = new L.Marker([10, 20]),
-			polyline = new L.Polyline([[10, 20], [2, 5]]),
-			layerGroup = new L.LayerGroup([marker, polyline]);
+		polyline = new L.Polyline([[10, 20], [2, 5]]),
+		layerGroup = new L.LayerGroup([marker, polyline]);
 		expect(layerGroup.toGeoJSON()).to.eql({
 			type: 'FeatureCollection',
 			features: [marker.toGeoJSON(), polyline.toGeoJSON()]
@@ -371,8 +371,8 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 	it("returns a 3D FeatureCollection object", function () {
 		var marker = new L.Marker([10, 20, 30]),
-			polyline = new L.Polyline([[10, 20, 30], [2, 5, 10]]),
-			layerGroup = new L.LayerGroup([marker, polyline]);
+		polyline = new L.Polyline([[10, 20, 30], [2, 5, 10]]),
+		layerGroup = new L.LayerGroup([marker, polyline]);
 		expect(layerGroup.toGeoJSON()).to.eql({
 			type: 'FeatureCollection',
 			features: [marker.toGeoJSON(), polyline.toGeoJSON()]
@@ -381,7 +381,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 	it("ensures that every member is a Feature", function () {
 		var tileLayer = new L.TileLayer(),
-			layerGroup = new L.LayerGroup([tileLayer]);
+		layerGroup = new L.LayerGroup([tileLayer]);
 
 		tileLayer.toGeoJSON = function () {
 			return {
@@ -482,7 +482,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 	it("omits layers which do not implement toGeoJSON", function () {
 		var tileLayer = new L.TileLayer(),
-			layerGroup = new L.LayerGroup([tileLayer]);
+		layerGroup = new L.LayerGroup([tileLayer]);
 		expect(layerGroup.toGeoJSON()).to.eql({
 			type: 'FeatureCollection',
 			features: []
@@ -504,8 +504,8 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 	it("should allow specific precisions", function () {
 		var marker = new L.Marker([10, 20]),
-			polyline = new L.Polyline([[10, 20], [2, 5]]),
-			layerGroup = new L.LayerGroup([marker, polyline]);
+		polyline = new L.Polyline([[10, 20], [2, 5]]),
+		layerGroup = new L.LayerGroup([marker, polyline]);
 		expect(layerGroup.toGeoJSON(3)).to.eql({
 			type: 'FeatureCollection',
 			features: [marker.toGeoJSON(3), polyline.toGeoJSON(3)]
@@ -526,7 +526,7 @@ describe("L.GeoJSON functions", function () {
 				type: 'Point',
 				coordinates: [100, 100],
 			},
-		}; 
+		};
 
 		var featureCollection = {
 			type: 'FeatureCollection',
