@@ -512,3 +512,88 @@ describe("L.LayerGroup#toGeoJSON", function () {
 		});
 	});
 });
+
+describe("L.GeoJSON functions", function () {
+	describe("#geometryToLayer", function () {
+		const point = {
+			type: "Point",
+			coordinates: [0, 0]
+		};
+		const multiPoint  = {
+			type: "MultiPoint",
+			coordinates: [
+				[0, 0], [10, 10]
+			]
+		};
+		const line =  {
+			type: "LineString",
+			coordinates: [
+				[0, 0], [10, 10], [20, 20]
+			]
+		};
+		const multiLine = {
+			type: "MultiLineString",
+			coordinates: [
+				[[10, 10], [20, 20], [30, 30]],
+				[[50, 50], [60, 60], [70, 70]]
+			]
+		};
+		const polygon = {
+			type: "Polygon",
+			coordinates: [
+				[[30, 10], [40, 40], [20, 40], [10, 20], [30, 10]]
+			]
+		};
+		const multiPolygon = {
+			type: "MultiPolygon",
+			coordinates: [
+				[
+					[[30, 20], [45, 40], [10, 40], [30, 20]]
+				],
+				[
+					[[15, 5], [40, 10], [10, 20], [5, 10], [15, 5]]
+				]
+			]
+		};
+		const geometryCollection  = {
+			type: "GeometryCollection",
+			geometries: [
+				{
+					type: "Point",
+					coordinates: [0, 0]
+				},
+				{
+					type: "LineString",
+					coordinates: [
+						[10, 10], [20, 20]
+					]
+				}
+			]
+		};
+
+		[
+			point, line, polygon,
+			multiPoint, multiLine, multiPolygon,
+			geometryCollection
+		].forEach(function (geometry) {
+			it("creates a Layer from a GeoJSON feature (type='" + geometry.type + "')", function () {
+				const layer = L.GeoJSON.geometryToLayer({
+					type: "Feature",
+					geometry: geometry
+				});
+				expect(layer instanceof L.Layer).to.be(true);
+			});
+		});
+
+		[
+			point, line, polygon,
+			multiPoint, multiLine, multiPolygon,
+			geometryCollection
+		].forEach(function (geometry) {
+			it("creates a Layer from a GeoJSON geometry (type='" + geometry.type + "')", function () {
+				const layer = L.GeoJSON.geometryToLayer(geometry);
+				expect(layer instanceof L.Layer).to.be(true);
+			});
+		});
+	});
+});
