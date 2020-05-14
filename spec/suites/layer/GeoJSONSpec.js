@@ -595,5 +595,17 @@ describe("L.GeoJSON functions", function () {
 				expect(layer instanceof L.Layer).to.be(true);
 			});
 		});
+
+		it("throws an error if feature is an invalid GeoJSON object", function () {
+			expect(function () {
+				L.GeoJSON.geometryToLayer({
+					type: "Feature",
+					geometry: {
+						type: "invalid",
+						coordinates: [0, 0]
+					}
+				});
+			}).to.throwError("Invalid GeoJSON object.");
+		});
 	});
 });
