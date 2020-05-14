@@ -607,5 +607,10 @@ describe("L.GeoJSON functions", function () {
 				});
 			}).to.throwError("Invalid GeoJSON object.");
 		});
+
+		it("returns null if feature does not have a geometry property", function () {
+			const ret = L.GeoJSON.geometryToLayer({type: "Feature"});
+			expect(ret).to.be(null);
+		});
 	});
 });
