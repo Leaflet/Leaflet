@@ -571,6 +571,12 @@ describe("L.GeoJSON functions", function () {
 			]
 		};
 
+		function customPointToLayer(geojsonPoint, latLng) {
+			return new L.Circle(latLng, {
+				radius: geojsonPoint.properties.radius
+			});
+		}
+
 		[
 			point, line, polygon,
 			multiPoint, multiLine, multiPolygon,
@@ -611,6 +617,32 @@ describe("L.GeoJSON functions", function () {
 		it("returns null if feature does not have a geometry property", function () {
 			const ret = L.GeoJSON.geometryToLayer({type: "Feature"});
 			expect(ret).to.be(null);
+		});
+
+		it("creates a Layer using pointToLayer option (Point)", function () {
+			const layer = L.GeoJSON.geometryToLayer({
+				type: "Feature",
+				geometry: point,
+				properties: {radius: 100}
+			}, {
+				pointToLayer: customPointToLayer
+			});
+			expect(layer instanceof L.Circle).to.be(true);
+			expect(layer.options.radius).to.be(100);
+		});
+
+		it("creates a Layer using pointToLayer option (MultiPoint)", function () {
+			const layer = L.GeoJSON.geometryToLayer({
+				type: "Feature",
+				geometry: multiPoint,
+				properties: {radius: 100}
+			}, {
+				pointToLayer: customPointToLayer
+			});
+			Object.keys(layer._layers).forEach(function (id) {
+				expect(layer._layers[id] instanceof L.Circle).to.be(true);
+				expect(layer._layers[id].options.radius).to.be(100);
+			});
 		});
 	});
 });
