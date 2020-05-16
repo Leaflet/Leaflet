@@ -167,7 +167,7 @@ export var Polyline = Path.extend({
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng: function (latlng, latlngs) {
-		var oldLatLngs = this._latlngs;
+		var oldLatLngs = this._convertLatLngs(this._latlngs);
 		latlngs = latlngs || this._defaultShape();
 		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
