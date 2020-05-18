@@ -69,6 +69,13 @@ export var Icon = Class.extend({
 	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same
 	 * as iconAnchor if not specified).
 	 *
+	 * @option crossOrigin: Boolean|String = false
+	 * Whether the crossOrigin attribute will be added to the icon image.
+	 * If a String is provided, the image will have its crossOrigin attribute set to the String
+	 * provided. This is needed if you want to access image pixel data.
+	 * Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes)
+	 * for valid String values.
+	 *
 	 * @option className: String = ''
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
