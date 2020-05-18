@@ -73,6 +73,26 @@ describe("Marker", function () {
 			expect(icon.style.height).to.be(expectedXY + 'px');
 		});
 
+		it("set the crossOrigin attribute", function () {
+			testCrossOriginValue(undefined, null);
+			testCrossOriginValue(true, '');
+			testCrossOriginValue('', '');
+			testCrossOriginValue('anonymous', 'anonymousss');
+			testCrossOriginValue('use-credentials', 'use-credentials');
+
+			function testCrossOriginValue(crossOrigin, expectedValue) {
+				it('uses crossOrigin option value ' + crossOrigin, function () {
+					var sizedIcon = new L.Icon.Default({
+						crossOrigin: crossOrigin
+					});
+					var marker = new L.Marker([0, 0], {icon: sizedIcon});
+					map.addLayer(marker);
+					var icon = marker._icon;
+					expect(icon.getAttribute('crossorigin')).to.be(expectedValue);
+				});
+			}
+		});
+
 		it("changes the icon to another image while re-using the IMG element", function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
