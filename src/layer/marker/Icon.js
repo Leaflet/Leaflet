@@ -125,6 +125,10 @@ export var Icon = Class.extend({
 
 		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
 
+		if (options.crossOrigin || options.crossOrigin === '') {
+			img.crossOrigin = options.crossOrigin === true ? '' : options.crossOrigin;
+		}
+
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';
 			img.style.marginTop  = (-anchor.y) + 'px';

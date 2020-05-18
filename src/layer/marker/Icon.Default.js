@@ -27,7 +27,8 @@ export var IconDefault = Icon.extend({
 		iconAnchor:  [12, 41],
 		popupAnchor: [1, -34],
 		tooltipAnchor: [16, -28],
-		shadowSize:  [41, 41]
+		shadowSize:  [41, 41],
+		crossOrigin: false
 	},
 
 	_getIconUrl: function (name) {
