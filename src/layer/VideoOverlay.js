@@ -72,7 +72,9 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
-		if (!this.options.keepAspectRatio && vid.style.hasOwnProperty('objectFit')) { vid.style['objectFit'] = 'fill'; }
+		if (!this.options.keepAspectRatio && Object.prototype.hasOwnProperty.call(vid.style, 'objectFit')) {
+			vid.style['objectFit'] = 'fill';
+		}
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
