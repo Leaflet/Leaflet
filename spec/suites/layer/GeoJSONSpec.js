@@ -842,6 +842,57 @@ describe("L.GeoJSON functions", function () {
 			const coords = L.GeoJSON.latLngsToCoords(latLngs);
 			expect(coords).to.eql([[0, 0, 0], [1, 1, 1]]);
 		});
+	});
 
+	describe("#asFeature", function () {
+		const geometry1 = {
+			type: "Point",
+			coordinates: [0, 0]
+		};
+
+		const geometry2 = {
+			type: "Point",
+			coordinates: [1, 1]
+		};
+
+		const feature1 = {
+			type: "Feature",
+			geometry: geometry1,
+			properties: {a: 1}
+		};
+
+		const feature2 = {
+			type: "Feature",
+			geometry: geometry2,
+			properties: {b: 2}
+		};
+
+		const featureCollection = {
+			type: "FeatureCollection",
+			features: [
+				feature1,
+				feature2
+			]
+		};
+
+		it("given a bare geometry returns a GeoJSON-like feature", function () {
+			const ret = L.GeoJSON.asFeature(geometry1);
+			const expected = {
+				type: "Feature",
+				properties: {},
+				geometry: geometry1
+			};
+			expect(ret).to.eql(expected);
+		});
+
+		it("given a GeoJSON feature directly returns it", function () {
+			const ret = L.GeoJSON.asFeature(feature1);
+			expect(ret).to.eql(feature1);
+		});
+
+		it("given a GeoJSON feature collection directly returns it", function () {
+			const ret = L.GeoJSON.asFeature(featureCollection);
+			expect(ret).to.eql(featureCollection);
+		});
 	});
 });
