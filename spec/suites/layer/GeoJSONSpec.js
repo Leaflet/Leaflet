@@ -701,6 +701,70 @@ describe("L.GeoJSON functions", function () {
 			expect(latlng.lat).to.be(0);
 			expect(latlng.alt).to.be(0);
 		});
+	});
+
+	describe("#coordsToLatLngs", function () {
+
+		function customCoordsToLatLng(coords) {
+			return new L.LatLng(coords[0] + 1, coords[1] + 1, coords[2] + 1);
+		}
+
+		it("creates a multidimensional array of LatLngs", function () {
+			const latLngs = L.GeoJSON.coordsToLatLngs([[0, 0], [1, 1], [2, 2]]);
+			expect(latLngs.length).to.be(3);
+			latLngs.forEach(function (latLng) {
+				expect(latLng instanceof L.LatLng).to.be(true);
+			});
+		});
+
+		it("creates a multidimensional array of LatLngs (levelsDeep=1)", function () {
+			const latLngs = L.GeoJSON.coordsToLatLngs([
+				[[0, 0], [1, 1], [2, 2]],
+				[[4, 4], [5, 5], [6, 6]]
+			], 1);
+			expect(latLngs.length).to.be(2);
+			for (var i = 0; i < latLngs.length; i++) {
+				for (var j = 0; j < latLngs[i].length; j++) {
+					expect(latLngs[i][j] instanceof L.LatLng).to.be(true);
+				}
+			}
+		});
+
+		it("creates a multidimensional array of LatLngs with custom coordsToLatLng", function () {
+			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
+			const expected = [
+				{lat: 2, lng: 3, alt: 4},
+				{lat: 5, lng: 6, alt: 7},
+				{lat: 8, lng: 9, alt: 10}
+			];
+			for (var i = 0; i < latLngs.length; i++) {
+				expect(latLngs[i]).to.eql(expected[i]);
+			}
+		});
+
+		it("creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)", function () {
+			const coords = [
+				[[1, 2, 3], [4, 5, 6]],
+				[[12, 13, 14], [15, 16, 17]]
+			];
+			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
+			const expected = [
+				[
+					{lat: 2, lng: 3, alt: 4},
+					{lat: 5, lng: 6, alt: 7}
+				],
+				[
+					{lat: 13, lng: 14, alt: 15},
+					{lat: 16, lng: 17, alt: 18}
+				]
+			];
+			for (var i = 0; i < latLngs.length; i++) {
+				for (var j = 0; j < latLngs[i].length; j++) {
+					expect(latLngs[i][j]).to.eql(expected[i][j]);
+				}
+			}
+		});
 
 	});
 });
