@@ -765,6 +765,32 @@ describe("L.GeoJSON functions", function () {
 				}
 			}
 		});
+	});
+
+	describe("#latLngToCoords", function () {
+		it("returns an array of coordinates (longitude, latitude)", function () {
+			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(0, 0));
+			expect(coords).to.eql([0, 0]);
+		});
+
+		it("returns an array of coordinates and altitude (longitude, latitude, altitude)", function () {
+			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(0, 0, 0));
+			expect(coords).to.eql([0, 0, 0]);
+		});
+
+		it("returns an array of coordinates with given precision (longitude, latitude)", function () {
+			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(
+				1.123456, 1.123456
+			), 3);
+			expect(coords).to.eql([1.123, 1.123]);
+		});
+
+		it("returns an array of coordinates with given precision (longitude, latitude, altitude)", function () {
+			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(
+				1.123456, 1.123456, 1.123456
+			), 3);
+			expect(coords).to.eql([1.123, 1.123, 1.123]);
+		});
 
 	});
 });
