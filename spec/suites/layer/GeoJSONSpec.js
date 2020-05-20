@@ -684,4 +684,23 @@ describe("L.GeoJSON functions", function () {
 			}
 		});
 	});
+
+	describe("#coordsToLatLng", function () {
+		it("creates a LatLng object given longitude and latitude", function () {
+			const latlng = L.GeoJSON.coordsToLatLng([0, 0]);
+			expect(latlng instanceof L.LatLng).to.be(true);
+			expect(latlng.lat).to.be(0);
+			expect(latlng.lat).to.be(0);
+			expect(latlng.alt).to.be(undefined);
+		});
+
+		it("creates a LatLng object given longitude, latitude and altitude", function () {
+			const latlng = L.GeoJSON.coordsToLatLng([0, 0, 0]);
+			expect(latlng instanceof L.LatLng).to.be(true);
+			expect(latlng.lat).to.be(0);
+			expect(latlng.lat).to.be(0);
+			expect(latlng.alt).to.be(0);
+		});
+
+	});
 });
