@@ -577,6 +577,10 @@ describe("L.GeoJSON functions", function () {
 			});
 		}
 
+		function customCoordstoLatLng(coords) {
+			return new L.LatLng(coords[1] + 1, coords[0] + 1, coords[2] + 1);
+		}
+
 		[
 			point, line, polygon,
 			multiPoint, multiLine, multiPolygon,
@@ -643,6 +647,41 @@ describe("L.GeoJSON functions", function () {
 				expect(layer._layers[id] instanceof L.Circle).to.be(true);
 				expect(layer._layers[id].options.radius).to.be(100);
 			});
+		});
+
+		it("creates a Layer using coordsToLatLng option (Point)", function () {
+			const layer = L.GeoJSON.geometryToLayer({
+				type: "Feature",
+				geometry: {
+					type: "Point",
+					coordinates: [1, 2, 3]
+				}
+			}, {
+				coordsToLatLng: customCoordstoLatLng
+			});
+			expect(layer._latlng).to.eql({lat: 3, lng: 2, alt: 4});
+		});
+
+		it("creates a Layer using coordsToLatLng option (MultiPoint)", function () {
+			const layer = L.GeoJSON.geometryToLayer({
+				type: "Feature",
+				geometry: {
+					type: "MultiPoint",
+					coordinates: [
+						[1, 2, 3], [4, 5, 6]
+					]
+				}
+			}, {
+				coordsToLatLng: customCoordstoLatLng
+			});
+			const expected = [
+				{lat: 3, lng: 2, alt: 4},
+				{lat: 6, lng: 5, alt: 7}
+			];
+			const ids = Object.keys(layer._layers);
+			for (var i = 0; i < ids.length; i++) {
+				expect(layer._layers[ids[i]]._latlng).to.eql(expected[i]);
+			}
 		});
 	});
 });
