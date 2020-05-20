@@ -791,6 +791,57 @@ describe("L.GeoJSON functions", function () {
 			), 3);
 			expect(coords).to.eql([1.123, 1.123, 1.123]);
 		});
+	});
+
+	describe("#latLngsToCoords", function () {
+		it("returns a multidimensional array of coordinates", function () {
+			const coords = L.GeoJSON.latLngsToCoords([L.latLng(0, 0), L.latLng(1, 1)]);
+			expect(coords).to.eql([[0, 0], [1, 1]]);
+		});
+
+		it("returns a multidimensional array of coordinates (levelDeep=1)", function () {
+			const latLngs = [
+				[L.latLng(0, 0), L.latLng(1, 1)],
+				[L.latLng(2, 2), L.latLng(3, 3)]
+			];
+			const coords = L.GeoJSON.latLngsToCoords(latLngs, 1);
+			const expected = [
+				[[0, 0], [1, 1]],
+				[[2, 2], [3, 3]]
+			];
+			expect(coords).to.eql(expected);
+		});
+
+		it("returns a multidimensional array of coordinates (closed=True)", function () {
+			const latLngs = [L.latLng(0, 0), L.latLng(1, 1), L.latLng(2, 2)];
+			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, true);
+			expect(coords).to.eql([[0, 0], [1, 1], [2, 2], [0, 0]]);
+		});
+
+		it("returns a multidimensional array of coordinates (levelsDeep=1, closed=True)", function () {
+			const latLngs = [
+				[L.latLng(0, 0), L.latLng(1, 1), L.latLng(2, 2)],
+				[L.latLng(3, 3), L.latLng(4, 4), L.latLng(5, 5)]
+			];
+			const coords = L.GeoJSON.latLngsToCoords(latLngs, 1, true);
+			const expected = [
+				[[0, 0], [1, 1], [2, 2], [0, 0]],
+				[[3, 3], [4, 4], [5, 5], [3, 3]]
+			];
+			expect(coords).to.eql(expected);
+		});
+
+		it("returns a multidimensional array of coordinates with given precision", function () {
+			const latLngs = [L.latLng(1.123456, 1.123456), L.latLng(2.123456, 2.123456)];
+			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, false, 3);
+			expect(coords).to.eql([[1.123, 1.123], [2.123, 2.123]]);
+		});
+
+		it("returns a multidimensional array of coordinates (latitude, longitude, altitude)", function () {
+			const latLngs = [L.latLng(0, 0, 0), L.latLng(1, 1, 1)];
+			const coords = L.GeoJSON.latLngsToCoords(latLngs);
+			expect(coords).to.eql([[0, 0, 0], [1, 1, 1]]);
+		});
 
 	});
 });
