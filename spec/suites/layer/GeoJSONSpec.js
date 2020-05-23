@@ -515,36 +515,36 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 describe("L.GeoJSON functions", function () {
 	describe("#geometryToLayer", function () {
-		const point = {
+		var point = {
 			type: "Point",
 			coordinates: [0, 0]
 		};
-		const multiPoint  = {
+		var multiPoint  = {
 			type: "MultiPoint",
 			coordinates: [
 				[0, 0], [10, 10]
 			]
 		};
-		const line =  {
+		var line =  {
 			type: "LineString",
 			coordinates: [
 				[0, 0], [10, 10], [20, 20]
 			]
 		};
-		const multiLine = {
+		var multiLine = {
 			type: "MultiLineString",
 			coordinates: [
 				[[10, 10], [20, 20], [30, 30]],
 				[[50, 50], [60, 60], [70, 70]]
 			]
 		};
-		const polygon = {
+		var polygon = {
 			type: "Polygon",
 			coordinates: [
 				[[30, 10], [40, 40], [20, 40], [10, 20], [30, 10]]
 			]
 		};
-		const multiPolygon = {
+		var multiPolygon = {
 			type: "MultiPolygon",
 			coordinates: [
 				[
@@ -555,7 +555,7 @@ describe("L.GeoJSON functions", function () {
 				]
 			]
 		};
-		const geometryCollection  = {
+		var geometryCollection  = {
 			type: "GeometryCollection",
 			geometries: [
 				{
@@ -572,13 +572,13 @@ describe("L.GeoJSON functions", function () {
 		};
 
 		function customPointToLayer(geojsonPoint, latLng) {
-			return new L.Circle(latLng, {
+			return L.circle(latLng, {
 				radius: geojsonPoint.properties.radius
 			});
 		}
 
 		function customCoordstoLatLng(coords) {
-			return new L.LatLng(coords[1] + 1, coords[0] + 1, coords[2] + 1);
+			return L.latLng(coords[1] + 1, coords[0] + 1, coords[2] + 1);
 		}
 
 		[
@@ -587,11 +587,11 @@ describe("L.GeoJSON functions", function () {
 			geometryCollection
 		].forEach(function (geometry) {
 			it("creates a Layer from a GeoJSON feature (type='" + geometry.type + "')", function () {
-				const layer = L.GeoJSON.geometryToLayer({
+				var layer = L.GeoJSON.geometryToLayer({
 					type: "Feature",
 					geometry: geometry
 				});
-				expect(layer instanceof L.Layer).to.be(true);
+				expect(layer).to.be.a(L.Layer);
 			});
 		});
 
@@ -601,56 +601,54 @@ describe("L.GeoJSON functions", function () {
 			geometryCollection
 		].forEach(function (geometry) {
 			it("creates a Layer from a GeoJSON geometry (type='" + geometry.type + "')", function () {
-				const layer = L.GeoJSON.geometryToLayer(geometry);
-				expect(layer instanceof L.Layer).to.be(true);
+				var layer = L.GeoJSON.geometryToLayer(geometry);
+				expect(layer).to.be.a(L.Layer);
 			});
 		});
 
 		it("throws an error if feature is an invalid GeoJSON object", function () {
-			expect(function () {
-				L.GeoJSON.geometryToLayer({
-					type: "Feature",
-					geometry: {
-						type: "invalid",
-						coordinates: [0, 0]
-					}
-				});
+			expect(L.GeoJSON.geometryToLayer).withArgs({
+				type: "Feature",
+				geometry: {
+					type: "invalid",
+					coordinates: [0, 0]
+				}
 			}).to.throwError("Invalid GeoJSON object.");
 		});
 
-		it("returns null if feature does not have a geometry property", function () {
-			const ret = L.GeoJSON.geometryToLayer({type: "Feature"});
-			expect(ret).to.be(null);
+		it("returns nothing if feature does not have a geometry property", function () {
+			var ret = L.GeoJSON.geometryToLayer({type: "Feature"});
+			expect(ret).not.to.be.ok();
 		});
 
 		it("creates a Layer using pointToLayer option (Point)", function () {
-			const layer = L.GeoJSON.geometryToLayer({
+			var layer = L.GeoJSON.geometryToLayer({
 				type: "Feature",
 				geometry: point,
 				properties: {radius: 100}
 			}, {
 				pointToLayer: customPointToLayer
 			});
-			expect(layer instanceof L.Circle).to.be(true);
+			expect(layer).to.be.a(L.Circle);
 			expect(layer.options.radius).to.be(100);
 		});
 
 		it("creates a Layer using pointToLayer option (MultiPoint)", function () {
-			const layer = L.GeoJSON.geometryToLayer({
+			var layer = L.GeoJSON.geometryToLayer({
 				type: "Feature",
 				geometry: multiPoint,
 				properties: {radius: 100}
 			}, {
 				pointToLayer: customPointToLayer
 			});
-			Object.keys(layer._layers).forEach(function (id) {
-				expect(layer._layers[id] instanceof L.Circle).to.be(true);
-				expect(layer._layers[id].options.radius).to.be(100);
+			layer.eachLayer(function (lyr) {
+				expect(lyr).to.be.a(L.Circle);
+				expect(lyr.options.radius).to.be(100);
 			});
 		});
 
 		it("creates a Layer using coordsToLatLng option (Point)", function () {
-			const layer = L.GeoJSON.geometryToLayer({
+			var layer = L.GeoJSON.geometryToLayer({
 				type: "Feature",
 				geometry: {
 					type: "Point",
@@ -659,11 +657,11 @@ describe("L.GeoJSON functions", function () {
 			}, {
 				coordsToLatLng: customCoordstoLatLng
 			});
-			expect(layer._latlng).to.eql({lat: 3, lng: 2, alt: 4});
+			expect(layer.getLatLng()).to.eql({lat: 3, lng: 2, alt: 4});
 		});
 
 		it("creates a Layer using coordsToLatLng option (MultiPoint)", function () {
-			const layer = L.GeoJSON.geometryToLayer({
+			var layer = L.GeoJSON.geometryToLayer({
 				type: "Feature",
 				geometry: {
 					type: "MultiPoint",
@@ -674,200 +672,188 @@ describe("L.GeoJSON functions", function () {
 			}, {
 				coordsToLatLng: customCoordstoLatLng
 			});
-			const expected = [
+			expect(layer.getLayers().map(function (lyr) {
+				return lyr.getLatLng();
+			})).to.eql([
 				{lat: 3, lng: 2, alt: 4},
 				{lat: 6, lng: 5, alt: 7}
-			];
-			const ids = Object.keys(layer._layers);
-			for (var i = 0; i < ids.length; i++) {
-				expect(layer._layers[ids[i]]._latlng).to.eql(expected[i]);
-			}
+			]);
 		});
 	});
 
 	describe("#coordsToLatLng", function () {
 		it("creates a LatLng object given longitude and latitude", function () {
-			const latlng = L.GeoJSON.coordsToLatLng([0, 0]);
-			expect(latlng instanceof L.LatLng).to.be(true);
-			expect(latlng.lat).to.be(0);
-			expect(latlng.lat).to.be(0);
-			expect(latlng.alt).to.be(undefined);
+			var latlng = L.GeoJSON.coordsToLatLng([1, 2]);
+			expect(latlng).to.be.a(L.LatLng);
+			expect(latlng.lat).to.be(2);
+			expect(latlng.lng).to.be(1);
+			expect(latlng.alt).not.to.be.ok();
 		});
 
 		it("creates a LatLng object given longitude, latitude and altitude", function () {
-			const latlng = L.GeoJSON.coordsToLatLng([0, 0, 0]);
-			expect(latlng instanceof L.LatLng).to.be(true);
-			expect(latlng.lat).to.be(0);
-			expect(latlng.lat).to.be(0);
-			expect(latlng.alt).to.be(0);
+			var latlng = L.GeoJSON.coordsToLatLng([1, 2, 3]);
+			expect(latlng).to.be.a(L.LatLng);
+			expect(latlng.lat).to.be(2);
+			expect(latlng.lng).to.be(1);
+			expect(latlng.alt).to.be(3);
 		});
 	});
 
 	describe("#coordsToLatLngs", function () {
 
 		function customCoordsToLatLng(coords) {
-			return new L.LatLng(coords[0] + 1, coords[1] + 1, coords[2] + 1);
+			return L.latLng(coords[1] + 1, coords[0] + 1, coords[2] + 1);
 		}
 
 		it("creates a multidimensional array of LatLngs", function () {
-			const latLngs = L.GeoJSON.coordsToLatLngs([[0, 0], [1, 1], [2, 2]]);
+			var latLngs = L.GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
 			expect(latLngs.length).to.be(3);
 			latLngs.forEach(function (latLng) {
-				expect(latLng instanceof L.LatLng).to.be(true);
+				expect(latLng).to.be.a(L.LatLng);
 			});
 		});
 
 		it("creates a multidimensional array of LatLngs (levelsDeep=1)", function () {
-			const latLngs = L.GeoJSON.coordsToLatLngs([
-				[[0, 0], [1, 1], [2, 2]],
-				[[4, 4], [5, 5], [6, 6]]
+			var latLngs = L.GeoJSON.coordsToLatLngs([
+				[[1, 2], [3, 4], [5, 6]],
+				[[5, 6], [7, 8], [9, 10]]
 			], 1);
 			expect(latLngs.length).to.be(2);
-			for (var i = 0; i < latLngs.length; i++) {
-				for (var j = 0; j < latLngs[i].length; j++) {
-					expect(latLngs[i][j] instanceof L.LatLng).to.be(true);
-				}
-			}
+			latLngs.forEach(function (arr) {
+				arr.forEach(function (latlng) {
+					expect(latlng).to.be.a(L.LatLng);
+				});
+			});
 		});
 
 		it("creates a multidimensional array of LatLngs with custom coordsToLatLng", function () {
-			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
-			const expected = [
-				{lat: 2, lng: 3, alt: 4},
-				{lat: 5, lng: 6, alt: 7},
-				{lat: 8, lng: 9, alt: 10}
-			];
-			for (var i = 0; i < latLngs.length; i++) {
-				expect(latLngs[i]).to.eql(expected[i]);
-			}
+			var coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+			var latLngs = L.GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
+			expect(latLngs).to.eql([
+				{lat: 3, lng: 2, alt: 4},
+				{lat: 6, lng: 5, alt: 7},
+				{lat: 9, lng: 8, alt: 10}
+			]);
 		});
 
 		it("creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)", function () {
-			const coords = [
+			var coords = [
 				[[1, 2, 3], [4, 5, 6]],
 				[[12, 13, 14], [15, 16, 17]]
 			];
-			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
-			const expected = [
+			var latLngs = L.GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
+			expect(latLngs).to.eql([
 				[
-					{lat: 2, lng: 3, alt: 4},
-					{lat: 5, lng: 6, alt: 7}
+					{lat: 3, lng: 2, alt: 4},
+					{lat: 6, lng: 5, alt: 7}
 				],
 				[
-					{lat: 13, lng: 14, alt: 15},
-					{lat: 16, lng: 17, alt: 18}
+					{lat: 14, lng: 13, alt: 15},
+					{lat: 17, lng: 16, alt: 18}
 				]
-			];
-			for (var i = 0; i < latLngs.length; i++) {
-				for (var j = 0; j < latLngs[i].length; j++) {
-					expect(latLngs[i][j]).to.eql(expected[i][j]);
-				}
-			}
+			]);
 		});
 	});
 
 	describe("#latLngToCoords", function () {
 		it("returns an array of coordinates (longitude, latitude)", function () {
-			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(0, 0));
-			expect(coords).to.eql([0, 0]);
+			var coords = L.GeoJSON.latLngToCoords(L.latLng(2, 1));
+			expect(coords).to.eql([1, 2]);
 		});
 
 		it("returns an array of coordinates and altitude (longitude, latitude, altitude)", function () {
-			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(0, 0, 0));
-			expect(coords).to.eql([0, 0, 0]);
+			var coords = L.GeoJSON.latLngToCoords(L.latLng(2, 1, 3));
+			expect(coords).to.eql([1, 2, 3]);
 		});
 
 		it("returns an array of coordinates with given precision (longitude, latitude)", function () {
-			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(
-				1.123456, 1.123456
+			var coords = L.GeoJSON.latLngToCoords(L.latLng(
+				2.123456, 1.123456
 			), 3);
-			expect(coords).to.eql([1.123, 1.123]);
+			expect(coords).to.eql([1.123, 2.123]);
 		});
 
 		it("returns an array of coordinates with given precision (longitude, latitude, altitude)", function () {
-			const coords = L.GeoJSON.latLngToCoords(new L.LatLng(
-				1.123456, 1.123456, 1.123456
+			var coords = L.GeoJSON.latLngToCoords(L.latLng(
+				2.123456, 1.123456, 3.123456
 			), 3);
-			expect(coords).to.eql([1.123, 1.123, 1.123]);
+			expect(coords).to.eql([1.123, 2.123, 3.123]);
 		});
 	});
 
 	describe("#latLngsToCoords", function () {
 		it("returns a multidimensional array of coordinates", function () {
-			const coords = L.GeoJSON.latLngsToCoords([L.latLng(0, 0), L.latLng(1, 1)]);
-			expect(coords).to.eql([[0, 0], [1, 1]]);
+			var coords = L.GeoJSON.latLngsToCoords([L.latLng(2, 1), L.latLng(4, 3)]);
+			expect(coords).to.eql([[1, 2], [3, 4]]);
 		});
 
 		it("returns a multidimensional array of coordinates (levelDeep=1)", function () {
-			const latLngs = [
-				[L.latLng(0, 0), L.latLng(1, 1)],
-				[L.latLng(2, 2), L.latLng(3, 3)]
+			var latLngs = [
+				[L.latLng(2, 1), L.latLng(4, 3)],
+				[L.latLng(6, 5), L.latLng(8, 7)]
 			];
-			const coords = L.GeoJSON.latLngsToCoords(latLngs, 1);
-			const expected = [
-				[[0, 0], [1, 1]],
-				[[2, 2], [3, 3]]
-			];
-			expect(coords).to.eql(expected);
+			var coords = L.GeoJSON.latLngsToCoords(latLngs, 1);
+			expect(coords).to.eql([
+				[[1, 2], [3, 4]],
+				[[5, 6], [7, 8]]
+			]);
 		});
 
 		it("returns a multidimensional array of coordinates (closed=True)", function () {
-			const latLngs = [L.latLng(0, 0), L.latLng(1, 1), L.latLng(2, 2)];
-			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, true);
-			expect(coords).to.eql([[0, 0], [1, 1], [2, 2], [0, 0]]);
+			var latLngs = [L.latLng(2, 1), L.latLng(4, 3), L.latLng(6, 5)];
+			var coords = L.GeoJSON.latLngsToCoords(latLngs, 0, true);
+			expect(coords).to.eql([[1, 2], [3, 4], [5, 6], [1, 2]]);
 		});
 
 		it("returns a multidimensional array of coordinates (levelsDeep=1, closed=True)", function () {
-			const latLngs = [
-				[L.latLng(0, 0), L.latLng(1, 1), L.latLng(2, 2)],
-				[L.latLng(3, 3), L.latLng(4, 4), L.latLng(5, 5)]
+			var latLngs = [
+				[L.latLng(2, 1), L.latLng(4, 3), L.latLng(6, 5)],
+				[L.latLng(8, 7), L.latLng(10, 9), L.latLng(12, 11)]
 			];
-			const coords = L.GeoJSON.latLngsToCoords(latLngs, 1, true);
-			const expected = [
-				[[0, 0], [1, 1], [2, 2], [0, 0]],
-				[[3, 3], [4, 4], [5, 5], [3, 3]]
-			];
-			expect(coords).to.eql(expected);
+			var coords = L.GeoJSON.latLngsToCoords(latLngs, 1, true);
+			expect(coords).to.eql([
+				[[1, 2], [3, 4], [5, 6], [1, 2]],
+				[[7, 8], [9, 10], [11, 12], [7, 8]]
+			]);
 		});
 
 		it("returns a multidimensional array of coordinates with given precision", function () {
-			const latLngs = [L.latLng(1.123456, 1.123456), L.latLng(2.123456, 2.123456)];
-			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, false, 3);
-			expect(coords).to.eql([[1.123, 1.123], [2.123, 2.123]]);
+			var latLngs = [L.latLng(2.123456, 1.123456), L.latLng(4.123456, 3.123456)];
+			var coords = L.GeoJSON.latLngsToCoords(latLngs, 0, false, 3);
+			expect(coords).to.eql([[1.123, 2.123], [3.123, 4.123]]);
 		});
 
 		it("returns a multidimensional array of coordinates (latitude, longitude, altitude)", function () {
-			const latLngs = [L.latLng(0, 0, 0), L.latLng(1, 1, 1)];
-			const coords = L.GeoJSON.latLngsToCoords(latLngs);
-			expect(coords).to.eql([[0, 0, 0], [1, 1, 1]]);
+			var latLngs = [L.latLng(2, 1, 3), L.latLng(5, 4, 6)];
+			var coords = L.GeoJSON.latLngsToCoords(latLngs);
+			expect(coords).to.eql([[1, 2, 3], [4, 5, 6]]);
 		});
 	});
 
 	describe("#asFeature", function () {
-		const geometry1 = {
+		var geometry1 = {
 			type: "Point",
 			coordinates: [0, 0]
 		};
 
-		const geometry2 = {
+		var geometry2 = {
 			type: "Point",
 			coordinates: [1, 1]
 		};
 
-		const feature1 = {
+		var feature1 = {
 			type: "Feature",
 			geometry: geometry1,
 			properties: {a: 1}
 		};
 
-		const feature2 = {
+		var feature2 = {
 			type: "Feature",
 			geometry: geometry2,
 			properties: {b: 2}
 		};
 
-		const featureCollection = {
+		var featureCollection = {
 			type: "FeatureCollection",
 			features: [
 				feature1,
@@ -876,22 +862,21 @@ describe("L.GeoJSON functions", function () {
 		};
 
 		it("given a bare geometry returns a GeoJSON-like feature", function () {
-			const ret = L.GeoJSON.asFeature(geometry1);
-			const expected = {
+			var ret = L.GeoJSON.asFeature(geometry1);
+			expect(ret).to.eql({
 				type: "Feature",
 				properties: {},
 				geometry: geometry1
-			};
-			expect(ret).to.eql(expected);
+			});
 		});
 
 		it("given a GeoJSON feature directly returns it", function () {
-			const ret = L.GeoJSON.asFeature(feature1);
+			var ret = L.GeoJSON.asFeature(feature1);
 			expect(ret).to.eql(feature1);
 		});
 
 		it("given a GeoJSON feature collection directly returns it", function () {
-			const ret = L.GeoJSON.asFeature(featureCollection);
+			var ret = L.GeoJSON.asFeature(featureCollection);
 			expect(ret).to.eql(featureCollection);
 		});
 	});
