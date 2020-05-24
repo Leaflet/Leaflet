@@ -748,24 +748,31 @@ describe("L.GeoJSON functions", function () {
 	});
 
 	describe("#latLngToCoords", function () {
-		it("returns an array of coordinates and altitude (longitude, latitude, altitude)", function () {
-			var coords = L.GeoJSON.latLngToCoords(L.latLng(2, 1, 3));
-			expect(coords).to.eql([1, 2, 3]);
+		it("returns an array of coordinates and altitude", function () {
+			var coords = L.GeoJSON.latLngToCoords(L.latLng(2, 1));
+			var coordsWithAlt = L.GeoJSON.latLngToCoords(L.latLng(2, 1, 3));
+			expect(coords).to.eql([1, 2]);
+			expect(coordsWithAlt).to.eql([1, 2, 3]);
 		});
 
-		it("returns an array of coordinates with given precision (longitude, latitude, altitude)", function () {
+		it("returns an array of coordinates with given precision", function () {
 			var coords = L.GeoJSON.latLngToCoords(L.latLng(
+				2.123456, 1.123456
+			), 3);
+			var coordsWithAlt = L.GeoJSON.latLngToCoords(L.latLng(
 				2.123456, 1.123456, 3.123456
 			), 3);
-			expect(coords).to.eql([1.123, 2.123, 3.123]);
+			expect(coords).to.eql([1.123, 2.123]);
+			expect(coordsWithAlt).to.eql([1.123, 2.123, 3.123]);
 		});
 	});
 
 	describe("#latLngsToCoords", function () {
-		it("returns a multidimensional array of coordinates (latitude, longitude, altitude)", function () {
-			var latLngs = [L.latLng(2, 1, 3), L.latLng(5, 4, 6)];
-			var coords = L.GeoJSON.latLngsToCoords(latLngs);
-			expect(coords).to.eql([[1, 2, 3], [4, 5, 6]]);
+		it("returns a multidimensional array of coordinates", function () {
+			var coords = L.GeoJSON.latLngsToCoords([L.latLng(2, 1), L.latLng(4, 3)]);
+			var coordWithAlt = L.GeoJSON.latLngsToCoords([L.latLng(2, 1, 3), L.latLng(5, 4, 6)]);
+			expect(coords).to.eql([[1, 2], [3, 4]]);
+			expect(coordWithAlt).to.eql([[1, 2, 3], [4, 5, 6]]);
 		});
 
 		it("returns a multidimensional array of coordinates (levelDeep=1)", function () {
