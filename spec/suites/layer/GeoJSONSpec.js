@@ -682,12 +682,22 @@ describe("L.GeoJSON functions", function () {
 	});
 
 	describe("#coordsToLatLng", function () {
-		it("creates a LatLng object given longitude, latitude and altitude", function () {
-			var latlng = L.GeoJSON.coordsToLatLng([1, 2, 3]);
-			expect(latlng).to.be.a(L.LatLng);
-			expect(latlng.lat).to.be(2);
-			expect(latlng.lng).to.be(1);
-			expect(latlng.alt).to.be(3);
+		it("creates a LatLng object", function () {
+			var latLng = L.GeoJSON.coordsToLatLng([1, 2]);
+			var latLngWithAlt = L.GeoJSON.coordsToLatLng([3, 4, 5]);
+			expect(latLng).to.be.a(L.LatLng);
+			expect(latLngWithAlt).to.be.a(L.LatLng);
+		});
+
+		it("creates a LatLng object with given coordinates", function () {
+			var latLng = L.GeoJSON.coordsToLatLng([1, 2]);
+			var latLngWithAlt = L.GeoJSON.coordsToLatLng([3, 4, 5]);
+			expect(latLng.lat).to.be(2);
+			expect(latLng.lng).to.be(1);
+			expect(latLng.alt).not.to.be.ok();
+			expect(latLngWithAlt.lat).to.be(4);
+			expect(latLngWithAlt.lng).to.be(3);
+			expect(latLngWithAlt.alt).to.be(5);
 		});
 	});
 
