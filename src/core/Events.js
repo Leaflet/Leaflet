@@ -75,7 +75,7 @@ export var Events = {
 
 		} else if (typeof types === 'object') {
 			for (var type in types) {
-				this._off(type, types[type], fn);
+				this._off(type, types[type], context);   
 			}
 
 		} else {
