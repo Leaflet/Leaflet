@@ -120,7 +120,13 @@ export var Map = Evented.extend({
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true
+		trackResize: true,
+
+		// @option worldCopyJump: Boolean = false
+		// With this option enabled, the map tracks when you pan/zoom to another
+		// "copy" of the world and seamlessly jumps to the original one so that
+		// all overlays like markers and vector layers are still visible.
+		worldCopyJump: false
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -1248,6 +1254,14 @@ export var Map = Evented.extend({
 	},
 
 	_moveEnd: function (zoomChanged) {
+		if (this.options.worldCopyJump) {
+			var center = this.getCenter();
+			var wrappedCenter = this.wrapLatLng(center);
+			if (!center.equals(wrappedCenter)) {
+				this.panTo(wrappedCenter, {animate: false});
+			}
+		}
+
 		// @event zoomend: Event
 		// Fired when the map has changed, after any animations.
 		if (zoomChanged) {
