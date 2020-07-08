@@ -393,8 +393,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 
 /* Default icon URLs */
-.leaflet-default-icon-path {
+.leaflet-marker-icon.leaflet-default-icon {
 	background-image: url(images/marker-icon.png);
+	}
+.leaflet-retina .leaflet-marker-icon.leaflet-default-icon {
+	background-image: url(images/marker-icon-2x.png);
+	}
+.leaflet-marker-shadow.leaflet-default-icon{
+	background-image: url(images/marker-shadow.png);
 	}
 
 
