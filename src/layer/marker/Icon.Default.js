@@ -57,6 +57,10 @@ export var IconDefault = Icon.extend({
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
-		return this._stripUrl(path) || '';
+		path = this._stripUrl(path);
+		if (path) { return path; }
+		var link = document.querySelector('link[href$="leaflet.css"]');
+		if (!link) { return ''; }
+		return link.href.substring(0, link.href.length - 'leaflet.css'.length - 1);
 	}
 });
