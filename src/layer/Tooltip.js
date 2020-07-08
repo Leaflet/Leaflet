@@ -137,7 +137,8 @@ export var Tooltip = DivOverlay.extend({
 		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
 		    tooltipPoint = map.layerPointToContainerPoint(pos),
 		    direction = this.options.direction,
-		    tooltipWidth = container.offsetWidth,
+		    isRtl = DomUtil.getStyle(container, 'direction') === 'rtl',
+		    tooltipWidth = isRtl ? 6 : container.offsetWidth,
 		    tooltipHeight = container.offsetHeight,
 		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
