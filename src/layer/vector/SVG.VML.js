@@ -8,14 +8,14 @@ import {Renderer} from './Renderer';
 
 
 export var vmlCreate = (function () {
-	try {
+	if (document.namespaces === undefined) {
+		return function (name) {
+			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+		};
+	} else {
 		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
 		return function (name) {
 			return document.createElement('<lvml:' + name + ' class="lvml">');
-		};
-	} catch (e) {
-		return function (name) {
-			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
 		};
 	}
 })();
@@ -74,9 +74,9 @@ export var vmlMixin = {
 
 	_updateStyle: function (layer) {
 		var stroke = layer._stroke,
-		    fill = layer._fill,
-		    options = layer.options,
-		    container = layer._container;
+				fill = layer._fill,
+				options = layer.options,
+				container = layer._container;
 
 		container.stroked = !!options.stroke;
 		container.filled = !!options.fill;
@@ -92,8 +92,8 @@ export var vmlMixin = {
 
 			if (options.dashArray) {
 				stroke.dashStyle = Util.isArray(options.dashArray) ?
-				    options.dashArray.join(' ') :
-				    options.dashArray.replace(/( *, *)/g, ' ');
+						options.dashArray.join(' ') :
+						options.dashArray.replace(/( *, *)/g, ' ');
 			} else {
 				stroke.dashStyle = '';
 			}
@@ -121,8 +121,8 @@ export var vmlMixin = {
 
 	_updateCircle: function (layer) {
 		var p = layer._point.round(),
-		    r = Math.round(layer._radius),
-		    r2 = Math.round(layer._radiusY || r);
+				r = Math.round(layer._radius),
+				r2 = Math.round(layer._radiusY || r);
 
 		this._setPath(layer, layer._empty() ? 'M0 0' :
 			'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r2 + ' 0,' + (65535 * 360));
