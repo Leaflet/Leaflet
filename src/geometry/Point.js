@@ -203,7 +203,7 @@ Point.prototype = {
 		var sinTheta = Math.sin(theta);
 		var cosTheta = Math.cos(theta);
 
-		return new L.Point(
+		return new Point(
 			this.x * cosTheta - this.y * sinTheta,
 			this.x * sinTheta + this.y * cosTheta
 		);

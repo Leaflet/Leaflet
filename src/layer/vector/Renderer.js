@@ -2,7 +2,7 @@ import {Layer} from '../Layer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Util from '../../core/Util';
 import * as Browser from '../../core/Browser';
-import {Bounds} from '../../geometry/Bounds';
+// import {Bounds} from '../../geometry/Bounds';
 
 
 
@@ -91,14 +91,14 @@ export var Renderer = Layer.extend({
 
 	_updateTransform: function (center, zoom) {
 		var scale = this._map.getZoomScale(zoom, this._zoom),
-		    position = DomUtil.getPosition(this._container),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-			destCenterPoint = this._map.project(center, zoom),
-			offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
-		    // centerOffset = destCenterPoint.subtract(currentCenterPoint),
+		offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
+		// position = DomUtil.getPosition(this._container),
+		// viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
+		// currentCenterPoint = this._map.project(this._center, zoom),
+		// destCenterPoint = this._map.project(center, zoom),
+		// centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		    // topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+		// topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
 		if (Browser.any3d) {
 			DomUtil.setTransform(this._container, offset, scale);
@@ -144,7 +144,7 @@ export var Renderer = Layer.extend({
 			    map.containerPointToLayerPoint([padMax.x, padMin.y]).floor(),
 			    map.containerPointToLayerPoint([padMax.x, padMax.y]).floor()
 		    ]);
-			// min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+		// min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = clip;
 		this._topLeft = this._map.layerPointToLatLng(clip.min);

@@ -172,7 +172,7 @@ export function setOpacity(el, value) {
 
 function _setOpacityIE(el, value) {
 	var filter = false,
-		filterName = 'DXImageTransform.Microsoft.Alpha';
+	filterName = 'DXImageTransform.Microsoft.Alpha';
 
 	// filters collection throws an error if we try to retrieve a filter that doesn't exist
 	try {
@@ -224,8 +224,7 @@ export function setTransform(el, offset, scale, bearing, pivot) {
 	} else {
 		pos = pos.rotateFrom(bearing, pivot);
 
-		el.style[TRANSFORM] =
-			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' +
+		el.style[TRANSFORM] = 'translate3d(' + pos.x + 'px,' + pos.y + 'px, 0)' +
 			(scale ? ' scale(' + scale + ')' : '') +
 			' rotate(' + bearing + 'rad)';
 	}
@@ -235,7 +234,7 @@ export function setTransform(el, offset, scale, bearing, pivot) {
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
-export function setPosition(el, point) {
+export function setPosition(el, point, bearing, pivot) {
 
 	/*eslint-disable */
 	el._leaflet_pos = point;

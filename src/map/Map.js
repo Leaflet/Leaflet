@@ -1054,13 +1054,12 @@ export var Map = Evented.extend({
 	// pixel coordinate relative to the [origin pixel](#map-getpixelorigin).
 	containerPointToLayerPoint: function (point) { // (Point)
 		if (this._rotate && this._bearing) {
-			return point(point)
+			return toPoint(point)
 				.subtract(this._getMapPanePos())
 				.rotateFrom(-this._bearing, this._getRotatePanePos())
 				.subtract(this._getRotatePanePos());
-		}
-		else {
-			return point(point).subtract(this._getMapPanePos());
+		} else {
+			return toPoint(point).subtract(this._getMapPanePos());
 		}
 	},
 
@@ -1069,13 +1068,12 @@ export var Map = Evented.extend({
 	// returns the corresponding pixel coordinate relative to the map container.
 	layerPointToContainerPoint: function (point) { // (Point)
 		if (this._rotate && this._bearing) {
-			return point(point)
+			return toPoint(point)
 				.add(this._getRotatePanePos())
 				.rotateFrom(this._bearing, this._getRotatePanePos())
 				.add(this._getMapPanePos());
-		}
-		else {
-			return point(point).add(this._getMapPanePos());
+		} else {
+			return toPoint(point).add(this._getMapPanePos());
 		}
 	},
 
@@ -1118,7 +1116,7 @@ export var Map = Evented.extend({
 	// Rotation methods
 	// setBearing will work with just the 'theta' parameter.
 	setBearing: function (theta) {
-		if (!L.Browser.any3d || !this._rotate) { return; }
+		if (!Browser.any3d || !this._rotate) { return; }
 
 		var rotatePanePos = this._getRotatePanePos();
 		var halfSize = this.getSize().divideBy(2);
@@ -1126,16 +1124,16 @@ export var Map = Evented.extend({
 
 		rotatePanePos = rotatePanePos.rotateFrom(-this._bearing, this._pivot);
 
-		this._bearing = theta * L.DomUtil.DEG_TO_RAD; // TODO: mod 360
+		this._bearing = theta * DomUtil.DEG_TO_RAD; // TODO: mod 360
 		this._rotatePanePos = rotatePanePos.rotateFrom(this._bearing, this._pivot);
 
-		L.DomUtil.setPosition(this._rotatePane, this._rotatePanePos, this._bearing, this._rotatePanePos);
+		DomUtil.setPosition(this._rotatePane, this._rotatePanePos, this._bearing, this._rotatePanePos);
 
 		this.fire('rotate');
 	},
 
 	getBearing: function () {
-		return this._bearing * L.DomUtil.RAD_TO_DEG;
+		return this._bearing * DomUtil.RAD_TO_DEG;
 	},
 
 
@@ -1200,7 +1198,7 @@ export var Map = Evented.extend({
 
 		if (this._rotate) {
 			this._rotatePane = this.createPane('rotatePane', this._mapPane);
-			L.DomUtil.setPosition(this._rotatePane, new L.Point(0, 0), this._bearing, this._pivot);
+			DomUtil.setPosition(this._rotatePane, new Point(0, 0), this._bearing, this._pivot);
 		}
 
 		// @pane tilePane: HTMLElement = 200
@@ -1528,7 +1526,7 @@ export var Map = Evented.extend({
 
 
 	_getRotatePanePos: function () {
-		return this._rotatePanePos || new L.Point(0, 0);
+		return this._rotatePanePos || new Point(0, 0);
 	},
 
 	_moved: function () {

@@ -49,7 +49,7 @@ export var Canvas = Renderer.extend({
 		this._postponeUpdatePaths = true;
 	},
 
-	onAdd: function () {
+	onAdd: function (map) {
 		Renderer.prototype.onAdd.call(this);
 
 		// Redraw vectors since canvas is cleared upon removal,
