@@ -4041,6 +4041,15 @@ Print or export your map.
 			<a href="https://github.com/Igor-Vladyka">Igor Vladyka</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/pasichnykvasyl/Leaflet.BigImage">Leaflet.BigImage</a>
+		</td><td>
+			A plugin that allows users to receive a large map area and download it.
+		</td><td>
+			<a href="https://github.com/pasichnykvasyl">Vasyl Pasichnyk (Oswald)</a>
+		</td>
+	</tr>
 </table>
 
 
