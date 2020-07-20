@@ -4045,7 +4045,7 @@ Print or export your map.
 		<td>
 			<a href="https://github.com/pasichnykvasyl/Leaflet.BigImage">Leaflet.BigImage</a>
 		</td><td>
-			A plugin that allows users to receive a large map area and download it.
+			Allows users to download an image with a scaled-up version of the visible map.
 		</td><td>
 			<a href="https://github.com/pasichnykvasyl">Vasyl Pasichnyk (Oswald)</a>
 		</td>
