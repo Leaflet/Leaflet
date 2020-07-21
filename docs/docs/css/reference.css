@@ -68,14 +68,15 @@ div.accordion.expanded > div.accordion-overflow > div.accordion-content {
 
 div.accordion.expanded > label > span.expander {
     transform: rotate(90deg);
+    top: 1px;
 }
 
 div.accordion > label > span.expander {
-    transition: transform 0.4s ease-out 0s;
+    transition: transform 0.4s ease-out 0s, top 0.4s ease-out 0s;
     display: inline-block;
     font-size: 12px;
     position: relative;
-    top: -2px;
+    top: -3px;
 }
 
 
