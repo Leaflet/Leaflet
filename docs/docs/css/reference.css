@@ -31,6 +31,7 @@ label {
 div.accordion > div.accordion-overflow > div.accordion-content {
     max-height: 0;
     display: none;
+    pointer-events: none;
 }
 
 div.accordion.collapsed > div.accordion-overflow > div.accordion-content {
@@ -48,6 +49,7 @@ div.accordion.expanded > div.accordion-overflow > div.accordion-content {
 /* 		height: auto; */
     max-height: none;
     display: block;
+    pointer-events: fill;
 }
 
 @keyframes collapse {
@@ -72,6 +74,8 @@ div.accordion > label > span.expander {
     transition: transform 0.4s ease-out 0s;
     display: inline-block;
     font-size: 12px;
+    position: relative;
+    top: -2px;
 }
 
 
