@@ -68,7 +68,7 @@ div.accordion.expanded > div.accordion-overflow > div.accordion-content {
 
 div.accordion.expanded > label > span.expander {
     transform: rotate(90deg);
-    top: 1px;
+    top: 0px;
 }
 
 div.accordion > label > span.expander {
