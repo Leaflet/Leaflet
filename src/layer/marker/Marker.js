@@ -91,6 +91,13 @@ export var Marker = Layer.extend({
 		// @option autoPanSpeed: Number = 10
 		// Number of pixels the map should pan by.
 		autoPanSpeed: 10
+
+		// TODO: Check if Leaflet Rotated Marker will work with the new version
+		// // @option alignedVertically: Bolean = true
+		// alignedVertically: true,
+
+		// // @option rotationAngle: Number = 0;
+		// rotationAngle: 0
 	},
 
 	/* @section
@@ -185,6 +192,19 @@ export var Marker = Layer.extend({
 
 		return this;
 	},
+
+	// TODO: Check if Leaflet Rotated Marker will work with the new version
+	// setRotationAngle: function (angle) {
+	// 	this.options.rotationAngle = angle;
+	// 	this.update();
+	// 	return this;
+	// },
+
+	// setRotationOrigin: function (origin) {
+	// 	this.options.rotationOrigin = origin;
+	// 	this.update();
+	// 	return this;
+	// },
 
 	getElement: function () {
 		return this._icon;

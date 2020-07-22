@@ -545,6 +545,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
+		// if (noPrune === undefined) { noPrune = true; } // TODO: Check if I need it in the new version
 		var tileZoom = Math.round(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
