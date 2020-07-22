@@ -137,7 +137,7 @@ export var Map = Evented.extend({
 
 		if (options.rotate) {
 			this._rotate = true;
-			this._bearing = 0;
+			this._bearing = 0.1 * DomUtil.DEG_TO_RAD;// TODO: Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
 		}
 
 		this._initContainer(id);
@@ -1124,7 +1124,7 @@ export var Map = Evented.extend({
 
 		rotatePanePos = rotatePanePos.rotateFrom(-this._bearing, this._pivot);
 
-		this._bearing = theta * DomUtil.DEG_TO_RAD; // TODO: mod 360
+		this._bearing = (theta || 0.1) * DomUtil.DEG_TO_RAD; // TODO: mod 360. Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
 		this._rotatePanePos = rotatePanePos.rotateFrom(this._bearing, this._pivot);
 
 		DomUtil.setPosition(this._rotatePane, this._rotatePanePos, this._bearing, this._rotatePanePos);
@@ -1198,6 +1198,10 @@ export var Map = Evented.extend({
 
 		if (this._rotate) {
 			this._rotatePane = this.createPane('rotatePane', this._mapPane);
+
+			var halfSize = this.getSize().divideBy(2);
+			this._pivot = this._getMapPanePos().clone().multiplyBy(-1).add(halfSize);
+
 			DomUtil.setPosition(this._rotatePane, new Point(0, 0), this._bearing, this._pivot);
 		}
 
