@@ -49,12 +49,14 @@ export var Draggable = Evented.extend({
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline, options) {
+	initialize: function (element, dragStartTarget, preventOutline, options, map, anchor) {
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
+		this._anchor = anchor;
+		this._map = map;
 	},
 
 	// @method enable()
@@ -185,7 +187,9 @@ export var Draggable = Evented.extend({
 		// Fired continuously during dragging *before* each corresponding
 		// update of the element's position.
 		this.fire('predrag', e);
-		DomUtil.setPosition(this._element, this._newPos);
+		if (this._map && this._map.options.rotate) {
+			DomUtil.setPosition(this._element, this._newPos, -this._map._bearing || 0, this._newPos.add(this._anchor));
+		} else { DomUtil.setPosition(this._element, this._newPos); }
 
 		// @event drag: Event
 		// Fired continuously during dragging.
