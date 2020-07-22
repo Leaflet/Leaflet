@@ -57,6 +57,8 @@ export var DivOverlay = Layer.extend({
 			DomUtil.setOpacity(this._container, 1);
 		}
 
+		map.on('rotate', this.update, this);
+
 		this.bringToFront();
 	},
 
@@ -67,6 +69,8 @@ export var DivOverlay = Layer.extend({
 		} else {
 			DomUtil.remove(this._container);
 		}
+
+		map.off('rotate', this.update);
 	},
 
 	// @namespace Popup
@@ -216,7 +220,11 @@ export var DivOverlay = Layer.extend({
 		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
-			DomUtil.setPosition(this._container, pos.add(anchor));
+			if (this._map.options.rotate) {
+				DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
+			} else {
+				DomUtil.setPosition(this._container, pos.add(anchor));
+			}
 		} else {
 			offset = offset.add(pos).add(anchor);
 		}

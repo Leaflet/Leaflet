@@ -56,7 +56,7 @@ export var Popup = DivOverlay.extend({
 		// @option autoPan: Boolean = true
 		// Set it to `false` if you don't want the map to do panning animation
 		// to fit the opened popup.
-		autoPan: true,
+		autoPan: false, // TODO: Enable adjustPan with rotation
 
 		// @option autoPanPaddingTopLeft: Point = null
 		// The margin between the popup and the top left corner of the map
@@ -230,7 +230,12 @@ export var Popup = DivOverlay.extend({
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		    anchor = this._getAnchor();
-		DomUtil.setPosition(this._container, pos.add(anchor));
+
+		if (this._map._rotate) {
+			DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
+		} else {
+			DomUtil.setPosition(this._container, pos.add(anchor));
+		}
 	},
 
 	_adjustPan: function () {
@@ -333,7 +338,13 @@ Map.include({
 		}
 
 		this._popup = popup;
-		return this.addLayer(popup);
+		var layer = this.addLayer(popup);
+
+		if (this.options.rotate) {
+			popup._container.style['transformOrigin'] = '50% 124%'; // Magic number, based on trials. Old version - "55% 184%"
+		}
+
+		return layer;
 	},
 
 	// @method closePopup(popup?: Popup): this
