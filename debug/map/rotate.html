@@ -112,6 +112,13 @@
 	<input type="range" min="0" max="360" step="1" name="rho" id='rho_input' /><span id='rho'></span>
 
 
+	<h2>Circumscribed Bounds</h2>
+	<table>
+		<tr><th>North </th><td id='north'></td></tr>
+		<tr><th>South</th><td id='south'></td></tr>
+		<tr><th>East </th><td id='east'></td></tr>
+		<tr><th>West </th><td id='west'></td></tr>
+	</table>
 
 	<div>
 		<button onclick="map.flyTo(trd, 10);" >flyTo TRD</button>
@@ -181,11 +188,25 @@
 		}
 
 
+		function updateCircumscribedBound(){
+			var bounds = map.getCircumscribedBounds(),
+			north = bounds.getNorth(),
+			south = bounds.getSouth(),
+			east = bounds.getEast(),
+			west = bounds. getWest();
+
+			document.getElementById('north').innerHTML = north;
+			document.getElementById('south').innerHTML = south;
+			document.getElementById('east').innerHTML = east;
+			document.getElementById('west').innerHTML = west;
+		}
+
 		map.on('move rotate zoomend', function(ev) {
 			var panePos = this._getMapPanePos();
 			document.getElementById('pox').innerHTML = panePos.x;
 			document.getElementById('poy').innerHTML = panePos.y;
 
+			updateCircumscribedBound();
 		});
 
 
@@ -198,6 +219,7 @@
 		};
 		map.on('rotate zoomend load', updatePixelOrigin);
 		updatePixelOrigin();
+		updateCircumscribedBound();
 
 		document.getElementById('rho_input').addEventListener('change', rotate);
 		document.getElementById('rho_input').addEventListener('mousemove', rotate);

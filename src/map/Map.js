@@ -860,6 +860,31 @@ export var Map = Evented.extend({
 		return new LatLngBounds(sw, ne);
 	},
 
+	// @method getCircumscribedBounds(): LatLngBounds
+	// Returns the geographical circumscribed bounds in the current map view
+	getCircumscribedBounds: function () {
+		if (!this._rotate || !this._bearing) {
+			return this.getBounds();
+		}
+
+		var size = this.getSize(),
+		topLeft = this.layerPointToLatLng(this.containerPointToLayerPoint(toPoint(0, 0))),
+		topRight = this.layerPointToLatLng(this.containerPointToLayerPoint(toPoint(size.x, 0))),
+		bottomRight = this.layerPointToLatLng(this.containerPointToLayerPoint(toPoint(size.x, size.y))),
+		bottomLeft = this.layerPointToLatLng(this.containerPointToLayerPoint(toPoint(0, size.y)));
+
+		var minLng = Math.min(topLeft.lng, topRight.lng, bottomRight.lng, bottomLeft.lng);
+		var maxLng = Math.max(topLeft.lng, topRight.lng, bottomRight.lng, bottomLeft.lng);
+
+		var minLat = Math.min(topLeft.lat, topRight.lat, bottomRight.lat, bottomLeft.lat);
+		var maxLat = Math.max(topLeft.lat, topRight.lat, bottomRight.lat, bottomLeft.lat);
+
+		var ne = new LatLng(maxLat, maxLng),
+		sw = new LatLng(minLat, minLng);
+
+		return new LatLngBounds(sw, ne);
+	},
+
 	// @method getMinZoom(): Number
 	// Returns the minimum zoom level of the map (if set in the `minZoom` option of the map or of any layers), or `0` by default.
 	getMinZoom: function () {
@@ -1129,7 +1154,7 @@ export var Map = Evented.extend({
 
 		DomUtil.setPosition(this._rotatePane, this._rotatePanePos, this._bearing, this._rotatePanePos);
 
-		this.fire('rotate');
+		this.fire('rotate').fire('move').fire('moveend');
 	},
 
 	getBearing: function () {
