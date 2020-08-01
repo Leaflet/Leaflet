@@ -105,12 +105,16 @@ export var Zoom = Control.extend({
 
 		DomUtil.removeClass(this._zoomInButton, className);
 		DomUtil.removeClass(this._zoomOutButton, className);
+		DomUtil.setAttribute(this._zoomOutButton,'aria-disabled', false);
+		DomUtil.setAttribute(this._zoomInButton, 'aria-disabled', false);
 
 		if (this._disabled || map._zoom === map.getMinZoom()) {
 			DomUtil.addClass(this._zoomOutButton, className);
+			DomUtil.setAttribute(this._zoomOutButton,'aria-disabled', true);
 		}
 		if (this._disabled || map._zoom === map.getMaxZoom()) {
 			DomUtil.addClass(this._zoomInButton, className);
+			DomUtil.setAttribute(this._zoomInButton,'aria-disabled', true);
 		}
 	}
 });
