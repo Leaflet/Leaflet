@@ -351,6 +351,6 @@ export function getScale(element) {
 // @function setAttribute(el: HTMLElement, attribute: String, value: String || boolean)
 // Sets the element's given attribute with the given value
 export function setAttribute(element, attribute, value) {
-	if (element === undefined || attribute === undefined || value === undefined) { return; };
+	if (element === undefined || attribute === undefined || value === undefined) { return; }
 	element.setAttribute(attribute, value);
 }
