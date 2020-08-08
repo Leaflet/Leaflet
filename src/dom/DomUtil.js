@@ -172,7 +172,7 @@ export function setOpacity(el, value) {
 
 function _setOpacityIE(el, value) {
 	var filter = false,
-	filterName = 'DXImageTransform.Microsoft.Alpha';
+	    filterName = 'DXImageTransform.Microsoft.Alpha';
 
 	// filters collection throws an error if we try to retrieve a filter that doesn't exist
 	try {
