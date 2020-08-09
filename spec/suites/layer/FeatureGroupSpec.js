@@ -84,4 +84,105 @@
 			expect(fg.hasLayer(marker)).to.be(false);
 		});
 	});
+	
+	describe('getBounds', function () {
+		it('returns the bounds (latlng) of the group', function () {
+			var fg = L.featureGroup([
+				L.marker([0, 0]),
+				L.marker([4, 4]),
+				L.marker([3, 3]),
+				L.marker([2, 2]),
+				L.marker([1, 1]),
+			]);
+
+			var southWest = new L.LatLng(0, 0),
+				northEast = new L.LatLng(4, 4);
+			
+			var bounds = new L.LatLngBounds(southWest, northEast);			
+			expect(fg.getBounds()).to.eql(bounds);
+		});
+		
+		it('returns the bounds (LatLng) of the group', function () {
+			var fg = L.featureGroup([
+				L.marker([0, 0]),
+				L.marker([4, 4]),
+				L.marker([3, 3]),
+				L.marker([2, 2]),
+				L.marker([1, 1]),
+			]);
+
+			var southWest = new L.LatLng(0, 0),
+				northEast = new L.LatLng(4, 4);
+			
+			var bounds = new L.LatLngBounds(southWest, northEast);			
+			expect(fg.getBounds()).to.eql(bounds);
+		});
+
+		describe('when a FeatureGroup contains a LayerGroup as children', function(){
+			it("returns the bounds (LatLng) of the group, including group member's child layers", function(){
+				var parentFeatureGroup = L.featureGroup([ L.marker([-23, -102]) ]);
+
+				var layerGroupWithChildren = L.layerGroup([
+					L.marker([39.61, -105.02]),
+					L.marker([39.74, -104.99]),
+					L.marker([39.73, -104.8]),
+					L.marker([39.77, -105.23]),
+				]).addTo(parentFeatureGroup)
+
+				var bounds = new L.LatLngBounds(
+					new L.LatLng(-23, -105.23), 
+					new L.LatLng(39.77, -102)
+				);			
+				expect(parentFeatureGroup.getBounds()).to.eql(bounds);
+			})
+		});
+		
+		describe('when a FeatureGroup contains nested LayerGroups/FeatureGroups as children', function(){
+			it("returns the bounds (LatLng) of the group, including bounds of nested groups' child layers", function(){
+				var parentFeatureGroup = L.featureGroup();
+
+				var layerGroupWithChildren = L.layerGroup([
+					L.marker([39.61, -105.02]),
+					L.marker([39.74, -104.99]),
+					L.marker([39.73, -104.8]),
+					L.marker([39.77, -105.23]),
+				]).addTo(parentFeatureGroup)
+				
+				var layerGroupWithNestedGroups = L.layerGroup([
+					L.marker([39.72, -103.31]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([39.52, -106]),
+					]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([39.5, -103]),
+						L.marker([42, -104]),
+					]),
+					L.marker([39.77, -105.32]),
+				]).addTo(parentFeatureGroup)
+				
+				var featureGroupWithNestedGroups = L.layerGroup([
+					L.marker([39.72, -103.31]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([43.5, -103]),
+					]),
+					L.featureGroup([
+						L.featureGroup([
+							L.marker([39, -55]),
+							L.marker([39, -55.6]),
+							L.marker([39.2, -50]),
+						])	
+					]),
+				]).addTo(parentFeatureGroup)
+
+				var bounds = new L.LatLngBounds(
+					new L.LatLng(39, -106), 
+					new L.LatLng(43.5, -50)
+				);
+				expect(parentFeatureGroup.getBounds()).to.eql(bounds);
+			})
+		});
+	});
 });
