@@ -3991,6 +3991,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aazuspan/leaflet-feature-legend">leaflet-feature-legend
+			</a>
+		</td>
+		<td>
+			Create a legend describing the features in your map using symbols and labels. <a href="https://aazuspan.github.io/leaflet-feature-legend/demo/index.html">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/aazuspan">aazuspan</a>
+		</td>
+	</tr>
 </table>
 
 
