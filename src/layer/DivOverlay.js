@@ -221,7 +221,7 @@ export var DivOverlay = Layer.extend({
 
 		if (this._zoomAnimated) {
 			if (this._map.options.rotate) {
-				DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
+				DomUtil.setPositionAndRotation(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
 			} else {
 				DomUtil.setPosition(this._container, pos.add(anchor));
 			}

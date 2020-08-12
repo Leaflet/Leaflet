@@ -232,7 +232,7 @@ export var Popup = DivOverlay.extend({
 		    anchor = this._getAnchor();
 
 		if (this._map._rotate) {
-			DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
+			DomUtil.setPositionAndRotation(this._container, pos.add(anchor), -this._map._bearing, pos.add(anchor));
 		} else {
 			DomUtil.setPosition(this._container, pos.add(anchor));
 		}

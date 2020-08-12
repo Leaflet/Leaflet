@@ -312,7 +312,7 @@ export var Marker = Layer.extend({
 		if (this._icon) {
 			if (this._map._rotate) {
 				var anchor = this.options.icon.options.iconAnchor || new Point(0, 0);
-				DomUtil.setPosition(this._icon, pos, -this._map._bearing || 0, pos.add(anchor));
+				DomUtil.setPositionAndRotation(this._icon, pos, -this._map._bearing || 0, pos.add(anchor));
 			} else {
 				DomUtil.setPosition(this._icon, pos);
 			}

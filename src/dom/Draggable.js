@@ -188,7 +188,7 @@ export var Draggable = Evented.extend({
 		// update of the element's position.
 		this.fire('predrag', e);
 		if (this._map && this._map.options.rotate) {
-			DomUtil.setPosition(this._element, this._newPos, -this._map._bearing || 0, this._newPos.add(this._anchor));
+			DomUtil.setPositionAndRotation(this._element, this._newPos, -this._map._bearing || 0, this._newPos.add(this._anchor));
 		} else { DomUtil.setPosition(this._element, this._newPos); }
 
 		// @event drag: Event
