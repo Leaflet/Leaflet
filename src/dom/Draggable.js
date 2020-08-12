@@ -3,7 +3,7 @@ import * as Browser from '../core/Browser';
 import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
-import {Point} from '../geometry/Point';
+import {Point, toPoint} from '../geometry/Point';
 
 /*
  * @class Draggable
@@ -44,19 +44,25 @@ export var Draggable = Evented.extend({
 		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
-		clickTolerance: 3
+		clickTolerance: 3,
+
+		// @option anchor: Point = [0, 0],
+		anchor: toPoint(0, 0),
+
+		// @option map: L.Map = null,
+		map: null
 	},
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline, options, map, anchor) {
+	initialize: function (element, dragStartTarget, preventOutline, options) {
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
-		this._anchor = anchor;
-		this._map = map;
+		this._anchor = options && options.anchor;
+		this._map = options && options.map;
 	},
 
 	// @method enable()
