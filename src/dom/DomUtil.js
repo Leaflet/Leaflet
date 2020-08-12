@@ -33,9 +33,6 @@ export var TRANSITION = testProp(
 export var TRANSITION_END =
 	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
 
-export var DEG_TO_RAD = Math.PI / 180;
-export var RAD_TO_DEG = 180 / Math.PI;
-
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.

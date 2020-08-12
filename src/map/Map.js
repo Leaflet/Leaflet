@@ -29,6 +29,9 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  */
 
+var DEG_TO_RAD = Math.PI / 180;
+var RAD_TO_DEG = 180 / Math.PI;
+
 export var Map = Evented.extend({
 
 	options: {
@@ -137,7 +140,7 @@ export var Map = Evented.extend({
 
 		if (options.rotate) {
 			this._rotate = true;
-			this._bearing = 0.1 * DomUtil.DEG_TO_RAD;// TODO: Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
+			this._bearing = 0.1 * DEG_TO_RAD;// TODO: Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
 		}
 
 		this._initContainer(id);
@@ -1149,7 +1152,7 @@ export var Map = Evented.extend({
 
 		rotatePanePos = rotatePanePos.rotateFrom(-this._bearing, this._pivot);
 
-		this._bearing = (theta || 0.1) * DomUtil.DEG_TO_RAD; // TODO: mod 360. Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
+		this._bearing = (theta || 0.1) * DEG_TO_RAD; // TODO: mod 360. Check why sometimes some GeometryLayers aren't shown on the map when bearing is equal to 0
 		this._rotatePanePos = rotatePanePos.rotateFrom(this._bearing, this._pivot);
 
 		DomUtil.setPositionAndRotation(this._rotatePane, this._rotatePanePos, this._bearing, this._rotatePanePos);
@@ -1158,7 +1161,7 @@ export var Map = Evented.extend({
 	},
 
 	getBearing: function () {
-		return this._bearing * DomUtil.RAD_TO_DEG;
+		return this._bearing * RAD_TO_DEG;
 	},
 
 
