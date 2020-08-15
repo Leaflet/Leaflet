@@ -184,5 +184,56 @@
 				expect(parentFeatureGroup.getBounds()).to.eql(bounds);
 			});
 		});
+
+		describe('when a FeatureGroup contains nested LayerGroups/FeatureGroups as children with self references (circular structure)', function () {
+			it("returns the bounds (LatLng) of the group, including bounds of nested groups' child layers, while avoiding circular references", function () {
+				var parentFeatureGroup = L.featureGroup();
+
+				L.layerGroup([
+					L.marker([39.61, -105.02]),
+					L.marker([39.74, -104.99]),
+					L.marker([39.73, -104.8]),
+					L.marker([39.77, -105.23]),
+				]).addTo(parentFeatureGroup);
+
+				var nestedGroup = L.layerGroup([
+					L.marker([39.72, -103.31]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([39.52, -106]),
+					]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([39.5, -103]),
+						L.marker([42, -104]),
+					]),
+					L.marker([39.77, -105.32]),
+				]);
+
+				nestedGroup.addTo(parentFeatureGroup);
+				parentFeatureGroup.addTo(nestedGroup);
+
+				L.layerGroup([
+					L.marker([39.72, -103.31]),
+					L.layerGroup([
+						L.marker([39.51, -104]),
+						L.marker([43.5, -103]),
+					]),
+					L.featureGroup([
+						L.featureGroup([
+							L.marker([39, -55]),
+							L.marker([39, -55.6]),
+							L.marker([39.2, -50]),
+						])
+					]),
+				]).addTo(parentFeatureGroup);
+
+				var bounds = new L.LatLngBounds(
+					new L.LatLng(39, -106),
+					new L.LatLng(43.5, -50)
+				);
+				expect(parentFeatureGroup.getBounds()).to.eql(bounds);
+			});
+		});
 	});
 });
