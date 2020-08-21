@@ -157,6 +157,14 @@ export var Draggable = Evented.extend({
 		offset.x /= this._parentScale.x;
 		offset.y /= this._parentScale.y;
 
+		if (this._map && this._map.options.rotate) {
+			var offsetX = offset.y * Math.sin(this._map._bearing) + offset.x * Math.cos(this._map._bearing);
+			var offsetY = offset.y * Math.cos(this._map._bearing) - offset.x * Math.sin(this._map._bearing);
+
+			offset.x = offsetX;
+			offset.y = offsetY;
+		}
+
 		DomEvent.preventDefault(e);
 
 		if (!this._moved) {
