@@ -1315,11 +1315,11 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
     	<tr>
 		<td>
-			<a href="https://github.com/marslan390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
+			<a href="https://github.com/masajid390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
 		</td><td>
 			Lightweight plugin that adds colorful iconic markers without image and gives full control of style to end user (i.e. Unlimited colors and CSS styling).
 		</td><td>
-			<a href="https://github.com/marslan390">Muhammad Arslan Sajid</a>
+			<a href="https://github.com/masajid390">Muhammad Arslan Sajid</a>
 		</td>
 	</tr>
 	<tr>
