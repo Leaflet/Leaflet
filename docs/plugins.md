@@ -1845,6 +1845,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iDerekLi/">Derek Li</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/coyotesqrl/Leaflet.ArrowCircle">Leaflet.ArrowCircle</a>
+		</td>
+		<td>
+		    A Marker extension to display circles with directional arrows.
+		</td>
+		<td>
+			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
+		</td>
+	</tr>
 </table>
 
 
