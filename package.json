@@ -1,14 +1,14 @@
 {
   "name": "leaflet",
-  "version": "1.6.0",
+  "version": "1.7.1",
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-mourner": "^2.0.1",
-    "git-rev-sync": "^2.0.0",
+    "git-rev-sync": "^2.1.0",
     "happen": "~0.3.2",
-    "karma": "^5.0.3",
+    "karma": "^5.2.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-edge-launcher": "^0.4.2",
     "karma-expect": "^1.1.3",
@@ -28,7 +28,7 @@
     "rollup-plugin-json": "^4.0.0",
     "sinon": "^7.5.0",
     "ssri": "^8.0.0",
-    "uglify-js": "^3.9.2"
+    "uglify-js": "^3.10.3"
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
@@ -48,7 +48,7 @@
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
-    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
+    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
     "integrity": "node ./build/integrity.js"
   },
   "eslintConfig": {

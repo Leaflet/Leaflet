@@ -5,6 +5,12 @@ Leaflet Changelog
 
 ## 1.7.0 (2020-09-03)
 
+### Bug fixes
+
+* Fix build toolchain to reflect uglifyjs upgrade from v2 to v3 (by [@ivansanchez](https://github.com/ivansanchez))
+
+## 1.7.0 (2020-09-03)
+
 ### API changes
 
 * `VideoOverlay` now can take a `muted` option ([#7071](https://github.com/Leaflet/Leaflet/pull/7071) by [@ronikar](https://github.com/ronikar))
