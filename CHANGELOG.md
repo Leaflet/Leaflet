@@ -3,7 +3,57 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.6.0
+## 1.7.0 (2020-09-03)
+
+### API changes
+
+* `VideoOverlay` now can take a `muted` option ([#7071](https://github.com/Leaflet/Leaflet/pull/7071) by [@ronikar](https://github.com/ronikar))
+* The `featureGroup` factory method now takes `options`, as the `FeatureGroup` constructor ([#7160](https://github.com/Leaflet/Leaflet/pull/7160) by [@frogcat](https://github.com/frogcat))
+
+### Improvements
+
+* Use passive event listeners for `touchstart`/`touchend` events ([#7008](https://github.com/Leaflet/Leaflet/pull/7008) by [@yneet](https://github.com/yneet))
+* Better detection of `PointerEvents`-capable browsers in `L.Browser`, and related changes to `Tap`, `Drag`, and `TouchZoom` handlers ([#7010](https://github.com/Leaflet/Leaflet/pull/7010), ([#7033](https://github.com/Leaflet/Leaflet/pull/7041), ([#7036](https://github.com/Leaflet/Leaflet/pull/7036), ([#7068](https://github.com/Leaflet/Leaflet/pull/7068), ([#7195](https://github.com/Leaflet/Leaflet/pull/7195) by [@johnd0e](https://github.com/johnd0e))
+* Add more browser profiles for the automated tests ([#7115](https://github.com/Leaflet/Leaflet/pull/7115) by [@johnd0e](https://github.com/johnd0e))
+
+### Bug fixes
+
+* Fix canvas renderer not clearing the canvas on some zoom transformations, was affecting opacity of items ([#6915](https://github.com/Leaflet/Leaflet/pull/6915) by [@chipta](https://github.com/chipta))
+* Fix detection of passive events in `L.Browser` ([#6930](https://github.com/Leaflet/Leaflet/pull/6930) by [@Ivan-Perez](https://github.com/Ivan-Perez))
+* Prefix MS-specific CSS style to prevent warnings (by [@ivansanchez](https://github.com/ivansanchez), kudos to [@zachricha](https://github.com/zachricha) for [#6960](https://github.com/Leaflet/Leaflet/pull/6960))
+* Clean up `moveend` listener from `map.setMaxBounds` ([#6958](https://github.com/Leaflet/Leaflet/pull/6958) by [@simon04](https://github.com/simon04))
+* Fix wrong scope of `bind` call in ESM environments ([#6970](https://github.com/Leaflet/Leaflet/pull/6970) by [@shintonik](https://github.com/shintonik))
+* Check that `closePopup` exists before calling it automatically ([#6962](https://github.com/Leaflet/Leaflet/pull/6962) by [@pke](https://github.com/pke))
+* Fix exception when calling `layerGroup.hasLayer()` with wrong `layerId` ([#6998](https://github.com/Leaflet/Leaflet/pull/6998) by [@johnd0e](https://github.com/johnd0e))
+* Remove `click` filter targeting Android 4.x browsers ([#7013](https://github.com/Leaflet/Leaflet/pull/7013) by [@johnd0e](https://github.com/johnd0e))
+* Fix touch zoom handler context ([#7036](https://github.com/Leaflet/Leaflet/pull/7036) by [@johnd0e](https://github.com/johnd0e))
+* Tests for `Bounds.overlaps()` and `Bounds.intersects()` ([#7075](https://github.com/Leaflet/Leaflet/pull/7075) by [@mondeja](https://github.com/mondeja))
+* Fix event propagation in a popup's container ([#7091](https://github.com/Leaflet/Leaflet/pull/7091) by [@johnd0e](https://github.com/johnd0e))
+* Fix tile flickering when `maxNativeZoom === maxZoom` ([#7094](https://github.com/Leaflet/Leaflet/pull/7094) by [@johnd0e](https://github.com/johnd0e))
+* Fix `GridLayer`'s zoom-level loading algorithm ([#7123](https://github.com/Leaflet/Leaflet/pull/7123) by [@johnd0e](https://github.com/johnd0e))
+* Fix `tooltipAnchor` behavior for different tooltip directions ([#7155](https://github.com/Leaflet/Leaflet/pull/7155) by [@Istador](https://github.com/Istador))
+
+### Docs & Web Site
+
+* Updated examples to use non-legacy Mapbox tiles, and related changes ([#6905](https://github.com/Leaflet/Leaflet/pull/6905) by [@riastrad](https://github.com/riastrad)) ([#6922](https://github.com/Leaflet/Leaflet/pull/6922) by [@danswick](https://github.com/danswick)) ([#6995](https://github.com/Leaflet/Leaflet/pull/6995) by [@riastrad](https://github.com/riastrad))
+* Fix documentation for `Polyline.addLatLng()` ([#6924](https://github.com/Leaflet/Leaflet/pull/6924) by [@life777](https://github.com/life777))
+* CRS tutorial: change link for UQM tool to an archived version (by [@ivansanchez](https://github.com/ivansanchez))
+* Fixed minor spelling errors in documentation ([#6850](https://github.com/Leaflet/Leaflet/pull/6850) by [@flopp](https://github.com/flopp)) ([#6944](https://github.com/Leaflet/Leaflet/pull/6944) by [@jieter](https://github.com/jieter))
+* Fixed typo in panes documentation (by [#6939](https://github.com/Leaflet/Leaflet/pull/6939) by [@R4M80MrX](https://github.com/R4M80MrX))
+* Fixed broken URL in quick-start example ([#6982](https://github.com/Leaflet/Leaflet/pull/6982) by [@ekbarber](https://github.com/ekbarber))
+* Fix documentation for `map.setMaxBounds()` ([#7001](https://github.com/Leaflet/Leaflet/pull/7001) by [@johnd0e](https://github.com/johnd0e))
+* Fix tilt code in handler tutorial ([#7014](https://github.com/Leaflet/Leaflet/pull/7014) by [@vncntcltt](https://github.com/vncntcltt))
+* Fix instructions for using `jekyll` when building docs ([#7014](https://github.com/Leaflet/Leaflet/pull/7014) by [@vncntcltt](https://github.com/vncntcltt))
+* Update WMS servers in WMS tutorial ([#7014](https://github.com/Leaflet/Leaflet/pull/7014) by [@vncntcltt](https://github.com/vncntcltt))
+* Website constrast changes and minor cleanup (by [@mourner](https://github.com/mourner))
+* Fixed typo in WMS example ([#7098](https://github.com/Leaflet/Leaflet/pull/7098) by [@andreasnuesslein](https://github.com/andreasnuesslein))
+* Fix documentation for `divOverlay.getElement()` ([#7111](https://github.com/Leaflet/Leaflet/pull/7111) by [@mondeja](https://github.com/mondeja))
+* Fix documentation for `Marker.shadowPane` ([#7135](https://github.com/Leaflet/Leaflet/pull/7135) by [@mi-v](https://github.com/mi-v))
+* Update URL about NPM in developer docs ([#7161](https://github.com/Leaflet/Leaflet/pull/7161) by [@iamtekson](https://github.com/iamtekson))
+* Fix documentation for `Layer.removeFrom()` regarding `LayerGroup`s (by [@ivansanchez](https://github.com/ivansanchez))
+* Fix documentation for `LatLngBounds.overlaps()` [#7194](https://github.com/Leaflet/Leaflet/pull/7194) by [@DerZade](https://github.com/DerZade))
+
+## 1.6.0 (2019-11-17)
 
 ### API changes
 
