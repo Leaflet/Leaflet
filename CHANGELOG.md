@@ -3,7 +3,7 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.7.1 (2020-09-03)
+## 1.7.1 (2020-09-04)
 
 ### Bug fixes
 
