@@ -39,6 +39,7 @@
   ],
   "scripts": {
     "docs": "node ./build/docs.js",
+    "preinstall": "npx npm-force-resolutions",
     "pretest": "npm run lint",
     "test": "npm run test-nolint",
     "test-nolint": "karma start ./spec/karma.conf.js",
@@ -50,6 +51,9 @@
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
     "integrity": "node ./build/integrity.js"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
   },
   "eslintConfig": {
     "root": true,
