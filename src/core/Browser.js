@@ -1,5 +1,5 @@
 import * as Util from './Util';
-import {svgCreate} from '../layer/vector/SVG.Util';
+import {svgCreate} from '../layer/vector/svgCreate';
 
 /*
  * @namespace Browser

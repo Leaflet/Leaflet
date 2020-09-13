@@ -4,6 +4,7 @@ import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
+import {getScale} from './getScale';
 
 /*
  * @class Draggable
@@ -118,7 +119,7 @@ export var Draggable = Evented.extend({
 		this._startPoint = new Point(first.clientX, first.clientY);
 
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
-		this._parentScale = DomUtil.getScale(sizedParent);
+		this._parentScale = getScale(sizedParent);
 
 		DomEvent.on(document, MOVE[e.type], this._onMove, this);
 		DomEvent.on(document, END[e.type], this._onUp, this);
