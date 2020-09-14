@@ -43,16 +43,16 @@ export var LatLng = Class.extend({
 			throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 		}
 
-		// 	// @property lat: Number
-		// 	// Latitude in degrees
+		// @property lat: Number
+		// Latitude in degrees
 		this.lat = +lat;
 
-		// 	// @property lng: Number
-		// 	// Longitude in degrees
+		// @property lng: Number
+		// Longitude in degrees
 		this.lng = +lng;
 
-		// 	// @property alt: Number
-		// 	// Altitude in meters (optional)
+		// @property alt: Number
+		// Altitude in meters (optional)
 		if (alt !== undefined) {
 			this.alt = +alt;
 		}
