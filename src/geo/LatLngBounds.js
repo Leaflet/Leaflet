@@ -167,7 +167,7 @@ LatLngBounds.prototype = {
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
-		if ((typeof obj[0] === 'number' || obj instanceof LatLng || 'lat' in obj)) {
+		if (typeof obj[0] === 'number' || obj instanceof LatLng || 'lat' in obj) {
 			obj = toLatLng(obj);
 		} else {
 			obj = toLatLngBounds(obj);
