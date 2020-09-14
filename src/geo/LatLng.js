@@ -1,3 +1,4 @@
+import {Class} from '../core/Class';
 import * as Util from '../core/Util';
 import {distance as earthDistance} from './crs/CRS.Earth.distance';
 
@@ -35,27 +36,28 @@ import {distance as earthDistance} from './crs/CRS.Earth.distance';
 // @alternative
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
-export function LatLng(lat, lng, alt) {
-	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
-	}
+export var LatLng = Class.extend({
 
-	// @property lat: Number
-	// Latitude in degrees
-	this.lat = +lat;
+	initialize: function (lat, lng, alt) {
+		if (isNaN(lat) || isNaN(lng)) {
+			throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
+		}
 
-	// @property lng: Number
-	// Longitude in degrees
-	this.lng = +lng;
+		// 	// @property lat: Number
+		// 	// Latitude in degrees
+		this.lat = +lat;
 
-	// @property alt: Number
-	// Altitude in meters (optional)
-	if (alt !== undefined) {
-		this.alt = +alt;
-	}
-}
+		// 	// @property lng: Number
+		// 	// Longitude in degrees
+		this.lng = +lng;
 
-LatLng.prototype = {
+		// 	// @property alt: Number
+		// 	// Altitude in meters (optional)
+		if (alt !== undefined) {
+			this.alt = +alt;
+		}
+	},
+
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
@@ -93,7 +95,7 @@ LatLng.prototype = {
 	clone: function () {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
-};
+});
 
 export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {

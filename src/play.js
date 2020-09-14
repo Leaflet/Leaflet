@@ -1,11 +1,9 @@
+import {LatLng} from './geo';
+
 /* eslint-disable*/
 // import { LatLng } from "./geo/LatLng";
 // import "./geo/LatLngtoBounds";
-
-import {LatLng} from './geo';
-
 var x = new LatLng(15.5, 10);
-//var z = LatLng(1,1);
 
 console.log(x);
 console.log(x.toString())
