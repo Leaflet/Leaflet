@@ -203,7 +203,7 @@ and optionally an object literal with <code>Map options</code>.</td>
 		<td><code>Boolean</code></td>
 		<td><code>false</code></td>
 		<td>Whether <a href="#path"><code>Path</code></a>s should be rendered on a <a href="#canvas"><code>Canvas</code></a> renderer.
-By default, all <code>Path</code>s are rendered in a <a href="#svg"><code>SVG</code></a> renderer.</td>
+By default, all <a href="#path"><code>Path</code></a>s are rendered in a <a href="#svg"><code>SVG</code></a> renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -916,7 +916,7 @@ handlers start running).</td>
 		<td><code><b>getRenderer</b>(<nobr>&lt;<a href='#path'>Path</a>&gt;</nobr> <i>layer</i>)</code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><p>Returns the instance of <a href="#renderer"><code>Renderer</code></a> that should be used to render the given
-<a href="#path"><code>Path</code></a>. It will ensure that the <a href="#renderer"><code>renderer</code></a> options of the map and paths
+<a href="#path"><code>Path</code></a>. It will ensure that the <code>renderer</code> options of the map and paths
 are respected, and that the renderers do exist on the map.</p>
 </td>
 	</tr>
@@ -1129,7 +1129,7 @@ but takes a bounds parameter like <a href="#map-fitbounds"><code>fitBounds</code
 	<tr id='map-paninside'>
 		<td><code><b>panInside</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;options&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Pans the map the minimum amount to make the <a href="#latlng"><code>latlng</code></a> visible. Use
+		<td><p>Pans the map the minimum amount to make the <code>latlng</code> visible. Use
 <code>padding</code>, <code>paddingTopLeft</code> and <code>paddingTopRight</code> options to fit
 the display to more restricted bounds, like <a href="#map-fitbounds"><code>fitBounds</code></a>.
 If <code>latlng</code> is already within the (optionally padded) display bounds,
@@ -2346,7 +2346,7 @@ map edge to start panning the map.</td>
 	<tr id='marker-move'>
 		<td><code><b>move</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the marker is moved via <a href="#marker-setlatlng"><code>setLatLng</code></a> or by <a href="#marker-dragging">dragging</a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <a href="#latlng"><code>latlng</code></a>.</td>
+		<td>Fired when the marker is moved via <a href="#marker-setlatlng"><code>setLatLng</code></a> or by <a href="#marker-dragging">dragging</a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <code>latlng</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -2615,7 +2615,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -2712,7 +2712,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='marker-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='marker-closepopup'>
@@ -2783,7 +2783,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='marker-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='marker-closetooltip'>
@@ -3459,7 +3459,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='popup-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='popup-closepopup'>
@@ -3530,7 +3530,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='popup-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='popup-closetooltip'>
@@ -4055,7 +4055,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tooltip-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tooltip-closepopup'>
@@ -4126,7 +4126,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tooltip-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tooltip-closetooltip'>
@@ -4503,7 +4503,7 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
 effect when the <a href="#map-crs">map CRS</a> doesn't wrap around. Can be used
-in combination with [<a href="#bounds"><code>bounds</code></a>](#gridlayer-bounds) to prevent requesting
+in combination with <a href="#gridlayer-bounds"><code>bounds</code></a> to prevent requesting
 tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='tilelayer-pane'>
@@ -4924,7 +4924,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-closepopup'>
@@ -4995,7 +4995,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-closetooltip'>
@@ -5429,7 +5429,7 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
 effect when the <a href="#map-crs">map CRS</a> doesn't wrap around. Can be used
-in combination with [<a href="#bounds"><code>bounds</code></a>](#gridlayer-bounds) to prevent requesting
+in combination with <a href="#gridlayer-bounds"><code>bounds</code></a> to prevent requesting
 tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='tilelayer-wms-pane'>
@@ -5855,7 +5855,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-wms-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-closepopup'>
@@ -5926,7 +5926,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-wms-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-closetooltip'>
@@ -6597,7 +6597,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='imageoverlay-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-closepopup'>
@@ -6668,7 +6668,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='imageoverlay-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-closetooltip'>
@@ -6906,7 +6906,7 @@ geographical bounds it is tied to.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
 		<td>Whether the video will save aspect ratio after the projection.
-Relevant for supported browsers. Browser compatibility- https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit</td>
+Relevant for supported browsers. See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">browser compatibility</a></td>
 	</tr>
 	<tr id='videooverlay-muted'>
 		<td><code><b>muted</b></code></td>
@@ -7430,7 +7430,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='videooverlay-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-closepopup'>
@@ -7501,7 +7501,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='videooverlay-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-closetooltip'>
@@ -8211,7 +8211,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svgoverlay-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-closepopup'>
@@ -8282,7 +8282,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svgoverlay-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-closetooltip'>
@@ -8909,7 +8909,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='path-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='path-closepopup'>
@@ -8980,7 +8980,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='path-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='path-closetooltip'>
@@ -9592,7 +9592,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON <code>LineString</code> or <code>MultiLineString</code> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polyline (as a GeoJSON <code>LineString</code> or <code>MultiLineString</code> Feature).</p>
 </td>
 	</tr>
 	<tr id='polyline-getlatlngs'>
@@ -9778,7 +9778,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polyline-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='polyline-closepopup'>
@@ -9849,7 +9849,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polyline-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='polyline-closetooltip'>
@@ -10468,7 +10468,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -10675,7 +10675,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polygon-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='polygon-closepopup'>
@@ -10746,7 +10746,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polygon-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='polygon-closetooltip'>
@@ -11374,7 +11374,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -11582,7 +11582,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='rectangle-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='rectangle-closepopup'>
@@ -11653,7 +11653,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='rectangle-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='rectangle-closetooltip'>
@@ -12087,7 +12087,7 @@ precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
 	<tr id='circle-move'>
 		<td><code><b>move</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the marker is moved via <a href="#circlemarker-setlatlng"><code>setLatLng</code></a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <a href="#latlng"><code>latlng</code></a>.</td>
+		<td>Fired when the marker is moved via <a href="#circlemarker-setlatlng"><code>setLatLng</code></a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <code>latlng</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -12305,7 +12305,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 	<tr id='circle-setlatlng'>
@@ -12460,7 +12460,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circle-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='circle-closepopup'>
@@ -12531,7 +12531,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circle-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='circle-closetooltip'>
@@ -12935,7 +12935,7 @@ precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
 	<tr id='circlemarker-move'>
 		<td><code><b>move</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the marker is moved via <a href="#circlemarker-setlatlng"><code>setLatLng</code></a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <a href="#latlng"><code>latlng</code></a>.</td>
+		<td>Fired when the marker is moved via <a href="#circlemarker-setlatlng"><code>setLatLng</code></a>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <code>latlng</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -13114,7 +13114,7 @@ for a second (also called long press).</td>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 	<tr id='circlemarker-setlatlng'>
@@ -13280,7 +13280,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circlemarker-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-closepopup'>
@@ -13351,7 +13351,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circlemarker-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-closetooltip'>
@@ -13865,7 +13865,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svg-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='svg-closepopup'>
@@ -13936,7 +13936,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svg-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='svg-closetooltip'>
@@ -14479,7 +14479,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='canvas-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='canvas-closepopup'>
@@ -14550,7 +14550,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='canvas-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='canvas-closetooltip'>
@@ -14913,7 +14913,7 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='layergroup-addlayer'>
@@ -15088,7 +15088,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layergroup-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='layergroup-closepopup'>
@@ -15159,7 +15159,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layergroup-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='layergroup-closetooltip'>
@@ -15596,7 +15596,7 @@ and custom events.</li>
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='featuregroup-addlayer'>
@@ -15772,7 +15772,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='featuregroup-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-closepopup'>
@@ -15843,7 +15843,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='featuregroup-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-closetooltip'>
@@ -16323,7 +16323,7 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 		<td><code><b>resetStyle</b>(<i>layer?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
-If <a href="#layer"><code>layer</code></a> is omitted, the style of all features in the current layer is reset.</p>
+If <code>layer</code> is omitted, the style of all features in the current layer is reset.</p>
 </td>
 	</tr>
 	<tr id='geojson-setstyle'>
@@ -16396,7 +16396,7 @@ If <a href="#layer"><code>layer</code></a> is omitted, the style of all features
 		<td><code>Object</code></td>
 		<td><p><code>precision</code> is the number of decimal places for coordinates.
 The default value is 6 places.
-Returns a [<a href="#geojson"><code>GeoJSON</code></a>](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='geojson-addlayer'>
@@ -16572,7 +16572,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='geojson-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='geojson-closepopup'>
@@ -16643,7 +16643,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='geojson-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='geojson-closetooltip'>
@@ -17045,7 +17045,7 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
 effect when the <a href="#map-crs">map CRS</a> doesn't wrap around. Can be used
-in combination with [<a href="#bounds"><code>bounds</code></a>](#gridlayer-bounds) to prevent requesting
+in combination with <a href="#gridlayer-bounds"><code>bounds</code></a> to prevent requesting
 tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='gridlayer-pane'>
@@ -17422,7 +17422,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='gridlayer-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-closepopup'>
@@ -17493,7 +17493,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='gridlayer-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-closetooltip'>
@@ -18006,7 +18006,7 @@ Negative values will retract the bounds.</p>
 <pre><code class="language-js">map.panBy([200, 300]);
 map.panBy(L.point(200, 300));
 </code></pre>
-<p>Note that <code>Point</code> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
+<p>Note that <a href="#point"><code>Point</code></a> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
 which means new classes can't inherit from it, and new methods
 can't be added to it with the <code>include</code> function.</p>
 
@@ -18208,7 +18208,7 @@ bounds = L.bounds(p1, p2);
 <p>All Leaflet methods that accept <a href="#bounds"><code>Bounds</code></a> objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
 <pre><code class="language-js">otherBounds.intersects([[10, 10], [40, 60]]);
 </code></pre>
-<p>Note that <code>Bounds</code> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
+<p>Note that <a href="#bounds"><code>Bounds</code></a> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
 which means new classes can't inherit from it, and new methods
 can't be added to it with the <code>include</code> function.</p>
 
@@ -21522,7 +21522,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layer-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='layer-closepopup'>
@@ -21591,7 +21591,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layer-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='layer-closetooltip'>
@@ -22067,7 +22067,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='interactive-layer-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-closepopup'>
@@ -22138,7 +22138,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='interactive-layer-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-closetooltip'>
@@ -22753,7 +22753,7 @@ geographical CRSs. If <code>undefined</code>, the longitude axis does not wrap a
 		<td><code><b>L.CRS.EPSG3857</b></code></td>
 		<td>The most common CRS for online maps, used by almost all free and commercial
 tile providers. Uses Spherical Mercator projection. Set in by default in
-Map's <a href="#crs"><code>crs</code></a> option.</td>
+Map's <code>crs</code> option.</td>
 	</tr>
 	<tr id='crs-l-crs-epsg4326'>
 		<td><code><b>L.CRS.EPSG4326</b></code></td>
@@ -22762,13 +22762,13 @@ Map's <a href="#crs"><code>crs</code></a> option.</td>
 which is a breaking change from 0.7.x behaviour.  If you are using a <a href="#tilelayer"><code>TileLayer</code></a>
 with this CRS, ensure that there are two 256x256 pixel tiles covering the
 whole earth at zoom level zero, and that the tile coordinate origin is (-180,+90),
-or (-180,-90) for <code>TileLayer</code>s with <a href="#tilelayer-tms">the <code>tms</code> option</a> set.</p></td>
+or (-180,-90) for <a href="#tilelayer"><code>TileLayer</code></a>s with <a href="#tilelayer-tms">the <code>tms</code> option</a> set.</p></td>
 	</tr>
 	<tr id='crs-l-crs-earth'>
 		<td><code><b>L.CRS.Earth</b></code></td>
 		<td>Serves as the base for CRS that are global such that they cover the earth.
 Can only be used as the base for other CRS and cannot be used directly,
-since it does not have a <code>code</code>, <a href="#projection"><code>projection</code></a> or <a href="#transformation"><code>transformation</code></a>. <code>distance()</code> returns
+since it does not have a <code>code</code>, <code>projection</code> or <code>transformation</code>. <code>distance()</code> returns
 meters.</td>
 	</tr>
 	<tr id='crs-l-crs-simple'>
@@ -22801,8 +22801,8 @@ DOM container of the renderer, its bounds, and its zoom animation.</p>
 <p>A <a href="#renderer"><code>Renderer</code></a> works as an implicit layer group for all <a href="#path"><code>Path</code></a>s - the renderer
 itself can be added or removed to the map. All paths use a renderer, which can
 be implicit (the map will decide the type of renderer and use it automatically)
-or explicit (using the [<a href="#renderer"><code>renderer</code></a>](#path-renderer) option of the path).</p>
-<p>Do not use this class directly, use <code>SVG</code> and <code>Canvas</code> instead.</p>
+or explicit (using the <a href="#path-renderer"><code>renderer</code></a> option of the path).</p>
+<p>Do not use this class directly, use <a href="#svg"><code>SVG</code></a> and <a href="#canvas"><code>Canvas</code></a> instead.</p>
 
 <section>
 <h3 id='renderer-option'>Options</h3>
@@ -23086,7 +23086,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='renderer-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='renderer-closepopup'>
@@ -23157,7 +23157,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='renderer-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='renderer-closetooltip'>
@@ -23395,7 +23395,7 @@ event parent.</td>
 	<tr id='keyboardevent-originalevent'>
 		<td><code><b>originalEvent</b></code></td>
 		<td><code>DOMEvent</code></td>
-		<td>The original [DOM <a href="#keyboardevent"><code>KeyboardEvent</code></a>](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this Leaflet event.</td>
+		<td>The original <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">DOM <code>KeyboardEvent</code></a> that triggered this Leaflet event.</td>
 	</tr>
 </tbody></table>
 
@@ -23486,7 +23486,7 @@ event parent.</td>
 	<tr id='mouseevent-originalevent'>
 		<td><code><b>originalEvent</b></code></td>
 		<td><code>DOMEvent</code></td>
-		<td>The original [DOM <a href="#mouseevent"><code>MouseEvent</code></a>](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or <a href="https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent">DOM <code>TouchEvent</code></a> that triggered this Leaflet event.</td>
+		<td>The original <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent">DOM <code>MouseEvent</code></a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent">DOM <code>TouchEvent</code></a> that triggered this Leaflet event.</td>
 	</tr>
 </tbody></table>
 
@@ -24793,7 +24793,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='divoverlay-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-closepopup'>
@@ -24864,7 +24864,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='divoverlay-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-closetooltip'>
