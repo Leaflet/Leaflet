@@ -15,9 +15,11 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [File Structure](#file-structure)
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
-3. [Publishing on NPM](#publishing-on-npm)
-4. [Module Loaders](#module-loaders)
-5. [Adding to the plugins list](#adding-to-the-plugins-list)
+3. [Content Accessibility](#content-accessibility)
+  - [Accessibility Testing Tools](#accessibility-testing-tools)
+4. [Publishing on NPM](#publishing-on-npm)
+5. [Module Loaders](#module-loaders)
+6. [Adding to the plugins list](#adding-to-the-plugins-list)
 
 ## Presentation
 
@@ -129,6 +131,31 @@ marker.myPlugin('bla', {
 ```
 
 And most importantly, keep it simple. Leaflet is all about *simplicity*.
+
+## Content Accessibility
+
+Make sure your content is accessible to users from all walks of life.
+Some users can only navigate web content using a keyboard,
+or must rely on their screen reader to be able to convey the visual information.
+Thus it's important to ensure components are keyboard-friendly,
+and decorative content, such as icon fonts and images, have a text alternative.
+
+Learn more about web accessibility:
+
+- [MDN web docs — Accessibility](https://developer.mozilla.org/docs/Web/Accessibility)
+- [W3C — Web Accessibility Initiative](https://www.w3.org/WAI/)
+- [W3C — ARIA in HTML](https://www.w3.org/TR/html-aria/)
+- [W3C — WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+
+### Accessibility Testing Tools
+
+Tools for automated testing can help you discover common accessibility issues:
+
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
+- [axe](https://www.deque.com/axe/)
+- [WAVE](https://wave.webaim.org/)
+- [Accessibility Insights](https://accessibilityinsights.io/)
+- [webhint](https://webhint.io/)
 
 ## Publishing on NPM
 
