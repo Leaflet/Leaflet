@@ -2820,7 +2820,7 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/zakjan/leaflet-lasso">leaflet-lasso</a>
 		</td>
 		<td>
-			True lasso selection plugin (<a href="http://zakjan.github.io/leaflet-lasso/">Demo</a>)
+			Lasso selection plugin (<a href="http://zakjan.github.io/leaflet-lasso/">Demo</a>)
 		</td>
 		<td>
 			<a href="https://github.com/zakjan">Jan Zak</a>
