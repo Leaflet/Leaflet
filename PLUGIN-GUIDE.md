@@ -142,10 +142,10 @@ and decorative content, such as icon fonts and images, have a text alternative.
 
 Learn more about web accessibility:
 
-- [MDN web docs — Accessibility](https://developer.mozilla.org/docs/Web/Accessibility)
-- [W3C — Web Accessibility Initiative](https://www.w3.org/WAI/)
-- [W3C — ARIA in HTML](https://www.w3.org/TR/html-aria/)
-- [W3C — WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [WAI — Web Accessibility Initiative](https://www.w3.org/WAI/)
+- [ARIA in HTML — Accessible Rich Internet Applications](https://www.w3.org/TR/html-aria/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [WCAG — Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG/)
 
 ### Accessibility Testing Tools
 
