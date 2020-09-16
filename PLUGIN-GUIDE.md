@@ -138,7 +138,8 @@ Make sure your content is accessible to users from all walks of life.
 Some users can only navigate web content using a keyboard,
 or must rely on their screen reader to be able to convey the visual information.
 Thus it's important to ensure components are keyboard-friendly,
-and decorative content, such as icon fonts and images, have a text alternative.
+and non-text content (such as icon fonts and images) either have a text
+alternative or are hidden from screen readers if they're purely decorative.
 
 Learn more about web accessibility:
 
