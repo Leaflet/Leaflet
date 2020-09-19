@@ -16,7 +16,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
 3. [Content Accessibility](#content-accessibility)
-  - [Accessibility Testing Tools](#accessibility-testing-tools)
+	- [Accessibility Testing Tools](#accessibility-testing-tools)
 4. [Publishing on NPM](#publishing-on-npm)
 5. [Module Loaders](#module-loaders)
 6. [Adding to the plugins list](#adding-to-the-plugins-list)
