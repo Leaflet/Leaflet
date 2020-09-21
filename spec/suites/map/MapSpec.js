@@ -234,7 +234,7 @@ describe("Map", function () {
 			var boundsZoom = map.getBoundsZoom(bounds, false, padding);
 			expect(boundsZoom).to.eql(9);
 
-			// test case: EPSG:25833 (mocked, for somplicity)
+			// test case: EPSG:25833 (mocked, for simplicity)
 			// The following coordinates are bounds projected with proj4leaflet crs = EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs
 			var crsMock = sinon.mock(map.options.crs);
 			crsMock.expects("latLngToPoint")
