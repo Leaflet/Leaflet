@@ -627,6 +627,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://publiclab.org">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/GIAPspzoo/L.TileLayer.Canvas">Leaflet.TileLayer.Canvas</a>
+		</td><td>
+			Render tiles as canvas elements.
+		</td><td>
+			<a href="https://giap.pl/">GIAP</a>
+		</td>
+	</tr>
 </table>
 
 
