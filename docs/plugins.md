@@ -1992,7 +1992,29 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
-	</table>
+	<tr>
+		<td>
+			<a href="https://github.com/onaci/leaflet-point-animator">leaflet-point-animator</a>
+		</td>
+		<td>
+			Animate a large number of GeoJSON points. (<a href="https://onaci.github.io/leaflet-point-animator">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/danwild">danwild</a>, <a href="https://github.com/onaci">onaci</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/onaci/leaflet-temporal-geojson">leaflet-temporal-geojson</a>
+		</td>
+		<td>
+			Flexible animation of GeoJSON features. (<a href="https://onaci.github.io/leaflet-temporal-geojson">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/danwild">danwild</a>, <a href="https://github.com/onaci">onaci</a>
+		</td>
+	</tr>
+</table>
 
 
 
