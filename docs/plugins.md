@@ -627,6 +627,17 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://publiclab.org">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/equinor/leaflet.tilelayer.gloperations">Leaflet.TileLayer.GLOperations</a>
+		</td><td>
+			WebGL TileLayer: Colorize floating-point pixels, mouse event handlers for pixel values, hillshading, contours,
+			transitions, filter and do calculations on multiple layers.
+			 (<a href="https://equinor.github.io/leaflet.tilelayer.gloperations/">Demo</a>).
+		</td><td>
+			<a href="https://github.com/thor85">Thorbjørn Horgen</a>
+		</td>
+	</tr>
 </table>
 
 
