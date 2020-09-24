@@ -13,6 +13,7 @@ describe("Marker.Drag", function () {
 	});
 
 	afterEach(function () {
+		map.remove();
 		document.body.removeChild(div);
 	});
 
@@ -20,8 +21,7 @@ describe("Marker.Drag", function () {
 		it("drags a marker with mouse", function (done) {
 			var marker = new L.Marker([0, 0], {
 				draggable: true
-			});
-			map.addLayer(marker);
+			}).addTo(map);
 
 			var hand = new Hand({
 				timing: 'fastframe',
@@ -55,16 +55,10 @@ describe("Marker.Drag", function () {
 				div.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
 			});
 
-			afterEach(function () {
-				div.style.webkitTransformOrigin = '';
-				div.style.webkitTransform = '';
-			});
-
 			it("drags a marker with mouse, compensating for CSS scale", function (done) {
 				var marker = new L.Marker([0, 0], {
 					draggable: true
-				});
-				map.addLayer(marker);
+				}).addTo(map);
 
 				var hand = new Hand({
 					timing: 'fastframe',
@@ -94,8 +88,7 @@ describe("Marker.Drag", function () {
 			var marker = new L.Marker([0, 0], {
 				draggable: true,
 				autoPan: true
-			});
-			map.addLayer(marker);
+			}).addTo(map);
 
 			var hand = new Hand({
 				timing: 'fastframe',

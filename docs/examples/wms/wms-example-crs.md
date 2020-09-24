@@ -10,8 +10,8 @@ title: WMS example
 		crs: L.CRS.EPSG4326
 	});
 
-	var wmsLayer = L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
-		layers: 'nasa:bluemarble'
+	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 
 

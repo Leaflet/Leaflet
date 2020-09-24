@@ -31,7 +31,9 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 		id: 'mapbox/satellite-v9',
-		attribution: ...
+		attribution: ...,
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:

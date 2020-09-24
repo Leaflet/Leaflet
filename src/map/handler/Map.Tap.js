@@ -15,10 +15,12 @@ import * as Browser from '../../core/Browser';
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option tap: Boolean = true
+	// @option tap: Boolean
 	// Enables mobile hacks for supporting instant taps (fixing 200ms click
 	// delay on iOS/Android) and touch holds (fired as `contextmenu` events).
-	tap: true,
+	// This is legacy option, by default enabled in mobile Safari only
+	// (because we still need `contextmenu` simulation for iOS).
+	tap: Browser.safari && Browser.mobile,
 
 	// @option tapTolerance: Number = 15
 	// The max number of pixels a user can shift his finger during touch
@@ -131,6 +133,4 @@ export var Tap = Handler.extend({
 // @section Handlers
 // @property tap: Handler
 // Mobile touch hacks (quick tap and touch hold) handler.
-if (Browser.touch && !Browser.pointer) {
-	Map.addInitHook('addHandler', 'tap', Tap);
-}
+Map.addInitHook('addHandler', 'tap', Tap);

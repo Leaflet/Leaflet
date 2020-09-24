@@ -47,7 +47,7 @@ export var androidStock = android && userAgentContains('Google') && webkitVer < 
 export var opera = !!window.opera;
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-export var chrome = userAgentContains('chrome');
+export var chrome = !edge && userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
@@ -93,7 +93,7 @@ export var msPointer = !window.PointerEvent && window.MSPointerEvent;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-export var pointer = !webkit && !!(window.PointerEvent || msPointer);
+export var pointer = !!(window.PointerEvent || msPointer);
 
 // @property touch: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
@@ -120,7 +120,7 @@ export var passiveEvents = (function () {
 	var supportsPassiveOption = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {
-			get: function () {
+			get: function () { // eslint-disable-line getter-return
 				supportsPassiveOption = true;
 			}
 		});

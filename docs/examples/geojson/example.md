@@ -12,7 +12,9 @@ title: GeoJSON tutorial
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/light-v9'
+		id: 'mapbox/light-v9',
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 	var baseballIcon = L.icon({

@@ -1,5 +1,4 @@
 describe('Util', function () {
-
 	describe('#extend', function () {
 		var a;
 

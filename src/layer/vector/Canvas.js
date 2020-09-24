@@ -348,8 +348,10 @@ export var Canvas = Renderer.extend({
 
 		for (var order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
-			if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
-				clickedLayer = layer;
+			if (layer.options.interactive && layer._containsPoint(point)) {
+				if (!(e.type === 'click' || e.type !== 'preclick') || !this._map._draggableMoved(layer)) {
+					clickedLayer = layer;
+				}
 			}
 		}
 		if (clickedLayer)  {
@@ -406,7 +408,7 @@ export var Canvas = Renderer.extend({
 		}
 
 		this._mouseHoverThrottled = true;
-		setTimeout(L.bind(function () {
+		setTimeout(Util.bind(function () {
 			this._mouseHoverThrottled = false;
 		}, this), 32);
 	},

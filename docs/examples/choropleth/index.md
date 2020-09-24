@@ -38,7 +38,9 @@ Let's display our states data on a map with a custom Mapbox style for nice grays
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 		id: 'mapbox/light-v9',
-		attribution: ...
+		attribution: ...,
+		tileSize: 512,
+		zoomOffset: -1
 	}).addTo(map);
 
 	L.geoJson(statesData).addTo(map);

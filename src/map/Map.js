@@ -441,7 +441,7 @@ export var Map = Evented.extend({
 		return this.flyTo(target.center, target.zoom, options);
 	},
 
-	// @method setMaxBounds(bounds: Bounds): this
+	// @method setMaxBounds(bounds: LatLngBounds): this
 	// Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
@@ -752,6 +752,7 @@ export var Map = Evented.extend({
 	remove: function () {
 
 		this._initEvents(true);
+		this.off('moveend', this._panInsideMaxBounds);
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
@@ -1388,7 +1389,7 @@ export var Map = Evented.extend({
 
 		var type = e.type;
 
-		if (type === 'mousedown' || type === 'keypress' || type === 'keyup' || type === 'keydown') {
+		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(e.target || e.srcElement);
 		}

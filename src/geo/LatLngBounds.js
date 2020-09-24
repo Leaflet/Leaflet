@@ -195,7 +195,7 @@ LatLngBounds.prototype = {
 		return latIntersects && lngIntersects;
 	},
 
-	// @method overlaps(otherBounds: Bounds): Boolean
+	// @method overlaps(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.
 	overlaps: function (bounds) {
 		bounds = toLatLngBounds(bounds);

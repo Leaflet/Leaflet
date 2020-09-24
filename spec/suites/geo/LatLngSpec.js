@@ -12,7 +12,7 @@ describe('LatLng', function () {
 
 		it('throws an error if invalid lat or lng', function () {
 			expect(function () {
-				var a = new L.LatLng(NaN, NaN);
+				L.latLng(NaN, NaN);
 			}).to.throwError();
 		});
 
@@ -28,7 +28,6 @@ describe('LatLng', function () {
 			var b = new L.LatLng(-25, -74, -50);
 			expect(b.alt).to.eql(-50);
 		});
-
 	});
 
 	describe('#equals', function () {
@@ -119,7 +118,6 @@ describe('LatLng', function () {
 	});
 
 	describe('#clone', function () {
-
 		it('should clone attributes', function () {
 			var a = new L.LatLng(50.5, 30.5, 100);
 			var b = a.clone();
@@ -135,7 +133,5 @@ describe('LatLng', function () {
 
 			expect(a === b).to.be(false);
 		});
-
 	});
-
 });
