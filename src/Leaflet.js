@@ -1,6 +1,6 @@
 
-import {version} from '../package.json';
-export {version};
+import pkgInfo from '../package.json';
+export var version = pkgInfo.version;
 
 // control
 export * from './control/index';
