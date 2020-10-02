@@ -4414,6 +4414,17 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/louh">Lou Huang</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/location-iq/leaflet-geocoder">Leaflet LocationIQ Geocoder</a>
+		</td>
+		<td>
+			A plugin that adds the ability to search (geocode) a Leaflet-powered map using <a href="https://locationiq.com/">LocationIQ</a>.
+		</td>
+		<td>
+			<a href="https://github.com/location-iq">LocationIQ</a>
+		</td>
+	</tr>
 </table>
 
 
