@@ -177,6 +177,8 @@ export var DivOverlay = Layer.extend({
 				latlng = layer.getCenter();
 			} else if (layer.getLatLng) {
 				latlng = layer.getLatLng();
+			} else if (layer.getBounds) {
+				latlng = layer.getBounds().getCenter();
 			} else {
 				throw new Error('Unable to get source layer LatLng.');
 			}
