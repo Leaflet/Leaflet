@@ -1,0 +1,14 @@
+tasks:
+  - name: Rollup
+    init: npm install
+    command: npm run watch
+  - name: Docs
+    init: |
+      gem install jekyll
+      cd docs/
+      bundle install
+    command: jekyll serve --watch
+      
+ports: 
+  - port: 4000
+    onOpen: open-preview

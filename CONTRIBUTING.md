@@ -63,6 +63,16 @@ and ask yourself two questions:
 If your feature or API improvement did get merged into master,
 please consider submitting another pull request with the corresponding [documentation update](#improving-documentation).
 
+### Online one-click Setup for contributing
+
+You can use [Gitpod](https://www.gitpod.io/) (an Online Open Source VS Code-like IDE which is free for Open Source) for working on issues and making PRs to this project online. With a single click it will start a workspace and automatically:
+
+- clone this repo. 
+- install all the dependencies i.e jykell, node modules and all the ruby gems.
+- run `npm run watch` and `jykell serve watch` in isolated terminals.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ### Setting up the Build System
 
 The Leaflet build system uses [NodeJS](http://nodejs.org/).
