@@ -366,7 +366,7 @@ describe("Map.Drag", function () {
 				onStop: function () {
 					var center = map.getCenter();
 					var zoom = map.getZoom();
-					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
+					expect(center.equals(originalCenter)).to.be(true); // Expect center point to be the same as before the click
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 					expect(zoom).to.be(1);
 

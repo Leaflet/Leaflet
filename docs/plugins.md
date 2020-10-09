@@ -627,6 +627,17 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://publiclab.org">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/equinor/leaflet.tilelayer.gloperations">Leaflet.TileLayer.GLOperations</a>
+		</td><td>
+			WebGL TileLayer: Colorize floating-point pixels, mouse event handlers for pixel values, hillshading, contours,
+			transitions, filter and do calculations on multiple layers.
+			 (<a href="https://equinor.github.io/leaflet.tilelayer.gloperations/">Demo</a>).
+		</td><td>
+			<a href="https://github.com/thor85">Thorbjørn Horgen</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1315,11 +1326,11 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
     	<tr>
 		<td>
-			<a href="https://github.com/marslan390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
+			<a href="https://github.com/masajid390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
 		</td><td>
 			Lightweight plugin that adds colorful iconic markers without image and gives full control of style to end user (i.e. Unlimited colors and CSS styling).
 		</td><td>
-			<a href="https://github.com/marslan390">Muhammad Arslan Sajid</a>
+			<a href="https://github.com/masajid390">Muhammad Arslan Sajid</a>
 		</td>
 	</tr>
 	<tr>
@@ -1845,6 +1856,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iDerekLi/">Derek Li</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/coyotesqrl/Leaflet.ArrowCircle">Leaflet.ArrowCircle</a>
+		</td>
+		<td>
+		    A Marker extension to display circles with directional arrows.
+		</td>
+		<td>
+			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1970,7 +1992,29 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
-	</table>
+	<tr>
+		<td>
+			<a href="https://github.com/onaci/leaflet-point-animator">leaflet-point-animator</a>
+		</td>
+		<td>
+			Animate a large number of GeoJSON points. (<a href="https://onaci.github.io/leaflet-point-animator">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/danwild">danwild</a>, <a href="https://github.com/onaci">onaci</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/onaci/leaflet-temporal-geojson">leaflet-temporal-geojson</a>
+		</td>
+		<td>
+			Flexible animation of GeoJSON features. (<a href="https://onaci.github.io/leaflet-temporal-geojson">demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/danwild">danwild</a>, <a href="https://github.com/onaci">onaci</a>
+		</td>
+	</tr>
+</table>
 
 
 
@@ -2593,6 +2637,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/linghuam">linghuam</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/zimmicz/Leaflet-Timeline-Control">Leaflet Timeline Control</a>
+		</td>
+		<td>
+			Unopinionated timeline control that helps you display time series data. <a href="https://codesandbox.io/s/leaflet-timeline-control-ibyby">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2809,7 +2864,7 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/zakjan/leaflet-lasso">leaflet-lasso</a>
 		</td>
 		<td>
-			True lasso selection plugin (<a href="http://zakjan.github.io/leaflet-lasso/">Demo</a>)
+			Lasso selection plugin (<a href="http://zakjan.github.io/leaflet-lasso/">Demo</a>)
 		</td>
 		<td>
 			<a href="https://github.com/zakjan">Jan Zak</a>
@@ -3991,6 +4046,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ptma/Leaflet.Legend">Leaflet.Legend
+			</a>
+		</td>
+		<td>
+			Display legend symbols and toggle overlays(<a href="https://ptma.github.io/Leaflet.Legend/examples/legend.html">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ptma">JJ Jin</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -4391,15 +4458,26 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/louh">Lou Huang</a>
 		</td>
 	</tr>
-		<tr>
+  <tr>
 		<td>
 			<a href="https://github.com/tomik23/Leaflet.Autocomplete">Leaflet.Autocomplete</a>
 		</td>
 		<td>
-		Leaflet.Autocomplete is to expand the autosugestion plugin with the ability to geocode and show data on the map in the way you think you need. The <a href="https://tomik23.github.io/Leaflet.Autocomplete/">DEMO</a> is based on the use of OpenstreetMap Nominatim to locate places by address. Accessible, with full support for ARIA attributes and keyboard interactions.
+			Leaflet.Autocomplete is to expand the autosugestion plugin with the ability to geocode and show data on the map in the way you think you need. The <a href="https://tomik23.github.io/Leaflet.Autocomplete/">DEMO</a> is based on the use of OpenstreetMap Nominatim to locate places by address. Accessible, with full support for ARIA attributes and keyboard interactions.
 		</td>
 		<td>
 			<a href="https://github.com/tomik23">Grzegorz Tomicki</a>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/location-iq/leaflet-geocoder">Leaflet LocationIQ Geocoder</a>
+		</td>
+		<td>
+			A plugin that adds the ability to search (geocode) a Leaflet-powered map using <a href="https://locationiq.com/">LocationIQ</a>.
+		</td>
+		<td>
+			<a href="https://github.com/location-iq">LocationIQ</a>
 		</td>
 	</tr>
 </table>

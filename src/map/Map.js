@@ -1389,7 +1389,7 @@ export var Map = Evented.extend({
 
 		var type = e.type;
 
-		if (type === 'mousedown' || type === 'keypress' || type === 'keyup' || type === 'keydown') {
+		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(e.target || e.srcElement);
 		}
