@@ -44,7 +44,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var Layers = Control.extend({
+export let Layers = Control.extend({
 	// @section
 	// @aka Control.Layers options
 	options: {
