@@ -2,10 +2,10 @@
 hljs.configure({tabReplace: '    '});
 hljs.initHighlighting();
 
-var tocCopy = document.createElement('div');
+let tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
 
-var toc = document.querySelector('#toc');
+const toc = document.querySelector('#toc');
 
 if (toc) {
 	tocCopy.innerHTML = toc.innerHTML;
