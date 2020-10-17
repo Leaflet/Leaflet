@@ -1871,8 +1871,8 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/heyman/leaflet-centermarker">Leaflet.CenterMarker</a>
 		</td><td>
-			Leaflet Marker that is kept fixed to the center of the map when the map is panned by dragging.
-			Can be seen in action on <a href="https://whatismyaddress.net/">What is my adress?</a>.
+			Marker that is kept fixed to the center of the map when the map is panned by dragging.
+			Can be seen in action on <a href="https://whatismyaddress.net/">What is my adress?</a>
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
 		</td>
