@@ -663,24 +663,19 @@ export var Map = Evented.extend({
 					.then(function (locationWatchId) {
 						this._locationWatchId = locationWatchId;
 					});
-
 			} else {
 				options.getCoordinates(options)
 					.then(function (pos) {
 						onResponse(pos);
-
 					}).catch(function (error) {
 						onError(error);
-
 					});
 			}
 		} else if (options.watch) {
 			this._locationWatchId =
 				navigator.geolocation.watchPosition(onResponse, onError, options);
-
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
-
 		}
 		return this;
 	},
