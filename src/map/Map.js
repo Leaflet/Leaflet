@@ -655,7 +655,7 @@ export var Map = Evented.extend({
 		}
 
 		var onResponse = Util.bind(this._handleGeolocationResponse, this),
-			onError = Util.bind(this._handleGeolocationError, this);
+		    onError = Util.bind(this._handleGeolocationError, this);
 
 		if (options.getCoordinates) {
 			if (options.watch) {
@@ -673,7 +673,7 @@ export var Map = Evented.extend({
 			}
 		} else if (options.watch) {
 			this._locationWatchId =
-				navigator.geolocation.watchPosition(onResponse, onError, options);
+			    navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
 		}
