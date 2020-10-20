@@ -2637,6 +2637,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/linghuam">linghuam</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/zimmicz/Leaflet-Timeline-Control">Leaflet Timeline Control</a>
+		</td>
+		<td>
+			Unopinionated timeline control that helps you display time series data. <a href="https://codesandbox.io/s/leaflet-timeline-control-ibyby">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -4445,6 +4456,17 @@ External services that transform an address or the name of a place into latitude
 		</td>
 		<td>
 			<a href="https://github.com/louh">Lou Huang</a>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/location-iq/leaflet-geocoder">Leaflet LocationIQ Geocoder</a>
+		</td>
+		<td>
+			A plugin that adds the ability to search (geocode) a Leaflet-powered map using <a href="https://locationiq.com/">LocationIQ</a>.
+		</td>
+		<td>
+			<a href="https://github.com/location-iq">LocationIQ</a>
 		</td>
 	</tr>
 </table>
