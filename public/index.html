@@ -14,15 +14,32 @@ crossorigin=""/>
 
 <div id="mapid"></div>
 <script>
-var map = L.map('mapid').setView([51.505, -0.09], 13);
+var map = L.map('mapid').locate({setView: true, maxZoom: 1000});;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    // source: https://leafletjs.com/examples/mobile/
     
-    L.marker([51.5, -0.09]).addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+    function onLocationFound(e) {
+        var radius = e.accuracy;
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+        
+        L.circle(e.latlng, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+    map.on('locationerror', onLocationError);
+    // L.marker(geolocation.getCurrentPosition()).addTo(map)
+    //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //     .openPopup();
+    map.on('locationfound', onLocationFound);
+        
 </script>
 </body>
 </html>
