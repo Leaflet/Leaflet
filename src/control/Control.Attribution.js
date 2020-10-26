@@ -19,7 +19,7 @@ export var Attribution = Control.extend({
 	options: {
 		position: 'bottomright',
 
-		// @option prefix: String = 'Leaflet'
+		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
 		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">Leaflet</a>'
 
@@ -63,8 +63,8 @@ export var Attribution = Control.extend({
 		}
 	},
 
-	// @method setPrefix(prefix: String): this
-	// Sets the text before the attributions.
+	// @method setPrefix(prefix: String|false): this
+	// The HTML text shown before the attributions. Pass `false` to disable.
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
 		this._update();
