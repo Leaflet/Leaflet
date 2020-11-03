@@ -46,26 +46,26 @@ export var GeoJSON = FeatureGroup.extend({
 	 * 	return L.marker(latlng);
 	 * }
 	 * ```
-	 * 
+	 *
 	 * @option lineToLayer: Function = *
 	 * A `Function` defining how GeoJSON LineString and MultiLineString geometry types
 	 * spawn Leaflet layers. It is internally called when data is added,
 	 * passing the GeoJSON line feature and its `LatLngs`.
-	 * The default is to spawn a default `Marker`:
+	 * The default is to spawn a default `Polyline`:
 	 * ```js
 	 * function(geoJsonLine, latlngs) {
-	 * 	return L.marker(latlng);
+	 * 	return L.polyline(latlng);
 	 * }
 	 * ```
-	 * 
+	 *
 	 * @option polygonToLayer: Function = *
 	 * A `Function` defining how GeoJSON Polygon and MultiPolygon geometry types
 	 * spawn Leaflet layers. It is internally called when data is added,
 	 * passing the GeoJSON polygon feature and its `LatLngs`.
-	 * The default is to spawn a default `Marker`:
+	 * The default is to spawn a default `Polygon`:
 	 * ```js
 	 * function(geoJsonPolygon, latlngs) {
-	 * 	return L.marker(latlngs);
+	 * 	return L.polygon(latlngs);
 	 * }
 	 * ```
 	 *
@@ -199,6 +199,7 @@ export function geometryToLayer(geojson, options) {
 	    layers = [],
 	    pointToLayer = options && options.pointToLayer,
 	    lineToLayer = options && options.lineToLayer,
+	    polygonToLayer = options && options.polygonToLayer,
 	    _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng,
 	    latlng, latlngs, i, len;
 
@@ -221,12 +222,12 @@ export function geometryToLayer(geojson, options) {
 	case 'LineString':
 	case 'MultiLineString':
 		latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
-	  return _lineToLayer(lineToLayer, geojson, latlngs, options);
+		return _lineToLayer(lineToLayer, geojson, latlngs, options);
 
 	case 'Polygon':
 	case 'MultiPolygon':
 		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
-	  return _polygonToLayer(polygonToLayer, geojson, latlngs, options);
+		return _polygonToLayer(polygonToLayer, geojson, latlngs, options);
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
@@ -256,7 +257,7 @@ function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 function _lineToLayer(lineToLayerFn, geojson, latlngs, options) {
 	return lineToLayerFn ?
 		lineToLayerFn(geojson, latlngs) :
-	  new Polyline(latlngs, options && options.markersInheritOptions && options);
+		new Polyline(latlngs, options && options.markersInheritOptions && options);
 }
 
 function _polygonToLayer(polygonToLayerFn, geojson, latlngs, options) {

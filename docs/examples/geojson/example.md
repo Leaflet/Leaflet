@@ -65,7 +65,16 @@ title: GeoJSON tutorial
 			return false;
 		},
 
-		onEachFeature: onEachFeature
+		onEachFeature: onEachFeature,
+
+		lineToLayer: function (feature, latlngs) {
+			console.log('lineToLayer');
+	    	return L.polyline(latlngs, {
+	    		color: "#FF00FF",
+	    		weight: 4,
+				opacity: 1
+		    })
+		}
 	}).addTo(map);
 
 	var coorsLayer = L.geoJSON(coorsField, {
