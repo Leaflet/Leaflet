@@ -430,6 +430,28 @@ describe('TileLayer', function () {
 				});
 			});
 		}
+
+		it('loads tiles with matching min/maxZoom and detectRetina', function (done) {
+			const kittenLayer = kittenLayerFactory({
+				minZoom: 1,
+				maxZoom: 1,
+				detectRetina: true,
+			});
+
+			var tilesLoaded = 0;
+
+			kittenLayer.on('tileload', function () {
+				tilesLoaded += 1;
+			});
+
+			kittenLayer.on('load', function () {
+				// copied from loads 8 kittens zoom 1 above
+				expect(tilesLoaded).to.be(8 * 4);
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
 	});
 
 	describe('#setUrl', function () {
