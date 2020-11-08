@@ -432,6 +432,8 @@ describe('TileLayer', function () {
 		}
 
 		it('loads tiles with matching min/maxZoom and detectRetina', function (done) {
+			L.Browser.retina = true;
+
 			const kittenLayer = kittenLayerFactory({
 				minZoom: 1,
 				maxZoom: 1,
