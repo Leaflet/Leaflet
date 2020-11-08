@@ -1,4 +1,4 @@
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 
 /*
  * Extends the event handling code with double tap support for mobile browsers.
