@@ -1,5 +1,5 @@
 import {GridLayer} from './GridLayer';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
 import * as DomUtil from '../../dom/DomUtil';
@@ -93,10 +93,10 @@ export var TileLayer = GridLayer.extend({
 
 			if (!options.zoomReverse) {
 				options.zoomOffset++;
-				options.maxZoom--;
+				options.maxZoom = Math.max(options.minZoom, options.maxZoom - 1);
 			} else {
 				options.zoomOffset--;
-				options.minZoom++;
+				options.minZoom = Math.min(options.maxZoom, options.minZoom + 1);
 			}
 
 			options.minZoom = Math.max(0, options.minZoom);
