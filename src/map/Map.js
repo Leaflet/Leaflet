@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import Browser from '../core/Browser';
+import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';

@@ -3,7 +3,7 @@ import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import Browser from '../../core/Browser';
+import * as Browser from '../../core/Browser';
 
 /*
  * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.

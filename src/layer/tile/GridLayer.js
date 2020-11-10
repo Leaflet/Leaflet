@@ -1,5 +1,5 @@
 import {Layer} from '../Layer';
-import Browser from '../../core/Browser';
+import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';

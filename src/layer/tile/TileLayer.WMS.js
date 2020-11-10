@@ -1,6 +1,6 @@
 import {TileLayer} from './TileLayer';
 import {extend, setOptions, getParamString} from '../../core/Util';
-import Browser from '../../core/Browser';
+import {retina} from '../../core/Browser';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
 import {toBounds} from '../../geometry/Bounds';
 
@@ -80,7 +80,7 @@ export var TileLayerWMS = TileLayer.extend({
 
 		options = setOptions(this, options);
 
-		var realRetina = options.detectRetina && Browser.retina ? 2 : 1;
+		var realRetina = options.detectRetina && retina ? 2 : 1;
 		var tileSize = this.getTileSize();
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;

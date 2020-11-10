@@ -1,4 +1,4 @@
-import Browser from './Browser';
+import * as Browser from './Browser';
 export {Browser};
 
 export {Class} from './Class';

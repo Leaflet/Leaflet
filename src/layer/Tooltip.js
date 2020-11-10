@@ -1,5 +1,5 @@
 
-import Browser from '../core/Browser';
+import * as Browser from '../core/Browser';
 import {DivOverlay} from './DivOverlay';
 import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';

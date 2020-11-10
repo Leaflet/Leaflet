@@ -1,7 +1,7 @@
 
 import {Control} from './Control';
 import * as Util from '../core/Util';
-import Browser from '../core/Browser';
+import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 

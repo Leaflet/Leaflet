@@ -1,5 +1,5 @@
 import {Map} from '../Map';
-import Browser from '../../core/Browser';
+import * as Browser from '../../core/Browser';
 import {Handler} from '../../core/Handler';
 import {Draggable} from '../../dom/Draggable';
 import * as Util from '../../core/Util';
