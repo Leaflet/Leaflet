@@ -2552,6 +2552,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/slutske22/leaflet-topography">Leaflet Topography</a>
+		</td>
+		<td>
+			A set of tools for calculating and visualizing topographic data (elevation, slope, aspect) at lightning speed.  Based on Mapbox RGB Encoded DEM tiles.
+		</td>
+		<td>
+			<a href="https://github.com/slutske22">Seth Lutske</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/svitkin/leaflet-timeline-slider/">Leaflet.timelineSlider</a>
 		</td>
 		<td>
