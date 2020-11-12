@@ -659,17 +659,11 @@ export var Map = Evented.extend({
 
 		if (options.getCoordinates) {
 			if (options.watch) {
-				options.getCoordinates(options)
-					.then(function (locationWatchId) {
-						this._locationWatchId = locationWatchId;
-					});
+				this._locationWatchId = options.getCoordinates(options, onResponse);
 			} else {
 				options.getCoordinates(options)
-					.then(function (pos) {
-						onResponse(pos);
-					}).catch(function (error) {
-						onError(error);
-					});
+					.then(onResponse)
+					.catch(onError);
 			}
 		} else if (options.watch) {
 			this._locationWatchId =
