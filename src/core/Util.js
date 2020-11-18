@@ -152,7 +152,7 @@ export function getParamString(obj, existingUrl, uppercase) {
 	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 }
 
-var templateRe = /\{ *([\w_-]+) *\}/g;
+var templateRe = /\{ *([\w_ -]+) *\}/g;
 
 // @function template(str: String, data: Object): String
 // Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
