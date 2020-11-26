@@ -29,13 +29,15 @@ Create the `example.html` file in a text editor as follows:
 </html>
 ```
 
+In this tutorial and we'll add a blank line between each block we enter so it's easier to check.
+
 Include Leaflet CSS file in the head section of your document after the title line:
 
+		<!-- Leaflet -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin="" />
 
-Include Leaflet JavaScript file **after** Leaflet's CSS:
+Include Leaflet JavaScript file by adding another line **after** Leaflet's CSS in block above:
 
-		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
 
 Put a `div` element with a certain `id` after the `<body>` line:
@@ -54,7 +56,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 {% include frame.html url="example-basic.html" %}
 
-Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level. Make sure all the code is called after the  `leaflet.js` and `div` inclusion. Code in the `body` is set up between `<script></script>` tags and we'll add a blank line between each block we enter so it's easier to check:
+Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level. Make sure all the code is called after the  `leaflet.js` and `div` inclusion. Code in the `body` is set up between `<script></script>` tags:
 
 	<script>
 
@@ -69,16 +71,16 @@ Note the `setView` call also returns the map object --- most Leaflet methods act
 Next we'll add a tile layer to add to our map, in this case it's an OMS Streets tile layer. Creating a tile layer involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images and attribution text as a minimum.
 
 ```javascript
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 		}).addTo(mymap);
 ```
 
 That's it! You have a working Leaflet map now.
 
-It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. You can try replacing `tile.osm.org` with `tile.opentopomap.org`, and see what happens. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you want to.
+It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. You can try replacing `World_Street_Map` with `World_Topo_Map`, and see what happens. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you want to.
 
-Access also varies by provider ranging from free access, access by code after registration and paid access - see [leaflet-providers](https://github.com/leaflet-extras/leaflet-providers). Whenever using anything based on OpenStreetMap, an *attribution* is obligatory as per the [copyright notice](https://www.openstreetmap.org/copyright). Most other tile providers (such as [Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/), [Stamen](http://maps.stamen.com/) or [Thunderforest](https://www.thunderforest.com/terms/)) require an attribution as well. Make sure to give credit where credit is due.
+Access also varies by provider ranging from free access, access by code after registration and paid access - see [leaflet-providers](https://github.com/leaflet-extras/leaflet-providers) [(previewed)](https://leaflet-extras.github.io/leaflet-providers/preview/index.html). Most tile providers also require an attribution, eg OpenStreetMap as per the [copyright notice](https://www.openstreetmap.org/copyright), [Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/), [Stamen](http://maps.stamen.com/) and [Thunderforest](https://www.thunderforest.com/terms/), and it often changes by layer (as in the example above). Make sure to give credit where credit is due.
 
 
 ### Markers, circles and polygons

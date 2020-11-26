@@ -4,12 +4,13 @@ title: Quick Start
 customMapContainer: "true"
 ---
 	<div id="mapid" style="width: 600px; height: 400px;"></div>
+
 <script>
 
 	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 		}).addTo(mymap);
 
 	var marker = L.marker([51.5, -0.09]).addTo(mymap);
