@@ -70,6 +70,9 @@ When naming classes, methods and properties, adhere to the following conventions
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
+Usage notes:
+* Don't instantiate objects in the class body, do it in constructor. `L.Class.extend({ myProperty: new SomeClass() })` will result in `myProperty` being a reference to `new SomeClass()` in all instances because `L.Class.extend()` treats passed objects as-is and doesn't re-instantiate it's properties. Instead, write following in the constructor: `this.myProperty = new SomeClass();`.
+
 ### `L.Class.include()`    
     
 If a class is already defined, existing properties/methods can be redefined, or new ones can be added by using `.include()`:
