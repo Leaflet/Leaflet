@@ -104,6 +104,12 @@ export var GeoJSON = FeatureGroup.extend({
 	 *
 	 * @option markersInheritOptions: Boolean = false
 	 * Whether default Markers for "Point" type Features inherit from group options.
+   *
+   * @option linesInheritOptions: Boolean = true
+	 * Whether default Markers for "Polyline" type Features inherit from group options.
+   *
+   * @option polygonsInheritOptions: Boolean = true
+	 * Whether default Markers for "Polygon" type Features inherit from group options.
 	 */
 
 	initialize: function (geojson, options) {
@@ -257,13 +263,13 @@ function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 function _lineToLayer(lineToLayerFn, geojson, latlngs, options) {
 	return lineToLayerFn ?
 		lineToLayerFn(geojson, latlngs) :
-		new Polyline(latlngs, options && options.markersInheritOptions && options);
+		new Polyline(latlngs, options && options.linesInheritOptions && options);
 }
 
 function _polygonToLayer(polygonToLayerFn, geojson, latlngs, options) {
 	return polygonToLayerFn ?
 		polygonToLayerFn(geojson, latlngs) :
-		new Polygon(latlngs, options && options.markersInheritOptions && options);
+		new Polygon(latlngs, options && options.polygonsInheritOptions && options);
 }
 
 // @function coordsToLatLng(coords: Array): LatLng
