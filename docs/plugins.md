@@ -4480,6 +4480,18 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/location-iq">LocationIQ</a>
 		</td>
 	</tr>
+	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/mmaciejkowalski/L.Highlight">L.Highlight</a>
+		</td>
+		<td>
+			A plugin that adds the ability to quick highlighting streets and areas using <a href="https://nominatim.org/">Nominatim</a>.
+		</td>
+		<td>
+			<a href="https://github.com/mmaciejkowalski">Maciej Kowalski</a>
+		</td>
+	</tr>
 </table>
 
 
