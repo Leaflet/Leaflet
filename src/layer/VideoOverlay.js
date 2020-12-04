@@ -78,6 +78,7 @@ export var VideoOverlay = ImageOverlay.extend({
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
+		vid.playsInline = true;
 		for (var i = 0; i < this._url.length; i++) {
 			var source = DomUtil.create('source');
 			source.src = this._url[i];
