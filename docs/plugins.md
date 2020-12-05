@@ -2025,6 +2025,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/mapbox/supercluster">supercluster</a>
+		</td><td>
+			A very fast clustering library.
+		</td><td>
+			<a href="https://github.com/mapbox">Mapbox</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>
 		</td><td>
 			Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>
