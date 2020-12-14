@@ -212,4 +212,15 @@ describe('Polyline', function () {
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
 		});
 	});
+
+	describe("#style", function () {
+		it("can set weight after being added to the map", function () {
+			var polyline = new L.Polyline([]).addTo(map);
+			polyline.setStyle({
+				weight: 3,
+			});
+			expect(map.hasLayer(polyline)).to.be(true);
+			expect(polyline.options.weight).to.be(3);
+		});
+	});
 });
