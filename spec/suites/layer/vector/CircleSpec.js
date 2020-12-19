@@ -1,7 +1,16 @@
 describe('Circle', function () {
+	var map, circle;
+
+	beforeEach(function () {
+		map = L.map(document.createElement('div')).setView([0, 0], 4);
+		circle = L.circle([50, 30], {radius: 200}).addTo(map);
+	});
+
+	afterEach(function () {
+		map.remove();
+	});
 
 	describe('#init', function () {
-
 		it('uses default radius if not given', function () {
 			var circle = L.circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
@@ -16,14 +25,6 @@ describe('Circle', function () {
 	});
 
 	describe('#getBounds', function () {
-
-		var map, circle;
-
-		beforeEach(function () {
-			map = L.map(document.createElement('div')).setView([0, 0], 4);
-			circle = L.circle([50, 30], {radius: 200}).addTo(map);
-		});
-
 		it('returns bounds', function () {
 			var bounds = circle.getBounds();
 
@@ -33,14 +34,6 @@ describe('Circle', function () {
 	});
 
 	describe('Legacy factory', function () {
-
-		var map, circle;
-
-		beforeEach(function () {
-			map = L.map(document.createElement('div')).setView([0, 0], 4);
-			circle = L.circle([50, 30], 200).addTo(map);
-		});
-
 		it('returns same bounds as 1.0 factory', function () {
 			var bounds = circle.getBounds();
 
@@ -48,5 +41,4 @@ describe('Circle', function () {
 			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
 		});
 	});
-
 });

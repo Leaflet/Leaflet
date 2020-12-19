@@ -1157,11 +1157,11 @@ export var Map = Evented.extend({
 		// Pane for `GridLayer`s and `TileLayer`s
 		this.createPane('tilePane');
 		// @pane overlayPane: HTMLElement = 400
-		// Pane for overlay shadows (e.g. `Marker` shadows)
-		this.createPane('shadowPane');
-		// @pane shadowPane: HTMLElement = 500
 		// Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s
 		this.createPane('overlayPane');
+		// @pane shadowPane: HTMLElement = 500
+		// Pane for overlay shadows (e.g. `Marker` shadows)
+		this.createPane('shadowPane');
 		// @pane markerPane: HTMLElement = 600
 		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
@@ -1389,7 +1389,7 @@ export var Map = Evented.extend({
 
 		var type = e.type;
 
-		if (type === 'mousedown' || type === 'keypress' || type === 'keyup' || type === 'keydown') {
+		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(e.target || e.srcElement);
 		}

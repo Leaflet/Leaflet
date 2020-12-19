@@ -1,5 +1,4 @@
 describe('Util', function () {
-
 	describe('#extend', function () {
 		var a;
 
@@ -230,9 +229,10 @@ describe('Util', function () {
 			}).to.throwError();
 		});
 
-		it('allows underscores and dashes in placeholders', function () {
+		it('allows underscores, dashes and spaces in placeholders', function () {
 			expect(L.Util.template('{nice_stuff}', {'nice_stuff': 'foo'})).to.eql('foo');
 			expect(L.Util.template('{-y}', {'-y': 1})).to.eql('1');
+			expect(L.Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
 	});
 

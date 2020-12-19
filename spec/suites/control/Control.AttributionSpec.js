@@ -1,5 +1,4 @@
 describe("Control.Attribution", function () {
-
 	var map, control, container;
 
 	beforeEach(function () {
@@ -122,5 +121,4 @@ describe("Control.Attribution", function () {
 			expect(container.innerHTML).to.eql('prefix');
 		});
 	});
-
 });

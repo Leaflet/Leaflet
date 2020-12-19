@@ -1,7 +1,4 @@
-
-
 describe('TileLayer', function () {
-
 	var div, map;
 
 	// Placekitten via http://placekitten.com/attribution.html
@@ -166,16 +163,13 @@ describe('TileLayer', function () {
 		div.style.width = '800px';
 		div.style.height = '600px';
 		div.style.visibility = 'hidden';
-
 		document.body.appendChild(div);
-
 		map = L.map(div);
 	});
 
 	afterEach(function () {
-		if (div) {
-			document.body.removeChild(div);
-		}
+		map.remove();
+		document.body.removeChild(div);
 	});
 
 	function kittenLayerFactory(options) {
@@ -192,7 +186,6 @@ describe('TileLayer', function () {
 	}
 
 	describe("number of kittens loaded", function () {
-
 		var clock, kittenLayer, counts;
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
@@ -244,7 +237,6 @@ describe('TileLayer', function () {
 		});
 
 		it("Loads 8 kittens zoom 1", function (done) {
-
 			kittenLayer.on('load', function () {
 				expect(counts.tileloadstart).to.be(8);
 				expect(counts.tileload).to.be(8);
@@ -257,11 +249,9 @@ describe('TileLayer', function () {
 			clock.tick(250);
 		});
 
-
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
-
+		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
@@ -300,14 +290,9 @@ describe('TileLayer', function () {
 
 	describe('url template', function () {
 		beforeEach(function () {
-			div = document.createElement('div');
 			div.style.width = '400px';
 			div.style.height = '400px';
-			div.style.visibility = 'hidden';
-
-			document.body.appendChild(div);
-
-			map = L.map(div).setView([0, 0], 2);
+			map.setView([0, 0], 2);
 		});
 
 		it('replaces {y} with y coordinate', function () {
@@ -423,18 +408,8 @@ describe('TileLayer', function () {
 	});
 
 	describe('options', function () {
-
 		beforeEach(function () {
-			div = document.createElement('div');
-			div.style.width = '400px';
-			div.style.height = '400px';
-
-			map = L.map(div).setView([0, 0], 2);
-		});
-
-		afterEach(function () {
-			map = null;
-			div = null;
+			map.setView([0, 0], 2);
 		});
 
 		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes

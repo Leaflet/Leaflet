@@ -11,7 +11,6 @@ var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
 var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
 var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
 var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
-var TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'];
 
 var _pointers = {};
 var _pointerDocListener = false;
@@ -52,13 +51,8 @@ export function removePointerListener(obj, type, id) {
 
 function _addPointerStart(obj, handler, id) {
 	var onDown = Util.bind(function (e) {
-		if (e.pointerType !== (e.MSPOINTER_TYPE_MOUSE || 'mouse')) {
-			// In IE11, some touch events needs to fire for form controls, or
-			// the controls will stop working. We keep a whitelist of tag names that
-			// need these events. For other target tags, we prevent default on the event.
-			if (Browser.ie && TAG_WHITE_LIST.indexOf(e.target.tagName) >= 0) {
-				return;
-			}
+		// IE10 specific: MsTouch needs preventDefault. See #2000
+		if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
 			DomEvent.preventDefault(e);
 		}
 

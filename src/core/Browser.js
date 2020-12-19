@@ -120,7 +120,7 @@ export var passiveEvents = (function () {
 	var supportsPassiveOption = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {
-			get: function () {
+			get: function () { // eslint-disable-line getter-return
 				supportsPassiveOption = true;
 			}
 		});

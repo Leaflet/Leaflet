@@ -42,16 +42,18 @@ export default {
 			name: 'L',
 			banner: banner,
 			outro: outro,
-			sourcemap: true
+			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
+			freeze: false
 		},
 		{
 			file: 'dist/leaflet-src.esm.js',
 			format: 'es',
 			banner: banner,
-			sourcemap: true
+			sourcemap: true,
+			freeze: false
 		}
 	],
-	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
 		release ? json() : rollupGitVersion()
 	]

@@ -87,8 +87,8 @@ export var FeatureGroup = LayerGroup.extend({
 	}
 });
 
-// @factory L.featureGroup(layers: Layer[])
-// Create a feature group, optionally given an initial set of layers.
-export var featureGroup = function (layers) {
-	return new FeatureGroup(layers);
+// @factory L.featureGroup(layers?: Layer[], options?: Object)
+// Create a feature group, optionally given an initial set of layers and an `options` object.
+export var featureGroup = function (layers, options) {
+	return new FeatureGroup(layers, options);
 };

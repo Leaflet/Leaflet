@@ -30,8 +30,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -39,7 +39,6 @@ describe("Map.TouchZoom", function () {
 		f2.wait(100).moveTo(325, 300, 0)
 			.down().moveBy(200, 0, 500).up(100);
 	});
-
 
 	it.skipIfNotTouch("Decreases zoom when pinching in", function (done) {
 		var container = document.createElement('div');
@@ -72,8 +71,8 @@ describe("Map.TouchZoom", function () {
 				});
 			}
 		});
-		var f1 = hand.growFinger('touch');
-		var f2 = hand.growFinger('touch');
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -81,7 +80,4 @@ describe("Map.TouchZoom", function () {
 		f2.wait(100).moveTo(525, 300, 0)
 			.down().moveBy(-200, 0, 500).up(100);
 	});
-
-
-
 });
