@@ -75,7 +75,7 @@ export var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
+export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || (CSS && CSS.supports('transform', 'translate3d(0,0,0)'))) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 export var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
