@@ -102,7 +102,7 @@ export var TileLayerWMS = TileLayer.extend({
 	getTileUrl: function (coords) {
 
 		var tileBounds = this._tileCoordsToNwSe(coords),
-		    crs = this._crs,
+		     crs = this._crs,
 		    bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
 		    min = bounds.min,
 		    max = bounds.max,
@@ -110,9 +110,11 @@ export var TileLayerWMS = TileLayer.extend({
 		    [min.y, min.x, max.y, max.x] :
 		    [min.x, min.y, max.x, max.y]).join(','),
 		    url = TileLayer.prototype.getTileUrl.call(this, coords);
-		return url +
+			url = url +
 			getParamString(this.wmsParams, url, this.options.uppercase) +
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", url, true);
 	},
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
