@@ -179,6 +179,7 @@ describe("Marker", function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
+			marker._shadow.style.zIndex =1;
 			var oldShadow = marker._shadow;
 
 			marker.setIcon(icon2);
