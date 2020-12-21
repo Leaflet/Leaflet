@@ -1,6 +1,7 @@
 import {Evented} from '../core/Events';
 import {Map} from '../map/Map';
 import * as Util from '../core/Util';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class Layer
@@ -76,6 +77,27 @@ export var Layer = Evented.extend({
 	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
 	getPane: function (name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
+	},
+
+	// @method setPane(name : String): this
+	// The layer will be moved to another pane
+	setPane: function (name) {
+		if (!this._map) {
+			this.options.pane = name;
+			return this;
+		}
+
+		if (this instanceof L.Marker) {
+			DomUtil.remove(this._icon);
+			this.options.pane = name;
+			this.getPane().appendChild(this._icon);
+		} else {
+			this._map.getRenderer(this)._removePath(this);
+			this.options.pane = name;
+			this._renderer = this._map.getRenderer(this);
+			this.onAdd();
+		}
+		return this;
 	},
 
 	addInteractiveTarget: function (targetEl) {

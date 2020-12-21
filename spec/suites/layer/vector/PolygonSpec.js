@@ -322,4 +322,30 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
 		});
 	});
+
+	describe("#DOM change", function () {
+		it("should move polygon to another pane", function () {
+			var map = new L.Map(document.createElement('div'));
+			map.setView([0, 0], 0);
+			map.createPane('draw');
+
+			var polygon = new L.Polygon([[0,0],[1,1]]).addTo(map);
+
+			const overlayPane = map.getPane('overlayPane');
+			const drawPane = map.getPane('draw');
+
+			var pane = polygon._renderer._container.parentNode;
+			expect(pane).to.be(overlayPane);
+
+			polygon.setPane('draw');
+			pane = polygon._renderer._container.parentNode;
+			expect(pane).to.not.be(overlayPane);
+			expect(pane).to.be(drawPane);
+
+			polygon.setStyle({pane: 'overlayPane'});
+			pane = polygon._renderer._container.parentNode;
+			expect(pane).to.be(overlayPane);
+			expect(pane).to.not.be(drawPane);
+		});
+	});
 });
