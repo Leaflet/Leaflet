@@ -329,7 +329,7 @@ describe('Polygon', function () {
 			map.setView([0, 0], 0);
 			map.createPane('draw');
 
-			var polygon = new L.Polygon([[0,0],[1,1]]).addTo(map);
+			var polygon = new L.Polygon([[0, 0], [1, 1]]).addTo(map);
 
 			const overlayPane = map.getPane('overlayPane');
 			const drawPane = map.getPane('draw');

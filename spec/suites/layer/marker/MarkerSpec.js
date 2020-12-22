@@ -335,7 +335,7 @@ describe("Marker", function () {
 			map.setView([0, 0], 0);
 			map.createPane('draw');
 
-			var marker = new L.Marker([0,0]).addTo(map);
+			var marker = new L.Marker([0, 0]).addTo(map);
 
 			const markerPane = map.getPane('markerPane');
 			const drawPane = map.getPane('draw');
