@@ -638,6 +638,18 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/thor85">Thorbjørn Horgen</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ptma/Leaflet.Mask">Leaflet.Mask
+			</a>
+		</td>
+		<td>
+			Load polygons from geojson to masking the rest of the map(<a href="https://ptma.github.io/Leaflet.Mask/examples/mask.html">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ptma">JJ Jin</a>
+		</td>
+	</tr>
 </table>
 
 
