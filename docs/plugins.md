@@ -4174,6 +4174,15 @@ Plugins that extend Leaflet's geolocation capabilities.
 			<a href="https://github.com/M165437">Michael Schmidt-Voigt</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rhlt/leaflet-geolet">Geolet</a>
+		</td><td>
+			A simple but highly customizable geolocation plugin for Leaflet
+		</td><td>
+			<a href="https://github.com/rhlt/">Ruben Holthuijsen</a>
+		</td>
+	</tr>
 </table>
 
 
