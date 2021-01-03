@@ -513,12 +513,18 @@ export var Map = Evented.extend({
 
 	// @method panInside(latlng: LatLng, options?: options): this
 	// Pans the map the minimum amount to make the `latlng` visible. Use
-	// `padding`, `paddingTopLeft` and `paddingTopRight` options to fit
-	// the display to more restricted bounds, like [`fitBounds`](#map-fitbounds).
+	// `padding`, `paddingTopLeft` and `paddingTopRight` options
+	// ([Point](#point) types) to fit the display to more restricted bounds,
+	// like the [`padding options for fitBounds`](#fitbounds-options).
 	// If `latlng` is already within the (optionally padded) display bounds,
 	// the map will not be panned.
 	panInside: function (latlng, options) {
 		options = options || {};
+
+		// Set same padding for X and Y if only a single value is passed in
+		if (options.padding && options.padding.length === 1) {
+			options.padding.push(options.padding[0]);
+		}
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
