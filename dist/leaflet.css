@@ -100,7 +100,8 @@
 .leaflet-overlay-pane { z-index: 400; }
 .leaflet-shadow-pane  { z-index: 500; }
 .leaflet-marker-pane  { z-index: 600; }
-.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-tooltip-pane   { z-index: 650;}
+.leaflet-rtl .leaflet-tooltip-pane   {direction: ltr;}
 .leaflet-popup-pane   { z-index: 700; }
 
 .leaflet-map-pane canvas { z-index: 100; }
@@ -268,6 +269,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	}
+
+.leaflet-rtl{
+	direction: rtl;
 	}
 
 
@@ -638,3 +643,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+
+.leaflet-rtl .leaflet-tooltip-pane > * {
+	direction: rtl;
+}

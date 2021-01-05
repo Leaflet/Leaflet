@@ -23,7 +23,8 @@ import {Path} from './vector/Path';
  * marker.bindPopup(popupContent).openPopup();
  * ```
  * Path overlays like polylines also have a `bindPopup` method.
- * Here's a more complicated way to open a popup on a map:
+ *
+ * Here's a more complicated way to open a standalone popup on a map:
  *
  * ```js
  * var popup = L.popup()
@@ -95,9 +96,6 @@ export var Popup = DivOverlay.extend({
 		// Set it if you want to override the default behavior of the popup closing when user clicks
 		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
 
-		// @option className: String = ''
-		// A custom CSS class name to assign to the popup.
-		className: ''
 	},
 
 	// @namespace Popup
@@ -116,6 +114,12 @@ export var Popup = DivOverlay.extend({
 		// @event popupopen: PopupEvent
 		// Fired when a popup is opened in the map
 		map.fire('popupopen', {popup: this});
+
+		// @namespace Popup
+		// @section Popup events
+		// @event popupopen: PopupEvent
+		// Fired when the popup is opened
+		this.fire('popupopen', {popup: this}, true);
 
 		if (this._source) {
 			// @namespace Layer
@@ -139,6 +143,13 @@ export var Popup = DivOverlay.extend({
 		// @event popupclose: PopupEvent
 		// Fired when a popup in the map is closed
 		map.fire('popupclose', {popup: this});
+
+
+		// @namespace Popup
+		// @section Popup events
+		// @event popupclose: PopupEvent
+		// Fired when the popup is closed
+		this.fire('popupclose', {popup: this}, true);
 
 		if (this._source) {
 			// @namespace Layer
@@ -292,6 +303,9 @@ export var Popup = DivOverlay.extend({
 // @namespace Popup
 // @factory L.popup(options?: Popup options, source?: Layer)
 // Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
+// @alternative
+// @factory L.popup(options?: Popup options, latlng?: LatLng)
+// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `LatLng` where the overlay will open.
 export var popup = function (options, source) {
 	return new Popup(options, source);
 };
