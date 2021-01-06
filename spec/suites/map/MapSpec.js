@@ -1024,6 +1024,13 @@ describe("Map", function () {
 			tlPix = map.getPixelBounds().min;
 		});
 
+		it("reports an error when padding is not a point", function () {
+			var p = map.unproject(tlPix.subtract([200, 200]));
+			expect(function () {
+				map.panInside(p, {padding: 50, animate: false});
+			}).to.throwError();
+		});
+
 		it("does not pan the map when the target is within bounds", function () {
 			map.panInside(tl, {animate:false});
 			expect(center).to.equal(map.getCenter());

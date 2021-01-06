@@ -521,6 +521,10 @@ export var Map = Evented.extend({
 	panInside: function (latlng, options) {
 		options = options || {};
 
+		if (options.padding && options.padding.length !== 2) {
+			throw new Error('Padding must be a point type.');
+		}
+
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 		    center = this.getCenter(),
