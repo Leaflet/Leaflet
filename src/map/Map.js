@@ -521,11 +521,6 @@ export var Map = Evented.extend({
 	panInside: function (latlng, options) {
 		options = options || {};
 
-		// Set same padding for X and Y if only a single value is passed in
-		if (options.padding && options.padding.length === 1) {
-			options.padding.push(options.padding[0]);
-		}
-
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 		    center = this.getCenter(),
