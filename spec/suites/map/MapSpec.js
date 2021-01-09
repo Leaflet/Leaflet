@@ -1024,10 +1024,16 @@ describe("Map", function () {
 			tlPix = map.getPixelBounds().min;
 		});
 
-		it("reports an error when padding is not a point", function () {
+		it("reports an error when padding options are not points", function () {
 			var p = map.unproject(tlPix.subtract([200, 200]));
 			expect(function () {
 				map.panInside(p, {padding: 50, animate: false});
+			}).to.throwError();
+			expect(function () {
+				map.panInside(p, {paddingTopLeft: 50, animate: false});
+			}).to.throwError();
+			expect(function () {
+				map.panInside(p, {paddingBottomRight: 50, animate: false});
 			}).to.throwError();
 		});
 
