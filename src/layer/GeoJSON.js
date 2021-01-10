@@ -202,6 +202,20 @@ export function geometryToLayer(geojson, options) {
 	case 'MultiPolygon':
 		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
 		return new Polygon(latlngs, options);
+			
+	case 'FeatureCollection':
+		for (i = 0, len = geometry.features.length; i < len; i++) {
+			var layer = geometryToLayer({
+				geometry: geometry.features[i].geometry,
+				type: 'Feature',
+				properties: geojson.properties
+			}, options);
+
+			if (layer) {
+				layers.push(layer);
+			}
+		}
+		return new FeatureGroup(layers)
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
