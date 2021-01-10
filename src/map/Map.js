@@ -252,6 +252,13 @@ export var Map = Evented.extend({
 	_getBoundsCenterZoom: function (bounds, options) {
 
 		options = options || {};
+
+		if ((options.padding && options.padding.length !== 2) ||
+			(options.paddingTopLeft && options.paddingTopLeft.length !== 2) ||
+			(options.paddingBottomRight && options.paddingBottomRight.length !== 2)) {
+			throw new Error('Padding must be a point type.');
+		}
+
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),

@@ -791,6 +791,29 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#flyToBounds', function () {
+		var center = L.latLng(50.5, 30.51);
+		var bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
+
+		beforeEach(function () {
+			// flyToBounds needs a map container with non-null area
+			container.style.width = container.style.height = "100px";
+			map.setView(center, 15);
+		});
+
+		it("throws an error with invalid padding", function () {
+			expect(function () {
+				map.flyToBounds(bounds, {padding: 50});
+			}).to.throwError();
+			expect(function () {
+				map.flyToBounds(bounds, {paddingTopLeft: 50});
+			}).to.throwError();
+			expect(function () {
+				map.flyToBounds(bounds, {paddingBottomRight: 50});
+			}).to.throwError();
+		});
+	});
+
 	describe('#zoomIn and #zoomOut', function () {
 		var center = L.latLng(22, 33);
 		beforeEach(function () {
@@ -937,6 +960,18 @@ describe("Map", function () {
 		it('throws an error with invalid bounds', function () {
 			expect(function () {
 				map.fitBounds(NaN);
+			}).to.throwError();
+		});
+
+		it('throws an error with invalid padding', function () {
+			expect(function () {
+				map.fitBounds(bounds, {padding: 50});
+			}).to.throwError();
+			expect(function () {
+				map.fitBounds(bounds, {paddingTopLeft: 50});
+			}).to.throwError();
+			expect(function () {
+				map.fitBounds(bounds, {paddingBottomRight: 50});
 			}).to.throwError();
 		});
 
