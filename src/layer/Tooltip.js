@@ -15,9 +15,23 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * @example
  *
+ * If you want to just bind a tooltip to marker:
+ *
  * ```js
  * marker.bindTooltip("my tooltip text").openTooltip();
  * ```
+ * Path overlays like polylines also have a `bindTooltip` method.
+ *
+ * A tooltip can be also standalone:
+ *
+ * ```js
+ * var tooltip = L.tooltip()
+ * 	.setLatLng(latlng)
+ * 	.setContent('Hello world!<br />This is a nice tooltip.')
+ * 	.addTo(map);
+ * ```
+ *
+ *
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offsetting:
  * - the `offset` Tooltip option: it defaults to [0, 0], and it's specific to one tooltip.
@@ -25,6 +39,8 @@ import * as DomUtil from '../dom/DomUtil';
  *   move it to the bottom. Negatives will move to the left and top.
  * - the `tooltipAnchor` Icon option: this will only be considered for Marker. You
  *   should adapt this value if you use a custom icon.
+ *
+ *
  */
 
 
@@ -178,6 +194,8 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_updatePosition: function () {
+		if (!this._map || !this._latlng) { return; }
+
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 		this._setPosition(pos);
 	},
