@@ -959,6 +959,17 @@ export var Map = Evented.extend({
 		return this._container;
 	},
 
+	// @method setRTLDirection(rtl: Boolean): this
+	// Support for right-to-left text direction. Adds to the map container the CSS-Class `leaflet-rtl`.
+	// During initialization the style `direction: rtl` is searched on the map container and accordingly `leaflet-rtl` is set
+	setRTLDirection: function (rtl) {
+		if (rtl) {
+			DomUtil.addClass(this._container, 'leaflet-rtl');
+		} else {
+			DomUtil.removeClass(this._container, 'leaflet-rtl');
+		}
+		return this;
+	},
 
 	// @section Conversion Methods
 
@@ -1120,6 +1131,8 @@ export var Map = Evented.extend({
 			(Browser.ielt9 ? ' leaflet-oldie' : '') +
 			(Browser.safari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
+
+		this.setRTLDirection(DomUtil.getStyle(container, 'direction') === 'rtl');
 
 		var position = DomUtil.getStyle(container, 'position');
 
