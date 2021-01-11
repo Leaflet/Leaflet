@@ -39,7 +39,14 @@ export var DivOverlay = Layer.extend({
 	initialize: function (options, source) {
 		Util.setOptions(this, options);
 
-		this._source = source;
+		if (source instanceof L.LatLng || Util.isArray(source)) {
+			this._latlng = toLatLng(source);
+		} else {
+			this._source = source;
+		}
+		if (this.options.content) {
+			this._content = this.options.content;
+		}
 	},
 
 	onAdd: function (map) {
@@ -219,7 +226,7 @@ export var DivOverlay = Layer.extend({
 	},
 
 	_updatePosition: function () {
-		if (!this._map) { return; }
+		if (!this._map || !this._latlng) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    offset = toPoint(this.options.offset),
