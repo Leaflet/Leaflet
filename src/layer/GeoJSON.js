@@ -207,7 +207,7 @@ export function geometryToLayer(geojson, options) {
 		for (i = 0, len = geometry.features.length; i < len; i++) {
 			var layer = geometryToLayer({
 				geometry: geometry.features[i].geometry,
-				type: 'Feature',
+				type: geometry.features[i].type,
 				properties: geojson.properties
 			}, options);
 
