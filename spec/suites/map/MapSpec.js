@@ -791,26 +791,33 @@ describe("Map", function () {
 		});
 	});
 
-	describe('#flyToBounds', function () {
-		var center = L.latLng(50.5, 30.51);
-		var bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
-
+	describe('#padding options types', function () {
 		beforeEach(function () {
 			// flyToBounds needs a map container with non-null area
-			container.style.width = container.style.height = "100px";
-			map.setView(center, 15);
+			container.style.width = container.style.height = '100px';
+			map.setView([50.5, 30.51], 15);
 		});
 
-		it("throws an error with invalid padding", function () {
-			expect(function () {
-				map.flyToBounds(bounds, {padding: 50});
-			}).to.throwError();
-			expect(function () {
-				map.flyToBounds(bounds, {paddingTopLeft: 50});
-			}).to.throwError();
-			expect(function () {
-				map.flyToBounds(bounds, {paddingBottomRight: 50});
-			}).to.throwError();
+		var bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
+		var paddingError = 'Padding must be a point type.';
+
+		['padding', 'paddingTopLeft', 'paddingBottomRight'].forEach(function (prop) {
+			var paddingOptions = {};
+			paddingOptions[prop] = 50; // invalid
+
+			it('throws an error with invalid ' + prop, function () {
+				expect(function () {
+					map.flyToBounds(bounds, paddingOptions);
+				}).to.throwError(paddingError);
+
+				expect(function () {
+					map.fitBounds(bounds, paddingOptions);
+				}).to.throwError(paddingError);
+
+				expect(function () {
+					map.panInside([55, 32], paddingOptions);
+				}).to.throwError(paddingError);
+			});
 		});
 	});
 
@@ -963,18 +970,6 @@ describe("Map", function () {
 			}).to.throwError();
 		});
 
-		it('throws an error with invalid padding', function () {
-			expect(function () {
-				map.fitBounds(bounds, {padding: 50});
-			}).to.throwError();
-			expect(function () {
-				map.fitBounds(bounds, {paddingTopLeft: 50});
-			}).to.throwError();
-			expect(function () {
-				map.fitBounds(bounds, {paddingBottomRight: 50});
-			}).to.throwError();
-		});
-
 		it('Fits to same scale and zoom', function (done) {
 			var bounds = map.getBounds(),
 			    zoom = map.getZoom();
@@ -1057,19 +1052,6 @@ describe("Map", function () {
 			center = map.getCenter();
 			tl = map.getBounds().getNorthWest();
 			tlPix = map.getPixelBounds().min;
-		});
-
-		it("reports an error when padding options are not points", function () {
-			var p = map.unproject(tlPix.subtract([200, 200]));
-			expect(function () {
-				map.panInside(p, {padding: 50, animate: false});
-			}).to.throwError();
-			expect(function () {
-				map.panInside(p, {paddingTopLeft: 50, animate: false});
-			}).to.throwError();
-			expect(function () {
-				map.panInside(p, {paddingBottomRight: 50, animate: false});
-			}).to.throwError();
 		});
 
 		it("does not pan the map when the target is within bounds", function () {
