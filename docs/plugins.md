@@ -234,6 +234,16 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Azure-Samples/azure-maps-leaflet">Azure Maps Leaflet plugin</a>
+		</td><td>
+			A leafletjs plugin that makes it easy to overlay all the different tile layers available from the [Azure Maps](https://azure.com/maps). Supports using an Azure Maps subscription key or Azure Active Directory for authentication.
+			<a href="https://azuremapscodesamples.azurewebsites.net/?search=leaflet">Demos</a>.
+		</td><td>
+			<a href="https://github.com/rbrundritt">Ricky Brundritt</a>
+		</td>
+	</tr>
 </table>
 
 
