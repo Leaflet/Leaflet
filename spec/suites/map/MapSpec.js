@@ -801,9 +801,14 @@ describe("Map", function () {
 		var bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
 		var paddingError = 'Padding must be a point type.';
 
+		// Passing a single value instead of a point as a padding option
+		// is invalid and sets the Y value to 0. Here we check that each of
+		// the methods which take padding options report the error correctly
 		['padding', 'paddingTopLeft', 'paddingBottomRight'].forEach(function (prop) {
 			var paddingOptions = {};
-			paddingOptions[prop] = 50; // invalid
+			paddingOptions[prop] = 50;
+			// NOTE: we could expand this to include other invalid values in 
+			// the future, but this likely covers the most common mistake
 
 			it('throws an error with invalid ' + prop, function () {
 				expect(function () {
