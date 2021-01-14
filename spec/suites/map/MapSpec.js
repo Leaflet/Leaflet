@@ -953,6 +953,24 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
+		it('Fits to bounds and zoom out 1 level', function (done) {
+			map.once('zoomend', function () {
+				expect(map.getZoom()).to.eql(1);
+				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
+				done();
+			});
+			map.fitBounds(bounds, {animate: false, zoomOffset: -1});
+		});
+
+		it('ZoomOffset does not override maxZoom', function (done) {
+			map.once('zoomend', function () {
+				expect(map.getZoom()).to.eql(10);
+				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
+				done();
+			});
+			map.fitBounds(bounds, {animate: false, zoomOffset: 100, maxZoom: 10});
+		});
+
 		it('Fits to small bounds from small zoom', function (done) {
 			map.once('zoomend', function () {
 				map.once('zoomend', function () {

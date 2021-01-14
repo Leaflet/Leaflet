@@ -259,6 +259,9 @@ export var Map = Evented.extend({
 
 		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
+		if (typeof options.zoomOffset === 'number') {
+			zoom += options.zoomOffset;
+		}
 		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
 		if (zoom === Infinity) {
