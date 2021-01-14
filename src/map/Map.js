@@ -252,7 +252,6 @@ export var Map = Evented.extend({
 	_getBoundsCenterZoom: function (bounds, options) {
 
 		options = options || {};
-
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
