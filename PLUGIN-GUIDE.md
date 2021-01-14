@@ -146,6 +146,7 @@ Learn more about web accessibility:
 - [WAI — Web Accessibility Initiative](https://www.w3.org/WAI/)
 - [ARIA in HTML — Accessible Rich Internet Applications](https://www.w3.org/TR/html-aria/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [Using ARIA](https://www.w3.org/TR/using-aria/)
 - [WCAG — Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG/)
 
 ### Accessibility Testing Tools
