@@ -791,41 +791,6 @@ describe("Map", function () {
 		});
 	});
 
-	describe('#padding options types', function () {
-		beforeEach(function () {
-			// flyToBounds needs a map container with non-null area
-			container.style.width = container.style.height = '100px';
-			map.setView([50.5, 30.51], 15);
-		});
-
-		var bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122));
-		var paddingError = 'Padding must be a point type.';
-
-		// Passing a single value instead of a point as a padding option
-		// is invalid and sets the Y value to 0. Here we check that each of
-		// the methods which take padding options report the error correctly
-		['padding', 'paddingTopLeft', 'paddingBottomRight'].forEach(function (prop) {
-			var paddingOptions = {};
-			paddingOptions[prop] = 50;
-			// NOTE: we could expand this to include other invalid values in 
-			// the future, but this likely covers the most common mistake
-
-			it('throws an error with invalid ' + prop, function () {
-				expect(function () {
-					map.flyToBounds(bounds, paddingOptions);
-				}).to.throwError(paddingError);
-
-				expect(function () {
-					map.fitBounds(bounds, paddingOptions);
-				}).to.throwError(paddingError);
-
-				expect(function () {
-					map.panInside([55, 32], paddingOptions);
-				}).to.throwError(paddingError);
-			});
-		});
-	});
-
 	describe('#zoomIn and #zoomOut', function () {
 		var center = L.latLng(22, 33);
 		beforeEach(function () {

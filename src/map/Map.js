@@ -253,12 +253,6 @@ export var Map = Evented.extend({
 
 		options = options || {};
 
-		if ((options.padding && options.padding.length !== 2) ||
-			(options.paddingTopLeft && options.paddingTopLeft.length !== 2) ||
-			(options.paddingBottomRight && options.paddingBottomRight.length !== 2)) {
-			throw new Error('Padding must be a point type.');
-		}
-
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
@@ -525,12 +519,6 @@ export var Map = Evented.extend({
 	// the map will not be panned.
 	panInside: function (latlng, options) {
 		options = options || {};
-
-		if ((options.padding && options.padding.length !== 2) ||
-			(options.paddingTopLeft && options.paddingTopLeft.length !== 2) ||
-			(options.paddingBottomRight && options.paddingBottomRight.length !== 2)) {
-			throw new Error('Padding must be a point type.');
-		}
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
