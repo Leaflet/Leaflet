@@ -215,11 +215,11 @@ describe('Polyline', function () {
 
 	describe("#style", function () {
 		it("can set weight after being added to the map", function () {
-			var polyline = new L.Polyline([]).addTo(map);
-			polyline.setStyle({
-				weight: 3,
-			});
-			expect(map.hasLayer(polyline)).to.be(true);
+			var polyline = L.polyline([]);
+
+			polyline.addTo(map);
+			polyline.setStyle({weight: 3});
+
 			expect(polyline.options.weight).to.be(3);
 		});
 	});
