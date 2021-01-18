@@ -692,12 +692,8 @@ describe("L.GeoJSON functions", function () {
 		it("creates a LatLng object with given coordinates", function () {
 			var latLng = L.GeoJSON.coordsToLatLng([1, 2]);
 			var latLngWithAlt = L.GeoJSON.coordsToLatLng([3, 4, 5]);
-			expect(latLng.lat).to.be(2);
-			expect(latLng.lng).to.be(1);
-			expect(latLng.alt).not.to.be.ok();
-			expect(latLngWithAlt.lat).to.be(4);
-			expect(latLngWithAlt.lng).to.be(3);
-			expect(latLngWithAlt.alt).to.be(5);
+			expect(latLng).to.eql({lng: 1, lat: 2});
+			expect(latLngWithAlt).to.eql({lng: 3, lat: 4, alt: 5});
 		});
 	});
 
