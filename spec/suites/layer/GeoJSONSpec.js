@@ -582,27 +582,37 @@ describe("L.GeoJSON functions", function () {
 		}
 
 		[
-			point, line, polygon,
-			multiPoint, multiLine, multiPolygon,
-			geometryCollection
-		].forEach(function (geometry) {
+			[point, L.Marker],
+			[line, L.Polyline],
+			[polygon, L.Polygon],
+			[multiPoint, L.FeatureGroup],
+			[multiLine, L.Polyline],
+			[multiPolygon, L.Polygon],
+			[geometryCollection, L.FeatureGroup]
+		].forEach(function (item) {
+			var geometry = item[0], expectedType = item[1];
 			it("creates a Layer from a GeoJSON feature (type='" + geometry.type + "')", function () {
 				var layer = L.GeoJSON.geometryToLayer({
 					type: "Feature",
 					geometry: geometry
 				});
-				expect(layer).to.be.a(L.Layer);
+				expect(layer).to.be.a(expectedType);
 			});
 		});
 
 		[
-			point, line, polygon,
-			multiPoint, multiLine, multiPolygon,
-			geometryCollection
-		].forEach(function (geometry) {
+			[point, L.Marker],
+			[line, L.Polyline],
+			[polygon, L.Polygon],
+			[multiPoint, L.FeatureGroup],
+			[multiLine, L.Polyline],
+			[multiPolygon, L.Polygon],
+			[geometryCollection, L.FeatureGroup]
+		].forEach(function (item) {
+			var geometry = item[0], expectedType = item[1];
 			it("creates a Layer from a GeoJSON geometry (type='" + geometry.type + "')", function () {
 				var layer = L.GeoJSON.geometryToLayer(geometry);
-				expect(layer).to.be.a(L.Layer);
+				expect(layer).to.be.a(expectedType);
 			});
 		});
 
