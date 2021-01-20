@@ -5,7 +5,6 @@
  * (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386)
  */
 
-var _pre = '_leaflet_';
 function makeDblclick(event) {
 	// in modern browsers `type` cannot be just overridden:
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only
@@ -24,7 +23,7 @@ function makeDblclick(event) {
 }
 
 var delay = 200;
-export function addDoubleTapListener(obj, handler, id) {
+export function addDoubleTapListener(obj, handler) {
 	// Most browsers handle double tap natively
 	obj.addEventListener('dblclick', handler);
 
@@ -59,11 +58,13 @@ export function addDoubleTapListener(obj, handler, id) {
 
 	obj.addEventListener('click', simDblclick);
 
-	obj[_pre + 'dblclick' + id] = handler;
-	obj[_pre + 'simDblclick' + id] = simDblclick;
+	return {
+		dblclick: handler,
+		simDblclick: simDblclick
+	};
 }
 
-export function removeDoubleTapListener(obj, id) {
-	obj.removeEventListener('dblclick', obj[_pre + 'dblclick' + id]);
-	obj.removeEventListener('click', obj[_pre + 'simDblclick' + id]);
+export function removeDoubleTapListener(obj, handlers) {
+	obj.removeEventListener('dblclick', handlers.dblclick);
+	obj.removeEventListener('click', handlers.simDblclick);
 }
