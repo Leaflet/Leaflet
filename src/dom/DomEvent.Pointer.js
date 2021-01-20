@@ -1,5 +1,4 @@
 import * as DomEvent from './DomEvent';
-import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
 
 /*
@@ -18,26 +17,22 @@ var _pointerDocListener = false;
 // Provides a touch events wrapper for (ms)pointer events.
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
-export function addPointerListener(obj, type, handler, id) {
+export function addPointerListener(obj, type, handler) {
 	if (type === 'touchstart') {
-		_addPointerStart(obj, handler, id);
+		return _addPointerStart(obj, handler);
 
 	} else if (type === 'touchmove') {
-		_addPointerMove(obj, handler, id);
+		return _addPointerMove(obj, handler);
 
 	} else if (type === 'touchend') {
-		_addPointerEnd(obj, type, handler, id);
+		return _addPointerEnd(obj, handler);
 
 	} else if (type === 'touchcancel') {
-		_addPointerCancel(obj, type, handler, id);
+		return _addPointerCancel(obj, handler);
 	}
-
-	return this;
 }
 
-export function removePointerListener(obj, type, id) {
-	var handler = obj['_leaflet_' + type + id];
-
+export function removePointerListener(obj, type, handler) {
 	if (type === 'touchstart') {
 		obj.removeEventListener(POINTER_DOWN, handler, false);
 
@@ -50,22 +45,17 @@ export function removePointerListener(obj, type, id) {
 	} else if (type === 'touchcancel') {
 		obj.removeEventListener(POINTER_CANCEL, handler, false);
 	}
-
-	return this;
 }
 
-function _addPointerStart(obj, handler, id) {
-	var onDown = Util.bind(function (e) {
+function _addPointerStart(obj, handler) {
+	var onDown = function (e) {
 		// IE10 specific: MsTouch needs preventDefault. See #2000
 		if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
 			DomEvent.preventDefault(e);
 		}
 
 		_handlePointer(e, handler);
-	});
-
-	obj['_leaflet_touchstart' + id] = onDown;
-	obj.addEventListener(POINTER_DOWN, onDown, false);
+	};
 
 	// need to keep track of what pointers and how many are active to provide e.touches emulation
 	if (!_pointerDocListener) {
@@ -77,6 +67,9 @@ function _addPointerStart(obj, handler, id) {
 
 		_pointerDocListener = true;
 	}
+
+	obj.addEventListener(POINTER_DOWN, onDown, false);
+	return onDown;
 }
 
 function _globalPointerDown(e) {
@@ -103,7 +96,7 @@ function _handlePointer(e, handler) {
 	handler(e);
 }
 
-function _addPointerMove(obj, handler, id) {
+function _addPointerMove(obj, handler) {
 	var onMove = function (e) {
 		// don't fire touch moves when mouse isn't down
 		if ((e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) && e.buttons === 0) {
@@ -113,24 +106,24 @@ function _addPointerMove(obj, handler, id) {
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_touchmove' + id] = onMove;
 	obj.addEventListener(POINTER_MOVE, onMove, false);
+	return onMove;
 }
 
-function _addPointerEnd(obj, type, handler, id) {
+function _addPointerEnd(obj, handler) {
 	var onUp = function (e) {
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_' + type + id] = onUp;
 	obj.addEventListener(POINTER_UP, onUp, false);
+	return onUp;
 }
 
-function _addPointerCancel(obj, type, handler, id) {
+function _addPointerCancel(obj, handler) {
 	var onCancel = function (e) {
 		_handlePointer(e, handler);
 	};
 
-	obj['_leaflet_' + type + id] = onCancel;
 	obj.addEventListener(POINTER_CANCEL, onCancel, false);
+	return onCancel;
 }
