@@ -700,7 +700,6 @@ describe("L.GeoJSON functions", function () {
 
 		it("creates a multidimensional array of LatLngs", function () {
 			var latLngs = L.GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
-			expect(latLngs.length).to.be(3);
 			expect(latLngs).to.eql([{lng: 1, lat: 2}, {lng: 3, lat: 4}, {lng: 5, lat: 6}]);
 			latLngs.forEach(function (latLng) {
 				expect(latLng).to.be.a(L.LatLng);
@@ -712,7 +711,6 @@ describe("L.GeoJSON functions", function () {
 				[[1, 2], [3, 4], [5, 6]],
 				[[5, 6], [7, 8], [9, 10]]
 			], 1);
-			expect(latLngs.length).to.be(2);
 			expect(latLngs).to.eql([
 				[{lng: 1, lat: 2}, {lng: 3, lat: 4}, {lng: 5, lat: 6}],
 				[{lng: 5, lat: 6}, {lng: 7, lat: 8}, {lng: 9, lat: 10}]
