@@ -77,15 +77,20 @@ export var TapHold = Handler.extend({
 	},
 
 	_simulateEvent: function (type, e) {
-		var simulatedEvent = document.createEvent('MouseEvents');
+		var simulatedEvent = new MouseEvent(type, {
+			bubbles: true,
+			cancelable: true,
+			view: window,
+			// detail: 1,
+			screenX: e.screenX,
+			screenY: e.screenY,
+			clientX: e.clientX,
+			clientY: e.clientY,
+			// button: 2,
+			// buttons: 2
+		});
 
 		simulatedEvent._simulated = true;
-
-		simulatedEvent.initMouseEvent(
-		        type, true, true, window, 1,
-		        e.screenX, e.screenY,
-		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
