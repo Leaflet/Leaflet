@@ -53,6 +53,17 @@ happen.at = function (what, x, y, props) {
 	}, props || {}));
 };
 
+happen.makeEvent = (function (makeEvent) {
+	return function (o) {
+		var evt = makeEvent(o);
+		if (o.type.substring(0, 7) === 'pointer') {
+			evt.pointerId = o.pointerId;
+			evt.pointerType = o.pointerType;
+		}
+		return evt;
+	};
+})(happen.makeEvent);
+
 // We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
 it.skipIfNo3d = L.Browser.any3d ? it : it.skip;
 
