@@ -28,6 +28,7 @@ describe('DomEvent.Pointer', function () {
 				happen.once(el, {type: type});
 			});
 			touchEvents.forEach(function (type) {
+				expect(listeners[type].called).to.be.ok();
 				expect(listeners[type].calledOnce).to.be.ok();
 			});
 		});
@@ -51,6 +52,93 @@ describe('DomEvent.Pointer', function () {
 			touchEvents.forEach(function (type) {
 				expect(listeners[type].notCalled).to.be.ok();
 			});
+		});
+
+		it('simulates touch events with correct properties', function () {
+			function containIn(props, evt) {
+				if (Array.isArray(props)) {
+					return props.every(function (props0) {
+						return containIn(props0, evt);
+					});
+				}
+				if ('length' in evt) {
+					return Array.prototype.some.call(evt, containIn.bind(this, props));
+				}
+				for (var prop in props) {
+					var res = true;
+					if (props[prop] !== evt[prop]) {
+						return false;
+					}
+				}
+				return res;
+			}
+			// test helper function
+			expect(containIn(undefined, {a:1})).not.to.be.ok();
+			expect(containIn({}, {a:1})).not.to.be.ok();
+			expect(containIn({a:1}, {a:2})).not.to.be.ok();
+			expect(containIn({a:1}, {a:1, b:2})).to.be.ok();
+			expect(containIn({a:1, b:2}, {a:1})).not.to.be.ok();
+			expect(containIn({a:1}, [{a:1}, {b:2}])).to.be.ok();
+			expect(containIn({a:1}, [{a:0}, {b:2}])).not.to.be.ok();
+			expect(containIn([{a:1}, {b:2}], [{a:1}, {b:2}, {c:3}])).to.be.ok();
+			expect(containIn([{a:1}, {b:2}], [{a:0}, {b:2}])).not.to.be.ok();
+
+			// pointerdown/touchstart
+			var pointer1 = {clientX:1, clientY:1, pointerId: 1};
+			happen.once(el, L.extend({type: 'pointerdown'}, pointer1));
+			var evt = listeners.touchstart.lastCall.args[0];
+			expect(evt.type).to.be('pointerdown');
+			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.changedTouches).to.have.length(1);
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
+			expect(evt.touches).to.have.length(1);
+			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
+
+			// another pointerdown/touchstart (multitouch)
+			var pointer2 = {clientX:2, clientY:2, pointerId: 2};
+			happen.once(el, L.extend({type: 'pointerdown'}, pointer2));
+			evt = listeners.touchstart.lastCall.args[0];
+			expect(evt.type).to.be('pointerdown');
+			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.changedTouches).to.have.length(1);
+			expect(containIn(pointer2, evt.changedTouches[0])).to.be.ok();
+			expect(evt.touches).to.have.length(2);
+			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
+
+			// pointermove/touchmove (multitouch)
+			L.extend(pointer1, {clientX:11, clientY:11});
+			happen.once(el, L.extend({type: 'pointermove'}, pointer1));
+			evt = listeners.touchmove.lastCall.args[0];
+			expect(evt.type).to.be('pointermove');
+			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.changedTouches).to.have.length(1);
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
+			expect(evt.touches).to.have.length(2);
+			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
+
+			// pointerup/touchend (multitouch)
+			happen.once(el, L.extend({type: 'pointerup'}, pointer2));
+			evt = listeners.touchend.lastCall.args[0];
+			expect(evt.type).to.be('pointerup');
+			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.changedTouches).to.have.length(1);
+			expect(containIn(pointer2, evt.changedTouches[0])).to.be.ok();
+			expect(evt.touches).to.have.length(1);
+			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
+
+			// pointercancel/touchcancel
+			happen.once(el, L.extend({type: 'pointercancel'}, pointer1));
+			evt = listeners.touchcancel.lastCall.args[0];
+			expect(evt.type).to.be('pointercancel');
+			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.changedTouches).to.have.length(1);
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
+			expect(evt.touches).to.be.empty();
+
+			expect(listeners.touchstart.calledTwice).to.be.ok();
+			expect(listeners.touchmove.calledOnce).to.be.ok();
+			expect(listeners.touchend.calledOnce).to.be.ok();
+			expect(listeners.touchcancel.calledOnce).to.be.ok();
 		});
 	});
 
