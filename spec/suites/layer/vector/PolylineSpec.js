@@ -214,7 +214,7 @@ describe('Polyline', function () {
 	});
 
 	describe("#style", function () {
-		it("can set weight after being added to the map", function () {
+		it("can set weight after empty Polyline is added to the map", function () {
 			var polyline = L.polyline([]);
 
 			polyline.addTo(map);
