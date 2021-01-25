@@ -89,4 +89,28 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		}
 		expect(event.isTrusted).not.to.be.ok();
 	});
+
+	it('respects disableClickPropagation', function () {
+		var spyMap = sinon.spy();
+		var map = L.map(el).setView([51.505, -0.09], 13);
+		map.on('dblclick', spyMap);
+
+		var spyCtrl = sinon.spy();
+		var ctrl = L.DomUtil.create('div');
+		L.DomEvent.disableClickPropagation(ctrl);
+		var MyControl = L.Control.extend({
+			onAdd: function () {
+				return ctrl;
+			}
+		});
+		map.addControl(new MyControl());
+		L.DomEvent.on(ctrl, 'dblclick', spyCtrl);
+
+		happen.click(ctrl, {detail: 1});
+		clock.tick(100);
+		happen.click(ctrl, {detail: 1});
+
+		expect(spyCtrl.called).to.be.ok();
+		expect(spyMap.notCalled).to.be.ok();
+	});
 });
