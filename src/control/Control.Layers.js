@@ -187,7 +187,13 @@ export var Layers = Control.extend({
 			this._map.on('click', this.collapse, this);
 
 			DomEvent.on(container, {
-				mouseenter: this.expand,
+				mouseenter: function () {
+					DomEvent.on(section, 'click', DomEvent.preventDefault);
+					this.expand();
+					setTimeout(function () {
+						DomEvent.off(section, 'click', DomEvent.preventDefault);
+					});
+				},
 				mouseleave: this.collapse
 			}, this);
 		}
