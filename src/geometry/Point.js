@@ -25,6 +25,9 @@ import {isArray, formatNum} from '../core/Util';
  */
 
 export function Point(x, y, round) {
+	if (isNaN(x) || isNaN(y)) {
+		throw new Error('Invalid Point object: (' + x + ', ' + y + ')');
+	}
 	// @property x: Number; The `x` coordinate of the point
 	this.x = (round ? Math.round(x) : parseFloat(x));
 	// @property y: Number; The `y` coordinate of the point
