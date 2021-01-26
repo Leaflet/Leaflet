@@ -29,7 +29,6 @@ export function Point(x, y, round) {
 	this.x = (round ? Math.round(x) : parseFloat(x));
 	// @property y: Number; The `y` coordinate of the point
 	this.y = (round ? Math.round(y) : parseFloat(y));
-
 }
 
 var trunc = Math.trunc || function (v) {
@@ -164,7 +163,7 @@ Point.prototype = {
 		point = toPoint(point);
 
 		var x = point.x - this.x,
-		y = point.y - this.y;
+		    y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);
 	},
@@ -175,7 +174,7 @@ Point.prototype = {
 		point = toPoint(point);
 
 		return point.x === this.x &&
-			point.y === this.y;
+		       point.y === this.y;
 	},
 
 	// @method contains(otherPoint: Point): Boolean
@@ -184,15 +183,15 @@ Point.prototype = {
 		point = toPoint(point);
 
 		return Math.abs(point.x) <= Math.abs(this.x) &&
-			Math.abs(point.y) <= Math.abs(this.y);
+		       Math.abs(point.y) <= Math.abs(this.y);
 	},
 
 	// @method toString(): String
 	// Returns a string representation of the point for debugging purposes.
 	toString: function () {
 		return 'Point(' +
-			formatNum(this.x) + ', ' +
-			formatNum(this.y) + ')';
+		        formatNum(this.x) + ', ' +
+		        formatNum(this.y) + ')';
 	}
 };
 
@@ -211,13 +210,13 @@ export function toPoint(x, y, round) {
 		return x;
 	}
 	if (isArray(x)) {
-		return new Point(parseFloat(x[0]), parseFloat(x[1]));
+		return new Point(x[0], x[1]);
 	}
 	if (x === undefined || x === null) {
 		return x;
 	}
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
-		return new Point(parseFloat(x.x), parseFloat(x.y));
+		return new Point(x.x, x.y);
 	}
-	return new Point(parseFloat(x), parseFloat(y), round);
+	return new Point(x, y, round);
 }
