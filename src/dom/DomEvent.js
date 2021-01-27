@@ -251,20 +251,6 @@ export function getWheelDelta(e) {
 	       0;
 }
 
-var skipEvents = {};
-
-export function fakeStop(e) {
-	// fakes stopPropagation by setting a special event flag, checked/reset with skipped(e)
-	skipEvents[e.type] = true;
-}
-
-export function skipped(e) {
-	var events = skipEvents[e.type];
-	// reset when checking, as it's only used in map container and propagates outside of the map
-	skipEvents[e.type] = false;
-	return events;
-}
-
 // check if element really left/entered the event target (for mouseenter/mouseleave)
 export function isExternalTarget(el, e) {
 

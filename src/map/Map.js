@@ -1386,7 +1386,7 @@ export var Map = Evented.extend({
 
 	_handleDOMEvent: function (e) {
 		var el = (e.target || e.srcElement);
-		if (!this._loaded || DomEvent.skipped(e) || el['_leaflet_disable_click'] && e.type === 'click') {
+		if (!this._loaded || el['_leaflet_disable_events'] || el['_leaflet_disable_click'] && e.type === 'click') {
 			return;
 		}
 
