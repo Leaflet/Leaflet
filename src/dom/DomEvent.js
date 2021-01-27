@@ -184,7 +184,7 @@ export function disableScrollPropagation(el) {
 // `'mousedown'` and `'touchstart'` events (plus browser variants).
 export function disableClickPropagation(el) {
 	on(el, 'mousedown touchstart dblclick', stopPropagation);
-	addOne(el, 'click', fakeStop);
+	el['_leaflet_disable_click'] = true;
 	return this;
 }
 
