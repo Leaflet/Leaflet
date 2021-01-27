@@ -1377,7 +1377,7 @@ export var Map = Evented.extend({
 
 	_handleDOMEvent: function (e) {
 		var el = (e.target || e.srcElement);
-		if (!this._loaded || DomEvent.skipped(e) || e.type === 'click' && this._isClickDisabled(el)) {
+		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
 			return;
 		}
 
