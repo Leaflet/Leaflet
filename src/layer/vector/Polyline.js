@@ -213,8 +213,7 @@ export var Polyline = Path.extend({
 		var w = this._clickTolerance(),
 		    p = new Point(w, w);
 
-		if (this._rawPxBounds === undefined) {
-			this._project();
+		if (!this._rawPxBounds) {
 			return;
 		}
 
