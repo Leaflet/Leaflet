@@ -85,6 +85,56 @@ describe('DomEvent', function () {
 		});
 	});
 
+	describe('#disableScrollPropagation', function () {
+		it('stops wheel events from propagation to parent elements', function () {
+			var child = document.createElement('div');
+			el.appendChild(child);
+			var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+			L.DomEvent.on(el, wheel, listener);
+
+			L.DomEvent.disableScrollPropagation(child);
+			happen.once(child, {type: wheel});
+
+			expect(listener.notCalled).to.be.ok();
+		});
+	});
+
+	describe('#disableClickPropagation', function () {
+		it('stops click events from propagation to parent elements', function () { // except 'click'
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(el, 'dblclick mousedown touchstart', listener);
+
+			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'mousedown'});
+			happen.once(child, {type: 'touchstart', touches: []});
+
+			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('prevents click event on map object, but propagates to DOM elements', function () { // to solve #301
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(el, 'click', listener);
+			var map = L.map(el).setView([0, 0], 0);
+			var mapClickListener = sinon.spy();
+			var mapOtherListener = sinon.spy();
+			map.on('click', mapClickListener);
+			map.on('keypress', mapOtherListener); // control case
+
+			happen.once(child, {type: 'click'});
+			happen.once(child, {type: 'keypress'});
+
+			expect(listener.called).to.be.ok();
+			expect(mapOtherListener.called).to.be.ok();
+			expect(mapClickListener.notCalled).to.be.ok();
+
+			map.remove();
+		});
+	});
+
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
 			L.DomEvent.on(el, 'click', listener);
