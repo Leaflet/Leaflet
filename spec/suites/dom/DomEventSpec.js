@@ -1,11 +1,10 @@
 describe('DomEvent', function () {
-	var el;
+	var el, listener;
 
 	beforeEach(function () {
 		el = document.createElement('div');
-		el.style.position = 'absolute';
-		el.style.top = el.style.left = '-10000px';
 		document.body.appendChild(el);
+		listener = sinon.spy();
 	});
 
 	afterEach(function () {
@@ -14,45 +13,37 @@ describe('DomEvent', function () {
 
 	describe('#on (addListener)', function () {
 		it('adds a listener and calls it on event', function () {
-			var listener1 = sinon.spy(),
-			    listener2 = sinon.spy();
-
-			L.DomEvent.on(el, 'click', listener1);
+			var listener2 = sinon.spy();
+			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
 			happen.click(el);
 
-			expect(listener1.called).to.be.ok();
+			expect(listener.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
 		});
 
 		it('binds "this" to the given context', function () {
-			var obj = {foo: 'bar'},
-			    result;
-
-			L.DomEvent.on(el, 'click', function () {
-				result = this;
-			}, obj);
+			var obj = {foo: 'bar'};
+			L.DomEvent.on(el, 'click', listener, obj);
 
 			happen.click(el);
 
-			expect(result).to.eql(obj);
+			expect(listener.calledOn(obj)).to.be.ok();
 		});
 
 		it('passes an event object to the listener', function () {
-			var type;
+			L.DomEvent.on(el, 'click', listener);
 
-			L.DomEvent.on(el, 'click', function (e) {
-				type = e && e.type;
-			});
 			happen.click(el);
 
-			expect(type).to.eql('click');
+			expect(listener.lastCall.args[0].type).to.eql('click');
 		});
 
 		it('is chainable', function () {
 			var res = L.DomEvent.on(el, 'click', function () {});
-			expect(res.on).to.be.a('function');
+
+			expect(res).to.be(L.DomEvent);
 		});
 
 		it('is aliased to addListener ', function () {
@@ -62,19 +53,18 @@ describe('DomEvent', function () {
 
 	describe('#off (removeListener)', function () {
 		it('removes a previously added listener', function () {
-			var listener = sinon.spy();
-
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener);
 
 			happen.click(el);
 
-			expect(listener.called).to.not.be.ok();
+			expect(listener.notCalled).to.be.ok();
 		});
 
 		it('is chainable', function () {
 			var res = L.DomEvent.off(el, 'click', function () {});
-			expect(res.off).to.be.a('function');
+
+			expect(res).to.be(L.DomEvent);
 		});
 
 		it('is aliased to removeListener ', function () {
@@ -84,27 +74,21 @@ describe('DomEvent', function () {
 
 	describe('#stopPropagation', function () {
 		it('stops propagation of the given event', function () {
-			var child = document.createElement('div'),
-			    listener = sinon.spy();
-
+			var child = document.createElement('div');
 			el.appendChild(child);
-
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.on(el, 'click', listener);
 
 			happen.click(child);
 
-			expect(listener.called).to.not.be.ok();
-
-			el.removeChild(child);
+			expect(listener.notCalled).to.be.ok();
 		});
 	});
 
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
-			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
-			var listener = sinon.spy();
 			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
 
 			happen.click(el);
 
