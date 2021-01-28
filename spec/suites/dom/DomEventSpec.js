@@ -1,17 +1,6 @@
 describe('DomEvent', function () {
 	var el;
 
-	function simulateClick(el) {
-		if (document.createEvent) {
-			var e = document.createEvent('MouseEvents');
-			e.initMouseEvent('click', true, true, window,
-				0, 0, 0, 0, 0, false, false, false, false, 0, null);
-			return el.dispatchEvent(e);
-		} else if (el.fireEvent) {
-			return el.fireEvent('onclick');
-		}
-	}
-
 	beforeEach(function () {
 		el = document.createElement('div');
 		el.style.position = 'absolute';
@@ -31,7 +20,7 @@ describe('DomEvent', function () {
 			L.DomEvent.on(el, 'click', listener1);
 			L.DomEvent.on(el, 'click', listener2);
 
-			simulateClick(el);
+			happen.click(el);
 
 			expect(listener1.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
@@ -45,7 +34,7 @@ describe('DomEvent', function () {
 				result = this;
 			}, obj);
 
-			simulateClick(el);
+			happen.click(el);
 
 			expect(result).to.eql(obj);
 		});
@@ -56,7 +45,7 @@ describe('DomEvent', function () {
 			L.DomEvent.on(el, 'click', function (e) {
 				type = e && e.type;
 			});
-			simulateClick(el);
+			happen.click(el);
 
 			expect(type).to.eql('click');
 		});
@@ -78,7 +67,7 @@ describe('DomEvent', function () {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener);
 
-			simulateClick(el);
+			happen.click(el);
 
 			expect(listener.called).to.not.be.ok();
 		});
@@ -103,7 +92,7 @@ describe('DomEvent', function () {
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.on(el, 'click', listener);
 
-			simulateClick(child);
+			happen.click(child);
 
 			expect(listener.called).to.not.be.ok();
 
@@ -114,8 +103,17 @@ describe('DomEvent', function () {
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
 			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
+			var listener = sinon.spy();
+			L.DomEvent.on(el, 'click', listener);
 
-			expect(simulateClick(el)).to.be(false);
+			happen.click(el);
+
+			var e = listener.lastCall.args[0];
+			if ('defaultPrevented' in e) {
+				expect(e.defaultPrevented).to.be.ok();
+			} else {
+				expect(e.returnValue).not.to.be.ok();
+			}
 		});
 	});
 });
