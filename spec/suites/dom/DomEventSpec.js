@@ -23,13 +23,13 @@ describe('DomEvent', function () {
 		document.body.removeChild(el);
 	});
 
-	describe('#addListener', function () {
+	describe('#on (addListener)', function () {
 		it('adds a listener and calls it on event', function () {
 			var listener1 = sinon.spy(),
 			    listener2 = sinon.spy();
 
-			L.DomEvent.addListener(el, 'click', listener1);
-			L.DomEvent.addListener(el, 'click', listener2);
+			L.DomEvent.on(el, 'click', listener1);
+			L.DomEvent.on(el, 'click', listener2);
 
 			simulateClick(el);
 
@@ -41,7 +41,7 @@ describe('DomEvent', function () {
 			var obj = {foo: 'bar'},
 			    result;
 
-			L.DomEvent.addListener(el, 'click', function () {
+			L.DomEvent.on(el, 'click', function () {
 				result = this;
 			}, obj);
 
@@ -53,7 +53,7 @@ describe('DomEvent', function () {
 		it('passes an event object to the listener', function () {
 			var type;
 
-			L.DomEvent.addListener(el, 'click', function (e) {
+			L.DomEvent.on(el, 'click', function (e) {
 				type = e && e.type;
 			});
 			simulateClick(el);
@@ -62,17 +62,21 @@ describe('DomEvent', function () {
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.addListener(el, 'click', function () {});
-			expect(res.addListener).to.be.a('function');
+			var res = L.DomEvent.on(el, 'click', function () {});
+			expect(res.on).to.be.a('function');
+		});
+
+		it('is aliased to addListener ', function () {
+			expect(L.DomEvent.on).to.be(L.DomEvent.addListener);
 		});
 	});
 
-	describe('#removeListener', function () {
+	describe('#off (removeListener)', function () {
 		it('removes a previously added listener', function () {
 			var listener = sinon.spy();
 
-			L.DomEvent.addListener(el, 'click', listener);
-			L.DomEvent.removeListener(el, 'click', listener);
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.off(el, 'click', listener);
 
 			simulateClick(el);
 
@@ -80,8 +84,12 @@ describe('DomEvent', function () {
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.removeListener(el, 'click', function () {});
-			expect(res.removeListener).to.be.a('function');
+			var res = L.DomEvent.off(el, 'click', function () {});
+			expect(res.off).to.be.a('function');
+		});
+
+		it('is aliased to removeListener ', function () {
+			expect(L.DomEvent.off).to.be(L.DomEvent.removeListener);
 		});
 	});
 
@@ -92,8 +100,8 @@ describe('DomEvent', function () {
 
 			el.appendChild(child);
 
-			L.DomEvent.addListener(child, 'click', L.DomEvent.stopPropagation);
-			L.DomEvent.addListener(el, 'click', listener);
+			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
+			L.DomEvent.on(el, 'click', listener);
 
 			simulateClick(child);
 
@@ -105,7 +113,7 @@ describe('DomEvent', function () {
 
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
-			L.DomEvent.addListener(el, 'click', L.DomEvent.preventDefault);
+			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
 
 			expect(simulateClick(el)).to.be(false);
 		});
