@@ -133,6 +133,25 @@ describe('DomEvent', function () {
 
 			map.remove();
 		});
+
+		it('does not interfere with stopPropagation', function () { // test for #1925
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
+			var map = L.map(el).setView([0, 0], 0);
+			map.on('click', listener);
+
+			happen.once(child, {type: 'click'});
+
+			expect(listener.notCalled).to.be.ok();
+
+			happen.once(map.getContainer(), {type: 'click'});
+
+			expect(listener.called).to.be.ok();
+
+			map.remove();
+		});
 	});
 
 	describe('#preventDefault', function () {
