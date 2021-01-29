@@ -322,4 +322,21 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
 		});
 	});
+
+	describe("#style", function () {
+		var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+
+		after(function () {
+			map.remove();
+		});
+
+		it("can set weight after empty Polygon is added to the map", function () {
+			var polygon = L.polygon([]);
+
+			polygon.addTo(map);
+			polygon.setStyle({weight: 3});
+
+			expect(polygon.options.weight).to.be(3);
+		});
+	});
 });
