@@ -1406,8 +1406,6 @@ export var Map = Evented.extend({
 			this._fireDOMEvent(synth, synth.type, targets);
 		}
 
-		if (e._stopped) { return; }
-
 		// Find the layer the event is propagating from and its parents.
 		targets = (targets || []).concat(this._findEventTargets(e, type));
 
