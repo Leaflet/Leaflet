@@ -272,11 +272,11 @@ export var Marker = Layer.extend({
 				mouseout: this._resetZIndex
 			});
 		}
-		
-		if(this._icon){
+
+		if (this._icon) {
 			DomUtil.remove(this._icon);
 			this.removeInteractiveTarget(this._icon);
-		}		
+		}
 
 		this._icon = null;
 	},
