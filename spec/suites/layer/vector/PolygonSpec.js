@@ -323,20 +323,25 @@ describe('Polygon', function () {
 		});
 	});
 
-	describe("#style", function () {
+	describe("#setStyle", function () {
 		var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
 
 		after(function () {
 			map.remove();
 		});
 
-		it("can set weight after empty Polygon is added to the map", function () {
+		it("succeeds for empty Polygon already added to the map", function () {
+			var style = {
+				weight: 3
+			};
 			var polygon = L.polygon([]);
 
 			polygon.addTo(map);
-			polygon.setStyle({weight: 3});
+			polygon.setStyle(style);
 
-			expect(polygon.options.weight).to.be(3);
+			for (var prop in style) {
+				expect(polygon.options[prop]).to.be(style[prop]);
+			}
 		});
 	});
 });
