@@ -1,5 +1,9 @@
 describe('Polyline', function () {
-	var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	var map;
+
+	before(function () {
+		map  = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
 
 	after(function () {
 		map.remove();
