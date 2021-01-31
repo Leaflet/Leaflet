@@ -361,12 +361,17 @@ describe("Map", function () {
 	});
 
 	describe("#hasLayer", function () {
-		it("returns false when passed undefined, null, or false", function () {
+		it("throws when called without proper argument", function () {
 			var map = L.map(document.createElement('div'));
+			var hasLayer = L.Util.bind(map.hasLayer, map);
+			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
+
+			expect(hasLayer).withArgs(undefined).to.throwException();
+			expect(hasLayer).withArgs(null).to.throwException();
+			expect(hasLayer).withArgs(false).to.throwException();
+			expect(hasLayer).to.throwException();
+
 			map.remove(); // clean up
-			expect(map.hasLayer(undefined)).to.equal(false);
-			expect(map.hasLayer(null)).to.equal(false);
-			expect(map.hasLayer(false)).to.equal(false);
 		});
 	});
 
