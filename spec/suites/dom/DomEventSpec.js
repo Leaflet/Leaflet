@@ -104,9 +104,10 @@ describe('DomEvent', function () {
 			var child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
-			L.DomEvent.on(el, 'dblclick mousedown touchstart', listener);
+			L.DomEvent.on(el, 'dblclick contextmenu mousedown touchstart', listener);
 
 			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'contextmenu'});
 			happen.once(child, {type: 'mousedown'});
 			happen.once(child, {type: 'touchstart', touches: []});
 
