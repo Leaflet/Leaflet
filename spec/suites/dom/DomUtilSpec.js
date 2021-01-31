@@ -251,9 +251,12 @@ describe('DomUtil', function () {
 	describe("#preventOutline", function () {
 		// TODO This test failed, why ?
 		it("should set outline style to invisible", function () {
-			el.style.outline = "currentcolor solid 1rem";
-			L.DomUtil.preventOutline(el);
-			expect(el.style.outline).to.be("none");
+			var text = document.createElement('p');
+			text.innerHTML = "message test";
+			text.style.outline = "currentcolor solid 1rem";
+			el.appendChild(text);
+			L.DomUtil.preventOutline(text);
+			expect(text.style.outline).to.be("none");
 		});
 	});
 
