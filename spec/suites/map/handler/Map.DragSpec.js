@@ -82,10 +82,8 @@ describe("Map.Drag", function () {
 			});
 			var mouse = hand.growFinger('mouse');
 
-			// We move 5 pixels first to overcome the 3-pixel threshold of
-			// L.Draggable.
 			mouse.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+				.down().moveBy(5, 0, 20).moveTo(200 + 256, 200 + 32, 200).up();
 		});
 
 		describe("in CSS scaled container", function () {
@@ -119,10 +117,8 @@ describe("Map.Drag", function () {
 				});
 				var mouse = hand.growFinger('mouse');
 
-				// We move 5 pixels first to overcome the 3-pixel threshold of
-				// L.Draggable.
 				mouse.wait(100).moveTo(200, 200, 0)
-					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 200).up();
+					.down().moveBy(5, 0, 20).moveTo(200 + scaleX * 256, 200 + scaleY * 32, 200).up();
 			});
 		});
 
@@ -185,10 +181,8 @@ describe("Map.Drag", function () {
 			});
 			var mouse = hand.growFinger('mouse');
 
-			// We move 5 pixels first to overcome the 3-pixel threshold of
-			// L.Draggable.
 			mouse.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
 		});
 
 		it("does not trigger preclick nor click when dragging on top of a static marker", function (done) {
@@ -344,10 +338,8 @@ describe("Map.Drag", function () {
 			});
 			var toucher = hand.growFinger(touchEventType);
 
-			// We move 5 pixels first to overcome the 3-pixel threshold of
-			// L.Draggable.
 			toucher.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+				.down().moveBy(5, 0, 20).moveTo(200 + 256, 200 + 32, 200).up();
 		});
 
 		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
