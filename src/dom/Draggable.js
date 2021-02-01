@@ -173,9 +173,8 @@ export var Draggable = Evented.extend({
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
-		Util.cancelAnimFrame(this._animRequest);
 		this._lastEvent = e;
-		this._animRequest = Util.requestAnimFrame(this._updatePosition, this, true);
+		this._updatePosition();
 	},
 
 	_updatePosition: function () {
@@ -219,9 +218,6 @@ export var Draggable = Evented.extend({
 		DomUtil.enableTextSelection();
 
 		if (this._moved && this._moving) {
-			// ensure drag is not fired after dragend
-			Util.cancelAnimFrame(this._animRequest);
-			DomUtil.setPosition(this._element, this._newPos);
 
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
