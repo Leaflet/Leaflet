@@ -49,6 +49,30 @@ describe('DomEvent', function () {
 		it('is aliased to addListener ', function () {
 			expect(L.DomEvent.on).to.be(L.DomEvent.addListener);
 		});
+
+		it('adds listener with multiple events and calls it on every event', function () {
+			L.DomEvent.on(el, 'click dblclick', listener);
+
+			happen.dblclick(el);
+			happen.click(el);
+
+			expect(listener.calledTwice).to.be.ok();
+		});
+
+		it('adds listener with an event map and calls appropriate listener when DOM event type occurs', function () {
+			var listener2 = sinon.spy();
+			var eventMap = {
+				click: listener,
+				dblclick: listener2,
+			};
+
+			L.DomEvent.on(el, eventMap);
+
+			happen.click(el);
+
+			expect(listener.called).to.be.ok();
+			expect(listener2.notCalled).to.be.ok();
+		});
 	});
 
 	describe('#off (removeListener)', function () {
@@ -69,6 +93,43 @@ describe('DomEvent', function () {
 
 		it('is aliased to removeListener ', function () {
 			expect(L.DomEvent.off).to.be(L.DomEvent.removeListener);
+		});
+
+		it('removes a previously added listener with multiple types', function () {
+			L.DomEvent.on(el, 'click dblclick', listener);
+			L.DomEvent.off(el, 'click dblclick', listener);
+
+			happen.click(el);
+			happen.dblclick(el);
+
+			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('removes only specified types from a previously added listener', function () {
+			L.DomEvent.on(el, 'click dblclick', listener);
+			L.DomEvent.off(el, 'click', listener);
+
+			happen.click(el);
+			happen.dblclick(el);
+
+			expect(listener.calledOnce).to.be.ok();
+		});
+
+		it('removes a previously added type/listener pair', function () {
+			var listener2 = sinon.spy();
+			var eventMap = {
+				click: listener,
+				dblclick: listener2,
+			};
+
+			L.DomEvent.on(el, eventMap);
+			L.DomEvent.off(el, eventMap);
+
+			happen.click(el);
+			happen.dblclick(el);
+
+			expect(listener.notCalled).to.be.ok();
+			expect(listener2.notCalled).to.be.ok();
 		});
 	});
 
