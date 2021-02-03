@@ -1,4 +1,14 @@
 describe('Polygon', function () {
+	var map;
+
+	before(function () {
+		map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
+
+	after(function () {
+		map.remove();
+	});
+
 	describe("#initialize", function () {
 		it("should never be flat", function () {
 			var latLngs = [[1, 2], [3, 4]];
@@ -59,10 +69,8 @@ describe('Polygon', function () {
 		});
 
 		it("can be added to the map when empty", function () {
-			var map = new L.Map(document.createElement('div'));
 			var polygon = new L.Polygon([]).addTo(map);
 			var isAdded = map.hasLayer(polygon);
-			map.remove(); // clean up
 			expect(isAdded).to.be(true);
 		});
 
@@ -140,12 +148,6 @@ describe('Polygon', function () {
 	});
 
 	describe('#getCenter', function () {
-		var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
-
-		after(function () {
-			map.remove();
-		});
-
 		it('should compute center of a big simple polygon around equator', function () {
 			var latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
@@ -323,20 +325,19 @@ describe('Polygon', function () {
 		});
 	});
 
-	describe("#style", function () {
-		var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
-
-		after(function () {
-			map.remove();
-		});
-
-		it("can set weight after empty Polygon is added to the map", function () {
+	describe("#setStyle", function () {
+		it("succeeds for empty Polygon already added to the map", function () {
+			var style = {
+				weight: 3
+			};
 			var polygon = L.polygon([]);
 
 			polygon.addTo(map);
-			polygon.setStyle({weight: 3});
+			polygon.setStyle(style);
 
-			expect(polygon.options.weight).to.be(3);
+			for (var prop in style) {
+				expect(polygon.options[prop]).to.be(style[prop]);
+			}
 		});
 	});
 });

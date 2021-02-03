@@ -1,5 +1,9 @@
 describe('Polyline', function () {
-	var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	var map;
+
+	before(function () {
+		map  = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
 
 	after(function () {
 		map.remove();
@@ -213,14 +217,19 @@ describe('Polyline', function () {
 		});
 	});
 
-	describe("#style", function () {
-		it("can set weight after empty Polyline is added to the map", function () {
+	describe("#setStyle", function () {
+		it("succeeds for empty Polyline already added to the map", function () {
+			var style = {
+				weight: 3
+			};
 			var polyline = L.polyline([]);
 
 			polyline.addTo(map);
-			polyline.setStyle({weight: 3});
+			polyline.setStyle(style);
 
-			expect(polyline.options.weight).to.be(3);
+			for (var prop in style) {
+				expect(polyline.options[prop]).to.be(style[prop]);
+			}
 		});
 	});
 });
