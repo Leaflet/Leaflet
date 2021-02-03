@@ -292,7 +292,7 @@ describe("Map", function () {
 		});
 
 		it("remove listeners when called without arguments", function () {
-			L.tileLayer('http://tilecache.openstreetmap.fr/hot/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20}).addTo(map);
+			L.tileLayer('', {minZoom: 0, maxZoom: 20}).addTo(map);
 			container.style.width = container.style.height = "500px";
 			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
 			map.setMaxBounds(bounds, {animate: false});
@@ -323,9 +323,9 @@ describe("Map", function () {
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
 			map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
 
-			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
-			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
-			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
+			L.tileLayer("", {minZoom: 4, maxZoom: 10}).addTo(map);
+			L.tileLayer("", {minZoom: 6, maxZoom: 17}).addTo(map);
+			L.tileLayer("", {minZoom: 0, maxZoom: 22}).addTo(map);
 
 			expect(map.getMinZoom()).to.be(2);
 			expect(map.getMaxZoom()).to.be(20);
@@ -333,28 +333,28 @@ describe("Map", function () {
 
 		it("layer minZoom overrides map zoom if map has no minZoom set and layer minZoom is bigger than map zoom", function () {
 			map = L.map(document.createElement("div"), {zoom: 10});
-			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+			L.tileLayer("", {minZoom: 15}).addTo(map);
 
 			expect(map.getMinZoom()).to.be(15);
 		});
 
 		it("layer maxZoom overrides map zoom if map has no maxZoom set and layer maxZoom is smaller than map zoom", function () {
 			map = L.map(document.createElement("div"), {zoom: 20});
-			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+			L.tileLayer("", {maxZoom: 15}).addTo(map);
 
 			expect(map.getMaxZoom()).to.be(15);
 		});
 
 		it("map's zoom is adjusted to layer's minZoom even if initialized with smaller value", function () {
 			map = L.map(document.createElement("div"), {zoom: 10});
-			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+			L.tileLayer("", {minZoom: 15}).addTo(map);
 
 			expect(map.getZoom()).to.be(15);
 		});
 
 		it("map's zoom is adjusted to layer's maxZoom even if initialized with larger value", function () {
 			map = L.map(document.createElement("div"), {zoom: 20});
-			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+			L.tileLayer("", {maxZoom: 15}).addTo(map);
 
 			expect(map.getZoom()).to.be(15);
 		});
@@ -451,7 +451,7 @@ describe("Map", function () {
 				var spy = sinon.spy();
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 				expect(spy.called).to.be.ok();
 			});
 		});
@@ -459,10 +459,10 @@ describe("Map", function () {
 		describe("when a new layer with greater zoomlevel coverage than the current layer is added to a map", function () {
 			it("fires a zoomlevelschange event", function () {
 				var spy = sinon.spy();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 15}).addTo(map);
 				expect(spy.called).to.be.ok();
 			});
 		});
@@ -470,12 +470,12 @@ describe("Map", function () {
 		describe("when a new layer with the same or lower zoomlevel coverage as the current layer is added to a map", function () {
 			it("fires no zoomlevelschange event", function () {
 				var spy = sinon.spy();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 5}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 5}).addTo(map);
 				expect(spy.called).not.to.be.ok();
 			});
 		});
@@ -543,7 +543,7 @@ describe("Map", function () {
 		});
 
 		it("supports adding and removing a tile layer without initializing the map", function () {
-			var layer = L.tileLayer("{z}{x}{y}");
+			var layer = L.tileLayer("");
 			map.addLayer(layer);
 			map.removeLayer(layer);
 		});
@@ -559,7 +559,7 @@ describe("Map", function () {
 			it("fires a zoomlevelschange event", function () {
 				map.setView([0, 0], 0);
 				var spy = sinon.spy();
-				var tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				var tl = L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
@@ -571,9 +571,9 @@ describe("Map", function () {
 		describe("when a tile layer is removed from a map and it had greater zoom level coverage than the remainding layer", function () {
 			it("fires a zoomlevelschange event", function () {
 				map.setView([0, 0], 0);
-				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
+				L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map);
 				var spy = sinon.spy(),
-				    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
+				    t2 = L.tileLayer("", {minZoom: 0, maxZoom: 15}).addTo(map);
 
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).to.not.be.ok();
@@ -586,9 +586,9 @@ describe("Map", function () {
 			it("fires no zoomlevelschange event", function () {
 				map.setView([0, 0], 0);
 				var spy = sinon.spy(),
-				    t1 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
-				    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
-				    t3 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 5}).addTo(map);
+				    t1 = L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map),
+				    t2 = L.tileLayer("", {minZoom: 0, maxZoom: 10}).addTo(map),
+				    t3 = L.tileLayer("", {minZoom: 0, maxZoom: 5}).addTo(map);
 
 				map.on("zoomlevelschange", spy);
 				map.removeLayer(t2);
@@ -607,8 +607,8 @@ describe("Map", function () {
 		});
 
 		it("calls the provided function for each layer", function () {
-			var t1 = L.tileLayer("{z}{x}{y}").addTo(map),
-			    t2 = L.tileLayer("{z}{x}{y}").addTo(map),
+			var t1 = L.tileLayer("").addTo(map),
+			    t2 = L.tileLayer("").addTo(map),
 			    spy = sinon.spy();
 
 			map.eachLayer(spy);
@@ -620,7 +620,7 @@ describe("Map", function () {
 
 		it("calls the provided function with the provided context", function () {
 			var spy = sinon.spy();
-			L.tileLayer("{z}{x}{y}").addTo(map);
+			L.tileLayer("").addTo(map);
 
 			map.eachLayer(spy, map);
 
@@ -995,7 +995,7 @@ describe("Map", function () {
 
 		it('Snaps to a number after adding tile layer', function () {
 			// expect(L.Browser.any3d).to.be.ok(); // precondition
-			map.addLayer(L.tileLayer('file:///dev/null'));
+			map.addLayer(L.tileLayer(''));
 			expect(map.getZoom()).to.be(undefined);
 			map.fitBounds(bounds);
 			expect(map.getZoom()).to.be(2);
@@ -1263,7 +1263,7 @@ describe("Map", function () {
 		});
 
 		it("returns undefined if map not initialized but layers added", function () {
-			map.addLayer(L.tileLayer('file:///dev/null'));
+			map.addLayer(L.tileLayer(""));
 			expect(map.getZoom()).to.be(undefined);
 		});
 	});
