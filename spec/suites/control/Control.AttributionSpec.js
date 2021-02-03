@@ -1,4 +1,4 @@
-describe("Control.Attribution", function () {
+describe.only("Control.Attribution", function () {
 	var map, control, container;
 
 	beforeEach(function () {
