@@ -37,19 +37,13 @@ describe("Map", function () {
 
 		describe("corner case checking", function () {
 			it("throws an exception upon reinitialization", function () {
-				expect(function () {
-					L.map(container);
-				}).to.throwException(function (e) {
-					expect(e.message).to.eql("Map container is already initialized.");
-				});
+				expect(L.map).withArgs(container)
+				  .to.throwException("Map container is already initialized.");
 			});
 
 			it("throws an exception if a container is not found", function () {
-				expect(function () {
-					L.map("nonexistentdivelement");
-				}).to.throwException(function (e) {
-					expect(e.message).to.eql("Map container not found.");
-				});
+				expect(L.map).withArgs("nonexistentdivelement")
+				  .to.throwException("Map container not found.");
 			});
 		});
 
@@ -119,9 +113,10 @@ describe("Map", function () {
 		});
 
 		it("returns correct center after invalidateSize (#1919)", function () {
-			map.setView(L.latLng(10, 10), 1);
+			var center = L.latLng(10, 10);
+			map.setView(center, 1);
 			map.invalidateSize();
-			expect(map.getCenter()).not.to.eql(L.latLng(10, 10));
+			expect(map.getCenter()).not.to.eql(center);
 		});
 	});
 
@@ -624,7 +619,7 @@ describe("Map", function () {
 
 			map.eachLayer(spy, map);
 
-			expect(spy.thisValues[0]).to.eql(map);
+			expect(spy.alwaysCalledOn(map)).to.be.ok();
 		});
 	});
 
@@ -1182,7 +1177,7 @@ describe("Map", function () {
 			layer.on("mouseout", layerSpy);
 			happen.mouseout(layer._icon, {relatedTarget: child});
 			expect(mapSpy.called).not.to.be.ok();
-			expect(layerSpy.calledOnce).not.to.be.ok();
+			expect(layerSpy.called).not.to.be.ok();
 		});
 
 		it("mouseout is not forwarded if fired on target's child", function () {
@@ -1198,7 +1193,7 @@ describe("Map", function () {
 			layer.on("mouseout", layerSpy);
 			happen.mouseout(child, {relatedTarget: layer._icon});
 			expect(mapSpy.called).not.to.be.ok();
-			expect(layerSpy.calledOnce).not.to.be.ok();
+			expect(layerSpy.called).not.to.be.ok();
 		});
 
 		it("mouseout is not forwarded to layers if fired on the map", function () {
