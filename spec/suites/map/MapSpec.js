@@ -286,7 +286,7 @@ describe("Map", function () {
 			expect(bounds.contains(map.getBounds())).to.be(true);
 		});
 
-		it("remove listeners when called without arguments", function () {
+		it("remove listeners when called without arguments", function (done) {
 			L.tileLayer("", {minZoom: 0, maxZoom: 20}).addTo(map);
 			container.style.width = container.style.height = "500px";
 			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
@@ -296,6 +296,7 @@ describe("Map", function () {
 			var center = L.latLng([0, 0]);
 			map.once("moveend", function () {
 				expect(center.equals(map.getCenter())).to.be(true);
+				done();
 			});
 			map.setView(center, 18, {animate: false});
 		});
@@ -425,10 +426,11 @@ describe("Map", function () {
 			expect(spy.called).not.to.be.ok();
 		});
 
-		it("adds the layer before firing layeradd", function () {
+		it("adds the layer before firing layeradd", function (done) {
 			var layer = layerSpy();
 			map.on("layeradd", function () {
 				expect(map.hasLayer(layer)).to.be.ok();
+				done();
 			});
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
@@ -527,10 +529,11 @@ describe("Map", function () {
 			expect(spy.called).not.to.be.ok();
 		});
 
-		it("removes the layer before firing layerremove", function () {
+		it("removes the layer before firing layerremove", function (done) {
 			var layer = layerSpy();
 			map.on("layerremove", function () {
 				expect(map.hasLayer(layer)).not.to.be.ok();
+				done();
 			});
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
@@ -1213,7 +1216,7 @@ describe("Map", function () {
 
 		it("preclick is fired before click on marker and map", function () {
 			var called = 0;
-			var layer = new L.Marker([1, 2]).addTo(map);
+			var layer = new L.Marker([1, 2], {bubblingMouseEvents: true}).addTo(map);
 			layer.on("preclick", function (e) {
 				expect(called++).to.eql(0);
 				expect(e.latlng).to.ok();
@@ -1231,6 +1234,7 @@ describe("Map", function () {
 				expect(e.latlng).to.ok();
 			});
 			happen.click(layer._icon);
+			expect(called).to.eql(4);
 		});
 	});
 
