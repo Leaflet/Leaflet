@@ -45,6 +45,17 @@ describe("Map.Drag", function () {
 		});
 	});
 
+	var MyMap = L.Map.extend({
+		_getPosition: function () {
+			return L.DomUtil.getPosition(this.dragging._draggable._element);
+		},
+		getOffset: function () {
+			return this._getPosition().subtract(this._initialPos);
+		}
+	}).addInitHook('on', 'load', function () {
+		this._initialPos = this._getPosition();
+	});
+
 	describe("mouse events", function () {
 		var container, map;
 
@@ -62,63 +73,75 @@ describe("Map.Drag", function () {
 		});
 
 		it("change the center of the map", function (done) {
-			map = new L.Map(container, {
+			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
 			});
 			map.setView([0, 0], 1);
 
+			var start = L.point(200, 200);
+			var offset = L.point(256, 32);
+			var finish = start.add(offset);
+
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
-					expect(center.lat).to.be.within(21.9430, 21.9431);
-					expect(center.lng).to.be(-180);
-					expect(zoom).to.be(1);
+					expect(map.getOffset()).to.eql(offset);
+
+					expect(map.getZoom()).to.be(1);
+					expect(map.getCenter().equals({ // small margin of error allowed
+						lat: 21.943045533, // 21.94304553343818
+						lng: -180
+					})).to.be.ok();
 
 					done();
 				}
 			});
 			var mouse = hand.growFinger('mouse');
 
-			mouse.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveTo(200 + 256, 200 + 32, 200).up();
+			mouse.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
 		describe("in CSS scaled container", function () {
-			var scaleX = 2;
-			var scaleY = 1.5;
+			var scale = L.point(2, 1.5);
 
 			beforeEach(function () {
 				container.style.webkitTransformOrigin = 'top left';
-				container.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
+				container.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
 			});
 
-			// fixme IE
 			(L.Browser.ie ? it.skip : it)("change the center of the map, compensating for CSS scale", function (done) {
-				map = new L.Map(container, {
+				map = new MyMap(container, {
 				    dragging: true,
 				    inertia: false
 				});
 				map.setView([0, 0], 1);
 
+				var start = L.point(200, 200);
+				var offset = L.point(256, 32);
+				var finish = start.add(offset);
+
 				var hand = new Hand({
 					timing: 'fastframe',
 					onStop: function () {
-						var center = map.getCenter();
-						var zoom = map.getZoom();
-						expect(center.lat).to.be.within(21.9430, 21.9431);
-						expect(center.lng).to.be(-180);
-						expect(zoom).to.be(1);
+						expect(map.getOffset()).to.eql(offset);
+
+						expect(map.getZoom()).to.be(1);
+						expect(map.getCenter().equals({ // small margin of error allowed
+							lat: 21.943045533, // 21.94304553343818
+							lng: -180
+						})).to.be.ok();
 
 						done();
 					}
 				});
 				var mouse = hand.growFinger('mouse');
 
-				mouse.wait(100).moveTo(200, 200, 0)
-					.down().moveBy(5, 0, 20).moveTo(200 + scaleX * 256, 200 + scaleY * 32, 200).up();
+				var startScaled = start.scaleBy(scale);
+				var finishScaled = finish.scaleBy(scale);
+				mouse.moveTo(startScaled.x, startScaled.y, 0)
+					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
 			});
 		});
 
@@ -137,11 +160,10 @@ describe("Map.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
-					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
+					expect(map.getZoom()).to.be(1);
+					// Expect center point to be the same as before the click
+					expect(map.getCenter()).to.be(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-					expect(zoom).to.be(1);
 
 					done();
 				}
@@ -150,7 +172,7 @@ describe("Map.Drag", function () {
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// L.Draggable. This should result in a click and not a drag.
-			mouse.wait(100).moveTo(200, 200, 0)
+			mouse.moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
@@ -181,7 +203,7 @@ describe("Map.Drag", function () {
 			});
 			var mouse = hand.growFinger('mouse');
 
-			mouse.wait(100).moveTo(200, 200, 0)
+			mouse.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
 		});
 
@@ -280,11 +302,10 @@ describe("Map.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
-					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
+					expect(map.getZoom()).to.be(1);
+					// Expect center point to be the same as before the click
+					expect(map.getCenter()).to.be(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-					expect(zoom).to.be(1);
 
 					done();
 				}
@@ -293,10 +314,9 @@ describe("Map.Drag", function () {
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
-			mouse.wait(100).moveTo(200, 200, 0)
+			mouse.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 		});
-
 	});
 
 	describe("touch events", function () {
@@ -318,28 +338,34 @@ describe("Map.Drag", function () {
 		});
 
 		it.skipIfNotTouch("change the center of the map", function (done) {
-			map = new L.Map(container, {
+			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
 			});
 			map.setView([0, 0], 1);
 
+			var start = L.point(200, 200);
+			var offset = L.point(256, 32);
+			var finish = start.add(offset);
+
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
-					expect(center.lat).to.be.within(21.9430, 21.9431);
-					expect(center.lng).to.be(-180);
-					expect(zoom).to.be(1);
+					expect(map.getOffset()).to.eql(offset);
+
+					expect(map.getZoom()).to.be(1);
+					expect(map.getCenter().equals({ // small margin of error allowed
+						lat: 21.943045533, // 21.94304553343818
+						lng: -180
+					})).to.be.ok();
 
 					done();
 				}
 			});
 			var toucher = hand.growFinger(touchEventType);
 
-			toucher.wait(100).moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveTo(200 + 256, 200 + 32, 200).up();
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
 		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
@@ -357,11 +383,10 @@ describe("Map.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
-					expect(center.equals(originalCenter)).to.be(true); // Expect center point to be the same as before the click
+					expect(map.getZoom()).to.be(1);
+					// Expect center point to be the same as before the click
+					expect(map.getCenter().equals(originalCenter)).to.be.ok(); // small margin of error allowed
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-					expect(zoom).to.be(1);
 
 					done();
 				}
@@ -371,7 +396,7 @@ describe("Map.Drag", function () {
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// L.Draggable. This should result in a click and not a drag.
-			toucher.wait(100).moveTo(200, 200, 0)
+			toucher.moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
@@ -388,12 +413,15 @@ describe("Map.Drag", function () {
 			map.dragging.disable();
 			map.dragging.enable();
 
-			var center = map.getCenter(),
-			zoom = map.getZoom();
-
+			var center, zoom;
+			function savePos() {
+				center = map.getCenter();
+				zoom = map.getZoom();
+			}
 
 			var mouseHand = new Hand({
 				timing: 'fastframe',
+				onStart: savePos,
 				onStop: function () {
 					expect(map.getCenter()).to.eql(center);
 					expect(map.getZoom()).to.eql(zoom);
@@ -404,11 +432,11 @@ describe("Map.Drag", function () {
 			var mouse = mouseHand.growFinger('mouse');
 			var hand = new Hand({
 				timing: 'fastframe',
+				onStart: savePos,
 				onStop: function () {
 					expect(map.getCenter()).not.to.eql(center);
 					expect(map.getZoom()).not.to.eql(zoom);
-					center = map.getCenter();
-					zoom = map.getZoom();
+
 					mouse.moveTo(220, 220, 0).moveBy(200, 0, 2000);
 				}
 			});
@@ -417,11 +445,11 @@ describe("Map.Drag", function () {
 			var f2 = hand.growFinger(touchEventType);
 
 			hand.sync(5);
-			f1.wait(100).moveTo(275, 300, 0)
-				.down().moveBy(-200, 0, 1000).up(200);
+			f1.moveTo(275, 300, 0)
+				.down().moveBy(-200, 0, 1000).up();
 			// This finger should touch me map after the other one.
-			f2.wait(110).moveTo(325, 300, 0)
-				.down().moveBy(210, 0, 1000).up(200);
+			f2.wait(10).moveTo(325, 300, 0)
+				.down().moveBy(210, 0, 1000).up();
 		});
 	});
 });
