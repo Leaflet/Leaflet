@@ -2673,6 +2673,17 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			<a href="https://github.com/Lemaf">Lemaf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/FacilMap/Leaflet.DraggableLines">Leaflet.DraggableLines</a>
+		</td>
+		<td>
+		    Add/move/remove points on routes, lines and polygons by drag&drop. <a href="https://unpkg.com/leaflet-draggable-lines/example.html">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/cdauth/">Candid Dauth</a>
+		</td>
+	</tr>
 </table>
 
 
