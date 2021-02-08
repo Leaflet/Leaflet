@@ -233,8 +233,8 @@ describe('GridLayer', function () {
 			map.setView([0, 0], 1);
 		});
 
-		describe("when a tilelayer is added to a map with no other layers", function () {
-			it("has the same zoomlevels as the tilelayer", function () {
+		describe("when a gridlayer is added to a map with no other layers", function () {
+			it("has the same zoomlevels as the gridlayer", function () {
 				var maxZoom = 10,
 				    minZoom = 5;
 
@@ -248,14 +248,14 @@ describe('GridLayer', function () {
 			});
 		});
 
-		describe("accessing a tilelayer's properties", function () {
+		describe("accessing a gridlayer's properties", function () {
 			it('provides a container', function () {
 				var layer = L.gridLayer().addTo(map);
 				expect(layer.getContainer()).to.be.ok();
 			});
 		});
 
-		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
+		describe("when a gridlayer is added to a map that already has a gridlayer", function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
 				L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map);
 				expect(map.getMinZoom()).to.be(10);
