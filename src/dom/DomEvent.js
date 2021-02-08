@@ -180,7 +180,7 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'doubleclick'`,
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`,
 // `'mousedown'` and `'touchstart'` events (plus browser variants).
 export function disableClickPropagation(el) {
 	on(el, 'mousedown touchstart dblclick', stopPropagation);

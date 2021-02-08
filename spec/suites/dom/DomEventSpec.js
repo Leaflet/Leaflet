@@ -1,113 +1,181 @@
 describe('DomEvent', function () {
-	var el;
-
-	function simulateClick(el) {
-		if (document.createEvent) {
-			var e = document.createEvent('MouseEvents');
-			e.initMouseEvent('click', true, true, window,
-				0, 0, 0, 0, 0, false, false, false, false, 0, null);
-			return el.dispatchEvent(e);
-		} else if (el.fireEvent) {
-			return el.fireEvent('onclick');
-		}
-	}
+	var el, listener;
 
 	beforeEach(function () {
 		el = document.createElement('div');
-		el.style.position = 'absolute';
-		el.style.top = el.style.left = '-10000px';
 		document.body.appendChild(el);
+		listener = sinon.spy();
 	});
 
 	afterEach(function () {
 		document.body.removeChild(el);
 	});
 
-	describe('#addListener', function () {
+	describe('#on (addListener)', function () {
 		it('adds a listener and calls it on event', function () {
-			var listener1 = sinon.spy(),
-			    listener2 = sinon.spy();
+			var listener2 = sinon.spy();
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.on(el, 'click', listener2);
 
-			L.DomEvent.addListener(el, 'click', listener1);
-			L.DomEvent.addListener(el, 'click', listener2);
+			happen.click(el);
 
-			simulateClick(el);
-
-			expect(listener1.called).to.be.ok();
+			expect(listener.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
 		});
 
 		it('binds "this" to the given context', function () {
-			var obj = {foo: 'bar'},
-			    result;
+			var obj = {foo: 'bar'};
+			L.DomEvent.on(el, 'click', listener, obj);
 
-			L.DomEvent.addListener(el, 'click', function () {
-				result = this;
-			}, obj);
+			happen.click(el);
 
-			simulateClick(el);
-
-			expect(result).to.eql(obj);
+			expect(listener.calledOn(obj)).to.be.ok();
 		});
 
 		it('passes an event object to the listener', function () {
-			var type;
+			L.DomEvent.on(el, 'click', listener);
 
-			L.DomEvent.addListener(el, 'click', function (e) {
-				type = e && e.type;
-			});
-			simulateClick(el);
+			happen.click(el);
 
-			expect(type).to.eql('click');
+			expect(listener.lastCall.args[0].type).to.eql('click');
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.addListener(el, 'click', function () {});
-			expect(res.addListener).to.be.a('function');
+			var res = L.DomEvent.on(el, 'click', function () {});
+
+			expect(res).to.be(L.DomEvent);
+		});
+
+		it('is aliased to addListener ', function () {
+			expect(L.DomEvent.on).to.be(L.DomEvent.addListener);
 		});
 	});
 
-	describe('#removeListener', function () {
+	describe('#off (removeListener)', function () {
 		it('removes a previously added listener', function () {
-			var listener = sinon.spy();
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.off(el, 'click', listener);
 
-			L.DomEvent.addListener(el, 'click', listener);
-			L.DomEvent.removeListener(el, 'click', listener);
+			happen.click(el);
 
-			simulateClick(el);
-
-			expect(listener.called).to.not.be.ok();
+			expect(listener.notCalled).to.be.ok();
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.removeListener(el, 'click', function () {});
-			expect(res.removeListener).to.be.a('function');
+			var res = L.DomEvent.off(el, 'click', function () {});
+
+			expect(res).to.be(L.DomEvent);
+		});
+
+		it('is aliased to removeListener ', function () {
+			expect(L.DomEvent.off).to.be(L.DomEvent.removeListener);
 		});
 	});
 
 	describe('#stopPropagation', function () {
 		it('stops propagation of the given event', function () {
-			var child = document.createElement('div'),
-			    listener = sinon.spy();
-
+			var child = document.createElement('div');
 			el.appendChild(child);
+			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
+			L.DomEvent.on(el, 'click', listener);
 
-			L.DomEvent.addListener(child, 'click', L.DomEvent.stopPropagation);
-			L.DomEvent.addListener(el, 'click', listener);
+			happen.click(child);
 
-			simulateClick(child);
+			expect(listener.notCalled).to.be.ok();
+		});
+	});
 
-			expect(listener.called).to.not.be.ok();
+	describe('#disableScrollPropagation', function () {
+		it('stops wheel events from propagation to parent elements', function () {
+			var child = document.createElement('div');
+			el.appendChild(child);
+			var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+			L.DomEvent.on(el, wheel, listener);
 
-			el.removeChild(child);
+			L.DomEvent.disableScrollPropagation(child);
+			happen.once(child, {type: wheel});
+
+			expect(listener.notCalled).to.be.ok();
+		});
+	});
+
+	describe('#disableClickPropagation', function () {
+		it('stops click events from propagation to parent elements', function () { // except 'click'
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(el, 'dblclick mousedown touchstart', listener);
+
+			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'mousedown'});
+			happen.once(child, {type: 'touchstart', touches: []});
+
+			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('prevents click event on map object, but propagates to DOM elements', function () { // to solve #301
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(el, 'click', listener);
+			var grandChild = document.createElement('div');
+			child.appendChild(grandChild);
+
+			var map = L.map(el).setView([0, 0], 0);
+			var mapClickListener = sinon.spy();
+			var mapOtherListener = sinon.spy();
+			map.on('click', mapClickListener);          // control case
+			map.on('keypress', mapOtherListener);       // control case
+
+			happen.once(grandChild, {type: 'click'});
+			happen.once(grandChild, {type: 'keypress'});
+
+			expect(mapOtherListener.called).to.be.ok(); // control case
+			expect(listener.called).to.be.ok();
+			expect(mapClickListener.notCalled).to.be.ok();
+
+			happen.once(child, {type: 'click'});
+			happen.once(child, {type: 'keypress'});
+
+			expect(listener.calledTwice).to.be.ok();
+			expect(mapClickListener.notCalled).to.be.ok();
+
+			map.remove();
+		});
+
+		it('does not interfere with stopPropagation', function () { // test for #1925
+			var child = document.createElement('div');
+			el.appendChild(child);
+			L.DomEvent.disableClickPropagation(child);
+			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
+			var map = L.map(el).setView([0, 0], 0);
+			map.on('click', listener);
+
+			happen.once(child, {type: 'click'});
+
+			expect(listener.notCalled).to.be.ok();
+
+			happen.once(map.getContainer(), {type: 'click'});
+
+			expect(listener.called).to.be.ok();
+
+			map.remove();
 		});
 	});
 
 	describe('#preventDefault', function () {
 		it('prevents the default action of event', function () {
-			L.DomEvent.addListener(el, 'click', L.DomEvent.preventDefault);
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
 
-			expect(simulateClick(el)).to.be(false);
+			happen.click(el);
+
+			var e = listener.lastCall.args[0];
+			if ('defaultPrevented' in e) {
+				expect(e.defaultPrevented).to.be.ok();
+			} else {
+				expect(e.returnValue).not.to.be.ok();
+			}
 		});
 	});
 });
