@@ -63,7 +63,7 @@ describe('ImageOverlay', function () {
 
 		function raiseImageEvent(event) {
 			var domEvent = document.createEvent('Event');
-			domEvent.initEvent(event);
+			domEvent.initEvent(event, false, false);
 			overlay._image.dispatchEvent(domEvent);
 		}
 
