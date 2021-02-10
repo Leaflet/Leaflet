@@ -28,7 +28,7 @@
     "rollup-plugin-json": "^4.0.0",
     "sinon": "^7.5.0",
     "ssri": "^8.0.1",
-    "uglify-js": "^3.12.6"
+    "terser": "^5.5.1"
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
@@ -48,7 +48,7 @@
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
-    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
+    "uglify": "terser dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
     "integrity": "node ./build/integrity.js"
   },
   "eslintConfig": {
