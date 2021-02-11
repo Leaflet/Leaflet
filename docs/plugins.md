@@ -2269,7 +2269,7 @@ These plugins help users select either overlays or areas in the map.
 		</td><td>
 			Selecting feature layers on a map by drawing an area.
 		</td><td>
-			<a href="http://pezzo.org">Sandro Pibia</a>
+			<a href="https://github.com/sandropibia">Sandro Pibia</a>
 		</td>
 	</tr>
 </table>
