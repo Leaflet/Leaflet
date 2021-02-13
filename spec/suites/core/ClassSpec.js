@@ -118,12 +118,9 @@ describe("Class", function () {
 		});
 
 		it("prevents change of prototype options", function () {
-			var K1 = L.Class.extend({options: {}});
-			var rect = L.rectangle([[0, 0], [0, 0]]);
-			rect.klass = new K1(rect);
-			rect.klass.options.foo = 'bar';
-			expect(K1.prototype.options.foo).to.not.eql('bar');
-			expect(rect.klass.options.foo).to.eql('bar');
+			var Klass = L.Class.extend({options: {}});
+			var instance = new Klass();
+			expect(Klass.prototype.options).to.not.be(instance.options);
 		});
 
 		it("adds constructor hooks correctly", function () {
