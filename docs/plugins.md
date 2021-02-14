@@ -4778,6 +4778,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/KoRiGaN">Mickaël KoRiGaN</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/axyjo/leaflet-rails">leaflet-rails gem</a>
+		</td><td>
+			This gem provides the leaflet.js map display library for your Rails 5 application. <a href="https://rubygems.org/gems/leaflet-rails">leaflet-rails on RubyGems</a>
+		</td><td>
+			<a href="https://github.com/axyjo">Akshay Joshi</a>
+		</td>
+	</tr>
 </table>
 
 
