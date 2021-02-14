@@ -1090,6 +1090,17 @@ describe("Map", function () {
 			var dy = map.getCenter().lat - center.lat;
 			expect(dy).to.be.lessThan(1.0E-9);
 		});
+
+		it("pans correctly when padding takes up more than half the display bounds", function () {
+			var c = map.project(center);
+			var p = c.add([0, 5]);
+			var halfSize = map.getPixelBounds().getSize().divideBy(2);
+			map.panInside(map.unproject(p), {paddingBottomRight: [0, halfSize.y + 15], animate: false});
+			var newCenter = map.project(map.getCenter());
+			var offset = newCenter.subtract(c);
+			expect(Math.abs(offset.y - 20)).to.be.lessThan(1);
+			expect(offset.x).to.be.lessThan(1);
+		});
 	});
 
 	describe("#DOM events", function () {
