@@ -214,7 +214,7 @@ Ready-to-go basemaps, with little or no configuration at all.
         </td><td>
         	<a href="https://github.com/SuperMap">SuperMap</a>
         </td>
-   	</tr>
+    </tr>
 	<tr>
         <td>
         	<a href="https://github.com/MIERUNE/Leaflet.TileLayer.MIERUNE">Leaflet.TileLayer.Mierune</a>
@@ -223,7 +223,7 @@ Ready-to-go basemaps, with little or no configuration at all.
         </td><td>
         	<a href="https://github.com/MIERUNE">Mierune</a>
         </td>
-   	</tr>
+    </tr>
 	<tr>
 		<td>
 			<a href="https://github.com/rkaravia/Leaflet.TileLayer.Swiss">Leaflet.TileLayer.Swiss</a>
@@ -267,6 +267,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			Enhanced WMS support for Leaflet, including single-tile/untiled layers, shared WMS sources, and layer identify via GetFeatureInfo.
 		</td><td>
 			<a href="https://github.com/sheppard/">S. Andrew Sheppard</a><br>(<a href="https://github.com/heigeo/">HEI Geo</a>)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/alcalin/L.TileLayer.WMTS">L.TileLayer.WMTS</a>
+		</td><td>
+			A simple WMTS Tile Layer plugin for Leaflet.
+		</td><td>
+			<a href="https://github.com/alcalin">Alexandru Calin</a>
 		</td>
 	</tr>
 	<tr>
@@ -369,14 +378,6 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 		 (<a href="https://geoportalpl.github.io/leaflet.projwmts/examples/wmts_services.html">demo</a>).
 		</td><td>
 			<a href="https://github.com/GeoportalPL">Geoportal Poland</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/alcalin/L.TileLayer.WMTS">L.TileLayer.WMTS</a>
-		</td><td>A simple WMTS Tile Layer plugin for Leaflet.
-		</td><td>
-			<a href="https://github.com/alcalin">Alexandru Calin</a>
 		</td>
 	</tr>
 </table>
