@@ -1092,13 +1092,21 @@ describe("Map", function () {
 		});
 
 		it("pans correctly when padding takes up more than half the display bounds", function () {
-			var c = map.project(center);
-			var p = c.add([0, 5]);
+			var oldCenter = map.project(center);
+			// Create target inside the padding area, but above the centrepoint
+			// (replicates issue #7445)
+			var panTarget = oldCenter.subtract([0, 5]);
 			var halfSize = map.getPixelBounds().getSize().divideBy(2);
-			map.panInside(map.unproject(p), {paddingBottomRight: [0, halfSize.y + 15], animate: false});
+			// Make padding take up the bottom half of the display bounds plus 15 pixels
+			var paddingAmount = halfSize.y + 15;
+			// Execute the pan to the target point, taking into account the padding
+			map.panInside(map.unproject(panTarget), {paddingBottomRight: [0, paddingAmount], animate: false});
+			// Calculate the distance moved during the pan
 			var newCenter = map.project(map.getCenter());
-			var offset = newCenter.subtract(c);
-			expect(Math.abs(offset.y - 20)).to.be.lessThan(1);
+			var offset = newCenter.subtract(oldCenter);
+			// The target was placed 5 pixels above center and the padding was 15 pixels
+			// above center, so the Y distance should be 15 - 5 = 10 pixels
+			expect(offset.y - 10).to.be.lessThan(1);
 			expect(offset.x).to.be.lessThan(1);
 		});
 	});
