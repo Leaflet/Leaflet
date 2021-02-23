@@ -64,6 +64,9 @@ export var opera12 = 'OTransition' in style;
 // @property win: Boolean; `true` when the browser is running in a Windows platform
 export var win = navigator.platform.indexOf('Win') === 0;
 
+// @property linux: Boolean; `true` when the browser is running in a Linux platform
+export var linux = navigator.platform.indexOf('Linux') === 0;
+
 // @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
 export var ie3d = ie && ('transition' in style);
 
