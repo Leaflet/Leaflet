@@ -108,23 +108,23 @@ describe('ImageOverlay', function () {
 		it('should update the z-index of the image if it has allready been added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('1');
+			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should set the z-index of the image when it is added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should use the z-index specified in options', function () {
 			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('20');
+			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
 		});
 
 		it('should be fluent', function () {
