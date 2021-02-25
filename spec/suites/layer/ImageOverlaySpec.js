@@ -135,7 +135,8 @@ describe('ImageOverlay', function () {
 
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
-	describe('_image2', function () {
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		var overlay;
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
