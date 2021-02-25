@@ -1,6 +1,6 @@
 <img width="600" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" alt="Leaflet" />
 
-Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
+Leaflet is the leading open-source ([BSD 2-Clause license][]) JavaScript library for **mobile-friendly interactive maps**.
 Weighing just about 39 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
@@ -20,6 +20,7 @@ and push the limits of what's possible with online maps!
 
 [![Build Status](https://travis-ci.org/Leaflet/Leaflet.svg?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
 
+ [BSD 2-Clause license]: https://github.com/Leaflet/Leaflet/blob/master/LICENSE
  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
  [features]: http://leafletjs.com/#features
  [plugins]: http://leafletjs.com/plugins.html
