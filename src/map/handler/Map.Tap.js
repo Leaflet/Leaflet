@@ -124,7 +124,8 @@ export var Tap = Handler.extend({
 		        type, true, true, window, 1,
 		        e.screenX, e.screenY,
 		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
+		        e.ctrlKey, e.altKey, 
+			e.shiftKey, e.metaKey, 0, null);
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
