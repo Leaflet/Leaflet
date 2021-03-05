@@ -390,7 +390,7 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/turban/Leaflet.Zoomify">TileLayer.Zoomify</a>
+			<a href="https://github.com/cmulders/Leaflet.Zoomify">TileLayer.Zoomify</a>
 		</td><td>
 			A TileLayer for Zoomify images.
 		</td><td>
