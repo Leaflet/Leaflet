@@ -271,6 +271,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/alcalin/L.TileLayer.WMTS">L.TileLayer.WMTS</a>
+		</td><td>
+			A simple WMTS Tile Layer plugin for Leaflet.
+		</td><td>
+			<a href="https://github.com/alcalin">Alexandru Calin</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/stuartmatthews/Leaflet.NonTiledLayer.WCS">Leaflet.NonTiledLayer.WCS</a>
 		</td><td>
 			Display raster data from Web Coverage Services.  Rasters can be styled and queried in the client.  See the <a href="https://stuartmatthews.github.io/Leaflet.NonTiledLayer.WCS/">demo</a>.
