@@ -522,35 +522,19 @@ export var Map = Evented.extend({
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
-		    center = this.getCenter(),
-		    pixelCenter = this.project(center),
+		    pixelCenter = this.project(this.getCenter()),
 		    pixelPoint = this.project(latlng),
 		    pixelBounds = this.getPixelBounds(),
-		    halfPixelBounds = pixelBounds.getSize().divideBy(2),
-		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
+		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
+		    paddedSize = paddedBounds.getSize();
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
-			var diff = pixelCenter.subtract(pixelPoint),
-			    newCenter = toPoint(pixelPoint.x + diff.x, pixelPoint.y + diff.y);
-
-			if (pixelPoint.x < paddedBounds.min.x || pixelPoint.x > paddedBounds.max.x) {
-				newCenter.x = pixelCenter.x - diff.x;
-				if (diff.x > 0) {
-					newCenter.x += halfPixelBounds.x - paddingTL.x;
-				} else {
-					newCenter.x -= halfPixelBounds.x - paddingBR.x;
-				}
-			}
-			if (pixelPoint.y < paddedBounds.min.y || pixelPoint.y > paddedBounds.max.y) {
-				newCenter.y = pixelCenter.y - diff.y;
-				if (diff.y > 0) {
-					newCenter.y += halfPixelBounds.y - paddingTL.y;
-				} else {
-					newCenter.y -= halfPixelBounds.y - paddingBR.y;
-				}
-			}
-			this.panTo(this.unproject(newCenter), options);
+			var centerOffset = pixelPoint.subtract(paddedBounds.getCenter());
+			var offset = paddedBounds.extend(pixelPoint).getSize().subtract(paddedSize);
+			pixelCenter.x += centerOffset.x < 0 ? -offset.x : offset.x;
+			pixelCenter.y += centerOffset.y < 0 ? -offset.y : offset.y;
+			this.panTo(this.unproject(pixelCenter), options);
 			this._enforcingBounds = false;
 		}
 		return this;

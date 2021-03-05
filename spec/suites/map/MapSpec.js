@@ -1090,6 +1090,19 @@ describe("Map", function () {
 			var dy = map.getCenter().lat - center.lat;
 			expect(dy).to.be.lessThan(1.0E-9);
 		});
+
+		it("pans correctly when padding takes up more than half the display bounds", function () {
+			var oldCenter = map.project(center);
+			var targetOffset = L.point(0, -5); // arbitrary point above center
+			var target = oldCenter.add(targetOffset);
+			var paddingOffset = L.point(0, 15);
+			var padding = map.getSize().divideBy(2) // half size
+			  .add(paddingOffset); // padding more than half the display bounds (replicates issue #7445)
+			map.panInside(map.unproject(target), {paddingBottomRight: [0, padding.y], animate: false});
+			var offset = map.project(map.getCenter()).subtract(oldCenter); // distance moved during the pan
+			var result = paddingOffset.add(targetOffset).subtract(offset);
+			expect(result.trunc()).to.eql(L.point(0, 0));
+		});
 	});
 
 	describe("#DOM events", function () {
