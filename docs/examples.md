@@ -95,6 +95,16 @@ title="Showing video files"
 description="Leaflet can help you display videos somewhere on the map."
 %}
 
+
+{% include tutorial_link.html
+page="giv/giv.html"
+thumbnail="giv/giv.jpg"
+title="GeoImageViewer"
+description="Link Leaflet Maps to Photographs, and find any corresponding location."
+%}
+
+
+
 ***
 
 The following tutorials cover how to create plugins for Leaflet, and are intended only for developers experienced in JavaScript:
