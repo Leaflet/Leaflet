@@ -7,7 +7,7 @@ title: Layer Groups and Layers Control
 
 This tutorial will show you how to group several layers into one, and how to use the layers control to allow users to easily switch different layers on your map.
 
-{% include frame.html width="100%" height="400" url="example.html" %}
+{% include frame.html url="example.html" %}
 
 ### Layer Groups
 
