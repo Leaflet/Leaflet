@@ -12,7 +12,7 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.7.1/leaflet.zip">Leaflet 1.7.1</a></td>
+		<td><a href="https://cdn.leafletjs.com/leaflet/v1.7.1/leaflet.zip">Leaflet 1.7.1</a></td>
 		<td>Stable version, released on September 3, 2020.</td>
 	</tr>
 	<tr>
@@ -20,7 +20,7 @@ bodyclass: download-page
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
+		<td class="width100"><a href="https://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
 		<td>Legacy version, released on November 18, 2013 and last updated on October 26, 2015.</td>
 	</tr>
 </table>
@@ -86,11 +86,11 @@ from the <a href="https://github.com/Leaflet/Leaflet">GitHub repository</a>.
 
 ### Building Leaflet from the Source
 
-Leaflet build system is powered by the [Node.js](http://nodejs.org) platform,
+Leaflet build system is powered by the [Node.js](https://nodejs.org) platform,
 which installs easily and works well across all major platforms.
 Here are the steps to set it up:
 
- 1. [Download and install Node](http://nodejs.org)
+ 1. [Download and install Node](https://nodejs.org)
  2. Run the following command in the command line:
 
  <pre><code>npm install</code></pre>
