@@ -4934,6 +4934,16 @@ The following plugins integrate Leaflet into third party services or websites.
 		<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
 	</td>
   </tr>
+  <tr>
+	<td>
+		<a href="https://github.com/arnaufp/Leaflet.GeoJSON.Alloy">Leaflet.GeoJSON.Alloy</a>
+	</td><td>
+		A Leaflet plugin to fetch and visualise layers from Alloy, Yotta's Asset Management System, in GeoJson format.
+	  </td><td>
+		<a href="https://github.com/arnaufp">Arnau Forner</a>
+	</td>	  
+	  
+  </tr>
 </table>
 
 
