@@ -23,6 +23,16 @@ describe('DomUtil', function () {
 		});
 	});
 
+	describe('#getPosition', function () {
+		it('returns x0 y0 as position when provided el is undefined', function () {
+			expect(L.DomUtil.getPosition(undefined)).to.eql({x:0, y:0});
+		});
+
+		it('returns x0 y0 as position when provided el doesnt have position', function () {
+			expect(L.DomUtil.getPosition(el)).to.eql({x:0, y:0});
+		});
+	});
+
 	describe('#addClass, #removeClass, #hasClass', function () {
 		it('has defined class for test element', function () {
 			el.className = 'bar foo baz ';
