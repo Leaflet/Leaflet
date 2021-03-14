@@ -528,6 +528,15 @@ The following plugins change the way that tile or image layers are displayed in 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.ImageOverlay.Arrugator">Leaflet.ImageOverlay.Arrugator</a>
+		</td><td>
+			Displays reprojected ImageOverlays, given four control points and a proj4js projection function. (<a href='https://ivansanchez.gitlab.io/Leaflet.ImageOverlay.Arrugator/demo.html'>demo</a>).
+		</td><td>
+			<a href="https://ivan.sanchezortega.es">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/xtk93x/Leaflet.TileLayer.ColorFilter">Leaflet.TileLayer.ColorFilter</a>
 		</td><td>
 			A simple and lightweight Leaflet plugin to apply CSS filters on map tiles (<a href="https://xtk93x.github.io/Leaflet.TileLayer.ColorFilter/">demo</a>).
