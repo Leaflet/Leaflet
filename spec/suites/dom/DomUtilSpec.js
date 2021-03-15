@@ -55,5 +55,11 @@ describe('DomUtil', function () {
 
 	// describe('#setPosition', noSpecs);
 
+	describe("#getPosition", function () {
+		it("can handle undefined", function () {
+			expect(L.DomUtil.getPosition(undefined)).to.eql({x: 0, y: 0});
+		});
+	});
+
 	// describe('#getStyle', noSpecs);
 });
