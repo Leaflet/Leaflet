@@ -244,7 +244,7 @@ export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 
-	return el._leaflet_pos || new Point(0, 0);
+	return el?._leaflet_pos || new Point(0, 0);
 }
 
 // @function disableTextSelection()
