@@ -234,6 +234,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/spaceflighter/leaflet-tilelayer-hongkong">leaflet-tilelayer-hongkong</a>
+		</td><td>
+			Displays Hong Kong map tiles from <a href="https://geodata.gov.hk">Hong Kong GeoData Store</a> provider.
+		</td><td>
+			<a href="https://github.com/spaceflighter">spaceflighter</a>
+		</td>
+	</tr>
 </table>
 
 
