@@ -96,6 +96,9 @@ export var Events = {
 
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context) {
+		if (typeof fn !== 'function') {
+			return;
+		}
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -152,6 +155,9 @@ export var Events = {
 			context = undefined;
 		}
 
+		if (typeof fn !== 'function') {
+			return;
+		}
 		// find fn and remove it
 		for (i = 0, len = listeners.length; i < len; i++) {
 			var l = listeners[i];

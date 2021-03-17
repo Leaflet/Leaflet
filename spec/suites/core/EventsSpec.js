@@ -387,6 +387,16 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(true);
 		});
 
+		it('ignores non-function listeners passed', function () {
+			var obj = new L.Evented();
+			var off = obj.off.bind(obj);
+			['string', {}, [], true, false, undefined].forEach(function (fn) {
+				obj.on('test', fn);
+				expect(obj.listens('test')).to.be(false);
+				expect(off).withArgs('test', fn).to.not.throwException();
+			});
+		});
+
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
