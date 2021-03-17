@@ -131,9 +131,12 @@ export var Events = {
 		}
 
 		if (!fn) {
-			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = Util.falseFn;
+			if (this._firingCount) {
+				// Set all removed listeners to noop
+				// so they are not called if remove happens in fire
+				for (i = 0, len = listeners.length; i < len; i++) {
+					listeners[i].fn = Util.falseFn;
+				}
 			}
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
@@ -149,11 +152,10 @@ export var Events = {
 			var l = listeners[i];
 			if (l.ctx !== context) { continue; }
 			if (l.fn === fn) {
-
-				// set the removed listener to noop so that's not called if remove happens in fire
-				l.fn = Util.falseFn;
-
 				if (this._firingCount) {
+					// set the removed listener to noop so that's not called if remove happens in fire
+					l.fn = Util.falseFn;
+
 					/* copy array in case events are being fired */
 					this._events[type] = listeners = listeners.slice();
 				}
