@@ -144,25 +144,22 @@ export var Events = {
 			context = undefined;
 		}
 
-		if (listeners) {
+		// find fn and remove it
+		for (i = 0, len = listeners.length; i < len; i++) {
+			var l = listeners[i];
+			if (l.ctx !== context) { continue; }
+			if (l.fn === fn) {
 
-			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
-				if (l.ctx !== context) { continue; }
-				if (l.fn === fn) {
+				// set the removed listener to noop so that's not called if remove happens in fire
+				l.fn = Util.falseFn;
 
-					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = Util.falseFn;
-
-					if (this._firingCount) {
-						/* copy array in case events are being fired */
-						this._events[type] = listeners = listeners.slice();
-					}
-					listeners.splice(i, 1);
-
-					return;
+				if (this._firingCount) {
+					/* copy array in case events are being fired */
+					this._events[type] = listeners = listeners.slice();
 				}
+				listeners.splice(i, 1);
+
+				return;
 			}
 		}
 	},
