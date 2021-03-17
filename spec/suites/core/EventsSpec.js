@@ -378,6 +378,15 @@ describe('Events', function () {
 	});
 
 	describe('#on, #off & #fire', function () {
+		it('does not remove all listeners when any fn argument specified', function () {
+			var obj = new L.Evented();
+			obj.on('test', L.Util.falseFn);
+			obj.off('test', undefined);
+			obj.off({test: undefined});
+
+			expect(obj.listens('test')).to.be(true);
+		});
+
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();

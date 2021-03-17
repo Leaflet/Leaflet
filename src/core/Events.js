@@ -81,8 +81,13 @@ export var Events = {
 		} else {
 			types = Util.splitWords(types);
 
+			var removeAll = arguments.length === 1;
 			for (var i = 0, len = types.length; i < len; i++) {
-				this._off(types[i], fn, context);
+				if (removeAll) {
+					this._off(types[i]);
+				} else {
+					this._off(types[i], fn, context);
+				}
 			}
 		}
 
@@ -130,7 +135,7 @@ export var Events = {
 			return;
 		}
 
-		if (!fn) {
+		if (arguments.length === 1) { // remove all
 			if (this._firingCount) {
 				// Set all removed listeners to noop
 				// so they are not called if remove happens in fire
