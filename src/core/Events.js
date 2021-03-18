@@ -69,7 +69,7 @@ export var Events = {
 	 */
 	off: function (types, fn, context) {
 
-		if (!types) {
+		if (!arguments.length) {
 			// clear all listeners if called without arguments
 			delete this._events;
 

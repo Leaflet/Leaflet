@@ -397,6 +397,19 @@ describe('Events', function () {
 			});
 		});
 
+		it('throws with wrong types passed', function () {
+			var obj = new L.Evented();
+			var on = obj.on.bind(obj);
+			var off = obj.off.bind(obj);
+			// todo? make it throw  with []
+			[true, false, undefined, 1].forEach(function (type) {
+				expect(on).withArgs(type, L.Util.falseFn).to.throwException();
+				expect(off).withArgs(type, L.Util.falseFn).to.throwException();
+			});
+
+			// todo? make `fire` and `listen` to throw with wrong type
+		});
+
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
