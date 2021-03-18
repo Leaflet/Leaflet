@@ -97,6 +97,7 @@ export var Events = {
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context) {
 		if (typeof fn !== 'function') {
+			console.warn('wrong listener type: ' + typeof fn);
 			return;
 		}
 		this._events = this._events || {};
@@ -156,6 +157,7 @@ export var Events = {
 		}
 
 		if (typeof fn !== 'function') {
+			console.warn('wrong listener type: ' + typeof fn);
 			return;
 		}
 		// find fn and remove it
@@ -174,6 +176,7 @@ export var Events = {
 
 				return;
 			}
+			console.warn('listener not found');
 		}
 	},
 
@@ -215,6 +218,9 @@ export var Events = {
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
+		if (typeof type !== 'string') {
+			console.warn('"string" type argument expected');
+		}
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
