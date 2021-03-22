@@ -22,6 +22,24 @@
 			width: 600px;
 			height: 400px;
 		}
+		@media screen and (max-width:600px) {
+		#map{
+			max-width: 550px;
+			height: 366.67px;
+		}
+		}
+		@media screen and (max-width:500px) {
+		#map{
+			max-width: 450px;
+			height: 300px;
+		}
+		@media screen and (max-width:400px) {
+		#map{
+			max-width: 350px;
+			height: 233.33px;
+		}
+		}
+		}
 	</style>
 {% endunless %}
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
