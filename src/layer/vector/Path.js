@@ -143,6 +143,6 @@ export var Path = Layer.extend({
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
 		return (this.options.stroke ? this.options.weight / 2 : 0) +
-		(this._renderer.options.tolerance ? this._renderer.options.tolerance : 0);
+		  (this._renderer.options.tolerance || 0);
 	}
 });
