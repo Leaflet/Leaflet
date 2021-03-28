@@ -70,9 +70,7 @@ export var Tooltip = DivOverlay.extend({
 
 		if (this.options.interactive) {
 			DomUtil.addClass(this._container, 'leaflet-interactive');
-			if (this._source) {
-				this._source.addInteractiveTarget(this._container);
-			}
+			this.addInteractiveTarget(this._container);
 		}
 
 		// @namespace Map
@@ -82,6 +80,8 @@ export var Tooltip = DivOverlay.extend({
 		map.fire('tooltipopen', {tooltip: this});
 
 		if (this._source) {
+			this.addEventParent(this._source);
+
 			// @namespace Layer
 			// @section Tooltip events
 			// @event tooltipopen: TooltipEvent
@@ -95,9 +95,7 @@ export var Tooltip = DivOverlay.extend({
 
 		if (this.options.interactive) {
 			DomUtil.removeClass(this._container, 'leaflet-interactive');
-			if (this._source) {
-				this._source.removeInteractiveTarget(this._container);
-			}
+			this.removeInteractiveTarget(this._container);
 		}
 
 		// @namespace Map
@@ -107,6 +105,8 @@ export var Tooltip = DivOverlay.extend({
 		map.fire('tooltipclose', {tooltip: this});
 
 		if (this._source) {
+			this.removeEventParent(this._source);
+
 			// @namespace Layer
 			// @section Tooltip events
 			// @event tooltipclose: TooltipEvent
