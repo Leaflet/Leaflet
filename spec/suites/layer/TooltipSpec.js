@@ -278,6 +278,14 @@ describe('Tooltip', function () {
 		map.openTooltip('Tooltip', center);
 	});
 
+	it("map.openTooltip considers interactive option", function () {
+		if (!window.getComputedStyle) { this.skip(); } // IE9+
+
+		var tooltip = L.tooltip({interactive: true}).setContent('Tooltip');
+		map.openTooltip(tooltip, center);
+		expect(getComputedStyle(tooltip._container).pointerEvents).to.equal('auto');
+	});
+
 	it("can call closeTooltip while not on the map", function () {
 		var layer = new L.Marker(center);
 		layer.bindTooltip('Tooltip', {interactive: true});
