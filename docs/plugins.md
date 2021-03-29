@@ -2349,31 +2349,30 @@ Powerful multi-purpose libraries for data visualization.
             <a href="https://github.com/locknono">locknono</a>
         </td>
     </tr>
-    <tr>
-        <td>
-    	  <a href="https://github.com/robertleeplummerjr/Leaflet.glify">Leaflet.glify</a>
-    	</td>
-    	<td>
-            Fast rendering for large (+100MB) GeoJSON datasets with WebGL
-            <a href="https://robertleeplummerjr.github.io/Leaflet.glify">Demo</a>
-        </td>
-        <td>
-            <a href="https://github.com/robertleeplummerjr">robertleeplummerjr</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-    	  <a href="https://github.com/onaci/Leaflet.glify.layer">Leaflet.glify.layer</a>
-    	</td>
-    	<td>
-            Add-on for the Leaflet.glify plugin to provide more leaflet-idiomatic bindings. Provides fast webgl rendering for GeoJSON FeatureCollections (currently limited to polygons, lines and points).
-            <a href="https://onaci.github.io/Leaflet.glify.layer/">Demo</a>
-        </td>
-        <td>
-            <a href="https://github.com/onaci">onaci</a>
-        </td>
-    </tr>
-	
+	<tr>
+		<td>
+			<a href="https://github.com/robertleeplummerjr/Leaflet.glify">Leaflet.glify</a>
+		</td>
+		<td>
+			Fast rendering for large (+100MB) GeoJSON datasets with WebGL
+			<a href="https://robertleeplummerjr.github.io/Leaflet.glify">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/robertleeplummerjr">robertleeplummerjr</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/onaci/Leaflet.glify.layer">Leaflet.glify.layer</a>
+		</td>
+		<td>
+			Add-on for the Leaflet.glify plugin to provide more leaflet-idiomatic bindings. Provides fast webgl rendering for GeoJSON FeatureCollections (currently limited to polygons, lines and points).
+			<a href="https://onaci.github.io/Leaflet.glify.layer/">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/onaci">onaci</a>
+		</td>
+	</tr>	
 </table>
 
 
