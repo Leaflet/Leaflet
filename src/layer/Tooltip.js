@@ -324,19 +324,18 @@ Layer.include({
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (layer, latlng) {
-		if (this._map) {
-			latlng = this._tooltip._prepareOpen(this, layer, latlng);
+		latlng = this._tooltip._prepareOpen(this, layer, latlng);
 
-			// open the tooltip on the map
-			this._map.openTooltip(this._tooltip, latlng);
+		// open the tooltip on the map
+		this._map.openTooltip(this._tooltip, latlng);
 
-			// Tooltip container may not be defined if not permanent and never
-			// opened.
-			if (this._tooltip.options.interactive && this._tooltip._container) {
-				DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
-				this.addInteractiveTarget(this._tooltip._container);
-			}
+		// Tooltip container may not be defined if not permanent and never
+		// opened.
+		if (this._tooltip.options.interactive && this._tooltip._container) {
+			DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
+			this.addInteractiveTarget(this._tooltip._container);
 		}
+
 		return this;
 	},
 
@@ -381,8 +380,6 @@ Layer.include({
 	},
 
 	_openTooltip: function (e) {
-		if (!this._map) { return; }
-
 		var layer = e.layer || e.target;
 		this.openTooltip(layer, this._tooltip.options.sticky ? e.latlng : undefined);
 	},

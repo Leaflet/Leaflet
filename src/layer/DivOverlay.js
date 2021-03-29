@@ -211,8 +211,6 @@ export var DivOverlay = Layer.extend({
 	},
 
 	_updatePosition: function () {
-		if (!this._map) { return; }
-
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
