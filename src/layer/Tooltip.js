@@ -106,7 +106,7 @@ export var Tooltip = DivOverlay.extend({
 	getEvents: function () {
 		var events = DivOverlay.prototype.getEvents.call(this);
 
-		if (Browser.touch && !this.options.permanent) {
+		if (!this.options.permanent) {
 			events.preclick = this._close;
 		}
 
@@ -312,9 +312,7 @@ Layer.include({
 			if (this._tooltip.options.sticky) {
 				events.mousemove = this._moveTooltip;
 			}
-			if (Browser.touch) {
-				events.click = this._openTooltip;
-			}
+			events.click = this._openTooltip;
 		} else {
 			events.add = this._openTooltip;
 		}
