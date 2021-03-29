@@ -291,11 +291,10 @@ Layer.include({
 	// @method unbindTooltip(): this
 	// Removes the tooltip previously bound with `bindTooltip`.
 	unbindTooltip: function () {
-		if (this._tooltip) {
-			this._initTooltipInteractions(true);
-			this.closeTooltip();
-			this._tooltip = null;
-		}
+		this._initTooltipInteractions(true);
+		this.closeTooltip();
+		this._tooltip = null;
+
 		return this;
 	},
 
@@ -325,7 +324,7 @@ Layer.include({
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (layer, latlng) {
-		if (this._tooltip && this._map) {
+		if (this._map) {
 			latlng = this._tooltip._prepareOpen(this, layer, latlng);
 
 			// open the tooltip on the map
@@ -338,19 +337,16 @@ Layer.include({
 				this.addInteractiveTarget(this._tooltip._container);
 			}
 		}
-
 		return this;
 	},
 
 	// @method closeTooltip(): this
 	// Closes the tooltip bound to this layer if it is open.
 	closeTooltip: function () {
-		if (this._tooltip) {
-			this._tooltip._close();
-			if (this._tooltip.options.interactive && this._tooltip._container) {
-				DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
-				this.removeInteractiveTarget(this._tooltip._container);
-			}
+		this._tooltip._close();
+		if (this._tooltip.options.interactive && this._tooltip._container) {
+			DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
+			this.removeInteractiveTarget(this._tooltip._container);
 		}
 		return this;
 	},
@@ -358,12 +354,10 @@ Layer.include({
 	// @method toggleTooltip(): this
 	// Opens or closes the tooltip bound to this layer depending on its current state.
 	toggleTooltip: function (target) {
-		if (this._tooltip) {
-			if (this._tooltip._map) {
-				this.closeTooltip();
-			} else {
-				this.openTooltip(target);
-			}
+		if (this._tooltip._map) {
+			this.closeTooltip();
+		} else {
+			this.openTooltip(target);
 		}
 		return this;
 	},
@@ -377,10 +371,7 @@ Layer.include({
 	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
 	// Sets the content of the tooltip bound to this layer.
 	setTooltipContent: function (content) {
-		if (this._tooltip) {
-			this._tooltip.setContent(content);
-		}
-		return this;
+		return this._tooltip.setContent(content);
 	},
 
 	// @method getTooltip(): Tooltip
@@ -390,11 +381,9 @@ Layer.include({
 	},
 
 	_openTooltip: function (e) {
-		var layer = e.layer || e.target;
+		if (!this._map) { return; }
 
-		if (!this._tooltip || !this._map) {
-			return;
-		}
+		var layer = e.layer || e.target;
 		this.openTooltip(layer, this._tooltip.options.sticky ? e.latlng : undefined);
 	},
 
