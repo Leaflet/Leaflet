@@ -329,11 +329,7 @@ Layer.include({
 	// Opens or closes the tooltip bound to this layer depending on its current state.
 	toggleTooltip: function () {
 		if (this._tooltip) {
-			if (this._tooltip._map) {
-				this._tooltip.close();
-			} else {
-				this.openTooltip();
-			}
+			this._tooltip.toggle(this);
 		}
 		return this;
 	},

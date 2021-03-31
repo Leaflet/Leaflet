@@ -148,10 +148,6 @@ export var Popup = DivOverlay.extend({
 	onRemove: function (map) {
 		DivOverlay.prototype.onRemove.call(this, map);
 
-		if (this === map._popup) {
-			map._popup = null;
-		}
-
 		// @namespace Map
 		// @section Popup events
 		// @event popupclose: PopupEvent
@@ -418,11 +414,7 @@ Layer.include({
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup: function () {
 		if (this._popup) {
-			if (this._popup._map) {
-				this._popup.close();
-			} else {
-				this.openPopup();
-			}
+			this._popup.toggle(this);
 		}
 		return this;
 	},
