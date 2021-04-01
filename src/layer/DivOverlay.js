@@ -160,13 +160,8 @@ export var DivOverlay = Layer.extend({
 	},
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
-	_prepareOpen: function (source, latlng) {
-		if (source instanceof Layer) {
-			this._source = source;
-		} else {
-			latlng = source;
-			source = this._source;
-		}
+	_prepareOpen: function (latlng) {
+		var source = this._source;
 		if (!source._map) { return; }
 
 		if (source instanceof FeatureGroup) {
