@@ -159,38 +159,50 @@ export var DivOverlay = Layer.extend({
 		return this;
 	},
 
-	_prepareOpen: function (parent, layer, latlng) {
-		if (!(layer instanceof Layer)) {
-			latlng = layer;
-			layer = parent;
+	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
+	_prepareOpen: function (source, latlng) {
+		if (source instanceof Layer) {
+			this._source = source;
+		} else {
+			latlng = source;
+			source = this._source;
 		}
+		if (!source._map) { return; }
 
-		if (layer instanceof FeatureGroup) {
-			for (var id in parent._layers) {
-				layer = parent._layers[id];
-				break;
+		if (source instanceof FeatureGroup) {
+			source = null;
+			var layers = this._source._layers;
+			for (var id in layers) {
+				if (layers[id]._map) {
+					source = layers[id];
+					break;
+				}
 			}
+			if (!source) { return; } // Unable to get source layer.
+
+			// set overlay source to this layer
+			this._source = source;
 		}
 
 		if (!latlng) {
-			if (layer.getCenter) {
-				latlng = layer.getCenter();
-			} else if (layer.getLatLng) {
-				latlng = layer.getLatLng();
-			} else if (layer.getBounds) {
-				latlng = layer.getBounds().getCenter();
+			if (source.getCenter) {
+				latlng = source.getCenter();
+			} else if (source.getLatLng) {
+				latlng = source.getLatLng();
+			} else if (source.getBounds) {
+				latlng = source.getBounds().getCenter();
 			} else {
 				throw new Error('Unable to get source layer LatLng.');
 			}
 		}
+		this.setLatLng(latlng);
 
-		// set overlay source to this layer
-		this._source = layer;
+		if (this._map) {
+			// update the overlay (content, layout, ect...)
+			this.update();
+		}
 
-		// update the overlay (content, layout, ect...)
-		this.update();
-
-		return latlng;
+		return true;
 	},
 
 	_updateContent: function () {

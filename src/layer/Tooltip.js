@@ -324,10 +324,8 @@ Layer.include({
 
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
-	openTooltip: function (layer, latlng) {
-		if (this._tooltip && this._map) {
-			latlng = this._tooltip._prepareOpen(this, layer, latlng);
-
+	openTooltip: function (target, latlng) {
+		if (this._tooltip && this._tooltip._prepareOpen(target, latlng)) {
 			// open the tooltip on the map
 			this._map.openTooltip(this._tooltip, latlng);
 
@@ -390,12 +388,12 @@ Layer.include({
 	},
 
 	_openTooltip: function (e) {
-		var layer = e.layer || e.target;
+		var target = e.layer || e.target;
 
 		if (!this._tooltip || !this._map) {
 			return;
 		}
-		this.openTooltip(layer, this._tooltip.options.sticky ? e.latlng : undefined);
+		this.openTooltip(target, this._tooltip.options.sticky ? e.latlng : undefined);
 	},
 
 	_moveTooltip: function (e) {

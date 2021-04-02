@@ -416,10 +416,8 @@ Layer.include({
 
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
-	openPopup: function (layer, latlng) {
-		if (this._popup && this._map) {
-			latlng = this._popup._prepareOpen(this, layer, latlng);
-
+	openPopup: function (target, latlng) {
+		if (this._popup && this._popup._prepareOpen(target, latlng)) {
 			// open the popup on the map
 			this._map.openPopup(this._popup, latlng);
 		}
@@ -471,7 +469,7 @@ Layer.include({
 	},
 
 	_openPopup: function (e) {
-		var layer = e.layer || e.target;
+		var target = e.layer || e.target;
 
 		if (!this._popup) {
 			return;
@@ -486,17 +484,17 @@ Layer.include({
 
 		// if this inherits from Path its a vector and we can just
 		// open the popup at the new location
-		if (layer instanceof Path) {
-			this.openPopup(e.layer || e.target, e.latlng);
+		if (target instanceof Path) {
+			this.openPopup(target, e.latlng);
 			return;
 		}
 
 		// otherwise treat it like a marker and figure out
 		// if we should toggle it open/closed
-		if (this._map.hasLayer(this._popup) && this._popup._source === layer) {
+		if (this._map.hasLayer(this._popup) && this._popup._source === target) {
 			this.closePopup();
 		} else {
-			this.openPopup(layer, e.latlng);
+			this.openPopup(target, e.latlng);
 		}
 	},
 
