@@ -94,6 +94,55 @@ describe('DomUtil', function () {
 		});
 	});
   
+	describe('#toFront, #toBack', function () {
+		beforeEach(function () {
+			L.DomUtil.create('div', 'childContainer', el);
+			L.DomUtil.create('h1', 'childh1', el);
+			L.DomUtil.create('p', 'childp', el);
+		});
+		it('Moves el to last child position parent element', function () {
+			el.id = 'testId';
+			expect(el.children.length).to.equal(3);
+			expect(Array.from(el.children).indexOf(document.querySelector('.childContainer') === 0));
+			L.DomUtil.toFront(el.children[0]);
+			expect(Array.from(el.children).indexOf(document.querySelector('.childContainer') === 2));
+		});
+		it('Moves el to first child position parent element', function () {
+			el.id = 'testId';
+			expect(el.children.length).to.equal(3);
+			expect(Array.from(el.children).indexOf(document.querySelector('.childp') === 2));
+			L.DomUtil.toFront(el.children[0]);
+			expect(Array.from(el.children).indexOf(document.querySelector('.childp') === 0));
+		});
+	});
+
+	describe('#setClass, #getClass', function () {
+		it('Sets the elements class', function () {
+			el.id = 'testId';
+			expect(el.classList.contains('newClass')).to.not.be.ok();
+			L.DomUtil.setClass(el, 'newClass');
+			expect(el.classList.contains('newClass')).to.be.ok();
+		});
+		it('Gets the elements class', function () {
+			el.id = 'testId';
+			expect(L.DomUtil.getClass(el)).to.not.equal('newClass');
+			L.DomUtil.setClass(el, 'newClass');
+			expect(L.DomUtil.getClass(el)).to.equal('newClass');
+		});
+	});
+
+	describe('#setOpacity', function () {
+		it('Sets opacity of element', function () {
+			el.id = 'testId';
+			L.DomUtil.setOpacity(el, 1);
+			expect(el.style.opacity).to.equal('1');
+			L.DomUtil.setOpacity(el, 0.5);
+			expect(el.style.opacity).to.equal('0.5');
+			L.DomUtil.setOpacity(el, '0');
+			expect(el.style.opacity).to.equal('0');
+		});
+	});
+
 	// describe('#setPosition', noSpecs);
 
 	// describe('#getStyle', noSpecs);
