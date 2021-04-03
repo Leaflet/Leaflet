@@ -93,7 +93,7 @@ describe('DomUtil', function () {
 			expect(el.children.length).to.equal(0);
 		});
 	});
-  
+
 	describe('#toFront, #toBack', function () {
 		beforeEach(function () {
 			L.DomUtil.create('div', 'childContainer', el);
@@ -140,6 +140,38 @@ describe('DomUtil', function () {
 			expect(el.style.opacity).to.equal('0.5');
 			L.DomUtil.setOpacity(el, '0');
 			expect(el.style.opacity).to.equal('0');
+		});
+	});
+  
+	describe('#testProp', function () {
+		it('Check array of style names return first valid style name for element', function () {
+			expect(L.DomUtil.testProp(['transform'])).to.not.be.ok();
+			document.documentElement.style.transform = 'rotate(0deg)';
+			expect(L.DomUtil.testProp(['transform'])).to.be.ok();
+		});
+	});
+
+	describe('#setTransform', function () {
+		it("Resets the transform style of an el.", function () {
+			expect(L.DomUtil.getStyle(el, '-webkit-transform')).to.be.equal('none');
+
+			var offset = L.point(200, 200);
+			var scale = 10;
+			L.DomUtil.setTransform(el, offset, scale);
+			var transform = L.DomUtil.getStyle(el, '-webkit-transform');
+			expect(L.DomUtil.getStyle(el, '-webkit-transform')).to.be.equal(transform);
+
+			var newScale = 20;
+			var newOffset = L.point(400, 400);
+			L.DomUtil.setTransform(el, newOffset, newScale);
+			expect(L.DomUtil.getStyle(el, '-webkit-transform')).to.not.be.equal(transform);
+		});
+	});
+
+	describe('#setPosition', function () {
+		it("Sets position of el to coordinates specified by position.", function () {
+			var position = L.point(100, 100);
+			L.DomUtil.setPosition(el, position);
 		});
 	});
 
