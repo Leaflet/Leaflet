@@ -479,4 +479,24 @@ describe('L.Layer#_popup', function () {
 			done();
 		}).to.not.throwException();
 	});
+
+	it("does not close popup when clicking on it's tip", function () {
+		if (L.Browser.ie) { this.skip(); } // fixme
+		c.style.position = "absolute";
+		c.style.top = "0";
+		c.style.left = "0";
+		var popup = L.popup().setLatLng(map.getCenter())
+			.openOn(map);
+
+		var point = map.latLngToContainerPoint(map.getCenter());
+		point.y -= 2; // move mouse into the popup-tip
+		var el = document.elementFromPoint(point.x, point.y);
+		expect(el).to.be(popup._tip);
+
+		happen.click(el, {
+			clientX: point.x,
+			clientY: point.y
+		});
+		expect(popup.isOpen()).to.be.ok();
+	});
 });
