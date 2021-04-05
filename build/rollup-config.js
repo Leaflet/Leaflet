@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'release') {
 
 const banner = `/* @preserve
  * Leaflet ${version}, a JS library for interactive maps. http://leafletjs.com
- * (c) 2010-2019 Vladimir Agafonkin, (c) 2010-2011 CloudMade
+ * (c) 2010-2021 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 `;
 
@@ -42,16 +42,18 @@ export default {
 			name: 'L',
 			banner: banner,
 			outro: outro,
-			sourcemap: true
+			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
+			freeze: false
 		},
 		{
 			file: 'dist/leaflet-src.esm.js',
 			format: 'es',
 			banner: banner,
-			sourcemap: true
+			sourcemap: true,
+			freeze: false
 		}
 	],
-	legacy: true, // Needed to create files loadable by IE8
 	plugins: [
 		release ? json() : rollupGitVersion()
 	]
