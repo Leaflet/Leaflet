@@ -32,6 +32,29 @@ describe('ImageOverlay', function () {
 			var overlay = L.imageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
+
+		it("fires a move event", function () {
+			var beforeBounds = new L.LatLngBounds(
+				new L.LatLng(14, 12),
+				new L.LatLng(30, 40));
+
+			var afterBounds = new L.LatLngBounds(
+				new L.LatLng(0, 0),
+				new L.LatLng(10, 10));
+
+			var overlay = L.imageOverlay().setBounds(beforeBounds);
+
+			var eventArgs = null;
+			overlay.on('move', function (e) {
+				eventArgs = e;
+			});
+			overlay.setBounds(afterBounds);
+
+			expect(eventArgs).to.not.be(null);
+			expect(eventArgs.oldBounds).to.be(beforeBounds);
+			expect(eventArgs.bounds).to.be(afterBounds);
+			expect(overlay.getBounds()).to.be(afterBounds);
+		});
 	});
 
 	describe("_image", function () {

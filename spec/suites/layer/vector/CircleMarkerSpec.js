@@ -79,4 +79,27 @@
 			expect(marker.getLatLng()).to.be(afterLatLng);
 		});
 	});
+
+
+	describe("#setRadius", function () {
+		it("fires a move event", function () {
+			var marker = new L.CircleMarker([0, 0]);
+			map.addLayer(marker);
+
+			var beforeRadius = marker._radius;
+			var afterRadius = 30;
+
+			var eventArgs = null;
+			marker.on('move', function (e) {
+				eventArgs = e;
+			});
+
+			marker.setRadius(afterRadius);
+
+			expect(eventArgs).to.not.be(null);
+			expect(eventArgs.oldRadius).to.be(beforeRadius);
+			expect(eventArgs.radius).to.be(afterRadius);
+			expect(marker.getRadius()).to.be(afterRadius);
+		});
+	});
 });
