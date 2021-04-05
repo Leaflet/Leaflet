@@ -79,12 +79,16 @@ export var DivOverlay = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the popup will open.
 	setLatLng: function (latlng) {
+		var oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
 			this._adjustPan();
 		}
-		return this;
+
+		// @event move: Event
+		// Fired when the divoverlay is moved via [`setLatLng`](#divoverlay-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
 	// @method getContent: String|HTMLElement

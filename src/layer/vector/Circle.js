@@ -43,8 +43,13 @@ export var Circle = CircleMarker.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
 	setRadius: function (radius) {
+		var oldRadius = this._mRadius;
 		this._mRadius = radius;
-		return this.redraw();
+		this.redraw();
+
+		// @event move: Event
+		// Fired when the circle radius is changed via [`setRadius`](#circle-setradius). Old and new radius are included in event arguments as `oldRadius`, `radius`.
+		return this.fire('move', {oldRadius: oldRadius, radius: this._mRadius});
 	},
 
 	// @method getRadius(): Number
