@@ -291,15 +291,11 @@ Layer.include({
 	// @method unbindTooltip(): this
 	// Removes the tooltip previously bound with `bindTooltip`.
 	unbindTooltip: function () {
-		if (this._tooltip && this._tooltip._isRedraw) {
+		if (this._tooltip) {
 			this._initTooltipInteractions(true);
 			this.closeTooltip();
-			this._tooltip._isRedraw = false;
-		} else if (this._tooltip) {
-			  this._initTooltipInteractions(true);
-			  this.closeTooltip();
-			  this._tooltip = null;
-			  }
+			this._tooltip = null;
+		}
 		return this;
 	},
 
@@ -311,7 +307,7 @@ Layer.include({
 			move: this._moveTooltip
 		    };
 		if (this._tooltip.options.permanent && this._map) {
-			this._map.on('zoomend', this._redrawTooltip, this);
+			this._map[onOff]('zoomend', this._updateTooltipCenter, this);
 		}
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
@@ -415,9 +411,10 @@ Layer.include({
 		this._tooltip.setLatLng(latlng);
 	},
 
-	_redrawTooltip: function () {
-		this._tooltip._isRedraw = true;
-		this.unbindTooltip();
-		this.bindTooltip();
+	_updateTooltipCenter: function () {
+		var latlng = this.getCenter();
+		if (latlng) {
+			this._tooltip.setLatLng(latlng);
+		}
 	}
 });
