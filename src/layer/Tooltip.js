@@ -306,7 +306,7 @@ Layer.include({
 			remove: this.closeTooltip,
 			move: this._moveTooltip
 		    };
-		if (this._tooltip.options.permanent && this._map) {
+		if (this._tooltip.options.permanent && this.getCenter && this._map) {
 			this._map[onOff]('zoomend', this._updateTooltipCenter, this);
 		}
 		if (!this._tooltip.options.permanent) {
