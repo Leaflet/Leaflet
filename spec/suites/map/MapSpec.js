@@ -1249,6 +1249,37 @@ describe("Map", function () {
 			happen.click(layer._icon);
 			expect(called).to.eql(4);
 		});
+
+		it("prevents default action of contextmenu if there is any listener", function () {
+			if (!L.Browser.canvas) { this.skip(); }
+
+			map.remove();
+			var container = document.createElement('div');
+			container.style.width = container.style.height = '300px';
+			container.style.top = container.style.left = 0;
+			container.style.position = 'absolute';
+			document.body.appendChild(container);
+
+			map = L.map(container, {
+				renderer: L.canvas(),
+				center: [0, 0],
+				zoom: 0
+			});
+			map.setView(L.latLng([0, 0]), 12);
+			var spy = sinon.spy();
+			map.on('contextmenu', spy);
+			var marker = L.circleMarker([0, 0]).addTo(map);
+
+			happen.at('contextmenu', 0, 0); // first
+
+			happen.at('contextmenu', marker._point.x, marker._point.y); // second  (#5995)
+
+			document.body.removeChild(container); // cleanup
+
+			expect(spy.callCount).to.be(2);
+			expect(spy.firstCall.lastArg.originalEvent.defaultPrevented).to.be.ok();
+			expect(spy.secondCall.lastArg.originalEvent.defaultPrevented).to.be.ok();
+		});
 	});
 
 	describe("#getScaleZoom && #getZoomScale", function () {
