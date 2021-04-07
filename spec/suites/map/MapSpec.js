@@ -1267,7 +1267,9 @@ describe("Map", function () {
 			});
 			map.setView(L.latLng([0, 0]), 12);
 			var spy = sinon.spy();
-			map.on('contextmenu', spy);
+			map.on('contextmenu', function (e) {
+				spy(e.originalEvent.defaultPrevented);
+			});
 			var marker = L.circleMarker([0, 0]).addTo(map);
 
 			happen.at('contextmenu', 0, 0); // first
@@ -1277,8 +1279,8 @@ describe("Map", function () {
 			document.body.removeChild(container); // cleanup
 
 			expect(spy.callCount).to.be(2);
-			expect(spy.firstCall.lastArg.originalEvent.defaultPrevented).to.be.ok();
-			expect(spy.secondCall.lastArg.originalEvent.defaultPrevented).to.be.ok();
+			expect(spy.firstCall.lastArg).to.be.ok();
+			expect(spy.secondCall.lastArg).to.be.ok();
 		});
 	});
 
