@@ -2,13 +2,10 @@ describe('DomUtil', function () {
 	var el;
 
 	beforeEach(function () {
-		var el = document.createElement('div');
-		var input = document.createElement('input');
-		input.value = 'xxx';
+		el = document.createElement('div');
 		el.style.position = 'absolute';
-		el.style.top = el.style.left = '-10000px';
+		el.style.top = el.style.left = '0px';
 		document.body.appendChild(el);
-		document.body.appendChild(input);
 	});
 
 	afterEach(function () {
@@ -173,8 +170,8 @@ describe('DomUtil', function () {
 
 	describe('#setPosition, #getPosition', function () {
 		it("Sets position of el to coordinates specified by position.", function () {
-			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('-10000px');
-			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('-10000px');
+			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('0px');
+			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('0px');
 
 			var x = 100;
 			var y = 100;
@@ -201,18 +198,67 @@ describe('DomUtil', function () {
 		});
 	});
 
+	describe('#getSizedParentNode', function () {
+		it('Find nearest parent element where height / width are not null', function () {
+			var parentEl = document.createElement('div');
+			var childEl = document.createElement('div');
+			el.appendChild(parentEl);
+			parentEl.appendChild(childEl);
+			expect(L.DomUtil.getSizedParentNode(childEl)).to.not.eql(parentEl)
+			parentEl.style.width = '150px';
+			parentEl.style.height = '150px';
+			expect(L.DomUtil.getSizedParentNode(childEl)).to.eql(parentEl);
+		});
+	});
+
+	describe('#getScale', function () {
+		it('Returns scale of element as x & y scales respectively', function () {
+			var childEl = document.createElement('div');
+			el.appendChild(childEl);
+			var scale = {
+				x: 1, 
+				y: 1, 
+				boundingClientRect: {
+					left: 25,
+					right: 305,
+					top: 25,
+					height: 280,
+					bottom: 305,
+					width: 280
+				}
+			}
+			childEl.style.width = '250px';
+			childEl.style.height = '250px';
+			childEl.style.padding = '15px';
+			childEl.style.margin = '25px';
+			expect(L.DomUtil.getScale(childEl)).to.eql(scale)
+			childEl.style.padding = '400px';
+			expect(L.DomUtil.getScale(childEl)).to.not.eql(scale)
+		})
+	});
+
+
 	describe('#disableTextSelection', function () {
 		it('Disable the selectstart DOM events for the user ', function () {
-			// var listener = sinon.spy();
-			// console.log('selectstart' in window)
-			// L.DomUtil.disableTextSelection()
-			// console.log('onselectstart' in window)
-			// // L.DomEvent.on(window, 'selectstart', listener)
-			// // happen.once(window, {
-			// //   type: "selectstart"
-			// // })
-			// // expect(listener.called).to.be.ok()
-			// L.DomUtil.disableTextSelection()
+
+		});
+	});
+
+	describe('#enableTextSelection', function () {
+		it('Enable the selectstart DOM events for the user ', function () {
+
+		});
+	});
+
+	describe('#preventOutline', function () {
+		it('Makes outline of passed element invisible', function () {
+
+		});
+	});
+
+	describe('#restoreOutline', function () {
+		it('Restores outline for element if not already visible', function () {
+
 		});
 	});
 
