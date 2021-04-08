@@ -2,10 +2,13 @@ describe('DomUtil', function () {
 	var el;
 
 	beforeEach(function () {
-		el = document.createElement('div');
+		var el = document.createElement('div');
+		var input = document.createElement('input');
+		input.value = 'xxx';
 		el.style.position = 'absolute';
 		el.style.top = el.style.left = '-10000px';
 		document.body.appendChild(el);
+		document.body.appendChild(input);
 	});
 
 	afterEach(function () {
@@ -52,7 +55,7 @@ describe('DomUtil', function () {
 			expect(el.className).to.eql('foo barz');
 		});
 	});
-  describe('#getStyle', function () {
+	describe('#getStyle', function () {
 		it('gets the value for a certain style attribute on an element,', function () {
 			el.id = 'testId';
 			el.style.color = 'black';
@@ -142,7 +145,7 @@ describe('DomUtil', function () {
 			expect(el.style.opacity).to.equal('0');
 		});
 	});
-  
+
 	describe('#testProp', function () {
 		it('Check array of style names return first valid style name for element', function () {
 			expect(L.DomUtil.testProp(['transform'])).to.not.be.ok();
@@ -168,10 +171,48 @@ describe('DomUtil', function () {
 		});
 	});
 
-	describe('#setPosition', function () {
+	describe('#setPosition, #getPosition', function () {
 		it("Sets position of el to coordinates specified by position.", function () {
-			var position = L.point(100, 100);
+			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('-10000px');
+			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('-10000px');
+
+			var x = 100;
+			var y = 100;
+			var position = L.point(x, y);
 			L.DomUtil.setPosition(el, position);
+			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal(x + 'px');
+			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal(y + 'px');
+
+			var newX = 333;
+			var newY = 666;
+			var newPosition = L.point(newX, newY);
+			L.DomUtil.setPosition(el, newPosition);
+			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal(newX + 'px');
+			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal(newY + 'px');
+		});
+
+		it("Returns position of an element positioned with setPosition.", function () {
+			var coordinates = {x: 333, y: 666};
+			var position = L.point(coordinates);
+			expect(L.DomUtil.getPosition(el)).to.not.eql(coordinates);
+			L.DomUtil.setPosition(el, position);
+			expect(L.DomUtil.getPosition(el)).to.be.an('object');
+			expect(L.DomUtil.getPosition(el)).to.eql(coordinates);
+		});
+	});
+
+	describe('#disableTextSelection', function () {
+		it('Disable the selectstart DOM events for the user ', function () {
+			// var listener = sinon.spy();
+			// console.log('selectstart' in window)
+			// L.DomUtil.disableTextSelection()
+			// console.log('onselectstart' in window)
+			// // L.DomEvent.on(window, 'selectstart', listener)
+			// // happen.once(window, {
+			// //   type: "selectstart"
+			// // })
+			// // expect(listener.called).to.be.ok()
+			// L.DomUtil.disableTextSelection()
 		});
 	});
 
