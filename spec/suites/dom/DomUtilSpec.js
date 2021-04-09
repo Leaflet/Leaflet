@@ -229,9 +229,14 @@ describe('DomUtil', function () {
 					left: 25,
 				}
 			};
-			expect(JSON.stringify(L.DomUtil.getScale(childEl))).to.eql(JSON.stringify(scale));
+			// Not all browsers contain x y inside boundclientRect, always contains top, right, bottom and left properties
+			expect(L.DomUtil.getScale(childEl).boundingClientRect.top).to.be.equal(scale.boundingClientRect.top);
+			expect(L.DomUtil.getScale(childEl).boundingClientRect.right).to.be.equal(scale.boundingClientRect.right);
+			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.be.equal(scale.boundingClientRect.bottom);
+			expect(L.DomUtil.getScale(childEl).boundingClientRect.left).to.be.equal(scale.boundingClientRect.left);
+
 			childEl.style.padding = '400px';
-			expect(JSON.stringify(L.DomUtil.getScale(childEl))).to.not.eql(JSON.stringify(scale));
+			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
 		});
 	});
 
