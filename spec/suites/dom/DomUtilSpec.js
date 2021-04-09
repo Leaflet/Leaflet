@@ -204,7 +204,7 @@ describe('DomUtil', function () {
 			var childEl = document.createElement('div');
 			el.appendChild(parentEl);
 			parentEl.appendChild(childEl);
-			expect(L.DomUtil.getSizedParentNode(childEl)).to.not.eql(parentEl)
+			expect(L.DomUtil.getSizedParentNode(childEl)).to.not.eql(parentEl);
 			parentEl.style.width = '150px';
 			parentEl.style.height = '150px';
 			expect(L.DomUtil.getSizedParentNode(childEl)).to.eql(parentEl);
@@ -216,8 +216,8 @@ describe('DomUtil', function () {
 			var childEl = document.createElement('div');
 			el.appendChild(childEl);
 			var scale = {
-				x: 1, 
-				y: 1, 
+				x: 1,
+				y: 1,
 				boundingClientRect: {
 					left: 25,
 					right: 305,
@@ -226,15 +226,15 @@ describe('DomUtil', function () {
 					bottom: 305,
 					width: 280
 				}
-			}
+			};
 			childEl.style.width = '250px';
 			childEl.style.height = '250px';
 			childEl.style.padding = '15px';
 			childEl.style.margin = '25px';
-			expect(L.DomUtil.getScale(childEl)).to.eql(scale)
+			expect(L.DomUtil.getScale(childEl)).to.eql(scale);
 			childEl.style.padding = '400px';
-			expect(L.DomUtil.getScale(childEl)).to.not.eql(scale)
-		})
+			expect(L.DomUtil.getScale(childEl)).to.not.eql(scale);
+		});
 	});
 
 
@@ -242,23 +242,23 @@ describe('DomUtil', function () {
 		it('Disable / enable the selectstart DOM events for the user ', function () {
 			var selectionPrevented;
 			function checkPrevented(e) {
-				if(e.defaultPrevented) {
-					selectionPrevented = true
+				if (e.defaultPrevented) {
+					selectionPrevented = true;
 				} else {
-					selectionPrevented = false
+					selectionPrevented = false;
 				}
 			}
 			var child = document.createElement('div');
 			el.appendChild(child);
 
-			L.DomUtil.disableTextSelection()
-			window.addEventListener('selectstart', checkPrevented)
+			L.DomUtil.disableTextSelection();
+			window.addEventListener('selectstart', checkPrevented);
 			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.be.ok()
+			expect(selectionPrevented).to.be.ok();
 
 			L.DomUtil.enableTextSelection();
 			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.not.be.ok()
+			expect(selectionPrevented).to.not.be.ok();
 		});
 	});
 
@@ -266,23 +266,23 @@ describe('DomUtil', function () {
 		it('Disable / enable dragstart DOM events for the user', function () {
 			var selectionPrevented;
 			function checkPrevented(e) {
-				if(e.defaultPrevented) {
-					selectionPrevented = true
+				if (e.defaultPrevented) {
+					selectionPrevented = true;
 				} else {
-					selectionPrevented = false
+					selectionPrevented = false;
 				}
 			}
 			var child = document.createElement('div');
 			el.appendChild(child);
 
-			L.DomUtil.disableImageDrag()
-			window.addEventListener('dragstart', checkPrevented)
+			L.DomUtil.disableImageDrag();
+			window.addEventListener('dragstart', checkPrevented);
 			happen.once(child, {type: 'dragstart'});
-			expect(selectionPrevented).to.be.ok()
+			expect(selectionPrevented).to.be.ok();
 
 			L.DomUtil.enableImageDrag();
 			happen.once(child, {type: 'dragstart'});
-			expect(selectionPrevented).to.not.be.ok()
+			expect(selectionPrevented).to.not.be.ok();
 		});
 	});
 
@@ -293,20 +293,20 @@ describe('DomUtil', function () {
 			child.tabIndex = 0;
 			child.style.outline = 'solid';
 
-			expect(child.style.outline).to.be.equal('solid')
-			L.DomUtil.preventOutline(child)
-			expect(child.style.outline).to.be.equal('none')
+			expect(child.style.outline).to.be.equal('solid');
+			L.DomUtil.preventOutline(child);
+			expect(child.style.outline).to.be.equal('none');
 
-			//Explicit #restoreOutline through direct call
-			expect(child.style.outline).to.be.equal('none')
-			L.DomUtil.restoreOutline(child)
-			expect(child.style.outline).to.be.equal('solid')
+			//	Explicit #restoreOutline through direct call
+			expect(child.style.outline).to.be.equal('none');
+			L.DomUtil.restoreOutline(child);
+			expect(child.style.outline).to.be.equal('solid');
 
-			//Implicit #restoreOutline test through simulation
-			L.DomUtil.preventOutline(child)
-			expect(child.style.outline).to.be.equal('none')
-			happen.once(child, { type: 'keydown'})
-			expect(child.style.outline).to.be.equal('solid')
+			//	Implicit #restoreOutline test through simulation
+			L.DomUtil.preventOutline(child);
+			expect(child.style.outline).to.be.equal('none');
+			happen.once(child, {type: 'keydown'});
+			expect(child.style.outline).to.be.equal('solid');
 		});
 	});
 });
