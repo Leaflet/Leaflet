@@ -145,9 +145,9 @@ describe('DomUtil', function () {
 
 	describe('#testProp', function () {
 		it('Check array of style names return first valid style name for element', function () {
-			expect(L.DomUtil.testProp(['transform'])).to.not.be.ok();
-			document.documentElement.style.transform = 'rotate(0deg)';
-			expect(L.DomUtil.testProp(['transform'])).to.be.ok();
+			var hasProp;
+			hasProp = L.DomUtil.testProp(['-webkit-transform', '-webkit-transform', '-ms-tranform', '-o-transform']);
+			expect(hasProp).to.match(/(?:-webkit-transform|-webkit-transform|-ms-tranform|-o-transform)/);
 		});
 	});
 
@@ -173,19 +173,17 @@ describe('DomUtil', function () {
 			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('0px');
 			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('0px');
 
-			var x = 100;
-			var y = 100;
+			var x = 50;
+			var y = 55;
 			var position = L.point(x, y);
 			L.DomUtil.setPosition(el, position);
-			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal(x + 'px');
-			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal(y + 'px');
+			expect(L.DomUtil.getPosition(el)).to.be.eql({x: x, y: y});
 
 			var newX = 333;
 			var newY = 666;
 			var newPosition = L.point(newX, newY);
 			L.DomUtil.setPosition(el, newPosition);
-			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal(newX + 'px');
-			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal(newY + 'px');
+			expect(L.DomUtil.getPosition(el)).to.be.eql({x: newX, y: newY});
 		});
 
 		it("Returns position of an element positioned with setPosition.", function () {
@@ -200,40 +198,40 @@ describe('DomUtil', function () {
 
 	describe('#getSizedParentNode', function () {
 		it('Find nearest parent element where height / width are not null', function () {
-			var parentEl = document.createElement('div');
-			var childEl = document.createElement('div');
-			el.appendChild(parentEl);
-			parentEl.appendChild(childEl);
-			expect(L.DomUtil.getSizedParentNode(childEl)).to.not.eql(parentEl);
-			parentEl.style.width = '150px';
-			parentEl.style.height = '150px';
-			expect(L.DomUtil.getSizedParentNode(childEl)).to.eql(parentEl);
+			var child = document.createElement('div');
+			var grandChild = document.createElement('div');
+			el.appendChild(child);
+			child.appendChild(grandChild);
+			child.style.width = child.style.height = '500px';
+			expect(L.DomUtil.getSizedParentNode(grandChild)).to.eql(child);
 		});
 	});
 
 	describe('#getScale', function () {
 		it('Returns scale of element as x & y scales respectively', function () {
 			var childEl = document.createElement('div');
+			childEl.style.width = '250px';
+			childEl.style.height = '250px';
+			childEl.style.padding = '15px';
+			childEl.style.margin = '25px';
 			el.appendChild(childEl);
 			var scale = {
 				x: 1,
 				y: 1,
 				boundingClientRect: {
-					left: 25,
-					right: 305,
-					top: 25,
+					x: 25,
+					y: 25,
+					width: 280,
 					height: 280,
+					top: 25,
+					right: 305,
 					bottom: 305,
-					width: 280
+					left: 25,
 				}
 			};
-			childEl.style.width = '250px';
-			childEl.style.height = '250px';
-			childEl.style.padding = '15px';
-			childEl.style.margin = '25px';
-			expect(L.DomUtil.getScale(childEl)).to.eql(scale);
+			expect(JSON.stringify(L.DomUtil.getScale(childEl))).to.eql(JSON.stringify(scale));
 			childEl.style.padding = '400px';
-			expect(L.DomUtil.getScale(childEl)).to.not.eql(scale);
+			expect(JSON.stringify(L.DomUtil.getScale(childEl))).to.not.eql(JSON.stringify(scale));
 		});
 	});
 
@@ -291,22 +289,20 @@ describe('DomUtil', function () {
 			var child = document.createElement('div');
 			el.appendChild(child);
 			child.tabIndex = 0;
-			child.style.outline = 'solid';
-
-			expect(child.style.outline).to.be.equal('solid');
+			expect(child.style.outline).to.be.equal(child.style.outline);
 			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.be.equal('none');
+			expect(child.style.outline).to.match(/(?:none)/);
 
 			//	Explicit #restoreOutline through direct call
-			expect(child.style.outline).to.be.equal('none');
+			expect(child.style.outline).to.match(/(?:none)/);
 			L.DomUtil.restoreOutline(child);
-			expect(child.style.outline).to.be.equal('solid');
+			expect(child.style.outline).to.be.equal(child.style.outline);
 
 			//	Implicit #restoreOutline test through simulation
 			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.be.equal('none');
+			expect(child.style.outline).to.match(/(?:none)/);
 			happen.once(child, {type: 'keydown'});
-			expect(child.style.outline).to.be.equal('solid');
+			expect(child.style.outline).to.be.equal(child.style.outline);
 		});
 	});
 });
