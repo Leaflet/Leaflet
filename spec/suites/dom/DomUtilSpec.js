@@ -238,31 +238,75 @@ describe('DomUtil', function () {
 	});
 
 
-	describe('#disableTextSelection', function () {
-		it('Disable the selectstart DOM events for the user ', function () {
+	describe('#disableTextSelection, #enableTextSelection', function () {
+		it('Disable / enable the selectstart DOM events for the user ', function () {
+			var selectionPrevented;
+			function checkPrevented(e) {
+				if(e.defaultPrevented) {
+					selectionPrevented = true
+				} else {
+					selectionPrevented = false
+				}
+			}
+			var child = document.createElement('div');
+			el.appendChild(child);
 
+			L.DomUtil.disableTextSelection()
+			window.addEventListener('selectstart', checkPrevented)
+			happen.once(child, {type: 'selectstart'});
+			expect(selectionPrevented).to.be.ok()
+
+			L.DomUtil.enableTextSelection();
+			happen.once(child, {type: 'selectstart'});
+			expect(selectionPrevented).to.not.be.ok()
 		});
 	});
 
-	describe('#enableTextSelection', function () {
-		it('Enable the selectstart DOM events for the user ', function () {
+	describe('#disableImageDrag, #enablerImageDrag', function () {
+		it('Disable / enable dragstart DOM events for the user', function () {
+			var selectionPrevented;
+			function checkPrevented(e) {
+				if(e.defaultPrevented) {
+					selectionPrevented = true
+				} else {
+					selectionPrevented = false
+				}
+			}
+			var child = document.createElement('div');
+			el.appendChild(child);
 
+			L.DomUtil.disableImageDrag()
+			window.addEventListener('dragstart', checkPrevented)
+			happen.once(child, {type: 'dragstart'});
+			expect(selectionPrevented).to.be.ok()
+
+			L.DomUtil.enableImageDrag();
+			happen.once(child, {type: 'dragstart'});
+			expect(selectionPrevented).to.not.be.ok()
 		});
 	});
 
-	describe('#preventOutline', function () {
-		it('Makes outline of passed element invisible', function () {
+	describe('#preventOutline, #restoreOutline', function () {
+		it('Prevent / Restore outline for the element', function () {
+			var child = document.createElement('div');
+			el.appendChild(child);
+			child.tabIndex = 0;
+			child.style.outline = 'solid';
 
+			expect(child.style.outline).to.be.equal('solid')
+			L.DomUtil.preventOutline(child)
+			expect(child.style.outline).to.be.equal('none')
+
+			//Explicit #restoreOutline through direct call
+			expect(child.style.outline).to.be.equal('none')
+			L.DomUtil.restoreOutline(child)
+			expect(child.style.outline).to.be.equal('solid')
+
+			//Implicit #restoreOutline test through simulation
+			L.DomUtil.preventOutline(child)
+			expect(child.style.outline).to.be.equal('none')
+			happen.once(child, { type: 'keydown'})
+			expect(child.style.outline).to.be.equal('solid')
 		});
 	});
-
-	describe('#restoreOutline', function () {
-		it('Restores outline for element if not already visible', function () {
-
-		});
-	});
-
-	// describe('#setPosition', noSpecs);
-
-	// describe('#getStyle', noSpecs);
 });
