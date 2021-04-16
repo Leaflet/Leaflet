@@ -1550,13 +1550,13 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/triedeti/Leaflet.streetlabels">Leaflet.streetlabels</a>
+			<a href="https://github.com/3mapslab/Leaflet.streetlabels">Leaflet.streetlabels</a>
 		</td>
 		<td>
-			A Leaflet plugin to show labels following the paths of polylines. An extension of yakitoritabetai Leaflet.LabelTextCollision (<a href="https://triedeti.github.io/Leaflet.streetlabels/">demo</a>).
+			A Leaflet plugin to show labels following the paths of polylines. An extension of yakitoritabetai Leaflet.LabelTextCollision (<a href="https://3mapslab.github.io/Leaflet.streetlabels/">demo</a>).
 		</td>
 		<td>
-			<a href="https://github.com/triedeti">Triede TI</a>
+			<a href="https://github.com/3mapslab">3Maps</a>
 		</td>
 	</tr>
 	<tr>
