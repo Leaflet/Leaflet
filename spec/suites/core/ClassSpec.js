@@ -2,6 +2,7 @@
 describe("Class", function () {
 	describe("#extend", function () {
 		var Klass,
+		    props,
 		    constructor,
 		    method;
 
@@ -9,14 +10,15 @@ describe("Class", function () {
 			constructor = sinon.spy();
 			method = sinon.spy();
 
-			Klass = L.Class.extend({
+			props = {
 				statics: {bla: 1},
 				includes: {mixin: true},
 
 				initialize: constructor,
 				foo: 5,
 				bar: method
-			});
+			};
+			Klass = L.Class.extend(props);
 		});
 
 		it("creates a class with the given constructor & properties", function () {
@@ -46,8 +48,23 @@ describe("Class", function () {
 			expect(method.called).to.be.ok();
 		});
 
+		it("does not modify source props object", function () {
+			expect(props).to.eql({
+				statics: {bla: 1},
+				includes: {mixin: true},
+
+				initialize: constructor,
+				foo: 5,
+				bar: method
+			});
+		});
+
 		it("supports static properties", function () {
 			expect(Klass.bla).to.eql(1);
+		});
+
+		it("does not merge 'statics' property itself", function () {
+			expect('statics' in Klass.prototype).to.not.be.ok();
 		});
 
 		it("inherits parent static properties", function () {
@@ -65,6 +82,10 @@ describe("Class", function () {
 		it("includes the given mixin", function () {
 			var a = new Klass();
 			expect(a.mixin).to.be.ok();
+		});
+
+		it("does not merge 'includes' property itself", function () {
+			expect('includes' in Klass.prototype).to.not.be.ok();
 		});
 
 		it("includes multiple mixins", function () {
