@@ -70,7 +70,7 @@ export var TouchZoom = Handler.extend({
 		var map = this._map,
 		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
-		    scale = p1.distanceTo(p2) / this._startDist;
+		    scale = this._startDist !== 0 ? : p1.distanceTo(p2) / this._startDist : 1;
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
