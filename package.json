@@ -28,6 +28,7 @@
     "rollup-plugin-json": "^4.0.0",
     "sinon": "^7.5.0",
     "ssri": "^8.0.1",
+    "typescript": "^4.3.2",
     "uglify-js": "^3.12.6"
   },
   "main": "dist/leaflet-src.js",
@@ -103,7 +104,14 @@
   },
   "keywords": [
     "gis",
-    "map"
+    "map",
+    "typescript",
+    "patch",
+    "port"
   ],
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {},
+  "peerDependencies": {
+    "rollup": "^1.20.0 || ^2.0.0"
+  }
 }
