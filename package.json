@@ -6,6 +6,7 @@
     "author": "Fabio Rodrigues <https://www.facebook.com/kefaro>, Luis Mendes <machadoluismendes@gmail.com>",
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.26.1",
+        "@typescript-eslint/parser": "^4.26.1",
         "eslint": "^7.28.0",
         "eslint-config-mourner": "^2.0.1",
         "git-rev-sync": "^3.0.1",
@@ -18,7 +19,7 @@
         "karma-ie-launcher": "^1.0.0",
         "karma-mocha": "^2.0.1",
         "karma-phantomjs-launcher": "^1.0.4",
-        "karma-rollup-preprocessor": "^6.1.2",
+        "karma-rollup-preprocessor": "^7.0.7",
         "karma-safari-launcher": "~1.0.0",
         "karma-sinon": "^1.0.5",
         "leafdoc": "^2.2.1",
