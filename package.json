@@ -43,7 +43,7 @@
         "docs": "node ./build/docs.js",
         "pretest": "npm run lint",
         "test": "npm run test-nolint",
-        "test-nolint": "karma start ./spec/karma.conf.js",
+        "test-nolint": "karma start ./spec/karma.conf.ts",
         "build": "npm run rollup && npm run uglify",
         "release": "./build/publish.sh",
         "lint": "eslint src spec/suites docs/docs/js",
