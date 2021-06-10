@@ -3,6 +3,14 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+
+## 1.7.1 (2021-06-10)
+docker build . -t poligonosapp/leaflet
+
+server.ts // require('dist/leaflet-src.js');
+with typescript
+with snyk
+
 ## 1.7.1 (2020-09-04)
 
 ### Bug fixes

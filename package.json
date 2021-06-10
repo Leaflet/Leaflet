@@ -34,14 +34,15 @@
         "typescript": "^4.3.2",
         "uglify-js": "^3.12.6"
     },
-    "main": "dist/leaflet-src.js",
     "style": "dist/leaflet.css",
     "files": [
         "dist",
         "src",
         "!dist/leaflet.zip"
     ],
+    "main": "server.ts",
     "scripts": {
+        "start": "node server.ts",
         "docs": "node ./build/docs.js",
         "pretest": "npm run lint",
         "test": "npm run test-nolint",
@@ -113,7 +114,9 @@
         "port"
     ],
     "license": "BSD-2-Clause",
-    "dependencies": {},
+    "dependencies": {
+        "express": "^4.17.1"
+    },
     "peerDependencies": {
         "rollup": "^1.20.0 || ^2.0.0"
     }
