@@ -1,6 +1,6 @@
 import * as Util from '../core/Util';
 import {Evented} from '../core/Events';
-import * as DomUtil from '../dom/DomUtil';
+import * as DomUtil from './DomUtil';
 
 
 /*
