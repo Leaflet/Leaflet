@@ -1,11 +1,13 @@
 /* global hljs */
-hljs.configure({tabReplace: '    '});
+import hljs from 'highlight.js';
+
+hljs.configure({ tabReplace: '    ' });
 hljs.initHighlighting();
 
-var tocCopy = document.createElement('div');
+const tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
 
-var toc = document.querySelector('#toc');
+const toc = document.querySelector('#toc');
 
 if (toc) {
 	tocCopy.innerHTML = toc.innerHTML;
@@ -24,7 +26,7 @@ if (toc) {
 		});
 	}
 
-	var labels = document.querySelectorAll('#toc-copy h4');
+	const labels = document.querySelectorAll('#toc-copy h4');
 
 	for (i = 0; i < labels.length; i++) {
 		labels[i].addEventListener('click', function () {
@@ -38,8 +40,8 @@ if (toc) {
 		}
 	});
 
-	var scrollPos = function scrollPos() {
-		var scroll = window.scrollY;
+	const scrollPos = function scrollPos() {
+		const scroll = window.scrollY;
 
 		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
 			document.body.classList.add('scrolled');

@@ -26,7 +26,7 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export var TouchZoom = Handler.extend({
+export const TouchZoom = Handler.extend({
 	addHooks: function () {
 		DomUtil.addClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
@@ -38,10 +38,10 @@ export var TouchZoom = Handler.extend({
 	},
 
 	_onTouchStart: function (e) {
-		var map = this._map;
+		const map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
+		const p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
 
 		this._centerPoint = map.getSize()._divideBy(2);
@@ -67,7 +67,7 @@ export var TouchZoom = Handler.extend({
 	_onTouchMove: function (e) {
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
-		var map = this._map,
+		const map = this._map,
 		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
 		    scale = p1.distanceTo(p2) / this._startDist;
@@ -85,7 +85,7 @@ export var TouchZoom = Handler.extend({
 			if (scale === 1) { return; }
 		} else {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
-			var delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
+			const delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
 			if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
 			this._center = map.unproject(map.project(this._pinchStartLatLng, this._zoom).subtract(delta), this._zoom);
 		}
@@ -97,7 +97,7 @@ export var TouchZoom = Handler.extend({
 
 		Util.cancelAnimFrame(this._animRequest);
 
-		var moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
+		const moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
 		this._animRequest = Util.requestAnimFrame(moveFn, this, true);
 
 		DomEvent.preventDefault(e);

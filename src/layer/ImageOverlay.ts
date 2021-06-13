@@ -20,7 +20,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var ImageOverlay = Layer.extend({
+export const ImageOverlay = Layer.extend({
 
 	// @section
 	// @aka ImageOverlay options
@@ -259,6 +259,6 @@ export var ImageOverlay = Layer.extend({
 // @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
-export var imageOverlay = function (url, bounds, options) {
+export const imageOverlay = function (url, bounds, options) {
 	return new ImageOverlay(url, bounds, options);
 };

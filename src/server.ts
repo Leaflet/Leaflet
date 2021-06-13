@@ -1,8 +1,9 @@
 'use strict';
 
-require('dist/leaflet-src.ts');
+// require('dist/leaflet-src.ts');
 
-const express = require('express');
+import express from 'express';
+// const express = require('express');
 
 // Constants
 const PORT = 8080;

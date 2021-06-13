@@ -34,7 +34,7 @@ exports.noConflict = function() {
 window.L = exports;`;
 
 export default {
-	input: 'src/Leaflet.js',
+	input: 'src/Leaflet.ts',
 	output: [
 		{
 			file: pkg.main,
@@ -47,7 +47,7 @@ export default {
 			freeze: false
 		},
 		{
-			file: 'dist/leaflet-src.esm.js',
+			file: 'dist/leaflet-src.esm.ts',
 			format: 'es',
 			banner: banner,
 			sourcemap: true,

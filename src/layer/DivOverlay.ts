@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  */
 
 // @namespace DivOverlay
-export var DivOverlay = Layer.extend({
+export const DivOverlay = Layer.extend({
 
 	// @section
 	// @aka DivOverlay options
@@ -196,8 +196,8 @@ export var DivOverlay = Layer.extend({
 	_updateContent: function () {
 		if (!this._content) { return; }
 
-		var node = this._contentNode;
-		var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+		const node = this._contentNode;
+		const content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
