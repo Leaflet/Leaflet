@@ -140,6 +140,10 @@ export var BoxZoom = Handler.extend({
 	_onKeyDown: function (e) {
 		if (e.keyCode === 27) {
 			this._finish();
+			// Postpone to next JS tick so internal click event handling
+			// still see it as "moved".
+			this._clearDeferredResetState();
+			this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
 		}
 	}
 });
