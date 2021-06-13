@@ -1,6 +1,6 @@
 'use strict';
 
-require('dist/leaflet-src.js');
+require('dist/leaflet-src.ts');
 
 const express = require('express');
 
