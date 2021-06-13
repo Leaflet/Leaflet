@@ -34,5 +34,3 @@ git branch -D build
 
 echo "All done."
 echo "Remember to run 'npm run-script integrity' and then commit the changes to the master branch, in order to update the website."
-
-

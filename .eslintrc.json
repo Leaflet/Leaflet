@@ -10,6 +10,7 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
+        "project": "./tsconfig.eslint.json",
         "ecmaVersion": 12
     },
     "plugins": [

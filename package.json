@@ -120,6 +120,7 @@
     "dependencies": {
         "core-js": "^3.14.0",
         "express": "^4.17.1",
+        "iconv-lite-loader": "^1.0.0",
         "regenerator-runtime": "^0.13.7"
     },
     "peerDependencies": {
