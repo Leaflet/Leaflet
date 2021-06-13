@@ -1,4 +1,4 @@
-var json = require('rollup-plugin-json');
+import { json } from 'rollup-plugin-json';
 
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
