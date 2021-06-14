@@ -128,7 +128,11 @@
         "regenerator-runtime": "^0.13.7"
     },
     "peerDependencies": {
-        "rollup": "^1.20.0 || ^2.0.0"
+        "@angular/compiler": "^11.0.0",
+        "@angular/compiler-cli": "^11.0.0",
+        "tslib": "^2.0.0",
+        "typescript": "^4.0 || <4.2",
+        "rollup": "^1.20.0 || ^2.0.0 || ^2.30.0"
     },
     "engines": {
         "node": "14.17.13",
