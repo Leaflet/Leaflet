@@ -1,6 +1,11 @@
 // karma.conf.ts
 module.exports = function (config) {
     config.set({
+        compilerOptions: {
+            target: "ES2015",
+            lib: ["es5", "es6", "es2015", "dom"]
+        },
+        tsconfig: "tsconfig.json",
         browsers: ['PhantomJS', 'PhantomJS_custom'],
 
         // you can define custom flags

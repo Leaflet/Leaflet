@@ -2,13 +2,16 @@
 {
   "compileOnSave": false,
   "include": [
+    "src/**/*",
     "**/*.tsconfig.eslint.json" // for *.config.js files
   ],
   "compilerOptions": {
     "baseUrl": "./",
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",

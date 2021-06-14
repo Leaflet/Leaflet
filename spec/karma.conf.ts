@@ -1,4 +1,6 @@
-import { json } from 'rollup-plugin-json';
+// import { json } from 'rollup-plugin-json'; //deprecated module
+import json from '@rollup/plugin-json';
+import {phantom} from "../src/core/Browser";
 
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
@@ -9,12 +11,21 @@ exports.noConflict = function() {
 // Always export us to window global (see #2364)
 window.L = exports;`;
 
+export default {
+	input: 'src/index.js',
+	output: {
+		dir: 'output',
+		format: 'cjs'
+	},
+	plugins: [json()]
+};
+
 // Karma configuration
 module.exports = function (config) {
 
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
-	var files = [
+	const files = [
 		"spec/before.js",
 		"src/Leaflet.js",
 		"spec/after.js",
@@ -26,9 +37,9 @@ module.exports = function (config) {
 		{pattern: "dist/images/*.png", included: false, serve: true}
 	];
 
-	var preprocessors = {};
+	const preprocessors = {};
 
-	preprocessors['src/Leaflet.js'] = ['rollup'];
+	preprocessors['src/Leaflet.ts'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
@@ -132,7 +143,16 @@ module.exports = function (config) {
 				options: {
 					onCallback: function (data) {
 						if (data.render) {
-							page.render(data.render);
+							// test-nolint TYPESCRIPT 2304
+							// page.render(data.render);
+                            const page = require('webpage').create();
+                            page.open('http://www.poligonosapp.herokuapp.com', function() {
+                                setTimeout(function() {
+                                    page.render('google.png');
+                                    // @ts-ignore
+                                    phantom.exit();
+                                }, 200);
+                            });
 						}
 					}
 				}
