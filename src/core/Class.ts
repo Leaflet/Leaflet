@@ -15,7 +15,7 @@ Class.extend = function (props) {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+	const NewClass = function () {
 
 		// call the constructor
 		if (this.initialize) {
@@ -26,15 +26,15 @@ Class.extend = function (props) {
 		this.callInitHooks();
 	};
 
-	var parentProto = NewClass.__super__ = this.prototype;
+	const parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = Util.create(parentProto);
+	const proto = Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
 
 	// inherit parent's statics
-	for (var i in this) {
+	for (const i in this) {
 		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
@@ -74,7 +74,7 @@ Class.extend = function (props) {
 
 		this._initHooksCalled = true;
 
-		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+		for (let i = 0, len = proto._initHooks.length; i < len; i++) {
 			proto._initHooks[i].call(this);
 		}
 	};
@@ -100,9 +100,9 @@ Class.mergeOptions = function (options) {
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
 Class.addInitHook = function (fn) { // (Function) || (String, args...)
-	var args = Array.prototype.slice.call(arguments, 1);
+	const args = Array.prototype.slice.call(arguments, 1);
 
-	var init = typeof fn === 'function' ? fn : function () {
+	const init = typeof fn === 'function' ? fn : function () {
 		this[fn].apply(this, args);
 	};
 
@@ -116,7 +116,7 @@ function checkDeprecatedMixinEvents(includes) {
 
 	includes = Util.isArray(includes) ? includes : [includes];
 
-	for (var i = 0; i < includes.length; i++) {
+	for (let i = 0; i < includes.length; i++) {
 		if (includes[i] === L.Mixin.Events) {
 			console.warn('Deprecated include of L.Mixin.Events: ' +
 				'this property will be removed in future releases, ' +

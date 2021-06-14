@@ -5,21 +5,27 @@ The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of aw
 
 This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself.
 
-1. [Presentation](#presentation)
-	- [Repository](#repository)
-	- [Name](#name)
-	- [Demo](#demo)
-	- [Readme](#readme)
-	- [License](#license)
-2. [Code](#code)
-	- [File Structure](#file-structure)
-	- [Code Conventions](#code-conventions)
-	- [Plugin API](#plugin-api)
-3. [Publishing on NPM](#publishing-on-npm)
-4. [Module Loaders](#module-loaders)
-5. [Adding to the plugins list](#adding-to-the-plugins-list)
+- [Leaflet Plugin Authoring Guide](#leaflet-plugin-authoring-guide)
+  - [Presentation](#presentation)
+    - [Repository](#repository)
+    - [Name](#name)
+    - [Demo](#demo)
+    - [Readme](#readme)
+    - [License](#license)
+  - [Code](#code)
+    - [File Structure](#file-structure)
+    - [Code Conventions](#code-conventions)
+    - [Plugin API](#plugin-api)
+  - [Publishing on NPM](#publishing-on-npm)
+  - [Module Loaders](#module-loaders)
+  - [Adding to the plugins list](#adding-to-the-plugins-list)
 
 ## Presentation
+
+leaflet fork
+with typescript
+with snyk
+with Angular 12
 
 ### Repository
 

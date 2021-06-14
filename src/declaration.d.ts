@@ -1,1 +1,2 @@
-import json from '@rollup/plugin-json';
+import '@rollup/plugin-json';
+import '@typescript-eslint/parser';

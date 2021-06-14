@@ -1,9 +1,8 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "include": [
     "src/**/*",
-    "**/*.tsconfig.eslint.json" // for *.config.js files
+    "**/*.tsconfig.eslint.json"
   ],
   "compilerOptions": {
     "baseUrl": "./",

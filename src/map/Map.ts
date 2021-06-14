@@ -29,7 +29,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  */
 
-export var Map = Evented.extend({
+export const Map = Evented.extend({
 
 	options: {
 		// @section Map State Options
@@ -254,7 +254,7 @@ export var Map = Evented.extend({
 		options = options || {};
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
-		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
+		const paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 
 		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
@@ -268,7 +268,7 @@ export var Map = Evented.extend({
 			};
 		}
 
-		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
+		const paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),

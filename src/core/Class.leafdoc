@@ -10,7 +10,7 @@ In addition to implementing a simple classical inheritance model, it introduces 
 @example
 
 ```js
-var MyClass = L.Class.extend({
+const MyClass = L.Class.extend({
 initialize: function (greeter) {
 	this.greeter = greeter;
 	// class constructor
@@ -22,7 +22,7 @@ greet: function (name) {
 });
 
 // create instance of MyClass, passing "Hello" to the constructor
-var a = new MyClass("Hello");
+const a = new MyClass("Hello");
 
 // call greet method, alerting "Hello, World"
 a.greet("World");

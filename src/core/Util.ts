@@ -7,7 +7,7 @@
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest) {
-	var i, j, len, src;
+	const i, j, len, src;
 
 	for (j = 1, len = arguments.length; j < len; j++) {
 		src = arguments[j];

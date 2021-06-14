@@ -24,14 +24,14 @@ import {isArray, formatNum} from '../core/Util';
  * can't be added to it with the `include` function.
  */
 
-export function Point(x, y, round) {
+export function Point(x:integer, y:integer, round:integer) {
 	// @property x: Number; The `x` coordinate of the point
 	this.x = (round ? Math.round(x) : x);
 	// @property y: Number; The `y` coordinate of the point
 	this.y = (round ? Math.round(y) : y);
 }
 
-var trunc = Math.trunc || function (v) {
+const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
 };
 

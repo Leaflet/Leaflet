@@ -14,9 +14,9 @@ const banner = `/* @preserve
 `;
 
 export default {
-	input: 'src/Leaflet.js',
+	input: 'src/Leaflet.ts',
 	output: {
-		file: 'dist/leaflet-src.js',
+		file: 'dist/leaflet-src.ts',
 		format: 'umd',
 		name: 'L',
 		banner: banner,

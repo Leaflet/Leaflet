@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  * All other controls extend from this class.
  */
 
-export var Control = Class.extend({
+export const Control = Class.extend({
 	// @section
 	// @aka Control options
 	options: {
@@ -40,7 +40,7 @@ export var Control = Class.extend({
 	// @method setPosition(position: string): this
 	// Sets the position of the control.
 	setPosition: function (position) {
-		var map = this._map;
+		const map = this._map;
 
 		if (map) {
 			map.removeControl(this);
@@ -111,7 +111,7 @@ export var Control = Class.extend({
 	}
 });
 
-export var control = function (options) {
+export const control = function (options) {
 	return new Control(options);
 };
 
