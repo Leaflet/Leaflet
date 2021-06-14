@@ -5,6 +5,7 @@
     "**/*.tsconfig.eslint.json"
   ],
   "compilerOptions": {
+    "noImplicitThis": true,
     "baseUrl": "./",
     "allowJs": true,
     "declaration": true,
