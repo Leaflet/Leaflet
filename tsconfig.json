@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "include": [
+    "docs/**/*ts",
     "src/**/*",
     "**/*.tsconfig.eslint.json"
   ],
