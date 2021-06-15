@@ -1,7 +1,7 @@
 /* global hljs */
 import hljs from 'highlight.js';
 
-hljs.configure({ tabReplace: '    ' });
+// hljs.configure({ tabReplace: '    ' }); // TS2345
 hljs.initHighlighting();
 
 const tocCopy = document.createElement('div');
@@ -13,10 +13,10 @@ if (toc) {
 	tocCopy.innerHTML = toc.innerHTML;
 	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-	var menus = document.querySelectorAll('#toc-copy ul');
-	var i;
+	const menus = document.querySelectorAll('#toc-copy ul');
+	// const outeri;
 
-	for (i = 0; i < menus.length; i++) {
+	for (const i = 0; i < menus.length; i++) {
 		menus[i].addEventListener('mouseover', function () {
 			this.previousElementSibling.classList.add('hover');
 		});
@@ -28,7 +28,7 @@ if (toc) {
 
 	const labels = document.querySelectorAll('#toc-copy h4');
 
-	for (i = 0; i < labels.length; i++) {
+	for (const i = 0; i < labels.length; i++) {
 		labels[i].addEventListener('click', function () {
 			this.classList.toggle('active');
 		});

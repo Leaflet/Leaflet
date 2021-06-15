@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig.json",
+  "@typescript-eslint/restrict-plus-operands": "error",
   "include": [
+    "dist/**/*ts",
+    "build/**/*ts",
     "docs/**/*ts",
+    "spec/**/*ts",
     "src/**/*.ts",
     "test/**/*.ts",
     "typings/**/*.ts",

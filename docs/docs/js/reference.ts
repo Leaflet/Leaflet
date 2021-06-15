@@ -1,12 +1,12 @@
 if (document.body.className.indexOf('api-page') !== -1) {
 
-	var elems = document.querySelectorAll('h2, h3, h4, tr');
+	const elems = document.querySelectorAll('h2, h3, h4, tr');
 
-	for (var i = 0, len = elems.length; i < len; i++) {
-		var el = elems[i];
+	for (const i = 0, len = elems.length; i < len; i++) {
+		const el = elems[i];
 
 		if (el.id) {
-			var anchor = document.createElement('a');
+			const anchor = document.createElement('a');
 			anchor.setAttribute('anchor', el.id);
 			if (!el.children.length) {
 				// For headers, insert the anchor before.
