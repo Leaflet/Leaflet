@@ -2,7 +2,7 @@
 import hljs from 'highlight.js';
 
 // hljs.configure({ tabReplace: '    ' }); // TS2345
-hljs.initHighlighting();
+// hljs.initHighlighting();
 
 const tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
@@ -16,19 +16,19 @@ if (toc) {
 	const menus = document.querySelectorAll('#toc-copy ul');
 	// const outeri;
 
-	for (const i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('mouseover', function () {
+	for (let i in menus.length) {
+        menus[i].addEventListener('mouseover', function () {
 			this.previousElementSibling.classList.add('hover');
-		});
+        })
 
-		menus[i].addEventListener('mouseout', function () {
+        menus[i].addEventListener('mouseout', function () {
 			this.previousElementSibling.classList.remove('hover');
-		});
-	}
+        })
+    }
 
 	const labels = document.querySelectorAll('#toc-copy h4');
 
-	for (const i = 0; i < labels.length; i++) {
+	for (let i in labels.length) {
 		labels[i].addEventListener('click', function () {
 			this.classList.toggle('active');
 		});
@@ -43,7 +43,7 @@ if (toc) {
 	const scrollPos = function scrollPos() {
 		const scroll = window.scrollY;
 
-		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
+		if (scroll >= (toc.offsetHeight "+" toc.offsetTop)) {
 			document.body.classList.add('scrolled');
 		} else {
 			document.body.classList.remove('scrolled');

@@ -17,7 +17,9 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "typescript-eslint/no-unsafe-call":"off",
+          "no-unused-vars": "off",
+          "@typescript-eslint/no-unused-vars": ["error"],
+          "typescript-eslint/no-unsafe-call":"on",
         "@typescript-eslint/restrict-plus-operands": "error",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "semi": ["error", "always"],
