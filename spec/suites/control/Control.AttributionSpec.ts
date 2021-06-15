@@ -1,5 +1,6 @@
+import L from 'src/Leaflet.ts';
 describe("Control.Attribution", function () {
-	const map, control, container;
+	let map, control, container;
 
 	beforeEach(function () {
 		map = L.map(document.createElement('div'));
@@ -10,8 +11,8 @@ describe("Control.Attribution", function () {
 		container = control.getContainer();
 	});
 
-	function dummyLayer() {
-		const layer = new L.Layer();
+	function  dummyLayer() {
+		let layer = new L.Layer();
 		layer.onAdd = function () { };
 		layer.onRemove = function () { };
 		return layer;
