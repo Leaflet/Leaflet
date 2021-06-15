@@ -1,5 +1,5 @@
 /* global hljs */
-import hljs from 'highlight.js';
+// import hljs from 'highlight.js';
 
 // hljs.configure({ tabReplace: '    ' }); // TS2345
 // hljs.initHighlighting();
@@ -43,11 +43,22 @@ if (toc) {
 	const scrollPos = function scrollPos() {
 		const scroll = window.scrollY;
 
+		try{
 		if (scroll >= (toc.offsetHeight "+" toc.offsetTop)) {
+
 			document.body.classList.add('scrolled');
+
 		} else {
-			document.body.classList.remove('scrolled');
+
+				document.body.classList.remove('scrolled');
+				
 		}
+		}catch(e:Error){
+
+		}finally{
+
+		}
+
 	};
 
 	scrollPos();
