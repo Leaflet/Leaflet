@@ -18,8 +18,18 @@
     ],
     "rules": {
         "@typescript-eslint/rule-name": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "semi": ["error", "always"],
         "quotes": ["error", "double"]
-    }
+    },
+    "overrides": [
+        {
+            // enable the rule specifically for TypeScript files
+            "files": ["*.ts", "*.tsx"],
+            "rules": {
+                "@typescript-eslint/explicit-module-boundary-types": ["error"]
+            }
+        }
+    ]
 }
 

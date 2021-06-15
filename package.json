@@ -59,7 +59,7 @@
         "lintfix": "npm run lint -- --fix",
         "rollup": "rollup -c build/rollup-config.ts",
         "watch": "rollup -w -c build/rollup-watch-config.ts",
-        "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
+        "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.ts --source-map filename=dist/leaflet.ts.map --source-map content=dist/leaflet-src.ts.map --source-map url=leaflet.ts.map --comments",
         "integrity": "node ./build/integrity.ts"
     },
     "eslintConfig": {
@@ -135,7 +135,7 @@
         "rollup": "^1.20.0 || ^2.0.0 || ^2.30.0"
     },
     "engines": {
-        "node": "14.17.13",
+        "node": "14.17.0",
         "npm": "6.14.13"
     }
 }

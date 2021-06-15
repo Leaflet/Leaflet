@@ -10,7 +10,7 @@ import * as Util from '../../core/Util';
  * overlays (Polygon, Polyline, Circle). Do not use it directly. Extends `Layer`.
  */
 
-export var Path = Layer.extend({
+export const Path = Layer.extend({
 
 	// @section
 	// @aka Path options

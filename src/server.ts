@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict'; // eslint https://stackoverflow.com/questions/32791507/node-js-and-eslint-disagree-on-use-strict
 
 // require('dist/leaflet-src.ts');
 
@@ -11,7 +11,7 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
-app.get('/', (req, res) => {
+app.get('/', (req:Request, res:Response) => {
   res.send('Hello World');
 });
 

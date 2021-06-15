@@ -51,7 +51,7 @@ import * as PolyUtil from '../../geometry/PolyUtil';
  * ```
  */
 
-export var Polygon = Polyline.extend({
+export const Polygon = Polyline.extend({
 
 	options: {
 		fill: true
@@ -67,7 +67,7 @@ export var Polygon = Polyline.extend({
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 
-		var i, j, p1, p2, f, area, x, y, center,
+		const i, j, p1, p2, f, area, x, y, center,
 		    points = this._rings[0],
 		    len = points.length;
 
@@ -97,7 +97,7 @@ export var Polygon = Polyline.extend({
 	},
 
 	_convertLatLngs: function (latlngs) {
-		var result = Polyline.prototype._convertLatLngs.call(this, latlngs),
+		const result = Polyline.prototype._convertLatLngs.call(this, latlngs),
 		    len = result.length;
 
 		// remove last point if it equals first one
@@ -121,7 +121,7 @@ export var Polygon = Polyline.extend({
 	_clipPoints: function () {
 		// polygons need a different clipping algorithm so we redefine that
 
-		var bounds = this._renderer._bounds,
+		const bounds = this._renderer._bounds,
 		    w = this.options.weight,
 		    p = new Point(w, w);
 
@@ -152,7 +152,7 @@ export var Polygon = Polyline.extend({
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint: function (p) {
-		var inside = false,
+		const inside = false,
 		    part, p1, p2, i, j, k, len, len2;
 
 		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
