@@ -18,7 +18,6 @@
     ],
     "rules": {
         "@typescript-eslint/restrict-plus-operands": "error",
-        "@typescript-eslint/rule-name": "error",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "semi": ["error", "always"],
         "quotes": ["error", "double"]

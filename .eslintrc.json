@@ -17,7 +17,6 @@
         "@typescript-eslint"
     ],
     "rules": {
-         "@typescript-eslint/rule-name": "error",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/restrict-plus-operands": "error"
     },
