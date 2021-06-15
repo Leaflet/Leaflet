@@ -747,10 +747,12 @@ export const Map = Evented.extend({
 			delete this._container._leaflet_id;
 			delete this._containerId;
 		} catch (e) {
-			/*eslint-disable */
+if(e instanceof Error){
+				/*eslint-disable */
 			this._container._leaflet_id = undefined;
 			/* eslint-enable */
 			this._containerId = undefined;
+}
 		}
 
 		if (this._locationWatchId !== undefined) {

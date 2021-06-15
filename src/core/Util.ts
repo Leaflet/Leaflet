@@ -9,7 +9,7 @@
 export function extend(dest) {
 	const i, j, len, src;
 
-	for (j = 1, len = arguments.length; j < len; j++) {
+	for (let j in arguments.length) {
 		src = arguments[j];
 		for (i in src) {
 			dest[i] = src[i];
@@ -20,7 +20,7 @@ export function extend(dest) {
 
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export var create = Object.create || (function () {
+export const create = Object.create || (function () {
 	function F() {}
 	return function (proto) {
 		F.prototype = proto;
@@ -47,7 +47,7 @@ export function bind(fn, obj) {
 
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
-export var lastId = 0;
+export const lastId = 0;
 
 // @function stamp(obj: Object): Number
 // Returns the unique ID of an object, assigning it one if it doesn't have it.
@@ -133,7 +133,7 @@ export function setOptions(obj, options) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
-	for (var i in options) {
+	for (let i in options) {
 		obj.options[i] = options[i];
 	}
 	return obj.options;
@@ -145,14 +145,14 @@ export function setOptions(obj, options) {
 // be appended at the end. If `uppercase` is `true`, the parameter names will
 // be uppercased (e.g. `'?A=foo&B=bar'`)
 export function getParamString(obj, existingUrl, uppercase) {
-	var params = [];
-	for (var i in obj) {
+	const params = [];
+	for (const i in obj) {
 		params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
 	}
 	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 }
 
-var templateRe = /\{ *([\w_ -]+) *\}/g;
+const templateRe = /\{ *([\w_ -]+) *\}/g;
 
 // @function template(str: String, data: Object): String
 // Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
@@ -161,7 +161,7 @@ var templateRe = /\{ *([\w_ -]+) *\}/g;
 // data values — they will be evaluated passing `data` as an argument.
 export function template(str, data) {
 	return str.replace(templateRe, function (str, key) {
-		var value = data[key];
+		const value = data[key];
 
 		if (value === undefined) {
 			throw new Error('No value provided for variable ' + str);
@@ -175,14 +175,14 @@ export function template(str, data) {
 
 // @function isArray(obj): Boolean
 // Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export var isArray = Array.isArray || function (obj) {
+export const isArray = Array.isArray || function (obj) {
 	return (Object.prototype.toString.call(obj) === '[object Array]');
 };
 
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 export function indexOf(array, el) {
-	for (var i = 0; i < array.length; i++) {
+	for (let i in array.length) {
 		if (array[i] === el) { return i; }
 	}
 	return -1;
@@ -192,7 +192,7 @@ export function indexOf(array, el) {
 // Data URI string containing a base64-encoded empty GIF image.
 // Used as a hack to free memory from unused images on WebKit-powered
 // mobile devices (by setting image `src` to this string).
-export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 // inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
@@ -200,19 +200,19 @@ function getPrefixed(name) {
 	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
 }
 
-var lastTime = 0;
+const lastTime = 0;
 
 // fallback for IE 7-8
 function timeoutDefer(fn) {
-	var time = +new Date(),
+	const time = +new Date(),
 	    timeToCall = Math.max(0, 16 - (time - lastTime));
 
 	lastTime = time + timeToCall;
 	return window.setTimeout(fn, timeToCall);
 }
 
-export var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+export const requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
+export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
 		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number

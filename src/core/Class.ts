@@ -116,7 +116,7 @@ function checkDeprecatedMixinEvents(includes) {
 
 	includes = Util.isArray(includes) ? includes : [includes];
 
-	for (let i = 0; i < includes.length; i++) {
+	for (let i in includes.length) {
 		if (includes[i] === L.Mixin.Events) {
 			console.warn('Deprecated include of L.Mixin.Events: ' +
 				'this property will be removed in future releases, ' +
