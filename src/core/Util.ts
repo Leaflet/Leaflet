@@ -32,13 +32,13 @@ export const create = Object.create || (function () {
 // Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 // Has a `L.bind()` shortcut.
 export function bind(fn, obj) {
-	var slice = Array.prototype.slice;
+	const slice = Array.prototype.slice;
 
 	if (fn.bind) {
 		return fn.bind.apply(fn, slice.call(arguments, 1));
 	}
 
-	var args = slice.call(arguments, 2);
+	const args = slice.call(arguments, 2);
 
 	return function () {
 		return fn.apply(obj, args.length ? args.concat(slice.call(arguments)) : arguments);
@@ -66,7 +66,7 @@ export function stamp(obj) {
 // function, followed by any arguments passed when invoking the bound function.
 // Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
-	var lock, args, wrapperFn, later;
+	const lock, args, wrapperFn, later;
 
 	later = function () {
 		// reset lock and call if queued
@@ -98,7 +98,7 @@ export function throttle(fn, time, context) {
 // `range[0]` and `range[1]`. The returned value will be always smaller than
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
-	var max = range[1],
+	const max = range[1],
 	    min = range[0],
 	    d = max - min;
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
@@ -111,7 +111,7 @@ export function falseFn() { return false; }
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
 export function formatNum(num, digits) {
-	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
+	const pow = Math.pow(10, (digits === undefined ? 6 : digits));
 	return Math.round(num * pow) / pow;
 }
 

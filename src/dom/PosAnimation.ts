@@ -20,7 +20,7 @@ import * as DomUtil from './DomUtil';
  *
  */
 
-export var PosAnimation = Evented.extend({
+export const PosAnimation = Evented.extend({
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
@@ -62,7 +62,7 @@ export var PosAnimation = Evented.extend({
 	},
 
 	_step: function (round) {
-		var elapsed = (+new Date()) - this._startTime,
+		const elapsed = (+new Date()) - this._startTime,
 		    duration = this._duration * 1000;
 
 		if (elapsed < duration) {
@@ -74,7 +74,7 @@ export var PosAnimation = Evented.extend({
 	},
 
 	_runFrame: function (progress, round) {
-		var pos = this._startPos.add(this._offset.multiplyBy(progress));
+		const pos = this._startPos.add(this._offset.multiplyBy(progress));
 		if (round) {
 			pos._round();
 		}

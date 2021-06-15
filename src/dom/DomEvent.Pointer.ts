@@ -7,50 +7,50 @@ import * as Browser from '../core/Browser';
  */
 
 
-var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
-var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
-var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
-var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
+const POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
+const POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
+const POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
+const POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
 
-var _pointers = {};
-var _pointerDocListener = false;
+const _pointers = {};
+const _pointerDocListener = false;
 
 // Provides a touch events wrapper for (ms)pointer events.
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
 export function addPointerListener(obj, type, handler, id) {
 	if (type === 'touchstart') {
-		_addPointerStart(obj, handler, id);
+		return _addPointerStart(obj, handler, id);
 
 	} else if (type === 'touchmove') {
-		_addPointerMove(obj, handler, id);
+		return _addPointerMove(obj, handler, id);
 
 	} else if (type === 'touchend') {
-		_addPointerEnd(obj, handler, id);
+		return _addPointerEnd(obj, handler, id);
 	}
 
-	return this;
+	return;
 }
 
 export function removePointerListener(obj, type, id) {
-	var handler = obj['_leaflet_' + type + id];
+	const handler = obj['_leaflet_' + type + id];
 
 	if (type === 'touchstart') {
-		obj.removeEventListener(POINTER_DOWN, handler, false);
+		return obj.removeEventListener(POINTER_DOWN, handler, false);
 
 	} else if (type === 'touchmove') {
-		obj.removeEventListener(POINTER_MOVE, handler, false);
+		return obj.removeEventListener(POINTER_MOVE, handler, false);
 
 	} else if (type === 'touchend') {
 		obj.removeEventListener(POINTER_UP, handler, false);
-		obj.removeEventListener(POINTER_CANCEL, handler, false);
+		return obj.removeEventListener(POINTER_CANCEL, handler, false);
 	}
 
-	return this;
+	return;
 }
 
 function _addPointerStart(obj, handler, id) {
-	var onDown = Util.bind(function (e) {
+	const onDown = Util.bind(function (e) {
 		// IE10 specific: MsTouch needs preventDefault. See #2000
 		if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
 			DomEvent.preventDefault(e);
@@ -99,7 +99,7 @@ function _handlePointer(e, handler) {
 }
 
 function _addPointerMove(obj, handler, id) {
-	var onMove = function (e) {
+	const onMove = function (e) {
 		// don't fire touch moves when mouse isn't down
 		if ((e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) && e.buttons === 0) {
 			return;
@@ -113,7 +113,7 @@ function _addPointerMove(obj, handler, id) {
 }
 
 function _addPointerEnd(obj, handler, id) {
-	var onUp = function (e) {
+	const onUp = function (e) {
 		_handlePointer(e, handler);
 	};
 

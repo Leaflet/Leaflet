@@ -21,14 +21,14 @@ import {Point} from '../geometry/Point';
  * ```
  */
 
-var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
-var END = {
+const START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
+const END = {
 	mousedown: 'mouseup',
 	touchstart: 'touchend',
 	pointerdown: 'touchend',
 	MSPointerDown: 'touchend'
 };
-var MOVE = {
+const MOVE = {
 	mousedown: 'mousemove',
 	touchstart: 'touchmove',
 	pointerdown: 'touchmove',
@@ -36,7 +36,7 @@ var MOVE = {
 };
 
 
-export var Draggable = Evented.extend({
+export const Draggable = Evented.extend({
 
 	options: {
 		// @section
@@ -112,7 +112,7 @@ export var Draggable = Evented.extend({
 		// Fired when a drag is about to start.
 		this.fire('down');
 
-		var first = e.touches ? e.touches[0] : e,
+		const first = e.touches ? e.touches[0] : e,
 		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
 		this._startPoint = new Point(first.clientX, first.clientY);
@@ -137,7 +137,7 @@ export var Draggable = Evented.extend({
 			return;
 		}
 
-		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+		const first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
@@ -179,7 +179,7 @@ export var Draggable = Evented.extend({
 	},
 
 	_updatePosition: function () {
-		var e = {originalEvent: this._lastEvent};
+		const e = {originalEvent: this._lastEvent};
 
 		// @event predrag: Event
 		// Fired continuously during dragging *before* each corresponding
@@ -210,7 +210,7 @@ export var Draggable = Evented.extend({
 			this._lastTarget = null;
 		}
 
-		for (var i in MOVE) {
+		for (let i in MOVE) {
 			DomEvent.off(document, MOVE[i], this._onMove, this);
 			DomEvent.off(document, END[i], this._onUp, this);
 		}
