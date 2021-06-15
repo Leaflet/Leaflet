@@ -1586,11 +1586,11 @@ export const Map = Evented.extend({
 
 	_createAnimProxy: function () {
 
-		var proxy = this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+	    const proxy = this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
 		this._panes.mapPane.appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
-			var prop = DomUtil.TRANSFORM,
+			const prop = DomUtil.TRANSFORM,
 			    transform = this._proxy.style[prop];
 
 			DomUtil.setTransform(this._proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
@@ -1613,7 +1613,7 @@ export const Map = Evented.extend({
 	},
 
 	_animMoveEnd: function () {
-		var c = this.getCenter(),
+		const c = this.getCenter(),
 		    z = this.getZoom();
 		DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
 	},
@@ -1639,7 +1639,7 @@ export const Map = Evented.extend({
 		        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center
-		var scale = this.getZoomScale(zoom),
+		const scale = this.getZoomScale(zoom),
 		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
 
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced

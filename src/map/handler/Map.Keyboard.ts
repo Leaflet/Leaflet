@@ -21,7 +21,7 @@ Map.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export var Keyboard = Handler.extend({
+export const Keyboard = Handler.extend({
 
 	keyCodes: {
 		left:    [37],
@@ -40,7 +40,7 @@ export var Keyboard = Handler.extend({
 	},
 
 	addHooks: function () {
-		var container = this._map._container;
+		const container = this._map._container;
 
 		// make the container focusable by tabbing
 		if (container.tabIndex <= 0) {
@@ -98,33 +98,37 @@ export var Keyboard = Handler.extend({
 	},
 
 	_setPanDelta: function (panDelta) {
-		var keys = this._panKeys = {},
-		    codes = this.keyCodes,
-		    i, len;
+		const keys = this._panKeys = {};
+		const codes = this.keyCodes;
+		// const i;
+		// const len;
 
-		for (i = 0, len = codes.left.length; i < len; i++) {
+		for (let i in codes.left.length) {
+
 			keys[codes.left[i]] = [-1 * panDelta, 0];
+
 		}
-		for (i = 0, len = codes.right.length; i < len; i++) {
+		for (let i in codes.right.length) {
 			keys[codes.right[i]] = [panDelta, 0];
 		}
-		for (i = 0, len = codes.down.length; i < len; i++) {
+		for (let i in codes.down.length) {
 			keys[codes.down[i]] = [0, panDelta];
 		}
-		for (i = 0, len = codes.up.length; i < len; i++) {
+		for (let i in codes.up.length) {
 			keys[codes.up[i]] = [0, -1 * panDelta];
 		}
 	},
 
 	_setZoomDelta: function (zoomDelta) {
-		var keys = this._zoomKeys = {},
-		    codes = this.keyCodes,
-		    i, len;
+		const keys = this._zoomKeys = {};
+		const codes = this.keyCodes;
+		// const i;
+	    // const len;
 
-		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
+		for (let i in codes.zoomIn.length) {
 			keys[codes.zoomIn[i]] = zoomDelta;
 		}
-		for (i = 0, len = codes.zoomOut.length; i < len; i++) {
+		for (let i in codes.zoomOut.length) {
 			keys[codes.zoomOut[i]] = -zoomDelta;
 		}
 	},
@@ -137,10 +141,10 @@ export var Keyboard = Handler.extend({
 		off(document, 'keydown', this._onKeyDown, this);
 	},
 
-	_onKeyDown: function (e) {
+	_onKeyDown: function (e:KeyboardEvent) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
-		var key = e.keyCode,
+		const key = e.code,
 		    map = this._map,
 		    offset;
 

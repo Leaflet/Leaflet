@@ -9,7 +9,7 @@ import {Class} from './Class';
 // @aka L.Handler
 // Abstract class for map interaction handlers
 
-export var Handler = Class.extend({
+export const Handler = Class.extend({
 	initialize: function (map) {
 		this._map = map;
 	},
@@ -46,12 +46,16 @@ export var Handler = Class.extend({
 	// Called when the handler is enabled, should add event hooks.
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
-});
 
-// @section There is static function which can be called without instantiating L.Handler:
+	// @section There is static function which can be called without instantiating L.Handler:
 // @function addTo(map: Map, name: String): this
 // Adds a new Handler to the given map with the given name.
-Handler.addTo = function (map, name) {
-	map.addHandler(name, this);
-	return this;
-};
+
+// addTo : function (map, name) {
+	// map.addHandler(name, this);
+	// return this;
+// 	};
+	
+});
+
+

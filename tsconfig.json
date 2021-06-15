@@ -6,6 +6,7 @@
     "**/*.tsconfig.eslint.json"
   ],
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "noImplicitThis": true,
     "baseUrl": "./",
     "allowJs": true,
