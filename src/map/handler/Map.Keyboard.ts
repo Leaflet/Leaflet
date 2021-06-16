@@ -77,7 +77,7 @@ export const Keyboard = Handler.extend({
 	_onMouseDown: function () {
 		if (this._focused) { return; }
 
-		var body = document.body,
+		const body = document.body,
 		    docEl = document.documentElement,
 		    top = body.scrollTop || docEl.scrollTop,
 		    left = body.scrollLeft || docEl.scrollLeft;

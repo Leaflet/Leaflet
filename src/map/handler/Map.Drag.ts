@@ -53,10 +53,10 @@ Map.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-export var Drag = Handler.extend({
+export const Drag = Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
-			var map = this._map;
+			const map = this._map;
 
 			this._draggable = new Draggable(map._mapPane, map._container);
 
@@ -95,11 +95,11 @@ export var Drag = Handler.extend({
 	},
 
 	_onDragStart: function () {
-		var map = this._map;
+		const map = this._map;
 
 		map._stop();
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
-			var bounds = latLngBounds(this._map.options.maxBounds);
+			const bounds = latLngBounds(this._map.options.maxBounds);
 
 			this._offsetLimit = toBounds(
 				this._map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
@@ -123,7 +123,7 @@ export var Drag = Handler.extend({
 
 	_onDrag: function (e) {
 		if (this._map.options.inertia) {
-			var time = this._lastTime = +new Date(),
+			const time = this._lastTime = +new Date(),
 			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
@@ -145,7 +145,7 @@ export var Drag = Handler.extend({
 	},
 
 	_onZoomEnd: function () {
-		var pxCenter = this._map.getSize().divideBy(2),
+		const pxCenter = this._map.getSize().divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
@@ -159,9 +159,9 @@ export var Drag = Handler.extend({
 	_onPreDragLimit: function () {
 		if (!this._viscosity || !this._offsetLimit) { return; }
 
-		var offset = this._draggable._newPos.subtract(this._draggable._startPos);
+		const offset = this._draggable._newPos.subtract(this._draggable._startPos);
 
-		var limit = this._offsetLimit;
+		const limit = this._offsetLimit;
 		if (offset.x < limit.min.x) { offset.x = this._viscousLimit(offset.x, limit.min.x); }
 		if (offset.y < limit.min.y) { offset.y = this._viscousLimit(offset.y, limit.min.y); }
 		if (offset.x > limit.max.x) { offset.x = this._viscousLimit(offset.x, limit.max.x); }
@@ -172,7 +172,7 @@ export var Drag = Handler.extend({
 
 	_onPreDragWrap: function () {
 		// TODO refactor to be able to adjust map pane position after zoom
-		var worldWidth = this._worldWidth,
+		const worldWidth = this._worldWidth,
 		    halfWidth = Math.round(worldWidth / 2),
 		    dx = this._initialWorldOffset,
 		    x = this._draggable._newPos.x,
@@ -185,7 +185,7 @@ export var Drag = Handler.extend({
 	},
 
 	_onDragEnd: function (e) {
-		var map = this._map,
+		const map = this._map,
 		    options = map.options,
 
 		    noInertia = !options.inertia || this._times.length < 2;
@@ -198,7 +198,7 @@ export var Drag = Handler.extend({
 		} else {
 			this._prunePositions(+new Date());
 
-			var direction = this._lastPos.subtract(this._positions[0]),
+			const direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime - this._times[0]) / 1000,
 			    ease = options.easeLinearity,
 
