@@ -21,7 +21,7 @@
 		if (window.TouchEvent) { window.ontouchstart = function(){} };
 	</script>
 
-	<script src="../dist/leaflet-src.js"></script>
+	<script src="../dist/leaflet-src.ts"></script>
 
 	<script class="mocha-init">
 		mocha.setup('bdd');
@@ -30,71 +30,71 @@
 
 	<!-- spec files -->
 
-	<script src="suites/SpecHelper.js"></script>
+	<script src="suites/SpecHelper.ts"></script>
 
 	<!-- /control -->
-	<script src="suites/control/ControlSpec.js"></script>
-	<script src="suites/control/Control.LayersSpec.js"></script>
-	<script src="suites/control/Control.ScaleSpec.js"></script>
-	<script src="suites/control/Control.AttributionSpec.js"></script>
+	<script src="suites/control/ControlSpec.ts"></script>
+	<script src="suites/control/Control.LayersSpec.ts"></script>
+	<script src="suites/control/Control.ScaleSpec.ts"></script>
+	<script src="suites/control/Control.AttributionSpec.ts"></script>
 
 	<!-- /core -->
-	<script src="suites/core/UtilSpec.js"></script>
-	<script src="suites/core/ClassSpec.js"></script>
-	<script src="suites/core/EventsSpec.js"></script>
+	<script src="suites/core/UtilSpec.ts"></script>
+	<script src="suites/core/ClassSpec.ts"></script>
+	<script src="suites/core/EventsSpec.ts"></script>
 
 	<!-- /geometry -->
-	<script src="suites/geometry/PointSpec.js"></script>
-	<script src="suites/geometry/BoundsSpec.js"></script>
-	<script src="suites/geometry/TransformationSpec.js"></script>
-	<script src="suites/geometry/LineUtilSpec.js"></script>
-	<script src="suites/geometry/PolyUtilSpec.js"></script>
+	<script src="suites/geometry/PointSpec.ts"></script>
+	<script src="suites/geometry/BoundsSpec.ts"></script>
+	<script src="suites/geometry/TransformationSpec.ts"></script>
+	<script src="suites/geometry/LineUtilSpec.ts"></script>
+	<script src="suites/geometry/PolyUtilSpec.ts"></script>
 
 	<!-- /geo -->
-	<script src="suites/geo/LatLngSpec.js"></script>
-	<script src="suites/geo/LatLngBoundsSpec.js"></script>
-	<script src="suites/geo/ProjectionSpec.js"></script>
+	<script src="suites/geo/LatLngSpec.ts"></script>
+	<script src="suites/geo/LatLngBoundsSpec.ts"></script>
+	<script src="suites/geo/ProjectionSpec.ts"></script>
 
 	<!-- /dom -->
-	<script src="suites/dom/DomEventSpec.js"></script>
-	<script src="suites/dom/DomUtilSpec.js"></script>
+	<script src="suites/dom/DomEventSpec.ts"></script>
+	<script src="suites/dom/DomUtilSpec.ts"></script>
 
 	<!-- /layer -->
-	<script src="suites/layer/FeatureGroupSpec.js"></script>
-	<script src="suites/layer/GeoJSONSpec.js"></script>
-	<script src="suites/layer/ImageOverlaySpec.js"></script>
-	<script src="suites/layer/LayerGroupSpec.js"></script>
-	<script src="suites/layer/PopupSpec.js"></script>
-	<script src="suites/layer/TooltipSpec.js"></script>
+	<script src="suites/layer/FeatureGroupSpec.ts"></script>
+	<script src="suites/layer/GeoJSONSpec.ts"></script>
+	<script src="suites/layer/ImageOverlaySpec.ts"></script>
+	<script src="suites/layer/LayerGroupSpec.ts"></script>
+	<script src="suites/layer/PopupSpec.ts"></script>
+	<script src="suites/layer/TooltipSpec.ts"></script>
 
 	<!-- /layer/tile -->
-	<script src="suites/layer/tile/GridLayerSpec.js"></script>
-	<script src="suites/layer/tile/TileLayerSpec.js"></script>
+	<script src="suites/layer/tile/GridLayerSpec.ts"></script>
+	<script src="suites/layer/tile/TileLayerSpec.ts"></script>
 
 	<!-- /layer/marker/ -->
-	<script src="suites/layer/marker/MarkerSpec.js"></script>
-	<script src="suites/layer/marker/Marker.DragSpec.js"></script>
-	<script src="suites/layer/marker/Icon.DefaultSpec.js"></script>
+	<script src="suites/layer/marker/MarkerSpec.ts"></script>
+	<script src="suites/layer/marker/Marker.DragSpec.ts"></script>
+	<script src="suites/layer/marker/Icon.DefaultSpec.ts"></script>
 
 	<!-- /layer/vector/ -->
-	<script src="suites/layer/vector/CircleSpec.js"></script>
-	<script src="suites/layer/vector/CircleMarkerSpec.js"></script>
-	<script src="suites/layer/vector/PathSpec.js"></script>
-	<script src="suites/layer/vector/PolygonSpec.js"></script>
-	<script src="suites/layer/vector/PolylineSpec.js"></script>
-	<script src="suites/layer/vector/PolylineGeometrySpec.js"></script>
-	<script src="suites/layer/vector/CanvasSpec.js"></script>
+	<script src="suites/layer/vector/CircleSpec.ts"></script>
+	<script src="suites/layer/vector/CircleMarkerSpec.ts"></script>
+	<script src="suites/layer/vector/PathSpec.ts"></script>
+	<script src="suites/layer/vector/PolygonSpec.ts"></script>
+	<script src="suites/layer/vector/PolylineSpec.ts"></script>
+	<script src="suites/layer/vector/PolylineGeometrySpec.ts"></script>
+	<script src="suites/layer/vector/CanvasSpec.ts"></script>
 
 	<!-- /map -->
-	<script src="suites/map/MapSpec.js"></script>
+	<script src="suites/map/MapSpec.ts"></script>
 
 	<!-- /map/handler -->
-	<script src="suites/map/handler/Map.DragSpec.js"></script>
-	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
-	<script src="suites/map/handler/Map.KeyboardSpec.js"></script>
+	<script src="suites/map/handler/Map.DragSpec.ts"></script>
+	<script src="suites/map/handler/Map.TouchZoomSpec.ts"></script>
+	<script src="suites/map/handler/Map.KeyboardSpec.ts"></script>
 
 	<!-- /geo/crs -->
-	<script src="suites/geo/CRSSpec.js"></script>
+	<script src="suites/geo/CRSSpec.ts"></script>
 
 	<script class="mocha-exec">
 		(window.mochaPhantomJS || window.mocha).run();

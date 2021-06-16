@@ -6,6 +6,10 @@
     "**/*.tsconfig.eslint.json"
   ],
   "compilerOptions": {
+    "paths": {
+      "jquery": ["node_modules/jquery/dist/jquery"],
+      "*": ["*", "generated/*"]
+    },
     "allowSyntheticDefaultImports": true,
     "noImplicitThis": true,
     "baseUrl": "./",

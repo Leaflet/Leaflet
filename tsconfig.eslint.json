@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "@typescript-eslint/restrict-plus-operands": "error",
+  "compileOnSave": false,
   "include": [
     "dist/**/*ts",
     "build/**/*ts",
@@ -11,5 +12,32 @@
     "typings/**/*.ts",
     "src/**/*.js",
     "babel.config.json"
-  ]
+  ],
+  "compileOptions": {
+    "paths": {
+      "jquery": ["node_modules/jquery/dist/jquery"],
+      "*": ["*", "generated/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "noImplicitThis": true,
+    "baseUrl": "./",
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "es2020",
+    "lib": ["es2018", "dom"]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

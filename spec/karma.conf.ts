@@ -1,7 +1,7 @@
 // import { json } from 'rollup-plugin-json'; //deprecated module
 import json from '@rollup/plugin-json';
 import {phantom} from "../src/core/Browser";
-
+//string output outro
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
 	window.L = oldL;
@@ -26,12 +26,12 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	const files = [
-		"spec/before.js",
-		"src/Leaflet.js",
-		"spec/after.js",
+		"spec/before.ts",
+		"src/Leaflet.ts",
+		"spec/after.ts",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
-		"spec/suites/SpecHelper.js",
+		"spec/suites/SpecHelper.ts",
 		"spec/suites/**/*.js",
 		"dist/*.css",
 		{pattern: "dist/images/*.png", included: false, serve: true}

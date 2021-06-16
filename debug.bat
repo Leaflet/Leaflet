@@ -1,0 +1,1 @@
+kubectl exec leaflet --date
