@@ -23,9 +23,9 @@ const banner = `/* @preserve
  * (c) 2010-2021 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 `;
-
-// const outro =
-`var oldL = window.L;
+// string output
+ const outro =
+`const oldL = window.L;
 exports.noConflict = function() {
 	window.L = oldL;
 	return this;
@@ -33,7 +33,7 @@ exports.noConflict = function() {
 
 // Always export us to window global (see #2364)
 window.L = exports;`
-	// ;
+	 ;
 
 export default {
 	input: 'src/Leaflet.ts',
