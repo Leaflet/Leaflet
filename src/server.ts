@@ -6,8 +6,8 @@ import express from 'express';
 // const express = require('express');
 
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+declare const PORT = 8080;
+declare const HOST = '0.0.0.0';
 
 // App
 const app = express();

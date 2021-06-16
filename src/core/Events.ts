@@ -292,4 +292,4 @@ Events.fireEvent = Events.fire;
 // Alias to [`listens(…)`](#evented-listens)
 Events.hasEventListeners = Events.listens;
 
-export var Evented = Class.extend(Events);
+export const Evented = Class.extend(Events);
