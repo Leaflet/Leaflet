@@ -5,8 +5,8 @@ const ssri = require('ssri');
 const fs   = require('fs');
 const version = require('../package.json').version;
 
-const integritySrc = ssri.fromData(fs.readFileSync('dist/leaflet-src.js'));
-const integrityUglified = ssri.fromData(fs.readFileSync('dist/leaflet.js'));
+const integritySrc = ssri.fromData(fs.readFileSync('dist/leaflet-src.ts'));
+const integrityUglified = ssri.fromData(fs.readFileSync('dist/leaflet.ts'));
 const integrityCss = ssri.fromData(fs.readFileSync('dist/leaflet.css'));
 
 

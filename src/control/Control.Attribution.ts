@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-export var Attribution = Control.extend({
+export const Attribution = Control.extend({
 	// @section
 	// @aka Control.Attribution options
 	options: {
@@ -36,7 +36,7 @@ export var Attribution = Control.extend({
 		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
-		for (var i in map._layers) {
+		for (const i in map._layers) {
 			if (map._layers[i].getAttribution) {
 				this.addAttribution(map._layers[i].getAttribution());
 			}
@@ -86,15 +86,15 @@ export var Attribution = Control.extend({
 	_update: function () {
 		if (!this._map) { return; }
 
-		var attribs = [];
+		const attribs = [];
 
-		for (var i in this._attributions) {
+		for (const i in this._attributions) {
 			if (this._attributions[i]) {
 				attribs.push(i);
 			}
 		}
 
-		var prefixAndAttribs = [];
+		const prefixAndAttribs = [];
 
 		if (this.options.prefix) {
 			prefixAndAttribs.push(this.options.prefix);
@@ -124,6 +124,6 @@ Map.addInitHook(function () {
 // @namespace Control.Attribution
 // @factory L.control.attribution(options: Control.Attribution options)
 // Creates an attribution control.
-export var attribution = function (options) {
+export const attribution = function (options) {
 	return new Attribution(options);
 };
