@@ -1,11 +1,11 @@
-var packageDef = require('../package.json');
+const packageDef = require('../package.json');
 
 function buildDocs() {
 
 	console.log('Building Leaflet documentation with Leafdoc ...');
 
-	var LeafDoc = require('leafdoc');
-	var doc = new LeafDoc({
+	const LeafDoc = require('leafdoc');
+	const doc = new LeafDoc({
 		templateDir: 'build/leafdoc-templates',
 		showInheritancesWhenEmpty: true,
 		leadingCharacter: '@'
@@ -26,10 +26,10 @@ function buildDocs() {
 	doc.addDir('src');
 	doc.addFile('build/docs-misc.leafdoc', false);
 
-	var out = doc.outputStr();
-	var path = 'dist/reference-' + packageDef.version + '.html';
+	const out = doc.outputStr();
+	const path = 'dist/reference-' + packageDef.version + '.html';
 
-	var fs = require('fs');
+	const fs = require('fs');
 
 	fs.writeFileSync(path, out);
 	console.log('Successfully built ' + path);

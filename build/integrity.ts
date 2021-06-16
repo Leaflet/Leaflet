@@ -1,9 +1,9 @@
 // This script calculates the integrity hashes of the files in dist/ , and
 // **overwrites** the values in the documentation.
 
-var ssri = require('ssri');
-var fs   = require('fs');
-var version = require('../package.json').version;
+const ssri = require('ssri');
+const fs   = require('fs');
+const version = require('../package.json').version;
 
 const integritySrc = ssri.fromData(fs.readFileSync('dist/leaflet-src.js'));
 const integrityUglified = ssri.fromData(fs.readFileSync('dist/leaflet.js'));
@@ -15,7 +15,7 @@ console.log('dist/leaflet-src.js: ', integritySrc.toString());
 console.log('dist/leaflet.js:     ', integrityUglified.toString());
 console.log('dist/leaflet.css:    ', integrityCss.toString());
 
-var docConfig = fs.readFileSync('docs/_config.yml').toString();
+const docConfig = fs.readFileSync('docs/_config.yml').toString();
 
 docConfig = docConfig.
 	replace(/latest_leaflet_version:.*/,  'latest_leaflet_version: ' + version).
