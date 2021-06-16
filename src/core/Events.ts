@@ -26,7 +26,7 @@ import * as Util from './Util';
  * ```
  */
 
-export var Events = {
+export const Events = {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -38,7 +38,7 @@ export var Events = {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (var type in types) {
+			for (const type in types) {
 				// we don't process space-separated events here for performance;
 				// it's a hot path since Layer uses the on(obj) syntax
 				this._on(type, types[type], fn);
@@ -48,7 +48,7 @@ export var Events = {
 			// types can be a string of space-separated words
 			types = Util.splitWords(types);
 
-			for (var i = 0, len = types.length; i < len; i++) {
+			for (let i in types.length) {
 				this._on(types[i], fn, context);
 			}
 		}
@@ -74,14 +74,14 @@ export var Events = {
 			delete this._events;
 
 		} else if (typeof types === 'object') {
-			for (var type in types) {
+			for (const type in types) {
 				this._off(type, types[type], fn);
 			}
 
 		} else {
 			types = Util.splitWords(types);
 
-			for (var i = 0, len = types.length; i < len; i++) {
+			for (const i = 0, len = types.length; i < len; i++) {
 				this._off(types[i], fn, context);
 			}
 		}
@@ -94,7 +94,7 @@ export var Events = {
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
-		var typeListeners = this._events[type];
+		const typeListeners = this._events[type];
 		if (!typeListeners) {
 			typeListeners = [];
 			this._events[type] = typeListeners;
@@ -104,11 +104,11 @@ export var Events = {
 			// Less memory footprint.
 			context = undefined;
 		}
-		var newListener = {fn: fn, ctx: context},
+		const newListener = {fn: fn, ctx: context},
 		    listeners = typeListeners;
 
 		// check if fn already there
-		for (var i = 0, len = listeners.length; i < len; i++) {
+		for (const i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn && listeners[i].ctx === context) {
 				return;
 			}
@@ -118,7 +118,7 @@ export var Events = {
 	},
 
 	_off: function (type, fn, context) {
-		var listeners,
+		const listeners,
 		    i,
 		    len;
 
@@ -148,7 +148,7 @@ export var Events = {
 
 			// find fn and remove it
 			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
+				const l = listeners[i];
 				if (l.ctx !== context) { continue; }
 				if (l.fn === fn) {
 
@@ -174,19 +174,19 @@ export var Events = {
 	fire: function (type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		var event = Util.extend({}, data, {
+		const event = Util.extend({}, data, {
 			type: type,
 			target: this,
 			sourceTarget: data && data.sourceTarget || this
 		});
 
 		if (this._events) {
-			var listeners = this._events[type];
+			const listeners = this._events[type];
 
 			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
-				for (var i = 0, len = listeners.length; i < len; i++) {
-					var l = listeners[i];
+				for (const i = 0, len = listeners.length; i < len; i++) {
+					const l = listeners[i];
 					l.fn.call(l.ctx || this, event);
 				}
 
@@ -205,12 +205,12 @@ export var Events = {
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
-		var listeners = this._events && this._events[type];
+		const listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
-			for (var id in this._eventParents) {
+			for (const id in this._eventParents) {
 				if (this._eventParents[id].listens(type, propagate)) { return true; }
 			}
 		}
@@ -222,13 +222,13 @@ export var Events = {
 	once: function (types, fn, context) {
 
 		if (typeof types === 'object') {
-			for (var type in types) {
+			for (const type in types) {
 				this.once(type, types[type], fn);
 			}
 			return this;
 		}
 
-		var handler = Util.bind(function () {
+		const handler = Util.bind(function () {
 			this
 			    .off(types, fn, context)
 			    .off(types, handler, context);
@@ -258,7 +258,7 @@ export var Events = {
 	},
 
 	_propagateEvent: function (e) {
-		for (var id in this._eventParents) {
+		for (const id in this._eventParents) {
 			this._eventParents[id].fire(e.type, Util.extend({
 				layer: e.target,
 				propagatedFrom: e.target
