@@ -7,7 +7,7 @@ import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 import {vmlMixin, vmlCreate} from './SVG.VML';
 
-export var create = Browser.vml ? vmlCreate : svgCreate;
+export const create = Browser.vml ? vmlCreate : svgCreate;
 
 /*
  * @class SVG
@@ -30,7 +30,7 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * Use SVG by default for all paths in the map:
  *
  * ```js
- * var map = L.map('map', {
+ * const map = L.map('map', {
  * 	renderer: L.svg()
  * });
  * ```
@@ -38,17 +38,17 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * Use a SVG renderer with extra padding for specific vector geometries:
  *
  * ```js
- * var map = L.map('map');
- * var myRenderer = L.svg({ padding: 0.5 });
- * var line = L.polyline( coordinates, { renderer: myRenderer } );
- * var circle = L.circle( center, { renderer: myRenderer } );
+ * const map = L.map('map');
+ * const myRenderer = L.svg({ padding: 0.5 });
+ * const line = L.polyline( coordinates, { renderer: myRenderer } );
+ * const circle = L.circle( center, { renderer: myRenderer } );
  * ```
  */
 
-export var SVG = Renderer.extend({
+export const SVG = Renderer.extend({
 
 	getEvents: function () {
-		var events = Renderer.prototype.getEvents.call(this);
+		const events = Renderer.prototype.getEvents.call(this);
 		events.zoomstart = this._onZoomStart;
 		return events;
 	},
@@ -83,7 +83,7 @@ export var SVG = Renderer.extend({
 
 		Renderer.prototype._update.call(this);
 
-		var b = this._bounds,
+		const b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
 
@@ -104,7 +104,7 @@ export var SVG = Renderer.extend({
 	// methods below are called by vector layers implementations
 
 	_initPath: function (layer) {
-		var path = layer._path = create('path');
+		const path = layer._path = create('path');
 
 		// @namespace Path
 		// @option className: String = null
@@ -139,7 +139,7 @@ export var SVG = Renderer.extend({
 	},
 
 	_updateStyle: function (layer) {
-		var path = layer._path,
+		const path = layer._path,
 		    options = layer.options;
 
 		if (!path) { return; }
@@ -180,13 +180,13 @@ export var SVG = Renderer.extend({
 	},
 
 	_updateCircle: function (layer) {
-		var p = layer._point,
+		const p = layer._point,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
 		    arc = 'a' + r + ',' + r2 + ' 0 1,0 ';
 
 		// drawing a circle with two half-arcs
-		var d = layer._empty() ? 'M0 0' :
+		const d = layer._empty() ? 'M0 0' :
 			'M' + (p.x - r) + ',' + p.y +
 			arc + (r * 2) + ',0 ' +
 			arc + (-r * 2) + ',0 ';

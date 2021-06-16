@@ -128,7 +128,7 @@ export const BoxZoom = Handler.extend({
 		this._clearDeferredResetState();
 		this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
 
-		var bounds = new LatLngBounds(
+		const bounds = new LatLngBounds(
 		        this._map.containerPointToLatLng(this._startPoint),
 		        this._map.containerPointToLatLng(this._point));
 

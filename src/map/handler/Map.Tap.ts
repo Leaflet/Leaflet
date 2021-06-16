@@ -28,7 +28,7 @@ Map.mergeOptions({
 	tapTolerance: 15
 });
 
-export var Tap = Handler.extend({
+export const Tap = Handler.extend({
 	addHooks: function () {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
@@ -51,7 +51,7 @@ export var Tap = Handler.extend({
 			return;
 		}
 
-		var first = e.touches[0],
+		const first = e.touches[0],
 		    el = first.target;
 
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
@@ -88,7 +88,7 @@ export var Tap = Handler.extend({
 
 		if (this._fireClick && e && e.changedTouches) {
 
-			var first = e.changedTouches[0],
+			const first = e.changedTouches[0],
 			    el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
@@ -109,13 +109,13 @@ export var Tap = Handler.extend({
 	},
 
 	_onMove: function (e) {
-		var first = e.touches[0];
+		const first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 		this._simulateEvent('mousemove', first);
 	},
 
 	_simulateEvent: function (type, e) {
-		var simulatedEvent = document.createEvent('MouseEvents');
+		const simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent._simulated = true;
 		e.target._simulatedClick = true;

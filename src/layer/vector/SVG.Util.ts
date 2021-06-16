@@ -15,10 +15,10 @@ export function svgCreate(name) {
 // Generates a SVG path string for multiple rings, with each ring turning
 // into "M..L..L.." instructions
 export function pointsToPath(rings, closed) {
-	var str = '',
+	const str = '',
 	i, j, len, len2, points, p;
 
-	for (i = 0, len = rings.length; i < len; i++) {
+	for (let i in rings.length) {
 		points = rings[i];
 
 		for (j = 0, len2 = points.length; j < len2; j++) {

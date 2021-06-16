@@ -9,7 +9,7 @@ import {isArray, formatNum} from '../core/Util';
  * @example
  *
  * ```js
- * var point = L.point(200, 300);
+ * const point = L.point(200, 300);
  * ```
  *
  * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:
@@ -162,7 +162,7 @@ Point.prototype = {
 	distanceTo: function (point) {
 		point = toPoint(point);
 
-		var x = point.x - this.x,
+		const x = point.x - this.x,
 		    y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);

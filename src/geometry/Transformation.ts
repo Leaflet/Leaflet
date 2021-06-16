@@ -12,7 +12,7 @@ import * as Util from '../core/Util';
  * @example
  *
  * ```js
- * var transformation = L.transformation(2, 5, -1, 10),
+ * const transformation = L.transformation(2, 5, -1, 10),
  * 	p = L.point(1, 2),
  * 	p2 = transformation.transform(p), //  L.point(7, 8)
  * 	p3 = transformation.untransform(p2); //  L.point(1, 2)

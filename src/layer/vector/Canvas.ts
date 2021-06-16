@@ -22,7 +22,7 @@ import {Bounds} from '../../geometry/Bounds';
  * Use Canvas by default for all paths in the map:
  *
  * ```js
- * var map = L.map('map', {
+ * const map = L.map('map', {
  * 	renderer: L.canvas()
  * });
  * ```
@@ -30,10 +30,10 @@ import {Bounds} from '../../geometry/Bounds';
  * Use a Canvas renderer with extra padding for specific vector geometries:
  *
  * ```js
- * var map = L.map('map');
- * var myRenderer = L.canvas({ padding: 0.5 });
- * var line = L.polyline( coordinates, { renderer: myRenderer } );
- * var circle = L.circle( center, { renderer: myRenderer } );
+ * const map = L.map('map');
+ * const myRenderer = L.canvas({ padding: 0.5 });
+ * const line = L.polyline( coordinates, { renderer: myRenderer } );
+ * const circle = L.circle( center, { renderer: myRenderer } );
  * ```
  */
 
@@ -80,7 +80,7 @@ export const Canvas = Renderer.extend({
 
 		const layer;
 		this._redrawBounds = null;
-		for (var id in this._layers) {
+		for (const id in this._layers) {
 			layer = this._layers[id];
 			layer._update();
 		}

@@ -7,7 +7,7 @@ import {Renderer} from './Renderer';
  */
 
 
-export var vmlCreate = (function () {
+export const vmlCreate = (function () {
 	try {
 		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
 		return function (name) {
@@ -32,7 +32,7 @@ export var vmlCreate = (function () {
  */
 
 // mixin to redefine some SVG methods to handle VML syntax which is similar but with some differences
-export var vmlMixin = {
+export const vmlMixin = {
 
 	_initContainer: function () {
 		this._container = DomUtil.create('div', 'leaflet-vml-container');
@@ -45,7 +45,7 @@ export var vmlMixin = {
 	},
 
 	_initPath: function (layer) {
-		var container = layer._container = vmlCreate('shape');
+		const container = layer._container = vmlCreate('shape');
 
 		DomUtil.addClass(container, 'leaflet-vml-shape ' + (this.options.className || ''));
 
@@ -59,7 +59,7 @@ export var vmlMixin = {
 	},
 
 	_addPath: function (layer) {
-		var container = layer._container;
+		const container = layer._container;
 		this._container.appendChild(container);
 
 		if (layer.options.interactive) {
@@ -68,14 +68,14 @@ export var vmlMixin = {
 	},
 
 	_removePath: function (layer) {
-		var container = layer._container;
+		const container = layer._container;
 		DomUtil.remove(container);
 		layer.removeInteractiveTarget(container);
 		delete this._layers[Util.stamp(layer)];
 	},
 
 	_updateStyle: function (layer) {
-		var stroke = layer._stroke,
+		const stroke = layer._stroke,
 		    fill = layer._fill,
 		    options = layer.options,
 		    container = layer._container;
@@ -122,7 +122,7 @@ export var vmlMixin = {
 	},
 
 	_updateCircle: function (layer) {
-		var p = layer._point.round(),
+		const p = layer._point.round(),
 		    r = Math.round(layer._radius),
 		    r2 = Math.round(layer._radiusY || r);
 

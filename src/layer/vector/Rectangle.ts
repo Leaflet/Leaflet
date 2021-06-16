@@ -16,7 +16,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
  *
  * ```js
  * // define rectangle geographical bounds
- * var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+ * const bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
  *
  * // create an orange rectangle
  * L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
@@ -28,7 +28,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
  */
 
 
-export var Rectangle = Polygon.extend({
+export const Rectangle = Polygon.extend({
 	initialize: function (latLngBounds, options) {
 		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},

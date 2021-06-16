@@ -2,7 +2,7 @@ import * as LineUtil from './LineUtil';
 
 /*
  * @namespace PolyUtil
- * Various utility functions for polygon geometries.
+ * constious utility functions for polygon geometries.
  */
 
 /* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
@@ -12,7 +12,7 @@ import * as LineUtil from './LineUtil';
  * than polyline, so there's a separate method for it.
  */
 export function clipPolygon(points, bounds, round) {
-	var clippedPoints,
+	const clippedPoints,
 	    edges = [1, 4, 2, 8],
 	    i, j, k,
 	    a, b,

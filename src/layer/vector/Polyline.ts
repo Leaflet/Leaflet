@@ -17,13 +17,13 @@ import {Point} from '../../geometry/Point';
  *
  * ```js
  * // create a red polyline from an array of LatLng points
- * var latlngs = [
+ * const latlngs = [
  * 	[45.51, -122.68],
  * 	[37.77, -122.43],
  * 	[34.04, -118.2]
  * ];
  *
- * var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+ * const polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
  *
  * // zoom the map to the polyline
  * map.fitBounds(polyline.getBounds());
@@ -33,7 +33,7 @@ import {Point} from '../../geometry/Point';
  *
  * ```js
  * // create a red polyline from an array of arrays of LatLng points
- * var latlngs = [
+ * const latlngs = [
  * 	[[45.51, -122.68],
  * 	 [37.77, -122.43],
  * 	 [34.04, -118.2]],
@@ -45,7 +45,7 @@ import {Point} from '../../geometry/Point';
  */
 
 
-export var Polyline = Path.extend({
+export const Polyline = Path.extend({
 
 	// @section
 	// @aka Polyline options
@@ -87,19 +87,19 @@ export var Polyline = Path.extend({
 	// @method closestLayerPoint(p: Point): Point
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint: function (p) {
-		var minDistance = Infinity,
+		const minDistance = Infinity,
 		    minPoint = null,
 		    closest = LineUtil._sqClosestPointOnSegment,
 		    p1, p2;
 
-		for (var j = 0, jLen = this._parts.length; j < jLen; j++) {
-			var points = this._parts[j];
+		for (const j = 0, jLen = this._parts.length; j < jLen; j++) {
+			const points = this._parts[j];
 
-			for (var i = 1, len = points.length; i < len; i++) {
+			for (const i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
 
-				var sqDist = closest(p, p1, p2, true);
+				const sqDist = closest(p, p1, p2, true);
 
 				if (sqDist < minDistance) {
 					minDistance = sqDist;
@@ -121,7 +121,7 @@ export var Polyline = Path.extend({
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 
-		var i, halfDist, segDist, dist, p1, p2, ratio,
+		const i, halfDist, segDist, dist, p1, p2, ratio,
 		    points = this._rings[0],
 		    len = points.length;
 
@@ -183,10 +183,10 @@ export var Polyline = Path.extend({
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
-		var result = [],
+		const result = [],
 		    flat = LineUtil.isFlat(latlngs);
 
-		for (var i = 0, len = latlngs.length; i < len; i++) {
+		for (const i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
 				result[i] = toLatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
@@ -199,7 +199,7 @@ export var Polyline = Path.extend({
 	},
 
 	_project: function () {
-		var pxBounds = new Bounds();
+		const pxBounds = new Bounds();
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
@@ -210,7 +210,7 @@ export var Polyline = Path.extend({
 	},
 
 	_updateBounds: function () {
-		var w = this._clickTolerance(),
+		const w = this._clickTolerance(),
 		    p = new Point(w, w);
 		this._pxBounds = new Bounds([
 			this._rawPxBounds.min.subtract(p),
@@ -220,7 +220,7 @@ export var Polyline = Path.extend({
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs: function (latlngs, result, projectedBounds) {
-		var flat = latlngs[0] instanceof LatLng,
+		const flat = latlngs[0] instanceof LatLng,
 		    len = latlngs.length,
 		    i, ring;
 
@@ -240,7 +240,7 @@ export var Polyline = Path.extend({
 
 	// clip polyline by renderer bounds so that we have less to render for performance
 	_clipPoints: function () {
-		var bounds = this._renderer._bounds;
+		const bounds = this._renderer._bounds;
 
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
@@ -252,7 +252,7 @@ export var Polyline = Path.extend({
 			return;
 		}
 
-		var parts = this._parts,
+		const parts = this._parts,
 		    i, j, k, len, len2, segment, points;
 
 		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
@@ -277,10 +277,10 @@ export var Polyline = Path.extend({
 
 	// simplify each clipped part of the polyline for performance
 	_simplifyPoints: function () {
-		var parts = this._parts,
+		const parts = this._parts,
 		    tolerance = this.options.smoothFactor;
 
-		for (var i = 0, len = parts.length; i < len; i++) {
+		for (const i = 0, len = parts.length; i < len; i++) {
 			parts[i] = LineUtil.simplify(parts[i], tolerance);
 		}
 	},
@@ -299,7 +299,7 @@ export var Polyline = Path.extend({
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint: function (p, closed) {
-		var i, j, k, len, len2, part,
+		const i, j, k, len, len2, part,
 		    w = this._clickTolerance();
 
 		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }

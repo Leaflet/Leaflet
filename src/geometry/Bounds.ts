@@ -9,7 +9,7 @@ import {Point, toPoint} from './Point';
  * @example
  *
  * ```js
- * var p1 = L.point(10, 10),
+ * const p1 = L.point(10, 10),
  * p2 = L.point(40, 60),
  * bounds = L.bounds(p1, p2);
  * ```
@@ -28,9 +28,9 @@ import {Point, toPoint} from './Point';
 export function Bounds(a, b) {
 	if (!a) { return; }
 
-	var points = b ? [a, b] : a;
+	const points = b ? [a, b] : a;
 
-	for (var i = 0, len = points.length; i < len; i++) {
+	for (const i = 0, len = points.length; i < len; i++) {
 		this.extend(points[i]);
 	}
 }
@@ -101,7 +101,7 @@ Bounds.prototype = {
 	// @method contains(point: Point): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains: function (obj) {
-		var min, max;
+		const min, max;
 
 		if (typeof obj[0] === 'number' || obj instanceof Point) {
 			obj = toPoint(obj);
@@ -128,7 +128,7 @@ Bounds.prototype = {
 	intersects: function (bounds) { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
-		var min = this.min,
+		const min = this.min,
 		    max = this.max,
 		    min2 = bounds.min,
 		    max2 = bounds.max,
@@ -144,7 +144,7 @@ Bounds.prototype = {
 	overlaps: function (bounds) { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
-		var min = this.min,
+		const min = this.min,
 		    max = this.max,
 		    min2 = bounds.min,
 		    max2 = bounds.max,

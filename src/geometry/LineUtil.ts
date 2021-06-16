@@ -5,7 +5,7 @@ import * as Util from '../core/Util';
 /*
  * @namespace LineUtil
  *
- * Various utility functions for polyline points processing, used by Leaflet internally to make polylines lightning-fast.
+ * constious utility functions for polyline points processing, used by Leaflet internally to make polylines lightning-fast.
  */
 
 // Simplify polyline with vertex reduction and Douglas-Peucker simplification.
@@ -24,7 +24,7 @@ export function simplify(points, tolerance) {
 		return points.slice();
 	}
 
-	var sqTolerance = tolerance * tolerance;
+	const sqTolerance = tolerance * tolerance;
 
 	    // stage 1: vertex reduction
 	    points = _reducePoints(points, sqTolerance);
@@ -50,7 +50,7 @@ export function closestPointOnSegment(p, p1, p2) {
 // Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
 function _simplifyDP(points, sqTolerance) {
 
-	var len = points.length,
+	const len = points.length,
 	    ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
 	    markers = new ArrayConstructor(len);
 
@@ -58,7 +58,7 @@ function _simplifyDP(points, sqTolerance) {
 
 	_simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
 
-	var i,
+	const i,
 	    newPoints = [];
 
 	for (i = 0; i < len; i++) {
@@ -72,7 +72,7 @@ function _simplifyDP(points, sqTolerance) {
 
 function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 
-	var maxSqDist = 0,
+	const maxSqDist = 0,
 	index, i, sqDist;
 
 	for (i = first + 1; i <= last - 1; i++) {
@@ -94,9 +94,9 @@ function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 
 // reduce points that are too close to each other to a single point
 function _reducePoints(points, sqTolerance) {
-	var reducedPoints = [points[0]];
+	const reducedPoints = [points[0]];
 
-	for (var i = 1, prev = 0, len = points.length; i < len; i++) {
+	for (const i = 1, prev = 0, len = points.length; i < len; i++) {
 		if (_sqDist(points[i], points[prev]) > sqTolerance) {
 			reducedPoints.push(points[i]);
 			prev = i;
@@ -108,7 +108,7 @@ function _reducePoints(points, sqTolerance) {
 	return reducedPoints;
 }
 
-var _lastCode;
+const _lastCode;
 
 // @function clipSegment(a: Point, b: Point, bounds: Bounds, useLastCode?: Boolean, round?: Boolean): Point[]|Boolean
 // Clips the segment a to b by rectangular bounds with the
@@ -116,7 +116,7 @@ var _lastCode;
 // (modifying the segment points directly!). Used by Leaflet to only show polyline
 // points that are on the screen or near, increasing performance.
 export function clipSegment(a, b, bounds, useLastCode, round) {
-	var codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
+	const codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
 	    codeB = _getBitCode(b, bounds),
 
 	    codeOut, p, newCode;
@@ -151,7 +151,7 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 }
 
 export function _getEdgeIntersection(a, b, code, bounds, round) {
-	var dx = b.x - a.x,
+	const dx = b.x - a.x,
 	    dy = b.y - a.y,
 	    min = bounds.min,
 	    max = bounds.max,
@@ -178,7 +178,7 @@ export function _getEdgeIntersection(a, b, code, bounds, round) {
 }
 
 export function _getBitCode(p, bounds) {
-	var code = 0;
+	const code = 0;
 
 	if (p.x < bounds.min.x) { // left
 		code |= 1;
@@ -197,14 +197,14 @@ export function _getBitCode(p, bounds) {
 
 // square distance (to avoid unnecessary Math.sqrt calls)
 function _sqDist(p1, p2) {
-	var dx = p2.x - p1.x,
+	const dx = p2.x - p1.x,
 	    dy = p2.y - p1.y;
 	return dx * dx + dy * dy;
 }
 
 // return closest point on segment or distance to that point
 export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
-	var x = p1.x,
+	const x = p1.x,
 	    y = p1.y,
 	    dx = p2.x - x,
 	    dy = p2.y - y,
