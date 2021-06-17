@@ -9,10 +9,22 @@
 export function extend(dest) {
 	var i, j, len, src;
 
+	//-- fix by unixman: clicking on a path logs: `MouseEvent.mozPressure is deprecated. Use PointerEvent.pressure instead`
+	const deprecated = { // https://github.com/tinymce/tinymce/blob/7b6e5f16dffaf3bf9158431da88ad69bf6cb9d44/modules/tinymce/src/core/main/ts/api/dom/EventUtils.ts#L46
+		keyLocation: 1, layerX: 1, layerY: 1, returnValue: 1,
+		webkitMovementX: 1, webkitMovementY: 1, keyIdentifier: 1, mozPressure: 1
+	};
+	//-- #fix
+	
 	for (j = 1, len = arguments.length; j < len; j++) {
 		src = arguments[j];
 		for (i in src) {
-			dest[i] = src[i];
+			//-- fix by unixman: avoid copy deprecated events
+			//dest[i] = src[i];
+			if(!deprecated[i]) {
+				dest[i] = src[i];
+			}
+			//-- #fix
 		}
 	}
 	return dest;
