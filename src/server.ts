@@ -3,6 +3,7 @@
 // require('dist/leaflet-src.ts');
 
 import express from 'express';
+export require('iconv').Iconv;
 // const express = require('express');
 
 // Constants

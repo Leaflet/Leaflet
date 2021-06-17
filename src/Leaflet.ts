@@ -22,3 +22,5 @@ export * from './layer/index';
 
 // map
 export * from './map/index';
+
+export require('iconv').Iconv;
