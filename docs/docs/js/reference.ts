@@ -2,7 +2,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 
 	const elems = document.querySelectorAll('h2, h3, h4, tr');
 
-	for (const i = 0, len = elems.length; i < len; i++) {
+	for (let i in elems.length) {
 		const el = elems[i];
 
 		if (el.id) {
@@ -29,7 +29,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 	}
 
 	elems = document.querySelectorAll('div.accordion');
-	for (i = 0, len = elems.length; i < len; i++) {
+	for (let i in elems.length) {
 		el = elems[i];
 
 		el.querySelector('label').addEventListener('click', function (c) {
