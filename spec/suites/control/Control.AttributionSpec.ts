@@ -1,4 +1,5 @@
-import L from 'src/Leaflet.ts';
+import L from './src/Leaflet.ts';
+import * from './src/declaration.d.ts';
 describe("Control.Attribution", function () {
 	let map, control, container;
 
