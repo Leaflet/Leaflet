@@ -11,8 +11,8 @@ const integrityCss = ssri.fromData(fs.readFileSync('dist/leaflet.css'));
 
 
 console.log('Integrity hashes for ', version, ':');
-console.log('dist/leaflet-src.js: ', integritySrc.toString());
-console.log('dist/leaflet.js:     ', integrityUglified.toString());
+console.log('dist/leaflet-src.tsc: ', integritySrc.toString());
+console.log('dist/leaflet.tsc:     ', integrityUglified.toString());
 console.log('dist/leaflet.css:    ', integrityCss.toString());
 
 const docConfig = fs.readFileSync('docs/_config.yml').toString();

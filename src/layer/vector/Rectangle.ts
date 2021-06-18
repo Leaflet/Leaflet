@@ -14,7 +14,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * // define rectangle geographical bounds
  * const bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
  *

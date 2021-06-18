@@ -151,7 +151,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "name": "my-leaflet-plugin",
   "version": "1.0.0",
   "description": "A simple leaflet plugin.",
-  "main": "my-plugin.js",
+  "main": "my-plugin.tsc",
   "author": "You",
   "license": "IST",
   "peerDependencies": {

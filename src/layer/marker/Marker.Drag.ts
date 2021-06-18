@@ -15,7 +15,7 @@ import {requestAnimFrame, cancelAnimFrame} from '../../core/Util';
  *
  * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
  *
- * ```js
+ * ```tsc
  * marker.dragging.disable();
  * ```
  *

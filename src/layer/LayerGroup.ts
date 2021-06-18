@@ -13,7 +13,7 @@ import * as Util from '../core/Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * L.layerGroup([marker1, marker2])
  * 	.addLayer(polyline)
  * 	.addTo(map);
@@ -113,7 +113,7 @@ export const LayerGroup = Layer.extend({
 
 	// @method eachLayer(fn: Function, context?: Object): this
 	// Iterates over the layers of the group, optionally specifying context of the iterator function.
-	// ```js
+	// ```tsc
 	// group.eachLayer(function (layer) {
 	// 	layer.bindPopup('Hello');
 	// });

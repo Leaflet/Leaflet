@@ -17,7 +17,7 @@ import {Earth} from '../../geo/crs/CRS.Earth';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * L.circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
  */

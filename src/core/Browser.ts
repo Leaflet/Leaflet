@@ -9,7 +9,7 @@ import {svgCreate} from '../layer/vector/SVG.Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * if (L.Browser.ielt9) {
  *   alert('Upgrade your browser, dude!');
  * }

@@ -6,7 +6,8 @@ export {Class} from './Class';
 import {Evented} from './Events';
 import {Events} from './Events';
 export {Evented};
-export var Mixin = {Events: Events};
+// Abstract subclasses or mix-ins https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+export const Mixin = {Events: Events};
 
 export {Handler} from './Handler';
 

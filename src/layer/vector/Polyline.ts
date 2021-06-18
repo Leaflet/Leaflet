@@ -15,7 +15,7 @@ import {Point} from '../../geometry/Point';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * // create a red polyline from an array of LatLng points
  * const latlngs = [
  * 	[45.51, -122.68],
@@ -31,7 +31,7 @@ import {Point} from '../../geometry/Point';
  *
  * You can also pass a multi-dimensional array to represent a `MultiPolyline` shape:
  *
- * ```js
+ * ```tsc
  * // create a red polyline from an array of arrays of LatLng points
  * const latlngs = [
  * 	[[45.51, -122.68],

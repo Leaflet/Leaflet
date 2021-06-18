@@ -1,4 +1,4 @@
-import {Class} from './Class';
+import { Class } from "./Class";
 
 /*
 	L.Handler is a base class for handler classes that are used internally to inject
@@ -9,7 +9,7 @@ import {Class} from './Class';
 // @aka L.Handler
 // Abstract class for map interaction handlers
 
-export const Handler = Class.extend({
+export class Handler extends Class.extend({
 	initialize: function (map) {
 		this._map = map;
 	},
@@ -55,7 +55,7 @@ export const Handler = Class.extend({
 	// map.addHandler(name, this);
 	// return this;
 // 	};
-	
+
 });
 
 

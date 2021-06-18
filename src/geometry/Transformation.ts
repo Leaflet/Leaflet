@@ -11,7 +11,7 @@ import * as Util from '../core/Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * const transformation = L.transformation(2, 5, -1, 10),
  * 	p = L.point(1, 2),
  * 	p2 = transformation.transform(p), //  L.point(7, 8)

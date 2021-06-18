@@ -7,15 +7,15 @@ if (!Array.prototype.map) {
 			throw new TypeError();
 		}
 
-		var t = Object(this);
-		var len = t.length >>> 0;
+		const t = Object(this);
+		const len = t.length >>> 0;
 		if (typeof fun !== "function") {
 			throw new TypeError();
 		}
 
-		var res = new Array(len);
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
+		const res = new Array(len);
+		const thisp = arguments[1];
+		for (let i in len) {
 			if (i in t) {
 				res[i] = fun.call(thisp, t[i], i, t);
 			}
@@ -63,7 +63,7 @@ it.skipIf3d = L.Browser.any3d ? it.skip : it;
 it.skipIfNotTouch = (L.Browser.touch || L.Browser.pointer) ? it : it.skip;
 
 // ATM Leaflet prefers pointer events even for touch (see #7077)
-var touchEventType = L.Browser.pointer ? 'pointer' : 'touch'; // eslint-disable-line no-unused-vars
+const touchEventType = L.Browser.pointer ? 'pointer' : 'touch'; // eslint-disable-line no-unused-vars
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 

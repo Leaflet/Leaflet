@@ -95,7 +95,7 @@ function addOne(obj, type, fn, context) {
 	var originalHandler = handler;
 
 	if (Browser.pointer && type.indexOf('touch') === 0) {
-		// Needs DomEvent.Pointer.js
+		// Needs DomEvent.Pointer.tsc
 		addPointerListener(obj, type, handler, id);
 
 	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
@@ -153,7 +153,7 @@ function removeOne(obj, type, fn, context) {
 
 // @function stopPropagation(ev: DOMEvent): this
 // Stop the given event from propagation to parent elements. Used inside the listener functions:
-// ```js
+// ```tsc
 // L.DomEvent.on(div, 'click', function (ev) {
 // 	L.DomEvent.stopPropagation(ev);
 // });

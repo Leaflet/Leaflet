@@ -14,7 +14,7 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * const baseLayers = {
  * 	"Mapbox": mapbox,
  * 	"OpenStreetMap": osm
@@ -30,7 +30,7 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * The `baseLayers` and `overlays` parameters are object literals with layer names as keys and `Layer` objects as values:
  *
- * ```js
+ * ```tsc
  * {
  *     "<someName1>": layer1,
  *     "<someName2>": layer2
@@ -39,7 +39,7 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * The layer names can contain HTML, which allows you to add additional styling to the items:
  *
- * ```js
+ * ```tsc
  * {"<img src='my-layer-icon' /> <span class='my-layer-item'>My Layer</span>": myLayer}
  * ```
  */

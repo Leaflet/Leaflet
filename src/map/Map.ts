@@ -19,7 +19,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * // initialize the map on the "map" div with a given center and zoom
  * const map = L.map('map', {
  * 	center: [51.505, -0.09],

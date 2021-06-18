@@ -8,7 +8,7 @@ kramdown:
 latest_leaflet_version: 1.7.1
 latest_leaflet_reference: 1.7.1
 
-# Integrity hashes for both leaflet.js and leaflet-src.js
+# Integrity hashes for both leaflet.tsc and leaflet-src.tsc
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
 integrity_hash_css: "sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="

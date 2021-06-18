@@ -13,7 +13,7 @@ import {MarkerDrag} from './Marker.Drag';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * L.marker([50.5, 30.5]).addTo(map);
  * ```
  */

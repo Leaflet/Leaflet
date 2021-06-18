@@ -13,7 +13,7 @@ import * as Util from '../core/Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
  * svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
  * svgElement.setAttribute('viewBox', "0 0 200 200");

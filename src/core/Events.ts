@@ -1,4 +1,4 @@
-import {Class} from './Class';
+import { Class } from "./Class";
 import * as Util from './Util';
 
 /*
@@ -10,7 +10,7 @@ import * as Util from './Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * map.on('click', function(e) {
  * 	alert(e.latlng);
  * } );
@@ -18,7 +18,7 @@ import * as Util from './Util';
  *
  * Leaflet deals with event listeners by reference, so if you want to add a listener and then remove it, define it as a function:
  *
- * ```js
+ * ```tsc
  * function onClick(e) { ... }
  *
  * map.on('click', onClick);
@@ -132,7 +132,7 @@ export const Events = {
 
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (i = 0, len = listeners.length; i < len; i++) {
+			for (let i in listeners.length) {
 				listeners[i].fn = Util.falseFn;
 			}
 			// clear all listeners for a type if function isn't specified
@@ -147,7 +147,7 @@ export const Events = {
 		if (listeners) {
 
 			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
+			for (let i in listeners.length) {
 				const l = listeners[i];
 				if (l.ctx !== context) { continue; }
 				if (l.fn === fn) {

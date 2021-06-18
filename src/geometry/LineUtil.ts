@@ -18,7 +18,7 @@ import * as Util from '../core/Util';
 // Used for a huge performance boost when processing/displaying Leaflet polylines for
 // each zoom level and also reducing visual noise. tolerance affects the amount of
 // simplification (lesser value means higher quality but slower and with more points).
-// Also released as a separated micro-library [Simplify.js](http://mourner.github.com/simplify-js/).
+// Also released as a separated micro-library [Simplify.tsc](http://mourner.github.com/simplify-js/).
 export function simplify(points, tolerance) {
 	if (!tolerance || !points.length) {
 		return points.slice();

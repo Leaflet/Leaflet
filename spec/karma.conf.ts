@@ -12,7 +12,7 @@ exports.noConflict = function() {
 window.L = exports;`;
 
 export default {
-	input: 'src/index.js',
+	input: 'src/index.tsc',
 	output: {
 		dir: 'output',
 		format: 'cjs'
@@ -23,16 +23,16 @@ export default {
 // Karma configuration
 module.exports = function (config) {
 
-// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
+// 	var libSources = require(__dirname + '/../build/build.tsc').getFiles();
 
 	const files = [
 		"spec/before.ts",
 		"src/Leaflet.ts",
 		"spec/after.ts",
-		"node_modules/happen/happen.js",
-		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
+		"node_modules/happen/happen.tsc",
+		"node_modules/prosthetic-hand/dist/prosthetic-hand.tsc",
 		"spec/suites/SpecHelper.ts",
-		"spec/suites/**/*.js",
+		"spec/suites/**/*.tsc",
 		"dist/*.css",
 		{pattern: "dist/images/*.png", included: false, serve: true}
 	];

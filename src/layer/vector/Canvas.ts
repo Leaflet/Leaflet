@@ -21,7 +21,7 @@ import {Bounds} from '../../geometry/Bounds';
  *
  * Use Canvas by default for all paths in the map:
  *
- * ```js
+ * ```tsc
  * const map = L.map('map', {
  * 	renderer: L.canvas()
  * });
@@ -29,7 +29,7 @@ import {Bounds} from '../../geometry/Bounds';
  *
  * Use a Canvas renderer with extra padding for specific vector geometries:
  *
- * ```js
+ * ```tsc
  * const map = L.map('map');
  * const myRenderer = L.canvas({ padding: 0.5 });
  * const line = L.polyline( coordinates, { renderer: myRenderer } );

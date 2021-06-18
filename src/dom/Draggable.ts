@@ -15,7 +15,7 @@ import {Point} from '../geometry/Point';
  * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
  *
  * @example
- * ```js
+ * ```tsc
  * var draggable = new L.Draggable(elementToDrag);
  * draggable.enable();
  * ```

@@ -1,4 +1,4 @@
 require:
-  - 'core-js'
+  - 'core-tsc'
   - 'regenerator-runtime'
   - '@babel/register'

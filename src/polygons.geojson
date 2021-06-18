@@ -1,0 +1,38 @@
+const {poligonos} =
+[
+  {
+       "type": "Feature",
+       "bbox": [-10.0, -10.0, 10.0, 10.0],
+       "geometry": {
+           "type": "Polygon",
+           "coordinates": [
+               [
+                   [-10.0, -10.0],
+                   [10.0, -10.0],
+                   [10.0, 10.0],
+                   [-10.0, -10.0]
+               ]
+           ]
+       }
+   }
+,
+  {
+  "type":"Feature",
+  "geometry":{
+    type : "Polygon",
+  coordinates : [
+     [ [ 0 , 0 ] , [ 3 , 6 ] , [ 6 , 1 ] , [ 0 , 0 ] ],
+     [ [ 2 , 2 ] , [ 3 , 3 ] , [ 4 , 2 ] , [ 2 , 2 ] ]
+  ]
+  }
+},{
+  "type":"Feature",
+  "geometry":{
+    type : "Polygon",
+  coordinates : [
+     [ [ 0 , 0 ] , [ 3 , 6 ] , [ 6 , 1 ] , [ 0 , 0 ] ],
+     [ [ 2 , 2 ] , [ 3 , 3 ] , [ 4 , 2 ] , [ 2 , 2 ] ]
+  ]
+  }
+}
+];

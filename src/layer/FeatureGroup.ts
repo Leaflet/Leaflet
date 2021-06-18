@@ -15,7 +15,7 @@ import {LatLngBounds} from '../geo/LatLngBounds';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * L.featureGroup([marker1, marker2, polyline])
  * 	.bindPopup('Hello world!')
  * 	.on('click', function() { alert('Clicked on a member of the group!'); })

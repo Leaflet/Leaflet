@@ -11,7 +11,7 @@ import {empty} from '../../dom/DomUtil';
  * element instead of an image. Inherits from `Icon` but ignores the `iconUrl` and shadow options.
  *
  * @example
- * ```js
+ * ```tsc
  * var myIcon = L.divIcon({className: 'my-div-icon'});
  * // you can set .my-div-icon styles in CSS
  *

@@ -46,7 +46,7 @@ export const DoubleClickZoom = Handler.extend({
 // interaction behavior in runtime, enabling or disabling certain features such
 // as dragging or touch zoom (see `Handler` methods). For example:
 //
-// ```js
+// ```tsc
 // map.doubleClickZoom.disable();
 // ```
 //

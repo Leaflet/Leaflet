@@ -1,4 +1,4 @@
-import {Class} from '../../core/Class';
+import { Class } from "../../core/Class";
 import {setOptions} from '../../core/Util';
 import {toPoint as point} from '../../geometry/Point';
 import {retina} from '../../core/Browser';
@@ -11,7 +11,7 @@ import {retina} from '../../core/Browser';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * var myIcon = L.icon({
  *     iconUrl: 'my-icon.png',
  *     iconRetinaUrl: 'my-icon@2x.png',

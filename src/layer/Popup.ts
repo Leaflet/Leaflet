@@ -19,13 +19,13 @@ import {Path} from './vector/Path';
  *
  * If you want to just bind a popup to marker click and then open it, it's really easy:
  *
- * ```js
+ * ```tsc
  * marker.bindPopup(popupContent).openPopup();
  * ```
  * Path overlays like polylines also have a `bindPopup` method.
  * Here's a more complicated way to open a popup on a map:
  *
- * ```js
+ * ```tsc
  * var popup = L.popup()
  * 	.setLatLng(latlng)
  * 	.setContent('<p>Hello world!<br />This is a nice popup.</p>')
@@ -356,7 +356,7 @@ Map.include({
  *
  * All layers share a set of methods convenient for binding popups to it.
  *
- * ```js
+ * ```tsc
  * var layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
  * layer.openPopup();
  * layer.closePopup();

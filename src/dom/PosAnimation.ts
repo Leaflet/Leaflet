@@ -10,7 +10,7 @@ import * as DomUtil from './DomUtil';
  * Used internally for panning animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.
  *
  * @example
- * ```js
+ * ```tsc
  * var fx = new L.PosAnimation();
  * fx.run(el, [300, 500], 0.5);
  * ```

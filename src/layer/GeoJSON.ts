@@ -20,7 +20,7 @@ import * as LineUtil from '../geometry/LineUtil';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * L.geoJSON(data, {
  * 	style: function (feature) {
  * 		return {color: feature.properties.color};
@@ -40,7 +40,7 @@ export var GeoJSON = FeatureGroup.extend({
 	 * A `Function` defining how GeoJSON points spawn Leaflet layers. It is internally
 	 * called when data is added, passing the GeoJSON point feature and its `LatLng`.
 	 * The default is to spawn a default `Marker`:
-	 * ```js
+	 * ```tsc
 	 * function(geoJsonPoint, latlng) {
 	 * 	return L.marker(latlng);
 	 * }
@@ -50,7 +50,7 @@ export var GeoJSON = FeatureGroup.extend({
 	 * A `Function` defining the `Path options` for styling GeoJSON lines and polygons,
 	 * called internally when data is added.
 	 * The default value is to not override any defaults:
-	 * ```js
+	 * ```tsc
 	 * function (geoJsonFeature) {
 	 * 	return {}
 	 * }
@@ -60,14 +60,14 @@ export var GeoJSON = FeatureGroup.extend({
 	 * A `Function` that will be called once for each created `Feature`, after it has
 	 * been created and styled. Useful for attaching events and popups to features.
 	 * The default is to do nothing with the newly created layers:
-	 * ```js
+	 * ```tsc
 	 * function (feature, layer) {}
 	 * ```
 	 *
 	 * @option filter: Function = *
 	 * A `Function` that will be used to decide whether to include a feature or not.
 	 * The default is to include all features:
-	 * ```js
+	 * ```tsc
 	 * function (geoJsonFeature) {
 	 * 	return true;
 	 * }

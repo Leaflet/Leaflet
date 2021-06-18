@@ -15,7 +15,7 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * marker.bindTooltip("my tooltip text").openTooltip();
  * ```
  * Note about tooltip offset. Leaflet takes two options in consideration
@@ -251,7 +251,7 @@ Map.include({
  *
  * All layers share a set of methods convenient for binding tooltips to it.
  *
- * ```js
+ * ```tsc
  * var layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
  * layer.openTooltip();
  * layer.closeTooltip();

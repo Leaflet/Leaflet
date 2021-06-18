@@ -1,5 +1,5 @@
 
-import {Class} from '../core/Class';
+import { Class } from "../core/Class";
 import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';

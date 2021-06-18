@@ -17,7 +17,7 @@ import * as PolyUtil from '../../geometry/PolyUtil';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * // create a red polygon from an array of LatLng points
  * const latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
  *
@@ -29,7 +29,7 @@ import * as PolyUtil from '../../geometry/PolyUtil';
  *
  * You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:
  *
- * ```js
+ * ```tsc
  * const latlngs = [
  *   [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
  *   [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
@@ -38,7 +38,7 @@ import * as PolyUtil from '../../geometry/PolyUtil';
  *
  * Additionally, you can pass a multi-dimensional array to represent a MultiPolygon shape.
  *
- * ```js
+ * ```tsc
  * const latlngs = [
  *   [ // first polygon
  *     [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring

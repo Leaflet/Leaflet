@@ -8,13 +8,13 @@ import {isArray, formatNum} from '../core/Util';
  *
  * @example
  *
- * ```js
+ * ```tsc
  * const point = L.point(200, 300);
  * ```
  *
  * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:
  *
- * ```js
+ * ```tsc
  * map.panBy([200, 300]);
  * map.panBy(L.point(200, 300));
  * ```

@@ -13,8 +13,8 @@ import * as Util from '../core/Util';
  *
  * @example
  *
- * ```js
- * var layer = L.marker(latlng).addTo(map);
+ * ```tsc
+ * const layer = L.marker(latlng).addTo(map);
  * layer.addTo(map);
  * layer.remove();
  * ```
@@ -27,7 +27,7 @@ import * as Util from '../core/Util';
  */
 
 
-export var Layer = Evented.extend({
+export const Layer = Evented.extend({
 
 	// Classes extending `L.Layer` will inherit the following options:
 	options: {
@@ -95,7 +95,7 @@ export var Layer = Evented.extend({
 	},
 
 	_layerAdd: function (e) {
-		var map = e.target;
+		const map = e.target;
 
 		// check in case layer gets added and then removed before the map is ready
 		if (!map.hasLayer(this)) { return; }
@@ -104,7 +104,7 @@ export var Layer = Evented.extend({
 		this._zoomAnimated = map._zoomAnimated;
 
 		if (this.getEvents) {
-			var events = this.getEvents();
+			const events = this.getEvents();
 			map.on(events, this);
 			this.once('remove', function () {
 				map.off(events, this);
@@ -163,7 +163,7 @@ Map.include({
 			throw new Error('The provided object is not a Layer.');
 		}
 
-		var id = Util.stamp(layer);
+		const id = Util.stamp(layer);
 		if (this._layers[id]) { return this; }
 		this._layers[id] = layer;
 
@@ -181,7 +181,7 @@ Map.include({
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the map.
 	removeLayer: function (layer) {
-		var id = Util.stamp(layer);
+		const id = Util.stamp(layer);
 
 		if (!this._layers[id]) { return this; }
 
@@ -220,7 +220,7 @@ Map.include({
 	 * ```
 	 */
 	eachLayer: function (method, context) {
-		for (var i in this._layers) {
+		for (const i in this._layers) {
 			method.call(context, this._layers[i]);
 		}
 		return this;
@@ -229,7 +229,7 @@ Map.include({
 	_addLayers: function (layers) {
 		layers = layers ? (Util.isArray(layers) ? layers : [layers]) : [];
 
-		for (var i = 0, len = layers.length; i < len; i++) {
+		for (const i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);
 		}
 	},
@@ -242,7 +242,7 @@ Map.include({
 	},
 
 	_removeZoomLimit: function (layer) {
-		var id = Util.stamp(layer);
+		const id = Util.stamp(layer);
 
 		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
@@ -251,12 +251,12 @@ Map.include({
 	},
 
 	_updateZoomLevels: function () {
-		var minZoom = Infinity,
+		const minZoom = Infinity,
 		    maxZoom = -Infinity,
 		    oldZoomSpan = this._getZoomSpan();
 
-		for (var i in this._zoomBoundLayers) {
-			var options = this._zoomBoundLayers[i].options;
+		for (const i in this._zoomBoundLayers) {
+			const options = this._zoomBoundLayers[i].options;
 
 			minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
 			maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);

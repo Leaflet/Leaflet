@@ -54,7 +54,7 @@
         "test-nolint": "karma start ./spec/karma.conf.ts",
         "build": "npm run rollup && npm run uglify",
         "release": "./build/publish.sh",
-        "lint": "eslint src spec/suites docs/docs/js",
+        "lint": "eslint src spec/suites docs/docs/tsc",
         "lintfix": "npm run lint -- --fix",
         "rollup": "rollup -c build/rollup-config.ts",
         "watch": "rollup -w -c build/rollup-watch-config.ts",

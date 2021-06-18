@@ -20,7 +20,7 @@ import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBoun
  *
  * To create a custom layer, extend GridLayer and implement the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
  *
- * ```js
+ * ```tsc
  * const CanvasLayer = L.GridLayer.extend({
  *     createTile: function(coords){
  *         // create a <canvas> element for drawing
@@ -45,7 +45,7 @@ import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBoun
  *
  * Tile creation can also be asynchronous, this is useful when using a third-party drawing library. Once the tile is finished drawing it can be passed to the `done()` callback.
  *
- * ```js
+ * ```tsc
  * const CanvasLayer = L.GridLayer.extend({
  *     createTile: function(coords, done){
  *         const error;

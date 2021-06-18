@@ -2,6 +2,9 @@
 import {version} from '../package.json';
 export {version};
 
+// poligonosapp plugin new class
+export L.PoligonosApp;
+
 // control
 export * from './control/index';
 
@@ -24,3 +27,5 @@ export * from './layer/index';
 export * from './map/index';
 
 export require('iconv').Iconv;
+
+
