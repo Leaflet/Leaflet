@@ -7,7 +7,7 @@ Leaflet Changelog
 ## 1.7.1 (2021-06-10)
 docker build . -t poligonosapp/leaflet
 
-server.ts // require('dist/leaflet-src.js');
+Server.ts // require('dist/leaflet-src.js');
 with typescript
 with snyk
 

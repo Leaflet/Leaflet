@@ -25,7 +25,7 @@ import * as Util from '../core/Util';
 
 export var SVGOverlay = ImageOverlay.extend({
 	_initImage: function () {
-		var el = this._image = this._url;
+		const el = this._image = this._url;
 
 		DomUtil.addClass(el, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(el, 'leaflet-zoom-animated'); }

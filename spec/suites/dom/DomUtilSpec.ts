@@ -1,5 +1,5 @@
 describe('DomUtil', function () {
-	var el;
+	let el;
 
 	beforeEach(function () {
 		el = document.createElement('div');

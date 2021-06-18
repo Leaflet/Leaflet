@@ -21,7 +21,7 @@ export var Earth = Util.extend({}, CRS, {
 
 	// distance between two geographical points using spherical law of cosines approximation
 	distance: function (latlng1, latlng2) {
-		var rad = Math.PI / 180,
+		const rad = Math.PI / 180,
 		    lat1 = latlng1.lat * rad,
 		    lat2 = latlng2.lat * rad,
 		    sinDLat = Math.sin((latlng2.lat - latlng1.lat) * rad / 2),

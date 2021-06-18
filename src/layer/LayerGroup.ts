@@ -27,7 +27,7 @@ export const LayerGroup = Layer.extend({
 
 		this._layers = {};
 
-		var i, len;
+		let i, len;
 
 		if (layers) {
 			for (i = 0, len = layers.length; i < len; i++) {
@@ -39,7 +39,7 @@ export const LayerGroup = Layer.extend({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
 	addLayer: function (layer) {
-		var id = this.getLayerId(layer);
+		const id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
 
@@ -56,7 +56,7 @@ export const LayerGroup = Layer.extend({
 	// @method removeLayer(id: Number): this
 	// Removes the layer with the given internal ID from the group.
 	removeLayer: function (layer) {
-		var id = layer in this._layers ? layer : this.getLayerId(layer);
+		const id = layer in this._layers ? layer : this.getLayerId(layer);
 
 		if (this._map && this._layers[id]) {
 			this._map.removeLayer(this._layers[id]);
@@ -74,7 +74,7 @@ export const LayerGroup = Layer.extend({
 	// Returns `true` if the given internal ID is currently added to the group.
 	hasLayer: function (layer) {
 		if (!layer) { return false; }
-		var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
+		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	},
 
@@ -89,7 +89,7 @@ export const LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke: function (methodName) {
-		var args = Array.prototype.slice.call(arguments, 1),
+		let args = Array.prototype.slice.call(arguments, 1),
 		    i, layer;
 
 		for (i in this._layers) {
@@ -119,7 +119,7 @@ export const LayerGroup = Layer.extend({
 	// });
 	// ```
 	eachLayer: function (method, context) {
-		for (var i in this._layers) {
+		for (const i in this._layers) {
 			method.call(context, this._layers[i]);
 		}
 		return this;
@@ -134,7 +134,7 @@ export const LayerGroup = Layer.extend({
 	// @method getLayers(): Layer[]
 	// Returns an array of all the layers added to the group.
 	getLayers: function () {
-		var layers = [];
+		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
 	},

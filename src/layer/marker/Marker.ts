@@ -144,7 +144,7 @@ export var Marker = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Changes the marker position to the given point.
 	setLatLng: function (latlng) {
-		var oldLatLng = this._latlng;
+		const oldLatLng = this._latlng;
 		this._latlng = latLng(latlng);
 		this.update();
 
@@ -191,7 +191,7 @@ export var Marker = Layer.extend({
 	update: function () {
 
 		if (this._icon && this._map) {
-			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			const pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
 		}
 
@@ -199,10 +199,10 @@ export var Marker = Layer.extend({
 	},
 
 	_initIcon: function () {
-		var options = this.options,
+		const options = this.options,
 		    classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
-		var icon = options.icon.createIcon(this._icon),
+		let icon = options.icon.createIcon(this._icon),
 		    addIcon = false;
 
 		// if we're not reusing the icon, remove the old one and init new one
@@ -236,7 +236,7 @@ export var Marker = Layer.extend({
 			});
 		}
 
-		var newShadow = options.icon.createShadow(this._shadow),
+		let newShadow = options.icon.createShadow(this._shadow),
 		    addShadow = false;
 
 		if (newShadow !== this._shadow) {
@@ -308,7 +308,7 @@ export var Marker = Layer.extend({
 	},
 
 	_animateZoom: function (opt) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+		const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
 		this._setPos(pos);
 	},
@@ -322,7 +322,7 @@ export var Marker = Layer.extend({
 		this.addInteractiveTarget(this._icon);
 
 		if (MarkerDrag) {
-			var draggable = this.options.draggable;
+			let draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
 				this.dragging.disable();
@@ -348,7 +348,7 @@ export var Marker = Layer.extend({
 	},
 
 	_updateOpacity: function () {
-		var opacity = this.options.opacity;
+		const opacity = this.options.opacity;
 
 		if (this._icon) {
 			DomUtil.setOpacity(this._icon, opacity);

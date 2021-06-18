@@ -1,6 +1,6 @@
 describe("Map.Drag", function () {
 	describe("#addHook", function () {
-		var container, map;
+		let container, map;
 
 		before(function () {
 			container = document.createElement('div');
@@ -46,7 +46,7 @@ describe("Map.Drag", function () {
 	});
 
 	describe("mouse events", function () {
-		var container, map;
+		let container, map;
 
 		beforeEach(function () {
 			container = document.createElement('div');
@@ -68,11 +68,11 @@ describe("Map.Drag", function () {
 			});
 			map.setView([0, 0], 1);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
+					const center = map.getCenter();
+					const zoom = map.getZoom();
 					expect(center.lat).to.be.within(21.9430, 21.9431);
 					expect(center.lng).to.be(-180);
 					expect(zoom).to.be(1);
@@ -80,7 +80,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -89,8 +89,8 @@ describe("Map.Drag", function () {
 		});
 
 		describe("in CSS scaled container", function () {
-			var scaleX = 2;
-			var scaleY = 1.5;
+			const scaleX = 2;
+			const scaleY = 1.5;
 
 			beforeEach(function () {
 				container.style.webkitTransformOrigin = 'top left';
@@ -104,11 +104,11 @@ describe("Map.Drag", function () {
 				});
 				map.setView([0, 0], 1);
 
-				var hand = new Hand({
+				const hand = new Hand({
 					timing: 'fastframe',
 					onStop: function () {
-						var center = map.getCenter();
-						var zoom = map.getZoom();
+						const center = map.getCenter();
+						const zoom = map.getZoom();
 						expect(center.lat).to.be.within(21.9430, 21.9431);
 						expect(center.lng).to.be(-180);
 						expect(zoom).to.be(1);
@@ -116,7 +116,7 @@ describe("Map.Drag", function () {
 						done();
 					}
 				});
-				var mouse = hand.growFinger('mouse');
+				const mouse = hand.growFinger('mouse');
 
 				// We move 5 pixels first to overcome the 3-pixel threshold of
 				// L.Draggable.
@@ -131,17 +131,17 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 
-			var originalCenter = L.latLng(0, 0);
+			const originalCenter = L.latLng(0, 0);
 			map.setView(originalCenter, 1);
 
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
+					const center = map.getCenter();
+					const zoom = map.getZoom();
 					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 					expect(zoom).to.be(1);
@@ -149,7 +149,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// L.Draggable. This should result in a click and not a drag.
@@ -163,14 +163,14 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 			map.setView([0, 0], 1);
-			var clickSpy = sinon.spy();
-			var preclickSpy = sinon.spy();
-			var dragSpy = sinon.spy();
+			const clickSpy = sinon.spy();
+			const preclickSpy = sinon.spy();
+			const dragSpy = sinon.spy();
 			map.on('click', clickSpy);
 			map.on('preclick', preclickSpy);
 			map.on('drag', dragSpy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
 					// A real user scenario would trigger a click on mouseup.
@@ -182,7 +182,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -196,11 +196,11 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 			map.setView([0, 0], 1);
-			var marker = L.marker(map.getCenter()).addTo(map);
-			var clickSpy = sinon.spy();
-			var preclickSpy = sinon.spy();
-			var markerDragSpy = sinon.spy();
-			var mapDragSpy = sinon.spy();
+			const marker = L.marker(map.getCenter()).addTo(map);
+			const clickSpy = sinon.spy();
+			const preclickSpy = sinon.spy();
+			const markerDragSpy = sinon.spy();
+			const mapDragSpy = sinon.spy();
 			map.on('click', clickSpy);
 			map.on('preclick', preclickSpy);
 			map.on('drag', mapDragSpy);
@@ -208,7 +208,7 @@ describe("Map.Drag", function () {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
 					// A real user scenario would trigger a click on mouseup.
@@ -221,7 +221,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -235,11 +235,11 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 			map.setView([0, 0], 1);
-			var marker = L.marker(map.getCenter(), {draggable: true}).addTo(map);
-			var clickSpy = sinon.spy();
-			var preclickSpy = sinon.spy();
-			var markerDragSpy = sinon.spy();
-			var mapDragSpy = sinon.spy();
+			const marker = L.marker(map.getCenter(), {draggable: true}).addTo(map);
+			const clickSpy = sinon.spy();
+			const preclickSpy = sinon.spy();
+			const markerDragSpy = sinon.spy();
+			const mapDragSpy = sinon.spy();
 			map.on('click', clickSpy);
 			map.on('preclick', preclickSpy);
 			map.on('drag', mapDragSpy);
@@ -247,7 +247,7 @@ describe("Map.Drag", function () {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
 					// A real user scenario would trigger a click on mouseup.
@@ -260,7 +260,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -273,20 +273,20 @@ describe("Map.Drag", function () {
 				dragging: true,
 				inertia: false
 			});
-			var originalCenter = L.latLng(0, 0);
+			const originalCenter = L.latLng(0, 0);
 			map.setView(originalCenter, 1);
 
 			map.on('mousedown', function () {
 				map.dragging.disable();
 			});
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
+					const center = map.getCenter();
+					const zoom = map.getZoom();
 					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 					expect(zoom).to.be(1);
@@ -294,7 +294,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -305,7 +305,7 @@ describe("Map.Drag", function () {
 	});
 
 	describe("touch events", function () {
-		var container, map;
+		let container, map;
 
 		beforeEach(function () {
 			container = document.createElement('div');
@@ -329,11 +329,11 @@ describe("Map.Drag", function () {
 			});
 			map.setView([0, 0], 1);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
+					const center = map.getCenter();
+					const zoom = map.getZoom();
 					expect(center.lat).to.be.within(21.9430, 21.9431);
 					expect(center.lng).to.be(-180);
 					expect(zoom).to.be(1);
@@ -341,7 +341,7 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var toucher = hand.growFinger(touchEventType);
+			const toucher = hand.growFinger(touchEventType);
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -355,17 +355,17 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 
-			var originalCenter = L.latLng(0, 0);
+			const originalCenter = L.latLng(0, 0);
 			map.setView(originalCenter, 1);
 
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					var zoom = map.getZoom();
+					const center = map.getCenter();
+					const zoom = map.getZoom();
 					expect(center.equals(originalCenter)).to.be(true); // Expect center point to be the same as before the click
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 					expect(zoom).to.be(1);
@@ -374,7 +374,7 @@ describe("Map.Drag", function () {
 				}
 			});
 
-			var toucher = hand.growFinger(touchEventType);
+			const toucher = hand.growFinger(touchEventType);
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// L.Draggable. This should result in a click and not a drag.
@@ -395,11 +395,11 @@ describe("Map.Drag", function () {
 			map.dragging.disable();
 			map.dragging.enable();
 
-			var center = map.getCenter(),
+			let center = map.getCenter(),
 			zoom = map.getZoom();
 
 
-			var mouseHand = new Hand({
+			const mouseHand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
 					expect(map.getCenter()).to.eql(center);
@@ -408,8 +408,8 @@ describe("Map.Drag", function () {
 					done();
 				}
 			});
-			var mouse = mouseHand.growFinger('mouse');
-			var hand = new Hand({
+			const mouse = mouseHand.growFinger('mouse');
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
 					expect(map.getCenter()).not.to.eql(center);
@@ -420,8 +420,8 @@ describe("Map.Drag", function () {
 				}
 			});
 
-			var f1 = hand.growFinger(touchEventType);
-			var f2 = hand.growFinger(touchEventType);
+			const f1 = hand.growFinger(touchEventType);
+			const f2 = hand.growFinger(touchEventType);
 
 			hand.sync(5);
 			f1.wait(100).moveTo(275, 300, 0)

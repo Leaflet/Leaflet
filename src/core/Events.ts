@@ -48,7 +48,7 @@ export const Events = {
 			// types can be a string of space-separated words
 			types = Util.splitWords(types);
 
-			for (let i in types.length) {
+			for (const i in types.length) {
 				this._on(types[i], fn, context);
 			}
 		}
@@ -132,7 +132,7 @@ export const Events = {
 
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (let i in listeners.length) {
+			for (const i in listeners.length) {
 				listeners[i].fn = Util.falseFn;
 			}
 			// clear all listeners for a type if function isn't specified
@@ -147,7 +147,7 @@ export const Events = {
 		if (listeners) {
 
 			// find fn and remove it
-			for (let i in listeners.length) {
+			for (const i in listeners.length) {
 				const l = listeners[i];
 				if (l.ctx !== context) { continue; }
 				if (l.fn === fn) {

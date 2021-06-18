@@ -1,7 +1,7 @@
 ﻿describe('LayerGroup', function () {
 	describe("#hasLayer", function () {
 		it("returns false when passed undefined, null, or false", function () {
-			var lg = L.layerGroup();
+			const lg = L.layerGroup();
 			expect(lg.hasLayer(undefined)).to.equal(false);
 			expect(lg.hasLayer(null)).to.equal(false);
 			expect(lg.hasLayer(false)).to.equal(false);
@@ -10,7 +10,7 @@
 
 	describe("#addLayer", function () {
 		it('adds a layer', function () {
-			var lg = L.layerGroup(),
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
@@ -21,7 +21,7 @@
 
 	describe("#removeLayer", function () {
 		it('removes a layer', function () {
-			var lg = L.layerGroup(),
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -33,7 +33,7 @@
 
 	describe("#clearLayers", function () {
 		it('removes all layers', function () {
-			var lg = L.layerGroup(),
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -45,7 +45,7 @@
 
 	describe("#getLayers", function () {
 		it('gets all layers', function () {
-			var lg = L.layerGroup(),
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -56,7 +56,7 @@
 
 	describe("#eachLayer", function () {
 		it('iterates over all layers', function () {
-			var lg = L.layerGroup(),
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]),
 			    ctx = {foo: 'bar'};
 
@@ -71,7 +71,7 @@
 
 	describe("#toGeoJSON", function () {
 		it('should return valid GeoJSON for a layer with a FeatureCollection', function () {
-			var geoJSON = {
+			const geoJSON = {
 				"type":"FeatureCollection",
 				"features":[
 					{
@@ -85,8 +85,8 @@
 				]
 			};
 
-			var layerGroup = L.layerGroup();
-			var layer = L.geoJSON(geoJSON);
+			const layerGroup = L.layerGroup();
+			const layer = L.geoJSON(geoJSON);
 			layerGroup.addLayer(layer);
 
 			L.geoJson(layerGroup.toGeoJSON());
@@ -95,12 +95,12 @@
 
 	describe("#invoke", function () {
 		it('should invoke `setOpacity` method on every layer', function () {
-			var layers = [
+			const layers = [
 				L.marker([0, 0]),
 				L.marker([1, 1])
 			];
-			var lg = L.layerGroup(layers);
-			var opacity = 0.5;
+			const lg = L.layerGroup(layers);
+			const opacity = 0.5;
 
 			expect(layers[0].options.opacity).to.not.eql(opacity);
 			lg.invoke('setOpacity', opacity);

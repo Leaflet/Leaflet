@@ -9,7 +9,7 @@
 export function extend(dest) {
 	const i, j, len, src;
 
-	for (let j in arguments.length) {
+	for (const j in arguments.length) {
 		src = arguments[j];
 		for (i in src) {
 			dest[i] = src[i];
@@ -133,7 +133,7 @@ export function setOptions(obj, options) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
-	for (let i in options) {
+	for (const i in options) {
 		obj.options[i] = options[i];
 	}
 	return obj.options;
@@ -182,7 +182,7 @@ export const isArray = Array.isArray || function (obj) {
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 export function indexOf(array, el) {
-	for (let i in array.length) {
+	for (const i in array.length) {
 		if (array[i] === el) { return i; }
 	}
 	return -1;

@@ -1,6 +1,6 @@
 describe('Util', function () {
 	describe('#extend', function () {
-		var a;
+		let a;
 
 		beforeEach(function () {
 			a = {
@@ -35,23 +35,23 @@ describe('Util', function () {
 
 	describe('#bind', function () {
 		it('returns the given function with the given context', function () {
-			var fn = function () {
+			const fn = function () {
 				return this;
 			};
 
-			var fn2 = L.Util.bind(fn, {foo: 'bar'});
+			const fn2 = L.Util.bind(fn, {foo: 'bar'});
 
 			expect(fn2()).to.eql({foo: 'bar'});
 		});
 
 		it('passes additional arguments to the bound function', function () {
-			var fn = sinon.spy(),
+			const fn = sinon.spy(),
 			    foo = {},
 			    a = {},
 			    b = {},
 			    c = {};
 
-			var fn2 = L.Util.bind(fn, foo, a, b);
+			const fn2 = L.Util.bind(fn, foo, a, b);
 
 			fn2(c);
 
@@ -61,13 +61,13 @@ describe('Util', function () {
 
 	describe('#stamp', function () {
 		it('sets a unique id on the given object and returns it', function () {
-			var a = {},
+			const a = {},
 			    id = L.Util.stamp(a);
 
 			expect(typeof id).to.eql('number');
 			expect(L.Util.stamp(a)).to.eql(id);
 
-			var b = {},
+			const b = {},
 			    id2 = L.Util.stamp(b);
 
 			expect(id2).not.to.eql(id);
@@ -92,7 +92,7 @@ describe('Util', function () {
 
 	describe('#getParamString', function () {
 		it('creates a valid query string for appending depending on url input', function () {
-			var a = {
+			const a = {
 				url: 'http://example.com/get',
 				obj: {bar: 7, baz: 3},
 				result: '?bar=7&baz=3'
@@ -100,7 +100,7 @@ describe('Util', function () {
 
 			expect(L.Util.getParamString(a.obj, a.url)).to.eql(a.result);
 
-			var b = {
+			const b = {
 				url: 'http://example.com/get?justone=qs',
 				obj: {bar: 7, baz: 3},
 				result: '&bar=7&baz=3'
@@ -108,7 +108,7 @@ describe('Util', function () {
 
 			expect(L.Util.getParamString(b.obj, b.url)).to.eql(b.result);
 
-			var c = {
+			const c = {
 				url: undefined,
 				obj: {bar: 7, baz: 3},
 				result: '?bar=7&baz=3'
@@ -120,7 +120,7 @@ describe('Util', function () {
 
 	describe('#requestAnimFrame', function () {
 		it('calles a function on next frame, unless canceled', function (done) {
-			var spy = sinon.spy(),
+			const spy = sinon.spy(),
 			    foo = {};
 
 			L.Util.requestAnimFrame(spy);
@@ -136,9 +136,9 @@ describe('Util', function () {
 
 	describe('#throttle', function () {
 		it('limits execution to not more often than specified time interval', function (done) {
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 
-			var fn = L.Util.throttle(spy, 20);
+			const fn = L.Util.throttle(spy, 20);
 
 			fn();
 			fn();
@@ -161,39 +161,39 @@ describe('Util', function () {
 
 	describe('#setOptions', function () {
 		it('sets specified options on object', function () {
-			var o = {};
+			const o = {};
 			L.Util.setOptions(o, {foo: 'bar'});
 			expect(o.options.foo).to.eql('bar');
 		});
 
 		it('returns options', function () {
-			var o = {};
-			var r = L.Util.setOptions(o, {foo: 'bar'});
+			const o = {};
+			const r = L.Util.setOptions(o, {foo: 'bar'});
 			expect(r).to.equal(o.options);
 		});
 
 		it('accepts undefined', function () {
-			var o = {};
+			const o = {};
 			L.Util.setOptions(o, undefined);
 			expect(o.options).to.eql({});
 		});
 
 		it('creates a distinct options object', function () {
-			var opts = {},
+			const opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
 
 		it("doesn't create a distinct options object if object already has own options", function () {
-			var opts = {},
+			const opts = {},
 			    o = {options: opts};
 			L.Util.setOptions(o, {});
 			expect(o.options).to.equal(opts);
 		});
 
 		it('inherits options prototypally', function () {
-			var opts = {},
+			const opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
 			opts.foo = 'bar';
@@ -203,9 +203,9 @@ describe('Util', function () {
 
 	describe('#template', function () {
 		it('evaluates templates with a given data object', function () {
-			var tpl = 'Hello {foo} and {bar}!';
+			const tpl = 'Hello {foo} and {bar}!';
 
-			var str = L.Util.template(tpl, {
+			const str = L.Util.template(tpl, {
 				foo: 'Vlad',
 				bar: 'Dave'
 			});
@@ -239,7 +239,7 @@ describe('Util', function () {
 	describe('#isArray', function () {
 		expect(L.Util.isArray([1, 2, 3])).to.be(true);
 		/* eslint no-array-constructor: 0 */
-		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
+		expect(L.Util.isArray([1, 2, 3])).to.be(true);
 		expect(L.Util.isArray('blabla')).to.be(false);
 		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);
 	});

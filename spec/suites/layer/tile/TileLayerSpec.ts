@@ -1,10 +1,10 @@
 describe('TileLayer', function () {
-	var div, map;
+	let div, map;
 
 	// Placekitten via http://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
-	var placeKitten = "data:image/jpeg;base64," +
+	const placeKitten = "data:image/jpeg;base64," +
 	"/9j/4AAQSkZJRgABAQAAAQABAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBF" +
 	"RyB2NjIpLCBxdWFsaXR5ID0gNjUK/9sAQwALCAgKCAcLCgkKDQwLDREcEhEPDxEiGRoUHCkkKyooJCcn" +
 	"LTJANy0wPTAnJzhMOT1DRUhJSCs2T1VORlRAR0hF/9sAQwEMDQ0RDxEhEhIhRS4nLkVFRUVFRUVFRUVF" +
@@ -177,8 +177,8 @@ describe('TileLayer', function () {
 	}
 
 	function eachImg(layer, callback) {
-		var imgtags = layer._container.children[0].children;
-		for (var i in imgtags) {
+		const imgtags = layer._container.children[0].children;
+		for (const i in imgtags) {
 			if (imgtags[i].tagName === 'IMG') {
 				callback(imgtags[i]);
 			}
@@ -186,7 +186,7 @@ describe('TileLayer', function () {
 	}
 
 	describe("number of kittens loaded", function () {
-		var clock, kittenLayer, counts;
+		let clock, kittenLayer, counts;
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
 		function runFrames(n) {
@@ -254,7 +254,7 @@ describe('TileLayer', function () {
 		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			var mad = [40.40, -3.7], trd = [63.41, 10.41];
+			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.on('load', function () {
 				expect(counts.tileloadstart).to.be(12);
@@ -296,16 +296,16 @@ describe('TileLayer', function () {
 		});
 
 		it('replaces {y} with y coordinate', function () {
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/2/1/1.png',
 				'http://example.com/2/1/2.png',
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, function (img) {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -313,14 +313,14 @@ describe('TileLayer', function () {
 		});
 
 		it('replaces {-y} with inverse y coordinate', function () {
-			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
-			var urls = [
+			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
+			const urls = [
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png',
 				'http://example.com/2/1/1.png',
 				'http://example.com/2/1/2.png'
 			];
-			var i = 0;
+			let i = 0;
 			eachImg(layer, function (img) {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -328,16 +328,16 @@ describe('TileLayer', function () {
 		});
 
 		it('Does not replace {-y} on map with infinite CRS', function () {
-			var simplediv = document.createElement('div');
+			const simplediv = document.createElement('div');
 			simplediv.style.width = '400px';
 			simplediv.style.height = '400px';
 			simplediv.style.visibility = 'hidden';
 
 			document.body.appendChild(simplediv);
-			var simpleMap = L.map(simplediv, {
+			const simpleMap = L.map(simplediv, {
 				crs: L.CRS.Simple
 			}).setView([0, 0], 5);
-			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
+			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
 
 			expect(function () {
 				layer.addTo(simpleMap);
@@ -348,7 +348,7 @@ describe('TileLayer', function () {
 		});
 
 		it('replaces {s} with [abc] by default', function () {
-			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
+			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
 
 			eachImg(layer, function (img) {
 				expect(['a', 'b', 'c'].indexOf(img.src[7]) >= 0).to.eql(true);
@@ -356,7 +356,7 @@ describe('TileLayer', function () {
 		});
 
 		it('replaces {s} with specified prefixes', function () {
-			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
 				subdomains: 'qrs'
 			}).addTo(map);
 
@@ -367,18 +367,18 @@ describe('TileLayer', function () {
 
 		it('uses zoomOffset option', function () {
 			// Map view is set at zoom 2 in beforeEach.
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
 			}).addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/3/1/1.png',
 				'http://example.com/3/1/2.png',
 				'http://example.com/3/2/1.png',
 				'http://example.com/3/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, function (img) {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -387,18 +387,18 @@ describe('TileLayer', function () {
 
 		it('uses negative zoomOffset option', function () {
 			// Map view is set at zoom 2 in beforeEach.
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
 			}).addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/-1/1/1.png',
 				'http://example.com/-1/1/2.png',
 				'http://example.com/-1/2/1.png',
 				'http://example.com/-1/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, function (img) {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -421,7 +421,7 @@ describe('TileLayer', function () {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it('uses crossOrigin value ' + crossOrigin, function () {
-				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 					crossOrigin: crossOrigin
 				}).addTo(map);
 
@@ -434,8 +434,8 @@ describe('TileLayer', function () {
 
 	describe('#setUrl', function () {
 		it('fires only one load event', function (done) {
-			var layer = L.tileLayer(placeKitten).addTo(map);
-			var counts = {
+			const layer = L.tileLayer(placeKitten).addTo(map);
+			const counts = {
 				load: 0,
 				tileload: 0
 			};

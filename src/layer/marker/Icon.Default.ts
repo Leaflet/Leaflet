@@ -43,8 +43,8 @@ export var IconDefault = Icon.extend({
 	},
 
 	_detectIconPath: function () {
-		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-		var path = DomUtil.getStyle(el, 'background-image') ||
+		const el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+		let path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);

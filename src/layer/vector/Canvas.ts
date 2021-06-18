@@ -279,8 +279,8 @@ export const Canvas = Renderer.extend({
 
 		ctx.beginPath();
 
-		for (i = 0; i < len; i++) {
-			for (j = 0, len2 = parts[i].length; j < len2; j++) {
+		for (let i in len) {
+			for (let j in parts[i].length) {
 				p = parts[i][j];
 				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
 			}

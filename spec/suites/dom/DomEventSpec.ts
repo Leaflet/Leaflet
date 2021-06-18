@@ -1,5 +1,5 @@
 describe('DomEvent', function () {
-	var el, listener;
+	let el, listener;
 
 	beforeEach(function () {
 		el = document.createElement('div');
@@ -13,7 +13,7 @@ describe('DomEvent', function () {
 
 	describe('#on (addListener)', function () {
 		it('adds a listener and calls it on event', function () {
-			var listener2 = sinon.spy();
+			const listener2 = sinon.spy();
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
@@ -24,7 +24,7 @@ describe('DomEvent', function () {
 		});
 
 		it('binds "this" to the given context', function () {
-			var obj = {foo: 'bar'};
+			const obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click', listener, obj);
 
 			happen.click(el);
@@ -41,7 +41,7 @@ describe('DomEvent', function () {
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.on(el, 'click', function () {});
+			const res = L.DomEvent.on(el, 'click', function () {});
 
 			expect(res).to.be(L.DomEvent);
 		});
@@ -62,7 +62,7 @@ describe('DomEvent', function () {
 		});
 
 		it('is chainable', function () {
-			var res = L.DomEvent.off(el, 'click', function () {});
+			const res = L.DomEvent.off(el, 'click', function () {});
 
 			expect(res).to.be(L.DomEvent);
 		});
@@ -74,7 +74,7 @@ describe('DomEvent', function () {
 
 	describe('#stopPropagation', function () {
 		it('stops propagation of the given event', function () {
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.on(el, 'click', listener);
@@ -87,9 +87,9 @@ describe('DomEvent', function () {
 
 	describe('#disableScrollPropagation', function () {
 		it('stops wheel events from propagation to parent elements', function () {
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
-			var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+			const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 			L.DomEvent.on(el, wheel, listener);
 
 			L.DomEvent.disableScrollPropagation(child);
@@ -101,7 +101,7 @@ describe('DomEvent', function () {
 
 	describe('#disableClickPropagation', function () {
 		it('stops click events from propagation to parent elements', function () { // except 'click'
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(el, 'dblclick mousedown touchstart', listener);
@@ -114,16 +114,16 @@ describe('DomEvent', function () {
 		});
 
 		it('prevents click event on map object, but propagates to DOM elements', function () { // to solve #301
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(el, 'click', listener);
-			var grandChild = document.createElement('div');
+			const grandChild = document.createElement('div');
 			child.appendChild(grandChild);
 
-			var map = L.map(el).setView([0, 0], 0);
-			var mapClickListener = sinon.spy();
-			var mapOtherListener = sinon.spy();
+			const map = L.map(el).setView([0, 0], 0);
+			const mapClickListener = sinon.spy();
+			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case
 			map.on('keypress', mapOtherListener);       // control case
 
@@ -144,11 +144,11 @@ describe('DomEvent', function () {
 		});
 
 		it('does not interfere with stopPropagation', function () { // test for #1925
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
-			var map = L.map(el).setView([0, 0], 0);
+			const map = L.map(el).setView([0, 0], 0);
 			map.on('click', listener);
 
 			happen.once(child, {type: 'click'});
@@ -170,7 +170,7 @@ describe('DomEvent', function () {
 
 			happen.click(el);
 
-			var e = listener.lastCall.args[0];
+			const e = listener.lastCall.args[0];
 			if ('defaultPrevented' in e) {
 				expect(e.defaultPrevented).to.be.ok();
 			} else {

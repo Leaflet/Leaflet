@@ -1,5 +1,5 @@
 describe("Map.TouchZoom", function () {
-	var container, map;
+	let container, map;
 
 	beforeEach(function () {
 		container = document.createElement('div');
@@ -30,9 +30,9 @@ describe("Map.TouchZoom", function () {
 			done();
 		});
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -51,9 +51,9 @@ describe("Map.TouchZoom", function () {
 			done();
 		});
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)

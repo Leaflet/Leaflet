@@ -153,7 +153,7 @@ export var Popup = DivOverlay.extend({
 	},
 
 	getEvents: function () {
-		var events = DivOverlay.prototype.getEvents.call(this);
+		const events = DivOverlay.prototype.getEvents.call(this);
 
 		if (this.options.closeOnClick !== undefined ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
@@ -173,12 +173,12 @@ export var Popup = DivOverlay.extend({
 	},
 
 	_initLayout: function () {
-		var prefix = 'leaflet-popup',
+		const prefix = 'leaflet-popup',
 		    container = this._container = DomUtil.create('div',
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-animated');
 
-		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
+		const wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
 		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
 
 		DomEvent.disableClickPropagation(container);
@@ -189,7 +189,7 @@ export var Popup = DivOverlay.extend({
 		this._tip = DomUtil.create('div', prefix + '-tip', this._tipContainer);
 
 		if (this.options.closeButton) {
-			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
+			const closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
@@ -198,13 +198,13 @@ export var Popup = DivOverlay.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._contentNode,
+		const container = this._contentNode,
 		    style = container.style;
 
 		style.width = '';
 		style.whiteSpace = 'nowrap';
 
-		var width = container.offsetWidth;
+		let width = container.offsetWidth;
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
@@ -213,7 +213,7 @@ export var Popup = DivOverlay.extend({
 
 		style.height = '';
 
-		var height = container.offsetHeight,
+		const height = container.offsetHeight,
 		    maxHeight = this.options.maxHeight,
 		    scrolledClass = 'leaflet-popup-scrolled';
 
@@ -228,7 +228,7 @@ export var Popup = DivOverlay.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
+		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		    anchor = this._getAnchor();
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
@@ -237,7 +237,7 @@ export var Popup = DivOverlay.extend({
 		if (!this.options.autoPan) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
 
-		var map = this._map,
+		const map = this._map,
 		    marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
 		    containerHeight = this._container.offsetHeight + marginBottom,
 		    containerWidth = this._containerWidth,
@@ -245,7 +245,7 @@ export var Popup = DivOverlay.extend({
 
 		layerPos._add(DomUtil.getPosition(this._container));
 
-		var containerPos = map.layerPointToContainerPoint(layerPos),
+		let containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = toPoint(this.options.autoPanPadding),
 		    paddingTL = toPoint(this.options.autoPanPaddingTopLeft || padding),
 		    paddingBR = toPoint(this.options.autoPanPaddingBottomRight || padding),
@@ -471,7 +471,7 @@ Layer.include({
 	},
 
 	_openPopup: function (e) {
-		var layer = e.layer || e.target;
+		const layer = e.layer || e.target;
 
 		if (!this._popup) {
 			return;

@@ -1,5 +1,5 @@
 describe('GridLayer', function () {
-	var div, map;
+	let div, map;
 
 	beforeEach(function () {
 		div = document.createElement('div');
@@ -19,14 +19,14 @@ describe('GridLayer', function () {
 
 	describe('#redraw', function () {
 		it('can be called before map.setView', function () {
-			var grid = L.gridLayer().addTo(map);
+			const grid = L.gridLayer().addTo(map);
 			expect(grid.redraw()).to.equal(grid);
 		});
 	});
 
 	describe('#setOpacity', function () {
 		it('can be called before map.setView', function () {
-			var grid = L.gridLayer().addTo(map);
+			const grid = L.gridLayer().addTo(map);
 			expect(grid.setOpacity(0.5)).to.equal(grid);
 		});
 
@@ -34,7 +34,7 @@ describe('GridLayer', function () {
 			map.remove();
 			map = L.map(div, {fadeAnimation: false}).setView([0, 0], 0);
 
-			var grid = L.gridLayer().setOpacity(0.5).addTo(map);
+			const grid = L.gridLayer().setOpacity(0.5).addTo(map);
 			grid.on('load', function () {
 				expect(grid._container.style.opacity).to.equal('0.5');
 				done();
@@ -45,21 +45,21 @@ describe('GridLayer', function () {
 	it('positions tiles correctly with wrapping and bounding', function () {
 		map.setView([0, 0], 1);
 
-		var tiles = [];
+		const tiles = [];
 
-		var grid = L.gridLayer();
+		const grid = L.gridLayer();
 		grid.createTile = function (coords) {
-			var tile = document.createElement('div');
+			const tile = document.createElement('div');
 			tiles.push({coords: coords, tile: tile});
 			return tile;
 		};
 
 		map.addLayer(grid);
 
-		var loaded = {};
+		const loaded = {};
 
-		for (var i = 0; i < tiles.length; i++) {
-			var coords = tiles[i].coords,
+		for (let i = 0; i < tiles.length; i++) {
+			const coords = tiles[i].coords,
 			    pos = L.DomUtil.getPosition(tiles[i].tile);
 
 			loaded[pos.x + ':' + pos.y] = [coords.x, coords.y];
@@ -78,7 +78,7 @@ describe('GridLayer', function () {
 	});
 
 	describe('tile pyramid', function () {
-		var clock;
+		let clock;
 
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
@@ -93,8 +93,8 @@ describe('GridLayer', function () {
 			map = L.map(div, {fadeAnimation: false});
 			map.setView([0, 0], 1);
 
-			var grid = L.gridLayer();
-			var tiles = {};
+			const grid = L.gridLayer();
+			const tiles = {};
 
 			grid.createTile = function (coords) {
 				tiles[grid._tileCoordsToKey(coords)] = true;
@@ -120,7 +120,7 @@ describe('GridLayer', function () {
 	});
 
 	describe('#createTile', function () {
-		var grid;
+		let grid;
 
 		beforeEach(function () {
 			// Simpler sizes to test.
@@ -135,13 +135,13 @@ describe('GridLayer', function () {
 		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', function (done) {
 			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
-			var count = 0,
+			let count = 0,
 			    loadCount = 0;
 			grid.createTile = function () {
 				count++;
 				return document.createElement('div');
 			};
-			var onLoad = function () {
+			const onLoad = function () {
 				expect(count).to.eql(4);
 				count = 0;
 				loadCount++;
@@ -156,12 +156,12 @@ describe('GridLayer', function () {
 		});
 
 		describe('when done() is called with an error parameter', function () {
-			var keys;
+			let keys;
 
 			beforeEach(function () {
 				keys = [];
 				grid.createTile = function (coords, done) {
-					var tile = document.createElement('div');
+					const tile = document.createElement('div');
 					keys.push(this._tileCoordsToKey(coords));
 					done('error', tile);
 					return tile;
@@ -169,7 +169,7 @@ describe('GridLayer', function () {
 			});
 
 			it('does not raise tileload events', function (done) {
-				var tileLoadRaised = sinon.spy();
+				const tileLoadRaised = sinon.spy();
 				grid.on('tileload', tileLoadRaised);
 				grid.on('tileerror', function () {
 					if (keys.length === 4) {
@@ -181,7 +181,7 @@ describe('GridLayer', function () {
 			});
 
 			it('raises tileerror events', function (done) {
-				var tileErrorRaised = sinon.spy();
+				const tileErrorRaised = sinon.spy();
 				grid.on('tileerror', function () {
 					tileErrorRaised();
 					if (keys.length === 4) {
@@ -193,7 +193,7 @@ describe('GridLayer', function () {
 			});
 
 			it('does not add the .leaflet-tile-loaded class to tile elements', function (done) {
-				var count = 0;
+				let count = 0;
 				grid.on('tileerror', function (e) {
 					if (!L.DomUtil.hasClass(e.tile, 'leaflet-tile-loaded')) {
 						count++;
@@ -211,16 +211,16 @@ describe('GridLayer', function () {
 
 	describe("#onAdd", function () {
 		it('is called after zoomend on first map load', function () {
-			var layer = L.gridLayer().addTo(map);
+			const layer = L.gridLayer().addTo(map);
 
-			var onAdd = layer.onAdd,
+			const onAdd = layer.onAdd,
 			    onAddSpy = sinon.spy();
 			layer.onAdd = function () {
 				onAdd.apply(this, arguments);
 				onAddSpy();
 			};
 
-			var onReset = sinon.spy();
+			const onReset = sinon.spy();
 			map.on('zoomend', onReset);
 			map.setView([0, 0], 0);
 
@@ -235,7 +235,7 @@ describe('GridLayer', function () {
 
 		describe("when a gridlayer is added to a map with no other layers", function () {
 			it("has the same zoomlevels as the gridlayer", function () {
-				var maxZoom = 10,
+				const maxZoom = 10,
 				    minZoom = 5;
 
 				L.gridLayer({
@@ -250,7 +250,7 @@ describe('GridLayer', function () {
 
 		describe("accessing a gridlayer's properties", function () {
 			it('provides a container', function () {
-				var layer = L.gridLayer().addTo(map);
+				const layer = L.gridLayer().addTo(map);
 				expect(layer.getContainer()).to.be.ok();
 			});
 		});
@@ -278,7 +278,7 @@ describe('GridLayer', function () {
 
 		describe("when a gridlayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
-				var tiles = [
+				const tiles = [
 					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
 					L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
 					L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
@@ -310,10 +310,10 @@ describe('GridLayer', function () {
 		it("calls createTile() with maxNativeZoom when map zoom is larger", function (done) {
 			map.setView([0, 0], 10);
 
-			var grid = L.gridLayer({
+			const grid = L.gridLayer({
 				maxNativeZoom: 5
 			});
-			var tileCount = 0;
+			let tileCount = 0;
 
 			grid.createTile = function (coords) {
 				expect(coords.z).to.be(5);
@@ -334,10 +334,10 @@ describe('GridLayer', function () {
 		it("calls createTile() with minNativeZoom when map zoom is smaller", function (done) {
 			map.setView([0, 0], 3);
 
-			var grid = L.gridLayer({
+			const grid = L.gridLayer({
 				minNativeZoom: 5
 			});
-			var tileCount = 0;
+			let tileCount = 0;
 
 			grid.createTile = function (coords) {
 				expect(coords.z).to.be(5);
@@ -357,7 +357,7 @@ describe('GridLayer', function () {
 	});
 
 	describe("number of 256px tiles loaded in synchronous non-animated grid @800x600px", function () {
-		var clock, grid, counts;
+		let clock, grid, counts;
 
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
@@ -368,7 +368,7 @@ describe('GridLayer', function () {
 			});
 
 			grid.createTile = function (coords) {
-				var tile = document.createElement('div');
+				const tile = document.createElement('div');
 				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 				tile.style.border = '2px solid red';
 				return tile;
@@ -508,7 +508,7 @@ describe('GridLayer', function () {
 	});
 
 	describe("number of 256px tiles loaded in synchronous animated grid @800x600px", function () {
-		var clock, grid, counts;
+		let clock, grid, counts;
 
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
@@ -519,7 +519,7 @@ describe('GridLayer', function () {
 			});
 
 			grid.createTile = function (coords) {
-				var tile = document.createElement('div');
+				const tile = document.createElement('div');
 				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 				tile.style.border = '2px solid red';
 				return tile;
@@ -789,7 +789,7 @@ describe('GridLayer', function () {
 		it.skipIfNo3d("Loads 290, unloads 275 tiles on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			var mad = [40.40, -3.7], trd = [63.41, 10.41];
+			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(12);
@@ -823,7 +823,7 @@ describe('GridLayer', function () {
 	});
 
 	describe("configurable tile pruning", function () {
-		var clock, grid, counts;
+		let clock, grid, counts;
 
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
@@ -834,7 +834,7 @@ describe('GridLayer', function () {
 			});
 
 			grid.createTile = function (coords) {
-				var tile = document.createElement('div');
+				const tile = document.createElement('div');
 				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 				tile.style.border = '2px solid red';
 				return tile;
@@ -973,7 +973,7 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads map, moves forth and back by 512 px, default keepBuffer", function (done) {
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -1007,12 +1007,12 @@ describe('GridLayer', function () {
 
 	describe("nowrap option", function () {
 		it("When false, uses same coords at zoom 0 for all tiles", function (done) {
-			var grid = L.gridLayer({
+			const grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),
 				noWrap: false
 			});
-			var loadedTileKeys = [];
+			const loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
 				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
@@ -1028,12 +1028,12 @@ describe('GridLayer', function () {
 		});
 
 		it("When true, uses different coords at zoom level 0 for all tiles", function (done) {
-			var grid = L.gridLayer({
+			const grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),
 				noWrap: true
 			});
-			var loadedTileKeys = [];
+			const loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
 				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
@@ -1049,13 +1049,13 @@ describe('GridLayer', function () {
 		});
 
 		it("When true and with bounds, loads just one tile at zoom level 0", function (done) {
-			var grid = L.gridLayer({
+			const grid = L.gridLayer({
 				attribution: 'Grid Layer',
 				tileSize: L.point(256, 256),
 				bounds: [[-90, -180], [90, 180]],
 				noWrap: true
 			});
-			var loadedTileKeys = [];
+			const loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
 				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
@@ -1089,8 +1089,8 @@ describe('GridLayer', function () {
 
 	it("doesn't call map's getZoomScale method with null after _invalidateAll method was called", function () {
 		map.setView([0, 0], 0);
-		var grid = L.gridLayer().addTo(map);
-		var wrapped = sinon.spy(map, 'getZoomScale');
+		const grid = L.gridLayer().addTo(map);
+		const wrapped = sinon.spy(map, 'getZoomScale');
 		grid._invalidateAll();
 		grid.redraw();
 		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);

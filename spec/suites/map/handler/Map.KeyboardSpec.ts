@@ -8,7 +8,7 @@ describe("Map.Keyboard", function () {
 	const KEYCODE_MINUS = 173;
 	const KEYCODE_ESC = 27;
 
-	var map, container;
+	let map, container;
 
 	beforeEach(function () {
 		container = document.createElement('div');
@@ -143,7 +143,7 @@ describe("Map.Keyboard", function () {
 	describe("popup closing", function () {
 		it("closes a popup when pressing escape", function () {
 
-			var popup = L.popup().setLatLng([0, 0]).setContent('Null Island');
+			const popup = L.popup().setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
 
 			expect(popup.isOpen()).to.be(true);
@@ -158,7 +158,7 @@ describe("Map.Keyboard", function () {
 	describe("popup closing disabled", function () {
 		it("close of popup when pressing escape disabled via options", function () {
 
-			var popup = L.popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
+			const popup = L.popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
 
 			expect(popup.isOpen()).to.be(true);
@@ -172,9 +172,9 @@ describe("Map.Keyboard", function () {
 
 	describe("keys events binding", function () {
 		it("keypress", function (done) {
-			var keyDownSpy = sinon.spy();
-			var keyPressSpy = sinon.spy();
-			var keyUpSpy = sinon.spy();
+			const keyDownSpy = sinon.spy();
+			const keyPressSpy = sinon.spy();
+			const keyUpSpy = sinon.spy();
 
 			map.on('keypress', keyPressSpy);
 			happen.keypress(container, {keyCode: KEYCODE_LOWERCASE_A});
@@ -188,9 +188,9 @@ describe("Map.Keyboard", function () {
 		});
 
 		it("keydown", function (done) {
-			var keyDownSpy = sinon.spy();
-			var keyPressSpy = sinon.spy();
-			var keyUpSpy = sinon.spy();
+			const keyDownSpy = sinon.spy();
+			const keyPressSpy = sinon.spy();
+			const keyUpSpy = sinon.spy();
 
 			map.on('keydown', keyDownSpy);
 			happen.keydown(container, {keyCode: KEYCODE_LOWERCASE_A});
@@ -204,9 +204,9 @@ describe("Map.Keyboard", function () {
 		});
 
 		it("keyup", function (done) {
-			var keyDownSpy = sinon.spy();
-			var keyPressSpy = sinon.spy();
-			var keyUpSpy = sinon.spy();
+			const keyDownSpy = sinon.spy();
+			const keyPressSpy = sinon.spy();
+			const keyUpSpy = sinon.spy();
 
 			map.on('keyup', keyUpSpy);
 			happen.keyup(container, {keyCode: KEYCODE_LOWERCASE_A});

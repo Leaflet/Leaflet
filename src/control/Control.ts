@@ -67,7 +67,7 @@ export const Control = Class.extend({
 		this.remove();
 		this._map = map;
 
-		var container = this._container = this.onAdd(map),
+		const container = this._container = this.onAdd(map),
 		    pos = this.getPosition(),
 		    corner = map._controlCorners[pos];
 
@@ -146,13 +146,13 @@ Map.include({
 	},
 
 	_initControlPos: function () {
-		var corners = this._controlCorners = {},
+		const corners = this._controlCorners = {},
 		    l = 'leaflet-',
 		    container = this._controlContainer =
 		            DomUtil.create('div', l + 'control-container', this._container);
 
 		function createCorner(vSide, hSide) {
-			var className = l + vSide + ' ' + l + hSide;
+			const className = l + vSide + ' ' + l + hSide;
 
 			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}
@@ -164,7 +164,7 @@ Map.include({
 	},
 
 	_clearControlPos: function () {
-		for (var i in this._controlCorners) {
+		for (const i in this._controlCorners) {
 			DomUtil.remove(this._controlCorners[i]);
 		}
 		DomUtil.remove(this._controlContainer);

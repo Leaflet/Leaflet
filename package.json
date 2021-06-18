@@ -36,7 +36,8 @@
         "semantic-release": "^17.4.3",
         "sinon": "^7.5.0",
         "ssri": "^8.0.1",
-        "typescript": "^4.3.2",
+        "tslint": "^6.1.3",
+        "typescript": "^4.3.4",
         "uglify-js": "^3.12.6"
     },
     "style": "dist/leaflet.css",
@@ -122,6 +123,8 @@
     "dependencies": {
         "@angular/compiler": "^11.2.14",
         "@angular/compiler-cli": "^12.0.4",
+        "@types/eslint": "^7.2.13",
+        "@typescript-eslint/types": "^4.27.0",
         "core-js": "^3.14.0",
         "css-what": "^5.0.1",
         "express": "^4.17.1",

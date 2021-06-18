@@ -18,7 +18,7 @@ export function pointsToPath(rings, closed) {
 	const str = '',
 	i, j, len, len2, points, p;
 
-	for (let i in rings.length) {
+	for (const i in rings.length) {
 		points = rings[i];
 
 		for (j = 0, len2 = points.length; j < len2; j++) {

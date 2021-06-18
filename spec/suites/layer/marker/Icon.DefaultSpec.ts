@@ -1,5 +1,5 @@
 describe("Icon.Default", function () {
-	var div, map;
+	let div, map;
 
 	beforeEach(function () {
 		div = document.createElement('div');
@@ -15,13 +15,13 @@ describe("Icon.Default", function () {
 	});
 
 	it("icon measures 25x41px", function () {
-		var img = map.getPane('markerPane').querySelector('img');
+		const img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(25);
 	});
 
 	it("shadow measures 41x41px", function () {
-		var img = map.getPane('shadowPane').querySelector('img');
+		const img = map.getPane('shadowPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(41);
 	});

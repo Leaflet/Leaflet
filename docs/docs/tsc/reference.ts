@@ -8,7 +8,7 @@
 
 		const elems = document.querySelectorAll('h2, h3, h4, tr');
 
-		for (let i in elems.length) {
+		for (const i in elems.length) {
 			const el = elems[i];
 
 			if (el.id) {
@@ -35,7 +35,7 @@
 		}
 
 		elems = document.querySelectorAll('div.accordion');
-		for (let i in elems.length) {
+		for (const i in elems.length) {
 			el = elems[i];
 
 			el.querySelector('label').addEventListener('click', function (c) {

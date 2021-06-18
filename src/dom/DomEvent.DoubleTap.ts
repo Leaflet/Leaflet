@@ -4,13 +4,13 @@ import * as Browser from '../core/Browser';
  * Extends the event handling code with double tap support for mobile browsers.
  */
 
-var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'pointerdown' : 'touchstart';
-var _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend';
-var _pre = '_leaflet_';
+const _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'pointerdown' : 'touchstart';
+const _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend';
+const _pre = '_leaflet_';
 
 // inspired by Zepto touch code by Thomas Fuchs
 export function addDoubleTapListener(obj, handler, id) {
-	var last, touch,
+	let last, touch,
 	    doubleTap = false,
 	    delay = 250;
 
@@ -23,7 +23,7 @@ export function addDoubleTapListener(obj, handler, id) {
 			return;
 		}
 
-		var now = Date.now(),
+		const now = Date.now(),
 		    delta = now - (last || now);
 
 		touch = e.touches ? e.touches[0] : e;
@@ -36,7 +36,7 @@ export function addDoubleTapListener(obj, handler, id) {
 			if (Browser.pointer) {
 				if (e.pointerType === 'mouse') { return; }
 				// work around .type being readonly with MSPointer* events
-				var newTouch = {},
+				let newTouch = {},
 				    prop, i;
 
 				for (i in touch) {
@@ -69,7 +69,7 @@ export function addDoubleTapListener(obj, handler, id) {
 }
 
 export function removeDoubleTapListener(obj, id) {
-	var touchstart = obj[_pre + _touchstart + id],
+	const touchstart = obj[_pre + _touchstart + id],
 	    touchend = obj[_pre + _touchend + id],
 	    dblclick = obj[_pre + 'dblclick' + id];
 

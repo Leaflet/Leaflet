@@ -1,5 +1,5 @@
 describe("Transformation", function () {
-	var t, p;
+	let t, p;
 
 	beforeEach(function () {
 		t = new L.Transformation(1, 2, 3, 4);
@@ -8,20 +8,20 @@ describe("Transformation", function () {
 
 	describe('#transform', function () {
 		it("performs a transformation", function () {
-			var p2 = t.transform(p, 2);
+			const p2 = t.transform(p, 2);
 			expect(p2).to.eql(new L.Point(24, 128));
 		});
 
 		it('assumes a scale of 1 if not specified', function () {
-			var p2 = t.transform(p);
+			const p2 = t.transform(p);
 			expect(p2).to.eql(new L.Point(12, 64));
 		});
 	});
 
 	describe('#untransform', function () {
 		it("performs a reverse transformation", function () {
-			var p2 = t.transform(p, 2);
-			var p3 = t.untransform(p2, 2);
+			const p2 = t.transform(p, 2);
+			const p3 = t.untransform(p2, 2);
 			expect(p3).to.eql(p);
 		});
 
@@ -32,7 +32,7 @@ describe("Transformation", function () {
 
 	describe('#constructor', function () {
 		it("allows an array property for a", function () {
-			var t2 = L.transformation([1, 2, 3, 4]);
+			const t2 = L.transformation([1, 2, 3, 4]);
 			expect(t._a).to.eql(t2._a);
 			expect(t._b).to.eql(t2._b);
 			expect(t._c).to.eql(t2._c);

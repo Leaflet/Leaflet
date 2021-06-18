@@ -1,3 +1,6 @@
+declare module "*.css";
+declare module "*.ts";
+declare module "*.tsx";
 import 'iconv';
 import 'typescript-eslint/no-unsafe-call';
 import 'typescript-eslint';

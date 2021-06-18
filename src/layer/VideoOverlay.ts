@@ -45,8 +45,8 @@ export var VideoOverlay = ImageOverlay.extend({
 	},
 
 	_initImage: function () {
-		var wasElementSupplied = this._url.tagName === 'VIDEO';
-		var vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
+		const wasElementSupplied = this._url.tagName === 'VIDEO';
+		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
 
 		DomUtil.addClass(vid, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(vid, 'leaflet-zoom-animated'); }
@@ -60,9 +60,9 @@ export var VideoOverlay = ImageOverlay.extend({
 		vid.onloadeddata = Util.bind(this.fire, this, 'load');
 
 		if (wasElementSupplied) {
-			var sourceElements = vid.getElementsByTagName('source');
-			var sources = [];
-			for (var j = 0; j < sourceElements.length; j++) {
+			const sourceElements = vid.getElementsByTagName('source');
+			const sources = [];
+			for (let j = 0; j < sourceElements.length; j++) {
 				sources.push(sourceElements[j].src);
 			}
 
@@ -78,8 +78,8 @@ export var VideoOverlay = ImageOverlay.extend({
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
-		for (var i = 0; i < this._url.length; i++) {
-			var source = DomUtil.create('source');
+		for (let i = 0; i < this._url.length; i++) {
+			const source = DomUtil.create('source');
 			source.src = this._url[i];
 			vid.appendChild(source);
 		}

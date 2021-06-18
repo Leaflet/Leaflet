@@ -16,21 +16,21 @@ export var Mercator = {
 	bounds: new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
 	project: function (latlng) {
-		var d = Math.PI / 180,
+		let d = Math.PI / 180,
 		    r = this.R,
 		    y = latlng.lat * d,
 		    tmp = this.R_MINOR / r,
 		    e = Math.sqrt(1 - tmp * tmp),
 		    con = e * Math.sin(y);
 
-		var ts = Math.tan(Math.PI / 4 - y / 2) / Math.pow((1 - con) / (1 + con), e / 2);
+		const ts = Math.tan(Math.PI / 4 - y / 2) / Math.pow((1 - con) / (1 + con), e / 2);
 		y = -r * Math.log(Math.max(ts, 1E-10));
 
 		return new Point(latlng.lng * d * r, y);
 	},
 
 	unproject: function (point) {
-		var d = 180 / Math.PI,
+		let d = 180 / Math.PI,
 		    r = this.R,
 		    tmp = this.R_MINOR / r,
 		    e = Math.sqrt(1 - tmp * tmp),

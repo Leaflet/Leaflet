@@ -1,6 +1,6 @@
 describe('ImageOverlay', function () {
-	var c, map;
-	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+	let c, map;
+	const imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
 	beforeEach(function () {
 		c = document.createElement('div');
@@ -19,27 +19,27 @@ describe('ImageOverlay', function () {
 
 	describe('#setStyle', function () {
 		it('sets opacity', function () {
-			var overlay = L.imageOverlay().setStyle({opacity: 0.5});
+			const overlay = L.imageOverlay().setStyle({opacity: 0.5});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
 
 	describe('#setBounds', function () {
 		it('sets bounds', function () {
-			var bounds = new L.LatLngBounds(
+			const bounds = new L.LatLngBounds(
 				new L.LatLng(14, 12),
 				new L.LatLng(30, 40));
-			var overlay = L.imageOverlay().setBounds(bounds);
+			const overlay = L.imageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
 	});
 
 	describe("_image", function () {
-		var overlay;
+		let overlay;
 
 		// Url for testing errors
-		var errorUrl = 'data:image/false;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAT1JREFUOI2dk79qwlAUxr9zcKmxbyAWh0IIDqJrcchkX6ODrn2TDAWRPEkyKKVzBxHJkKFoySP0mlLhnA5NbIgmpf6my73n+853/xFKRLY9UJEpAy6Am2x6q8xLYZ73omhVrKd88DocNpvGPBHwUDYtIiL+9X7/2EmS9GiQiUMC7urER1RfLGPGnSRJGQCyzidiy/Nged6pAdHoo9XyAIAj2x78FfscBEw3jtNnFZn+V5zDIhPOTvsiFHAZv1d1SYIuXyrOaQDYArg9t3gIw1qxML81lHlJFQZfQVBrwKoLFuZ5VUHlO8ggVZ97UbQSEf9cwSEMq7ehOrPjeE0A8N5uXxnLCkA0qs2cIcBzM03vu7vdJwNAJ0lSy5hxVZJy51wMFH5jzsZx+iwyUcBlkS7wc9qsuiBV347jdbH+G/fth7AzHdiJAAAAAElFTkSuQmCC';
-		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+		const errorUrl = 'data:image/false;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAT1JREFUOI2dk79qwlAUxr9zcKmxbyAWh0IIDqJrcchkX6ODrn2TDAWRPEkyKKVzBxHJkKFoySP0mlLhnA5NbIgmpf6my73n+853/xFKRLY9UJEpAy6Am2x6q8xLYZ73omhVrKd88DocNpvGPBHwUDYtIiL+9X7/2EmS9GiQiUMC7urER1RfLGPGnSRJGQCyzidiy/Nged6pAdHoo9XyAIAj2x78FfscBEw3jtNnFZn+V5zDIhPOTvsiFHAZv1d1SYIuXyrOaQDYArg9t3gIw1qxML81lHlJFQZfQVBrwKoLFuZ5VUHlO8ggVZ97UbQSEf9cwSEMq7ehOrPjeE0A8N5uXxnLCkA0qs2cIcBzM03vu7vdJwNAJ0lSy5hxVZJy51wMFH5jzsZx+iwyUcBlkS7wc9qsuiBV347jdbH+G/fth7AzHdiJAAAAAElFTkSuQmCC';
+		const blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
 		// Create overlay for each test
 		beforeEach(function () {
@@ -49,7 +49,7 @@ describe('ImageOverlay', function () {
 			});
 			map.addLayer(overlay);
 
-			var bounds = new L.LatLngBounds(
+			const bounds = new L.LatLngBounds(
 				new L.LatLng(14, 12),
 				new L.LatLng(30, 40));
 			overlay.setBounds(bounds);
@@ -62,14 +62,14 @@ describe('ImageOverlay', function () {
 		});
 
 		function raiseImageEvent(event) {
-			var domEvent = document.createEvent('Event');
+			const domEvent = document.createEvent('Event');
 			domEvent.initEvent(event);
 			overlay._image.dispatchEvent(domEvent);
 		}
 
 		describe('when loaded', function () {
 			it('should raise the load event', function () {
-				var loadRaised = sinon.spy();
+				const loadRaised = sinon.spy();
 				overlay.once('load', loadRaised);
 				raiseImageEvent('load');
 				expect(loadRaised.called).to.be(true);
@@ -78,7 +78,7 @@ describe('ImageOverlay', function () {
 
 		describe('when load fails', function () {
 			it('should raise the error event', function () {
-				var errorRaised  = sinon.spy();
+				const errorRaised  = sinon.spy();
 				overlay.once('error', errorRaised);
 				raiseImageEvent('error');
 				expect(errorRaised.called).to.be(true);
@@ -100,13 +100,13 @@ describe('ImageOverlay', function () {
 
 	describe('#setZIndex', function () {
 		it('sets the z-index of the image', function () {
-			var overlay = L.imageOverlay();
+			const overlay = L.imageOverlay();
 			overlay.setZIndex(10);
 			expect(overlay.options.zIndex).to.equal(10);
 		});
 
 		it('should update the z-index of the image if it has allready been added to the map', function () {
-			var overlay = L.imageOverlay('', imageBounds);
+			const overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('1');
 
@@ -115,20 +115,20 @@ describe('ImageOverlay', function () {
 		});
 
 		it('should set the z-index of the image when it is added to the map', function () {
-			var overlay = L.imageOverlay('', imageBounds);
+			const overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('10');
 		});
 
 		it('should use the z-index specified in options', function () {
-			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
+			const overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.be('20');
 		});
 
 		it('should be fluent', function () {
-			var overlay = L.imageOverlay();
+			const overlay = L.imageOverlay();
 			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
@@ -136,8 +136,8 @@ describe('ImageOverlay', function () {
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
 	describe('_image2', function () {
-		var overlay;
-		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+		let overlay;
+		const blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
 		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
 		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.

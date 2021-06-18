@@ -138,7 +138,7 @@ export const Polygon = Polyline.extend({
 			return;
 		}
 
-		for (let i in this._rings.length) {
+		for (const i in this._rings.length) {
 			clipped = PolyUtil.clipPolygon(this._rings[i], bounds, true);
 			if (clipped.length) {
 				this._parts.push(clipped);

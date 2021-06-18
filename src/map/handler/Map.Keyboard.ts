@@ -103,18 +103,18 @@ export const Keyboard = Handler.extend({
 		// const i;
 		// const len;
 
-		for (let i in codes.left.length) {
+		for (const i in codes.left.length) {
 
 			keys[codes.left[i]] = [-1 * panDelta, 0];
 
 		}
-		for (let i in codes.right.length) {
+		for (const i in codes.right.length) {
 			keys[codes.right[i]] = [panDelta, 0];
 		}
-		for (let i in codes.down.length) {
+		for (const i in codes.down.length) {
 			keys[codes.down[i]] = [0, panDelta];
 		}
-		for (let i in codes.up.length) {
+		for (const i in codes.up.length) {
 			keys[codes.up[i]] = [0, -1 * panDelta];
 		}
 	},
@@ -125,10 +125,10 @@ export const Keyboard = Handler.extend({
 		// const i;
 	    // const len;
 
-		for (let i in codes.zoomIn.length) {
+		for (const i in codes.zoomIn.length) {
 			keys[codes.zoomIn[i]] = zoomDelta;
 		}
-		for (let i in codes.zoomOut.length) {
+		for (const i in codes.zoomOut.length) {
 			keys[codes.zoomOut[i]] = -zoomDelta;
 		}
 	},

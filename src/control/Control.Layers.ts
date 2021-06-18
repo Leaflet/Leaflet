@@ -85,11 +85,11 @@ export const Layers = Control.extend({
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 
-		for (let i in baseLayers) {
+		for (const i in baseLayers) {
 			this._addLayer(baseLayers[i], i);
 		}
 
-		for (let i in overlays) {
+		for (const i in overlays) {
 			this._addLayer(overlays[i], i, true);
 		}
 	},
@@ -101,7 +101,7 @@ export const Layers = Control.extend({
 		this._map = map;
 		map.on('zoomend', this._checkDisabledLayers, this);
 
-		for (let i in this._layers.length) {
+		for (const i in this._layers.length) {
 			this._layers[i].layer.on('add remove', this._onLayerChange, this);
 		}
 
@@ -117,9 +117,9 @@ export const Layers = Control.extend({
 	onRemove: function () {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
 
-		for (const i = 0; i < this._layers.length; i++) {
-			this._layers[i].layer.off('add remove', this._onLayerChange, this);
-		}
+		for (const i in this._layers.length) {
+            this._layers[i].layer.off('add remove', this._onLayerChange, this)
+        }
 	},
 
 	// @method addBaseLayer(layer: Layer, name: String): this
@@ -218,12 +218,11 @@ export const Layers = Control.extend({
 	},
 
 	_getLayer: function (id) {
-		for (const i = 0; i < this._layers.length; i++) {
-
-			if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
-				return this._layers[i];
-			}
-		}
+		for (const i in this._layers.length) {
+            if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
+                return this._layers[i]
+            }
+        }
 	},
 
 	_addLayer: function (layer, name, overlay) {
@@ -260,7 +259,7 @@ export const Layers = Control.extend({
 		this._layerControlInputs = [];
 		const baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
-		for (let i in this._layers.length) {
+		for (const i in this._layers.length) {
 			obj = this._layers[i];
 			this._addItem(obj);
 			overlaysPresent = overlaysPresent || obj.overlay;
@@ -373,12 +372,12 @@ export const Layers = Control.extend({
 		}
 
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
-		for (let i in removedLayers.length) {
+		for (const i in removedLayers.length) {
 			if (this._map.hasLayer(removedLayers[i])) {
 				this._map.removeLayer(removedLayers[i]);
 			}
 		}
-		for (let i in addedLayers.length) {
+		for (const i in addedLayers.length) {
 			if (!this._map.hasLayer(addedLayers[i])) {
 				this._map.addLayer(addedLayers[i]);
 			}

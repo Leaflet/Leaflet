@@ -124,7 +124,7 @@ export const DivOverlay = Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {
+		const events = {
 			zoom: this._updatePosition,
 			viewreset: this._updatePosition
 		};
@@ -166,7 +166,7 @@ export const DivOverlay = Layer.extend({
 		}
 
 		if (layer instanceof FeatureGroup) {
-			for (var id in parent._layers) {
+			for (const id in parent._layers) {
 				layer = parent._layers[id];
 				break;
 			}
@@ -213,7 +213,7 @@ export const DivOverlay = Layer.extend({
 	_updatePosition: function () {
 		if (!this._map) { return; }
 
-		var pos = this._map.latLngToLayerPoint(this._latlng),
+		let pos = this._map.latLngToLayerPoint(this._latlng),
 		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
 
@@ -223,7 +223,7 @@ export const DivOverlay = Layer.extend({
 			offset = offset.add(pos).add(anchor);
 		}
 
-		var bottom = this._containerBottom = -offset.y,
+		const bottom = this._containerBottom = -offset.y,
 		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the popup in case the height of the popup changes (images loading etc)

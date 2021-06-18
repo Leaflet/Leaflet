@@ -25,7 +25,7 @@ export var CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
-		var projectedPoint = this.projection.project(latlng),
+		const projectedPoint = this.projection.project(latlng),
 		    scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
@@ -35,7 +35,7 @@ export var CRS = {
 	// The inverse of `latLngToPoint`. Projects pixel coordinates on a given
 	// zoom into geographical coordinates.
 	pointToLatLng: function (point, zoom) {
-		var scale = this.scale(zoom),
+		const scale = this.scale(zoom),
 		    untransformedPoint = this.transformation.untransform(point, scale);
 
 		return this.projection.unproject(untransformedPoint);
@@ -75,7 +75,7 @@ export var CRS = {
 	getProjectedBounds: function (zoom) {
 		if (this.infinite) { return null; }
 
-		var b = this.projection.bounds,
+		const b = this.projection.bounds,
 		    s = this.scale(zoom),
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
@@ -108,7 +108,7 @@ export var CRS = {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		const lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
 		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
@@ -120,7 +120,7 @@ export var CRS = {
 	// that its center is within the CRS's bounds.
 	// Only accepts actual `L.LatLngBounds` instances, not arrays.
 	wrapLatLngBounds: function (bounds) {
-		var center = bounds.getCenter(),
+		const center = bounds.getCenter(),
 		    newCenter = this.wrapLatLng(center),
 		    latShift = center.lat - newCenter.lat,
 		    lngShift = center.lng - newCenter.lng;
@@ -129,7 +129,7 @@ export var CRS = {
 			return bounds;
 		}
 
-		var sw = bounds.getSouthWest(),
+		const sw = bounds.getSouthWest(),
 		    ne = bounds.getNorthEast(),
 		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
 		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);

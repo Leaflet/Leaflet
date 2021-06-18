@@ -1,5 +1,5 @@
 describe("Marker.Drag", function () {
-	var map,
+	let map,
 	    div;
 
 	beforeEach(function () {
@@ -19,18 +19,18 @@ describe("Marker.Drag", function () {
 
 	describe("drag", function () {
 		it("drags a marker with mouse", function (done) {
-			var marker = new L.Marker([0, 0], {
+			const marker = new L.Marker([0, 0], {
 				draggable: true
 			}).addTo(map);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
+					const center = map.getCenter();
 					expect(center.lat).to.be(0);
 					expect(center.lng).to.be(0);
 
-					var markerPos = marker.getLatLng();
+					const markerPos = marker.getLatLng();
 					// Marker drag is very timing sensitive, so we can't check
 					// exact values here, just verify that the drag is in the
 					// right ballpark
@@ -40,15 +40,15 @@ describe("Marker.Drag", function () {
 					done();
 				}
 			});
-			var toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger('mouse');
 
 			toucher.wait(100).moveTo(300, 280, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 1000).wait(100).up().wait(100);
 		});
 
 		describe("in CSS scaled container", function () {
-			var scaleX = 2;
-			var scaleY = 1.5;
+			const scaleX = 2;
+			const scaleY = 1.5;
 
 			beforeEach(function () {
 				div.style.webkitTransformOrigin = 'top left';
@@ -56,18 +56,18 @@ describe("Marker.Drag", function () {
 			});
 
 			it("drags a marker with mouse, compensating for CSS scale", function (done) {
-				var marker = new L.Marker([0, 0], {
+				const marker = new L.Marker([0, 0], {
 					draggable: true
 				}).addTo(map);
 
-				var hand = new Hand({
+				const hand = new Hand({
 					timing: 'fastframe',
 					onStop: function () {
-						var center = map.getCenter();
+						const center = map.getCenter();
 						expect(center.lat).to.be(0);
 						expect(center.lng).to.be(0);
 
-						var markerPos = marker.getLatLng();
+						const markerPos = marker.getLatLng();
 						// Marker drag is very timing sensitive, so we can't check
 						// exact values here, just verify that the drag is in the
 						// right ballpark
@@ -77,7 +77,7 @@ describe("Marker.Drag", function () {
 						done();
 					}
 				});
-				var toucher = hand.growFinger('mouse');
+				const toucher = hand.growFinger('mouse');
 
 				toucher.wait(100).moveTo(scaleX * 300, scaleY * 280, 0)
 					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 1000).wait(100).up().wait(100);
@@ -85,19 +85,19 @@ describe("Marker.Drag", function () {
 		});
 
 		it("pans map when autoPan is enabled", function (done) {
-			var marker = new L.Marker([0, 0], {
+			const marker = new L.Marker([0, 0], {
 				draggable: true,
 				autoPan: true
 			}).addTo(map);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
+					const center = map.getCenter();
 					expect(center.lat).to.be(0);
 					expect(center.lng).to.be.within(10, 30);
 
-					var markerPos = marker.getLatLng();
+					const markerPos = marker.getLatLng();
 					// Marker drag is very timing sensitive, so we can't check
 					// exact values here, just verify that the drag is in the
 					// right ballpark
@@ -107,7 +107,7 @@ describe("Marker.Drag", function () {
 					done();
 				}
 			});
-			var toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger('mouse');
 
 			toucher.wait(100).moveTo(300, 280, 0)
 				.down().moveBy(5, 0, 20).moveBy(290, 32, 1000).wait(100).up().wait(100);

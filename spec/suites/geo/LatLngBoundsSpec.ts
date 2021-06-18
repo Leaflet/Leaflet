@@ -1,5 +1,5 @@
 describe('LatLngBounds', function () {
-	var a, c;
+	let a, c;
 
 	beforeEach(function () {
 		a = new L.LatLngBounds(
@@ -10,7 +10,7 @@ describe('LatLngBounds', function () {
 
 	describe('constructor', function () {
 		it('instantiates either passing two latlngs or an array of latlngs', function () {
-			var b = new L.LatLngBounds([
+			const b = new L.LatLngBounds([
 				new L.LatLng(14, 12),
 				new L.LatLng(30, 40)
 			]);
@@ -19,12 +19,12 @@ describe('LatLngBounds', function () {
 		});
 
 		it('returns an empty bounds when not argument is given', function () {
-			var bounds = new L.LatLngBounds();
+			const bounds = new L.LatLngBounds();
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
 		it('returns an empty bounds when not argument is given to factory', function () {
-			var bounds = L.latLngBounds();
+			const bounds = L.latLngBounds();
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
@@ -63,7 +63,7 @@ describe('LatLngBounds', function () {
 
 	describe('#pad', function () {
 		it('pads the bounds by a given ratio', function () {
-			var b = a.pad(0.5);
+			const b = a.pad(0.5);
 
 			expect(b).to.eql(L.latLngBounds([[6, -2], [38, 54]]));
 		});

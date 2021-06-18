@@ -1,5 +1,5 @@
 describe("CRS.EPSG3857", function () {
-	var crs = L.CRS.EPSG3857;
+	const crs = L.CRS.EPSG3857;
 
 	describe("#latLngToPoint", function () {
 		it("projects a center point", function () {
@@ -39,7 +39,7 @@ describe("CRS.EPSG3857", function () {
 
 	describe("#getProjectedBounds", function () {
 		it("gives correct size", function () {
-			var i,
+			let i,
 			    worldSize = 256,
 			    crsSize;
 			for (i = 0; i <= 22; i++) {
@@ -75,9 +75,9 @@ describe("CRS.EPSG3857", function () {
 	describe('#wrapLatLngBounds', function () {
 		it("does not wrap bounds between -180 and 180 longitude", function () {
 
-			var bounds1 = L.latLngBounds([-10, -10], [10, 10]);
-			var bounds2 = L.latLngBounds([-80, -180], [-70, -170]);
-			var bounds3 = L.latLngBounds([70, 170], [80, 180]);
+			let bounds1 = L.latLngBounds([-10, -10], [10, 10]);
+			let bounds2 = L.latLngBounds([-80, -180], [-70, -170]);
+			let bounds3 = L.latLngBounds([70, 170], [80, 180]);
 
 			bounds1 = crs.wrapLatLngBounds(bounds1);
 			bounds2 = crs.wrapLatLngBounds(bounds2);
@@ -101,8 +101,8 @@ describe("CRS.EPSG3857", function () {
 		});
 
 		it("wraps bounds when center longitude is less than -180", function () {
-			var bounds1 = L.latLngBounds([0, -185], [10, -170]);
-			var bounds2 = L.latLngBounds([0, -190], [10, -175]);
+			let bounds1 = L.latLngBounds([0, -185], [10, -170]);
+			let bounds2 = L.latLngBounds([0, -190], [10, -175]);
 
 			bounds1 = crs.wrapLatLngBounds(bounds1);
 			bounds2 = crs.wrapLatLngBounds(bounds2);
@@ -119,8 +119,8 @@ describe("CRS.EPSG3857", function () {
 		});
 
 		it("wraps bounds when center longitude is larger than +180", function () {
-			var bounds1 = L.latLngBounds([0, 185], [10, 170]);
-			var bounds2 = L.latLngBounds([0, 190], [10, 175]);
+			let bounds1 = L.latLngBounds([0, 185], [10, 170]);
+			let bounds2 = L.latLngBounds([0, 190], [10, 175]);
 
 			bounds1 = crs.wrapLatLngBounds(bounds1);
 			bounds2 = crs.wrapLatLngBounds(bounds2);
@@ -141,11 +141,11 @@ describe("CRS.EPSG3857", function () {
 });
 
 describe("CRS.EPSG4326", function () {
-	var crs = L.CRS.EPSG4326;
+	const crs = L.CRS.EPSG4326;
 
 	describe("#getSize", function () {
 		it("gives correct size", function () {
-			var i,
+			let i,
 			    worldSize = 256,
 			    crsSize;
 			for (i = 0; i <= 22; i++) {
@@ -160,7 +160,7 @@ describe("CRS.EPSG4326", function () {
 });
 
 describe("CRS.EPSG3395", function () {
-	var crs = L.CRS.EPSG3395;
+	const crs = L.CRS.EPSG3395;
 
 	describe("#latLngToPoint", function () {
 		it("projects a center point", function () {
@@ -184,7 +184,7 @@ describe("CRS.EPSG3395", function () {
 });
 
 describe("CRS.Simple", function () {
-	var crs = L.CRS.Simple;
+	const crs = L.CRS.Simple;
 
 	describe("#latLngToPoint", function () {
 		it("converts LatLng coords to pixels", function () {
@@ -214,7 +214,7 @@ describe("CRS.Simple", function () {
 		});
 
 		it("wraps coords if configured", function () {
-			var crs = L.extend({}, L.CRS.Simple, {
+			const crs = L.extend({}, L.CRS.Simple, {
 				wrapLng: [-200, 200],
 				wrapLat: [-200, 200]
 			});
@@ -225,20 +225,20 @@ describe("CRS.Simple", function () {
 });
 
 describe("CRS", function () {
-	var crs = L.CRS;
+	const crs = L.CRS;
 
 	describe("#zoom && #scale", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
-			var zoom = 2.5;
-			var scale = crs.scale(zoom);
-			var zoom2 = crs.zoom(scale);
+			const zoom = 2.5;
+			const scale = crs.scale(zoom);
+			const zoom2 = crs.zoom(scale);
 			expect(L.Util.formatNum(zoom2)).to.eql(zoom);
 		});
 	});
 });
 
 describe("CRS.ZoomNotPowerOfTwo", function () {
-	var crs = L.extend({}, L.CRS, {
+	const crs = L.extend({}, L.CRS, {
 		scale: function (zoom) {
 			return 256 * Math.pow(1.5, zoom);
 		},
@@ -249,8 +249,8 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 
 	describe("#scale", function () {
 		it("of zoom levels are related by a power of 1.5", function () {
-			var zoom = 5;
-			var scale = crs.scale(zoom);
+			const zoom = 5;
+			const scale = crs.scale(zoom);
 			expect(crs.scale(zoom + 1)).to.eql(1.5 * scale);
 			expect(crs.zoom(1.5 * scale)).to.eql(zoom + 1);
 		});
@@ -258,8 +258,8 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 
 	describe("#zoom && #scale", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
-			var zoom = 2;
-			var scale = crs.scale(zoom);
+			const zoom = 2;
+			const scale = crs.scale(zoom);
 			expect(crs.zoom(scale)).to.eql(zoom);
 		});
 	});
@@ -271,8 +271,8 @@ describe("CRS.Earth", function () {
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
 		// is correct, since that's what International Union of Geodesy and Geophysics recommends,
 		// and that sounds serious.
-		var p1 = L.latLng(36.12, -86.67);
-		var p2 = L.latLng(33.94, -118.40);
+		const p1 = L.latLng(36.12, -86.67);
+		const p2 = L.latLng(33.94, -118.40);
 		expect(L.CRS.Earth.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
 	});
 });

@@ -1,5 +1,5 @@
 describe("Projection.Mercator", function () {
-	var p = L.Projection.Mercator;
+	const p = L.Projection.Mercator;
 
 	describe("#project", function () {
 		it("projects a center point", function () {
@@ -48,7 +48,7 @@ describe("Projection.Mercator", function () {
 });
 
 describe("Projection.SphericalMercator", function () {
-	var p = L.Projection.SphericalMercator;
+	const p = L.Projection.SphericalMercator;
 
 	describe("#project", function () {
 		it("projects a center point", function () {

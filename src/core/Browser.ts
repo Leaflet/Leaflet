@@ -62,7 +62,7 @@ export const phantom = userAgentContains('phantom');
 export const opera12 = 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
-export cconst win = navigator.platform.indexOf('Win') === 0;
+export const win = navigator.platform.indexOf('Win') === 0;
 
 // @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
 export const ie3d = ie && ('transition' in style);

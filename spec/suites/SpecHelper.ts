@@ -15,7 +15,7 @@ if (!Array.prototype.map) {
 
 		const res = new Array(len);
 		const thisp = arguments[1];
-		for (let i in len) {
+		for (const i in len) {
 			if (i in t) {
 				res[i] = fun.call(thisp, t[i], i, t);
 			}

@@ -2,6 +2,8 @@
   "extends": "./tsconfig.json",
   "@typescript-eslint/restrict-plus-operands": "error",
   "compileOnSave": false,
+  "no-any": true,
+  "no-unsafe-any": true,
   "include": [
     "dist/**/*ts",
     "build/**/*ts",

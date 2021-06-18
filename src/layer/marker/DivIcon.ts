@@ -43,7 +43,7 @@ export var DivIcon = Icon.extend({
 	},
 
 	createIcon: function (oldIcon) {
-		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
+		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
 		if (options.html instanceof Element) {
@@ -54,7 +54,7 @@ export var DivIcon = Icon.extend({
 		}
 
 		if (options.bgPos) {
-			var bgPos = point(options.bgPos);
+			const bgPos = point(options.bgPos);
 			div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
 		}
 		this._setIconStyles(div, 'icon');

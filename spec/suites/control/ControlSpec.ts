@@ -3,7 +3,7 @@ describe("Control", function () {
 		return L.DomUtil.create('div', 'leaflet-test-control');
 	}
 
-	var map,
+	let map,
 	    container,
 	    control;
 
@@ -46,7 +46,7 @@ describe("Control", function () {
 		});
 
 		it("is a no-op if the control has not been added", function () {
-			var control = new L.Control();
+			const control = new L.Control();
 			expect(control.remove()).to.equal(control);
 		});
 	});

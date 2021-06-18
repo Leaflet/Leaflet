@@ -90,7 +90,7 @@ function _globalPointerUp(e) {
 
 function _handlePointer(e, handler) {
 	e.touches = [];
-	for (var i in _pointers) {
+	for (const i in _pointers) {
 		e.touches.push(_pointers[i]);
 	}
 	e.changedTouches = [e];

@@ -30,7 +30,7 @@ export function Bounds(a, b) {
 
 	const points = b ? [a, b] : a;
 
-	for (const i = 0, len = points.length; i < len; i++) {
+	for (let i in points.length) {
 		this.extend(points[i]);
 	}
 }

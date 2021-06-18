@@ -104,7 +104,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	getEvents: function () {
-		var events = DivOverlay.prototype.getEvents.call(this);
+		const events = DivOverlay.prototype.getEvents.call(this);
 
 		if (Browser.touch && !this.options.permanent) {
 			events.preclick = this._close;
@@ -120,7 +120,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_initLayout: function () {
-		var prefix = 'leaflet-tooltip',
+		const prefix = 'leaflet-tooltip',
 		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
 		this._contentNode = this._container = DomUtil.create('div', className);
@@ -131,7 +131,7 @@ export var Tooltip = DivOverlay.extend({
 	_adjustPan: function () {},
 
 	_setPosition: function (pos) {
-		var subX, subY,
+		let subX, subY,
 		    map = this._map,
 		    container = this._container,
 		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
@@ -178,7 +178,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_updatePosition: function () {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		const pos = this._map.latLngToLayerPoint(this._latlng);
 		this._setPosition(pos);
 	},
 
@@ -191,7 +191,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 		this._setPosition(pos);
 	},
 
@@ -301,7 +301,7 @@ Layer.include({
 
 	_initTooltipInteractions: function (remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
-		var onOff = remove ? 'off' : 'on',
+		const onOff = remove ? 'off' : 'on',
 		    events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
@@ -390,7 +390,7 @@ Layer.include({
 	},
 
 	_openTooltip: function (e) {
-		var layer = e.layer || e.target;
+		const layer = e.layer || e.target;
 
 		if (!this._tooltip || !this._map) {
 			return;
@@ -399,7 +399,7 @@ Layer.include({
 	},
 
 	_moveTooltip: function (e) {
-		var latlng = e.latlng, containerPoint, layerPoint;
+		let latlng = e.latlng, containerPoint, layerPoint;
 		if (this._tooltip.options.sticky && e.originalEvent) {
 			containerPoint = this._map.mouseEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);

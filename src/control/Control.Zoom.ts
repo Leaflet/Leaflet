@@ -36,7 +36,7 @@ export const Zoom = Control.extend({
 	},
 
 	onAdd: function (map) {
-		var zoomName = 'leaflet-control-zoom',
+		const zoomName = 'leaflet-control-zoom',
 		    container = DomUtil.create('div', zoomName + ' leaflet-bar'),
 		    options = this.options;
 
@@ -80,7 +80,7 @@ export const Zoom = Control.extend({
 	},
 
 	_createButton: function (html, title, className, container, fn) {
-		var link = DomUtil.create('a', className, container);
+		const link = DomUtil.create('a', className, container);
 		link.innerHTML = html;
 		link.href = '#';
 		link.title = title;
@@ -100,7 +100,7 @@ export const Zoom = Control.extend({
 	},
 
 	_updateDisabled: function () {
-		var map = this._map,
+		const map = this._map,
 		    className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);

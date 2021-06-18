@@ -210,7 +210,7 @@ export const Draggable = Evented.extend({
 			this._lastTarget = null;
 		}
 
-		for (let i in MOVE) {
+		for (const i in MOVE) {
 			DomEvent.off(document, MOVE[i], this._onMove, this);
 			DomEvent.off(document, END[i], this._onUp, this);
 		}

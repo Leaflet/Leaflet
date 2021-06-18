@@ -1,5 +1,5 @@
 describe('Bounds', function () {
-	var a, b, c;
+	let a, b, c;
 
 	beforeEach(function () {
 		a = new L.Bounds(
@@ -131,7 +131,7 @@ describe('Bounds', function () {
 
 	describe('L.bounds factory', function () {
 		it('creates bounds from array of number arrays', function () {
-			var bounds = L.bounds([[14, 12], [30, 40]]);
+			const bounds = L.bounds([[14, 12], [30, 40]]);
 			expect(bounds).to.eql(a);
 		});
 	});

@@ -1,16 +1,16 @@
 describe('PolyUtil', function () {
 	describe('#clipPolygon', function () {
 		it('clips polygon by bounds', function () {
-			var bounds = L.bounds([0, 0], [10, 10]);
+			const bounds = L.bounds([0, 0], [10, 10]);
 
-			var points = [
+			const points = [
 				new L.Point(5, 5),
 				new L.Point(15, 10),
 				new L.Point(10, 15)
 			];
 
 			// check clip without rounding
-			var clipped = L.PolyUtil.clipPolygon(points, bounds);
+			const clipped = L.PolyUtil.clipPolygon(points, bounds);
 
 			for (var i = 0, len = clipped.length; i < len; i++) {
 				delete clipped[i]._code;
@@ -24,7 +24,7 @@ describe('PolyUtil', function () {
 			]);
 
 			// check clip with rounding
-			var clippedRounded = L.PolyUtil.clipPolygon(points, bounds, true);
+			const clippedRounded = L.PolyUtil.clipPolygon(points, bounds, true);
 
 			for (i = 0, len = clippedRounded.length; i < len; i++) {
 				delete clippedRounded[i]._code;
