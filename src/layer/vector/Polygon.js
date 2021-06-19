@@ -1,5 +1,5 @@
 import {Polyline} from './Polyline';
-import {LatLng} from '../../geo/LatLng';
+import {LatLng, toLatLng} from '../../geo/LatLng';
 import * as LineUtil from '../../geometry/LineUtil';
 import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
@@ -67,16 +67,20 @@ export var Polygon = Polyline.extend({
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 
-		var i, j, p1, p2, f, area, x, y, center,
-		    points = this._rings[0],
-		    len = points.length;
+		var i, j, p1, p2, f, area, x, y, center;
+		var zoom = this._map.getMaxZoom() === Infinity ? this._map.getZoom() : this._map.getMaxZoom();
+		var points = [];
+		for (var k in this._defaultShape()) {
+			points.push(this._map.project(toLatLng(this._defaultShape()[k]), zoom));
+		}
+
+		var len = points.length;
 
 		if (!len) { return null; }
 
-		// polygon centroid algorithm; only uses the first ring if there are multiple
-
 		area = x = y = 0;
 
+		// polygon centroid algorithm;
 		for (i = 0, j = len - 1; i < len; j = i++) {
 			p1 = points[i];
 			p2 = points[j];
@@ -93,7 +97,7 @@ export var Polygon = Polyline.extend({
 		} else {
 			center = [x / area, y / area];
 		}
-		return this._map.layerPointToLatLng(center);
+		return this._map.unproject(center, zoom);
 	},
 
 	_convertLatLngs: function (latlngs) {
