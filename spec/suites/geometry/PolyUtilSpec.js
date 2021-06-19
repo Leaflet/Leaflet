@@ -38,4 +38,50 @@ describe('PolyUtil', function () {
 			]);
 		});
 	});
+
+	describe('#polygonCenter', function () {
+		var map;
+		before(function () {
+			map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+		});
+
+		after(function () {
+			map.remove();
+		});
+
+		// More tests in PolygonSpec
+
+		it('compute center of polygon', function () {
+			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
+			expect(L.PolyUtil.polygonCenter(latlngs, map)).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+		});
+
+		it('throws error if latlngs not passed', function () {
+			expect(function () {
+				L.PolyUtil.polygonCenter(null, map);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if latlng array is empty', function () {
+			expect(function () {
+				L.PolyUtil.polygonCenter([], map);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if latlngs not flat', function () {
+			var latlngs = [
+				[[0, 0], [10, 0], [10, 10], [0, 10]]
+			];
+			expect(function () {
+				L.PolyUtil.polygonCenter(latlngs, map);
+			}).to.throwException('latlngs are not flat!');
+		});
+
+		it('throws error if map not passed', function () {
+			var latlngs = [[80, 0], [80, 90]];
+			expect(function () {
+				L.PolyUtil.polygonCenter(latlngs, null);
+			}).to.throwException('map not passed');
+		});
+	});
 });
