@@ -1,8 +1,8 @@
 {
-    "name": "leaflet",
-    "version": "1.7.1-with-typescript-and-snyk",
-    "homepage": "https://leafletjs.com/",
-    "description": "leaflet fork with typescript and snyk",
+    "name": "poligonosapp",
+    "version": "1.7.1-beta",
+    "homepage": "https://www.poligonosapp.herokuapp.com",
+    "description": "poligonosapp is a leaflet plugin",
     "author": "Fabio Rodrigues <https://www.facebook.com/kefaro>, Luis Mendes <machadoluismendes@gmail.com>",
     "devDependencies": {
         "@babel/core": "^7.14.5",
