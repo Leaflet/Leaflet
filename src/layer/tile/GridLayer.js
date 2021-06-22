@@ -159,8 +159,7 @@ export var GridLayer = Layer.extend({
 		this._levels = {};
 		this._tiles = {};
 
-		this._resetView();
-		this._update();
+		this._resetView(); // implicit _update() call
 	},
 
 	beforeAdd: function (map) {
