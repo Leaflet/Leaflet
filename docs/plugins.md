@@ -2263,15 +2263,6 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/wandergis/leaflet-echarts">leaflet-echarts</a>
-		</td><td>
-			A plugin for Leaflet to load <a href="https://github.com/ecomfe/echarts">echarts</a> map and make big data visualization easier.
-		</td><td>
-			<a href="https://github.com/wandergis">wandergis</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="https://github.com/atlefren/storymap">jquery-storymap</a>
 		</td><td>
 			A jQuery plugin to display several map locations as the user scrolls through paragraphs.
