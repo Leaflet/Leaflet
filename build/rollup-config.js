@@ -36,24 +36,17 @@ exports.noConflict = function() {
 // Always export us to window global (see #2364)
 window.L = exports;`;
 
-export default {
+export default [{
 	input: 'src/Leaflet.js',
 	output: [
 		{
-			file: pkg.main,
+			file: 'dist/leaflet.legacy.js',
 			format: 'umd',
 			name: 'L',
 			banner: banner,
 			outro: outro,
 			sourcemap: true,
 			legacy: true, // Needed to create files loadable by IE8
-			freeze: false
-		},
-		{
-			file: 'dist/leaflet-src.esm.js',
-			format: 'es',
-			banner: banner,
-			sourcemap: true,
 			freeze: false
 		}
 	],
@@ -64,4 +57,47 @@ export default {
 		}),
 		buble({ transforms: { dangerousForOf: true } }),
 	]
-};
+},
+{
+	input: 'src/Leaflet.js',
+	output: [
+		{
+			file: 'dist/leaflet.es6.js',
+			format: 'umd',
+			name: 'L',
+			banner: banner,
+			outro: outro,
+			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
+			freeze: false
+		}
+	],
+	plugins: [
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es6'
+		}),
+		// buble({ transforms: { dangerousForOf: true } }),
+	]
+},
+{
+	input: 'src/Leaflet.js',
+	output: [
+		{
+			file: 'dist/leaflet.modern.js',
+			format: 'umd',
+			name: 'L',
+			banner: banner,
+			outro: outro,
+			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
+			freeze: false
+		}
+	],
+	plugins: [
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es2017'
+		}),
+	]
+}]

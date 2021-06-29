@@ -45,8 +45,6 @@ export class Class {
 		 */
 		const staticMethods = Object.getOwnPropertyNames(this);
 
-		console.log(staticMethods);
-
 		staticMethods.filter(v => !_NO_STATIC_.includes(v)).forEach(v => {
 			NewClass[v] = this[v];
 		});
