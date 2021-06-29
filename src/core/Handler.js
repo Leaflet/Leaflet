@@ -18,7 +18,8 @@ export class Handler extends Class {
 		return this;
 	}
 
-	initialize(map) {
+	constructor(map) {
+		super();
 		this._map = map;
 	}
 

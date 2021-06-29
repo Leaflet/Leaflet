@@ -32,8 +32,7 @@ export class Keyboard extends Handler {
 	}
 
 	constructor(map) {
-		super()
-		this._map = map;
+		super(map)
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);

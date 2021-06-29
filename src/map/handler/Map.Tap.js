@@ -1,7 +1,7 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
+import { Map } from '../Map';
+import { Handler } from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
-import {Point} from '../../geometry/Point';
+import { Point } from '../../geometry/Point';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Browser from '../../core/Browser';
@@ -28,16 +28,16 @@ Map.mergeOptions({
 	tapTolerance: 15
 });
 
-export var Tap = Handler.extend({
-	addHooks: function () {
+export class Tap extends Handler {
+	addHooks() {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
-	},
+	}
 
-	removeHooks: function () {
+	removeHooks() {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
-	},
+	}
 
-	_onDown: function (e) {
+	_onDown(e) {
 		if (!e.touches) { return; }
 
 		DomEvent.preventDefault(e);
@@ -52,7 +52,7 @@ export var Tap = Handler.extend({
 		}
 
 		var first = e.touches[0],
-		    el = first.target;
+			el = first.target;
 
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
@@ -76,9 +76,9 @@ export var Tap = Handler.extend({
 			touchmove: this._onMove,
 			touchend: this._onUp
 		}, this);
-	},
+	}
 
-	_onUp: function (e) {
+	_onUp(e) {
 		clearTimeout(this._holdTimeout);
 
 		DomEvent.off(document, {
@@ -89,7 +89,7 @@ export var Tap = Handler.extend({
 		if (this._fireClick && e && e.changedTouches) {
 
 			var first = e.changedTouches[0],
-			    el = first.target;
+				el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				DomUtil.removeClass(el, 'leaflet-active');
@@ -102,33 +102,33 @@ export var Tap = Handler.extend({
 				this._simulateEvent('click', first);
 			}
 		}
-	},
+	}
 
-	_isTapValid: function () {
+	_isTapValid() {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
-	},
+	}
 
-	_onMove: function (e) {
+	_onMove(e) {
 		var first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 		this._simulateEvent('mousemove', first);
-	},
+	}
 
-	_simulateEvent: function (type, e) {
+	_simulateEvent(type, e) {
 		var simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent._simulated = true;
 		e.target._simulatedClick = true;
 
 		simulatedEvent.initMouseEvent(
-		        type, true, true, window, 1,
-		        e.screenX, e.screenY,
-		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
+			type, true, true, window, 1,
+			e.screenX, e.screenY,
+			e.clientX, e.clientY,
+			false, false, false, false, 0, null);
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
-});
+}
 
 // @section Handlers
 // @property tap: Handler

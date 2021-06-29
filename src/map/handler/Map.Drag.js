@@ -1,11 +1,11 @@
-import {Map} from '../Map';
+import { Map } from '../Map';
 import * as Browser from '../../core/Browser';
-import {Handler} from '../../core/Handler';
-import {Draggable} from '../../dom/Draggable';
+import { Handler } from '../../core/Handler';
+import { Draggable } from '../../dom/Draggable';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
-import {toBounds} from '../../geometry/Bounds';
+import { toLatLngBounds as latLngBounds } from '../../geo/LatLngBounds';
+import { toBounds } from '../../geometry/Bounds';
 
 /*
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
@@ -53,8 +53,8 @@ Map.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-export var Drag = Handler.extend({
-	addHooks: function () {
+export class Drag extends Handler {
+	addHooks() {
 		if (!this._draggable) {
 			var map = this._map;
 
@@ -78,23 +78,23 @@ export var Drag = Handler.extend({
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];
-	},
+	}
 
-	removeHooks: function () {
+	removeHooks() {
 		DomUtil.removeClass(this._map._container, 'leaflet-grab');
 		DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
-	},
+	}
 
-	moved: function () {
+	moved() {
 		return this._draggable && this._draggable._moved;
-	},
+	}
 
-	moving: function () {
+	moving() {
 		return this._draggable && this._draggable._moving;
-	},
+	}
 
-	_onDragStart: function () {
+	_onDragStart() {
 		var map = this._map;
 
 		map._stop();
@@ -112,19 +112,19 @@ export var Drag = Handler.extend({
 		}
 
 		map
-		    .fire('movestart')
-		    .fire('dragstart');
+			.fire('movestart')
+			.fire('dragstart');
 
 		if (map.options.inertia) {
 			this._positions = [];
 			this._times = [];
 		}
-	},
+	}
 
-	_onDrag: function (e) {
+	_onDrag(e) {
 		if (this._map.options.inertia) {
 			var time = this._lastTime = +new Date(),
-			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
+				pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
 			this._times.push(time);
@@ -133,30 +133,30 @@ export var Drag = Handler.extend({
 		}
 
 		this._map
-		    .fire('move', e)
-		    .fire('drag', e);
-	},
+			.fire('move', e)
+			.fire('drag', e);
+	}
 
-	_prunePositions: function (time) {
+	_prunePositions(time) {
 		while (this._positions.length > 1 && time - this._times[0] > 50) {
 			this._positions.shift();
 			this._times.shift();
 		}
-	},
+	}
 
-	_onZoomEnd: function () {
+	_onZoomEnd() {
 		var pxCenter = this._map.getSize().divideBy(2),
-		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
+			pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
-	},
+	}
 
-	_viscousLimit: function (value, threshold) {
+	_viscousLimit(value, threshold) {
 		return value - (value - threshold) * this._viscosity;
-	},
+	}
 
-	_onPreDragLimit: function () {
+	_onPreDragLimit() {
 		if (!this._viscosity || !this._offsetLimit) { return; }
 
 		var offset = this._draggable._newPos.subtract(this._draggable._startPos);
@@ -168,27 +168,27 @@ export var Drag = Handler.extend({
 		if (offset.y > limit.max.y) { offset.y = this._viscousLimit(offset.y, limit.max.y); }
 
 		this._draggable._newPos = this._draggable._startPos.add(offset);
-	},
+	}
 
-	_onPreDragWrap: function () {
+	_onPreDragWrap() {
 		// TODO refactor to be able to adjust map pane position after zoom
 		var worldWidth = this._worldWidth,
-		    halfWidth = Math.round(worldWidth / 2),
-		    dx = this._initialWorldOffset,
-		    x = this._draggable._newPos.x,
-		    newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		    newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		    newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+			halfWidth = Math.round(worldWidth / 2),
+			dx = this._initialWorldOffset,
+			x = this._draggable._newPos.x,
+			newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
+			newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
+			newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
 
 		this._draggable._absPos = this._draggable._newPos.clone();
 		this._draggable._newPos.x = newX;
-	},
+	}
 
-	_onDragEnd: function (e) {
+	_onDragEnd(e) {
 		var map = this._map,
-		    options = map.options,
+			options = map.options,
 
-		    noInertia = !options.inertia || this._times.length < 2;
+			noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
@@ -199,17 +199,17 @@ export var Drag = Handler.extend({
 			this._prunePositions(+new Date());
 
 			var direction = this._lastPos.subtract(this._positions[0]),
-			    duration = (this._lastTime - this._times[0]) / 1000,
-			    ease = options.easeLinearity,
+				duration = (this._lastTime - this._times[0]) / 1000,
+				ease = options.easeLinearity,
 
-			    speedVector = direction.multiplyBy(ease / duration),
-			    speed = speedVector.distanceTo([0, 0]),
+				speedVector = direction.multiplyBy(ease / duration),
+				speed = speedVector.distanceTo([0, 0]),
 
-			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
-			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
+				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
+				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
-			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+				decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
+				offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');
@@ -228,7 +228,7 @@ export var Drag = Handler.extend({
 			}
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property dragging: Handler
