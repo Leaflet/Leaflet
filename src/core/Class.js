@@ -39,7 +39,7 @@ export class Class {
 		NewClass.prototype = proto;
 
 
-		const _NO_STATIC_ = ['length', 'prototype', '__super__', 'name']
+		const _NO_STATIC_ = ['length', 'prototype', '__super__', 'name'];
 		/**
 		 * @type {Array<string>}
 		 */
