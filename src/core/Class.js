@@ -100,9 +100,7 @@ export class Class {
 
 	// @function addInitHook(fn: Function): this
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
-	static addInitHook(fn) { // (Function) || (String, args...)
-		var args = Array.prototype.slice.call(arguments, 1);
-
+	static addInitHook(fn, ...args) { // (Function) || (String, args...)
 		var init = typeof fn === 'function' ? fn : function () {
 			this[fn].apply(this, args);
 		};
