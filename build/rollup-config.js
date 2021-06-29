@@ -4,8 +4,11 @@ import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
 import gitRev from 'git-rev-sync'
 import pkg from '../package.json'
+// import { babel } from '@rollup/plugin-babel';
+import buble from '@rollup/plugin-buble';
+import esbuild from 'rollup-plugin-esbuild'
 
-let {version} = pkg;
+let { version } = pkg;
 let release;
 
 // Skip the git branch+rev in the banner when doing a release build
@@ -55,6 +58,10 @@ export default {
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es6'
+		}),
+		buble({ transforms: { dangerousForOf: true } }),
 	]
 };
