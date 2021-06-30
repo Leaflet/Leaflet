@@ -10,9 +10,11 @@ import * as Util from './Util';
 
 
 export class Class {
-	constructor() {
+	constructor(callHooks = true) {
 		// call all constructor hooks
-		this.callInitHooks();
+		if (callHooks) {
+			this.callInitHooks();
+		}
 	}
 
 	// @function mergeOptions(options: Object): this
