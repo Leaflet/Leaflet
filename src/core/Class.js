@@ -8,6 +8,7 @@ import * as Util from './Util';
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
+
 export class Class {
 	constructor() {
 		// call all constructor hooks
@@ -43,20 +44,19 @@ export class Class {
 
 		NewClass.prototype = proto;
 
-		staticHandler(NewClass, this);
-		staticHandler(NewClass, (this.__super__ || {}).constructor || {});
-		staticHandler(NewClass, this.__proto__ || {});
-
 		// mix static properties into the class
 		if (props.statics) {
-			Util.extend(NewClass, props.statics);
+			staticHandler(NewClass, props.statics);
 			delete props.statics;
 		}
 
+		staticHandler(NewClass, (this.__super__ || {}).constructor || {});
+		staticHandler(NewClass, this.__proto__ || {});
+		staticHandler(NewClass, this);
+
 		// mix includes into the prototype
 		if (props.includes) {
-			checkDeprecatedMixinEvents(props.includes);
-			Util.extend.apply(null, [proto].concat(props.includes));
+			Util.extend(proto, ...props.includes);
 			delete props.includes;
 		}
 
@@ -107,20 +107,6 @@ export class Class {
 
 		for (var i = 0, len = this._initHooks.length; i < len; i++) {
 			this._initHooks[i].call(this);
-		}
-	}
-}
-
-function checkDeprecatedMixinEvents(includes) {
-	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
-
-	includes = Util.isArray(includes) ? includes : [includes];
-
-	for (var i = 0; i < includes.length; i++) {
-		if (includes[i] === L.Mixin.Events) {
-			console.warn('Deprecated include of L.Mixin.Events: ' +
-				'this property will be removed in future releases, ' +
-				'please inherit from L.Evented instead.', new Error().stack);
 		}
 	}
 }
