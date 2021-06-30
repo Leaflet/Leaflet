@@ -4,9 +4,9 @@ export {Browser};
 export {Class} from './Class';
 
 import {Evented} from './Events';
-import {Events} from './Events';
+// import {Events} from './Events';
 export {Evented};
-export var Mixin = {Events: Events};
+// export var Mixin = {Events: Events};
 
 export {Handler} from './Handler';
 

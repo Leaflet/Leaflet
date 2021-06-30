@@ -157,7 +157,7 @@ export var Map = Evented.extend({
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
 		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && !Browser.mobileOpera &&
-				this.options.zoomAnimation;
+			this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
@@ -240,11 +240,11 @@ export var Map = Evented.extend({
 	// Zooms the map while keeping a specified pixel on the map (relative to the top-left corner) stationary.
 	setZoomAround: function (latlng, zoom, options) {
 		var scale = this.getZoomScale(zoom),
-		    viewHalf = this.getSize().divideBy(2),
-		    containerPoint = latlng instanceof Point ? latlng : this.latLngToContainerPoint(latlng),
+		viewHalf = this.getSize().divideBy(2),
+		containerPoint = latlng instanceof Point ? latlng : this.latLngToContainerPoint(latlng),
 
-		    centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
-		    newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
+		centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
+		newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
 
 		return this.setView(newCenter, zoom, {zoom: options});
 	},
@@ -255,9 +255,9 @@ export var Map = Evented.extend({
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
+		paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 
-		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
+		zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
 		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
@@ -270,9 +270,9 @@ export var Map = Evented.extend({
 
 		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
-		    swPoint = this.project(bounds.getSouthWest(), zoom),
-		    nePoint = this.project(bounds.getNorthEast(), zoom),
-		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
+		swPoint = this.project(bounds.getSouthWest(), zoom),
+		nePoint = this.project(bounds.getNorthEast(), zoom),
+		center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
 
 		return {
 			center: center,
@@ -365,30 +365,30 @@ export var Map = Evented.extend({
 		this._stop();
 
 		var from = this.project(this.getCenter()),
-		    to = this.project(targetCenter),
-		    size = this.getSize(),
-		    startZoom = this._zoom;
+		to = this.project(targetCenter),
+		size = this.getSize(),
+		startZoom = this._zoom;
 
 		targetCenter = toLatLng(targetCenter);
 		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
 
 		var w0 = Math.max(size.x, size.y),
-		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
-		    u1 = (to.distanceTo(from)) || 1,
-		    rho = 1.42,
-		    rho2 = rho * rho;
+		w1 = w0 * this.getZoomScale(startZoom, targetZoom),
+		u1 = (to.distanceTo(from)) || 1,
+		rho = 1.42,
+		rho2 = rho * rho;
 
 		function r(i) {
 			var s1 = i ? -1 : 1,
-			    s2 = i ? w1 : w0,
-			    t1 = w1 * w1 - w0 * w0 + s1 * rho2 * rho2 * u1 * u1,
-			    b1 = 2 * s2 * rho2 * u1,
-			    b = t1 / b1,
-			    sq = Math.sqrt(b * b + 1) - b;
+			s2 = i ? w1 : w0,
+			t1 = w1 * w1 - w0 * w0 + s1 * rho2 * rho2 * u1 * u1,
+			b1 = 2 * s2 * rho2 * u1,
+			b = t1 / b1,
+			sq = Math.sqrt(b * b + 1) - b;
 
-			    // workaround for floating point precision bug when sq = 0, log = -Infinite,
-			    // thus triggering an infinite loop in flyTo
-			    var log = sq < 0.000000001 ? -18 : Math.log(sq);
+			// workaround for floating point precision bug when sq = 0, log = -Infinite,
+			// thus triggering an infinite loop in flyTo
+			var log = sq < 0.000000001 ? -18 : Math.log(sq);
 
 			return log;
 		}
@@ -405,12 +405,12 @@ export var Map = Evented.extend({
 		function easeOut(t) { return 1 - Math.pow(1 - t, 1.5); }
 
 		var start = Date.now(),
-		    S = (r(1) - r0) / rho,
-		    duration = options.duration ? 1000 * options.duration : 1000 * S * 0.8;
+		S = (r(1) - r0) / rho,
+		duration = options.duration ? 1000 * options.duration : 1000 * S * 0.8;
 
 		function frame() {
 			var t = (Date.now() - start) / duration,
-			    s = easeOut(t) * S;
+			s = easeOut(t) * S;
 
 			if (t <= 1) {
 				this._flyToFrame = Util.requestAnimFrame(frame, this);
@@ -501,7 +501,7 @@ export var Map = Evented.extend({
 	panInsideBounds: function (bounds, options) {
 		this._enforcingBounds = true;
 		var center = this.getCenter(),
-		    newCenter = this._limitCenter(center, this._zoom, toLatLngBounds(bounds));
+		newCenter = this._limitCenter(center, this._zoom, toLatLngBounds(bounds));
 
 		if (!center.equals(newCenter)) {
 			this.panTo(newCenter, options);
@@ -521,12 +521,12 @@ export var Map = Evented.extend({
 		options = options || {};
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
-		    pixelCenter = this.project(this.getCenter()),
-		    pixelPoint = this.project(latlng),
-		    pixelBounds = this.getPixelBounds(),
-		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
-		    paddedSize = paddedBounds.getSize();
+		paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
+		pixelCenter = this.project(this.getCenter()),
+		pixelPoint = this.project(latlng),
+		pixelBounds = this.getPixelBounds(),
+		paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
+		paddedSize = paddedBounds.getSize();
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
@@ -566,9 +566,9 @@ export var Map = Evented.extend({
 		this._lastCenter = null;
 
 		var newSize = this.getSize(),
-		    oldCenter = oldSize.divideBy(2).round(),
-		    newCenter = newSize.divideBy(2).round(),
-		    offset = oldCenter.subtract(newCenter);
+		oldCenter = oldSize.divideBy(2).round(),
+		newCenter = newSize.divideBy(2).round(),
+		offset = oldCenter.subtract(newCenter);
 
 		if (!offset.x && !offset.y) { return this; }
 
@@ -639,11 +639,11 @@ export var Map = Evented.extend({
 		}
 
 		var onResponse = Util.bind(this._handleGeolocationResponse, this),
-		    onError = Util.bind(this._handleGeolocationError, this);
+		onError = Util.bind(this._handleGeolocationError, this);
 
 		if (options.watch) {
 			this._locationWatchId =
-			        navigator.geolocation.watchPosition(onResponse, onError, options);
+				navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
 		}
@@ -666,9 +666,9 @@ export var Map = Evented.extend({
 
 	_handleGeolocationError: function (error) {
 		var c = error.code,
-		    message = error.message ||
-		            (c === 1 ? 'permission denied' :
-		            (c === 2 ? 'position unavailable' : 'timeout'));
+		message = error.message ||
+				(c === 1 ? 'permission denied' :
+				(c === 2 ? 'position unavailable' : 'timeout'));
 
 		if (this._locateOptions.setView && !this._loaded) {
 			this.fitWorld();
@@ -685,10 +685,10 @@ export var Map = Evented.extend({
 
 	_handleGeolocationResponse: function (pos) {
 		var lat = pos.coords.latitude,
-		    lng = pos.coords.longitude,
-		    latlng = new LatLng(lat, lng),
-		    bounds = latlng.toBounds(pos.coords.accuracy * 2),
-		    options = this._locateOptions;
+		lng = pos.coords.longitude,
+		latlng = new LatLng(lat, lng),
+		bounds = latlng.toBounds(pos.coords.accuracy * 2),
+		options = this._locateOptions;
 
 		if (options.setView) {
 			var zoom = this.getBoundsZoom(bounds);
@@ -801,7 +801,7 @@ export var Map = Evented.extend({
 	// as a child of the main map pane if not set.
 	createPane: function (name, container) {
 		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
-		    pane = DomUtil.create('div', className, container || this._mapPane);
+		pane = DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
 			this._panes[name] = pane;
@@ -832,8 +832,8 @@ export var Map = Evented.extend({
 	// Returns the geographical bounds visible in the current map view
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-		    sw = this.unproject(bounds.getBottomLeft()),
-		    ne = this.unproject(bounds.getTopRight());
+		sw = this.unproject(bounds.getBottomLeft()),
+		ne = this.unproject(bounds.getTopRight());
 
 		return new LatLngBounds(sw, ne);
 	},
@@ -862,16 +862,16 @@ export var Map = Evented.extend({
 		padding = toPoint(padding || [0, 0]);
 
 		var zoom = this.getZoom() || 0,
-		    min = this.getMinZoom(),
-		    max = this.getMaxZoom(),
-		    nw = bounds.getNorthWest(),
-		    se = bounds.getSouthEast(),
-		    size = this.getSize().subtract(padding),
-		    boundsSize = toBounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
-		    snap = Browser.any3d ? this.options.zoomSnap : 1,
-		    scalex = size.x / boundsSize.x,
-		    scaley = size.y / boundsSize.y,
-		    scale = inside ? Math.max(scalex, scaley) : Math.min(scalex, scaley);
+		min = this.getMinZoom(),
+		max = this.getMaxZoom(),
+		nw = bounds.getNorthWest(),
+		se = bounds.getSouthEast(),
+		size = this.getSize().subtract(padding),
+		boundsSize = toBounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
+		snap = Browser.any3d ? this.options.zoomSnap : 1,
+		scalex = size.x / boundsSize.x,
+		scaley = size.y / boundsSize.y,
+		scale = inside ? Math.max(scalex, scaley) : Math.min(scalex, scaley);
 
 		zoom = this.getScaleZoom(scale, zoom);
 
@@ -1323,11 +1323,11 @@ export var Map = Evented.extend({
 	_onResize: function () {
 		Util.cancelAnimFrame(this._resizeRequest);
 		this._resizeRequest = Util.requestAnimFrame(
-		        function () { this.invalidateSize({debounceMoveend: true}); }, this);
+			function () { this.invalidateSize({debounceMoveend: true}); }, this);
 	},
 
 	_onScroll: function () {
-		this._container.scrollTop  = 0;
+		this._container.scrollTop = 0;
 		this._container.scrollLeft = 0;
 	},
 
@@ -1342,10 +1342,10 @@ export var Map = Evented.extend({
 
 	_findEventTargets: function (e, type) {
 		var targets = [],
-		    target,
-		    isHover = type === 'mouseout' || type === 'mouseover',
-		    src = e.target || e.srcElement,
-		    dragging = false;
+		target,
+		isHover = type === 'mouseout' || type === 'mouseover',
+		src = e.target || e.srcElement,
+		dragging = false;
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
@@ -1508,9 +1508,9 @@ export var Map = Evented.extend({
 		if (!bounds) { return center; }
 
 		var centerPoint = this.project(center, zoom),
-		    viewHalf = this.getSize().divideBy(2),
-		    viewBounds = new Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
-		    offset = this._getBoundsOffset(viewBounds, bounds, zoom);
+		viewHalf = this.getSize().divideBy(2),
+		viewBounds = new Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
+		offset = this._getBoundsOffset(viewBounds, bounds, zoom);
 
 		// If offset is less than a pixel, ignore.
 		// This prevents unstable projections from getting into
@@ -1527,7 +1527,7 @@ export var Map = Evented.extend({
 		if (!bounds) { return offset; }
 
 		var viewBounds = this.getPixelBounds(),
-		    newBounds = new Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
+		newBounds = new Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
 
 		return offset.add(this._getBoundsOffset(newBounds, bounds));
 	},
@@ -1535,14 +1535,14 @@ export var Map = Evented.extend({
 	// returns offset needed for pxBounds to get inside maxBounds at a specified zoom
 	_getBoundsOffset: function (pxBounds, maxBounds, zoom) {
 		var projectedMaxBounds = toBounds(
-		        this.project(maxBounds.getNorthEast(), zoom),
-		        this.project(maxBounds.getSouthWest(), zoom)
-		    ),
-		    minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
-		    maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
+			this.project(maxBounds.getNorthEast(), zoom),
+			this.project(maxBounds.getSouthWest(), zoom)
+		),
+		minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
+		maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
 
-		    dx = this._rebound(minOffset.x, -maxOffset.x),
-		    dy = this._rebound(minOffset.y, -maxOffset.y);
+		dx = this._rebound(minOffset.x, -maxOffset.x),
+		dy = this._rebound(minOffset.y, -maxOffset.y);
 
 		return new Point(dx, dy);
 	},
@@ -1555,8 +1555,8 @@ export var Map = Evented.extend({
 
 	_limitZoom: function (zoom) {
 		var min = this.getMinZoom(),
-		    max = this.getMaxZoom(),
-		    snap = Browser.any3d ? this.options.zoomSnap : 1;
+		max = this.getMaxZoom(),
+		snap = Browser.any3d ? this.options.zoomSnap : 1;
 		if (snap) {
 			zoom = Math.round(zoom / snap) * snap;
 		}
@@ -1591,7 +1591,7 @@ export var Map = Evented.extend({
 
 		this.on('zoomanim', function (e) {
 			var prop = DomUtil.TRANSFORM,
-			    transform = this._proxy.style[prop];
+			transform = this._proxy.style[prop];
 
 			DomUtil.setTransform(this._proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
@@ -1614,7 +1614,7 @@ export var Map = Evented.extend({
 
 	_animMoveEnd: function () {
 		var c = this.getCenter(),
-		    z = this.getZoom();
+		z = this.getZoom();
 		DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
 	},
 
@@ -1636,19 +1636,19 @@ export var Map = Evented.extend({
 
 		// don't animate if disabled, not supported or zoom difference is too large
 		if (!this._zoomAnimated || options.animate === false || this._nothingToAnimate() ||
-		        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
+			Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
-		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
+		offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
 
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true, false)
-			    ._animateZoom(center, zoom, true);
+				._moveStart(true, false)
+				._animateZoom(center, zoom, true);
 		}, this);
 
 		return true;

@@ -38,16 +38,9 @@ export class Class {
 
 		NewClass.prototype = proto;
 
-
-		const _NO_STATIC_ = ['length', 'prototype', '__super__', 'name'];
-		/**
-		 * @type {Array<string>}
-		 */
-		const staticMethods = Object.getOwnPropertyNames(this);
-
-		staticMethods.filter(v => !_NO_STATIC_.includes(v)).forEach(v => {
-			NewClass[v] = this[v];
-		});
+		staticHandler(NewClass, this);
+		staticHandler(NewClass, (this.__super__ || {}).constructor || {});
+		staticHandler(NewClass, this.__proto__ || {});
 
 		// mix static properties into the class
 		if (props.statics) {
@@ -131,4 +124,14 @@ function checkDeprecatedMixinEvents(includes) {
 				'please inherit from L.Evented instead.', new Error().stack);
 		}
 	}
+}
+
+const __NON_STATIC__ = ['prototype', '__proto__', '__super__', ...Object.getOwnPropertyNames(Object.prototype), ...Object.getOwnPropertyNames((() => { }).__proto__), ...Object.getOwnPropertyNames(class A { }.__proto__)];
+
+function staticHandler(target, parent) {
+	(Object.getOwnPropertyNames(parent) || []).filter(v => !__NON_STATIC__.includes(v)).forEach(k => {
+		if (!target[k]) {
+			target[k] = parent[k];
+		}
+	});
 }

@@ -3,7 +3,6 @@ import {Handler} from '../../core/Handler';
 import {on, off, stop} from '../../dom/DomEvent';
 import {toPoint} from '../../geometry/Point';
 
-
 /*
  * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */

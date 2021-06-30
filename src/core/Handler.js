@@ -56,3 +56,4 @@ export class Handler extends Class {
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
 }
+
