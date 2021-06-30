@@ -1,6 +1,6 @@
 
-import {Control} from './Control';
-import {Map} from '../map/Map';
+import { Control } from './Control';
+import { Map } from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
@@ -13,24 +13,14 @@ import * as DomUtil from '../dom/DomUtil';
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-export var Attribution = Control.extend({
-	// @section
-	// @aka Control.Attribution options
-	options: {
-		position: 'bottomright',
-
-		// @option prefix: String = 'Leaflet'
-		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: '<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
-	},
-
-	initialize: function (options) {
-		Util.setOptions(this, options);
+export class Attribution extends Control {
+	constructor(options) {
+		super(options)
 
 		this._attributions = {};
-	},
+	}
 
-	onAdd: function (map) {
+	onAdd(map) {
 		map.attributionControl = this;
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
@@ -45,19 +35,19 @@ export var Attribution = Control.extend({
 		this._update();
 
 		return this._container;
-	},
+	}
 
 	// @method setPrefix(prefix: String): this
 	// Sets the text before the attributions.
-	setPrefix: function (prefix) {
+	setPrefix(prefix) {
 		this.options.prefix = prefix;
 		this._update();
 		return this;
-	},
+	}
 
 	// @method addAttribution(text: String): this
 	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
-	addAttribution: function (text) {
+	addAttribution(text) {
 		if (!text) { return this; }
 
 		if (!this._attributions[text]) {
@@ -68,11 +58,11 @@ export var Attribution = Control.extend({
 		this._update();
 
 		return this;
-	},
+	}
 
 	// @method removeAttribution(text: String): this
 	// Removes an attribution text.
-	removeAttribution: function (text) {
+	removeAttribution(text) {
 		if (!text) { return this; }
 
 		if (this._attributions[text]) {
@@ -81,9 +71,9 @@ export var Attribution = Control.extend({
 		}
 
 		return this;
-	},
+	}
 
-	_update: function () {
+	_update() {
 		if (!this._map) { return; }
 
 		var attribs = [];
@@ -105,7 +95,19 @@ export var Attribution = Control.extend({
 
 		this._container.innerHTML = prefixAndAttribs.join(' | ');
 	}
-});
+}
+
+// @section
+// @aka Control.Attribution options
+Attribution.setDefaultOptions(
+	{
+		position: 'bottomright',
+
+		// @option prefix: String = 'Leaflet'
+		// The HTML text shown before the attributions. Pass `false` to disable.
+		prefix: '<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
+	}
+);
 
 // @namespace Map
 // @section Control options

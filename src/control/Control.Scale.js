@@ -1,5 +1,5 @@
 
-import {Control} from './Control';
+import { Control } from './Control';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -16,32 +16,11 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var Scale = Control.extend({
-	// @section
-	// @aka Control.Scale options
-	options: {
-		position: 'bottomleft',
-
-		// @option maxWidth: Number = 100
-		// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-		maxWidth: 100,
-
-		// @option metric: Boolean = True
-		// Whether to show the metric scale line (m/km).
-		metric: true,
-
-		// @option imperial: Boolean = True
-		// Whether to show the imperial scale line (mi/ft).
-		imperial: true
-
-		// @option updateWhenIdle: Boolean = false
-		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-	},
-
-	onAdd: function (map) {
+export class Scale extends Control {
+	onAdd(map) {
 		var className = 'leaflet-control-scale',
-		    container = DomUtil.create('div', className),
-		    options = this.options;
+			container = DomUtil.create('div', className),
+			options = this.options;
 
 		this._addScales(options, className + '-line', container);
 
@@ -49,51 +28,51 @@ export var Scale = Control.extend({
 		map.whenReady(this._update, this);
 
 		return container;
-	},
+	}
 
-	onRemove: function (map) {
+	onRemove(map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-	},
+	}
 
-	_addScales: function (options, className, container) {
+	_addScales(options, className, container) {
 		if (options.metric) {
 			this._mScale = DomUtil.create('div', className, container);
 		}
 		if (options.imperial) {
 			this._iScale = DomUtil.create('div', className, container);
 		}
-	},
+	}
 
-	_update: function () {
+	_update() {
 		var map = this._map,
-		    y = map.getSize().y / 2;
+			y = map.getSize().y / 2;
 
 		var maxMeters = map.distance(
 			map.containerPointToLatLng([0, y]),
 			map.containerPointToLatLng([this.options.maxWidth, y]));
 
 		this._updateScales(maxMeters);
-	},
+	}
 
-	_updateScales: function (maxMeters) {
+	_updateScales(maxMeters) {
 		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
-	},
+	}
 
-	_updateMetric: function (maxMeters) {
+	_updateMetric(maxMeters) {
 		var meters = this._getRoundNum(maxMeters),
-		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
+			label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
-	},
+	}
 
-	_updateImperial: function (maxMeters) {
+	_updateImperial(maxMeters) {
 		var maxFeet = maxMeters * 3.2808399,
-		    maxMiles, miles, feet;
+			maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
@@ -104,24 +83,45 @@ export var Scale = Control.extend({
 			feet = this._getRoundNum(maxFeet);
 			this._updateScale(this._iScale, feet + ' ft', feet / maxFeet);
 		}
-	},
+	}
 
-	_updateScale: function (scale, text, ratio) {
+	_updateScale(scale, text, ratio) {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
 		scale.innerHTML = text;
-	},
+	}
 
-	_getRoundNum: function (num) {
+	_getRoundNum(num) {
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
-		    d = num / pow10;
+			d = num / pow10;
 
 		d = d >= 10 ? 10 :
-		    d >= 5 ? 5 :
-		    d >= 3 ? 3 :
-		    d >= 2 ? 2 : 1;
+			d >= 5 ? 5 :
+				d >= 3 ? 3 :
+					d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}
+}
+
+// @section
+// @aka Control.Scale options
+Scale.setDefaultOptions({
+	position: 'bottomleft',
+
+	// @option maxWidth: Number = 100
+	// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+	maxWidth: 100,
+
+	// @option metric: Boolean = True
+	// Whether to show the metric scale line (m/km).
+	metric: true,
+
+	// @option imperial: Boolean = True
+	// Whether to show the imperial scale line (mi/ft).
+	imperial: true
+
+	// @option updateWhenIdle: Boolean = false
+	// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
 });
 
 

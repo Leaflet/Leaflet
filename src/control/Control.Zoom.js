@@ -1,6 +1,6 @@
 
-import {Control} from './Control';
-import {Map} from '../map/Map';
+import { Control } from './Control';
+import { Map } from '../map/Map';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
 
@@ -12,74 +12,52 @@ import * as DomEvent from '../dom/DomEvent';
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
-export var Zoom = Control.extend({
-	// @section
-	// @aka Control.Zoom options
-	options: {
-		position: 'topleft',
-
-		// @option zoomInText: String = '+'
-		// The text set on the 'zoom in' button.
-		zoomInText: '+',
-
-		// @option zoomInTitle: String = 'Zoom in'
-		// The title set on the 'zoom in' button.
-		zoomInTitle: 'Zoom in',
-
-		// @option zoomOutText: String = '&#x2212;'
-		// The text set on the 'zoom out' button.
-		zoomOutText: '&#x2212;',
-
-		// @option zoomOutTitle: String = 'Zoom out'
-		// The title set on the 'zoom out' button.
-		zoomOutTitle: 'Zoom out'
-	},
-
-	onAdd: function (map) {
+export class Zoom extends Control {
+	onAdd(map) {
 		var zoomName = 'leaflet-control-zoom',
-		    container = DomUtil.create('div', zoomName + ' leaflet-bar'),
-		    options = this.options;
+			container = DomUtil.create('div', zoomName + ' leaflet-bar'),
+			options = this.options;
 
-		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
-		        zoomName + '-in',  container, this._zoomIn);
+		this._zoomInButton = this._createButton(options.zoomInText, options.zoomInTitle,
+			zoomName + '-in', container, this._zoomIn);
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-		        zoomName + '-out', container, this._zoomOut);
+			zoomName + '-out', container, this._zoomOut);
 
 		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
-	},
+	}
 
-	onRemove: function (map) {
+	onRemove(map) {
 		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
-	},
+	}
 
-	disable: function () {
+	disable() {
 		this._disabled = true;
 		this._updateDisabled();
 		return this;
-	},
+	}
 
-	enable: function () {
+	enable() {
 		this._disabled = false;
 		this._updateDisabled();
 		return this;
-	},
+	}
 
-	_zoomIn: function (e) {
+	_zoomIn(e) {
 		if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
 			this._map.zoomIn(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
-	},
+	}
 
-	_zoomOut: function (e) {
+	_zoomOut(e) {
 		if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
 			this._map.zoomOut(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
-	},
+	}
 
-	_createButton: function (html, title, className, container, fn) {
+	_createButton(html, title, className, container, fn) {
 		var link = DomUtil.create('a', className, container);
 		link.innerHTML = html;
 		link.href = '#';
@@ -97,11 +75,11 @@ export var Zoom = Control.extend({
 		DomEvent.on(link, 'click', this._refocusOnMap, this);
 
 		return link;
-	},
+	}
 
-	_updateDisabled: function () {
+	_updateDisabled() {
 		var map = this._map,
-		    className = 'leaflet-disabled';
+			className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);
 		DomUtil.removeClass(this._zoomOutButton, className);
@@ -117,7 +95,30 @@ export var Zoom = Control.extend({
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}
+}
+
+// @section
+// @aka Control.Zoom options
+Zoom.setDefaultOptions({
+	position: 'topleft',
+
+	// @option zoomInText: String = '+'
+	// The text set on the 'zoom in' button.
+	zoomInText: '+',
+
+	// @option zoomInTitle: String = 'Zoom in'
+	// The title set on the 'zoom in' button.
+	zoomInTitle: 'Zoom in',
+
+	// @option zoomOutText: String = '&#x2212;'
+	// The text set on the 'zoom out' button.
+	zoomOutText: '&#x2212;',
+
+	// @option zoomOutTitle: String = 'Zoom out'
+	// The title set on the 'zoom out' button.
+	zoomOutTitle: 'Zoom out'
 });
+
 
 // @namespace Map
 // @section Control options
