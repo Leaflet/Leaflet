@@ -109,6 +109,14 @@ export class Class {
 		this.prototype._initHooks.push(init);
 		return this;
 	}
+
+	static setDefaultOptions(options) {
+		if (!this.prototype.options) {
+			this.prototype.options = Util.extend({}, options);
+		} else {
+			this.prototype.options = Util.extend({}, this.prototype.options, options);
+		}
+	}
 }
 
 function checkDeprecatedMixinEvents(includes) {
