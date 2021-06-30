@@ -9,6 +9,11 @@ import * as Util from './Util';
 // Thanks to John Resig and Dean Edwards for inspiration!
 
 export class Class {
+	constructor() {
+		// call all constructor hooks
+		this.callInitHooks();
+	}
+
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(options) {
@@ -63,24 +68,6 @@ export class Class {
 		// mix given properties into the prototype
 		Util.extend(proto, props);
 
-		proto._initHooks = [];
-
-		// add method for calling all hooks
-		proto.callInitHooks = function () {
-
-			if (this._initHooksCalled) { return; }
-
-			if (parentProto.callInitHooks) {
-				parentProto.callInitHooks.call(this);
-			}
-
-			this._initHooksCalled = true;
-
-			for (var i = 0, len = proto._initHooks.length; i < len; i++) {
-				proto._initHooks[i].call(this);
-			}
-		};
-
 		return NewClass;
 	}
 
@@ -108,6 +95,18 @@ export class Class {
 			this.prototype.options = Util.extend({}, options);
 		} else {
 			this.prototype.options = Util.extend({}, this.prototype.options, options);
+		}
+	}
+
+	callInitHooks() {
+		if (this._initHooksCalled || !this._initHooks) { return; }
+
+		this._initHooksCalled = true;
+
+		console.log(this._initHooks);
+
+		for (var i = 0, len = this._initHooks.length; i < len; i++) {
+			this._initHooks[i].call(this);
 		}
 	}
 }
