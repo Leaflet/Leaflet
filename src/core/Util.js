@@ -28,6 +28,11 @@ export var create = Object.create || (function () {
 	};
 })();
 
+// IE <= 9 Compat fix for transpile
+if (!Object.create) {
+	Object.create = create;
+}
+
 // @function bind(fn: Function, …): Function
 // Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 // Has a `L.bind()` shortcut.
