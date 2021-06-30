@@ -3350,7 +3350,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/elidupuis/leaflet.zoomfs">leaflet.zoomfs</a>
+			<a href="https://elidupuis.github.io/leaflet.zoomfs/">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
 		</td><td>
