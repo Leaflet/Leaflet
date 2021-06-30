@@ -1,10 +1,10 @@
-import { Map } from '../Map';
-import { Handler } from '../../core/Handler';
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
-import { LatLngBounds } from '../../geo/LatLngBounds';
-import { Bounds } from '../../geometry/Bounds';
+import {LatLngBounds} from '../../geo/LatLngBounds';
+import {Bounds} from '../../geometry/Bounds';
 
 /*
  * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map
@@ -92,7 +92,7 @@ export class BoxZoom extends Handler {
 		this._point = this._map.mouseEventToContainerPoint(e);
 
 		var bounds = new Bounds(this._point, this._startPoint),
-			size = bounds.getSize();
+		size = bounds.getSize();
 
 		DomUtil.setPosition(this._box, bounds.min);
 
@@ -134,7 +134,7 @@ export class BoxZoom extends Handler {
 
 		this._map
 			.fitBounds(bounds)
-			.fire('boxzoomend', { boxZoomBounds: bounds });
+			.fire('boxzoomend', {boxZoomBounds: bounds});
 	}
 
 	_onKeyDown(e) {

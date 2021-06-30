@@ -1,6 +1,6 @@
 
-import { Control } from './Control';
-import { Map } from '../map/Map';
+import {Control} from './Control';
+import {Map} from '../map/Map';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
 
@@ -15,8 +15,8 @@ import * as DomEvent from '../dom/DomEvent';
 export class Zoom extends Control {
 	onAdd(map) {
 		var zoomName = 'leaflet-control-zoom',
-			container = DomUtil.create('div', zoomName + ' leaflet-bar'),
-			options = this.options;
+		container = DomUtil.create('div', zoomName + ' leaflet-bar'),
+		options = this.options;
 
 		this._zoomInButton = this._createButton(options.zoomInText, options.zoomInTitle,
 			zoomName + '-in', container, this._zoomIn);
@@ -79,7 +79,7 @@ export class Zoom extends Control {
 
 	_updateDisabled() {
 		var map = this._map,
-			className = 'leaflet-disabled';
+		className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);
 		DomUtil.removeClass(this._zoomOutButton, className);

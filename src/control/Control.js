@@ -1,6 +1,6 @@
 
-import { Class } from '../core/Class';
-import { Map } from '../map/Map';
+import {Class} from '../core/Class';
+import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -60,8 +60,8 @@ export class Control extends Class {
 		this._map = map;
 
 		var container = this._container = this.onAdd(map),
-			pos = this.getPosition(),
-			corner = map._controlCorners[pos];
+		pos = this.getPosition(),
+		corner = map._controlCorners[pos];
 
 		DomUtil.addClass(container, 'leaflet-control');
 
@@ -149,8 +149,8 @@ Map.include({
 
 	_initControlPos() {
 		var corners = this._controlCorners = {},
-			l = 'leaflet-',
-			container = this._controlContainer =
+		l = 'leaflet-',
+		container = this._controlContainer =
 				DomUtil.create('div', l + 'control-container', this._container);
 
 		function createCorner(vSide, hSide) {

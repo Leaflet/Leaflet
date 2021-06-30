@@ -1,7 +1,6 @@
 
-import { Control } from './Control';
-import { Map } from '../map/Map';
-import * as Util from '../core/Util';
+import {Control} from './Control';
+import {Map} from '../map/Map';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -15,7 +14,7 @@ import * as DomUtil from '../dom/DomUtil';
 
 export class Attribution extends Control {
 	constructor(options) {
-		super(options)
+		super(options);
 
 		this._attributions = {};
 	}

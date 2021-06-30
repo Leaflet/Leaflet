@@ -1,7 +1,7 @@
-import { Map } from '../Map';
-import { Handler } from '../../core/Handler';
-import { on, off, stop } from '../../dom/DomEvent';
-import { toPoint } from '../../geometry/Point';
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import {on, off, stop} from '../../dom/DomEvent';
+import {toPoint} from '../../geometry/Point';
 
 
 /*
@@ -22,17 +22,17 @@ Map.mergeOptions({
 });
 
 export class Keyboard extends Handler {
-	static keyCodes = {
-		left: [37],
-		right: [39],
-		down: [40],
-		up: [38],
-		zoomIn: [187, 107, 61, 171],
-		zoomOut: [189, 109, 54, 173]
-	}
-
 	constructor(map) {
-		super(map)
+		super(map);
+
+		this.keyCodes = {
+			left: [37],
+			right: [39],
+			down: [40],
+			up: [38],
+			zoomIn: [187, 107, 61, 171],
+			zoomOut: [189, 109, 54, 173]
+		};
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
@@ -77,9 +77,9 @@ export class Keyboard extends Handler {
 		if (this._focused) { return; }
 
 		var body = document.body,
-			docEl = document.documentElement,
-			top = body.scrollTop || docEl.scrollTop,
-			left = body.scrollLeft || docEl.scrollLeft;
+		docEl = document.documentElement,
+		top = body.scrollTop || docEl.scrollTop,
+		left = body.scrollLeft || docEl.scrollLeft;
 
 		this._map._container.focus();
 
@@ -98,8 +98,8 @@ export class Keyboard extends Handler {
 
 	_setPanDelta(panDelta) {
 		var keys = this._panKeys = {},
-			codes = Keyboard.keyCodes,
-			i, len;
+		codes = this.keyCodes,
+		i, len;
 
 		for (i = 0, len = codes.left.length; i < len; i++) {
 			keys[codes.left[i]] = [-1 * panDelta, 0];
@@ -117,8 +117,8 @@ export class Keyboard extends Handler {
 
 	_setZoomDelta(zoomDelta) {
 		var keys = this._zoomKeys = {},
-			codes = Keyboard.keyCodes,
-			i, len;
+		codes = this.keyCodes,
+		i, len;
 
 		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
 			keys[codes.zoomIn[i]] = zoomDelta;
@@ -140,8 +140,8 @@ export class Keyboard extends Handler {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		var key = e.keyCode,
-			map = this._map,
-			offset;
+		map = this._map,
+		offset;
 
 		if (key in this._panKeys) {
 			if (!map._panAnim || !map._panAnim._inProgress) {

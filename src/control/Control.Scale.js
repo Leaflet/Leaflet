@@ -1,5 +1,5 @@
 
-import { Control } from './Control';
+import {Control} from './Control';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -19,8 +19,8 @@ import * as DomUtil from '../dom/DomUtil';
 export class Scale extends Control {
 	onAdd(map) {
 		var className = 'leaflet-control-scale',
-			container = DomUtil.create('div', className),
-			options = this.options;
+		container = DomUtil.create('div', className),
+		options = this.options;
 
 		this._addScales(options, className + '-line', container);
 
@@ -45,7 +45,7 @@ export class Scale extends Control {
 
 	_update() {
 		var map = this._map,
-			y = map.getSize().y / 2;
+		y = map.getSize().y / 2;
 
 		var maxMeters = map.distance(
 			map.containerPointToLatLng([0, y]),
@@ -65,14 +65,14 @@ export class Scale extends Control {
 
 	_updateMetric(maxMeters) {
 		var meters = this._getRoundNum(maxMeters),
-			label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
+		label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	}
 
 	_updateImperial(maxMeters) {
 		var maxFeet = maxMeters * 3.2808399,
-			maxMiles, miles, feet;
+		maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
@@ -92,12 +92,12 @@ export class Scale extends Control {
 
 	_getRoundNum(num) {
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
-			d = num / pow10;
+		d = num / pow10;
 
 		d = d >= 10 ? 10 :
 			d >= 5 ? 5 :
-				d >= 3 ? 3 :
-					d >= 2 ? 2 : 1;
+			d >= 3 ? 3 :
+			d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}

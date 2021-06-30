@@ -1,11 +1,11 @@
-import { Map } from '../Map';
+import {Map} from '../Map';
 import * as Browser from '../../core/Browser';
-import { Handler } from '../../core/Handler';
-import { Draggable } from '../../dom/Draggable';
+import {Handler} from '../../core/Handler';
+import {Draggable} from '../../dom/Draggable';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import { toLatLngBounds as latLngBounds } from '../../geo/LatLngBounds';
-import { toBounds } from '../../geometry/Bounds';
+import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+import {toBounds} from '../../geometry/Bounds';
 
 /*
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
@@ -124,7 +124,7 @@ export class Drag extends Handler {
 	_onDrag(e) {
 		if (this._map.options.inertia) {
 			var time = this._lastTime = +new Date(),
-				pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
+			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
 			this._times.push(time);
@@ -146,7 +146,7 @@ export class Drag extends Handler {
 
 	_onZoomEnd() {
 		var pxCenter = this._map.getSize().divideBy(2),
-			pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
+		pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
@@ -173,12 +173,12 @@ export class Drag extends Handler {
 	_onPreDragWrap() {
 		// TODO refactor to be able to adjust map pane position after zoom
 		var worldWidth = this._worldWidth,
-			halfWidth = Math.round(worldWidth / 2),
-			dx = this._initialWorldOffset,
-			x = this._draggable._newPos.x,
-			newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-			newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-			newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+		halfWidth = Math.round(worldWidth / 2),
+		dx = this._initialWorldOffset,
+		x = this._draggable._newPos.x,
+		newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
+		newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
+		newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
 
 		this._draggable._absPos = this._draggable._newPos.clone();
 		this._draggable._newPos.x = newX;
@@ -186,9 +186,9 @@ export class Drag extends Handler {
 
 	_onDragEnd(e) {
 		var map = this._map,
-			options = map.options,
+		options = map.options,
 
-			noInertia = !options.inertia || this._times.length < 2;
+		noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
@@ -199,17 +199,17 @@ export class Drag extends Handler {
 			this._prunePositions(+new Date());
 
 			var direction = this._lastPos.subtract(this._positions[0]),
-				duration = (this._lastTime - this._times[0]) / 1000,
-				ease = options.easeLinearity,
+			duration = (this._lastTime - this._times[0]) / 1000,
+			ease = options.easeLinearity,
 
-				speedVector = direction.multiplyBy(ease / duration),
-				speed = speedVector.distanceTo([0, 0]),
+			speedVector = direction.multiplyBy(ease / duration),
+			speed = speedVector.distanceTo([0, 0]),
 
-				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
-				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
+			limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
+			limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-				decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
-				offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
+			offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');

@@ -1,7 +1,7 @@
-import { Map } from '../Map';
-import { Handler } from '../../core/Handler';
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
-import { Point } from '../../geometry/Point';
+import {Point} from '../../geometry/Point';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Browser from '../../core/Browser';
@@ -52,7 +52,7 @@ export class Tap extends Handler {
 		}
 
 		var first = e.touches[0],
-			el = first.target;
+		el = first.target;
 
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
@@ -89,7 +89,7 @@ export class Tap extends Handler {
 		if (this._fireClick && e && e.changedTouches) {
 
 			var first = e.changedTouches[0],
-				el = first.target;
+			el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				DomUtil.removeClass(el, 'leaflet-active');
