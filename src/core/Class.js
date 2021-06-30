@@ -46,15 +46,19 @@ export class Class {
 
 		NewClass.prototype = proto;
 
+		staticHandler(NewClass, this);
+		staticHandler(NewClass, this.__proto__ || {});
+		staticHandler(NewClass, (this.__super__ || {}).constructor || {});
+
 		// mix static properties into the class
 		if (props.statics) {
 			staticHandler(NewClass, props.statics);
 			delete props.statics;
 		}
 
-		staticHandler(NewClass, (this.__super__ || {}).constructor || {});
-		staticHandler(NewClass, this.__proto__ || {});
-		staticHandler(NewClass, this);
+
+
+		// staticHandler(NewClass, Class);
 
 		// mix includes into the prototype
 		if (props.includes) {
@@ -117,7 +121,7 @@ const __NON_STATIC__ = ['prototype', '__proto__', '__super__', ...Object.getOwnP
 
 function staticHandler(target, parent) {
 	(Object.getOwnPropertyNames(parent) || []).filter(v => !__NON_STATIC__.includes(v)).forEach(k => {
-		if (!target[k]) {
+		if (Object.prototype.hasOwnProperty.call(parent, k)) {
 			target[k] = parent[k];
 		}
 	});
