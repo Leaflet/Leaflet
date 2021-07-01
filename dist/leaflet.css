@@ -500,10 +500,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 }
 .leaflet-darkmode .leaflet-control-scale-line {
   border: 2px solid #444;
-  background: rgba(51, 51, 51, 0.5);
+  border-top: none;
+  background: rgba(51, 51, 51, 0.6);
 }
+
 .leaflet-darkmode .leaflet-control-scale-line:not(:first-child) {
   border-top: 2px solid #444;
+  border-bottom: none;
 }
 .leaflet-darkmode .leaflet-control-scale-line:not(:first-child):not(:last-child) {
   border-bottom: 2px solid #444;
