@@ -96,7 +96,7 @@ function addOne(obj, type, fn, context) {
 
 	if (Browser.pointer && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
-		addPointerListener(obj, type, handler, id);
+		handler = addPointerListener(obj, type, handler);
 
 	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
 		addDoubleTapListener(obj, handler, id);
@@ -135,7 +135,7 @@ function removeOne(obj, type, fn, context) {
 	if (!handler) { return this; }
 
 	if (Browser.pointer && type.indexOf('touch') === 0) {
-		removePointerListener(obj, type, id);
+		removePointerListener(obj, type, handler);
 
 	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
 		removeDoubleTapListener(obj, id);
