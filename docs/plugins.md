@@ -3194,6 +3194,17 @@ Change the way the user can interactively move around the map.
 			<a href="https://github.com/will4906/">Shuhua Huang</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/petoc/Leaflet.DoubleTouchDragZoom">Leaflet.DoubleTouchDragZoom</a>
+		</td>
+		<td>
+			Plugin for one finger zoom. <a href="https://petoc.github.io/Leaflet.DoubleTouchDragZoom/example/">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/petoc">Peter C</a>
+		</td>
+	</tr>
 </table>
 
 
