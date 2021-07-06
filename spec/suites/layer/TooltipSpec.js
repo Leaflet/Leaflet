@@ -58,7 +58,27 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
+	it("is not interactive by default", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+
+		layer.bindTooltip('Tooltip', {permanent: true});
+		layer._tooltip.on('click', spy);
+		happen.click(layer._tooltip._container);
+		expect(spy.called).to.be(false);
+	});
+
 	it("can be made interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+
+		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
+		layer._tooltip.on('click', spy);
+		happen.click(layer._tooltip._container);
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("events are propagated to bound layer", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -276,6 +296,17 @@ describe('Tooltip', function () {
 			done();
 		});
 		map.openTooltip('Tooltip', center);
+	});
+
+	it("map.openTooltip considers interactive option", function () {
+		var spy = sinon.spy();
+		var tooltip = L.tooltip({interactive: true, permanent: true})
+		  .setContent('Tooltip')
+		  .on('click', spy);
+		map.openTooltip(tooltip, center);
+
+		happen.click(tooltip._container);
+		expect(spy.calledOnce).to.be(true);
 	});
 
 	it("can call closeTooltip while not on the map", function () {
