@@ -135,5 +135,13 @@ export var CRS = {
 		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
 
 		return new LatLngBounds(newSw, newNe);
-	}
+	},
+
+	// @property minZoom: Number = -Infinity
+	// The minimum zoom level supported by the CRS.
+	minZoom: 0,
+
+	// @property maxZoom: Number = Infinity
+	// The maximum zoom level supported by the CRS.
+	maxZoom: Infinity
 };
