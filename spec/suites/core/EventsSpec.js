@@ -378,6 +378,38 @@ describe('Events', function () {
 	});
 
 	describe('#on, #off & #fire', function () {
+		it('does not remove all listeners when any fn argument specified', function () {
+			var obj = new L.Evented();
+			obj.on('test', L.Util.falseFn);
+			obj.off('test', undefined);
+			obj.off({test: undefined});
+
+			expect(obj.listens('test')).to.be(true);
+		});
+
+		it('ignores non-function listeners passed', function () {
+			var obj = new L.Evented();
+			var off = obj.off.bind(obj);
+			['string', {}, [], true, false, undefined].forEach(function (fn) {
+				obj.on('test', fn);
+				expect(obj.listens('test')).to.be(false);
+				expect(off).withArgs('test', fn).to.not.throwException();
+			});
+		});
+
+		it('throws with wrong types passed', function () {
+			var obj = new L.Evented();
+			var on = obj.on.bind(obj);
+			var off = obj.off.bind(obj);
+			// todo? make it throw  with []
+			[true, false, undefined, 1].forEach(function (type) {
+				expect(on).withArgs(type, L.Util.falseFn).to.throwException();
+				expect(off).withArgs(type, L.Util.falseFn).to.throwException();
+			});
+
+			// todo? make `fire` and `listen` to throw with wrong type
+		});
+
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
