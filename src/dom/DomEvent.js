@@ -233,7 +233,8 @@ export function getMousePosition(e, container) {
 // and Firefox scrolls device pixels, not CSS pixels
 var wheelPxFactor =
 	(Browser.win && Browser.chrome) ? 2 * window.devicePixelRatio :
-	Browser.gecko ? window.devicePixelRatio : 1;
+	(Browser.linux && Browser.chrome || Browser.gecko) ? window.devicePixelRatio :
+	1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a wheel DOM event, in vertical
