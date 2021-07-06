@@ -41,4 +41,26 @@ describe('Circle', function () {
 			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
 		});
 	});
+
+	describe("#setRadius", function () {
+		it("fires a move event", function () {
+			var circle = new L.Circle([0, 0]);
+			map.addLayer(circle);
+
+			var beforeRadius = circle._mRadius;
+			var afterRadius = 30;
+
+			var eventArgs = null;
+			circle.on('move', function (e) {
+				eventArgs = e;
+			});
+
+			circle.setRadius(afterRadius);
+
+			expect(eventArgs).to.not.be(null);
+			expect(eventArgs.oldRadius).to.be(beforeRadius);
+			expect(eventArgs.radius).to.be(afterRadius);
+			expect(circle.getRadius()).to.be(afterRadius);
+		});
+	});
 });
