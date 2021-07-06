@@ -132,6 +132,36 @@ describe('Popup', function () {
 		expect(group._popup._contentNode.innerHTML).to.be("I'm marker 2.");
 	});
 
+	it("it should close a popup when has no content with a FeatureGroup", function () {
+		var marker1 = new L.Marker(center);
+		var marker2 = new L.Marker([54.6, 38.2]);
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+
+		marker1.description = "I'm marker 1.";
+		marker2.description = undefined;
+
+		group.bindPopup(function (layer) {
+			return layer.description;
+		});
+
+		map.options.closePopupOnClick = true;
+
+		// toggle popup on marker1
+		group.fire('click', {
+			latlng: center,
+			layer: marker1
+		});
+		expect(map.hasLayer(group._popup)).to.be.ok();
+		expect(group._popup._contentNode.innerHTML).to.be("I'm marker 1.");
+
+		// toggle popup on marker2
+		group.fire('click', {
+			latlng: [54.6, 38.2],
+			layer: marker2
+		});
+		expect(map.hasLayer(group._popup)).not.to.be.ok();
+	});
+
 	it("should use a function for popup content when a source is passed to Popup", function () {
 		var marker = new L.Marker(center).addTo(map);
 		L.popup({}, marker);
@@ -478,5 +508,32 @@ describe('L.Layer#_popup', function () {
 			marker.bindPopup("new layer").openPopup();
 			done();
 		}).to.not.throwException();
+	});
+
+	it("does not open for empty FeatureGroup", function () {
+		var popup = L.popup();
+		L.featureGroup([])
+		  .addTo(map)
+		  .bindPopup(popup)
+		  .openPopup();
+
+		expect(map.hasLayer(popup)).to.not.be.ok();
+	});
+
+	it("uses only visible layers of FeatureGroup for popup content source", function () {
+		var marker1 = L.marker([1, 1]);
+		var marker2 = L.marker([2, 2]);
+		var marker3 = L.marker([3, 3]);
+		var popup = L.popup();
+		var group = L.featureGroup([marker1, marker2])
+		  .bindPopup(popup)
+		  .addTo(map);
+
+		marker1.remove();
+		marker3.remove();
+		group.openPopup();
+
+		expect(map.hasLayer(popup)).to.be.ok();
+		expect(popup._source).to.be(marker2);
 	});
 });
