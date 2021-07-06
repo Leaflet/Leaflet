@@ -22,7 +22,7 @@ import {LatLngBounds} from '../geo/LatLngBounds';
  * 	.addTo(map);
  * ```
  */
-
+console.log(LayerGroup);
 export var FeatureGroup = LayerGroup.extend({
 
 	addLayer: function (layer) {

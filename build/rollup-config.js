@@ -4,8 +4,11 @@ import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
 import gitRev from 'git-rev-sync'
 import pkg from '../package.json'
+// import { babel } from '@rollup/plugin-babel';
+import buble from '@rollup/plugin-buble';
+import esbuild from 'rollup-plugin-esbuild'
 
-let {version} = pkg;
+let { version } = pkg;
 let release;
 
 // Skip the git branch+rev in the banner when doing a release build
@@ -33,11 +36,11 @@ exports.noConflict = function() {
 // Always export us to window global (see #2364)
 window.L = exports;`;
 
-export default {
+export default [{
 	input: 'src/Leaflet.js',
 	output: [
 		{
-			file: pkg.main,
+			file: 'dist/leaflet.legacy.js',
 			format: 'umd',
 			name: 'L',
 			banner: banner,
@@ -45,16 +48,56 @@ export default {
 			sourcemap: true,
 			legacy: true, // Needed to create files loadable by IE8
 			freeze: false
-		},
+		}
+	],
+	plugins: [
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es6'
+		}),
+		buble({ transforms: { dangerousForOf: true } }),
+	]
+},
+{
+	input: 'src/Leaflet.js',
+	output: [
 		{
-			file: 'dist/leaflet-src.esm.js',
-			format: 'es',
+			file: 'dist/leaflet.es6.js',
+			format: 'umd',
+			name: 'L',
 			banner: banner,
+			outro: outro,
 			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
 			freeze: false
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es6'
+		}),
+		// buble({ transforms: { dangerousForOf: true } }),
 	]
-};
+},
+{
+	input: 'src/Leaflet.js',
+	output: [
+		{
+			file: 'dist/leaflet.modern.js',
+			format: 'umd',
+			name: 'L',
+			banner: banner,
+			outro: outro,
+			sourcemap: true,
+			legacy: true, // Needed to create files loadable by IE8
+			freeze: false
+		}
+	],
+	plugins: [
+		release ? json() : rollupGitVersion(),
+		esbuild({
+			target: 'es2017'
+		}),
+	]
+}]
