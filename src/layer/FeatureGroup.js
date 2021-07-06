@@ -77,11 +77,20 @@ export var FeatureGroup = LayerGroup.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
 	getBounds: function () {
+		var traversedIds = arguments.length ? arguments[0] : [this._leaflet_id.toString()];
 		var bounds = new LatLngBounds();
 
 		for (var id in this._layers) {
+			if (traversedIds.indexOf(id) !== -1) {
+				continue;
+			}
+			traversedIds.push(id);
 			var layer = this._layers[id];
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+			if (layer instanceof LayerGroup) {
+				bounds.extend(FeatureGroup.prototype.getBounds.call(layer, traversedIds));
+			} else {
+				bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+			}
 		}
 		return bounds;
 	}
