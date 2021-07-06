@@ -18,8 +18,8 @@ export var Control = Class.extend({
 	// @aka Control options
 	options: {
 		// @option position: String = 'topright'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		// The position of the control. Possible values are `'topleft'`, `'topright'`, `'topcenter'`,
+		// `'bottomleft'`, `'bottomright'`, `'bottomcenter'`, `'centerleft'`, `'centerright'` or `'center'`
 		position: 'topright'
 	},
 
@@ -151,16 +151,19 @@ Map.include({
 		    container = this._controlContainer =
 		            DomUtil.create('div', l + 'control-container', this._container);
 
-		function createCorner(vSide, hSide) {
-			var className = l + vSide + ' ' + l + hSide;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
+		function createCorner(corner, className) {
+			corners[corner] = DomUtil.create('div', className, container);
 		}
 
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
+		createCorner('topleft', 'leaflet-top leaflet-left');
+		createCorner('topright', 'leaflet-top leaflet-right');
+		createCorner('topcenter', 'leaflet-top leaflet-horizontal-center');
+		createCorner('bottomleft', 'leaflet-bottom leaflet-left');
+		createCorner('bottomright', 'leaflet-bottom leaflet-right');
+		createCorner('bottomcenter', 'leaflet-bottom leaflet-horizontal-center');
+		createCorner('leftcenter', 'leaflet-left leaflet-vertical-center');
+		createCorner('rightcenter', 'leaflet-right leaflet-vertical-center');
+		createCorner('center', 'leaflet-horizontal-center leaflet-vertical-center');
 	},
 
 	_clearControlPos: function () {
