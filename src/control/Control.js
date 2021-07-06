@@ -15,7 +15,7 @@ import * as DomUtil from '../dom/DomUtil';
 
 export var Control = Class.extend({
 	// @section
-	// @aka Control options
+	// @aka Control Options
 	options: {
 		// @option position: String = 'topright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
