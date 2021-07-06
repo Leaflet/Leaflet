@@ -29,7 +29,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  */
 
-export var Map = Evented.extend({
+export var Map = Evented.extend('Map', {
 
 	options: {
 		// @section Map State Options

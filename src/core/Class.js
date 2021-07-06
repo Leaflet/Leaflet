@@ -10,21 +10,32 @@ import * as Util from './Util';
 
 export function Class() {}
 
-Class.extend = function (props) {
 
-	// @function extend(props: Object): Function
-	// [Extends the current class](#class-inheritance) given the properties to be included.
-	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+// @function extend(className: String, props: Object): Function
+// [Extends the current class](#class-inheritance) given the properties to be included.
+// Returns a Javascript function that is a class constructor (to be called with `new`).
+// The given name is shown in the stack traces when debugging.
 
+// @alternative extend(props: Object): Function
+// Extends the current class. The resulting constructor is unnamed, and will
+// show up as `NewClass` in the stack traces when debugging.
+Class.extend = function (className, props) {
+
+	if (props === undefined) {
+		props = className;
+		className = '';
+	}
+
+	className = className.replace(/\W/, '');	// Remove spaces and non-letters
+
+	var NewClass = eval('var NewClass = function ' + className + '() {' +
 		// call the constructor
-		if (this.initialize) {
-			this.initialize.apply(this, arguments);
-		}
+		'if (this.initialize){ this.initialize.apply(this, arguments);}' +
 
 		// call all constructor hooks
-		this.callInitHooks();
-	};
+		'this.callInitHooks();' +
+
+		'};NewClass;'); //
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
