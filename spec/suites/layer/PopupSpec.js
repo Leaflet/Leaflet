@@ -479,4 +479,31 @@ describe('L.Layer#_popup', function () {
 			done();
 		}).to.not.throwException();
 	});
+
+	it("does not open for empty FeatureGroup", function () {
+		var popup = L.popup();
+		L.featureGroup([])
+		  .addTo(map)
+		  .bindPopup(popup)
+		  .openPopup();
+
+		expect(map.hasLayer(popup)).to.not.be.ok();
+	});
+
+	it("uses only visible layers of FeatureGroup for popup content source", function () {
+		var marker1 = L.marker([1, 1]);
+		var marker2 = L.marker([2, 2]);
+		var marker3 = L.marker([3, 3]);
+		var popup = L.popup();
+		var group = L.featureGroup([marker1, marker2, marker3])
+		  .bindPopup(popup)
+		  .addTo(map);
+
+		marker1.remove();
+		marker3.remove();
+		group.openPopup();
+
+		expect(map.hasLayer(popup)).to.be.ok();
+		expect(popup._source).to.be(marker2);
+	});
 });
