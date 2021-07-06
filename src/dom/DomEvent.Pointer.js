@@ -1,6 +1,6 @@
-import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
+import {preventDefault} from './preventDefault';
 
 /*
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
@@ -53,7 +53,7 @@ function _addPointerStart(obj, handler, id) {
 	var onDown = Util.bind(function (e) {
 		// IE10 specific: MsTouch needs preventDefault. See #2000
 		if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
-			DomEvent.preventDefault(e);
+			preventDefault(e);
 		}
 
 		_handlePointer(e, handler);

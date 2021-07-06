@@ -53,6 +53,25 @@ describe('DomUtil', function () {
 		});
 	});
 
+	describe('#getScale', function () {
+		it('returns scale obj', function () {
+			var rect = {width: 100, height: 100};
+			var el = {
+				offsetWidth: 200,
+				offsetHeight: 200,
+				getBoundingClientRect: function () {
+					return rect;
+				}
+			};
+			var expected = {
+				x: 0.5,
+				y: 0.5,
+				boundingClientRect: rect
+			};
+			expect(L.DomUtil.getScale(el)).to.eql(expected);
+		});
+	});
+
 	// describe('#setPosition', noSpecs);
 
 	// describe('#getStyle', noSpecs);

@@ -1,6 +1,6 @@
+import {Class} from '../core/Class';
 import * as Util from '../core/Util';
-import {Earth} from './crs/CRS.Earth';
-import {toLatLngBounds} from './LatLngBounds';
+import {distance as earthDistance} from './crs/CRS.Earth.distance';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -26,28 +26,38 @@ import {toLatLngBounds} from './LatLngBounds';
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
+// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
+// Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
 
-export function LatLng(lat, lng, alt) {
-	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
-	}
+// @alternative
+// @factory L.latLng(coords: Array): LatLng
+// Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
 
-	// @property lat: Number
-	// Latitude in degrees
-	this.lat = +lat;
+// @alternative
+// @factory L.latLng(coords: Object): LatLng
+// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+export var LatLng = Class.extend({
 
-	// @property lng: Number
-	// Longitude in degrees
-	this.lng = +lng;
+	initialize: function (lat, lng, alt) {
+		if (isNaN(lat) || isNaN(lng)) {
+			throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
+		}
 
-	// @property alt: Number
-	// Altitude in meters (optional)
-	if (alt !== undefined) {
-		this.alt = +alt;
-	}
-}
+		// @property lat: Number
+		// Latitude in degrees
+		this.lat = +lat;
 
-LatLng.prototype = {
+		// @property lng: Number
+		// Longitude in degrees
+		this.lng = +lng;
+
+		// @property alt: Number
+		// Altitude in meters (optional)
+		if (alt !== undefined) {
+			this.alt = +alt;
+		}
+	},
+
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
@@ -73,43 +83,19 @@ LatLng.prototype = {
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Spherical Law of Cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines).
 	distanceTo: function (other) {
-		return Earth.distance(this, toLatLng(other));
+		return earthDistance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
-		return Earth.wrapLatLng(this);
-	},
-
-	// @method toBounds(sizeInMeters: Number): LatLngBounds
-	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
-	toBounds: function (sizeInMeters) {
-		var latAccuracy = 180 * sizeInMeters / 40075017,
-		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
-
-		return toLatLngBounds(
-		        [this.lat - latAccuracy, this.lng - lngAccuracy],
-		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
+		return wrapLatLng(this);
 	},
 
 	clone: function () {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
-};
-
-
-
-// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
-// Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
-
-// @alternative
-// @factory L.latLng(coords: Array): LatLng
-// Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
-
-// @alternative
-// @factory L.latLng(coords: Object): LatLng
-// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+});
 
 export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
@@ -134,4 +120,12 @@ export function toLatLng(a, b, c) {
 		return null;
 	}
 	return new LatLng(a, b, c);
+}
+
+export function wrapLatLng(latlng) {
+	var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+	lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+	alt = latlng.alt;
+
+	return new LatLng(lat, lng, alt);
 }

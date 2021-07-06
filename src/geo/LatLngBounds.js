@@ -29,11 +29,10 @@ import {LatLng, toLatLng} from './LatLng';
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
-
 export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
 	if (!corner1) { return; }
 
-	var latlngs = corner2 ? [corner1, corner2] : corner1;
+	var latlngs = corner2 ? [corner1, corner2] : [].concat(corner1);
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
@@ -41,6 +40,16 @@ export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[
 }
 
 LatLngBounds.prototype = {
+
+	/**
+	 * @type {LatLng|undefined}
+	 */
+	_southWest: undefined,
+
+	/**
+	 * @type {LatLng|undefined}
+	 */
+	_northEast: undefined,
 
 	// @method extend(latlng: LatLng): this
 	// Extend the bounds to contain the given point
@@ -54,8 +63,8 @@ LatLngBounds.prototype = {
 		    sw2, ne2;
 
 		if (obj instanceof LatLng) {
-			sw2 = obj;
-			ne2 = obj;
+			sw2 = (/** @type {LatLng} */ (obj));
+			ne2 = (/** @type {LatLng} */ (obj));
 
 		} else if (obj instanceof LatLngBounds) {
 			sw2 = obj._southWest;
@@ -172,7 +181,7 @@ LatLngBounds.prototype = {
 			sw2 = obj.getSouthWest();
 			ne2 = obj.getNorthEast();
 		} else {
-			sw2 = ne2 = obj;
+			sw2 = ne2 = (/** @type {LatLng} */ (obj));
 		}
 
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
