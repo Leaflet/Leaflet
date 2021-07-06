@@ -17,100 +17,112 @@ describe("Marker.Drag", function () {
 		document.body.removeChild(div);
 	});
 
+	var MyMarker = L.Marker.extend({
+		_getPosition: function () {
+			return L.DomUtil.getPosition(this.dragging._draggable._element);
+		},
+		getOffset: function () {
+			return this._getPosition().subtract(this._initialPos);
+		}
+	}).addInitHook('on', 'add', function () {
+		this._initialPos = this._getPosition();
+	});
+
 	describe("drag", function () {
 		it("drags a marker with mouse", function (done) {
-			var marker = new L.Marker([0, 0], {
-				draggable: true
-			}).addTo(map);
+			var marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+
+			var start = L.point(300, 280);
+			var offset = L.point(256, 32);
+			var finish = start.add(offset);
 
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					expect(center.lat).to.be(0);
-					expect(center.lng).to.be(0);
+					expect(marker.getOffset()).to.eql(offset);
 
-					var markerPos = marker.getLatLng();
-					// Marker drag is very timing sensitive, so we can't check
-					// exact values here, just verify that the drag is in the
-					// right ballpark
-					expect(markerPos.lat).to.be.within(-50, -30);
-					expect(markerPos.lng).to.be.within(340, 380);
+					expect(map.getCenter()).to.eql({lat: 0, lng: 0});
+					expect(marker.getLatLng().equals({ // small margin of error allowed
+						lat: -40.979898069620134,
+						lng: 360
+					})).to.be.ok();
 
 					done();
 				}
 			});
 			var toucher = hand.growFinger('mouse');
 
-			toucher.wait(100).moveTo(300, 280, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 1000).wait(100).up().wait(100);
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
 		describe("in CSS scaled container", function () {
-			var scaleX = 2;
-			var scaleY = 1.5;
+			var scale = L.point(2, 1.5);
 
 			beforeEach(function () {
 				div.style.webkitTransformOrigin = 'top left';
-				div.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
+				div.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
 			});
 
 			it("drags a marker with mouse, compensating for CSS scale", function (done) {
-				var marker = new L.Marker([0, 0], {
-					draggable: true
-				}).addTo(map);
+				var marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+
+				var start = L.point(300, 280);
+				var offset = L.point(256, 32);
+				var finish = start.add(offset);
 
 				var hand = new Hand({
 					timing: 'fastframe',
 					onStop: function () {
-						var center = map.getCenter();
-						expect(center.lat).to.be(0);
-						expect(center.lng).to.be(0);
+						expect(marker.getOffset()).to.eql(offset);
 
-						var markerPos = marker.getLatLng();
-						// Marker drag is very timing sensitive, so we can't check
-						// exact values here, just verify that the drag is in the
-						// right ballpark
-						expect(markerPos.lat).to.be.within(-50, -30);
-						expect(markerPos.lng).to.be.within(340, 380);
+						expect(map.getCenter()).to.eql({lat: 0, lng: 0});
+						expect(marker.getLatLng().equals({ // small margin of error allowed
+							lat: -40.979898069620134,
+							lng: 360
+						})).to.be.ok();
 
 						done();
 					}
 				});
 				var toucher = hand.growFinger('mouse');
 
-				toucher.wait(100).moveTo(scaleX * 300, scaleY * 280, 0)
-					.down().moveBy(5, 0, 20).moveBy(scaleX * 256, scaleY * 32, 1000).wait(100).up().wait(100);
+				var startScaled = start.scaleBy(scale);
+				var finishScaled = finish.scaleBy(scale);
+				toucher.wait(0).moveTo(startScaled.x, startScaled.y, 0)
+					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
 			});
 		});
 
 		it("pans map when autoPan is enabled", function (done) {
-			var marker = new L.Marker([0, 0], {
+			var marker = new MyMarker([0, 0], {
 				draggable: true,
 				autoPan: true
 			}).addTo(map);
 
+			var start = L.point(300, 280);
+			var offset = L.point(290, 32);
+			var finish = start.add(offset);
+
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
-					var center = map.getCenter();
-					expect(center.lat).to.be(0);
-					expect(center.lng).to.be.within(10, 30);
+					expect(marker.getOffset()).to.eql(offset);
 
-					var markerPos = marker.getLatLng();
-					// Marker drag is very timing sensitive, so we can't check
-					// exact values here, just verify that the drag is in the
-					// right ballpark
-					expect(markerPos.lat).to.be.within(-50, -30);
-					expect(markerPos.lng).to.be.within(400, 450);
+					// small margin of error allowed
+					expect(map.getCenter().equals({lat: 0, lng: 11.25})).to.be.ok();
+					expect(marker.getLatLng().equals({
+						lat: -40.979898069620134,
+						lng: 419.0625
+					})).to.be.ok();
 
 					done();
 				}
 			});
 			var toucher = hand.growFinger('mouse');
 
-			toucher.wait(100).moveTo(300, 280, 0)
-				.down().moveBy(5, 0, 20).moveBy(290, 32, 1000).wait(100).up().wait(100);
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 	});
 });
