@@ -202,8 +202,12 @@ export var Marker = Layer.extend({
 		var options = this.options,
 		    classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
+		var button = DomUtil.create('button', 'leaflet-marker-button');
 		var icon = options.icon.createIcon(this._icon),
 		    addIcon = false;
+
+		button.setAttribute('aria-haspopup', 'true');
+		button.setAttribute('aria-describedby', 'popup-tooltip');
 
 		// if we're not reusing the icon, remove the old one and init new one
 		if (icon !== this._icon) {
@@ -217,17 +221,14 @@ export var Marker = Layer.extend({
 			}
 
 			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt || '';
+				icon.alt = options.alt || 'Location';
 			}
 		}
 
 		DomUtil.addClass(icon, classToAdd);
 
-		if (options.keyboard) {
-			icon.tabIndex = '0';
-		}
-
 		this._icon = icon;
+		this._button = button;
 
 		if (options.riseOnHover) {
 			this.on({
@@ -257,7 +258,7 @@ export var Marker = Layer.extend({
 
 
 		if (addIcon) {
-			this.getPane().appendChild(this._icon);
+			this.getPane().appendChild(this._button).appendChild(this._icon);
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {

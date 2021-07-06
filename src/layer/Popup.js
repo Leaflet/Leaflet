@@ -179,7 +179,11 @@ export var Popup = DivOverlay.extend({
 			' leaflet-zoom-animated');
 
 		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
-		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
+		var wrapperContent = this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
+
+		wrapperContent.setAttribute('role', 'tooltip');
+		wrapperContent.setAttribute('id', 'popup-tooltip');
+		wrapperContent.parentElement.parentElement.setAttribute('tabIndex', '-1');
 
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(this._contentNode);
@@ -189,8 +193,9 @@ export var Popup = DivOverlay.extend({
 		this._tip = DomUtil.create('div', prefix + '-tip', this._tipContainer);
 
 		if (this.options.closeButton) {
-			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
-			closeButton.href = '#close';
+			var closeButton = this._closeButton = DomUtil.create('button', prefix + '-close-button', container);
+
+			closeButton.setAttribute('aria-label', 'Close');
 			closeButton.innerHTML = '&#215;';
 
 			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
@@ -422,6 +427,11 @@ Layer.include({
 
 			// open the popup on the map
 			this._map.openPopup(this._popup, latlng);
+		}
+
+		if (this._popup && this._popup._wrapper) {
+			// set focus to popup
+			this._popup._wrapper.parentElement.focus();
 		}
 
 		return this;

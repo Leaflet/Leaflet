@@ -26,6 +26,7 @@ describe("Marker.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStop: function () {
+
 					var center = map.getCenter();
 					expect(center.lat).to.be(0);
 					expect(center.lng).to.be(0);

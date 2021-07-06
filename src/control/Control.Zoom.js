@@ -80,23 +80,18 @@ export var Zoom = Control.extend({
 	},
 
 	_createButton: function (html, title, className, container, fn) {
-		var link = DomUtil.create('a', className, container);
-		link.innerHTML = html;
-		link.href = '#';
-		link.title = title;
+		var button = DomUtil.create('button', className, container);
+		button.innerHTML = html;
+		button.title = title;
 
-		/*
-		 * Will force screen readers like VoiceOver to read this as "Zoom in - button"
-		 */
-		link.setAttribute('role', 'button');
-		link.setAttribute('aria-label', title);
+		button.setAttribute('aria-label', title);
 
-		DomEvent.disableClickPropagation(link);
-		DomEvent.on(link, 'click', DomEvent.stop);
-		DomEvent.on(link, 'click', fn, this);
-		DomEvent.on(link, 'click', this._refocusOnMap, this);
+		DomEvent.disableClickPropagation(button);
+		DomEvent.on(button, 'click', DomEvent.stop);
+		DomEvent.on(button, 'click', fn, this);
+		DomEvent.on(button, 'click', this._refocusOnMap, this);
 
-		return link;
+		return button;
 	},
 
 	_updateDisabled: function () {
