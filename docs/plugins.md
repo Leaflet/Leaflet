@@ -3434,6 +3434,15 @@ Allow the user to measure distances or areas.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/elmatou/Leaflet-course">Leaflet.course</a>
+		</td><td>
+			 Prepare air or sea navigations ! Draw routes on map, measure distances, incoming and outcoming bearings. (<a href="https://elmatou.github.io/Leaflet-course/dist/demo.html">Demo</a>
+		</td><td>
+			<a href="https://github.com/elmatou">elmatou</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/ppete2/Leaflet.PolylineMeasure">Leaflet.PolylineMeasure</a>
 		</td><td>
 			 Measure great-circle distances of simple lines as well as of complex polylines. (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo1.html">Demo 1</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo2.html">Demo 2</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo3.html">Demo 3</a>)
