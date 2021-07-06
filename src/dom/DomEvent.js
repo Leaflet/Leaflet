@@ -1,6 +1,6 @@
 import {Point} from '../geometry/Point';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 import {getScale} from './DomUtil';

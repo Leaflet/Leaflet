@@ -4,7 +4,7 @@ import * as DomEvent from '../../dom/DomEvent';
 import {Point} from '../../geometry/Point';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 
 
 /*

@@ -1,7 +1,7 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
