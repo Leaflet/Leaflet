@@ -46,7 +46,6 @@ export function get(id) {
 // including computed values or values set through CSS.
 export function getStyle(el, style) {
 	var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
-
 	if ((!value || value === 'auto') && document.defaultView) {
 		var css = document.defaultView.getComputedStyle(el, null);
 		value = css ? css[style] : null;
@@ -57,13 +56,18 @@ export function getStyle(el, style) {
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
 export function create(tagName, className, container) {
-	var el = document.createElement(tagName);
-	el.className = className || '';
+	try {
+		var el = document.createElement(tagName);
+		el.className = className || '';
 
-	if (container) {
-		container.appendChild(el);
+		if (container) {
+			container.appendChild(el);
+		}
+		return el;
+	} catch (error) {
+		throw new Error('Invalid tagName');
 	}
-	return el;
+
 }
 
 // @function remove(el: HTMLElement)
