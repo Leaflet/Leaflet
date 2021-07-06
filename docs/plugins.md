@@ -2910,6 +2910,15 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/olanaso">Erick S Escalante Olano</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sandropibia/Leaflet.SelectAreaFeature/">Leaflet.SelectAreaFeature</a>
+		</td><td>
+			Selecting feature layers on a map by drawing an area.
+		</td><td>
+			<a href="https://github.com/sandropibia">Sandro Pibia</a>
+		</td>
+	</tr>
 </table>
 
 
