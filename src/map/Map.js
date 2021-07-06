@@ -269,10 +269,10 @@ export var Map = Evented.extend({
 		}
 
 		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
-
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
-		    nePoint = this.project(bounds.getNorthEast(), zoom),
-		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
+		    nePoint = this.project(bounds.getNorthEast(), zoom);
+
+		var center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
 
 		return {
 			center: center,
