@@ -75,7 +75,9 @@ export var Layer = Evented.extend({
 	// @method getPane(name? : String): HTMLElement
 	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
 	getPane: function (name) {
-		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
+		return this._map.getPane(name ?
+			(this.options[name] || name) :
+			('_groupPane' in this.options ? this.options._groupPane : this.options.pane));
 	},
 
 	addInteractiveTarget: function (targetEl) {
