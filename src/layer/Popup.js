@@ -401,28 +401,25 @@ Layer.include({
 	// @method unbindPopup(): this
 	// Removes the popup previously bound with `bindPopup`.
 	unbindPopup: function () {
-		if (this._popup) {
-			this.off({
-				click: this._openPopup,
-				keypress: this._onKeyPress,
-				remove: this.closePopup,
-				move: this._movePopup
-			});
-			this._popupHandlersAdded = false;
-			this._popup = null;
-		}
+		this.off({
+			click: this._openPopup,
+			keypress: this._onKeyPress,
+			remove: this.closePopup,
+			move: this._movePopup
+		});
+		this._popupHandlersAdded = false;
+		this._popup = null;
+
 		return this;
 	},
 
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (layer, latlng) {
-		if (this._popup && this._map) {
-			latlng = this._popup._prepareOpen(this, layer, latlng);
+		latlng = this._popup._prepareOpen(this, layer, latlng);
 
-			// open the popup on the map
-			this._map.openPopup(this._popup, latlng);
-		}
+		// open the popup on the map
+		this._map.openPopup(this._popup, latlng);
 
 		return this;
 	},
@@ -430,21 +427,16 @@ Layer.include({
 	// @method closePopup(): this
 	// Closes the popup bound to this layer if it is open.
 	closePopup: function () {
-		if (this._popup) {
-			this._popup._close();
-		}
-		return this;
+		return this._popup._close();
 	},
 
 	// @method togglePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup: function (target) {
-		if (this._popup) {
-			if (this._popup._map) {
-				this.closePopup();
-			} else {
-				this.openPopup(target);
-			}
+		if (this._popup._map) {
+			this.closePopup();
+		} else {
+			this.openPopup(target);
 		}
 		return this;
 	},
@@ -452,16 +444,13 @@ Layer.include({
 	// @method isPopupOpen(): boolean
 	// Returns `true` if the popup bound to this layer is currently open.
 	isPopupOpen: function () {
-		return (this._popup ? this._popup.isOpen() : false);
+		return this._popup.isOpen();
 	},
 
 	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent: function (content) {
-		if (this._popup) {
-			this._popup.setContent(content);
-		}
-		return this;
+		return this._popup.setContent(content);
 	},
 
 	// @method getPopup(): Popup
@@ -472,14 +461,6 @@ Layer.include({
 
 	_openPopup: function (e) {
 		var layer = e.layer || e.target;
-
-		if (!this._popup) {
-			return;
-		}
-
-		if (!this._map) {
-			return;
-		}
 
 		// prevent map click
 		DomEvent.stop(e);
