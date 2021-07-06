@@ -86,7 +86,14 @@ Class.extend = function (props) {
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
+	var options;
+	if (props.options) {
+		options = Util.extend({}, this.prototype.options, props.options);
+	}
 	Util.extend(this.prototype, props);
+	if (options) {
+		this.prototype.options = options;
+	}
 	return this;
 };
 
