@@ -42,6 +42,7 @@
     "pretest": "npm run lint",
     "test": "npm run test-nolint",
     "test-nolint": "karma start ./spec/karma.conf.js",
+    "test-server-import": "node ./spec/serverSpec.js",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src spec/suites docs/docs/js",
