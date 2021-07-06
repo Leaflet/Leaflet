@@ -4930,7 +4930,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td><td>
 		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
-		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+		<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
 	</td>
   </tr>
   <tr>
