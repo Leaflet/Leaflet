@@ -254,6 +254,10 @@ export var Map = Evented.extend({
 		options = options || {};
 		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
+		if (!bounds.isValid()) {
+			throw new Error('Bounds are not valid.');
+		}
+
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
 
@@ -284,13 +288,6 @@ export var Map = Evented.extend({
 	// Sets a map view that contains the given geographical bounds with the
 	// maximum zoom level possible.
 	fitBounds: function (bounds, options) {
-
-		bounds = toLatLngBounds(bounds);
-
-		if (!bounds.isValid()) {
-			throw new Error('Bounds are not valid.');
-		}
-
 		var target = this._getBoundsCenterZoom(bounds, options);
 		return this.setView(target.center, target.zoom, options);
 	},
