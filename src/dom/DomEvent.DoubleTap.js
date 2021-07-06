@@ -49,6 +49,7 @@ export function addDoubleTapListener(obj, handler, id) {
 			touch.button = 0;
 			handler(touch);
 			last = null;
+			doubleTap = false;
 		}
 	}
 
