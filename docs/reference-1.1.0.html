@@ -19903,9 +19903,9 @@ properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='evented-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it. The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='evented-once'>

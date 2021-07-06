@@ -202,8 +202,9 @@ export var Events = {
 		return this;
 	},
 
-	// @method listens(type: String): Boolean
+	// @method listens(type: String, propagate?: Boolean): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
+	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
 	listens: function (type, propagate) {
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
