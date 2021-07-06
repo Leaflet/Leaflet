@@ -1383,7 +1383,7 @@ export var Map = Evented.extend({
 
 	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
-	_fireDOMEvent: function (e, type, targets) {
+	_fireDOMEvent: function (e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
@@ -1393,21 +1393,31 @@ export var Map = Evented.extend({
 			// handlers start running).
 			var synth = Util.extend({}, e);
 			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, targets);
+			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}
 
 		if (e._stopped) { return; }
 
 		// Find the layer the event is propagating from and its parents.
-		targets = (targets || []).concat(this._findEventTargets(e, type));
+		var targets = this._findEventTargets(e, type);
+
+		if (canvasTargets) {
+			var filtered = []; // pick only targets with listeners
+			for (var i = 0; i < canvasTargets.length; i++) {
+				if (canvasTargets[i].listens(type, true)) {
+					filtered.push(canvasTargets[i]);
+				}
+			}
+			targets = filtered.concat(targets);
+		}
 
 		if (!targets.length) { return; }
 
-		var target = targets[0];
-		if (type === 'contextmenu' && target.listens(type, true)) {
+		if (type === 'contextmenu') {
 			DomEvent.preventDefault(e);
 		}
 
+		var target = targets[0];
 		var data = {
 			originalEvent: e
 		};
@@ -1420,7 +1430,7 @@ export var Map = Evented.extend({
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
 
-		for (var i = 0; i < targets.length; i++) {
+		for (i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
 				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
