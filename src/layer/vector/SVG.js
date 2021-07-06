@@ -59,6 +59,46 @@ export var SVG = Renderer.extend({
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 
+		this._radientGroup = create('g');
+
+		for (var i in this._map.gradients) {
+			var gradientOptions = this._map.gradients[i];
+			var gradient = create('linearGradient');
+
+			gradient.id = gradientOptions.name;
+
+			var x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+
+			if (gradientOptions.direction === 'up') {
+				y1 = 1;
+			} else if (gradientOptions.direction === 'left') {
+				x1 = 1;
+			} else if (gradientOptions.direction === 'right') {
+				x2 = 1;
+			} else {
+				y2 = 1;
+			}
+
+			gradient.setAttribute('x1', x1);
+			gradient.setAttribute('x2', x2);
+			gradient.setAttribute('y1', y1);
+			gradient.setAttribute('y2', y2);
+
+			for (var j in gradientOptions.stops) {
+				var stopOptions = gradientOptions.stops[j];
+				var stop = create('stop');
+
+				stop.setAttribute('offset', stopOptions.offset + '%');
+				stop.setAttribute('stop-color', stopOptions.color);
+
+				gradient.appendChild(stop);
+			}
+
+			this._radientGroup.appendChild(gradient);
+		}
+
+		this._container.appendChild(this._radientGroup);
+
 		this._rootGroup = create('g');
 		this._container.appendChild(this._rootGroup);
 	},
@@ -167,7 +207,7 @@ export var SVG = Renderer.extend({
 		}
 
 		if (options.fill) {
-			path.setAttribute('fill', options.fillColor || options.color);
+			path.setAttribute('fill', (options.gradient && 'url(#' + options.gradient + ')') || options.fillColor || options.color);
 			path.setAttribute('fill-opacity', options.fillOpacity);
 			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
