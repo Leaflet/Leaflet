@@ -234,6 +234,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wandersoncs/leaflet-tilelayer-here">Leaflet.TileLayer.HERE</a>
+		</td><td>
+			Displays tiles from HERE maps.
+		</td><td>
+			<a href="https://github.com/wandersoncs">Wanderson Souza</a>
+		</td>
+	</tr>
 </table>
 
 
