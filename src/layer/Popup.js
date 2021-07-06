@@ -193,7 +193,7 @@ export var Popup = DivOverlay.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
+			DomEvent.on(closeButton, 'click', this._close, this);
 		}
 	},
 
@@ -275,11 +275,6 @@ export var Popup = DivOverlay.extend({
 			    .fire('autopanstart')
 			    .panBy([dx, dy]);
 		}
-	},
-
-	_onCloseButtonClick: function (e) {
-		this._close();
-		DomEvent.stop(e);
 	},
 
 	_getAnchor: function () {
