@@ -641,9 +641,17 @@ export var Map = Evented.extend({
 		var onResponse = Util.bind(this._handleGeolocationResponse, this),
 		    onError = Util.bind(this._handleGeolocationError, this);
 
-		if (options.watch) {
+		if (options.getCoordinates) {
+			if (options.watch) {
+				this._locationWatchId = options.getCoordinates(options, onResponse);
+			} else {
+				options.getCoordinates(options)
+					.then(onResponse)
+					.catch(onError);
+			}
+		} else if (options.watch) {
 			this._locationWatchId =
-			        navigator.geolocation.watchPosition(onResponse, onError, options);
+			    navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
 		}
