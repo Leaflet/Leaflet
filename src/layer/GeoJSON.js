@@ -8,6 +8,7 @@ import {Polyline} from './vector/Polyline';
 import {Polygon} from './vector/Polygon';
 import {LatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
+import {toLatLng} from '../geo/LatLng';
 
 
 /*
@@ -257,9 +258,10 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 export function latLngToCoords(latlng, precision) {
 	precision = typeof precision === 'number' ? precision : 6;
-	return latlng.alt !== undefined ?
-		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
-		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
+	var Truelatlng = toLatLng(latlng);
+	return Truelatlng.alt !== undefined ?
+		[Util.formatNum(Truelatlng.lng, precision), Util.formatNum(Truelatlng.lat, precision), Util.formatNum(Truelatlng.alt, precision)] :
+		[Util.formatNum(Truelatlng.lng, precision), Util.formatNum(Truelatlng.lat, precision)];
 }
 
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
@@ -267,11 +269,12 @@ export function latLngToCoords(latlng, precision) {
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
-
 	for (var i = 0, len = latlngs.length; i < len; i++) {
+		var latlng;
+		if (!levelsDeep) { latlng = toLatLng(latlngs[i]); } else { latlng = latlngs[i]; }
 		coords.push(levelsDeep ?
-			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
-			latLngToCoords(latlngs[i], precision));
+			latLngsToCoords(latlng, levelsDeep - 1, closed, precision) :
+			latLngToCoords(latlng, precision));
 	}
 
 	if (!levelsDeep && closed) {
