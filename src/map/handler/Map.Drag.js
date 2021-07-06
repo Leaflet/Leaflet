@@ -132,6 +132,8 @@ export var Drag = Handler.extend({
 			this._prunePositions(time);
 		}
 
+		this._map._movedAfterCentered = true;
+
 		this._map
 		    .fire('move', e)
 		    .fire('drag', e);
@@ -187,7 +189,6 @@ export var Drag = Handler.extend({
 	_onDragEnd: function (e) {
 		var map = this._map,
 		    options = map.options,
-
 		    noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
