@@ -1,12 +1,7 @@
 ---
 layout: tutorial_frame
 title: Choropleth Tutorial
-css: "#map {
-			width: 800px;
-			height: 500px;
-		}
-
-		.info {
+css: ".info {
 			padding: 6px 8px;
 			font: 14px/16px Arial, Helvetica, sans-serif;
 			background: white;
