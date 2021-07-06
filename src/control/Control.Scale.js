@@ -114,7 +114,7 @@ export var Scale = Control.extend({
 	_getRoundNum: function (num) {
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
 		    d = num / pow10;
-
+		d = Math.round((d + Number.EPSILON) * 100) / 100;
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
