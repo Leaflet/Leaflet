@@ -1,5 +1,4 @@
 import {CircleMarker} from './CircleMarker';
-import {Path} from './Path';
 import * as Util from '../../core/Util';
 import {toLatLng} from '../../geo/LatLng';
 import {LatLngBounds} from '../../geo/LatLngBounds';
@@ -63,7 +62,12 @@ export var Circle = CircleMarker.extend({
 			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	setStyle: Path.prototype.setStyle,
+	setStyle : function (options) {
+		var radius = options && options.radius || this._mRadius;
+		CircleMarker.prototype.setStyle.call(this, options);
+		this.setRadius(radius);
+		return this;
+	},
 
 	_project: function () {
 
