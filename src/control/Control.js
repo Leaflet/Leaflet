@@ -2,6 +2,7 @@
 import {Class} from '../core/Class';
 import {Map} from '../map/Map';
 import * as Util from '../core/Util';
+import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -150,6 +151,9 @@ Map.include({
 		    l = 'leaflet-',
 		    container = this._controlContainer =
 		            DomUtil.create('div', l + 'control-container', this._container);
+
+		DomEvent.disableClickPropagation(container);
+		DomEvent.disableScrollPropagation(container);
 
 		function createCorner(vSide, hSide) {
 			var className = l + vSide + ' ' + l + hSide;
