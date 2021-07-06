@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script>
+
+		var resolutions = [500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1];
+
+		var CRS = L.Class.extend({
+			includes: L.CRS.EPSG3857,
+
+			initialize() {
+				this._scales = resolutions.map(resolution => 1 / resolution);
+				this.transformation = L.transformation(1, 0, 1, 0);
+			},
+
+			scale(zoom) {
+				return this._scales[zoom];
+			},
+		});
+
+		var grid = L.gridLayer({
+			attribution: 'Grid Layer'
+		});
+
+		grid.createTile = function (coords, done) {
+			var tile = document.createElement('div');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+			tile.style.outline = '1px solid red';
+			tile.style.background = 'white';
+
+			// test async
+			setTimeout(function () {
+				done(null, tile);
+			}, 500 + Math.random() * 500);
+
+			return tile;
+		};
+
+		grid.on('loading', function() { console.log('loading'); });
+		grid.on('load', function() { console.log('load'); });
+		grid.on('tileunload', function(tile) { console.log('tileunload ' + tile.coords.x + ',' + tile.coords.y + ',' + tile.coords.z); });
+
+		var map = L.map('map', { crs: new CRS(), maxZoom: resolutions.length - 1 })
+				.setView([10, 10], 10)
+				.addLayer(grid);
+
+	</script>
+</body>
+</html>
