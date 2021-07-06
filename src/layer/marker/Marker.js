@@ -42,7 +42,7 @@ export var Marker = Layer.extend({
 
 		// @option alt: String = ''
 		// Text for the `alt` attribute of the icon image (useful for accessibility).
-		alt: '',
+		alt: 'Marker',
 
 		// @option zIndexOffset: Number = 0
 		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).

@@ -191,7 +191,8 @@ export var Popup = DivOverlay.extend({
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
+			// This is actually a button labelled "Close" for accessibility
+			closeButton.innerHTML = '<span role="button" aria-label="Close">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
