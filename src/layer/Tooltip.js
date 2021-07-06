@@ -306,6 +306,9 @@ Layer.include({
 			remove: this.closeTooltip,
 			move: this._moveTooltip
 		    };
+		if (this._tooltip.options.permanent && this.getCenter && this._map) {
+			this._map[onOff]('zoomend', this._updateTooltipCenter, this);
+		}
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
@@ -406,5 +409,12 @@ Layer.include({
 			latlng = this._map.layerPointToLatLng(layerPoint);
 		}
 		this._tooltip.setLatLng(latlng);
+	},
+
+	_updateTooltipCenter: function () {
+		var latlng = this.getCenter();
+		if (latlng) {
+			this._tooltip.setLatLng(latlng);
+		}
 	}
 });
