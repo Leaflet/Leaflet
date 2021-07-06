@@ -52,7 +52,7 @@ export var IconDefault = Icon.extend({
 		if (path === null || path.indexOf('url') !== 0) {
 			path = '';
 		} else {
-			path = path.replace(/^url\(["']?/, '').replace(/marker-icon\.png["']?\)$/, '');
+			path = path.replace(/^url\(["']?/, '').replace(/marker-icon(-[A-Za-z0-9]+)?\.png["']?\)$/, '');
 		}
 
 		return path;
