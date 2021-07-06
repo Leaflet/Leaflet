@@ -67,9 +67,9 @@ export var MarkerDrag = Handler.extend({
 		    map = marker._map,
 		    speed = this._marker.options.autoPanSpeed,
 		    padding = this._marker.options.autoPanPadding,
-		    iconPos = DomUtil.getPosition(marker._icon),
+		    iconPos = this._draggable._newPos,
 		    bounds = map.getPixelBounds(),
-		    origin = map.getPixelOrigin();
+		origin = map.getPixelOrigin();
 
 		var panBounds = toBounds(
 			bounds.min._subtract(origin).add(padding),
@@ -84,17 +84,21 @@ export var MarkerDrag = Handler.extend({
 
 				(Math.max(panBounds.max.y, iconPos.y) - panBounds.max.y) / (bounds.max.y - panBounds.max.y) -
 				(Math.min(panBounds.min.y, iconPos.y) - panBounds.min.y) / (bounds.min.y - panBounds.min.y)
-			).multiplyBy(speed);
+			).multiplyBy(speed).round();
 
-			map.panBy(movement, {animate: false});
+			movement = map._limitOffset(movement, map.options.maxBounds);
 
-			this._draggable._newPos._add(movement);
-			this._draggable._startPos._add(movement);
+			if (movement.x || movement.y) {
+				map.panBy(movement, {animate: false});
 
-			DomUtil.setPosition(marker._icon, this._draggable._newPos);
-			this._onDrag(e);
+				this._draggable._newPos._add(movement);
+				this._draggable._startPos._add(movement);
 
-			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
+				DomUtil.setPosition(marker._icon, this._draggable._newPos);
+				this._onDrag(e);
+
+				this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
+			}
 		}
 	},
 
@@ -127,7 +131,7 @@ export var MarkerDrag = Handler.extend({
 		var marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = DomUtil.getPosition(marker._icon),
-		    latlng = marker._map.layerPointToLatLng(iconPos);
+		latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// update shadow position
 		if (shadow) {
