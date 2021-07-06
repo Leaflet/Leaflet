@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="41">
+  <defs>
+    <linearGradient id="d" x1="15.94" y1="40.63" x2="29.02" y2="10.85" gradientUnits="userSpaceOnUse">
+      <stop offset="0.2" stop-color="gray" stop-opacity=".7"/>
+      <stop offset="0.8" stop-color="gray" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f" x1="15.94" y1="40.63" x2="26.68" y2="10.94" gradientUnits="userSpaceOnUse">
+      <stop offset="0.5" stop-color="gray" stop-opacity="0"/>
+      <stop offset="1" stop-color="gray" stop-opacity=".6"/>
+    </linearGradient>
+    <filter id="e" x="-.13" width="1.26" y="-.12" height="1.25" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="1"/>
+    </filter>
+    <filter id="g" x="-.49" width="1.97" y="-.46" height="1.93" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <path d="M29.64 14.1c-6.57 0-14.06 3.92-16.25 8.17-.99 1.92-.67 4.35-.41 6.03l2.96 12.33 15.6-12.33c2-1.68 4.8-3.99 5.85-6.03 2.2-4.25-1.17-8.18-7.75-8.18z" fill="url(#d)" filter="url(#e)"/>
+  <path d="M29.64 14.1c-6.57 0-14.06 3.92-16.25 8.17-.99 1.92-.67 4.35-.41 6.03l2.96 12.33 15.6-12.33c2-1.68 4.8-3.99 5.85-6.03 2.2-4.25-1.17-8.18-7.75-8.18z" fill="url(#f)" filter="url(#g)"/>
+</svg>
