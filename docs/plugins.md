@@ -2677,6 +2677,17 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/zimmicz/Leaflet-Timeline-Control">Leaflet Hex Time Slider</a>
+		</td>
+		<td>
+			Minimalistic time slider using leaflet + d3.js and nouislider for displaying time series data using a geoJSON file. <a href="https://albertkun.github.io/leaflet_hex_timeslider/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/albertkun/leaflet_hex_timeslider/">Albert Kochaphum</a>
+		</td>
+	</tr>
 </table>
 
 
