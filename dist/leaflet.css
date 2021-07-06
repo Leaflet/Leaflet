@@ -396,6 +396,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-default-icon-path {
 	background-image: url(images/marker-icon.png);
 	}
+.leaflet-default-icon-path-2x {
+	background-image: url(images/marker-icon-2x.png);
+	}
+.leaflet-default-icon-path-shadow {
+	background-image: url(images/marker-shadow.png);
+	}
 
 
 /* attribution and scale controls */

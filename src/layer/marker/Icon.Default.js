@@ -31,30 +31,32 @@ export var IconDefault = Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
-		if (!IconDefault.imagePath) {	// Deprecated, backwards-compatibility only
-			IconDefault.imagePath = this._detectIconPath();
+		 // IconDefault.imagePath is deprecated, backwards-compatibility only
+		if (!IconDefault.imagePath && !IconDefault._imagePathDetected) {
+			this._detectIconPath('iconUrl', 'leaflet-default-icon-path');
+			this._detectIconPath('iconRetinaUrl', 'leaflet-default-icon-path-2x');
+			this._detectIconPath('shadowUrl', 'leaflet-default-icon-path-shadow');
 		}
 
 		// @option imagePath: String
 		// `Icon.Default` will try to auto-detect the location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right path.
-		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
+		return (this.options.imagePath || IconDefault.imagePath || '') + Icon.prototype._getIconUrl.call(this, name);
 	},
 
-	_detectIconPath: function () {
-		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+	_detectIconPath: function (property, className) {
+		var el = DomUtil.create('div',  className, document.body);
 		var path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
 
 		if (path === null || path.indexOf('url') !== 0) {
-			path = '';
-		} else {
-			path = path.replace(/^url\(["']?/, '').replace(/marker-icon\.png["']?\)$/, '');
+			return;
 		}
-
-		return path;
+		path = path.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+		IconDefault.prototype.options[property] = path;
+		IconDefault._imagePathDetected = true;
 	}
 });
