@@ -796,12 +796,6 @@ export var GridLayer = Layer.extend({
 		if (Browser.ielt9 && this.options.opacity < 1) {
 			DomUtil.setOpacity(tile, this.options.opacity);
 		}
-
-		// without this hack, tiles disappear after zoom on Chrome for Android
-		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (Browser.android && !Browser.android23) {
-			tile.style.WebkitBackfaceVisibility = 'hidden';
-		}
 	},
 
 	_addTile: function (coords, container) {

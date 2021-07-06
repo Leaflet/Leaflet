@@ -17,8 +17,8 @@ Map.mergeOptions({
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
-	// browsers except for old Androids.
-	touchZoom: Browser.touch && !Browser.android23,
+	// browsers.
+	touchZoom: Browser.touch,
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
