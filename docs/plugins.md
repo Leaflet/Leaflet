@@ -1885,6 +1885,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/FacilMap/Leaflet.HighlightableLayers">Leaflet.HighlightableLayers</a>
+		</td>
+		<td>
+		    Highlight Leaflet lines and polygons by adding a border and raising them above others. Add a transparent border to increase the tolerance for mouse/touch interactions. <a href="https://unpkg.com/leaflet-highlightable-layers/example.html">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/cdauth/">Candid Dauth</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2558,6 +2569,17 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			An extension to Leaflet.draw to allow editing large polylines one chunk at the time.
 		</td><td>
 			<a href="https://github.com/Lemaf">Lemaf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/FacilMap/Leaflet.DraggableLines">Leaflet.DraggableLines</a>
+		</td>
+		<td>
+		    Add/move/remove points on routes, lines and polygons by drag&drop. <a href="https://unpkg.com/leaflet-draggable-lines/example.html">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/cdauth/">Candid Dauth</a>
 		</td>
 	</tr>
 </table>
