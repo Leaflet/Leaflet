@@ -38,6 +38,15 @@ import {Bounds} from '../../geometry/Bounds';
  */
 
 export var Canvas = Renderer.extend({
+
+	// @section
+	// @aka Canvas options
+	options: {
+		// @option tolerance: Number = 0
+		// How much to extend the click tolerance around a path/object on the map.
+		tolerance: 0
+	},
+
 	getEvents: function () {
 		var events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
