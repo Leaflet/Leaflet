@@ -22,12 +22,12 @@ import * as DomUtil from '../dom/DomUtil';
 
 export var PosAnimation = Evented.extend({
 
-	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
+	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number, source?: String)
 	// Run an animation of a given element to a new position, optionally setting
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
 	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
 	// `0.5` by default).
-	run: function (el, newPos, duration, easeLinearity) {
+	run: function (el, newPos, duration, easeLinearity, source) {
 		this.stop();
 
 		this._el = el;
@@ -38,10 +38,11 @@ export var PosAnimation = Evented.extend({
 		this._startPos = DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = +new Date();
+		this._source = source || 'imperative';
 
 		// @event start: Event
 		// Fired when the animation starts
-		this.fire('start');
+		this.fire('start', {source: this._source});
 
 		this._animate();
 	},
@@ -82,7 +83,7 @@ export var PosAnimation = Evented.extend({
 
 		// @event step: Event
 		// Fired continuously during the animation.
-		this.fire('step');
+		this.fire('step', {source: this._source});
 	},
 
 	_complete: function () {
@@ -91,7 +92,7 @@ export var PosAnimation = Evented.extend({
 		this._inProgress = false;
 		// @event end: Event
 		// Fired when the animation ends.
-		this.fire('end');
+		this.fire('end', {source: this._source});
 	},
 
 	_easeOut: function (t) {
