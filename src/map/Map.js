@@ -1167,8 +1167,6 @@ export var Map = Evented.extend({
 
 	// @section Map state change events
 	_resetView: function (center, zoom) {
-		DomUtil.setPosition(this._mapPane, new Point(0, 0));
-
 		var loading = !this._loaded;
 		this._loaded = true;
 		zoom = this._limitZoom(zoom);
