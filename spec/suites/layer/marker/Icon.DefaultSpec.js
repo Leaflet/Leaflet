@@ -14,6 +14,30 @@ describe("Icon.Default", function () {
 		document.body.removeChild(div);
 	});
 
+	it("detect icon images path", function () {
+		var origPath = L.Icon.Default.imagePath; // set in after.js
+		expect(origPath).to.be.ok();
+		delete L.Icon.Default.imagePath;
+		var marker = new L.Marker([0, 0]);
+
+		expect(L.Icon.Default.imagePath).to.not.be.ok();
+		marker.addTo(map);
+		expect(L.Icon.Default.imagePath).to.equal(document.location.origin + origPath);
+
+		var stripUrl = L.Icon.Default.prototype._stripUrl;
+		var properPath = 'http://localhost:8000/base/dist/images/';
+		[ // valid
+			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox
+			"url('http://localhost:8000/base/dist/images/marker-icon.png')",
+			'url(http://localhost:8000/base/dist/images/marker-icon.png)',    // IE, Edge
+		].map(stripUrl).forEach(function (str) { expect(str).to.be(properPath); });
+
+		[ // invalid
+			'url("http://localhost:8000/base/dist/images/marker-icon.png?2x)"',
+			'url("data:image/png;base64,iVBORw...")',                         // inline image (bundlers)
+		].map(stripUrl).forEach(function (str) { expect(str).not.to.be.ok(); });
+	});
+
 	it("icon measures 25x41px", function () {
 		var img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
