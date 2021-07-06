@@ -83,4 +83,50 @@ describe('LineUtil', function () {
 			]);
 		});
 	});
+
+	describe('#polylineCenter', function () {
+		var map;
+		before(function () {
+			map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+		});
+
+		after(function () {
+			map.remove();
+		});
+
+		// More tests in PolylineSpec
+
+		it('compute center of line', function () {
+			var latlngs = [[80, 0], [80, 90]];
+			expect(L.LineUtil.polylineCenter(latlngs, map)).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+		});
+
+		it('throws error if latlngs not passed', function () {
+			expect(function () {
+				L.LineUtil.polylineCenter(null, map);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if latlng array is empty', function () {
+			expect(function () {
+				L.LineUtil.polylineCenter([], map);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if latlngs not flat', function () {
+			var latlngs = [
+				[[80, 0], [80, 90]]
+			];
+			expect(function () {
+				L.LineUtil.polylineCenter(latlngs, map);
+			}).to.throwException('latlngs are not flat!');
+		});
+
+		it('throws error if map not passed', function () {
+			var latlngs = [[80, 0], [80, 90]];
+			expect(function () {
+				L.LineUtil.polylineCenter(latlngs, null);
+			}).to.throwException('map not passed');
+		});
+	});
 });
