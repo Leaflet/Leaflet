@@ -1308,7 +1308,14 @@ export var Map = Evented.extend({
 		// that do not produce a character value.
 		// @event keyup: KeyboardEvent
 		// Fired when the user releases a key from the keyboard while the map is focused.
+		// @event touchstart: TouchEvent
+		// Fired when the user ...to be continued
+		// @event touchend: TouchEvent
+		// Fired when the user ...to be continued
+		// @event touchcancel: TouchEvent
+		// Fired when the user ...to be continued
 		onOff(this._container, 'click dblclick mousedown mouseup ' +
+			'touchstart touchend touchcancel ' +
 			'mouseover mouseout mousemove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
@@ -1368,10 +1375,10 @@ export var Map = Evented.extend({
 		return targets;
 	},
 
-	_handleDOMEvent: function (e) {
+	_handleDOMEvent: function (e, originalType) {
 		if (!this._loaded || DomEvent.skipped(e)) { return; }
 
-		var type = e.type;
+		var type = originalType || e.type;
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element

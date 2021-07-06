@@ -56,7 +56,7 @@ function _addPointerStart(obj, handler, id) {
 			DomEvent.preventDefault(e);
 		}
 
-		_handlePointer(e, handler);
+		_handlePointer(e, 'touchstart', handler);
 	});
 
 	obj['_leaflet_touchstart' + id] = onDown;
@@ -88,14 +88,14 @@ function _globalPointerUp(e) {
 	delete _pointers[e.pointerId];
 }
 
-function _handlePointer(e, handler) {
+function _handlePointer(e, type, handler) {
 	e.touches = [];
 	for (var i in _pointers) {
 		e.touches.push(_pointers[i]);
 	}
 	e.changedTouches = [e];
 
-	handler(e);
+	handler(e, type);
 }
 
 function _addPointerMove(obj, handler, id) {
@@ -105,7 +105,7 @@ function _addPointerMove(obj, handler, id) {
 			return;
 		}
 
-		_handlePointer(e, handler);
+		_handlePointer(e, 'touchmove', handler);
 	};
 
 	obj['_leaflet_touchmove' + id] = onMove;
@@ -114,7 +114,7 @@ function _addPointerMove(obj, handler, id) {
 
 function _addPointerEnd(obj, handler, id) {
 	var onUp = function (e) {
-		_handlePointer(e, handler);
+		_handlePointer(e, e.type === POINTER_UP ? 'touchend' : 'touchcancel', handler);
 	};
 
 	obj['_leaflet_touchend' + id] = onUp;

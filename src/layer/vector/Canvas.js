@@ -60,6 +60,7 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
+		// Todo: touchstart touchend touchcancel
 		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
