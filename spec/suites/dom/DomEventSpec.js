@@ -164,18 +164,25 @@ describe('DomEvent', function () {
 	});
 
 	describe('#preventDefault', function () {
-		it('prevents the default action of event', function () {
-			L.DomEvent.on(el, 'click', listener);
-			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
+		function isPrevented(e) {
+			if ('defaultPrevented' in e) {
+				return e.defaultPrevented;
+			} else { // IE<11
+				return !e.returnValue;
+			}
+		}
+
+		it('prevents the default action of event', function (done) {
+			L.DomEvent.on(el, 'click', function (e) {
+				expect(isPrevented(e)).not.to.be.ok(); // control case
+
+				L.DomEvent.preventDefault(e);
+
+				expect(isPrevented(e)).to.be.ok();
+				done();
+			});
 
 			happen.click(el);
-
-			var e = listener.lastCall.args[0];
-			if ('defaultPrevented' in e) {
-				expect(e.defaultPrevented).to.be.ok();
-			} else {
-				expect(e.returnValue).not.to.be.ok();
-			}
 		});
 	});
 });

@@ -631,6 +631,7 @@ describe("Map", function () {
 		    clock;
 
 		beforeEach(function () {
+			container.style.height = "100px";
 			container.style.width = origWidth + "px";
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
