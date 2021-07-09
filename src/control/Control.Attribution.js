@@ -24,13 +24,13 @@ export var Attribution = Control.extend({
 		prefix: '<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
 	},
 
-	initialize: function (options) {
+	initialize: (options) => {
 		Util.setOptions(this, options);
 
 		this._attributions = {};
 	},
 
-	onAdd: function (map) {
+	onAdd: (map) => {
 		map.attributionControl = this;
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
@@ -49,7 +49,7 @@ export var Attribution = Control.extend({
 
 	// @method setPrefix(prefix: String): this
 	// Sets the text before the attributions.
-	setPrefix: function (prefix) {
+	setPrefix: (prefix) => {
 		this.options.prefix = prefix;
 		this._update();
 		return this;
@@ -57,7 +57,7 @@ export var Attribution = Control.extend({
 
 	// @method addAttribution(text: String): this
 	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
-	addAttribution: function (text) {
+	addAttribution: (text) => {
 		if (!text) { return this; }
 
 		if (!this._attributions[text]) {
@@ -72,9 +72,9 @@ export var Attribution = Control.extend({
 
 	// @method removeAttribution(text: String): this
 	// Removes an attribution text.
-	removeAttribution: function (text) {
+	removeAttribution: (text) => {
 		if (!text) { return this; }
-
+		 
 		if (this._attributions[text]) {
 			this._attributions[text]--;
 			this._update();
@@ -83,7 +83,7 @@ export var Attribution = Control.extend({
 		return this;
 	},
 
-	_update: function () {
+	_update: () => {
 		if (!this._map) { return; }
 
 		var attribs = [];
@@ -115,7 +115,7 @@ Map.mergeOptions({
 	attributionControl: true
 });
 
-Map.addInitHook(function () {
+Map.addInitHook( () => {
 	if (this.options.attributionControl) {
 		new Attribution().addTo(this);
 	}
@@ -124,6 +124,6 @@ Map.addInitHook(function () {
 // @namespace Control.Attribution
 // @factory L.control.attribution(options: Control.Attribution options)
 // Creates an attribution control.
-export var attribution = function (options) {
+export var attribution = (options) => {
 	return new Attribution(options);
 };

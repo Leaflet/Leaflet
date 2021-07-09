@@ -49,8 +49,8 @@ export function removePointerListener(obj, type, id) {
 	return this;
 }
 
-function _addPointerStart(obj, handler, id) {
-	var onDown = Util.bind(function (e) {
+_addPointerStart = (obj, handler, id) => {
+	var onDown = Util.bind((e) => {
 		// IE10 specific: MsTouch needs preventDefault. See #2000
 		if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
 			DomEvent.preventDefault(e);
@@ -74,21 +74,21 @@ function _addPointerStart(obj, handler, id) {
 	}
 }
 
-function _globalPointerDown(e) {
+ _globalPointerDown = e => {
 	_pointers[e.pointerId] = e;
 }
 
-function _globalPointerMove(e) {
+ _globalPointerMove = e => {
 	if (_pointers[e.pointerId]) {
 		_pointers[e.pointerId] = e;
 	}
 }
 
-function _globalPointerUp(e) {
+ _globalPointerUp = e => {
 	delete _pointers[e.pointerId];
 }
 
-function _handlePointer(e, handler) {
+ _handlePointer =(e, handler) => {
 	e.touches = [];
 	for (var i in _pointers) {
 		e.touches.push(_pointers[i]);
@@ -98,8 +98,8 @@ function _handlePointer(e, handler) {
 	handler(e);
 }
 
-function _addPointerMove(obj, handler, id) {
-	var onMove = function (e) {
+ _addPointerMove = (obj, handler, id) => {
+	var onMove = e => {
 		// don't fire touch moves when mouse isn't down
 		if ((e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) && e.buttons === 0) {
 			return;
@@ -112,8 +112,8 @@ function _addPointerMove(obj, handler, id) {
 	obj.addEventListener(POINTER_MOVE, onMove, false);
 }
 
-function _addPointerEnd(obj, handler, id) {
-	var onUp = function (e) {
+ _addPointerEnd = (obj, handler, id) => {
+	var onUp = e => {
 		_handlePointer(e, handler);
 	};
 

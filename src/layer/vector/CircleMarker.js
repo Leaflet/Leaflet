@@ -24,7 +24,7 @@ export var CircleMarker = Path.extend({
 		radius: 10
 	},
 
-	initialize: function (latlng, options) {
+	initialize: (latlng, options) => {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
 		this._radius = this.options.radius;
@@ -32,7 +32,7 @@ export var CircleMarker = Path.extend({
 
 	// @method setLatLng(latLng: LatLng): this
 	// Sets the position of a circle marker to a new location.
-	setLatLng: function (latlng) {
+	setLatLng:  latlng => {
 		var oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		this.redraw();
@@ -44,36 +44,36 @@ export var CircleMarker = Path.extend({
 
 	// @method getLatLng(): LatLng
 	// Returns the current geographical position of the circle marker
-	getLatLng: function () {
+	getLatLng: () => {
 		return this._latlng;
 	},
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
-	setRadius: function (radius) {
+	setRadius: radius => {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	},
 
 	// @method getRadius(): Number
 	// Returns the current radius of the circle
-	getRadius: function () {
+	getRadius: () => {
 		return this._radius;
 	},
 
-	setStyle : function (options) {
+	setStyle : options => {
 		var radius = options && options.radius || this._radius;
 		Path.prototype.setStyle.call(this, options);
 		this.setRadius(radius);
 		return this;
 	},
 
-	_project: function () {
+	_project: () => {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 		this._updateBounds();
 	},
 
-	_updateBounds: function () {
+	_updateBounds: () => {
 		var r = this._radius,
 		    r2 = this._radiusY || r,
 		    w = this._clickTolerance(),
@@ -81,22 +81,22 @@ export var CircleMarker = Path.extend({
 		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
 	},
 
-	_update: function () {
+	_update: () => {
 		if (this._map) {
 			this._updatePath();
 		}
 	},
 
-	_updatePath: function () {
+	_updatePath: () => {
 		this._renderer._updateCircle(this);
 	},
 
-	_empty: function () {
+	_empty: () => {
 		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
 	},
 
 	// Needed by the `Canvas` renderer for interactivity
-	_containsPoint: function (p) {
+	_containsPoint: p => {
 		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 	}
 });

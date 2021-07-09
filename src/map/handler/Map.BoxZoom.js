@@ -21,7 +21,7 @@ Map.mergeOptions({
 });
 
 export var BoxZoom = Handler.extend({
-	initialize: function (map) {
+	initialize: map => {
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
@@ -29,36 +29,36 @@ export var BoxZoom = Handler.extend({
 		map.on('unload', this._destroy, this);
 	},
 
-	addHooks: function () {
+	addHooks: () => {
 		DomEvent.on(this._container, 'mousedown', this._onMouseDown, this);
 	},
 
-	removeHooks: function () {
+	removeHooks: () => {
 		DomEvent.off(this._container, 'mousedown', this._onMouseDown, this);
 	},
 
-	moved: function () {
+	moved: () => {
 		return this._moved;
 	},
 
-	_destroy: function () {
+	_destroy: () => {
 		DomUtil.remove(this._pane);
 		delete this._pane;
 	},
 
-	_resetState: function () {
+	_resetState: () => {
 		this._resetStateTimeout = 0;
 		this._moved = false;
 	},
 
-	_clearDeferredResetState: function () {
+	_clearDeferredResetState: () => {
 		if (this._resetStateTimeout !== 0) {
 			clearTimeout(this._resetStateTimeout);
 			this._resetStateTimeout = 0;
 		}
 	},
 
-	_onMouseDown: function (e) {
+	_onMouseDown: e => {
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
@@ -79,7 +79,7 @@ export var BoxZoom = Handler.extend({
 		}, this);
 	},
 
-	_onMouseMove: function (e) {
+	_onMouseMove: e => {
 		if (!this._moved) {
 			this._moved = true;
 
@@ -100,7 +100,7 @@ export var BoxZoom = Handler.extend({
 		this._box.style.height = size.y + 'px';
 	},
 
-	_finish: function () {
+	_finish: () => {
 		if (this._moved) {
 			DomUtil.remove(this._box);
 			DomUtil.removeClass(this._container, 'leaflet-crosshair');
@@ -117,7 +117,7 @@ export var BoxZoom = Handler.extend({
 		}, this);
 	},
 
-	_onMouseUp: function (e) {
+	_onMouseUp: e => {
 		if ((e.which !== 1) && (e.button !== 1)) { return; }
 
 		this._finish();
@@ -137,7 +137,7 @@ export var BoxZoom = Handler.extend({
 			.fire('boxzoomend', {boxZoomBounds: bounds});
 	},
 
-	_onKeyDown: function (e) {
+	_onKeyDown: e => {
 		if (e.keyCode === 27) {
 			this._finish();
 			this._clearDeferredResetState();

@@ -10,12 +10,12 @@ import * as Util from './Util';
 
 export function Class() {}
 
-Class.extend = function (props) {
+Class.extend = props => {
 
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+	var NewClass = () => {
 
 		// call the constructor
 		if (this.initialize) {
@@ -64,7 +64,7 @@ Class.extend = function (props) {
 	proto._initHooks = [];
 
 	// add method for calling all hooks
-	proto.callInitHooks = function () {
+	proto.callInitHooks = () => {
 
 		if (this._initHooksCalled) { return; }
 
@@ -85,21 +85,21 @@ Class.extend = function (props) {
 
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
-Class.include = function (props) {
+Class.include = props => {
 	Util.extend(this.prototype, props);
 	return this;
 };
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
-Class.mergeOptions = function (options) {
+Class.mergeOptions = options => {
 	Util.extend(this.prototype.options, options);
 	return this;
 };
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn) { // (Function) || (String, args...)
+Class.addInitHook = fn => { // (Function) || (String, args...)
 	var args = Array.prototype.slice.call(arguments, 1);
 
 	var init = typeof fn === 'function' ? fn : function () {
@@ -111,7 +111,7 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	return this;
 };
 
-function checkDeprecatedMixinEvents(includes) {
+checkDeprecatedMixinEvents = includes => {
 	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
 
 	includes = Util.isArray(includes) ? includes : [includes];

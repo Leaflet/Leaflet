@@ -54,7 +54,7 @@ Map.mergeOptions({
 });
 
 export var Drag = Handler.extend({
-	addHooks: function () {
+	addHooks: () => {
 		if (!this._draggable) {
 			var map = this._map;
 
@@ -80,21 +80,21 @@ export var Drag = Handler.extend({
 		this._times = [];
 	},
 
-	removeHooks: function () {
+	removeHooks: () => {
 		DomUtil.removeClass(this._map._container, 'leaflet-grab');
 		DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
 	},
 
-	moved: function () {
+	moved: () => {
 		return this._draggable && this._draggable._moved;
 	},
 
-	moving: function () {
+	moving: () => {
 		return this._draggable && this._draggable._moving;
 	},
 
-	_onDragStart: function () {
+	_onDragStart: () => {
 		var map = this._map;
 
 		map._stop();
@@ -121,7 +121,7 @@ export var Drag = Handler.extend({
 		}
 	},
 
-	_onDrag: function (e) {
+	_onDrag:  e =>{
 		if (this._map.options.inertia) {
 			var time = this._lastTime = +new Date(),
 			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
@@ -137,14 +137,14 @@ export var Drag = Handler.extend({
 		    .fire('drag', e);
 	},
 
-	_prunePositions: function (time) {
+	_prunePositions: time  => {
 		while (this._positions.length > 1 && time - this._times[0] > 50) {
 			this._positions.shift();
 			this._times.shift();
 		}
 	},
 
-	_onZoomEnd: function () {
+	_onZoomEnd:  () => {
 		var pxCenter = this._map.getSize().divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
@@ -152,11 +152,11 @@ export var Drag = Handler.extend({
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
 	},
 
-	_viscousLimit: function (value, threshold) {
+	_viscousLimit: (value, threshold) => {
 		return value - (value - threshold) * this._viscosity;
 	},
 
-	_onPreDragLimit: function () {
+	_onPreDragLimit:  () => {
 		if (!this._viscosity || !this._offsetLimit) { return; }
 
 		var offset = this._draggable._newPos.subtract(this._draggable._startPos);
@@ -170,7 +170,7 @@ export var Drag = Handler.extend({
 		this._draggable._newPos = this._draggable._startPos.add(offset);
 	},
 
-	_onPreDragWrap: function () {
+	_onPreDragWrap:  () => {
 		// TODO refactor to be able to adjust map pane position after zoom
 		var worldWidth = this._worldWidth,
 		    halfWidth = Math.round(worldWidth / 2),
@@ -184,7 +184,7 @@ export var Drag = Handler.extend({
 		this._draggable._newPos.x = newX;
 	},
 
-	_onDragEnd: function (e) {
+	_onDragEnd:  e => {
 		var map = this._map,
 		    options = map.options,
 
@@ -217,7 +217,7 @@ export var Drag = Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				Util.requestAnimFrame(function () {
+				Util.requestAnimFrame( () => {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,

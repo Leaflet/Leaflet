@@ -38,7 +38,7 @@ export function Bounds(a, b) {
 Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
-	extend: function (point) { // (Point)
+	extend: point => { // (Point)
 		point = toPoint(point);
 
 		// @property min: Point
@@ -59,7 +59,7 @@ Bounds.prototype = {
 
 	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
-	getCenter: function (round) {
+	getCenter: round => {
 		return new Point(
 		        (this.min.x + this.max.x) / 2,
 		        (this.min.y + this.max.y) / 2, round);
@@ -67,31 +67,31 @@ Bounds.prototype = {
 
 	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
-	getBottomLeft: function () {
+	getBottomLeft: () => {
 		return new Point(this.min.x, this.max.y);
 	},
 
 	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
-	getTopRight: function () { // -> Point
+	getTopRight: () => { // -> Point
 		return new Point(this.max.x, this.min.y);
 	},
 
 	// @method getTopLeft(): Point
 	// Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
-	getTopLeft: function () {
+	getTopLeft: () => {
 		return this.min; // left, top
 	},
 
 	// @method getBottomRight(): Point
 	// Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
-	getBottomRight: function () {
+	getBottomRight: () => {
 		return this.max; // right, bottom
 	},
 
 	// @method getSize(): Point
 	// Returns the size of the given bounds
-	getSize: function () {
+	getSize: () => {
 		return this.max.subtract(this.min);
 	},
 
@@ -100,7 +100,7 @@ Bounds.prototype = {
 	// @alternative
 	// @method contains(point: Point): Boolean
 	// Returns `true` if the rectangle contains the given point.
-	contains: function (obj) {
+	contains: obj =>{
 		var min, max;
 
 		if (typeof obj[0] === 'number' || obj instanceof Point) {
@@ -125,7 +125,7 @@ Bounds.prototype = {
 	// @method intersects(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds
 	// intersect if they have at least one point in common.
-	intersects: function (bounds) { // (Bounds) -> Boolean
+	intersects: bounds => { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
 		var min = this.min,
@@ -141,7 +141,7 @@ Bounds.prototype = {
 	// @method overlaps(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
 	// overlap if their intersection is an area.
-	overlaps: function (bounds) { // (Bounds) -> Boolean
+	overlaps: bounds => { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
 		var min = this.min,
@@ -154,7 +154,7 @@ Bounds.prototype = {
 		return xOverlaps && yOverlaps;
 	},
 
-	isValid: function () {
+	isValid: ()  => {
 		return !!(this.min && this.max);
 	}
 };

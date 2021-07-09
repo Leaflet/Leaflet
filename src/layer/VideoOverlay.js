@@ -44,7 +44,7 @@ export var VideoOverlay = ImageOverlay.extend({
 		muted: false
 	},
 
-	_initImage: function () {
+	_initImage: () => {
 		var wasElementSupplied = this._url.tagName === 'VIDEO';
 		var vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
 

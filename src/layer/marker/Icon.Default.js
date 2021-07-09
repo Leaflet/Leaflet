@@ -30,7 +30,7 @@ export var IconDefault = Icon.extend({
 		shadowSize:  [41, 41]
 	},
 
-	_getIconUrl: function (name) {
+	_getIconUrl: name => {
 		if (!IconDefault.imagePath) {	// Deprecated, backwards-compatibility only
 			IconDefault.imagePath = this._detectIconPath();
 		}
@@ -42,7 +42,7 @@ export var IconDefault = Icon.extend({
 		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
 	},
 
-	_detectIconPath: function () {
+	_detectIconPath: () => {
 		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
 		var path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8

@@ -49,7 +49,7 @@ export var Draggable = Evented.extend({
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline, options) {
+	initialize: (element, dragStartTarget, preventOutline, options) => {
 		Util.setOptions(this, options);
 
 		this._element = element;
@@ -59,7 +59,7 @@ export var Draggable = Evented.extend({
 
 	// @method enable()
 	// Enables the dragging ability
-	enable: function () {
+	enable: () => {
 		if (this._enabled) { return; }
 
 		DomEvent.on(this._dragStartTarget, START, this._onDown, this);
@@ -69,7 +69,7 @@ export var Draggable = Evented.extend({
 
 	// @method disable()
 	// Disables the dragging ability
-	disable: function () {
+	disable: () => {
 		if (!this._enabled) { return; }
 
 		// If we're currently dragging this draggable,
@@ -84,7 +84,7 @@ export var Draggable = Evented.extend({
 		this._moved = false;
 	},
 
-	_onDown: function (e) {
+	_onDown: (e) => {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
@@ -124,7 +124,7 @@ export var Draggable = Evented.extend({
 		DomEvent.on(document, END[e.type], this._onUp, this);
 	},
 
-	_onMove: function (e) {
+	_onMove: (e) => {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
@@ -178,7 +178,7 @@ export var Draggable = Evented.extend({
 		this._animRequest = Util.requestAnimFrame(this._updatePosition, this, true);
 	},
 
-	_updatePosition: function () {
+	_updatePosition:  () => {
 		var e = {originalEvent: this._lastEvent};
 
 		// @event predrag: Event
@@ -192,7 +192,7 @@ export var Draggable = Evented.extend({
 		this.fire('drag', e);
 	},
 
-	_onUp: function (e) {
+	_onUp: (e) => {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
@@ -202,7 +202,7 @@ export var Draggable = Evented.extend({
 		this.finishDrag();
 	},
 
-	finishDrag: function () {
+	finishDrag: () => {
 		DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {

@@ -38,7 +38,7 @@ export var Scale = Control.extend({
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
 	},
 
-	onAdd: function (map) {
+	onAdd: (map) => {
 		var className = 'leaflet-control-scale',
 		    container = DomUtil.create('div', className),
 		    options = this.options;
@@ -51,11 +51,11 @@ export var Scale = Control.extend({
 		return container;
 	},
 
-	onRemove: function (map) {
+	onRemove: (map) => {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	},
 
-	_addScales: function (options, className, container) {
+	_addScales: (options, className, container) => {
 		if (options.metric) {
 			this._mScale = DomUtil.create('div', className, container);
 		}
@@ -64,7 +64,7 @@ export var Scale = Control.extend({
 		}
 	},
 
-	_update: function () {
+	_update: () => {
 		var map = this._map,
 		    y = map.getSize().y / 2;
 
@@ -75,7 +75,7 @@ export var Scale = Control.extend({
 		this._updateScales(maxMeters);
 	},
 
-	_updateScales: function (maxMeters) {
+	_updateScales: (maxMeters) => {
 		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
@@ -84,14 +84,14 @@ export var Scale = Control.extend({
 		}
 	},
 
-	_updateMetric: function (maxMeters) {
+	_updateMetric: (maxMeters) => {
 		var meters = this._getRoundNum(maxMeters),
 		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	},
 
-	_updateImperial: function (maxMeters) {
+	_updateImperial: (maxMeters) => {
 		var maxFeet = maxMeters * 3.2808399,
 		    maxMiles, miles, feet;
 
@@ -106,12 +106,12 @@ export var Scale = Control.extend({
 		}
 	},
 
-	_updateScale: function (scale, text, ratio) {
+	_updateScale: (scale, text, ratio) => {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
 		scale.innerHTML = text;
 	},
 
-	_getRoundNum: function (num) {
+	_getRoundNum: (num) => {
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
 		    d = num / pow10;
 
@@ -127,6 +127,6 @@ export var Scale = Control.extend({
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-export var scale = function (options) {
+export var scale = (options) => {
 	return new Scale(options);
 };

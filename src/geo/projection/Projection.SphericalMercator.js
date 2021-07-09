@@ -18,7 +18,7 @@ export var SphericalMercator = {
 	R: earthRadius,
 	MAX_LATITUDE: 85.0511287798,
 
-	project: function (latlng) {
+	project: latlng => {
 		var d = Math.PI / 180,
 		    max = this.MAX_LATITUDE,
 		    lat = Math.max(Math.min(max, latlng.lat), -max),
@@ -29,7 +29,7 @@ export var SphericalMercator = {
 			this.R * Math.log((1 + sin) / (1 - sin)) / 2);
 	},
 
-	unproject: function (point) {
+	unproject: point => {
 		var d = 180 / Math.PI;
 
 		return new LatLng(
@@ -37,7 +37,7 @@ export var SphericalMercator = {
 			point.x * d / this.R);
 	},
 
-	bounds: (function () {
+	bounds: (() => {
 		var d = earthRadius * Math.PI;
 		return new Bounds([-d, -d], [d, d]);
 	})()

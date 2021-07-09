@@ -20,9 +20,9 @@ export function extend(dest) {
 
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export var create = Object.create || (function () {
-	function F() {}
-	return function (proto) {
+export var create = Object.create || ( () => {
+	 F= () => {}
+	return (proto) => {
 		F.prototype = proto;
 		return new F();
 	};
@@ -40,7 +40,7 @@ export function bind(fn, obj) {
 
 	var args = slice.call(arguments, 2);
 
-	return function () {
+	return () => {
 		return fn.apply(obj, args.length ? args.concat(slice.call(arguments)) : arguments);
 	};
 }
@@ -68,7 +68,7 @@ export function stamp(obj) {
 export function throttle(fn, time, context) {
 	var lock, args, wrapperFn, later;
 
-	later = function () {
+	later = () => {
 		// reset lock and call if queued
 		lock = false;
 		if (args) {
@@ -77,7 +77,7 @@ export function throttle(fn, time, context) {
 		}
 	};
 
-	wrapperFn = function () {
+	wrapperFn = () => {
 		if (lock) {
 			// called too soon, queue to call later
 			args = arguments;
@@ -196,14 +196,14 @@ export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA
 
 // inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
-function getPrefixed(name) {
+getPrefixed = name => {
 	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
 }
 
 var lastTime = 0;
 
 // fallback for IE 7-8
-function timeoutDefer(fn) {
+timeoutDefer = fn => {
 	var time = +new Date(),
 	    timeToCall = Math.max(0, 16 - (time - lastTime));
 

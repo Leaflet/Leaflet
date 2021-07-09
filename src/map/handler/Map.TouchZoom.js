@@ -27,17 +27,17 @@ Map.mergeOptions({
 });
 
 export var TouchZoom = Handler.extend({
-	addHooks: function () {
+	addHooks: () => {
 		DomUtil.addClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
-	removeHooks: function () {
+	removeHooks: () => {
 		DomUtil.removeClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
-	_onTouchStart: function (e) {
+	_onTouchStart: (e)=>  {
 		var map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
@@ -64,7 +64,7 @@ export var TouchZoom = Handler.extend({
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchMove: function (e) {
+	_onTouchMove: e => {
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
 		var map = this._map,
@@ -103,7 +103,7 @@ export var TouchZoom = Handler.extend({
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchEnd: function () {
+	_onTouchEnd: () => {
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;

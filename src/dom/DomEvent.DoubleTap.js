@@ -14,7 +14,7 @@ export function addDoubleTapListener(obj, handler, id) {
 	    doubleTap = false,
 	    delay = 250;
 
-	function onTouchStart(e) {
+	 onTouchStart = e => {
 
 		if (Browser.pointer) {
 			if (!e.isPrimary) { return; }
@@ -31,7 +31,7 @@ export function addDoubleTapListener(obj, handler, id) {
 		last = now;
 	}
 
-	function onTouchEnd(e) {
+	 onTouchEnd = e => {
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
 				if (e.pointerType === 'mouse') { return; }

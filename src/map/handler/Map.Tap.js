@@ -29,15 +29,15 @@ Map.mergeOptions({
 });
 
 export var Tap = Handler.extend({
-	addHooks: function () {
+	addHooks: () => {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	removeHooks: function () {
+	removeHooks: () => {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	_onDown: function (e) {
+	_onDown: (e)=>  {
 		if (!e.touches) { return; }
 
 		DomEvent.preventDefault(e);
@@ -62,7 +62,7 @@ export var Tap = Handler.extend({
 		}
 
 		// simulate long hold but setting a timeout
-		this._holdTimeout = setTimeout(Util.bind(function () {
+		this._holdTimeout = setTimeout(Util.bind( () => {
 			if (this._isTapValid()) {
 				this._fireClick = false;
 				this._onUp();
@@ -78,7 +78,7 @@ export var Tap = Handler.extend({
 		}, this);
 	},
 
-	_onUp: function (e) {
+	_onUp: e => {
 		clearTimeout(this._holdTimeout);
 
 		DomEvent.off(document, {
@@ -104,17 +104,17 @@ export var Tap = Handler.extend({
 		}
 	},
 
-	_isTapValid: function () {
+	_isTapValid: () => {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
 	},
 
-	_onMove: function (e) {
+	_onMove: e => {
 		var first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 		this._simulateEvent('mousemove', first);
 	},
 
-	_simulateEvent: function (type, e) {
+	_simulateEvent: (type, e) => {
 		var simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent._simulated = true;

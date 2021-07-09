@@ -29,17 +29,17 @@ Map.mergeOptions({
 });
 
 export var ScrollWheelZoom = Handler.extend({
-	addHooks: function () {
+	addHooks: ()  => {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
-	removeHooks: function () {
+	removeHooks: ()  => {
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
 	},
 
-	_onWheelScroll: function (e) {
+	_onWheelScroll: (e) =>  {
 		var delta = DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
@@ -59,7 +59,7 @@ export var ScrollWheelZoom = Handler.extend({
 		DomEvent.stop(e);
 	},
 
-	_performZoom: function () {
+	_performZoom: () => {
 		var map = this._map,
 		    zoom = map.getZoom(),
 		    snap = this._map.options.zoomSnap || 0;

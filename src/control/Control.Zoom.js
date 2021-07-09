@@ -35,7 +35,7 @@ export var Zoom = Control.extend({
 		zoomOutTitle: 'Zoom out'
 	},
 
-	onAdd: function (map) {
+	onAdd: (map) => {
 		var zoomName = 'leaflet-control-zoom',
 		    container = DomUtil.create('div', zoomName + ' leaflet-bar'),
 		    options = this.options;
@@ -51,35 +51,35 @@ export var Zoom = Control.extend({
 		return container;
 	},
 
-	onRemove: function (map) {
+	onRemove: (map) => {
 		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
 	},
 
-	disable: function () {
+	disable: () => {
 		this._disabled = true;
 		this._updateDisabled();
 		return this;
 	},
 
-	enable: function () {
+	enable: () => {
 		this._disabled = false;
 		this._updateDisabled();
 		return this;
 	},
 
-	_zoomIn: function (e) {
+	_zoomIn: (e) => {
 		if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
 			this._map.zoomIn(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
 	},
 
-	_zoomOut: function (e) {
+	_zoomOut: (e) => {
 		if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
 			this._map.zoomOut(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
 	},
 
-	_createButton: function (html, title, className, container, fn) {
+	_createButton: (html, title, className, container, fn) => {
 		var link = DomUtil.create('a', className, container);
 		link.innerHTML = html;
 		link.href = '#';
@@ -99,7 +99,7 @@ export var Zoom = Control.extend({
 		return link;
 	},
 
-	_updateDisabled: function () {
+	_updateDisabled: () => {
 		var map = this._map,
 		    className = 'leaflet-disabled';
 
@@ -127,7 +127,7 @@ Map.mergeOptions({
 	zoomControl: true
 });
 
-Map.addInitHook(function () {
+Map.addInitHook( () => {
 	if (this.options.zoomControl) {
 		// @section Controls
 		// @property zoomControl: Control.Zoom
@@ -141,6 +141,6 @@ Map.addInitHook(function () {
 // @namespace Control.Zoom
 // @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
-export var zoom = function (options) {
+export var zoom = (options) => {
 	return new Zoom(options);
 };

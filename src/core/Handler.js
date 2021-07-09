@@ -10,13 +10,13 @@ import {Class} from './Class';
 // Abstract class for map interaction handlers
 
 export var Handler = Class.extend({
-	initialize: function (map) {
+	initialize: (map) => {
 		this._map = map;
 	},
 
 	// @method enable(): this
 	// Enables the handler
-	enable: function () {
+	enable: () => {
 		if (this._enabled) { return this; }
 
 		this._enabled = true;
@@ -26,7 +26,7 @@ export var Handler = Class.extend({
 
 	// @method disable(): this
 	// Disables the handler
-	disable: function () {
+	disable: () => {
 		if (!this._enabled) { return this; }
 
 		this._enabled = false;
@@ -36,7 +36,7 @@ export var Handler = Class.extend({
 
 	// @method enabled(): Boolean
 	// Returns `true` if the handler is enabled
-	enabled: function () {
+	enabled: () => {
 		return !!this._enabled;
 	}
 
@@ -51,7 +51,7 @@ export var Handler = Class.extend({
 // @section There is static function which can be called without instantiating L.Handler:
 // @function addTo(map: Map, name: String): this
 // Adds a new Handler to the given map with the given name.
-Handler.addTo = function (map, name) {
+Handler.addTo = (map, name) => {
 	map.addHandler(name, this);
 	return this;
 };

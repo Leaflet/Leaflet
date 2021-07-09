@@ -34,7 +34,7 @@ export var Events = {
 	 * @method on(eventMap: Object): this
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	 */
-	on: function (types, fn, context) {
+	on: (types, fn, context) => {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -67,7 +67,7 @@ export var Events = {
 	 * @method off: this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
-	off: function (types, fn, context) {
+	off: (types, fn, context) => {
 
 		if (!types) {
 			// clear all listeners if called without arguments
@@ -90,7 +90,7 @@ export var Events = {
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type, fn, context) {
+	_on: (type, fn, context) => {
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -117,7 +117,7 @@ export var Events = {
 		listeners.push(newListener);
 	},
 
-	_off: function (type, fn, context) {
+	_off: (type, fn, context) => {
 		var listeners,
 		    i,
 		    len;
@@ -171,7 +171,7 @@ export var Events = {
 	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
-	fire: function (type, data, propagate) {
+	fire: (type, data, propagate) => {
 		if (!this.listens(type, propagate)) { return this; }
 
 		var event = Util.extend({}, data, {
@@ -204,7 +204,7 @@ export var Events = {
 
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
-	listens: function (type, propagate) {
+	listens: (type, propagate) => {
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
@@ -219,7 +219,7 @@ export var Events = {
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
-	once: function (types, fn, context) {
+	once: (types, fn, context) => {
 
 		if (typeof types === 'object') {
 			for (var type in types) {
@@ -228,7 +228,7 @@ export var Events = {
 			return this;
 		}
 
-		var handler = Util.bind(function () {
+		var handler = Util.bind(() => {
 			this
 			    .off(types, fn, context)
 			    .off(types, handler, context);
@@ -242,7 +242,7 @@ export var Events = {
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
-	addEventParent: function (obj) {
+	addEventParent: (obj) => {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
@@ -250,14 +250,14 @@ export var Events = {
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
-	removeEventParent: function (obj) {
+	removeEventParent:(obj)  =>{
 		if (this._eventParents) {
 			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
 	},
 
-	_propagateEvent: function (e) {
+	_propagateEvent: (e) => {
 		for (var id in this._eventParents) {
 			this._eventParents[id].fire(e.type, Util.extend({
 				layer: e.target,

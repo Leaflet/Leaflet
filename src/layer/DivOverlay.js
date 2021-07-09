@@ -32,13 +32,13 @@ export var DivOverlay = Layer.extend({
 		pane: 'popupPane'
 	},
 
-	initialize: function (options, source) {
+	initialize: (options, source) => {
 		Util.setOptions(this, options);
 
 		this._source = source;
 	},
 
-	onAdd: function (map) {
+	onAdd: map => {
 		this._zoomAnimated = map._zoomAnimated;
 
 		if (!this._container) {
@@ -60,7 +60,7 @@ export var DivOverlay = Layer.extend({
 		this.bringToFront();
 	},
 
-	onRemove: function (map) {
+	onRemove: map => {
 		if (map._fadeAnimated) {
 			DomUtil.setOpacity(this._container, 0);
 			this._removeTimeout = setTimeout(Util.bind(DomUtil.remove, undefined, this._container), 200);
@@ -72,13 +72,13 @@ export var DivOverlay = Layer.extend({
 	// @namespace Popup
 	// @method getLatLng: LatLng
 	// Returns the geographical point of popup.
-	getLatLng: function () {
+	getLatLng: () => {
 		return this._latlng;
 	},
 
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the popup will open.
-	setLatLng: function (latlng) {
+	setLatLng: latlng => {
 		this._latlng = toLatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
@@ -89,13 +89,13 @@ export var DivOverlay = Layer.extend({
 
 	// @method getContent: String|HTMLElement
 	// Returns the content of the popup.
-	getContent: function () {
+	getContent: () => {
 		return this._content;
 	},
 
 	// @method setContent(htmlContent: String|HTMLElement|Function): this
 	// Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a `String` or `HTMLElement` to be used in the popup.
-	setContent: function (content) {
+	setContent: content => {
 		this._content = content;
 		this.update();
 		return this;
@@ -103,13 +103,13 @@ export var DivOverlay = Layer.extend({
 
 	// @method getElement: String|HTMLElement
 	// Returns the HTML container of the popup.
-	getElement: function () {
+	getElement: () => {
 		return this._container;
 	},
 
 	// @method update: null
 	// Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
-	update: function () {
+	update: () => {
 		if (!this._map) { return; }
 
 		this._container.style.visibility = 'hidden';
@@ -123,7 +123,7 @@ export var DivOverlay = Layer.extend({
 		this._adjustPan();
 	},
 
-	getEvents: function () {
+	getEvents: () => {
 		var events = {
 			zoom: this._updatePosition,
 			viewreset: this._updatePosition
@@ -137,13 +137,13 @@ export var DivOverlay = Layer.extend({
 
 	// @method isOpen: Boolean
 	// Returns `true` when the popup is visible on the map.
-	isOpen: function () {
+	isOpen: () => {
 		return !!this._map && this._map.hasLayer(this);
 	},
 
 	// @method bringToFront: this
 	// Brings this popup in front of other popups (in the same map pane).
-	bringToFront: function () {
+	bringToFront: () => {
 		if (this._map) {
 			DomUtil.toFront(this._container);
 		}
@@ -152,14 +152,14 @@ export var DivOverlay = Layer.extend({
 
 	// @method bringToBack: this
 	// Brings this popup to the back of other popups (in the same map pane).
-	bringToBack: function () {
+	bringToBack: () => {
 		if (this._map) {
 			DomUtil.toBack(this._container);
 		}
 		return this;
 	},
 
-	_prepareOpen: function (parent, layer, latlng) {
+	_prepareOpen: (parent, layer, latlng) => {
 		if (!(layer instanceof Layer)) {
 			latlng = layer;
 			layer = parent;
@@ -193,7 +193,7 @@ export var DivOverlay = Layer.extend({
 		return latlng;
 	},
 
-	_updateContent: function () {
+	_updateContent: () => {
 		if (!this._content) { return; }
 
 		var node = this._contentNode;
@@ -210,7 +210,7 @@ export var DivOverlay = Layer.extend({
 		this.fire('contentupdate');
 	},
 
-	_updatePosition: function () {
+	_updatePosition: () => {
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
@@ -231,7 +231,7 @@ export var DivOverlay = Layer.extend({
 		this._container.style.left = left + 'px';
 	},
 
-	_getAnchor: function () {
+	_getAnchor: () => {
 		return [0, 0];
 	}
 

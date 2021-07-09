@@ -168,7 +168,7 @@ export function setOpacity(el, value) {
 	}
 }
 
-function _setOpacityIE(el, value) {
+ _setOpacityIE = (el, value) => {
 	var filter = false,
 	    filterName = 'DXImageTransform.Microsoft.Alpha';
 
@@ -259,24 +259,24 @@ export var disableTextSelection;
 export var enableTextSelection;
 var _userSelect;
 if ('onselectstart' in document) {
-	disableTextSelection = function () {
+	disableTextSelection = () => {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
-	enableTextSelection = function () {
+	enableTextSelection = () => {
 		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
 	};
 } else {
 	var userSelectProperty = testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	disableTextSelection = function () {
+	disableTextSelection = () => {
 		if (userSelectProperty) {
 			var style = document.documentElement.style;
 			_userSelect = style[userSelectProperty];
 			style[userSelectProperty] = 'none';
 		}
 	};
-	enableTextSelection = function () {
+	enableTextSelection = () => {
 		if (userSelectProperty) {
 			document.documentElement.style[userSelectProperty] = _userSelect;
 			_userSelect = undefined;

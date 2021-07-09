@@ -72,12 +72,12 @@ export var Layers = Control.extend({
 		// The function receives both the `L.Layer` instances and their names, as in
 		// `sortFunction(layerA, layerB, nameA, nameB)`.
 		// By default, it sorts layers alphabetically by their name.
-		sortFunction: function (layerA, layerB, nameA, nameB) {
+		sortFunction: (layerA, layerB, nameA, nameB) => {
 			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
 		}
 	},
 
-	initialize: function (baseLayers, overlays, options) {
+	initialize: (baseLayers, overlays, options) => {
 		Util.setOptions(this, options);
 
 		this._layerControlInputs = [];
@@ -94,7 +94,7 @@ export var Layers = Control.extend({
 		}
 	},
 
-	onAdd: function (map) {
+	onAdd: (map) => {
 		this._initLayout();
 		this._update();
 
@@ -108,13 +108,13 @@ export var Layers = Control.extend({
 		return this._container;
 	},
 
-	addTo: function (map) {
+	addTo: (map) => {
 		Control.prototype.addTo.call(this, map);
 		// Trigger expand after Layers Control has been inserted into DOM so that is now has an actual height.
 		return this._expandIfNotCollapsed();
 	},
 
-	onRemove: function () {
+	onRemove: () => {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
 
 		for (var i = 0; i < this._layers.length; i++) {
@@ -124,21 +124,21 @@ export var Layers = Control.extend({
 
 	// @method addBaseLayer(layer: Layer, name: String): this
 	// Adds a base layer (radio button entry) with the given name to the control.
-	addBaseLayer: function (layer, name) {
+	addBaseLayer: (layer, name) => {
 		this._addLayer(layer, name);
 		return (this._map) ? this._update() : this;
 	},
 
 	// @method addOverlay(layer: Layer, name: String): this
 	// Adds an overlay (checkbox entry) with the given name to the control.
-	addOverlay: function (layer, name) {
+	addOverlay: (layer, name) => {
 		this._addLayer(layer, name, true);
 		return (this._map) ? this._update() : this;
 	},
 
 	// @method removeLayer(layer: Layer): this
 	// Remove the given layer from the control.
-	removeLayer: function (layer) {
+	removeLayer: (layer) => {
 		layer.off('add remove', this._onLayerChange, this);
 
 		var obj = this._getLayer(Util.stamp(layer));
@@ -150,7 +150,7 @@ export var Layers = Control.extend({
 
 	// @method expand(): this
 	// Expand the control container if collapsed.
-	expand: function () {
+	expand: () => {
 		DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
 		this._section.style.height = null;
 		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
@@ -166,12 +166,12 @@ export var Layers = Control.extend({
 
 	// @method collapse(): this
 	// Collapse the control container if expanded.
-	collapse: function () {
+	collapse: () => {
 		DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
 		return this;
 	},
 
-	_initLayout: function () {
+	_initLayout: () => {
 		var className = 'leaflet-control-layers',
 		    container = this._container = DomUtil.create('div', className),
 		    collapsed = this.options.collapsed;
@@ -217,7 +217,7 @@ export var Layers = Control.extend({
 		container.appendChild(section);
 	},
 
-	_getLayer: function (id) {
+	_getLayer: (id) => {
 		for (var i = 0; i < this._layers.length; i++) {
 
 			if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
@@ -226,7 +226,7 @@ export var Layers = Control.extend({
 		}
 	},
 
-	_addLayer: function (layer, name, overlay) {
+	_addLayer: (layer, name, overlay) => {
 		if (this._map) {
 			layer.on('add remove', this._onLayerChange, this);
 		}
@@ -251,7 +251,7 @@ export var Layers = Control.extend({
 		this._expandIfNotCollapsed();
 	},
 
-	_update: function () {
+	_update: () => {
 		if (!this._container) { return this; }
 
 		DomUtil.empty(this._baseLayersList);
@@ -279,7 +279,7 @@ export var Layers = Control.extend({
 		return this;
 	},
 
-	_onLayerChange: function (e) {
+	_onLayerChange: (e) => {
 		if (!this._handlingClick) {
 			this._update();
 		}
@@ -305,7 +305,7 @@ export var Layers = Control.extend({
 	},
 
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see https://stackoverflow.com/a/119079)
-	_createRadioElement: function (name, checked) {
+	_createRadioElement: (name, checked) => {
 
 		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' +
 				name + '"' + (checked ? ' checked="checked"' : '') + '/>';
@@ -316,7 +316,7 @@ export var Layers = Control.extend({
 		return radioFragment.firstChild;
 	},
 
-	_addItem: function (obj) {
+	_addItem: (obj) => {
 		var label = document.createElement('label'),
 		    checked = this._map.hasLayer(obj.layer),
 		    input;
@@ -353,7 +353,7 @@ export var Layers = Control.extend({
 		return label;
 	},
 
-	_onInputClick: function () {
+	_onInputClick: () => {
 		var inputs = this._layerControlInputs,
 		    input, layer;
 		var addedLayers = [],
@@ -389,7 +389,7 @@ export var Layers = Control.extend({
 		this._refocusOnMap();
 	},
 
-	_checkDisabledLayers: function () {
+	_checkDisabledLayers: () => {
 		var inputs = this._layerControlInputs,
 		    input,
 		    layer,
@@ -404,19 +404,19 @@ export var Layers = Control.extend({
 		}
 	},
 
-	_expandIfNotCollapsed: function () {
+	_expandIfNotCollapsed: () => {
 		if (this._map && !this.options.collapsed) {
 			this.expand();
 		}
 		return this;
 	},
 
-	_expand: function () {
+	_expand: () => {
 		// Backward compatibility, remove me in 1.1.
 		return this.expand();
 	},
 
-	_collapse: function () {
+	_collapse: () => {
 		// Backward compatibility, remove me in 1.1.
 		return this.collapse();
 	}
@@ -426,6 +426,6 @@ export var Layers = Control.extend({
 
 // @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-export var layers = function (baseLayers, overlays, options) {
+export var layers = (baseLayers, overlays, options) => {
 	return new Layers(baseLayers, overlays, options);
 };

@@ -70,7 +70,7 @@ export function off(obj, types, fn, context) {
 	return this;
 }
 
-function browserFiresNativeDblClick() {
+ browserFiresNativeDblClick = () => {
 	// See https://github.com/w3c/pointerevents/issues/171
 	if (Browser.pointer) {
 		return !(Browser.edge || Browser.safari);
@@ -83,12 +83,12 @@ var mouseSubst = {
 	wheel: !('onwheel' in window) && 'mousewheel'
 };
 
-function addOne(obj, type, fn, context) {
+ addOne = (obj, type, fn, context) => {
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
 
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
-	var handler = function (e) {
+	var handler = (e) => {
 		return fn.call(context || obj, e || window.event);
 	};
 
@@ -107,7 +107,7 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(mouseSubst[type] || type, handler, Browser.passiveEvents ? {passive: false} : false);
 
 		} else if (type === 'mouseenter' || type === 'mouseleave') {
-			handler = function (e) {
+			handler = e => {
 				e = e || window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
@@ -126,8 +126,8 @@ function addOne(obj, type, fn, context) {
 	obj[eventsKey] = obj[eventsKey] || {};
 	obj[eventsKey][id] = handler;
 }
-
-function removeOne(obj, type, fn, context) {
+ 
+removeOne = (obj, type, fn, context) => {
 
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
 	    handler = obj[eventsKey] && obj[eventsKey][id];

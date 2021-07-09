@@ -48,7 +48,7 @@ export function closestPointOnSegment(p, p1, p2) {
 }
 
 // Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
-function _simplifyDP(points, sqTolerance) {
+ _simplifyDP =(points, sqTolerance) => {
 
 	var len = points.length,
 	    ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
@@ -70,7 +70,7 @@ function _simplifyDP(points, sqTolerance) {
 	return newPoints;
 }
 
-function _simplifyDPStep(points, markers, sqTolerance, first, last) {
+_simplifyDPStep = (points, markers, sqTolerance, first, last) => {
 
 	var maxSqDist = 0,
 	index, i, sqDist;
@@ -93,7 +93,7 @@ function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 }
 
 // reduce points that are too close to each other to a single point
-function _reducePoints(points, sqTolerance) {
+ _reducePoints = (points, sqTolerance) => {
 	var reducedPoints = [points[0]];
 
 	for (var i = 1, prev = 0, len = points.length; i < len; i++) {
@@ -196,7 +196,7 @@ export function _getBitCode(p, bounds) {
 }
 
 // square distance (to avoid unnecessary Math.sqrt calls)
-function _sqDist(p1, p2) {
+ _sqDist = (p1, p2) => {
 	var dx = p2.x - p1.x,
 	    dy = p2.y - p1.y;
 	return dx * dx + dy * dy;

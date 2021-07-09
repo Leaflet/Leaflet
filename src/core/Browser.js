@@ -120,7 +120,7 @@ export var passiveEvents = (function () {
 	var supportsPassiveOption = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {
-			get: function () { // eslint-disable-line getter-return
+			get: () => { // eslint-disable-line getter-return
 				supportsPassiveOption = true;
 			}
 		});
@@ -160,6 +160,6 @@ export var vml = !svg && (function () {
 }());
 
 
-function userAgentContains(str) {
+userAgentContains =str => {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }

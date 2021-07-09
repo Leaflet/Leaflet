@@ -18,15 +18,15 @@ Map.mergeOptions({
 });
 
 export var DoubleClickZoom = Handler.extend({
-	addHooks: function () {
+	addHooks: () => {
 		this._map.on('dblclick', this._onDoubleClick, this);
 	},
 
-	removeHooks: function () {
+	removeHooks: () => {
 		this._map.off('dblclick', this._onDoubleClick, this);
 	},
 
-	_onDoubleClick: function (e) {
+	_onDoubleClick: e => {
 		var map = this._map,
 		    oldZoom = map.getZoom(),
 		    delta = map.options.zoomDelta,

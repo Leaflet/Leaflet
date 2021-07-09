@@ -25,7 +25,7 @@ import {LatLngBounds} from '../geo/LatLngBounds';
 
 export var FeatureGroup = LayerGroup.extend({
 
-	addLayer: function (layer) {
+	addLayer: layer => {
 		if (this.hasLayer(layer)) {
 			return this;
 		}
@@ -39,7 +39,7 @@ export var FeatureGroup = LayerGroup.extend({
 		return this.fire('layeradd', {layer: layer});
 	},
 
-	removeLayer: function (layer) {
+	removeLayer: layer => {
 		if (!this.hasLayer(layer)) {
 			return this;
 		}
@@ -58,25 +58,25 @@ export var FeatureGroup = LayerGroup.extend({
 
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
-	setStyle: function (style) {
+	setStyle: style => {
 		return this.invoke('setStyle', style);
 	},
 
 	// @method bringToFront(): this
 	// Brings the layer group to the top of all other layers
-	bringToFront: function () {
+	bringToFront: () => {
 		return this.invoke('bringToFront');
 	},
 
 	// @method bringToBack(): this
 	// Brings the layer group to the back of all other layers
-	bringToBack: function () {
+	bringToBack: () => {
 		return this.invoke('bringToBack');
 	},
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
-	getBounds: function () {
+	getBounds: () => {
 		var bounds = new LatLngBounds();
 
 		for (var id in this._layers) {
