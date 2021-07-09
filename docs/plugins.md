@@ -3897,13 +3897,13 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 	<tr>
 		<td>
-			<a href=https://gitlab.com/manuel.richter95/leaflet.notifications">Leaflet.Notifications</a>
+			<a href="https://gitlab.com/manuel.richter95/leaflet.notifications">Leaflet.Notifications</a>
 		</td>
 		<td>
 			Spawn toast notifications inside your map
 		</td>
 		<td>
-			<a href=https://gitlab.com/manuel.richter95">Manuel Richter</a>
+			<a href="https://gitlab.com/manuel.richter95">Manuel Richter</a>
 		</td>
 	</tr>
 	<tr>
