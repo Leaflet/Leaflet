@@ -1261,7 +1261,7 @@ export var Map = Evented.extend({
 	},
 
 	_panInsideMaxBounds: function () {
-		if (!this._enforcingBounds) {
+		if (!this._enforcingBounds && this.options.maxBounds) {
 			this.panInsideBounds(this.options.maxBounds);
 		}
 	},
