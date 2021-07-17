@@ -3563,6 +3563,17 @@ Show the geographical coordinates under the mouse cursor in different ways.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/YUUKIToriyama/Leaflet.MousePosition.ts">Leaflet.MousePosition.ts</a>
+		</td><td>
+			A fully custmizable coordinate viewer written in TypeScript.
+			You can change how this plugin looks by creating a custom component with JSX.
+			(<a href="https://yuukitoriyama.github.io/Leaflet.MousePosition.ts">demo</a>)
+		</td><td>
+			<a href="https://github.com/YUUKIToriyama">Yuuki Toriyama</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/MrMufflon/Leaflet.Coordinates">Leaflet.Coordinates</a>
 		</td><td>
 			A simple Leaflet plugin viewing the mouse LatLng-coordinates. Also views a marker with coordinate popup on userinput.
