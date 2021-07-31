@@ -30,9 +30,9 @@ Before writing any code for the map, you need to do the following preparation st
 
 		<div id="mapid"></div>
 
- * Make sure the map container has a defined height, for example by setting it in CSS:
-
-	<pre><code class="css">#mapid { height: 180px; }</code></pre>
+ * Make sure the map container has a defined height, for example by setting it in CSS. Put this in the head section of your document:
+	
+	<pre><code class="css"><style>#mapid { height: 180px; }</style></code></pre>
 
 Now you're ready to initialize the map and do some stuff with it.
 
