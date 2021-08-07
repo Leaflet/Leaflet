@@ -267,6 +267,10 @@ Layer.include({
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindTooltip: function (content, options) {
 
+		if (this._tooltip && this.isTooltipOpen()) {
+			this.unbindTooltip();
+		}
+
 		if (content instanceof Tooltip) {
 			Util.setOptions(content, options);
 			this._tooltip = content;

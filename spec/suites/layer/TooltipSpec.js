@@ -283,4 +283,11 @@ describe('Tooltip', function () {
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
 	});
+
+	it("closes already open permanent-tooltip on bindTooltip", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip Test text', {permanent: true});
+		layer.bindTooltip('Other text', {permanent: false}).openTooltip();
+		expect(Object.keys(map._layers).length).to.be(2);
+	});
 });
