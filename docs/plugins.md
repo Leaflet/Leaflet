@@ -4342,9 +4342,9 @@ The following plugins use external services to calculate driving or walking rout
 		<td>
 			<a href="https://github.com/StephanGeorg/leaflet-routeboxer">Leaflet RouteBoxer</a>
 		</td><td>
-			This is a Leaflet implementation of the RouteBoxer Class from Google. The Leaflet 		RouteBoxer class generates a set of L.LatLngBounds objects that are guaranteed to cover every point within a specified distance of a path.
+			This is a Leaflet implementation of the RouteBoxer Class from Google. The Leaflet RouteBoxer class generates a set of L.LatLngBounds objects that are guaranteed to cover every point within a specified distance of a path.
 		</td><td>
-			<a href="http://www.nearest.place/">Nearest!</a>
+			<a href="https://github.com/StephanGeorg">Stephan Georg</a>
 		</td>
 	</tr>
 	<tr>
