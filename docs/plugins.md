@@ -4942,6 +4942,15 @@ The following plugins integrate Leaflet into third party services or websites.
 		<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
 	</td>
   </tr>
+  <tr>
+	<td>
+		<a href="https://wordpress.org/plugins/locations-and-areas/">Locations & Areas – Leaflet Map with Region Tabs</a>
+	</td><td>
+		WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
+	  </td><td>
+		<a href="https://www.locations-and-areas.com/">100plugins</a>
+	</td>
+  </tr>
 </table>
 
 
