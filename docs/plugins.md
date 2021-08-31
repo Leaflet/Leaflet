@@ -1437,7 +1437,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
 			Plugin for plotting a marker representing a user - or multiple users - on a map,
-			with support for drawing an accuraccy circle. Can be seen in action on
+			with support for drawing an accuracy circle. Can be seen in action on
 			<a href="http://longitude.me">Longitude.me</a>.
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
@@ -4294,7 +4294,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		<td>
 			<a href="https://github.com/briannaAndCo/Leaflet.Antimeridian">Leaflet.Antimeridian</a>
 		</td><td>
-			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the Internation Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
+			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the International Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
 		</td><td>
 			<a href="https://github.com/briannaAndCo">Brianna Landon</a>
 		</td>
