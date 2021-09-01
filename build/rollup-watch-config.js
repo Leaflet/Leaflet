@@ -4,6 +4,8 @@
 import rollupGitVersion from 'rollup-plugin-git-version'
 import gitRev from 'git-rev-sync'
 
+import esBuild from 'rollup-plugin-esbuild'
+
 const branch = gitRev.branch();
 const rev = gitRev.short();
 const version = require('../package.json').version + '+' + branch + '.' + rev;
@@ -21,10 +23,12 @@ export default {
 		name: 'L',
 		banner: banner,
 		sourcemap: true,
-		legacy: true, // Needed to create files loadable by IE8
 		freeze: false,
 	},
 	plugins: [
+		esBuild({
+			target: 'es6'
+		}),
 		rollupGitVersion()
 	]
 };
