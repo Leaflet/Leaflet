@@ -54,6 +54,8 @@ export class Class {
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
+		checkDeprecatedMixinEvents(props)
+
 		applyMixin(this, props)
 		return this;
 	}
@@ -147,3 +149,14 @@ function extendClass(Class, props) {
 }
 
 extendedClasses.add(Class)
+
+
+function checkDeprecatedMixinEvents(includes) {
+	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
+
+	if (includes === L.Mixin.Events) {
+		console.warn('Deprecated include of L.Mixin.Events: ' +
+			'this property will be removed in future releases, ' +
+			'please inherit from L.Evented instead.', new Error().stack);
+	}
+}
