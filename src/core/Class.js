@@ -1,6 +1,6 @@
 const initHooks = new WeakMap()
 const options = new WeakMap()
-const extendedClasses = new WeakSet()
+export const extendedClasses = new WeakSet()
 
 export class Class {
 	constructor() {
@@ -143,12 +143,10 @@ function extendClass(Class, props) {
 
 	applyMixin(NewClass, props);
 
-	extendenClasses.add(NewClass)
+	extendedClasses.add(NewClass)
 
 	return NewClass
 }
-
-extendedClasses.add(Class)
 
 
 function checkDeprecatedMixinEvents(includes) {
@@ -160,3 +158,5 @@ function checkDeprecatedMixinEvents(includes) {
 			'please inherit from L.Evented instead.', new Error().stack);
 	}
 }
+
+extendedClasses.add(Class)
