@@ -1,5 +1,6 @@
 const initHooks = new WeakMap()
 const options = new WeakMap()
+const extendedClasses = new WeakSet()
 
 export class Class {
 	constructor() {
@@ -41,6 +42,8 @@ export class Class {
 		this._options = value
 	}
 
+	// @function mergeOptions(options: Object): this
+	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(option) {
 		if (!options.has(this.prototype)) options.set(this.prototype, {})
 
@@ -48,6 +51,26 @@ export class Class {
 		return this;
 	}
 
+	// @function include(properties: Object): this
+	// [Includes a mixin](#class-includes) into the current class.
+	static include(props) {
+		applyMixin(this, props)
+		return this;
+	}
+
+	// @function extend(props: Object): Function
+	// [Extends the current class](#class-inheritance) given the properties to be included.
+	// Returns a Javascript function that is a class constructor (to be called with `new`).
+	static extend(props) {
+		if (!extendedClasses.has(this)) {
+			throw new Error("You can not switch between es6 Class syntax and extend method!")
+		}
+
+		return extendClass(this, props)
+	}
+
+	// @function addInitHook(fn: Function): this
+	// Adds a [constructor hook](#class-constructor-hooks) to the class.
 	static addInitHook(hook, ...args) {
 		let fn = hook
 		if (typeof hook === 'string') {
@@ -64,14 +87,6 @@ export class Class {
 		return this;
 	}
 
-	static include(props) {
-		applyMixin(this, props)
-		return this;
-	}
-
-	static extend(props) {
-		return extendClass(this, props)
-	}
 
 	callInitHooks() {
 		if (this._initHooksCalled) { return; }
@@ -84,31 +99,12 @@ export class Class {
 }
 
 function applyMixin(Class, props) {
-	// var members = [];
-
 	for (const prop in props) {
 		if (Object.hasOwnProperty.call(props, prop)) {
 			const member = props[prop];
-
-			// if (typeof member === 'function') {
-				Class.prototype[prop] = member;
-			// } else {
-			// 	members.push(prop);
-			// }
+			Class.prototype[prop] = member;
 		}
 	}
-
-	// WIP better members...
-	// if (members.length === 0) return
-
-	// // DONT USE ARROW FUNCTION HERE THIS CONTEXT IS IMPORTANT!
-	// Class.prototype._setupMembers = function () {
-	// 	this._getProto._setupMembers && this._getProto._setupMembers()
-	// 	members.forEach((prop) => {
-	// 		console.log(this, prop, props[prop])
-	// 		this[prop] = props[prop];
-	// 	});
-	// }
 }
 
 function extendClass(Class, props) {
@@ -145,5 +141,9 @@ function extendClass(Class, props) {
 
 	applyMixin(NewClass, props);
 
+	extendenClasses.add(NewClass)
+
 	return NewClass
 }
+
+extendedClasses.add(Class)
