@@ -136,8 +136,10 @@ export var TileLayer = GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
+		tile.dataset.failoverOffset = 0;
+
 		DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile));
-		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile));
+		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile, coords));
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
@@ -166,10 +168,10 @@ export var TileLayer = GridLayer.extend({
 	// @method getTileUrl(coords: Object): String
 	// Called only internally, returns the URL for a tile given its coordinates.
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
-	getTileUrl: function (coords) {
+	getTileUrl: function (coords, failoverOffset) {
 		var data = {
 			r: Browser.retina ? '@2x' : '',
-			s: this._getSubdomain(coords),
+			s: this._getSubdomain(coords, failoverOffset),
 			x: coords.x,
 			y: coords.y,
 			z: this._getZoomForUrl()
@@ -194,7 +196,13 @@ export var TileLayer = GridLayer.extend({
 		}
 	},
 
-	_tileOnError: function (done, tile, e) {
+	_tileOnError: function (done, tile, coords, e) {
+		if (tile.dataset.failoverOffset < this.options.subdomains.length) {
+			tile.dataset.failoverOffset += 1;
+			tile.src = this.getTileUrl(coords, tile.dataset.failoverOffset);
+			done(null, tile);
+			return;
+		}
 		var errorUrl = this.options.errorTileUrl;
 		if (errorUrl && tile.getAttribute('src') !== errorUrl) {
 			tile.src = errorUrl;
@@ -219,8 +227,8 @@ export var TileLayer = GridLayer.extend({
 		return zoom + zoomOffset;
 	},
 
-	_getSubdomain: function (tilePoint) {
-		var index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+	_getSubdomain: function (tilePoint, failoverOffset = 0) {
+		var index = Math.abs(tilePoint.x + tilePoint.y + failoverOffset) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	},
 
