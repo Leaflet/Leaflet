@@ -42,9 +42,7 @@
   ],
   "scripts": {
     "docs": "node ./build/docs.js",
-    "pretest": "npm run lint",
-    "test": "npm run test-nolint",
-    "test-nolint": "karma start ./spec/karma.conf.js",
+    "test": "karma start ./spec/karma.conf.js",
     "release": "./build/publish.sh",
     "lint": "eslint src spec/suites docs/docs/js",
     "lintfix": "npm run lint -- --fix",
