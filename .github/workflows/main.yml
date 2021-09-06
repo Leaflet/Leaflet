@@ -11,5 +11,6 @@ jobs:
           check-latest: true
           cache: npm
       - run: npm ci
+      - run: npm run lint
       - run: npm test -- -- --browsers PhantomJSCustom,Chrome1280x1024,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch --reporters
       - run: npm run build
