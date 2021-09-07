@@ -1,6 +1,6 @@
-const initHooks = new WeakMap()
-const options = new WeakMap()
-export const extendedClasses = new WeakSet()
+const initHooks = new WeakMap();
+const options = new WeakMap();
+export const extendedClasses = new WeakSet();
 
 export class Class {
 	constructor() {
@@ -9,18 +9,18 @@ export class Class {
 			this.initialize(...arguments);
 		}
 		// Call regesterted init hooks
-		this.callInitHooks()
+		this.callInitHooks();
 	}
 
 	// Helper to get prototype of current instance for loookups in Map
 	get _getProto() {
-		return this.prototype || this.__proto__
+		return this.prototype || this.__proto__;
 	}
 
 	// getter for initHooks
 	// BRAKING-CHANGE: Has no setter.
 	get _initHooks() {
-		return [...(this._getProto._initHooks || []), ...(initHooks.has(this._getProto) ? initHooks.get(this._getProto) : [])]
+		return [...(this._getProto._initHooks || []), ...(initHooks.has(this._getProto) ? initHooks.get(this._getProto) : [])];
 	}
 
 	// New getter for default options of class
@@ -28,35 +28,35 @@ export class Class {
 		return {
 			...(this._getProto._defaultOptions) || {},
 			...(options.has(this._getProto) ? options.get(this._getProto) : {})
-		}
+		};
 	}
 
 	// options of instance
 	get options() {
-		if (!this._options) { this._options = this._defaultOptions }
+		if (!this._options) { this._options = this._defaultOptions; }
 
-		return this._options
+		return this._options;
 	}
 
 	set options(value) {
-		this._options = value
+		this._options = value;
 	}
 
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(option) {
-		if (!options.has(this.prototype)) options.set(this.prototype, {})
+		if (!options.has(this.prototype)) { options.set(this.prototype, {}); }
 
-		options.set(this.prototype, { ...options.get(this.prototype), ...option })
+		options.set(this.prototype, {...options.get(this.prototype), ...option});
 		return this;
 	}
 
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
-		checkDeprecatedMixinEvents(props)
+		checkDeprecatedMixinEvents(props);
 
-		applyMixin(this, props)
+		applyMixin(this, props);
 		return this;
 	}
 
@@ -65,27 +65,27 @@ export class Class {
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	static extend(props) {
 		if (!extendedClasses.has(this)) {
-			throw new Error("You can not switch between es6 Class syntax and extend method!")
+			throw new Error('You can not switch between es6 Class syntax and extend method!');
 		}
 
-		return extendClass(this, props)
+		return extendClass(this, props);
 	}
 
 	// @function addInitHook(fn: Function): this
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
 	static addInitHook(hook, ...args) {
-		let fn = hook
+		let fn = hook;
 		if (typeof hook === 'string') {
 			fn = function () {
 				this[hook].apply(this, args);
-			}
+			};
 		}
 
-		if (typeof fn !== 'function') return
+		if (typeof fn !== 'function') { return; }
 
-		if (!initHooks.has(this.prototype)) initHooks.set(this.prototype, [])
+		if (!initHooks.has(this.prototype)) { initHooks.set(this.prototype, []); }
 
-		initHooks.get(this.prototype).push(fn)
+		initHooks.get(this.prototype).push(fn);
 		return this;
 	}
 
@@ -116,36 +116,36 @@ function extendClass(Class, props) {
 
 		for (const stat in props.statics) {
 			if (Object.hasOwnProperty.call(props.statics, stat)) {
-				NewClass[stat] = props.statics[stat]
+				NewClass[stat] = props.statics[stat];
 			}
 		}
 
-		delete props.statics
+		delete props.statics;
 	}
 
 	if ('options' in props) {
-		NewClass.mergeOptions(props.options)
-		delete props.options
+		NewClass.mergeOptions(props.options);
+		delete props.options;
 	}
 
 	if ('includes' in props) {
 		if (!Array.isArray(props.includes)) {
-			props.includes = [props.includes]
+			props.includes = [props.includes];
 		}
 
 		for (let i = 0; i < props.includes.length; i++) {
 			const mixin = props.includes[i];
 
-			NewClass.include(mixin)
+			NewClass.include(mixin);
 		}
-		delete props.includes
+		delete props.includes;
 	}
 
 	applyMixin(NewClass, props);
 
-	extendedClasses.add(NewClass)
+	extendedClasses.add(NewClass);
 
-	return NewClass
+	return NewClass;
 }
 
 
@@ -159,4 +159,4 @@ function checkDeprecatedMixinEvents(includes) {
 	}
 }
 
-extendedClasses.add(Class)
+extendedClasses.add(Class);
