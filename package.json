@@ -47,7 +47,7 @@
     "lintfix": "npm run lint -- --fix",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "integrity": "node ./build/integrity.js",
-    "build": "rollup -c build/rollup-build-modern.js && yarn tsc --allowJs ./dist/leaflet-modern.esm.js --outDir dist/temp --sourcemap --module es6 && node ./build/copy.js && rollup -c build/rollup-build-legacy.js && uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments"
+    "build": "rollup -c build/rollup-build-modern.js && yarn tsc --allowJs ./dist/leaflet-modern.esm.js --outDir dist/temp --sourcemap --module es6 && move-file ./dist/temp/leaflet-modern.esm.js ./dist/leaflet-src.esm.js && rollup -c build/rollup-build-legacy.js && uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments"
   },
   "eslintConfig": {
     "root": true,
@@ -103,5 +103,8 @@
     "gis",
     "map"
   ],
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "move-file-cli": "^3.0.0"
+  }
 }
