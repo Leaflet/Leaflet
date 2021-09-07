@@ -24,7 +24,7 @@ export default {
 
             function noConflict() {
               window.L = oldL;
-              return this;
+              return LL;
             }
 
             // Always export us to window global (see #2364)

@@ -17,8 +17,6 @@ module.exports = function (config) {
 
 	var preprocessors = {};
 
-	preprocessors['src/Leaflet.js'] = ['rollup'];
-
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
