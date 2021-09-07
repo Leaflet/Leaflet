@@ -3,8 +3,8 @@ export default {
   output: [
     {
       file: 'dist/leaflet-src.js',
-      format: 'umd',
-      name: 'L',
+      format: 'iife',
+      // name: 'L',
       sourcemap: true,
       freeze: false
     }
@@ -22,13 +22,14 @@ export default {
             import * as LL from '@/dist/leaflet-src.esm.js'
             var oldL = window.L;
 
-            export function noConflict() {
+            function noConflict() {
               window.L = oldL;
-              return this;
+              return LL;
             }
 
             // Always export us to window global (see #2364)
-            window.L = LL;`;
+            window.L = LL;
+            window.L.noConflict = noConflict`;
         }
       }
     }

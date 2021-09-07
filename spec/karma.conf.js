@@ -1,41 +1,27 @@
-var json = require('rollup-plugin-json');
-
-const outro = `var oldL = window.L;
-exports.noConflict = function() {
-	window.L = oldL;
-	return this;
-}
-
-// Always export us to window global (see #2364)
-window.L = exports;`;
-
 // Karma configuration
 module.exports = function (config) {
 
-// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
+	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
 		"spec/before.js",
-		"src/Leaflet.js",
+		"dist/leaflet-src.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
 		"spec/suites/SpecHelper.js",
 		"spec/suites/**/*.js",
 		"dist/*.css",
-		{pattern: "dist/images/*.png", included: false, serve: true}
+		{ pattern: "dist/images/*.png", included: false, serve: true }
 	];
 
 	var preprocessors = {};
-
-	preprocessors['src/Leaflet.js'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
 
 		plugins: [
-			'karma-rollup-preprocessor',
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
@@ -55,21 +41,6 @@ module.exports = function (config) {
 			'/base/dist/images/': 'dist/images/'
 		},
 		exclude: [],
-
-		// Rollup the ES6 Leaflet sources into just one file, before tests
-		preprocessors: preprocessors,
-		rollupPreprocessor: {
-			plugins: [
-				json()
-			],
-			output: {
-				format: 'umd',
-				name: 'L',
-				outro: outro,
-				legacy: true, // Needed to create files loadable by IE8
-				freeze: false,
-			},
-		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -107,24 +78,24 @@ module.exports = function (config) {
 			},
 			'FirefoxPointer': {
 				base: 'FirefoxHeadless',
-			        prefs: {
+				prefs: {
 					'dom.w3c_pointer_events.enabled': true,
 					'dom.w3c_touch_events.enabled': 0
-			        }
+				}
 			},
 			'FirefoxTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
+				prefs: {
 					'dom.w3c_pointer_events.enabled': false,
 					'dom.w3c_touch_events.enabled': 1
-			        }
+				}
 			},
 			'FirefoxPointerTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
+				prefs: {
 					'dom.w3c_pointer_events.enabled': true,
 					'dom.w3c_touch_events.enabled': 1
-			        }
+				}
 			},
 			'PhantomJSCustom': {
 				base: 'PhantomJS',
@@ -153,9 +124,9 @@ module.exports = function (config) {
 		singleRun: true,
 
 		client: {
-			 mocha: {
-			 	forbidOnly: process.env.CI || false
-			 }
+			mocha: {
+				forbidOnly: process.env.CI || false
+			}
 		}
 	});
 };

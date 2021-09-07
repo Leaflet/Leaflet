@@ -2,7 +2,7 @@
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import esBuild from 'rollup-plugin-esbuild'
-import json from 'rollup-plugin-json'
+import json from '@rollup/plugin-json'
 import gitRev from 'git-rev-sync'
 import pkg from '../package.json'
 
