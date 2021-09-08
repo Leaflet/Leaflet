@@ -35,12 +35,7 @@ export class Class {
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(option) {
-		if (!options.has(this.prototype)) {
-			this.prototype.__options = {}
-		}
-
-		this.prototype.__options = { ...this.prototype.__options, ...option };
-
+		this.prototype.__options = { ...(this.prototype.__options || {}), ...option };
 		return this;
 	}
 
@@ -72,7 +67,7 @@ export class Class {
 
 		if (typeof fn !== 'function') { return; }
 
-		if (!this.prototype._initHooks) { this.prototype._initHooks = [] }
+		if (!this.prototype._initHooks) { this.prototype._initHooks = []; }
 
 		this.prototype._initHooks.push(fn);
 		return this;
@@ -132,8 +127,6 @@ function extendClass(Class, props) {
 
 	applyMixin(NewClass, props);
 
-	extendedClasses.add(NewClass);
-
 	return NewClass;
 }
 
@@ -147,5 +140,3 @@ function checkDeprecatedMixinEvents(includes) {
 			'please inherit from L.Evented instead.', new Error().stack);
 	}
 }
-
-extendedClasses.add(Class);
