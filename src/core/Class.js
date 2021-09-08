@@ -1,7 +1,3 @@
-const initHooks = new WeakMap();
-const options = new WeakMap();
-export const extendedClasses = new WeakSet();
-
 export class Class {
 	constructor() {
 		// Call custom constructor. Doesnt propergate through parents.
@@ -17,17 +13,11 @@ export class Class {
 		return this.prototype || this.__proto__;
 	}
 
-	// getter for initHooks
-	// BRAKING-CHANGE: Has no setter.
-	get _initHooks() {
-		return [...(this._getProto._initHooks || []), ...(initHooks.has(this._getProto) ? initHooks.get(this._getProto) : [])];
-	}
-
 	// New getter for default options of class
 	get _defaultOptions() {
 		return {
 			...(this._getProto._defaultOptions) || {},
-			...(options.has(this._getProto) ? options.get(this._getProto) : {})
+			...(this.__options)
 		};
 	}
 
@@ -45,9 +35,12 @@ export class Class {
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(option) {
-		if (!options.has(this.prototype)) { options.set(this.prototype, {}); }
+		if (!options.has(this.prototype)) {
+			this.prototype.__options = {}
+		}
 
-		options.set(this.prototype, {...options.get(this.prototype), ...option});
+		this.prototype.__options = { ...this.prototype.__options, ...option };
+
 		return this;
 	}
 
@@ -64,10 +57,6 @@ export class Class {
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	static extend(props) {
-		if (!extendedClasses.has(this)) {
-			throw new Error('You can not switch between es6 Class syntax and extend method!');
-		}
-
 		return extendClass(this, props);
 	}
 
@@ -83,9 +72,9 @@ export class Class {
 
 		if (typeof fn !== 'function') { return; }
 
-		if (!initHooks.has(this.prototype)) { initHooks.set(this.prototype, []); }
+		if (!this.prototype._initHooks) { this.prototype._initHooks = [] }
 
-		initHooks.get(this.prototype).push(fn);
+		this.prototype._initHooks.push(fn);
 		return this;
 	}
 
