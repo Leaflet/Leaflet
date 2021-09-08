@@ -78,6 +78,8 @@ export class Class {
 		if (this._initHooksCalled) { return; }
 		this._initHooksCalled = true;
 
+		if (!this._initHooks || this._initHooks.length === 0) { return; }
+
 		for (var i = 0; i < this._initHooks.length; i++) {
 			this._initHooks[i].call(this);
 		}
