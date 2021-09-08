@@ -80,6 +80,10 @@ export class Class {
 
 		if (!this._initHooks || this._initHooks.length === 0) { return; }
 
+		if (this._getProto && this._getProto.callInitHooks) {
+			this._getProto.callInitHooks();
+		}
+
 		for (var i = 0; i < this._initHooks.length; i++) {
 			this._initHooks[i].call(this);
 		}
