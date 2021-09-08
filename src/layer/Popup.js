@@ -1,11 +1,11 @@
-import { DivOverlay } from './DivOverlay';
+import {DivOverlay} from './DivOverlay';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
-import { Point, toPoint } from '../geometry/Point';
-import { Map } from '../map/Map';
-import { Layer } from './Layer';
+import {Point, toPoint} from '../geometry/Point';
+import {Map} from '../map/Map';
+import {Layer} from './Layer';
 import * as Util from '../core/Util';
-import { Path } from './vector/Path';
+import {Path} from './vector/Path';
 
 /*
  * @class Popup
@@ -115,14 +115,14 @@ export var Popup = DivOverlay.extend({
 		// @section Popup events
 		// @event popupopen: PopupEvent
 		// Fired when a popup is opened in the map
-		map.fire('popupopen', { popup: this });
+		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
 			// @namespace Layer
 			// @section Popup events
 			// @event popupopen: PopupEvent
 			// Fired when a popup bound to this layer is opened
-			this._source.fire('popupopen', { popup: this }, true);
+			this._source.fire('popupopen', {popup: this}, true);
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (!(this._source instanceof Path)) {
@@ -138,14 +138,14 @@ export var Popup = DivOverlay.extend({
 		// @section Popup events
 		// @event popupclose: PopupEvent
 		// Fired when a popup in the map is closed
-		map.fire('popupclose', { popup: this });
+		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
 			// @namespace Layer
 			// @section Popup events
 			// @event popupclose: PopupEvent
 			// Fired when a popup bound to this layer is closed
-			this._source.fire('popupclose', { popup: this }, true);
+			this._source.fire('popupclose', {popup: this}, true);
 			if (!(this._source instanceof Path)) {
 				this._source.off('preclick', DomEvent.stopPropagation);
 			}
@@ -174,8 +174,8 @@ export var Popup = DivOverlay.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			container = this._container = DomUtil.create('div',
-				prefix + ' ' + (this.options.className || '') +
+		container = this._container = DomUtil.create('div',
+			prefix + ' ' + (this.options.className || '') +
 				' leaflet-zoom-animated');
 
 		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
@@ -199,7 +199,7 @@ export var Popup = DivOverlay.extend({
 
 	_updateLayout: function () {
 		var container = this._contentNode,
-			style = container.style;
+		style = container.style;
 
 		style.width = '';
 		style.whiteSpace = 'nowrap';
@@ -214,8 +214,8 @@ export var Popup = DivOverlay.extend({
 		style.height = '';
 
 		var height = container.offsetHeight,
-			maxHeight = this.options.maxHeight,
-			scrolledClass = 'leaflet-popup-scrolled';
+		maxHeight = this.options.maxHeight,
+		scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
 			style.height = maxHeight + 'px';
@@ -229,7 +229,7 @@ export var Popup = DivOverlay.extend({
 
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
-			anchor = this._getAnchor();
+		anchor = this._getAnchor();
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
@@ -238,20 +238,20 @@ export var Popup = DivOverlay.extend({
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
 
 		var map = this._map,
-			marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
-			containerHeight = this._container.offsetHeight + marginBottom,
-			containerWidth = this._containerWidth,
-			layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
+		marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
+		containerHeight = this._container.offsetHeight + marginBottom,
+		containerWidth = this._containerWidth,
+		layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		layerPos._add(DomUtil.getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
-			padding = toPoint(this.options.autoPanPadding),
-			paddingTL = toPoint(this.options.autoPanPaddingTopLeft || padding),
-			paddingBR = toPoint(this.options.autoPanPaddingBottomRight || padding),
-			size = map.getSize(),
-			dx = 0,
-			dy = 0;
+		padding = toPoint(this.options.autoPanPadding),
+		paddingTL = toPoint(this.options.autoPanPaddingTopLeft || padding),
+		paddingBR = toPoint(this.options.autoPanPaddingBottomRight || padding),
+		size = map.getSize(),
+		dx = 0,
+		dy = 0;
 
 		if (containerPos.x + containerWidth + paddingBR.x > size.x) { // right
 			dx = containerPos.x + containerWidth - size.x + paddingBR.x;
@@ -328,7 +328,7 @@ Map.include({
 			return this;
 		}
 
-		console.log(this)
+		console.log(this);
 
 		if (this._popup && this._popup.options.autoClose) {
 			this.closePopup();
