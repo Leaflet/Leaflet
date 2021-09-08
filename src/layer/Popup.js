@@ -328,7 +328,7 @@ Map.include({
 			return this;
 		}
 
-		if (this._popup && this._popup.options.autoClose) {
+		if (this._popup) {// && this._popup.options.autoClose) {
 			this.closePopup();
 		}
 
