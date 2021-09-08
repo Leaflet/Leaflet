@@ -183,7 +183,7 @@ Map.include({
 	removeLayer: function (layer) {
 		var id = Util.stamp(layer);
 
-		if (!this._layers[id]) { return this; }
+		if (!this._layers[id]) { console.log('layer-not-found'); return this; }
 
 		if (this._loaded) {
 			layer.onRemove(this);

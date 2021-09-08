@@ -328,8 +328,6 @@ Map.include({
 			return this;
 		}
 
-		console.log(this);
-
 		if (this._popup && this._popup.options.autoClose) {
 			this.closePopup();
 		}
