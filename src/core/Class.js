@@ -35,7 +35,7 @@ export class Class {
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(option) {
-		this.prototype.__options = { ...(this.prototype.__options || {}), ...option };
+		this.prototype.__options = {...(this.prototype.__options || {}), ...option};
 		return this;
 	}
 
