@@ -227,7 +227,10 @@ export var TileLayer = GridLayer.extend({
 		return zoom + zoomOffset;
 	},
 
-	_getSubdomain: function (tilePoint, failoverOffset = 0) {
+	_getSubdomain: function (tilePoint, failoverOffset) {
+		if (failoverOffset === undefined) {
+			failoverOffset = 0;
+		}
 		var index = Math.abs(tilePoint.x + tilePoint.y + failoverOffset) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	},
