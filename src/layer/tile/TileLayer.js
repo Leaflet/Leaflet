@@ -216,7 +216,11 @@ export var TileLayer = GridLayer.extend({
 			zoom = maxZoom - zoom;
 		}
 
-		return zoom + zoomOffset;
+		if (zoom + zoomOffset > -1) {
+			zoom = zoom + zoomOffset;
+		  }
+
+		return zoom;
 	},
 
 	_getSubdomain: function (tilePoint) {

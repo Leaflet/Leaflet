@@ -388,14 +388,14 @@ describe('TileLayer', function () {
 		it('uses negative zoomOffset option', function () {
 			// Map view is set at zoom 2 in beforeEach.
 			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
-				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
+				zoomOffset: -3 // => zoom 2 + zoomOffset -3 is negetive then z 2 in URL.
 			}).addTo(map);
 
 			var urls = [
-				'http://example.com/-1/1/1.png',
-				'http://example.com/-1/1/2.png',
-				'http://example.com/-1/2/1.png',
-				'http://example.com/-1/2/2.png'
+				'http://example.com/2/1/1.png',
+				'http://example.com/2/1/2.png',
+				'http://example.com/2/2/1.png',
+				'http://example.com/2/2/2.png'
 			];
 
 			var i = 0;
