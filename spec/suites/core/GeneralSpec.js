@@ -6,10 +6,15 @@ describe('General', function () {
 			L = leaflet;
 		});
 
-		expect(L.noConflict()).to.eql(leaflet);
+		var LL = L.noConflict();
+
+		expect(LL).to.eql(leaflet);
+
+		L = LL;
 	});
 
 	describe('namespace extension', function () {
+		// console.log(L)
 		L.Util.foo = 'bar';
 		L.Foo = 'Bar';
 

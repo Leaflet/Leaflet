@@ -6,7 +6,7 @@ tmp/**/*
 *.iml
 _site
 *.sublime-*
-_site
+dist/temp
 dist/*.js
 dist/*.map
 dist/reference.html
