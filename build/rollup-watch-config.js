@@ -16,16 +16,38 @@ const banner = `/* @preserve
 `;
 
 export default {
-	input: 'src/Leaflet.js',
+	input: 'leaflet-entry:',
 	output: {
 		file: 'dist/leaflet-src.js',
-		format: 'umd',
-		name: 'L',
+		format: 'iife',
 		banner: banner,
 		sourcemap: true,
 		freeze: false,
 	},
 	plugins: [
+		{
+			name: 'leaflet',
+			resolveId(id) {
+				if (id === 'leaflet-entry:') return id
+				if (id[0] === '@') return __dirname + '/..' + id.slice(1)
+			},
+			load(id) {
+				if (id === 'leaflet-entry:') {
+					return `
+            import * as LL from '@/src/Leaflet.js'
+            var oldL = window.L;
+
+            function noConflict() {
+              window.L = oldL;
+              return LL;
+            }
+
+            // Always export us to window global (see #2364)
+            window.L = LL;
+            window.L.noConflict = noConflict`;
+				}
+			}
+		},
 		esBuild({
 			target: 'es6'
 		}),
