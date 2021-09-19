@@ -1,8 +1,8 @@
 // Config file for running Rollup in "watch" mode
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
 
-import rollupGitVersion from 'rollup-plugin-git-version'
-import gitRev from 'git-rev-sync'
+import rollupGitVersion from 'rollup-plugin-git-version';
+import gitRev from 'git-rev-sync';
 
 const branch = gitRev.branch();
 const rev = gitRev.short();

@@ -42,7 +42,7 @@
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
-    "lint": "eslint src spec/suites docs/docs/js",
+    "lint": "eslint src spec/suites docs/docs/js build",
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
@@ -93,7 +93,18 @@
           "allowShortCircuit": true
         }
       ]
-    }
+    },
+    "overrides": [
+      {
+        "files": ["build/**/*"],
+        "env": {
+          "node": true
+        },
+        "rules": {
+          "global-require": 0
+        }
+      }
+    ]
   },
   "repository": {
     "type": "git",

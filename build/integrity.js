@@ -17,11 +17,11 @@ console.log('dist/leaflet.css:    ', integrityCss.toString());
 
 var docConfig = fs.readFileSync('docs/_config.yml').toString();
 
-docConfig = docConfig.
-	replace(/latest_leaflet_version:.*/,  'latest_leaflet_version: ' + version).
-	replace(/integrity_hash_source:.*/,   'integrity_hash_source: "' +   integritySrc.toString() + '"').
-	replace(/integrity_hash_uglified:.*/, 'integrity_hash_uglified: "' + integrityUglified.toString() + '"').
-	replace(/integrity_hash_css:.*/,      'integrity_hash_css: "' +      integrityCss.toString() + '"');
+docConfig = docConfig
+	.replace(/latest_leaflet_version:.*/,  'latest_leaflet_version: ' + version)
+	.replace(/integrity_hash_source:.*/,   'integrity_hash_source: "' +   integritySrc.toString() + '"')
+	.replace(/integrity_hash_uglified:.*/, 'integrity_hash_uglified: "' + integrityUglified.toString() + '"')
+	.replace(/integrity_hash_css:.*/,      'integrity_hash_css: "' +      integrityCss.toString() + '"');
 
 // console.log('New jekyll docs config: \n', docConfig);
 
