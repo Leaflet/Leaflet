@@ -53,6 +53,31 @@ describe('DomUtil', function () {
 		});
 	});
 
+	describe('getClass', function () {
+		it('should return the element\'s class', function () {
+			el.className = 'bar foo baz';
+			expect(L.DomUtil.getClass(el)).to.eql('bar foo baz');
+		});
+		it('should return empty string if no className', function () {
+			el.id = 'testId';
+			expect(L.DomUtil.getClass(el)).to.eql('');
+		});
+	});
+
+	describe('setClass', function () {
+		it('should set className', function () {
+			el.className = '';
+			L.DomUtil.setClass(el, 'bar');
+			expect(el.className).to.eql('bar');
+		});
+
+		it('should set classNames', function () {
+			el.className = '';
+			L.DomUtil.setClass(el, 'bar foo baz');
+			expect(el.className).to.eql('bar foo baz');
+		});
+	});
+
 	// describe('#setPosition', noSpecs);
 
 	// describe('#getStyle', noSpecs);
