@@ -4942,6 +4942,15 @@ The following plugins integrate Leaflet into third party services or websites.
 		<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
 	</td>
   </tr>
+  <tr>
+	<td>
+		<a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
+	</td><td>
+		WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
+	  </td><td>
+		<a href="https://www.open-user-map.com/">100plugins</a>
+	</td>
+  </tr>
 </table>
 
 
