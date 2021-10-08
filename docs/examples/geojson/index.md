@@ -202,4 +202,24 @@ L.geoJSON(someFeatures, {
 	}
 }).addTo(map);</code></pre>
 
+<h3>Layer to GeoJSON Object</h3>
+
+<p><code>Layer</code> can be easily converted to a GeoJSON object.</p>
+
+<p>Suppose we have a following <code>layer</code></p>
+<pre><code>var circle = L.circle([51.508, -0.11], {
+    color: '#ff7800',
+    fillColor: '#000',
+    fillOpacity: 0.5,
+    radius: 500
+})</code></pre>
+
+<p> We can make use of the <code>toGeoJSON</code> method and <code>options</code> attribute of <code>layer</code> (<code>circle</code> in above case) to convert it to a GeoJSON object</p>
+
+<pre><code>var geoJSONObject = {
+	...circle.toGeoJSON(),
+	properties: circle.options,
+}
+</code></pre>
+
 <p>View the <a href="example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>
