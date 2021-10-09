@@ -13,6 +13,8 @@
 // export require('iconv').Iconv;
 // const express = require('express');
 
+import {PoligonosApp} from './PoligonosApp';
+
 function serve() {
       // Constants
       const PORT = 8080;

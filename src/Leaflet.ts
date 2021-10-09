@@ -8,6 +8,7 @@ export {version};
 
 // poligonosapp plugin new class
 export function poligonosapp(){
+    require('./PoligonosApp');
     return L.PoligonosApp();
 }
 

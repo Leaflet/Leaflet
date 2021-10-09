@@ -47,6 +47,7 @@
         "!dist/leaflet.zip"
     ],
     "main": "./src/Server.ts",
+    "type": "module",
     "scripts": {
         "start": "node ./src/Server.ts",
         "docs": "node ./build/docs.ts",

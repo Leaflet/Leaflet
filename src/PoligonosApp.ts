@@ -1,13 +1,49 @@
-import {Server} from './Server';
+// import {Server} from './Server';
 
-import {GeoJSON} from './layer';
+// import {GeoJSON} from './layer';
 
-import {Polygon} from './vector/Polygon';
+import {Polygon} from './layer/vector/Polygon';
+
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-3.html
+function makeUnique<T>(
+	collection: Set<T> | T[],
+	comparer: (x: T, y: T) => string | Polygon
+  ): Set<T> | T[] {
+	// Early bail-out if we have a Set.
+	// We assume the elements are already unique.
+	if (collection instanceof Set) {
+	  return collection;
+	}
+	// Sort the array, then remove consecutive duplicates.
+	collection.sort(comparer);
+	for (let i = 0; i < collection.length; i++) {
+	  let j = i;
+	  while (
+		j < collection.length &&
+		comparer(collection[i], collection[j + 1]) === 0
+	  ) {
+		j++;
+	  }
+	  collection.splice(i + 1, j - i);
+	}
+	return collection;
+  }
+
+function polygons(polygonsArray:Polygon) {
+	return polygonsArray;
+}
+let indexPolygonsArray = require('./polygons.geojson').split("},{", 3);
+
+let polygonsArray = require('./polygons.geojson');
+
+for (let index = 0; index < polygonsArray.length; index++) {
+	const element = array[index];
+}
 
 const PoligonosAppDemoClass = L.Class.extend({
 
 	// A property with initial value = 42
-	myDemoProperty: (typeof Polygon[])require('./polygons.geojson'),
+	myDemoProperty: makeUnique(polygonsArray),
 
 	// A method
 	myDemoMethod: function() {

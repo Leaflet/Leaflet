@@ -2,7 +2,8 @@
   "compileOnSave": false,
   "include": [
     "docs/**/*ts",
-    "src/**/*",
+    "src/**/*ts",
+    "src/**/*geojson",
     "**/*.tsconfig.eslint.json"
   ],
   "compilerOptions": {
