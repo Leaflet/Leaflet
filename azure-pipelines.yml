@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- leaflet-1.7.1-with-typescript-and-snyk
+- leaflet-1.7.2-with-typescript-and-snyk
 
 resources:
 - repo: self

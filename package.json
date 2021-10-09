@@ -1,7 +1,7 @@
 {
-    "name": "leaflet",
-    "version": "1.7.1-with-typescript-and-snyk",
-    "homepage": "https://leafletjs.com/",
+    "name": "poligonosapp",
+    "version": "1.7.2-with-typescript-and-snyk",
+    "homepage": "https://bitbucket.org/poligonosapp/",
     "description": "leaflet fork with typescript and snyk",
     "author": "Fabio Rodrigues <https://www.facebook.com/kefaro>, Luis Mendes <machadoluismendes@gmail.com>",
     "devDependencies": {
@@ -48,7 +48,7 @@
     ],
     "main": "server.ts",
     "scripts": {
-        "start": "node server.ts",
+        "start": "node ./src/Server.ts",
         "docs": "node ./build/docs.ts",
         "pretest": "npm run lint",
         "test": "npm run test-nolint",
@@ -70,7 +70,7 @@
         "env": {
             "commonjs": true,
             "amd": true,
-            "node": false
+            "node": true
         },
         "extends": "mourner",
         "parserOptions": {

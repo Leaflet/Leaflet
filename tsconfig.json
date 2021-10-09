@@ -14,6 +14,7 @@
     "noImplicitAny": true,
     "extends": "eslint:recommended",
     "smart-tabs":true,
+    "no-unsafe-unsignement": false,
     "noImplicitThis": true,
     "baseUrl": "./",
     "allowJs": true,
