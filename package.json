@@ -122,9 +122,10 @@
     "license": "BSD-2-Clause",
     "dependencies": {
         "@angular/compiler": "^11.2.14",
-        "@angular/compiler-cli": "^12.0.4",
+        "@angular/compiler-cli": "^11.0.0",
         "@types/eslint": "^7.2.13",
         "@typescript-eslint/types": "^4.27.0",
+        "ansi-regex": "^6.0.1",
         "core-js": "^3.14.0",
         "css-what": "^5.0.1",
         "express": "^4.17.1",
@@ -134,14 +135,12 @@
         "normalize-url": "6.0.1",
         "regenerator-runtime": "^0.13.7",
         "snyk": "^1.634.0",
-        "tslib": "^2.3.0"
+        "tslib": "^2.0.0"
     },
     "peerDependencies": {
-        "@angular/compiler": "^11.0.0",
-        "@angular/compiler-cli": "^11.0.0",
+        "rollup": "^1.20.0 || ^2.0.0 || ^2.30.0",
         "tslib": "^2.0.0",
-        "typescript": "^4.3.2",
-        "rollup": "^1.20.0 || ^2.0.0 || ^2.30.0"
+        "typescript": "^4.3.2"
     },
     "engines": {
         "node": "14.17.1",

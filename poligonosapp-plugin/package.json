@@ -1,6 +1,7 @@
 {
   "name": "poligonosapp-plugin",
   "version": "0.0.0",
+  "type": "commonjs",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -11,6 +12,8 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "snyk": "^1.733.0",
+    "typescript": "^4.3.5"
   }
 }

@@ -1,19 +1,26 @@
 {
+  "extends": "./tsconfig.json",
+  "@typescript-eslint/restrict-plus-operands": "error",
   "compileOnSave": false,
+  "no-any": true,
+  "no-unsafe-any": true,
   "include": [
+    "dist/**/*ts",
+    "build/**/*ts",
     "docs/**/*ts",
-    "src/**/*",
-    "**/*.tsconfig.eslint.json"
+    "spec/**/*ts",
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "typings/**/*.ts",
+    "src/**/*.js",
+    "babel.config.json"
   ],
-  "compilerOptions": {
+  "compileOptions": {
     "paths": {
       "jquery": ["node_modules/jquery/dist/jquery"],
       "*": ["*", "generated/*"]
     },
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "extends": "eslint:recommended",
-    "smart-tabs":true,
     "noImplicitThis": true,
     "baseUrl": "./",
     "allowJs": true,
