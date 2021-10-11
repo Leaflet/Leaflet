@@ -1,3 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-mixed-spaces-and-tabs */
 // import {Server} from './Server';
 
 // import {GeoJSON} from './layer';
@@ -29,12 +37,14 @@ function makeUnique<T>(
 	return collection;
   }
 
-function polygons(polygonsArray:Polygon) {
+function PoligonosApp(polygonsArray:Polygon) {
 	return polygonsArray;
 }
-let indexPolygonsArray = require('./polygons.geojson').split("},{", 3);
+const indexPolygonsArray = require('./polygons.geojson').split("},{", 3);
 
-let polygonsArray = require('./polygons.geojson');
+const polygonsArray = require('./polygons.geojson');
+
+PoligonosApp(polygonsArray);
 
 for (let index = 0; index < polygonsArray.length; index++) {
 	const element = array[index];
@@ -153,3 +163,4 @@ function myBoxClass(name, options) {
 }
 
 
+export default PoligonosApp as L.PoligonosApp;

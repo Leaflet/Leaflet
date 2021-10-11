@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "include": [
+    "rollup.config.ts",
+    "babel.config.json",
     "docs/**/*ts",
     "src/**/*ts",
     "src/**/*geojson",
@@ -13,9 +15,7 @@
     },
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "extends": "eslint:recommended",
-    "smart-tabs":true,
-    "no-unsafe-unsignement": false,
+    "esModuleInterop": true,
     "noImplicitThis": true,
     "baseUrl": "./",
     "allowJs": true,

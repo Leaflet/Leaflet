@@ -6,11 +6,13 @@
 import {version} from '../package.json';
 export {version};
 
+// import {L.PoligonosApp} from './PoligonosApp';
+
 // poligonosapp plugin new class
-export function poligonosapp(){
-    require('./PoligonosApp');
-    return L.PoligonosApp();
-}
+// export function poligonosapp(){
+    // require('./PoligonosApp');
+    // return require('./PoligonosApp');
+// }
 
 // control
 export * from './control/index';

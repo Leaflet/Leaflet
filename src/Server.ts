@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -13,9 +14,11 @@
 // export require('iconv').Iconv;
 // const express = require('express');
 
-import {PoligonosApp} from './PoligonosApp';
+// import {L.PoligonosApp} from './PoligonosApp';
 
-function serve() {
+import {Response , Request} from 'express';
+
+public function serve() {
       // Constants
       const PORT = 8080;
       const HOST = '0.0.0.0';
@@ -23,15 +26,36 @@ function serve() {
   // App
       const express = require('express');
       const app = express();
-      
-      app.get('/', (req, res) => {
-        res.send('Welcome PoligonosApp');
-        require('./Leaflet.ts'); // L.PoligonosApp();
-      });
-  
-      app.listen(PORT, HOST);
-      console.log(`Running on http://${HOST}:${PORT}`);
-}
+      console.log(`...`);
 
-serve();
+      // https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript/54649617
+      try{
+        app.get('/', function (req:Request, res:Response) => {
+          res.json({success:true});
+          res.send('PoligonosApp');
+          res.sendFile('./polygons.geojson');
+          res.json('./polygons.geojson');
+          require('./Leaflet.ts'); // L.PoligonosApp();
+        });
+    
+        app.listen(PORT, HOST);
+        console.log(`Running on http://${HOST}:${PORT}`);
+      }
+      catch(e){
+        result = (e as Exception).Message;
+      }
+      finnaly{
+
+      }
+
+}
+// https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript/54649617
+try{
+  serve();
+}catch(e){
+  result = (e as Exception).Message;
+}
+finally{
+
+}
 
