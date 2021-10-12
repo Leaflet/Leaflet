@@ -53,7 +53,7 @@
     "scripts": {
         "start": "ts-node ./src/Server.ts",
         "docs": "node ./build/docs.ts",
-        "pretest": "npm run lint",
+        "pretest": "npm run lint --fix",
         "test": "npm run test-nolint",
         "test-nolint": "karma start ./spec/karma.conf.ts",
         "build": "npm run rollup && npm run uglify",
@@ -62,7 +62,7 @@
         "lintfix": "npm run lint -- --fix",
         "rollup": "rollup -c build/rollup-config.ts",
         "watch": "rollup -w -c build/rollup-watch-config.ts",
-        "uglify": "uglifyjs dist/leaflet-src.ts -c -m -o dist/leaflet.ts --source-map filename=dist/leaflet.ts.map --source-map content=dist/leaflet-src.ts.map --source-map url=leaflet.ts.map --comments",
+        "uglify": "uglifyjs dist/poligonosapp-src.ts -c -m -o dist/poligonosapp.ts --source-map filename=dist/poligonosapp.ts.map --source-map content=dist/poligonosapp-src.ts.map --source-map url=poligonosapp.ts.map --comments",
         "integrity": "node ./build/integrity.ts"
     },
     "eslintConfig": {
@@ -126,10 +126,14 @@
     "dependencies": {
         "@angular/compiler": "^11.2.14",
         "@angular/compiler-cli": "^11.0.0",
+        "@types/body-parser": "^1.19.1",
+        "@types/connect": "^3.4.35",
         "@types/eslint": "^7.2.13",
         "@types/express": "^4.17.13",
+        "@types/node": "^16.10.3",
         "@typescript-eslint/types": "^4.27.0",
         "ansi-regex": "^6.0.1",
+        "body-parser": "^1.19.0",
         "core-js": "^3.14.0",
         "css-what": "^5.0.1",
         "express": "^4.17.1",

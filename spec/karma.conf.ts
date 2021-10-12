@@ -26,8 +26,8 @@ module.exports = function (config) {
 // 	var libSources = require(__dirname + '/../build/build.tsc').getFiles();
 
 	const files = [
-		"spec/before.ts",
-		"src/Leaflet.ts",
+		"./spec/before.ts",
+		"./src/Leaflet.ts",
 		"spec/after.ts",
 		"node_modules/happen/happen.tsc",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.tsc",
@@ -39,7 +39,7 @@ module.exports = function (config) {
 
 	const preprocessors = {};
 
-	preprocessors['src/Leaflet.ts'] = ['rollup'];
+	preprocessors['./src/Leaflet.ts'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude

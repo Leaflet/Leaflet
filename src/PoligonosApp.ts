@@ -44,13 +44,13 @@ const indexPolygonsArray = require('./polygons.geojson').split("},{", 3);
 
 const polygonsArray = require('./polygons.geojson');
 
-PoligonosApp(polygonsArray);
+// PoligonosApp(polygonsArray);
 
 for (let index = 0; index < polygonsArray.length; index++) {
 	const element = array[index];
 }
 
-const PoligonosAppDemoClass = L.Class.extend({
+const PoligonosApp = L.Class.extend({
 
 	// A property with initial value = 42
 	myDemoProperty: makeUnique(polygonsArray),

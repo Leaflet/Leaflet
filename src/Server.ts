@@ -16,7 +16,11 @@
 
 // import {L.PoligonosApp} from './PoligonosApp';
 
-import {Response , Request} from 'express';
+import {Response , Request, Router} from 'express';
+
+const router = Router();
+
+const bodyParser = require('body-parser');
 
 public function serve() {
       // Constants
@@ -26,11 +30,12 @@ public function serve() {
   // App
       const express = require('express');
       const app = express();
+      
       console.log(`...`);
 
       // https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript/54649617
       try{
-        app.get('/', function (req:Request, res:Response) => {
+        router.get('/', (req, res) => {
           res.json({success:true});
           res.send('PoligonosApp');
           res.sendFile('./polygons.geojson');
@@ -46,9 +51,12 @@ public function serve() {
       }
       finnaly{
 
+        return;
+
       }
 
-}
+} // end function serve
+
 // https://stackoverflow.com/questions/54649465/how-to-do-try-catch-and-finally-statements-in-typescript/54649617
 try{
   serve();
@@ -58,4 +66,6 @@ try{
 finally{
 
 }
+
+export default router;
 

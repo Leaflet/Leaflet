@@ -36,7 +36,7 @@ window.L = exports;`
 	 ;
 
 export default {
-	input: 'src/Leaflet.ts',
+	input: './src/Leaflet.ts',
 	output: [
 		{
 			file: pkg.main,
@@ -45,11 +45,11 @@ export default {
 			banner: banner,
 			outro: outro,
 			sourcemap: true,
-			legacy: true, // Needed to create files loadable by IE8
+			legacy: false, // Needed to create files loadable by IE8
 			freeze: false
 		},
 		{
-			file: 'dist/leaflet-src.esm.ts',
+			file: 'dist/poligonosapp-src.esm.ts',
 			format: 'es',
 			banner: banner,
 			sourcemap: true,

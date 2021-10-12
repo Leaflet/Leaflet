@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Map} from './Map';
 import {BoxZoom} from './handler/Map.BoxZoom';
 Map.BoxZoom = BoxZoom;
