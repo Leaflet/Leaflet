@@ -18,6 +18,8 @@
 
 import {Response , Request, Router} from 'express';
 
+import {Exception} from 'typescript';
+
 const router = Router();
 
 const bodyParser = require('body-parser');
@@ -47,11 +49,14 @@ public function serve() {
         console.log(`Running on http://${HOST}:${PORT}`);
       }
       catch(e){
-        result = (e as Exception).Message;
-      }
-      finnaly{
+        const result = (e as Exception).Message;
 
-        return;
+        console.log(result);
+
+      }
+      finally{
+
+        console.log("finally");
 
       }
 
@@ -61,9 +66,14 @@ public function serve() {
 try{
   serve();
 }catch(e){
-  result = (e as Exception).Message;
+  const result = (e as Exception).Message;
+
+  console.log(result);
+
 }
 finally{
+
+  console.log("finally");
 
 }
 
