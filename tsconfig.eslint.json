@@ -13,7 +13,8 @@
     "test/**/*.ts",
     "typings/**/*.ts",
     "src/**/*.js",
-    "babel.config.json"
+    "babel.config.json",
+    "rollup.config.json"
   ],
   "compileOptions": {
     "paths": {

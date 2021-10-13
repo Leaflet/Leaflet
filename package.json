@@ -59,13 +59,14 @@
         "build": "npm run rollup && npm run uglify",
         "release": "./build/publish.sh",
         "lint": "eslint src spec/suites docs/docs/tsc",
-        "lintfix": "npm run lint -- --fix",
-        "rollup": "rollup -c build/rollup-config.ts",
+        "lintfix": "npm run lint --fix",
+        "rollup": "rollup -c ./rollup.config.ts",
         "watch": "rollup -w -c build/rollup-watch-config.ts",
         "uglify": "uglifyjs dist/poligonosapp-src.ts -c -m -o dist/poligonosapp.ts --source-map filename=dist/poligonosapp.ts.map --source-map content=dist/poligonosapp-src.ts.map --source-map url=poligonosapp.ts.map --comments",
         "integrity": "node ./build/integrity.ts"
     },
     "eslintConfig": {
+        "include": "./rollup.config.ts",
         "root": true,
         "globals": {
             "L": true

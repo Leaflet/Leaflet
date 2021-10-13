@@ -9,5 +9,8 @@ export default {
     format: 'esm'
   },
   external: ["angular", "react"]
-  plugins: [babel({ babelHelpers: 'bundled' }),typescript({lib: ["es5", "es6", "dom"], target: "es5"})]
+  plugins: [
+    typescript({lib: ["es2015","es5", "dom"], target: "es2015"}),
+    babel({ babelHelpers: 'bundled' })
+  ]
 };
