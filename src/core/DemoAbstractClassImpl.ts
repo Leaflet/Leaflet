@@ -1,6 +1,6 @@
-import { Class } from './Class';
+import { DemoAbstractClass } from './DemoAbstractClass';
 import * as Util from './Util';
-public class ClassImpl extends Class{
+public class DemoAbstractClassImpl extends DemoAbstractClass{
 
 	constructor(){
 		super();
@@ -78,26 +78,26 @@ Class.extends = function (props) {
 	return NewClass;
 };
 
-} // end ClassImpl
+} // end DemoAbstractClassImpl
 
 
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
-Class.include = function (props) {
+DemoAbstractClass.include = function (props) {
 	Util.extend(this.prototype, props);
 	return this;
 };
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
-Class.mergeOptions = function (options) {
+DemoAbstractClass.mergeOptions = function (options) {
 	Util.extend(this.prototype.options, options);
 	return this;
 };
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn) { // (Function) || (String, args...)
+DemoAbstractClass.addInitHook = function (fn) { // (Function) || (String, args...)
 	const args = Array.prototype.slice.call(arguments, 1);
 
 	const init = typeof fn === 'function' ? fn : function () {

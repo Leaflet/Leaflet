@@ -1,4 +1,4 @@
-import { Class } from "./Class";
+import { DemoAbstractClass } from "./DemoAbstractClass";
 import * as Util from './Util';
 
 /*
@@ -292,4 +292,4 @@ Events.fireEvent = Events.fire;
 // Alias to [`listens(…)`](#evented-listens)
 Events.hasEventListeners = Events.listens;
 
-export const Evented = Class.extend(Events);
+export const Evented = DemoAbstractClass.extend(Events);

@@ -1,5 +1,5 @@
 
-import { Class } from "../core/Class";
+import { DemoAbstractClass } from "../core/DemoAbstractClass";
 import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  * All other controls extend from this class.
  */
 
-export const Control = Class.extend({
+export const Control = DemoAbstractClass.extend({
 	// @section
 	// @aka Control options
 	options: {

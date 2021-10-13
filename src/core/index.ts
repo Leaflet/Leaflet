@@ -1,7 +1,7 @@
 import * as Browser from './Browser';
 export {Browser};
 
-export {Class} from './Class';
+export {DemoAbstractClass} from './DemoAbstractClass';
 
 import {Evented} from './Events';
 import {Events} from './Events';

@@ -1,4 +1,4 @@
-import { Class } from "../../core/Class";
+import { DemoAbstractClass } from "../../core/DemoAbstractClass";
 import {setOptions} from '../../core/Util';
 import {toPoint as point} from '../../geometry/Point';
 import {retina} from '../../core/Browser';
@@ -31,7 +31,7 @@ import {retina} from '../../core/Browser';
  *
  */
 
-export var Icon = Class.extend({
+export var Icon = DemoAbstractClass.extend({
 
 	/* @section
 	 * @aka Icon options
