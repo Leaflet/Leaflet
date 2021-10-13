@@ -40,7 +40,7 @@
         "ssri": "^8.0.1",
         "ts-node": "^10.2.1",
         "tslint": "^6.1.3",
-        "typescript": "4.0",
+        "typescript": "^4.0.8",
         "uglify-js": "^3.12.6"
     },
     "style": "dist/leaflet.css",
@@ -127,7 +127,7 @@
     ],
     "license": "BSD-2-Clause",
     "dependencies": {
-        "@angular/compiler": "^11.2.14",
+        "@angular/compiler": "^11.0.0",
         "@angular/compiler-cli": "^11.0.0",
         "@types/body-parser": "^1.19.1",
         "@types/connect": "^3.4.35",
