@@ -8,9 +8,9 @@ export default {
     dir: 'output',
     format: 'esm'
   },
-  external: ["angular", "react"]
   plugins: [
     typescript({lib: ["es2015","es5", "dom"], target: "es2015"}),
     babel({ babelHelpers: 'bundled' })
-  ]
+  ],
+  external: ["angular", "react"]
 };

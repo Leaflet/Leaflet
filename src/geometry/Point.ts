@@ -1,3 +1,10 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {isArray, formatNum} from '../core/Util';
 
 /*
@@ -24,7 +31,7 @@ import {isArray, formatNum} from '../core/Util';
  * can't be added to it with the `include` function.
  */
 
-export function Point(x:integer, y:integer, round:integer) {
+export function Point(x:integer | number, y:integer | number, round:integer | number) {
 	// @property x: Number; The `x` coordinate of the point
 	this.x = (round ? Math.round(x) : x);
 	// @property y: Number; The `y` coordinate of the point
@@ -205,7 +212,7 @@ Point.prototype = {
 // @alternative
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-export function toPoint(x: any, y: integer, round: integer) {
+export function toPoint(x: integer | number, y: integer | number, round: integer | number) {
 	if (x instanceof Point) {
 		return x;
 	}
