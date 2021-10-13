@@ -47,6 +47,7 @@
     "files": [
         "dist",
         "src",
+        "./dist/poligonosapp.zip",
         "!dist/leaflet.zip"
     ],
     "main": "./src/Server.ts",
@@ -66,6 +67,7 @@
         "integrity": "node ./build/integrity.ts"
     },
     "eslintConfig": {
+        "validate": "typescript",
         "include": "./rollup.config.ts",
         "root": true,
         "globals": {

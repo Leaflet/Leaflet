@@ -5,6 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+// @ts-ignore
+// @ts-ignore
+
 import {isArray, formatNum} from '../core/Util';
 
 /*
@@ -31,28 +34,83 @@ import {isArray, formatNum} from '../core/Util';
  * can't be added to it with the `include` function.
  */
 
-export function Point(x:integer | number, y:integer | number, round:integer | number) {
-	// @property x: Number; The `x` coordinate of the point
-	this.x = (round ? Math.round(x) : x);
-	// @property y: Number; The `y` coordinate of the point
-	this.y = (round ? Math.round(y) : y);
+// @ts-ignore
+import {Object, ReturnType} from 'typescript';
+
+interface PointReturn{
+	x: number | ReturnType<typeof Object.Number>;
+	y: number | ReturnType<typeof Object.Number>;
 }
+
+public class PointReturnImpl implements PointReturn{
+
+	x: 0.0;
+	y: 0.0;
+
+	constructor(x:number, y:number, round:number) {
+		this.x = Object.create((round ? Math.round(x) : x));
+		this.y = Object.create((round ? Math.round(y) : y));
+	}
+
+
+
+	public getX(): number{
+		return this.x;
+	}
+	public getY(): number{
+		return this.y;
+	}
+
+}
+
+
+
+export function Point(x:number, y:number, round:number): PointReturn {
+	// @property x: Number; The `x` coordinate of the point
+	public const x = Object.create((round ? Math.round(x) : x));
+	// @property y: Number; The `y` coordinate of the point
+	public const y = Object.create((round ? Math.round(y) : y));
+
+	// const arrayXY = {x,y};
+	// return arrayXY;
+}
+
+Point(0,0,0);
 
 const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
 };
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type P = ReturnType<typeof  Point.prototype.clone>;
+
+type numberAuxX = ReturnType<typeof Object.Number>;
+
+type numberAuxY = ReturnType<typeof Object.Number>;
 
 Point.prototype = {
 
+//	type P = ReturnType<typeof  clone>;
+
 	// @method clone(): Point
 	// Returns a copy of the current point.
+	// fail type self.Point
+	// @ts-ignore
 	clone: function () {
-		return new Point(this.x, this.y);
+	try{
+		if(typeof Point.x === typeof numberAuxX){
+			if(typeof this.y === typeof numberAuxY) {
+				return new Point(this.x, this.y);
+			}
+		}
+	}finally {
+		return -1;// not a number
+	}
+
 	},
 
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
-	add: function (point) {
+	add: function (point:Point) {
 		// non-destructive, returns a new point
 		return this.clone()._add(toPoint(point));
 	},
@@ -78,11 +136,11 @@ Point.prototype = {
 
 	// @method divideBy(num: Number): Point
 	// Returns the result of division of the current point by the given number.
-	divideBy: function (num) {
+	divideBy: function (num: number) {
 		return this.clone()._divideBy(num);
 	},
 
-	_divideBy: function (num) {
+	_divideBy: function (num: number) {
 		this.x /= num;
 		this.y /= num;
 		return this;
@@ -90,11 +148,11 @@ Point.prototype = {
 
 	// @method multiplyBy(num: Number): Point
 	// Returns the result of multiplication of the current point by the given number.
-	multiplyBy: function (num) {
+	multiplyBy: function (num:number) {
 		return this.clone()._multiplyBy(num);
 	},
 
-	_multiplyBy: function (num) {
+	_multiplyBy: function (num:number) {
 		this.x *= num;
 		this.y *= num;
 		return this;
@@ -105,24 +163,24 @@ Point.prototype = {
 	// `scale`. In linear algebra terms, multiply the point by the
 	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
 	// defined by `scale`.
-	scaleBy: function (point) {
+	scaleBy: function (point:Point):Point {
 		return new Point(this.x * point.x, this.y * point.y);
 	},
 
 	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
-	unscaleBy: function (point) {
+	unscaleBy: function (point:Point):Point {
 		return new Point(this.x / point.x, this.y / point.y);
 	},
 
 	// @method round(): Point
 	// Returns a copy of the current point with rounded coordinates.
-	round: function () {
+	round: function (): {
 		return this.clone()._round();
 	},
 
-	_round: function () {
+	_round: function (): Object.getPrototypeOf(Math.round(this.x)) | Object.getPrototypeOf(Math.round(this.y)) {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
 		return this;
@@ -212,7 +270,7 @@ Point.prototype = {
 // @alternative
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-export function toPoint(x: integer | number, y: integer | number, round: integer | number) {
+export function toPoint(x:number, y:number, round:number) {
 	if (x instanceof Point) {
 		return x;
 	}

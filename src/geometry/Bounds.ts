@@ -25,12 +25,17 @@ import {Point, toPoint} from './Point';
  * can't be added to it with the `include` function.
  */
 
-export function Bounds(a, b) {
+// import {Number} from 'typescript';
+
+import {Point} from './Point';
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function Bounds(a:number, b:number) {
 	if (!a) { return; }
 
 	const points = b ? [a, b] : a;
 
-	for (let i in points.length) {
+	for (const i in points.length) {
 		this.extend(points[i]);
 	}
 }
@@ -38,7 +43,7 @@ export function Bounds(a, b) {
 Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
-	extend: function (point) { // (Point)
+	extend: function (point:Point) { // (Point)
 		point = toPoint(point);
 
 		// @property min: Point
