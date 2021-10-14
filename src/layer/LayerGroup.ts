@@ -1,6 +1,34 @@
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable prefer-spread */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import {Layer} from './Layer';
 import * as Util from '../core/Util';
+
+import {Object, ReturnType} from 'typescript';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+type numberAuxX = ReturnType<typeof Object.Number>;
+
+type numberAuxY = ReturnType<typeof Object.Number>;
 
 /*
  * @class LayerGroup
@@ -89,8 +117,9 @@ export const LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke: function (methodName) {
-		let args = Array.prototype.slice.call(arguments, 1),
-		    i, layer;
+		const args = Array.prototype.slice.call(arguments, 1);
+		const i
+		const layer;
 
 		for (i in this._layers) {
 			layer = this._layers[i];
@@ -133,7 +162,7 @@ export const LayerGroup = Layer.extend({
 
 	// @method getLayers(): Layer[]
 	// Returns an array of all the layers added to the group.
-	getLayers: function () {
+	getLayers: function (): LayerReturnType[] {
 		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
@@ -141,13 +170,13 @@ export const LayerGroup = Layer.extend({
 
 	// @method setZIndex(zIndex: Number): this
 	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
-	setZIndex: function (zIndex) {
+	setZIndex: function (zIndex:NumberReturnType) {
 		return this.invoke('setZIndex', zIndex);
 	},
 
 	// @method getLayerId(layer: Layer): Number
 	// Returns the internal ID for a layer
-	getLayerId: function (layer) {
+	getLayerId: function (layer:LayerReturnType) {
 		return Util.stamp(layer);
 	}
 });
@@ -155,6 +184,6 @@ export const LayerGroup = Layer.extend({
 
 // @factory L.layerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
-export var layerGroup = function (layers, options) {
+export const layerGroup = function (layers:LayerReturnType[], options):LayerGroupReturnType {
 	return new LayerGroup(layers, options);
 };

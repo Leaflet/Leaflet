@@ -1,3 +1,9 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// import L.Polygon from 'poligonosapp';
+
 describe('Polygon', function () {
 	describe("#initialize", function () {
 		it("should never be flat", function () {

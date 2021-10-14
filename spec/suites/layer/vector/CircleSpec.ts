@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+// import L.circle from 'poligonosapp';
+
 describe('Circle', function () {
-	let map, circle;
+	const map;
+	const circle;
 
 	beforeEach(function () {
 		map = L.map(document.createElement('div')).setView([0, 0], 4);
