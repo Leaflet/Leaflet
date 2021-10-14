@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -13,7 +14,8 @@ import {$ , Event} from 'jquery';
 import {Point} from "../geometry";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
-type MapReturnType = ReturnType<typeof Map|LayerGroup>;
+type MapReturnType = ReturnType<typeof Map>;
+type LayerGroupReturnType = ReturnType<typeof LayerGroup>;
 type EventReturnType= ReturnType<typeof Event>;
 type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
@@ -80,7 +82,7 @@ export const Layer = Evented.extend({
 	 * @method addTo(map: Map|LayerGroup): this
 	 * Adds the layer to the given map or layer group.
 	 */
-	addTo: function (map) {
+	addTo: function (map:MapReturnType|LayerGroupReturnType):MapReturnType|LayerGroupRetunType {
 		map.addLayer(this);
 		return this;
 	},
@@ -97,7 +99,7 @@ export const Layer = Evented.extend({
 	// @alternative
 	// @method removeFrom(group: LayerGroup): this
 	// Removes the layer from the given `LayerGroup`
-	removeFrom: function (obj) {
+	removeFrom: function (obj: MapReturnType | LayerGroupReturnType): MapReturnType | LayerGroupReturnType {
 		if (obj) {
 			obj.removeLayer(this);
 		}
@@ -106,7 +108,7 @@ export const Layer = Evented.extend({
 
 	// @method getPane(name? : String): HTMLElement
 	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
-	getPane: function (name) {
+	getPane: function (name: StringReturnType):HTMLElementReturnType {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	},
 
@@ -126,7 +128,7 @@ export const Layer = Evented.extend({
 		return this.options.attribution;
 	},
 
-	_layerAdd: function (e) {
+	_layerAdd: function (e:EventReturnType) {
 		const map = e.target;
 
 		// check in case layer gets added and then removed before the map is ready
@@ -190,7 +192,7 @@ export const Layer = Evented.extend({
 Map.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
-	addLayer: function (layer) {
+	addLayer: function (layer: LayerReturnType):LayerReturnType {
 		if (!layer._layerAdd) {
 			throw new Error('The provided object is not a Layer.');
 		}
@@ -212,7 +214,7 @@ Map.include({
 
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the map.
-	removeLayer: function (layer) {
+	removeLayer: function (layer:LayerReturnType):LayerReturnType {
 		const id = Util.stamp(layer);
 
 		if (!this._layers[id]) { return this; }
@@ -239,7 +241,7 @@ Map.include({
 
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the map
-	hasLayer: function (layer) {
+	hasLayer: function (layer:LayerReturnType):boolean {
 		return !!layer && (Util.stamp(layer) in this._layers);
 	},
 
@@ -283,9 +285,9 @@ Map.include({
 	},
 
 	_updateZoomLevels: function () {
-		const minZoom = Infinity,
-		    maxZoom = -Infinity,
-		    oldZoomSpan = this._getZoomSpan();
+		const minZoom = Infinity;
+		const maxZoom = -Infinity;
+		const oldZoomSpan = this._getZoomSpan();
 
 		for (const i in this._zoomBoundLayers) {
 			const options = this._zoomBoundLayers[i].options;
