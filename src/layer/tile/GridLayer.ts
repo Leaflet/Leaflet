@@ -20,6 +20,7 @@ type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
 // type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
+type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 // type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
@@ -947,6 +948,6 @@ export const GridLayer = Layer.extend({
 
 // @factory L.gridLayer(options?: GridLayer options)
 // Creates a new instance of GridLayer with the supplied options.
-export function gridLayer(options) {
+export function gridLayer(options: GridLayerReturnType): GridLayerReturnType {
 	return new GridLayer(options);
 }

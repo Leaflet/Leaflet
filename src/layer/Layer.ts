@@ -1,6 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Evented} from '../core/Events';
 import {Map} from '../map/Map';
+import {LayerGroup} from './LayerGroup';
 import * as Util from '../core/Util';
+
+
+import {Object, ReturnType, HTMLElement} from 'typescript';
+import {$ , Event} from 'jquery';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type MapReturnType = ReturnType<typeof Map|LayerGroup>;
+type EventReturnType= ReturnType<typeof Event>;
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
 
 /*
  * @class Layer
@@ -55,7 +87,7 @@ export const Layer = Evented.extend({
 
 	// @method remove: this
 	// Removes the layer from the map it is currently active on.
-	remove: function () {
+	remove: function ():EventReturnType {
 		return this.removeFrom(this._map || this._mapToAdd);
 	},
 
