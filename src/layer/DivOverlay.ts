@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
 import * as DomUtil from '../dom/DomUtil';
+
+
 
 /*
  * @class DivOverlay
@@ -213,9 +220,9 @@ export const DivOverlay = Layer.extend({
 	_updatePosition: function () {
 		if (!this._map) { return; }
 
-		let pos = this._map.latLngToLayerPoint(this._latlng),
-		    offset = toPoint(this.options.offset),
-		    anchor = this._getAnchor();
+		const pos = this._map.latLngToLayerPoint(this._latlng);
+		const offset = toPoint(this.options.offset);
+		const anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
 			DomUtil.setPosition(this._container, pos.add(anchor));
@@ -223,8 +230,8 @@ export const DivOverlay = Layer.extend({
 			offset = offset.add(pos).add(anchor);
 		}
 
-		const bottom = this._containerBottom = -offset.y,
-		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
+		const bottom = this._containerBottom = -offset.y;
+		const left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = bottom + 'px';
