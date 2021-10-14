@@ -1,6 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {ImageOverlay} from './ImageOverlay';
 import * as DomUtil from '../dom/DomUtil';
 import * as Util from '../core/Util';
+
+import {Object, ReturnType} from 'typescript';
+// import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+
+type VideoReturnType = ReturnType<typeof String|Array|HTMLVideoElement>;
 
 /*
  * @class VideoOverlay
@@ -21,7 +33,7 @@ import * as Util from '../core/Util';
  * ```
  */
 
-export var VideoOverlay = ImageOverlay.extend({
+export const VideoOverlay = ImageOverlay.extend({
 
 	// @section
 	// @aka VideoOverlay options
@@ -95,6 +107,6 @@ export var VideoOverlay = ImageOverlay.extend({
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
 
-export function videoOverlay(video, bounds, options) {
+export function videoOverlay(video:VideoReturnType, bounds, options) {
 	return new VideoOverlay(video, bounds, options);
 }

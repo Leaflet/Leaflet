@@ -156,7 +156,7 @@ export const LayerGroup = Layer.extend({
 
 	// @method getLayer(id: Number): Layer
 	// Returns the layer with the given internal ID.
-	getLayer: function (id) {
+	getLayer: function (id:NumberReturnType) {
 		return this._layers[id];
 	},
 
