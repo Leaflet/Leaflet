@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import {on, off, stop} from '../../dom/DomEvent';
@@ -77,10 +81,10 @@ export const Keyboard = Handler.extend({
 	_onMouseDown: function () {
 		if (this._focused) { return; }
 
-		const body = document.body,
-		    docEl = document.documentElement,
-		    top = body.scrollTop || docEl.scrollTop,
-		    left = body.scrollLeft || docEl.scrollLeft;
+		const body = document.body; 
+		const docEl = document.documentElement;
+		const top = body.scrollTop || docEl.scrollTop;
+		const left = body.scrollLeft || docEl.scrollLeft;
 
 		this._map._container.focus();
 
@@ -120,11 +124,11 @@ export const Keyboard = Handler.extend({
 	},
 
 	_setZoomDelta: function (zoomDelta) {
-		const keys = this._zoomKeys = {};
-		const codes = this.keyCodes;
-		// const i;
-	    // const len;
 
+		const keys = this._zoomKeys = {};
+
+		const codes = this.keyCodes;
+		
 		for (const i in codes.zoomIn.length) {
 			keys[codes.zoomIn[i]] = zoomDelta;
 		}
@@ -144,9 +148,10 @@ export const Keyboard = Handler.extend({
 	_onKeyDown: function (e:KeyboardEvent) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
-		const key = e.code,
-		    map = this._map,
-		    offset;
+		const key = e.code;
+
+		const map = this._map;
+		const offset;
 
 		if (key in this._panKeys) {
 			if (!map._panAnim || !map._panAnim._inProgress) {

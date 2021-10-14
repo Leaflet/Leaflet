@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Map} from '../Map';
 import * as Browser from '../../core/Browser';
 import {Handler} from '../../core/Handler';
@@ -111,9 +116,7 @@ export const Drag = Handler.extend({
 			this._offsetLimit = null;
 		}
 
-		map
-		    .fire('movestart')
-		    .fire('dragstart');
+		map.fire('movestart').fire('dragstart');
 
 		if (map.options.inertia) {
 			this._positions = [];
@@ -123,8 +126,8 @@ export const Drag = Handler.extend({
 
 	_onDrag: function (e) {
 		if (this._map.options.inertia) {
-			const time = this._lastTime = +new Date(),
-			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
+			const time = this._lastTime = +new Date();
+			const pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
 			this._times.push(time);
@@ -132,9 +135,7 @@ export const Drag = Handler.extend({
 			this._prunePositions(time);
 		}
 
-		this._map
-		    .fire('move', e)
-		    .fire('drag', e);
+		this._map.fire('move', e).fire('drag', e);
 	},
 
 	_prunePositions: function (time) {
@@ -145,8 +146,8 @@ export const Drag = Handler.extend({
 	},
 
 	_onZoomEnd: function () {
-		const pxCenter = this._map.getSize().divideBy(2),
-		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
+		const pxCenter = this._map.getSize().divideBy(2);
+		const pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
@@ -172,23 +173,22 @@ export const Drag = Handler.extend({
 
 	_onPreDragWrap: function () {
 		// TODO refactor to be able to adjust map pane position after zoom
-		const worldWidth = this._worldWidth,
-		    halfWidth = Math.round(worldWidth / 2),
-		    dx = this._initialWorldOffset,
-		    x = this._draggable._newPos.x,
-		    newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		    newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		    newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+		const worldWidth = this._worldWidth;
+		const halfWidth = Math.round(worldWidth / 2);
+		const dx = this._initialWorldOffset;
+		const x = this._draggable._newPos.x;
+		const newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx;
+		const newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx;
+		const newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
 
 		this._draggable._absPos = this._draggable._newPos.clone();
 		this._draggable._newPos.x = newX;
 	},
 
 	_onDragEnd: function (e) {
-		const map = this._map,
-		    options = map.options,
-
-		    noInertia = !options.inertia || this._times.length < 2;
+		const map = this._map;
+		const options = map.options;
+		const noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
@@ -198,18 +198,18 @@ export const Drag = Handler.extend({
 		} else {
 			this._prunePositions(+new Date());
 
-			const direction = this._lastPos.subtract(this._positions[0]),
-			    duration = (this._lastTime - this._times[0]) / 1000,
-			    ease = options.easeLinearity,
+			const direction = this._lastPos.subtract(this._positions[0]);
+			const duration = (this._lastTime - this._times[0]) / 1000;
+			const ease = options.easeLinearity;
 
-			    speedVector = direction.multiplyBy(ease / duration),
-			    speed = speedVector.distanceTo([0, 0]),
+			const speedVector = direction.multiplyBy(ease / duration);
+			const speed = speedVector.distanceTo([0, 0]);
 
-			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
-			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
+			const limitedSpeed = Math.min(options.inertiaMaxSpeed, speed);
+			const limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed);
 
-			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
-			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			const decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
+			const offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');

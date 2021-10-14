@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
@@ -60,17 +64,20 @@ export const ScrollWheelZoom = Handler.extend({
 	},
 
 	_performZoom: function () {
-		const map = this._map,
-		    zoom = map.getZoom(),
-		    snap = this._map.options.zoomSnap || 0;
+		const map = this._map;
+		const zoom = map.getZoom();
+		const snap = this._map.options.zoomSnap || 0;
 
 		map._stop(); // stop panning and fly animations if any
 
 		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
-		const d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4),
-		    d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
-		    d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
-		    delta = map._limitZoom(zoom + (this._delta > 0 ? d4 : -d4)) - zoom;
+		const d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4);
+
+		const d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2;
+
+		const d4 = snap ? Math.ceil(d3 / snap) * snap : d3;
+
+		const delta = map._limitZoom(zoom + (this._delta > 0 ? d4 : -d4)) - zoom;
 
 		this._delta = 0;
 		this._startTime = null;
