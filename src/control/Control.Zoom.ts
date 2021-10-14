@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import {Control} from './Control';
 import {Map} from '../map/Map';
@@ -36,9 +41,9 @@ export const Zoom = Control.extend({
 	},
 
 	onAdd: function (map) {
-		const zoomName = 'leaflet-control-zoom',
-		    container = DomUtil.create('div', zoomName + ' leaflet-bar'),
-		    options = this.options;
+		const zoomName = 'leaflet-control-zoom';
+		const container = DomUtil.create('div', zoomName + ' leaflet-bar'),
+		const options = this.options;
 
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
 		        zoomName + '-in',  container, this._zoomIn);
@@ -100,8 +105,8 @@ export const Zoom = Control.extend({
 	},
 
 	_updateDisabled: function () {
-		const map = this._map,
-		    className = 'leaflet-disabled';
+		const map = this._map;
+		const className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);
 		DomUtil.removeClass(this._zoomOutButton, className);
@@ -141,6 +146,6 @@ Map.addInitHook(function () {
 // @namespace Control.Zoom
 // @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
-export var zoom = function (options) {
+export const zoom = function (options) {
 	return new Zoom(options);
 };

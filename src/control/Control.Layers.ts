@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import {Control} from './Control';
 import * as Util from '../core/Util';
@@ -172,9 +178,9 @@ export const Layers = Control.extend({
 	},
 
 	_initLayout: function () {
-		const className = 'leaflet-control-layers',
-		    container = this._container = DomUtil.create('div', className),
-		    collapsed = this.options.collapsed;
+		const className = 'leaflet-control-layers';
+		const container = this._container = DomUtil.create('div', className);
+		const collapsed = this.options.collapsed;
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
@@ -316,9 +322,9 @@ export const Layers = Control.extend({
 	},
 
 	_addItem: function (obj) {
-		const label = document.createElement('label'),
-		    checked = this._map.hasLayer(obj.layer),
-		    input;
+		const label = document.createElement('label');
+		const checked = this._map.hasLayer(obj.layer);
+		const input;
 
 		if (obj.overlay) {
 			input = document.createElement('input');
@@ -353,10 +359,11 @@ export const Layers = Control.extend({
 	},
 
 	_onInputClick: function () {
-		const inputs = this._layerControlInputs,
-		    input, layer;
-		const addedLayers = [],
-		    removedLayers = [];
+		const inputs = this._layerControlInputs;
+		const input;
+		const layer;
+		const addedLayers = [];
+		const removedLayers = [];
 
 		this._handlingClick = true;
 
@@ -389,10 +396,10 @@ export const Layers = Control.extend({
 	},
 
 	_checkDisabledLayers: function () {
-		const inputs = this._layerControlInputs,
-		    input,
-		    layer,
-		    zoom = this._map.getZoom();
+		const inputs = this._layerControlInputs;
+		const input;
+		const layer;
+		const zoom = this._map.getZoom();
 
 		for (const i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];

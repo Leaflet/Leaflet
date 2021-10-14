@@ -53,7 +53,7 @@
     "main": "./src/Server.ts",
     "scripts": {
         "start": "ts-node ./src/Server.ts",
-        "docs": "node ./build/docs.ts",
+        "docs": "ts-node ./build/docs.ts",
         "pretest": "npm run lint --fix",
         "test": "npm run test-nolint",
         "test-nolint": "karma start ./spec/karma.conf.ts",

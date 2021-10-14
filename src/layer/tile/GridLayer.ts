@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Layer} from '../Layer';
 import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
@@ -5,6 +10,28 @@ import * as DomUtil from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+
+import {Object, ReturnType, HTMLElement} from 'typescript';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
 
 /*
  * @class GridLayer
@@ -177,7 +204,7 @@ export const GridLayer = Layer.extend({
 
 	// @method bringToFront: this
 	// Brings the tile layer to the top of all tile layers.
-	bringToFront: function () {
+	bringToFront: function ():LayerReturnType {
 		if (this._map) {
 			DomUtil.toFront(this._container);
 			this._setAutoZIndex(Math.max);
@@ -187,7 +214,7 @@ export const GridLayer = Layer.extend({
 
 	// @method bringToBack: this
 	// Brings the tile layer to the bottom of all tile layers.
-	bringToBack: function () {
+	bringToBack: function ():LayerReturnType {
 		if (this._map) {
 			DomUtil.toBack(this._container);
 			this._setAutoZIndex(Math.min);
@@ -197,13 +224,13 @@ export const GridLayer = Layer.extend({
 
 	// @method getContainer: HTMLElement
 	// Returns the HTML element that contains the tiles for this layer.
-	getContainer: function () {
+	getContainer: function ():HTMLElementReturnType {
 		return this._container;
 	},
 
 	// @method setOpacity(opacity: Number): this
 	// Changes the [opacity](#gridlayer-opacity) of the grid layer.
-	setOpacity: function (opacity) {
+	setOpacity: function (opacity:NumberReturnType):LayerReturnType {
 		this.options.opacity = opacity;
 		this._updateOpacity();
 		return this;
@@ -220,7 +247,7 @@ export const GridLayer = Layer.extend({
 
 	// @method isLoading: Boolean
 	// Returns `true` if any tile in the grid layer has not finished loading.
-	isLoading: function () {
+	isLoading: function ():boolean {
 		return this._loading;
 	},
 
@@ -285,8 +312,8 @@ export const GridLayer = Layer.extend({
 	_setAutoZIndex: function (compare) {
 		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
-		const layers = this.getPane().children,
-		    edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
+		const layers = this.getPane().children;
+		const edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
 
 		for (const i = 0, len = layers.length, zIndex; i < len; i++) {
 
@@ -311,9 +338,9 @@ export const GridLayer = Layer.extend({
 
 		DomUtil.setOpacity(this._container, this.options.opacity);
 
-		const now = +new Date(),
-		    nextFrame = false,
-		    willPrune = false;
+		const now = +new Date();
+		const nextFrame = false;
+		const willPrune = false;
 
 		for (const key in this._tiles) {
 			const tile = this._tiles[key];
@@ -359,8 +386,8 @@ export const GridLayer = Layer.extend({
 
 	_updateLevels: function () {
 
-		const zoom = this._tileZoom,
-		    maxZoom = this.options.maxZoom;
+		const zoom = this._tileZoom;
+		const maxZoom = this.options.maxZoom;
 
 		if (zoom === undefined) { return undefined; }
 
@@ -377,8 +404,8 @@ export const GridLayer = Layer.extend({
 			}
 		}
 
-		const level = this._levels[zoom],
-		    map = this._map;
+		const level = this._levels[zoom];
+		const map = this._map;
 
 		if (!level) {
 			level = this._levels[zoom] = {};
@@ -413,7 +440,8 @@ export const GridLayer = Layer.extend({
 			return;
 		}
 
-		const key, tile;
+		const key;
+		const tile;
 
 		const zoom = this._map.getZoom();
 		if (zoom > this.options.maxZoom ||
@@ -471,14 +499,14 @@ export const GridLayer = Layer.extend({
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
-		const x2 = Math.floor(x / 2),
-		    y2 = Math.floor(y / 2),
-		    z2 = z - 1,
-		    coords2 = new Point(+x2, +y2);
+		const x2 = Math.floor(x / 2);
+		const y2 = Math.floor(y / 2);
+		const z2 = z - 1;
+		const coords2 = new Point(+x2, +y2);
 		coords2.z = +z2;
 
-		const key = this._tileCoordsToKey(coords2),
-		    tile = this._tiles[key];
+		const key = this._tileCoordsToKey(coords2);
+		const tile = this._tiles[key];
 
 		if (tile && tile.active) {
 			tile.retain = true;
@@ -503,8 +531,8 @@ export const GridLayer = Layer.extend({
 				const coords = new Point(i, j);
 				coords.z = z + 1;
 
-				const key = this._tileCoordsToKey(coords),
-				    tile = this._tiles[key];
+				const key = this._tileCoordsToKey(coords);
+				const tile = this._tiles[key];
 
 				if (tile && tile.active) {
 					tile.retain = true;
@@ -547,7 +575,7 @@ export const GridLayer = Layer.extend({
 	_setView: function (center, zoom, noPrune, noUpdate) {
 		const tileZoom = Math.round(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
-		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
+		(this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
 			tileZoom = undefined;
 		} else {
 			tileZoom = this._clampZoom(tileZoom);
@@ -589,9 +617,8 @@ export const GridLayer = Layer.extend({
 	},
 
 	_setZoomTransform: function (level, center, zoom) {
-		const scale = this._map.getZoomScale(zoom, level.zoom),
-		    translate = level.origin.multiplyBy(scale)
-		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
+		const scale = this._map.getZoomScale(zoom, level.zoom);
+		const translate = level.origin.multiplyBy(scale).subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
 		if (Browser.any3d) {
 			DomUtil.setTransform(level.el, translate, scale);
@@ -601,10 +628,10 @@ export const GridLayer = Layer.extend({
 	},
 
 	_resetGrid: function () {
-		const map = this._map,
-		    crs = map.options.crs,
-		    tileSize = this._tileSize = this.getTileSize(),
-		    tileZoom = this._tileZoom;
+		const map = this._map;
+		const crs = map.options.crs;
+		const tileSize = this._tileSize = this.getTileSize();
+		const tileZoom = this._tileZoom;
 
 		const bounds = this._map.getPixelWorldBounds(this._tileZoom);
 		if (bounds) {
@@ -628,11 +655,11 @@ export const GridLayer = Layer.extend({
 	},
 
 	_getTiledPixelBounds: function (center) {
-		const map = this._map,
-		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
-		    scale = map.getZoomScale(mapZoom, this._tileZoom),
-		    pixelCenter = map.project(center, this._tileZoom).floor(),
-		    halfSize = map.getSize().divideBy(scale * 2);
+		const map = this._map;
+		const mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom();
+		const scale = map.getZoomScale(mapZoom, this._tileZoom);
+		const pixelCenter = map.project(center, this._tileZoom).floor();
+		const halfSize = map.getSize().divideBy(scale * 2);
 
 		return new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
@@ -646,12 +673,12 @@ export const GridLayer = Layer.extend({
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
-		const pixelBounds = this._getTiledPixelBounds(center),
-		    tileRange = this._pxBoundsToTileRange(pixelBounds),
-		    tileCenter = tileRange.getCenter(),
-		    queue = [],
-		    margin = this.options.keepBuffer,
-		    noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
+		const pixelBounds = this._getTiledPixelBounds(center);
+		const tileRange = this._pxBoundsToTileRange(pixelBounds);
+		const tileCenter = tileRange.getCenter();
+		const queue = [];
+		const margin = this.options.keepBuffer;
+		const noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
 		                              tileRange.getTopRight().add([margin, -margin]));
 
 		// Sanity check: panic if the tile range contains Infinity somewhere.
@@ -734,20 +761,20 @@ export const GridLayer = Layer.extend({
 		return this._tileCoordsToBounds(this._keyToTileCoords(key));
 	},
 
-	_tileCoordsToNwSe: function (coords) {
-		const map = this._map,
-		    tileSize = this.getTileSize(),
-		    nwPoint = coords.scaleBy(tileSize),
-		    sePoint = nwPoint.add(tileSize),
-		    nw = map.unproject(nwPoint, coords.z),
-		    se = map.unproject(sePoint, coords.z);
+	_tileCoordsToNwSe: function (coords:pointReturnType[]):pointReturnType[] {
+		const map = this._map;
+		const tileSize = this.getTileSize();
+		const nwPoint = coords.scaleBy(tileSize);
+		const sePoint = nwPoint.add(tileSize);
+		const nw = map.unproject(nwPoint, coords.z);
+		const se = map.unproject(sePoint, coords.z);
 		return [nw, se];
 	},
 
 	// converts tile coordinates to its geographical bounds
-	_tileCoordsToBounds: function (coords) {
-		const bp = this._tileCoordsToNwSe(coords),
-		    bounds = new LatLngBounds(bp[0], bp[1]);
+	_tileCoordsToBounds: function (coords:pointReturnType[]):LatLngBoundsReturnType {
+		const bp = this._tileCoordsToNwSe(coords);
+		const bounds = new LatLngBounds(bp[0], bp[1]);
 
 		if (!this.options.noWrap) {
 			bounds = this._map.wrapLatLngBounds(bounds);
@@ -760,9 +787,9 @@ export const GridLayer = Layer.extend({
 	},
 
 	// converts tile cache key to coordinates
-	_keyToTileCoords: function (key) {
-		const k = key.split(':'),
-		    coords = new Point(+k[0], +k[1]);
+	_keyToTileCoords: function (key):pointReturnType {
+		const k = key.split(':');
+		const coords = new Point(+k[0], +k[1]);
 		coords.z = +k[2];
 		return coords;
 	},
@@ -806,8 +833,8 @@ export const GridLayer = Layer.extend({
 	},
 
 	_addTile: function (coords, container) {
-		const tilePos = this._getTilePos(coords),
-		    key = this._tileCoordsToKey(coords);
+		const tilePos = this._getTilePos(coords);
+		const key = this._tileCoordsToKey(coords);
 
 		const tile = this.createTile(this._wrapCoords(coords), Util.bind(this._tileReady, this, coords));
 

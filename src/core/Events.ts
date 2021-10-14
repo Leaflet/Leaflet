@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DemoAbstractClass } from "./DemoAbstractClass";
@@ -9,6 +13,7 @@ import {Point} from "../geometry";
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 // type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type onReturnType = ReturnType<typeof String | Object.Number >;
+type eventReturnType = ReturnType<typeof Event>;
 type _onReturnType = ReturnType<typeof String | Object.Number >;
 type offReturnType = ReturnType<typeof String | Object.Number >;
 // type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
@@ -140,9 +145,9 @@ export const Events = {
 	},
 
 	_off: function (type, fn, context) {
-		const listeners,
-		    i,
-		    len;
+		const listeners;
+		const i;
+		const len;
 
 		if (!this._events) { return; }
 
@@ -251,15 +256,11 @@ export const Events = {
 		}
 
 		const handler = Util.bind(function () {
-			this
-			    .off(types, fn, context)
-			    .off(types, handler, context);
+			this.off(types, fn, context).off(types, handler, context);
 		}, this);
 
 		// add a listener that's executed once and removed after that
-		return this
-		    .on(types, fn, context)
-		    .on(types, handler, context);
+		return this.on(types, fn, context).on(types, handler, context);
 	},
 
 	// @method addEventParent(obj: Evented): this

@@ -66,9 +66,10 @@ public function serve() {
 try{
   serve();
 }catch(e){
-  const result = (e as Exception).Message;
+  //typescript 2304
+  // const result = (e as Exception).Message;
 
-  console.log(result);
+  // console.log(result);
 
 }
 finally{

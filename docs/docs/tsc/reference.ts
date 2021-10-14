@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 //import * as $ from '@types/jquery';
 
 // function reference():'@types/jquery'{

@@ -1,9 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as Browser from '../core/Browser';
+
+import Event from 'typescript';
+
+import {Object, ReturnType} from 'typescript';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type onReturnType = ReturnType<typeof String | Object.Number >;
+
+type eventReturnType = ReturnType<typeof Event>;
+type idReturnType = ReturnType<typeof Number>;
+type objReturnType = ReturnType<typeof Object|Event|Point>;
+type handlerReturnType = ReturnType<typeof Object|Event|Point>;
+
+type _onReturnType = ReturnType<typeof String | Object.Number >;
+type offReturnType = ReturnType<typeof String | Object.Number >;
+// type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
 
 /*
  * Extends the event handling code with double tap support for mobile browsers.
@@ -14,13 +43,13 @@ const _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointer
 const _pre = '_leaflet_';
 
 // inspired by Zepto touch code by Thomas Fuchs
-export function addDoubleTapListener(obj, handler, id) {
+export function addDoubleTapListener(obj:objReturnType, handler:handlerReturnType, id:idReturnType) {
 	const last;
 	const touch;
 	const doubleTap = false,
 	const delay = 250;
 
-	function onTouchStart(e) {
+	function onTouchStart(e:eventReturnType): eventReturnType {
 
 		if (Browser.pointer) {
 			if (!e.isPrimary) { return; }
@@ -37,7 +66,7 @@ export function addDoubleTapListener(obj, handler, id) {
 		last = now;
 	}
 
-	function onTouchEnd(e) {
+	function onTouchEnd(e:eventReturnType) {
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
 				if (e.pointerType === 'mouse') { return; }
@@ -74,7 +103,7 @@ export function addDoubleTapListener(obj, handler, id) {
 	return this;
 }
 
-export function removeDoubleTapListener(obj, id) {
+export function removeDoubleTapListener(obj:objReturnType, id:idReturnType){
 	const touchstart = obj[_pre + _touchstart + id];
 	const touchend = obj[_pre + _touchend + id];
 	const dblclick = obj[_pre + 'dblclick' + id];
@@ -85,3 +114,4 @@ export function removeDoubleTapListener(obj, id) {
 
 	return this;
 }
+} // end nested export
