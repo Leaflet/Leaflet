@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as Browser from '../core/Browser';
 
 /*
@@ -10,9 +15,10 @@ const _pre = '_leaflet_';
 
 // inspired by Zepto touch code by Thomas Fuchs
 export function addDoubleTapListener(obj, handler, id) {
-	let last, touch,
-	    doubleTap = false,
-	    delay = 250;
+	const last;
+	const touch;
+	const doubleTap = false,
+	const delay = 250;
 
 	function onTouchStart(e) {
 
@@ -23,8 +29,8 @@ export function addDoubleTapListener(obj, handler, id) {
 			return;
 		}
 
-		const now = Date.now(),
-		    delta = now - (last || now);
+		const now = Date.now();
+		const delta = now - (last || now);
 
 		touch = e.touches ? e.touches[0] : e;
 		doubleTap = (delta > 0 && delta <= delay);
@@ -36,10 +42,10 @@ export function addDoubleTapListener(obj, handler, id) {
 			if (Browser.pointer) {
 				if (e.pointerType === 'mouse') { return; }
 				// work around .type being readonly with MSPointer* events
-				let newTouch = {},
-				    prop, i;
+				const newTouch;
+				const prop;
 
-				for (i in touch) {
+				for (const i in touch) {
 					prop = touch[i];
 					newTouch[i] = prop && prop.bind ? prop.bind(touch) : prop;
 				}
@@ -69,9 +75,9 @@ export function addDoubleTapListener(obj, handler, id) {
 }
 
 export function removeDoubleTapListener(obj, id) {
-	const touchstart = obj[_pre + _touchstart + id],
-	    touchend = obj[_pre + _touchend + id],
-	    dblclick = obj[_pre + 'dblclick' + id];
+	const touchstart = obj[_pre + _touchstart + id];
+	const touchend = obj[_pre + _touchend + id];
+	const dblclick = obj[_pre + 'dblclick' + id];
 
 	obj.removeEventListener(_touchstart, touchstart, Browser.passiveEvents ? {passive: false} : false);
 	obj.removeEventListener(_touchend, touchend, Browser.passiveEvents ? {passive: false} : false);

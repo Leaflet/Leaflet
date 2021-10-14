@@ -1,5 +1,27 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DemoAbstractClass } from "./DemoAbstractClass";
 import * as Util from './Util';
+
+import {Object, ReturnType} from 'typescript';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type onReturnType = ReturnType<typeof String | Object.Number >;
+type _onReturnType = ReturnType<typeof String | Object.Number >;
+type offReturnType = ReturnType<typeof String | Object.Number >;
+// type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
 
 /*
  * @class Evented
@@ -34,7 +56,7 @@ export const Events = {
 	 * @method on(eventMap: Object): this
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	 */
-	on: function (types, fn, context) {
+	on: function (types:onReturnType, fn, context) {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -67,7 +89,7 @@ export const Events = {
 	 * @method off: this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
-	off: function (types, fn, context) {
+	off: function (types:offReturnType, fn, context) {
 
 		if (!types) {
 			// clear all listeners if called without arguments
@@ -81,7 +103,7 @@ export const Events = {
 		} else {
 			types = Util.splitWords(types);
 
-			for (const i = 0, len = types.length; i < len; i++) {
+			for (const type in types) {
 				this._off(types[i], fn, context);
 			}
 		}
@@ -90,7 +112,7 @@ export const Events = {
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type, fn, context) {
+	_on: function (type:_onReturnType, fn, context) {
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -104,8 +126,8 @@ export const Events = {
 			// Less memory footprint.
 			context = undefined;
 		}
-		const newListener = {fn: fn, ctx: context},
-		    listeners = typeListeners;
+		const newListener = {fn: fn, ctx: context};
+		const listeners = typeListeners;
 
 		// check if fn already there
 		for (const i = 0, len = listeners.length; i < len; i++) {
