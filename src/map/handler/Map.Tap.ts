@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
@@ -51,8 +54,8 @@ export const Tap = Handler.extend({
 			return;
 		}
 
-		const first = e.touches[0],
-		    el = first.target;
+		const first = e.touches[0];
+		const el = first.target;
 
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
@@ -88,8 +91,8 @@ export const Tap = Handler.extend({
 
 		if (this._fireClick && e && e.changedTouches) {
 
-			const first = e.changedTouches[0],
-			    el = first.target;
+			const first = e.changedTouches[0];
+			const el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				DomUtil.removeClass(el, 'leaflet-active');
@@ -121,10 +124,10 @@ export const Tap = Handler.extend({
 		e.target._simulatedClick = true;
 
 		simulatedEvent.initMouseEvent(
-		        type, true, true, window, 1,
-		        e.screenX, e.screenY,
-		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
+			type, true, true, window, 1,
+			e.screenX, e.screenY,
+			e.clientX, e.clientY,
+			false, false, false, false, 0, null);
 
 		e.target.dispatchEvent(simulatedEvent);
 	}

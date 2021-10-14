@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 
@@ -27,10 +31,10 @@ export const DoubleClickZoom = Handler.extend({
 	},
 
 	_onDoubleClick: function (e) {
-		const map = this._map,
-		    oldZoom = map.getZoom(),
-		    delta = map.options.zoomDelta,
-		    zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
+		const map = this._map;
+		const oldZoom = map.getZoom();
+		const delta = map.options.zoomDelta;
+		const zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;
 
 		if (map.options.doubleClickZoom === 'center') {
 			map.setZoom(zoom);

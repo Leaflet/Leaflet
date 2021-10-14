@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as Util from '../../core/Util';
@@ -91,8 +96,8 @@ export const BoxZoom = Handler.extend({
 
 		this._point = this._map.mouseEventToContainerPoint(e);
 
-		const bounds = new Bounds(this._point, this._startPoint),
-		    size = bounds.getSize();
+		const bounds = new Bounds(this._point, this._startPoint);
+		const size = bounds.getSize();
 
 		DomUtil.setPosition(this._box, bounds.min);
 
@@ -128,9 +133,8 @@ export const BoxZoom = Handler.extend({
 		this._clearDeferredResetState();
 		this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
 
-		const bounds = new LatLngBounds(
-		        this._map.containerPointToLatLng(this._startPoint),
-		        this._map.containerPointToLatLng(this._point));
+		const bounds = new LatLngBounds(this._map.containerPointToLatLng(this._startPoint),
+		this._map.containerPointToLatLng(this._point));
 
 		this._map
 			.fitBounds(bounds)
