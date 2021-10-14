@@ -9,7 +9,7 @@ import * as Util from '../../core/Util';
  *
  * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */
-export var EPSG3395 = Util.extend({}, Earth, {
+export const EPSG3395 = Util.extend({}, Earth, {
 	code: 'EPSG:3395',
 	projection: Mercator,
 

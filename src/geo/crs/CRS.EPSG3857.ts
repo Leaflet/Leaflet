@@ -12,7 +12,7 @@ import * as Util from '../../core/Util';
  * Map's `crs` option.
  */
 
-export var EPSG3857 = Util.extend({}, Earth, {
+export const EPSG3857 = Util.extend({}, Earth, {
 	code: 'EPSG:3857',
 	projection: SphericalMercator,
 

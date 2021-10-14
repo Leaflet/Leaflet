@@ -1,6 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+import {CRS} from './CRS';
+import {LonLat} from '../projection/Projection.LonLat';
+import {toTransformation} from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
+
+
 import {LatLng} from '../LatLng';
 import {Bounds} from '../../geometry/Bounds';
 import {Point} from '../../geometry/Point';
@@ -33,28 +36,34 @@ type PointReturnType = ReturnType<typeof  Point.prototype.clone> | number | Retu
 
 // type numberAuxY = ReturnType<typeof Object.Number>;
 
-
 /*
- * @namespace Projection
- * @section
- * Leaflet comes with a set of already defined Projections out of the box:
+ * @namespace CRS
+ * @crs L.CRS.Simple
  *
- * @projection L.Projection.LonLat
- *
- * Equirectangular, or Plate Carree projection — the most simple projection,
- * mostly used by GIS enthusiasts. Directly maps `x` as longitude, and `y` as
- * latitude. Also suitable for flat worlds, e.g. game maps. Used by the
- * `EPSG:4326` and `Simple` CRS.
+ * A simple CRS that maps longitude and latitude into `x` and `y` directly.
+ * May be used for maps of flat surfaces (e.g. game maps). Note that the `y`
+ * axis should still be inverted (going from bottom to top). `distance()` returns
+ * simple euclidean distance.
  */
 
-export const LonLat = {
-	project: function (latlng:LatLngReturnType):PointReturnType {
-		return new Point(latlng.lng, latlng.lat);
+export const Simple = Util.extend({}, CRS, {
+	projection: LonLat,
+	transformation: toTransformation(1, 0, -1, 0),
+
+	scale: function (zoom) {
+		return Math.pow(2, zoom);
 	},
 
-	unproject: function (point:PointReturnType):LatLngReturnType {
-		return new LatLng(point.y, point.x);
+	zoom: function (scale) {
+		return Math.log(scale) / Math.LN2;
 	},
 
-	bounds: new Bounds([-180, -90], [180, 90])
-};
+	distance: function (latlng1, latlng2) {
+		var dx = latlng2.lng - latlng1.lng,
+		    dy = latlng2.lat - latlng1.lat;
+
+		return Math.sqrt(dx * dx + dy * dy);
+	},
+
+	infinite: true
+});

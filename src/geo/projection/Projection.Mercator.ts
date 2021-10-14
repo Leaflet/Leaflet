@@ -9,7 +9,7 @@ import {Point} from '../../geometry/Point';
  * Elliptical Mercator projection — more complex than Spherical Mercator. Assumes that Earth is an ellipsoid. Used by the EPSG:3395 CRS.
  */
 
-export var Mercator = {
+export const Mercator = {
 	R: 6378137,
 	R_MINOR: 6356752.314245179,
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -680,7 +681,7 @@ export const GridLayer = Layer.extend({
 		const queue = [];
 		const margin = this.options.keepBuffer;
 		const noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
-		                              tileRange.getTopRight().add([margin, -margin]));
+		tileRange.getTopRight().add([margin, -margin]));
 
 		// Sanity check: panic if the tile range contains Infinity somewhere.
 		if (!(isFinite(tileRange.min.x) &&

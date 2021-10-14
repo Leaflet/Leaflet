@@ -4,6 +4,39 @@ import {LatLng} from '../LatLng';
 import {LatLngBounds} from '../LatLngBounds';
 import * as Util from '../../core/Util';
 
+
+import {LatLng} from '../LatLng';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
+
+
+import {Object, ReturnType} from 'typescript';
+// import {$ , Event} from 'jquery';
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type MapReturnType = ReturnType<typeof Map>;
+// type LayerGroupReturnType = ReturnType<typeof LayerGroup>;
+// type EventReturnType= ReturnType<typeof Event>;
+// type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+// type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
 /*
  * @namespace CRS
  * @crs L.CRS.Base
@@ -21,7 +54,7 @@ import * as Util from '../../core/Util';
  * and methods can't be added to them with the `include` function.
  */
 
-export var CRS = {
+export const CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
@@ -35,8 +68,8 @@ export var CRS = {
 	// The inverse of `latLngToPoint`. Projects pixel coordinates on a given
 	// zoom into geographical coordinates.
 	pointToLatLng: function (point, zoom) {
-		const scale = this.scale(zoom),
-		    untransformedPoint = this.transformation.untransform(point, scale);
+		const scale = this.scale(zoom);
+		const untransformedPoint = this.transformation.untransform(point, scale);
 
 		return this.projection.unproject(untransformedPoint);
 	},
