@@ -65,11 +65,11 @@ public class PointReturnImpl implements PointReturn{
 
 
 
-export function Point(x:number, y:number, round:number): PointReturn {
+export function Point(x:number, y:number, round:number): PointReturnType {
 	// @property x: Number; The `x` coordinate of the point
-	public const x = Object.create((round ? Math.round(x) : x));
+	const x = Object.create((round ? Math.round(x) : x));
 	// @property y: Number; The `y` coordinate of the point
-	public const y = Object.create((round ? Math.round(y) : y));
+	const y = Object.create((round ? Math.round(y) : y));
 
 	// const arrayXY = {x,y};
 	// return arrayXY;
@@ -81,7 +81,12 @@ const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
 };
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
-type P = ReturnType<typeof  Point.prototype.clone>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
 
 type numberAuxX = ReturnType<typeof Object.Number>;
 
@@ -95,7 +100,7 @@ Point.prototype = {
 	// Returns a copy of the current point.
 	// fail type self.Point
 	// @ts-ignore
-	clone: function () {
+	clone: function ():NumberReturnType {
 	try{
 		if(typeof Point.x === typeof numberAuxX){
 			if(typeof this.y === typeof numberAuxY) {
@@ -110,12 +115,12 @@ Point.prototype = {
 
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
-	add: function (point:Point) {
+	add: function (point:PointReturnType) {
 		// non-destructive, returns a new point
 		return this.clone()._add(toPoint(point));
 	},
 
-	_add: function (point) {
+	_add: function (point: PointReturnType): PointReturnType {
 		// destructive, used directly for performance in situations where it's safe to modify existing point
 		this.x += point.x;
 		this.y += point.y;
@@ -124,11 +129,11 @@ Point.prototype = {
 
 	// @method subtract(otherPoint: Point): Point
 	// Returns the result of subtraction of the given point from the current.
-	subtract: function (point) {
+	subtract: function (point: PointReturnType): PointReturnType {
 		return this.clone()._subtract(toPoint(point));
 	},
 
-	_subtract: function (point) {
+	_subtract: function (point: PointReturnType): PointReturnType {
 		this.x -= point.x;
 		this.y -= point.y;
 		return this;
@@ -163,24 +168,24 @@ Point.prototype = {
 	// `scale`. In linear algebra terms, multiply the point by the
 	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
 	// defined by `scale`.
-	scaleBy: function (point:Point):Point {
+	scaleBy: function (point:PointReturnType):PointReturnType {
 		return new Point(this.x * point.x, this.y * point.y);
 	},
 
 	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
-	unscaleBy: function (point:Point):Point {
+	unscaleBy: function (point:PointReturnType):PointReturnType {
 		return new Point(this.x / point.x, this.y / point.y);
 	},
 
 	// @method round(): Point
 	// Returns a copy of the current point with rounded coordinates.
-	round: function (): {
+	round: function (): roundReturnType {
 		return this.clone()._round();
 	},
 
-	_round: function (): Object.getPrototypeOf(Math.round(this.x)) | Object.getPrototypeOf(Math.round(this.y)) {
+	_round: function (): _roundReturnType {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
 		return this;
@@ -188,7 +193,7 @@ Point.prototype = {
 
 	// @method floor(): Point
 	// Returns a copy of the current point with floored coordinates (rounded down).
-	floor: function () {
+	floor: function (): roundReturnType {
 		return this.clone()._floor();
 	},
 
@@ -224,7 +229,7 @@ Point.prototype = {
 
 	// @method distanceTo(otherPoint: Point): Number
 	// Returns the cartesian distance between the current and the given points.
-	distanceTo: function (point) {
+	distanceTo: function (point:PointReturnType) : PointReturnType {
 		point = toPoint(point);
 
 		const x = point.x - this.x,
@@ -235,25 +240,25 @@ Point.prototype = {
 
 	// @method equals(otherPoint: Point): Boolean
 	// Returns `true` if the given point has the same coordinates.
-	equals: function (point) {
-		point = toPoint(point);
+	equals: function (point:NumberReturnType[]):NumberReturnType[] {
+		point = toPoint(point[0]);
 
-		return point.x === this.x &&
-		       point.y === this.y;
+		return point[0].x === this.x &&
+		       point[0].y === this.y;
 	},
 
 	// @method contains(otherPoint: Point): Boolean
 	// Returns `true` if both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).
-	contains: function (point) {
-		point = toPoint(point);
+	contains: function (point:NumberReturnType[]): NumberReturnType[] {
+		point = toPoint(point[0],point[1],point[2]);
 
-		return Math.abs(point.x) <= Math.abs(this.x) &&
-		       Math.abs(point.y) <= Math.abs(this.y);
+		return Math.abs(point[0].x) <= Math.abs(this.x) &&
+		       Math.abs(point[1].y) <= Math.abs(this.y);
 	},
 
 	// @method toString(): String
 	// Returns a string representation of the point for debugging purposes.
-	toString: function () {
+	toString: function (): StringReturnType | StringReturnType[] {
 		return 'Point(' +
 		        formatNum(this.x) + ', ' +
 		        formatNum(this.y) + ')';
@@ -270,8 +275,8 @@ Point.prototype = {
 // @alternative
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-export function toPoint(x:number, y:number, round:number) {
-	if (x instanceof Point) {
+export function toPoint(x:NumberReturnType[], y:NumberReturnType[], round:NumberReturnType[]): NumberReturnType | NumberReturnType[] {
+	if (x[0] instanceof Point) {
 		return x;
 	}
 	if (isArray(x)) {

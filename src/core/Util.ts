@@ -4,6 +4,22 @@
  * Various utility functions, used by Leaflet internally.
  */
 
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// @ts-ignore
+import {Object, ReturnType} from "typescript";
+import {Point} from "../geometry";
+
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+type numberAuxX = ReturnType<typeof Object.Number>;
+
+type numberAuxY = ReturnType<typeof Object.Number>;
+
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest) {
@@ -110,20 +126,20 @@ export function falseFn() { return false; }
 
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
-export function formatNum(num, digits) {
+export function formatNum(num:NumberReturnType|NumberReturnType[], digits:NumberReturnType|NumberReturnType[]):NumberReturnType|NumberReturnType[] {
 	const pow = Math.pow(10, (digits === undefined ? 6 : digits));
 	return Math.round(num * pow) / pow;
 }
 
 // @function trim(str: String): String
 // Compatibility polyfill for [String.prototype.trim](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim)
-export function trim(str) {
+export function trim(str:StringReturnType | StringReturnType[]):StringReturnType | StringReturnType[] {
 	return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 }
 
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
-export function splitWords(str) {
+export function splitWords(str:StringReturnType | StringReturnType[]) {
 	return trim(str).split(/\s+/);
 }
 
@@ -231,8 +247,13 @@ export function requestAnimFrame(fn, context, immediate) {
 
 // @function cancelAnimFrame(id: Number): undefined
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
-export function cancelAnimFrame(id) {
+export function cancelAnimFrame(id: NumberReturnType): undefined | void {
+try{
 	if (id) {
 		cancelFn.call(window, id);
 	}
+}finally {
+	// eslint-disable-next-line no-unsafe-finally
+	return;
+}
 }

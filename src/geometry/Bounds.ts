@@ -28,9 +28,26 @@ import {Point, toPoint} from './Point';
 // import {Number} from 'typescript';
 
 import {Point} from './Point';
+import {Object, ReturnType} from "typescript";
+
+// @ts-ignore
+import {Object, ReturnType} from 'typescript';
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+type numberAuxX = ReturnType<typeof Object.Number>;
+
+type numberAuxY = ReturnType<typeof Object.Number>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function Bounds(a:number, b:number) {
+export function Bounds(a:NumberReturnType, b:NumberReturnType): PointReturnType | PointReturnType[] {
+
 	if (!a) { return; }
 
 	const points = b ? [a, b] : a;
@@ -38,12 +55,13 @@ export function Bounds(a:number, b:number) {
 	for (const i in points.length) {
 		this.extend(points[i]);
 	}
+	return this;
 }
 
 Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
-	extend: function (point:Point) { // (Point)
+	extend: function (point:PointReturnType):PointReturnType { // (Point)
 		point = toPoint(point);
 
 		// @property min: Point
@@ -170,7 +188,7 @@ Bounds.prototype = {
 // @alternative
 // @factory L.bounds(points: Point[])
 // Creates a Bounds object from the given array of points.
-export function toBounds(a, b) {
+export function toBounds(a:PointReturnType|PointReturnType[], b:PointReturnType|PointReturnType[]):PointReturnType|PointReturnType[] {
 	if (!a || a instanceof Bounds) {
 		return a;
 	}
