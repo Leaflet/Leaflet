@@ -141,6 +141,7 @@
         "css-what": "^5.0.1",
         "express": "^4.17.1",
         "highlight.js": "^11.0.1",
+        "http": "0.0.1-security",
         "iconv": "^3.0.0",
         "iconv-lite-loader": "^1.0.0",
         "normalize-url": "6.0.1",

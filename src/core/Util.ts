@@ -42,12 +42,17 @@ export function extend(dest:ObjectReturnType[]): ObjectReturnType[] {
 
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export const create = Object.create || (function ():ObjectReturnType {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+export const create = Object.create || (function ():ObjectReturnType|FunctionReturnType {
+try{
 	function F() {}
-	return function (proto) {
+	return function (proto:ObjectReturnType):ObjectReturnType|FunctionReturnType {
 		F.prototype = proto;
 		return new F();
 	};
+}finally {
+	return;
+}
 })();
 
 // @function bind(fn: Function, …): Function
@@ -93,7 +98,7 @@ export function throttle(fn:FunctionReturnType, time:NumberReturnType, context:O
 	const wrapperFn;
 	const later;
 
-	later = function () {
+	later = function ():void {
 		// reset lock and call if queued
 		lock = false;
 		if (args) {

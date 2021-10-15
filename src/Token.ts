@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-unsafe-finally */
 function token ():string{
 
     const {Octokit, App, Action} = require('octokit');
@@ -11,9 +18,14 @@ function token ():string{
             data: { login },
         } = await octokit.rest.users.getAuthenticated();
         console.log("Hello, %s", login);
+        const retrieve = require('./AppServer.ts');
+        retrieve();
         return octokit.toString('leaflet-secret');
+    }finally{
+        // return null;
+        throw new Exception('retieve token GitHub error');
     }
-    return null;
+    
 }
 
 export default token;
