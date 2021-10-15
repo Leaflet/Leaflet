@@ -1,6 +1,27 @@
 import {Point} from './Point';
 import * as Util from '../core/Util';
 
+import {ReturnType} from 'typescript';
+// import {Point} from "../geometry";
+import {LatLngBounds} from "../geo";
+// import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type LatLngReturnType = ReturnType<typeof LatLng>;
+type LatLngBoundsReturnType = ReturnType<typeof LatLngBounds>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+
 /*
  * @class Transformation
  * @aka L.Transformation
@@ -22,7 +43,7 @@ import * as Util from '../core/Util';
 
 // factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
-export function Transformation(a, b, c, d) {
+export function Transformation(a:NumberReturnType, b:NumberReturnType, c:NumberReturnType, d:NumberReturnType):NumberReturnType {
 	if (Util.isArray(a)) {
 		// use array properties
 		this._a = a[0];
@@ -41,7 +62,7 @@ Transformation.prototype = {
 	// @method transform(point: Point, scale?: Number): Point
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts actual `L.Point` instances, not arrays.
-	transform: function (point, scale) { // (Point, Number) -> Point
+	transform: function (point:PointReturnType, scale:NumberReturnType):PointReturnType { // (Point, Number) -> Point
 		return this._transform(point.clone(), scale);
 	},
 

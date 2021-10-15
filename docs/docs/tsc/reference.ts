@@ -7,7 +7,7 @@
 
 	if (document.body.className.indexOf('api-page') !== -1) {
 
-		const elems = document.querySelectorAll('h2, h3, h4, tr');
+		let elems = document.querySelectorAll('h2, h3, h4, tr');
 
 		for (const i in elems.length) {
 			const el = elems[i];
@@ -37,7 +37,8 @@
 
 		elems = document.querySelectorAll('div.accordion');
 		for (const i in elems.length) {
-			el = elems[i];
+
+			const el = elems[i];
 
 			el.querySelector('label').addEventListener('click', function (c) {
 				return function () {

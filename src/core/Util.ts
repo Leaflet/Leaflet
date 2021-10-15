@@ -10,7 +10,10 @@ import {Object, ReturnType} from "typescript";
 import {Point} from "../geometry";
 
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type FunctionReturnType = ReturnType<typeof Object.Function>;
+type ObjectReturnType = ReturnType<typeof Object.String>;
 type PointReturnType = ReturnType<typeof Point>;
+type ArrayReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
 type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
@@ -22,10 +25,13 @@ type numberAuxY = ReturnType<typeof Object.Number>;
 
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
-export function extend(dest) {
-	const i, j, len, src;
+export function extend(dest:ObjectReturnType[]): ObjectReturnType[] {
+	const i;
+	const j;
+	const len;
+	const src:ObjectReturnType[];
 
-	for (const j in arguments.length) {
+	for (const j in arguments) {
 		src = arguments[j];
 		for (i in src) {
 			dest[i] = src[i];
@@ -47,7 +53,7 @@ export const create = Object.create || (function () {
 // @function bind(fn: Function, …): Function
 // Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 // Has a `L.bind()` shortcut.
-export function bind(fn, obj) {
+export function bind(fn:FunctionReturnType, obj:ObjectReturnType):FunctionReturnType {
 	const slice = Array.prototype.slice;
 
 	if (fn.bind) {
@@ -63,11 +69,11 @@ export function bind(fn, obj) {
 
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
-export const lastId = 0;
+export let lastId = 0;
 
 // @function stamp(obj: Object): Number
 // Returns the unique ID of an object, assigning it one if it doesn't have it.
-export function stamp(obj) {
+export function stamp(obj:ObjectReturnType):NumberReturnType {
 	/*eslint-disable */
 	obj._leaflet_id = obj._leaflet_id || ++lastId;
 	return obj._leaflet_id;
@@ -81,8 +87,11 @@ export function stamp(obj) {
 // received by the bound function will be any arguments passed when binding the
 // function, followed by any arguments passed when invoking the bound function.
 // Has an `L.throttle` shortcut.
-export function throttle(fn, time, context) {
-	const lock, args, wrapperFn, later;
+export function throttle(fn:FunctionReturnType, time:NumberReturnType, context:ObjectReturnType):FunctionReturnType {
+	const lock;
+	const args;
+	const wrapperFn;
+	const later;
 
 	later = function () {
 		// reset lock and call if queued
@@ -113,16 +122,17 @@ export function throttle(fn, time, context) {
 // Returns the number `num` modulo `range` in such a way so it lies within
 // `range[0]` and `range[1]`. The returned value will be always smaller than
 // `range[1]` unless `includeMax` is set to `true`.
-export function wrapNum(x, range, includeMax) {
-	const max = range[1],
-	    min = range[0],
-	    d = max - min;
+export function wrapNum(x:NumberReturnType, range:NumberReturnType[], includeMax:boolean):NumberReturnType {
+	const max = range[1];
+	const min = range[0];
+	const d = max - min;
+
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 }
 
 // @function falseFn(): Function
 // Returns a function which always returns `false`.
-export function falseFn() { return false; }
+export function falseFn():FunctionReturnType { return false; }
 
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
@@ -145,7 +155,7 @@ export function splitWords(str:StringReturnType | StringReturnType[]) {
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
-export function setOptions(obj, options) {
+export function setOptions(obj:ObjectReturnType, options:ObjectReturnType):ObjectReturnType {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
@@ -160,7 +170,7 @@ export function setOptions(obj, options) {
 // translates to `'?a=foo&b=bar'`. If `existingUrl` is set, the parameters will
 // be appended at the end. If `uppercase` is `true`, the parameter names will
 // be uppercased (e.g. `'?A=foo&B=bar'`)
-export function getParamString(obj, existingUrl, uppercase) {
+export function getParamString(obj:ObjectReturnType, existingUrl:StringReturnType, uppercase:boolean):StringReturnType {
 	const params = [];
 	for (const i in obj) {
 		params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
@@ -175,8 +185,8 @@ const templateRe = /\{ *([\w_ -]+) *\}/g;
 // and a data object like `{a: 'foo', b: 'bar'}`, returns evaluated string
 // `('Hello foo, bar')`. You can also specify functions instead of strings for
 // data values — they will be evaluated passing `data` as an argument.
-export function template(str, data) {
-	return str.replace(templateRe, function (str, key) {
+export function template(str:StringReturnType, data:ObjectReturnType):StringReturnType {
+	return str.replace(templateRe, function (str:StringReturnType, key:ObjectReturnType) {
 		const value = data[key];
 
 		if (value === undefined) {
@@ -191,13 +201,13 @@ export function template(str, data) {
 
 // @function isArray(obj): Boolean
 // Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export const isArray = Array.isArray || function (obj) {
+export const isArray = Array.isArray || function (obj:ObjectReturnType):boolean {
 	return (Object.prototype.toString.call(obj) === '[object Array]');
 };
 
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
-export function indexOf(array, el) {
+export function indexOf(array:ArrayReturnType, el:ObjectReturnType) {
 	for (const i in array.length) {
 		if (array[i] === el) { return i; }
 	}

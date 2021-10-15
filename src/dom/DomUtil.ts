@@ -3,6 +3,22 @@ import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
 
+// @ts-ignore
+import {HTMLElement, Object, ReturnType} from 'typescript';
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+type ObjectReturnType = ReturnType<typeof Object.String>;
+type StringReturnType = ReturnType<typeof HTMLElement> | ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+type numberAuxX = ReturnType<typeof Object.Number>;
+
+type numberAuxY = ReturnType<typeof Object.Number>;
+
 /*
  * @namespace DomUtil
  *
@@ -37,7 +53,7 @@ export const TRANSITION_END =
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
-export function get(id) {
+export function get(id:StringReturnType) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
@@ -195,10 +211,11 @@ function _setOpacityIE(el, value) {
 // Goes through the array of style names and returns the first name
 // that is a valid style name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
-export function testProp(props) {
+export function testProp(props: StringReturnType[]): StringReturnType {
 	const style = document.documentElement.style;
 
-	for (const i = 0; i < props.length; i++) {
+	// eslint-disable-next-line @typescript-eslint/no-for-in-array
+	for (const i in props) {
 		if (props[i] in style) {
 			return props[i];
 		}
@@ -210,7 +227,7 @@ export function testProp(props) {
 // Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
-export function setTransform(el, offset, scale) {
+export function setTransform(el:StringReturnType, offset:PointReturnType, scale:NumberReturnType) {
 	const pos = offset || new Point(0, 0);
 
 	el.style[TRANSFORM] =
@@ -224,7 +241,7 @@ export function setTransform(el, offset, scale) {
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
-export function setPosition(el, point) {
+export function setPosition(el:StringReturnType, point:PointReturnType) {
 
 	/*eslint-disable */
 	el._leaflet_pos = point;
@@ -240,7 +257,7 @@ export function setPosition(el, point) {
 
 // @function getPosition(el: HTMLElement): Point
 // Returns the coordinates of an element previously positioned with setPosition.
-export function getPosition(el) {
+export function getPosition(el:StringReturnType):PointReturnType {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 
@@ -303,7 +320,7 @@ const _outlineElement, _outlineStyle;
 // of the element `el` invisible. Used internally by Leaflet to prevent
 // focusable elements from displaying an outline when the user performs a
 // drag interaction on them.
-export function preventOutline(element) {
+export function preventOutline(element:StringReturnType) {
 	while (element.tabIndex === -1) {
 		element = element.parentNode;
 	}
@@ -327,7 +344,7 @@ export function restoreOutline() {
 
 // @function getSizedParentNode(el: HTMLElement): HTMLElement
 // Finds the closest parent node which size (width and height) is not null.
-export function getSizedParentNode(element) {
+export function getSizedParentNode(element:StringReturnType):StringReturnTypeing {
 	do {
 		element = element.parentNode;
 	} while ((!element.offsetWidth || !element.offsetHeight) && element !== document.body);
@@ -338,12 +355,13 @@ export function getSizedParentNode(element) {
 // Computes the CSS scale currently applied on the element.
 // Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
 // and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
-export function getScale(element) {
+export function getScale(element:StringReturnType):ObjectReturnType {
 	const rect = element.getBoundingClientRect(); // Read-only in old browsers.
 
 	return {
 		x: rect.width / element.offsetWidth || 1,
 		y: rect.height / element.offsetHeight || 1,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		boundingClientRect: rect
 	};
 }

@@ -1,4 +1,4 @@
-function docs(){
+function docs():void{
 	/* global hljs */
 // import hljs from 'highlight.tsc';
 
@@ -42,10 +42,13 @@ function docs(){
 		});
 
 		const scrollPos = function scrollPos() {
+
+			// const Error = require('typescript');
+
 			const scroll = window.scrollY;
 
 			try{
-				if (scroll >= (toc.offsetHeight "+" toc.offsetTop)) {
+				if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
 
 					document.body.classList.add('scrolled');
 
@@ -54,7 +57,14 @@ function docs(){
 					document.body.classList.remove('scrolled');
 
 				}
-			}catch(e:Error){
+			}catch(e){
+
+				throw new Error("Error");
+
+				// if(e instanceof Error){
+					// const $ = require('jquery');
+					// $('map').alert('Error');
+				// }
 
 			}finally{
 

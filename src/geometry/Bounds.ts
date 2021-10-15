@@ -27,8 +27,8 @@ import {Point, toPoint} from './Point';
 
 // import {Number} from 'typescript';
 
-import {Point} from './Point';
-import {Object, ReturnType} from "typescript";
+// import {Point} from './Point';
+// import {Object, ReturnType} from "typescript";
 
 // @ts-ignore
 import {Object, ReturnType} from 'typescript';
@@ -36,14 +36,14 @@ import {Object, ReturnType} from 'typescript';
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type PointReturnType = ReturnType<typeof Point>;
-type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
-type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
-type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
-type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
 
-type numberAuxX = ReturnType<typeof Object.Number>;
+// type numberAuxX = ReturnType<typeof Object.Number>;
 
-type numberAuxY = ReturnType<typeof Object.Number>;
+// type numberAuxY = ReturnType<typeof Object.Number>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function Bounds(a:NumberReturnType, b:NumberReturnType): PointReturnType | PointReturnType[] {

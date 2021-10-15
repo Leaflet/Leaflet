@@ -7,12 +7,28 @@ import {ImageOverlay} from './ImageOverlay';
 import * as DomUtil from '../dom/DomUtil';
 import * as Util from '../core/Util';
 
-import {Object, ReturnType} from 'typescript';
+import {ReturnType} from 'typescript';
+// import {Point} from "../geometry";
+import {LatLngBounds} from "../geo";
 // import {Point} from "../geometry";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type LatLngReturnType = ReturnType<typeof LatLng>;
+type LatLngBoundsReturnType = ReturnType<typeof LatLngBounds>;
+// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
 
-type VideoReturnType = ReturnType<typeof String|Array|HTMLVideoElement>;
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+
+type VideoReturnType = ReturnType<typeof String|typeof Array| typeof HTMLVideoElement>;
 
 /*
  * @class VideoOverlay
@@ -107,6 +123,6 @@ export const VideoOverlay = ImageOverlay.extend({
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
 
-export function videoOverlay(video:VideoReturnType, bounds, options) {
+export function videoOverlay(video:VideoReturnType| VideoReturnType[], bounds:LatLngBoundsReturnType, options: VideoReturnType):VideoReturnType {
 	return new VideoOverlay(video, bounds, options);
 }
