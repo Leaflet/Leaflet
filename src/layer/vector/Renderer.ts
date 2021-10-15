@@ -4,6 +4,39 @@ import * as Util from '../../core/Util';
 import * as Browser from '../../core/Browser';
 import {Bounds} from '../../geometry/Bounds';
 
+// import {Bounds} from '../../geometry/Bounds';
+
+import {Point} from '../../geometry/Point';
+// import {Bounds} from '../../geometry/Bounds';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+
+import {Object, ReturnType, HTMLElement} from 'typescript';
+import {Point} from "../geometry";
+import {FeatureGroup} from "../FeatureGroup";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+
+type EventReturnType = ReturnType<typeof Event>;
+
+// type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
 
 
 /*
@@ -41,7 +74,7 @@ export const Renderer = Layer.extend({
 		tolerance : 0
 	},
 
-	initialize: function (options) {
+	initialize: function (options:NumberReturnType) {
 		Util.setOptions(this, options);
 		Util.stamp(this);
 		this._layers = this._layers || {};
@@ -128,9 +161,9 @@ export const Renderer = Layer.extend({
 	_update: function () {
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		// Subclasses are responsible of firing the 'update' event.
-		const p = this.options.padding,
-		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+		const p = this.options.padding;
+		const size = this._map.getSize();
+		const min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
 

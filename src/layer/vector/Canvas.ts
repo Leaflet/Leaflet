@@ -5,6 +5,37 @@ import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import {Bounds} from '../../geometry/Bounds';
 
+import {Point} from '../../geometry/Point';
+import {Bounds} from '../../geometry/Bounds';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+
+import {Object, ReturnType, HTMLElement} from 'typescript';
+import {Point} from "../geometry";
+import {FeatureGroup} from "../FeatureGroup";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+
+type EventReturnType = ReturnType<typeof Event>;
+
+// type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+// type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
 /*
  * @class Canvas
  * @inherits Renderer
@@ -38,7 +69,7 @@ import {Bounds} from '../../geometry/Bounds';
  */
 
 export const Canvas = Renderer.extend({
-	getEvents: function () {
+	getEvents: function ():EventReturnType {
 		const events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
 		return events;
@@ -125,7 +156,7 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	_initPath: function (layer) {
+	_initPath: function (layer:LayerReturnType) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
 
@@ -139,11 +170,11 @@ export const Canvas = Renderer.extend({
 		this._drawFirst = this._drawFirst || this._drawLast;
 	},
 
-	_addPath: function (layer) {
+	_addPath: function (layer:LayerReturnType) {
 		this._requestRedraw(layer);
 	},
 
-	_removePath: function (layer) {
+	_removePath: function (layer:LayerReturnType) {
 		const order = layer._order;
 		const next = order.next;
 		const prev = order.prev;
@@ -166,7 +197,7 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	},
 
-	_updatePath: function (layer) {
+	_updatePath: function (layer:LayerReturnType) {
 		// Redraw the union of the layer's old pixel
 		// bounds and the new pixel bounds.
 		this._extendRedrawBounds(layer);
@@ -177,18 +208,18 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	},
 
-	_updateStyle: function (layer) {
+	_updateStyle: function (layer:LayerReturnType) {
 		this._updateDashArray(layer);
 		this._requestRedraw(layer);
 	},
 
-	_updateDashArray: function (layer) {
+	_updateDashArray: function (layer:LayerReturnType) {
 		if (typeof layer.options.dashArray === 'string') {
-			const parts = layer.options.dashArray.split(/[, ]+/),
-			    dashArray = [],
-			    dashValue,
-			    i;
-			for (i = 0; i < parts.length; i++) {
+			const parts = layer.options.dashArray.split(/[, ]+/);
+			const dashArray = [];
+			const dashValue;
+			// const i;
+			for (const i in parts) {
 				dashValue = Number(parts[i]);
 				// Ignore dash array containing invalid lengths
 				if (isNaN(dashValue)) { return; }
@@ -200,14 +231,14 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	_requestRedraw: function (layer) {
+	_requestRedraw: function (layer:LayerReturnType) {
 		if (!this._map) { return; }
 
 		this._extendRedrawBounds(layer);
 		this._redrawRequest = this._redrawRequest || Util.requestAnimFrame(this._redraw, this);
 	},
 
-	_extendRedrawBounds: function (layer) {
+	_extendRedrawBounds: function (layer:LayerReturnType) {
 		if (layer._pxBounds) {
 			const padding = (layer.options.weight || 0) + 1;
 			this._redrawBounds = this._redrawBounds || new Bounds();
@@ -267,13 +298,17 @@ export const Canvas = Renderer.extend({
 		this._ctx.restore();  // Restore state before clipping.
 	},
 
-	_updatePoly: function (layer, closed) {
+	_updatePoly: function (layer:LayerReturnType, closed) {
 		if (!this._drawing) { return; }
 
-		const i, j, len2, p,
-		    parts = layer._parts,
-		    len = parts.length,
-		    ctx = this._ctx;
+		const i;
+		const j;
+		const len2;
+		const p;
+
+		const parts = layer._parts;
+		const len = parts.length;
+		const ctx = this._ctx;
 
 		if (!len) { return; }
 
@@ -294,14 +329,14 @@ export const Canvas = Renderer.extend({
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
-	_updateCircle: function (layer) {
+	_updateCircle: function (layer:LayerReturnType) {
 
 		if (!this._drawing || layer._empty()) { return; }
 
-		const p = layer._point,
-		    ctx = this._ctx,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
+		const p = layer._point;
+		const ctx = this._ctx;
+		const r = Math.max(Math.round(layer._radius), 1);
+		const s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
 
 		if (s !== 1) {
 			ctx.save();
@@ -360,7 +395,7 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	_onMouseMove: function (e) {
+	_onMouseMove: function (e:EventReturnType) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.mouseEventToLayerPoint(e);
@@ -368,7 +403,7 @@ export const Canvas = Renderer.extend({
 	},
 
 
-	_handleMouseOut: function (e) {
+	_handleMouseOut: function (e:EventReturnType) {
 		const layer = this._hoveredLayer;
 		if (layer) {
 			// if we're leaving the layer, fire mouseout
@@ -379,7 +414,7 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	_handleMouseHover: function (e, point) {
+	_handleMouseHover: function (e:EventReturnType, point) {
 		if (this._mouseHoverThrottled) {
 			return;
 		}
@@ -413,11 +448,11 @@ export const Canvas = Renderer.extend({
 		}, this), 32);
 	},
 
-	_fireEvent: function (layers, e, type) {
+	_fireEvent: function (layers:LayerReturnType[], e:EventReturnType, type) {
 		this._map._fireDOMEvent(e, type || e.type, layers);
 	},
 
-	_bringToFront: function (layer) {
+	_bringToFront: function (layer:LayerReturnType) {
 		const order = layer._order;
 
 		if (!order) { return; }
@@ -448,7 +483,7 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	},
 
-	_bringToBack: function (layer) {
+	_bringToBack: function (layer:LayerReturnType) {
 		const order = layer._order;
 
 		if (!order) { return; }
@@ -482,6 +517,6 @@ export const Canvas = Renderer.extend({
 
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
-export function canvas(options) {
+export function canvas(options:NumberReturnType) {
 	return Browser.canvas ? new Canvas(options) : null;
 }

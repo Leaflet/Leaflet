@@ -42,7 +42,7 @@ export function extend(dest:ObjectReturnType[]): ObjectReturnType[] {
 
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export const create = Object.create || (function () {
+export const create = Object.create || (function ():ObjectReturnType {
 	function F() {}
 	return function (proto) {
 		F.prototype = proto;
@@ -102,7 +102,7 @@ export function throttle(fn:FunctionReturnType, time:NumberReturnType, context:O
 		}
 	};
 
-	wrapperFn = function () {
+	wrapperFn = function ():FunctionReturnType {
 		if (lock) {
 			// called too soon, queue to call later
 			args = arguments;
@@ -229,9 +229,9 @@ function getPrefixed(name) {
 const lastTime = 0;
 
 // fallback for IE 7-8
-function timeoutDefer(fn) {
-	const time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
+function timeoutDefer(fn:FunctionReturnType) {
+	const time = +new Date();
+	const timeToCall = Math.max(0, 16 - (time - lastTime));
 
 	lastTime = time + timeToCall;
 	return window.setTimeout(fn, timeToCall);
@@ -247,7 +247,7 @@ export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimat
 // the browser doesn't have native support for
 // [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
 // otherwise it's delayed. Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn, context, immediate) {
+export function requestAnimFrame(fn:FunctionReturnType, context, immediate) {
 	if (immediate && requestFn === timeoutDefer) {
 		fn.call(context);
 	} else {
