@@ -11,6 +11,7 @@ function token ():string{
             data: { login },
         } = await octokit.rest.users.getAuthenticated();
         console.log("Hello, %s", login);
+        return octokit.toString('leaflet-secret');
     }
     return null;
 }
