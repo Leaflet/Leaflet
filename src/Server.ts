@@ -27,6 +27,10 @@
 
 function serve(): void {
 
+  const { L , Map, Layer, Canvas, tileLayer, geoJSON, Polygon} = require ('./Leaflet.ts');
+
+  const {PoligonosApp} = require('./PoligonosApp');
+
   const {Response , Request, Router} = require('express');
 
   const Exception = require('typescript');
@@ -50,13 +54,13 @@ function serve(): void {
 
         router.get('/', (req:Request, res:Response):void => {
 
-        res.json({success:true});
-        res.send('PoligonosApp');
+        // res.json({success:true});
+        // res.send('PoligonosApp');
         // res.sendFile('./polygons.geojson');
         // res.json('./polygons.geojson');
-        require('./Leaflet.ts'); // L.PoligonosApp();
-        require('./PoligonosApp.ts');
-        const polygons = require('./L.Polygon.ts')('./polygons.geojson');
+        // require('./Leaflet.ts'); // L.PoligonosApp();
+        // require('./PoligonosApp.ts');
+        const polygons = L.Polygon('./polygons.geojson');
         
         //canvas
         const map = L.map('map', {
@@ -65,7 +69,14 @@ function serve(): void {
 
         polygons.addTo(map);
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        const token = require('./Token');
+
+        const a = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';
+        // const b = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+        const s = a.concat(token);
+
+        L.tileLayer(s, {
           maxZoom: 18,
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -75,6 +86,9 @@ function serve(): void {
         }).addTo(map);
 
         });
+
+        // typescript 2304 cannot find name 'res'
+        // res.json({success:true});
     
         app.listen(PORT, HOST);
         console.log(`Running on http://${HOST}:${PORT}`);
@@ -110,5 +124,5 @@ finally{
 
 }
 
-export default serve;
+// export default serve;
 

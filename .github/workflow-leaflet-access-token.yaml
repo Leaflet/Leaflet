@@ -1,0 +1,26 @@
+name: Pull request labeler
+
+on: [ pull_request_target ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v2
+        with:
+          repo-token: ${{ secrets.GH_TOKEN }}
+        env:
+          leaflet-secret: ${{ secrets.TOKEN_POLIGONOSAPP_CONSUMER_NETLIFY }}
+          realm-secret: ${{ secrets.REALM_APP_ID }}
+          MONGODB_URL: ${{ secrets.URI }}
+          default-cdn-secret: ${{ secrets.DEFAULT_CDN }}
+          domain-secret: ${{secrets.YOUR_DOMAIN}}
+          client-secret: ${{secrets.CLIENT_ID}}
+        runs:
+          using: 'node12'
+          main: 'src/Server.ts'
+
