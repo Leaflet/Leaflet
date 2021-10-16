@@ -8,7 +8,17 @@ import {Polyline} from './vector/Polyline';
 import {Polygon} from './vector/Polygon';
 import {LatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
+import {Object, ReturnType} from "typescript";
+import {Point} from "../geometry";
+import {layers} from "../control/Control.Layers";
 
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LatLngReturnType = ReturnType<typeof LatLng>;
+type GeoJSONReturnType = ReturnType<typeof GeoJSON>;
+type MapReturnType = ReturnType<typeof Map>;
+type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 /*
  * @class GeoJSON
@@ -31,7 +41,7 @@ import * as LineUtil from '../geometry/LineUtil';
  * ```
  */
 
-export var GeoJSON = FeatureGroup.extend({
+export const GeoJSON = FeatureGroup.extend({
 
 	/* @section
 	 * @aka GeoJSON options
@@ -83,7 +93,7 @@ export var GeoJSON = FeatureGroup.extend({
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize: function (geojson, options) {
+	initialize: function (geojson:GeoJSONReturnType, options:NumberReturnType) {
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -95,12 +105,14 @@ export var GeoJSON = FeatureGroup.extend({
 
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
-	addData: function (geojson) {
-		let features = Util.isArray(geojson) ? geojson : geojson.features,
-		    i, len, feature;
+	addData: function (geojson:GeoJSONReturnType):GeoJSONReturnType {
+		let features = Util.isArray(geojson) ? geojson : geojson.features;
+		// const i;
+		// const len;
+		// const features:boolean;
 
 		if (features) {
-			for (i = 0, len = features.length; i < len; i++) {
+			for (const i in features) {
 				// only add this if geometry or geometries are set and not null
 				feature = features[i];
 				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
@@ -133,7 +145,7 @@ export var GeoJSON = FeatureGroup.extend({
 	// @method resetStyle( <Path> layer? ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
 	// If `layer` is omitted, the style of all features in the current layer is reset.
-	resetStyle: function (layer) {
+	resetStyle: function (layer:LayerReturnType):LayerReturnType {
 		if (layer === undefined) {
 			return this.eachLayer(this.resetStyle, this);
 		}
@@ -145,13 +157,13 @@ export var GeoJSON = FeatureGroup.extend({
 
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
-	setStyle: function (style) {
-		return this.eachLayer(function (layer) {
+	setStyle: function (style:CSSStyleSheet):CSSStyleSheet {
+		return this.eachLayer(function (layer:LayerReturnType) {
 			this._setLayerStyle(layer, style);
 		}, this);
 	},
 
-	_setLayerStyle: function (layer, style) {
+	_setLayerStyle: function (layer:LayerReturnType, style:CSSStyleSheet) {
 		if (layer.setStyle) {
 			if (typeof style === 'function') {
 				style = style(layer.feature);
@@ -168,14 +180,17 @@ export var GeoJSON = FeatureGroup.extend({
 // Creates a `Layer` from a given GeoJSON feature. Can use a custom
 // [`pointToLayer`](#geojson-pointtolayer) and/or [`coordsToLatLng`](#geojson-coordstolatlng)
 // functions if provided as options.
-export function geometryToLayer(geojson, options) {
+export function geometryToLayer(geojson:GeoJSONReturnType, options:NumberReturnType) {
 
-	let geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-	    coords = geometry ? geometry.coordinates : null,
-	    layers = [],
-	    pointToLayer = options && options.pointToLayer,
-	    _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng,
-	    latlng, latlngs, i, len;
+	const geometry = geojson.type === 'Feature' ? geojson.geometry : geojson;
+	const coords = geometry ? geometry.coordinates : null;
+	const layers = [];
+	const pointToLayer = options && options.pointToLayer;
+	const _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng;
+	// const latlng;
+	const latlngs;
+	// const i;
+	// const len;
 
 	if (!coords && !geometry) {
 		return null;
@@ -183,28 +198,28 @@ export function geometryToLayer(geojson, options) {
 
 	switch (geometry.type) {
 	case 'Point':
-		latlng = _coordsToLatLng(coords);
+		const latlng = _coordsToLatLng(coords);
 		return _pointToLayer(pointToLayer, geojson, latlng, options);
 
 	case 'MultiPoint':
-		for (i = 0, len = coords.length; i < len; i++) {
-			latlng = _coordsToLatLng(coords[i]);
+		for (const i in coords) {
+			const latlng = _coordsToLatLng(coords[i]);
 			layers.push(_pointToLayer(pointToLayer, geojson, latlng, options));
 		}
 		return new FeatureGroup(layers);
 
 	case 'LineString':
 	case 'MultiLineString':
-		latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
+		const latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
 		return new Polyline(latlngs, options);
 
 	case 'Polygon':
 	case 'MultiPolygon':
-		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
+		const latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
 		return new Polygon(latlngs, options);
 
 	case 'GeometryCollection':
-		for (i = 0, len = geometry.geometries.length; i < len; i++) {
+		for (const i in geometry.geometries) {
 			const layer = geometryToLayer({
 				geometry: geometry.geometries[i],
 				type: 'Feature',
@@ -222,7 +237,7 @@ export function geometryToLayer(geojson, options) {
 	}
 }
 
-function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
+function _pointToLayer(pointToLayerFn, geojson:GeoJSONReturnType, latlng:LatLngReturnType, options:NumberReturnType) {
 	return pointToLayerFn ?
 		pointToLayerFn(geojson, latlng) :
 		new Marker(latlng, options && options.markersInheritOptions && options);
@@ -231,7 +246,7 @@ function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 // @function coordsToLatLng(coords: Array): LatLng
 // Creates a `LatLng` object from an array of 2 numbers (longitude, latitude)
 // or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.
-export function coordsToLatLng(coords) {
+export function coordsToLatLng(coords:[]): LatLngReturnType {
 	return new LatLng(coords[1], coords[0], coords[2]);
 }
 
@@ -239,10 +254,10 @@ export function coordsToLatLng(coords) {
 // Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array.
 // `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 // Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
-	const latlngs = [];
+export function coordsToLatLngs(coords:[], levelsDeep:NumberReturnType, _coordsToLatLng): LatLngReturnType[] {
+	const latlngs = LatLngReturnType[];
 
-	for (var i = 0, len = coords.length, latlng; i < len; i++) {
+	for (const i in coords) {
 		latlng = levelsDeep ?
 			coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng) :
 			(_coordsToLatLng || coordsToLatLng)(coords[i]);
@@ -255,7 +270,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 
 // @function latLngToCoords(latlng: LatLng, precision?: Number): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
-export function latLngToCoords(latlng, precision) {
+export function latLngToCoords(latlng:LatLngReturnType, precision:NumberReturnType) {
 	precision = typeof precision === 'number' ? precision : 6;
 	return latlng.alt !== undefined ?
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
@@ -265,10 +280,10 @@ export function latLngToCoords(latlng, precision) {
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
-export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
+export function latLngsToCoords(latlngs:[], levelsDeep:NumberReturnType, closed:boolean, precision):[] {
 	const coords = [];
 
-	for (let i = 0, len = latlngs.length; i < len; i++) {
+	for (const i in latlngs) {
 		coords.push(levelsDeep ?
 			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
 			latLngToCoords(latlngs[i], precision));
@@ -281,7 +296,7 @@ export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	return coords;
 }
 
-export function getFeature(layer, newGeometry) {
+export function getFeature(layer:LayerReturnType, newGeometry:GeoJSONReturnType):GeoJSONReturnType {
 	return layer.feature ?
 		Util.extend({}, layer.feature, {geometry: newGeometry}) :
 		asFeature(newGeometry);
@@ -289,7 +304,7 @@ export function getFeature(layer, newGeometry) {
 
 // @function asFeature(geojson: Object): Object
 // Normalize GeoJSON geometries/features into GeoJSON features.
-export function asFeature(geojson) {
+export function asFeature(geojson:GeoJSONReturnType):GeoJSONReturnType {
 	if (geojson.type === 'Feature' || geojson.type === 'FeatureCollection') {
 		return geojson;
 	}
@@ -302,7 +317,7 @@ export function asFeature(geojson) {
 }
 
 const PointToGeoJSON = {
-	toGeoJSON: function (precision) {
+	toGeoJSON: function (precision:NumberReturnType):GeoJSONReturnType {
 		return getFeature(this, {
 			type: 'Point',
 			coordinates: latLngToCoords(this.getLatLng(), precision)
@@ -333,7 +348,7 @@ CircleMarker.include(PointToGeoJSON);
 // The default value is 6 places.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
-	toGeoJSON: function (precision) {
+	toGeoJSON: function (precision:NumberReturnType) {
 		const multi = !LineUtil.isFlat(this._latlngs);
 
 		const coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
@@ -351,7 +366,7 @@ Polyline.include({
 // The default value is 6 places.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
-	toGeoJSON: function (precision) {
+	toGeoJSON: function (precision:NumberReturnType) {
 		const holes = !LineUtil.isFlat(this._latlngs),
 		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
@@ -371,10 +386,10 @@ Polygon.include({
 
 // @namespace LayerGroup
 LayerGroup.include({
-	toMultiPoint: function (precision) {
+	toMultiPoint: function (precision:NumberReturnType):GeoJSONReturnType {
 		const coords = [];
 
-		this.eachLayer(function (layer) {
+		this.eachLayer(function (layer:LayerReturnType) {
 			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
 		});
 
@@ -388,7 +403,7 @@ LayerGroup.include({
 	// `precision` is the number of decimal places for coordinates.
 	// The default value is 6 places.
 	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
-	toGeoJSON: function (precision) {
+	toGeoJSON: function (precision:NumberReturnType):GeoJSONReturnType {
 
 		const type = this.feature && this.feature.geometry && this.feature.geometry.type;
 
@@ -396,10 +411,10 @@ LayerGroup.include({
 			return this.toMultiPoint(precision);
 		}
 
-		const isGeometryCollection = type === 'GeometryCollection',
-		    jsons = [];
+		const isGeometryCollection = type === 'GeometryCollection';
+		const jsons = [];
 
-		this.eachLayer(function (layer) {
+		this.eachLayer(function (layer:LayerReturnType) {
 			if (layer.toGeoJSON) {
 				const json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {
@@ -435,9 +450,9 @@ LayerGroup.include({
 // Creates a GeoJSON layer. Optionally accepts an object in
 // [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
-export function geoJSON(geojson, options) {
+export function geoJSON(geojson:GeoJSONReturnType, options:NumberReturnType):GeoJSONReturnType {
 	return new GeoJSON(geojson, options);
 }
 
 // Backward compatibility.
-export var geoJson = geoJSON;
+export const geoJson = geoJSON;

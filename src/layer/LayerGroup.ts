@@ -13,8 +13,11 @@ import * as Util from '../core/Util';
 
 import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
+import {FeatureGroup} from "./FeatureGroup";
+import {LatLngBounds} from "../geo";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
@@ -50,15 +53,16 @@ type numberAuxY = ReturnType<typeof Object.Number>;
 
 export const LayerGroup = Layer.extend({
 
-	initialize: function (layers, options) {
+	initialize: function (layers:LayerReturnType, options) {
 		Util.setOptions(this, options);
 
 		this._layers = {};
 
-		let i, len;
+		// const i;
+		// const len;
 
 		if (layers) {
-			for (i = 0, len = layers.length; i < len; i++) {
+			for (const i in layers) {
 				this.addLayer(layers[i]);
 			}
 		}
@@ -66,7 +70,7 @@ export const LayerGroup = Layer.extend({
 
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
-	addLayer: function (layer) {
+	addLayer: function (layer:LayerReturnType) {
 		const id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
@@ -83,7 +87,7 @@ export const LayerGroup = Layer.extend({
 	// @alternative
 	// @method removeLayer(id: Number): this
 	// Removes the layer with the given internal ID from the group.
-	removeLayer: function (layer) {
+	removeLayer: function (layer:LayerReturnType) {
 		const id = layer in this._layers ? layer : this.getLayerId(layer);
 
 		if (this._map && this._layers[id]) {
@@ -100,7 +104,7 @@ export const LayerGroup = Layer.extend({
 	// @alternative
 	// @method hasLayer(id: Number): Boolean
 	// Returns `true` if the given internal ID is currently added to the group.
-	hasLayer: function (layer) {
+	hasLayer: function (layer:LayerReturnType):boolean {
 		if (!layer) { return false; }
 		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
@@ -108,7 +112,7 @@ export const LayerGroup = Layer.extend({
 
 	// @method clearLayers(): this
 	// Removes all the layers from the group.
-	clearLayers: function () {
+	clearLayers: function ():LayerReturnType {
 		return this.eachLayer(this.removeLayer, this);
 	},
 
@@ -116,12 +120,12 @@ export const LayerGroup = Layer.extend({
 	// Calls `methodName` on every layer contained in this group, passing any
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
-	invoke: function (methodName) {
+	invoke: function (methodName:StringReturnType) {
 		const args = Array.prototype.slice.call(arguments, 1);
-		const i
+		// const i;
 		const layer;
 
-		for (i in this._layers) {
+		for (const i in this._layers) {
 			layer = this._layers[i];
 
 			if (layer[methodName]) {
@@ -132,7 +136,7 @@ export const LayerGroup = Layer.extend({
 		return this;
 	},
 
-	onAdd: function (map) {
+	onAdd: function (map:MapReturnType) {
 		this.eachLayer(map.addLayer, map);
 	},
 

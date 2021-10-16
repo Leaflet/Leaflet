@@ -106,7 +106,7 @@ export const VideoOverlay = ImageOverlay.extend({
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
-		for (let i = 0; i < this._url.length; i++) {
+		for (const i in this._url) {
 			const source = DomUtil.create('source');
 			source.src = this._url[i];
 			vid.appendChild(source);

@@ -160,7 +160,8 @@ export function splitWords(str:StringReturnType | StringReturnType[]) {
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
-export function setOptions(obj:ObjectReturnType, options:ObjectReturnType):ObjectReturnType {
+export function setOptions(obj:ObjectReturnType, options:NumberReturnType):NumberReturnType {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}

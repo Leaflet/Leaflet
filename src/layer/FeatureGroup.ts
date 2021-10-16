@@ -33,7 +33,7 @@ import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
-// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
@@ -49,7 +49,7 @@ type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeo
 
 export const FeatureGroup = LayerGroup.extend({
 
-	addLayer: function (layer) {
+	addLayer: function (layer:LayerReturnType) {
 		if (this.hasLayer(layer)) {
 			return this;
 		}
@@ -63,7 +63,7 @@ export const FeatureGroup = LayerGroup.extend({
 		return this.fire('layeradd', {layer: layer});
 	},
 
-	removeLayer: function (layer) {
+	removeLayer: function (layer:LayerReturnType) {
 		if (!this.hasLayer(layer)) {
 			return this;
 		}
@@ -82,7 +82,7 @@ export const FeatureGroup = LayerGroup.extend({
 
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
-	setStyle: function (style) {
+	setStyle: function (style:CSSStyleSheet) {
 		return this.invoke('setStyle', style);
 	},
 
@@ -100,7 +100,7 @@ export const FeatureGroup = LayerGroup.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
-	getBounds: function () {
+	getBounds: function ():LatLngBoundsReturnType {
 		const bounds = new LatLngBounds();
 
 		for (const id in this._layers) {
@@ -113,6 +113,6 @@ export const FeatureGroup = LayerGroup.extend({
 
 // @factory L.featureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
-export const featureGroup = function (layers: LayerReturnType[], options) {
+export const featureGroup = function (layers: LayerReturnType[], options:NumberReturnType) {
 	return new FeatureGroup(layers, options);
 };

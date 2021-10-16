@@ -17,7 +17,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * `L.Marker.prototype.options.icon` with your own icon instead.
  */
 
-export var IconDefault = Icon.extend({
+export const IconDefault = Icon.extend({
 
 	options: {
 		iconUrl:       'marker-icon.png',
@@ -30,7 +30,7 @@ export var IconDefault = Icon.extend({
 		shadowSize:  [41, 41]
 	},
 
-	_getIconUrl: function (name) {
+	_getIconUrl: function (name:StringReturnType) {
 		if (!IconDefault.imagePath) {	// Deprecated, backwards-compatibility only
 			IconDefault.imagePath = this._detectIconPath();
 		}

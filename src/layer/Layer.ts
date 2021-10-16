@@ -12,6 +12,8 @@ import * as Util from '../core/Util';
 import {Object, ReturnType, HTMLElement} from 'typescript';
 import {$ , Event} from 'jquery';
 import {Point} from "../geometry";
+import {FeatureGroup} from "./FeatureGroup";
+import {LatLngBounds} from "../geo";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 type MapReturnType = ReturnType<typeof Map>;

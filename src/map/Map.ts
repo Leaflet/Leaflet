@@ -10,12 +10,12 @@ import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
 
-import {Point} from '../../geometry/Point';
-import {Bounds} from '../../geometry/Bounds';
+// import {Point} from '../../geometry/Point';
+// import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
 
 import {Object, ReturnType, HTMLElement} from 'typescript';
-import {Point} from "../geometry";
+// import {Point} from "../geometry";
 import {FeatureGroup} from "../layer";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
@@ -204,7 +204,7 @@ export const Map = Evented.extend({
 	// @method setView(center: LatLng, zoom: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) with the given
 	// animation options.
-	setView: function (center:, zoom, options) {
+	setView: function (center: LatLngReturnType, zoom:NumberReturnType, options:NumberReturnType) {
 
 		zoom = zoom === undefined ? this._zoom : this._limitZoom(zoom);
 		center = this._limitCenter(toLatLng(center), zoom, this.options.maxBounds);
@@ -239,7 +239,7 @@ export const Map = Evented.extend({
 
 	// @method setZoom(zoom: Number, options?: Zoom/pan options): this
 	// Sets the zoom of the map.
-	setZoom: function (zoom, options) {
+	setZoom: function (zoom:NumberReturnType, options:NumberReturnType) {
 		if (!this._loaded) {
 			this._zoom = zoom;
 			return this;
@@ -249,14 +249,14 @@ export const Map = Evented.extend({
 
 	// @method zoomIn(delta?: Number, options?: Zoom options): this
 	// Increases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
-	zoomIn: function (delta, options) {
+	zoomIn: function (delta:NumberReturnType, options:NumberReturnType) {
 		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom + delta, options);
 	},
 
 	// @method zoomOut(delta?: Number, options?: Zoom options): this
 	// Decreases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
-	zoomOut: function (delta, options) {
+	zoomOut: function (delta:NumberReturnType, options:NumberReturnType) {
 		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom - delta, options);
 	},
@@ -267,13 +267,13 @@ export const Map = Evented.extend({
 	// @alternative
 	// @method setZoomAround(offset: Point, zoom: Number, options: Zoom options): this
 	// Zooms the map while keeping a specified pixel on the map (relative to the top-left corner) stationary.
-	setZoomAround: function (latlng, zoom, options) {
-		const scale = this.getZoomScale(zoom),
-		    viewHalf = this.getSize().divideBy(2),
-		    containerPoint = latlng instanceof Point ? latlng : this.latLngToContainerPoint(latlng),
+	setZoomAround: function (latlng:LatLngReturnType, zoom:NumberReturnType, options:NumberReturnType) {
+		const scale = this.getZoomScale(zoom);
+		const viewHalf = this.getSize().divideBy(2);
+		const containerPoint = latlng instanceof Point ? latlng : this.latLngToContainerPoint(latlng);
 
-		    centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
-		    newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
+		const centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale);
+		const newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
 
 		return this.setView(newCenter, zoom, {zoom: options});
 	},
