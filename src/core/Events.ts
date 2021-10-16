@@ -9,17 +9,20 @@ import * as Util from './Util';
 
 import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
+import {LayerGroup} from "../layer";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
-// type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type FunctionReturnType = ReturnType<typeof Function>;
+type EventReturnType = ReturnType<typeof Event>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type onReturnType = ReturnType<typeof String | Object.Number >;
 type eventReturnType = ReturnType<typeof Event>;
 type _onReturnType = ReturnType<typeof String | Object.Number >;
 type offReturnType = ReturnType<typeof String | Object.Number >;
-// type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 // type PointReturnType = ReturnType<typeof Point>;
-// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 // type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
 // type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
 // type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
@@ -61,7 +64,7 @@ export const Events = {
 	 * @method on(eventMap: Object): this
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	 */
-	on: function (types:onReturnType, fn, context) {
+	on: function (types:onReturnType, fn:FunctionReturnType, context:EventReturnType):EventReturnType {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -94,7 +97,7 @@ export const Events = {
 	 * @method off: this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
-	off: function (types:offReturnType, fn, context) {
+	off: function (types:offReturnType, fn:FunctionReturnType, context:EventReturnType):EventReturnType {
 
 		if (!types) {
 			// clear all listeners if called without arguments
@@ -108,7 +111,7 @@ export const Events = {
 		} else {
 			types = Util.splitWords(types);
 
-			for (const type in types) {
+			for (const i in types) {
 				this._off(types[i], fn, context);
 			}
 		}
@@ -117,7 +120,7 @@ export const Events = {
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type:_onReturnType, fn, context) {
+	_on: function (type:_onReturnType, fn:FunctionReturnType, context:EventReturnType):void {
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -144,10 +147,10 @@ export const Events = {
 		listeners.push(newListener);
 	},
 
-	_off: function (type, fn, context) {
+	_off: function (type:EventReturnType, fn:FunctionReturnType, context:EventReturnType):void {
 		const listeners;
-		const i;
-		const len;
+		// const i;
+		// const len;
 
 		if (!this._events) { return; }
 
@@ -198,7 +201,7 @@ export const Events = {
 	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
-	fire: function (type, data, propagate) {
+	fire: function (type:StringReturnType, data, propagate:boolean) {
 		if (!this.listens(type, propagate)) { return this; }
 
 		const event = Util.extend({}, data, {
@@ -231,7 +234,7 @@ export const Events = {
 
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
-	listens: function (type, propagate) {
+	listens: function (type:StringReturnType, propagate):boolean {
 		const listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
@@ -246,7 +249,7 @@ export const Events = {
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
-	once: function (types, fn, context) {
+	once: function (types:EventReturnType, fn:FunctionReturnType, context:EventReturnType):EventReturnType {
 
 		if (typeof types === 'object') {
 			for (const type in types) {
@@ -265,7 +268,7 @@ export const Events = {
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
-	addEventParent: function (obj) {
+	addEventParent: function (obj:EventReturnType):EventReturnType {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
@@ -273,14 +276,14 @@ export const Events = {
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
-	removeEventParent: function (obj) {
+	removeEventParent: function (obj:EventReturnType):EventReturnType {
 		if (this._eventParents) {
 			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
 	},
 
-	_propagateEvent: function (e) {
+	_propagateEvent: function (e:EventReturnType):void {
 		for (const id in this._eventParents) {
 			this._eventParents[id].fire(e.type, Util.extend({
 				layer: e.target,

@@ -1,8 +1,28 @@
 import {Layer} from './Layer';
 import * as Util from '../core/Util';
-import {toLatLngBounds} from '../geo/LatLngBounds';
+import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
 import {Bounds} from '../geometry/Bounds';
 import * as DomUtil from '../dom/DomUtil';
+import {Object, ReturnType} from "typescript";
+import {Point} from "../geometry";
+import {LatLng} from "../geo";
+import {FeatureGroup} from "./FeatureGroup";
+import {GeoJSON} from "./GeoJSON";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type ImageOverlayReturnType = ReturnType<typeof ImageOverlay>;
+type EventReturnType = ReturnType<typeof Event>;
+type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+type LatLngBoundsReturnType = ReturnType<typeof LatLngBounds>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type BoundsReturnType = ReturnType<typeof Bounds | typeof Array | typeof Point | typeof Point[]>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LatLngReturnType = ReturnType<typeof LatLng>;
+type GeoJSONReturnType = ReturnType<typeof GeoJSON>;
+type MapReturnType = ReturnType<typeof Map>;
+type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
 
 /*
  * @class ImageOverlay
@@ -56,7 +76,7 @@ export const ImageOverlay = Layer.extend({
 		className: ''
 	},
 
-	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
+	initialize: function (url:StringReturnType, bounds:BoundsReturnType, options:NumberReturnType) { // (String, LatLngBounds, Object)
 		this._url = url;
 		this._bounds = toLatLngBounds(bounds);
 
@@ -90,7 +110,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method setOpacity(opacity: Number): this
 	// Sets the opacity of the overlay.
-	setOpacity: function (opacity) {
+	setOpacity: function (opacity:NumberReturnType) {
 		this.options.opacity = opacity;
 
 		if (this._image) {
@@ -108,7 +128,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method bringToFront(): this
 	// Brings the layer to the top of all overlays.
-	bringToFront: function () {
+	bringToFront: function ():MapReturnType {
 		if (this._map) {
 			DomUtil.toFront(this._image);
 		}
@@ -117,7 +137,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method bringToBack(): this
 	// Brings the layer to the bottom of all overlays.
-	bringToBack: function () {
+	bringToBack: function ():MapReturnType {
 		if (this._map) {
 			DomUtil.toBack(this._image);
 		}
@@ -126,7 +146,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method setUrl(url: String): this
 	// Changes the URL of the image.
-	setUrl: function (url) {
+	setUrl: function (url:StringReturnType) {
 		this._url = url;
 
 		if (this._image) {
@@ -137,7 +157,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
-	setBounds: function (bounds) {
+	setBounds: function (bounds:BoundsReturnType) {
 		this._bounds = toLatLngBounds(bounds);
 
 		if (this._map) {
@@ -146,7 +166,7 @@ export const ImageOverlay = Layer.extend({
 		return this;
 	},
 
-	getEvents: function () {
+	getEvents: function ():EventReturnType {
 		const events = {
 			zoom: this._reset,
 			viewreset: this._reset
@@ -161,7 +181,7 @@ export const ImageOverlay = Layer.extend({
 
 	// @method setZIndex(value: Number): this
 	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
-	setZIndex: function (value) {
+	setZIndex: function (value:NumberReturnType) {
 		this.options.zIndex = value;
 		this._updateZIndex();
 		return this;
@@ -169,18 +189,18 @@ export const ImageOverlay = Layer.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Get the bounds that this ImageOverlay covers
-	getBounds: function () {
+	getBounds: function ():LatLngBoundsReturnType {
 		return this._bounds;
 	},
 
 	// @method getElement(): HTMLElement
 	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
 	// used by this overlay.
-	getElement: function () {
+	getElement: function (): HTMLElementReturnType {
 		return this._image;
 	},
 
-	_initImage: function () {
+	_initImage: function ():void {
 		const wasElementSupplied = this._url.tagName === 'IMG';
 		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
@@ -213,19 +233,20 @@ export const ImageOverlay = Layer.extend({
 		img.alt = this.options.alt;
 	},
 
-	_animateZoom: function (e) {
+	_animateZoom: function (e:EventReturnType) {
 		const scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
 	},
 
-	_reset: function () {
-		const image = this._image,
-		    bounds = new Bounds(
+	_reset: function ():void {
+		const image = this._image;
+		const bounds = new Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
-		    size = bounds.getSize();
+		        this._map.latLngToLayerPoint(this._bounds.getSouthEast()));
+
+		const size = bounds.getSize();
 
 		DomUtil.setPosition(image, bounds.min);
 
@@ -243,7 +264,7 @@ export const ImageOverlay = Layer.extend({
 		}
 	},
 
-	_overlayOnError: function () {
+	_overlayOnError: function ():void {
 		// @event error: Event
 		// Fired when the ImageOverlay layer fails to load its image
 		this.fire('error');
@@ -259,6 +280,6 @@ export const ImageOverlay = Layer.extend({
 // @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
-export const imageOverlay = function (url, bounds, options) {
+export const imageOverlay = function (url:StringReturnType, bounds:BoundsReturnType, options:NumberReturnType):ImageOverlayReturnType {
 	return new ImageOverlay(url, bounds, options);
 };
