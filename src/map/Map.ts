@@ -30,7 +30,7 @@ type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<ty
 // type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 type PointReturnType = ReturnType<typeof Point>;
-// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 // type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
 // type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
 // type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
@@ -89,7 +89,7 @@ export const Map = Evented.extend({
 
 		// @option layers: Layer[] = []
 		// Array of layers that will be added to the map initially
-		layers: [],
+		layers: LayerReturnType[],
 
 		// @option maxBounds: LatLngBounds = null
 		// When this option is set, the map restricts the view to the given
@@ -152,7 +152,7 @@ export const Map = Evented.extend({
 		trackResize: true
 	},
 
-	initialize: function (id, options) { // (HTMLElement or String, Object)
+	initialize: function (id:NumberReturnType, options:NumberReturnType): HTMLElement | StringReturnType | Object { // (HTMLElement or String, Object)
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,

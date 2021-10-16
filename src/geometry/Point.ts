@@ -42,7 +42,7 @@ interface PointReturn{
 	y: number | ReturnType<typeof Object.Number>;
 }
 
-public class PointReturnImpl implements PointReturn{
+class PointReturnImpl implements PointReturn{
 
 	x: 0.0;
 	y: 0.0;
@@ -64,14 +64,17 @@ public class PointReturnImpl implements PointReturn{
 }
 
 export function Point(x:NumberReturnType,y:NumberReturnType): PointReturnImpl{
+	// @ts-ignore
 	return new PointReturnImpl(x,y);
 };
 
-export function Point(x:NumberReturnType, y:NumberReturnType, round:NumberReturnType): void {
+// @ts-ignore
+export function Point(x:NumberReturnType, y:NumberReturnType, round:NumberReturnType): PointReturnImpl {
 	// @property x: Number; The `x` coordinate of the point
 	const x = Object.create((round ? Math.round(x) : x));
 	// @property y: Number; The `y` coordinate of the point
 	const y = Object.create((round ? Math.round(y) : y));
+	return new PointReturnImpl(x,y);
 }
 
 // Point(0,0,0);
