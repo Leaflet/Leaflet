@@ -59,6 +59,7 @@ type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<ty
  * its map has moved
  */
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const Renderer = Layer.extend({
 
 	// @section
@@ -74,13 +75,13 @@ export const Renderer = Layer.extend({
 		tolerance : 0
 	},
 
-	initialize: function (options:NumberReturnType) {
+	initialize: function (options:NumberReturnType):void {
 		Util.setOptions(this, options);
 		Util.stamp(this);
 		this._layers = this._layers || {};
 	},
 
-	onAdd: function () {
+	onAdd: function ():void {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
@@ -94,12 +95,12 @@ export const Renderer = Layer.extend({
 		this.on('update', this._updatePaths, this);
 	},
 
-	onRemove: function () {
+	onRemove: function ():void {
 		this.off('update', this._updatePaths, this);
 		this._destroyContainer();
 	},
 
-	getEvents: function () {
+	getEvents: function (){
 		const events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
@@ -121,14 +122,14 @@ export const Renderer = Layer.extend({
 	},
 
 	_updateTransform: function (center, zoom) {
-		const scale = this._map.getZoomScale(zoom, this._zoom),
-		    position = DomUtil.getPosition(this._container),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
+		const scale = this._map.getZoomScale(zoom, this._zoom);
+		const position = DomUtil.getPosition(this._container);
+		const viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding);
+		const currentCenterPoint = this._map.project(this._center, zoom);
+		const destCenterPoint = this._map.project(center, zoom);
+		const centerOffset = destCenterPoint.subtract(currentCenterPoint);
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+		const topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
 		if (Browser.any3d) {
 			DomUtil.setTransform(this._container, topLeftOffset, scale);
@@ -137,7 +138,7 @@ export const Renderer = Layer.extend({
 		}
 	},
 
-	_reset: function () {
+	_reset: function ():void {
 		this._update();
 		this._updateTransform(this._center, this._zoom);
 
@@ -146,19 +147,19 @@ export const Renderer = Layer.extend({
 		}
 	},
 
-	_onZoomEnd: function () {
+	_onZoomEnd: function ():void {
 		for (const id in this._layers) {
 			this._layers[id]._project();
 		}
 	},
 
-	_updatePaths: function () {
+	_updatePaths: function ():void {
 		for (const id in this._layers) {
 			this._layers[id]._update();
 		}
 	},
 
-	_update: function () {
+	_update: function ():void {
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		// Subclasses are responsible of firing the 'update' event.
 		const p = this.options.padding;

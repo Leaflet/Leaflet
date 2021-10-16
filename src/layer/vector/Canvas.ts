@@ -5,8 +5,6 @@ import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import {Bounds} from '../../geometry/Bounds';
 
-import {Point} from '../../geometry/Point';
-import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
 
 import {Object, ReturnType, HTMLElement} from 'typescript';
@@ -14,6 +12,7 @@ import {Point} from "../geometry";
 import {FeatureGroup} from "../FeatureGroup";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type CanvasReturnType = ReturnType<typeof Canvas>;
 type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 
 type EventReturnType = ReturnType<typeof Event>;
@@ -26,7 +25,7 @@ type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | Ret
 type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 // type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
-// type PointReturnType = ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
 // type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 // type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
 // type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
@@ -123,10 +122,10 @@ export const Canvas = Renderer.extend({
 
 		Renderer.prototype._update.call(this);
 
-		const b = this._bounds,
-		    container = this._container,
-		    size = b.getSize(),
-		    m = Browser.retina ? 2 : 1;
+		const b = this._bounds;
+		const container = this._container;
+		const size = b.getSize();
+		const m = Browser.retina ? 2 : 1;
 
 		DomUtil.setPosition(container, b.min);
 
@@ -275,8 +274,11 @@ export const Canvas = Renderer.extend({
 	},
 
 	_draw: function () {
-		const layer, bounds = this._redrawBounds;
+		const layer;
+		const bounds = this._redrawBounds;
+
 		this._ctx.save();
+
 		if (bounds) {
 			const size = bounds.getSize();
 			this._ctx.beginPath();
@@ -298,7 +300,7 @@ export const Canvas = Renderer.extend({
 		this._ctx.restore();  // Restore state before clipping.
 	},
 
-	_updatePoly: function (layer:LayerReturnType, closed) {
+	_updatePoly: function (layer:LayerReturnType, closed:boolean) {
 		if (!this._drawing) { return; }
 
 		const i;
@@ -315,7 +317,7 @@ export const Canvas = Renderer.extend({
 		ctx.beginPath();
 
 		for (let i in len) {
-			for (let j in parts[i].length) {
+			for (let j in parts[i]) {
 				p = parts[i][j];
 				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
 			}
@@ -353,7 +355,7 @@ export const Canvas = Renderer.extend({
 		this._fillStroke(ctx, layer);
 	},
 
-	_fillStroke: function (ctx, layer) {
+	_fillStroke: function (ctx, layer:LayerReturnType) {
 		const options = layer.options;
 
 		if (options.fill) {
@@ -378,8 +380,10 @@ export const Canvas = Renderer.extend({
 	// Canvas obviously doesn't have mouse events for individual drawn objects,
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
-	_onClick: function (e) {
-		const point = this._map.mouseEventToLayerPoint(e), layer, clickedLayer;
+	_onClick: function (e:EventReturnType) {
+		const point = this._map.mouseEventToLayerPoint(e);
+		const layer:LayerReturnType;
+		const clickedLayer;
 
 		for (const order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
@@ -414,7 +418,7 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	_handleMouseHover: function (e:EventReturnType, point) {
+	_handleMouseHover: function (e:EventReturnType, point:PointReturnType) {
 		if (this._mouseHoverThrottled) {
 			return;
 		}
@@ -517,6 +521,6 @@ export const Canvas = Renderer.extend({
 
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
-export function canvas(options:NumberReturnType) {
+export function canvas(options:NumberReturnType): CanvasReturnType {
 	return Browser.canvas ? new Canvas(options) : null;
 }

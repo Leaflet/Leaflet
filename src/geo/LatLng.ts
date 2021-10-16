@@ -2,6 +2,35 @@ import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
 import {toLatLngBounds} from './LatLngBounds';
 
+import {Point} from '../../geometry/Point';
+import {Bounds} from '../../geometry/Bounds';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+
+import {Object, ReturnType, HTMLElement} from 'typescript';
+import {Point} from "../geometry";
+import {FeatureGroup} from "../layer";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngReturnType = ReturnType<typeof LatLng> | ReturnType<typeof LatLng.prototype.clone>;
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
+type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
 /* @class LatLng
  * @aka L.LatLng
  *
@@ -27,7 +56,7 @@ import {toLatLngBounds} from './LatLngBounds';
  * can't be added to it with the `include` function.
  */
 
-export function LatLng(lat, lng, alt) {
+export function LatLng(lat:NumberReturnType, lng:NumberReturnType, alt:NumberReturnType):void {
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
@@ -50,7 +79,7 @@ export function LatLng(lat, lng, alt) {
 LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
-	equals: function (obj, maxMargin) {
+	equals: function (obj:LatLngReturnType, maxMargin:NumberReturnType):boolean {
 		if (!obj) { return false; }
 
 		obj = toLatLng(obj);
@@ -72,28 +101,28 @@ LatLng.prototype = {
 
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Spherical Law of Cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines).
-	distanceTo: function (other) {
+	distanceTo: function (other:LatLngReturnType):NumberReturnType {
 		return Earth.distance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
-	wrap: function () {
+	wrap: function ():LatLngReturnType {
 		return Earth.wrapLatLng(this);
 	},
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
 	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
-	toBounds: function (sizeInMeters) {
-		const latAccuracy = 180 * sizeInMeters / 40075017,
-		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
+	toBounds: function (sizeInMeters:NumberReturnType): LatLngBoundsReturnType[] {
+		const latAccuracy = 180 * sizeInMeters / 40075017;
+		const lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
 		return toLatLngBounds(
 		        [this.lat - latAccuracy, this.lng - lngAccuracy],
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
 	},
 
-	clone: function () {
+	clone: function ():LatLngReturnType {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
 };
@@ -111,7 +140,7 @@ LatLng.prototype = {
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 
-export function toLatLng(a, b, c) {
+export function toLatLng(a:NumberReturnType, b:NumberReturnType, c:NumberReturnType):LatLngReturnType {
 	if (a instanceof LatLng) {
 		return a;
 	}

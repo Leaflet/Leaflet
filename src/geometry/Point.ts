@@ -63,19 +63,18 @@ public class PointReturnImpl implements PointReturn{
 
 }
 
+export function Point(x:NumberReturnType,y:NumberReturnType): PointReturnImpl{
+	return new PointReturnImpl(x,y);
+};
 
-
-export function Point(x:number, y:number, round:number): PointReturnType {
+export function Point(x:NumberReturnType, y:NumberReturnType, round:NumberReturnType): void {
 	// @property x: Number; The `x` coordinate of the point
 	const x = Object.create((round ? Math.round(x) : x));
 	// @property y: Number; The `y` coordinate of the point
 	const y = Object.create((round ? Math.round(y) : y));
-
-	// const arrayXY = {x,y};
-	// return arrayXY;
 }
 
-Point(0,0,0);
+// Point(0,0,0);
 
 const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
@@ -85,7 +84,7 @@ type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | Ret
 type PointReturnType = ReturnType<typeof Point>;
 type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
-type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+type roundReturnType = ReturnType<typeof Point> | ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
 type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
 
 type numberAuxX = ReturnType<typeof Object.Number>;
@@ -169,6 +168,7 @@ Point.prototype = {
 	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
 	// defined by `scale`.
 	scaleBy: function (point:PointReturnType):PointReturnType {
+		// @ts-ignore
 		return new Point(this.x * point.x, this.y * point.y);
 	},
 
@@ -275,18 +275,18 @@ Point.prototype = {
 // @alternative
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-export function toPoint(x:NumberReturnType[], y:NumberReturnType[], round:NumberReturnType[]): NumberReturnType | NumberReturnType[] {
+export function toPoint(x:PointReturnType[], y:NumberReturnType[], round:NumberReturnType[]): PointReturnType {
 	if (x[0] instanceof Point) {
 		return x;
 	}
 	if (isArray(x)) {
-		return new Point(x[0], x[1]);
+		return new Point(x[0], x[1], round);
 	}
 	if (x === undefined || x === null) {
 		return x;
 	}
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
-		return new Point(x.x, x.y);
+		return new Point(x.x, x.y, round);
 	}
 	return new Point(x, y, round);
 }

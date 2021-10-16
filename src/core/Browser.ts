@@ -1,6 +1,30 @@
 import * as Util from './Util';
 import {svgCreate} from '../layer/vector/SVG.Util';
 
+// @ts-ignore
+import {ReturnType} from 'typescript';
+import {Point} from "../geometry";
+import {LatLngBounds} from "../geo";
+import {Canvas} from "../layer";
+// import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type CanvasReturnType = ReturnType<typeof Canvas>;
+// type LatLngReturnType = ReturnType<typeof LatLng>;
+// type LatLngBoundsReturnType = ReturnType<typeof LatLngBounds>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Number>| ReturnType<typeof Point>;
+// type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+
 /*
  * @namespace Browser
  * @aka L.Browser
@@ -44,7 +68,7 @@ const webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10
 export const androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
 // @property opera: Boolean; `true` for the Opera browser
-export const opera = !!window.opera;
+export const opera = false; // without opera
 
 // @property chrome: Boolean; `true` for the Chrome browser.
 export const chrome = !edge && userAgentContains('chrome');
@@ -53,8 +77,10 @@ export const chrome = !edge && userAgentContains('chrome');
 export const gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
 
 // @property safari: Boolean; `true` for the Safari browser.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const safari = !chrome && userAgentContains('safari');
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const phantom = userAgentContains('phantom');
 
 // @property opera12: Boolean
@@ -75,12 +101,13 @@ export const gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export const any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
+export const any3d = (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
-export const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
+export const mobile = typeof userAgentContains('mobile');
 
 // @property mobileWebkit: Boolean; `true` for all webkit-based browsers in a mobile device.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const mobileWebkit = mobile && webkit;
 
 // @property mobileWebkit3d: Boolean
@@ -100,8 +127,7 @@ export const pointer = !!(window.PointerEvent || msPointer);
 // This does not necessarily mean that the browser is running in a computer with
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
-export const touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
-		(window.DocumentTouch && document instanceof window.DocumentTouch));
+export const touch = (pointer || 'ontouchstart' in window);
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
 export const mobileOpera = mobile && opera;
@@ -112,13 +138,14 @@ export const mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
-export const retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+export const retina = (window.devicePixelRatio) > 1;
 
 // @property passiveEvents: Boolean
 // `true` for browsers that support passive events.
-export const passiveEvents = (function () {
-	const supportsPassiveOption = false;
+export const passiveEvents = (function ():boolean {
+	let supportsPassiveOption = false;
 	try {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const opts = Object.defineProperty({}, 'passive', {
 			get: function () { // eslint-disable-line getter-return
 				supportsPassiveOption = true;
@@ -134,25 +161,25 @@ export const passiveEvents = (function () {
 
 // @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
-export const canvas = (function () {
+export const canvas = (function ():boolean {
 	return !!document.createElement('canvas').getContext;
 }());
 
 // @property svg: Boolean
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
-export const svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
+export const svg = !!(document.createElementNS);
 
 // @property vml: Boolean
 // `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
-export const vml = !svg && (function () {
+export const vml = !svg && (function ():boolean| ChildNode {
 	try {
 		const div = document.createElement('div');
 		div.innerHTML = '<v:shape adj="1"/>';
 
 		const shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
+		// shape.style.behavior = 'url(#default#VML)';
 
-		return shape && (typeof shape.adj === 'object');
+		return shape;
 
 	} catch (e) {
 		return false;
@@ -160,6 +187,6 @@ export const vml = !svg && (function () {
 }());
 
 
-function userAgentContains(str) {
+function userAgentContains(str:StringReturnType):NumberReturnType {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }

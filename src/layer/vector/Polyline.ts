@@ -6,6 +6,27 @@ import {LatLngBounds} from '../../geo/LatLngBounds';
 import {Bounds} from '../../geometry/Bounds';
 import {Point} from '../../geometry/Point';
 
+import {ReturnType} from 'typescript';
+// import {Point} from "../geometry";
+import {LatLngBounds} from "../geo";
+// import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngReturnType = ReturnType<typeof LatLng>;
+type LatLngBoundsReturnType = ReturnType<typeof LatLngBounds>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point>;
+// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
+// type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
+// type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
+
+// type numberAuxX = ReturnType<typeof Object.Number>;
+
+// type numberAuxY = ReturnType<typeof Object.Number>;
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+
 /*
  * @class Polyline
  * @aka L.Polyline
@@ -60,7 +81,7 @@ export const Polyline = Path.extend({
 		noClip: false
 	},
 
-	initialize: function (latlngs, options) {
+	initialize: function (latlngs:LatLngReturnType, options:NumberReturnType) {
 		Util.setOptions(this, options);
 		this._setLatLngs(latlngs);
 	},
@@ -73,24 +94,25 @@ export const Polyline = Path.extend({
 
 	// @method setLatLngs(latlngs: LatLng[]): this
 	// Replaces all the points in the polyline with the given array of geographical points.
-	setLatLngs: function (latlngs) {
+	setLatLngs: function (latlngs:LatLngReturnType[]) {
 		this._setLatLngs(latlngs);
 		return this.redraw();
 	},
 
 	// @method isEmpty(): Boolean
 	// Returns `true` if the Polyline has no LatLngs.
-	isEmpty: function () {
-		return !this._latlngs.length;
+	isEmpty: function ():boolean {
+		return this._latlngs.isEmpty();
 	},
 
 	// @method closestLayerPoint(p: Point): Point
 	// Returns the point closest to `p` on the Polyline.
-	closestLayerPoint: function (p) {
-		const minDistance = Infinity,
-		    minPoint = null,
-		    closest = LineUtil._sqClosestPointOnSegment,
-		    p1, p2;
+	closestLayerPoint: function (p:PointReturnType):boolean {
+		const minDistance = Infinity;
+		const minPoint = null;
+		const closest = LineUtil._sqClosestPointOnSegment;
+		const p1;
+		const p2;
 
 		for (const j = 0, jLen = this._parts.length; j < jLen; j++) {
 			const points = this._parts[j];
@@ -115,7 +137,7 @@ export const Polyline = Path.extend({
 
 	// @method getCenter(): LatLng
 	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the polyline.
-	getCenter: function () {
+	getCenter: function ():LatLngReturnType {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
@@ -156,7 +178,7 @@ export const Polyline = Path.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
-	getBounds: function () {
+	getBounds: function ():LatLngBoundsReturnType[] {
 		return this._bounds;
 	},
 
@@ -164,7 +186,7 @@ export const Polyline = Path.extend({
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
-	addLatLng: function (latlng, latlngs) {
+	addLatLng: function (latlng:LatLngReturnType, latlngs:LatLngReturnType[]) {
 		latlngs = latlngs || this._defaultShape();
 		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
@@ -172,18 +194,18 @@ export const Polyline = Path.extend({
 		return this.redraw();
 	},
 
-	_setLatLngs: function (latlngs) {
+	_setLatLngs: function (latlngs:LatLngBoundsReturnType) {
 		this._bounds = new LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
 	},
 
-	_defaultShape: function () {
+	_defaultShape: function ():boolean {
 		return LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
-	_convertLatLngs: function (latlngs) {
-		const result = [],
+	_convertLatLngs: function (latlngs:LatLngReturnType[]):LatLngReturnType[] {
+		const result : LatLngReturnType[],
 		    flat = LineUtil.isFlat(latlngs);
 
 		for (const i = 0, len = latlngs.length; i < len; i++) {
@@ -198,7 +220,7 @@ export const Polyline = Path.extend({
 		return result;
 	},
 
-	_project: function () {
+	_project: function ():void {
 		const pxBounds = new Bounds();
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
@@ -210,8 +232,8 @@ export const Polyline = Path.extend({
 	},
 
 	_updateBounds: function () {
-		const w = this._clickTolerance(),
-		    p = new Point(w, w);
+		const w = this._clickTolerance();
+		const p = new Point(w, w);
 		this._pxBounds = new Bounds([
 			this._rawPxBounds.min.subtract(p),
 			this._rawPxBounds.max.add(p)
@@ -219,20 +241,21 @@ export const Polyline = Path.extend({
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates
-	_projectLatlngs: function (latlngs, result, projectedBounds) {
-		const flat = latlngs[0] instanceof LatLng,
-		    len = latlngs.length,
-		    i, ring;
+	_projectLatlngs: function (latlngs:LatLngReturnType[], result, projectedBounds) {
+		const flat = latlngs[0] instanceof LatLng;
+		// const len = latlngs.length;
+		// const i;
+		const ring;
 
 		if (flat) {
 			ring = [];
-			for (i = 0; i < len; i++) {
+			for (const i in latlngs) {
 				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
 				projectedBounds.extend(ring[i]);
 			}
 			result.push(ring);
 		} else {
-			for (i = 0; i < len; i++) {
+			for (const i in latlngs) {
 				this._projectLatlngs(latlngs[i], result, projectedBounds);
 			}
 		}
