@@ -9,6 +9,7 @@
 import {Object, ReturnType} from "typescript";
 import {Point} from "../geometry";
 
+type EventReturnType = ReturnType<typeof Event>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type FunctionReturnType = ReturnType<typeof Object.Function>;
 type ObjectReturnType = ReturnType<typeof Object.String>;
@@ -26,14 +27,14 @@ type numberAuxY = ReturnType<typeof Object.Number>;
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest:ObjectReturnType[]): ObjectReturnType[] {
-	const i;
-	const j;
-	const len;
+	// const i;
+	// const j;
+	// const len;
 	const src:ObjectReturnType[];
 
 	for (const j in arguments) {
 		src = arguments[j];
-		for (i in src) {
+		for (const i in src) {
 			dest[i] = src[i];
 		}
 	}
@@ -253,7 +254,7 @@ export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimat
 // the browser doesn't have native support for
 // [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
 // otherwise it's delayed. Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn:FunctionReturnType, context, immediate) {
+export function requestAnimFrame(fn:FunctionReturnType, context:EventReturnType, immediate) {
 	if (immediate && requestFn === timeoutDefer) {
 		fn.call(context);
 	} else {

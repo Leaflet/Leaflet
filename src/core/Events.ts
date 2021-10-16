@@ -201,7 +201,7 @@ export const Events = {
 	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
-	fire: function (type:StringReturnType, data, propagate:boolean) {
+	fire: function (type:StringReturnType, data, propagate:boolean):EventReturnType {
 		if (!this.listens(type, propagate)) { return this; }
 
 		const event = Util.extend({}, data, {
