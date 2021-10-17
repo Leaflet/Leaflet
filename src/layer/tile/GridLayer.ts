@@ -8,13 +8,13 @@ import {Layer} from '../Layer';
 import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import {Point} from '../../geometry/Point';
+// import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
 
 import {Object, ReturnType, HTMLElement} from 'typescript';
 import {Point} from "../geometry";
-
+import {FeatureGroup} from "../FeatureGroup";
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 type HTMLElementReturnType = ReturnType<typeof HTMLElement>;

@@ -2,7 +2,7 @@ import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
 import {toLatLngBounds} from './LatLngBounds';
 
-import {Point} from '../../geometry/Point';
+// import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
 
@@ -13,16 +13,16 @@ import {FeatureGroup} from "../layer";
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 type LatLngReturnType = ReturnType<typeof LatLng> | ReturnType<typeof LatLng.prototype.clone>;
 type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
-type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
+// type HTMLElementReturnType = ReturnType<typeof HTMLElement>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
-type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type pointReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
-type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
-type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+// type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 // type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
-type PointReturnType = ReturnType<typeof Point>;
-// type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
+// type PointReturnType = ReturnType<typeof Point>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 // type _roundReturnType = ReturnType<typeof  Point.prototype._round> | number | ReturnType<typeof Object.Number>;
 // type roundReturnType = ReturnType<typeof  Point.prototype.round> | number | ReturnType<typeof Object.Number>;
 // type floorReturnType = ReturnType<typeof  Point.prototype.floor> | number | ReturnType<typeof Object.Number>;
@@ -56,17 +56,19 @@ type PointReturnType = ReturnType<typeof Point>;
  * can't be added to it with the `include` function.
  */
 
-export function LatLng(lat:NumberReturnType, lng:NumberReturnType, alt:NumberReturnType):void {
+export function LatLng(this: any, lat:NumberReturnType, lng:NumberReturnType, alt:NumberReturnType):void {
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
 
 	// @property lat: Number
 	// Latitude in degrees
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	this.lat = +lat;
 
 	// @property lng: Number
 	// Longitude in degrees
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	this.lng = +lng;
 
 	// @property alt: Number
@@ -93,7 +95,7 @@ LatLng.prototype = {
 
 	// @method toString(): String
 	// Returns a string representation of the point (for debugging purposes).
-	toString: function (precision) {
+	toString: function (precision:NumberReturnType):StringReturnType {
 		return 'LatLng(' +
 		        Util.formatNum(this.lat, precision) + ', ' +
 		        Util.formatNum(this.lng, precision) + ')';

@@ -34,6 +34,7 @@ import {PointReturn} from './PointReturn';
 
 // @ts-ignore
 import {Object, ReturnType} from 'typescript';
+import {Point} from "./Point";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 
@@ -134,7 +135,7 @@ Bounds.prototype = {
 		const max;
 
 		if (typeof obj[0] === 'number' || obj instanceof Point) {
-			obj = toPoint(obj);
+			obj = this.toPoint(obj);
 		} else {
 			obj = toBounds(obj);
 		}

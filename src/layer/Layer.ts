@@ -9,13 +9,16 @@ import {LayerGroup} from './LayerGroup';
 import * as Util from '../core/Util';
 
 
+
 import {Object, ReturnType, HTMLElement} from 'typescript';
+// @ts-ignore
 import {$ , Event} from 'jquery';
 import {Point} from "../geometry";
 import {FeatureGroup} from "./FeatureGroup";
 import {LatLngBounds} from "../geo";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type FunctionReturnType = ReturnType<typeof Function>;
 type MapReturnType = ReturnType<typeof Map>;
 type LayerGroupReturnType = ReturnType<typeof LayerGroup>;
 type EventReturnType= ReturnType<typeof Event>;

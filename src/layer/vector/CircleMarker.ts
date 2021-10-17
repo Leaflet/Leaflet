@@ -1,7 +1,24 @@
 import {Path} from './Path';
 import * as Util from '../../core/Util';
-import {toLatLng} from '../../geo/LatLng';
+import {LatLng, toLatLng} from '../../geo/LatLng';
 import {Bounds} from '../../geometry/Bounds';
+
+import {Object, ReturnType} from "typescript";
+import {Point} from "../geometry";
+import {layers} from "../control/Control.Layers";
+
+import * as L from './Leaflet';
+import {FeatureGroup} from "../FeatureGroup";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type EventReturnType = ReturnType<typeof Event>;
+// type FunctionReturnType = ReturnType<typeof Function>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LatLngReturnType = ReturnType<typeof LatLng>;
+// type GeoJSONReturnType = ReturnType<typeof GeoJSON>;
+export type MapReturnType = ReturnType<typeof L.Map>;
+// type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 
 /*
@@ -24,7 +41,7 @@ export const CircleMarker = Path.extend({
 		radius: 10
 	},
 
-	initialize: function (latlng, options) {
+	initialize: function (latlng:LayerReturnType, options:NumberReturnType):void {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
 		this._radius = this.options.radius;
@@ -32,7 +49,7 @@ export const CircleMarker = Path.extend({
 
 	// @method setLatLng(latLng: LatLng): this
 	// Sets the position of a circle marker to a new location.
-	setLatLng: function (latlng) {
+	setLatLng: function (latlng:LatLngReturnType):EventReturnType {
 		const oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		this.redraw();
@@ -50,7 +67,7 @@ export const CircleMarker = Path.extend({
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
-	setRadius: function (radius) {
+	setRadius: function (radius:NumberReturnType) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	},
@@ -104,6 +121,6 @@ export const CircleMarker = Path.extend({
 
 // @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
-export function circleMarker(latlng, options) {
+export function circleMarker(latlng:LatLngReturnType, options:NumberReturnType) {
 	return new CircleMarker(latlng, options);
 }

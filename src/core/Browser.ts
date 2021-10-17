@@ -53,14 +53,14 @@ export const edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
-export const webkit = userAgentContains('webkit');
+export const webkit:boolean = userAgentContains('webkit');
 
 // @property android: Boolean
 // `true` for any browser running on an Android platform.
-export const android = userAgentContains('android');
+export const android:boolean = userAgentContains('android');
 
 // @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
-export const android23 = userAgentContains('android 2') || userAgentContains('android 3');
+export const android23:boolean = userAgentContains('android 2') || userAgentContains('android 3');
 
 /* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
 const webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
@@ -68,10 +68,11 @@ const webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10
 export const androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
 // @property opera: Boolean; `true` for the Opera browser
-export const opera = false; // without opera
+export const opera:false = false; // without opera
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-export const chrome = !edge && userAgentContains('chrome');
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+export const chrome:false = !edge && userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 export const gecko = userAgentContains('gecko') && !webkit && !opera && !ie;

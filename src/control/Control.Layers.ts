@@ -15,9 +15,12 @@ import {FeatureGroup, LayerGroup} from "../layer";
 import {Point} from "../geometry";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type EventReturnType = ReturnType<typeof Event>;
+type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
 type MapReturnType = ReturnType<typeof Map>;
 type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
-type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerGroupReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 /*
  * @class Control.Layers
@@ -86,12 +89,13 @@ export const Layers = Control.extend({
 		// The function receives both the `L.Layer` instances and their names, as in
 		// `sortFunction(layerA, layerB, nameA, nameB)`.
 		// By default, it sorts layers alphabetically by their name.
-		sortFunction: function (layerA, layerB, nameA, nameB) {
+		sortFunction: function (layerA:LayerReturnType, layerB:LayerReturnType, nameA:StringReturnType, nameB:StringReturnType):StringReturnType {
+			// return String.sort(nameA, nameB).toString();
 			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
 		}
 	},
 
-	initialize: function (baseLayers, overlays, options) {
+	initialize: function (baseLayers:LayerReturnType[], overlays:LayerReturnType[], options:NumberReturnType) {
 		Util.setOptions(this, options);
 
 		this._layerControlInputs = [];
@@ -138,14 +142,14 @@ export const Layers = Control.extend({
 
 	// @method addBaseLayer(layer: Layer, name: String): this
 	// Adds a base layer (radio button entry) with the given name to the control.
-	addBaseLayer: function (layer, name) {
+	addBaseLayer: function (layer:LayerReturnType, name:StringReturnType) {
 		this._addLayer(layer, name);
 		return (this._map) ? this._update() : this;
 	},
 
 	// @method addOverlay(layer: Layer, name: String): this
 	// Adds an overlay (checkbox entry) with the given name to the control.
-	addOverlay: function (layer, name) {
+	addOverlay: function (layer:LayerReturnType, name:StringReturnType) {
 		this._addLayer(layer, name, true);
 		return (this._map) ? this._update() : this;
 	},
@@ -271,7 +275,11 @@ export const Layers = Control.extend({
 		DomUtil.empty(this._overlaysList);
 
 		this._layerControlInputs = [];
-		const baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
+		const baseLayersPresent;
+		const overlaysPresent;
+		// const i;
+		const obj;
+		const baseLayersCount = 0;
 
 		for (const i in this._layers.length) {
 			obj = this._layers[i];
@@ -292,7 +300,7 @@ export const Layers = Control.extend({
 		return this;
 	},
 
-	_onLayerChange: function (e) {
+	_onLayerChange: function (e:EventReturnType) {
 		if (!this._handlingClick) {
 			this._update();
 		}
