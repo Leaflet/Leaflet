@@ -8,7 +8,7 @@ import * as Util from './Util';
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
-export function Class() {}
+export function Class() { }
 
 Class.extend = function (props) {
 
@@ -64,22 +64,35 @@ Class.extend = function (props) {
 	proto._initHooks = [];
 
 	// add method for calling all hooks
-	proto.callInitHooks = function () {
-
-		if (this._initHooksCalled) { return; }
-
-		if (parentProto.callInitHooks) {
-			parentProto.callInitHooks.call(this);
-		}
-
-		this._initHooksCalled = true;
-
-		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
-			proto._initHooks[i].call(this);
-		}
-	};
+	// proto.callInitHooks = callInitHooks;
 
 	return NewClass;
+};
+
+Class.prototype.callInitHooks = callInitHooks;
+
+let depth = 0
+
+function callInitHooks() {
+
+	if (this._initHooksCalled) { return; }
+
+	const proto = this.__proto__;
+
+	depth++
+	console.log(depth);
+	if (proto.callInitHooks) {
+		callInitHooks.call(proto);
+	}
+	depth--;
+
+	this._initHooksCalled = true;
+
+	if (!proto._initHooks) { return; }
+
+	for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+		proto._initHooks[i].call(this);
+	}
 };
 
 

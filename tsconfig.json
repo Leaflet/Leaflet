@@ -1,0 +1,8 @@
+{
+  "compileOptions": {
+    "allowJs": true
+  },
+  "include": [
+    "src"
+  ]
+}
