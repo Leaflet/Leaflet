@@ -4,11 +4,14 @@ import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
-import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
+// import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
 import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
+
+type FunctionReturnType = ReturnType<typeof Function>;
+type EventReturnType = ReturnType<typeof Event>;
 
 // import {Point} from '../../geometry/Point';
 // import {Bounds} from '../../geometry/Bounds';
@@ -89,7 +92,7 @@ export const Map = Evented.extend({
 
 		// @option layers: Layer[] = []
 		// Array of layers that will be added to the map initially
-		layers: LayerReturnType[],
+		layers: [],
 
 		// @option maxBounds: LatLngBounds = null
 		// When this option is set, the map restricts the view to the given
@@ -1149,7 +1152,7 @@ if(e instanceof Error){
 		}
 	},
 
-	_initPanes: function () {
+	_initPanes: function ():void {
 		const panes = this._panes = {};
 		this._paneRenderers = {};
 
@@ -1197,7 +1200,7 @@ if(e instanceof Error){
 	// private methods that modify map state
 
 	// @section Map state change events
-	_resetView: function (center, zoom) {
+	_resetView: function (center, zoom):void {
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		const loading = !this._loaded;
@@ -1225,7 +1228,7 @@ if(e instanceof Error){
 		}
 	},
 
-	_moveStart: function (zoomChanged, noMoveStart) {
+	_moveStart: function (zoomChanged, noMoveStart):EventReturnType {
 		// @event zoomstart: Event
 		// Fired when the map zoom is about to change (e.g. before zoom animation).
 		// @event movestart: Event

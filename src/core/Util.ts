@@ -11,6 +11,9 @@ import {Point} from "../geometry";
 
 type EventReturnType = ReturnType<typeof Event>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+
+type ArgumentReturnType = ReturnType<typeof Object.Function.typeArguments>;
+
 type FunctionReturnType = ReturnType<typeof Object.Function>;
 type ObjectReturnType = ReturnType<typeof Object.String>;
 type PointReturnType = ReturnType<typeof Point>;
@@ -30,7 +33,9 @@ export function extend(dest:ObjectReturnType[]): ObjectReturnType[] {
 	// const i;
 	// const j;
 	// const len;
-	const src:ObjectReturnType[];
+	const src:ObjectReturnType[] = [];
+
+	let arguments:ArgumentReturnType = Object.Function.getTypeArguments(dest);
 
 	for (const j in arguments) {
 		src = arguments[j];

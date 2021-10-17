@@ -1,7 +1,7 @@
 import * as Browser from './Browser';
 export {Browser};
 
-export {DemoAbstractClass} from './DemoAbstractClass';
+export {GeoJSONAbstractClass} from './GeoJSONAbstractClass';
 
 import {Evented} from './Events';
 import {Events} from './Events';

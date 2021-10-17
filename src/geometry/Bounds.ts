@@ -1,4 +1,6 @@
-import {Point, toPoint} from './Point';
+// import {Point, toPoint} from './Point';
+// import {Point, toPoint} from './PointImp';
+import {PointReturn} from './PointReturn';
 
 /*
  * @class Bounds
@@ -36,7 +38,7 @@ import {Object, ReturnType} from 'typescript';
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
-type PointReturnType = ReturnType<typeof Point>;
+type PointReturnType = ReturnType<typeof Point> | ReturnType<typeof PointImpl>;
 
 type BoundsReturnType = ReturnType<typeof Bounds | typeof Array | typeof Point | typeof Point[]>;
 

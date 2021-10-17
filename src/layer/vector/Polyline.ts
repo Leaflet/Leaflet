@@ -114,7 +114,8 @@ export const Polyline = Path.extend({
 		const p1;
 		const p2;
 
-		for (const j = 0, jLen = this._parts.length; j < jLen; j++) {
+		for (const j in this._parts.length) {
+
 			const points = this._parts[j];
 
 			for (const i = 1, len = points.length; i < len; i++) {
@@ -143,15 +144,22 @@ export const Polyline = Path.extend({
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 
-		const i, halfDist, segDist, dist, p1, p2, ratio,
-		    points = this._rings[0],
-		    len = points.length;
+		// const i;
+		let halfDist = 0;
+		const segDist;
+		let dist = 0;
+		const p1;
+		const p2;
+		const ratio;
+
+		points = this._rings[0];
+		// len = points.length;
 
 		if (!len) { return null; }
 
 		// polyline centroid algorithm; only uses the first ring if there are multiple
 
-		for (i = 0, halfDist = 0; i < len - 1; i++) {
+		for (const i in points) {
 			halfDist += points[i].distanceTo(points[i + 1]) / 2;
 		}
 
@@ -160,7 +168,7 @@ export const Polyline = Path.extend({
 			return this._map.layerPointToLatLng(points[0]);
 		}
 
-		for (i = 0, dist = 0; i < len - 1; i++) {
+		for (const i in points) {
 			p1 = points[i];
 			p2 = points[i + 1];
 			segDist = p1.distanceTo(p2);
@@ -186,7 +194,7 @@ export const Polyline = Path.extend({
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
-	addLatLng: function (latlng:LatLngReturnType, latlngs:LatLngReturnType[]) {
+	addLatLng: function (latlng:LatLngReturnType, latlngs:LatLngReturnType[]):LatLngReturnType {
 		latlngs = latlngs || this._defaultShape();
 		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
@@ -194,7 +202,7 @@ export const Polyline = Path.extend({
 		return this.redraw();
 	},
 
-	_setLatLngs: function (latlngs:LatLngBoundsReturnType) {
+	_setLatLngs: function (latlngs:LatLngBoundsReturnType):void {
 		this._bounds = new LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
 	},

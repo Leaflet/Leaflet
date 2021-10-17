@@ -37,31 +37,14 @@ import {isArray, formatNum} from '../core/Util';
 // @ts-ignore
 import {Object, ReturnType} from 'typescript';
 
-interface PointReturn{
-	x: number | ReturnType<typeof Object.Number>;
-	y: number | ReturnType<typeof Object.Number>;
-}
+import {PointReturn} from './PointReturn';
 
-class PointReturnImpl implements PointReturn{
+import {PointReturnImpl} from './PointReturnImpl';
 
-	x: 0.0;
-	y: 0.0;
-
-	constructor(x:number, y:number, round:number) {
-		this.x = Object.create((round ? Math.round(x) : x));
-		this.y = Object.create((round ? Math.round(y) : y));
-	}
-
-
-
-	public getX(): number{
-		return this.x;
-	}
-	public getY(): number{
-		return this.y;
-	}
-
-}
+// interface PointReturn{
+	// x: number | ReturnType<typeof Object.Number>;
+	// y: number | ReturnType<typeof Object.Number>;
+//}
 
 export function Point(x:NumberReturnType,y:NumberReturnType): PointReturnImpl{
 	// @ts-ignore
@@ -69,12 +52,13 @@ export function Point(x:NumberReturnType,y:NumberReturnType): PointReturnImpl{
 };
 
 // @ts-ignore
+// eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
 export function Point(x:NumberReturnType, y:NumberReturnType, round:NumberReturnType): PointReturnImpl {
 	// @property x: Number; The `x` coordinate of the point
-	const x = Object.create((round ? Math.round(x) : x));
+	// const x = Object.create((round ? Math.round(x) : x));
 	// @property y: Number; The `y` coordinate of the point
-	const y = Object.create((round ? Math.round(y) : y));
-	return new PointReturnImpl(x,y);
+	// const y = Object.create((round ? Math.round(y) : y));
+	return new PointReturnImpl(x,y,round).roundXY(x,y,round);
 }
 
 // Point(0,0,0);
@@ -106,7 +90,7 @@ Point.prototype = {
 	try{
 		if(typeof Point.x === typeof numberAuxX){
 			if(typeof this.y === typeof numberAuxY) {
-				return new Point(this.x, this.y);
+				return new Point(this.x.clone(), this.y.clone());
 			}
 		}
 	}finally {

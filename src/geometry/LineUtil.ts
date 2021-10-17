@@ -1,5 +1,13 @@
 import {Point} from './Point';
+import {PointReturnImpl} from './PointReturnImpl';
 import * as Util from '../core/Util';
+import {LatLng} from "../geo";
+import {Object , ReturnType} from "typescript";// no List no ArrayList no Serializable
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type LatLngReturnType = ReturnType<typeof LatLng>;
+type PointReturnImplType = ReturnType<typeof PointReturnImpl>;
+type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 
 /*
@@ -19,7 +27,8 @@ import * as Util from '../core/Util';
 // each zoom level and also reducing visual noise. tolerance affects the amount of
 // simplification (lesser value means higher quality but slower and with more points).
 // Also released as a separated micro-library [Simplify.tsc](http://mourner.github.com/simplify-js/).
-export function simplify(points, tolerance) {
+export function simplify(points:PointReturnImplType[], tolerance:NumberReturnType):PointReturnImplType[] {
+
 	if (!tolerance || !points.length) {
 		return points.slice();
 	}
@@ -37,31 +46,31 @@ export function simplify(points, tolerance) {
 
 // @function pointToSegmentDistance(p: Point, p1: Point, p2: Point): Number
 // Returns the distance between point `p` and segment `p1` to `p2`.
-export function pointToSegmentDistance(p, p1, p2) {
+export function pointToSegmentDistance(p:PointReturnImpl, p1:PointReturnImpl, p2:PointReturnImpl): NumberReturnType {
 	return Math.sqrt(_sqClosestPointOnSegment(p, p1, p2, true));
 }
 
 // @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
 // Returns the closest point from a point `p` on a segment `p1` to `p2`.
-export function closestPointOnSegment(p, p1, p2) {
+export function closestPointOnSegment(p:PointReturnImpl, p1:PointReturnImpl, p2:PointReturnImpl):NumberReturnType {
 	return _sqClosestPointOnSegment(p, p1, p2);
 }
 
 // Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
-function _simplifyDP(points, sqTolerance) {
+function _simplifyDP(points:PointReturnImpl[], sqTolerance:NumberReturnType):[] {
 
-	const len = points.length,
-	    ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
-	    markers = new ArrayConstructor(len);
+	const len = points.length;
+	const ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array;
+	const markers = new ArrayConstructor(len);
 
-	    markers[0] = markers[len - 1] = 1;
+	markers[0] = markers[len - 1] = 1;
 
 	_simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
 
-	const i,
-	    newPoints = [];
+	// const i;
+	const newPoints = [];
 
-	for (i = 0; i < len; i++) {
+	for (const i in markers[i]) {
 		if (markers[i]) {
 			newPoints.push(points[i]);
 		}
@@ -70,12 +79,17 @@ function _simplifyDP(points, sqTolerance) {
 	return newPoints;
 }
 
-function _simplifyDPStep(points, markers, sqTolerance, first, last) {
+function _simplifyDPStep(points:PointReturnImpl[], markers, sqTolerance:NumberReturnType, first, last):void {
 
-	const maxSqDist = 0,
-	index, i, sqDist;
+	const maxSqDist = 0;
+	const index;
+	// const i;
+	const sqDist;
 
-	for (i = first + 1; i <= last - 1; i++) {
+	// for loop diferentiation map test fail
+	// sqDist = _sqClosestPointOnSegment(points.map(points[first],first+1, points[last]), true);
+
+	for (const i = first + 1; i <= last - 1; i++) {
 		sqDist = _sqClosestPointOnSegment(points[i], points[first], points[last], true);
 
 		if (sqDist > maxSqDist) {
@@ -203,13 +217,13 @@ function _sqDist(p1, p2) {
 }
 
 // return closest point on segment or distance to that point
-export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
-	const x = p1.x,
-	    y = p1.y,
-	    dx = p2.x - x,
-	    dy = p2.y - y,
-	    dot = dx * dx + dy * dy,
-	    t;
+export function _sqClosestPointOnSegment(p:PointReturnImpl, p1:PointReturnImpl, p2:PointReturnImpl, sqDist:NumberReturnType):PointReturnImpl {
+	const x:NumberReturnType = p1.x;
+	const y:NumberReturnType = p1.y;
+	const dx:NumberReturnType = p2.x - x;
+	const dy:NumberReturnType = p2.y - y;
+	const dot:NumberReturnType = dx * dx + dy * dy;
+	const t:NumberReturnType;
 
 	if (dot > 0) {
 		t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
@@ -232,11 +246,11 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 
 // @function isFlat(latlngs: LatLng[]): Boolean
 // Returns true if `latlngs` is a flat array, false is nested.
-export function isFlat(latlngs) {
+export function isFlat(latlngs:LatLngReturnType[] | LatLngReturnType[][]): boolean {
 	return !Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }
 
-export function _flat(latlngs) {
+export function _flat(latlngs:LatLngReturnType):boolean {
 	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
 	return isFlat(latlngs);
 }

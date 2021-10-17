@@ -7,6 +7,7 @@ import {ImageOverlay} from './ImageOverlay';
 import * as DomUtil from '../dom/DomUtil';
 import * as Util from '../core/Util';
 
+// @ts-ignore
 import {ReturnType} from 'typescript';
 // import {Point} from "../geometry";
 import {LatLngBounds} from "../geo";
@@ -72,7 +73,7 @@ export const VideoOverlay = ImageOverlay.extend({
 		muted: false
 	},
 
-	_initImage: function () {
+	_initImage: function ():void {
 		const wasElementSupplied = this._url.tagName === 'VIDEO';
 		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
 

@@ -10,6 +10,14 @@ import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
+import {Object, ReturnType} from "typescript";
+import {FeatureGroup, LayerGroup} from "../layer";
+import {Point} from "../geometry";
+
+// https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type MapReturnType = ReturnType<typeof Map>;
+type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerGroupReturnType = ReturnType<typeof  LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 /*
  * @class Control.Layers
@@ -100,7 +108,7 @@ export const Layers = Control.extend({
 		}
 	},
 
-	onAdd: function (map) {
+	onAdd: function (map:MapReturnType) {
 		this._initLayout();
 		this._update();
 
@@ -114,7 +122,7 @@ export const Layers = Control.extend({
 		return this._container;
 	},
 
-	addTo: function (map) {
+	addTo: function (map:MapReturnType) {
 		Control.prototype.addTo.call(this, map);
 		// Trigger expand after Layers Control has been inserted into DOM so that is now has an actual height.
 		return this._expandIfNotCollapsed();

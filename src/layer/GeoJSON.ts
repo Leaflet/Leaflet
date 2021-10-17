@@ -12,11 +12,14 @@ import {Object, ReturnType} from "typescript";
 import {Point} from "../geometry";
 import {layers} from "../control/Control.Layers";
 
+import * as L from './Leaflet';
+
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type FunctionReturnType = ReturnType<typeof Function>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type LatLngReturnType = ReturnType<typeof LatLng>;
 type GeoJSONReturnType = ReturnType<typeof GeoJSON>;
-type MapReturnType = ReturnType<typeof Map>;
+export type MapReturnType = ReturnType<typeof L.Map>;
 type GridLayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 type LayerReturnType = ReturnType<typeof  FeatureGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
@@ -93,7 +96,7 @@ export const GeoJSON = FeatureGroup.extend({
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize: function (geojson:GeoJSONReturnType, options:NumberReturnType) {
+	initialize: function (geojson:GeoJSONReturnType, options:NumberReturnType):void {
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -114,7 +117,7 @@ export const GeoJSON = FeatureGroup.extend({
 		if (features) {
 			for (const i in features) {
 				// only add this if geometry or geometries are set and not null
-				feature = features[i];
+				const feature = features[i];
 				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
 					this.addData(feature);
 				}
@@ -220,7 +223,7 @@ export function geometryToLayer(geojson:GeoJSONReturnType, options:NumberReturnT
 
 	case 'GeometryCollection':
 		for (const i in geometry.geometries) {
-			const layer = geometryToLayer({
+			const layer:LayerReturnType = geometryToLayer({
 				geometry: geometry.geometries[i],
 				type: 'Feature',
 				properties: geojson.properties
@@ -237,7 +240,7 @@ export function geometryToLayer(geojson:GeoJSONReturnType, options:NumberReturnT
 	}
 }
 
-function _pointToLayer(pointToLayerFn, geojson:GeoJSONReturnType, latlng:LatLngReturnType, options:NumberReturnType) {
+function _pointToLayer(pointToLayerFn:FunctionReturnType, geojson:GeoJSONReturnType, latlng:LatLngReturnType, options:NumberReturnType) {
 	return pointToLayerFn ?
 		pointToLayerFn(geojson, latlng) :
 		new Marker(latlng, options && options.markersInheritOptions && options);
@@ -255,7 +258,7 @@ export function coordsToLatLng(coords:[]): LatLngReturnType {
 // `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 // Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
 export function coordsToLatLngs(coords:[], levelsDeep:NumberReturnType, _coordsToLatLng): LatLngReturnType[] {
-	const latlngs = LatLngReturnType[];
+	const latlngs : LatLngReturnType[];
 
 	for (const i in coords) {
 		latlng = levelsDeep ?
@@ -280,8 +283,8 @@ export function latLngToCoords(latlng:LatLngReturnType, precision:NumberReturnTy
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
-export function latLngsToCoords(latlngs:[], levelsDeep:NumberReturnType, closed:boolean, precision):[] {
-	const coords = [];
+export function latLngsToCoords(latlngs:[], levelsDeep:NumberReturnType, closed:boolean, precision:NumberReturnType):NumberReturnType[] {
+	const coords : NumberReturnType[] = [];
 
 	for (const i in latlngs) {
 		coords.push(levelsDeep ?
@@ -367,10 +370,10 @@ Polyline.include({
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
 	toGeoJSON: function (precision:NumberReturnType) {
-		const holes = !LineUtil.isFlat(this._latlngs),
-		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
+		const holes = !LineUtil.isFlat(this._latlngs);
+		const multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
-		let coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
+		let coords:[] = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
 
 		if (!holes) {
 			coords = [coords];
@@ -451,6 +454,7 @@ LayerGroup.include({
 // [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
 export function geoJSON(geojson:GeoJSONReturnType, options:NumberReturnType):GeoJSONReturnType {
+	options = 0;// 12 IANA CONSIDERATIONS Optional parameters:  n/a
 	return new GeoJSON(geojson, options);
 }
 

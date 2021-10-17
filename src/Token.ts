@@ -18,7 +18,7 @@ function token ():string{
             data: { login },
         } = await octokit.rest.users.getAuthenticated();
         console.log("Hello, %s", login);
-        const retrieve = require('./AppServer.ts');
+        const retrieve = require('./OctokitAppServer.ts');
         retrieve();
         return octokit.toString('leaflet-secret');
     }finally{

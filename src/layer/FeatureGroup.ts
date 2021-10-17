@@ -31,11 +31,15 @@ import {LatLngBounds} from '../geo/LatLngBounds';
 
 import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
+import {LatLng} from "../geo";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+// type MapReturnType = ReturnType<typeof Map>;
+type LatLngReturnType = ReturnType<typeof LatLng>;
+type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
-type LayerReturnType = ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
+type LayerReturnType = ReturnType<typeof String> | ReturnType<typeof LayerGroup> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
 // type PointReturnType = ReturnType<typeof Point>;
 // type StringReturnType = ReturnType<typeof  Point.prototype.toString> | string | ReturnType<typeof Object.String>;
@@ -101,7 +105,7 @@ export const FeatureGroup = LayerGroup.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
 	getBounds: function ():LatLngBoundsReturnType {
-		const bounds = new LatLngBounds();
+		const bounds:LatLngBoundsReturnType = new LatLngBounds();
 
 		for (const id in this._layers) {
 			const layer = this._layers[id];

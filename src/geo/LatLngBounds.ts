@@ -7,6 +7,7 @@ import {LatLng, toLatLng} from './LatLng';
 
 import {Object, ReturnType, HTMLElement} from 'typescript';
 import {Point} from "../geometry";
+import {FeatureGroup} from "../layer";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 type LatLngReturnType = ReturnType<typeof LatLng>;
@@ -76,7 +77,7 @@ LatLngBounds.prototype = {
 	// @alternative
 	// @method extend(otherBounds: LatLngBounds): this
 	// Extend the bounds to contain the given bounds
-	extend: function (obj: LatLngReturnType | LatLngBoundsReturnType) {
+	extend: function (obj: LatLngReturnType | LatLngBoundsReturnType):LatLngBoundsReturnType|void {
 		const sw = this._southWest;
 		const ne = this._northEast;
 		const sw2;

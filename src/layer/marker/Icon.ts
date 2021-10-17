@@ -1,4 +1,4 @@
-import { DemoAbstractClass } from "../../core/DemoAbstractClass";
+import { GeoJSONAbstractClass } from "../../core/GeoJSONAbstractClass";
 import {setOptions} from '../../core/Util';
 import {toPoint as point} from '../../geometry/Point';
 import {retina} from '../../core/Browser';
@@ -31,7 +31,7 @@ import {retina} from '../../core/Browser';
  *
  */
 
-export var Icon = DemoAbstractClass.extend({
+export var Icon = GeoJSONAbstractClass.extend({
 
 	/* @section
 	 * @aka Icon options

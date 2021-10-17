@@ -26,6 +26,9 @@
     "baseUrl": "./",
     "allowJs": true,
     "declaration": true,
+    "adjacent-overload-signatures": [true, {
+      "OPTION_IGNORE_ACCESSORS": true
+    }],
     "emitDeclarationOnly": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

@@ -1,6 +1,6 @@
-import { DemoAbstractClass } from './DemoAbstractClass';
+import { GeoJSONAbstractClass } from './GeoJSONAbstractClass';
 import * as Util from './Util';
-public class DemoAbstractClassImpl extends DemoAbstractClass{
+public class DemoAbstractClassImpl extends GeoJSONAbstractClass{
 
 	constructor(){
 		super();
@@ -83,21 +83,21 @@ Class.extends = function (props) {
 
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
-DemoAbstractClass.include = function (props) {
+GeoJSONAbstractClass.include = function (props) {
 	Util.extend(this.prototype, props);
 	return this;
 };
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
-DemoAbstractClass.mergeOptions = function (options) {
+GeoJSONAbstractClass.mergeOptions = function (options) {
 	Util.extend(this.prototype.options, options);
 	return this;
 };
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-DemoAbstractClass.addInitHook = function (fn) { // (Function) || (String, args...)
+GeoJSONAbstractClass.addInitHook = function (fn) { // (Function) || (String, args...)
 	const args = Array.prototype.slice.call(arguments, 1);
 
 	const init = typeof fn === 'function' ? fn : function () {

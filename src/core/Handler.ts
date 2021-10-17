@@ -1,4 +1,4 @@
-import { DemoAbstractClass } from "./DemoAbstractClass";
+import { GeoJSONAbstractClass } from "./GeoJSONAbstractClass";
 
 /*
 	L.Handler is a base class for handler classes that are used internally to inject
@@ -9,7 +9,7 @@ import { DemoAbstractClass } from "./DemoAbstractClass";
 // @aka L.Handler
 // Abstract class for map interaction handlers
 
-export class Handler extends DemoAbstractClass.extend({
+export class Handler extends GeoJSONAbstractClass.extend({
 
 	initialize: function (map) {
 		this._map = map;

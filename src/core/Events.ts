@@ -4,14 +4,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DemoAbstractClass } from "./DemoAbstractClass";
+import { GeoJSONAbstractClass } from "./GeoJSONAbstractClass";
 import * as Util from './Util';
 
+// @ts-ignore
 import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
 import {LayerGroup} from "../layer";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type ObjectReturnType = ReturnType<typeof Object>;
 type FunctionReturnType = ReturnType<typeof Function>;
 type EventReturnType = ReturnType<typeof Event>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
@@ -201,7 +203,7 @@ export const Events = {
 	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
-	fire: function (type:StringReturnType, data, propagate:boolean):EventReturnType {
+	fire: function (type:StringReturnType, data:ObjectReturnType, propagate:boolean):EventReturnType {
 		if (!this.listens(type, propagate)) { return this; }
 
 		const event = Util.extend({}, data, {
@@ -234,7 +236,7 @@ export const Events = {
 
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
-	listens: function (type:StringReturnType, propagate):boolean {
+	listens: function (type:StringReturnType, propagate:boolean):boolean {
 		const listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
@@ -258,7 +260,7 @@ export const Events = {
 			return this;
 		}
 
-		const handler = Util.bind(function () {
+		const handler = Util.bind(function ():void {
 			this.off(types, fn, context).off(types, handler, context);
 		}, this);
 
@@ -318,4 +320,4 @@ Events.fireEvent = Events.fire;
 // Alias to [`listens(…)`](#evented-listens)
 Events.hasEventListeners = Events.listens;
 
-export const Evented = DemoAbstractClass.extend(Events);
+export const Evented:EventReturnType = GeoJSONAbstractClass.extend(Events);

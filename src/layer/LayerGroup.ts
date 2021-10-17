@@ -15,8 +15,12 @@ import {Object, ReturnType} from 'typescript';
 import {Point} from "../geometry";
 import {FeatureGroup} from "./FeatureGroup";
 import {LatLngBounds} from "../geo";
+import {layers} from "../control/Control.Layers";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
+type ObjectReturnType = ReturnType<typeof Object>;
+type FunctionReturnType = ReturnType<typeof Function>;
+type MapReturnType = ReturnType<typeof Map>;
 type LatLngBoundsReturnType= ReturnType<typeof LatLngBounds>;
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
 
@@ -52,8 +56,8 @@ type numberAuxY = ReturnType<typeof Object.Number>;
  */
 
 export const LayerGroup = Layer.extend({
-
-	initialize: function (layers:LayerReturnType, options) {
+// 12 IANA Considerations Optional parameters:  n/a
+	initialize: function (layers:LayerReturnType, options:NumberReturnType):LatLngBoundsReturnType|void {
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -120,10 +124,10 @@ export const LayerGroup = Layer.extend({
 	// Calls `methodName` on every layer contained in this group, passing any
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
-	invoke: function (methodName:StringReturnType) {
+	invoke: function (methodName:StringReturnType):StringReturnType {
 		const args = Array.prototype.slice.call(arguments, 1);
 		// const i;
-		const layer;
+		let layer:StringReturnType[];
 
 		for (const i in this._layers) {
 			layer = this._layers[i];
@@ -140,7 +144,7 @@ export const LayerGroup = Layer.extend({
 		this.eachLayer(map.addLayer, map);
 	},
 
-	onRemove: function (map) {
+	onRemove: function (map:MapReturnType) {
 		this.eachLayer(map.removeLayer, map);
 	},
 
@@ -151,7 +155,7 @@ export const LayerGroup = Layer.extend({
 	// 	layer.bindPopup('Hello');
 	// });
 	// ```
-	eachLayer: function (method, context) {
+	eachLayer: function (method:FunctionReturnType, context:ObjectReturnType):LayerReturnType {
 		for (const i in this._layers) {
 			method.call(context, this._layers[i]);
 		}
@@ -167,8 +171,8 @@ export const LayerGroup = Layer.extend({
 	// @method getLayers(): Layer[]
 	// Returns an array of all the layers added to the group.
 	getLayers: function (): LayerReturnType[] {
-		const layers = [];
-		this.eachLayer(layers.push, layers);
+		// let layers:LayerReturnType = [];
+		this.eachLayer(layers.push, this.layers);
 		return layers;
 	},
 
@@ -188,6 +192,8 @@ export const LayerGroup = Layer.extend({
 
 // @factory L.layerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
-export const layerGroup = function (layers:LayerReturnType[], options):LayerGroupReturnType {
+export const layerGroup = function (layers:LayerReturnType[], options:NumberReturnType):LayerGroupReturnType {
+	// https://datatracker.ietf.org/doc/html/rfc7946
+	// 12 IANA Considerations Optional parameters:  n/a
 	return new LayerGroup(layers, options);
 };
