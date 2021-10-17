@@ -1,0 +1,142 @@
+{
+  // Set to true if your app contains a errorHandler middleware:
+  // http://expressjs.com/guide.html#error-handling
+  "expressErrorHandling": false,
+
+  // By setting this field to "force", your app will be forced to use RS256 algorithm when authenticating install/uninstall callbacks.
+  // Make sure to opt-in to signed-install feature from the app descriptor file(atlassian-connect.json) to get this security benefit in advance.
+  "signed-install": "force",
+
+  // This is the default environment. To change your app to use
+  // a different env, set NODE_ENV (http://expressjs.com/api.html#app.configure)
+  "development": {
+    // This is the port your Express server will listen on
+    "port": 3000,
+
+    // To enable validation of descriptor on startup and every time it changes,
+    // add the optional config validateDescriptor to true
+    "validateDescriptor": true,
+
+    // atlassian-connect-express currently integrates with Sequelize for
+    // persistence to store the host client information (i.e., client key,
+    // host public key, etc). When no adapter is specified, it defaults to
+    // Sequelize's fallback memory storage.
+    //
+    // To specify a backend for Sequelize  other than "memory", set the
+    // "dialect" value to one of Sequelize's other supported diaclets.
+    //
+    // To use your own storage adapter, add the key
+    // "adapter" to the following configuration, and replace "dialect"
+    // and "connection" with any values your adapter expects.  Then make sure
+    // that you register your adapter factory with the following code in
+    // app.js:
+    //
+    //   ac.store.register(adapterName, factoryFn)
+    //
+    // See `atlassian-connect-express/lib/store/index.js` and the default
+    // `sequelize.js` files for code demonstrating how to write a
+    // conformant adapter.  The default values are as follows:
+    //
+    //   "store": {
+    //     "adapter": "sequelize",
+    //     "dialect": "sqlite",
+    //     "storage": ":memory:"
+    //   },
+    //
+    //
+    // To use sqlite with a persistent file instead of an in-memory database, the following settings can be used,
+    // and will result in a store.db file being created in the working directory of the app:
+    //
+    //   "store": {
+    //     "adapter": "sequelize",
+    //     "dialect": "sqlite3",
+    //     "url": "sqlite://./store.db"
+    //   },
+    //
+    // To instead configure, say, a PostgreSQL store, the following could be
+    // used:
+    //
+    //   "store": {
+    //     "adapter": "sequelize",
+    //     "dialect": "postgres",
+    //     "url": "postgres://localhost/my_addon_database",
+    //     "table": "MySetting" //optional - table name. Default is "AddonSetting"
+    //     "logging": function, //optional - function that gets executed every time Sequelize would log something.
+    //     "pool": {}           //optional - pool options you have that you may pass to sequelize adapter
+    //   },
+    //
+    // For MongoDB, use the following:
+    //
+    //   "store": {
+    //     "adapter": "mongodb",
+    //     "url": "mongodb://localhost:27017/my_addon_database",
+    //     "collection": "AddonSettings"
+    //   },
+    //
+    // For Redis, use the following:
+    //
+    //   "store": {
+    //     "adapter": "redis",
+    //     "url": "redis://localhost:6379",
+    //   },
+    //
+    // For DynamoDB, use the following:
+    //
+    //   "store": {
+    //     "adapter": "dynamodb",
+    //     "table": "AddonSettings",
+    //     "region": "us-east-1",
+    //   },
+    //
+    //  Note that the DynamoDB table should have "clientKey" as a string
+    //  partition key and "key" as a string sort key.
+    //
+    // You will also need an appropriate Sequelize driver if you choose something
+    // other than the default "diaclet".  In the PostgreSQL case you'd need to
+    // run the following command to add the proper support:
+    //
+    //   $ npm install --save pg
+    //
+    // You will also need aws-sdk if you choose the DynamoDB driver:
+    //
+    //   $ npm install --save @aws-sdk/client-dynamodb
+    //
+
+  },
+
+  // This is the production add-on configuration, which is enabled by setting
+  // the NODE_ENV=production environment variable.
+  "production": {
+    // On a PaaS host like Heroku, the runtime environment will provide the
+    // HTTP port to you via the PORT environement variable, so we configure
+    // that to be honored here.
+    "port": "$PORT",
+    // This is the public URL to your production add-on.
+    "localBaseUrl": "https://your-subdomain.herokuapp.com",
+    "store": {
+      // You won't want to use the memory store in production, or your install
+      // registrations will be forgotten any time your app restarts.  Here
+      // we tell atlassian-connect-express to use the PostgreSQL backend for the default
+      // Sequelize adapter.
+      "dialect": "postgres",
+      // Again, a PaaS host like Heroku will probably provide the db connection
+      // URL to you through the environment, so we tell atlassian-connect-express to use that value.
+      "url": "$DATABASE_URL"
+    },
+
+    // If your app supports multiple baseUrls,
+    // additional baseUrls can be added here so that it can be used to
+    // verify the `audience` claim during installation lifecycle callback.
+    "allowedBaseUrls" : [
+      "https://other-domain.herokuapp.com"
+    ],
+
+    // Make sure that your add-on can only be registered by the hosts on
+    // these domains.
+    "whitelist": [
+      "*.jira-dev.com",
+      "*.atlassian.net",
+      "*.jira.com"
+    ]
+  }
+}

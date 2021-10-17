@@ -35,11 +35,12 @@ import {PointReturn} from './PointReturn';
 // @ts-ignore
 import {Object, ReturnType} from 'typescript';
 import {Point} from "./Point";
+import {PointReturnImpl} from "./PointReturnImpl";
 
 // https://www.typescriptlang.org/docs/handbook/2/typeof-types.html
 
 type NumberReturnType = ReturnType<typeof  Point.prototype.clone> | number | ReturnType<typeof Object.Number>| ReturnType<typeof Point>;
-type PointReturnType = ReturnType<typeof Point> | ReturnType<typeof PointImpl>;
+type PointReturnType = ReturnType<typeof Point> | ReturnType<typeof PointReturnImpl>;
 
 type BoundsReturnType = ReturnType<typeof Bounds | typeof Array | typeof Point | typeof Point[]>;
 

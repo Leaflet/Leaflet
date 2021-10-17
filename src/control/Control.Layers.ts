@@ -235,15 +235,15 @@ export const Layers = Control.extend({
 		container.appendChild(section);
 	},
 
-	_getLayer: function (id) {
-		for (const i in this._layers.length) {
+	_getLayer: function (id:NumberReturnType):LayerReturnType[] {
+		for (const i in this._layers) {
             if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
                 return this._layers[i]
             }
         }
 	},
 
-	_addLayer: function (layer, name, overlay) {
+	_addLayer: function (layer:LayerReturnType, name, overlay) {
 		if (this._map) {
 			layer.on('add remove', this._onLayerChange, this);
 		}
@@ -279,7 +279,7 @@ export const Layers = Control.extend({
 		const overlaysPresent;
 		// const i;
 		const obj;
-		const baseLayersCount = 0;
+		let baseLayersCount = 0;
 
 		for (const i in this._layers.length) {
 			obj = this._layers[i];

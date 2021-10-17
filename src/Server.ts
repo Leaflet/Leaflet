@@ -6,6 +6,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 // 'use strict'; // eslint https://stackoverflow.com/questions/32791507/node-js-and-eslint-disagree-on-use-strict
 
+import {GeoJSONAbstractClass, map} from "./Leaflet";
+import {MapReturnType} from "./layer/GeoJSON";
+import Exception from "typescript";
+
 // require('./src/Leaflet.ts');
 
  // const L.PoligonosApp = require('poligonosapp');
@@ -25,7 +29,7 @@
 
 // const bodyParser = require('body-parser');
 
-function serve(): void {
+function serve(): void | GeoJSONAbstractClass | String {
 
   const { L , Map, Layer, Canvas, tileLayer, geoJSON, Polygon} = require ('./Leaflet.ts');
 
@@ -63,35 +67,59 @@ function serve(): void {
         const polygons = L.Polygon('./polygons.geojson');
         
         //canvas
-        const map = L.map('map', {
+        // @ts-ignore
+            const map:MapReturnType = L.Map('map', {
         renderer: L.canvas()
         });
 
         polygons.addTo(map);
 
-        const token = require('./Token');
+        const option:number = 1;
 
-        const a = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';
-        // const b = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+        switch(option){
+            case 1:
+                const token1 = require('./Pipeline');
 
-        const s = a.concat(token);
+                const a1 = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';
+                // const b1 = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
-        L.tileLayer(s, {
-          maxZoom: 18,
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          id: 'mapbox/light-v9',
-          tileSize: 512,
-          zoomOffset: -1
-        }).addTo(map);
+                const s1 = a1.concat(token1);
 
-        });
+                L.tileLayer(s1, {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    id: 'mapbox/light-v9',
+                    tileSize: 512,
+                    zoomOffset: -1
+                }).addTo(map);
+
+        //});
+                break;
+            case 2:
+                const token2 = require('./Token');
+
+                const a2 = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=';
+                // const b2 = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+                const s2 = a2.concat(token2);
+                L.tileLayer(s2, {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    id: 'mapbox/light-v9',
+                    tileSize: 512,
+                    zoomOffset: -1
+                }).addTo(map);
+
+        // });
+                break;
+        }
 
         // typescript 2304 cannot find name 'res'
         // res.json({success:true});
     
-        app.listen(PORT, HOST);
-        console.log(`Running on http://${HOST}:${PORT}`);
+
       }
       catch(e){
         // typescript error TS1044
@@ -99,10 +127,13 @@ function serve(): void {
 
         // console.log(result);
 
+              throw new Exception("LEAFLET TOKEN NOT FOUND");
+
       }
       finally{
 
-        console.log("finally");
+    app.listen(PORT, HOST);
+    console.log(`Running on http://${HOST}:${PORT}`);
 
       }
 
@@ -116,6 +147,8 @@ try{
   // const result = (e as Exception).Message;
 
   // console.log(result);
+
+    throw new Exception("LEAFLET TOKEN NOT FOUND");
 
 }
 finally{
