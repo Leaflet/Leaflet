@@ -24,6 +24,16 @@ export class Marker extends MarkerInternal {
     super(latlng, { ...options });
   }
 
+  get options() {
+    return {
+
+    }
+  }
+
+  get includes() {
+    return []
+  }
+
   onAdd(map) {
     console.log('added')
     super.onAdd(map);

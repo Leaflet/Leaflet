@@ -1,8 +1,9 @@
 {
-  "compileOptions": {
-    "allowJs": true
+  "compilerOptions": {
+    "allowJs": false,
+    "experimentalDecorators": true
   },
   "include": [
-    "src"
+    "./src/**/*.ts"
   ]
 }
