@@ -5,4 +5,4 @@ Icon.Default = IconDefault;
 export { Icon };
 
 export { DivIcon, divIcon } from './DivIcon';
-export { Marker, marker } from './Marker.class.ts';
+export { Marker, marker } from './Marker.class';

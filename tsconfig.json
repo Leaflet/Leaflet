@@ -1,9 +1,23 @@
 {
   "compilerOptions": {
+    "target": "ES6",
+    "lib": [
+      "ESNext",
+      "ScriptHost",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ES6",
+    "moduleResolution": "Node",
     "allowJs": false,
+    "sourceMap": true,
+    "importHelpers": true,
     "experimentalDecorators": true
   },
   "include": [
     "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

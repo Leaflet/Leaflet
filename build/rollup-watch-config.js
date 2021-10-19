@@ -3,6 +3,7 @@
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import gitRev from 'git-rev-sync'
+import rollupTs from 'rollup-plugin-ts'
 
 const branch = gitRev.branch();
 const rev = gitRev.short();

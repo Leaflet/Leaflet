@@ -21,8 +21,7 @@ function leafletExtends() {
 
 @leafletExtends()
 export class Marker extends MarkerInternal {
-  includes = []
-  options = []
+  get options() { return {} }
 
   constructor(latlng, options) {
     super(latlng, options)

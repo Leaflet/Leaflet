@@ -20,3 +20,7 @@ Gemfile.lock
 yarn.lock
 *.log
 .types
+
+##
+*.class.js
+*.class.js.map
