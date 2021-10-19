@@ -12,8 +12,28 @@ function leafletExtends() {
   }
 }
 
+/**
+ *     proto = target.prototype
+    const chain = Util.extend(Util.create(proto.options), _options);
+    // Util.extend(proto, chain)
+    proto.options = chain;
+ */
+
 @leafletExtends()
 export class Marker extends MarkerInternal {
   includes = []
   options = []
+
+  constructor(latlng, options) {
+    super(latlng, options)
+  }
+
+  onAdd(map) {
+    console.log('added')
+    super.onAdd(map);
+  }
+}
+
+export function marker(latlng, options) {
+  return new Marker(latlng, options);
 }
