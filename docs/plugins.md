@@ -3341,7 +3341,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://brunob.github.com/leaflet.fullscreen">leaflet.fullscreen</a>
+			<a href="https://github.com/brunob/leaflet.fullscreen">leaflet.fullscreen</a>
 		</td><td>
 			Another fullscreen button control but for modern browsers, using HTML5 Fullscreen API.
 		</td><td>
@@ -3350,7 +3350,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
+			<a href="https://github.com/elidupuis/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
 		</td><td>
