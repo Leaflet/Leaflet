@@ -1,3 +1,4 @@
+import * as Util from '../../core/Util'
 import { Marker as MarkerInternal } from './Marker'
 
 function leafletExtends() {
@@ -8,20 +9,19 @@ function leafletExtends() {
    * 4. 
    */
   return (target) => {
-    console.log(target)
+    const _options = target.options;
+    const proto = target.prototype
+    const chain = Util.extend(Util.create(proto.options), _options);
+    Util.extend(proto, chain)
+    proto.options = chain;
   }
 }
 
-/**
- *     proto = target.prototype
-    const chain = Util.extend(Util.create(proto.options), _options);
-    // Util.extend(proto, chain)
-    proto.options = chain;
- */
-
 @leafletExtends()
 export class Marker extends MarkerInternal {
-  get options() { return {} }
+  static options = {
+    draggable: true
+  }
 
   constructor(latlng, options) {
     super(latlng, options)

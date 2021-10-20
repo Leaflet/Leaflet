@@ -2,7 +2,7 @@
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
-import rollupTs from 'rollup-plugin-ts'
+import typescript from 'rollup-plugin-typescript2'
 import gitRev from 'git-rev-sync'
 import pkg from '../package.json'
 
@@ -57,5 +57,6 @@ export default {
 	],
 	plugins: [
 		release ? json() : rollupGitVersion(),
+		typescript({})
 	]
 };

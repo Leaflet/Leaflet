@@ -9,7 +9,7 @@
     ],
     "module": "ES6",
     "moduleResolution": "Node",
-    "allowJs": false,
+    "allowJs": true,
     "sourceMap": true,
     "importHelpers": true,
     "experimentalDecorators": true
