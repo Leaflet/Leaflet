@@ -103,6 +103,9 @@ export var ImageOverlay = Layer.extend({
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
 		}
+		if (styleOpts.interactive === true || styleOpts.interactive === false) {
+			this.setInteractive(styleOpts.interactive);
+		}
 		return this;
 	},
 
@@ -253,6 +256,21 @@ export var ImageOverlay = Layer.extend({
 			this._url = errorUrl;
 			this._image.src = errorUrl;
 		}
+	},
+
+	// @method setInteractive(interactive: Boolean): this
+	// Changes `interactive` option. Emit of [mouse events](#interactive-layer) on image overlay when clicked or hovered.
+	setInteractive: function (interactive) {
+		interactive = !!interactive;
+		if (interactive) {
+			DomUtil.addClass(this._image, 'leaflet-interactive');
+			this.addInteractiveTarget(this._image);
+		} else {
+			DomUtil.removeClass(this._image, 'leaflet-interactive');
+			this.removeInteractiveTarget(this._image);
+		}
+		this.options.interactive = interactive;
+		return this;
 	}
 });
 

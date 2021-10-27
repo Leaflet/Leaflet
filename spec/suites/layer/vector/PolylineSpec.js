@@ -212,4 +212,21 @@ describe('Polyline', function () {
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
 		});
 	});
+
+	describe("#interactive", function () {
+		it("should have class leaflet-interactive", function () {
+			var polyline = new L.Polyline([[1, 2], [2, 3]]).addTo(map);
+			expect(L.DomUtil.hasClass(polyline._path, 'leaflet-interactive')).to.eql(true);
+		});
+		it("should not have class leaflet-interactive", function () {
+			var polyline = new L.Polyline([[1, 2], [2, 3]], {interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(polyline._path, 'leaflet-interactive')).to.eql(false);
+		});
+		it("toggle class leaflet-interactive", function () {
+			var polyline = new L.Polyline([[1, 2], [2, 3]], {interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(polyline._path, 'leaflet-interactive')).to.eql(false);
+			polyline.setStyle({interactive: true});
+			expect(L.DomUtil.hasClass(polyline._path, 'leaflet-interactive')).to.eql(true);
+		});
+	});
 });

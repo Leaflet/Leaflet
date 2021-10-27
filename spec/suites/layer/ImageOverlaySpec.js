@@ -157,4 +157,28 @@ describe('ImageOverlay', function () {
 			});
 		}
 	});
+
+	describe("#interactive", function () {
+		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+		it("should have class leaflet-interactive", function () {
+			var overlay = L.imageOverlay(blankUrl, imageBounds, {interactive: true}).addTo(map);
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(true);
+		});
+		it("should not have class leaflet-interactive", function () {
+			var overlay = L.imageOverlay('', imageBounds).addTo(map);
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(false);
+		});
+		it("toggle class leaflet-interactive with setStyle", function () {
+			var overlay = L.imageOverlay('', imageBounds, {interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(false);
+			overlay.setStyle({interactive: true});
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(true);
+		});
+		it("toggle class leaflet-interactive with setInteractive", function () {
+			var overlay = L.imageOverlay('', imageBounds, {interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(false);
+			overlay.setInteractive(true);
+			expect(L.DomUtil.hasClass(overlay._image, 'leaflet-interactive')).to.eql(true);
+		});
+	});
 });

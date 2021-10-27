@@ -173,6 +173,14 @@ export var SVG = Renderer.extend({
 		} else {
 			path.setAttribute('fill', 'none');
 		}
+
+		if (layer.options.interactive) {
+			DomUtil.addClass(path, 'leaflet-interactive');
+			layer.addInteractiveTarget(layer._path);
+		} else if (DomUtil.hasClass(path, 'leaflet-interactive')) {
+			DomUtil.removeClass(path, 'leaflet-interactive');
+			layer.removeInteractiveTarget(layer._path);
+		}
 	},
 
 	_updatePoly: function (layer, closed) {

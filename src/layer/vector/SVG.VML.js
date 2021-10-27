@@ -119,6 +119,12 @@ export var vmlMixin = {
 			container.removeChild(fill);
 			layer._fill = null;
 		}
+
+		if (layer.options.interactive) {
+			layer.addInteractiveTarget(container);
+		} else {
+			layer.removeInteractiveTarget(container);
+		}
 	},
 
 	_updateCircle: function (layer) {

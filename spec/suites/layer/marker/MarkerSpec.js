@@ -328,4 +328,22 @@ describe("Marker", function () {
 			happen.mousemove(marker._icon);
 		});
 	});
+
+	describe("#interactive", function () {
+		it("should have class leaflet-interactive", function () {
+			var marker = new L.Marker([0, 0], {icon: icon1}).addTo(map);
+			expect(L.DomUtil.hasClass(marker._icon, 'leaflet-interactive')).to.eql(true);
+		});
+		it("should not have class leaflet-interactive", function () {
+			var marker = new L.Marker([0, 0], {icon: icon1, interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(marker._icon, 'leaflet-interactive')).to.eql(false);
+		});
+		it("toggle class leaflet-interactive", function () {
+			var marker = new L.Marker([0, 0], {icon: icon1, interactive: false}).addTo(map);
+			expect(L.DomUtil.hasClass(marker._icon, 'leaflet-interactive')).to.eql(false);
+			marker.options.interactive = true;
+			marker.setIcon(icon1);
+			expect(L.DomUtil.hasClass(marker._icon, 'leaflet-interactive')).to.eql(true);
+		});
+	});
 });
