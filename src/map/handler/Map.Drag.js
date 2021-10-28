@@ -112,7 +112,7 @@ export var Drag = Handler.extend({
 		}
 
 		map
-		    .fire('movestart')
+		    .fire('movestart', {source: 'user.drag'})
 		    .fire('dragstart');
 
 		if (map.options.inertia) {
@@ -131,6 +131,8 @@ export var Drag = Handler.extend({
 
 			this._prunePositions(time);
 		}
+
+		e.source = 'user.drag';
 
 		this._map
 		    .fire('move', e)
@@ -193,7 +195,7 @@ export var Drag = Handler.extend({
 		map.fire('dragend', e);
 
 		if (noInertia) {
-			map.fire('moveend');
+			map.fire('moveend', {source: 'user.drag'});
 
 		} else {
 			this._prunePositions(+new Date());
@@ -212,7 +214,7 @@ export var Drag = Handler.extend({
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			if (!offset.x && !offset.y) {
-				map.fire('moveend');
+				map.fire('moveend', {source: 'user.drag'});
 
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
@@ -223,7 +225,7 @@ export var Drag = Handler.extend({
 						easeLinearity: ease,
 						noMoveStart: true,
 						animate: true
-					});
+					}, 'user.drag');
 				});
 			}
 		}

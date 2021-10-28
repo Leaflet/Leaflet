@@ -91,13 +91,13 @@ export var TouchZoom = Handler.extend({
 		}
 
 		if (!this._moved) {
-			map._moveStart(true, false);
+			map._moveStart(true, false, 'user.touchzoom');
 			this._moved = true;
 		}
 
 		Util.cancelAnimFrame(this._animRequest);
 
-		var moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
+		var moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false}, 'user.touchzoom');
 		this._animRequest = Util.requestAnimFrame(moveFn, this, true);
 
 		DomEvent.preventDefault(e);
@@ -117,9 +117,9 @@ export var TouchZoom = Handler.extend({
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {
-			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap);
+			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap, 'user.touchzoom');
 		} else {
-			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
+			this._map._resetView(this._center, this._map._limitZoom(this._zoom), 'user.touchzoom');
 		}
 	}
 });

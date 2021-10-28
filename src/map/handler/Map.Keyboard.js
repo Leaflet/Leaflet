@@ -151,14 +151,14 @@ export var Keyboard = Handler.extend({
 					offset = toPoint(offset).multiplyBy(3);
 				}
 
-				map.panBy(offset);
+				map.panBy(offset, null, 'user.keyboard');
 
 				if (map.options.maxBounds) {
-					map.panInsideBounds(map.options.maxBounds);
+					map.panInsideBounds(map.options.maxBounds, null, 'user.keyboard');
 				}
 			}
 		} else if (key in this._zoomKeys) {
-			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
+			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key], null, 'user.keyboard');
 
 		} else if (key === 27 && map._popup && map._popup.options.closeOnEscapeKey) {
 			map.closePopup();
