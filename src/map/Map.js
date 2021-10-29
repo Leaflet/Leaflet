@@ -1219,28 +1219,28 @@ export var Map = Evented.extend({
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		// @event zoom: Event
-		// Fired repeatedly during any change in zoom level, including zoom
-		// and fly animations.
+		// Fired repeatedly during any change in zoom level,
+		// including zoom and fly animations.
 		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
 
 		// @event move: Event
-		// Fired repeatedly during any movement of the map, including pan and
-		// fly animations.
+		// Fired repeatedly during any movement of the map,
+		// including pan and fly animations.
 		return this.fire('move', data);
 	},
 
 	_moveEnd: function (zoomChanged) {
 		// @event zoomend: Event
-		// Fired when the map has changed, after any animations.
+		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
 
 		// @event moveend: Event
-		// Fired when the center of the map stops changing (e.g. user stopped
-		// dragging the map).
+		// Fired when the center of the map stops changing
+		// (e.g. user stopped dragging the map or after non-centered zoom).
 		return this.fire('moveend');
 	},
 
