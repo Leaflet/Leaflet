@@ -1,11 +1,12 @@
-name: CI
-on: [push, pull_request]
+name: Artifacts
+on:
+  push:
+    branches: master
+    tags: v*
 jobs:
-  ci:
+  upload:
     runs-on: ubuntu-latest
-    env:
-      # Only deploy artifacts from the main repo if on master, or when a version is tagged.
-      DEPLOY_ARTIFACTS: ${{ github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
+    if: secrets.AWS_S3_BUCKET && secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -19,25 +20,19 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - run: npm run lint
-      - run: npm test -- --browsers PhantomJSCustom,Chrome1280x1024,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch
       - run: npm run build
 
       - name: Compress artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         working-directory: dist
         run: zip -r leaflet.zip .
 
       - name: Determine directory for artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         id: artifacts-directory
         run: |
           VERSION=$(git tag --points-at HEAD)
           echo "::set-output name=path::content/leaflet/${VERSION:-master}"
 
       - name: Deploy artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --delete
