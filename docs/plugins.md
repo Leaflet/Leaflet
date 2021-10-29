@@ -234,6 +234,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wandersoncs/leaflet-tilelayer-here">Leaflet.TileLayer.HERE</a>
+		</td><td>
+			Displays tiles from HERE maps.
+		</td><td>
+			<a href="https://github.com/wandersoncs">Wanderson Souza</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1437,7 +1446,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
 			Plugin for plotting a marker representing a user - or multiple users - on a map,
-			with support for drawing an accuraccy circle. Can be seen in action on
+			with support for drawing an accuracy circle. Can be seen in action on
 			<a href="http://longitude.me">Longitude.me</a>.
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
@@ -3341,7 +3350,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://brunob.github.com/leaflet.fullscreen">leaflet.fullscreen</a>
+			<a href="https://github.com/brunob/leaflet.fullscreen">leaflet.fullscreen</a>
 		</td><td>
 			Another fullscreen button control but for modern browsers, using HTML5 Fullscreen API.
 		</td><td>
@@ -3350,7 +3359,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
+			<a href="https://github.com/elidupuis/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
 		</td><td>
@@ -4294,7 +4303,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		<td>
 			<a href="https://github.com/briannaAndCo/Leaflet.Antimeridian">Leaflet.Antimeridian</a>
 		</td><td>
-			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the Internation Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
+			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the International Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
 		</td><td>
 			<a href="https://github.com/briannaAndCo">Brianna Landon</a>
 		</td>
@@ -4930,7 +4939,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td><td>
 		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
-		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+		<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
 	</td>
   </tr>
   <tr>

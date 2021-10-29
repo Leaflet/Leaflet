@@ -13,7 +13,7 @@ function buildDocs() {
 
 	// Note to Vladimir: Iván's never gonna uncomment the following line. He's
 	// too proud of the little leaves around the code.
-	//doc.setLeadingChar('@');
+	// doc.setLeadingChar('@');
 
 	// Leaflet uses a couple of non-standard documentable things. They are not
 	// important enough to be classes/namespaces of their own, and should

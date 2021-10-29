@@ -28,11 +28,11 @@ Before writing any code for the map, you need to do the following preparation st
 
  * Put a `div` element with a certain `id` where you want your map to be:
 
-		<div id="mapid"></div>
+		<div id="map"></div>
 
  * Make sure the map container has a defined height, for example by setting it in CSS:
 
-	<pre><code class="css">#mapid { height: 180px; }</code></pre>
+	<pre><code class="css">#map { height: 180px; }</code></pre>
 
 Now you're ready to initialize the map and do some stuff with it.
 
@@ -44,7 +44,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
-	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+	var mymap = L.map('map').setView([51.505, -0.09], 13);
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
 
