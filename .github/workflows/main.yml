@@ -1,11 +1,10 @@
 name: CI
 on: [push, pull_request]
+env:
+  NODE_VERSION: 16
 jobs:
-  ci:
+  setup:
     runs-on: ubuntu-latest
-    env:
-      # Only deploy artifacts from the main repo if on master, or when a version is tagged.
-      DEPLOY_ARTIFACTS: ${{ github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -13,31 +12,101 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           check-latest: true
           cache: npm
 
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run lint
-      - run: npm test -- --browsers PhantomJSCustom,Chrome1280x1024,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch
-      - run: npm run build
+      - name: Build project
+        run: npm run build
+
+      - name: Cache setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+  run:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command: [lint]
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run ${{ matrix.command }} task
+        run: npm run ${{ matrix.command }}
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser:
+          [
+            PhantomJSCustom,
+            Chrome1280x1024,
+            FirefoxPointer,
+            FirefoxTouch,
+            FirefoxPointerTouch,
+          ]
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run tests on ${{ matrix.browser }}
+        run: npm test -- --browsers ${{ matrix.browser }}
+
+  deploy:
+    needs: setup
+    # if: secrets.AWS_S3_BUCKET && secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
 
       - name: Compress artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         working-directory: dist
         run: zip -r leaflet.zip .
 
       - name: Determine directory for artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         id: artifacts-directory
         run: |
           VERSION=$(git tag --points-at HEAD)
           echo "::set-output name=path::content/leaflet/${VERSION:-master}"
 
       - name: Deploy artifacts
-        if: env.DEPLOY_ARTIFACTS == 'true'
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --delete
