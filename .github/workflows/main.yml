@@ -86,19 +86,21 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }}
 
   check-secrets:
-      outputs:
-        ok: ${{ steps.ok.outputs.defined }}
-      steps:
-          - id: ok
-            env:
-                AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            if: env.AWS_S3_BUCKET && env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY
-            run: echo "::set-output name=defined::true"
+    needs: [setup]
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.ok.outputs.defined }}
+    steps:
+        - id: ok
+          env:
+              AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          if: env.AWS_S3_BUCKET && env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY
+          run: echo "::set-output name=defined::true"
 
   deploy:
-    needs: [setup, check-secrets]
+    needs: [check-secrets]
     if: needs.check-secrets.outputs.ok == 'true'
     runs-on: ubuntu-latest
     steps:
