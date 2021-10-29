@@ -88,6 +88,7 @@ jobs:
   check-secrets:
     needs: [setup]
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
     outputs:
       ok: ${{ steps.ok.outputs.defined }}
     steps:
