@@ -19,6 +19,7 @@ export default {
 		banner: banner,
 		sourcemap: true,
 		freeze: false,
+		esModule: false
 	},
 	plugins: [
 		rollupGitVersion()
