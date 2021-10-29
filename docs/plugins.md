@@ -2236,7 +2236,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://dynmeth.github.com/RaphaelLayer/">RaphaelLayer</a>
+			<a href="https://github.com/dynmeth/RaphaelLayer">RaphaelLayer</a>
 		</td><td>
 			Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.
 		</td><td>
@@ -2245,7 +2245,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
+			<a href="https://github.com/humangeo/leaflet-dvf">Leaflet Data Visualization Framework</a>
 		</td><td>
 			New markers, layers, and utility classes for easy thematic mapping and data visualization.
 		</td><td>
