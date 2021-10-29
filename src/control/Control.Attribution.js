@@ -21,7 +21,8 @@ export var Attribution = Control.extend({
 
 		// @option prefix: String = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: '<a href="https://leafletjs.com/" title="A JavaScript library for interactive maps">Leaflet</a>'
+		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">Leaflet</a>'
+
 	},
 
 	initialize: function (options) {
