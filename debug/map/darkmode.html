@@ -9,11 +9,13 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../dist/leaflet-src.js"></script>
+	<script src="../leaflet-include.js"></script>
 
 	<style>
-		html, body{
-			background: #333333;
+		@media (prefers-color-scheme: dark) {
+			:root {
+				background-color: #333333;
+			}
 		}
 
 		#map{
