@@ -27,7 +27,7 @@ export var Attribution = Control.extend({
 
 	initialize: function (options) {
 		Util.setOptions(this, options);
-
+		this._attributionText = '';
 		this._attributions = {};
 	},
 
@@ -104,7 +104,13 @@ export var Attribution = Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' | ');
+		this._attributionText = this._container.innerHTML = prefixAndAttribs.join(' | ');
+	},
+
+	// @method getAttributionText(): String
+	// Returns the generated attribution text.
+	getAttributionText: function () {
+		return this._attributionText;
 	}
 });
 
