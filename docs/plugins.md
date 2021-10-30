@@ -1894,6 +1894,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
 		</td>
 	</tr>
+    <tr>
+        <td>
+            <a href="https://github.com/Falke-Design/L.Donut">L.Donut</a>
+        </td>
+        <td>
+           Extension of L.Circle which allows to define a outer and inner radius. <a href="https://falke-design.github.io/L.Donut/">Demo</a>
+        </td>
+        <td>
+            <a href="https://github.com/Falke-Design/">Falke-Design</a>
+        </td>
+    </tr>
 </table>
 
 
