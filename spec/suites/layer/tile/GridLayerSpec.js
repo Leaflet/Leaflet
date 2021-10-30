@@ -1103,15 +1103,19 @@ describe('GridLayer', function () {
 			clock = sinon.useFakeTimers();
 		});
 
+		afterEach(function () {
+			clock.restore();
+		});
+
 		it("shows attribution only when layer is between min and maxZoom", function () {
 
-			L.gridLayer({
+			var grid1 = L.gridLayer({
 				attribution: 'Grid 1',
 				maxZoom: 20,
 				minZoom: 1
 			}).addTo(map);
 
-			L.gridLayer({
+			var grid2 = L.gridLayer({
 				attribution: 'Grid 2',
 				maxZoom: 10,
 				minZoom: 5
@@ -1139,16 +1143,19 @@ describe('GridLayer', function () {
 			map.setZoom(4, {animate: false});
 			clock.tick(250);
 			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(false);
+
+			grid1.remove();
+			grid2.remove();
 		});
 
 		it("shows attribution only when visible tile bounds overlaps with map bounds", function () {
-			L.gridLayer({
+			var grid1 = L.gridLayer({
 				attribution: 'Grid 1',
 				bounds: [[47.521, 9.813], [47.454, 9.676]]
 			}).addTo(map);
 
 			// moves to position where tile is visible
-			map.setView([47.5832810257206, 9.747963094401658],12);
+			map.setView([47.5832810257206, 9.747963094401658], 12);
 			clock.tick(250);
 			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(true);
 
@@ -1158,9 +1165,11 @@ describe('GridLayer', function () {
 			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(false);
 
 			// move map to show tiles
-			map.panTo([47.561818868642106, 9.740236583855408 ], {animate: false});
+			map.panTo([47.561818868642106, 9.740236583855408], {animate: false});
 			clock.tick(250);
 			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(true);
+
+			grid1.remove();
 		});
 
 	});

@@ -929,13 +929,13 @@ export var GridLayer = Layer.extend({
 		}
 		return true;
 	},
-	_layerAdd: function(e){
-		Layer.prototype._layerAdd.call(this,e);
+	_layerAdd: function (e) {
+		Layer.prototype._layerAdd.call(this, e);
 		this._attributionAdded = true; // attribution is already added over Layer._layerAdd
 		this._attributionCheck();
 	},
-	_attributionCheck(){
-		if (this.getAttribution && this._map.attributionControl) {
+	_attributionCheck: function () {
+		if (this.getAttribution && this._map && this._map.attributionControl) {
 			var tileZoom = Math.round(this._map.getZoom());
 
 			var removeAttribution = false;
@@ -950,10 +950,10 @@ export var GridLayer = Layer.extend({
 				removeAttribution = true;
 			}
 
-			if(removeAttribution){
+			if (removeAttribution) {
 				this._map.attributionControl.removeAttribution(this.getAttribution());
 				this._attributionAdded = false;
-			}else if (this.getAttribution && this._map.attributionControl && this._attributionAdded === false) {
+			} else if (this.getAttribution && this._map.attributionControl && this._attributionAdded === false) {
 				this._attributionAdded = true;
 				this._map.attributionControl.addAttribution(this.getAttribution());
 			}
