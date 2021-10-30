@@ -234,6 +234,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wandersoncs/leaflet-tilelayer-here">Leaflet.TileLayer.HERE</a>
+		</td><td>
+			Displays tiles from HERE maps.
+		</td><td>
+			<a href="https://github.com/wandersoncs">Wanderson Souza</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1437,7 +1446,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
 			Plugin for plotting a marker representing a user - or multiple users - on a map,
-			with support for drawing an accuraccy circle. Can be seen in action on
+			with support for drawing an accuracy circle. Can be seen in action on
 			<a href="http://longitude.me">Longitude.me</a>.
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
@@ -2227,7 +2236,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://dynmeth.github.com/RaphaelLayer/">RaphaelLayer</a>
+			<a href="https://github.com/dynmeth/RaphaelLayer">RaphaelLayer</a>
 		</td><td>
 			Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.
 		</td><td>
@@ -2236,7 +2245,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
+			<a href="https://github.com/humangeo/leaflet-dvf">Leaflet Data Visualization Framework</a>
 		</td><td>
 			New markers, layers, and utility classes for easy thematic mapping and data visualization.
 		</td><td>
@@ -3341,7 +3350,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://brunob.github.com/leaflet.fullscreen">leaflet.fullscreen</a>
+			<a href="https://github.com/brunob/leaflet.fullscreen">leaflet.fullscreen</a>
 		</td><td>
 			Another fullscreen button control but for modern browsers, using HTML5 Fullscreen API.
 		</td><td>
@@ -3350,7 +3359,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
+			<a href="https://github.com/elidupuis/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
 		</td><td>
@@ -4294,7 +4303,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		<td>
 			<a href="https://github.com/briannaAndCo/Leaflet.Antimeridian">Leaflet.Antimeridian</a>
 		</td><td>
-			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the Internation Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
+			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the International Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
 		</td><td>
 			<a href="https://github.com/briannaAndCo">Brianna Landon</a>
 		</td>
@@ -4342,9 +4351,9 @@ The following plugins use external services to calculate driving or walking rout
 		<td>
 			<a href="https://github.com/StephanGeorg/leaflet-routeboxer">Leaflet RouteBoxer</a>
 		</td><td>
-			This is a Leaflet implementation of the RouteBoxer Class from Google. The Leaflet 		RouteBoxer class generates a set of L.LatLngBounds objects that are guaranteed to cover every point within a specified distance of a path.
+			This is a Leaflet implementation of the RouteBoxer Class from Google. The Leaflet RouteBoxer class generates a set of L.LatLngBounds objects that are guaranteed to cover every point within a specified distance of a path.
 		</td><td>
-			<a href="http://www.nearest.place/">Nearest!</a>
+			<a href="https://github.com/StephanGeorg">Stephan Georg</a>
 		</td>
 	</tr>
 	<tr>
@@ -4459,7 +4468,7 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/lokku/leaflet-opencage-search">Leaflet.OpenCage.Search</a>
 		</td>
 		<td>
-			A search plugin plugin that uses <a href="http://geocoder.opencagedata.com/">OpenCage Data's geocoding API</a>.
+			A search plugin plugin that uses <a href="https://opencagedata.com">OpenCage's geocoding API</a>.
 		</td>
 		<td>
 			The <a href="https://github.com/opencagedata">OpenCage</a> team
@@ -4497,7 +4506,6 @@ External services that transform an address or the name of a place into latitude
 		<td>
 			<a href="https://github.com/location-iq">LocationIQ</a>
 		</td>
-	</tr>
 	</tr>
 		<tr>
 		<td>
@@ -4931,7 +4939,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td><td>
 		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
-		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+		<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
 	</td>
   </tr>
   <tr>

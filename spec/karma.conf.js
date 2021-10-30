@@ -1,4 +1,4 @@
-var json = require('rollup-plugin-json');
+var json = require('@rollup/plugin-json');
 
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
@@ -12,7 +12,7 @@ window.L = exports;`;
 // Karma configuration
 module.exports = function (config) {
 
-// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
+	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
 		"spec/before.js",
@@ -66,7 +66,6 @@ module.exports = function (config) {
 				format: 'umd',
 				name: 'L',
 				outro: outro,
-				legacy: true, // Needed to create files loadable by IE8
 				freeze: false,
 			},
 		},
