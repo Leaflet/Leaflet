@@ -350,6 +350,16 @@ Map.include({
 	}
 });
 
+/* @namespace Layer
+ * @section Popup Options
+ * @option togglePopupOnClick: Boolean = true
+ * Set it to `false` if you don't want the popup to be toggled when user clicks the popup.
+ * If set to `false`, the only way to toggle the popup is by calling `openPopup()` or `closePopup()` manually
+ */
+L.Layer.mergeOptions({
+	togglePopupOnClick: true
+});
+
 /*
  * @namespace Layer
  * @section Popup methods example
@@ -494,8 +504,10 @@ Layer.include({
 		// otherwise treat it like a marker and figure out
 		// if we should toggle it open/closed
 		if (this._map.hasLayer(this._popup) && this._popup._source === layer) {
-			this.closePopup();
-		} else {
+			if ('togglePopupOnClick' in this.options && this.options.togglePopupOnClick) {
+				this.closePopup();
+			}
+		} else if ('togglePopupOnClick' in this.options && this.options.togglePopupOnClick) {
 			this.openPopup(layer, e.latlng);
 		}
 	},

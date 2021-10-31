@@ -70,6 +70,25 @@ describe('Popup', function () {
 		expect(map.hasLayer(marker._popup)).to.be(false);
 	});
 
+	it("should not toggle its visibility when marker with togglePopupOnClick: false option is clicked", function () {
+		var marker = new L.Marker(new L.LatLng(55.8, 37.6), {togglePopupOnClick: false});
+		map.addLayer(marker);
+
+		marker.bindPopup('Popup1');
+		expect(map.hasLayer(marker._popup)).to.be(false);
+
+		// click marker
+		happen.click(marker._icon);
+		expect(map.hasLayer(marker._popup)).to.be(false);
+
+		// manually open popup
+		marker.openPopup();
+
+		// click marker
+		happen.click(marker._icon);
+		expect(map.hasLayer(marker._popup)).to.be(true);
+	});
+
 	it("it should use a popup with a function as content with a FeatureGroup", function () {
 		var marker1 = new L.Marker(center);
 		var marker2 = new L.Marker([54.6, 38.2]);
