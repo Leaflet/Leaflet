@@ -1144,6 +1144,8 @@ describe('GridLayer', function () {
 			clock.tick(250);
 			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(false);
 
+			map.setZoom(10, {animate: false});
+
 			grid1.remove();
 			grid2.remove();
 		});
