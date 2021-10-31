@@ -108,11 +108,17 @@ export function wrapNum(x, range, includeMax) {
 // Returns a function which always returns `false`.
 export function falseFn() { return false; }
 
+// compatibility polyfills for IE
+var EPSILON = Number.EPSILON || Math.pow(2, -52);
+var sign = Math.sign || function (x) {
+	return ((x > 0) - (x < 0)) || +x;
+};
+
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
 export function formatNum(num, digits) {
 	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
-	return Math.round(num * pow) / pow;
+	return Math.round((num + sign(num) * EPSILON) * pow) / pow;
 }
 
 // @function trim(str: String): String
