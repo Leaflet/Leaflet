@@ -97,7 +97,9 @@ export var DivOverlay = Layer.extend({
 	// Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a `String` or `HTMLElement` to be used in the popup.
 	setContent: function (content) {
 		this._content = content;
-		this.update();
+		if (this._map) {
+			this.update();
+		}
 		return this;
 	},
 
@@ -110,8 +112,6 @@ export var DivOverlay = Layer.extend({
 	// @method update: null
 	// Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
 	update: function () {
-		if (!this._map) { return; }
-
 		this._container.style.visibility = 'hidden';
 
 		this._updateContent();
@@ -188,7 +188,9 @@ export var DivOverlay = Layer.extend({
 		this._source = layer;
 
 		// update the overlay (content, layout, ect...)
-		this.update();
+		if (this._map) {
+			this.update();
+		}
 
 		return latlng;
 	},
@@ -211,8 +213,6 @@ export var DivOverlay = Layer.extend({
 	},
 
 	_updatePosition: function () {
-		if (!this._map) { return; }
-
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
