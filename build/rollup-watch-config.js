@@ -1,18 +1,15 @@
 // Config file for running Rollup in "watch" mode
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
 
-import rollupGitVersion from 'rollup-plugin-git-version'
-import gitRev from 'git-rev-sync'
+import rollupGitVersion from 'rollup-plugin-git-version';
+import gitRev from 'git-rev-sync';
+import pkg from '../package.json';
+import {createBanner} from './banner';
 
-const branch = gitRev.branch();
-const rev = gitRev.short();
-const version = require('../package.json').version + '+' + branch + '.' + rev;
-const banner = `/* @preserve
- * Leaflet ${version}, a JS library for interactive maps. http://leafletjs.com
- * (c) 2010-2021 Vladimir Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
+const version = `${pkg.version}+${gitRev.branch()}.${gitRev.short()}`;
+const banner = createBanner(version);
 
+/** @type {import('rollup').RollupOptions} */
 export default {
 	input: 'src/Leaflet.js',
 	output: {
@@ -21,8 +18,8 @@ export default {
 		name: 'L',
 		banner: banner,
 		sourcemap: true,
-		legacy: true, // Needed to create files loadable by IE8
 		freeze: false,
+		esModule: false
 	},
 	plugins: [
 		rollupGitVersion()
