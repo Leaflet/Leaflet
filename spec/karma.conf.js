@@ -135,6 +135,18 @@ module.exports = function (config) {
 						}
 					}
 				}
+			},
+			IE8: { // not working in IE 11!!
+				base: 'IE',
+				'X-UA-Compatible': 'IE=EmulateIE8'
+			},
+			IE9: { // not working in IE 11!!
+				base: 'IE',
+				'X-UA-Compatible': 'IE=EmulateIE9'
+			},
+			IE10: {
+				base: 'IE',
+				'x-ua-compatible': 'IE=EmulateIE10'
 			}
 		},
 
