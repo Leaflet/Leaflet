@@ -4,7 +4,10 @@ env:
   NODE_VERSION: 16
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2019]
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -34,7 +37,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}
 
   run:
     needs: setup
@@ -47,7 +50,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}
 
       - name: Set up Node
         uses: actions/setup-node@v2
@@ -59,20 +62,22 @@ jobs:
 
   test:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
-        browser:
-          - Chrome1280x1024
-          - FirefoxTouch
-          - FirefoxNoTouch
+        include:
+          - browser: Chrome1280x1024
+          - browser: FirefoxTouch
+          - browser: FirefoxNoTouch
+          - browser: IE
+            os: windows-2019
     steps:
       - name: Restore setup
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}
 
       - name: Set up Node
         uses: actions/setup-node@v2
@@ -91,7 +96,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}
 
       - name: Compress artifacts
         working-directory: dist
