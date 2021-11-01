@@ -355,9 +355,7 @@ export var Canvas = Renderer.extend({
 				}
 			}
 		}
-		if (clickedLayer)  {
-			this._fireEvent([clickedLayer], e);
-		}
+		this._fireEvent(clickedLayer ? [clickedLayer] : false, e)
 	},
 
 	_onMouseMove: function (e) {
