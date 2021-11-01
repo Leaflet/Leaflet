@@ -70,6 +70,13 @@ export var Tooltip = DivOverlay.extend({
 		DivOverlay.prototype.onAdd.call(this, map);
 		this.setOpacity(this.options.opacity);
 
+		if (this.options.interactive) {
+			DomUtil.addClass(this._container, 'leaflet-clickable');
+			if (this._source) {
+				this._source.addInteractiveTarget(this._container);
+			}
+		}
+
 		// @namespace Map
 		// @section Tooltip events
 		// @event tooltipopen: TooltipEvent
@@ -87,6 +94,13 @@ export var Tooltip = DivOverlay.extend({
 
 	onRemove: function (map) {
 		DivOverlay.prototype.onRemove.call(this, map);
+
+		if (this.options.interactive) {
+			DomUtil.removeClass(this._container, 'leaflet-clickable');
+			if (this._source) {
+				this._source.removeInteractiveTarget(this._container);
+			}
+		}
 
 		// @namespace Map
 		// @section Tooltip events
@@ -330,13 +344,6 @@ Layer.include({
 
 			// open the tooltip on the map
 			this._map.openTooltip(this._tooltip, latlng);
-
-			// Tooltip container may not be defined if not permanent and never
-			// opened.
-			if (this._tooltip.options.interactive && this._tooltip._container) {
-				DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
-				this.addInteractiveTarget(this._tooltip._container);
-			}
 		}
 
 		return this;
@@ -347,10 +354,6 @@ Layer.include({
 	closeTooltip: function () {
 		if (this._tooltip) {
 			this._tooltip._close();
-			if (this._tooltip.options.interactive && this._tooltip._container) {
-				DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
-				this.removeInteractiveTarget(this._tooltip._container);
-			}
 		}
 		return this;
 	},
