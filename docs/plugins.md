@@ -4166,6 +4166,15 @@ Print or export your map.
 			<a href="https://github.com/pasichnykvasyl">Vasyl Pasichnyk (Oswald)</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hersle/leaflet-route-print">leaflet-route-print</a>
+		</td><td>
+			Automatic PDF printing of routes (i.e. polylines) with custom scale, paper size and margin by covering the route with a sequence of identical rectangles.
+		</td><td>
+			<a href="https://github.com/hersle">Herman Sletmoen</a>
+		</td>
+	</tr>
 </table>
 
 
