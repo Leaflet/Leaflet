@@ -22,19 +22,6 @@ import {Point} from '../geometry/Point';
  */
 
 var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
-var END = {
-	mousedown: 'mouseup',
-	touchstart: 'touchend',
-	pointerdown: 'touchend',
-	MSPointerDown: 'touchend'
-};
-var MOVE = {
-	mousedown: 'mousemove',
-	touchstart: 'touchmove',
-	pointerdown: 'touchmove',
-	MSPointerDown: 'touchmove'
-};
-
 
 export var Draggable = Evented.extend({
 
@@ -120,8 +107,9 @@ export var Draggable = Evented.extend({
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
 
-		DomEvent.on(document, MOVE[e.type], this._onMove, this);
-		DomEvent.on(document, END[e.type], this._onUp, this);
+		var mouseevent = e.type === 'mousedown';
+		DomEvent.on(document, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
+		DomEvent.on(document, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -210,10 +198,8 @@ export var Draggable = Evented.extend({
 			this._lastTarget = null;
 		}
 
-		for (var i in MOVE) {
-			DomEvent.off(document, MOVE[i], this._onMove, this);
-			DomEvent.off(document, END[i], this._onUp, this);
-		}
+		DomEvent.off(document, 'mousemove touchmove', this._onMove, this);
+		DomEvent.off(document, 'mouseup touchend touchcancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
 		DomUtil.enableTextSelection();
