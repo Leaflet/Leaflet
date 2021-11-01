@@ -64,7 +64,6 @@ jobs:
       matrix:
         browser:
           [
-            PhantomJSCustom,
             Chrome1280x1024,
             FirefoxPointer,
             FirefoxTouch,
