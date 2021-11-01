@@ -39,7 +39,6 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-phantomjs-launcher',
 			'karma-edge-launcher',
 			'karma-ie-launcher',
 			'karma-chrome-launcher',
@@ -93,9 +92,8 @@ module.exports = function (config) {
 		// - Firefox
 		// - Opera
 		// - Safari (only Mac)
-		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJSCustom'],
+		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
 			'Chrome1280x1024': {
@@ -125,17 +123,6 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 1
 			        }
 			},
-			'PhantomJSCustom': {
-				base: 'PhantomJS',
-				flags: ['--load-images=true'],
-				options: {
-					onCallback: function (data) {
-						if (data.render) {
-							page.render(data.render);
-						}
-					}
-				}
-			},
 			IE8: { // not working in IE 11!!
 				base: 'IE',
 				'X-UA-Compatible': 'IE=EmulateIE8'
@@ -154,10 +141,6 @@ module.exports = function (config) {
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 10000,
-
-		// Workaround for PhantomJS random DISCONNECTED error
-		browserDisconnectTimeout: 10000, // default 2000
-		browserDisconnectTolerance: 1, // default 0
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
