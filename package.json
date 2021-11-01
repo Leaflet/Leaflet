@@ -40,6 +40,8 @@
   "scripts": {
     "docs": "node ./build/docs.js",
     "test": "karma start ./spec/karma.conf.js",
+    "test-all": "karma start ./spec/karma.conf.js --browsers Chrome1280x1024,FirefoxPointer,FirefoxTouch,FirefoxPointerTouch",
+    "pre-commit": "npm run build && npm run lint && npm run test-all -- --forbidOnly",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src spec/suites docs/docs/js build",

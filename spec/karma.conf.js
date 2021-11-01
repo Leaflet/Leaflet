@@ -165,7 +165,7 @@ module.exports = function (config) {
 
 		client: {
 			 mocha: {
-			 	forbidOnly: process.env.CI || false
+			 	forbidOnly: process.env.CI || config.forbidOnly || false
 			 }
 		}
 	});
