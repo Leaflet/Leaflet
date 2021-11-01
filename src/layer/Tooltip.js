@@ -246,13 +246,10 @@ Map.include({
 		return this.addLayer(tooltip);
 	},
 
-	// @method closeTooltip(tooltip?: Tooltip): this
+	// @method closeTooltip(tooltip: Tooltip): this
 	// Closes the tooltip given as parameter.
 	closeTooltip: function (tooltip) {
-		if (tooltip) {
-			this.removeLayer(tooltip);
-		}
-		return this;
+		return this.removeLayer(tooltip);
 	}
 
 });
