@@ -207,9 +207,10 @@ describe('DomEvent', function () {
 			var child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
-			L.DomEvent.on(el, 'dblclick mousedown touchstart', listener);
+			L.DomEvent.on(el, 'dblclick contextmenu mousedown touchstart', listener);
 
 			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'contextmenu'});
 			happen.once(child, {type: 'mousedown'});
 			happen.once(child, {type: 'touchstart', touches: []});
 
@@ -242,25 +243,6 @@ describe('DomEvent', function () {
 
 			expect(listener.calledTwice).to.be.ok();
 			expect(mapClickListener.notCalled).to.be.ok();
-
-			map.remove();
-		});
-
-		it('does not interfere with stopPropagation', function () { // test for #1925
-			var child = document.createElement('div');
-			el.appendChild(child);
-			L.DomEvent.disableClickPropagation(child);
-			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
-			var map = L.map(el).setView([0, 0], 0);
-			map.on('click', listener);
-
-			happen.once(child, {type: 'click'});
-
-			expect(listener.notCalled).to.be.ok();
-
-			happen.once(map.getContainer(), {type: 'click'});
-
-			expect(listener.called).to.be.ok();
 
 			map.remove();
 		});

@@ -1368,14 +1368,24 @@ export var Map = Evented.extend({
 		return targets;
 	},
 
+	_isClickDisabled: function (el) {
+		while (el !== this._container) {
+			if (el['_leaflet_disable_click']) { return true; }
+			el = el.parentNode;
+		}
+	},
+
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || DomEvent.skipped(e)) { return; }
+		var el = (e.target || e.srcElement);
+		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+			return;
+		}
 
 		var type = e.type;
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			DomUtil.preventOutline(e.target || e.srcElement);
+			DomUtil.preventOutline(el);
 		}
 
 		this._fireDOMEvent(e, type);
@@ -1395,8 +1405,6 @@ export var Map = Evented.extend({
 			synth.type = 'preclick';
 			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}
-
-		if (e._stopped) { return; }
 
 		// Find the layer the event is propagating from and its parents.
 		var targets = this._findEventTargets(e, type);
