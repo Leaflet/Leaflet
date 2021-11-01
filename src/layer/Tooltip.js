@@ -69,7 +69,7 @@ export var Tooltip = DivOverlay.extend({
 		this.setOpacity(this.options.opacity);
 
 		if (this.options.interactive) {
-			DomUtil.addClass(this._container, 'leaflet-clickable');
+			DomUtil.addClass(this._container, 'leaflet-interactive');
 			if (this._source) {
 				this._source.addInteractiveTarget(this._container);
 			}
@@ -94,7 +94,7 @@ export var Tooltip = DivOverlay.extend({
 		DivOverlay.prototype.onRemove.call(this, map);
 
 		if (this.options.interactive) {
-			DomUtil.removeClass(this._container, 'leaflet-clickable');
+			DomUtil.removeClass(this._container, 'leaflet-interactive');
 			if (this._source) {
 				this._source.removeInteractiveTarget(this._container);
 			}
