@@ -234,6 +234,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/rkaravia">Roman Karavia</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wandersoncs/leaflet-tilelayer-here">Leaflet.TileLayer.HERE</a>
+		</td><td>
+			Displays tiles from HERE maps.
+		</td><td>
+			<a href="https://github.com/wandersoncs">Wanderson Souza</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1437,7 +1446,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
 			Plugin for plotting a marker representing a user - or multiple users - on a map,
-			with support for drawing an accuraccy circle. Can be seen in action on
+			with support for drawing an accuracy circle. Can be seen in action on
 			<a href="http://longitude.me">Longitude.me</a>.
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
@@ -1885,6 +1894,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
 		</td>
 	</tr>
+    <tr>
+        <td>
+            <a href="https://github.com/Falke-Design/L.Donut">L.Donut</a>
+        </td>
+        <td>
+           Extension of L.Circle which allows to define a outer and inner radius. <a href="https://falke-design.github.io/L.Donut/">Demo</a>
+        </td>
+        <td>
+            <a href="https://github.com/Falke-Design/">Falke-Design</a>
+        </td>
+    </tr>
 </table>
 
 
@@ -2227,7 +2247,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://dynmeth.github.com/RaphaelLayer/">RaphaelLayer</a>
+			<a href="https://github.com/dynmeth/RaphaelLayer">RaphaelLayer</a>
 		</td><td>
 			Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.
 		</td><td>
@@ -2236,7 +2256,7 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
+			<a href="https://github.com/humangeo/leaflet-dvf">Leaflet Data Visualization Framework</a>
 		</td><td>
 			New markers, layers, and utility classes for easy thematic mapping and data visualization.
 		</td><td>
@@ -3341,7 +3361,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://brunob.github.com/leaflet.fullscreen">leaflet.fullscreen</a>
+			<a href="https://github.com/brunob/leaflet.fullscreen">leaflet.fullscreen</a>
 		</td><td>
 			Another fullscreen button control but for modern browsers, using HTML5 Fullscreen API.
 		</td><td>
@@ -3350,7 +3370,7 @@ Allows display of the map in full-screen mode.
 	</tr>
 	<tr>
 		<td>
-			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
+			<a href="https://github.com/elidupuis/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
 		</td><td>
@@ -3648,6 +3668,17 @@ Show the geographical coordinates under the mouse cursor in different ways.
 		</td>
 		<td>
 			<a href="https://github.com/matlads">Martin Atukunda</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/edihasaj/leaflet-coord-projection">Leaflet.CoordProjection</a>
+		</td>
+		<td>
+			Shows coordinates on mouse move and displays it based on given projection (<a href="https://edihasaj.github.io/leaflet-coord-projection/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/edihasaj">Edi Hasaj</a>
 		</td>
 	</tr>
 </table>
@@ -4146,6 +4177,15 @@ Print or export your map.
 			<a href="https://github.com/pasichnykvasyl">Vasyl Pasichnyk (Oswald)</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hersle/leaflet-route-print">leaflet-route-print</a>
+		</td><td>
+			Automatic PDF printing of routes (i.e. polylines) with custom scale, paper size and margin by covering the route with a sequence of identical rectangles.
+		</td><td>
+			<a href="https://github.com/hersle">Herman Sletmoen</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -4294,7 +4334,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		<td>
 			<a href="https://github.com/briannaAndCo/Leaflet.Antimeridian">Leaflet.Antimeridian</a>
 		</td><td>
-			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the Internation Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
+			A plugin to allow polygons and polylines to naturally draw across the Antimeridian (or the International Date Line) instead of always wrapping across the Greenwich meridian. (<a href="https://briannaandco.github.io/Leaflet.Antimeridian/">Demo</a>)
 		</td><td>
 			<a href="https://github.com/briannaAndCo">Brianna Landon</a>
 		</td>
@@ -4575,6 +4615,16 @@ Ease your development integrating Leaflet into a development framework or automa
 			Yeoman generator that scaffolds out a basic Leaflet map application.
 		</td><td>
 			<a href="https://github.com/moklick">Moritz Klack</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iamtekson/leaflet-geoserver-request">leaflet-geoserver-request</a>
+		</td><td>
+			Basic geoserver requests in leaflet. Currently supports wms, wfs, legend, wmsImage request on the leaflet. 
+		<a href="https://iamtekson.github.io/leaflet-geoserver-request/examples/maps.html">Demo</a>
+		</td><td>
+			<a href="https://github.com/iamtekson">Iamtekson</a>
 		</td>
 	</tr>
 	<tr>
@@ -4930,7 +4980,7 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td><td>
 		Simple plugin for adding Facebook like button as a control.
 	  </td><td>
-		<a href="https://marcinwasilewski.eu/u">Marcin Wasilewski</a>
+		<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
 	</td>
   </tr>
   <tr>
@@ -4943,13 +4993,26 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td>
   </tr>
   <tr>
-	<td>
-		<a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
-	</td><td>
-		WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
-	  </td><td>
-		<a href="https://www.locations-and-areas.com/">100plugins</a>
-	</td>
+    <td>
+		  <a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
+	  </td>
+    <td>
+		  WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
+	  </td>
+    <td>
+		  <a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
+    </td>
+  </tr>
+  <tr>
+	  <td>
+		  <a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
+	  </td>
+    <td>
+		  WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
+	  </td>
+    <td>
+		  <a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
+	  </td>
   </tr>
 </table>
 

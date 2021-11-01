@@ -23,6 +23,16 @@ describe('DomEvent', function () {
 			expect(listener2.called).to.be.ok();
 		});
 
+		it('adds a listener when passed an event map', function () {
+			var listener = sinon.spy();
+
+			L.DomEvent.on(el, {click: listener});
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+		});
+
 		it('binds "this" to the given context', function () {
 			var obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click', listener, obj);
@@ -30,6 +40,17 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			expect(listener.calledOn(obj)).to.be.ok();
+		});
+
+		it('binds "this" to the given context when passed an event map', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, {click: listener}, ctx);
+
+			happen.click(el);
+
+			sinon.assert.calledOn(listener, ctx);
 		});
 
 		it('passes an event object to the listener', function () {
@@ -59,6 +80,88 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('removes a previously added listener when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener};
+
+			L.DomEvent.on(el, events);
+			L.DomEvent.off(el, events);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('removes listener added with context', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, 'click', listener, ctx);
+			L.DomEvent.off(el, 'click', listener, ctx);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('removes listener added with context when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener},
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, events, ctx);
+			L.DomEvent.off(el, events, ctx);
+
+			happen.click(el);
+
+			sinon.assert.notCalled(listener);
+		});
+
+		it('only removes listener when proper context specified', function () {
+			var listener = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.off(el, 'click', listener, ctx);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+
+			listener = sinon.spy();
+			L.DomEvent.on(el, 'click', listener, ctx);
+			L.DomEvent.off(el, 'click', listener, {}); // wrong context
+			L.DomEvent.off(el, 'click', listener);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+		});
+
+		it('only removes listener when proper context specified when passed an event map', function () {
+			var listener = sinon.spy(),
+			    events = {click: listener},
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, events);
+			L.DomEvent.off(el, events, ctx);
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
+
+			listener = sinon.spy();
+			   events = {click: listener};
+
+			L.DomEvent.on(el, events, ctx);
+			L.DomEvent.off(el, events);
+			L.DomEvent.off(el, events, {}); // wrong context
+
+			happen.click(el);
+
+			sinon.assert.called(listener);
 		});
 
 		it('is chainable', function () {
@@ -164,18 +267,25 @@ describe('DomEvent', function () {
 	});
 
 	describe('#preventDefault', function () {
-		it('prevents the default action of event', function () {
-			L.DomEvent.on(el, 'click', listener);
-			L.DomEvent.on(el, 'click', L.DomEvent.preventDefault);
+		function isPrevented(e) {
+			if ('defaultPrevented' in e) {
+				return e.defaultPrevented;
+			} else { // IE<11
+				return !e.returnValue;
+			}
+		}
+
+		it('prevents the default action of event', function (done) {
+			L.DomEvent.on(el, 'click', function (e) {
+				expect(isPrevented(e)).not.to.be.ok(); // control case
+
+				L.DomEvent.preventDefault(e);
+
+				expect(isPrevented(e)).to.be.ok();
+				done();
+			});
 
 			happen.click(el);
-
-			var e = listener.lastCall.args[0];
-			if ('defaultPrevented' in e) {
-				expect(e.defaultPrevented).to.be.ok();
-			} else {
-				expect(e.returnValue).not.to.be.ok();
-			}
 		});
 	});
 });

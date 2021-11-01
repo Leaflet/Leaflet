@@ -212,6 +212,11 @@ export var Polyline = Path.extend({
 	_updateBounds: function () {
 		var w = this._clickTolerance(),
 		    p = new Point(w, w);
+
+		if (!this._rawPxBounds) {
+			return;
+		}
+
 		this._pxBounds = new Bounds([
 			this._rawPxBounds.min.subtract(p),
 			this._rawPxBounds.max.add(p)
