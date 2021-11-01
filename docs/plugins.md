@@ -803,6 +803,15 @@ Plugins to display [vector tiles](https://github.com/mapbox/vector-tile-spec).
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/iamtekson/leaflet-geojson-vt">leaflet-geojson-vt</a>
+		</td><td>
+			Displaying the vector tiles of GeoJSON data on the fly on leaflet
+		</td><td>
+			<a href="https://github.com/iamtekson">Tek Kshetri</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/mapbox/geojson-vt">geojson-vt</a>
 		</td><td>
 			Efficient library for slicing GeoJSON data into vector tiles on the fly.
