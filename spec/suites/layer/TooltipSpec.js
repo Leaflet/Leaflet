@@ -71,13 +71,13 @@ describe('Tooltip', function () {
 	it("has class leaflet-interactive", function () {
 		var layer = new L.Marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
-		expect(L.DomUtil.hasClass(layer._tooltip._container,'leaflet-interactive')).to.be(true);
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
 	});
 
 	it("has not class leaflet-interactive", function () {
 		var layer = new L.Marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true});
-		expect(L.DomUtil.hasClass(layer._tooltip._container,'leaflet-interactive')).to.be(false);
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
 	});
 
 	it("can be forced on left direction", function () {
