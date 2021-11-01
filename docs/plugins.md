@@ -1145,6 +1145,15 @@ These plugins create useful overlays from scratch, no loading required.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/facilmap/Leaflet.AutoGraticule">Leaflet.AutoGraticule</a>
+		</td><td>
+			Draws a grid of latitude and longitude lines, automatically adjusting the scale to the current zoom level. <a href="https://unpkg.com/leaflet-auto-graticule/example.html">Demo</a>
+		</td><td>
+			<a href="https://github.com/cdauth">Candid Dauth</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1247,6 +1256,15 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 		</td>
 		<td>
 			<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/facilmap/Leaflet.FreieTonne">Leaflet.FreieTonne</a>
+		</td><td>
+			An overlay with nautical features from <a href="https://www.freietonne.de/">FreieTonne</a>. (<a href="https://unpkg.com/leaflet-freie-tonne/example.html">Demo</a>)
+		</td><td>
+			<a href="https://github.com/cdauth">Candid Dauth</a>
 		</td>
 	</tr>
 </table>
