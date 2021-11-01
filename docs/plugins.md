@@ -4599,6 +4599,16 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/iamtekson/leaflet-geoserver-request">leaflet-geoserver-request</a>
+		</td><td>
+			Basic geoserver requests in leaflet. Currently supports wms, wfs, legend, wmsImage request on the leaflet. 
+		<a href="https://iamtekson.github.io/leaflet-geoserver-request/examples/maps.html">Demo</a>
+		</td><td>
+			<a href="https://github.com/iamtekson">Iamtekson</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/PaulLeCam/react-leaflet">react-leaflet</a>
 		</td><td>
 			<a href="https://facebook.github.io/react/">React</a> components for Leaflet maps.
