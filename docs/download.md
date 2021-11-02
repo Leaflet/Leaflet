@@ -26,28 +26,17 @@ bodyclass: download-page
 Note that the master version can contain incompatible changes,
 so please read the changelog carefully when upgrading to it.
 
-[Get notified of new Leaflet releases](https://github.com/Leaflet/Leaflet/issues/6295)
-
 ### Using a Hosted Version of Leaflet
 
 The latest stable Leaflet release is available on several CDN's &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
 
-To avoid potential security problems, we recommend and encourage enabling
-[subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
-when using Leaflet from a CDN:
+Note that the [`integrity` hashes]((https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)) are included for security when using Leaflet from CDN.
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
-      integrity="{{site.integrity_hash_css}}"
-      crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
-      integrity="{{site.integrity_hash_uglified}}"
-      crossorigin=""></script>
-
-Leaflet is available on the following free CDN's:  [unpkg](https://unpkg.com/leaflet/dist/), [cdnjs](https://cdnjs.com/libraries/leaflet), [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist)
+Leaflet is available on the following free CDNs: [unpkg](https://unpkg.com/leaflet/dist/), [cdnjs](https://cdnjs.com/libraries/leaflet), [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist).
 
 _Disclaimer: these services are external to Leaflet; for questions or support, please contact them directly._
 
@@ -56,7 +45,7 @@ _Disclaimer: these services are external to Leaflet; for questions or support, p
 Inside the archives downloaded from the above links, you will see four things:
 
 - `leaflet.js` - This is the minified Leaflet JavaScript code.
-- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging. <small>(The integrity hash for this file is <nobr><tt>{{site.integrity_hash_source}}</tt></nobr>)</small>
+- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging. <small>(integrity="<nobr><tt>{{site.integrity_hash_source}}</tt></nobr>")</small>
 - `leaflet.css` - This is the stylesheet for Leaflet.
 - `images` - This is a folder that contains images referenced by `leaflet.css`. It must be in the same directory as `leaflet.css`.
 
