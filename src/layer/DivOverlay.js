@@ -18,6 +18,10 @@ export var DivOverlay = Layer.extend({
 	// @section
 	// @aka DivOverlay options
 	options: {
+		// @option interactive: Boolean = false
+		// If true, the popup/tooltip will listen to the mouse events.
+		interactive: false,
+
 		// @option offset: Point = Point(0, 7)
 		// The offset of the popup position. Useful to control the anchor
 		// of the popup when opening it on some overlays.
@@ -58,6 +62,11 @@ export var DivOverlay = Layer.extend({
 		}
 
 		this.bringToFront();
+
+		if (this.options.interactive) {
+			DomUtil.addClass(this._container, 'leaflet-interactive');
+			this.addInteractiveTarget(this._container);
+		}
 	},
 
 	onRemove: function (map) {
@@ -66,6 +75,11 @@ export var DivOverlay = Layer.extend({
 			this._removeTimeout = setTimeout(Util.bind(DomUtil.remove, undefined, this._container), 200);
 		} else {
 			DomUtil.remove(this._container);
+		}
+
+		if (this.options.interactive) {
+			DomUtil.removeClass(this._container, 'leaflet-interactive');
+			this.removeInteractiveTarget(this._container);
 		}
 	},
 

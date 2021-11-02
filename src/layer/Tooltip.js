@@ -55,10 +55,6 @@ export var Tooltip = DivOverlay.extend({
 		// If true, the tooltip will follow the mouse instead of being fixed at the feature center.
 		sticky: false,
 
-		// @option interactive: Boolean = false
-		// If true, the tooltip will listen to the mouse events.
-		interactive: false,
-
 		// @option opacity: Number = 0.9
 		// Tooltip container opacity.
 		opacity: 0.9
@@ -67,11 +63,6 @@ export var Tooltip = DivOverlay.extend({
 	onAdd: function (map) {
 		DivOverlay.prototype.onAdd.call(this, map);
 		this.setOpacity(this.options.opacity);
-
-		if (this.options.interactive) {
-			DomUtil.addClass(this._container, 'leaflet-interactive');
-			this.addInteractiveTarget(this._container);
-		}
 
 		// @namespace Map
 		// @section Tooltip events
@@ -92,11 +83,6 @@ export var Tooltip = DivOverlay.extend({
 
 	onRemove: function (map) {
 		DivOverlay.prototype.onRemove.call(this, map);
-
-		if (this.options.interactive) {
-			DomUtil.removeClass(this._container, 'leaflet-interactive');
-			this.removeInteractiveTarget(this._container);
-		}
 
 		// @namespace Map
 		// @section Tooltip events
