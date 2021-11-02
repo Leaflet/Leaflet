@@ -78,4 +78,4 @@ var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disa
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
 console.log('L.Browser.pointer', L.Browser.pointer);
-console.log('L.Browser.touch', L.Browser.touch);
+console.log('L.Browser.touchNative', L.Browser.touchNative);
