@@ -7,7 +7,7 @@ import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class DivOverlay
- * @inherits Layer
+ * @inherits Interactive layer
  * @aka L.DivOverlay
  * Base model for L.Popup and L.Tooltip. Inherit from it for custom popup like plugins.
  */

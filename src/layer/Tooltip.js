@@ -56,7 +56,7 @@ export var Tooltip = DivOverlay.extend({
 		sticky: false,
 
 		// @option interactive: Boolean = false
-		// If true, the tooltip will listen to the feature events.
+		// If true, the tooltip will listen to the mouse events.
 		interactive: false,
 
 		// @option opacity: Number = 0.9
