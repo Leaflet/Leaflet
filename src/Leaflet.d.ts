@@ -14,18 +14,11 @@
 export as namespace L;
 
 import * as geojson from 'geojson';
+export * as Browser from './core/Browser'
+export {Class} from './core/Class'
 
 /** A constant that represents the Leaflet version in use. */
 export const version: string;
-
-export class Class {
-    static extend(props: any): {new(...args: any[]): any} & typeof Class;
-    static include(props: any): any & typeof Class;
-    static mergeOptions(props: any): any & typeof Class;
-
-    static addInitHook(initHookFn: () => void): any & typeof Class;
-    static addInitHook(methodName: string, ...args: any[]): any & typeof Class;
-}
 
 export class Transformation {
     constructor(a: number, b: number, c: number, d: number);
@@ -1979,39 +1972,6 @@ export class Marker<P = any> extends Layer {
 }
 
 export function marker(latlng: LatLngExpression, options?: MarkerOptions): Marker;
-
-export namespace Browser {
-    // sorting according to https://leafletjs.com/reference-1.5.0.html#browser
-    const ie: boolean;
-    const ielt9: boolean;
-    const edge: boolean;
-    const webkit: boolean;
-    const android: boolean;
-    const android23: boolean;
-    const androidStock: boolean;
-    const opera: boolean;
-    const chrome: boolean;
-    const gecko: boolean;
-    const safari: boolean;
-    const opera12: boolean;
-    const win: boolean;
-    const ie3d: boolean;
-    const webkit3d: boolean;
-    const gecko3d: boolean;
-    const any3d: boolean;
-    const mobile: boolean;
-    const mobileWebkit: boolean;
-    const mobileWebkit3d: boolean;
-    const msPointer: boolean;
-    const pointer: boolean;
-    const touch: boolean;
-    const mobileOpera: boolean;
-    const mobileGecko: boolean;
-    const retina: boolean;
-    const canvas: boolean;
-    const svg: boolean;
-    const vml: boolean;
-}
 
 export namespace Util {
     function extend<D extends object, S1 extends object = {}>(dest: D, src?: S1): D & S1;
