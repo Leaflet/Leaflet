@@ -16,17 +16,19 @@ import {
   FitBoundsOptions,
   InvalidateSizeOptions,
   DefaultMapPanes,
-  LayersControlEvent,
-  LayerEvent,
-  ResizeEvent,
-  PopupEvent,
-  TooltipEvent,
-  ErrorEvent,
-  LocationEvent,
-  LeafletMouseEvent,
-  LeafletKeyboardEvent,
-  ZoomAnimEvent,
 } from "../Leaflet";
+import {
+    LayersControlEvent,
+    LayerEvent,
+    ResizeEvent,
+    PopupEvent,
+    TooltipEvent,
+    ErrorEvent,
+    LocationEvent,
+    LeafletMouseEvent,
+    LeafletKeyboardEvent,
+    ZoomAnimEvent
+} from "../Events";
 import { Bounds } from "../geometry/Bounds";
 import {
     Point,

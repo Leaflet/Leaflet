@@ -1,5 +1,5 @@
 import { LeafletEvent } from "../core/Events";
-import { LeafletMouseEvent, LeafletKeyboardEvent } from "../Leaflet";
+import { LeafletMouseEvent, LeafletKeyboardEvent } from "../Events";
 import { Point } from "../geometry/Point";
 
 namespace DomEvent {

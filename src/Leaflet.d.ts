@@ -15,11 +15,10 @@ export as namespace L;
 
 //@ts-ignore
 import * as geojson from "geojson";
-import { LeafletEvent } from "./core/Events";
 import { Handler } from "./core/Handler";
 import { Map } from "./map/Map";
-import { Layer, LayerOptions } from "./Layer";
-import { LatLngExpression, LatLngBoundsExpression, LatLngBounds, LatLng } from "./geo/LatLng";
+import { Layer, LayerOptions } from "./Layer/Layer";
+import { LatLngExpression, LatLngBoundsExpression, LatLngBounds, LatLng, CRS } from "./geo";
 import { PointExpression, Point, Coords } from "./geometry/Point";
 export { Map, map } from "./map/Map";
 export * from './control'
@@ -35,13 +34,12 @@ export interface InteractiveLayerOptions extends LayerOptions {
   bubblingMouseEvents?: boolean | undefined;
 }
 
-export interface GridLayerOptions {
+export interface GridLayerOptions extends LayerOptions {
   tileSize?: number | Point | undefined;
   opacity?: number | undefined;
   updateWhenIdle?: boolean | undefined;
   updateWhenZooming?: boolean | undefined;
   updateInterval?: number | undefined;
-  attribution?: string | undefined;
   zIndex?: number | undefined;
   bounds?: LatLngBoundsExpression | undefined;
   minZoom?: number | undefined;
@@ -57,7 +55,6 @@ export interface GridLayerOptions {
    */
   minNativeZoom?: number | undefined;
   noWrap?: boolean | undefined;
-  pane?: string | undefined;
   className?: string | undefined;
   keepBuffer?: number | undefined;
 }
@@ -120,11 +117,11 @@ export interface TileLayerOptions extends GridLayerOptions {
 export class TileLayer extends GridLayer {
   constructor(urlTemplate: string, options?: TileLayerOptions);
   setUrl(url: string, noRedraw?: boolean): this;
-  getTileUrl(coords: L.Coords): string;
+  getTileUrl(coords: Coords): string;
 
-  protected _tileOnLoad(done: L.DoneCallback, tile: HTMLElement): void;
+  protected _tileOnLoad(done: DoneCallback, tile: HTMLElement): void;
   protected _tileOnError(
-    done: L.DoneCallback,
+    done: DoneCallback,
     tile: HTMLElement,
     e: Error
   ): void;
@@ -915,80 +912,6 @@ export interface LocateOptions {
   timeout?: number | undefined;
   maximumAge?: number | undefined;
   enableHighAccuracy?: boolean | undefined;
-}
-
-export interface LeafletMouseEvent extends LeafletEvent {
-  latlng: LatLng;
-  layerPoint: Point;
-  containerPoint: Point;
-  originalEvent: MouseEvent;
-}
-
-export interface LeafletKeyboardEvent extends LeafletEvent {
-  originalEvent: KeyboardEvent;
-}
-
-export interface LocationEvent extends LeafletEvent {
-  latlng: LatLng;
-  bounds: LatLngBounds;
-  accuracy: number;
-  altitude: number;
-  altitudeAccuracy: number;
-  heading: number;
-  speed: number;
-  timestamp: number;
-}
-
-export interface ErrorEvent extends LeafletEvent {
-  message: string;
-  code: number;
-}
-
-export interface LayerEvent extends LeafletEvent {
-  layer: Layer;
-}
-
-export interface LayersControlEvent extends LayerEvent {
-  name: string;
-}
-
-export interface TileEvent extends LeafletEvent {
-  tile: HTMLImageElement;
-  coords: Coords;
-}
-
-export interface TileErrorEvent extends TileEvent {
-  error: Error;
-}
-
-export interface ResizeEvent extends LeafletEvent {
-  oldSize: Point;
-  newSize: Point;
-}
-
-export interface GeoJSONEvent extends LeafletEvent {
-  layer: Layer;
-  properties: any;
-  geometryType: string;
-  id: string;
-}
-
-export interface PopupEvent extends LeafletEvent {
-  popup: Popup;
-}
-
-export interface TooltipEvent extends LeafletEvent {
-  tooltip: Tooltip;
-}
-
-export interface DragEndEvent extends LeafletEvent {
-  distance: number;
-}
-
-export interface ZoomAnimEvent extends LeafletEvent {
-  center: LatLng;
-  zoom: number;
-  noUpdate: boolean;
 }
 
 export interface DefaultMapPanes {

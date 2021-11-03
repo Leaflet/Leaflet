@@ -24,13 +24,13 @@ export type LatLngTuple = [number, number];
 
 export type LatLngExpression = LatLng | LatLngLiteral | LatLngTuple;
 
-export function latLng(
+export function toLatLng(
     latitude: number,
     longitude: number,
     altitude?: number
 ): LatLng;
 
-export function latLng(
+export function toLatLng(
     coords: LatLngTuple |
     [number, number, number] |
         LatLngLiteral |

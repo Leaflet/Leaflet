@@ -31,9 +31,9 @@ export type LatLngBoundsLiteral = LatLngTuple[]; // Must be [LatLngTuple, LatLng
 
 export type LatLngBoundsExpression = LatLngBounds | LatLngBoundsLiteral;
 
-export function latLngBounds(
-    southWest: LatLngExpression,
-    northEast: LatLngExpression
+export function toLatLngBounds(
+  southWest: LatLngExpression,
+  northEast: LatLngExpression
 ): LatLngBounds;
 
-export function latLngBounds(latlngs: LatLngExpression[]): LatLngBounds;
+export function toLatLngBounds(latlngs: LatLngExpression[]): LatLngBounds;

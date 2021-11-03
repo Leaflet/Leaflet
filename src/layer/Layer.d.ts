@@ -1,24 +1,20 @@
 import { Evented, EventMap, LeafletEvent } from "../core/Events";
 import { Map } from "../map/Map";
 import {
-  LayerOptions,
   LayerGroup,
   Content,
   Popup,
   PopupOptions,
   Tooltip,
   TooltipOptions,
-  PopupEvent,
-  TooltipEvent,
 } from "../Leaflet";
+import { PopupEvent, TooltipEvent } from "../Events";
 import { LatLngExpression } from "../geo/LatLng";
-
 
 export interface LayerOptions {
   pane?: string | undefined;
   attribution?: string | undefined;
 }
-
 
 interface LayerEventMap extends EventMap {
   add: LeafletEvent;
