@@ -2,7 +2,7 @@ import { LeafletEvent } from "../core/Events";
 import { LeafletMouseEvent, LeafletKeyboardEvent } from "../Events";
 import { Point } from "../geometry/Point";
 
-namespace DomEvent {
+declare namespace DomEvent {
     export type EventHandlerFn = (event: Event) => void;
 
     export type PropagableEvent = LeafletMouseEvent |

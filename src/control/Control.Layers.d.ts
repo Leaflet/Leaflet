@@ -1,3 +1,4 @@
+import { Map } from "../map/Map";
 import { Layer } from "../Layer";
 import { ControlOptions, Control } from "./Control";
 
@@ -34,6 +35,8 @@ export class Layers extends Control {
   expand(): this;
   collapse(): this;
   options: LayersOptions;
+  onAdd(map: Map): HTMLElement;
+  onRemove(map: Map): void;
 }
 
 export function layers(

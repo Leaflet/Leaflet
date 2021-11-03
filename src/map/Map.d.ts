@@ -37,10 +37,10 @@ import {
 import {
     LatLngExpression, LatLngBoundsExpression, LatLng,
     LatLngBounds
-} from "../geo/LatLng";
+} from "../geo";
 import { Control } from "../control";
 import { Layer } from "../Layer";
-import { Handler } from "../Handler";
+import { Handler } from "../core/Handler";
 
 export interface MapEventMap extends EventMap {
   // Layer Events
