@@ -5,7 +5,6 @@ import {
   Renderer,
   Popup,
   Content,
-  LatLngExpression,
   Tooltip,
   PopupOptions,
   TooltipOptions,
@@ -18,10 +17,7 @@ import {
   LocateOptions,
   FitBoundsOptions,
   InvalidateSizeOptions,
-  LatLngBoundsExpression,
   Bounds,
-  LatLng,
-  LatLngBounds,
   DefaultMapPanes,
   LayersControlEvent,
   LayerEvent,
@@ -34,6 +30,10 @@ import {
   LeafletKeyboardEvent,
   ZoomAnimEvent,
 } from "../Leaflet";
+import {
+    LatLngExpression, LatLngBoundsExpression, LatLng,
+    LatLngBounds
+} from "../geo/LatLng";
 import { Control } from "../control";
 import { Layer } from "../Layer";
 import { Handler } from "../Handler";

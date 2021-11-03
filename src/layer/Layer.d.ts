@@ -6,12 +6,12 @@ import {
   Content,
   Popup,
   PopupOptions,
-  LatLngExpression,
   Tooltip,
   TooltipOptions,
   PopupEvent,
   TooltipEvent,
 } from "../Leaflet";
+import { LatLngExpression } from "../geo/LatLng";
 
 interface LayerEventMap extends EventMap {
   add: LeafletEvent;

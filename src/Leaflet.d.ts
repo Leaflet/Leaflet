@@ -13,12 +13,15 @@
 
 export as namespace L;
 
+//@ts-ignore
 import * as geojson from "geojson";
 import { LeafletEvent } from "./core/Events";
 import { Handler } from "./core/Handler";
 import { Map } from "./map/Map";
 import * as Util from "./core/Util";
 import { Layer } from "./Layer";
+export * from './geo'
+import { LatLngExpression, LatLngBoundsExpression, LatLngBounds, LatLng } from "./geo/LatLng";
 export { Map, map } from "./map/Map";
 export * from './control'
 export * from './core'
@@ -71,117 +74,6 @@ export namespace PolyUtil {
     round?: boolean
   ): Point[];
 }
-
-export interface CRS {
-  latLngToPoint(latlng: LatLngExpression, zoom: number): Point;
-  pointToLatLng(point: PointExpression, zoom: number): LatLng;
-  project(latlng: LatLng | LatLngLiteral): Point;
-  unproject(point: PointExpression): LatLng;
-  scale(zoom: number): number;
-  zoom(scale: number): number;
-  getProjectedBounds(zoom: number): Bounds;
-  distance(latlng1: LatLngExpression, latlng2: LatLngExpression): number;
-  wrapLatLng(latlng: LatLng | LatLngLiteral): LatLng;
-
-  code?: string | undefined;
-  wrapLng?: [number, number] | undefined;
-  wrapLat?: [number, number] | undefined;
-  infinite: boolean;
-}
-
-export namespace CRS {
-  const EPSG3395: CRS;
-  const EPSG3857: CRS;
-  const EPSG4326: CRS;
-  const EPSG900913: CRS;
-  const Earth: CRS;
-  const Simple: CRS;
-}
-
-export interface Projection {
-  project(latlng: LatLng | LatLngLiteral): Point;
-  unproject(point: PointExpression): LatLng;
-
-  bounds: Bounds;
-}
-
-export namespace Projection {
-  const LonLat: Projection;
-  const Mercator: Projection;
-  const SphericalMercator: Projection;
-}
-
-export class LatLng {
-  constructor(latitude: number, longitude: number, altitude?: number);
-  equals(otherLatLng: LatLngExpression, maxMargin?: number): boolean;
-  toString(): string;
-  distanceTo(otherLatLng: LatLngExpression): number;
-  wrap(): LatLng;
-  toBounds(sizeInMeters: number): LatLngBounds;
-  clone(): LatLng;
-
-  lat: number;
-  lng: number;
-  alt?: number | undefined;
-}
-
-export interface LatLngLiteral {
-  lat: number;
-  lng: number;
-}
-
-export type LatLngTuple = [number, number];
-
-export type LatLngExpression = LatLng | LatLngLiteral | LatLngTuple;
-
-export function latLng(
-  latitude: number,
-  longitude: number,
-  altitude?: number
-): LatLng;
-
-export function latLng(
-  coords:
-    | LatLngTuple
-    | [number, number, number]
-    | LatLngLiteral
-    | { lat: number; lng: number; alt?: number | undefined }
-): LatLng;
-
-export class LatLngBounds {
-  constructor(southWest: LatLngExpression, northEast: LatLngExpression);
-  constructor(latlngs: LatLngBoundsLiteral);
-  extend(latlngOrBounds: LatLngExpression | LatLngBoundsExpression): this;
-  pad(bufferRatio: number): LatLngBounds; // does this modify the current instance or does it return a new one?
-  getCenter(): LatLng;
-  getSouthWest(): LatLng;
-  getNorthEast(): LatLng;
-  getNorthWest(): LatLng;
-  getSouthEast(): LatLng;
-  getWest(): number;
-  getSouth(): number;
-  getEast(): number;
-  getNorth(): number;
-  contains(
-    otherBoundsOrLatLng: LatLngBoundsExpression | LatLngExpression
-  ): boolean;
-  intersects(otherBounds: LatLngBoundsExpression): boolean;
-  overlaps(otherBounds: LatLngBoundsExpression): boolean;
-  toBBoxString(): string;
-  equals(otherBounds: LatLngBoundsExpression): boolean;
-  isValid(): boolean;
-}
-
-export type LatLngBoundsLiteral = LatLngTuple[]; // Must be [LatLngTuple, LatLngTuple], cant't change because Map.setMaxBounds
-
-export type LatLngBoundsExpression = LatLngBounds | LatLngBoundsLiteral;
-
-export function latLngBounds(
-  southWest: LatLngExpression,
-  northEast: LatLngExpression
-): LatLngBounds;
-
-export function latLngBounds(latlngs: LatLngExpression[]): LatLngBounds;
 
 export type PointTuple = [number, number];
 
