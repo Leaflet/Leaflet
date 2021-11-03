@@ -1,18 +1,18 @@
 import { Evented, LeafletEvent } from "./Events";
 
 interface X extends LeafletEvent {
-  myProp: number
+  myProp: number;
 }
 
 const e = new Evented<{
-  'test': X
-}>()
+  test: X;
+}>();
 
-e.on('test', (ev) => {
+e.on("test", (ev) => {
   // Is number
-  ev.myProp.toExponential()
-})
+  ev.myProp.toExponential();
+});
 
-e.on('example of a non existing event type', (e)=>{
+e.on("example of a non existing event type", (e) => {
   // This also works!
-})
+});

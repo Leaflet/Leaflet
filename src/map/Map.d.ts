@@ -3,8 +3,6 @@ import {
   MapOptions,
   Path,
   Renderer,
-  Control,
-  Layer,
   Popup,
   Content,
   LatLngExpression,
@@ -24,7 +22,6 @@ import {
   Bounds,
   LatLng,
   LatLngBounds,
-  Handler,
   DefaultMapPanes,
   LayersControlEvent,
   LayerEvent,
@@ -37,6 +34,9 @@ import {
   LeafletKeyboardEvent,
   ZoomAnimEvent,
 } from "../Leaflet";
+import { Control } from "../control";
+import { Layer } from "../Layer";
+import { Handler } from "../Handler";
 
 export interface MapEventMap extends EventMap {
   // Layer Events
@@ -196,7 +196,7 @@ export class Map extends Evented<MapEventMap> {
   stopLocate(): this;
 
   // Properties
-  attributionControl: L.Control.Attribution;
+  attributionControl: Control.Attribution;
   boxZoom: Handler;
   doubleClickZoom: Handler;
   dragging: Handler;
