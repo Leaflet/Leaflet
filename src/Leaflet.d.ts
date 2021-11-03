@@ -14,8 +14,7 @@
 export as namespace L;
 
 import * as geojson from "geojson";
-export * as Browser from "./core/Browser";
-import { Evented, LeafletEvent } from "./core/Events";
+import { LeafletEvent } from "./core/Events";
 import { Handler } from "./core/Handler";
 import { Map } from "./map/Map";
 import * as Util from "./core/Util";
@@ -23,6 +22,7 @@ import { Layer } from "./Layer";
 export { Map, map } from "./map/Map";
 export * from './control'
 export * from './core'
+export * from './dom'
 
 
 /** A constant that represents the Leaflet version in use. */
@@ -70,54 +70,6 @@ export namespace PolyUtil {
     bounds: BoundsExpression,
     round?: boolean
   ): Point[];
-}
-
-export namespace DomUtil {
-  /**
-   * Get Element by its ID or with the given HTML-Element
-   */
-  function get(element: string | HTMLElement): HTMLElement | null;
-  function getStyle(el: HTMLElement, styleAttrib: string): string | null;
-  /**
-   * Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
-   * @param tagName The name of the tag to create (for example: `div` or `canvas`).
-   * @param className The class to set on the created element.
-   * @param container The container to append the created element to.
-   */
-  function create<T extends keyof HTMLElementTagNameMap>(
-    tagName: T,
-    className?: string,
-    container?: HTMLElement
-  ): HTMLElementTagNameMap[T];
-  function create(
-    tagName: string,
-    className?: string,
-    container?: HTMLElement
-  ): HTMLElement;
-  function remove(el: HTMLElement): void;
-  function empty(el: HTMLElement): void;
-  function toFront(el: HTMLElement): void;
-  function toBack(el: HTMLElement): void;
-  function hasClass(el: HTMLElement, name: string): boolean;
-  function addClass(el: HTMLElement, name: string): void;
-  function removeClass(el: HTMLElement, name: string): void;
-  function setClass(el: HTMLElement, name: string): void;
-  function getClass(el: HTMLElement): string;
-  function setOpacity(el: HTMLElement, opacity: number): void;
-  function testProp(props: string[]): string | false;
-  function setTransform(el: HTMLElement, offset: Point, scale?: number): void;
-  function setPosition(el: HTMLElement, position: Point): void;
-  function getPosition(el: HTMLElement): Point;
-  function disableTextSelection(): void;
-  function enableTextSelection(): void;
-  function disableImageDrag(): void;
-  function enableImageDrag(): void;
-  function preventOutline(el: HTMLElement): void;
-  function restoreOutline(): void;
-
-  let TRANSFORM: string;
-  let TRANSITION: string;
-  let TRANSITION_END: string;
 }
 
 export interface CRS {
@@ -292,25 +244,6 @@ export function bounds(
 ): Bounds;
 
 export function bounds(points: Point[] | BoundsLiteral): Bounds;
-
-/**
- * A class for making DOM elements draggable (including touch support).
- * Used internally for map and marker dragging. Only works for elements
- * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
- */
-export class Draggable extends Evented {
-  constructor(
-    element: HTMLElement,
-    dragStartTarget?: HTMLElement,
-    preventOutline?: boolean
-  );
-
-  enable(): void;
-
-  disable(): void;
-
-  finishDrag(): void;
-}
 
 export interface LayerOptions {
   pane?: string | undefined;
@@ -1276,82 +1209,6 @@ export interface ZoomAnimEvent extends LeafletEvent {
   center: LatLng;
   zoom: number;
   noUpdate: boolean;
-}
-
-export namespace DomEvent {
-  type EventHandlerFn = (event: Event) => void;
-
-  type PropagableEvent =
-    | LeafletMouseEvent
-    | LeafletKeyboardEvent
-    | LeafletEvent
-    | Event;
-
-  function on(
-    el: HTMLElement,
-    types: string,
-    fn: EventHandlerFn,
-    context?: any
-  ): typeof DomEvent;
-
-  function on(
-    el: HTMLElement,
-    eventMap: { [eventName: string]: EventHandlerFn },
-    context?: any
-  ): typeof DomEvent;
-
-  function off(
-    el: HTMLElement,
-    types: string,
-    fn: EventHandlerFn,
-    context?: any
-  ): typeof DomEvent;
-
-  function off(
-    el: HTMLElement,
-    eventMap: { [eventName: string]: EventHandlerFn },
-    context?: any
-  ): typeof DomEvent;
-
-  function stopPropagation(ev: PropagableEvent): typeof DomEvent;
-
-  function disableScrollPropagation(el: HTMLElement): typeof DomEvent;
-
-  function disableClickPropagation(el: HTMLElement): typeof DomEvent;
-
-  function preventDefault(ev: Event): typeof DomEvent;
-
-  function stop(ev: PropagableEvent): typeof DomEvent;
-
-  function getMousePosition(ev: MouseEvent, container?: HTMLElement): Point;
-
-  function getWheelDelta(ev: Event): number;
-
-  function addListener(
-    el: HTMLElement,
-    types: string,
-    fn: EventHandlerFn,
-    context?: any
-  ): typeof DomEvent;
-
-  function addListener(
-    el: HTMLElement,
-    eventMap: { [eventName: string]: EventHandlerFn },
-    context?: any
-  ): typeof DomEvent;
-
-  function removeListener(
-    el: HTMLElement,
-    types: string,
-    fn: EventHandlerFn,
-    context?: any
-  ): typeof DomEvent;
-
-  function removeListener(
-    el: HTMLElement,
-    eventMap: { [eventName: string]: EventHandlerFn },
-    context?: any
-  ): typeof DomEvent;
 }
 
 export interface DefaultMapPanes {
