@@ -11,13 +11,10 @@ import {
   ZoomPanOptions,
   PanOptions,
   PanInsideOptions,
-  Point,
-  PointExpression,
   ZoomOptions,
   LocateOptions,
   FitBoundsOptions,
   InvalidateSizeOptions,
-  Bounds,
   DefaultMapPanes,
   LayersControlEvent,
   LayerEvent,
@@ -30,6 +27,11 @@ import {
   LeafletKeyboardEvent,
   ZoomAnimEvent,
 } from "../Leaflet";
+import { Bounds } from "../geometry/Bounds";
+import {
+    Point,
+    PointExpression
+} from "../geometry/Point";
 import {
     LatLngExpression, LatLngBoundsExpression, LatLng,
     LatLngBounds

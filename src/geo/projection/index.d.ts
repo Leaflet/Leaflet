@@ -1,4 +1,5 @@
-import { Point, PointExpression, Bounds } from "../../Leaflet";
+import { Bounds } from "../../geometry/Bounds";
+import { Point, PointExpression } from "../../geometry/Point";
 import { LatLng, LatLngLiteral } from "../LatLng";
 
 

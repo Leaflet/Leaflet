@@ -1,4 +1,4 @@
-import { Point } from "../Leaflet";
+import { Point } from "../geometry/Point";
 
 /**
  * Get Element by its ID or with the given HTML-Element

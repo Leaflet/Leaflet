@@ -1,5 +1,6 @@
 import { LeafletEvent } from "../core/Events";
-import { LeafletMouseEvent, LeafletKeyboardEvent, Point } from "../Leaflet";
+import { LeafletMouseEvent, LeafletKeyboardEvent } from "../Leaflet";
+import { Point } from "../geometry/Point";
 
 namespace DomEvent {
     export type EventHandlerFn = (event: Event) => void;

@@ -13,6 +13,13 @@ import {
 } from "../Leaflet";
 import { LatLngExpression } from "../geo/LatLng";
 
+
+export interface LayerOptions {
+  pane?: string | undefined;
+  attribution?: string | undefined;
+}
+
+
 interface LayerEventMap extends EventMap {
   add: LeafletEvent;
   remove: LeafletEvent;

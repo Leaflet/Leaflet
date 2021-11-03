@@ -18,130 +18,18 @@ import * as geojson from "geojson";
 import { LeafletEvent } from "./core/Events";
 import { Handler } from "./core/Handler";
 import { Map } from "./map/Map";
-import * as Util from "./core/Util";
-import { Layer } from "./Layer";
-export * from './geo'
+import { Layer, LayerOptions } from "./Layer";
 import { LatLngExpression, LatLngBoundsExpression, LatLngBounds, LatLng } from "./geo/LatLng";
+import { PointExpression, Point, Coords } from "./geometry/Point";
 export { Map, map } from "./map/Map";
 export * from './control'
 export * from './core'
 export * from './dom'
-
+export * from './geo'
+export * from './geometry'
 
 /** A constant that represents the Leaflet version in use. */
 export const version: string;
-
-export class Transformation {
-  constructor(a: number, b: number, c: number, d: number);
-  transform(point: Point, scale?: number): Point;
-  untransform(point: Point, scale?: number): Point;
-}
-
-/** Instantiates a Transformation object with the given coefficients. */
-export function transformation(
-  a: number,
-  b: number,
-  c: number,
-  d: number
-): Transformation;
-
-/** Expects an coefficients array of the form `[a: Number, b: Number, c: Number, d: Number]`. */
-export function transformation(
-  coefficients: [number, number, number, number]
-): Transformation;
-
-/**
- * @see https://github.com/Leaflet/Leaflet/blob/bc918d4bdc2ba189807bc207c77080fb41ecc196/src/geometry/LineUtil.js#L118
- */
-export namespace LineUtil {
-  function simplify(points: Point[], tolerance: number): Point[];
-  function pointToSegmentDistance(p: Point, p1: Point, p2: Point): number;
-  function closestPointOnSegment(p: Point, p1: Point, p2: Point): Point;
-  function isFlat(latlngs: LatLngExpression[]): boolean;
-  function clipSegment(
-    a: Point,
-    b: Point,
-    bounds: Bounds,
-    useLastCode?: boolean,
-    round?: boolean
-  ): [Point, Point] | false;
-}
-
-export namespace PolyUtil {
-  function clipPolygon(
-    points: Point[],
-    bounds: BoundsExpression,
-    round?: boolean
-  ): Point[];
-}
-
-export type PointTuple = [number, number];
-
-export class Point {
-  constructor(x: number, y: number, round?: boolean);
-  clone(): Point;
-  add(otherPoint: PointExpression): Point; // non-destructive, returns a new point
-  subtract(otherPoint: PointExpression): Point;
-  divideBy(num: number): Point;
-  multiplyBy(num: number): Point;
-  scaleBy(scale: PointExpression): Point;
-  unscaleBy(scale: PointExpression): Point;
-  round(): Point;
-  floor(): Point;
-  ceil(): Point;
-  distanceTo(otherPoint: PointExpression): number;
-  equals(otherPoint: PointExpression): boolean;
-  contains(otherPoint: PointExpression): boolean;
-  toString(): string;
-  x: number;
-  y: number;
-}
-
-export interface Coords extends Point {
-  z: number;
-}
-
-export type PointExpression = Point | PointTuple;
-
-export function point(x: number, y: number, round?: boolean): Point;
-
-export function point(coords: PointTuple | { x: number; y: number }): Point;
-
-export type BoundsLiteral = [PointTuple, PointTuple];
-
-export class Bounds {
-  constructor(topLeft: PointExpression, bottomRight: PointExpression);
-  constructor(points?: Point[] | BoundsLiteral);
-  extend(point: PointExpression): this;
-  getCenter(round?: boolean): Point;
-  getBottomLeft(): Point;
-  getBottomRight(): Point;
-  getTopLeft(): Point;
-  getTopRight(): Point;
-  getSize(): Point;
-  contains(pointOrBounds: BoundsExpression | PointExpression): boolean;
-  intersects(otherBounds: BoundsExpression): boolean;
-  overlaps(otherBounds: BoundsExpression): boolean;
-  isValid(): boolean;
-
-  min?: Point | undefined;
-  max?: Point | undefined;
-}
-
-export type BoundsExpression = Bounds | BoundsLiteral;
-
-export function bounds(
-  topLeft: PointExpression,
-  bottomRight: PointExpression
-): Bounds;
-
-export function bounds(points: Point[] | BoundsLiteral): Bounds;
-
-export interface LayerOptions {
-  pane?: string | undefined;
-  attribution?: string | undefined;
-}
-
 export interface InteractiveLayerOptions extends LayerOptions {
   interactive?: boolean | undefined;
   bubblingMouseEvents?: boolean | undefined;
@@ -1219,7 +1107,3 @@ export function marker(
   options?: MarkerOptions
 ): Marker;
 
-export const extend: typeof Util["extend"];
-export const bind: typeof Util["bind"];
-export const stamp: typeof Util["stamp"];
-export const setOptions: typeof Util["setOptions"];
