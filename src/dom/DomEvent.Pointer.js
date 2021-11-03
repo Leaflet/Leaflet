@@ -17,7 +17,7 @@ var pEvent = {
 };
 var handle = {
 	touchstart  : _onPointerStart,
-	touchmove   : _onPointerMove,
+	touchmove   : _handlePointer,
 	touchend    : _handlePointer,
 	touchcancel : _handlePointer
 };
@@ -68,6 +68,8 @@ function _addPointerDocListener() {
 }
 
 function _handlePointer(handler, e) {
+	if (e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) { return; }
+
 	e.touches = [];
 	for (var i in _pointers) {
 		e.touches.push(_pointers[i]);
@@ -81,14 +83,6 @@ function _onPointerStart(handler, e) {
 	// IE10 specific: MsTouch needs preventDefault. See #2000
 	if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
 		DomEvent.preventDefault(e);
-	}
-	_handlePointer(handler, e);
-}
-
-function _onPointerMove(handler, e) {
-	// don't fire touch moves when mouse isn't down
-	if ((e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) && e.buttons === 0) {
-		return;
 	}
 	_handlePointer(handler, e);
 }
