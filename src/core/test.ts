@@ -9,9 +9,10 @@ const e = new Evented<{
 }>()
 
 e.on('test', (ev) => {
-  ev.myProp
+  // Is number
+  ev.myProp.toExponential()
 })
 
-e.on('jfdsksdfsldf', (e)=>{
-  
+e.on('example of a non existing event type', (e)=>{
+  // This also works!
 })

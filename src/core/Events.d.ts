@@ -10,7 +10,7 @@ export interface LeafletEvent {
   sourceTarget: any;
   propagatedFrom: any;
   /**
-   * @deprecated The same as {@link LeafletEvent.propagatedFrom propagatedFrom}.
+   * @deprecated use {@link LeafletEvent.propagatedFrom propagatedFrom} instead.
    */
   layer: any;
 }
