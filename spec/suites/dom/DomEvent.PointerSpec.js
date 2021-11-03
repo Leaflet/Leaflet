@@ -46,6 +46,15 @@ describe('DomEvent.Pointer', function () {
 			});
 		});
 
+		it('ignores events from mouse', function () {
+			pointerEvents.forEach(function (type) {
+				happen.once(el, {type: type, pointerType: 'mouse'});
+			});
+			touchEvents.forEach(function (type) {
+				expect(listeners[type].notCalled).to.be.ok();
+			});
+		});
+
 		it('ignores native touch events', function () {
 			touchEvents.forEach(function (type) {
 				happen.once(el, {type: type});
