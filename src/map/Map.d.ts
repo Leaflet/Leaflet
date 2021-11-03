@@ -84,7 +84,7 @@ export interface MapEventMap extends EventMap {
   zoomanim: ZoomAnimEvent;
 }
 
-export class Map extends Evented {
+export class Map extends Evented<MapEventMap> {
   constructor(element: string | HTMLElement, options?: MapOptions);
   getRenderer(layer: Path): Renderer;
 
