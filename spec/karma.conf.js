@@ -104,15 +104,15 @@ module.exports = function (config) {
 			},
 			'FirefoxTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
+				prefs: {
 					'dom.w3c_touch_events.enabled': 1
-			        }
+				}
 			},
 			'FirefoxNoTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
+				prefs: {
 					'dom.w3c_touch_events.enabled': 0
-			        }
+				}
 			},
 			IE8: { // not working in IE 11!!
 				base: 'IE',
@@ -138,9 +138,9 @@ module.exports = function (config) {
 		singleRun: true,
 
 		client: {
-			 mocha: {
-			 	forbidOnly: process.env.CI || false
-			 }
+			mocha: {
+				forbidOnly: process.env.CI || false
+			}
 		}
 	});
 };
