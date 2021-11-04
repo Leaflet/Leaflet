@@ -4190,8 +4190,8 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
-  <tr>
-    <td>
+  	<tr>
+		<td>
 			<a href="https://github.com/ptma/Leaflet.Legend">Leaflet.Legend
 			</a>
 		</td>
@@ -4202,18 +4202,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/ptma">JJ Jin</a>
 		</td>
 	</tr>
-  <tr>
+  	<tr>
 		<td>
 			<a href="https://github.com/adammertel/Leaflet.Control.Select">Leaflet.Control.Select
 			</a>
 		</td>
 		<td>
-			 Customisable menu-style control, allows menu-items grouping or multiple-selection mode. See <a href="https://adammertel.github.io/Leaflet.Control.Select/">demo</a>.
+			Customisable menu-style control. See <a href="https://adammertel.github.io/Leaflet.Control.Select/">demo</a>.
 		</td>
 		<td>
 			<a href="https://github.com/adammertel">Adam Mertel</a>
-    </td>
-  </tr>
+		</td>
+  	</tr>
 </table>
 
 
