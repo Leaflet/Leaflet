@@ -64,11 +64,9 @@ jobs:
       fail-fast: false
       matrix:
         browser:
-          [
-            Chrome1280x1024,
-            FirefoxTouch,
-            FirefoxPointerTouch,
-          ]
+          - Chrome1280x1024
+          - FirefoxTouch
+          - FirefoxPointerTouch
     steps:
       - name: Restore setup
         uses: actions/cache@v2
@@ -84,24 +82,9 @@ jobs:
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }}
 
-  check-secrets:
-    needs: [setup]
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
-    outputs:
-      ok: ${{ steps.ok.outputs.defined }}
-    steps:
-        - id: ok
-          env:
-              AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          if: env.AWS_S3_BUCKET && env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY
-          run: echo "::set-output name=defined::true"
-
   deploy:
-    needs: [check-secrets]
-    if: needs.check-secrets.outputs.ok == 'true'
+    needs: setup
+    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
@@ -116,9 +99,7 @@ jobs:
 
       - name: Determine directory for artifacts
         id: artifacts-directory
-        run: |
-          VERSION=$(git tag --points-at HEAD)
-          echo "::set-output name=path::content/leaflet/${VERSION:-master}"
+        run: VERSION=$(git tag --points-at HEAD) echo "::set-output name=path::content/leaflet/${VERSION:-master}"
 
       - name: Deploy artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
