@@ -70,13 +70,6 @@ export function off(obj, types, fn, context) {
 	return this;
 }
 
-function browserFiresNativeDblClick() {
-	// See https://github.com/w3c/pointerevents/issues/171
-	if (Browser.pointer) {
-		return !(Browser.edge || Browser.safari);
-	}
-}
-
 var mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
@@ -94,12 +87,12 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (Browser.pointer && type.indexOf('touch') === 0) {
+	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
-		addPointerListener(obj, type, handler, id);
+		handler = addPointerListener(obj, type, handler);
 
-	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
-		addDoubleTapListener(obj, handler, id);
+	} else if (Browser.touch && (type === 'dblclick')) {
+		handler = addDoubleTapListener(obj, handler);
 
 	} else if ('addEventListener' in obj) {
 
@@ -134,11 +127,11 @@ function removeOne(obj, type, fn, context) {
 
 	if (!handler) { return this; }
 
-	if (Browser.pointer && type.indexOf('touch') === 0) {
-		removePointerListener(obj, type, id);
+	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
+		removePointerListener(obj, type, handler);
 
-	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
-		removeDoubleTapListener(obj, id);
+	} else if (Browser.touch && (type === 'dblclick')) {
+		removeDoubleTapListener(obj, handler);
 
 	} else if ('removeEventListener' in obj) {
 
@@ -167,7 +160,6 @@ export function stopPropagation(e) {
 	} else {
 		e.cancelBubble = true;
 	}
-	skipped(e);
 
 	return this;
 }
@@ -180,11 +172,11 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'doubleclick'`,
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`,
 // `'mousedown'` and `'touchstart'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	on(el, 'mousedown touchstart dblclick', stopPropagation);
-	addOne(el, 'click', fakeStop);
+	on(el, 'mousedown touchstart dblclick contextmenu', stopPropagation);
+	el['_leaflet_disable_click'] = true;
 	return this;
 }
 
@@ -250,20 +242,6 @@ export function getWheelDelta(e) {
 	       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 20 : // Legacy Moz lines
 	       e.detail ? e.detail / -32765 * 60 : // Legacy Moz pages
 	       0;
-}
-
-var skipEvents = {};
-
-export function fakeStop(e) {
-	// fakes stopPropagation by setting a special event flag, checked/reset with skipped(e)
-	skipEvents[e.type] = true;
-}
-
-export function skipped(e) {
-	var events = skipEvents[e.type];
-	// reset when checking, as it's only used in map container and propagates outside of the map
-	skipEvents[e.type] = false;
-	return events;
 }
 
 // check if element really left/entered the event target (for mouseenter/mouseleave)

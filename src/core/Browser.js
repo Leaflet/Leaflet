@@ -32,15 +32,15 @@ export var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 export var webkit = userAgentContains('webkit');
 
 // @property android: Boolean
-// `true` for any browser running on an Android platform.
+// **Deprecated.** `true` for any browser running on an Android platform.
 export var android = userAgentContains('android');
 
-// @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
+// @property android23: Boolean; **Deprecated.** `true` for browsers running on Android 2 or Android 3.
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
 /* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
 var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
-// @property androidStock: Boolean; `true` for the Android stock browser (i.e. not Chrome)
+// @property androidStock: Boolean; **Deprecated.** `true` for the Android stock browser (i.e. not Chrome)
 export var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
 // @property opera: Boolean; `true` for the Opera browser
@@ -95,13 +95,17 @@ export var msPointer = !window.PointerEvent && window.MSPointerEvent;
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
 export var pointer = !!(window.PointerEvent || msPointer);
 
-// @property touch: Boolean
+// @property touchNative: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
-// This does not necessarily mean that the browser is running in a computer with
+// **This does not necessarily mean** that the browser is running in a computer with
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
-export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
-		(window.DocumentTouch && document instanceof window.DocumentTouch));
+export var touchNative = 'ontouchstart' in window || !!window.TouchEvent;
+
+// @property touch: Boolean
+// `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
+// Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
+export var touch = !window.L_NO_TOUCH && (touchNative || pointer);
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
 export var mobileOpera = mobile && opera;
