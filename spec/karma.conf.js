@@ -108,10 +108,10 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 1
 			        }
 			},
-			'FirefoxPointerTouch': {
+			'FirefoxNoTouch': {
 				base: 'FirefoxHeadless',
 			        prefs: {
-					'dom.w3c_touch_events.enabled': 1
+					'dom.w3c_touch_events.enabled': 0
 			        }
 			},
 			IE8: { // not working in IE 11!!
