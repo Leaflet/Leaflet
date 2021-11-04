@@ -66,6 +66,7 @@ jobs:
         browser:
           [
             Chrome1280x1024,
+            FirefoxPointer,
             FirefoxTouch,
             FirefoxPointerTouch,
           ]

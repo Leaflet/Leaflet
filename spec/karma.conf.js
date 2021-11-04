@@ -102,15 +102,24 @@ module.exports = function (config) {
 				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
 				flags: ['--window-size=1280,1024']
 			},
+			'FirefoxPointer': {
+				base: 'FirefoxHeadless',
+			        prefs: {
+					'dom.w3c_pointer_events.enabled': true,
+					'dom.w3c_touch_events.enabled': 0
+			        }
+			},
 			'FirefoxTouch': {
 				base: 'FirefoxHeadless',
 			        prefs: {
+					'dom.w3c_pointer_events.enabled': false,
 					'dom.w3c_touch_events.enabled': 1
 			        }
 			},
 			'FirefoxPointerTouch': {
 				base: 'FirefoxHeadless',
 			        prefs: {
+					'dom.w3c_pointer_events.enabled': true,
 					'dom.w3c_touch_events.enabled': 1
 			        }
 			},
