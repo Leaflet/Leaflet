@@ -1,33 +1,28 @@
 describe("Icon.Default", function () {
+	var div, map;
 
-	it("icon measures 25x41px", function () {
-		var div = document.createElement('div');
+	beforeEach(function () {
+		div = document.createElement('div');
 		div.style.height = '100px';
 		document.body.appendChild(div);
+		map = L.map(div).setView([0, 0], 0);
+		L.marker([0, 0]).addTo(map);
+	});
 
-		var map = L.map(div).setView([0, 0], 0);
+	afterEach(function () {
+		map.remove();
+		document.body.removeChild(div);
+	});
 
-		var marker = new L.Marker([0, 0]).addTo(map);
-
+	it("icon measures 25x41px", function () {
 		var img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(25);
-		document.body.removeChild(div);
 	});
 
 	it("shadow measures 41x41px", function () {
-		var div = document.createElement('div');
-		div.style.height = '100px';
-		document.body.appendChild(div);
-
-		var map = L.map(div).setView([0, 0], 0);
-
-		var marker = new L.Marker([0, 0]).addTo(map);
-
 		var img = map.getPane('shadowPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(41);
-		document.body.removeChild(div);
 	});
-
 });

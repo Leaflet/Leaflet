@@ -46,6 +46,7 @@ describe("Projection.Mercator", function () {
 		});
 	});
 });
+
 describe("Projection.SphericalMercator", function () {
 	var p = L.Projection.SphericalMercator;
 

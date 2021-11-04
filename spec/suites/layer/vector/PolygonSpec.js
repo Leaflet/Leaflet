@@ -1,10 +1,13 @@
 describe('Polygon', function () {
+	var map;
 
-	var c = document.createElement('div');
-	c.style.width = '400px';
-	c.style.height = '400px';
-	var map = new L.Map(c);
-	map.setView(new L.LatLng(55.8, 37.6), 6);
+	before(function () {
+		map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
+
+	after(function () {
+		map.remove();
+	});
 
 	describe("#initialize", function () {
 		it("should never be flat", function () {
@@ -67,7 +70,8 @@ describe('Polygon', function () {
 
 		it("can be added to the map when empty", function () {
 			var polygon = new L.Polygon([]).addTo(map);
-			expect(map.hasLayer(polygon)).to.be(true);
+			var isAdded = map.hasLayer(polygon);
+			expect(isAdded).to.be(true);
 		});
 
 	});
@@ -144,7 +148,6 @@ describe('Polygon', function () {
 	});
 
 	describe('#getCenter', function () {
-
 		it('should compute center of a big simple polygon around equator', function () {
 			var latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
@@ -168,14 +171,13 @@ describe('Polygon', function () {
 					[[0, 0], [10, 0], [10, 10], [0, 10]]
 				];
 				var layer = new L.Polygon(latlngs);
-				var center = layer.getCenter();
+				layer.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
 	});
 
 	describe("#_defaultShape", function () {
-
 		it("should return latlngs on a simple polygon", function () {
 			var latlngs = [
 				L.latLng([1, 2]),
@@ -220,7 +222,6 @@ describe('Polygon', function () {
 
 			expect(polygon._defaultShape()).to.eql(latlngs[0][0]);
 		});
-
 	});
 
 	describe("#addLatLng", function () {
@@ -322,7 +323,21 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1][0]).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
 			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
 		});
-
 	});
 
+	describe("#setStyle", function () {
+		it("succeeds for empty Polygon already added to the map", function () {
+			var style = {
+				weight: 3
+			};
+			var polygon = L.polygon([]);
+
+			polygon.addTo(map);
+			polygon.setStyle(style);
+
+			for (var prop in style) {
+				expect(polygon.options[prop]).to.be(style[prop]);
+			}
+		});
+	});
 });

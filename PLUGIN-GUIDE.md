@@ -134,7 +134,7 @@ And most importantly, keep it simple. Leaflet is all about *simplicity*.
 
 NPM (Node Packaged Modules) is a package manager and code repository for JavaScript. Publishing your module on NPM allows other developers to quickly find and install your plugin as well as any other plugins it depends on.
 
-NPM has an excellent [developers guide](https://www.npmjs.org/doc/misc/npm-developers.html) to help you through the process.
+NPM has an excellent [developers guide](https://docs.npmjs.com/using-npm/developers.html) to help you through the process.
 
 When you publish your plugin you should add a dependency on `leaflet` to your `package.json` file. This will automatically install Leaflet when your package is installed.
 

@@ -4,9 +4,6 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-export var freeze = Object.freeze;
-Object.freeze = function (obj) { return obj; };
-
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest) {
@@ -111,10 +108,13 @@ export function wrapNum(x, range, includeMax) {
 // Returns a function which always returns `false`.
 export function falseFn() { return false; }
 
-// @function formatNum(num: Number, digits?: Number): Number
-// Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
-export function formatNum(num, digits) {
-	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
+// @function formatNum(num: Number, precision?: Number|false): Number
+// Returns the number `num` rounded with specified `precision`.
+// The default `precision` value is 6 decimal places.
+// `false` can be passed to skip any processing (can be useful to avoid round-off errors).
+export function formatNum(num, precision) {
+	if (precision === false) { return num; }
+	var pow = Math.pow(10, precision === undefined ? 6 : precision);
 	return Math.round(num * pow) / pow;
 }
 
@@ -133,7 +133,7 @@ export function splitWords(str) {
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
-	if (!obj.hasOwnProperty('options')) {
+	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
 	for (var i in options) {
@@ -155,7 +155,7 @@ export function getParamString(obj, existingUrl, uppercase) {
 	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 }
 
-var templateRe = /\{ *([\w_-]+) *\}/g;
+var templateRe = /\{ *([\w_ -]+) *\}/g;
 
 // @function template(str: String, data: Object): String
 // Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
