@@ -67,6 +67,33 @@ describe('Canvas', function () {
 			expect(spy.callCount).to.eql(1);
 		});
 
+		it("should be transparent for DOM events going to non-canvas features", function () {
+			var marker = L.marker(map.layerPointToLatLng([150, 150]))
+				.addTo(map);
+			var circle = L.circle(map.layerPointToLatLng([200, 200]), {
+				radius: 20000,
+				renderer: L.svg()
+			}).addTo(map);
+
+			var spyPolygon = sinon.spy();
+			var spyMap = sinon.spy();
+			var spyMarker = sinon.spy();
+			var spyCircle = sinon.spy();
+			layer.on("click", spyPolygon);
+			map.on("click", spyMap);
+			marker.on("click", spyMarker);
+			circle.on("click", spyCircle);
+
+			happen.at('click', 50, 50);   // polygon (canvas)
+			happen.at('click', 151, 151); // empty space
+			happen.at('click', 150, 148); // marker
+			happen.at('click', 200, 200); // circle (svg)
+			expect(spyPolygon.callCount).to.eql(1);
+			expect(spyMap.callCount).to.eql(3); // except marker
+			expect(spyMarker.callCount).to.eql(1);
+			expect(spyCircle.callCount).to.eql(1);
+		});
+
 		it("should fire preclick before click", function () {
 			var clickSpy = sinon.spy();
 			var preclickSpy = sinon.spy();
