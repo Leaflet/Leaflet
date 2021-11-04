@@ -63,6 +63,7 @@ export var Canvas = Renderer.extend({
 		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
+		container['_leaflet_disable_events'] = true;
 
 		this._ctx = container.getContext('2d');
 	},
@@ -354,10 +355,7 @@ export var Canvas = Renderer.extend({
 				}
 			}
 		}
-		if (clickedLayer)  {
-			DomEvent.fakeStop(e);
-			this._fireEvent([clickedLayer], e);
-		}
+		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	},
 
 	_onMouseMove: function (e) {
