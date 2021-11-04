@@ -4190,7 +4190,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
-  	<tr>
+	<tr>
 		<td>
 			<a href="https://github.com/ptma/Leaflet.Legend">Leaflet.Legend
 			</a>
@@ -4202,7 +4202,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/ptma">JJ Jin</a>
 		</td>
 	</tr>
-  	<tr>
+	<tr>
 		<td>
 			<a href="https://github.com/adammertel/Leaflet.Control.Select">Leaflet.Control.Select
 			</a>
@@ -4213,7 +4213,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		<td>
 			<a href="https://github.com/adammertel">Adam Mertel</a>
 		</td>
-  	</tr>
+	</tr>
 </table>
 
 
