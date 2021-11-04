@@ -1,5 +1,6 @@
 import {Class} from './Class';
 import * as Util from './Util';
+import {Dictionary} from './Dictionary';
 
 /*
  * @class Evented
@@ -91,13 +92,13 @@ export var Events = {
 
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context) {
-		this._events = this._events || {};
+		this._events = this._events || new Dictionary();
 
 		/* get/init listeners for type */
-		var typeListeners = this._events[type];
+		var typeListeners = this._events.get(type);
 		if (!typeListeners) {
-			typeListeners = [];
-			this._events[type] = typeListeners;
+			typeListeners = new Dictionary();
+			this._events.set(type, typeListeners);
 		}
 
 		if (context === this) {
@@ -107,24 +108,22 @@ export var Events = {
 		var newListener = {fn: fn, ctx: context},
 		    listeners = typeListeners;
 
-		// check if fn already there
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return;
-			}
+		var fullId = this._getListenerFullId(fn, context);
+
+		// Return if entry already exsits
+		if (listeners.get(fullId)) {
+			return;
 		}
 
-		listeners.push(newListener);
+		listeners.set(fullId, newListener);
 	},
 
 	_off: function (type, fn, context) {
-		var listeners,
-		    i,
-		    len;
+		var listeners;
 
 		if (!this._events) { return; }
 
-		listeners = this._events[type];
+		listeners = this._events.get(type);
 
 		if (!listeners) {
 			return;
@@ -132,11 +131,11 @@ export var Events = {
 
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = Util.falseFn;
-			}
+			listeners.forEach(function (l) {
+				l.fn = Util.falseFn;
+			}, this);
 			// clear all listeners for a type if function isn't specified
-			delete this._events[type];
+			delete this._events.delete(type);
 			return;
 		}
 
@@ -144,26 +143,18 @@ export var Events = {
 			context = undefined;
 		}
 
+		var fullId = this._getListenerFullId(fn, context);
+
+		// Get the event first to set it to noop incase this function was
+		// called in fire.
+		var listener = listeners.get(fullId);
+
+		if (listener) {
+			listener.fn = Util.falseFn;
+		}
+
 		if (listeners) {
-
-			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
-				if (l.ctx !== context) { continue; }
-				if (l.fn === fn) {
-
-					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = Util.falseFn;
-
-					if (this._firingCount) {
-						/* copy array in case events are being fired */
-						this._events[type] = listeners = listeners.slice();
-					}
-					listeners.splice(i, 1);
-
-					return;
-				}
-			}
+			listeners.delete(fullId);
 		}
 	},
 
@@ -180,15 +171,18 @@ export var Events = {
 			sourceTarget: data && data.sourceTarget || this
 		});
 
+		// Call every listener
 		if (this._events) {
-			var listeners = this._events[type];
+			var dict = this._events.get(type);
 
-			if (listeners) {
+			if (dict) {
+
+				var listeners = dict.getValuesAsArray();
+
 				this._firingCount = (this._firingCount + 1) || 1;
-				for (var i = 0, len = listeners.length; i < len; i++) {
-					var l = listeners[i];
+				listeners.forEach(function (l) {
 					l.fn.call(l.ctx || this, event);
-				}
+				}, this);
 
 				this._firingCount--;
 			}
@@ -205,8 +199,14 @@ export var Events = {
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
-		var listeners = this._events && this._events[type];
-		if (listeners && listeners.length) { return true; }
+		var listeners = this._events && this._events.get(type);
+
+		if (listeners) {
+			var size = typeof (listeners.size) == 'function' ? listeners.size() : listeners.size; // Fix for older firefox versions
+			if (size > 0) {
+				return true;
+			}
+		}
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
@@ -264,6 +264,20 @@ export var Events = {
 				propagatedFrom: e.target
 			}, e), true);
 		}
+	},
+
+	// Stamps the function and context and returns a combined unique id
+	// as a result
+	_getListenerFullId: function (fn, ctx) {
+
+		var fnId, ctxId;
+
+		fnId = Util.stamp(fn);
+		if (ctx) {
+			ctxId = Util.stamp(ctx);
+		}
+
+		return fnId + '*' + ctxId;
 	}
 };
 
