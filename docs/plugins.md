@@ -4212,6 +4212,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/ptma">JJ Jin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/adammertel/Leaflet.Control.Select">Leaflet.Control.Select
+			</a>
+		</td>
+		<td>
+			Customisable menu-style control. See <a href="https://adammertel.github.io/Leaflet.Control.Select/">demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/adammertel">Adam Mertel</a>
+		</td>
+	</tr>
 </table>
 
 
