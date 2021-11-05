@@ -208,7 +208,7 @@ Map.include({
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the map
 	hasLayer: function (layer) {
-		return !!layer && (Util.stamp(layer) in this._layers);
+		return Util.stamp(layer) in this._layers;
 	},
 
 	/* @method eachLayer(fn: Function, context?: Object): this
