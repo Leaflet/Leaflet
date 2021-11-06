@@ -2799,6 +2799,16 @@ Plugins that search for overlays and enhance how to display information about th
           </tr>
 	<tr>
 		<td>
+			<a href="https://github.com/luka1199/Leaflet.AnimatedSearchBox">Leaflet.AnimatedSearchBox</a>
+		</td>
+		<td>
+			A simple Leaflet plugin that provides a collapsible search box.
+		</td>
+		<td>
+			<a href="https://github.com/luka1199/">Luka Steinbach</a>
+		</td>
+    	<tr>
+		<td>
 			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
 		</td><td>
 			A Leaflet Plugin for Edge Cases.  For use when you want popups on <em>mouseover</em>, not <em>click</em>, and
