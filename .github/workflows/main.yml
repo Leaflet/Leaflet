@@ -72,6 +72,8 @@ jobs:
           - browser: FirefoxNoTouch
           - browser: IE
             os: windows-2019
+          - browser: IE10
+            os: windows-2019
     steps:
       - name: Restore setup
         uses: actions/cache@v2
