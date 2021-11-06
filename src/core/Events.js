@@ -176,8 +176,8 @@ export var Events = {
 
 				return;
 			}
-			console.warn('listener not found');
 		}
+		console.warn('listener not found');
 	},
 
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
