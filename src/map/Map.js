@@ -736,7 +736,7 @@ export var Map = Evented.extend({
 	remove: function () {
 
 		this._initEvents(true);
-		this.off('moveend', this._panInsideMaxBounds);
+		if (this.options.maxBounds) { this.off('moveend', this._panInsideMaxBounds); }
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
