@@ -1921,14 +1921,14 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/coyotesqrl/">R.A. Porter</a>
 		</td>
 	</tr>
-    <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/phloose/leaflet-layervisibility">leaflet-layervisibility</a>
 		</td>
-        <td>
-            Extends L.Layer and L.LayerGroup with methods to hide/show layers without removing/re-adding them.
+		<td>
+			Extends L.Layer and L.LayerGroup with methods to hide/show layers without removing/re-adding them.
 		</td>
-        <td>
+		<td>
 			<a href="https://github.com/phloose/">Philipp Loose</a>
 		</td>
 	</tr>
