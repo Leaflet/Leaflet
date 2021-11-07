@@ -1347,7 +1347,12 @@ export var Map = Evented.extend({
 		    src = e.target || e.srcElement,
 		    dragging = false;
 
+		var disablePropagation = false;
 		while (src) {
+			if (disablePropagation) { return targets; }
+			if (src['_leaflet_disable_click'] && (type === 'click' || type === 'preclick')) {
+				disablePropagation = true;
+			}
 			target = this._targets[Util.stamp(src)];
 			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
@@ -1368,16 +1373,9 @@ export var Map = Evented.extend({
 		return targets;
 	},
 
-	_isClickDisabled: function (el) {
-		while (el !== this._container) {
-			if (el['_leaflet_disable_click']) { return true; }
-			el = el.parentNode;
-		}
-	},
-
 	_handleDOMEvent: function (e) {
 		var el = (e.target || e.srcElement);
-		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+		if (!this._loaded || el['_leaflet_disable_events']) {
 			return;
 		}
 
