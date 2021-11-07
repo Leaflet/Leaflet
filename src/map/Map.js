@@ -1340,6 +1340,8 @@ export var Map = Evented.extend({
 		}
 	},
 
+	_clickEvents: ['mousedown', 'touchstart', 'preclick', 'click', 'dblclick', 'contextmenu'],
+
 	_findEventTargets: function (e, type) {
 		var targets = [],
 		    target,
@@ -1350,7 +1352,7 @@ export var Map = Evented.extend({
 		var disablePropagation = false;
 		while (src) {
 			if (disablePropagation) { return targets; }
-			if (src['_leaflet_disable_click'] && (type === 'click' || type === 'preclick')) {
+			if (src['_leaflet_disable_click_propagation'] && this._clickEvents.indexOf(type) !== -1) {
 				disablePropagation = true;
 			}
 			target = this._targets[Util.stamp(src)];

@@ -301,7 +301,7 @@ describe('DomEvent', function () {
 	});
 
 	describe('#disableClickPropagation', function () {
-		it('stops click events from propagation to parent elements', function () { // except 'click'
+		it('does not stop click events from propagation to parent HTML elements', function () {
 			var child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
@@ -312,6 +312,51 @@ describe('DomEvent', function () {
 			happen.once(child, {type: 'mousedown'});
 			happen.once(child, {type: 'touchstart', touches: []});
 
+			expect(listener.callCount).to.be(L.Browser.touchNative ? 4 : 3);
+		});
+
+		it('does not stop click events from firing on feature itself', function () {
+			var map = L.map(el, {zoom:0, center:[0, 0]});
+			var layer = new L.Layer();
+			layer.onAdd = layer.onRemove = L.Util.falseFn;
+			layer.addTo(map);
+
+			var child = document.createElement('div');
+			el.appendChild(child);
+			layer.addInteractiveTarget(child);
+
+			L.DomEvent.disableClickPropagation(child);
+			layer.on('click dblclick contextmenu mousedown', listener);
+
+			happen.once(child, {type: 'click'});
+			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'contextmenu'});
+			happen.once(child, {type: 'mousedown'});
+
+			map.remove(); // cleanup
+			expect(listener.callCount).to.be(4);
+		});
+
+		it('stops click events from propagation to parent features', function () {
+			var map = L.map(el, {zoom:0, center:[0, 0]});
+			var layer = new L.Layer();
+			layer.onAdd = layer.onRemove = L.Util.falseFn;
+			layer.addTo(map);
+
+			var child = document.createElement('div');
+			el.appendChild(child);
+			layer.addInteractiveTarget(child);
+
+			L.DomEvent.disableClickPropagation(child);
+			map.on('preclick click dblclick contextmenu mousedown', listener);
+
+			happen.once(child, {type: 'preclick'});
+			happen.once(child, {type: 'click'});
+			happen.once(child, {type: 'dblclick'});
+			happen.once(child, {type: 'contextmenu'});
+			happen.once(child, {type: 'mousedown'});
+
+			map.remove(); // cleanup
 			expect(listener.notCalled).to.be.ok();
 		});
 
