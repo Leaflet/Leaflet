@@ -45,23 +45,24 @@ Class.extend = function (props) {
 	// mix static properties into the class
 	if (props.statics) {
 		Util.extend(NewClass, props.statics);
-		delete props.statics;
 	}
 
 	// mix includes into the prototype
 	if (props.includes) {
 		checkDeprecatedMixinEvents(props.includes);
 		Util.extend.apply(null, [proto].concat(props.includes));
-		delete props.includes;
-	}
-
-	// merge options
-	if (proto.options) {
-		props.options = Util.extend(Util.create(proto.options), props.options);
 	}
 
 	// mix given properties into the prototype
 	Util.extend(proto, props);
+	delete proto.statics;
+	delete proto.includes;
+
+	// merge options
+	if (proto.options) {
+		proto.options = parentProto.options ? Util.create(parentProto.options) : {};
+		Util.extend(proto.options, props.options);
+	}
 
 	proto._initHooks = [];
 
