@@ -4643,6 +4643,17 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/louh">Lou Huang</a>
 		</td>
 	</tr>
+  <tr>
+		<td>
+			<a href="https://github.com/tomik23/Leaflet.Autocomplete">Leaflet.Autocomplete</a>
+		</td>
+		<td>
+			Leaflet.Autocomplete is to expand the autosugestion plugin with the ability to geocode and show data on the map in the way you think you need. The <a href="https://tomik23.github.io/Leaflet.Autocomplete/">DEMO</a> is based on the use of OpenstreetMap Nominatim to locate places by address. Accessible, with full support for ARIA attributes and keyboard interactions.
+		</td>
+		<td>
+			<a href="https://github.com/tomik23">Grzegorz Tomicki</a>
+		</td>
+	</tr>
 		<tr>
 		<td>
 			<a href="https://github.com/location-iq/leaflet-geocoder">Leaflet LocationIQ Geocoder</a>
