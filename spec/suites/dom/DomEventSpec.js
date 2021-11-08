@@ -301,53 +301,7 @@ describe('DomEvent', function () {
 	});
 
 	describe('#disableClickPropagation', function () {
-		var MyLayer = L.Layer.extend({
-			onAdd: function () {
-				var child = this._container = document.createElement('div');
-				this._map._container.appendChild(child);
-				this.addInteractiveTarget(child);
-			},
-			onRemove: L.Util.falseFn
-		});
-
-		var map, layer;
-
-	        beforeEach(function () {
-			map = L.map(el, {zoom:0, center:[0, 0]});
-			layer = new MyLayer();
-			layer.addTo(map);
-	        });
-
-	        afterEach(function () {
-			map.remove();
-	        });
-
-		it('stops click events from propagation to parent features', function () {
-			L.DomEvent.disableClickPropagation(layer._container);
-			map.on('preclick click dblclick contextmenu mousedown', listener);
-
-			happen.once(layer._container, {type: 'preclick'});
-			happen.once(layer._container, {type: 'click'});
-			happen.once(layer._container, {type: 'dblclick'});
-			happen.once(layer._container, {type: 'contextmenu'});
-			happen.once(layer._container, {type: 'mousedown'});
-
-			expect(listener.notCalled).to.be.ok();
-		});
-
-		it('does not stop click events from firing on feature itself', function () {
-			L.DomEvent.disableClickPropagation(layer._container);
-			layer.on('click dblclick contextmenu mousedown', listener);
-
-			happen.once(layer._container, {type: 'click'});
-			happen.once(layer._container, {type: 'dblclick'});
-			happen.once(layer._container, {type: 'contextmenu'});
-			happen.once(layer._container, {type: 'mousedown'});
-
-			expect(listener.callCount).to.be(4);
-		});
-
-		it('does not stop click events from propagation to parent HTML elements', function () {
+		it('stops click events from propagation to parent elements', function () { // except 'click'
 			var child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
@@ -358,34 +312,7 @@ describe('DomEvent', function () {
 			happen.once(child, {type: 'mousedown'});
 			happen.once(child, {type: 'touchstart', touches: []});
 
-			expect(listener.callCount).to.be(L.Browser.touchNative ? 4 : 3);
-		});
-
-		it('prevents click event on map object, but propagates to DOM elements', function () { // to solve #301
-			var child = document.createElement('div');
-			el.appendChild(child);
-			L.DomEvent.disableClickPropagation(child);
-			L.DomEvent.on(el, 'click', listener);
-			var grandChild = document.createElement('div');
-			child.appendChild(grandChild);
-
-			var mapClickListener = sinon.spy();
-			var mapOtherListener = sinon.spy();
-			map.on('click', mapClickListener);          // control case
-			map.on('keypress', mapOtherListener);       // control case
-
-			happen.once(grandChild, {type: 'click'});
-			happen.once(grandChild, {type: 'keypress'});
-
-			expect(mapOtherListener.called).to.be.ok(); // control case
-			expect(listener.called).to.be.ok();
-			expect(mapClickListener.notCalled).to.be.ok();
-
-			happen.once(child, {type: 'click'});
-			happen.once(child, {type: 'keypress'});
-
-			expect(listener.calledTwice).to.be.ok();
-			expect(mapClickListener.notCalled).to.be.ok();
+			expect(listener.notCalled).to.be.ok();
 		});
 	});
 

@@ -194,13 +194,10 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Stops propagation of `'click'`, `'dblclick'`, `'contextmenu'`, `'mousedown'`
-// and `'touchstart'` events to the element's parents' features.
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`,
+// `'mousedown'` and `'touchstart'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	if (!(el instanceof HTMLElement)) {
-		throw new Error('HTMLElement expected');
-	}
-	el['_leaflet_disable_click_propagation'] = true;
+	on(el, 'mousedown touchstart click dblclick contextmenu', stopPropagation);
 	return this;
 }
 
