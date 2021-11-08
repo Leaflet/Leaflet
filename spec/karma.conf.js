@@ -131,6 +131,7 @@ module.exports = function (config) {
 
 		client: {
 			mocha: {
+				// eslint-disable-next-line no-undef
 				forbidOnly: process.env.CI || false
 			}
 		}
