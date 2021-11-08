@@ -230,6 +230,37 @@ describe("Class", function () {
 			b.quux();
 			expect(q.called).to.be.ok();
 		});
+
+		it("keeps parent options", function () { // #6070
+
+			var Quux = L.Class.extend({
+				options: {foo: 'Foo!'}
+			});
+
+			Quux.include({
+				options: {bar: 'Bar!'}
+			});
+
+			var q = new Quux();
+			expect(q.options).to.have.property('foo');
+			expect(q.options).to.have.property('bar');
+		});
+
+		it("does not reuse original props.options", function () {
+			var props = {options: {}};
+			var K = Klass.include(props);
+
+			expect(K.prototype.options).not.to.be(props.options);
+		});
+
+		it("does not replace source props.options object", function () {
+			var K1 = Klass.include({options: {}});
+			var opts = {};
+			var props = {options: opts};
+			K1.extend(props);
+
+			expect(props.options).to.be(opts);
+		});
 	});
 
 	// TODO Class.mergeOptions
