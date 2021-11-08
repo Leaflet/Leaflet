@@ -1396,7 +1396,7 @@ export var Map = Evented.extend({
 	_fireDOMEvent: function (e, type, canvasTargets) {
 
 		if (e.type === 'click') {
-			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
+			// Fire a synthetic 'preclick' event which propagates up.
 			// @event preclick: MouseEvent
 			// Fired before mouse click on the map (sometimes useful when you
 			// want something to happen on click before any existing click

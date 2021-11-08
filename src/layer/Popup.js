@@ -126,7 +126,7 @@ export var Popup = DivOverlay.extend({
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (!(this._source instanceof Path)) {
-				this._source.on('preclick', DomEvent.stopPropagation);
+				this._source.on('click', DomEvent.stopPropagation);
 			}
 		}
 	},
@@ -147,7 +147,7 @@ export var Popup = DivOverlay.extend({
 			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
 			if (!(this._source instanceof Path)) {
-				this._source.off('preclick', DomEvent.stopPropagation);
+				this._source.off('click', DomEvent.stopPropagation);
 			}
 		}
 	},
@@ -156,7 +156,7 @@ export var Popup = DivOverlay.extend({
 		var events = DivOverlay.prototype.getEvents.call(this);
 
 		if (this.options.closeOnClick !== undefined ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
-			events.preclick = this._close;
+			events.click = this._close;
 		}
 
 		if (this.options.keepInView) {
