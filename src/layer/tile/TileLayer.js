@@ -106,10 +106,7 @@ export var TileLayer = GridLayer.extend({
 			options.subdomains = options.subdomains.split('');
 		}
 
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.android) {
-			this.on('tileunload', this._onTileRemove);
-		}
+		this.on('tileunload', this._onTileRemove);
 	},
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this
@@ -236,8 +233,15 @@ export var TileLayer = GridLayer.extend({
 
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
+					var coords = this._tiles[i].coords;
 					DomUtil.remove(tile);
 					delete this._tiles[i];
+					// @event tileabort: TileEvent
+					// Fired when a tile was loading but is now not wanted.
+					this.fire('tileabort', {
+						tile: tile,
+						coords: coords
+					});
 				}
 			}
 		}
@@ -248,11 +252,7 @@ export var TileLayer = GridLayer.extend({
 		if (!tile) { return; }
 
 		// Cancels any pending http requests associated with the tile
-		// unless we're on Android's stock browser,
-		// see https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.androidStock) {
-			tile.el.setAttribute('src', Util.emptyImageUrl);
-		}
+		tile.el.setAttribute('src', Util.emptyImageUrl);
 
 		return GridLayer.prototype._removeTile.call(this, key);
 	},
