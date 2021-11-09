@@ -1237,7 +1237,7 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
   		<a href="https://github.com/rwev/leaflet-radar">leaflet-radar</a>
 		</td>
 		<td>
-			Animated satellite weather radar overlays for Leaflet. 
+			Animated satellite weather radar overlays for Leaflet.
 		</td>
 		<td>
 			<a href="https://github.com/rwev/">rwev</a>
@@ -1923,6 +1923,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/phloose/leaflet-layervisibility">leaflet-layervisibility</a>
+		</td>
+		<td>
+			Extends L.Layer and L.LayerGroup with methods to hide/show layers without removing/re-adding them.
+		</td>
+		<td>
+			<a href="https://github.com/phloose/">Philipp Loose</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/heyman/leaflet-centermarker">Leaflet.CenterMarker</a>
 		</td><td>
 			Marker that is kept fixed to the center of the map when the map is panned by dragging.
@@ -2429,7 +2440,7 @@ Powerful multi-purpose libraries for data visualization.
 		<td>
 			<a href="https://github.com/onaci">onaci</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -3417,7 +3428,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			<a href="https://github.com/rwev/leaflet-view-meta">leaflet-view-meta</a>
 		</td>
 		<td>
-			Plugin control that displays and persists map view meta-data, center and boundary coordinates to URL for precise sharing and view reconstruction. 
+			Plugin control that displays and persists map view meta-data, center and boundary coordinates to URL for precise sharing and view reconstruction.
 		</td>
 		<td>
 			<a href="https://github.com/rwev">rwev</a>
@@ -3639,7 +3650,7 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/rwev">rwev</a>
 		</td>
 	</tr>
-	
+
 </table>
 
 
@@ -4748,7 +4759,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/iamtekson/leaflet-geoserver-request">leaflet-geoserver-request</a>
 		</td><td>
-			Basic geoserver requests in leaflet. Currently supports wms, wfs, legend, wmsImage request on the leaflet. 
+			Basic geoserver requests in leaflet. Currently supports wms, wfs, legend, wmsImage request on the leaflet.
 		<a href="https://iamtekson.github.io/leaflet-geoserver-request/examples/maps.html">Demo</a>
 		</td><td>
 			<a href="https://github.com/iamtekson">Iamtekson</a>
