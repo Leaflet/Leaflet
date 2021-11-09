@@ -774,6 +774,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/allartk">Allart Kooiman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/z632896862/Leaflet.TileCorrection">Leaflet.TileCorrection</a>
+		</td><td>
+			Allow tiles to be loaded in an diffent crs from map's and start at a custom zoom.
+		</td><td>
+			<a href="https://github.com/z632896862">Allart Kooiman</a>
+		</td>
+	</tr>
 </table>
 
 
