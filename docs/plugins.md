@@ -4941,79 +4941,76 @@ The following plugins integrate Leaflet into third party services or websites.
 		<td>
 			<a href="https://community.mybb.com/mods.php?action=view&pid=1238">ABP Usermap MyBB</a>
 		</td><td>
-		A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers
+			A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers
 		</td><td>
 			<a href="https://gitlab.com/AnoBug">CrazyCat</a>
 		</td>
 	</tr>
-  <tr>
+	<tr>
 		<td>
-      Leaflet Extensions for <a href="https://www.joomla.org/">Joomla! (3.x)</a>
-		</td><td>
+			Leaflet Extensions for <a href="https://www.joomla.org/">Joomla! (3.x)</a>
+		</td>
+		<td>
 			<ul>
-        <li>
-          <strong>Agosm: </strong><br />
-          Joomla Module not only for showing Markers on a OpenStreetMap Map.<br />
-          <a href="https://github.com/astridx/pkg_agosms">Gibhub</a><br />
-          <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosm/">Joomla Extension Directory</a><br />
-        </li>
-        <li>
-            <strong>Aggpxtrack: </strong><br />
-            Joomla Custom Field for dispaying a GPX Track on a Map - you can choose an OpenStreetMap or GoogleMaps. With much options. For example: One option is an elevation profil.<br />
-            <a href="https://github.com/astridx/pkg_aggpxtrack">Gibhub</a><br />
-            <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/aggpxtrack/">Joomla Extension Directory</a><br />
-        </li>
-        <li>
-            <strong>Agosmmapwithmarker: </strong><br />
-            Custom field for show a map with a marker in frond end - always the right card for the content. You can enter the address in backend.<br />
-            <a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
-            <a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
-        </li>
-    </ul>
+				<li>
+					<strong>Agosm: </strong><br />
+					Joomla Module not only for showing Markers on a OpenStreetMap Map.<br />
+					<a href="https://github.com/astridx/pkg_agosms">Gibhub</a><br />
+					<a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosm/">Joomla Extension Directory</a><br />
+				</li>
+				<li>
+					<strong>Aggpxtrack: </strong><br />
+					Joomla Custom Field for dispaying a GPX Track on a Map - you can choose an OpenStreetMap or GoogleMaps. With much options. For example: One option is an elevation profil.<br />
+					<a href="https://github.com/astridx/pkg_aggpxtrack">Gibhub</a><br />
+					<a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/aggpxtrack/">Joomla Extension Directory</a><br />
+				</li>
+				<li>
+					<strong>Agosmmapwithmarker: </strong><br />
+					Custom field for show a map with a marker in frond end - always the right card for the content. You can enter the address in backend.<br />
+					<a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
+					<a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
+				</li>
+    		</ul>
 		</td><td>
 			<a href="https://github.com/astridx">Astrid Günther</a>
-    </td>
-  </tr>
-  <tr>
-	<td>
-		<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
-	</td><td>
-		Simple plugin for adding Facebook like button as a control.
-	  </td><td>
-		<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
-	</td>
-  </tr>
-  <tr>
-	<td>
-		<a href="https://github.com/alexboia/WP-Trip-Summary/">WP-Trip-Summary</a>
-	</td><td>
-		A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
-	  </td><td>
-		<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
-	</td>
-  </tr>
-  <tr>
-	<td>
-		<a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
-	</td>
-	<td>
-		WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
-	</td>
-	<td>
-		<a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
-	</td>
+    	</td>
 	</tr>
-  <tr>
-	<td>
-		<a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
-	</td>
-	<td>
-		WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
-	</td>
-    <td>
-		<a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
-	</td>
-  </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
+		</td><td>
+			Simple plugin for adding Facebook like button as a control.
+	  	</td><td>
+			<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
+		</td>
+  	</tr>
+  	<tr>
+		<td>
+			<a href="https://github.com/alexboia/WP-Trip-Summary/">WP-Trip-Summary</a>
+		</td><td>
+			A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.
+		</td><td>
+			<a href="https://wordpress.org/plugins/wp-trip-summary/">Alexandru Boia</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
+		</td><td>
+			WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
+		</td><td>
+			<a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
+		</td><td>
+			WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
+		</td><td>
+			<a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
+		</td>
+	</tr>
 </table>
 
 
