@@ -144,6 +144,15 @@ describe("Map", function () {
 	});
 
 	describe("#setView", function () {
+		var clock;
+
+		beforeEach(function () {
+			clock = sinon.useFakeTimers();
+		});
+
+		afterEach(function () {
+			clock.restore();
+		});
 		it("sets the view of the map", function () {
 			expect(map.setView([51.505, -0.09], 13)).to.be(map);
 			expect(map.getZoom()).to.be(13);
@@ -179,6 +188,48 @@ describe("Map", function () {
 			map.remove(); // clean up
 			expect(map.panBy.callCount).to.eql(1);
 			expect(map.panBy.args[0][1].duration).to.eql(13);
+		});
+
+		it("passes a chain of setView / panBy and gets the same result as single calls", function () {
+			container.style.height = '369px';
+			container.style.width = '1048px';
+			var newCenter = new L.LatLng(40.720412475732395, -74.00502204895021);
+			map.setView([40.722036, -73.998599], 15, {animate: false});
+
+			// run as chain with animation
+			map.setView([40.722036, -73.998599], map.zoom, {
+				animate: true,
+				duration: 0.5
+			}).panBy([-150, 0], {animate: true, duration: 0.5}).panBy([0, 50], {animate: true, duration: 0.5});
+			// wait 2sec
+			clock.tick(2000);
+
+			expect(map.getCenter()).to.eql(newCenter);
+
+			// run movement step by step
+			map.setView([40.722036, -73.998599], map.zoom, {
+				animate: true,
+				duration: 0.5
+			});
+			expect(map.getCenter()).to.not.eql(newCenter);
+			// wait 0.7sec
+			clock.tick(700);
+			map.panBy([-150, 0], {animate: true, duration: 0.5});
+			// wait 0.7sec
+			clock.tick(700);
+			map.panBy([0, 50], {animate: true, duration: 0.5});
+			// wait 0.7sec
+			clock.tick(700);
+			expect(map.getCenter()).to.eql(newCenter);
+
+			// run movement without animation
+			map.setView([40.722036, -73.998599], map.zoom, {
+				animate: false,
+			});
+			expect(map.getCenter()).to.not.eql(newCenter);
+			map.panBy([-150, 0], {animate: false});
+			map.panBy([0, 50], {animate: false});
+			expect(map.getCenter()).to.eql(newCenter);
 		});
 	});
 
