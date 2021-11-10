@@ -4993,26 +4993,26 @@ The following plugins integrate Leaflet into third party services or websites.
 	</td>
   </tr>
   <tr>
-    <td>
-		  <a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
-	  </td>
-    <td>
-		  WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
-	  </td>
-    <td>
-		  <a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
-    </td>
-  </tr>
+	<td>
+		<a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
+	</td>
+	<td>
+		WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
+	</td>
+	<td>
+		<a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
+	</td>
+	</tr>
   <tr>
-	  <td>
-		  <a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
-	  </td>
+	<td>
+		<a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
+	</td>
+	<td>
+		WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
+	</td>
     <td>
-		  WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
-	  </td>
-    <td>
-		  <a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
-	  </td>
+		<a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
+	</td>
   </tr>
 </table>
 
