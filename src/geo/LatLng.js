@@ -28,23 +28,33 @@ import {toLatLngBounds} from './LatLngBounds';
  */
 
 export function LatLng(lat, lng, alt) {
-	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
-	}
-
 	// @property lat: Number
 	// Latitude in degrees
-	this.lat = +lat;
+	this.lat = checkNumber(lat);
 
 	// @property lng: Number
 	// Longitude in degrees
-	this.lng = +lng;
+	this.lng = checkNumber(lng);
 
 	// @property alt: Number
 	// Altitude in meters (optional)
-	if (alt !== undefined) {
-		this.alt = +alt;
+	if (arguments.length === 3) {
+		this.alt = typeof alt !== 'undefined' ? checkNumber(alt) : alt;
 	}
+}
+
+function isNumeric(str) { // https://stackoverflow.com/a/175787/2520247
+	return !isNaN(str) && !isNaN(parseFloat(str));
+}
+
+function checkNumber(a) {
+	if (typeof a === 'string' && isNumeric(a)) {
+		a = +a;
+	}
+	if ((typeof a === 'number' || a instanceof Number) && isFinite(a)) {
+		return a;
+	}
+	throw new Error('Number expected');
 }
 
 LatLng.prototype = {
@@ -122,16 +132,16 @@ export function toLatLng(a, b, c) {
 		if (a.length === 2) {
 			return new LatLng(a[0], a[1]);
 		}
-		return null;
-	}
-	if (a === undefined || a === null) {
-		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
-		return new LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
+		var lng = 'lng' in a ? a.lng : a.lon;
+		if ('alt' in a) {
+			return new LatLng(a.lat, lng, a.alt);
+		}
+		return new LatLng(a.lat, lng);
 	}
-	if (b === undefined) {
-		return null;
+	if (arguments.length === 3) {
+		return new LatLng(a, b, c);
 	}
-	return new LatLng(a, b, c);
+	return new LatLng(a, b);
 }
