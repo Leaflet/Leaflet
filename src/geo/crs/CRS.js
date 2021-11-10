@@ -109,10 +109,12 @@ export var CRS = {
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
 		var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
-		    alt = latlng.alt;
+		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat;
 
-		return new LatLng(lat, lng, alt);
+		if ('alt' in latlng) {
+			return new LatLng(lat, lng, latlng.alt);
+		}
+		return new LatLng(lat, lng);
 	},
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds

@@ -232,7 +232,11 @@ function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 // Creates a `LatLng` object from an array of 2 numbers (longitude, latitude)
 // or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.
 export function coordsToLatLng(coords) {
-	return new LatLng(coords[1], coords[0], coords[2]);
+	if (coords.length === 3) {
+		return new LatLng(coords[1], coords[0], coords[2]);
+	} else {
+		return new LatLng(coords[1], coords[0]);
+	}
 }
 
 // @function coordsToLatLngs(coords: Array, levelsDeep?: Number, coordsToLatLng?: Function): Array

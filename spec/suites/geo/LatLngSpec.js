@@ -10,13 +10,25 @@ describe('LatLng', function () {
 			expect(b.lng).to.eql(-74);
 		});
 
-		it('throws an error if invalid lat or lng', function () {
-			expect(function () {
-				L.latLng(NaN, NaN);
-			}).to.throwError();
+		it('throws an error if invalid lat, lng, alt', function () {
+			expect(L.latLng).withArgs(0, 0, undefined).to.throwError();
+			expect(L.latLng).withArgs(0).to.throwError();
+			expect(L.latLng).withArgs(NaN, 0).to.throwError();
+			expect(L.latLng).withArgs(Infinity, 0).to.throwError();
+			expect(L.latLng).withArgs(-Infinity, 0).to.throwError();
+			expect(L.latLng).withArgs(true, 0).to.throwError();
+			expect(L.latLng).withArgs(false, 0).to.throwError();
+			expect(L.latLng).withArgs(undefined, 0).to.throwError();
+			expect(L.latLng).withArgs(null, 0).to.throwError();
+			expect(L.latLng).withArgs('', 0).to.throwError();
+			expect(L.latLng).withArgs('\n', 0).to.throwError();
+			expect(L.latLng).withArgs('1px', 0).to.throwError();
+			expect(L.latLng).withArgs([]).to.throwError();
+			expect(L.latLng).withArgs([50]).to.throwError();
+			// expect(L.latLng).withArgs('1e5', 0).to.throwError();
 		});
 
-		it('does not set altitude if undefined', function () {
+		it('does not set altitude if not specified', function () {
 			var a = new L.LatLng(25, 74);
 			expect(typeof a.alt).to.eql('undefined');
 		});
@@ -80,15 +92,8 @@ describe('LatLng', function () {
 		});
 
 		it('accepts an array of coordinates', function () {
-			expect(L.latLng([])).to.eql(null);
-			expect(L.latLng([50])).to.eql(null);
 			expect(L.latLng([50, 30])).to.eql(new L.LatLng(50, 30));
 			expect(L.latLng([50, 30, 100])).to.eql(new L.LatLng(50, 30, 100));
-		});
-
-		it('passes null or undefined as is', function () {
-			expect(L.latLng(undefined)).to.eql(undefined);
-			expect(L.latLng(null)).to.eql(null);
 		});
 
 		it('creates a LatLng object from two coordinates', function () {
@@ -101,10 +106,6 @@ describe('LatLng', function () {
 
 		it('accepts an object with lat/lon', function () {
 			expect(L.latLng({lat: 50, lon: 30})).to.eql(new L.LatLng(50, 30));
-		});
-
-		it('returns null if lng not specified', function () {
-			expect(L.latLng(50)).to.be(null);
 		});
 
 		it('accepts altitude as third parameter', function () {
