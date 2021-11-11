@@ -4523,6 +4523,18 @@ The following plugins use external services to calculate driving or walking rout
     			<a href="https://github.com/BKGiser">Jack Good</a>
     		</td>
     	</tr>
+
+	<tr>
+		<td>
+			<a href="https://github.com/astridx/LeafletControlRouteToAddress">Leaflet RouteToAddress</a>
+		</td><td>
+			Control for route search from a custom address to a fixed address. 
+The Plugin integrates a simple geocoder that uses OpenstreetMap <a href="https://nominatim.openstreetmap.org/">Nominatim</a> to locate places by address. Ideal for the description of the directions "Find your way to us" on a website. Uses <a href="http://project-osrm.org/">OSRM</a> by default, but also supports
+<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a>. <a href="https://astrid-guenther.de/dies-und-das/38-leaflet-control-plugin-leafletcontrolroutetoaddress/">Demo</a>
+		</td><td>
+			<a href="https://github.com/astridx/">Astrid Günther</a>
+		</td>
+	</tr>
     <tr>
     	<td>
     		<a href="https://github.com/skedgo/tripkit-leaflet">Leaflet TripGo routing</a>
