@@ -262,9 +262,13 @@ export var Map = Evented.extend({
 		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
 		if (zoom === Infinity) {
+			var maxZoom = this.getMaxZoom();
+			if (!isFinite(maxZoom)) {
+				maxZoom = this.getZoom();
+			}
 			return {
 				center: bounds.getCenter(),
-				zoom: zoom
+				zoom: isNaN(maxZoom) ? zoom : maxZoom
 			};
 		}
 
