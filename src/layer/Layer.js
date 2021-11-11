@@ -113,10 +113,6 @@ export var Layer = Evented.extend({
 
 		this.onAdd(map);
 
-		if (this.getAttribution && map.attributionControl) {
-			map.attributionControl.addAttribution(this.getAttribution());
-		}
-
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
 	}
@@ -187,10 +183,6 @@ Map.include({
 
 		if (this._loaded) {
 			layer.onRemove(this);
-		}
-
-		if (layer.getAttribution && this.attributionControl) {
-			this.attributionControl.removeAttribution(layer.getAttribution());
 		}
 
 		delete this._layers[id];
