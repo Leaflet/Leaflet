@@ -259,16 +259,13 @@ export var Map = Evented.extend({
 
 		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
-		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
+		zoom = Math.min(this.getMaxZoom(), zoom);
 
 		if (zoom === Infinity) {
-			var maxZoom = this.getMaxZoom();
-			if (!isFinite(maxZoom)) {
-				maxZoom = this.getZoom();
-			}
+			var current = this.getZoom();
 			return {
 				center: bounds.getCenter(),
-				zoom: isNaN(maxZoom) ? zoom : maxZoom
+				zoom: typeof current === 'number' ? current : zoom
 			};
 		}
 
