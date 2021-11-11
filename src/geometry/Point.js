@@ -26,9 +26,26 @@ import {isArray, formatNum} from '../core/Util';
 
 export function Point(x, y, round) {
 	// @property x: Number; The `x` coordinate of the point
+	x = checkNumber(x);
 	this.x = (round ? Math.round(x) : x);
+
 	// @property y: Number; The `y` coordinate of the point
+	y = checkNumber(y);
 	this.y = (round ? Math.round(y) : y);
+}
+
+function isNumeric(str) { // https://stackoverflow.com/a/175787/2520247
+	return !isNaN(str) && !isNaN(parseFloat(str));
+}
+
+function checkNumber(a) {
+	if (typeof a === 'string' && isNumeric(a)) {
+		a = +a;
+	}
+	if ((typeof a === 'number' || a instanceof Number) && isFinite(a)) {
+		return a;
+	}
+	throw new Error('Number expected');
 }
 
 var trunc = Math.trunc || function (v) {
@@ -211,9 +228,6 @@ export function toPoint(x, y, round) {
 	}
 	if (isArray(x)) {
 		return new Point(x[0], x[1]);
-	}
-	if (x === undefined || x === null) {
-		return x;
 	}
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
 		return new Point(x.x, x.y);
