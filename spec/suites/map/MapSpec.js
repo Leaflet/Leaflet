@@ -886,14 +886,6 @@ describe("Map", function () {
 			expect(centerAndZoom.center).to.eql(center);
 			expect(centerAndZoom.zoom).to.eql(Infinity);
 		});
-		it("Returns valid center on empty bounds in initialized map", function () {
-			// Edge case from #6709
-			map.setView([0, 0], 0);
-			expect(isFinite(map.getMaxZoom())).not.to.be.ok(); // control condition
-
-			map.fitBounds([[0, 0], [0, 0]]);
-			expect(isFinite(map.getZoom())).to.be.ok();
-		});
 	});
 
 	describe("#fitBounds", function () {
@@ -993,6 +985,15 @@ describe("Map", function () {
 			bounds = L.latLngBounds([90, -180], [-90, 180]);
 			boundsCenter = bounds.getCenter();
 			map.setZoom(22);
+		});
+
+		it("Do not set Infinite zoom on empty bounds in initialized map", function () {
+			// Edge case from #6709
+			map.setView([0, 0], 0);
+			expect(isFinite(map.getMaxZoom())).not.to.be.ok(); // control condition
+
+			map.fitBounds([[0, 0], [0, 0]]);
+			expect(isFinite(map.getZoom())).to.be.ok();
 		});
 	});
 
