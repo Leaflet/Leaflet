@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script src="../leaflet-include.js"></script>
+    <script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
@@ -72,7 +72,7 @@
         }
 
         while (markerArr.length < 2000) {
-            shuffleMarkers();    
+            shuffleMarkers();
         }
 
         setInterval(shuffleMarkers, 20);
