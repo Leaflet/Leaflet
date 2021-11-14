@@ -304,10 +304,17 @@ describe('Tooltip', function () {
 		layer.closeTooltip();
 	});
 
-	it("closes already open permanent-tooltip on bindTooltip", function () {
+	it("closes existent tooltip on new bindTooltip call", function () {
 		var layer = new L.Marker(center).addTo(map);
-		layer.bindTooltip('Tooltip Test text', {permanent: true});
-		layer.bindTooltip('Other text', {permanent: false}).openTooltip();
-		expect(Object.keys(map._layers).length).to.be(2);
+		var eventSpy = sinon.spy();
+		layer.unbindTooltip = function(){
+			eventSpy();
+			L.Marker.prototype.unbindTooltip.call(layer);
+		};
+		layer.bindTooltip('Tooltip1', {permanent: true});
+		var tooltip1 = layer.getTooltip();
+		layer.bindTooltip('Tooltip2').openTooltip();
+		expect(map.hasLayer(tooltip1)).to.not.be.ok();
+		expect(eventSpy.calledOnce).to.be.ok();
 	});
 });
