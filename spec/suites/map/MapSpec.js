@@ -1318,4 +1318,22 @@ describe("Map", function () {
 			expect(map.getZoom()).to.be(undefined);
 		});
 	});
+
+	describe("RTL", function () {
+		beforeEach(function () {
+			if (container._leaflet_id) {
+				map.remove();
+			}
+			document.body.removeChild(container);
+
+			container = document.createElement("div");
+			container.style.direction = 'rtl';
+			document.body.appendChild(container);
+			map = L.map(container);
+		});
+
+		it("adds CSS class leaflet-rtl to the map container", function () {
+			expect(L.DomUtil.hasClass(map.getContainer(), 'leaflet-rtl')).to.be(true);
+		});
+	});
 });

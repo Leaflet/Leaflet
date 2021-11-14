@@ -106,6 +106,9 @@
 .leaflet-map-pane canvas { z-index: 100; }
 .leaflet-map-pane svg    { z-index: 200; }
 
+
+.leaflet-rtl .leaflet-tooltip-pane   {direction: ltr;}
+
 .leaflet-vml-shape {
 	width: 1px;
 	height: 1px;
@@ -268,6 +271,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	}
+
+.leaflet-rtl{
+	direction: rtl;
 	}
 
 
@@ -638,4 +645,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	left: 0;
 	margin-left: -12px;
 	border-right-color: #fff;
+	}
+
+.leaflet-rtl .leaflet-tooltip-pane > * {
+	direction: rtl;
 	}
