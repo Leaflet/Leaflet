@@ -79,8 +79,6 @@ export var Draggable = Evented.extend({
 		// under some circumstances, see #3666.
 		if (e._simulated || !this._enabled) { return; }
 
-		this._moved = false;
-
 		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
 		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
@@ -216,6 +214,9 @@ export var Draggable = Evented.extend({
 		}
 
 		this._moving = false;
+		setTimeout(L.Util.bind(function () { // defer resetting in order to be able to reject next click
+			this._moved = false;
+		}, this), 0);
 		Draggable._dragging = false;
 	}
 
