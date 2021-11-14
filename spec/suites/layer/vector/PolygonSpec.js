@@ -351,8 +351,8 @@ describe('Polygon', function () {
 			expect(pane).to.not.be(drawPane);
 		});
 	});
-	
-  describe("#setStyle", function () {
+
+	describe("#setStyle", function () {
 		it("succeeds for empty Polygon already added to the map", function () {
 			var style = {
 				weight: 3
