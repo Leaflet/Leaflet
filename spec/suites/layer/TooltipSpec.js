@@ -303,4 +303,33 @@ describe('Tooltip', function () {
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
 	});
+
+	it("opens a tooltip and follow the mouse (sticky)", function () {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		happen.at('click', 120, 120);
+		var latlng = map.containerPointToLatLng([120, 120]);
+		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+	});
+
+	it("opens a permanent tooltip and follow the mouse (sticky)", function (done) {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		var hand = new Hand({
+			timing: 'frame',
+			onStop: function () {
+				var latlng = map.containerPointToLatLng([120, 120]);
+				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+				done();
+			}
+		});
+		var toucher = hand.growFinger('mouse');
+		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+	});
 });
