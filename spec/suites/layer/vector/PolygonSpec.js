@@ -334,8 +334,8 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon([[0, 0], [1, 1]]).addTo(map);
 
-			const overlayPane = map.getPane('overlayPane');
-			const drawPane = map.getPane('draw');
+			var overlayPane = map.getPane('overlayPane');
+			var drawPane = map.getPane('draw');
 
 			var pane = polygon._renderer._container.parentNode;
 			expect(pane).to.be(overlayPane);

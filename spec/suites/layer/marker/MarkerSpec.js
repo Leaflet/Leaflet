@@ -337,8 +337,8 @@ describe("Marker", function () {
 
 			var marker = new L.Marker([0, 0]).addTo(map);
 
-			const markerPane = map.getPane('markerPane');
-			const drawPane = map.getPane('draw');
+			var markerPane = map.getPane('markerPane');
+			var drawPane = map.getPane('draw');
 
 			var pane = marker._icon.parentNode;
 			expect(pane).to.be(markerPane);
