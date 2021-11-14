@@ -322,7 +322,7 @@ describe('Tooltip', function () {
 		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
 
 		var hand = new Hand({
-			timing: 'frame',
+			timing: 'fastframe',
 			onStop: function () {
 				var latlng = map.containerPointToLatLng([120, 120]);
 				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
