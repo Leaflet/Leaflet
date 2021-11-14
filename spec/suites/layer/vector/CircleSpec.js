@@ -50,16 +50,15 @@ describe('Circle', function () {
 			var beforeRadius = circle._mRadius;
 			var afterRadius = 30;
 
-			var eventArgs = null;
-			circle.on('move', function (e) {
-				eventArgs = e;
-			});
+			var moveEvent = sinon.spy();
+			circle.on('move', moveEvent);
 
 			circle.setRadius(afterRadius);
 
-			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldRadius).to.be(beforeRadius);
-			expect(eventArgs.radius).to.be(afterRadius);
+			expect(moveEvent.callCount).to.not.be(0);
+			expect(moveEvent.args[0][0].oldRadius).to.be(beforeRadius);
+			expect(moveEvent.args[0][0].radius).to.be(afterRadius);
+			expect(moveEvent.args[0][0].latlng).to.be(circle.getLatLng());
 			expect(circle.getRadius()).to.be(afterRadius);
 		});
 	});

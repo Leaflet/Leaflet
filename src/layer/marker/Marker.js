@@ -149,7 +149,8 @@ export var Marker = Layer.extend({
 		this.update();
 
 		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+		// Fired when the Marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging).
+		// Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 

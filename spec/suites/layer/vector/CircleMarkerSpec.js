@@ -89,16 +89,15 @@
 			var beforeRadius = marker._radius;
 			var afterRadius = 30;
 
-			var eventArgs = null;
-			marker.on('move', function (e) {
-				eventArgs = e;
-			});
+			var moveEvent = sinon.spy();
+			marker.on('move', moveEvent);
 
 			marker.setRadius(afterRadius);
 
-			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldRadius).to.be(beforeRadius);
-			expect(eventArgs.radius).to.be(afterRadius);
+			expect(moveEvent.callCount).to.not.be(0);
+			expect(moveEvent.args[0][0].oldRadius).to.be(beforeRadius);
+			expect(moveEvent.args[0][0].radius).to.be(afterRadius);
+			expect(moveEvent.args[0][0].latlng).to.be(marker.getLatLng());
 			expect(marker.getRadius()).to.be(afterRadius);
 		});
 	});

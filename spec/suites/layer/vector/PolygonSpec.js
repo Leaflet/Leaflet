@@ -149,14 +149,12 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(originalLatLngs);
 
-			var moveevent = null;
-			polygon.on('move', function (e) {
-				moveevent = e;
-			});
+			var moveEvent = sinon.spy();
+			polygon.on('move', moveEvent);
 			polygon.setLatLngs(newLatLngs);
 
-			expect(moveevent.oldLatLngs).to.eql(originalLatLngs);
-			expect(moveevent.latlngs).to.eql(newLatLngs);
+			expect(moveEvent.args[0][0].oldLatLngs).to.eql(originalLatLngs);
+			expect(moveEvent.args[0][0].latlngs).to.eql(newLatLngs);
 		});
 	});
 
@@ -351,18 +349,18 @@ describe('Polygon', function () {
 			var latlng = L.latLng([5, 6]);
 
 			var polygon = new L.Polygon(originalLatLngs);
-			var moveevent = null;
-			polygon.on('move', function (e) {
-				moveevent = e;
-			});
+			var moveEvent = sinon.spy();
+			polygon.on('move', moveEvent);
 			polygon.addLatLng(latlng);
 
 			var originalLatLngsCopy = [[
 				L.latLng([1, 2]),
 				L.latLng([3, 4])
 			]];
-			expect(moveevent.oldLatLngs).to.eql(originalLatLngsCopy);
-			expect(moveevent.latlngs[0][2]).to.eql(latlng);
+			expect(moveEvent.args[0][0].oldLatLngs).to.eql(originalLatLngsCopy);
+			expect(moveEvent.args[0][0].latlngs[0][2]).to.eql(latlng);
+			expect(moveEvent.args[0][0].latlng).to.eql(latlng);
+			expect(moveEvent.args[0][0].ring).to.eql(polygon.getLatLngs()[0]);
 		});
 	});
 });

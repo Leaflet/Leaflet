@@ -146,7 +146,8 @@ export var ImageOverlay = Layer.extend({
 		}
 
 		// @event move: Event
-		// Fired when the imageoverlay is moved via [`setBounds`](#imageoverlay-setbounds). Old and new bounds are included in event arguments as `oldBounds`, `bounds`.
+		// Fired when the ImageOverlay is moved via [`setBounds`](#imageoverlay-setbounds).
+		// Old and new bounds are included in event arguments as `oldBounds`, `bounds`.
 		return this.fire('move', {oldBounds: oldBounds, bounds: this._bounds});
 	},
 

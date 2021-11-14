@@ -44,15 +44,13 @@ describe('ImageOverlay', function () {
 
 			var overlay = L.imageOverlay().setBounds(beforeBounds);
 
-			var eventArgs = null;
-			overlay.on('move', function (e) {
-				eventArgs = e;
-			});
+			var moveEvent = sinon.spy();
+			overlay.on('move', moveEvent);
 			overlay.setBounds(afterBounds);
 
-			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldBounds).to.be(beforeBounds);
-			expect(eventArgs.bounds).to.be(afterBounds);
+			expect(moveEvent.callCount).to.not.be(0);
+			expect(moveEvent.args[0][0].oldBounds).to.be(beforeBounds);
+			expect(moveEvent.args[0][0].bounds).to.be(afterBounds);
 			expect(overlay.getBounds()).to.be(afterBounds);
 		});
 	});

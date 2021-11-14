@@ -48,8 +48,9 @@ export var Circle = CircleMarker.extend({
 		this.redraw();
 
 		// @event move: Event
-		// Fired when the circle radius is changed via [`setRadius`](#circle-setradius). Old and new radius are included in event arguments as `oldRadius`, `radius`.
-		return this.fire('move', {oldRadius: oldRadius, radius: this._mRadius});
+		// Fired when the Circle radius is changed via [`setRadius`](#circle-setradius).
+		// Old and new radius and the latlng are included in event arguments as `oldRadius`, `radius`, `latlng`.
+		return this.fire('move', {oldRadius: oldRadius, radius: this._mRadius, latlng: this.getLatLng()});
 	},
 
 	// @method getRadius(): Number

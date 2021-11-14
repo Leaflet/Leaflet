@@ -356,16 +356,14 @@ describe('Popup', function () {
 		var beforeLatLng = popup._latlng;
 		var afterLatLng = new L.LatLng(1, 2);
 
-		var eventArgs = null;
-		popup.on('move', function (e) {
-			eventArgs = e;
-		});
+		var moveEvent = sinon.spy();
+		popup.on('move', moveEvent);
 
 		popup.setLatLng(afterLatLng);
 
-		expect(eventArgs).to.not.be(null);
-		expect(eventArgs.oldLatLng).to.be(beforeLatLng);
-		expect(eventArgs.latlng).to.be(afterLatLng);
+		expect(moveEvent.callCount).to.not.be(0);
+		expect(moveEvent.args[0][0].oldLatLng).to.be(beforeLatLng);
+		expect(moveEvent.args[0][0].latlng).to.be(afterLatLng);
 		expect(popup.getLatLng()).to.be(afterLatLng);
 	});
 });

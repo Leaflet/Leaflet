@@ -79,7 +79,8 @@ export var Polyline = Path.extend({
 		this.redraw();
 
 		// @event move: Event
-		// Fired when the polyline is moved via [`setLatLng`](#polyline-setlatlngs). Old and new coordinates are included in event arguments as `oldLatLngs`, `latlngs`.
+		// Fired when the Polyline is moved via [`setLatLng`](#polyline-setlatlngs).
+		// Old and new coordinates are included in event arguments as `oldLatLngs`, `latlngs`.
 		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs});
 	},
 
@@ -178,8 +179,9 @@ export var Polyline = Path.extend({
 		this.redraw();
 
 		// @event move: Event
-		// Fired when the polyline is moved via [`addLatLng`](#polyline-addlatlng). Old and new coordinates are included in event arguments as `oldLatLngs`, `latlngs`.
-		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs});
+		// Fired when the polyline is moved via [`addLatLng`](#polyline-addlatlng).
+		// Old and new coordinates, the added latlng and the edited ring are included in event arguments as `oldLatLngs`, `latlngs`, `latlng`, `ring`.
+		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs, latlng: latlng, ring: latlngs});
 	},
 
 	_setLatLngs: function (latlngs) {
