@@ -159,8 +159,7 @@ export var GridLayer = Layer.extend({
 		this._levels = {};
 		this._tiles = {};
 
-		this._resetView();
-		this._update();
+		this._resetView(); // implicit _update() call
 	},
 
 	beforeAdd: function (map) {
@@ -796,12 +795,6 @@ export var GridLayer = Layer.extend({
 		// update opacity on tiles in IE7-8 because of filter inheritance problems
 		if (Browser.ielt9 && this.options.opacity < 1) {
 			DomUtil.setOpacity(tile, this.options.opacity);
-		}
-
-		// without this hack, tiles disappear after zoom on Chrome for Android
-		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (Browser.android && !Browser.android23) {
-			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
 

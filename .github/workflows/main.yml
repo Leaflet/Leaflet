@@ -1,0 +1,120 @@
+name: CI
+on: [push, pull_request]
+env:
+  NODE_VERSION: 16
+jobs:
+  setup:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2019]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+          cache: npm
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Cache setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+  run:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command: [lint]
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run ${{ matrix.command }} task
+        run: npm run ${{ matrix.command }}
+
+  test:
+    needs: setup
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - browser: Chrome1280x1024
+          - browser: FirefoxTouch
+          - browser: FirefoxNoTouch
+          - browser: IE
+            os: windows-2019
+          - browser: IE10
+            os: windows-2019
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run tests on ${{ matrix.browser }}
+        run: npm test -- --browsers ${{ matrix.browser }}
+
+  deploy:
+    needs: setup
+    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+      - name: Compress artifacts
+        working-directory: dist
+        run: zip -r leaflet.zip .
+
+      - name: Determine directory for artifacts
+        id: artifacts-directory
+        run: VERSION=$(git tag --points-at HEAD) echo "::set-output name=path::content/leaflet/${VERSION:-master}"
+
+      - name: Deploy artifacts
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: dist
+          DEST_DIR: ${{ steps.artifacts-directory.outputs.path }}

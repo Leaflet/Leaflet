@@ -1,5 +1,9 @@
 describe('Polyline', function () {
-	var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	var map;
+
+	before(function () {
+		map  = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
 
 	after(function () {
 		map.remove();
@@ -210,6 +214,22 @@ describe('Polyline', function () {
 			polyline.addLatLng([1, 2]);
 
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
+		});
+	});
+
+	describe("#setStyle", function () {
+		it("succeeds for empty Polyline already added to the map", function () {
+			var style = {
+				weight: 3
+			};
+			var polyline = L.polyline([]);
+
+			polyline.addTo(map);
+			polyline.setStyle(style);
+
+			for (var prop in style) {
+				expect(polyline.options[prop]).to.be(style[prop]);
+			}
 		});
 	});
 });
