@@ -16,7 +16,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
 3. [Content Accessibility](#content-accessibility)
-	- [Accessibility Testing Tools](#accessibility-testing-tools)
+	- [Accessibility Testing](#accessibility-testing)
 4. [Publishing on NPM](#publishing-on-npm)
 5. [Module Loaders](#module-loaders)
 6. [Adding to the plugins list](#adding-to-the-plugins-list)
@@ -143,13 +143,13 @@ alternative or are hidden from screen readers if they're purely decorative.
 
 Learn more about web accessibility:
 
-- [WAI — Web Accessibility Initiative](https://www.w3.org/WAI/)
-- [ARIA in HTML — Accessible Rich Internet Applications](https://www.w3.org/TR/html-aria/)
+- [WAI (Web Accessibility Initiative): Accessibility Fundamentals Overview](https://www.w3.org/WAI/fundamentals/)
+- [ARIA in HTML (Accessible Rich Internet Applications)](https://www.w3.org/TR/html-aria/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
 - [Using ARIA](https://www.w3.org/TR/using-aria/)
-- [WCAG — Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG/)
+- [WCAG (Web Content Accessibility Guidelines)](https://www.w3.org/TR/WCAG/)
 
-### Accessibility Testing Tools
+### Accessibility Testing
 
 Tools for automated testing can help you discover common accessibility issues:
 
@@ -158,6 +158,10 @@ Tools for automated testing can help you discover common accessibility issues:
 - [WAVE](https://wave.webaim.org/)
 - [Accessibility Insights](https://accessibilityinsights.io/)
 - [webhint](https://webhint.io/)
+
+It is highly recommended that you test your components manually
+using only your keyboard,
+as well as using a screen reader such as Narrator, NVDA, VoiceOver, or JAWS.
 
 ## Publishing on NPM
 
