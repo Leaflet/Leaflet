@@ -29,13 +29,25 @@ export var DivOverlay = Layer.extend({
 
 		// @option pane: String = 'popupPane'
 		// `Map pane` where the popup will be added.
-		pane: 'popupPane'
+		pane: 'popupPane',
+
+		// @option content: String|HTMLElement|Function = ''
+		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+		content: ''
 	},
 
 	initialize: function (options, source) {
-		Util.setOptions(this, options);
-
-		this._source = source;
+		if (options && (options instanceof L.LatLng || Util.isArray(options))) {
+			this._latlng = toLatLng(options);
+			Util.setOptions(this, source);
+		} else {
+			Util.setOptions(this, options);
+			this._source = source;
+		}
+		if (this.options.content) {
+			this._content = this.options.content;
+		}
 	},
 
 	onAdd: function (map) {
