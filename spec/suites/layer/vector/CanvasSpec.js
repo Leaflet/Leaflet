@@ -137,6 +137,25 @@ describe('Canvas', function () {
 				.down().moveBy(20, 10, 200).up();
 		});
 
+		it("does fire mousedown on layer after dragging map", function (done) { // #7775
+			var spy = sinon.spy();
+			var circle = L.circle(p2ll(300, 300)).addTo(map);
+			circle.on('mousedown', spy);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					expect(spy.callCount).to.eql(2);
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			mouse.wait(100)
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()
+				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up();
+		});
 	});
 
 	describe("#events(interactive=false)", function () {
