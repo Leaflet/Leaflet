@@ -4277,6 +4277,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/adammertel">Adam Mertel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/williamlow/Leaflet.Signposts">Leaflet.Signposts
+			</a>
+		</td>
+		<td>
+			Guides users to points outside the current map view with directional arrows and a count of points in each given direction. See <a href="https://williamlow.github.io/leaflet-signpost/demo.html">demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/williamlow">William Low</a>
+		</td>
+	</tr>	
 </table>
 
 
