@@ -67,7 +67,7 @@ export var Scale = Control.extend({
 			this._iScale = DomUtil.create('div', className, container);
 		}
 		if (options.nautical) {
-			this._iScale = DomUtil.create('div', className, container);
+			this._nScale = DomUtil.create('div', className, container);
 		}
 	},
 
@@ -123,11 +123,11 @@ export var Scale = Control.extend({
 		if (maxYards > 2025) {
 			maxMiles = maxYards / 2025.37;
 			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, miles + ' nmi', miles / maxMiles);
+			this._updateScale(this._nScale, miles + ' nmi', miles / maxMiles);
 
 		} else {
 			yards = this._getRoundNum(maxYards);
-			this._updateScale(this._iScale, yards + ' yd', yards / maxYards);
+			this._updateScale(this._nScale, yards + ' yd', yards / maxYards);
 		}
 	},
 
