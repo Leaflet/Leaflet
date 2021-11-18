@@ -7,7 +7,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Scale
  * @inherits Control
  *
- * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
+ * A simple scale control that shows the scale of the current center of screen in metric (m/km), imperial (mi/ft) and nautical (nmi/yd) systems. Extends `Control`.
  *
  * @example
  *
@@ -32,7 +32,11 @@ export var Scale = Control.extend({
 
 		// @option imperial: Boolean = True
 		// Whether to show the imperial scale line (mi/ft).
-		imperial: true
+		imperial: true,
+
+		// @option nautical: Boolean = False
+		// Whether to show the nautical scale line (nmi/yd).
+		nautical: false
 
 		// @option updateWhenIdle: Boolean = false
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
@@ -62,6 +66,9 @@ export var Scale = Control.extend({
 		if (options.imperial) {
 			this._iScale = DomUtil.create('div', className, container);
 		}
+		if (options.nautical) {
+			this._iScale = DomUtil.create('div', className, container);
+		}
 	},
 
 	_update: function () {
@@ -81,6 +88,9 @@ export var Scale = Control.extend({
 		}
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
+		}
+		if (this.options.nautical && maxMeters) {
+			this._updateNautical(maxMeters);
 		}
 	},
 
@@ -103,6 +113,21 @@ export var Scale = Control.extend({
 		} else {
 			feet = this._getRoundNum(maxFeet);
 			this._updateScale(this._iScale, feet + ' ft', feet / maxFeet);
+		}
+	},
+
+	_updateNautical: function (maxMeters) {
+		var maxYards = maxMeters * 1.0936133,
+		    maxMiles, miles, yards;
+
+		if (maxYards > 2025) {
+			maxMiles = maxYards / 2025.37;
+			miles = this._getRoundNum(maxMiles);
+			this._updateScale(this._iScale, miles + ' nmi', miles / maxMiles);
+
+		} else {
+			yards = this._getRoundNum(maxYards);
+			this._updateScale(this._iScale, yards + ' yd', yards / maxYards);
 		}
 	},
 
