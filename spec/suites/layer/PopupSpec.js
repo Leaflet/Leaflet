@@ -413,7 +413,7 @@ describe("L.Map#openPopup", function () {
 			.down().moveBy(10, 10, 20).up();
 	});
 
-	it('moves the map over a long distance if the popup is not in the view (keepInView)', function (done) {
+	it('moves the map over a long distance to the popup if it is not in the view (keepInView)', function (done) {
 		c.style.position = 'absolute';
 		c.style.left = 0;
 		c.style.top = 0;
@@ -424,10 +424,10 @@ describe("L.Map#openPopup", function () {
 
 		var spy = sinon.spy();
 		map.on('autopanstart', spy);
-		var p = new L.Popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1]+50]);
+		var p = new L.Popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
 		map.openPopup(p);
 
-		setTimeout(function(){
+		setTimeout(function () {
 			expect(spy.called).to.be(true);
 			expect(map.getBounds().contains(p.getLatLng())).to.be(true);
 			done();
