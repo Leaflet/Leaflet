@@ -48,8 +48,7 @@
 .leaflet-container .leaflet-overlay-pane svg{
 	max-width: none !important;
 	max-height: none !important;
-
-}
+  }
 .leaflet-container .leaflet-marker-pane img,
 .leaflet-container .leaflet-shadow-pane img,
 .leaflet-container .leaflet-tile-pane img,
@@ -59,7 +58,7 @@
 	max-height: none !important;
 	width: auto;
 	padding: 0;
-}
+  }
 
 .leaflet-container.leaflet-touch-zoom {
 	-ms-touch-action: pan-x pan-y;
