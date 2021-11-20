@@ -413,6 +413,26 @@ describe("L.Map#openPopup", function () {
 			.down().moveBy(10, 10, 20).up();
 	});
 
+	it('moves the map over a long distance if the popup is not in the view (keepInView)', function (done) {
+		c.style.position = 'absolute';
+		c.style.left = 0;
+		c.style.top = 0;
+		c.style.zIndex = 10000;
+
+		// to prevent waiting until the animation is finished
+		map.options.inertia = false;
+
+		var spy = sinon.spy();
+		map.on('autopanstart', spy);
+		var p = new L.Popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1]+50]);
+		map.openPopup(p);
+
+		setTimeout(function(){
+			expect(spy.called).to.be(true);
+			expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+			done();
+		}, 800);
+	});
 });
 
 describe('L.Layer#_popup', function () {
