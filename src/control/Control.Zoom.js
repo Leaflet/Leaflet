@@ -81,7 +81,7 @@ export var Zoom = Control.extend({
 
 	_createButton: function (html, title, className, container, fn) {
 		var link = DomUtil.create('a', className, container);
-		link.innerHTML = html;
+		link.innerHTML = '<span aria-hidden="true">'+html+'</span>';
 		link.href = '#';
 		link.title = title;
 
