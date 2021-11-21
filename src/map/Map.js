@@ -1111,11 +1111,11 @@ export var Map = Evented.extend({
 			container.style.position = 'relative';
 		}
 
-		this._initPanes();
-
 		if (this._initControlPos) {
 			this._initControlPos();
 		}
+
+		this._initPanes();
 	},
 
 	_initPanes: function () {
