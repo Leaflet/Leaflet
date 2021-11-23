@@ -4970,21 +4970,21 @@ The following plugins integrate Leaflet into third party services or websites.
 					<a href="https://github.com/astridx/plg_fields_agosmmapwithmarker">Gibhub</a><br />
 					<a href="https://extensions.joomla.org/extensions/extension/maps-a-weather/maps-a-locations/agosmmapwithmarker/">Joomla Extension Directory</a><br />
 				</li>
-    		</ul>
+			</ul>
 		</td><td>
 			<a href="https://github.com/astridx">Astrid Günther</a>
-    	</td>
+		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/mwasil/Leaflet.Facebook/">Leaflet.Facebook</a>
 		</td><td>
 			Simple plugin for adding Facebook like button as a control.
-	  	</td><td>
+		</td><td>
 			<a href="https://marcinwasilewski.eu/">Marcin Wasilewski</a>
 		</td>
-  	</tr>
-  	<tr>
+	</tr>
+	<tr>
 		<td>
 			<a href="https://github.com/alexboia/WP-Trip-Summary/">WP-Trip-Summary</a>
 		</td><td>
@@ -4996,18 +4996,22 @@ The following plugins integrate Leaflet into third party services or websites.
 	<tr>
 		<td>
 			<a href="https://wordpress.org/plugins/locations-and-areas/">Locations and Areas – Leaflet Map with Region Tabs</a>
-		</td><td>
+		</td>
+		<td>
 			WordPress plugin to showcase widely distributed locations on a single map with additional navigation tabs for regions. The map is based on Leaflet JS and offers you several free map styles. Gutenberg Block included.
-		</td><td>
+		</td>
+		<td>
 			<a href="https://www.locations-and-areas.com/?ref=leafletjs.com">100plugins</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://wordpress.org/plugins/open-user-map/">Open User Map – Users can add locations from the frontend</a>
-		</td><td>
+		</td>
+		<td>
 			WordPress plugin to let your visitors add locations directly from the frontend - without registration. They drop a marker on the map and provide some location details. After submit the location proposal will be “pending” and wait for your review approval to get published.
-		</td><td>
+		</td>
+		<td>
 			<a href="https://www.open-user-map.com/?ref=leafletjs.com">100plugins</a>
 		</td>
 	</tr>
