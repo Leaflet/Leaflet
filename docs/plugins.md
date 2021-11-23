@@ -991,6 +991,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-layerJSON">Leaflet LayerJSON</a>
+		</td><td>
+		Simple way for transform any JSON data source in a Leaflet Layer, load JSON data in layer and minimize remote requests with caching system <a href="https://opengeo.tech/maps/leaflet-layerjson/">Demo</a>.
+		</td><td>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -2826,7 +2835,7 @@ Plugins that search for overlays and enhance how to display information about th
 		</td><td>
 			A control for search Markers/Features location by custom property in LayerGroup/GeoJSON. Support AJAX/JSONP, Autocompletion and 3rd party service
 		</td><td>
-			<a href="http://labs.easyblog.it">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -2984,10 +2993,10 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/stefanocudini/leaflet-geojson-selector">Leaflet GeoJSON Selector</a>
 		</td>
 		<td>
-			Leaflet Control for selection from GeoJSON feature in an interactive list and map (<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
+			Leaflet Control for selection from GeoJSON feature in an interactive list and map (<a href="https://opengeo.tech/maps/leaflet-geojson-selector/">Demo</a>).
 		</td>
 		<td>
-			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -3129,7 +3138,7 @@ The following plugins enhance or extend `L.Control.Layers`.
 		</td><td>
 			Leaflet Control Layers extended for group of layers and icons legend
 		</td><td>
-			<a href="http://labs.easyblog.it">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -3778,10 +3787,10 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/stefanocudini/leaflet-locationpicker">Leaflet Location Picker</a>
 		</td>
 		<td>
-			Simple location picker with mini Leaflet map (<a href="http://labs.easyblog.it/maps/leaflet-locationpicker/">Demo</a>)
+			Simple location picker with mini Leaflet map (<a href="https://opengeo.tech/maps/leaflet-locationpicker/">Demo</a>)
 		</td>
 		<td>
-			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -4379,7 +4388,7 @@ Plugins that extend Leaflet's geolocation capabilities.
 		</td><td>
 			A leaflet control plugin to build a simple rotating compass
 		</td><td>
-			<a href="http://labs.easyblog.it/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
