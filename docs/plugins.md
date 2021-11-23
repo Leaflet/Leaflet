@@ -1317,6 +1317,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/damianc/leaflet-place-groups-picker">leaflet-place-groups-picker</a>
+		</td><td>
+			Plugin for the Leaflet maps that allows grouping places in groups whose visibility can be toggled.
+		</td><td>
+			<a href="https://github.com/damianc">damianc</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/zhuang-hao-ming/Leaflet.RoughCanvas">Leaflet.RoughCanvas</a>
 		</td><td>
 			Leaflet.RoughCanvas renders hand-drawn, sketch style vector map (polyline, polygon, geojson).
