@@ -391,6 +391,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/geotiff/georaster-layer-for-leaflet">GeoRasterLayer</a>
+		</td><td>
+			Display small and large GeoTIFF files with configurable resolution.  Built for simplicity and performance.  Integrates with <a href="https://geoblaze.io/">GeoBlaze</a>, a JavaScript raster analysis library.  See the <a href="https://geotiff.github.io/georaster-layer-for-leaflet-example/">demo</a>.
+		</td><td>
+			<a href="https://github.com/DanielJDufour">Daniel J. Dufour</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/GeoportalPL/leaflet.projwmts">Leaflet.projwmts</a>
 		</td><td>
 			Adding WMTS services (GUGiK Poland).
@@ -673,6 +682,16 @@ The following plugins change the way that tile or image layers are displayed in 
 			 (<a href="https://equinor.github.io/leaflet.tilelayer.gloperations/">Demo</a>).
 		</td><td>
 			<a href="https://github.com/thor85">Thorbjørn Horgen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ptv-logistics/Leaflet.NonTiledLayer">Leaflet.NonTiledLayers</a>
+		</td><td>
+			A Leaflet layer for non-tiled overlays.
+			 (<a href="https://ptv-logistics.github.io/Leaflet.NonTiledLayer/index.html">Demo</a>).
+		</td><td>
+			<a href="https://github.com/ptv-logistics">PTV Logistics</a>
 		</td>
 	</tr>
 </table>
@@ -991,6 +1010,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-layerJSON">Leaflet LayerJSON</a>
+		</td><td>
+		Simple way for transform any JSON data source in a Leaflet Layer, load JSON data in layer and minimize remote requests with caching system <a href="https://opengeo.tech/maps/leaflet-layerjson/">Demo</a>.
+		</td><td>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -1000,6 +1028,15 @@ Load your own data from various GIS formats.
 Load dynamic data which is updated in the map, or load GIS vector data in non-standard ways.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ATran31/Leaflet-GeoSSE">Leaflet GeoSSE</a>
+		</td><td>
+			Add realtime data to a Leaflet map using server sent events.
+		</td><td>
+			<a href="https://github.com/ATran31/">An Tran</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/perliedman/leaflet-realtime">Leaflet Realtime</a>
@@ -1306,6 +1343,15 @@ The following plugins provide new ways of displaying overlay data information.
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/damianc/leaflet-place-groups-picker">leaflet-place-groups-picker</a>
+		</td><td>
+			Plugin for the Leaflet maps that allows grouping places in groups whose visibility can be toggled.
+		</td><td>
+			<a href="https://github.com/damianc">damianc</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/zhuang-hao-ming/Leaflet.RoughCanvas">Leaflet.RoughCanvas</a>
@@ -2826,7 +2872,7 @@ Plugins that search for overlays and enhance how to display information about th
 		</td><td>
 			A control for search Markers/Features location by custom property in LayerGroup/GeoJSON. Support AJAX/JSONP, Autocompletion and 3rd party service
 		</td><td>
-			<a href="http://labs.easyblog.it">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -2984,10 +3030,10 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/stefanocudini/leaflet-geojson-selector">Leaflet GeoJSON Selector</a>
 		</td>
 		<td>
-			Leaflet Control for selection from GeoJSON feature in an interactive list and map (<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
+			Leaflet Control for selection from GeoJSON feature in an interactive list and map (<a href="https://opengeo.tech/maps/leaflet-geojson-selector/">Demo</a>).
 		</td>
 		<td>
-			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -3042,6 +3088,17 @@ These plugins help users select either overlays or areas in the map.
 		</td>
 		<td>
 			<a href="https://github.com/olanaso">Erick S Escalante Olano</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bopen/leaflet-area-selection">@bopen/leaflet-area-selection</a>
+		</td>
+		<td>
+			leaflet-area-selection allows to easily select a polygonal area on the map (see the <a href="https://bopen.github.io/leaflet-area-selection/">demo</a>)
+		</td>
+		<td>
+			<a href="https://www.bopen.eu/">B-Open</a>
 		</td>
 	</tr>
 </table>
@@ -3129,7 +3186,7 @@ The following plugins enhance or extend `L.Control.Layers`.
 		</td><td>
 			Leaflet Control Layers extended for group of layers and icons legend
 		</td><td>
-			<a href="http://labs.easyblog.it">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -3778,10 +3835,10 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/stefanocudini/leaflet-locationpicker">Leaflet Location Picker</a>
 		</td>
 		<td>
-			Simple location picker with mini Leaflet map (<a href="http://labs.easyblog.it/maps/leaflet-locationpicker/">Demo</a>)
+			Simple location picker with mini Leaflet map (<a href="https://opengeo.tech/maps/leaflet-locationpicker/">Demo</a>)
 		</td>
 		<td>
-			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -4379,7 +4436,7 @@ Plugins that extend Leaflet's geolocation capabilities.
 		</td><td>
 			A leaflet control plugin to build a simple rotating compass
 		</td><td>
-			<a href="http://labs.easyblog.it/">Stefano Cudini</a>
+			<a href="https://opengeo.tech/">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -4389,6 +4446,15 @@ Plugins that extend Leaflet's geolocation capabilities.
 			Leaflet.AccuratePosition aims to provide a desired device location accuracy.
 		</td><td>
 			<a href="https://github.com/M165437">Michael Schmidt-Voigt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rhlt/leaflet-geolet">Geolet</a>
+		</td><td>
+			A simple but highly customizable geolocation plugin for Leaflet
+		</td><td>
+			<a href="https://github.com/rhlt/">Ruben Holthuijsen</a>
 		</td>
 	</tr>
 </table>
