@@ -3,11 +3,9 @@
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 {% for plugin in filteredplugins %}
 	<tr>
+		<td><a href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
+		<td>{{ plugin.content }}</td>
 		<td>
-			<a href="{{ plugin.repo }}">{{ plugin.name }}</a>
-		</td><td>
-			{{ plugin.content | markdownify }}
-		</td><td>
 		{% if plugin.category %}
 			<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>
 		{% else %}
