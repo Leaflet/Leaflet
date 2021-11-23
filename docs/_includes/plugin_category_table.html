@@ -1,10 +1,15 @@
 {% assign filteredplugins = site.plugins | where: "category", include.category %}
 
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Demo</th><th>Maintainer</th></tr>
 {% for plugin in filteredplugins %}
 	<tr>
 		<td><a href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
 		<td>{{ plugin.content }}</td>
+		<td>
+		{% if plugin.demo %}
+			<a href="{{ plugin.demo }}">Demo</a>
+		{% endif %}
+		</td>
 		<td>
 		{% if plugin.category %}
 			<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>

@@ -1,0 +1,12 @@
+---
+name: Leaflet.Elevation
+category: time-&-elevation
+repo: https://github.com/MrMufflon/Leaflet.Elevation
+author: Felix Bache
+author-url: https://github.com/MrMufflon
+demo: 
+compatible-v0: false
+compatible-v1: true
+---
+
+A Leaflet plugin to view interactive height profiles of GeoJSON lines using <a href="http://d3js.org/">d3</a>.

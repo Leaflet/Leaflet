@@ -1,0 +1,12 @@
+---
+name: Leaflet.CondensedAttribution
+category: user-interface
+repo: https://github.com/route360/Leaflet.CondensedAttribution
+author: Motion Intelligence GmbH
+author-url: http://www.motionintelligence.net/
+demo: 
+compatible-v0: false
+compatible-v1: true
+---
+
+An attribution plugin that makes long attributes visible on hover

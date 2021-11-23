@@ -1,0 +1,12 @@
+---
+name: Leaflet.Control.SideBySide
+category: tile/image-display
+repo: https://github.com/digidem/leaflet-side-by-side
+author: Digital Democracy
+author-url: http://www.digital-democracy.org/
+demo: http://lab.digital-democracy.org/leaflet-side-by-side/
+compatible-v0: false
+compatible-v1: true
+---
+
+A Leaflet control to add a split screen to compare two map overlays (<a href="http://lab.digital-democracy.org/leaflet-side-by-side/">demo</a>).

@@ -1,0 +1,12 @@
+---
+name: Maps Marker Pro
+category: 3rd-party-integration
+repo: http://www.mapsmarker.com/
+author: Robert Harm
+author-url: http://www.harm.co.at/
+demo: 
+compatible-v0: false
+compatible-v1: true
+---
+
+A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site.
