@@ -684,6 +684,16 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/thor85">Thorbjørn Horgen</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ptv-logistics/Leaflet.NonTiledLayer">Leaflet.NonTiledLayers</a>
+		</td><td>
+			A Leaflet layer for non-tiled overlays.
+			 (<a href="https://ptv-logistics.github.io/Leaflet.NonTiledLayer/index.html">Demo</a>).
+		</td><td>
+			<a href="https://github.com/ptv-logistics">PTV Logistics</a>
+		</td>
+	</tr>
 </table>
 
 
