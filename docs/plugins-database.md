@@ -124,7 +124,7 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 
 The following plugins change the way that tile or image layers are displayed in the map.
 
-{% include plugin_category_table.html category="tile/image-display" %}
+{% include plugin_category_table.html category="tile-image-display" %}
 
 ### Tile Load
 
@@ -158,7 +158,7 @@ Load your own data from various GIS formats.
 
 Load dynamic data which is updated in the map, or load GIS vector data in non-standard ways.
 
-{% include plugin_category_table.html category="dynamic/custom-data-loading" %}
+{% include plugin_category_table.html category="dynamic-custom-data-loading" %}
 
 ### Data providers
 
@@ -182,7 +182,7 @@ The following plugins provide new ways of displaying overlay data information.
 
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
-{% include plugin_category_table.html category="markers-&-renderers" %}
+{% include plugin_category_table.html category="markers-renderers" %}
 
 ### Overlay animations
 
@@ -194,7 +194,7 @@ These plugins animate markers or some geometries. See also [geometries with time
 
 When you are displaying a lot of data, these plugins will make your map look cleaner.
 
-{% include plugin_category_table.html category="clustering/decluttering" %}
+{% include plugin_category_table.html category="clustering-decluttering" %}
 
 ### Heatmaps
 
@@ -228,19 +228,19 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 
 Most data is two-dimensional (latitude and longitude), but some data has more dimensions (altitude and/or time). The following plugins help users navigate these extra dimensions.
 
-{% include plugin_category_table.html category="time-&-elevation" %}
+{% include plugin_category_table.html category="time-elevation" %}
 
 ### Search & popups
 
 Plugins that search for overlays and enhance how to display information about them.
 
-{% include plugin_category_table.html category="search-&-popups" %}
+{% include plugin_category_table.html category="search-popups" %}
 
 ### Area/overlay selection
 
 These plugins help users select either overlays or areas in the map.
 
-{% include plugin_category_table.html category="area/overlay-selection" %}
+{% include plugin_category_table.html category="area-overlay-selection" %}
 
 
 ## Map interaction
@@ -270,13 +270,13 @@ The following plugins enhance or extend `L.Control.Layers`.
 
 Change the way the user can interactively move around the map.
 
-{% include plugin_category_table.html category="interactive-pan/zoom" %}
+{% include plugin_category_table.html category="interactive-pan-zoom" %}
 
 ### Bookmarked pan/zoom
 
 Change the way the user is moved around the map, by jumping to predefined/stored places.
 
-{% include plugin_category_table.html category="bookmarked-pan/zoom" %}
+{% include plugin_category_table.html category="bookmarked-pan-zoom" %}
 
 ### Fullscreen controls
 
@@ -288,7 +288,7 @@ Allows display of the map in full-screen mode.
 
 Display two maps at once. One of them might be a different size and zoom level, usable as a minimap to aid with navigation.
 
-{% include plugin_category_table.html category="minimaps-&-synced-maps" %}
+{% include plugin_category_table.html category="minimaps-synced-maps" %}
 
 ### Measurement
 
@@ -323,7 +323,7 @@ Print or export your map.
 - Get a PNG from a Leaflet map and export it in PDF https://github.com/chrissom/leaflet-pdf
 -->
 
-{% include plugin_category_table.html category="print/export" %}
+{% include plugin_category_table.html category="print-export" %}
 
 ### Geolocation
 
@@ -367,7 +367,7 @@ Plugin developers: please keep future plugins in individual repositories.
 
 Ease your development integrating Leaflet into a development framework or automating some of the javascript/CSS work for complex applications.
 
-{% include plugin_category_table.html category="frameworks-&-build-systems" %}
+{% include plugin_category_table.html category="frameworks-build-systems" %}
 
 ### 3<sup>rd</sup> party integration
 
@@ -383,4 +383,4 @@ Leaflet keeps it simple. If you can think of a feature that is not required by a
 
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 
-Once your plugin is ready, you can submit it to this list: just send a pull request with the addition to [/docs/plugins.md](https://github.com/Leaflet/Leaflet/blob/master/docs/plugins.md) to our GitHub repository.
+Once your plugin is ready, you can submit it: just send a pull request with a new plugin file in [/docs/_plugins/](https://github.com/Leaflet/Leaflet/tree/master/docs/_plugins)to our GitHub repository.
