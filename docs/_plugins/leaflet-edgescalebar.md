@@ -4,7 +4,7 @@ category: synthetic-overlays
 repo: http://github.com/GEOF-OSGL/Leaflet.EdgeScaleBar
 author: Dražen Tutić, Ana Kuveždić Divjak
 author-url: http://github.com/GEOF-OSGL
-demo: http://geof-osgl.github.io/Leaflet.EdgeScaleBar/
+demo:
 compatible-v0:
 compatible-v1: true
 ---

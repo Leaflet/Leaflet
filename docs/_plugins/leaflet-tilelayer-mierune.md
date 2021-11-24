@@ -5,8 +5,8 @@ repo: https://github.com/MIERUNE/Leaflet.TileLayer.MIERUNE
 author: Mierune
 author-url: https://github.com/MIERUNE
 demo: https://tile.mierune.co.jp/
-compatible-v0:
+compatible-v0: true
 compatible-v1: true
 ---
 
-Displays tiles from <a href="https://mierune.co.jp/tile.html">Mierune map</a>.
+Displays tiles from Mierune map.

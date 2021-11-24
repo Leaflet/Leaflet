@@ -4,9 +4,9 @@ category: edit-geometries
 repo: https://github.com/manleyjster/Leaflet.Illustrate
 author: Justin Manley
 author-url: https://github.com/manleyjster
-demo: 
-compatible-v0:
-compatible-v1: true
+demo: https://justinmanley.github.io/Leaflet.Illustrate/examples/0.0.2/simple/
+compatible-v0: true
+compatible-v1: false
 ---
 
-Extension for Leaflet.draw enabling users to <a href="http://manleyjster.github.io/Leaflet.Illustrate/examples/0.0.2/simple/">type annotations directly on maps</a>.
+Extension for Leaflet.draw enabling users to type annotations directly on maps.

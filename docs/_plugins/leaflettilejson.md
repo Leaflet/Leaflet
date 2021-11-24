@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Adds support for the <a href="https://github.com/mapbox/TileJSON">TileJSON</a> specification to Leaflet.
+Adds support for the <a href="https://github.com/mapbox/tilejson-spec">TileJSON</a> specification to Leaflet.
