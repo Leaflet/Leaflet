@@ -1,7 +1,7 @@
 ---
 name: Leaflet.Rrose
 category: search-popups
-repo: http://erictheise.github.com/rrose
+repo: https://github.com/erictheise/rrose
 author: Eric Theise
 author-url: https://github.com/erictheise
 demo: 

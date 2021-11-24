@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Displays the <a href="http://www.mapcode.com">Mapcode</a> of the mouse pointer on mouse move.
+Displays the <a href="https://www.mapcode.com">Mapcode</a> of the mouse pointer on mouse move.

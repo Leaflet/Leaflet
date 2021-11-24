@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Easy and declarative mapping for <a href="http://emberjs.com/">Ember.js</a> using Leaflet.
+Easy and declarative mapping for <a href="https://emberjs.com/">Ember.js</a> using Leaflet.

@@ -3,7 +3,7 @@ name: Leaflet TripGo routing
 category: routing
 repo: https://github.com/skedgo/tripkit-leaflet
 author: SkedGo
-author-url: http://skedgo.com/
+author-url: https://skedgo.com/
 demo: 
 compatible-v0:
 compatible-v1: true

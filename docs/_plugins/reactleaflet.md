@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-<a href="http://reactjs.org/">React</a> components for Leaflet maps.
+<a href="https://reactjs.org/">React</a> components for Leaflet maps.

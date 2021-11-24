@@ -3,7 +3,7 @@ name: Leaflet for Drupal
 category: 3rd-party-integration
 repo: https://www.drupal.org/project/leaflet
 author: Marzee Labs
-author-url: http://marzeelabs.org/
+author-url: https://marzeelabs.org/
 demo: 
 compatible-v0:
 compatible-v1: true

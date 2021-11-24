@@ -1,7 +1,7 @@
 ---
 name: Leaflet.Pancontrol
 category: interactive-pan-zoom
-repo: http://kartena.github.com/Leaflet.Pancontrol/
+repo: https://github.com/kartena/Leaflet.Pancontrol/
 author: Kartena
 author-url: http://www.kartena.se/index.html
 demo: 

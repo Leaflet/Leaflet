@@ -3,9 +3,9 @@ name: leaflet-fusesearch
 category: search-popups
 repo: https://github.com/naomap/leaflet-fusesearch
 author: Antoine Riche
-author-url: https://www.naomap.fr/
+author-url: https://github.com/naomap
 demo: 
-compatible-v0:
+compatible-v0: http://dev.cartocite.fr/CultureNantes/
 compatible-v1: true
 ---
 

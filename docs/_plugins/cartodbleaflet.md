@@ -1,7 +1,7 @@
 ---
 name: cartodb-leaflet
 category: basemap-formats
-repo: http://vizzuality.github.com/cartodb-leaflet/
+repo: https://github.com/vizzuality/cartodb-leaflet/
 author: Vizzuality
 author-url: https://www.vizzuality.com/
 demo: 
