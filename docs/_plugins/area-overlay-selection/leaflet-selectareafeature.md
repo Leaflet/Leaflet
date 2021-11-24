@@ -3,7 +3,7 @@ name: Leaflet.SelectAreaFeature
 category: area-overlay-selection
 repo: https://github.com/sandropibia/Leaflet.SelectAreaFeature/
 author: Sandro Pibia
-author-url: https://pezzo.org/
+author-url: https://github.com/sandropibia
 demo: 
 compatible-v0:
 compatible-v1: true
