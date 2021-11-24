@@ -3,7 +3,7 @@ name: Leaflet.TileLegend
 category: user-interface
 repo: https://github.com/yohanboniface/Leaflet.TileLegend
 author: Yohan Boniface
-author-url: http://yohanboniface.me/
+author-url: https://yohanboniface.me/
 demo: 
 compatible-v0:
 compatible-v1: true

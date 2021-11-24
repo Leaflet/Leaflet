@@ -1,7 +1,7 @@
 ---
 name: WordPress Leaflet Map
 category: 3rd-party-integration
-repo: http://wordpress.org/plugins/leaflet-map/
+repo: https://wordpress.org/plugins/leaflet-map/
 author: Benjamin J DeLong
 author-url: https://bozdoz.com/projects/leaflet-map
 demo: 

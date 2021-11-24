@@ -1,7 +1,7 @@
 ---
 name: L.Credits
 category: user-interface
-repo: https://github.com/gregallensworth/L.Control.Credits
+repo: https://github.com/GreenInfo-Network/Leaflet-Control-Credits
 author: Greg Allensworth
 author-url: https://github.com/gregallensworth/
 demo: 

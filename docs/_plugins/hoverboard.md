@@ -1,10 +1,10 @@
 ---
 name: Hoverboard
 category: vector-tiles
-repo: https://github.com/devTristan/hoverboard
+repo: https://github.com/summer4096/hoverboard
 author: Tristan Davies
-author-url: http://tristan.io/
-demo: http://tristan.io/hoverboard/
+author-url: https://madd.tech/
+demo: https://madd.tech/hoverboard/
 compatible-v0: true
 compatible-v1: false
 ---

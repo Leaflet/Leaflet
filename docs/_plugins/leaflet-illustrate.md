@@ -1,7 +1,7 @@
 ---
 name: Leaflet.Illustrate
 category: edit-geometries
-repo: https://github.com/manleyjster/Leaflet.Illustrate
+repo: https://github.com/justinmanley/Leaflet.Illustrate
 author: Justin Manley
 author-url: https://github.com/manleyjster
 demo: https://justinmanley.github.io/Leaflet.Illustrate/examples/0.0.2/simple/

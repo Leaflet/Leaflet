@@ -4,7 +4,7 @@ category: tile-load
 repo: https://github.com/allartk/leaflet.offline
 author: Allart Kooiman
 author-url: https://github.com/allartk
-demo: http://allartk.github.io/leaflet.offline/
+demo: https://allartk.github.io/leaflet.offline/
 compatible-v0:
 compatible-v1: true
 ---

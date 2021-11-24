@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Create markers using <a href="https://www.mapbox.com/maki/">Maki Icons</a> from MapBox.
+Create markers using <a href="https://labs.mapbox.com/maki-icons/">Maki Icons</a> from MapBox.

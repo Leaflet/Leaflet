@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-<a href="http://www.opengeospatial.org/standards/wfs">WFS</a> client layer with transaction support
+<a href="https://www.ogc.org/standards/wfs">WFS</a> client layer with transaction support

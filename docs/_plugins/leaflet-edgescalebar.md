@@ -1,9 +1,9 @@
 ---
 name: Leaflet.EdgeScaleBar
 category: synthetic-overlays
-repo: http://github.com/GEOF-OSGL/Leaflet.EdgeScaleBar
+repo: https://github.com/dtutic/Leaflet.EdgeScaleBar
 author: Dražen Tutić, Ana Kuveždić Divjak
-author-url: http://github.com/GEOF-OSGL
+author-url: https://github.com/GEOF-OSGL
 demo:
 compatible-v0:
 compatible-v1: true

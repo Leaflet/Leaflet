@@ -1,7 +1,7 @@
 ---
 name: Leaflet for Drupal
 category: 3rd-party-integration
-repo: http://drupal.org/project/leaflet
+repo: https://www.drupal.org/project/leaflet
 author: Marzee Labs
 author-url: http://marzeelabs.org/
 demo: 

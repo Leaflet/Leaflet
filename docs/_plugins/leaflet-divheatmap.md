@@ -1,7 +1,7 @@
 ---
 name: Leaflet divHeatmap
 category: heatmaps
-repo: https://github.com/dpiccone/leaflet-div-heatmap
+repo: https://github.com/danielepiccone/leaflet-div-heatmap
 author: Daniele Piccone
 author-url: https://github.com/dpiccone
 demo: 

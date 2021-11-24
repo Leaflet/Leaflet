@@ -1,7 +1,7 @@
 ---
 name: leaflet-sidebar-v2
 category: user-interface
-repo: https://github.com/nickpeihl/leaflet-sidebar-v2/
+repo: https://github.com/noerw/leaflet-sidebar-v2
 author: Norwin Roosen
 author-url: https://github.com/noerw/
 demo: 

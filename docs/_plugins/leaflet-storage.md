@@ -1,9 +1,9 @@
 ---
 name: Leaflet.Storage
 category: edit-geometries
-repo: https://github.com/yohanboniface/Leaflet.Storage
+repo: https://github.com/umap-project/Leaflet.Storage
 author: Yohan Boniface
-author-url: http://yohanboniface.me/
+author-url: https://yohanboniface.me/
 demo: 
 compatible-v0:
 compatible-v1: true

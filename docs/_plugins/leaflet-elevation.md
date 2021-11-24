@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-A Leaflet plugin to view interactive height profiles of GeoJSON lines using <a href="http://d3js.org/">d3</a>.
+A Leaflet plugin to view interactive height profiles of GeoJSON lines using <a href="https://d3js.org//">d3</a>.

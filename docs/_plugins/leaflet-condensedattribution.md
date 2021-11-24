@@ -3,7 +3,7 @@ name: Leaflet.CondensedAttribution
 category: user-interface
 repo: https://github.com/route360/Leaflet.CondensedAttribution
 author: Motion Intelligence GmbH
-author-url: http://www.motionintelligence.net/
+author-url: https://www.targomo.com/
 demo: 
 compatible-v0:
 compatible-v1: true

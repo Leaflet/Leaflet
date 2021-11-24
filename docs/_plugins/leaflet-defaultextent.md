@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-A control that returns to the original start extent of the map.  Similar to the <a href="https://developers.arcgis.com/javascript/jssamples/widget_home.html">HomeButton</a> widget.
+A control that returns to the original start extent of the map.  Similar to the <a href="/javascript/3/jssamples/widget_home.html">HomeButton</a> widget.

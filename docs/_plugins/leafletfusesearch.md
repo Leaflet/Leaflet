@@ -3,7 +3,7 @@ name: leaflet-fusesearch
 category: search-popups
 repo: https://github.com/naomap/leaflet-fusesearch
 author: Antoine Riche
-author-url: http://www.naomap.fr/
+author-url: https://www.naomap.fr/
 demo: 
 compatible-v0:
 compatible-v1: true

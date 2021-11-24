@@ -1,7 +1,7 @@
 ---
 name: leaflet.TileLayer.WMTS
 category: basemap-formats
-repo: https://github.com/mylen/leaflet.TileLayer.WMTS
+repo: https://github.com/alexandre-melard/leaflet.TileLayer.WMTS
 author: Alexandre Melard
 author-url: https://github.com/mylen
 demo: 

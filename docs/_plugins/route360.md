@@ -3,7 +3,7 @@ name: Route360°
 category: routing
 repo: https://github.com/route360/r360-js
 author: Motion Intelligence GmbH
-author-url: http://www.motionintelligence.net/
+author-url: https://www.targomo.com/
 demo: 
 compatible-v0:
 compatible-v1: true

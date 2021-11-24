@@ -1,7 +1,7 @@
 ---
 name: Leaflet.GeographPhotos
 category: data-providers
-repo: https://github.com/barryhunter/Leaflet.GeographPhotos
+repo: https://github.com/geograph-project/Leaflet.GeographPhotos
 author: Barry Hunter
 author-url: https://github.com/barryhunter/
 demo: 

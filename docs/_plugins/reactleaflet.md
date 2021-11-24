@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-<a href="https://facebook.github.io/react/">React</a> components for Leaflet maps.
+<a href="http://reactjs.org/">React</a> components for Leaflet maps.

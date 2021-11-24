@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Integrate Leaflet in applications made with the <a href="http://angularjs.org/">AngularJS</a> web framework.
+Integrate Leaflet in applications made with the <a href="https://angularjs.org/">AngularJS</a> web framework.

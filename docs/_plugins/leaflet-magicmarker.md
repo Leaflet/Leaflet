@@ -1,7 +1,7 @@
 ---
 name: Leaflet.magicMarker
 category: markers-renderers
-repo: https://github.com/react-map/leaflet.magicMarker
+repo: https://github.com/lit-forest/leaflet.magicMarker
 author: Sylvenas
 author-url: https://github.com/react-map
 demo:

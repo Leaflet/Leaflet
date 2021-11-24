@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Provides easy setup of the tile layers from <a href="http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)
+Provides easy setup of the tile layers from <a href="https://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)

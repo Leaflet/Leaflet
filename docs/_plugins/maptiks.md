@@ -3,7 +3,7 @@ name: Maptiks
 category: 3rd-party-integration
 repo: https://maptiks.com/
 author: Sparkgeo
-author-url: http://www.sparkgeo.com/
+author-url: https://sparkgeo.com/
 demo: 
 compatible-v0:
 compatible-v1: true

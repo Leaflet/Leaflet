@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Add support for <a href="http://iipimage.sourceforge.net/">IIPImage</a> layers in Leaflet.
+Add support for <a href="https://iipimage.sourceforge.io/">IIPImage</a> layers in Leaflet.

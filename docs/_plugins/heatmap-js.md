@@ -1,7 +1,7 @@
 ---
 name: heatmap.js
 category: heatmaps
-repo: http://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
+repo: https://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
 author: Patrick Wied
 author-url: https://github.com/pa7
 demo: 

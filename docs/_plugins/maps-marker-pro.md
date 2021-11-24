@@ -1,9 +1,9 @@
 ---
 name: Maps Marker Pro
 category: 3rd-party-integration
-repo: http://www.mapsmarker.com/
+repo: https://www.mapsmarker.com/
 author: Robert Harm
-author-url: http://www.harm.co.at/
+author-url: https://www.harm.co.at/
 demo: 
 compatible-v0:
 compatible-v1: true

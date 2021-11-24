@@ -3,7 +3,7 @@ name: Leaflet.EditInOSM
 category: 3rd-party-integration
 repo: https://github.com/yohanboniface/Leaflet.EditInOSM
 author: Yohan Boniface
-author-url: http://yohanboniface.me/
+author-url: https://yohanboniface.me/
 demo: 
 compatible-v0:
 compatible-v1: true

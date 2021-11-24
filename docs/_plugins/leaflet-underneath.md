@@ -3,7 +3,7 @@ name: Leaflet Underneath
 category: search-popups
 repo: https://github.com/perliedman/leaflet-underneath
 author: Per Liedman
-author-url: http://github.com/perliedman
+author-url: https://github.com/perliedman
 demo: 
 compatible-v0:
 compatible-v1: true

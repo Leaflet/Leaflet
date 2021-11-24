@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Load points from tiled csv files, using the amazing <a href="http://papaparse.com/">PapaParse</a> library.
+Load points from tiled csv files, using the amazing <a href="https://www.papaparse.com/">PapaParse</a> library.

@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Control for route search with via points, displaying itinerary and alternative routes. Uses			<a href="http://project-osrm.org/">OSRM</a> by default, but also supports			<a href="https://graphhopper.com/">GraphHopper</a>,			<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a> and more.
+Control for route search with via points, displaying itinerary and alternative routes. Uses			<a href="http://project-osrm.org/">OSRM</a> by default, but also supports			<a href="https://www.graphhopper.com/">GraphHopper</a>,			<a href="https://docs.mapbox.com/api/">Mapbox Directions API</a> and more.

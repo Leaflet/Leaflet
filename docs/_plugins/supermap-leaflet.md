@@ -1,7 +1,7 @@
 ---
 name: SuperMap Leaflet
 category: basemap-providers
-repo: https://supermap.github.io/supermap-leaflet
+repo: https://supermap.github.io/supermap-leaflet/
 author: SuperMap
 author-url: https://github.com/SuperMap
 demo: 

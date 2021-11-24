@@ -1,7 +1,7 @@
 ---
 name: Esri Leaflet
 category: basemap-providers
-repo: http://esri.github.io/esri-leaflet
+repo: https://esri.github.io/esri-leaflet/
 author: Patrick Arlt
 author-url: https://github.com/patrickarlt/
 demo: 

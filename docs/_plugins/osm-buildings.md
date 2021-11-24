@@ -1,7 +1,7 @@
 ---
 name: OSM Buildings
 category: markers-renderers
-repo: http://osmbuildings.org/
+repo: https://osmbuildings.org/
 author: Jan Marsch
 author-url: https://github.com/kekscom/
 demo: 

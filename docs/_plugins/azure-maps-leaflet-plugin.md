@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-A leafletjs plugin that makes it easy to overlay all the different tile layers available from the <a href="https://azure.com/maps">Azure Maps</a>. Supports using an Azure Maps subscription key or Azure Active Directory for authentication.
+A leafletjs plugin that makes it easy to overlay all the different tile layers available from the <a href="https://azure.microsoft.com/en-us/services/azure-maps/">Azure Maps</a>. Supports using an Azure Maps subscription key or Azure Active Directory for authentication.

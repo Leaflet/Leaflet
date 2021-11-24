@@ -1,7 +1,7 @@
 ---
 name: Leaflet-pip
 category: geoprocessing
-repo: https://github.com/tmcw/leaflet-pip
+repo: https://github.com/mapbox/leaflet-pip
 author: Tom MacWright
 author-url: https://github.com/tmcw
 demo: 

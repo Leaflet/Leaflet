@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-TileLayer with <a href="http://bellard.org/bpg/">.bpg</a> image format decoding.
+TileLayer with <a href="https://bellard.org/bpg/">.bpg</a> image format decoding.

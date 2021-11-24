@@ -3,7 +3,7 @@ name: Leaflet.CenterMarker
 category: markers-renderers
 repo: https://github.com/heyman/leaflet-centermarker
 author: Jonatan Heyman
-author-url: http://heyman.info/
+author-url: https://heyman.info/
 demo: 
 compatible-v0:
 compatible-v1: true

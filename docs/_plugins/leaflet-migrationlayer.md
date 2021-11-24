@@ -1,10 +1,10 @@
 ---
 name: leaflet.migrationLayer
 category: dataviz
-repo: https://github.com/react-map/leaflet.migrationLayer
+repo: https://github.com/lit-forest/leaflet.migrationLayer
 author: Sylvenas
 author-url: https://github.com/react-map
-demo: https://react-map.github.io/leaflet.migrationLayer
+demo: https://lycheelin.github.io/leaflet.migrationLayer/
 compatible-v0:
 compatible-v1: true
 ---

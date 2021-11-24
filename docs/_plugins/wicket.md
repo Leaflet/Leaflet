@@ -1,7 +1,7 @@
 ---
 name: Wicket
 category: overlay-data-formats
-repo: http://arthur-e.github.com/Wicket/
+repo: https://github.com/arthur-e/Wicket/
 author: K. Arthur Endsley
 author-url: https://github.com/arthur-e/
 demo: 

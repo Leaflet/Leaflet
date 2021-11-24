@@ -3,7 +3,7 @@ name: Leaflet.RevealOSM
 category: search-popups
 repo: https://github.com/yohanboniface/Leaflet.RevealOSM
 author: Yohan Boniface
-author-url: http://yohanboniface.me/
+author-url: https://yohanboniface.me/
 demo: 
 compatible-v0:
 compatible-v1: true

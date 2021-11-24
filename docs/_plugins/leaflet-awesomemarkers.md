@@ -1,9 +1,9 @@
 ---
 name: Leaflet.Awesome-Markers
 category: markers-renderers
-repo: https://github.com/lvoogdt/Leaflet.awesome-markers
+repo: https://github.com/lennardv2/Leaflet.awesome-markers
 author: Lennard Voogdt
-author-url: http://www.lennardvoogdt.nl/
+author-url: https://lennardvoogdt.nl/
 demo: 
 compatible-v0:
 compatible-v1: true

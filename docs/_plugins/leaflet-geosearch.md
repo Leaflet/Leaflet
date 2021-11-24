@@ -1,7 +1,7 @@
 ---
 name: Leaflet GeoSearch
 category: geocoding
-repo: https://github.com/smeijer/L.GeoSearch
+repo: https://github.com/smeijer/leaflet-geosearch
 author: Stephan Meijer
 author-url: https://github.com/smeijer
 demo: 

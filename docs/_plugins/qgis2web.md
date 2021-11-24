@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-A <a href="http://qgis.org/">QGIS</a> plugin to make webmaps without coding.
+A <a href="https://qgis.org/">QGIS</a> plugin to make webmaps without coding.

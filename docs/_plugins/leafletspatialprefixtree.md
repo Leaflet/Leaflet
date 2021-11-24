@@ -1,7 +1,7 @@
 ---
 name: leaflet-spatial-prefix-tree
 category: geoprocessing
-repo: https://github.com/mapzen/leaflet-spatial-prefix-tree
+repo: https://github.com/missinglink/leaflet-spatial-prefix-tree
 author: Mapzen
 author-url: http://mapzen.com/
 demo: http://mapzen.github.io/leaflet-spatial-prefix-tree/

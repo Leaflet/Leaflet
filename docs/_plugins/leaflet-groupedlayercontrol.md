@@ -1,7 +1,7 @@
 ---
 name: Leaflet.GroupedLayerControl
 category: layer-switching-controls
-repo: https://github.com/ismyrnow/Leaflet.groupedlayercontrol
+repo: https://github.com/ismyrnow/leaflet-groupedlayercontrol
 author: Ishmael Smyrnow
 author-url: https://github.com/ismyrnow
 demo: 

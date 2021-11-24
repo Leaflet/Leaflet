@@ -1,7 +1,7 @@
 ---
 name: Leaflet.OpenCage.Search
 category: geocoding
-repo: https://github.com/lokku/leaflet-opencage-search
+repo: https://github.com/OpenCageData/leaflet-opencage-search
 author: OpenCage
 author-url: https://github.com/opencagedata
 demo: 
