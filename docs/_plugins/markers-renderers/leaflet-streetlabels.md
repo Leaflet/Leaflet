@@ -2,8 +2,8 @@
 name: Leaflet.streetlabels
 category: markers-renderers
 repo: https://github.com/3mapslab/Leaflet.streetlabels
-author: Triede TI
-author-url: https://github.com/triedeti
+author: 3Maps
+author-url: https://github.com/3mapslab
 demo: https://3mapslab.github.io/Leaflet.streetlabels/
 compatible-v0:
 compatible-v1: true
