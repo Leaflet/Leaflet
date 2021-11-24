@@ -1,8 +1,8 @@
 ---
 name: Leaflet.CondensedAttribution
 category: user-interface
-repo: https://github.com/route360/Leaflet.CondensedAttribution
-author: Motion Intelligence GmbH
+repo: https://github.com/targomo/Leaflet.CondensedAttribution
+author: Targomo GmbH
 author-url: https://www.targomo.com/
 demo: 
 compatible-v0:
