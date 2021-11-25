@@ -31,7 +31,7 @@ export function addPointerListener(obj, type, handler) {
 	if (type === 'touchstart') {
 		_addPointerDocListener();
 	}
-	handler = handle[type].bind(this, handler);
+	handler = handler[type].bind(this, handler);
 	obj.addEventListener(pEvent[type], handler, false);
 	return handler;
 }
