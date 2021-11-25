@@ -20,7 +20,8 @@ export var Zoom = Control.extend({
 
 		// @option zoomInText: String = '+'
 		// The text set on the 'zoom in' button.
-		zoomInText: '+',
+		zoomInText: '<span aria-hidden="true">+</span>',
+
 
 		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
@@ -28,7 +29,7 @@ export var Zoom = Control.extend({
 
 		// @option zoomOutText: String = '&#x2212;'
 		// The text set on the 'zoom out' button.
-		zoomOutText: '&#x2212;',
+		zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
 
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
@@ -81,7 +82,7 @@ export var Zoom = Control.extend({
 
 	_createButton: function (html, title, className, container, fn) {
 		var link = DomUtil.create('a', className, container);
-		link.innerHTML = '<span aria-hidden="true">' + html + '</span>';
+		link.innerHTML = html;
 		link.href = '#';
 		link.title = title;
 
