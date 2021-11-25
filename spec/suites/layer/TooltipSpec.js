@@ -306,11 +306,7 @@ describe('Tooltip', function () {
 
 	it("closes existent tooltip on new bindTooltip call", function () {
 		var layer = new L.Marker(center).addTo(map);
-		var eventSpy = sinon.spy();
-		layer.unbindTooltip = function () {
-			eventSpy();
-			L.Marker.prototype.unbindTooltip.call(layer);
-		};
+		var eventSpy = sinon.spy(layer, "unbindTooltip");
 		layer.bindTooltip('Tooltip1', {permanent: true});
 		var tooltip1 = layer.getTooltip();
 		layer.bindTooltip('Tooltip2').openTooltip();
