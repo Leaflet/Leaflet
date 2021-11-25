@@ -525,7 +525,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font: 16px/14px Tahoma, Verdana, sans-serif;
 	color: #757575;
 	text-decoration: none;
-	font-weight: bold;
 	background: transparent;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover {
