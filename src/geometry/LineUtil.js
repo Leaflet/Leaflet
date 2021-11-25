@@ -1,5 +1,6 @@
 import {Point} from './Point';
 import * as Util from '../core/Util';
+import {toLatLng} from '../geo/LatLng';
 
 
 /*
@@ -239,4 +240,20 @@ export function isFlat(latlngs) {
 export function _flat(latlngs) {
 	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
 	return isFlat(latlngs);
+}
+
+// @function cloneLatLngs(latlngs: LatLng[]): LatLng[]
+// Recursively clone latlngs to a new array and breaks the reference to the original one.
+export function cloneLatLngs(latlngs) {
+	var result = [],
+	flat = isFlat(latlngs);
+
+	for (var i = 0, len = latlngs.length; i < len; i++) {
+		if (flat) {
+			result[i] = toLatLng(latlngs[i]).clone();
+		} else {
+			result[i] = cloneLatLngs(latlngs[i]);
+		}
+	}
+	return result;
 }

@@ -83,4 +83,24 @@ describe('LineUtil', function () {
 			]);
 		});
 	});
+
+	describe('#cloneLatLngs', function () {
+		it('clone a flat latlng array', function () {
+			var latLngs = [
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			];
+			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
+			expect(latLngsClone).to.not.be(latLngs);
+		});
+
+		it('clone a latlng array', function () {
+			var latLngs = [[
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			]];
+			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
+			expect(latLngsClone).to.not.be(latLngs);
+		});
+	});
 });

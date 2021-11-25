@@ -170,18 +170,18 @@ export var Polyline = Path.extend({
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
-	addLatLng: function (latlng, latlngs) {
-		var oldLatLngs = this._convertLatLngs(this._latlngs);
-		latlngs = latlngs || this._defaultShape();
+	addLatLng: function (latlng, ring) {
+		var oldLatLngs = LineUtil.cloneLatLngs(this._latlngs);
+		ring = ring || this._defaultShape();
 		latlng = toLatLng(latlng);
-		latlngs.push(latlng);
+		ring.push(latlng);
 		this._bounds.extend(latlng);
 		this.redraw();
 
 		// @event move: Event
 		// Fired when the polyline is moved via [`addLatLng`](#polyline-addlatlng).
 		// Old and new coordinates, the added latlng and the edited ring are included in event arguments as `oldLatLngs`, `latlngs`, `latlng`, `ring`.
-		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs, latlng: latlng, ring: latlngs});
+		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs, latlng: latlng, ring: ring});
 	},
 
 	_setLatLngs: function (latlngs) {
