@@ -273,6 +273,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font: 0.75rem/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 
 
@@ -424,6 +425,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-scale {
 	font-size: 11px;
+	font-size: 0.69rem;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
@@ -437,6 +439,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	font-size: 11px;
+	font-size: 0.69rem;
 	white-space: nowrap;
 	overflow: hidden;
 	-moz-box-sizing: border-box;
