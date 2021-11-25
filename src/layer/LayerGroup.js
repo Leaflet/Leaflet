@@ -73,7 +73,6 @@ export var LayerGroup = Layer.extend({
 	// @method hasLayer(id: Number): Boolean
 	// Returns `true` if the given internal ID is currently added to the group.
 	hasLayer: function (layer) {
-		if (!layer) { return false; }
 		var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	},

@@ -736,7 +736,7 @@ export var Map = Evented.extend({
 	remove: function () {
 
 		this._initEvents(true);
-		this.off('moveend', this._panInsideMaxBounds);
+		if (this.options.maxBounds) { this.off('moveend', this._panInsideMaxBounds); }
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
@@ -1219,28 +1219,28 @@ export var Map = Evented.extend({
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		// @event zoom: Event
-		// Fired repeatedly during any change in zoom level, including zoom
-		// and fly animations.
+		// Fired repeatedly during any change in zoom level,
+		// including zoom and fly animations.
 		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
 
 		// @event move: Event
-		// Fired repeatedly during any movement of the map, including pan and
-		// fly animations.
+		// Fired repeatedly during any movement of the map,
+		// including pan and fly animations.
 		return this.fire('move', data);
 	},
 
 	_moveEnd: function (zoomChanged) {
 		// @event zoomend: Event
-		// Fired when the map has changed, after any animations.
+		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
 
 		// @event moveend: Event
-		// Fired when the center of the map stops changing (e.g. user stopped
-		// dragging the map).
+		// Fired when the center of the map stops changing
+		// (e.g. user stopped dragging the map or after non-centered zoom).
 		return this.fire('moveend');
 	},
 
@@ -1368,14 +1368,24 @@ export var Map = Evented.extend({
 		return targets;
 	},
 
+	_isClickDisabled: function (el) {
+		while (el !== this._container) {
+			if (el['_leaflet_disable_click']) { return true; }
+			el = el.parentNode;
+		}
+	},
+
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || DomEvent.skipped(e)) { return; }
+		var el = (e.target || e.srcElement);
+		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+			return;
+		}
 
 		var type = e.type;
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			DomUtil.preventOutline(e.target || e.srcElement);
+			DomUtil.preventOutline(el);
 		}
 
 		this._fireDOMEvent(e, type);
@@ -1383,7 +1393,7 @@ export var Map = Evented.extend({
 
 	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
-	_fireDOMEvent: function (e, type, targets) {
+	_fireDOMEvent: function (e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
@@ -1393,21 +1403,29 @@ export var Map = Evented.extend({
 			// handlers start running).
 			var synth = Util.extend({}, e);
 			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, targets);
+			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}
 
-		if (e._stopped) { return; }
-
 		// Find the layer the event is propagating from and its parents.
-		targets = (targets || []).concat(this._findEventTargets(e, type));
+		var targets = this._findEventTargets(e, type);
+
+		if (canvasTargets) {
+			var filtered = []; // pick only targets with listeners
+			for (var i = 0; i < canvasTargets.length; i++) {
+				if (canvasTargets[i].listens(type, true)) {
+					filtered.push(canvasTargets[i]);
+				}
+			}
+			targets = filtered.concat(targets);
+		}
 
 		if (!targets.length) { return; }
 
-		var target = targets[0];
-		if (type === 'contextmenu' && target.listens(type, true)) {
+		if (type === 'contextmenu') {
 			DomEvent.preventDefault(e);
 		}
 
+		var target = targets[0];
 		var data = {
 			originalEvent: e
 		};
@@ -1420,7 +1438,7 @@ export var Map = Evented.extend({
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
 
-		for (var i = 0; i < targets.length; i++) {
+		for (i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
 				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
