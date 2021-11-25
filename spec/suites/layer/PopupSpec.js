@@ -413,7 +413,7 @@ describe("L.Map#openPopup", function () {
 			.down().moveBy(10, 10, 20).up();
 	});
 
-	it('keeps the popup in the view (keepInView)', function (done) {
+	it('moves the map over a long distance to the popup if it is not in the view (keepInView)', function (done) {
 		c.style.position = 'absolute';
 		c.style.left = 0;
 		c.style.top = 0;
@@ -423,14 +423,13 @@ describe("L.Map#openPopup", function () {
 		map.options.inertia = false;
 
 		var spy = sinon.spy();
-		var p = new L.Popup({keepInView: true}).setContent('Popup').setLatLng(center);
-		map.openPopup(p);
 		map.on('autopanstart', spy);
+		var p = new L.Popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
+		map.openPopup(p);
 
-		map.panBy([200, 0]);
 		setTimeout(function () {
 			expect(spy.called).to.be(true);
-			expect(map.getCenter().equals([55.801280971180454, 40.86914062500001])).to.be(true);
+			expect(map.getBounds().contains(p.getLatLng())).to.be(true);
 			done();
 		}, 800);
 	});
