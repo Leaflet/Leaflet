@@ -22,7 +22,6 @@ export var Zoom = Control.extend({
 		// The text set on the 'zoom in' button.
 		zoomInText: '<span aria-hidden="true">+</span>',
 
-
 		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
 		zoomInTitle: 'Zoom in',
