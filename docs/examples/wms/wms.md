@@ -16,7 +16,7 @@ WMS, short for [*web map service*](https://en.wikipedia.org/wiki/Web_Map_Service
 
 TMS stands for [*tiled map service*](https://en.wikipedia.org/wiki/Tile_Map_Service), and is a map tiling standard more focused on web maps, very similar to the map tiles that Leaflet expects in a `L.TileLayer`.
 
-WTMS, for [*web map tile service*](https://en.wikipedia.org/wiki/Web_Map_Tile_Service), is the standard protocol for map tiles and serves map tiles directly usable in a `L.TileLayer`.
+WMTS, for [*web map tile service*](https://en.wikipedia.org/wiki/Web_Map_Tile_Service), is the standard protocol for map tiles and serves map tiles directly usable in a `L.TileLayer`.
 
 
 ## WMS in Leaflet

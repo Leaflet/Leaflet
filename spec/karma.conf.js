@@ -1,4 +1,4 @@
-var json = require('rollup-plugin-json');
+var json = require('@rollup/plugin-json');
 
 const outro = `var oldL = window.L;
 exports.noConflict = function() {
@@ -12,9 +12,10 @@ window.L = exports;`;
 // Karma configuration
 module.exports = function (config) {
 
-// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
+	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
+		"spec/before.js",
 		"src/Leaflet.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
@@ -38,7 +39,8 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-phantomjs-launcher',
+			'karma-edge-launcher',
+			'karma-ie-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
 			'karma-firefox-launcher'],
@@ -59,14 +61,17 @@ module.exports = function (config) {
 			plugins: [
 				json()
 			],
-			format: 'umd',
-			name: 'L',
-			outro: outro
+			output: {
+				format: 'umd',
+				name: 'L',
+				outro: outro,
+				freeze: false,
+			},
 		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: ['dots'],
+		// reporters: ['dots'],
 
 		// web server port
 		port: 9876,
@@ -87,33 +92,48 @@ module.exports = function (config) {
 		// - Firefox
 		// - Opera
 		// - Safari (only Mac)
-		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJSCustom'],
+		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
-			'PhantomJSCustom': {
-				base: 'PhantomJS',
-				flags: ['--load-images=true'],
-				options: {
-					onCallback: function (data) {
-						if (data.render) {
-							page.render(data.render);
-						}
-					}
+			'Chrome1280x1024': {
+				base: 'ChromeHeadless',
+				// increased viewport is required for some tests (TODO fix tests)
+				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
+				flags: ['--window-size=1280,1024']
+			},
+			'FirefoxTouch': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'dom.w3c_touch_events.enabled': 1
 				}
+			},
+			'FirefoxNoTouch': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'dom.w3c_touch_events.enabled': 0
+				}
+			},
+			IE10: {
+				base: 'IE',
+				'x-ua-compatible': 'IE=EmulateIE10'
 			}
 		},
 
-		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 5000,
+		concurrency: 1,
 
-		// Workaround for PhantomJS random DISCONNECTED error
-		browserDisconnectTimeout: 10000, // default 2000
-		browserDisconnectTolerance: 1, // default 0
+		// If browser does not capture in given timeout [ms], kill it
+		captureTimeout: 10000,
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
-		singleRun: true
+		singleRun: true,
+
+		client: {
+			mocha: {
+				// eslint-disable-next-line no-undef
+				forbidOnly: process.env.CI || false
+			}
+		}
 	});
 };

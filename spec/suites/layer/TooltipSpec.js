@@ -1,6 +1,5 @@
 describe('Tooltip', function () {
-
-	var c, map, p2ll,
+	var c, map,
 	    center = [55.8, 37.6];
 
 	beforeEach(function () {
@@ -14,12 +13,10 @@ describe('Tooltip', function () {
 		document.body.appendChild(c);
 		map = new L.Map(c);
 		map.setView(center, 6);
-		p2ll = function (x, y) {
-			return map.layerPointToLatLng([x, y]);
-		};
 	});
 
 	afterEach(function () {
+		map.remove();
 		document.body.removeChild(c);
 	});
 
@@ -69,6 +66,18 @@ describe('Tooltip', function () {
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
 		happen.click(layer._tooltip._container);
 		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("has class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
+	});
+
+	it("has not class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
 	});
 
 	it("can be forced on left direction", function () {
@@ -168,8 +177,8 @@ describe('Tooltip', function () {
 	});
 
 	it("it should use a tooltip with a function as content with a FeatureGroup", function () {
-		var marker1 = new L.Marker(new L.LatLng(55.8, 37.6), {description: "I'm marker 1."});
-		var marker2 = new L.Marker(new L.LatLng(54.6, 38.2), {description: "I'm marker 2."});
+		var marker1 = new L.Marker([55.8, 37.6], {description: "I'm marker 1."});
+		var marker2 = new L.Marker([54.6, 38.2], {description: "I'm marker 2."});
 		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 
 		group.bindTooltip(function (layer) {
@@ -281,11 +290,17 @@ describe('Tooltip', function () {
 		map.openTooltip('Tooltip', center);
 	});
 
+	it("map.openTooltip considers interactive option", function () {
+		if (!window.getComputedStyle) { this.skip(); } // IE9+
+
+		var tooltip = L.tooltip({interactive: true}).setContent('Tooltip');
+		map.openTooltip(tooltip, center);
+		expect(getComputedStyle(tooltip._container).pointerEvents).to.equal('auto');
+	});
+
 	it("can call closeTooltip while not on the map", function () {
 		var layer = new L.Marker(center);
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
 	});
-
 });
-

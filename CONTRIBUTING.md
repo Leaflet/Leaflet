@@ -118,15 +118,13 @@ on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
-To run the tests from the command line,
-install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
-then run:
+To run the tests from the command line, install [Google Chrome](https://www.google.com/chrome/) then run:
 
 ```
 npm test
 ```
 
-To run all the tests in actual browsers at the same time, you can do:
+To run the tests in other browsers at the same time, you can do:
 
 ```
 npm test -- -- --browsers Firefox,Chrome,Safari,IE

@@ -140,6 +140,8 @@ export var BoxZoom = Handler.extend({
 	_onKeyDown: function (e) {
 		if (e.keyCode === 27) {
 			this._finish();
+			this._clearDeferredResetState();
+			this._resetState();
 		}
 	}
 });

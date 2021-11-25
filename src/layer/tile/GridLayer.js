@@ -159,8 +159,7 @@ export var GridLayer = Layer.extend({
 		this._levels = {};
 		this._tiles = {};
 
-		this._resetView();
-		this._update();
+		this._resetView(); // implicit _update() call
 	},
 
 	beforeAdd: function (map) {
@@ -365,6 +364,7 @@ export var GridLayer = Layer.extend({
 		if (zoom === undefined) { return undefined; }
 
 		for (var z in this._levels) {
+			z = Number(z);
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
 				this._onUpdateLevel(z);
@@ -461,7 +461,7 @@ export var GridLayer = Layer.extend({
 	_invalidateAll: function () {
 		for (var z in this._levels) {
 			DomUtil.remove(this._levels[z].el);
-			this._onRemoveLevel(z);
+			this._onRemoveLevel(Number(z));
 			delete this._levels[z];
 		}
 		this._removeAllTiles();
@@ -544,10 +544,12 @@ export var GridLayer = Layer.extend({
 	},
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = this._clampZoom(Math.round(zoom));
+		var tileZoom = Math.round(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
 			tileZoom = undefined;
+		} else {
+			tileZoom = this._clampZoom(tileZoom);
 		}
 
 		var tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
@@ -793,12 +795,6 @@ export var GridLayer = Layer.extend({
 		// update opacity on tiles in IE7-8 because of filter inheritance problems
 		if (Browser.ielt9 && this.options.opacity < 1) {
 			DomUtil.setOpacity(tile, this.options.opacity);
-		}
-
-		// without this hack, tiles disappear after zoom on Chrome for Android
-		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (Browser.android && !Browser.android23) {
-			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
 

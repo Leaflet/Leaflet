@@ -1,15 +1,13 @@
 describe('Events', function () {
-
 	describe('#fireEvent', function () {
-
 		it('fires all listeners added through #addEventListener', function () {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
 			    spy3 = sinon.spy(),
 			    spy4 = sinon.spy(),
-			    spy5 = sinon.spy(),
-			    spy6 = sinon.spy();
+			    spy5 = sinon.spy();
+			    // spy6 = sinon.spy();
 
 			obj.addEventListener('test', spy1);
 			obj.addEventListener('test', spy2);
@@ -41,12 +39,12 @@ describe('Events', function () {
 			    ctx2 = new L.Class(),
 			    count = {one: 0, two: 0, three: 0, four: 0};
 
-			function listener1(e) {
+			function listener1() {
 				count.one++;
 				expect(count.two).to.eql(0);
 			}
 
-			function listener2(e) {
+			function listener2() {
 				count.two++;
 				expect(count.one).to.eql(1);
 				expect(count.three).to.eql(0);
@@ -59,7 +57,7 @@ describe('Events', function () {
 				}
 			}
 
-			function listener3(e) {
+			function listener3() {
 				count.three++;
 				expect(count.two).to.eql(3);
 				expect(count.four).to.eql(0);
@@ -70,7 +68,7 @@ describe('Events', function () {
 				}
 			}
 
-			function listener4(e) {
+			function listener4() {
 				count.four++;
 				expect(count.three).to.eql(2);
 			}
@@ -287,7 +285,6 @@ describe('Events', function () {
 		it('correctly removes all listeners if given no fn', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
-			    foo = {},
 			    foo2 = {},
 			    foo3 = {};
 
@@ -315,7 +312,6 @@ describe('Events', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
-			    spy3 = sinon.spy(),
 			    foo = {};
 
 			/* without context */
@@ -382,6 +378,37 @@ describe('Events', function () {
 	});
 
 	describe('#on, #off & #fire', function () {
+		it('does not remove all listeners when any fn argument specified', function () {
+			var obj = new L.Evented();
+			obj.on('test', L.Util.falseFn);
+			obj.off('test', undefined);
+			obj.off({test: undefined});
+
+			expect(obj.listens('test')).to.be(true);
+		});
+
+		it('ignores non-function listeners passed', function () {
+			var obj = new L.Evented();
+			var off = obj.off.bind(obj);
+			['string', {}, [], true, false, undefined].forEach(function (fn) {
+				obj.on('test', fn);
+				expect(obj.listens('test')).to.be(false);
+				expect(off).withArgs('test', fn).to.not.throwException();
+			});
+		});
+
+		it('throws with wrong types passed', function () {
+			var obj = new L.Evented();
+			var on = obj.on.bind(obj);
+			var off = obj.off.bind(obj);
+			// todo? make it throw  with []
+			[true, false, undefined, 1].forEach(function (type) {
+				expect(on).withArgs(type, L.Util.falseFn).to.throwException();
+				expect(off).withArgs(type, L.Util.falseFn).to.throwException();
+			});
+
+			// todo? make `fire` and `listen` to throw with wrong type
+		});
 
 		it('works like #addEventListener && #removeEventListener', function () {
 			var obj = new L.Evented(),
@@ -600,8 +627,7 @@ describe('Events', function () {
 
 	describe('#listens', function () {
 		it('is false if there is no event handler', function () {
-			var obj = new L.Evented(),
-			    spy = sinon.spy();
+			var obj = new L.Evented();
 
 			expect(obj.listens('test')).to.be(false);
 		});
@@ -650,5 +676,4 @@ describe('Events', function () {
 			expect(spy.called).to.be(true);
 		});
 	});
-
 });
