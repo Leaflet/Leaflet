@@ -190,8 +190,10 @@ export var Popup = DivOverlay.extend({
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
+			closeButton.setAttribute('aria-label', 'Close popup');
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
+			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', this._close, this);
 		}
