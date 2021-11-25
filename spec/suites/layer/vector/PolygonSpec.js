@@ -344,11 +344,6 @@ describe('Polygon', function () {
 			pane = polygon._renderer._container.parentNode;
 			expect(pane).to.not.be(overlayPane);
 			expect(pane).to.be(drawPane);
-
-			polygon.setStyle({pane: 'overlayPane'});
-			pane = polygon._renderer._container.parentNode;
-			expect(pane).to.be(overlayPane);
-			expect(pane).to.not.be(drawPane);
 		});
 	});
 

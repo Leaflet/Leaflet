@@ -80,8 +80,10 @@ export var Layer = Evented.extend({
 	},
 
 	// @method setPane(name : String): this
-	// The layer will be moved to another pane
+	// Move the layer to another pane
 	setPane: function (name) {
+		if (this.options.pane === name) { return this; }
+
 		if (!this._map) {
 			this.options.pane = name;
 			return this;

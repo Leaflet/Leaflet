@@ -105,9 +105,6 @@ export var Path = Layer.extend({
 		Util.setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
-			if (style.pane) {
-				this.setPane(this.options.pane);
-			}
 			if (this.options.stroke && style && Object.prototype.hasOwnProperty.call(style, 'weight')) {
 				this._updateBounds();
 			}
