@@ -1348,7 +1348,7 @@ export var Map = Evented.extend({
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
-			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+			if (target && (type === 'click' || type === 'preclick') && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;
