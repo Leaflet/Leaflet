@@ -16,7 +16,7 @@ title: Zoom Levels Tutorial
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	L.control.scale({maxWidth: 150}).addTo(map);
+	var scaleControl = L.control.scale({maxWidth: 150}).addTo(map);
 
 	setInterval(function(){
 		map.setView([0, 0], 0, {duration: 1, animate: true});

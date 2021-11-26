@@ -24,8 +24,8 @@ title: Custom Icons Tutorial
 		redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
 		orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
 
-	L.marker([51.5, -0.09], {icon: greenIcon}).bindPopup("I am a green leaf.").addTo(map);
-	L.marker([51.495, -0.083], {icon: redIcon}).bindPopup("I am a red leaf.").addTo(map);
-	L.marker([51.49, -0.1], {icon: orangeIcon}).bindPopup("I am an orange leaf.").addTo(map);
+	var mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).bindPopup("I am a green leaf.").addTo(map);
+	var mRed = L.marker([51.495, -0.083], {icon: redIcon}).bindPopup("I am a red leaf.").addTo(map);
+	var mOrange = L.marker([51.49, -0.1], {icon: orangeIcon}).bindPopup("I am an orange leaf.").addTo(map);
 
 </script>
