@@ -29,10 +29,10 @@ title: Video Overlay Tutorial
 	});
 	map.addLayer(overlay);
 
-    var MyPauseControl,
-        MyPlayControl,
-        pauseControl,
-        playControl;
+	var MyPauseControl,
+		MyPlayControl,
+ 		pauseControl,
+ 		playControl;
         
 	overlay.on('load', function () {
 		MyPauseControl = L.Control.extend({

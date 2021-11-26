@@ -27,7 +27,7 @@ title: Grid coordinates
 		return new L.GridLayer.DebugCoords(opts);
 	};
 
-    var debugCoordsGrid = L.gridLayer.debugCoords();
+	var debugCoordsGrid = L.gridLayer.debugCoords();
 	map.addLayer( debugCoordsGrid );
 	
 </script>

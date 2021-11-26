@@ -35,9 +35,9 @@ customMapContainer: "true"
 
 
 	var popup = L.popup()
-	    .setLatLng([51.513, -0.09])
-        .setContent("I am a standalone popup.")
-        .openOn(map);
+		.setLatLng([51.513, -0.09])
+		.setContent("I am a standalone popup.")
+		.openOn(map);
 
 	function onMapClick(e) {
 		popup

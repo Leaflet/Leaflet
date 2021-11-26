@@ -24,7 +24,7 @@ title: KittenLayer
 		return new L.TileLayer.Kitten();
 	}
 
-    var kittenTiles = L.tileLayer.kitten();
+	var kittenTiles = L.tileLayer.kitten();
 	map.addLayer( kittenTiles );
 	
 </script>

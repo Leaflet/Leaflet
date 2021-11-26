@@ -32,7 +32,7 @@ title: CanvasCircles
 		return new L.GridLayer.CanvasCircles(opts);
 	};
 
-    var cavasGridLayer = L.gridLayer.canvasCircles();
+	var cavasGridLayer = L.gridLayer.canvasCircles();
 	map.addLayer( cavasGridLayer );
 	
 </script>

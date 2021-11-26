@@ -22,8 +22,8 @@ css: "body {
 		zoomOffset: -1
 	}).addTo(map);
 
-    var locationMarker,
-        locationCircle;
+	var locationMarker,
+		locationCircle;
 	function onLocationFound(e) {
 		var radius = e.accuracy / 2;
 
