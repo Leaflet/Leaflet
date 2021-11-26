@@ -31,6 +31,6 @@ title: Watermark control
 		return new L.Control.Watermark(opts);
 	}
 	
-	L.control.watermark({ position: 'bottomleft' }).addTo(map);
+	var watermarkControl = L.control.watermark({ position: 'bottomleft' }).addTo(map);
 	
 </script>

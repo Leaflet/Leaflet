@@ -7,7 +7,7 @@ title: GeoJSON tutorial
 <script>
 	var map = L.map('map').setView([39.74739, -105], 13);
 
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -34,7 +34,7 @@ title: GeoJSON tutorial
 		layer.bindPopup(popupContent);
 	}
 
-	L.geoJSON([bicycleRental, campus], {
+	var bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -54,7 +54,7 @@ title: GeoJSON tutorial
 		}
 	}).addTo(map);
 
-	L.geoJSON(freeBus, {
+	var freeBusLayer = L.geoJSON(freeBus, {
 
 		filter: function (feature, layer) {
 			if (feature.properties) {

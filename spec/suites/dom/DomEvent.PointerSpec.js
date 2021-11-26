@@ -64,6 +64,11 @@ describe('DomEvent.Pointer', function () {
 			});
 		});
 
+		it('does not throw on invalid event names', function () {
+			L.DomEvent.on(el, 'touchleave', L.Util.falseFn);
+			L.DomEvent.off(el, 'touchleave', L.Util.falseFn);
+		});
+
 		it('simulates touch events with correct properties', function () {
 			function containIn(props, evt) {
 				if (Array.isArray(props)) {
