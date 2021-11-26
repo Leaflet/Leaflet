@@ -5,7 +5,7 @@ title: Video Overlay Tutorial
 <script>
 	var map = L.map('map');
 
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -29,8 +29,13 @@ title: Video Overlay Tutorial
 	});
 	map.addLayer(overlay);
 
+	var MyPauseControl,
+		MyPlayControl,
+ 		pauseControl,
+ 		playControl;
+        
 	overlay.on('load', function () {
-		var MyPauseControl = L.Control.extend({
+		MyPauseControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '⏸';
@@ -40,7 +45,7 @@ title: Video Overlay Tutorial
 				return button;
 			}
 		});
-		var MyPlayControl = L.Control.extend({
+		MyPlayControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '▶️';
@@ -51,8 +56,8 @@ title: Video Overlay Tutorial
 			}
 		});
 
-		var pauseControl = (new MyPauseControl()).addTo(map);
-		var playControl = (new MyPlayControl()).addTo(map);
+		pauseControl = (new MyPauseControl()).addTo(map);
+		playControl = (new MyPlayControl()).addTo(map);
 	});
 
 </script>

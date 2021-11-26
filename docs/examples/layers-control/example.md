@@ -5,10 +5,10 @@ title: Layers Control Tutorial
 <script>
 	var cities = L.layerGroup();
 
-	L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
-	L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
-	L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
-	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
+	var mLittleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
+		mDenver = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
+		mAurora = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
+		mGolden = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
 
 	var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -33,5 +33,5 @@ title: Layers Control Tutorial
 		"Cities": cities
 	};
 
-	L.control.layers(baseLayers, overlays).addTo(map);
+	var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 </script>
