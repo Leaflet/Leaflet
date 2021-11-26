@@ -665,6 +665,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationError: function (error) {
+		if (!this.getContainer()._leaflet_id) { return; }
+
 		var c = error.code,
 		    message = error.message ||
 		            (c === 1 ? 'permission denied' :
@@ -684,6 +686,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationResponse: function (pos) {
+		if (!this.getContainer()._leaflet_id) { return; }
+
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),
