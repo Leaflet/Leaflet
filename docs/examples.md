@@ -13,7 +13,7 @@ Every tutorial here comes with step-by-step code explanation and is easy enough 
 page="quick-start/"
 thumbnail="quick-start/thumbnail.png"
 title="Leaflet Quick Start Guide"
-description="A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with Mapbox tiles) on your page, working with markers, polylines and popups, and dealing with events."
+description="A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with OpenStreetMap tiles) on your page, working with markers, polylines and popups, and dealing with events."
 %}
 
 

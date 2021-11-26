@@ -12,21 +12,30 @@ title: Layers Control Tutorial
 
 
 	var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
 
-	var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr}),
-		streets  = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
+	var streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+		id: 'mapbox/streets-v11', 
+		tileSize: 512, 
+		zoomOffset: -1, 
+		attribution: mbAttr,
+		accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+	});
+		
+	var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	})
 
 	var map = L.map('map', {
 		center: [39.73, -104.99],
 		zoom: 10,
-		layers: [grayscale, cities]
+		layers: [osm, cities]
 	});
 
 	var baseLayers = {
-		"Grayscale": grayscale,
-		"Streets": streets
+		"OpenStreetMap": osm,
+		"Mapbox Streets": streets
 	};
 
 	var overlays = {

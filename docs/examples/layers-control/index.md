@@ -32,20 +32,24 @@ There are two types of layers: (1) base layers that are mutually exclusive (only
 
 Now let's create those base layers and add the default ones to the map:
 
-<pre><code>var grayscale = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution}),
-	streets   = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
+<pre><code>var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+})
+
+var streets = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
 
 var map = L.map('map', {
 	center: [39.73, -104.99],
 	zoom: 10,
-	layers: [grayscale, cities]
+	layers: [osm, cities]
 });</code></pre>
 
 Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key sets the text for the layer in the control (e.g. "Streets"), while the corresponding value is a reference to the layer (e.g. `streets`).
 
 <pre><code>var baseMaps = {
-	"Grayscale": grayscale,
-	"Streets": streets
+	"OpenStreetMap": osm,
+	"Mapbox Streets": streets
 };
 
 var overlayMaps = {
@@ -56,7 +60,7 @@ Now, all that's left to do is to create a [Layers Control](/reference.html#contr
 
 <pre><code>L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
 
-Note that we added `grayscale` and `cities` layers to the map but didn't add `streets`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
+Note that we added `osm` and `cities` layers to the map but didn't add `streets`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 
 Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
 
