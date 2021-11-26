@@ -53,28 +53,44 @@ describe('PolyUtil', function () {
 
 		it('compute center of polygon', function () {
 			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
-			expect(L.PolyUtil.polygonCenter(latlngs, map)).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+			expect(L.PolyUtil.polygonCenter(latlngs, map.options.crs, map.getZoom())).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+		});
+
+		it('compute center of polygon with maxZoom', function () {
+			L.gridLayer({maxZoom: 18}).addTo(map);
+			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
+			expect(L.PolyUtil.polygonCenter(latlngs, map.options.crs, map.getMaxZoom())).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
 		});
 
 		it('throws error if latlngs not passed', function () {
+			var maxZoom = map.getMaxZoom();
+			var zoom = maxZoom === Infinity ? map.getZoom() : maxZoom;
 			expect(function () {
-				L.PolyUtil.polygonCenter(null, map);
+				L.PolyUtil.polygonCenter(null,  map.options.crs, zoom);
 			}).to.throwException('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', function () {
+			var maxZoom = map.getMaxZoom();
+			var zoom = maxZoom === Infinity ? map.getZoom() : maxZoom;
 			expect(function () {
-				L.PolyUtil.polygonCenter([], map);
+				L.PolyUtil.polygonCenter([], map.options.crs, zoom);
 			}).to.throwException('latlngs not passed');
 		});
 
-		it('throws error if latlngs not flat', function () {
+		it('shows warning if latlngs is not flat', function () {
+			var maxZoom = map.getMaxZoom();
+			var zoom = maxZoom === Infinity ? map.getZoom() : maxZoom;
 			var latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
-			expect(function () {
-				L.PolyUtil.polygonCenter(latlngs, map);
-			}).to.throwException('latlngs are not flat!');
+			var spy = sinon.spy(console, 'warn');
+
+			var center = L.PolyUtil.polygonCenter(latlngs, map.options.crs, zoom);
+			expect(spy.calledOnce).to.eql(true);
+			expect(center).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+
+			console.warn.restore();
 		});
 
 		it('throws error if map not passed', function () {

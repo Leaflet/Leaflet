@@ -98,28 +98,25 @@ describe('LineUtil', function () {
 
 		it('compute center of line', function () {
 			var latlngs = [[80, 0], [80, 90]];
-			expect(L.LineUtil.polylineCenter(latlngs, map)).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+			expect(L.LineUtil.polylineCenter(latlngs, map.options.crs, map.getZoom())).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+		});
+
+		it('compute center of line with maxZoom', function () {
+			L.gridLayer({maxZoom: 18}).addTo(map);
+			var latlngs = [[80, 0], [80, 90]];
+			expect(L.LineUtil.polylineCenter(latlngs, map.options.crs, map.getMaxZoom())).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
 		});
 
 		it('throws error if latlngs not passed', function () {
 			expect(function () {
-				L.LineUtil.polylineCenter(null, map);
+				L.LineUtil.polylineCenter(null, map.options.crs, map.getZoom());
 			}).to.throwException('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', function () {
 			expect(function () {
-				L.LineUtil.polylineCenter([], map);
+				L.LineUtil.polylineCenter([], map.options.crs, map.getZoom());
 			}).to.throwException('latlngs not passed');
-		});
-
-		it('throws error if latlngs not flat', function () {
-			var latlngs = [
-				[[80, 0], [80, 90]]
-			];
-			expect(function () {
-				L.LineUtil.polylineCenter(latlngs, map);
-			}).to.throwException('latlngs are not flat!');
 		});
 
 		it('throws error if map not passed', function () {
@@ -127,6 +124,21 @@ describe('LineUtil', function () {
 			expect(function () {
 				L.LineUtil.polylineCenter(latlngs, null);
 			}).to.throwException('map not passed');
+		});
+
+		it('shows warning if latlngs is not flat', function () {
+			var maxZoom = map.getMaxZoom();
+			var zoom = maxZoom === Infinity ? map.getZoom() : maxZoom;
+			var latlngs = [
+				[[80, 0], [80, 90]]
+			];
+			var spy = sinon.spy(console, 'warn');
+
+			var center = L.LineUtil.polylineCenter(latlngs, map.options.crs, zoom);
+			expect(spy.calledOnce).to.eql(true);
+			expect(center).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+
+			console.warn.restore();
 		});
 	});
 });

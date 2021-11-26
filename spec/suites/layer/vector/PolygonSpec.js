@@ -156,6 +156,15 @@ describe('Polygon', function () {
 			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
 		});
 
+		it('should compute center of a big simple polygon around equator with maxZoom', function () {
+			var latlngs = [
+				[[0, 0], [10, 0], [10, 10], [0, 10]]
+			];
+			map.setMaxZoom(18);
+			var layer = new L.Polygon(latlngs).addTo(map);
+			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+		});
+
 		it('should compute center of a small simple polygon', function () {
 			var latlngs = [
 				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]

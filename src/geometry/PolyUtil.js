@@ -1,5 +1,6 @@
 import * as LineUtil from './LineUtil';
 import {toLatLng} from '../geo/LatLng';
+import {toPoint} from './Point';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
@@ -54,10 +55,10 @@ export function clipPolygon(points, bounds, round) {
 	return points;
 }
 
-/* @function polygonCenter(latlngs: LatLng[], map: Map): LatLng
- * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the `Polygon` of the passed LatLngs.
+/* @function polygonCenter(latlngs: LatLng[] crs: CRS, zoom: Number): LatLng
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the `Polygon` of the passed LatLngs (first ring).
  */
-export function polygonCenter(latlngs, map) {
+export function polygonCenter(latlngs, crs, zoom) {
 	var i, j, p1, p2, f, area, x, y, center;
 
 	if (!latlngs || latlngs.length === 0) {
@@ -65,24 +66,16 @@ export function polygonCenter(latlngs, map) {
 	}
 
 	if (!LineUtil.isFlat(latlngs)) {
-		throw new Error('latlngs are not flat!');
+		console.warn('latlngs are not flat! Only the first ring will be used');
+		latlngs = latlngs[0];
 	}
 
-	// throws error when map is not passed because calculation requires projected coordinates
-	if (!map) {
-		throw new Error('map not passed');
-	}
-
-	var zoom = map.getMaxZoom() === Infinity ? map.getZoom() : map.getMaxZoom();
 	var points = [];
 	for (var k in latlngs) {
-		points.push(map.project(toLatLng(latlngs[k]), zoom));
+		points.push(crs.latLngToPoint(toLatLng(latlngs[k]), zoom));
 	}
 
 	var len = points.length;
-
-	if (!len) { return null; }
-
 	area = x = y = 0;
 
 	// polygon centroid algorithm;
@@ -102,5 +95,5 @@ export function polygonCenter(latlngs, map) {
 	} else {
 		center = [x / area, y / area];
 	}
-	return map.unproject(center, zoom);
+	return crs.pointToLatLng(toPoint(center), zoom);
 }

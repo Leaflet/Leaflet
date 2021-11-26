@@ -1,4 +1,4 @@
-import {Point} from './Point';
+import {Point, toPoint} from './Point';
 import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 
@@ -242,11 +242,11 @@ export function _flat(latlngs) {
 	return isFlat(latlngs);
 }
 
-/* @function polylineCenter(latlngs: LatLng[], map: Map): LatLng
- * Returns the center of the `Polyline` of the passed LatLngs.
+/* @function polylineCenter(latlngs: LatLng[], crs: CRS, zoom: Number): LatLng
+ * Returns the center of `Polyline` of the passed LatLngs (first ring).
  * The returned LatLng will be on the `Polyline`.
  */
-export function polylineCenter(latlngs, map) {
+export function polylineCenter(latlngs, crs, zoom) {
 	var i, halfDist, segDist, dist, p1, p2, ratio, center;
 
 	if (!latlngs || latlngs.length === 0) {
@@ -254,22 +254,16 @@ export function polylineCenter(latlngs, map) {
 	}
 
 	if (!isFlat(latlngs)) {
-		throw new Error('latlngs are not flat!');
+		console.warn('latlngs are not flat! Only the first ring will be used');
+		latlngs = latlngs[0];
 	}
 
-	// throws error when map is not passed because calculation requires projected coordinates
-	if (!map) {
-		throw new Error('map not passed');
-	}
-
-	var zoom = map.getMaxZoom() === Infinity ? map.getZoom() : map.getMaxZoom();
 	var points = [];
 	for (var j in latlngs) {
-		points.push(map.project(toLatLng(latlngs[j]), zoom));
+		points.push(crs.latLngToPoint(toLatLng(latlngs[j]), zoom));
 	}
-	var len = points.length;
 
-	if (!len) { return null; }
+	var len = points.length;
 
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;
@@ -295,5 +289,5 @@ export function polylineCenter(latlngs, map) {
 			}
 		}
 	}
-	return map.unproject(center, zoom);
+	return crs.pointToLatLng(toPoint(center), zoom);
 }

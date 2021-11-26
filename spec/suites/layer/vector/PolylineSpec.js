@@ -109,6 +109,12 @@ describe('Polyline', function () {
 			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
 		});
 
+		it('should compute center of a big flat line on equator with maxZoom', function () {
+			map.setMaxZoom(18);
+			var polyline = new L.Polyline([[0, 0], [0, 90]]).addTo(map);
+			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
+		});
+
 		it('should compute center of a big flat line close to the pole', function () {
 			var polyline = new L.Polyline([[80, 0], [80, 90]]).addTo(map);
 			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);

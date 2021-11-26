@@ -68,7 +68,9 @@ export var Polygon = Polyline.extend({
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-		return PolyUtil.polygonCenter(this._defaultShape(), this._map);
+		var maxZoom = this._map.getMaxZoom();
+		var zoom = maxZoom === Infinity ? this._map.getZoom() : maxZoom;
+		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs, zoom);
 	},
 
 	_convertLatLngs: function (latlngs) {
