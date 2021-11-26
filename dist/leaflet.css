@@ -45,7 +45,10 @@
 	}
 /* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
 /* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
-.leaflet-container .leaflet-overlay-pane svg,
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
 .leaflet-container .leaflet-marker-pane img,
 .leaflet-container .leaflet-shadow-pane img,
 .leaflet-container .leaflet-tile-pane img,
@@ -53,6 +56,8 @@
 .leaflet-container .leaflet-tile {
 	max-width: none !important;
 	max-height: none !important;
+	width: auto;
+	padding: 0;
 	}
 
 .leaflet-container.leaflet-touch-zoom {
@@ -268,6 +273,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font: 0.75rem/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 
 
@@ -419,6 +425,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-scale {
 	font-size: 11px;
+	font-size: 0.69rem;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
@@ -432,6 +439,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	font-size: 11px;
+	font-size: 0.69rem;
 	white-space: nowrap;
 	overflow: hidden;
 	-moz-box-sizing: border-box;
@@ -518,13 +526,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	width: 18px;
 	height: 14px;
 	font: 16px/14px Tahoma, Verdana, sans-serif;
-	color: #c3c3c3;
+	color: #757575;
 	text-decoration: none;
-	font-weight: bold;
 	background: transparent;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover {
-	color: #999;
+	color: #585858;
 	}
 .leaflet-popup-scrolled {
 	overflow: auto;
