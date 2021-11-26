@@ -25,8 +25,13 @@ title: Video Overlay Tutorial
 	});
 	map.addLayer(overlay);
 
+	var MyPauseControl,
+		MyPlayControl,
+ 		pauseControl,
+ 		playControl;
+        
 	overlay.on('load', function () {
-		var MyPauseControl = L.Control.extend({
+		MyPauseControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '⏸';
@@ -36,7 +41,7 @@ title: Video Overlay Tutorial
 				return button;
 			}
 		});
-		var MyPlayControl = L.Control.extend({
+		MyPlayControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '▶️';
@@ -47,8 +52,8 @@ title: Video Overlay Tutorial
 			}
 		});
 
-		var pauseControl = (new MyPauseControl()).addTo(map);
-		var playControl = (new MyPlayControl()).addTo(map);
+		pauseControl = (new MyPauseControl()).addTo(map);
+		playControl = (new MyPlayControl()).addTo(map);
 	});
 
 </script>

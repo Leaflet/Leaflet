@@ -13,7 +13,7 @@ title: CRS.Simple example
 	var image = L.imageOverlay('uqm_map_full.png', bounds).addTo(map);
 
 	var sol = L.latLng([ 145, 175 ]);
-	L.marker(sol).addTo(map);
+	var marker = L.marker(sol).addTo(map);
 
 	map.setView( [70, 120], 1);
 

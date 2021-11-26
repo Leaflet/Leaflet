@@ -30,7 +30,7 @@ title: GeoJSON tutorial
 		layer.bindPopup(popupContent);
 	}
 
-	L.geoJSON([bicycleRental, campus], {
+	var bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -50,7 +50,7 @@ title: GeoJSON tutorial
 		}
 	}).addTo(map);
 
-	L.geoJSON(freeBus, {
+	var freeBusLayer = L.geoJSON(freeBus, {
 
 		filter: function (feature, layer) {
 			if (feature.properties) {

@@ -18,13 +18,15 @@ css: "body {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+	var locationMarker,
+		locationCircle;
 	function onLocationFound(e) {
 		var radius = e.accuracy / 2;
 
-		L.marker(e.latlng).addTo(map)
+		locationMarker = L.marker(e.latlng).addTo(map)
 			.bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-		L.circle(e.latlng, radius).addTo(map);
+		locationCircle = L.circle(e.latlng, radius).addTo(map);
 	}
 
 	function onLocationError(e) {

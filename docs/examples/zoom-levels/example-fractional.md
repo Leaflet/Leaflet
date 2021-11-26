@@ -49,7 +49,7 @@ title: Zoom Levels Tutorial
 		}
 	});
 
-	(new ZoomViewer).addTo(map);
+	var zoomViewerControl = (new ZoomViewer).addTo(map);
 
 	map.setView([0, 0], 0);
 </script>

@@ -22,6 +22,6 @@ title: Custom Icons Tutorial
 
 	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 
-	L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
+	var mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
 </script>

@@ -39,7 +39,7 @@
 			layer.bindPopup(popupContent);
 		}
 
-		L.geoJson([bicycleRental, campus], {
+		var bicycleRentalLayer = L.geoJson([bicycleRental, campus], {
 
 			style: function (feature) {
 				return feature.properties && feature.properties.style;
@@ -59,7 +59,7 @@
 			}
 		}).addTo(map);
 
-		L.geoJson(freeBus, {
+		var freeBusLayer = L.geoJson(freeBus, {
 
 			filter: function (feature, layer) {
 				if (feature.properties) {

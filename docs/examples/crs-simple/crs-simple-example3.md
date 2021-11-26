@@ -26,10 +26,10 @@ title: CRS.Simple example
 	var kruegerZ = xy( 13.4,  56.5);
 	var deneb    = xy(218.7,   8.3);
 
-	L.marker(     sol).addTo(map).bindPopup(      'Sol');
-	L.marker(   mizar).addTo(map).bindPopup(    'Mizar');
-	L.marker(kruegerZ).addTo(map).bindPopup('Krueger-Z');
-	L.marker(   deneb).addTo(map).bindPopup(    'Deneb');
+	var mSol = L.marker(sol).addTo(map).bindPopup('Sol');
+	var mMizar = L.marker(mizar).addTo(map).bindPopup('Mizar');
+	var mKruegerZ = L.marker(kruegerZ).addTo(map).bindPopup('Krueger-Z');
+	var mDeneb = L.marker(deneb).addTo(map).bindPopup('Deneb');
 
 	var travel = L.polyline([sol, deneb]).addTo(map);
 

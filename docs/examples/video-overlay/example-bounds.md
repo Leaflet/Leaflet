@@ -12,7 +12,7 @@ title: Video Overlay Tutorial
 
 	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
-	L.rectangle(bounds).addTo(map);
+	var rectangle = L.rectangle(bounds).addTo(map);
 
 	map.fitBounds(bounds);
 
