@@ -9,6 +9,11 @@ html, body, input, select, button, textarea, table {
 	text-rendering: optimizeLegibility;
 }
 
+html {
+	scroll-padding-top: 5em;
+	overflow: auto;
+}
+
 body {
 	line-height: 1.5;
 	color: black;
@@ -488,6 +493,10 @@ table.plugins td:first-child a {
 	color: #333;
 	border-bottom: 3px solid #555;
 	transition: border-color .25s ease;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: white;
 }
 .api-page #toc ~ h2:target {
 	border-color: #1EB300;
