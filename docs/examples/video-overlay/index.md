@@ -29,10 +29,10 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
 
 Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:
 

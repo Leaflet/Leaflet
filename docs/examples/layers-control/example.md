@@ -21,11 +21,11 @@ title: Layers Control Tutorial
 		attribution: mbAttr,
 		accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
 	});
-		
+	
 	var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	})
+	}).addTo(map);
 
 	var map = L.map('map', {
 		center: [39.73, -104.99],

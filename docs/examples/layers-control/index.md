@@ -35,7 +35,7 @@ Now let's create those base layers and add the default ones to the map:
 <pre><code>var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-})
+});
 
 var streets = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
 
@@ -53,7 +53,7 @@ Next, we'll create two objects. One will contain our base layers and one will co
 };
 
 var overlayMaps = {
-    "Cities": cities
+	"Cities": cities
 };</code></pre>
 
 Now, all that's left to do is to create a [Layers Control](/reference.html#control-layers) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional: you can pass just a base layers object by omitting the second argument, or just an overlays objects by passing `null` as the first argument. In each case, the omitted layer type will not appear for the user to select.
