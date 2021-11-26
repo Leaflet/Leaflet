@@ -312,5 +312,6 @@ describe('Tooltip', function () {
 		layer.bindTooltip('Tooltip2').openTooltip();
 		expect(map.hasLayer(tooltip1)).to.not.be.ok();
 		expect(eventSpy.calledOnce).to.be.ok();
+		layer.unbindTooltip.restore(); // unwrap the spy
 	});
 });
