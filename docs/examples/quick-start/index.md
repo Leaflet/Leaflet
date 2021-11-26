@@ -97,7 +97,7 @@ Adding a polygon is as easy:
 
 ### Working with popups
 
-{% include frame.html url="example-popups.html" %}
+{% include frame.html url="example.html" %}
 
 Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:
 
@@ -110,7 +110,7 @@ Try clicking on our objects. The `bindPopup` method attaches a popup with the sp
 You can also use popups as layers (when you need something more than attaching a popup to an object):
 
 	var popup = L.popup()
-		.setLatLng([51.5, -0.09])
+		.setLatLng([51.513, -0.09])
 		.setContent("I am a standalone popup.")
 		.openOn(map);
 
