@@ -40,6 +40,14 @@ export var Popup = DivOverlay.extend({
 	// @section
 	// @aka Popup options
 	options: {
+		// @option pane: String = 'popupPane'
+		// `Map pane` where the popup will be added.
+		pane: 'popupPane',
+
+		// @option offset: Point = Point(0, 7)
+		// The offset of the popup position.
+		offset: [0, 7],
+
 		// @option maxWidth: Number = 300
 		// Max width of the popup, in pixels.
 		maxWidth: 300,

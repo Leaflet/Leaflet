@@ -18,18 +18,17 @@ export var DivOverlay = Layer.extend({
 	// @section
 	// @aka DivOverlay options
 	options: {
-		// @option offset: Point = Point(0, 7)
-		// The offset of the overlay position. Useful to control the anchor
-		// of the popup when opening it on some overlays.
-		offset: [0, 7],
+		// @option offset: Point = Point(0, 0)
+		// The offset of the overlay position.
+		offset: [0, 0],
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the overlay.
 		className: '',
 
-		// @option pane: String = 'popupPane'
+		// @option pane: String = undefined
 		// `Map pane` where the overlay will be added.
-		pane: 'popupPane'
+		pane: undefined
 	},
 
 	initialize: function (options, source) {
