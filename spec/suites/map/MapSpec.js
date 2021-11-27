@@ -1327,7 +1327,7 @@ describe("Map", function () {
 				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
 			}).to.not.throwException();
 		});
-		it("don't throw error if location is found and map is not existing", function () {
+		it("don't throw error if location is not found and map is not existing", function () {
 			map._locateOptions = {setView: true};
 			var fn = L.Util.bind(map._handleGeolocationError, map);
 			map.remove();
