@@ -85,37 +85,41 @@ describe('LineUtil', function () {
 	});
 
 	describe('#polylineCenter', function () {
-		var map;
-		before(function () {
-			map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+		var map, crs, zoom;
+		beforeEach(function () {
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+			crs = map.options.crs;
+			zoom = map.getZoom();
 		});
 
-		after(function () {
+		afterEach(function () {
 			map.remove();
 		});
 
 		// More tests in PolylineSpec
 
-		it('compute center of line', function () {
+		it('computes center of line', function () {
 			var latlngs = [[80, 0], [80, 90]];
-			expect(L.LineUtil.polylineCenter(latlngs, map.options.crs, map.getZoom())).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			expect(center).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
 		});
 
-		it('compute center of line with maxZoom', function () {
+		it('computes center of line with maxZoom', function () {
 			L.gridLayer({maxZoom: 18}).addTo(map);
 			var latlngs = [[80, 0], [80, 90]];
-			expect(L.LineUtil.polylineCenter(latlngs, map.options.crs, map.getMaxZoom())).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+			var center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
+			expect(center).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
 		});
 
 		it('throws error if latlngs not passed', function () {
 			expect(function () {
-				L.LineUtil.polylineCenter(null, map.options.crs, map.getZoom());
+				L.LineUtil.polylineCenter(null, crs, zoom);
 			}).to.throwException('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', function () {
 			expect(function () {
-				L.LineUtil.polylineCenter([], map.options.crs, map.getZoom());
+				L.LineUtil.polylineCenter([], crs, zoom);
 			}).to.throwException('latlngs not passed');
 		});
 
@@ -127,18 +131,14 @@ describe('LineUtil', function () {
 		});
 
 		it('shows warning if latlngs is not flat', function () {
-			var maxZoom = map.getMaxZoom();
-			var zoom = maxZoom === Infinity ? map.getZoom() : maxZoom;
 			var latlngs = [
 				[[80, 0], [80, 90]]
 			];
 			var spy = sinon.spy(console, 'warn');
-
-			var center = L.LineUtil.polylineCenter(latlngs, map.options.crs, zoom);
+			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			console.warn.restore();
 			expect(spy.calledOnce).to.eql(true);
 			expect(center).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
-
-			console.warn.restore();
 		});
 	});
 });

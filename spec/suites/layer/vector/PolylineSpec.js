@@ -1,11 +1,11 @@
 describe('Polyline', function () {
 	var map;
 
-	before(function () {
-		map  = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	beforeEach(function () {
+		map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
 	});
 
-	after(function () {
+	afterEach(function () {
 		map.remove();
 	});
 
@@ -105,51 +105,52 @@ describe('Polyline', function () {
 
 	describe('#getCenter', function () {
 		it('should compute center of a big flat line on equator', function () {
-			var polyline = new L.Polyline([[0, 0], [0, 90]]).addTo(map);
+			var polyline = L.polyline([[0, 0], [0, 90]]).addTo(map);
 			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
 		});
 
 		it('should compute center of a big flat line on equator with maxZoom', function () {
 			map.setMaxZoom(18);
-			var polyline = new L.Polyline([[0, 0], [0, 90]]).addTo(map);
+			var polyline = L.polyline([[0, 0], [0, 90]]).addTo(map);
 			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
 		});
 
 		it('should compute center of a big flat line close to the pole', function () {
-			var polyline = new L.Polyline([[80, 0], [80, 90]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+			var polyline = L.polyline([[80, 0], [80, 90]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([80, 45]));
 		});
 
 		it('should compute center of a big diagonal line', function () {
-			var polyline = new L.Polyline([[0, 0], [80, 80]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([57, 40]), 1);
+			var polyline = L.polyline([[0, 0], [80, 80]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([57.04516467328689, 40]));
 		});
 
 		it('should compute center of a diagonal line close to the pole', function () {
-			var polyline = new L.Polyline([[70, 70], [84, 84]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([79, 77]), 1);
+			var polyline = L.polyline([[70, 70], [84, 84]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([79.01810060159328, 77]));
 		});
 
 		it('should compute center of a big multiline', function () {
-			var polyline = new L.Polyline([[[10, -80], [0, 0], [0, 10], [10, 90]], [[-10, -80], [10, 0], [10, 10], [-10, 90]]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 5]), 1);
+			var latlngs = [[[10, -80], [0, 0], [0, 10], [10, 90]], [[-10, -80], [10, 0], [10, 10], [-10, 90]]];
+			var polyline = L.polyline(latlngs).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 5]));
 		});
 
 		it('should compute center of a small flat line', function () {
-			var polyline = new L.Polyline([[0, 0], [0, 0.090]]).addTo(map);
+			var polyline = L.polyline([[0, 0], [0, 0.090]]).addTo(map);
 			map.setZoom(0);  // Make the line disappear in screen;
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 0.045]), 1e-2);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 0.045]));
 		});
 
 		it('throws error if not yet added to map', function () {
 			expect(function () {
-				var polyline = new L.Polyline([[0, 0], [0, 0.090]]);
+				var polyline = L.polyline([[0, 0], [0, 0.090]]);
 				polyline.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
 		it('should compute same center for low and high zoom', function () {
-			var layer = new L.Polyline([[10, -80], [0, 0], [0, 10], [10, 90]]).addTo(map);
+			var layer = L.polyline([[10, -80], [0, 0], [0, 10], [10, 90]]).addTo(map);
 			map.setZoom(0);
 			var center = layer.getCenter();
 			map.setZoom(18);
@@ -157,8 +158,8 @@ describe('Polyline', function () {
 		});
 
 		it('should compute center of a zick-zack line', function () {
-			var polyline = new L.Polyline([[0, 0], [50, 50], [30, 30], [35, 35]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([40.55, 38.37]), 1e-2);
+			var polyline = L.polyline([[0, 0], [50, 50], [30, 30], [35, 35]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([40.551864181628666, 38.36684065813897]));
 		});
 
 	});
