@@ -3,11 +3,11 @@ describe("CRS.EPSG3857", function () {
 
 	describe("#latLngToPoint", function () {
 		it("projects a center point", function () {
-			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near(new L.Point(128, 128), 0.01);
+			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([128, 128], 0.01);
 		});
 
 		it("projects the northeast corner of the world", function () {
-			expect(crs.latLngToPoint(L.latLng(85.0511287798, 180), 0)).near(new L.Point(256, 0));
+			expect(crs.latLngToPoint(L.latLng(85.0511287798, 180), 0)).near([256, 0]);
 		});
 	});
 
@@ -23,9 +23,9 @@ describe("CRS.EPSG3857", function () {
 
 	describe("project", function () {
 		it('projects geo coords into meter coords correctly', function () {
-			expect(crs.project(new L.LatLng(50, 30))).near(new L.Point(3339584.7238, 6446275.84102));
-			expect(crs.project(new L.LatLng(85.0511287798, 180))).near(new L.Point(20037508.34279, 20037508.34278));
-			expect(crs.project(new L.LatLng(-85.0511287798, -180))).near(new L.Point(-20037508.34279, -20037508.34278));
+			expect(crs.project(new L.LatLng(50, 30))).near([3339584.7238, 6446275.84102]);
+			expect(crs.project(new L.LatLng(85.0511287798, 180))).near([20037508.34279, 20037508.34278]);
+			expect(crs.project(new L.LatLng(-85.0511287798, -180))).near([-20037508.34279, -20037508.34278]);
 		});
 	});
 
@@ -164,11 +164,11 @@ describe("CRS.EPSG3395", function () {
 
 	describe("#latLngToPoint", function () {
 		it("projects a center point", function () {
-			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near(new L.Point(128, 128), 0.01);
+			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([128, 128], 0.01);
 		});
 
 		it("projects the northeast corner of the world", function () {
-			expect(crs.latLngToPoint(L.latLng(85.0840591556, 180), 0)).near(new L.Point(256, 0));
+			expect(crs.latLngToPoint(L.latLng(85.0840591556, 180), 0)).near([256, 0]);
 		});
 	});
 
@@ -188,9 +188,9 @@ describe("CRS.Simple", function () {
 
 	describe("#latLngToPoint", function () {
 		it("converts LatLng coords to pixels", function () {
-			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near(new L.Point(0, 0));
-			expect(crs.latLngToPoint(L.latLng(700, 300), 0)).near(new L.Point(300, -700));
-			expect(crs.latLngToPoint(L.latLng(-200, 1000), 1)).near(new L.Point(2000, 400));
+			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([0, 0]);
+			expect(crs.latLngToPoint(L.latLng(700, 300), 0)).near([300, -700]);
+			expect(crs.latLngToPoint(L.latLng(-200, 1000), 1)).near([2000, 400]);
 		});
 	});
 

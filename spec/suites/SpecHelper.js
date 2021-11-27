@@ -26,6 +26,7 @@ if (!Array.prototype.map) {
 }
 
 expect.Assertion.prototype.near = function (expected, delta) {
+	expected = L.point(expected);
 	delta = delta || 1;
 	expect(this.obj.x).to
 		.be.within(expected.x - delta, expected.x + delta);
