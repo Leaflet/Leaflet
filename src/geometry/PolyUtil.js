@@ -56,7 +56,7 @@ export function clipPolygon(points, bounds, round) {
 }
 
 /* @function polygonCenter(latlngs: LatLng[] crs: CRS, zoom: Number): LatLng
- * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the `Polygon` of the passed LatLngs (first ring).
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
  */
 export function polygonCenter(latlngs, crs, zoom) {
 	var i, j, p1, p2, f, area, x, y, center;

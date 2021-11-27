@@ -243,8 +243,7 @@ export function _flat(latlngs) {
 }
 
 /* @function polylineCenter(latlngs: LatLng[], crs: CRS, zoom: Number): LatLng
- * Returns the center of `Polyline` of the passed LatLngs (first ring).
- * The returned LatLng will be on the `Polyline`.
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
  */
 export function polylineCenter(latlngs, crs, zoom) {
 	var i, halfDist, segDist, dist, p1, p2, ratio, center;

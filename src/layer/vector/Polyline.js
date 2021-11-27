@@ -114,7 +114,7 @@ export var Polyline = Path.extend({
 	},
 
 	// @method getCenter(): LatLng
-	// Returns the center of the Polyline.
+	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polyline.
 	getCenter: function () {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
