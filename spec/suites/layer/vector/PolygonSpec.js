@@ -153,16 +153,7 @@ describe('Polygon', function () {
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			var layer = L.polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5.019148099025293, 5]));
-		});
-
-		it('should compute center of a big simple polygon around equator with maxZoom', function () {
-			var latlngs = [
-				[[0, 0], [10, 0], [10, 10], [0, 10]]
-			];
-			map.setMaxZoom(18);
-			var layer = L.polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5.019148099025293, 5]));
+			expect(layer.getCenter()).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
 		it('should compute center of a small simple polygon', function () {
@@ -171,7 +162,7 @@ describe('Polygon', function () {
 			];
 			var layer = L.polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0.005, 0.005]));
+			expect(layer.getCenter()).to.be.nearLatLng([0.005, 0.005]);
 		});
 
 		it('throws error if not yet added to map', function () {
@@ -201,7 +192,7 @@ describe('Polygon', function () {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 			var layer = L.polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([31.436532296911807, 39.99999999999979]));
+			expect(layer.getCenter()).to.be.nearLatLng([31.436532296911807, 39.99999999999979]);
 		});
 	});
 

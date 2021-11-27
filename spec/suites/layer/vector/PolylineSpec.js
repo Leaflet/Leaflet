@@ -117,29 +117,29 @@ describe('Polyline', function () {
 
 		it('should compute center of a big flat line close to the pole', function () {
 			var polyline = L.polyline([[80, 0], [80, 90]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([80, 45]));
+			expect(polyline.getCenter()).to.be.nearLatLng([80, 45]);
 		});
 
 		it('should compute center of a big diagonal line', function () {
 			var polyline = L.polyline([[0, 0], [80, 80]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([57.04516467328689, 40]));
+			expect(polyline.getCenter()).to.be.nearLatLng([57.04516467328689, 40]);
 		});
 
 		it('should compute center of a diagonal line close to the pole', function () {
 			var polyline = L.polyline([[70, 70], [84, 84]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([79.01810060159328, 77]));
+			expect(polyline.getCenter()).to.be.nearLatLng([79.01810060159328, 77]);
 		});
 
 		it('should compute center of a big multiline', function () {
 			var latlngs = [[[10, -80], [0, 0], [0, 10], [10, 90]], [[-10, -80], [10, 0], [10, 10], [-10, 90]]];
 			var polyline = L.polyline(latlngs).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 5]));
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 5]);
 		});
 
 		it('should compute center of a small flat line', function () {
 			var polyline = L.polyline([[0, 0], [0, 0.090]]).addTo(map);
 			map.setZoom(0);  // Make the line disappear in screen;
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 0.045]));
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 0.045]);
 		});
 
 		it('throws error if not yet added to map', function () {
@@ -159,7 +159,7 @@ describe('Polyline', function () {
 
 		it('should compute center of a zick-zack line', function () {
 			var polyline = L.polyline([[0, 0], [50, 50], [30, 30], [35, 35]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([40.551864181628666, 38.36684065813897]));
+			expect(polyline.getCenter()).to.be.nearLatLng([40.551864181628666, 38.36684065813897]);
 		});
 
 	});
