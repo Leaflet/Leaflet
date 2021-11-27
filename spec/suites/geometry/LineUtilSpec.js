@@ -101,14 +101,14 @@ describe('LineUtil', function () {
 		it('computes center of line', function () {
 			var latlngs = [[80, 0], [80, 90]];
 			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
-			expect(center).to.be.nearLatLng(L.latLng([80, 45]));
+			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
 		it('computes center of line with maxZoom', function () {
 			L.gridLayer({maxZoom: 18}).addTo(map);
 			var latlngs = [[80, 0], [80, 90]];
 			var center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
-			expect(center).to.be.nearLatLng(L.latLng([80, 45]));
+			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
 		it('throws error if latlngs not passed', function () {
@@ -138,7 +138,7 @@ describe('LineUtil', function () {
 			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
 			console.warn.restore();
 			expect(spy.calledOnce).to.be.ok();
-			expect(center).to.be.nearLatLng(L.latLng([80, 45]));
+			expect(center).to.be.nearLatLng([80, 45]);
 		});
 	});
 });

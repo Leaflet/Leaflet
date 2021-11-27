@@ -56,14 +56,14 @@ describe('PolyUtil', function () {
 		it('computes center of polygon', function () {
 			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
 			var center = L.PolyUtil.polygonCenter(latlngs, crs, zoom);
-			expect(center).to.be.nearLatLng(L.latLng([5.019148099025293, 5]));
+			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
 		it('computes center of polygon with maxZoom', function () {
 			L.gridLayer({maxZoom: 18}).addTo(map);
 			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
 			var center = L.PolyUtil.polygonCenter(latlngs, crs, map.getMaxZoom());
-			expect(center).to.be.nearLatLng(L.latLng([5.019148099025293, 5]));
+			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
 		it('throws error if latlngs not passed', function () {
@@ -86,7 +86,7 @@ describe('PolyUtil', function () {
 			var center = L.PolyUtil.polygonCenter(latlngs, crs, zoom);
 			console.warn.restore();
 			expect(spy.calledOnce).to.be.ok();
-			expect(center).to.be.nearLatLng(L.latLng([5.019148099025293, 5]));
+			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
 		it('throws error if map not passed', function () {
