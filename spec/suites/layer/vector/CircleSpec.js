@@ -28,8 +28,8 @@ describe('Circle', function () {
 		it('returns bounds', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
-			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
 	});
 
@@ -37,8 +37,8 @@ describe('Circle', function () {
 		it('returns same bounds as 1.0 factory', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
-			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
 	});
 });
