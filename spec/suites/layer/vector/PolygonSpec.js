@@ -201,7 +201,7 @@ describe('Polygon', function () {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 			var layer = L.polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([31.436532296911807 , 39.99999999999979]));
+			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([31.436532296911807, 39.99999999999979]));
 		});
 	});
 
