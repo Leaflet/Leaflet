@@ -34,6 +34,7 @@ expect.Assertion.prototype.near = function (expected, delta) {
 };
 
 expect.Assertion.prototype.nearLatLng = function (expected, delta) {
+	expected = L.latLng(expected);
 	delta = delta || 1e-4;
 	expect(this.obj.lat).to
 		.be.within(expected.lat - delta, expected.lat + delta);
