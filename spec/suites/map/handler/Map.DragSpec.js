@@ -74,7 +74,7 @@ describe("Map.Drag", function () {
 					var center = map.getCenter();
 					var zoom = map.getZoom();
 					expect(center.lat).to.be.within(21.9430, 21.9431);
-					expect(center.lng).to.be(-180);
+					expect(center.lng).to.be(-183.515625);
 					expect(zoom).to.be(1);
 
 					done();
@@ -111,7 +111,7 @@ describe("Map.Drag", function () {
 						var center = map.getCenter();
 						var zoom = map.getZoom();
 						expect(center.lat).to.be.within(21.9430, 21.9431);
-						expect(center.lng).to.be(-180);
+						expect(center.lng).to.be(-181.75781250000003);
 						expect(zoom).to.be(1);
 
 						done();
@@ -336,7 +336,7 @@ describe("Map.Drag", function () {
 					var center = map.getCenter();
 					var zoom = map.getZoom();
 					expect(center.lat).to.be.within(21.9430, 21.9431);
-					expect(center.lng).to.be(-180);
+					expect(center.lng).to.be(-183.515625);
 					expect(zoom).to.be(1);
 
 					done();

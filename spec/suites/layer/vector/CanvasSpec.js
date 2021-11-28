@@ -161,7 +161,7 @@ describe('Canvas', function () {
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()
 				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up();
+				.moveTo(310, 300, 0).down().moveBy(5, 0, 20).up();
 		});
 	});
 

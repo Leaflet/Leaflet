@@ -114,4 +114,36 @@ describe("Marker.Drag", function () {
 				.down().moveBy(5, 0, 20).moveBy(290, 32, 1000).wait(100).up().wait(100);
 		});
 	});
+
+	it("checks if the offset of the first mousemove event is correct", function (done) {
+		map.setZoom(15);
+		var marker = new L.Marker([0, 0], {
+			draggable: true
+		}).addTo(map);
+		var offset = 20;
+
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				marker.dragging._draggable._onMove({
+					type: 'mousemove',
+					buttons: 1,
+					clientX: 100,
+					clientY: 100,
+					target: marker._icon
+				});
+
+				setTimeout(function () {
+					// marker latlng is lower then the point where the mouse has clicked (offset)
+					var expectedLatLng = map.containerPointToLatLng([100, 100 + offset]);
+					expect(marker.getLatLng()).to.be.nearLatLng(expectedLatLng);
+					done();
+				}, 100);
+			}
+		});
+
+		// mouse clicks higher (offset) on the icon as the latlng of the marker
+		var toucher = hand.growFinger('mouse');
+		toucher.wait(100).moveTo(300, 300 - offset, 0).down();
+	});
 });

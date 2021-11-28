@@ -139,7 +139,7 @@ export var Draggable = Evented.extend({
 			this.fire('dragstart');
 
 			this._moved = true;
-			this._startPos = DomUtil.getPosition(this._element).subtract(offset);
+			this._startPos = DomUtil.getPosition(this._element);
 
 			DomUtil.addClass(document.body, 'leaflet-dragging');
 
