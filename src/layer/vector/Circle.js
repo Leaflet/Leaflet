@@ -29,10 +29,12 @@ export var Circle = CircleMarker.extend({
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
 			options = Util.extend({}, legacyOptions, {radius: options});
 		}
+		if (!this.options || isNaN(options.radius)) {
+			throw new Error('Circle radius cannot be NaN');
+		}
+
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
-
-		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
 		// @section
 		// @aka Circle options
