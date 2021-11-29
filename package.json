@@ -117,15 +117,6 @@
         "rules": {
           "global-require": 0
         }
-      },
-      {
-        "files": [
-          "*.md"
-        ],
-        "rules": {
-          "eol-last": 0,
-          "no-unused-vars": 0
-        }
       }
     ]
   },
