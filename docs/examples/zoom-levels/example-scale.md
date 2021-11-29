@@ -18,9 +18,9 @@ title: Zoom Levels Tutorial
 
 	var scaleControl = L.control.scale({maxWidth: 150}).addTo(map);
 
-	setInterval(function(){
+	setInterval(function () {
 		map.setView([0, 0], 0, {duration: 1, animate: true});
-		setTimeout(function(){
+		setTimeout(function () {
 			map.setView([60, 0], 0, {duration: 1, animate: true});
 		}, 2000);
 	}, 4000);
