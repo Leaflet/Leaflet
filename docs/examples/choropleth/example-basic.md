@@ -16,6 +16,7 @@ title: Choropleth Tutorial
 		zoomOffset: -1
 	}).addTo(map);
 
+	/* global statesData */
 	var geojson = L.geoJson(statesData).addTo(map);
 
 </script>
