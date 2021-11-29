@@ -22,15 +22,13 @@ css: "body {
 		zoomOffset: -1
 	}).addTo(map);
 
-	var locationMarker,
-		locationCircle;
 	function onLocationFound(e) {
 		var radius = e.accuracy / 2;
 
-		locationMarker = L.marker(e.latlng).addTo(map)
-			.bindPopup("You are within " + radius + " meters from this point").openPopup();
+		var locationMarker = L.marker(e.latlng).addTo(map)
+			.bindPopup('You are within ' + radius + ' meters from this point').openPopup();
 
-		locationCircle = L.circle(e.latlng, radius).addTo(map);
+		var locationCircle = L.circle(e.latlng, radius).addTo(map);
 	}
 
 	function onLocationError(e) {

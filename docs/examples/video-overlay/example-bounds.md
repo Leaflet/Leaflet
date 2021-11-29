@@ -14,7 +14,7 @@ title: Video Overlay Tutorial
 		zoomOffset: -1
 	}).addTo(map);
 
-	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	var bounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	var rectangle = L.rectangle(bounds).addTo(map);
 
