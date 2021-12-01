@@ -115,8 +115,8 @@ export var mobileOpera = mobile && opera;
 export var mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
-// `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
-export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+// `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom 200% or more.
+export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) >= 2;
 
 // @property passiveEvents: Boolean
 // `true` for browsers that support passive events.
