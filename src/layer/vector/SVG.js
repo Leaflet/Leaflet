@@ -45,7 +45,7 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * ```
  */
 
-export var SVG = Renderer.extend({
+export var SVG = Renderer.extend('SVG', {
 
 	getEvents: function () {
 		var events = Renderer.prototype.getEvents.call(this);

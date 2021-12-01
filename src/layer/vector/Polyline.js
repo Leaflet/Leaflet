@@ -45,7 +45,7 @@ import {Point} from '../../geometry/Point';
  */
 
 
-export var Polyline = Path.extend({
+export var Polyline = Path.extend('Polyline', {
 
 	// @section
 	// @aka Polyline options
