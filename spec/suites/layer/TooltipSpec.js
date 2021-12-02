@@ -331,9 +331,9 @@ describe('Tooltip', function () {
 		});
 		var toucher = hand.growFinger('mouse');
 		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
-  });
+	});
 
-  it("closes existent tooltip on new bindTooltip call", function () {
+	it("closes existent tooltip on new bindTooltip call", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var eventSpy = sinon.spy(layer, "unbindTooltip");
 		layer.bindTooltip('Tooltip1', {permanent: true});
