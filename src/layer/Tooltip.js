@@ -322,12 +322,12 @@ Layer.include({
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
-			if (this._tooltip.options.sticky) {
-				events.mousemove = this._moveTooltip;
-			}
 			events.click = this._openTooltip;
 		} else {
 			events.add = this._openTooltip;
+		}
+		if (this._tooltip.options.sticky) {
+			events.mousemove = this._moveTooltip;
 		}
 		this[onOff](events);
 		this._tooltipHandlersAdded = !remove;
