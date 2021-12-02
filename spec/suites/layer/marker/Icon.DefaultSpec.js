@@ -22,7 +22,10 @@ describe("Icon.Default", function () {
 
 		expect(L.Icon.Default.imagePath).to.not.be.ok();
 		marker.addTo(map);
-		expect(L.Icon.Default.imagePath).to.equal(document.location.origin + origPath);
+
+		// polyfill for IE<11
+		var origin = document.location.origin || window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+		expect(L.Icon.Default.imagePath).to.equal(origin + origPath);
 
 		var stripUrl = L.Icon.Default.prototype._stripUrl;
 		var properPath = 'http://localhost:8000/base/dist/images/';
