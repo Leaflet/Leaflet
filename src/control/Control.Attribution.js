@@ -45,7 +45,22 @@ export var Attribution = Control.extend({
 
 		this._update();
 
+		map.on('layeradd', this._addAttribution, this);
+
 		return this._container;
+	},
+
+	onRemove: function (map) {
+		map.off('layeradd', this._addAttribution, this);
+	},
+
+	_addAttribution: function (ev) {
+		if (ev.layer.getAttribution) {
+			this.addAttribution(ev.layer.getAttribution());
+			ev.layer.once('remove', function () {
+				this.removeAttribution(ev.layer.getAttribution());
+			}, this);
+		}
 	},
 
 	// @method setPrefix(prefix: String): this

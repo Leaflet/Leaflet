@@ -102,34 +102,17 @@ module.exports = function (config) {
 				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
 				flags: ['--window-size=1280,1024']
 			},
-			'FirefoxPointer': {
-				base: 'FirefoxHeadless',
-			        prefs: {
-					'dom.w3c_pointer_events.enabled': true,
-					'dom.w3c_touch_events.enabled': 0
-			        }
-			},
 			'FirefoxTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
-					'dom.w3c_pointer_events.enabled': false,
+				prefs: {
 					'dom.w3c_touch_events.enabled': 1
-			        }
+				}
 			},
-			'FirefoxPointerTouch': {
+			'FirefoxNoTouch': {
 				base: 'FirefoxHeadless',
-			        prefs: {
-					'dom.w3c_pointer_events.enabled': true,
-					'dom.w3c_touch_events.enabled': 1
-			        }
-			},
-			IE8: { // not working in IE 11!!
-				base: 'IE',
-				'X-UA-Compatible': 'IE=EmulateIE8'
-			},
-			IE9: { // not working in IE 11!!
-				base: 'IE',
-				'X-UA-Compatible': 'IE=EmulateIE9'
+				prefs: {
+					'dom.w3c_touch_events.enabled': 0
+				}
 			},
 			IE10: {
 				base: 'IE',
@@ -147,9 +130,10 @@ module.exports = function (config) {
 		singleRun: true,
 
 		client: {
-			 mocha: {
-			 	forbidOnly: process.env.CI || false
-			 }
+			mocha: {
+				// eslint-disable-next-line no-undef
+				forbidOnly: process.env.CI || false
+			}
 		}
 	});
 };

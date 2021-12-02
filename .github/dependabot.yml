@@ -9,3 +9,5 @@ updates:
     ignore:
       - dependency-name: eslint-config-mourner
         update-types: ["version-update:semver-major"]
+      - dependency-name: sinon
+        update-types: ["version-update:semver-major"]

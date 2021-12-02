@@ -26,6 +26,7 @@ if (!Array.prototype.map) {
 }
 
 expect.Assertion.prototype.near = function (expected, delta) {
+	expected = L.point(expected);
 	delta = delta || 1;
 	expect(this.obj.x).to
 		.be.within(expected.x - delta, expected.x + delta);
@@ -34,6 +35,7 @@ expect.Assertion.prototype.near = function (expected, delta) {
 };
 
 expect.Assertion.prototype.nearLatLng = function (expected, delta) {
+	expected = L.latLng(expected);
 	delta = delta || 1e-4;
 	expect(this.obj.lat).to
 		.be.within(expected.lat - delta, expected.lat + delta);
@@ -53,6 +55,17 @@ happen.at = function (what, x, y, props) {
 	}, props || {}));
 };
 
+happen.makeEvent = (function (makeEvent) {
+	return function (o) {
+		var evt = makeEvent(o);
+		if (o.type.substring(0, 7) === 'pointer') {
+			evt.pointerId = o.pointerId;
+			evt.pointerType = o.pointerType;
+		}
+		return evt;
+	};
+})(happen.makeEvent);
+
 // We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
 it.skipIfNo3d = L.Browser.any3d ? it : it.skip;
 
@@ -67,4 +80,4 @@ var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disa
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
 console.log('L.Browser.pointer', L.Browser.pointer);
-console.log('L.Browser.touch', L.Browser.touch);
+console.log('L.Browser.touchNative', L.Browser.touchNative);

@@ -331,5 +331,16 @@ describe('Tooltip', function () {
 		});
 		var toucher = hand.growFinger('mouse');
 		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+  });
+
+  it("closes existent tooltip on new bindTooltip call", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var eventSpy = sinon.spy(layer, "unbindTooltip");
+		layer.bindTooltip('Tooltip1', {permanent: true});
+		var tooltip1 = layer.getTooltip();
+		layer.bindTooltip('Tooltip2').openTooltip();
+		layer.unbindTooltip.restore(); // unwrap the spy
+		expect(map.hasLayer(tooltip1)).to.not.be.ok();
+		expect(eventSpy.calledOnce).to.be.ok();
 	});
 });

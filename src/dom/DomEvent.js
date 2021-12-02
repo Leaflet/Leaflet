@@ -1,6 +1,6 @@
 import {Point} from '../geometry/Point';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 import {getScale} from './DomUtil';
@@ -23,7 +23,7 @@ import {getScale} from './DomUtil';
 // Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 export function on(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
+	if (types && typeof types === 'object') {
 		for (var type in types) {
 			addOne(obj, type, types[type], fn);
 		}
@@ -48,26 +48,49 @@ var eventsKey = '_leaflet_events';
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+
+// @alternative
+// @function off(el: HTMLElement, types: String): this
+// Removes all previously added listeners of given types.
+
+// @alternative
+// @function off(el: HTMLElement): this
+// Removes all previously added listeners from given HTMLElement
 export function off(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
+	if (arguments.length === 1) {
+		batchRemove(obj);
+		delete obj[eventsKey];
+
+	} else if (types && typeof types === 'object') {
 		for (var type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
-	} else if (types) {
+
+	} else {
 		types = Util.splitWords(types);
 
-		for (var i = 0, len = types.length; i < len; i++) {
-			removeOne(obj, types[i], fn, context);
+		if (arguments.length === 2) {
+			batchRemove(obj, function (type) {
+				return Util.indexOf(types, type) !== -1;
+			});
+		} else {
+			for (var i = 0, len = types.length; i < len; i++) {
+				removeOne(obj, types[i], fn, context);
+			}
 		}
-	} else {
-		for (var j in obj[eventsKey]) {
-			removeOne(obj, j, obj[eventsKey][j]);
-		}
-		delete obj[eventsKey];
 	}
 
 	return this;
+}
+
+function batchRemove(obj, filterFn) {
+	for (var id in obj[eventsKey]) {
+		var type = id.split(/\d/)[0];
+		if (!filterFn || filterFn(type)) {
+			removeOne(obj, type, null, null, id);
+		}
+	}
 }
 
 var mouseSubst = {
@@ -112,7 +135,7 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(type, originalHandler, false);
 		}
 
-	} else if ('attachEvent' in obj) {
+	} else {
 		obj.attachEvent('on' + type, handler);
 	}
 
@@ -120,10 +143,9 @@ function addOne(obj, type, fn, context) {
 	obj[eventsKey][id] = handler;
 }
 
-function removeOne(obj, type, fn, context) {
-
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
-	    handler = obj[eventsKey] && obj[eventsKey][id];
+function removeOne(obj, type, fn, context, id) {
+	id = id || type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	var handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
@@ -137,7 +159,7 @@ function removeOne(obj, type, fn, context) {
 
 		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
-	} else if ('detachEvent' in obj) {
+	} else {
 		obj.detachEvent('on' + type, handler);
 	}
 

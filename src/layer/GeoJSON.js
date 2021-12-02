@@ -253,18 +253,19 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 	return latlngs;
 }
 
-// @function latLngToCoords(latlng: LatLng, precision?: Number): Array
+// @function latLngToCoords(latlng: LatLng, precision?: Number|false): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngToCoords(latlng, precision) {
-	precision = typeof precision === 'number' ? precision : 6;
 	return latlng.alt !== undefined ?
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
 }
 
-// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
+// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean, precision?: Number|false): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
 
@@ -312,25 +313,22 @@ var PointToGeoJSON = {
 
 // @namespace Marker
 // @section Other methods
-// @method toGeoJSON(precision?: Number): Object
-// `precision` is the number of decimal places for coordinates.
-// The default value is 6 places.
+// @method toGeoJSON(precision?: Number|false): Object
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
 Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker
-// @method toGeoJSON(precision?: Number): Object
-// `precision` is the number of decimal places for coordinates.
-// The default value is 6 places.
+// @method toGeoJSON(precision?: Number|false): Object
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
 Circle.include(PointToGeoJSON);
 CircleMarker.include(PointToGeoJSON);
 
 
 // @namespace Polyline
-// @method toGeoJSON(precision?: Number): Object
-// `precision` is the number of decimal places for coordinates.
-// The default value is 6 places.
+// @method toGeoJSON(precision?: Number|false): Object
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
 	toGeoJSON: function (precision) {
@@ -346,9 +344,8 @@ Polyline.include({
 });
 
 // @namespace Polygon
-// @method toGeoJSON(precision?: Number): Object
-// `precision` is the number of decimal places for coordinates.
-// The default value is 6 places.
+// @method toGeoJSON(precision?: Number|false): Object
+// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
 	toGeoJSON: function (precision) {
@@ -384,9 +381,8 @@ LayerGroup.include({
 		});
 	},
 
-	// @method toGeoJSON(precision?: Number): Object
-	// `precision` is the number of decimal places for coordinates.
-	// The default value is 6 places.
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	toGeoJSON: function (precision) {
 

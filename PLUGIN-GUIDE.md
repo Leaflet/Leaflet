@@ -213,7 +213,7 @@ Now your plugin is available as an AMD and CommonJS module and can be used in mo
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* In the `docs/plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
+* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
 * Commit the code to your fork.
 * [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
 

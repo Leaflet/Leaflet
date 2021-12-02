@@ -9,14 +9,14 @@
 
 	<link rel="stylesheet" href="../css/mobile.css" />
 
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 	<div id="map"></div>
 
 	<script>
 		var map = L.map('map');
-		
+
 		map.setView([51.505, -0.09], 13);
 
 		var marker = L.marker([51.5, -0.09])

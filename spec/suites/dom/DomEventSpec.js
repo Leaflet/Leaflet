@@ -11,7 +11,36 @@ describe('DomEvent', function () {
 		document.body.removeChild(el);
 	});
 
+	describe('#arguments check', function () {
+		it('throws when el is not HTMLElement', function () {
+			expect(L.DomEvent.on).withArgs({}, 'click', L.Util.falseFn)
+				.to.throwException();
+			expect(L.DomEvent.disableScrollPropagation).withArgs({})
+				.to.throwException();
+			expect(L.DomEvent.disableClickPropagation).withArgs({})
+				.to.throwException();
+			expect(L.DomEvent.getMousePosition).withArgs({clientX: 0, clientY: 0}, {})
+				.to.throwException();
+			// .off and .isExternalTarget do not throw atm
+		});
+	});
+
 	describe('#on (addListener)', function () {
+		it('throws when types/fn are undefined/null/false', function () {
+			expect(L.DomEvent.on).withArgs(el, undefined, L.Util.falseFn)
+				.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, null, L.Util.falseFn)
+				.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, false, L.Util.falseFn)
+				.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
+				.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, 'click', null)
+				.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, 'click', false)
+				.to.throwException();
+		});
+
 		it('adds a listener and calls it on event', function () {
 			var listener2 = sinon.spy();
 			L.DomEvent.on(el, 'click', listener);
@@ -80,6 +109,20 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('only removes the specified listener', function () {
+			var listenerA = sinon.spy(),
+			listenerB = sinon.spy();
+
+			L.DomEvent.on(el, 'click', listenerA);
+			L.DomEvent.on(el, 'click', listenerB);
+			L.DomEvent.off(el, 'click', listenerA);
+
+			happen.click(el);
+
+			expect(listenerA.called).to.not.be.ok();
+			expect(listenerB.called).to.be.ok();
 		});
 
 		it('removes a previously added listener when passed an event map', function () {
@@ -162,6 +205,61 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			sinon.assert.called(listener);
+		});
+
+		it('removes all listeners when only passed the HTMLElement', function () {
+			var listenerA = sinon.spy(),
+			listenerB = sinon.spy();
+
+			L.DomEvent.on(el, 'click', listenerA);
+			L.DomEvent.on(el, 'click', listenerB, {});
+			L.DomEvent.off(el);
+
+			happen.click(el);
+
+			expect(listenerA.called).to.not.be.ok();
+			expect(listenerB.called).to.not.be.ok();
+		});
+
+		it('only removes specified listeners type', function () {
+			var listenerClick = sinon.spy(),
+			listenerDblClick = sinon.spy();
+
+			L.DomEvent.on(el, 'click', listenerClick);
+			L.DomEvent.on(el, 'dblclick', listenerDblClick);
+			L.DomEvent.off(el, 'click');
+			happen.click(el);
+			happen.dblclick(el);
+
+			sinon.assert.notCalled(listenerClick);
+			sinon.assert.called(listenerDblClick);
+		});
+
+		it('throws when types/fn are undefined/null/false', function () {
+			expect(L.DomEvent.off).withArgs(el, undefined)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, null)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, false)
+				.to.throwException();
+
+			expect(L.DomEvent.off).withArgs(el, 'click', undefined)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, 'click', null)
+				.to.throwException();
+			expect(L.DomEvent.off).withArgs(el, 'click', false)
+				.to.throwException();
+		});
+
+		it('removes listener when passed an event map', function () {
+			var listener = sinon.spy();
+
+			L.DomEvent.on(el, 'click', listener);
+			L.DomEvent.off(el, {'click': listener});
+
+			happen.click(el);
+
+			expect(listener.called).to.not.be.ok();
 		});
 
 		it('is chainable', function () {
