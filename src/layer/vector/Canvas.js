@@ -69,8 +69,10 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
-		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
+		var touchMove = Browser.touch ? 'touchmove' : '';
+		var touchClick = Browser.touch ? 'touchstart touchend touchcancel' : '';
+		DomEvent.on(container, 'mousemove ' + touchMove, this._onMouseMove, this);
+		DomEvent.on(container, 'click dblclick contextmenu mousedown mouseup ' + touchClick, this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
 		container['_leaflet_disable_events'] = true;
 
@@ -354,7 +356,11 @@ export var Canvas = Renderer.extend({
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
 	_onClick: function (e) {
-		var point = this._map.mouseEventToLayerPoint(e), layer, clickedLayer;
+		var first = e.touches ? e.touches[0] : e;
+		if (e.type === 'touchend') {
+			first = e.changedTouches[0];
+		}
+		var point = this._map.mouseEventToLayerPoint(first), layer, clickedLayer;
 
 		for (var order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
@@ -370,7 +376,8 @@ export var Canvas = Renderer.extend({
 	_onMouseMove: function (e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
-		var point = this._map.mouseEventToLayerPoint(e);
+		var first = e.touches ? e.touches[0] : e;
+		var point = this._map.mouseEventToLayerPoint(first);
 		this._handleMouseHover(e, point);
 	},
 

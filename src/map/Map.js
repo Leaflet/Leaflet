@@ -1431,8 +1431,12 @@ export var Map = Evented.extend({
 
 		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
 			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
+			var first = e.touches ? e.touches[0] : e;
+			if (e.type === 'touchend') {
+				first = e.changedTouches[0];
+			}
 			data.containerPoint = isMarker ?
-				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
+				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(first);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
