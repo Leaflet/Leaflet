@@ -137,5 +137,3 @@ updated automatically on each commit to the repo.
 
 We removed the built versions from the repository because it's a chore to build and commit them manually on each change,
 and it often complicates merging branches and managing contributions.
-
-There's a common complaint that Leaflet can't be used with [Bower](http://bower.io/) because of that, but we'll resolve the issue soon.

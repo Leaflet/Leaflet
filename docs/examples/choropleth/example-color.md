@@ -20,13 +20,12 @@ title: Choropleth Tutorial
 	// get color depending on population density value
 	function getColor(d) {
 		return d > 1000 ? '#800026' :
-				d > 500  ? '#BD0026' :
-				d > 200  ? '#E31A1C' :
-				d > 100  ? '#FC4E2A' :
-				d > 50   ? '#FD8D3C' :
-				d > 20   ? '#FEB24C' :
-				d > 10   ? '#FED976' :
-							'#FFEDA0';
+			d > 500  ? '#BD0026' :
+			d > 200  ? '#E31A1C' :
+			d > 100  ? '#FC4E2A' :
+			d > 50   ? '#FD8D3C' :
+			d > 20   ? '#FEB24C' :
+			d > 10   ? '#FED976' : '#FFEDA0';
 	}
 
 	function style(feature) {
@@ -40,6 +39,7 @@ title: Choropleth Tutorial
 		};
 	}
 
+	/* global statesData */
 	var geojson = L.geoJson(statesData, {
 		style: style,
 	}).addTo(map);

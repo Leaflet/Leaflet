@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
@@ -664,6 +664,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationError: function (error) {
+		if (!this._container._leaflet_id) { return; }
+
 		var c = error.code,
 		    message = error.message ||
 		            (c === 1 ? 'permission denied' :
@@ -683,6 +685,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationResponse: function (pos) {
+		if (!this._container._leaflet_id) { return; }
+
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),

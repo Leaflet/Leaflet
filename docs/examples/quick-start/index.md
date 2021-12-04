@@ -42,7 +42,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 {% include frame.html url="example-basic.html" %}
 
-Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+Let's create a map of the center of London with pretty Mapbox Streets tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
