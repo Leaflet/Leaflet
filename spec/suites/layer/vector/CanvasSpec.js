@@ -1,3 +1,4 @@
+/* global touchPointerMap */
 describe('Canvas', function () {
 	document.body.appendChild(document.createElement('div'));
 	var c, map, latLngs;
@@ -47,6 +48,18 @@ describe('Canvas', function () {
 			map.on("click", spy);
 			happen.at('click', 50, 50);
 			expect(spy.callCount).to.eql(1);
+		});
+
+		it.skipIfNotTouch("DOM touch events propagate from canvas polygon to map", function () {
+			map.setView([0, 0], 0);
+			var spy = sinon.spy();
+			var spyLayer = sinon.spy();
+			map.on("touchmove", spy);
+			var layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			layer.on("touchmove", spyLayer);
+			happen.at(touchPointerMap['touchmove'], 200, 200);
+			expect(spy.calledOnce).to.be.ok();
+			expect(spyLayer.calledOnce).to.be.ok();
 		});
 
 		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
@@ -104,7 +117,7 @@ describe('Canvas', function () {
 		it.skipIfNotTouch("should not block touchmove event going to non-canvas features", function () {
 			var spyMap = sinon.spy();
 			map.on("touchmove", spyMap);
-			happen.at('touchmove', 151, 151); // empty space
+			happen.at(touchPointerMap['touchmove'], 151, 151); // empty space
 			expect(spyMap.calledOnce).to.be.ok();
 		});
 
@@ -171,7 +184,8 @@ describe('Canvas', function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('touch');
+
+			var mouse = hand.growFinger(touchEventType);
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -208,7 +222,7 @@ describe('Canvas', function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('touch');
+			var mouse = hand.growFinger(touchEventType);
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
@@ -248,7 +262,7 @@ describe('Canvas', function () {
 					done();
 				}
 			});
-			var mouse = hand.growFinger('touch');
+			var mouse = hand.growFinger(touchEventType);
 
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()

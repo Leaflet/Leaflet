@@ -37,3 +37,15 @@ Fired when the user right-clicks on the layer, prevents
 default browser context menu from showing if there are listeners on
 this event. Also fired on mobile when the user holds a single touch
 for a second (also called long press).
+
+@event touchstart: MouseEvent
+Fired when the user places a touch point on the layer.
+
+@event touchend: MouseEvent
+Fired when the user removes a touch point of the layer.
+
+@event touchmove: MouseEvent
+Fired when the user moves a touch point on the layer.
+
+@event touchcancel: MouseEvent
+Fired when the touch point has been disrupted in an implementation-specific manner.

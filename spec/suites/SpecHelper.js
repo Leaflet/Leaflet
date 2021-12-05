@@ -44,7 +44,7 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 };
 
 happen.at = function (what, x, y, props) {
-	this.once(document.elementFromPoint(x, y), L.Util.extend({
+	var event = L.Util.extend({
 		type: what,
 		clientX: x,
 		clientY: y,
@@ -52,12 +52,44 @@ happen.at = function (what, x, y, props) {
 		screenY: y,
 		which: 1,
 		button: 0
-	}, props || {}));
+	}, props || {});
+
+	if (what.indexOf('touch') === 0) {
+		event.touches = [event];
+		event.targetTouches = [event];
+		event.changedTouches = [event];
+	}
+
+	this.once(document.elementFromPoint(x, y), event);
 };
+
+// Make inheritance bearable: clone one level of properties - copy from happen
+function extend(child, parent) {
+	for (var property in parent) {
+		if (typeof child[property] == 'undefined') {
+			child[property] = parent[property];
+		}
+	}
+	return child;
+}
 
 happen.makeEvent = (function (makeEvent) {
 	return function (o) {
-		var evt = makeEvent(o);
+		var evt;
+		// touchcancel is not supported by happen
+		if (o.type === 'touchcancel') {
+			if (typeof document.createEvent === 'undefined' &&
+				typeof document.createEventObject !== 'undefined') {
+				evt = document.createEventObject();
+				extend(evt, o);
+			} else if (typeof document.createEvent !== 'undefined') {
+				evt = document.createEvent('UIEvent');
+				evt.initUIEvent(o.type, true, true, window, o.detail || 1);
+				extend(evt, o);
+			}
+		} else {
+			evt = makeEvent(o);
+		}
 		if (o.type.substring(0, 7) === 'pointer') {
 			evt.pointerId = o.pointerId;
 			evt.pointerType = o.pointerType;
@@ -74,6 +106,16 @@ it.skipIf3d = L.Browser.any3d ? it.skip : it;
 
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
+describe.skipIfNotTouch = L.Browser.touch ? describe : describe.skip;
+
+// if the Browser has no native touch, we need to fire pointerevents but listen on the touchevents
+var pointerToTouch = L.Browser.pointer && !L.Browser.touchNative;
+var touchPointerMap = { // eslint-disable-line no-unused-vars
+	touchstart: pointerToTouch ? 'pointerdown' : 'touchstart',
+	touchmove: pointerToTouch ? 'pointermove' : 'touchmove',
+	touchend: pointerToTouch ? 'pointerup' : 'touchend',
+	touchcancel: pointerToTouch ? 'pointercancel' : 'touchcancel'
+};
 
 var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disable-line no-unused-vars
 // Note: this override is needed to workaround prosthetic-hand fail,

@@ -1303,6 +1303,14 @@ export var Map = Evented.extend({
 		// default browser context menu from showing if there are listeners on
 		// this event. Also fired on mobile when the user holds a single touch
 		// for a second (also called long press).
+		// @event touchstart: MouseEvent
+		// Fired when the user places a touch point on the map.
+		// @event touchend: MouseEvent
+		// Fired when the user removes a touch point of the map.
+		// @event touchmove: MouseEvent
+		// Fired when the user moves a touch point on the map.
+		// @event touchcancel: MouseEvent
+		// Fired when the touch point has been disrupted in an implementation-specific manner.
 		// @event keypress: KeyboardEvent
 		// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
 		// @event keydown: KeyboardEvent
@@ -1311,8 +1319,10 @@ export var Map = Evented.extend({
 		// that do not produce a character value.
 		// @event keyup: KeyboardEvent
 		// Fired when the user releases a key from the keyboard while the map is focused.
-		onOff(this._container, 'click dblclick mousedown mouseup ' +
-			'mouseover mouseout mousemove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
+		var touchEvents = Browser.touch ? 'touchstart touchmove touchend touchcancel ' : '';
+		onOff(this._container, touchEvents + 'click dblclick mousedown mouseup ' +
+			'mouseover mouseout mousemove contextmenu keypress keydown keyup'
+		, this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			onOff(window, 'resize', this._onResize, this);
@@ -1391,7 +1401,18 @@ export var Map = Evented.extend({
 			DomUtil.preventOutline(el);
 		}
 
-		this._fireDOMEvent(e, type);
+		// this is not needed if #7064 is merged
+		var _type = type || e.type;
+		if (_type === 'pointerdown') {
+			_type = 'touchstart';
+		} else if (_type === 'pointermove') {
+			_type = 'touchmove';
+		} else if (_type === 'pointerup') {
+			_type = 'touchend';
+		} else if (_type === 'pointercancel') {
+			_type = 'touchcancel';
+		}
+		this._fireDOMEvent(e, _type);
 	},
 
 	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
@@ -1436,7 +1457,7 @@ export var Map = Evented.extend({
 		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
 			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			var first = e.touches ? e.touches[0] : e;
-			if (e.type === 'touchend') {
+			if (['touchend', 'touchcancel', 'pointerup', 'pointercancel'].indexOf(e.type) > -1) {
 				first = e.changedTouches[0];
 			}
 			data.containerPoint = isMarker ?
