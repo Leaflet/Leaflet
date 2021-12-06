@@ -643,3 +643,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+
+/* Disable pointer-events of relevant descendants on drag and box zoom. */
+.leaflet-crosshair *,
+.leaflet-drag-target .leaflet-control,
+.leaflet-dragging .leaflet-container * {
+	pointer-events: none;
+}
