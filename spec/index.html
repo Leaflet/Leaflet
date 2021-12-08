@@ -23,6 +23,12 @@
 
 	<script src="../dist/leaflet-src.js"></script>
 
+    <script>
+		// sets the default imagePath to the project path like "/Leaflet/dist/images/"
+        // same as in after.js but not static
+		L.Icon.Default.imagePath = '/' + window.location.pathname.split('/')[1] + '/dist/images/';
+    </script>
+
 	<script class="mocha-init">
 		mocha.setup('bdd');
 		mocha.checkLeaks();
