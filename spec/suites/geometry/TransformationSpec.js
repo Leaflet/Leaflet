@@ -1,4 +1,4 @@
-describe.only("Transformation", function () {
+describe("Transformation", function () {
 	var t, p;
 
 	beforeEach(function () {
