@@ -232,4 +232,47 @@ describe('Polyline', function () {
 			}
 		});
 	});
+
+	describe("#setStyle", function () {
+		it("succeeds for empty Polyline already added to the map", function () {
+			var style = {
+				weight: 3
+			};
+			var polyline = L.polyline([]);
+
+			polyline.addTo(map);
+			polyline.setStyle(style);
+
+			for (var prop in style) {
+				expect(polyline.options[prop]).to.be(style[prop]);
+			}
+		});
+	});
+
+	describe("#distance", function () {
+		it("calculates closestLayerPoint", function () {
+			var p1 = map.latLngToLayerPoint([55.8, 37.6]);
+			var p2 = map.latLngToLayerPoint([57.123076977278, 44.861962891635]);
+			var latlngs = [[56.485503424111, 35.545556640339], [55.972522915346, 36.116845702918], [55.502459116923, 34.930322265253], [55.31534617509, 38.973291015816]]
+				.map(function (ll) {
+					return L.latLng(ll[0], ll[1]);
+				});
+			var polyline = L.polyline([], {
+				'noClip': true
+			});
+			map.addLayer(polyline);
+
+			expect(polyline.closestLayerPoint(p1)).to.be(null);
+
+			polyline.setLatLngs(latlngs);
+			var point = polyline.closestLayerPoint(p1);
+			expect(point).not.to.be(null);
+			expect(point.distance).to.not.be(Infinity);
+			expect(point.distance).to.not.be(NaN);
+
+			var point2 = polyline.closestLayerPoint(p2);
+
+			expect(point.distance).to.be.lessThan(point2.distance);
+		});
+	});
 });

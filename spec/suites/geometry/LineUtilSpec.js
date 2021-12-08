@@ -83,4 +83,34 @@ describe('LineUtil', function () {
 			]);
 		});
 	});
+
+	describe('#isFlat', function () {
+		it('should return true for an array of LatLngs', function () {
+			expect(L.LineUtil.isFlat([L.latLng([0, 0])])).to.be(true);
+		});
+
+		it('should return true for an array of LatLngs arrays', function () {
+			expect(L.LineUtil.isFlat([[0, 0]])).to.be(true);
+		});
+
+		it('should return true for an empty array', function () {
+			expect(L.LineUtil.isFlat([])).to.be(true);
+		});
+
+		it('should return false for a nested array of LatLngs', function () {
+			expect(L.LineUtil.isFlat([[L.latLng([0, 0])]])).to.be(false);
+		});
+
+		it('should return false for a nested empty array', function () {
+			expect(L.LineUtil.isFlat([[]])).to.be(false);
+		});
+
+		it('should be aliased as _flat for retrocompat', function () {
+			expect(L.LineUtil._flat([L.latLng([0, 0])])).to.be(true);
+		});
+
+		it('should be aliased as L.Polyline._flat for retrocompat', function () {
+			expect(L.Polyline._flat([L.latLng([0, 0])])).to.be(true);
+		});
+	});
 });
