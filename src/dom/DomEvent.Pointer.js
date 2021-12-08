@@ -82,6 +82,11 @@ function _handlePointer(handler, e) {
 	for (var i in _pointers) {
 		e.touches.push(_pointers[i]);
 	}
+
+	if (e.touches.length === 0 && e.type !== 'pointercancel' && e.type !== 'pointerup') {
+		e.touches = [e];
+	}
+
 	e.changedTouches = [e];
 
 	handler(e);

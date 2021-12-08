@@ -1,3 +1,5 @@
+/* global touchPointerMap */
+
 describe("Map", function () {
 	var container,
 	    map;
@@ -1287,6 +1289,97 @@ describe("Map", function () {
 			expect(spy.callCount).to.be(2);
 			expect(spy.firstCall.lastArg).to.be.ok();
 			expect(spy.secondCall.lastArg).to.be.ok();
+		});
+	});
+
+	describe.skipIfNotTouch("#DOM touch events", function () {
+
+		beforeEach(function () {
+			container.style.width = "400px";
+			container.style.height = "400px";
+			container.style.position = "absolute";
+			container.style.top = "0";
+			map.setView([0, 0], 0);
+		});
+
+		it("DOM touch events fired on map", function () {
+			var spyStart = sinon.spy();
+			var spyMove = sinon.spy();
+			var spyEnd = sinon.spy();
+			var spyCancel = sinon.spy();
+			map.on("touchstart", spyStart);
+			map.on("touchmove", spyMove);
+			map.on("touchend", spyEnd);
+			map.on("touchcancel", spyCancel);
+			happen.at(touchPointerMap['touchstart'], 235, 135);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
+			happen.at(touchPointerMap['touchend'], 235, 135);
+			happen.at(touchPointerMap['touchcancel'], 235, 135);
+			expect(spyStart.calledOnce).to.be.ok();
+			expect(spyMove.calledOnce).to.be.ok();
+			expect(spyEnd.calledOnce).to.be.ok();
+			expect(spyCancel.calledOnce).to.be.ok();
+		});
+
+		it("DOM touch events fired on polygon", function () {
+			var spyStart = sinon.spy();
+			var spyMove = sinon.spy();
+			var spyEnd = sinon.spy();
+			var spyCancel = sinon.spy();
+			var layer = L.polygon([[100, 0], [100, 100], [0, 100], [0, 0]]).addTo(map);
+			layer.on("touchstart", spyStart);
+			layer.on("touchmove", spyMove);
+			layer.on("touchend", spyEnd);
+			layer.on("touchcancel", spyCancel);
+			happen.at(touchPointerMap['touchstart'], 235, 135);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
+			happen.at(touchPointerMap['touchend'], 235, 135);
+			happen.at(touchPointerMap['touchcancel'], 235, 135);
+			expect(spyStart.calledOnce).to.be.ok();
+			expect(spyMove.calledOnce).to.be.ok();
+			expect(spyEnd.calledOnce).to.be.ok();
+			expect(spyCancel.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from polygon to map", function () {
+			var spy = sinon.spy();
+			var spyLayer = sinon.spy();
+			map.on("touchmove", spy);
+			var layer = L.polygon([[100, 0], [100, 100], [0, 100], [0, 0]]).addTo(map);
+			layer.on("touchmove", spyLayer);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
+			expect(spy.calledOnce).to.be.ok();
+			expect(spyLayer.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from marker to map", function () {
+			var spy = sinon.spy();
+			map.on("touchmove", spy);
+			new L.Marker([1, 2]).addTo(map);
+			happen.at(touchPointerMap['touchmove'], 200, 190);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events fired on marker can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("touchmove", mapSpy);
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("touchmove", L.DomEvent.stopPropagation).on("touchmove", layerSpy);
+			happen.at(touchPointerMap['touchmove'], 200, 190);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("touchmove", mapSpy);
+			var layer = L.polygon([[100, 0], [100, 100], [0, 100], [0, 0]]).addTo(map);
+			layer.on("touchmove", L.DomEvent.stopPropagation).on("touchmove", layerSpy);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
 		});
 	});
 

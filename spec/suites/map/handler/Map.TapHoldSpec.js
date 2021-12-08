@@ -26,7 +26,7 @@ describe('Map.TapHoldSpec.js', function () {
 	});
 
 	afterEach(function () {
-		happen.once(el, {type: 'touchend'});
+		happen.once(el, {type: 'touchend', touches: [posStart], changedTouches: [posStart]});
 		for (var id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
 			happen.once(el, {type: 'pointercancel', pointerId:id});
 		}
@@ -70,7 +70,7 @@ describe('Map.TapHoldSpec.js', function () {
 		happen.once(el, {type: 'touchstart', touches: [posStart, posNear]});
 		happen.once(el, L.extend({type: 'pointerdown', pointerId:1}, posNear));
 		clock.tick(100);
-		happen.once(el, {type: 'touchend', touches: [posStart]});
+		happen.once(el, {type: 'touchend', touches: [posStart], changedTouches: [posStart]});
 		happen.once(el, L.extend({type: 'pointerup', pointerId:0}, posNear));
 		clock.tick(450);
 
@@ -110,7 +110,7 @@ describe('Map.TapHoldSpec.js', function () {
 		happen.once(el, {type: 'touchstart', touches: [posStart]});
 		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(650);
-		happen.once(el, {type: 'touchend', touches: [posStart]});
+		happen.once(el, {type: 'touchend', touches: [posStart], changedTouches: [posStart]});
 		happen.once(el, L.extend({type: 'pointerup', pointerId:0}, posNear));
 
 		expect(clickSpy.notCalled).to.be.ok();

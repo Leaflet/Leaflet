@@ -1,3 +1,4 @@
+/* global touchPointerMap */
 describe('Canvas', function () {
 	document.body.appendChild(document.createElement('div'));
 	var c, map, latLngs;
@@ -47,6 +48,18 @@ describe('Canvas', function () {
 			map.on("click", spy);
 			happen.at('click', 50, 50);
 			expect(spy.callCount).to.eql(1);
+		});
+
+		it.skipIfNotTouch("DOM touch events propagate from canvas polygon to map", function () {
+			map.setView([0, 0], 0);
+			var spy = sinon.spy();
+			var spyLayer = sinon.spy();
+			map.on("touchmove", spy);
+			var layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			layer.on("touchmove", spyLayer);
+			happen.at(touchPointerMap['touchmove'], 200, 200);
+			expect(spy.calledOnce).to.be.ok();
+			expect(spyLayer.calledOnce).to.be.ok();
 		});
 
 		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
@@ -101,6 +114,13 @@ describe('Canvas', function () {
 			expect(spyMap.calledOnce).to.be.ok();
 		});
 
+		it.skipIfNotTouch("should not block touchmove event going to non-canvas features", function () {
+			var spyMap = sinon.spy();
+			map.on("touchmove", spyMap);
+			happen.at(touchPointerMap['touchmove'], 151, 151); // empty space
+			expect(spyMap.calledOnce).to.be.ok();
+		});
+
 		it("should fire preclick before click", function () {
 			var clickSpy = sinon.spy();
 			var preclickSpy = sinon.spy();
@@ -144,6 +164,72 @@ describe('Canvas', function () {
 				.down().moveBy(20, 10, 200).up();
 		});
 
+		it.skipIfNotTouch("should fire touchevents while dragging the layer", function (done) {
+			var startSpy = sinon.spy();
+			var moveSpy = sinon.spy();
+			var endSpy = sinon.spy();
+			layer.on('touchstart', startSpy);
+			layer.on('touchmove', moveSpy);
+			layer.on('touchend', endSpy);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					// Prosthetic does not fire a click when we down+up, but it real world
+					// browsers would, so let's simulate it.
+					happen.at('click', 70, 60);
+					expect(startSpy.called).to.be(true);
+					expect(moveSpy.called).to.be(true);
+					expect(endSpy.called).to.be(true);
+					done();
+				}
+			});
+
+			var mouse = hand.growFinger(touchEventType);
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.moveTo(50, 50, 0)
+				.down().moveBy(20, 10, 200).up();
+		});
+
+		it.skipIfNotTouch("should not fire touchevents on layer while dragging the map", function (done) {
+			var startSpy = sinon.spy();
+			var moveSpy = sinon.spy();
+			var endSpy = sinon.spy();
+			layer.on('touchstart', startSpy);
+			layer.on('touchmove', moveSpy);
+			layer.on('touchend', endSpy);
+
+			var startMapSpy = sinon.spy();
+			var moveMapSpy = sinon.spy();
+			var endMapSpy = sinon.spy();
+			map.on('touchstart', startMapSpy);
+			map.on('touchmove', moveMapSpy);
+			map.on('touchend', endMapSpy);
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					// Prosthetic does not fire a click when we down+up, but it real world
+					// browsers would, so let's simulate it.
+					happen.at('click', 70, 60);
+					expect(startSpy.called).to.be(false);
+					expect(moveSpy.called).to.be(false);
+					expect(endSpy.called).to.be(false);
+					expect(startMapSpy.called).to.be(true);
+					expect(moveMapSpy.called).to.be(true);
+					expect(endMapSpy.called).to.be(true);
+					done();
+				}
+			});
+			var mouse = hand.growFinger(touchEventType);
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.moveTo(150, 50, 0)
+				.down().moveBy(20, 10, 200).up();
+		});
+
 		it("does fire mousedown on layer after dragging map", function (done) { // #7775
 			var spy = sinon.spy();
 			var circle = L.circle(p2ll(300, 300)).addTo(map);
@@ -157,6 +243,26 @@ describe('Canvas', function () {
 				}
 			});
 			var mouse = hand.growFinger('mouse');
+
+			mouse.wait(100)
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()
+				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up();
+		});
+
+		it.skipIfNotTouch("does fire touchstart on layer after dragging map", function (done) { // #7775
+			var spy = sinon.spy();
+			var circle = L.circle(p2ll(300, 300)).addTo(map);
+			circle.on('touchstart', spy);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					expect(spy.callCount).to.eql(2);
+					done();
+				}
+			});
+			var mouse = hand.growFinger(touchEventType);
 
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()

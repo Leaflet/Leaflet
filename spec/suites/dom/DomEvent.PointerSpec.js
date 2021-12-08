@@ -1,3 +1,4 @@
+/* global pointerToTouch */
 describe('DomEvent.Pointer', function () {
 	var el,
 	    listeners = {};
@@ -22,7 +23,6 @@ describe('DomEvent.Pointer', function () {
 
 	var skip = describe.skip;
 
-	var pointerToTouch = L.Browser.pointer && !L.Browser.touchNative;
 	(pointerToTouch ? describe : skip)('#Simulates touch based on pointer events', function () {
 		it('adds a listener and calls it on pointer event', function () {
 			pointerEvents.forEach(function (type) {
