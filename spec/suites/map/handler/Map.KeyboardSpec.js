@@ -11,14 +11,11 @@ describe("Map.Keyboard", function () {
 	var map, container;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		container.style.width = container.style.height = '600px';
-		container.style.top = container.style.left = 0;
-		container.style.position = 'absolute';
-		document.body.appendChild(container);
-		map = L.map(container, {
+		var obj = createMapContainer( {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
+		container = obj.container;
+		map = obj.map;
 
 		map.setView([0, 0], 5);
 
@@ -29,8 +26,7 @@ describe("Map.Keyboard", function () {
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 	describe("arrow keys", function () {
