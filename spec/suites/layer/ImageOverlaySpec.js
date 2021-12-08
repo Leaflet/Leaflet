@@ -1,4 +1,4 @@
-describe.only('ImageOverlay', function () {
+describe('ImageOverlay', function () {
 	var container, map;
 	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
