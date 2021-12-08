@@ -11,7 +11,7 @@ This tutorial will show you how to group several layers into one, and how to use
 
 ### Layer Groups
 
-Let's suppose you have a bunch of layers you want to combine into a group to handle them as one in your code:
+Let's suppose you have a bunch of markers you want to combine into a group to handle them as one in your code:
 
 	var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
 		denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
