@@ -2,26 +2,20 @@ describe("Map.BoxZoom", function () {
 	var container, map;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		container.style.width = container.style.height = '600px';
-		container.style.top = container.style.left = 0;
-		container.style.top = container.style.top = 0;
-		container.style.position = 'absolute';
-		document.body.appendChild(container);
+		var obj = createMapContainer({
+			center: [0, 0],
+			zoom: 3
+		});
+		container = obj.container;
+		map = obj.map;
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 
 	it("cancel boxZoom by pressing ESC and re-enable click event on the map", function () {
-		map = new L.Map(container, {
-			center: [0, 0],
-			zoom: 3
-		});
-
 		var mapClick = false;
 		map.on('click', function () {
 			mapClick = true;
