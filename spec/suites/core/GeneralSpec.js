@@ -1,5 +1,5 @@
 describe('General', function () {
-	describe('noConflict', function () {
+	it('noConflict', function () {
 		var leaflet = L;
 
 		after(function () {
@@ -9,7 +9,7 @@ describe('General', function () {
 		expect(L.noConflict()).to.eql(leaflet);
 	});
 
-	describe('namespace extension', function () {
+	it('namespace extension', function () {
 		L.Util.foo = 'bar';
 		L.Foo = 'Bar';
 
