@@ -1,25 +1,23 @@
 describe("Marker.Drag", function () {
 	var map,
-	    div;
+	    container;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = div.style.height = '600px';
-		div.style.top = div.style.left = 0;
-		div.style.position = 'absolute';
-		document.body.appendChild(div);
-
-		map = L.map(div).setView([0, 0], 0);
+		var obj = createMapContainer();
+		container = obj.container;
+		container.style.width = '600px';
+		container.style.height = '600px';
+		map = obj.map;
+		map.setView([0, 0], 0);
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	describe("drag", function () {
 		it("drags a marker with mouse", function (done) {
-			var marker = new L.Marker([0, 0], {
+			var marker = L.marker([0, 0], {
 				draggable: true
 			}).addTo(map);
 
@@ -51,13 +49,13 @@ describe("Marker.Drag", function () {
 			var scaleY = 1.5;
 
 			beforeEach(function () {
-				div.style.webkitTransformOrigin = 'top left';
-				div.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
+				container.style.webkitTransformOrigin = 'top left';
+				container.style.webkitTransform = 'scale(' + scaleX + ', ' + scaleY + ')';
 			});
 
 			// fixme IE
 			(L.Browser.ie ? it.skip : it)("drags a marker with mouse, compensating for CSS scale", function (done) {
-				var marker = new L.Marker([0, 0], {
+				var marker = L.marker([0, 0], {
 					draggable: true
 				}).addTo(map);
 
@@ -86,7 +84,7 @@ describe("Marker.Drag", function () {
 		});
 
 		it("pans map when autoPan is enabled", function (done) {
-			var marker = new L.Marker([0, 0], {
+			var marker = L.marker([0, 0], {
 				draggable: true,
 				autoPan: true
 			}).addTo(map);
