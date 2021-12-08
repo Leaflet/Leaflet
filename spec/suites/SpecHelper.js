@@ -79,5 +79,27 @@ var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disa
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
+function createMapContainer(mapOptions){
+	var container = document.createElement("div");
+	container.style.position = 'absolute';
+	container.style.top = '0px';
+	container.style.left = '0px';
+	container.style.height = '400px';
+	container.style.width = '400px';
+	container.style.opacity = '0.4';
+	document.body.appendChild(container);
+
+	var map = L.map(container, mapOptions);
+
+	return {map: map, container: container};
+}
+
+function removeMapContainer(map, container){
+	if (container._leaflet_id) {
+		map.remove();
+	}
+	document.body.removeChild(container);
+}
+
 console.log('L.Browser.pointer', L.Browser.pointer);
 console.log('L.Browser.touchNative', L.Browser.touchNative);
