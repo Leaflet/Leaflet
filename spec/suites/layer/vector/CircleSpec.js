@@ -1,13 +1,16 @@
 describe('Circle', function () {
-	var map, circle;
+	var map, container, circle;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div')).setView([0, 0], 4);
+		var obj = createMapContainer();
+		container = obj.container;
+		map = obj.map;
+		map.setView([0, 0], 4);
 		circle = L.circle([50, 30], {radius: 200}).addTo(map);
 	});
 
 	afterEach(function () {
-		map.remove();
+		removeMapContainer(map, container);
 	});
 
 	describe('#init', function () {
