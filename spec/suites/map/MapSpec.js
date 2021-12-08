@@ -1321,7 +1321,7 @@ describe("Map", function () {
 			expect(spyCancel.calledOnce).to.be.ok();
 		});
 
-		it.skipIfNotTouch("DOM touch events fired on polygon", function () {
+		it("DOM touch events fired on polygon", function () {
 			var spyStart = sinon.spy();
 			var spyMove = sinon.spy();
 			var spyEnd = sinon.spy();
@@ -1345,9 +1345,9 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			var spyLayer = sinon.spy();
 			map.on("touchmove", spy);
-			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var layer = L.polygon([[100, 0], [100, 100], [0, 100], [0, 0]]).addTo(map);
 			layer.on("touchmove", spyLayer);
-			happen.at(touchPointerMap['touchmove'], 200, 200);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
 			expect(spy.calledOnce).to.be.ok();
 			expect(spyLayer.calledOnce).to.be.ok();
 		});
@@ -1375,9 +1375,9 @@ describe("Map", function () {
 			var mapSpy = sinon.spy();
 			var layerSpy = sinon.spy();
 			map.on("touchmove", mapSpy);
-			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var layer = L.polygon([[100, 0], [100, 100], [0, 100], [0, 0]]).addTo(map);
 			layer.on("touchmove", L.DomEvent.stopPropagation).on("touchmove", layerSpy);
-			happen.at(touchPointerMap['touchmove'], 200, 200);
+			happen.at(touchPointerMap['touchmove'], 235, 135);
 			expect(layerSpy.calledOnce).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
 		});

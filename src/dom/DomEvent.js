@@ -228,6 +228,7 @@ export function stop(e) {
 // Gets normalized mouse position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
 export function getMousePosition(e, container) {
+	// TODO: Add here the touchevent logic
 	if (!container) {
 		return new Point(e.clientX, e.clientY);
 	}
