@@ -1,13 +1,15 @@
 ﻿describe('CircleMarker', function () {
-	var map;
+	var map, container;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div'));
+		var obj = createMapContainer();
+		container = obj.container;
+		map = obj.map;
 		map.setView([0, 0], 1);
 	});
 
 	afterEach(function () {
-		map.remove();
+		removeMapContainer(map, container);
 	});
 
 	describe("#_radius", function () {
@@ -60,11 +62,11 @@
 
 	describe("#setLatLng", function () {
 		it("fires a move event", function () {
-			var marker = new L.CircleMarker([0, 0]);
+			var marker = L.circleMarker([0, 0]);
 			map.addLayer(marker);
 
 			var beforeLatLng = marker._latlng;
-			var afterLatLng = new L.LatLng(1, 2);
+			var afterLatLng = L.latLng(1, 2);
 
 			var eventArgs = null;
 			marker.on('move', function (e) {
