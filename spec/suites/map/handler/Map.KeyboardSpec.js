@@ -11,7 +11,7 @@ describe("Map.Keyboard", function () {
 	var map, container;
 
 	beforeEach(function () {
-		var obj = createMapContainer( {
+		var obj = createMapContainer({
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 		container = obj.container;

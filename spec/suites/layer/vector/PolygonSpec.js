@@ -2,7 +2,7 @@ describe('Polygon', function () {
 	var map, container;
 
 	beforeEach(function () {
-		var obj = createMapContainer( {center: [55.8, 37.6], zoom: 6});
+		var obj = createMapContainer({center: [55.8, 37.6], zoom: 6});
 		container = obj.container;
 		map = obj.map;
 	});
