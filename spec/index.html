@@ -105,7 +105,9 @@
 	<script src="suites/geo/CRSSpec.js"></script>
 
 	<script class="mocha-exec">
-		window.mocha.run();
+		window.mocha
+				.globals([ '_leaflet_events' ]) // acceptable globals - fixing gloabl leaks
+				.run();
 	</script>
 </body>
 </html>

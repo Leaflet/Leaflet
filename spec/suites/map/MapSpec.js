@@ -23,12 +23,14 @@ describe("Map", function () {
 			map.setView([0, 0], 0);
 			map.on("unload", spy);
 			map.remove();
+			map = null;
 			expect(spy.called).to.be.ok();
 		});
 
 		it("fires no unload event if not loaded", function () {
 			map.on("unload", spy);
 			map.remove();
+			map = null;
 			expect(spy.called).not.to.be.ok();
 		});
 
@@ -47,6 +49,7 @@ describe("Map", function () {
 		it("undefines container._leaflet_id", function () {
 			expect(container._leaflet_id).to.be.ok();
 			map.remove();
+			map = null;
 			expect(container._leaflet_id).to.be(undefined);
 		});
 
@@ -61,6 +64,7 @@ describe("Map", function () {
 			spy = sinon.spy();
 			map.on("click dblclick mousedown mouseup mousemove", spy);
 			map.remove();
+			map = null;
 
 			happen.click(container);
 			happen.dblclick(container);
@@ -92,6 +96,7 @@ describe("Map", function () {
 			}).to.throwException();
 
 			map2.remove(); // clean up
+			map = null;
 		});
 	});
 
