@@ -2,9 +2,8 @@ describe('Circle', function () {
 	var map, container, circle;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 		map.setView([0, 0], 4);
 		circle = L.circle([50, 30], {radius: 200}).addTo(map);
 	});

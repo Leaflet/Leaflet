@@ -2,9 +2,8 @@ describe('Popup', function () {
 	var container, map, center = [55.8, 37.6];
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 		map.setView(center, 6);
 	});
 

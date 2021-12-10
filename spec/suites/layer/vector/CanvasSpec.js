@@ -6,9 +6,8 @@ describe('Canvas', function () {
 	}
 
 	beforeEach(function () {
-		var obj = createMapContainer({preferCanvas: true, zoomControl: false});
-		container = obj.container;
-		map = obj.map;
+		container = createContainer();
+		map = L.map(container, {preferCanvas: true, zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});

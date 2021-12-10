@@ -2,14 +2,13 @@ describe("Map.TouchZoom", function () {
 	var container, map;
 
 	beforeEach(function () {
-		var obj = createMapContainer({
+		container = createContainer();
+		map = L.map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
-		container = obj.container;
 		container.style.width = container.style.height = '600px';
-		map = obj.map;
 	});
 
 	afterEach(function () {

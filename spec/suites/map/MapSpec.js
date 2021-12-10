@@ -3,9 +3,8 @@ describe("Map", function () {
 	    map;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 	});
 
 	afterEach(function () {
@@ -312,9 +311,8 @@ describe("Map", function () {
 
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
 			removeMapContainer(map, container);
-			var obj = createMapContainer({minZoom: 2, maxZoom: 20});
-			container = obj.container;
-			map = obj.map;
+			container = createContainer();
+			map = L.map(container, {minZoom: 2, maxZoom: 20});
 
 			L.tileLayer("", {minZoom: 4, maxZoom: 10}).addTo(map);
 			L.tileLayer("", {minZoom: 6, maxZoom: 17}).addTo(map);
@@ -326,9 +324,8 @@ describe("Map", function () {
 
 		it("layer minZoom overrides map zoom if map has no minZoom set and layer minZoom is bigger than map zoom", function () {
 			removeMapContainer(map, container);
-			var obj = createMapContainer({zoom: 10});
-			container = obj.container;
-			map = obj.map;
+			container = createContainer();
+			map = L.map(container, {zoom: 10});
 
 			L.tileLayer("", {minZoom: 15}).addTo(map);
 
@@ -337,9 +334,8 @@ describe("Map", function () {
 
 		it("layer maxZoom overrides map zoom if map has no maxZoom set and layer maxZoom is smaller than map zoom", function () {
 			removeMapContainer(map, container);
-			var obj = createMapContainer({zoom: 20});
-			container = obj.container;
-			map = obj.map;
+			container = createContainer();
+			map = L.map(container, {zoom: 20});
 
 			L.tileLayer("", {maxZoom: 15}).addTo(map);
 
@@ -348,9 +344,8 @@ describe("Map", function () {
 
 		it("map's zoom is adjusted to layer's minZoom even if initialized with smaller value", function () {
 			removeMapContainer(map, container);
-			var obj = createMapContainer({zoom: 10});
-			container = obj.container;
-			map = obj.map;
+			container = createContainer();
+			map = L.map(container, {zoom: 10});
 
 			L.tileLayer("", {minZoom: 15}).addTo(map);
 
@@ -359,9 +354,8 @@ describe("Map", function () {
 
 		it("map's zoom is adjusted to layer's maxZoom even if initialized with larger value", function () {
 			removeMapContainer(map, container);
-			var obj = createMapContainer({zoom: 20});
-			container = obj.container;
-			map = obj.map;
+			container = createContainer();
+			map = L.map(container, {zoom: 20});
 
 			L.tileLayer("", {maxZoom: 15}).addTo(map);
 
@@ -1268,13 +1262,12 @@ describe("Map", function () {
 			if (!L.Browser.canvas) { this.skip(); }
 
 			removeMapContainer(map, container);
-			var obj = createMapContainer({
+			container = createContainer();
+			map = L.map(container, {
 				renderer: L.canvas(),
 				center: [0, 0],
 				zoom: 0
 			});
-			container = obj.container;
-			map = obj.map;
 
 			container.style.width = container.style.height = '300px';
 

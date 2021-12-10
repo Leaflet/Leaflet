@@ -3,11 +3,10 @@ describe("Marker.Drag", function () {
 	    container;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
+		container = createContainer();
+		map = L.map(container);
 		container.style.width = '600px';
 		container.style.height = '600px';
-		map = obj.map;
 		map.setView([0, 0], 0);
 	});
 

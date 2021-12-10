@@ -8,9 +8,8 @@ describe("Control", function () {
 	    control;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 
 		map.setView([0, 0], 1);
 		control = new L.Control();

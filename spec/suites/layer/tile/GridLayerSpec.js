@@ -2,11 +2,10 @@ describe('GridLayer', function () {
 	var container, map;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
+		container = createContainer();
+		map = L.map(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
-		map = obj.map;
 	});
 
 	afterEach(function () {

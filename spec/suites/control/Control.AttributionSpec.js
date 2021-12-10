@@ -2,9 +2,8 @@ describe("Control.Attribution", function () {
 	var map, control, container, controlContainer;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 
 		control = new L.Control.Attribution({
 			prefix: 'prefix'

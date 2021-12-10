@@ -2,12 +2,11 @@ describe("Map.BoxZoom", function () {
 	var container, map;
 
 	beforeEach(function () {
-		var obj = createMapContainer({
+		container = createContainer();
+		map = L.map(container, {
 			center: [0, 0],
 			zoom: 3
 		});
-		container = obj.container;
-		map = obj.map;
 	});
 
 	afterEach(function () {

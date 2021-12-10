@@ -3,9 +3,8 @@ describe('ImageOverlay', function () {
 	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 

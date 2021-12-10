@@ -6,13 +6,12 @@ describe('Map.TapHoldSpec.js', function () {
 	var posFar = {clientX:100, clientY:100};
 
 	beforeEach(function () {
-		var obj = createMapContainer({
+		container = createContainer();
+		map = L.map(container, {
 			center: [51.505, -0.09],
 			zoom: 13,
 			tapHold: true
 		});
-		container = obj.container;
-		map = obj.map;
 
 		clock = sinon.useFakeTimers();
 		clock.tick(1000);

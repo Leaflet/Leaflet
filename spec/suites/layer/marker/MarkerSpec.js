@@ -5,9 +5,8 @@ describe("Marker", function () {
 	    icon2;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 
 		map.setView([0, 0], 0);
 		icon1 = new L.Icon.Default();

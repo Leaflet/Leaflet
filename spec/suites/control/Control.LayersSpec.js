@@ -2,9 +2,8 @@ describe("Control.Layers", function () {
 	var container, map;
 
 	beforeEach(function () {
-		var obj = createMapContainer();
-		container = obj.container;
-		map = obj.map;
+		container = container = createContainer();
+		map = L.map(container);
 
 		map.setView([0, 0], 14);
 	});
