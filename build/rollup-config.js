@@ -7,7 +7,7 @@ import pkg from '../package.json';
 import {createBanner} from './banner';
 
 const release = process.env.NODE_ENV === 'release';
-const watch = process.argv.indexOf('-w') > -1 || process.argv.indexOf('--watch') > -1 ;
+const watch = process.argv.indexOf('-w') > -1 || process.argv.indexOf('--watch') > -1;
 // Skip the git branch+rev in the banner when doing a release build
 const version = release ? pkg.version : `${pkg.version}+${gitRev.branch()}.${gitRev.short()}`;
 const banner = createBanner(version);
@@ -35,12 +35,12 @@ const config = {
 			esModule: false
 		}
 	],
-		plugins: [
+	plugins: [
 		release ? json() : rollupGitVersion()
 	]
 };
 
-if(!watch){
+if (!watch) {
 	config.output.push(
 		{
 			file: 'dist/leaflet-src.esm.js',
