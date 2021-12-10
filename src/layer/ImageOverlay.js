@@ -253,6 +253,12 @@ export var ImageOverlay = Layer.extend({
 			this._url = errorUrl;
 			this._image.src = errorUrl;
 		}
+	},
+
+	// @method getCenter(): LatLng
+	// Returns the center of the ImageOverlay.
+	getCenter: function () {
+		return this._bounds.getCenter();
 	}
 });
 
