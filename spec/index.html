@@ -42,6 +42,7 @@
 	<script src="suites/core/UtilSpec.js"></script>
 	<script src="suites/core/ClassSpec.js"></script>
 	<script src="suites/core/EventsSpec.js"></script>
+	<script src="suites/core/GeneralSpec.js"></script>
 
 	<!-- /geometry -->
 	<script src="suites/geometry/PointSpec.js"></script>
@@ -53,7 +54,10 @@
 	<!-- /geo -->
 	<script src="suites/geo/LatLngSpec.js"></script>
 	<script src="suites/geo/LatLngBoundsSpec.js"></script>
-	<script src="suites/geo/ProjectionSpec.js"></script>
+	<script src="suites/geo/projection/ProjectionSpec.js"></script>
+
+	<!-- /geo/crs -->
+	<script src="suites/geo/crs/CRSSpec.js"></script>
 
 	<!-- /dom -->
 	<script src="suites/dom/DomEventSpec.js"></script>
@@ -91,13 +95,11 @@
 	<script src="suites/map/MapSpec.js"></script>
 
 	<!-- /map/handler -->
+	<script src="suites/map/handler/Map.BoxZoom.js"></script>
 	<script src="suites/map/handler/Map.DragSpec.js"></script>
 	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
 	<script src="suites/map/handler/Map.KeyboardSpec.js"></script>
 	<script src="suites/map/handler/Map.TapHoldSpec.js"></script>
-
-	<!-- /geo/crs -->
-	<script src="suites/geo/CRSSpec.js"></script>
 
 	<script class="mocha-exec">
 		window.mocha.run();
