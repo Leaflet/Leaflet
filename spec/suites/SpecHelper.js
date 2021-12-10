@@ -79,13 +79,15 @@ var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disa
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
-function createContainer() {
+function createContainer(width, height) {
+	width = width ? width : '400px';
+	height = height ? height : '400px';
 	var container = document.createElement("div");
 	container.style.position = 'absolute';
 	container.style.top = '0px';
 	container.style.left = '0px';
-	container.style.height = '400px';
-	container.style.width = '400px';
+	container.style.height = height;
+	container.style.width = width;
 	container.style.opacity = '0.4';
 	document.body.appendChild(container);
 
