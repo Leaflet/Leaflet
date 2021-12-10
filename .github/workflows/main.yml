@@ -32,6 +32,8 @@ jobs:
 
       - name: Build project
         run: npm run build
+        env:
+          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache setup
         uses: actions/cache@v2
@@ -89,7 +91,7 @@ jobs:
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }}
 
-  deploy:
+  publish-artifacts:
     needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
@@ -106,9 +108,11 @@ jobs:
 
       - name: Determine directory for artifacts
         id: artifacts-directory
-        run: VERSION=$(git tag --points-at HEAD) echo "::set-output name=path::content/leaflet/${VERSION:-master}"
+        run: |
+          VERSION=$(git tag --points-at HEAD)
+          echo "::set-output name=path::content/leaflet/${VERSION:-master}"
 
-      - name: Deploy artifacts
+      - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --delete
@@ -118,3 +122,25 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SOURCE_DIR: dist
           DEST_DIR: ${{ steps.artifacts-directory.outputs.path }}
+
+  publish-npm:
+    needs: setup
+    if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
