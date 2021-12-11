@@ -9,7 +9,7 @@ title: Video Overlay Tutorial
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
-    
+
 	var videoUrls = [
 		'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
