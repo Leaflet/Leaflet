@@ -227,7 +227,7 @@ Map.include({
 	},
 
 	_addZoomLimit: function (layer) {
-		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
 			this._zoomBoundLayers[Util.stamp(layer)] = layer;
 			this._updateZoomLevels();
 		}

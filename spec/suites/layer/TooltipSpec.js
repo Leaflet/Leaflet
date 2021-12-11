@@ -304,6 +304,47 @@ describe('Tooltip', function () {
 		layer.closeTooltip();
 	});
 
+	it("opens a tooltip and follow the mouse (sticky)", function () {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		happen.at('click', 120, 120);
+		var latlng = map.containerPointToLatLng([120, 120]);
+		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+	});
+
+	it("opens a permanent tooltip and follow the mouse (sticky)", function (done) {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				var latlng = map.containerPointToLatLng([120, 120]);
+				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+				done();
+			}
+		});
+		var toucher = hand.growFinger('mouse');
+		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+	});
+
+	it("closes existent tooltip on new bindTooltip call", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var eventSpy = sinon.spy(layer, "unbindTooltip");
+		layer.bindTooltip('Tooltip1', {permanent: true});
+		var tooltip1 = layer.getTooltip();
+		layer.bindTooltip('Tooltip2').openTooltip();
+		layer.unbindTooltip.restore(); // unwrap the spy
+		expect(map.hasLayer(tooltip1)).to.not.be.ok();
+		expect(eventSpy.calledOnce).to.be.ok();
+	});
+
+
 	it("opens tooltip with passed latlng position while initializing", function () {
 		var tooltip = new L.Tooltip(center)
 			.addTo(map);

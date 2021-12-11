@@ -297,6 +297,10 @@ Layer.include({
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindTooltip: function (content, options) {
 
+		if (this._tooltip && this.isTooltipOpen()) {
+			this.unbindTooltip();
+		}
+
 		if (content instanceof Tooltip) {
 			Util.setOptions(content, options);
 			this._tooltip = content;
@@ -339,12 +343,12 @@ Layer.include({
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
-			if (this._tooltip.options.sticky) {
-				events.mousemove = this._moveTooltip;
-			}
 			events.click = this._openTooltip;
 		} else {
 			events.add = this._openTooltip;
+		}
+		if (this._tooltip.options.sticky) {
+			events.mousemove = this._moveTooltip;
 		}
 		this[onOff](events);
 		this._tooltipHandlersAdded = !remove;

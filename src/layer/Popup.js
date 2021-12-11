@@ -196,8 +196,10 @@ export var Popup = DivOverlay.extend({
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
+			closeButton.setAttribute('aria-label', 'Close popup');
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
+			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', this._close, this);
 		}
@@ -239,7 +241,7 @@ export var Popup = DivOverlay.extend({
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
-	_adjustPan: function () {
+	_adjustPan: function (e) {
 		if (!this.options.autoPan) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
 
@@ -279,7 +281,7 @@ export var Popup = DivOverlay.extend({
 		if (dx || dy) {
 			map
 			    .fire('autopanstart')
-			    .panBy([dx, dy]);
+			    .panBy([dx, dy], {animate: e && e.type === 'moveend'});
 		}
 	},
 

@@ -29,25 +29,25 @@ title: Tilt handler
 	var trd = [63.41, 10.41];
 	
 	L.TiltHandler = L.Handler.extend({
-		addHooks: function() {
+		addHooks: function () {
 			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 	
-		removeHooks: function() {
+		removeHooks: function () {
 			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
-		
-		_tilt: function(ev) {
+
+		_tilt: function (ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
 			var info;
-			var offset = L.point(ev.gamma, ev.beta)
+			var offset = L.point(ev.gamma, ev.beta);
 			if (offset) {
 				this._map.panBy(offset);
 				info = ev.gamma + ',' + ev.beta;
 			} else {
-				info = 'Device orientation not detected'
+				info = 'Device orientation not detected';
 			}
-			document.getElementById('info').innerHTML = info
+			document.getElementById('info').innerHTML = info;
 		}
 	});
 	

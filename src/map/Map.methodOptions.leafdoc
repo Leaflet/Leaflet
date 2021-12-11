@@ -86,10 +86,8 @@ panning inertia).
 @inherits Pan options
 
 
-@miniclass FitBounds options (Map)
-@aka fitBounds options
-@inherits Zoom/pan options
-
+@miniclass Padding options (Map)
+@aka padding options
 @option paddingTopLeft: Point = [0, 0]
 Sets the amount of padding in the top left corner of a map container that
 shouldn't be accounted for when setting the view to fit bounds. Useful if you
@@ -101,6 +99,12 @@ The same for the bottom right corner of the map.
 
 @option padding: Point = [0, 0]
 Equivalent of setting both top left and bottom right padding to the same value.
+
+
+@miniclass FitBounds options (Map)
+@aka fitBounds options
+@inherits Zoom/pan options
+@inherits Padding options
 
 @option maxZoom: Number = null
 The maximum possible zoom to use.
