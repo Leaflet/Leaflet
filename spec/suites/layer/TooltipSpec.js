@@ -68,6 +68,18 @@ describe('Tooltip', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
+	it("has class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
+	});
+
+	it("has not class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
+	});
+
 	it("can be forced on left direction", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
@@ -278,9 +290,57 @@ describe('Tooltip', function () {
 		map.openTooltip('Tooltip', center);
 	});
 
+	it("map.openTooltip considers interactive option", function () {
+		if (!window.getComputedStyle) { this.skip(); } // IE9+
+
+		var tooltip = L.tooltip({interactive: true}).setContent('Tooltip');
+		map.openTooltip(tooltip, center);
+		expect(getComputedStyle(tooltip._container).pointerEvents).to.equal('auto');
+	});
+
 	it("can call closeTooltip while not on the map", function () {
 		var layer = new L.Marker(center);
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
+	});
+
+	it("opens a tooltip and follow the mouse (sticky)", function () {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		happen.at('click', 120, 120);
+		var latlng = map.containerPointToLatLng([120, 120]);
+		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+	});
+
+	it("opens a permanent tooltip and follow the mouse (sticky)", function (done) {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				var latlng = map.containerPointToLatLng([120, 120]);
+				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+				done();
+			}
+		});
+		var toucher = hand.growFinger('mouse');
+		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+	});
+
+	it("closes existent tooltip on new bindTooltip call", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var eventSpy = sinon.spy(layer, "unbindTooltip");
+		layer.bindTooltip('Tooltip1', {permanent: true});
+		var tooltip1 = layer.getTooltip();
+		layer.bindTooltip('Tooltip2').openTooltip();
+		layer.unbindTooltip.restore(); // unwrap the spy
+		expect(map.hasLayer(tooltip1)).to.not.be.ok();
+		expect(eventSpy.calledOnce).to.be.ok();
 	});
 });

@@ -42,15 +42,15 @@ Now you're ready to initialize the map and do some stuff with it.
 
 {% include frame.html url="example-basic.html" %}
 
-Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+Let's create a map of the center of London with pretty Mapbox Streets tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
-	var mymap = L.map('map').setView([51.505, -0.09], 13);
+	var map = L.map('map').setView([51.505, -0.09], 13);
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
 
-Note that `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
+Note that the `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text and the maximum zoom level of the layer. In this example we'll use the `mapbox/streets-v11` tiles from [Mapbox's Static Tiles API](https://docs.mapbox.com/api/maps/#static-tiles) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)). Because this API returns 512x512 tiles by default (instead of 256x256), we will also have to explicitly specify this and offset our zoom by a value of -1.
+Next, we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. In this example, we'll use the `mapbox/streets-v11` tiles from [Mapbox's Static Tiles API](https://docs.mapbox.com/api/maps/#static-tiles) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)). Because this API returns 512x512 tiles by default (instead of 256x256), we will also have to explicitly specify this and offset our zoom by a value of -1.
 
 <pre><code class="javascript">L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors, Imagery &copy; &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span>',
@@ -59,7 +59,7 @@ Next we'll add a tile layer to add to our map, in this case it's a Mapbox Street
 	tileSize: 512,
 	zoomOffset: -1,
 	accessToken: 'your.mapbox.access.token'
-}).addTo(mymap);</code></pre>
+}).addTo(map);</code></pre>
 
 Make sure all the code is called after the `div` and `leaflet.js` inclusion. That's it! You have a working Leaflet map now.
 
@@ -68,14 +68,14 @@ It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enf
 Whenever using anything based on OpenStreetMap, an *attribution* is obligatory as per the [copyright notice](https://www.openstreetmap.org/copyright). Most other tile providers (such as [Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/), [Stamen](http://maps.stamen.com/) or [Thunderforest](https://www.thunderforest.com/terms/)) require an attribution as well. Make sure to give credit where credit is due.
 
 
-### Markers, circles and polygons
+### Markers, circles, and polygons
 
 {% include frame.html url="example-overlays.html" %}
 
 
 Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:
 
-	var marker = L.marker([51.5, -0.09]).addTo(mymap);
+	var marker = L.marker([51.5, -0.09]).addTo(map);
 
 Adding a circle is the same (except for specifying the radius in meters as a second argument), but lets you control how it looks by passing options as the last argument when creating the object:
 
@@ -84,7 +84,7 @@ Adding a circle is the same (except for specifying the radius in meters as a sec
 		fillColor: '#f03',
 		fillOpacity: 0.5,
 		radius: 500
-	}).addTo(mymap);
+	}).addTo(map);
 
 Adding a polygon is as easy:
 
@@ -92,12 +92,12 @@ Adding a polygon is as easy:
 		[51.509, -0.08],
 		[51.503, -0.06],
 		[51.51, -0.047]
-	]).addTo(mymap);
+	]).addTo(map);
 
 
 ### Working with popups
 
-{% include frame.html url="example-popups.html" %}
+{% include frame.html url="example.html" %}
 
 Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:
 
@@ -110,9 +110,9 @@ Try clicking on our objects. The `bindPopup` method attaches a popup with the sp
 You can also use popups as layers (when you need something more than attaching a popup to an object):
 
 	var popup = L.popup()
-		.setLatLng([51.5, -0.09])
+		.setLatLng([51.513, -0.09])
 		.setContent("I am a standalone popup.")
-		.openOn(mymap);
+		.openOn(map);
 
 Here we use `openOn` instead of `addTo` because it handles automatic closing of a previously opened popup when opening a new one which is good for usability.
 
@@ -125,7 +125,7 @@ Every time something happens in Leaflet, e.g. user clicks on a marker or map zoo
 		alert("You clicked the map at " + e.latlng);
 	}
 
-	mymap.on('click', onMapClick);
+	map.on('click', onMapClick);
 
 Each object has its own set of events --- see [documentation](/reference.html) for details. The first argument of the listener function is an event object --- it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has `latlng` property which is a location at which the click occurred.
 
@@ -137,10 +137,10 @@ Let's improve our example by using a popup instead of an alert:
 		popup
 			.setLatLng(e.latlng)
 			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(mymap);
+			.openOn(map);
 	}
 
-	mymap.on('click', onMapClick);
+	map.on('click', onMapClick);
 
 Try clicking on the map and you will see the coordinates in a popup. <a target="_blank" href="example.html">View the full example &rarr;</a>
 

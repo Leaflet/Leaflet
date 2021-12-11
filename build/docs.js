@@ -1,5 +1,3 @@
-var packageDef = require('../package.json');
-
 function buildDocs() {
 
 	console.log('Building Leaflet documentation with Leafdoc ...');
@@ -27,7 +25,7 @@ function buildDocs() {
 	doc.addFile('build/docs-misc.leafdoc', false);
 
 	var out = doc.outputStr();
-	var path = 'dist/reference-' + packageDef.version + '.html';
+	var path = 'docs/reference.html';
 
 	var fs = require('fs');
 

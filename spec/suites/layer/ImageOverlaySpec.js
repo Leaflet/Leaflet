@@ -63,7 +63,7 @@ describe('ImageOverlay', function () {
 
 		function raiseImageEvent(event) {
 			var domEvent = document.createEvent('Event');
-			domEvent.initEvent(event);
+			domEvent.initEvent(event, false, false);
 			overlay._image.dispatchEvent(domEvent);
 		}
 
@@ -108,23 +108,23 @@ describe('ImageOverlay', function () {
 		it('should update the z-index of the image if it has allready been added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('1');
+			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should set the z-index of the image when it is added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should use the z-index specified in options', function () {
 			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('20');
+			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
 		});
 
 		it('should be fluent', function () {
@@ -133,9 +133,21 @@ describe('ImageOverlay', function () {
 		});
 	});
 
+	describe('#getCenter', function () {
+		it('should return the correct center', function () {
+			var overlay = L.imageOverlay('', imageBounds).addTo(map);
+			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
+		});
+		it('should open popup at the center', function () {
+			var overlay = L.imageOverlay('', imageBounds).addTo(map);
+			overlay.bindPopup('Center').openPopup();
+			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
+		});
+	});
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
-	describe('_image2', function () {
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		var overlay;
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
