@@ -153,7 +153,7 @@ describe('Polygon', function () {
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			var layer = new L.Polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+			expect(layer.getCenter()).to.be.nearLatLng([5, 5], 1e-1);
 		});
 
 		it('should compute center of a small simple polygon', function () {
@@ -162,7 +162,7 @@ describe('Polygon', function () {
 			];
 			var layer = new L.Polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0, 0]));
+			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
 		});
 
 		it('throws error if not yet added to map', function () {

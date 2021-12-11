@@ -14,7 +14,7 @@ title: Video Overlay Tutorial
 		'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 	],
-	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	bounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	map.fitBounds(bounds);
 

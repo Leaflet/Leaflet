@@ -14,7 +14,7 @@ title: Video Overlay Tutorial
 		'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 	],
-	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	bounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	map.fitBounds(bounds);
 
@@ -25,14 +25,9 @@ title: Video Overlay Tutorial
 	});
 	map.addLayer(overlay);
 
-	var MyPauseControl,
-		MyPlayControl,
- 		pauseControl,
- 		playControl;
-        
 	overlay.on('load', function () {
-		MyPauseControl = L.Control.extend({
-			onAdd: function() {
+		var MyPauseControl = L.Control.extend({
+			onAdd: function () {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '⏸';
 				L.DomEvent.on(button, 'click', function () {
@@ -41,8 +36,8 @@ title: Video Overlay Tutorial
 				return button;
 			}
 		});
-		MyPlayControl = L.Control.extend({
-			onAdd: function() {
+		var MyPlayControl = L.Control.extend({
+			onAdd: function () {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '▶️';
 				L.DomEvent.on(button, 'click', function () {
@@ -52,8 +47,8 @@ title: Video Overlay Tutorial
 			}
 		});
 
-		pauseControl = (new MyPauseControl()).addTo(map);
-		playControl = (new MyPlayControl()).addTo(map);
+		var pauseControl = (new MyPauseControl()).addTo(map);
+		var playControl = (new MyPlayControl()).addTo(map);
 	});
 
 </script>

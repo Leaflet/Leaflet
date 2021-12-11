@@ -20,8 +20,8 @@ title: GeoJSON tutorial
 	});
 
 	function onEachFeature(feature, layer) {
-		var popupContent = "<p>I started out as a GeoJSON " +
-				feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+		var popupContent = '<p>I started out as a GeoJSON ' +
+				feature.geometry.type + ', but now I\'m a Leaflet vector!</p>';
 
 		if (feature.properties && feature.properties.popupContent) {
 			popupContent += feature.properties.popupContent;
@@ -30,6 +30,7 @@ title: GeoJSON tutorial
 		layer.bindPopup(popupContent);
 	}
 
+	/* global campus, bicycleRental, freeBus, coorsField */
 	var bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
 
 		style: function (feature) {
@@ -41,8 +42,8 @@ title: GeoJSON tutorial
 		pointToLayer: function (feature, latlng) {
 			return L.circleMarker(latlng, {
 				radius: 8,
-				fillColor: "#ff7800",
-				color: "#000",
+				fillColor: '#ff7800',
+				color: '#000',
 				weight: 1,
 				opacity: 1,
 				fillOpacity: 0.8

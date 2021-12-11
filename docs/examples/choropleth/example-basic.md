@@ -12,6 +12,7 @@ title: Choropleth Tutorial
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
+	/* global statesData */
 	var geojson = L.geoJson(statesData).addTo(map);
 
 </script>

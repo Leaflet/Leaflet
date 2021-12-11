@@ -10,7 +10,7 @@ title: Video Overlay Tutorial
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	var bounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	var rectangle = L.rectangle(bounds).addTo(map);
 
