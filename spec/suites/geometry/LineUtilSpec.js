@@ -92,6 +92,7 @@ describe('LineUtil', function () {
 			];
 			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
 			expect(latLngsClone).to.not.be(latLngs);
+			expect(latLngsClone).to.eql(latLngs);
 		});
 
 		it('clone a latlng array', function () {
@@ -101,6 +102,7 @@ describe('LineUtil', function () {
 			]];
 			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
 			expect(latLngsClone).to.not.be(latLngs);
+			expect(latLngsClone).to.eql(latLngs);
 		});
 	});
 });
