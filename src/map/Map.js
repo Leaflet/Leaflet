@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
@@ -511,10 +511,9 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	// @method panInside(latlng: LatLng, options?: options): this
+	// @method panInside(latlng: LatLng, options?: padding options): this
 	// Pans the map the minimum amount to make the `latlng` visible. Use
-	// `padding`, `paddingTopLeft` and `paddingBottomRight` options to fit
-	// the display to more restricted bounds, like [`fitBounds`](#map-fitbounds).
+	// padding options to fit the display to more restricted bounds.
 	// If `latlng` is already within the (optionally padded) display bounds,
 	// the map will not be panned.
 	panInside: function (latlng, options) {
@@ -665,6 +664,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationError: function (error) {
+		if (!this._container._leaflet_id) { return; }
+
 		var c = error.code,
 		    message = error.message ||
 		            (c === 1 ? 'permission denied' :
@@ -684,6 +685,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationResponse: function (pos) {
+		if (!this._container._leaflet_id) { return; }
+
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),
@@ -1362,7 +1365,7 @@ export var Map = Evented.extend({
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
-			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+			if (target && (type === 'click' || type === 'preclick') && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;

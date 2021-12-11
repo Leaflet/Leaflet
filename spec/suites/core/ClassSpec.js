@@ -154,6 +154,12 @@ describe("Class", function () {
 			expect(props.options).to.be(opts);
 		});
 
+		it("prevents change of prototype options", function () {
+			var Klass = L.Class.extend({options: {}});
+			var instance = new Klass();
+			expect(Klass.prototype.options).to.not.be(instance.options);
+		});
+
 		it("adds constructor hooks correctly", function () {
 			var spy1 = sinon.spy();
 
