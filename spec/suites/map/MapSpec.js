@@ -1346,7 +1346,16 @@ describe("Map", function () {
 		});
 
 		describe("#Dark Mode", function () {
-			window.matchMediaOrg = window.matchMedia;
+
+			var matchMediaOrg;
+			before(function () {
+				matchMediaOrg = window.matchMedia;
+			});
+
+			after(function () {
+				window.matchMedia = matchMediaOrg;
+			});
+
 
 			function toHex(rgb) {
 				rgb = rgb.match(/\d+/g);
@@ -1368,9 +1377,9 @@ describe("Map", function () {
 
 				window.matchMedia = function (query) {
 					if (query === '(prefers-color-scheme: light)') {
-						return window.matchMediaOrg('');
+						return {matches: true};
 					}
-					return window.matchMediaOrg(query);
+					return matchMediaOrg(query);
 				};
 
 				map = L.map(container, {useUserColorScheme: true});
@@ -1379,13 +1388,12 @@ describe("Map", function () {
 
 			it.skipIfNo3d("Checks if User use Color Schema - Enabled Dark Mode", function () {
 				map.remove(); // remove the generated Map to re-created it with options
-
 				// we need to overwrite matchMedia to simulate the color-schema
 				window.matchMedia = function (query) {
 					if (query === '(prefers-color-scheme: dark)') {
-						return window.matchMediaOrg('');
+						return {matches: true};
 					}
-					return window.matchMediaOrg(query);
+					return matchMediaOrg(query);
 				};
 
 				map = L.map(container, {useUserColorScheme: true});
