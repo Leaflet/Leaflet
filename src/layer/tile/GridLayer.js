@@ -1,5 +1,5 @@
 import {Layer} from '../Layer';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';
@@ -228,6 +228,11 @@ export var GridLayer = Layer.extend({
 	redraw: function () {
 		if (this._map) {
 			this._removeAllTiles();
+			var tileZoom = this._clampZoom(this._map.getZoom());
+			if (tileZoom !== this._tileZoom) {
+				this._tileZoom = tileZoom;
+				this._updateLevels();
+			}
 			this._update();
 		}
 		return this;

@@ -261,9 +261,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-container a {
 	color: #0078A8;
 	}
-.leaflet-container a.leaflet-active {
-	outline: 2px solid orange;
-	}
 .leaflet-zoom-box {
 	border: 2px dotted #38f;
 	background: rgba(255,255,255,0.5);
@@ -399,7 +396,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 
 /* Default icon URLs */
-.leaflet-default-icon-path {
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
 	background-image: url(images/marker-icon.png);
 	}
 
@@ -645,4 +642,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	left: 0;
 	margin-left: -12px;
 	border-right-color: #fff;
+	}
+
+/* Printing */
+	
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		color-adjust: exact;
+		}
 	}

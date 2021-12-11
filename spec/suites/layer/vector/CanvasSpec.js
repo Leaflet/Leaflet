@@ -94,6 +94,13 @@ describe('Canvas', function () {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
+		it("should not block mousemove event going to non-canvas features", function () {
+			var spyMap = sinon.spy();
+			map.on("mousemove", spyMap);
+			happen.at('mousemove', 151, 151); // empty space
+			expect(spyMap.calledOnce).to.be.ok();
+		});
+
 		it("should fire preclick before click", function () {
 			var clickSpy = sinon.spy();
 			var preclickSpy = sinon.spy();

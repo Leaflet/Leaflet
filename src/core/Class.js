@@ -17,6 +17,8 @@ Class.extend = function (props) {
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	var NewClass = function () {
 
+		Util.setOptions(this);
+
 		// call the constructor
 		if (this.initialize) {
 			this.initialize.apply(this, arguments);

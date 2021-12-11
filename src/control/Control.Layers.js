@@ -201,6 +201,7 @@ export var Layers = Control.extend({
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
+		link.setAttribute('role', 'button');
 
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
 		DomEvent.on(link, 'focus', this.expand, this);

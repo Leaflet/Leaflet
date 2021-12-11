@@ -7,6 +7,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "eslint": "^8.1.0",
     "eslint-config-mourner": "^2.0.3",
+    "eslint-plugin-script-tags": "^0.5.0",
     "git-rev-sync": "^3.0.1",
     "happen": "~0.3.2",
     "karma": "^6.3.6",
@@ -53,9 +54,12 @@
       "dist",
       "debug",
       "docs/docs/highlight",
-      "docs/examples/choropleth",
-      "docs/examples/geojson",
-      "docs/examples/map-panes"
+      "docs/examples/choropleth/us-states.js",
+      "docs/examples/geojson/sample-geojson.js",
+      "docs/examples/map-panes/eu-countries.js",
+      "docs/examples/extending/extending-2-layers.md",
+      "docs/_posts/2012*",
+      "docs/_site"
     ],
     "root": true,
     "globals": {
@@ -67,6 +71,9 @@
       "node": false
     },
     "extends": "mourner",
+    "plugins": [
+      "script-tags"
+    ],
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module"
@@ -111,6 +118,15 @@
         },
         "rules": {
           "global-require": 0
+        }
+      },
+      {
+        "files": [
+          "*.md"
+        ],
+        "rules": {
+          "eol-last": 0,
+          "no-unused-vars": 0
         }
       }
     ]
