@@ -354,14 +354,14 @@ describe('Tooltip', function () {
 		map.dragging.moving = function () {
 			return true;
 		};
-		happen.at('mouseover',210, 195);
+		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 
 		// simulate map not dragging anymore
 		map.dragging.moving = function () {
 			return false;
 		};
-		happen.at('mouseover',210, 195);
+		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be.ok();
 	});
 
@@ -372,7 +372,7 @@ describe('Tooltip', function () {
 		var tooltip = layer.getTooltip();
 
 		// open tooltip before "dragging map"
-		happen.at('mouseover',210, 195);
+		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be.ok();
 
 		// simulate map dragging
@@ -383,7 +383,7 @@ describe('Tooltip', function () {
 		expect(tooltip.isOpen()).to.be(false);
 
 		// tooltip should not open again while dragging
-		happen.at('mouseover',210, 195);
+		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 	});
 });
