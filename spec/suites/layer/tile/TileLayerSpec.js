@@ -1,7 +1,7 @@
 describe('TileLayer', function () {
 	var div, map;
 
-	// Placekitten via http://placekitten.com/attribution.html
+	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
 	var placeKitten = "data:image/jpeg;base64," +
