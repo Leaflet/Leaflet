@@ -1365,7 +1365,7 @@ export var Map = Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover) {
 			targets = [this];
 		}
 		return targets;
