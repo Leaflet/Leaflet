@@ -46,8 +46,7 @@
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
-    "integrity": "node ./build/integrity.js",
-    "prepublishOnly": "npm ci && npm run lint && npm run test && NODE_ENV=release npm run build"
+    "integrity": "node ./build/integrity.js"
   },
   "eslintConfig": {
     "ignorePatterns": [

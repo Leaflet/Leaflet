@@ -1,9 +1,9 @@
 ## Releasing a new version of Leaflet
 
 - [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md) since last release and commit.
-- [ ] Run `npm publish --dry-run` to run all the necessary checks without actually publishing, and make sure it runs successfully.
 - [ ] Run `npm version <patch | minor | major>` (this will bump the version in `package.json` and create a new tag).
-- [ ] Run `npm publish` to publish to NPM.
+- [ ] Run `git push --follow-tags` to push the commit created by NPM to Github (together with the tag).
+- [ ] Wait for the CI to complete and follow the logs to make sure it runs successfully.
 - [ ] Verify that the release was correctly published to NPM by checking:
   - [ ] [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
   - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
