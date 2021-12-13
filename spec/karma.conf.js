@@ -93,7 +93,7 @@ module.exports = function (config) {
 		// - Opera
 		// - Safari (only Mac)
 		// - IE (only Windows)
-		browsers: ['IE'],
+		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
 			'Chrome1280x1024': {
