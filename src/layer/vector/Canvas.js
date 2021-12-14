@@ -340,7 +340,12 @@ export var Canvas = Renderer.extend({
 		if (options.stroke && options.weight !== 0) {
 			if (ctx.setLineDash) {
 				ctx.lineDashOffset = Number(options.dashOffset || 0);
-				ctx.setLineDash(options._dashArray || []);
+				var dash = options._dashArray || [];
+				if (dash.length > 1 && dash[0] === 0) {
+					ctx.lineDashOffset += dash[1];
+					dash = dash.slice(2);
+				}
+				ctx.setLineDash(dash);
 			}
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
