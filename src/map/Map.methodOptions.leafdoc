@@ -31,7 +31,7 @@ Maximum age of detected location. If less than this amount of milliseconds
 passed since last geolocation response, `locate` will return a cached location.
 
 @option enableHighAccuracy: Boolean = false
-Enables high accuracy, see [description in the W3C spec](https://dev.w3.org/geo/api/spec-source.html#high-accuracy).
+Enables high accuracy, see [description in the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
 
 
 
