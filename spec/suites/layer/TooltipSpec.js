@@ -343,4 +343,47 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(tooltip1)).to.not.be.ok();
 		expect(eventSpy.calledOnce).to.be.ok();
 	});
+
+	it("don't opens the tooltip on marker mouseover while dragging map", function () {
+		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
+		// the tooltip opened / closed.
+		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		var tooltip = layer.getTooltip();
+
+		// simulate map dragging
+		map.dragging.moving = function () {
+			return true;
+		};
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be(false);
+
+		// simulate map not dragging anymore
+		map.dragging.moving = function () {
+			return false;
+		};
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+	});
+
+	it("closes the tooltip on marker mouseout while dragging map and don't open it again", function () {
+		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
+		// the tooltip opened / closed.
+		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		var tooltip = layer.getTooltip();
+
+		// open tooltip before "dragging map"
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+
+		// simulate map dragging
+		map.dragging.moving = function () {
+			return true;
+		};
+		happen.mouseout(layer._icon, {relatedTarget: map._container});
+		expect(tooltip.isOpen()).to.be(false);
+
+		// tooltip should not open again while dragging
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be(false);
+	});
 });

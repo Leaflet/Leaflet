@@ -388,7 +388,7 @@ Layer.include({
 	},
 
 	_openTooltip: function (e) {
-		if (!this._tooltip || !this._map) {
+		if (!this._tooltip || !this._map || (this._map.dragging && this._map.dragging.moving())) {
 			return;
 		}
 		this._tooltip._source = e.layer || e.target;
