@@ -17,7 +17,7 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
  * Inherits `Renderer`.
  *
- * Due to [technical limitations](http://caniuse.com/#search=svg), SVG is not
+ * Due to [technical limitations](https://caniuse.com/svg), SVG is not
  * available in all web browsers, notably Android 2.x and 3.x.
  *
  * Although SVG is not available on IE7 and IE8, these browsers support

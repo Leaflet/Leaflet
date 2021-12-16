@@ -25,7 +25,7 @@ var _pointers = {};
 var _pointerDocListener = false;
 
 // Provides a touch events wrapper for (ms)pointer events.
-// ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
+// ref https://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
 export function addPointerListener(obj, type, handler) {
 	if (type === 'touchstart') {

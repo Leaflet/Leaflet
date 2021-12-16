@@ -315,13 +315,13 @@ var PointToGeoJSON = {
 // @section Other methods
 // @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
+// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
 Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker
 // @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
+// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
 Circle.include(PointToGeoJSON);
 CircleMarker.include(PointToGeoJSON);
 
@@ -329,7 +329,7 @@ CircleMarker.include(PointToGeoJSON);
 // @namespace Polyline
 // @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
+// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
 	toGeoJSON: function (precision) {
 		var multi = !LineUtil.isFlat(this._latlngs);
@@ -346,7 +346,7 @@ Polyline.include({
 // @namespace Polygon
 // @method toGeoJSON(precision?: Number|false): Object
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
+// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
 	toGeoJSON: function (precision) {
 		var holes = !LineUtil.isFlat(this._latlngs),
@@ -383,7 +383,7 @@ LayerGroup.include({
 
 	// @method toGeoJSON(precision?: Number|false): Object
 	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	toGeoJSON: function (precision) {
 
 		var type = this.feature && this.feature.geometry && this.feature.geometry.type;
