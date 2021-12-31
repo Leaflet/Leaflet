@@ -182,9 +182,9 @@ Bounds.prototype = {
 	// Negative values will retract the bounds.
 	pad: function (bufferRatio) {
 		var min = this.min,
-			max = this.max,
-			heightBuffer = Math.abs(min.x - max.x) * bufferRatio,
-			widthBuffer = Math.abs(min.y - max.y) * bufferRatio;
+		max = this.max,
+		heightBuffer = Math.abs(min.x - max.x) * bufferRatio,
+		widthBuffer = Math.abs(min.y - max.y) * bufferRatio;
 
 
 		return toBounds(
