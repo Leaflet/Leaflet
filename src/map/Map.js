@@ -1338,7 +1338,7 @@ export var Map = Evented.extend({
 		var pos = this._getMapPanePos();
 		if (Math.max(Math.abs(pos.x), Math.abs(pos.y)) >= this.options.transform3DLimit) {
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=1203873 but Webkit also have
-			// a pixel offset on very high values, see: http://jsfiddle.net/dg6r5hhb/
+			// a pixel offset on very high values, see: https://jsfiddle.net/dg6r5hhb/
 			this._resetView(this.getCenter(), this.getZoom());
 		}
 	},
@@ -1365,7 +1365,7 @@ export var Map = Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && this.listens(type, true)) {
 			targets = [this];
 		}
 		return targets;
