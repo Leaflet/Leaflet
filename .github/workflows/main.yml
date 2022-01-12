@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        command: [lint]
+        command: [lint, bundlesize]
     steps:
       - name: Restore setup
         uses: actions/cache@v2
