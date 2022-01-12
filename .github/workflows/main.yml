@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        command: [lint, bundlesize]
+        command: [lint]
     steps:
       - name: Restore setup
         uses: actions/cache@v2
@@ -90,6 +90,9 @@ jobs:
 
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }}
+      
+      - name: Run bundlesize
+        run: bundlesize
 
   publish-artifacts:
     needs: setup
