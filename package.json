@@ -5,7 +5,7 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
-    "bundlesize": "0.18.1",
+    "bundlesize": "^0.18.1",
     "eslint": "^8.1.0",
     "eslint-config-mourner": "^2.0.3",
     "eslint-plugin-script-tags": "^0.5.0",
