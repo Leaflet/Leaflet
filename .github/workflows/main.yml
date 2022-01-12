@@ -97,7 +97,6 @@ jobs:
 
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }}
-      
 
   publish-artifacts:
     needs: setup
