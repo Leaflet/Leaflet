@@ -61,6 +61,13 @@ jobs:
 
       - name: Run ${{ matrix.command }} task
         run: npm run ${{ matrix.command }}
+        env:
+          CI_REPO_OWNER: Leaflet
+          CI_REPO_NAME: Leaflet
+          CI_COMMIT_MESSAGE: N/A
+          CI_COMMIT_SHA: ${{ github.sha }}
+          # BUNDLESIZE_GITHUB_TOKEN 
+          
 
   test:
     needs: setup
