@@ -53,7 +53,7 @@
   "bundlesize": [
     {
       "path": "./dist/leaflet.js",
-      "maxSize": "31 KB"
+      "maxSize": "42 KB"
     }
   ],
   "eslintConfig": {
