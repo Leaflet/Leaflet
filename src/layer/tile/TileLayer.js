@@ -23,7 +23,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * A string of the following form:
  *
  * ```
- * 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+ * 'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
  * ```
  *
  * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add "&commat;2x" to the URL to load retina tiles.
@@ -31,7 +31,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
  *
  * ```
- * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
  */
 
@@ -142,7 +142,7 @@ export var TileLayer = GridLayer.extend({
 
 		/*
 		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 http://www.w3.org/TR/WCAG20-TECHS/H67
+		 https://www.w3.org/TR/WCAG20-TECHS/H67
 		*/
 		tile.alt = '';
 
