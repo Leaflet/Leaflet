@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        command: [lint]
+        command: [lint, bundlemon]
     steps:
       - name: Restore setup
         uses: actions/cache@v2
@@ -61,6 +61,9 @@ jobs:
 
       - name: Run ${{ matrix.command }} task
         run: npm run ${{ matrix.command }}
+        env:
+          BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
+          CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test:
     needs: setup
