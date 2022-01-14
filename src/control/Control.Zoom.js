@@ -18,17 +18,17 @@ export var Zoom = Control.extend({
 	options: {
 		position: 'topleft',
 
-		// @option zoomInText: String = '+'
+		// @option zoomInText: String = '<span aria-hidden="true">+</span>'
 		// The text set on the 'zoom in' button.
-		zoomInText: '+',
+		zoomInText: '<span aria-hidden="true">+</span>',
 
 		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
 		zoomInTitle: 'Zoom in',
 
-		// @option zoomOutText: String = '&#x2212;'
+		// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
 		// The text set on the 'zoom out' button.
-		zoomOutText: '&#x2212;',
+		zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
 
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
@@ -105,12 +105,16 @@ export var Zoom = Control.extend({
 
 		DomUtil.removeClass(this._zoomInButton, className);
 		DomUtil.removeClass(this._zoomOutButton, className);
+		this._zoomInButton.setAttribute('aria-disabled', 'false');
+		this._zoomOutButton.setAttribute('aria-disabled', 'false');
 
 		if (this._disabled || map._zoom === map.getMinZoom()) {
 			DomUtil.addClass(this._zoomOutButton, className);
+			this._zoomOutButton.setAttribute('aria-disabled', 'true');
 		}
 		if (this._disabled || map._zoom === map.getMaxZoom()) {
 			DomUtil.addClass(this._zoomInButton, className);
+			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}
 });

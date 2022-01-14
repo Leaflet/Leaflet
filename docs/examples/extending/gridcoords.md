@@ -16,17 +16,18 @@ title: Grid coordinates
 			tile.style.outline = '1px solid red';
 
 			setTimeout(function () {
-					done(null, tile);	// Syntax is 'done(error, tile)'
+				done(null, tile); // Syntax is 'done(error, tile)'
 			}, 500 + Math.random() * 1500);
 
 			return tile;
 		}
 	});
 	
-	L.gridLayer.debugCoords = function(opts) {
+	L.gridLayer.debugCoords = function (opts) {
 		return new L.GridLayer.DebugCoords(opts);
 	};
 
-	map.addLayer( L.gridLayer.debugCoords() );
+	var debugCoordsGrid = L.gridLayer.debugCoords();
+	map.addLayer(debugCoordsGrid);
 	
 </script>

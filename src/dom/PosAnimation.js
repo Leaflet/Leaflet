@@ -25,7 +25,7 @@ export var PosAnimation = Evented.extend({
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
-	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
+	// argument of the [cubic bezier curve](https://cubic-bezier.com/#0,0,.5,1),
 	// `0.5` by default).
 	run: function (el, newPos, duration, easeLinearity) {
 		this.stop();

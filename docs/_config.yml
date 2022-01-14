@@ -6,7 +6,6 @@ kramdown:
   entity_output: as_input
 
 latest_leaflet_version: 1.7.1
-latest_leaflet_reference: 1.7.1
 
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
@@ -14,3 +13,8 @@ latest_leaflet_reference: 1.7.1
 integrity_hash_css: "sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
 integrity_hash_source: "sha512-I5Hd7FcJ9rZkH7uD01G3AjsuzFy3gqz7HIJvzFZGFt2mrCS4Piw9bYZvCgUE0aiJuiZFYIJIwpbNnDIM6ohTrg=="
 integrity_hash_uglified: "sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+
+
+collections:
+  plugins:
+    output: false

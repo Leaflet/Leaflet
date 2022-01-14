@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../css/screen.css" />
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 	<script>
 	var map,
 		mapDiv,
@@ -19,7 +19,7 @@
 		if(mapDiv) mapDiv.parentNode.removeChild(mapDiv); // This will destroy the map div
 
 		// create new map div
-		var randomDivId = 'mapId' + new Date().getTime();
+		var randomDivId = 'map' + new Date().getTime();
 		mapDiv = document.createElement('div');
 		mapDiv.id = randomDivId;
 		mapDiv.style.height = '200px';
