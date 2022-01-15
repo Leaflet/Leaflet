@@ -1102,3 +1102,22 @@ iframe[src*='youtube.com'] {
 	padding: 5px 10px;
 	border-radius: 10px;
 }
+
+/* Accessibility statement */
+
+svg.a11y-icon {
+	fill: #199900;
+	position: absolute;
+	right: 0;
+	top: 21em;
+	width: 45vw;
+	height: auto;
+	z-index: -1;
+	opacity: .075;
+}
+
+@media screen and (max-width: 767px) {
+	svg.a11y-icon {
+		display: none;
+	}
+}
