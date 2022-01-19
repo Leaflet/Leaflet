@@ -56,8 +56,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Run bundlesize
-        run: npm run bundlesize
+      - name: Run Bundlemon
+        run: npm run bundlemon
         env:
           BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
