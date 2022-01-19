@@ -96,7 +96,7 @@ jobs:
 
   publish-artifacts:
     needs: setup
-    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
@@ -113,7 +113,7 @@ jobs:
         id: artifacts-directory
         run: |
           VERSION=$(git tag --points-at HEAD)
-          echo "::set-output name=path::content/leaflet/${VERSION:-master}"
+          echo "::set-output name=path::content/leaflet/${VERSION:-main}"
 
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
