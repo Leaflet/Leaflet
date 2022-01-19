@@ -1,0 +1,63 @@
+name: Bundlemon
+on:
+  push:
+    branches: [main]
+  pull_request:
+env:
+  NODE_VERSION: 16
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+          cache: npm
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: release
+
+      - name: Cache setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+  check-size:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run bundlesize
+        run: npm run bundlesize
+        env:
+          BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
+          CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
