@@ -19,7 +19,7 @@ describe('Popup', function () {
 	afterEach(cleanup);
 
 	it("closes on map click when map has closePopupOnClick option", function () {
-		map.options.closePopupOnClick = true;
+		// map.options.closePopupOnClick = true; // default
 
 		var popup = new L.Popup()
 			.setLatLng(center)
@@ -28,6 +28,18 @@ describe('Popup', function () {
 		happen.click(c);
 
 		expect(map.hasLayer(popup)).to.be(false);
+	});
+
+	it("does not close on map click when map has no closePopupOnClick option", function () {
+		map.options.closePopupOnClick = false;
+
+		var popup = new L.Popup()
+			.setLatLng(center)
+			.openOn(map);
+
+		happen.click(c);
+
+		expect(map.hasLayer(popup)).to.be(true);
 	});
 
 	it("closes on map click when popup has closeOnClick option", function () {

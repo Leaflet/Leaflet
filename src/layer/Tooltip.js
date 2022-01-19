@@ -119,7 +119,7 @@ export var Tooltip = DivOverlay.extend({
 		var events = DivOverlay.prototype.getEvents.call(this);
 
 		if (!this.options.permanent) {
-			events.preclick = this._close;
+			events.click = this._close;
 		}
 
 		return events;
