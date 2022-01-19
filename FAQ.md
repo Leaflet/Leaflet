@@ -75,7 +75,7 @@ Choice is yours.
 
 #### I'm building a commercial app that I plan to sell. Can I use Leaflet in it?
 
-You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/master/LICENSE).
+You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/main/LICENSE).
 Just make sure to attribute the use of the library somewhere in the app UI or the distribution
 (e.g. keep the Leaflet link on the map, or mention the use on the About page or a Readme file, etc.) and you'll be fine.
 
@@ -132,7 +132,7 @@ Leaflet [has a nice plugin](https://github.com/danzel/Leaflet.utfgrid) for it).
 #### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
 
 You can download the built versions using links from the [download page](http://leafletjs.com/download.html).
-It even includes the latest build of the development version (`master` branch),
+It even includes the latest build of the development version (`main` branch),
 updated automatically on each commit to the repo.
 
 We removed the built versions from the repository because it's a chore to build and commit them manually on each change,
