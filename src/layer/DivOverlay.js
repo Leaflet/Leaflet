@@ -1,3 +1,4 @@
+import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
@@ -35,6 +36,49 @@ export var DivOverlay = Layer.extend({
 		Util.setOptions(this, options);
 
 		this._source = source;
+	},
+
+	// @method openOn(map: Map): this
+	// Adds the overlay to the map.
+	// Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
+	openOn: function (map) {
+		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
+		if (!map.hasLayer(this)) {
+			map.addLayer(this);
+		}
+		return this;
+	},
+
+	// @method close(): this
+	// Closes the overlay.
+	// Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
+	// and `layer.closePopup()`/`.closeTooltip()`.
+	close: function () {
+		if (this._map) {
+			this._map.removeLayer(this);
+		}
+		return this;
+	},
+
+	// @method toggle(layer?: Layer): this
+	// Opens or closes the overlay bound to layer depending on its current state.
+	// Argument may be omitted only for overlay bound to layer.
+	// Alternative to `layer.togglePopup()`/`.toggleTooltip()`.
+	toggle: function (layer) {
+		if (this._map) {
+			this.close();
+		} else {
+			if (arguments.length) {
+				this._source = layer;
+			} else {
+				layer = this._source;
+			}
+			this._prepareOpen();
+
+			// open the overlay on the map
+			this.openOn(layer._map);
+		}
+		return this;
 	},
 
 	onAdd: function (map) {
@@ -247,4 +291,32 @@ export var DivOverlay = Layer.extend({
 		return [0, 0];
 	}
 
+});
+
+Map.include({
+	_initOverlay: function (OverlayClass, content, latlng, options) {
+		var overlay = content;
+		if (!(overlay instanceof OverlayClass)) {
+			overlay = new OverlayClass(options).setContent(content);
+		}
+		if (latlng) {
+			overlay.setLatLng(latlng);
+		}
+		return overlay;
+	}
+});
+
+
+Layer.include({
+	_initOverlay: function (OverlayClass, old, content, options) {
+		var overlay = content;
+		if (overlay instanceof OverlayClass) {
+			Util.setOptions(overlay, options);
+			overlay._source = this;
+		} else {
+			overlay = (old && !options) ? old : new OverlayClass(options, this);
+			overlay.setContent(content);
+		}
+		return overlay;
+	}
 });
