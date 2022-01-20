@@ -1,7 +1,7 @@
 describe('TileLayer', function () {
 	var div, map;
 
-	// Placekitten via http://placekitten.com/attribution.html
+	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
 	var placeKitten = "data:image/jpeg;base64," +
@@ -407,7 +407,8 @@ describe('TileLayer', function () {
 
 	});
 
-	describe('options', function () {
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		beforeEach(function () {
 			map.setView([0, 0], 2);
 		});

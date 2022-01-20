@@ -1,4 +1,14 @@
 describe('Polygon', function () {
+	var map;
+
+	before(function () {
+		map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
+
+	after(function () {
+		map.remove();
+	});
+
 	describe("#initialize", function () {
 		it("should never be flat", function () {
 			var latLngs = [[1, 2], [3, 4]];
@@ -59,10 +69,8 @@ describe('Polygon', function () {
 		});
 
 		it("can be added to the map when empty", function () {
-			var map = new L.Map(document.createElement('div'));
 			var polygon = new L.Polygon([]).addTo(map);
 			var isAdded = map.hasLayer(polygon);
-			map.remove(); // clean up
 			expect(isAdded).to.be(true);
 		});
 
@@ -140,18 +148,12 @@ describe('Polygon', function () {
 	});
 
 	describe('#getCenter', function () {
-		var map = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
-
-		after(function () {
-			map.remove();
-		});
-
 		it('should compute center of a big simple polygon around equator', function () {
 			var latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			var layer = new L.Polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+			expect(layer.getCenter()).to.be.nearLatLng([5, 5], 1e-1);
 		});
 
 		it('should compute center of a small simple polygon', function () {
@@ -160,7 +162,7 @@ describe('Polygon', function () {
 			];
 			var layer = new L.Polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
-			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0, 0]));
+			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
 		});
 
 		it('throws error if not yet added to map', function () {
@@ -320,6 +322,22 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[0][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
 			expect(polygon._latlngs[1][0]).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
 			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
+		});
+	});
+
+	describe("#setStyle", function () {
+		it("succeeds for empty Polygon already added to the map", function () {
+			var style = {
+				weight: 3
+			};
+			var polygon = L.polygon([]);
+
+			polygon.addTo(map);
+			polygon.setStyle(style);
+
+			for (var prop in style) {
+				expect(polygon.options[prop]).to.be(style[prop]);
+			}
 		});
 	});
 });
