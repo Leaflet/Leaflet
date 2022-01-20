@@ -1,6 +1,6 @@
 describe('ImageOverlay', function () {
 	var c, map;
-	var videoBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	var videoBounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	beforeEach(function () {
 		c = document.createElement('div');
