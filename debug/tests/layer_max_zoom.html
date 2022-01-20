@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+
+	<script>
+		// Trick Leaflet into believing we have a touchscreen (for Chrome)
+		if (window.Touch) { window.ontouchstart = function(){} };
+	</script>
+
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<script src="../../dist/leaflet-src.js"></script>
+
+	<script src="../../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+	<meta charset="utf-8">
+	<title>Leaflet test for pinch-zoom-without-bounce</title>
+	<style>
+		#map {
+			position:absolute;
+			top: 50px;
+			bottom: 0;
+			left:0;
+			right:0;
+		}
+		body {margin:0; padding: 0}
+	</style>
+</head>
+<body>
+    <div id='map'></div>
+
+
+    <script>
+  
+      var myCenter = new L.LatLng(63.41, 10.41);
+      var map = new L.Map('map', {
+          center: myCenter,
+          zoom: 15,
+          minZoom: 1,
+		  maxZoom: 16,
+          bounceAtZoomLimits: false
+      });
+      var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      var osmAttrib = 'Map data © OpenStreetMap contributors';
+      var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: NaN, attribution: osmAttrib, detectRetina: true });
+      map._addZoomLimit(osm);
+      console.log(map.options.maxZoom);
+      var osm2 = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: "a", attribution: osmAttrib, detectRetina: true });
+      map._addZoomLimit(osm);
+      console.log(map.options.maxZoom);
+      var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 25, attribution: osmAttrib, detectRetina: true });
+      map._addZoomLimit(osm);
+      console.log(map.options.maxZoom);
+
+    </script>
+</body>
+</html>
