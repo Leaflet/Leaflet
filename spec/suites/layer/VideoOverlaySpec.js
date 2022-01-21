@@ -1,4 +1,4 @@
-describe('ImageOverlay', function () {
+describe('VideoOverlay', function () {
 	var c, map;
 	var videoBounds = L.latLngBounds([[32, -130], [13, -100]]);
 
