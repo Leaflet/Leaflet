@@ -10,7 +10,7 @@
       "github",
       {
         "checkRun": true,
-        "commitStatus": true,
+        "commitStatus": false,
         "prComment": false
       }
     ]
