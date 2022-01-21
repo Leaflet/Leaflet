@@ -13,24 +13,24 @@ title: Watermark control
 	}).addTo(map);
 
 	L.Control.Watermark = L.Control.extend({
-		onAdd: function(map) {
+		onAdd: function (map) {
 			var img = L.DomUtil.create('img');
-			
+
 			img.src = '../../docs/images/logo.png';
 			img.style.width = '200px';
-			
+
 			return img;
 		},
-		
-		onRemove: function(map) {
+
+		onRemove: function (map) {
 			// Nothing to do here
 		}
 	});
 
-	L.control.watermark = function(opts) {
+	L.control.watermark = function (opts) {
 		return new L.Control.Watermark(opts);
-	}
+	};
 	
-	L.control.watermark({ position: 'bottomleft' }).addTo(map);
-	
+	var watermarkControl = L.control.watermark({position: 'bottomleft'}).addTo(map);
+
 </script>

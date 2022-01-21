@@ -357,12 +357,17 @@ describe("Map", function () {
 	});
 
 	describe("#hasLayer", function () {
-		it("returns false when passed undefined, null, or false", function () {
+		it("throws when called without proper argument", function () {
 			var map = L.map(document.createElement("div"));
+			var hasLayer = L.Util.bind(map.hasLayer, map);
+			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
+
+			expect(hasLayer).withArgs(undefined).to.throwException();
+			expect(hasLayer).withArgs(null).to.throwException();
+			expect(hasLayer).withArgs(false).to.throwException();
+			expect(hasLayer).to.throwException();
+
 			map.remove(); // clean up
-			expect(map.hasLayer(undefined)).to.equal(false);
-			expect(map.hasLayer(null)).to.equal(false);
-			expect(map.hasLayer(false)).to.equal(false);
 		});
 	});
 
@@ -631,6 +636,7 @@ describe("Map", function () {
 		    clock;
 
 		beforeEach(function () {
+			container.style.height = "100px";
 			container.style.width = origWidth + "px";
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
@@ -1249,6 +1255,39 @@ describe("Map", function () {
 			happen.click(layer._icon);
 			expect(called).to.eql(4);
 		});
+
+		it("prevents default action of contextmenu if there is any listener", function () {
+			if (!L.Browser.canvas) { this.skip(); }
+
+			map.remove();
+			var container = document.createElement('div');
+			container.style.width = container.style.height = '300px';
+			container.style.top = container.style.left = 0;
+			container.style.position = 'absolute';
+			document.body.appendChild(container);
+
+			map = L.map(container, {
+				renderer: L.canvas(),
+				center: [0, 0],
+				zoom: 0
+			});
+			map.setView(L.latLng([0, 0]), 12);
+			var spy = sinon.spy();
+			map.on('contextmenu', function (e) {
+				spy(e.originalEvent.defaultPrevented);
+			});
+			var marker = L.circleMarker([0, 0]).addTo(map);
+
+			happen.at('contextmenu', 0, 0); // first
+
+			happen.at('contextmenu', marker._point.x, marker._point.y); // second  (#5995)
+
+			document.body.removeChild(container); // cleanup
+
+			expect(spy.callCount).to.be(2);
+			expect(spy.firstCall.lastArg).to.be.ok();
+			expect(spy.secondCall.lastArg).to.be.ok();
+		});
 	});
 
 	describe("#getScaleZoom && #getZoomScale", function () {
@@ -1277,6 +1316,24 @@ describe("Map", function () {
 		it("returns undefined if map not initialized but layers added", function () {
 			map.addLayer(L.tileLayer(""));
 			expect(map.getZoom()).to.be(undefined);
+		});
+	});
+
+	describe("#Geolocation", function () {
+		it("doesn't throw error if location is found and map is not existing", function () {
+			var fn = L.Util.bind(map._handleGeolocationResponse, map);
+			map.remove();
+			expect(function () {
+				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
+			}).to.not.throwException();
+		});
+		it("doesn't throw error if location is not found and map is not existing", function () {
+			map._locateOptions = {setView: true};
+			var fn = L.Util.bind(map._handleGeolocationError, map);
+			map.remove();
+			expect(function () {
+				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
+			}).to.not.throwException();
 		});
 	});
 });

@@ -40,9 +40,9 @@ export var Marker = Layer.extend({
 		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
 		title: '',
 
-		// @option alt: String = ''
+		// @option alt: String = 'Marker'
 		// Text for the `alt` attribute of the icon image (useful for accessibility).
-		alt: '',
+		alt: 'Marker',
 
 		// @option zIndexOffset: Number = 0
 		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
@@ -225,6 +225,7 @@ export var Marker = Layer.extend({
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
+			icon.setAttribute('role', 'button');
 		}
 
 		this._icon = icon;

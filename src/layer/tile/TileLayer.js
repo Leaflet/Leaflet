@@ -1,5 +1,5 @@
 import {GridLayer} from './GridLayer';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
 import * as DomUtil from '../../dom/DomUtil';
@@ -23,7 +23,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * A string of the following form:
  *
  * ```
- * 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+ * 'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
  * ```
  *
  * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add "&commat;2x" to the URL to load retina tiles.
@@ -31,7 +31,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
  *
  * ```
- * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
  */
 
@@ -106,10 +106,7 @@ export var TileLayer = GridLayer.extend({
 			options.subdomains = options.subdomains.split('');
 		}
 
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.android) {
-			this.on('tileunload', this._onTileRemove);
-		}
+		this.on('tileunload', this._onTileRemove);
 	},
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this
@@ -145,7 +142,7 @@ export var TileLayer = GridLayer.extend({
 
 		/*
 		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 http://www.w3.org/TR/WCAG20-TECHS/H67
+		 https://www.w3.org/TR/WCAG20-TECHS/H67
 		*/
 		tile.alt = '';
 
@@ -236,8 +233,15 @@ export var TileLayer = GridLayer.extend({
 
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
+					var coords = this._tiles[i].coords;
 					DomUtil.remove(tile);
 					delete this._tiles[i];
+					// @event tileabort: TileEvent
+					// Fired when a tile was loading but is now not wanted.
+					this.fire('tileabort', {
+						tile: tile,
+						coords: coords
+					});
 				}
 			}
 		}
@@ -248,11 +252,7 @@ export var TileLayer = GridLayer.extend({
 		if (!tile) { return; }
 
 		// Cancels any pending http requests associated with the tile
-		// unless we're on Android's stock browser,
-		// see https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.androidStock) {
-			tile.el.setAttribute('src', Util.emptyImageUrl);
-		}
+		tile.el.setAttribute('src', Util.emptyImageUrl);
 
 		return GridLayer.prototype._removeTile.call(this, key);
 	},

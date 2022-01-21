@@ -1,5 +1,5 @@
 import {Evented} from '../core/Events';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import * as DomEvent from './DomEvent';
 import * as DomUtil from './DomUtil';
 import * as Util from '../core/Util';
@@ -22,19 +22,6 @@ import {Point} from '../geometry/Point';
  */
 
 var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
-var END = {
-	mousedown: 'mouseup',
-	touchstart: 'touchend',
-	pointerdown: 'touchend',
-	MSPointerDown: 'touchend'
-};
-var MOVE = {
-	mousedown: 'mousemove',
-	touchstart: 'touchmove',
-	pointerdown: 'touchmove',
-	MSPointerDown: 'touchmove'
-};
-
 
 export var Draggable = Evented.extend({
 
@@ -85,12 +72,9 @@ export var Draggable = Evented.extend({
 	},
 
 	_onDown: function (e) {
-		// Ignore simulated events, since we handle both touch and
-		// mouse explicitly; otherwise we risk getting duplicates of
-		// touch events, see #4315.
-		// Also ignore the event if disabled; this happens in IE11
+		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
-		if (e._simulated || !this._enabled) { return; }
+		if (!this._enabled) { return; }
 
 		this._moved = false;
 
@@ -120,17 +104,15 @@ export var Draggable = Evented.extend({
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
 
-		DomEvent.on(document, MOVE[e.type], this._onMove, this);
-		DomEvent.on(document, END[e.type], this._onUp, this);
+		var mouseevent = e.type === 'mousedown';
+		DomEvent.on(document, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
+		DomEvent.on(document, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
 	},
 
 	_onMove: function (e) {
-		// Ignore simulated events, since we handle both touch and
-		// mouse explicitly; otherwise we risk getting duplicates of
-		// touch events, see #4315.
-		// Also ignore the event if disabled; this happens in IE11
+		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
-		if (e._simulated || !this._enabled) { return; }
+		if (!this._enabled) { return; }
 
 		if (e.touches && e.touches.length > 1) {
 			this._moved = true;
@@ -192,13 +174,10 @@ export var Draggable = Evented.extend({
 		this.fire('drag', e);
 	},
 
-	_onUp: function (e) {
-		// Ignore simulated events, since we handle both touch and
-		// mouse explicitly; otherwise we risk getting duplicates of
-		// touch events, see #4315.
-		// Also ignore the event if disabled; this happens in IE11
+	_onUp: function () {
+		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
-		if (e._simulated || !this._enabled) { return; }
+		if (!this._enabled) { return; }
 		this.finishDrag();
 	},
 
@@ -210,10 +189,8 @@ export var Draggable = Evented.extend({
 			this._lastTarget = null;
 		}
 
-		for (var i in MOVE) {
-			DomEvent.off(document, MOVE[i], this._onMove, this);
-			DomEvent.off(document, END[i], this._onUp, this);
-		}
+		DomEvent.off(document, 'mousemove touchmove', this._onMove, this);
+		DomEvent.off(document, 'mouseup touchend touchcancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
 		DomUtil.enableTextSelection();

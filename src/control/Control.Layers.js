@@ -1,7 +1,6 @@
 
 import {Control} from './Control';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -10,7 +9,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Layers
  * @inherits Control
  *
- * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control/)). Extends `Control`.
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
  *
  * @example
  *
@@ -187,24 +186,25 @@ export var Layers = Control.extend({
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
-			if (!Browser.android) {
-				DomEvent.on(container, {
-					mouseenter: this.expand,
-					mouseleave: this.collapse
-				}, this);
-			}
+			DomEvent.on(container, {
+				mouseenter: function () {
+					DomEvent.on(section, 'click', DomEvent.preventDefault);
+					this.expand();
+					setTimeout(function () {
+						DomEvent.off(section, 'click', DomEvent.preventDefault);
+					});
+				},
+				mouseleave: this.collapse
+			}, this);
 		}
 
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
+		link.setAttribute('role', 'button');
 
-		if (Browser.touch) {
-			DomEvent.on(link, 'click', DomEvent.stop);
-			DomEvent.on(link, 'click', this.expand, this);
-		} else {
-			DomEvent.on(link, 'focus', this.expand, this);
-		}
+		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
+		DomEvent.on(link, 'focus', this.expand, this);
 
 		if (!collapsed) {
 			this.expand();
@@ -409,16 +409,6 @@ export var Layers = Control.extend({
 			this.expand();
 		}
 		return this;
-	},
-
-	_expand: function () {
-		// Backward compatibility, remove me in 1.1.
-		return this.expand();
-	},
-
-	_collapse: function () {
-		// Backward compatibility, remove me in 1.1.
-		return this.collapse();
 	}
 
 });

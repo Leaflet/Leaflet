@@ -45,7 +45,10 @@
 	}
 /* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
 /* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
-.leaflet-container .leaflet-overlay-pane svg,
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
 .leaflet-container .leaflet-marker-pane img,
 .leaflet-container .leaflet-shadow-pane img,
 .leaflet-container .leaflet-tile-pane img,
@@ -53,6 +56,8 @@
 .leaflet-container .leaflet-tile {
 	max-width: none !important;
 	max-height: none !important;
+	width: auto;
+	padding: 0;
 	}
 
 .leaflet-container.leaflet-touch-zoom {
@@ -166,9 +171,6 @@
 
 /* zoom and fade animations */
 
-.leaflet-fade-anim .leaflet-tile {
-	will-change: opacity;
-	}
 .leaflet-fade-anim .leaflet-popup {
 	opacity: 0;
 	-webkit-transition: opacity 0.2s linear;
@@ -183,9 +185,7 @@
 	    -ms-transform-origin: 0 0;
 	        transform-origin: 0 0;
 	}
-.leaflet-zoom-anim .leaflet-zoom-animated {
-	will-change: transform;
-	}
+
 .leaflet-zoom-anim .leaflet-zoom-animated {
 	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
 	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
@@ -256,9 +256,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-container a {
 	color: #0078A8;
 	}
-.leaflet-container a.leaflet-active {
-	outline: 2px solid orange;
-	}
 .leaflet-zoom-box {
 	border: 2px dotted #38f;
 	background: rgba(255,255,255,0.5);
@@ -268,6 +265,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font: 0.75rem/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 
 
@@ -393,7 +391,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 
 /* Default icon URLs */
-.leaflet-default-icon-path {
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
 	background-image: url(images/marker-icon.png);
 	}
 
@@ -419,6 +417,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-scale {
 	font-size: 11px;
+	font-size: 0.69rem;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
@@ -432,6 +431,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	font-size: 11px;
+	font-size: 0.69rem;
 	white-space: nowrap;
 	overflow: hidden;
 	-moz-box-sizing: border-box;
@@ -485,6 +485,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	height: 20px;
 	position: absolute;
 	left: 50%;
+	margin-top: -1px;
 	margin-left: -20px;
 	overflow: hidden;
 	pointer-events: none;
@@ -495,6 +496,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	padding: 1px;
 
 	margin: -10px auto 0;
+	pointer-events: auto;
 
 	-webkit-transform: rotate(45deg);
 	   -moz-transform: rotate(45deg);
@@ -517,13 +519,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	width: 18px;
 	height: 14px;
 	font: 16px/14px Tahoma, Verdana, sans-serif;
-	color: #c3c3c3;
+	color: #757575;
 	text-decoration: none;
-	font-weight: bold;
 	background: transparent;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover {
-	color: #999;
+	color: #585858;
 	}
 .leaflet-popup-scrolled {
 	overflow: auto;
@@ -540,9 +541,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
 	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
-	}
-.leaflet-oldie .leaflet-popup-tip-container {
-	margin-top: -1px;
 	}
 
 .leaflet-oldie .leaflet-control-zoom,
@@ -578,7 +576,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 	}
-.leaflet-tooltip.leaflet-clickable {
+.leaflet-tooltip.leaflet-interactive {
 	cursor: pointer;
 	pointer-events: auto;
 	}
@@ -637,4 +635,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	left: 0;
 	margin-left: -12px;
 	border-right-color: #fff;
+	}
+
+/* Printing */
+	
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		color-adjust: exact;
+		}
 	}
