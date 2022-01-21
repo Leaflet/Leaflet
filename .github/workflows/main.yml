@@ -30,43 +30,108 @@ jobs:
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Build project
-        run: npm run build
-        env:
-          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
-
       - name: Cache setup
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-setup
 
-  run:
+  build:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        command: [lint, bundlemon]
+        os: [ubuntu-latest, windows-2019]
     steps:
       - name: Restore setup
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Run ${{ matrix.command }} task
-        run: npm run ${{ matrix.command }}
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
+
+      - name: Cache build
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}-build
+
+  build-release:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}-setup
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: release
+
+      - name: Cache release build
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}-build-release
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}-setup
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run lint task
+        run: npm run lint
+
+  bundlemon:
+    needs: build-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore release build
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.sha }}-build-release
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run bundlemon task
+        run: npm run bundlemon
         env:
           BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test:
-    needs: setup
+    needs: build
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
@@ -80,11 +145,11 @@ jobs:
           - browser: IE10
             os: windows-2019
     steps:
-      - name: Restore setup
+      - name: Restore build
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
         uses: actions/setup-node@v2
@@ -95,15 +160,15 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }}
 
   publish-artifacts:
-    needs: setup
+    needs: build
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
     steps:
-      - name: Restore setup
+      - name: Restore build
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Compress artifacts
         working-directory: dist
@@ -127,15 +192,15 @@ jobs:
           DEST_DIR: ${{ steps.artifacts-directory.outputs.path }}
 
   publish-npm:
-    needs: setup
+    needs: build
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
-      - name: Restore setup
+      - name: Restore build
         uses: actions/cache@v2
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
         uses: actions/setup-node@v2
