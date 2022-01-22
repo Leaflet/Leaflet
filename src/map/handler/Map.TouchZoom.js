@@ -41,6 +41,9 @@ export var TouchZoom = Handler.extend({
 		var map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
+		// Disable dragging on the map until pinch zoom is finished
+		map.dragging._draggable._enabled = false;
+
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
 
@@ -121,6 +124,9 @@ export var TouchZoom = Handler.extend({
 		} else {
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
+
+		// Enable dragging on the map again after pinch zoom
+		this._map.dragging._draggable._enabled = true;
 	}
 });
 
