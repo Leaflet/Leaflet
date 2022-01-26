@@ -82,7 +82,7 @@ export var TileLayer = GridLayer.extend({
 		// @option referrerPolicy: Boolean|String = false
 		// Whether the referrerPolicy attribute will be added to the tiles.
 		// If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
-		// This may be needed if you your map's rendering context has a strict default but your tile provider expects a valid referrer
+		// This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
 		// (e.g. to validate an API token).
 		// Refer to [HTMLImageElement.referrerPolicy](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for valid String values.
 		referrerPolicy: false
