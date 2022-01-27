@@ -148,8 +148,10 @@ export var TileLayer = GridLayer.extend({
 			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
 		}
 
-		if (this.options.referrerPolicy || this.options.referrerPolicy === '') {
-			tile.referrerPolicy = this.options.referrerPolicy === true ? '' : this.options.referrerPolicy;
+		// for this new option we follow the documented behavior
+		// more closely by only setting the property when string
+		if (typeof this.options.referrerPolicy === 'string') {
+			tile.referrerPolicy = this.options.referrerPolicy;
 		}
 
 		/*
