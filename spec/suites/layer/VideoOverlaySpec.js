@@ -18,9 +18,7 @@ describe('VideoOverlay', function () {
 	});
 
 	it('create VideoOverlay', function () {
-		var overlay = L.imageOverlay().setStyle({opacity: 0.5});
-		expect(overlay.options.opacity).to.equal(0.5);
-
+		this.timeout(10000); // This test takes longer than usual in IE
 
 		var videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
