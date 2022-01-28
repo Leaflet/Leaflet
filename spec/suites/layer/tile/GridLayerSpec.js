@@ -1107,4 +1107,84 @@ describe('GridLayer', function () {
 		grid.redraw();
 		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);
 	});
+
+	describe("Attribution adding / removing", function () {
+		var clock;
+		beforeEach(function () {
+			map.setView([0, 0], 1);
+			clock = sinon.useFakeTimers();
+		});
+
+		afterEach(function () {
+			clock.restore();
+		});
+
+		it("shows attribution only when layer is between min and maxZoom", function () {
+
+			var grid1 = L.gridLayer({
+				attribution: 'Grid 1',
+				maxZoom: 20,
+				minZoom: 1
+			}).addTo(map);
+
+			var grid2 = L.gridLayer({
+				attribution: 'Grid 2',
+				maxZoom: 10,
+				minZoom: 5
+			}).addTo(map);
+
+			// Grid 2 should be hidden on Zoom 1
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(false);
+
+			// Grid 2 should be visible on Zoom 10
+			map.setZoom(10, {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(true);
+
+			// Grid 2 should be hidden on Zoom 11
+			map.setZoom(11, {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(false);
+
+			// Grid 2 should be visible on Zoom 5
+			map.setZoom(5, {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(true);
+
+			// Grid 2 should be hidden on Zoom 4
+			map.setZoom(4, {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 2') > -1).to.be(false);
+
+			map.setZoom(10, {animate: false});
+
+			grid1.remove();
+			grid2.remove();
+		});
+
+		it("shows attribution only when visible tile bounds overlaps with map bounds", function () {
+			var grid1 = L.gridLayer({
+				attribution: 'Grid 1',
+				bounds: [[47.521, 9.813], [47.454, 9.676]]
+			}).addTo(map);
+
+			// moves to position where tile is visible
+			map.setView([47.5832810257206, 9.747963094401658], 12);
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(true);
+
+			// Zoom in -> Tile vanish because of bounds
+			map.setZoom(13, {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(false);
+
+			// move map to show tiles
+			map.panTo([47.561818868642106, 9.740236583855408], {animate: false});
+			clock.tick(250);
+			expect(map.attributionControl.getAttributionText().indexOf('Grid 1') > -1).to.be(true);
+
+			grid1.remove();
+		});
+
+	});
 });

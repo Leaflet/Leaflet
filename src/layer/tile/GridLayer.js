@@ -557,6 +557,8 @@ export var GridLayer = Layer.extend({
 			tileZoom = this._clampZoom(tileZoom);
 		}
 
+		this._attributionCheck();
+
 		var tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
@@ -648,7 +650,11 @@ export var GridLayer = Layer.extend({
 		var zoom = this._clampZoom(map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
-		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
+		if (this._tileZoom === undefined) {
+			// if out of minzoom/maxzoom
+			this._attributionCheck();
+			return;
+		}
 
 		var pixelBounds = this._getTiledPixelBounds(center),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
@@ -675,6 +681,8 @@ export var GridLayer = Layer.extend({
 		// from the map's, let _setView reset levels and prune old tiles.
 		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); return; }
 
+		var visibleTileBounds = this.options.bounds ? latLngBounds() : this._map.getBounds();
+
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (var i = tileRange.min.x; i <= tileRange.max.x; i++) {
@@ -682,6 +690,10 @@ export var GridLayer = Layer.extend({
 				coords.z = this._tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
+
+				if (this.options.bounds) {
+					visibleTileBounds.extend(this._tileCoordsToBounds(coords));
+				}
 
 				var tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
@@ -691,6 +703,7 @@ export var GridLayer = Layer.extend({
 				}
 			}
 		}
+		this._visibleTileBounds = visibleTileBounds;
 
 		// sort tile queue to load tiles in order of their distance to center
 		queue.sort(function (a, b) {
@@ -715,6 +728,7 @@ export var GridLayer = Layer.extend({
 
 			this._level.el.appendChild(fragment);
 		}
+		this._attributionCheck();
 	},
 
 	_isValidTile: function (coords) {
@@ -913,6 +927,36 @@ export var GridLayer = Layer.extend({
 			if (!this._tiles[key].loaded) { return false; }
 		}
 		return true;
+	},
+	_layerAdd: function (e) {
+		Layer.prototype._layerAdd.call(this, e);
+		this._attributionAdded = true; // attribution is already added over Layer._layerAdd
+		this._attributionCheck();
+	},
+	_attributionCheck: function () {
+		if (this.getAttribution && this._map && this._map.attributionControl) {
+			var tileZoom = Math.round(this._map.getZoom());
+
+			var removeAttribution = false;
+			// remove attribution if layer is hidden because of min-/maxZoom
+			if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
+				(this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
+				removeAttribution = true;
+			}
+
+			// remove attribution if layer is out of the map bounds
+			if (this.options.bounds && this._visibleTileBounds && (!this._visibleTileBounds.getNorthEast() || !this._visibleTileBounds.overlaps(this._map.getBounds()))) {
+				removeAttribution = true;
+			}
+
+			if (removeAttribution) {
+				this._map.attributionControl.removeAttribution(this.getAttribution());
+				this._attributionAdded = false;
+			} else if (this.getAttribution && this._map.attributionControl && this._attributionAdded === false) {
+				this._attributionAdded = true;
+				this._map.attributionControl.addAttribution(this.getAttribution());
+			}
+		}
 	}
 });
 

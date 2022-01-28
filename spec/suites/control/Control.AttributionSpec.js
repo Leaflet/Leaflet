@@ -121,4 +121,11 @@ describe("Control.Attribution", function () {
 			expect(container.innerHTML).to.eql('prefix');
 		});
 	});
+
+	describe('#getAttributionText', function () {
+		it('reads out the attribution text', function () {
+			control.addAttribution('foo');
+			expect(control.getAttributionText()).to.eql('prefix | foo');
+		});
+	});
 });
