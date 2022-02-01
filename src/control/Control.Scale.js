@@ -79,9 +79,6 @@ export var Scale = Control.extend({
 		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
-		if (this.options.imperial && maxMeters) {
-			this._updateImperial(maxMeters);
-		}
 	},
 
 	_updateMetric: function (maxMeters) {
@@ -89,21 +86,6 @@ export var Scale = Control.extend({
 		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
-	},
-
-	_updateImperial: function (maxMeters) {
-		var maxFeet = maxMeters * 3.2808399,
-		    maxMiles, miles, feet;
-
-		if (maxFeet > 5280) {
-			maxMiles = maxFeet / 5280;
-			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, miles + ' mi', miles / maxMiles);
-
-		} else {
-			feet = this._getRoundNum(maxFeet);
-			this._updateScale(this._iScale, feet + ' ft', feet / maxFeet);
-		}
 	},
 
 	_updateScale: function (scale, text, ratio) {

@@ -219,7 +219,7 @@ Map.include({
 	},
 
 	_addLayers: function (layers) {
-		layers = layers ? (Util.isArray(layers) ? layers : [layers]) : [];
+		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
 
 		for (var i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);

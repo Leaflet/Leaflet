@@ -10,19 +10,13 @@ import {svgCreate} from '../layer/vector/SVG.Util';
  * @example
  *
  * ```js
- * if (L.Browser.ielt9) {
+ * if (L.Browser.edge) {
  *   alert('Upgrade your browser, dude!');
  * }
  * ```
  */
 
 var style = document.documentElement.style;
-
-// @property ie: Boolean; `true` for all Internet Explorer versions (not Edge).
-var ie = 'ActiveXObject' in window;
-
-// @property ielt9: Boolean; `true` for Internet Explorer versions less than 9.
-var ielt9 = ie && !document.addEventListener;
 
 // @property edge: Boolean; `true` for the Edge web browser.
 var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
@@ -34,9 +28,6 @@ var webkit = userAgentContains('webkit');
 // @property android: Boolean
 // **Deprecated.** `true` for any browser running on an Android platform.
 var android = userAgentContains('android');
-
-// @property android23: Boolean; **Deprecated.** `true` for browsers running on Android 2 or Android 3.
-var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
 /* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
 var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
@@ -50,7 +41,7 @@ var opera = !!window.opera;
 var chrome = !edge && userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
-var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
+var gecko = userAgentContains('gecko') && !webkit && !opera;
 
 // @property safari: Boolean; `true` for the Safari browser.
 var safari = !chrome && userAgentContains('safari');
@@ -64,18 +55,15 @@ var opera12 = 'OTransition' in style;
 // @property win: Boolean; `true` when the browser is running in a Windows platform
 var win = navigator.platform.indexOf('Win') === 0;
 
-// @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
-var ie3d = ie && ('transition' in style);
-
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
-var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
+var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix());
 
 // @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
 var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
+var any3d = !window.L_DISABLE_3D && (webkit3d || gecko3d) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
@@ -146,36 +134,14 @@ var canvas = (function () {
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 var svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
 
-// @property vml: Boolean
-// `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
-var vml = !svg && (function () {
-	try {
-		var div = document.createElement('div');
-		div.innerHTML = '<v:shape adj="1"/>';
-
-		var shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
-
-		return shape && (typeof shape.adj === 'object');
-
-	} catch (e) {
-		return false;
-	}
-}());
-
-
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
 
-
 export default {
-	ie: ie,
-	ielt9: ielt9,
 	edge: edge,
 	webkit: webkit,
 	android: android,
-	android23: android23,
 	androidStock: androidStock,
 	opera: opera,
 	chrome: chrome,
@@ -184,9 +150,7 @@ export default {
 	phantom: phantom,
 	opera12: opera12,
 	win: win,
-	ie3d: ie3d,
 	webkit3d: webkit3d,
-	gecko3d: gecko3d,
 	any3d: any3d,
 	mobile: mobile,
 	mobileWebkit: mobileWebkit,
@@ -200,6 +164,5 @@ export default {
 	retina: retina,
 	passiveEvents: passiveEvents,
 	canvas: canvas,
-	svg: svg,
-	vml: vml,
+	svg: svg
 };

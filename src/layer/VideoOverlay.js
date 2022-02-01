@@ -75,7 +75,7 @@ export var VideoOverlay = ImageOverlay.extend({
 			return;
 		}
 
-		if (!Util.isArray(this._url)) { this._url = [this._url]; }
+		if (!Array.isArray(this._url)) { this._url = [this._url]; }
 
 		if (!this.options.keepAspectRatio && Object.prototype.hasOwnProperty.call(vid.style, 'objectFit')) {
 			vid.style['objectFit'] = 'fill';

@@ -93,7 +93,7 @@ export var vmlMixin = {
 			stroke.opacity = options.opacity;
 
 			if (options.dashArray) {
-				stroke.dashStyle = Util.isArray(options.dashArray) ?
+				stroke.dashStyle = Array.isArray(options.dashArray) ?
 				    options.dashArray.join(' ') :
 				    options.dashArray.replace(/( *, *)/g, ' ');
 			} else {

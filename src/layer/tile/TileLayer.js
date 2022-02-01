@@ -183,12 +183,7 @@ export var TileLayer = GridLayer.extend({
 	},
 
 	_tileOnLoad: function (done, tile) {
-		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (Browser.ielt9) {
-			setTimeout(Util.bind(done, this, null, tile), 0);
-		} else {
-			done(null, tile);
-		}
+		done(null, tile);
 	},
 
 	_tileOnError: function (done, tile, e) {

@@ -115,7 +115,7 @@ export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
 		return a;
 	}
-	if (Util.isArray(a) && typeof a[0] !== 'object') {
+	if (Array.isArray(a) && typeof a[0] !== 'object') {
 		if (a.length === 3) {
 			return new LatLng(a[0], a[1], a[2]);
 		}

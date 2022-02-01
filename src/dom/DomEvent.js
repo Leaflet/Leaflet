@@ -72,7 +72,7 @@ export function off(obj, types, fn, context) {
 
 		if (arguments.length === 2) {
 			batchRemove(obj, function (type) {
-				return Util.indexOf(types, type) !== -1;
+				return types.indexOf(type) !== -1;
 			});
 		} else {
 			for (var i = 0, len = types.length; i < len; i++) {

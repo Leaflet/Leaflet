@@ -501,7 +501,6 @@ describe('L.Layer#_popup', function () {
 	});
 
 	it("does not close popup when clicking on it's tip", function () {
-		if (L.Browser.ie) { this.skip(); } // fixme
 		c.style.position = "absolute";
 		c.style.top = "0";
 		c.style.left = "0";

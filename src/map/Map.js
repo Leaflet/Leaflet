@@ -1104,7 +1104,6 @@ export var Map = Evented.extend({
 		DomUtil.addClass(container, 'leaflet-container' +
 			(Browser.touch ? ' leaflet-touch' : '') +
 			(Browser.retina ? ' leaflet-retina' : '') +
-			(Browser.ielt9 ? ' leaflet-oldie' : '') +
 			(Browser.safari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
@@ -1444,7 +1443,7 @@ export var Map = Evented.extend({
 		for (i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
+				(targets[i].options.bubblingMouseEvents === false && this._mouseEvents.indexOf(type) !== -1)) { return; }
 		}
 	},
 

@@ -18,16 +18,6 @@ export function extend(dest) {
 	return dest;
 }
 
-// @function create(proto: Object, properties?: Object): Object
-// Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export var create = Object.create || (function () {
-	function F() {}
-	return function (proto) {
-		F.prototype = proto;
-		return new F();
-	};
-})();
-
 // @function bind(fn: Function, …): Function
 // Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 // Has a `L.bind()` shortcut.
@@ -118,23 +108,17 @@ export function formatNum(num, precision) {
 	return Math.round(num * pow) / pow;
 }
 
-// @function trim(str: String): String
-// Compatibility polyfill for [String.prototype.trim](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim)
-export function trim(str) {
-	return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
-}
-
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
 export function splitWords(str) {
-	return trim(str).split(/\s+/);
+	return str.trim().split(/\s+/);
 }
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
-		obj.options = obj.options ? create(obj.options) : {};
+		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (var i in options) {
 		obj.options[i] = options[i];
@@ -176,21 +160,6 @@ export function template(str, data) {
 	});
 }
 
-// @function isArray(obj): Boolean
-// Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export var isArray = Array.isArray || function (obj) {
-	return (Object.prototype.toString.call(obj) === '[object Array]');
-};
-
-// @function indexOf(array: Array, el: Object): Number
-// Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
-export function indexOf(array, el) {
-	for (var i = 0; i < array.length; i++) {
-		if (array[i] === el) { return i; }
-	}
-	return -1;
-}
-
 // @property emptyImageUrl: String
 // Data URI string containing a base64-encoded empty GIF image.
 // Used as a hack to free memory from unused images on WebKit-powered
@@ -199,24 +168,8 @@ export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA
 
 // inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
-function getPrefixed(name) {
-	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
-}
-
-var lastTime = 0;
-
-// fallback for IE 7-8
-function timeoutDefer(fn) {
-	var time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
-
-	lastTime = time + timeToCall;
-	return window.setTimeout(fn, timeToCall);
-}
-
-export var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
+export var requestFn = window.requestAnimationFrame;
+export var cancelFn = window.cancelAnimationFrame;
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to
@@ -225,7 +178,7 @@ export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimatio
 // [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
 // otherwise it's delayed. Returns a request ID that can be used to cancel the request.
 export function requestAnimFrame(fn, context, immediate) {
-	if (immediate && requestFn === timeoutDefer) {
+	if (immediate) {
 		fn.call(context);
 	} else {
 		return requestFn.call(window, bind(fn, context));

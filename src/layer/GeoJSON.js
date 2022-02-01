@@ -9,7 +9,6 @@ import {Polygon} from './vector/Polygon';
 import {LatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
 
-
 /*
  * @class GeoJSON
  * @aka L.GeoJSON
@@ -96,7 +95,7 @@ export var GeoJSON = FeatureGroup.extend({
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
 	addData: function (geojson) {
-		var features = Util.isArray(geojson) ? geojson : geojson.features,
+		var features = Array.isArray(geojson) ? geojson : geojson.features,
 		    i, len, feature;
 
 		if (features) {

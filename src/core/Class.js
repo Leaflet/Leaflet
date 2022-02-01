@@ -30,7 +30,7 @@ Class.extend = function (props) {
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = Util.create(parentProto);
+	var proto = Object.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
@@ -60,7 +60,7 @@ Class.extend = function (props) {
 
 	// merge options
 	if (proto.options) {
-		proto.options = parentProto.options ? Util.create(parentProto.options) : {};
+		proto.options = parentProto.options ? Object.create(parentProto.options) : {};
 		Util.extend(proto.options, props.options);
 	}
 
@@ -122,7 +122,7 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 function checkDeprecatedMixinEvents(includes) {
 	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
 
-	includes = Util.isArray(includes) ? includes : [includes];
+	includes = Array.isArray(includes) ? includes : [includes];
 
 	for (var i = 0; i < includes.length; i++) {
 		if (includes[i] === L.Mixin.Events) {

@@ -5,9 +5,8 @@ import Browser from '../../core/Browser';
 import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
-import {vmlMixin, vmlCreate} from './SVG.VML';
 
-export var create = Browser.vml ? vmlCreate : svgCreate;
+export var create = svgCreate;
 
 /*
  * @class SVG
@@ -208,13 +207,9 @@ export var SVG = Renderer.extend({
 	}
 });
 
-if (Browser.vml) {
-	SVG.include(vmlMixin);
-}
-
 // @namespace SVG
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
 export function svg(options) {
-	return Browser.svg || Browser.vml ? new SVG(options) : null;
+	return new SVG(options);
 }
