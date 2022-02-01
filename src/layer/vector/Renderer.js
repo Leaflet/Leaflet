@@ -67,7 +67,8 @@ export var Renderer = Layer.extend({
 			viewreset: this._reset,
 			zoom: this._onZoom,
 			moveend: this._update,
-			zoomend: this._onZoomEnd
+			move: this._update,
+			zoomend: this._projectLayers
 		};
 		if (this._zoomAnimated) {
 			events.zoomanim = this._onAnimZoom;
@@ -81,6 +82,7 @@ export var Renderer = Layer.extend({
 
 	_onZoom: function () {
 		this._updateTransform(this._map.getCenter(), this._map.getZoom());
+		this._projectLayers();
 	},
 
 	_updateTransform: function (center, zoom) {
@@ -109,7 +111,7 @@ export var Renderer = Layer.extend({
 		}
 	},
 
-	_onZoomEnd: function () {
+	_projectLayers: function () {
 		for (var id in this._layers) {
 			this._layers[id]._project();
 		}

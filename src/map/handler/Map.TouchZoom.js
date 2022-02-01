@@ -41,8 +41,7 @@ export var TouchZoom = Handler.extend({
 		var map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		// Disable dragging on the map until pinch zoom is finished
-		map.dragging._draggable._enabled = false;
+		this._disableMapDrag();
 
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
@@ -109,6 +108,8 @@ export var TouchZoom = Handler.extend({
 	_onTouchEnd: function () {
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
+
+			this._enableMapDrag();
 			return;
 		}
 
@@ -125,8 +126,23 @@ export var TouchZoom = Handler.extend({
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
 
-		// Enable dragging on the map again after pinch zoom
-		this._map.dragging._draggable._enabled = true;
+		this._enableMapDrag();
+	},
+
+	_disableMapDrag: function () {
+		if (this._map.dragging._draggable) {
+			this._mapDraggingEnabled = this._map.dragging._draggable._enabled;
+
+			// Disable dragging on the map until pinch zoom is finished
+			this._map.dragging._draggable._enabled = false;
+		}
+	},
+
+	_enableMapDrag: function () {
+		if (this._map.dragging._draggable) {
+			// Enable dragging on the map again after pinch zoom
+			this._map.dragging._draggable._enabled = this._mapDraggingEnabled;
+		}
 	}
 });
 
