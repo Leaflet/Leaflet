@@ -77,7 +77,15 @@ export var TileLayer = GridLayer.extend({
 		// Whether the crossOrigin attribute will be added to the tiles.
 		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option referrerPolicy: Boolean|String = false
+		// Whether the referrerPolicy attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
+		// This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
+		// (e.g. to validate an API token).
+		// Refer to [HTMLImageElement.referrerPolicy](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for valid String values.
+		referrerPolicy: false
 	},
 
 	initialize: function (url, options) {
@@ -138,6 +146,12 @@ export var TileLayer = GridLayer.extend({
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
+		}
+
+		// for this new option we follow the documented behavior
+		// more closely by only setting the property when string
+		if (typeof this.options.referrerPolicy === 'string') {
+			tile.referrerPolicy = this.options.referrerPolicy;
 		}
 
 		/*
