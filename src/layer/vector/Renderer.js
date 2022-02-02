@@ -1,7 +1,6 @@
 import {Layer} from '../Layer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Util from '../../core/Util';
-import Browser from '../../core/Browser';
 import {Bounds} from '../../geometry/Bounds';
 
 
@@ -93,11 +92,7 @@ export var Renderer = Layer.extend({
 
 		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
-		if (Browser.any3d) {
-			DomUtil.setTransform(this._container, topLeftOffset, scale);
-		} else {
-			DomUtil.setPosition(this._container, topLeftOffset);
-		}
+		DomUtil.setTransform(this._container, topLeftOffset, scale);
 	},
 
 	_reset: function () {

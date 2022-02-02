@@ -594,11 +594,7 @@ export var GridLayer = Layer.extend({
 		    translate = level.origin.multiplyBy(scale)
 		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
-		if (Browser.any3d) {
-			DomUtil.setTransform(level.el, translate, scale);
-		} else {
-			DomUtil.setPosition(level.el, translate);
-		}
+		DomUtil.setTransform(level.el, translate, scale);
 	},
 
 	_resetGrid: function () {

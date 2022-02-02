@@ -1,7 +1,6 @@
 import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
-import Browser from '../core/Browser';
 
 /*
  * @namespace DomUtil
@@ -13,26 +12,6 @@ import Browser from '../core/Browser';
  * SVG elements. The only difference is that classes refer to CSS classes
  * in HTML and SVG classes in SVG.
  */
-
-
-// @property TRANSFORM: String
-// Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
-export var TRANSFORM = testProp(
-	['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
-
-// webkitTransition comes first because some browser versions that drop vendor prefix don't do
-// the same for the transitionend event, in particular the Android 4.1 stock browser
-
-// @property TRANSITION: String
-// Vendor-prefixed transition style name.
-export var TRANSITION = testProp(
-	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
-
-// @property TRANSITION_END: String
-// Vendor-prefixed transitionend event name.
-export var TRANSITION_END =
-	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
-
 
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
@@ -186,7 +165,7 @@ export function testProp(props) {
 export function setTransform(el, offset, scale) {
 	var pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] =
+	el.style['transform'] =
 		('translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
 		(scale ? ' scale(' + scale + ')' : '');
 }
@@ -201,12 +180,7 @@ export function setPosition(el, point) {
 	el._leaflet_pos = point;
 	/* eslint-enable */
 
-	if (Browser.any3d) {
-		setTransform(el, point);
-	} else {
-		el.style.left = point.x + 'px';
-		el.style.top = point.y + 'px';
-	}
+	setTransform(el, point);
 }
 
 // @function getPosition(el: HTMLElement): Point

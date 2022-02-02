@@ -1,14 +1,11 @@
-import * as DomEvent from './DomEvent';
-import Browser from '../core/Browser';
-
 /*
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
  */
 
-var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
-var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
-var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
-var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
+var POINTER_DOWN =   'pointerdown';
+var POINTER_MOVE =   'pointermove';
+var POINTER_UP =     'pointerup';
+var POINTER_CANCEL = 'pointercancel';
 var pEvent = {
 	touchstart  : POINTER_DOWN,
 	touchmove   : POINTER_MOVE,
@@ -16,7 +13,7 @@ var pEvent = {
 	touchcancel : POINTER_CANCEL
 };
 var handle = {
-	touchstart  : _onPointerStart,
+	touchstart  : _handlePointer,
 	touchmove   : _handlePointer,
 	touchend    : _handlePointer,
 	touchcancel : _handlePointer
@@ -76,7 +73,7 @@ function _addPointerDocListener() {
 }
 
 function _handlePointer(handler, e) {
-	if (e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) { return; }
+	if (e.pointerType === ('mouse')) { return; }
 
 	e.touches = [];
 	for (var i in _pointers) {
@@ -85,12 +82,4 @@ function _handlePointer(handler, e) {
 	e.changedTouches = [e];
 
 	handler(e);
-}
-
-function _onPointerStart(handler, e) {
-	// IE10 specific: MsTouch needs preventDefault. See #2000
-	if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
-		DomEvent.preventDefault(e);
-	}
-	_handlePointer(handler, e);
 }

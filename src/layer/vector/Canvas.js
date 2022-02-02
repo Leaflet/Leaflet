@@ -488,5 +488,5 @@ export var Canvas = Renderer.extend({
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
 export function canvas(options) {
-	return Browser.canvas ? new Canvas(options) : null;
+	return new Canvas(options);
 }
