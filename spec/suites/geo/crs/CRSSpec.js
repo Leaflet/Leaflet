@@ -140,90 +140,6 @@ describe("CRS.EPSG3857", function () {
 
 });
 
-describe("CRS.EPSG4326", function () {
-	var crs = L.CRS.EPSG4326;
-
-	describe("#getSize", function () {
-		it("gives correct size", function () {
-			var i,
-			    worldSize = 256,
-			    crsSize;
-			for (i = 0; i <= 22; i++) {
-				crsSize = crs.getProjectedBounds(i).getSize();
-				expect(crsSize.x).equal(worldSize * 2);
-				// Lat bounds are half as high (-90/+90 compared to -180/+180)
-				expect(crsSize.y).equal(worldSize);
-				worldSize *= 2;
-			}
-		});
-	});
-});
-
-describe("CRS.EPSG3395", function () {
-	var crs = L.CRS.EPSG3395;
-
-	describe("#latLngToPoint", function () {
-		it("projects a center point", function () {
-			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([128, 128], 0.01);
-		});
-
-		it("projects the northeast corner of the world", function () {
-			expect(crs.latLngToPoint(L.latLng(85.0840591556, 180), 0)).near([256, 0]);
-		});
-	});
-
-	describe("#pointToLatLng", function () {
-		it("reprojects a center point", function () {
-			expect(crs.pointToLatLng(new L.Point(128, 128), 0)).nearLatLng([0, 0], 0.01);
-		});
-
-		it("reprojects the northeast corner of the world", function () {
-			expect(crs.pointToLatLng(new L.Point(256, 0), 0)).nearLatLng([85.0840591556, 180]);
-		});
-	});
-});
-
-describe("CRS.Simple", function () {
-	var crs = L.CRS.Simple;
-
-	describe("#latLngToPoint", function () {
-		it("converts LatLng coords to pixels", function () {
-			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([0, 0]);
-			expect(crs.latLngToPoint(L.latLng(700, 300), 0)).near([300, -700]);
-			expect(crs.latLngToPoint(L.latLng(-200, 1000), 1)).near([2000, 400]);
-		});
-	});
-
-	describe("#pointToLatLng", function () {
-		it("converts pixels to LatLng coords", function () {
-			expect(crs.pointToLatLng(L.point(0, 0), 0)).nearLatLng([0, 0]);
-			expect(crs.pointToLatLng(L.point(300, -700), 0)).nearLatLng([700, 300]);
-			expect(crs.pointToLatLng(L.point(2000, 400), 1)).nearLatLng([-200, 1000]);
-		});
-	});
-
-	describe("getProjectedBounds", function () {
-		it("returns nothing", function () {
-			expect(crs.getProjectedBounds(5)).to.be(null);
-		});
-	});
-
-	describe("wrapLatLng", function () {
-		it("returns coords as is", function () {
-			expect(crs.wrapLatLng(new L.LatLng(270, 400)).equals(new L.LatLng(270, 400))).to.be(true);
-		});
-
-		it("wraps coords if configured", function () {
-			var crs = L.extend({}, L.CRS.Simple, {
-				wrapLng: [-200, 200],
-				wrapLat: [-200, 200]
-			});
-
-			expect(crs.wrapLatLng(new L.LatLng(300, -250))).nearLatLng([-100, 150]);
-		});
-	});
-});
-
 describe("CRS", function () {
 	var crs = L.CRS;
 
@@ -262,17 +178,5 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 			var scale = crs.scale(zoom);
 			expect(crs.zoom(scale)).to.eql(zoom);
 		});
-	});
-});
-
-describe("CRS.Earth", function () {
-	describe("#distance", function () {
-		// Test values from http://rosettacode.org/wiki/Haversine_formula,
-		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
-		// is correct, since that's what International Union of Geodesy and Geophysics recommends,
-		// and that sounds serious.
-		var p1 = L.latLng(36.12, -86.67);
-		var p2 = L.latLng(33.94, -118.40);
-		expect(L.CRS.Earth.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
 	});
 });

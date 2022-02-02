@@ -281,7 +281,6 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
-
 	it("opens with map.openTooltip", function (done) {
 		map.on('tooltipopen', function (e) {
 			expect(map.hasLayer(e.tooltip)).to.be(true);

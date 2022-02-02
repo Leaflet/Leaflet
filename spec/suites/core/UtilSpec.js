@@ -90,7 +90,6 @@ describe('Util', function () {
 		});
 	});
 
-
 	describe('#getParamString', function () {
 		it('creates a valid query string for appending depending on url input', function () {
 			var a = {
@@ -181,7 +180,7 @@ describe('Util', function () {
 
 		it('creates a distinct options object', function () {
 			var opts = {},
-			    o = L.Util.create({options: opts});
+			    o = Object.create({options: opts});
 			L.Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
@@ -195,7 +194,7 @@ describe('Util', function () {
 
 		it('inherits options prototypally', function () {
 			var opts = {},
-			    o = L.Util.create({options: opts});
+			    o = Object.create({options: opts});
 			L.Util.setOptions(o, {});
 			opts.foo = 'bar';
 			expect(o.options.foo).to.eql('bar');
@@ -235,13 +234,5 @@ describe('Util', function () {
 			expect(L.Util.template('{-y}', {'-y': 1})).to.eql('1');
 			expect(L.Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
-	});
-
-	describe('#isArray', function () {
-		expect(Array.isArray([1, 2, 3])).to.be(true);
-		/* eslint no-array-constructor: 0 */
-		expect(Array.isArray(new Array(1, 2, 3))).to.be(true);
-		expect(Array.isArray('blabla')).to.be(false);
-		expect(Array.isArray({0: 1, 1: 2})).to.be(false);
 	});
 });

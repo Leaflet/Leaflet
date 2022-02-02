@@ -17,7 +17,7 @@ export {SVGOverlay, svgOverlay} from './SVGOverlay';
 
 export {DivOverlay} from './DivOverlay';
 // export {Popup, popup} from './Popup';
-// export {Tooltip, tooltip} from './Tooltip';
+export {Tooltip, tooltip} from './Tooltip';
 
 export * from './marker/index';
 export * from './tile/index';

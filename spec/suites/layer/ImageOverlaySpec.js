@@ -138,11 +138,6 @@ describe('ImageOverlay', function () {
 			var overlay = L.imageOverlay('', imageBounds).addTo(map);
 			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
-		it('should open popup at the center', function () {
-			var overlay = L.imageOverlay('', imageBounds).addTo(map);
-			overlay.bindPopup('Center').openPopup();
-			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
-		});
 	});
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
