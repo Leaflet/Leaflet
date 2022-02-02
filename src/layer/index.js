@@ -12,11 +12,9 @@ GeoJSON.asFeature = asFeature;
 export {GeoJSON, geoJSON, geoJson};
 
 export {ImageOverlay, imageOverlay} from './ImageOverlay';
-// export {VideoOverlay, videoOverlay} from './VideoOverlay';
 export {SVGOverlay, svgOverlay} from './SVGOverlay';
 
 export {DivOverlay} from './DivOverlay';
-// export {Popup, popup} from './Popup';
 export {Tooltip, tooltip} from './Tooltip';
 
 export * from './marker/index';
