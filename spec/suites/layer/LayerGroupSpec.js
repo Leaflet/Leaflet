@@ -93,7 +93,7 @@
 			var layer = L.geoJSON(geoJSON);
 			layerGroup.addLayer(layer);
 
-			L.geoJson(layerGroup.toGeoJSON());
+			L.geoJSON(layerGroup.toGeoJSON());
 		});
 	});
 

@@ -39,9 +39,9 @@
 			'OSM': OSM_Mapnik,
 			'OSM BW': OSM_BlackAndWhite
 		}, {
-			'Circle': L.circle([53, 4], 111111).addTo(map),
+			'Circle': L.circle([53, 4], { radius: 111111 }).addTo(map),
 			'Polygon': L.polygon([[48, -3], [50, -4], [52, 4]]),
-			'GeoJSON': L.geoJson(geojson),
+			'GeoJSON': L.geoJSON(geojson),
 		}, {
 			collapsed: false
 		}).addTo(map);

@@ -433,6 +433,3 @@ LayerGroup.include({
 export function geoJSON(geojson, options) {
 	return new GeoJSON(geojson, options);
 }
-
-// Backward compatibility.
-export var geoJson = geoJSON;
