@@ -1221,7 +1221,7 @@ export var Map = Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		if(!supressEvent) {
+		if (!supressEvent) {
 			// @event zoom: Event
 			// Fired repeatedly during any change in zoom level,
 			// including zoom and fly animations.
@@ -1700,7 +1700,7 @@ export var Map = Evented.extend({
 			noUpdate: noUpdate
 		});
 
-		if(!this._tempFireZoomEvent){
+		if (!this._tempFireZoomEvent) {
 			this._tempFireZoomEvent = this._zoom !== this._animateToZoom;
 		}
 
@@ -1721,7 +1721,7 @@ export var Map = Evented.extend({
 
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
-		if(this._tempFireZoomEvent){
+		if (this._tempFireZoomEvent) {
 			this.fire('zoom');
 		}
 		delete this._tempFireZoomEvent;
