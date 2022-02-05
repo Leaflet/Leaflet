@@ -1211,7 +1211,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	_move: function (center, zoom, data) {
+	_move: function (center, zoom, data, supressEvent) {
 		if (zoom === undefined) {
 			zoom = this._zoom;
 		}
@@ -1221,17 +1221,20 @@ export var Map = Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		// @event zoom: Event
-		// Fired repeatedly during any change in zoom level,
-		// including zoom and fly animations.
-		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
-			this.fire('zoom', data);
-		}
+		if (!supressEvent) {
+			// @event zoom: Event
+			// Fired repeatedly during any change in zoom level,
+			// including zoom and fly animations.
+			if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+				this.fire('zoom', data);
+			}
 
-		// @event move: Event
-		// Fired repeatedly during any movement of the map,
-		// including pan and fly animations.
-		return this.fire('move', data);
+			// @event move: Event
+			// Fired repeatedly during any movement of the map,
+			// including pan and fly animations.
+			this.fire('move', data);
+		}
+		return this;
 	},
 
 	_moveEnd: function (zoomChanged) {
@@ -1697,6 +1700,12 @@ export var Map = Evented.extend({
 			noUpdate: noUpdate
 		});
 
+		if (!this._tempFireZoomEvent) {
+			this._tempFireZoomEvent = this._zoom !== this._animateToZoom;
+		}
+
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
+
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
 		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
 	},
@@ -1710,7 +1719,14 @@ export var Map = Evented.extend({
 
 		this._animatingZoom = false;
 
-		this._move(this._animateToCenter, this._animateToZoom);
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
+
+		if (this._tempFireZoomEvent) {
+			this.fire('zoom');
+		}
+		delete this._tempFireZoomEvent;
+
+		this.fire('move');
 
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
 		Util.requestAnimFrame(function () {
