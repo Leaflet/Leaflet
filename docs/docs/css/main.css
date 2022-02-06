@@ -504,6 +504,9 @@ table.plugins td:first-child a {
 .api-page h2:first-child {
 	border: none;
 }
+.api-page .ghost-pointer {
+	height: 0;
+}
 
 #toc h4 {
 	margin-top: 0;
