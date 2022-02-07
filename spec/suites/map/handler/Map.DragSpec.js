@@ -89,10 +89,7 @@ describe("Map.Drag", function () {
 					expect(map.getOffset()).to.eql(offset);
 
 					expect(map.getZoom()).to.be(1);
-					expect(map.getCenter().equals({ // small margin of error allowed
-						lat: 21.943045533, // 21.94304553343818
-						lng: -180
-					})).to.be.ok();
+					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 					done();
 				}
@@ -128,10 +125,7 @@ describe("Map.Drag", function () {
 						expect(map.getOffset()).to.eql(offset);
 
 						expect(map.getZoom()).to.be(1);
-						expect(map.getCenter().equals({ // small margin of error allowed
-							lat: 21.943045533, // 21.94304553343818
-							lng: -180
-						})).to.be.ok();
+						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 						done();
 					}
@@ -354,10 +348,7 @@ describe("Map.Drag", function () {
 					expect(map.getOffset()).to.eql(offset);
 
 					expect(map.getZoom()).to.be(1);
-					expect(map.getCenter().equals({ // small margin of error allowed
-						lat: 21.943045533, // 21.94304553343818
-						lng: -180
-					})).to.be.ok();
+					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 					done();
 				}

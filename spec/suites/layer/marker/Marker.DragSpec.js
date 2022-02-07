@@ -41,11 +41,8 @@ describe("Marker.Drag", function () {
 				onStop: function () {
 					expect(marker.getOffset()).to.eql(offset);
 
-					expect(map.getCenter()).to.eql({lat: 0, lng: 0});
-					expect(marker.getLatLng().equals({ // small margin of error allowed
-						lat: -40.979898069620134,
-						lng: 360
-					})).to.be.ok();
+					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
 
 					done();
 				}
@@ -76,11 +73,8 @@ describe("Marker.Drag", function () {
 					onStop: function () {
 						expect(marker.getOffset()).to.eql(offset);
 
-						expect(map.getCenter()).to.eql({lat: 0, lng: 0});
-						expect(marker.getLatLng().equals({ // small margin of error allowed
-							lat: -40.979898069620134,
-							lng: 360
-						})).to.be.ok();
+						expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
 
 						done();
 					}
@@ -110,11 +104,8 @@ describe("Marker.Drag", function () {
 					expect(marker.getOffset()).to.eql(offset);
 
 					// small margin of error allowed
-					expect(map.getCenter().equals({lat: 0, lng: 11.25})).to.be.ok();
-					expect(marker.getLatLng().equals({
-						lat: -40.979898069620134,
-						lng: 419.0625
-					})).to.be.ok();
+					expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
+					expect(marker.getLatLng()).to.be.nearLatLng(-40.979898069620134, 419.0625);
 
 					done();
 				}
