@@ -28,9 +28,9 @@
             }
 
             if (config.version) {
-                if (config.version === 'master') {
-                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/master/leaflet.css',
-                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/master/leaflet-src.js'
+                if (config.version === 'main') {
+                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/main/leaflet.css',
+                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/main/leaflet-src.js'
                 } else {
                     config.cssFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet.css`
                     config.jsFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet-src.js`

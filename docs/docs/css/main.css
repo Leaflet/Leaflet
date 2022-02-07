@@ -180,7 +180,7 @@ h1 a:hover, h1 a:focus {
 	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
 }
 
-h3.tagline {
+p.tagline {
 	font-weight: 300;
 	font-size: 1.5em;
 	margin-top: -.75em;
@@ -1003,7 +1003,7 @@ tr:target {
 		margin: 1em 0;
 	}
 
-	h3.tagline {
+	p.tagline {
 		font-size: 1.05em;
 		margin: 0 1em;
 	}

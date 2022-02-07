@@ -1,13 +1,13 @@
 var json = require('@rollup/plugin-json');
 
 const outro = `var oldL = window.L;
-exports.noConflict = function() {
+leaflet.noConflict = function() {
 	window.L = oldL;
 	return this;
 }
 
 // Always export us to window global (see #2364)
-window.L = exports;`;
+window.L = leaflet;`;
 
 // Karma configuration
 module.exports = function (config) {
@@ -63,7 +63,7 @@ module.exports = function (config) {
 			],
 			output: {
 				format: 'umd',
-				name: 'L',
+				name: 'leaflet',
 				outro: outro,
 				freeze: false,
 			},
@@ -123,7 +123,10 @@ module.exports = function (config) {
 		concurrency: 1,
 
 		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 10000,
+		captureTimeout: 60000,
+
+		// Timeout for the client socket connection [ms].
+		browserSocketTimeout: 30000,
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit

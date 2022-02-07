@@ -14,11 +14,11 @@ import * as Util from '../core/Util';
 // @function simplify(points: Point[], tolerance: Number): Point[]
 // Dramatically reduces the number of points in a polyline while retaining
 // its shape and returns a new array of simplified points, using the
-// [Douglas-Peucker algorithm](http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm).
+// [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm).
 // Used for a huge performance boost when processing/displaying Leaflet polylines for
 // each zoom level and also reducing visual noise. tolerance affects the amount of
 // simplification (lesser value means higher quality but slower and with more points).
-// Also released as a separated micro-library [Simplify.js](http://mourner.github.com/simplify-js/).
+// Also released as a separated micro-library [Simplify.js](https://mourner.github.io/simplify-js/).
 export function simplify(points, tolerance) {
 	if (!tolerance || !points.length) {
 		return points.slice();
@@ -47,7 +47,7 @@ export function closestPointOnSegment(p, p1, p2) {
 	return _sqClosestPointOnSegment(p, p1, p2);
 }
 
-// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
+// Ramer-Douglas-Peucker simplification, see https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
 function _simplifyDP(points, sqTolerance) {
 
 	var len = points.length,
