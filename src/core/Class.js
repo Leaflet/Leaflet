@@ -17,6 +17,8 @@ Class.extend = function (props) {
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	var NewClass = function () {
 
+		Util.setOptions(this);
+
 		// call the constructor
 		if (this.initialize) {
 			this.initialize.apply(this, arguments);
@@ -87,7 +89,12 @@ Class.extend = function (props) {
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
+	var parentOptions = this.prototype.options;
 	Util.extend(this.prototype, props);
+	if (props.options) {
+		this.prototype.options = parentOptions;
+		this.mergeOptions(props.options);
+	}
 	return this;
 };
 

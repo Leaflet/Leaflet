@@ -26,6 +26,7 @@ if (!Array.prototype.map) {
 }
 
 expect.Assertion.prototype.near = function (expected, delta) {
+	expected = L.point(expected);
 	delta = delta || 1;
 	expect(this.obj.x).to
 		.be.within(expected.x - delta, expected.x + delta);
@@ -34,6 +35,7 @@ expect.Assertion.prototype.near = function (expected, delta) {
 };
 
 expect.Assertion.prototype.nearLatLng = function (expected, delta) {
+	expected = L.latLng(expected);
 	delta = delta || 1e-4;
 	expect(this.obj.lat).to
 		.be.within(expected.lat - delta, expected.lat + delta);

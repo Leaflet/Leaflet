@@ -9,7 +9,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Layers
  * @inherits Control
  *
- * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control/)). Extends `Control`.
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
  *
  * @example
  *
@@ -201,6 +201,7 @@ export var Layers = Control.extend({
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
+		link.setAttribute('role', 'button');
 
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
 		DomEvent.on(link, 'focus', this.expand, this);

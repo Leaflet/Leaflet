@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 
@@ -11,7 +11,7 @@
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
 	<meta property="og:image" content="{{ root }}docs/images/logo.png" />
-
+	<meta property="og:image:alt" content="Leaflet">
 	<meta itemprop="name" content="Leaflet">
 	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
 	<meta itemprop="image" content="{{ root }}docs/images/logo.png">
@@ -58,70 +58,75 @@
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
-<h1><a href="https://leafletjs.com/"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
-<h3 class="tagline">an open-source JavaScript library<br> for mobile-friendly interactive maps</h3>
+<header>
+	<h1><a href="https://leafletjs.com/"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
+	<p class="tagline">an open-source JavaScript library<br> for mobile-friendly interactive maps</p>
+</header>
 
-<ul class="nav">
-	<li>
-		{% if page.title == nil %}
-			<span>Overview</span>
-		{% else %}
-			<a href="{{ root }}index.html">Overview</a>
-		{% endif %}
-	</li>
-	<li>
-		{% if page.title == 'Tutorials' %}
-			<span>Tutorials</span>
-		{% else %}
-			<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
-		{% endif %}
-	</li>
-	<li>
-		{% if page.title == 'Documentation' %}
-			<span>Docs</span>
-		{% else %}
-			<a href="{{ root }}reference.html">Docs</a>
-		{% endif %}
-	</li>
-	<li>
-		{% if page.title == 'Download' %}
-			<span>Download</span>
-		{% else %}
-			<a href="{{ root }}download.html">Download</a>
-		{% endif %}
-	</li>
-	<li>
-		{% if page.title == 'Plugins' %}
-			<span>Plugins</span>
-		{% else %}
-			<a href="{{ root }}plugins.html">Plugins</a>
-		{% endif %}
-	</li>
-	<li>
-		{% if page.title == 'Blog' %}
-			<span>Blog</span>
-		{% else %}
-			<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
-		{% endif %}
-	</li>
-</ul>
-
-<div class="container">
-
-
-{{ content }}
-
-<div class="footer">
-	<p>&copy; 2010–2021 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
-</div>
-
-</div>
-
-<nav class="ext-links">
-  <a class="ext-link twitter" href="https://twitter.com/LeafletJS" title="Follow LeafletJS on Twitter"><img alt="Follow LeafletJS on Twitter" src="{{root}}docs/images/twitter-round.png" width="46" /></a>
-  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.png" width="46" /></a>
-  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.png" width="46" /></a>
+<nav>
+	<ul class="nav">
+		<li>
+			{% if page.title == nil %}
+				<span>Overview</span>
+			{% else %}
+				<a href="{{ root }}index.html">Overview</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if page.title == 'Tutorials' %}
+				<span>Tutorials</span>
+			{% else %}
+				<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if page.title == 'Documentation' %}
+				<span>Docs</span>
+			{% else %}
+				<a href="{{ root }}reference.html">Docs</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if page.title == 'Download' %}
+				<span>Download</span>
+			{% else %}
+				<a href="{{ root }}download.html">Download</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if page.title == 'Plugins' %}
+				<span>Plugins</span>
+			{% else %}
+				<a href="{{ root }}plugins.html">Plugins</a>
+			{% endif %}
+		</li>
+		<li>
+			{% if page.title == 'Blog' %}
+				<span>Blog</span>
+			{% else %}
+				<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
+			{% endif %}
+		</li>
+	</ul>
 </nav>
+
+<main>
+	<div class="container">
+		{{ content }}
+	</div>
+</main>
+
+<footer class="container">
+	<div class="footer">
+		<p>&copy; 2010–{{ 'now' | date: "%Y" }} <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+	</div>
+
+	<nav class="ext-links">
+	  <a class="ext-link twitter" href="https://twitter.com/LeafletJS" title="Follow LeafletJS on Twitter"><img alt="Follow LeafletJS on Twitter" src="{{root}}docs/images/twitter-round.png" width="46" /></a>
+	  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.png" width="46" /></a>
+	  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.png" width="46" /></a>
+	</nav>
+</footer>
 
 <script>
 	var _gaq = _gaq || [];

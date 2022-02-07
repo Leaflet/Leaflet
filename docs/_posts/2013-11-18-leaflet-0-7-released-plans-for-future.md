@@ -20,7 +20,7 @@ For Leaflet, this can only mean very good things &mdash; much more time on Leafl
 
 ### 0.7 changes
 
-You can check out the [detailed changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#07-dev-master) of what's already done over the recent months for 0.7 (about 90 improvements and bugfixes), but I'd like to mention some highlights:
+You can check out the [detailed changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md#07-dev-master) of what's already done over the recent months for 0.7 (about 90 improvements and bugfixes), but I'd like to mention some highlights:
 
 * Added the ability to **upscale tiles** to higher zoom levels (e.g. have zoom 19-20 when the source has 18 max).
 * Added support for **IE11 touch devices**. MS unexpectedly broke their pointer API compatibility between Developer Preview and final IE11 release, and we eventually rewrote quite a bit of code to make everything work smoothly across all IE versions (both desktop & mobile), fixing a bunch of IE10 bugs along the way as well.
