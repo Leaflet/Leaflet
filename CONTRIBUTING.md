@@ -182,7 +182,7 @@ over to `docs/reference.html` - there is no need to send pull requests with chan
 Everyone is invited to participate in the Leaflet community and related projects:
 we want to create a welcoming and friendly environment.
 Harassment of participants or other unethical and unprofessional behavior will not be tolerated in our spaces.
-The [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/)
+The [Contributor Covenant](CODE_OF_CONDUCT.md)
 applies to all projects under the Leaflet organization.
 Report any issues to agafonkin@gmail.com.
 
