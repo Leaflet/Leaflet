@@ -111,6 +111,7 @@ jobs:
 
   bundlemon:
     needs: build-release
+    if: github.repository_owner == 'Leaflet'
     runs-on: ubuntu-latest
     steps:
       - name: Restore release build
