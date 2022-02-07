@@ -71,46 +71,47 @@ if (toc) {
 		scrollPos();
 	});
 
-	window.addEventListener("load", function (e) {
+	window.addEventListener('load', function () {
 		var currentHash = window.location.hash;
 		var elem = document.querySelector(currentHash);
 
-		if(elem.tagName === 'H2' || elem.tagName === 'H4'){
+		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
 			setTimeout(()=>{
-				scrollToHeader(elem, true)
-			},10);
+				scrollToHeader(elem, true);
+			}, 10);
 		}
 	}, false);
+}
 
-	function clickOnAnchor(e){
-		// if the parent element of <a> is clicked we ignore it
-		if(e.target.tagName !== 'A'){
-			return;
-		}
 
-		var anchor = '#'+ e.target.href.split('#')[1];
-		var elemHeader = document.querySelector(anchor);
-
-		scrollToHeader(elemHeader, '#'+elemHeader.id === currentAnchor);
-
-		// prevent default browser anchor scroll
-		e.preventDefault();
+function clickOnAnchor(e) {
+	// if the parent element of <a> is clicked we ignore it
+	if (e.target.tagName !== 'A') {
+		return;
 	}
 
-	function scrollToHeader(elemHeader, sameAnchor){
-		var scrollBy = elemHeader.nextSibling.offsetTop;
+	var anchor = '#' + e.target.href.split('#')[1];
+	var elemHeader = document.querySelector(anchor);
 
-		if(L.Browser.chrome && sameAnchor){
-			// chromium remove the anchor element from the scroll-position
-			// we check with sameAnchor if the User has clicked on the same anchor link again
-			scrollBy = scrollBy - elemHeader.offsetHeight;
-		}else{
-			// we scroll a little bit more down to get the element already sticky
-			scrollBy += 5;
-		}
-		// scroll to the anchor
-		window.scrollTo(0,scrollBy);
-		// apply the new anchor to the location url
-		currentAnchor = window.location.hash = '#'+elemHeader.id;
+	scrollToHeader(elemHeader, '#' + elemHeader.id === currentAnchor);
+
+	// prevent default browser anchor scroll
+	e.preventDefault();
+}
+
+function scrollToHeader(elemHeader, sameAnchor) {
+	var scrollBy = elemHeader.nextSibling.offsetTop;
+
+	if (L.Browser.chrome && sameAnchor) {
+		// chromium remove the anchor element from the scroll-position
+		// we check with sameAnchor if the User has clicked on the same anchor link again
+		scrollBy = scrollBy - elemHeader.offsetHeight;
+	} else {
+		// we scroll a little bit more down to get the element already sticky
+		scrollBy += 5;
 	}
+	// scroll to the anchor
+	window.scrollTo(0, scrollBy);
+	// apply the new anchor to the location url
+	currentAnchor = window.location.hash = '#' + elemHeader.id;
 }
