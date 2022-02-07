@@ -105,7 +105,7 @@ describe("Marker.Drag", function () {
 
 					// small margin of error allowed
 					expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
-					expect(marker.getLatLng()).to.be.nearLatLng(-40.979898069620134, 419.0625);
+					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 419.0625]);
 
 					done();
 				}
