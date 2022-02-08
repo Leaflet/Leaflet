@@ -202,7 +202,7 @@ export var TileLayer = GridLayer.extend({
 		}
 
 		var url = Util.template(this._url, Util.extend(data, this.options));
-		if(!url.startsWith('data:')) {
+		if (!url.startsWith('data:')) {
 			url += (url.indexOf('?') === -1 ? '?' : '&') + 'v=' + this._reqCacheVersion;
 		}
 		return url;

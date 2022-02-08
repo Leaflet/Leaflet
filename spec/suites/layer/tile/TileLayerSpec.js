@@ -473,14 +473,14 @@ describe('TileLayer', function () {
 			layer.on('tileload', function (e) {
 				counts.tileload++;
 				// >= 7 after redraw
-				if(counts.tileload === 1 || counts.tileload === 7){
+				if (counts.tileload === 1 || counts.tileload === 7) {
 					tileSrcs.push(e.tile.src);
 				}
 			});
 
-			layer.on('load', function (e) {
+			layer.on('load', function () {
 				counts.load++;
-				if (counts.load === 1){
+				if (counts.load === 1) {
 					layer.redraw();
 				} else {
 					expect(counts.load).to.equal(2);
