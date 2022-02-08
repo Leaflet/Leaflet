@@ -43,6 +43,10 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 		.be.within(expected.lng - delta, expected.lng + delta);
 };
 
+expect.Assertion.prototype.startsWith = function (expected) {
+	expect(this.obj.startsWith(expected)).to.be.ok();
+};
+
 happen.at = function (what, x, y, props) {
 	this.once(document.elementFromPoint(x, y), L.Util.extend({
 		type: what,

@@ -307,7 +307,7 @@ describe('TileLayer', function () {
 
 			var i = 0;
 			eachImg(layer, function (img) {
-				expect(img.src).to.eql(urls[i]);
+				expect(img.src).to.startsWith(urls[i]);
 				i++;
 			});
 		});
@@ -322,7 +322,7 @@ describe('TileLayer', function () {
 			];
 			var i = 0;
 			eachImg(layer, function (img) {
-				expect(img.src).to.eql(urls[i]);
+				expect(img.src).to.startsWith(urls[i]);
 				i++;
 			});
 		});
@@ -380,7 +380,7 @@ describe('TileLayer', function () {
 
 			var i = 0;
 			eachImg(layer, function (img) {
-				expect(img.src).to.eql(urls[i]);
+				expect(img.src).to.startsWith(urls[i]);
 				i++;
 			});
 		});
@@ -400,7 +400,7 @@ describe('TileLayer', function () {
 
 			var i = 0;
 			eachImg(layer, function (img) {
-				expect(img.src).to.eql(urls[i]);
+				expect(img.src).to.startsWith(urls[i]);
 				i++;
 			});
 		});
@@ -453,6 +453,42 @@ describe('TileLayer', function () {
 				expect(counts.tileload).to.equal(8);
 				done();
 			}, 250);
+		});
+	});
+
+	describe('#redraw', function () {
+		it('reload tiles / images instead of using the browser cached ones', function (done) {
+			this.timeout(4000);
+
+			map.setView([0, 0], 0);
+
+			var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+			var counts = {
+				load: 0,
+				tileload: 0
+			};
+
+			var tileSrcs = [];
+
+			layer.on('tileload', function (e) {
+				counts.tileload++;
+				// >= 7 after redraw
+				if(counts.tileload === 1 || counts.tileload === 7){
+					tileSrcs.push(e.tile.src);
+				}
+			});
+
+			layer.on('load', function (e) {
+				counts.load++;
+				if (counts.load === 1){
+					layer.redraw();
+				} else {
+					expect(counts.load).to.equal(2);
+					expect(counts.tileload).to.equal(10);
+					expect(tileSrcs[0]).to.not.equal(tileSrcs[1]);
+					done();
+				}
+			});
 		});
 	});
 });

@@ -33,6 +33,12 @@ import * as DomUtil from '../../dom/DomUtil';
  * ```
  * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
+ *
+ * It's also possible to use base64 encoded images:
+ *
+ * ```
+ * L.tileLayer('data:image/gif;base64,R0lGODlhAQ....ABAAACADs=');
+ * ```
  */
 
 
@@ -114,6 +120,8 @@ export var TileLayer = GridLayer.extend({
 			options.subdomains = options.subdomains.split('');
 		}
 
+		this._reqCacheVersion = new Date().getTime();
+
 		this.on('tileunload', this._onTileRemove);
 	},
 
@@ -193,7 +201,11 @@ export var TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return Util.template(this._url, Util.extend(data, this.options));
+		var url = Util.template(this._url, Util.extend(data, this.options));
+		if(!url.startsWith('data:')) {
+			url += (url.indexOf('?') === -1 ? '?' : '&') + 'v=' + this._reqCacheVersion;
+		}
+		return url;
 	},
 
 	_tileOnLoad: function (done, tile) {
@@ -277,6 +289,11 @@ export var TileLayer = GridLayer.extend({
 		}
 
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+	},
+
+	redraw: function () {
+		this._reqCacheVersion = new Date().getTime();
+		return GridLayer.prototype.redraw.call(this);
 	}
 });
 
