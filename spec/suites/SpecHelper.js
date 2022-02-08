@@ -25,6 +25,13 @@ if (!Array.prototype.map) {
 	};
 }
 
+if (!String.prototype.startsWith) {
+	String.prototype.startsWith = function (searchString, position) {
+		position = position || 0;
+		return this.indexOf(searchString, position) === position;
+	};
+}
+
 expect.Assertion.prototype.near = function (expected, delta) {
 	expected = L.point(expected);
 	delta = delta || 1;
