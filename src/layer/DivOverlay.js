@@ -8,7 +8,7 @@ import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class DivOverlay
- * @inherits Layer
+ * @inherits Interactive layer
  * @aka L.DivOverlay
  * Base model for L.Popup and L.Tooltip. Inherit from it for custom overlays like plugins.
  */
@@ -19,6 +19,10 @@ export var DivOverlay = Layer.extend({
 	// @section
 	// @aka DivOverlay options
 	options: {
+		// @option interactive: Boolean = false
+		// If true, the popup/tooltip will listen to the mouse events.
+		interactive: false,
+
 		// @option offset: Point = Point(0, 0)
 		// The offset of the overlay position.
 		offset: [0, 0],
@@ -101,6 +105,11 @@ export var DivOverlay = Layer.extend({
 		}
 
 		this.bringToFront();
+
+		if (this.options.interactive) {
+			DomUtil.addClass(this._container, 'leaflet-interactive');
+			this.addInteractiveTarget(this._container);
+		}
 	},
 
 	onRemove: function (map) {
@@ -109,6 +118,11 @@ export var DivOverlay = Layer.extend({
 			this._removeTimeout = setTimeout(Util.bind(DomUtil.remove, undefined, this._container), 200);
 		} else {
 			DomUtil.remove(this._container);
+		}
+
+		if (this.options.interactive) {
+			DomUtil.removeClass(this._container, 'leaflet-interactive');
+			this.removeInteractiveTarget(this._container);
 		}
 	},
 
