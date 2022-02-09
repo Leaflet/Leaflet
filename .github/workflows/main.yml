@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ubuntu-latest
+        os: [ubuntu-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ubuntu-latest
+        os: [ubuntu-latest]
     steps:
       - name: Restore setup
         uses: actions/cache@v2
