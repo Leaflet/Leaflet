@@ -41,7 +41,7 @@ An instance of `L.TileLayer.WMS` needs at least one option: `layers`. Be careful
 
 WMS servers define a set of *layers* in the service. These are defined in the `GetCapabilities` XML document, which most times is tedious and difficult to understand. Usually it's a good idea to use software such as [QGIS to see what layers are available in a WMS server](http://www.qgistutorials.com/en/docs/working_with_wms.html) to see the layer names available:
 
-![Discovering WMS layers with QGIS](qgis-wms-layers.png)
+<img src="qgis-wms-layers.png" width="693" style="max-width: 100%;" alt="Discovering WMS layers with QGIS">
 
 We can see that the *Mundialis* WMS has a WMS layer named `TOPO-OSM-WMS` with a basemap. Let's see how it looks:
 

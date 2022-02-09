@@ -16,7 +16,7 @@ Nowadays, we can use the following HTML code:
 
 To display this video:
 
-<video width="500" controls>
+<video width="500" style="max-width: 100%;" controls>
 <source src="https://www.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
 <source src="https://www.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
 </video>
