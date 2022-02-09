@@ -1,5 +1,4 @@
 import {Point} from './Point';
-import * as Util from '../core/Util';
 
 /*
  * @class Transformation

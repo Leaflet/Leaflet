@@ -1,6 +1,4 @@
 import {Point} from './Point';
-import * as Util from '../core/Util';
-
 
 /*
  * @namespace LineUtil
