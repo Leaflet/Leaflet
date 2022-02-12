@@ -93,6 +93,14 @@ iframe {
 	border: none;
 }
 
+img {
+	height: auto;
+}
+
+img,
+video {
+	max-width: 100%;
+}
 
 /* headings */
 
