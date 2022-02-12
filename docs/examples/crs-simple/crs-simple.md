@@ -17,13 +17,13 @@ Sometimes, maps do not represent things on the surface of the earth and, as such
 For this tutorial we've picked a starmap from Star Control II, a game that is now available as the [open-source project The Ur-Quan Masters](https://en.wikipedia.org/wiki/Star_Control_II#The_Ur-Quan_Masters). These maps were made with a [tool to read the open-source data files](http://www.highprogrammer.com/alan/games/video/uqm/index.html) of the game (webpage seems to have been taken down, see the [archived version](https://web.archive.org/web/20171112052528/https://www.highprogrammer.com/alan/games/video/uqm/index.html)), and look like this:
 
 <center>
-<img src="uqm_map_400px.png" style="border: 1px solid #ccc; border-radius: 5px; max-width: 100%;"/><br/>
+<img src="uqm_map_400px.png" style="border: 1px solid #ccc; border-radius: 5px" /><br/>
 </center>
 
 The game has a built-in square coordinate system, as can be seen in the corners. This will allow us to establish a coordinate system.
 
 <center>
-<img src="uqm_map_detail.png" style="border: 1px solid #ccc; border-radius: 5px; max-width: 100%;" /><br/>
+<img src="uqm_map_detail.png" style="border: 1px solid #ccc; border-radius: 5px" /><br/>
 </center>
 
 
