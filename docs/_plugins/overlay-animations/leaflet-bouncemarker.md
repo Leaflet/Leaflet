@@ -4,7 +4,7 @@ category: overlay-animations
 repo: https://github.com/maximeh/leaflet.bouncemarker
 author: Maxime Hadjinlian
 author-url: https://github.com/maximeh
-demo: 
+demo: https://maximeh.github.io/leaflet.bouncemarker/
 compatible-v0:
 compatible-v1: true
 ---

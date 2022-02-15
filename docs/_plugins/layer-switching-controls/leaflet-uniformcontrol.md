@@ -4,7 +4,7 @@ category: layer-switching-controls
 repo: https://github.com/chriscalip/L.UniformControl
 author: Chris Calip
 author-url: https://github.com/chriscalip
-demo: 
+demo: http://chriscalip.github.io/L.UniformControl/examples/layers-control-example-jeans.html
 compatible-v0:
 compatible-v1: true
 ---

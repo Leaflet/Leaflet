@@ -4,7 +4,7 @@ category: overlay-data-formats
 repo: https://github.com/arthur-e/Wicket/
 author: K. Arthur Endsley
 author-url: https://github.com/arthur-e/
-demo: 
+demo: https://arthur-e.github.io/Wicket/
 compatible-v0:
 compatible-v1: true
 ---

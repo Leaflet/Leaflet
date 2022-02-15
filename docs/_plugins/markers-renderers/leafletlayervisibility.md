@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/phloose/leaflet-layervisibility
 author: Philipp Loose
 author-url: https://github.com/phloose/
-demo: 
+demo: https://phloose.github.io/leaflet-layervisibility/
 compatible-v0:
 compatible-v1: true
 ---

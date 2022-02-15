@@ -4,7 +4,7 @@ category: geoprocessing
 repo: https://github.com/mapbox/leaflet-pip
 author: Tom MacWright
 author-url: https://github.com/tmcw
-demo: 
+demo: https://mapbox.github.io/leaflet-pip/
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: user-interface
 repo: https://github.com/yohanboniface/Leaflet.TileLegend
 author: Yohan Boniface
 author-url: https://yohanboniface.me/
-demo: 
+demo: http://map.hotosm.org
 compatible-v0:
 compatible-v1: true
 ---

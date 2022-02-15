@@ -1,10 +1,10 @@
 ---
 name: WebGL Heatmap
 category: heatmaps
-repo: http://ursudio.com/webgl-heatmap-leaflet/
+repo: https://github.com/ursudio/leaflet-webgl-heatmap
 author: Benjamin J DeLong
 author-url: http://ursudio.com/webgl-heatmap-leaflet/
-demo: 
+demo: https://ursudio.github.io/leaflet-webgl-heatmap/
 compatible-v0:
 compatible-v1: true
 ---
