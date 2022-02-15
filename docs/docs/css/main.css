@@ -93,6 +93,14 @@ iframe {
 	border: none;
 }
 
+img {
+	height: auto;
+}
+
+img,
+video {
+	max-width: 100%;
+}
 
 /* headings */
 
@@ -533,6 +541,7 @@ table.plugins td:first-child a {
 
 #toc-copy {
 	display: none;
+	z-index: 1;
 }
 
 #toc-copy div {
@@ -832,6 +841,18 @@ tr:target {
 .api-page h2[id]:before {
 	margin-left: -32px;
 	margin-top: 14px;
+}
+
+.api-page h2[id]:after {
+	content: '';
+	margin-left: -32px;
+	margin-top: 19px;
+	width: 23px;
+	height: 23px;
+	background-color: #fff;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 
 .api-page tr[id] td:first-child:before {

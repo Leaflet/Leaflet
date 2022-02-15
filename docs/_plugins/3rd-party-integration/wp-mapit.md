@@ -1,9 +1,9 @@
 ---
 name: WP MapIt
 category: 3rd-party-integration
-repo: http://wp-mapit.chandnipatel.in/
+repo: https://wp-mapit.chandnipatel.in/
 author: Chandni Patel
-author-url: http://chandnipatel.in/
+author-url: https://chandnipatel.in/
 demo: 
 compatible-v0:
 compatible-v1: true
