@@ -4,7 +4,7 @@ category: geoprocessing
 repo: https://github.com/makinacorpus/Leaflet.LayerIndex
 author: Mathieu Leplatre
 author-url: https://github.com/leplatrem
-demo: http://makinacorpus.github.io/Leaflet.LayerIndex/
+demo: https://makinacorpus.github.io/Leaflet.LayerIndex/
 compatible-v0:
 compatible-v1: true
 ---
