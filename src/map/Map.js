@@ -1221,11 +1221,11 @@ export var Map = Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		if (!supressEvent) {
+		if (!supressEvent || (data && data.pinch)) {	// Always fire 'zoom' & 'move' if pinching because #3530
 			// @event zoom: Event
 			// Fired repeatedly during any change in zoom level,
 			// including zoom and fly animations.
-			if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+			if (zoomChanged || (data && data.pinch)) {
 				this.fire('zoom', data);
 			}
 
