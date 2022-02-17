@@ -48,7 +48,7 @@ export var Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover or touch.
+		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
