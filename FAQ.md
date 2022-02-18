@@ -13,7 +13,7 @@ This is a collection of answers to the most frequently asked questions about Lea
 #### The map is wrong in my neighborhood, could you fix it?
 
 Nope, but you can.
-The map you see on Leaflet examples is based on [OpenStreetMap](http://openstreetmap.org),
+The map you see on Leaflet examples is based on [OpenStreetMap](https://www.openstreetmap.org/),
 a free editable map of the world.
 Signing up and editing the map there is easy,
 and the changes will be reflected on the map in a few minutes.
@@ -22,7 +22,7 @@ and the changes will be reflected on the map in a few minutes.
 
 Leaflet is provider-agnostic, meaning you can use any map provider as long as you conform to its terms of use.
 You can roll your own tiles as well.
-[OpenStreetMap](http://openstreetmap.org) is the most popular data source among different tile providers,
+[OpenStreetMap](https://www.openstreetmap.org/) is the most popular data source among different tile providers,
 but there are providers that use other sources.
 
 Check out [this example](http://leaflet-extras.github.io/leaflet-providers/preview/)
