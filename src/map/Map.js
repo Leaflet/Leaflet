@@ -1233,6 +1233,8 @@ export var Map = Evented.extend({
 			// Fired repeatedly during any movement of the map,
 			// including pan and fly animations.
 			this.fire('move', data);
+		} else if (data && data.pinch) {	// Always fire 'zoom' if pinching because #3530
+			this.fire('zoom', data);
 		}
 		return this;
 	},
