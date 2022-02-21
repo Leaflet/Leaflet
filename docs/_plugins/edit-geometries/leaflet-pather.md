@@ -4,7 +4,7 @@ category: edit-geometries
 repo: https://github.com/Wildhoney/L.Pather
 author: Wildhoney
 author-url: https://github.com/Wildhoney
-demo: 
+demo: https://pather.herokuapp.com/
 compatible-v0:
 compatible-v1: true
 ---

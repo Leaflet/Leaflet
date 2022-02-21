@@ -4,7 +4,7 @@ category: user-interface
 repo: https://github.com/Eclipse1979/leaflet-slider
 author: EPP
 author-url: https://github.com/Eclipse1979
-demo: https://github.com/Eclipse1979/leaflet-slider
+demo: https://eclipse1979.github.io/leaflet.slider/example/leaflet-slider.html
 compatible-v0:
 compatible-v1: true
 ---

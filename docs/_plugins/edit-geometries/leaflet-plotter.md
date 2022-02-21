@@ -4,7 +4,7 @@ category: edit-geometries
 repo: https://github.com/scripter-co/leaflet-plotter
 author: Nathan Mahdavi
 author-url: https://github.com/scripter-co
-demo: 
+demo: http://scripter-co.github.io/leaflet-plotter/
 compatible-v0:
 compatible-v1: true
 ---

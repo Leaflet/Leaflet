@@ -4,7 +4,7 @@ category: geoprocessing
 repo: https://github.com/kartena/Proj4Leaflet
 author: Kartena
 author-url: http://www.kartena.se/index.html
-demo: 
+demo: https://kartena.github.io/Proj4Leaflet/#examples
 compatible-v0:
 compatible-v1: true
 ---

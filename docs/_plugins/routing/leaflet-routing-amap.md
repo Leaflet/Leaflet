@@ -4,7 +4,7 @@ category: routing
 repo: https://github.com/UinJack/Leaflet.Routing.Amap
 author: Jack Good
 author-url: https://github.com/BKGiser
-demo: 
+demo: https://uinjack.github.io/Leaflet.Routing.Amap/example/
 compatible-v0:
 compatible-v1: true
 ---
