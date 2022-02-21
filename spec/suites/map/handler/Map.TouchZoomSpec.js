@@ -73,7 +73,7 @@ describe("Map.TouchZoom", function () {
 			pinchZoomEvent = e.pinch || pinchZoomEvent;
 		});
 		map.once('zoomend', function () {
-			expect(spy.callCount > 5).to.be.ok();
+			expect(spy.callCount > 1).to.be.ok();
 			expect(pinchZoomEvent).to.be.ok();
 
 			expect(map.getCenter()).to.eql({lat:0, lng:0});
