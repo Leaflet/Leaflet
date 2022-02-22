@@ -30,16 +30,6 @@ title: Video Overlay Tutorial
 	map.addLayer(overlay);
 
 	overlay.on('load', function () {
-		var MyPauseControl = L.Control.extend({
-			onAdd: function () {
-				var button = L.DomUtil.create('button');
-				button.innerHTML = '⏸';
-				L.DomEvent.on(button, 'click', function () {
-					overlay.getElement().pause();
-				});
-				return button;
-			}
-		});
 		var MyPlayControl = L.Control.extend({
 			onAdd: function () {
 				var button = L.DomUtil.create('button');
@@ -50,9 +40,19 @@ title: Video Overlay Tutorial
 				return button;
 			}
 		});
+		var MyPauseControl = L.Control.extend({
+			onAdd: function () {
+				var button = L.DomUtil.create('button');
+				button.innerHTML = '⏸';
+				L.DomEvent.on(button, 'click', function () {
+					overlay.getElement().pause();
+				});
+				return button;
+			}
+		});
 
-		var pauseControl = (new MyPauseControl()).addTo(map);
 		var playControl = (new MyPlayControl()).addTo(map);
+		var pauseControl = (new MyPauseControl()).addTo(map);
 	});
 
 </script>

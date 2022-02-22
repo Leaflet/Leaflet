@@ -95,16 +95,6 @@ This allows us to build custom interfaces. For example, we can build a small sub
 
 ```
 	videoOverlay.on('load', function () {
-		var MyPauseControl = L.Control.extend({
-			onAdd: function() {
-				var button = L.DomUtil.create('button');
-				button.innerHTML = '⏸';
-				L.DomEvent.on(button, 'click', function () {
-					videoOverlay.getElement().pause();
-				});
-				return button;
-			}
-		});
 		var MyPlayControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
@@ -115,9 +105,19 @@ This allows us to build custom interfaces. For example, we can build a small sub
 				return button;
 			}
 		});
+		var MyPauseControl = L.Control.extend({
+			onAdd: function() {
+				var button = L.DomUtil.create('button');
+				button.innerHTML = '⏸';
+				L.DomEvent.on(button, 'click', function () {
+					videoOverlay.getElement().pause();
+				});
+				return button;
+			}
+		});
 
-		var pauseControl = (new MyPauseControl()).addTo(map);
 		var playControl = (new MyPlayControl()).addTo(map);
+		var pauseControl = (new MyPauseControl()).addTo(map);
 	});
 ```
 
