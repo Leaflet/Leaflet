@@ -1,7 +1,7 @@
-<img width="600" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" alt="Leaflet" />
+<img width="600" src="https://rawgit.com/Leaflet/Leaflet/main/src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
-Weighing just about 37 KB of gzipped JS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 39 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,
@@ -11,14 +11,14 @@ has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
 For more info, docs and tutorials, check out the [official website][].<br>
-For **Leaflet downloads** (including the built master version), check out the [download page][].
+For **Leaflet downloads** (including the built main version), check out the [download page][].
 
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
 Let's make the best mapping library that will ever exist,
 and push the limits of what's possible with online maps!
 
-[![Build Status](https://travis-ci.org/Leaflet/Leaflet.svg?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
+[![CI](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml/badge.svg)](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml)
 
  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
  [features]: http://leafletjs.com/#features
@@ -26,7 +26,7 @@ and push the limits of what's possible with online maps!
  [well-documented]: http://leafletjs.com/reference.html "Leaflet API reference"
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
  [hosted on GitHub]: http://github.com/Leaflet/Leaflet
- [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
+ [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
  [download page]: http://leafletjs.com/download.html
 

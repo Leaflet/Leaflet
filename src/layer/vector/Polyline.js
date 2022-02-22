@@ -114,7 +114,7 @@ export var Polyline = Path.extend({
 	},
 
 	// @method getCenter(): LatLng
-	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the polyline.
+	// Returns the center ([centroid](https://en.wikipedia.org/wiki/Centroid)) of the polyline.
 	getCenter: function () {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
@@ -160,7 +160,7 @@ export var Polyline = Path.extend({
 		return this._bounds;
 	},
 
-	// @method addLatLng(latlng: LatLng, latlngs? LatLng[]): this
+	// @method addLatLng(latlng: LatLng, latlngs?: LatLng[]): this
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
@@ -203,14 +203,24 @@ export var Polyline = Path.extend({
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
+		if (this._bounds.isValid() && pxBounds.isValid()) {
+			this._rawPxBounds = pxBounds;
+			this._updateBounds();
+		}
+	},
+
+	_updateBounds: function () {
 		var w = this._clickTolerance(),
 		    p = new Point(w, w);
 
-		if (this._bounds.isValid() && pxBounds.isValid()) {
-			pxBounds.min._subtract(p);
-			pxBounds.max._add(p);
-			this._pxBounds = pxBounds;
+		if (!this._rawPxBounds) {
+			return;
 		}
+
+		this._pxBounds = new Bounds([
+			this._rawPxBounds.min.subtract(p),
+			this._rawPxBounds.max.add(p)
+		]);
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates

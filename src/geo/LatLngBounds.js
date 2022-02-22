@@ -25,7 +25,7 @@ import {LatLng, toLatLng} from './LatLng';
  *
  * Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners _outside_ the [-180, 180] degrees longitude range.
  *
- * Note that `LatLngBounds` does not inherit from Leafet's `Class` object,
+ * Note that `LatLngBounds` does not inherit from Leaflet's `Class` object,
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
@@ -195,7 +195,7 @@ LatLngBounds.prototype = {
 		return latIntersects && lngIntersects;
 	},
 
-	// @method overlaps(otherBounds: Bounds): Boolean
+	// @method overlaps(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.
 	overlaps: function (bounds) {
 		bounds = toLatLngBounds(bounds);

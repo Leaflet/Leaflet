@@ -1,10 +1,13 @@
 describe('Polyline', function () {
+	var map;
 
-	var c = document.createElement('div');
-	c.style.width = '400px';
-	c.style.height = '400px';
-	var map = new L.Map(c);
-	map.setView(new L.LatLng(55.8, 37.6), 6);
+	before(function () {
+		map  = new L.Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+	});
+
+	after(function () {
+		map.remove();
+	});
 
 	describe("#initialize", function () {
 		it("doesn't overwrite the given latlng array", function () {
@@ -35,7 +38,6 @@ describe('Polyline', function () {
 		});
 
 		it("should accept an empty array", function () {
-
 			var polyline = new L.Polyline([]);
 
 			expect(polyline._latlngs).to.eql([]);
@@ -50,7 +52,6 @@ describe('Polyline', function () {
 	});
 
 	describe("#isEmpty", function () {
-
 		it('should return true for a polyline with no latlngs', function () {
 			var polyline = new L.Polyline([]);
 			expect(polyline.isEmpty()).to.be(true);
@@ -103,7 +104,6 @@ describe('Polyline', function () {
 	});
 
 	describe('#getCenter', function () {
-
 		it('should compute center of a big flat line on equator', function () {
 			var polyline = new L.Polyline([[0, 0], [0, 90]]).addTo(map);
 			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
@@ -111,42 +111,40 @@ describe('Polyline', function () {
 
 		it('should compute center of a big flat line close to the pole', function () {
 			var polyline = new L.Polyline([[80, 0], [80, 90]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([80, 45]), 1e-2);
+			expect(polyline.getCenter()).to.be.nearLatLng([80, 45], 1e-2);
 		});
 
 		it('should compute center of a big diagonal line', function () {
 			var polyline = new L.Polyline([[0, 0], [80, 80]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([57, 40]), 1);
+			expect(polyline.getCenter()).to.be.nearLatLng([57, 40], 1);
 		});
 
 		it('should compute center of a diagonal line close to the pole', function () {
 			var polyline = new L.Polyline([[70, 70], [84, 84]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([79, 77]), 1);
+			expect(polyline.getCenter()).to.be.nearLatLng([79, 77], 1);
 		});
 
 		it('should compute center of a big multiline', function () {
 			var polyline = new L.Polyline([[10, -80], [0, 0], [0, 10], [10, 90]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 5]), 1);
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 5], 1);
 		});
 
 		it('should compute center of a small flat line', function () {
 			var polyline = new L.Polyline([[0, 0], [0, 0.090]]).addTo(map);
 			map.setZoom(0);  // Make the line disappear in screen;
-			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 0]), 1e-2);
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 0], 1e-2);
 		});
 
 		it('throws error if not yet added to map', function () {
 			expect(function () {
 				var polyline = new L.Polyline([[0, 0], [0, 0.090]]);
-				var center = polyline.getCenter();
+				polyline.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
 	});
 
-
 	describe("#_defaultShape", function () {
-
 		it("should return latlngs when flat", function () {
 			var latLngs = [L.latLng([1, 2]), L.latLng([3, 4])];
 
@@ -169,7 +167,6 @@ describe('Polyline', function () {
 	});
 
 	describe("#addLatLng", function () {
-
 		it("should add latlng to latlngs", function () {
 			var latLngs = [
 				[1, 2],
@@ -218,7 +215,21 @@ describe('Polyline', function () {
 
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
 		});
-
 	});
 
+	describe("#setStyle", function () {
+		it("succeeds for empty Polyline already added to the map", function () {
+			var style = {
+				weight: 3
+			};
+			var polyline = L.polyline([]);
+
+			polyline.addTo(map);
+			polyline.setStyle(style);
+
+			for (var prop in style) {
+				expect(polyline.options[prop]).to.be(style[prop]);
+			}
+		});
+	});
 });

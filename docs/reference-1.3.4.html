@@ -16771,7 +16771,7 @@ bounds = L.latLngBounds(corner1, corner2);
 ]);
 </code></pre>
 <p>Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners <em>outside</em> the [-180, 180] degrees longitude range.
-Note that <a href="#latlngbounds"><code>LatLngBounds</code></a> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that <a href="#latlngbounds"><code>LatLngBounds</code></a> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -16960,7 +16960,7 @@ Negative values will retract the bounds.</p>
 <pre><code class="lang-js">map.panBy([200, 300]);
 map.panBy(L.point(200, 300));
 </code></pre>
-<p>Note that <code>Point</code> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+<p>Note that <code>Point</code> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -17162,7 +17162,7 @@ bounds = L.bounds(p1, p2);
 <p>All Leaflet methods that accept <a href="#bounds"><code>Bounds</code></a> objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
 <pre><code class="lang-js">otherBounds.intersects([[10, 10], [40, 60]]);
 </code></pre>
-<p>Note that <code>Bounds</code> does not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+<p>Note that <code>Bounds</code> does not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 which means new classes can&#39;t inherit from it, and new methods
 can&#39;t be added to it with the <code>include</code> function.</p>
 
@@ -20120,9 +20120,9 @@ properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='evented-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it. The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='evented-once'>
@@ -21443,7 +21443,7 @@ Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not a
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location.
 Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.
-Note that the projection instances do not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that the projection instances do not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 and can&#39;t be instantiated. Also, new classes can&#39;t inherit from them,
 and methods can&#39;t be added to them with the <code>include</code> function.</p>
 </td>
@@ -21696,7 +21696,7 @@ coordinates in other units for <a href="https://en.wikipedia.org/wiki/Web_Map_Se
 Leaflet defines the most usual CRSs by default. If you want to use a
 CRS not defined by default, take a look at the
 <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.
-Note that the CRS instances do not inherit from Leafet&#39;s <a href="#class"><code>Class</code></a> object,
+Note that the CRS instances do not inherit from Leaflet&#39;s <a href="#class"><code>Class</code></a> object,
 and can&#39;t be instantiated. Also, new classes can&#39;t inherit from them,
 and methods can&#39;t be added to them with the <code>include</code> function.</td>
 	</tr>
@@ -22381,17 +22381,17 @@ event parent.</td>
 	<tr id='mouseevent-latlng'>
 		<td><code><b>latlng</b>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td>The geographical point where the mouse event occured.</td>
+		<td>The geographical point where the mouse event occurred.</td>
 	</tr>
 	<tr id='mouseevent-layerpoint'>
 		<td><code><b>layerPoint</b>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map layer.</td>
 	</tr>
 	<tr id='mouseevent-containerpoint'>
 		<td><code><b>containerPoint</b>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map сontainer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.</td>
 	</tr>
 	<tr id='mouseevent-originalevent'>
 		<td><code><b>originalEvent</b>
@@ -23968,184 +23968,3 @@ var Leaflet = L.noConflict();
 <h2 id='version'>version</h2><p>A constant that represents the Leaflet version in use.</p>
 <pre><code class="lang-js">L.version; // contains &quot;1.0.0&quot; (or whatever version is currently in use)
 </code></pre>
-
-
-
-
-
-	<div class="footer">
-		<p>© 2017 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
-	</div>
-
-	</div>
-
-	<script src="http://leafletjs.com/docs/js/docs.js"></script>
-	<script>
-	hljs.configure({tabReplace: '    '});
-	hljs.initHighlightingOnLoad();
-
-	var elems = document.querySelectorAll('h2, h3, h4, tr');
-
-	for (var i = 0, len = elems.length; i < len; i++) {
-		var el = elems[i];
-
-		if (el.id) {
-			var anchor = document.createElement('a');
-			anchor.setAttribute('anchor', el.id);
-			if (!el.children.length) {
-				// For headers, insert the anchor before.
-				el.parentNode.insertBefore(anchor, el);
-			} else {
-				// For table rows, insert the anchor inside the first <td>
-				el.querySelector('td').appendChild(anchor);
-
-				// Clicking on the row (meaning "the link icon on the ::before)
-				// jumps to the item
-				el.parentNode.onclick = function(hash){
-					return function(ev) {
-						if (ev.offsetX < 0) {
-							window.location.hash = '#' + ev.target.parentNode.id;
-						}
-					};
-				}(el.id);
-			}
-		}
-	}
-
-	elems = document.querySelectorAll('div.accordion');
-	for (var i = 0, len = elems.length; i < len; i++) {
-		var el = elems[i];
-
-		el.querySelector('label').addEventListener('click', function(c){
-			return function() {
-				if (c.className === 'accordion expanded') {
-					c.className = 'accordion collapsed';
-				} else {
-					c.className = 'accordion expanded';
-				}
-			};
-		}(el));
-
-// 		el.className = 'accordion collapsed';
-// 		el.querySelector('.accordion-content').style.display = 'none';
-	}
-
-</script>
-<style>
-
-	h2 {
-		margin-top: 2em;
-	}
-
-	h3 {
-		margin-top: 1em;
-		margin-bottom: .5em;
-	}
-
-	div.accordion {
-		width: 100%;
-/* 		overflow: hidden; */
-	}
-
-	div.accordion-overflow {
-		width: 100%;
-		overflow: hidden;
-	}
-
-	label,
-	section > h4 {
-		display: block;
-		font-weight: 500;
-		margin: 1em 0 0.25em;
-	}
-
-	label {
-		cursor: pointer;
-	}
-
-	div.accordion > div.accordion-overflow > div.accordion-content {
-		max-height: 0;
-		display: none;
-	}
-
-	div.accordion.collapsed > div.accordion-overflow > div.accordion-content {
-		animation-duration: 0.4s;
-		animation-name: collapse;
-/* 		height: 0; */
-		max-height: 0;
-		display: block;
-		overflow: hidden;
-	}
-
-	div.accordion.expanded > div.accordion-overflow > div.accordion-content {
-		animation-duration: 0.4s;
-		animation-name: expand;
-/* 		height: auto; */
-		max-height: none;
-		display: block;
-	}
-
-	@keyframes collapse {
-		0% { max-height: 100vh; }
-		100% { max-height: 0; }
-	}
-
-	@keyframes expand {
-		0% { max-height: 0; }
-		100% { max-height: 100vh; }
-	}
-
-/*	div.accordion > div.accordion-content {
-		transition: max-height 0.4s ease-out 0s;
-	}*/
-
-	div.accordion.expanded > label > span.expander {
-		transform: rotate(90deg);
-	}
-
-	div.accordion > label > span.expander {
-		transition: transform 0.4s ease-out 0s;
-		display: inline-block;
-		font-size: 12px;
-	}
-
-
-	table {
-		margin-bottom: 0;
-	}
-
-/* 	Markdown renders some spurious <p>s inside the table cells */
-	td > p {
-		margin:0;
-	}
-
-/* 	This just looks bad (with the current grey headers for sections which Vlad doesn't really like, so might have to change this) */
-	section.collapsable > div.section-comments > p {
-		margin:0;
-	}
-
-	div.section-comments {
-		margin-bottom: 0.25em;
-	}
-
-/*	section.collapsable div.section-comments {
-		margin: 1em;
-		font-size: 12px;
-	}*/
-
-	section.collapsable pre {
-		margin:0;
-	}
-
-	section {
-		margin-left: 0.5em;
-	}
-
-	section h4, section.collapsable h4 {
-		margin-left: -0.5em;
-	}
-
-
-
-</style>
-</body></html>

@@ -40,9 +40,9 @@ export var Marker = Layer.extend({
 		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
 		title: '',
 
-		// @option alt: String = ''
+		// @option alt: String = 'Marker'
 		// Text for the `alt` attribute of the icon image (useful for accessibility).
-		alt: '',
+		alt: 'Marker',
 
 		// @option zIndexOffset: Number = 0
 		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
@@ -63,6 +63,10 @@ export var Marker = Layer.extend({
 		// @option pane: String = 'markerPane'
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
+
+		// @option shadowPane: String = 'shadowPane'
+		// `Map pane` where the markers shadow will be added.
+		shadowPane: 'shadowPane',
 
 		// @option bubblingMouseEvents: Boolean = false
 		// When `true`, a mouse event on this marker will trigger the same event on the map
@@ -156,6 +160,12 @@ export var Marker = Layer.extend({
 		return this.update();
 	},
 
+	// @method getIcon: Icon
+	// Returns the current icon used by the marker
+	getIcon: function () {
+		return this.options.icon;
+	},
+
 	// @method setIcon(icon: Icon): this
 	// Changes the marker icon.
 	setIcon: function (icon) {
@@ -215,6 +225,7 @@ export var Marker = Layer.extend({
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
+			icon.setAttribute('role', 'button');
 		}
 
 		this._icon = icon;
@@ -251,7 +262,7 @@ export var Marker = Layer.extend({
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			this.getPane(options.shadowPane).appendChild(this._shadow);
 		}
 	},
 
@@ -277,7 +288,10 @@ export var Marker = Layer.extend({
 	},
 
 	_setPos: function (pos) {
-		DomUtil.setPosition(this._icon, pos);
+
+		if (this._icon) {
+			DomUtil.setPosition(this._icon, pos);
+		}
 
 		if (this._shadow) {
 			DomUtil.setPosition(this._shadow, pos);
@@ -289,7 +303,9 @@ export var Marker = Layer.extend({
 	},
 
 	_updateZIndex: function (offset) {
-		this._icon.style.zIndex = this._zIndex + offset;
+		if (this._icon) {
+			this._icon.style.zIndex = this._zIndex + offset;
+		}
 	},
 
 	_animateZoom: function (opt) {
@@ -335,7 +351,9 @@ export var Marker = Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		DomUtil.setOpacity(this._icon, opacity);
+		if (this._icon) {
+			DomUtil.setOpacity(this._icon, opacity);
+		}
 
 		if (this._shadow) {
 			DomUtil.setOpacity(this._shadow, opacity);

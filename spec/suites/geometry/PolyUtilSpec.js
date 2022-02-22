@@ -1,5 +1,4 @@
 describe('PolyUtil', function () {
-
 	describe('#clipPolygon', function () {
 		it('clips polygon by bounds', function () {
 			var bounds = L.bounds([0, 0], [10, 10]);

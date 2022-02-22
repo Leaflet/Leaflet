@@ -9,9 +9,15 @@ html, body, input, select, button, textarea, table {
 	text-rendering: optimizeLegibility;
 }
 
+html {
+	scroll-padding-top: 5em;
+	overflow: auto;
+}
+
 body {
 	line-height: 1.5;
-	color: #333;
+	color: black;
+	background-color: white;
 }
 
 p {
@@ -19,7 +25,7 @@ p {
 }
 
 a, a span.hljs-string {
-	color: #1EB300;
+	color: #199900;
 }
 
 a:hover, a:focus {
@@ -27,8 +33,8 @@ a:hover, a:focus {
 }
 
 hr {
-	background: #ddd;
-	color: #ddd;
+	background: #ccc;
+	color: #ccc;
 	height: 1px;
 	margin: 0 0 1.4em;
 	border: none;
@@ -87,6 +93,14 @@ iframe {
 	border: none;
 }
 
+img {
+	height: auto;
+}
+
+img,
+video {
+	max-width: 100%;
+}
 
 /* headings */
 
@@ -174,12 +188,12 @@ h1 a:hover, h1 a:focus {
 	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
 }
 
-h3.tagline {
+p.tagline {
 	font-weight: 300;
 	font-size: 1.5em;
 	margin-top: -.75em;
 	padding: 0;
-	color: #777;
+	color: #333;
 	text-align: center;
 	margin-bottom: 30px;
 }
@@ -191,7 +205,7 @@ h3.tagline {
 	text-align: center;
 	font-size: 1.25em;
 	margin-bottom: 40px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ccc;
 	padding-bottom: 40px;
 }
 
@@ -214,7 +228,7 @@ h3.tagline {
 
 .ext-link {
 	display: block;
-	opacity: 0.5;
+	opacity: 0.7;
 	-webkit-animation: fadein 1s;
 	animation: fadein 1s;
 }
@@ -223,11 +237,11 @@ h3.tagline {
 }
 @-webkit-keyframes fadein {
 	from { opacity: 0; }
-	to   { opacity: 0.5; }
+	to   { opacity: 0.7; }
 }
 @keyframes fadein {
 	from { opacity: 0; }
-	to   { opacity: 0.5; }
+	to   { opacity: 0.7; }
 }
 
 
@@ -256,7 +270,7 @@ h3.tagline {
 }
 
 .quiet {
-	color: #999;
+	color: #888;
 }
 
 
@@ -271,20 +285,20 @@ h3.tagline {
 .usedby-title {
 	text-align: center;
 	background-color: #f5f5f5;
-	padding: 1.5em 1em 0.5em;
+	padding: 1em 1em 0.5em;
 	margin: 0;
 }
 
 .usedby {
 	margin: 0 0 3em;
 	text-align: center;
-	padding: 0 3em 2em;
+	padding: 0 3em 0;
 	background-color: #f5f5f5;
 }
 
 .logo {
 	display: inline-block;
-	opacity: 0.6;
+	opacity: 0.8;
 	height: 32px;
 	overflow: hidden;
 	text-indent: -9999px;
@@ -392,6 +406,12 @@ h3.tagline {
 	background-size: 106px;
 }
 
+.logo-openstreetmap {
+	background-position: 50% -796px;
+	width: 160px;
+	height: 56px;
+}
+
 .features {
 	-webkit-column-count: 3;
 	-moz-column-count: 3;
@@ -481,6 +501,10 @@ table.plugins td:first-child a {
 	color: #333;
 	border-bottom: 3px solid #555;
 	transition: border-color .25s ease;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: white;
 }
 .api-page #toc ~ h2:target {
 	border-color: #1EB300;
@@ -517,6 +541,7 @@ table.plugins td:first-child a {
 
 #toc-copy {
 	display: none;
+	z-index: 1;
 }
 
 #toc-copy div {
@@ -818,6 +843,18 @@ tr:target {
 	margin-top: 14px;
 }
 
+.api-page h2[id]:after {
+	content: '';
+	margin-left: -32px;
+	margin-top: 19px;
+	width: 23px;
+	height: 23px;
+	background-color: #fff;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
 .api-page tr[id] td:first-child:before {
 	opacity: 0;
 }
@@ -987,7 +1024,7 @@ tr:target {
 		margin: 1em 0;
 	}
 
-	h3.tagline {
+	p.tagline {
 		font-size: 1.05em;
 		margin: 0 1em;
 	}
@@ -1074,10 +1111,6 @@ tr:target {
 
 iframe[src*='youtube.com'] {
 	max-width: 100% !important;
-}
-
-#disqus_thread {
-	margin-top: 3em;
 }
 
 .no-break {

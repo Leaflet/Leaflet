@@ -1,8 +1,6 @@
-var packageDef = require('../package.json');
-
 function buildDocs() {
 
-	console.log('Building Leaflet documentation with Leafdoc');
+	console.log('Building Leaflet documentation with Leafdoc ...');
 
 	var LeafDoc = require('leafdoc');
 	var doc = new LeafDoc({
@@ -13,7 +11,7 @@ function buildDocs() {
 
 	// Note to Vladimir: Iván's never gonna uncomment the following line. He's
 	// too proud of the little leaves around the code.
-	//doc.setLeadingChar('@');
+	// doc.setLeadingChar('@');
 
 	// Leaflet uses a couple of non-standard documentable things. They are not
 	// important enough to be classes/namespaces of their own, and should
@@ -27,10 +25,12 @@ function buildDocs() {
 	doc.addFile('build/docs-misc.leafdoc', false);
 
 	var out = doc.outputStr();
+	var path = 'docs/reference.html';
 
 	var fs = require('fs');
 
-	fs.writeFileSync('dist/reference-' + packageDef.version + '.html', out);
+	fs.writeFileSync(path, out);
+	console.log('Successfully built ' + path);
 }
 
 if (require.main === module) {

@@ -21,7 +21,7 @@ A new feature of **Leaflet 1.0.0** (not present in 0.7.x) is custom map panes, w
 
 ## The default is not always right
 
-In some particular cases, the default order is not the right one for the map. We can demonstrate this with the [Carto basemaps](https://cartodb.com/basemaps/) and labels:
+In some particular cases, the default order is not the right one for the map. We can demonstrate this with the [Carto basemaps](https://carto.com/location-data-services/basemaps/) and labels:
 
 
 <style>
@@ -79,11 +79,11 @@ One of the problems of having image tiles on top of other map layers is that the
 With the pane now ready, we can add the layers, paying attention to use the `pane` option on the labels tiles:
 
 
-    var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB'
     }).addTo(map);
 
-    var positronLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+    var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB',
             pane: 'labels'
     }).addTo(map);
