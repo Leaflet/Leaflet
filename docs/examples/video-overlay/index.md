@@ -98,7 +98,8 @@ This allows us to build custom interfaces. For example, we can build a small sub
 		var MyPlayControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '▶️';
+				button.title = 'Play';
+				button.innerHTML = '<span aria-hidden="true">▶️</span>';
 				L.DomEvent.on(button, 'click', function () {
 					videoOverlay.getElement().play();
 				});
@@ -108,7 +109,8 @@ This allows us to build custom interfaces. For example, we can build a small sub
 		var MyPauseControl = L.Control.extend({
 			onAdd: function() {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '⏸';
+				button.title = 'Pause';
+				button.innerHTML = '<span aria-hidden="true">⏸</span>';
 				L.DomEvent.on(button, 'click', function () {
 					videoOverlay.getElement().pause();
 				});

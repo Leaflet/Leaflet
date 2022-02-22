@@ -33,7 +33,8 @@ title: Video Overlay Tutorial
 		var MyPlayControl = L.Control.extend({
 			onAdd: function () {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '▶️';
+				button.title = 'Play';
+				button.innerHTML = '<span aria-hidden="true">▶️</span>';
 				L.DomEvent.on(button, 'click', function () {
 					overlay.getElement().play();
 				});
@@ -43,7 +44,8 @@ title: Video Overlay Tutorial
 		var MyPauseControl = L.Control.extend({
 			onAdd: function () {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '⏸';
+				button.title = 'Pause';
+				button.innerHTML = '<span aria-hidden="true">⏸</span>';
 				L.DomEvent.on(button, 'click', function () {
 					overlay.getElement().pause();
 				});
