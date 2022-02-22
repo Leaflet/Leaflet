@@ -1788,7 +1788,7 @@ var map = L.map('map', {
 
 <h3>Usage example</h3>
 
-<pre><code class="javascript">L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);</code></pre>
+<pre><code class="javascript">L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);</code></pre>
 
 <h3>Creation</h3>
 
@@ -4410,7 +4410,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-layers">Control.Layers</h2>
 
-<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control">Control</a>.</p>
+<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="https://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control">Control</a>.</p>
 
 <pre><code>var baseLayers = {
 	"Mapbox": mapbox,
@@ -6131,7 +6131,7 @@ map.addLayer(new MyCustomLayer(latlng));
 		</code></td>
 
 		<td><code>HTMLElement</code></td>
-		<td>Should contain code that creates all the neccessary DOM elements for the control, adds listeners on relevant map events, and returns the element containing the control. Called on <code>map.addControl(control)</code> or <code>control.addTo(map)</code>.</td>
+		<td>Should contain code that creates all the necessary DOM elements for the control, adds listeners on relevant map events, and returns the element containing the control. Called on <code>map.addControl(control)</code> or <code>control.addTo(map)</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>onRemove</b>(

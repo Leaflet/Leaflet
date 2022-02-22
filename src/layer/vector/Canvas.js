@@ -1,7 +1,7 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import {Bounds} from '../../geometry/Bounds';
 
@@ -13,7 +13,7 @@ import {Bounds} from '../../geometry/Bounds';
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
  *
- * Due to [technical limitations](http://caniuse.com/#search=canvas), Canvas is not
+ * Due to [technical limitations](https://caniuse.com/canvas), Canvas is not
  * available in all web browsers, notably IE8, and overlapping geometries might
  * not display properly in some edge cases.
  *
@@ -38,6 +38,15 @@ import {Bounds} from '../../geometry/Bounds';
  */
 
 export var Canvas = Renderer.extend({
+
+	// @section
+	// @aka Canvas options
+	options: {
+		// @option tolerance: Number = 0
+		// How much to extend the click tolerance around a path/object on the map.
+		tolerance: 0
+	},
+
 	getEvents: function () {
 		var events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
@@ -60,14 +69,16 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', Util.throttle(this._onMouseMove, 32, this), this);
+		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
+		container['_leaflet_disable_events'] = true;
 
 		this._ctx = container.getContext('2d');
 	},
 
 	_destroyContainer: function () {
+		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
 		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
@@ -88,8 +99,6 @@ export var Canvas = Renderer.extend({
 
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
-
-		this._drawnLayers = {};
 
 		Renderer.prototype._update.call(this);
 
@@ -162,7 +171,7 @@ export var Canvas = Renderer.extend({
 
 		delete layer._order;
 
-		delete this._layers[L.stamp(layer)];
+		delete this._layers[Util.stamp(layer)];
 
 		this._requestRedraw(layer);
 	},
@@ -184,14 +193,20 @@ export var Canvas = Renderer.extend({
 	},
 
 	_updateDashArray: function (layer) {
-		if (layer.options.dashArray) {
-			var parts = layer.options.dashArray.split(','),
+		if (typeof layer.options.dashArray === 'string') {
+			var parts = layer.options.dashArray.split(/[, ]+/),
 			    dashArray = [],
+			    dashValue,
 			    i;
 			for (i = 0; i < parts.length; i++) {
-				dashArray.push(Number(parts[i]));
+				dashValue = Number(parts[i]);
+				// Ignore dash array containing invalid lengths
+				if (isNaN(dashValue)) { return; }
+				dashArray.push(dashValue);
 			}
 			layer.options._dashArray = dashArray;
+		} else {
+			layer.options._dashArray = layer.options.dashArray;
 		}
 	},
 
@@ -231,7 +246,10 @@ export var Canvas = Renderer.extend({
 			var size = bounds.getSize();
 			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
 		} else {
+			this._ctx.save();
+			this._ctx.setTransform(1, 0, 0, 1, 0, 0);
 			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
+			this._ctx.restore();
 		}
 	},
 
@@ -269,8 +287,6 @@ export var Canvas = Renderer.extend({
 
 		if (!len) { return; }
 
-		this._drawnLayers[layer._leaflet_id] = layer;
-
 		ctx.beginPath();
 
 		for (i = 0; i < len; i++) {
@@ -296,8 +312,6 @@ export var Canvas = Renderer.extend({
 		    ctx = this._ctx,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
-
-		this._drawnLayers[layer._leaflet_id] = layer;
 
 		if (s !== 1) {
 			ctx.save();
@@ -344,14 +358,13 @@ export var Canvas = Renderer.extend({
 
 		for (var order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
-			if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
-				clickedLayer = layer;
+			if (layer.options.interactive && layer._containsPoint(point)) {
+				if (!(e.type === 'click' || e.type === 'preclick') || !this._map._draggableMoved(layer)) {
+					clickedLayer = layer;
+				}
 			}
 		}
-		if (clickedLayer)  {
-			DomEvent.fakeStop(e);
-			this._fireEvent([clickedLayer], e);
-		}
+		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	},
 
 	_onMouseMove: function (e) {
@@ -369,10 +382,15 @@ export var Canvas = Renderer.extend({
 			DomUtil.removeClass(this._container, 'leaflet-interactive');
 			this._fireEvent([layer], e, 'mouseout');
 			this._hoveredLayer = null;
+			this._mouseHoverThrottled = false;
 		}
 	},
 
 	_handleMouseHover: function (e, point) {
+		if (this._mouseHoverThrottled) {
+			return;
+		}
+
 		var layer, candidateHoveredLayer;
 
 		for (var order = this._drawFirst; order; order = order.next) {
@@ -392,9 +410,12 @@ export var Canvas = Renderer.extend({
 			}
 		}
 
-		if (this._hoveredLayer) {
-			this._fireEvent([this._hoveredLayer], e);
-		}
+		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
+
+		this._mouseHoverThrottled = true;
+		setTimeout(Util.bind(function () {
+			this._mouseHoverThrottled = false;
+		}, this), 32);
 	},
 
 	_fireEvent: function (layers, e, type) {
@@ -403,6 +424,9 @@ export var Canvas = Renderer.extend({
 
 	_bringToFront: function (layer) {
 		var order = layer._order;
+
+		if (!order) { return; }
+
 		var next = order.next;
 		var prev = order.prev;
 
@@ -431,6 +455,9 @@ export var Canvas = Renderer.extend({
 
 	_bringToBack: function (layer) {
 		var order = layer._order;
+
+		if (!order) { return; }
+
 		var next = order.next;
 		var prev = order.prev;
 

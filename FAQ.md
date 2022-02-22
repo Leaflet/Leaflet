@@ -13,7 +13,7 @@ This is a collection of answers to the most frequently asked questions about Lea
 #### The map is wrong in my neighborhood, could you fix it?
 
 Nope, but you can.
-The map you see on Leaflet examples is based on [OpenStreetMap](http://openstreetmap.org),
+The map you see on Leaflet examples is based on [OpenStreetMap](https://www.openstreetmap.org/),
 a free editable map of the world.
 Signing up and editing the map there is easy,
 and the changes will be reflected on the map in a few minutes.
@@ -22,7 +22,7 @@ and the changes will be reflected on the map in a few minutes.
 
 Leaflet is provider-agnostic, meaning you can use any map provider as long as you conform to its terms of use.
 You can roll your own tiles as well.
-[OpenStreetMap](http://openstreetmap.org) is the most popular data source among different tile providers,
+[OpenStreetMap](https://www.openstreetmap.org/) is the most popular data source among different tile providers,
 but there are providers that use other sources.
 
 Check out [this example](http://leaflet-extras.github.io/leaflet-providers/preview/)
@@ -57,7 +57,7 @@ Check out [this excellent guide](http://switch2osm.org/serving-tiles/).
 
 There's a number of services that allow you to do this easily,
 notably [MapBox](https://www.mapbox.com/), [CartoDB](http://cartodb.com/) and [GIS Cloud](http://www.giscloud.com/).
-If you want to make tiles on your own, probably the easiest way is using [TileMill](https://www.mapbox.com/tilemill/).
+If you want to make tiles on your own, probably the easiest way is using [TileMill](https://tilemill-project.github.io/tilemill/).
 TileMill can export your map as a single [.mbtiles](https://www.mapbox.com/developers/mbtiles/) file, which can be copied to a webserver and accessed by Leaflet with [a small PHP script](https://github.com/infostreams/mbtiles-php).
 Alternatively, you can [extract](https://github.com/mapbox/mbutil) the tiled images from the .mbtiles database and place them directly on your webserver with absolutely no server-side dependencies.
 
@@ -75,7 +75,7 @@ Choice is yours.
 
 #### I'm building a commercial app that I plan to sell. Can I use Leaflet in it?
 
-You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/master/LICENSE).
+You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/main/LICENSE).
 Just make sure to attribute the use of the library somewhere in the app UI or the distribution
 (e.g. keep the Leaflet link on the map, or mention the use on the About page or a Readme file, etc.) and you'll be fine.
 
@@ -132,10 +132,8 @@ Leaflet [has a nice plugin](https://github.com/danzel/Leaflet.utfgrid) for it).
 #### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
 
 You can download the built versions using links from the [download page](http://leafletjs.com/download.html).
-It even includes the latest build of the development version (`master` branch),
+It even includes the latest build of the development version (`main` branch),
 updated automatically on each commit to the repo.
 
 We removed the built versions from the repository because it's a chore to build and commit them manually on each change,
 and it often complicates merging branches and managing contributions.
-
-There's a common complaint that Leaflet can't be used with [Bower](http://bower.io/) because of that, but we'll resolve the issue soon.

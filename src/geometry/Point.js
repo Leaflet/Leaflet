@@ -19,7 +19,7 @@ import {isArray, formatNum} from '../core/Util';
  * map.panBy(L.point(200, 300));
  * ```
  *
- * Note that `Point` does not inherit from Leafet's `Class` object,
+ * Note that `Point` does not inherit from Leaflet's `Class` object,
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
@@ -145,7 +145,7 @@ Point.prototype = {
 		return this;
 	},
 
-	// @method ceil(): Point
+	// @method trunc(): Point
 	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
 	trunc: function () {
 		return this.clone()._trunc();

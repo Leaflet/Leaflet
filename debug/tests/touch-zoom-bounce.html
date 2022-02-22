@@ -11,7 +11,7 @@
 
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 
 	<script src="../../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
 	<meta charset="utf-8">
@@ -55,7 +55,7 @@
 	//In any map, set minZoom and/or maxZoom, plus bounceAtZoomLimits to false.
 
 	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 	}).addTo(map);
 
 	var marker = L.marker(myCenter);

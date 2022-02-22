@@ -11,19 +11,20 @@ title: KittenLayer
 	});
 
 	L.TileLayer.Kitten = L.TileLayer.extend({
-		getTileUrl: function(coords) {
-			var i = Math.ceil( Math.random() * 4 );
-			return "http://placekitten.com/256/256?image=" + i;
+		getTileUrl: function (coords) {
+			var i = Math.ceil(Math.random() * 4);
+			return 'https://placekitten.com/256/256?image=' + i;
 		},
-        getAttribution: function() {
-            return "<a href='http://placekitten.com/attribution.html'>PlaceKitten</a>"
-        }
+		getAttribution: function () {
+			return '<a href="https://placekitten.com/attribution.html">PlaceKitten</a>';
+		}
 	});
 
-	L.tileLayer.kitten = function() {
+	L.tileLayer.kitten = function () {
 		return new L.TileLayer.Kitten();
-	}
+	};
 
-	map.addLayer( L.tileLayer.kitten() );
+	var kittenTiles = L.tileLayer.kitten();
+	map.addLayer(kittenTiles);
 	
 </script>

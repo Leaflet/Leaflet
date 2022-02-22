@@ -5,8 +5,8 @@ title: Custom Icons Tutorial
 <script>
 	var map = L.map('map').setView([51.5, -0.09], 13);
 
-	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	var LeafIcon = L.Icon.extend({
@@ -22,6 +22,6 @@ title: Custom Icons Tutorial
 
 	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 
-	L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
+	var mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
 </script>

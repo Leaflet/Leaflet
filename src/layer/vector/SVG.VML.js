@@ -14,17 +14,18 @@ export var vmlCreate = (function () {
 			return document.createElement('<lvml:' + name + ' class="lvml">');
 		};
 	} catch (e) {
-		return function (name) {
-			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
-		};
+		// Do not return fn from catch block so `e` can be garbage collected
+		// See https://github.com/Leaflet/Leaflet/pull/7279
 	}
+	return function (name) {
+		return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+	};
 })();
 
 
 /*
  * @class SVG
  *
- * Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
  *
  * VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
  * with old versions of Internet Explorer.

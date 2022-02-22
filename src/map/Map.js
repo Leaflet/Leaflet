@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
@@ -126,6 +126,13 @@ export var Map = Evented.extend({
 	initialize: function (id, options) { // (HTMLElement or String, Object)
 		options = Util.setOptions(this, options);
 
+		// Make sure to assign internal flags at the beginning,
+		// to avoid inconsistent state in some edge cases.
+		this._handlers = [];
+		this._layers = {};
+		this._zoomBoundLayers = {};
+		this._sizeChanged = true;
+
 		this._initContainer(id);
 		this._initLayout();
 
@@ -145,11 +152,6 @@ export var Map = Evented.extend({
 		if (options.center && options.zoom !== undefined) {
 			this.setView(toLatLng(options.center), options.zoom, {reset: true});
 		}
-
-		this._handlers = [];
-		this._layers = {};
-		this._zoomBoundLayers = {};
-		this._sizeChanged = true;
 
 		this.callInitHooks();
 
@@ -439,7 +441,7 @@ export var Map = Evented.extend({
 		return this.flyTo(target.center, target.zoom, options);
 	},
 
-	// @method setMaxBounds(bounds: Bounds): this
+	// @method setMaxBounds(bounds: LatLngBounds): this
 	// Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
@@ -506,6 +508,34 @@ export var Map = Evented.extend({
 		}
 
 		this._enforcingBounds = false;
+		return this;
+	},
+
+	// @method panInside(latlng: LatLng, options?: padding options): this
+	// Pans the map the minimum amount to make the `latlng` visible. Use
+	// padding options to fit the display to more restricted bounds.
+	// If `latlng` is already within the (optionally padded) display bounds,
+	// the map will not be panned.
+	panInside: function (latlng, options) {
+		options = options || {};
+
+		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
+		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
+		    pixelCenter = this.project(this.getCenter()),
+		    pixelPoint = this.project(latlng),
+		    pixelBounds = this.getPixelBounds(),
+		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
+		    paddedSize = paddedBounds.getSize();
+
+		if (!paddedBounds.contains(pixelPoint)) {
+			this._enforcingBounds = true;
+			var centerOffset = pixelPoint.subtract(paddedBounds.getCenter());
+			var offset = paddedBounds.extend(pixelPoint).getSize().subtract(paddedSize);
+			pixelCenter.x += centerOffset.x < 0 ? -offset.x : offset.x;
+			pixelCenter.y += centerOffset.y < 0 ? -offset.y : offset.y;
+			this.panTo(this.unproject(pixelCenter), options);
+			this._enforcingBounds = false;
+		}
 		return this;
 	},
 
@@ -634,6 +664,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationError: function (error) {
+		if (!this._container._leaflet_id) { return; }
+
 		var c = error.code,
 		    message = error.message ||
 		            (c === 1 ? 'permission denied' :
@@ -653,10 +685,12 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationResponse: function (pos) {
+		if (!this._container._leaflet_id) { return; }
+
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),
-		    bounds = latlng.toBounds(pos.coords.accuracy),
+		    bounds = latlng.toBounds(pos.coords.accuracy * 2),
 		    options = this._locateOptions;
 
 		if (options.setView) {
@@ -705,6 +739,7 @@ export var Map = Evented.extend({
 	remove: function () {
 
 		this._initEvents(true);
+		if (this.options.maxBounds) { this.off('moveend', this._panInsideMaxBounds); }
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
@@ -731,6 +766,10 @@ export var Map = Evented.extend({
 
 		if (this._clearControlPos) {
 			this._clearControlPos();
+		}
+		if (this._resizeRequest) {
+			Util.cancelAnimFrame(this._resizeRequest);
+			this._resizeRequest = null;
 		}
 
 		this._clearHandlers();
@@ -816,7 +855,7 @@ export var Map = Evented.extend({
 			this.options.maxZoom;
 	},
 
-	// @method getBoundsZoom(bounds: LatLngBounds, inside?: Boolean): Number
+	// @method getBoundsZoom(bounds: LatLngBounds, inside?: Boolean, padding?: Point): Number
 	// Returns the maximum zoom level on which the given bounds fit to the map
 	// view in its entirety. If `inside` (optional) is set to `true`, the method
 	// instead returns the minimum zoom level on which the map view fits into
@@ -1106,10 +1145,10 @@ export var Map = Evented.extend({
 		this.createPane('tilePane');
 		// @pane overlayPane: HTMLElement = 400
 		// Pane for vectors (`Path`s, like `Polyline`s and `Polygon`s), `ImageOverlay`s and `VideoOverlay`s
-		this.createPane('shadowPane');
+		this.createPane('overlayPane');
 		// @pane shadowPane: HTMLElement = 500
 		// Pane for overlay shadows (e.g. `Marker` shadows)
-		this.createPane('overlayPane');
+		this.createPane('shadowPane');
 		// @pane markerPane: HTMLElement = 600
 		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
@@ -1172,7 +1211,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	_move: function (center, zoom, data) {
+	_move: function (center, zoom, data, supressEvent) {
 		if (zoom === undefined) {
 			zoom = this._zoom;
 		}
@@ -1182,29 +1221,34 @@ export var Map = Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		// @event zoom: Event
-		// Fired repeatedly during any change in zoom level, including zoom
-		// and fly animations.
-		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+		if (!supressEvent) {
+			// @event zoom: Event
+			// Fired repeatedly during any change in zoom level,
+			// including zoom and fly animations.
+			if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+				this.fire('zoom', data);
+			}
+
+			// @event move: Event
+			// Fired repeatedly during any movement of the map,
+			// including pan and fly animations.
+			this.fire('move', data);
+		} else if (data && data.pinch) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
-
-		// @event move: Event
-		// Fired repeatedly during any movement of the map, including pan and
-		// fly animations.
-		return this.fire('move', data);
+		return this;
 	},
 
 	_moveEnd: function (zoomChanged) {
 		// @event zoomend: Event
-		// Fired when the map has changed, after any animations.
+		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
 
 		// @event moveend: Event
-		// Fired when the center of the map stops changing (e.g. user stopped
-		// dragging the map).
+		// Fired when the center of the map stops changing
+		// (e.g. user stopped dragging the map or after non-centered zoom).
 		return this.fire('moveend');
 	},
 
@@ -1265,9 +1309,15 @@ export var Map = Evented.extend({
 		// this event. Also fired on mobile when the user holds a single touch
 		// for a second (also called long press).
 		// @event keypress: KeyboardEvent
-		// Fired when the user presses a key from the keyboard while the map is focused.
+		// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
+		// @event keydown: KeyboardEvent
+		// Fired when the user presses a key from the keyboard while the map is focused. Unlike the `keypress` event,
+		// the `keydown` event is fired for keys that produce a character value and for keys
+		// that do not produce a character value.
+		// @event keyup: KeyboardEvent
+		// Fired when the user releases a key from the keyboard while the map is focused.
 		onOff(this._container, 'click dblclick mousedown mouseup ' +
-			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
+			'mouseover mouseout mousemove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			onOff(window, 'resize', this._onResize, this);
@@ -1293,7 +1343,7 @@ export var Map = Evented.extend({
 		var pos = this._getMapPanePos();
 		if (Math.max(Math.abs(pos.x), Math.abs(pos.y)) >= this.options.transform3DLimit) {
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=1203873 but Webkit also have
-			// a pixel offset on very high values, see: http://jsfiddle.net/dg6r5hhb/
+			// a pixel offset on very high values, see: https://jsfiddle.net/dg6r5hhb/
 			this._resetView(this.getCenter(), this.getZoom());
 		}
 	},
@@ -1307,7 +1357,7 @@ export var Map = Evented.extend({
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
-			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+			if (target && (type === 'click' || type === 'preclick') && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;
@@ -1320,20 +1370,30 @@ export var Map = Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && this.listens(type, true)) {
 			targets = [this];
 		}
 		return targets;
 	},
 
+	_isClickDisabled: function (el) {
+		while (el !== this._container) {
+			if (el['_leaflet_disable_click']) { return true; }
+			el = el.parentNode;
+		}
+	},
+
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || DomEvent.skipped(e)) { return; }
+		var el = (e.target || e.srcElement);
+		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+			return;
+		}
 
 		var type = e.type;
 
-		if (type === 'mousedown' || type === 'keypress') {
+		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			DomUtil.preventOutline(e.target || e.srcElement);
+			DomUtil.preventOutline(el);
 		}
 
 		this._fireDOMEvent(e, type);
@@ -1341,7 +1401,7 @@ export var Map = Evented.extend({
 
 	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
-	_fireDOMEvent: function (e, type, targets) {
+	_fireDOMEvent: function (e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
@@ -1351,26 +1411,34 @@ export var Map = Evented.extend({
 			// handlers start running).
 			var synth = Util.extend({}, e);
 			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, targets);
+			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}
 
-		if (e._stopped) { return; }
-
 		// Find the layer the event is propagating from and its parents.
-		targets = (targets || []).concat(this._findEventTargets(e, type));
+		var targets = this._findEventTargets(e, type);
+
+		if (canvasTargets) {
+			var filtered = []; // pick only targets with listeners
+			for (var i = 0; i < canvasTargets.length; i++) {
+				if (canvasTargets[i].listens(type, true)) {
+					filtered.push(canvasTargets[i]);
+				}
+			}
+			targets = filtered.concat(targets);
+		}
 
 		if (!targets.length) { return; }
 
-		var target = targets[0];
-		if (type === 'contextmenu' && target.listens(type, true)) {
+		if (type === 'contextmenu') {
 			DomEvent.preventDefault(e);
 		}
 
+		var target = targets[0];
 		var data = {
 			originalEvent: e
 		};
 
-		if (e.type !== 'keypress') {
+		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
 			var isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
@@ -1378,7 +1446,7 @@ export var Map = Evented.extend({
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
 
-		for (var i = 0; i < targets.length; i++) {
+		for (i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
 				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
@@ -1559,18 +1627,21 @@ export var Map = Evented.extend({
 			}
 		}, this);
 
-		this.on('load moveend', function () {
-			var c = this.getCenter(),
-			    z = this.getZoom();
-			DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
-		}, this);
+		this.on('load moveend', this._animMoveEnd, this);
 
 		this._on('unload', this._destroyAnimProxy, this);
 	},
 
 	_destroyAnimProxy: function () {
 		DomUtil.remove(this._proxy);
+		this.off('load moveend', this._animMoveEnd, this);
 		delete this._proxy;
+	},
+
+	_animMoveEnd: function () {
+		var c = this.getCenter(),
+		    z = this.getZoom();
+		DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
 	},
 
 	_catchTransitionEnd: function (e) {
@@ -1622,13 +1693,20 @@ export var Map = Evented.extend({
 			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
 
+		// @section Other Events
 		// @event zoomanim: ZoomAnimEvent
-		// Fired on every frame of a zoom animation
+		// Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
 			noUpdate: noUpdate
 		});
+
+		if (!this._tempFireZoomEvent) {
+			this._tempFireZoomEvent = this._zoom !== this._animateToZoom;
+		}
+
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
 		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
@@ -1643,7 +1721,14 @@ export var Map = Evented.extend({
 
 		this._animatingZoom = false;
 
-		this._move(this._animateToCenter, this._animateToZoom);
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
+
+		if (this._tempFireZoomEvent) {
+			this.fire('zoom');
+		}
+		delete this._tempFireZoomEvent;
+
+		this.fire('move');
 
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
 		Util.requestAnimFrame(function () {

@@ -15,7 +15,7 @@ import * as DomUtil from '../dom/DomUtil';
 
 export var Control = Class.extend({
 	// @section
-	// @aka Control options
+	// @aka Control Options
 	options: {
 		// @option position: String = 'topright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
@@ -79,6 +79,8 @@ export var Control = Class.extend({
 			corner.appendChild(container);
 		}
 
+		this._map.on('unload', this.remove, this);
+
 		return this;
 	},
 
@@ -95,6 +97,7 @@ export var Control = Class.extend({
 			this.onRemove(this._map);
 		}
 
+		this._map.off('unload', this.remove, this);
 		this._map = null;
 
 		return this;

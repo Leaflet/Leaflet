@@ -1,6 +1,5 @@
 describe("Marker", function () {
 	var map,
-	    spy,
 	    div,
 	    icon1,
 	    icon2;
@@ -19,6 +18,7 @@ describe("Marker", function () {
 	});
 
 	afterEach(function () {
+		map.remove();
 		document.body.removeChild(div);
 	});
 
@@ -139,7 +139,6 @@ describe("Marker", function () {
 			map.addLayer(marker);
 
 			marker.setIcon(new L.DivIcon());
-			var afterIcon = marker._icon;
 
 			expect(marker._icon.innerHTML).to.not.contain('Inner1Text');
 		});
@@ -191,12 +190,12 @@ describe("Marker", function () {
 			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
 		});
 
-		it("sets the alt attribute to an empty string when no alt text is passed", function () {
+		it("sets the alt attribute to a default value when no alt text is passed", function () {
 			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(true);
-			expect(icon.alt).to.be('');
+			expect(icon.alt).to.be('Marker');
 		});
 
 		it("doesn't set the alt attribute for DivIcons", function () {
@@ -328,6 +327,5 @@ describe("Marker", function () {
 			});
 			happen.mousemove(marker._icon);
 		});
-
 	});
 });

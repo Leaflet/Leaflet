@@ -11,30 +11,28 @@ title: Zoom Levels Tutorial
 		zoomDelta: 0.25
 	});
 
-	var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
 	var ZoomViewer = L.Control.extend({
-		onAdd: function(){
-
-			var container= L.DomUtil.create('div');
+		onAdd: function () {
+			var container = L.DomUtil.create('div');
 			var gauge = L.DomUtil.create('div');
 			container.style.width = '200px';
 			container.style.background = 'rgba(255,255,255,0.5)';
 			container.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function(ev){
+			map.on('zoomstart zoom zoomend', function (ev) {
 				gauge.innerHTML = 'Zoom level: ' + map.getZoom();
-			})
+			});
 			container.appendChild(gauge);
-
 			return container;
 		}
 	});
 
-	(new ZoomViewer).addTo(map);
+	var zoomViewerControl = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
 </script>

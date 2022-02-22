@@ -8,7 +8,7 @@ css: "#map {
 ---
 <script type='text/javascript'>
 
-	var bounds = [[0,0], [1570,1910]];
+	var bounds = [[0, 0], [1570, 1910]];
 
 	var map = L.map('map', {
 		crs: L.CRS.Simple,

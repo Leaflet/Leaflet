@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
@@ -18,7 +18,7 @@
 			zoom: 3,
 			preferCanvas: true
 		});
-		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			minZoom: 1,
 			maxZoom: 17,
 			label: 'open street map'

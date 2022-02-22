@@ -1,14 +1,11 @@
 ﻿describe('FeatureGroup', function () {
-	var map;
-	beforeEach(function () {
-		map = L.map(document.createElement('div'));
-		map.setView([0, 0], 1);
-	});
 	describe("#_propagateEvent", function () {
 		var marker;
+
 		beforeEach(function () {
 			marker = L.marker([0, 0]);
 		});
+
 		describe("when a Marker is added to multiple FeatureGroups ", function () {
 			it("e.propagatedFrom should be the Marker", function () {
 				var fg1 = L.featureGroup(),
@@ -39,6 +36,7 @@
 			});
 		});
 	});
+
 	describe('addLayer', function () {
 		it('adds the layer', function () {
 			var fg = L.featureGroup(),
@@ -50,6 +48,7 @@
 
 			expect(fg.hasLayer(marker)).to.be(true);
 		});
+
 		it('supports non-evented layers', function () {
 			var fg = L.featureGroup(),
 			    g = L.layerGroup();
@@ -61,6 +60,7 @@
 			expect(fg.hasLayer(g)).to.be(true);
 		});
 	});
+
 	describe('removeLayer', function () {
 		it('removes the layer passed to it', function () {
 			var fg = L.featureGroup(),
@@ -72,6 +72,7 @@
 			fg.removeLayer(marker);
 			expect(fg.hasLayer(marker)).to.be(false);
 		});
+
 		it('removes the layer passed to it by id', function () {
 			var fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);

@@ -14,7 +14,7 @@ Some of the difficulties of maintaining/developing a javascript library like Lea
 
 Fortunately, all of the browser-specific hacks in Leaflet can be easily seen by looking at the [references to `L.Browser`](https://github.com/search?q=Browser+repo%3ALeaflet%2FLeaflet+language%3AJavaScript+extension%3Ajs+path%3A%2Fsrc&ref=searchresults&type=Code&utf8=%E2%9C%93) in the code.
 
-This can lead to somewhat [undesirable code](https://github.com/Leaflet/Leaflet/blob/master/src/dom/DomEvent.DoubleTap.js#L65) sometimes:
+This can lead to somewhat [undesirable code](https://github.com/Leaflet/Leaflet/blob/main/src/dom/DomEvent.DoubleTap.js#L65) sometimes:
 
 <pre><code class="javascript">    // On some platforms (notably, chrome on win10 + touchscreen + mouse),
     // the browser doesn't fire touchend/pointerup events but does fire
@@ -75,7 +75,7 @@ f2.wait(100).moveTo(350, 200, 0)
 	.down().wait(500).moveBy(-200, 0, 1000).wait(500).up().wait(500);
 </code></pre>
 
-You can check this in the [live prosthetic-hand demos](http://leaflet.github.io/prosthetic-hand/demos/).
+You can check this in the [live prosthetic-hand demos](https://leaflet.github.io/prosthetic-hand/demos/).
 
 The prosthetic-hand library is not perfect, and some types of events only work in some browsers, but it can help trigger mouse/touch/pointer events in a repeatable way, with adjustable timing, allowing developers to keep both hands at the debugger. The timing modes allow granular control of the events fired, allowing to run less iterations of the code for the same gesture, which in turn means a simpler, better understanding of what's going on.
 
@@ -89,7 +89,7 @@ Web development is no different - having the right tools will make your task so 
 
 It's not just a matter of time. Maybe writing a tool from scratch was time-consuming, but the best gain is that debugging **stops being frustrating**. Before, it was "use a hand on the touchscreen, look closely at the debugger, don't use breakpoints because you don't have enough hands". Now it's "change the timing on the prosthetic-hand events, set a breakpoint, *boom*".
 
-And what's even better, having an automated tool means that Leaflet now has [**unit tests for touch interactions**](https://github.com/Leaflet/Leaflet/blob/master/spec/suites/map/handler/Map.TouchZoomSpec.js). The PhantomJS headless web browser can understand the `TouchEvent`s that prosthetic-hand generates, and can check if a map behaves as expected when that gesture is performed.
+And what's even better, having an automated tool means that Leaflet now has [**unit tests for touch interactions**](https://github.com/Leaflet/Leaflet/blob/main/spec/suites/map/handler/Map.TouchZoomSpec.js). The PhantomJS headless web browser can understand the `TouchEvent`s that prosthetic-hand generates, and can check if a map behaves as expected when that gesture is performed.
 
 The amount of time and headaches we'll save in Leaflet by having automated touch tests is going to be huge. We can only hope more projects will benefit from similar automated testing.
 

@@ -7,9 +7,9 @@ authorsite: http://agafonkin.com/en
 ---
 
 One of the greatest things about Leaflet is its powerful plugin ecosystem.
-The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of awesome plugins, and more are being added every week.
+The [Leaflet plugins page](https://leafletjs.com/plugins.html) lists dozens of awesome plugins, and more are being added every week.
 
-This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself. Also available [in the repo](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
+This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself. Also available [in the repo](https://github.com/Leaflet/Leaflet/blob/main/PLUGIN-GUIDE.md).
 
 ### Presentation
 

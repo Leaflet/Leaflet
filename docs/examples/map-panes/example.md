@@ -5,7 +5,6 @@ title: Custom Icons Tutorial
 <script type="text/javascript" src="eu-countries.js"></script>
 
 <script>
-
 	var map = L.map('map');
 
 	map.createPane('labels');
@@ -16,10 +15,9 @@ title: Custom Icons Tutorial
 	// Layers in this pane are non-interactive and do not obscure mouse/touch events
 	map.getPane('labels').style.pointerEvents = 'none';
 
+	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-
-	var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
@@ -28,11 +26,12 @@ title: Custom Icons Tutorial
 		pane: 'labels'
 	}).addTo(map);
 
-	geojson = L.geoJson(euCountries).addTo(map);
+	/* global euCountries */
+	var geojson = L.geoJson(euCountries).addTo(map);
 
 	geojson.eachLayer(function (layer) {
 		layer.bindPopup(layer.feature.properties.name);
 	});
 
-	map.setView({ lat: 47.040182144806664, lng: 9.667968750000002 }, 4);
+	map.setView({lat: 47.040182144806664, lng: 9.667968750000002}, 4);
 </script>

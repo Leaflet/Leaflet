@@ -1,7 +1,7 @@
 import {Class} from '../../core/Class';
 import {setOptions} from '../../core/Util';
 import {toPoint as point} from '../../geometry/Point';
-import {retina} from '../../core/Browser';
+import Browser from '../../core/Browser';
 
 /*
  * @class Icon
@@ -51,8 +51,11 @@ export var Icon = Class.extend({
 	 * will be aligned so that this point is at the marker's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
-	 * @option popupAnchor: Point = null
+	 * @option popupAnchor: Point = [0, 0]
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
+	 *
+	 * @option tooltipAnchor: Point = [0, 0]
+	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
 	 *
 	 * @option shadowUrl: String = null
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
@@ -69,6 +72,17 @@ export var Icon = Class.extend({
 	 * @option className: String = ''
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
+
+	options: {
+		popupAnchor: [0, 0],
+		tooltipAnchor: [0, 0],
+
+		// @option crossOrigin: Boolean|String = false
+		// Whether the crossOrigin attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		crossOrigin: false
+	},
 
 	initialize: function (options) {
 		setOptions(this, options);
@@ -99,6 +113,10 @@ export var Icon = Class.extend({
 
 		var img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
 		this._setIconStyles(img, name);
+
+		if (this.options.crossOrigin || this.options.crossOrigin === '') {
+			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
+		}
 
 		return img;
 	},
@@ -135,7 +153,7 @@ export var Icon = Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+		return Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 

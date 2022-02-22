@@ -1,7 +1,5 @@
 describe('LineUtil', function () {
-
 	describe('#clipSegment', function () {
-
 		var bounds;
 
 		beforeEach(function () {
@@ -51,7 +49,6 @@ describe('LineUtil', function () {
 	});
 
 	describe('#pointToSegmentDistance & #closestPointOnSegment', function () {
-
 		var p1 = new L.Point(0, 10);
 		var p2 = new L.Point(10, 0);
 		var p = new L.Point(0, 0);
@@ -86,5 +83,4 @@ describe('LineUtil', function () {
 			]);
 		});
 	});
-
 });

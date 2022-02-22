@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 	<style type="text/css">
 		.my-div-icon {
 			background-color: goldenrod;
@@ -29,8 +29,8 @@
 
 		var map = L.map('map').setView(center, 13);
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
 		L.polygon([[41.21, 9.42], [41.22, 9.40], [41.23, 9.40]]).addTo(map).bindTooltip('Default centered polygon tooltip');

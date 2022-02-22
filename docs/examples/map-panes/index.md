@@ -21,7 +21,7 @@ A new feature of **Leaflet 1.0.0** (not present in 0.7.x) is custom map panes, w
 
 ## The default is not always right
 
-In some particular cases, the default order is not the right one for the map. We can demonstrate this with the [Carto basemaps](https://cartodb.com/basemaps/) and labels:
+In some particular cases, the default order is not the right one for the map. We can demonstrate this with the [Carto basemaps](https://carto.com/location-data-services/basemaps/) and labels:
 
 
 <style>
@@ -33,18 +33,18 @@ In some particular cases, the default order is not the right one for the map. We
 
 <div class='tiles'>
 <div style='display: inline-block'>
-<img src="http://a.basemaps.cartocdn.com/light_nolabels/0/0/0.png" class="bordered-img" /><br/>
+<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png" class="bordered-img" /><br/>
 Basemap tile with no labels
 </div>
 
 <div style='display: inline-block'>
-<img src="http://a.basemaps.cartocdn.com/light_only_labels/0/0/0.png" class="bordered-img" /><br/>
+<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png" class="bordered-img" /><br/>
 Transparent labels-only tile
 </div>
 
 <div style='display: inline-block; position:relative;'>
-<img src="http://a.basemaps.cartocdn.com/light_nolabels/0/0/0.png" class="bordered-img" />
-<img src="http://a.basemaps.cartocdn.com/light_only_labels/0/0/0.png"  style='position:absolute; left:0; top:0;'/><br/>
+<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png" class="bordered-img" />
+<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png"  style='position:absolute; left:0; top:0;'/><br/>
 Labels on top of basemap
 </div>
 </div>
@@ -79,11 +79,11 @@ One of the problems of having image tiles on top of other map layers is that the
 With the pane now ready, we can add the layers, paying attention to use the `pane` option on the labels tiles:
 
 
-    var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB'
     }).addTo(map);
 
-    var positronLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+    var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB',
             pane: 'labels'
     }).addTo(map);
