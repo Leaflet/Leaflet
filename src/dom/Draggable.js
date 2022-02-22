@@ -100,6 +100,7 @@ export var Draggable = Evented.extend({
 		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
 		this._startPoint = new Point(first.clientX, first.clientY);
+		this._startPos = DomUtil.getPosition(this._element);
 
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
@@ -139,7 +140,6 @@ export var Draggable = Evented.extend({
 			this.fire('dragstart');
 
 			this._moved = true;
-			this._startPos = DomUtil.getPosition(this._element).subtract(offset);
 
 			DomUtil.addClass(document.body, 'leaflet-dragging');
 
@@ -155,9 +155,8 @@ export var Draggable = Evented.extend({
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
-		Util.cancelAnimFrame(this._animRequest);
 		this._lastEvent = e;
-		this._animRequest = Util.requestAnimFrame(this._updatePosition, this, true);
+		this._updatePosition();
 	},
 
 	_updatePosition: function () {
@@ -196,8 +195,6 @@ export var Draggable = Evented.extend({
 		DomUtil.enableTextSelection();
 
 		if (this._moved && this._moving) {
-			// ensure drag is not fired after dragend
-			Util.cancelAnimFrame(this._animRequest);
 
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
