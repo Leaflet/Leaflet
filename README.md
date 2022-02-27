@@ -10,7 +10,7 @@ As Vladimir [expressed a few days ago](https://twitter.com/LeafletJS/status/1496
 
 Ukrainians are recommending the [https://savelife.in.ua/en/donate/](https://savelife.in.ua/en/donate/) charity. Consider also the [Ukrainian Red Cross](https://redcross.org.ua/en/).
 
-If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukraininan citizens is the future of Leaflet.
+If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukrainian citizens is the future of Leaflet.
 
 It is chilling to see Leaflet being used for [factual reporting of the war](https://liveuamap.com/) and for [coordination of humanitarian efforts](https://refugees.ro/). We commend these uses of Leaflet.
 
