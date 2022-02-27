@@ -4,7 +4,7 @@ category: bookmarked-pan-zoom
 repo: https://github.com/pwldp/leaflet.viewcenter
 author: Dariusz Pawlak
 author-url: https://github.com/pwldp/
-demo: 
+demo: https://pwldp.github.io/leaflet.viewcenter/
 compatible-v0:
 compatible-v1: true
 ---

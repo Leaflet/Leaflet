@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/rowanwins/leaflet-simplestyle
 author: Rowan Winsemius
 author-url: https://github.com/rowanwins/
-demo: 
+demo: https://rowanwins.github.io/leaflet-simplestyle/example/basic.html
 compatible-v0:
 compatible-v1: true
 ---

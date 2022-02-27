@@ -4,7 +4,7 @@ category: frameworks-build-systems
 repo: https://github.com/leaflet-extras/leaflet-map
 author: Hendrik Brummermann
 author-url: https://github.com/nhnb
-demo: 
+demo: https://leaflet-extras.github.io/leaflet-map/demo.html
 compatible-v0:
 compatible-v1: true
 ---

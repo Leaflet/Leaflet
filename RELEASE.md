@@ -1,6 +1,6 @@
 ## Releasing a new version of Leaflet
 
-- [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md) since last release and commit.
+- [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md) since last release and commit.
 - [ ] Run `npm version <patch | minor | major>` (this will bump the version in `package.json` and create a new tag).
 - [ ] Run `git push --follow-tags` to push the commit created by NPM to Github (together with the tag).
 - [ ] Wait for the CI to complete and follow the logs to make sure it runs successfully.

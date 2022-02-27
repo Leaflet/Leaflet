@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/rowanwins/Leaflet.SvgShapeMarkers
 author: Rowan Winsemius
 author-url: https://github.com/rowanwins/
-demo: 
+demo: https://rowanwins.github.io/Leaflet.SvgShapeMarkers/example/
 compatible-v0:
 compatible-v1: true
 ---

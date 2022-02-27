@@ -97,4 +97,4 @@ If your custom control consists of more than one HTML element (like `L.Control.Z
 
 ## Publishing your plugin
 
-If you have understood everything so far, you're ready to make some Leaflet plugins! But make sure to read the [`PLUGIN-GUIDE.md` file](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md), as it contains some tips and good practices about naming and publishing your plugin.
+If you have understood everything so far, you're ready to make some Leaflet plugins! But make sure to read the [`PLUGIN-GUIDE.md` file](https://github.com/Leaflet/Leaflet/blob/main/PLUGIN-GUIDE.md), as it contains some tips and good practices about naming and publishing your plugin.

@@ -275,8 +275,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 	border-radius: 4px;
 	}
-.leaflet-bar a,
-.leaflet-bar a:hover {
+.leaflet-bar a {
 	background-color: #fff;
 	border-bottom: 1px solid #ccc;
 	width: 26px;
@@ -293,7 +292,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	background-repeat: no-repeat;
 	display: block;
 	}
-.leaflet-bar a:hover {
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
 	background-color: #f4f4f4;
 	}
 .leaflet-bar a:first-child {
@@ -411,7 +411,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a {
 	text-decoration: none;
 	}
-.leaflet-control-attribution a:hover {
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
 	text-decoration: underline;
 	}
 .leaflet-container .leaflet-control-attribution,
@@ -485,6 +486,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	height: 20px;
 	position: absolute;
 	left: 50%;
+	margin-top: -1px;
 	margin-left: -20px;
 	overflow: hidden;
 	pointer-events: none;
@@ -522,7 +524,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	text-decoration: none;
 	background: transparent;
 	}
-.leaflet-container a.leaflet-popup-close-button:hover {
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
 	color: #585858;
 	}
 .leaflet-popup-scrolled {
@@ -540,9 +543,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
 	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
-	}
-.leaflet-oldie .leaflet-popup-tip-container {
-	margin-top: -1px;
 	}
 
 .leaflet-oldie .leaflet-control-zoom,

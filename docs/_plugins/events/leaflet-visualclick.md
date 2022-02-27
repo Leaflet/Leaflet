@@ -4,7 +4,7 @@ category: events
 repo: https://github.com/MazeMap/Leaflet.VisualClick
 author: Dag Jomar Mersland
 author-url: https://github.com/dagjomar
-demo: https://github.com/MazeMap/Leaflet.VisualClick/
+demo: https://github.com/MazeMap/Leaflet.VisualClick#readme
 compatible-v0: false
 compatible-v1: true
 ---

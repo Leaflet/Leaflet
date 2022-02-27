@@ -4,7 +4,7 @@ category: geocoding
 repo: https://github.com/k4r573n/leaflet-control-osm-geocoder
 author: Karsten Hinz
 author-url: https://github.com/k4r573n
-demo: 
+demo: https://k4r573n.github.io/leaflet-control-osm-geocoder/
 compatible-v0:
 compatible-v1: true
 ---

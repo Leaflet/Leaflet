@@ -4,7 +4,7 @@ category: bookmarked-pan-zoom
 repo: https://github.com/davidchouse/Leaflet.NavBar
 author: David C
 author-url: https://github.com/davidchouse
-demo: 
+demo: http://davidchouse.github.io/Leaflet.NavBar/
 compatible-v0:
 compatible-v1: true
 ---

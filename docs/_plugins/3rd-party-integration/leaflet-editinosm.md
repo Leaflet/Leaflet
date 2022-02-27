@@ -4,7 +4,7 @@ category: 3rd-party-integration
 repo: https://github.com/yohanboniface/Leaflet.EditInOSM
 author: Yohan Boniface
 author-url: https://yohanboniface.me/
-demo: 
+demo: http://yohanboniface.github.io/Leaflet.EditInOSM/examples/basic.html
 compatible-v0:
 compatible-v1: true
 ---

@@ -16,14 +16,14 @@ bodyclass: download-page
 		<td>Stable version, released on September 3, 2020.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.8-dev</a></td>
-		<td>In-progress version, developed on the <code>master</code> branch.</td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.zip">Leaflet 1.8-dev</a></td>
+		<td>In-progress version, developed on the <code>main</code> branch.</td>
 	</tr>
 </table>
 
-[View Changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md)
+[View Changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md)
 
-Note that the master version can contain incompatible changes,
+Note that the main version can contain incompatible changes,
 so please read the changelog carefully when upgrading to it.
 
 ### Using a Hosted Version of Leaflet

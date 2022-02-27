@@ -4,7 +4,7 @@ category: routing
 repo: https://github.com/traffordDataLab/leaflet.reachability
 author: Trafford Data Lab
 author-url: https://github.com/traffordDataLab
-demo: 
+demo: https://www.trafforddatalab.io/leaflet.reachability/leaflet.reachability_example.html
 compatible-v0:
 compatible-v1: true
 ---
