@@ -2,6 +2,12 @@
 layout: ua
 ---
 
+<style>
+	blockquote {
+		font-style: italic;
+	}
+</style>
+
 Leaflet was created 11 years ago by [Vladimir Agafonkin](https://agafonkin.com/), an Ukrainian citizen living in Kyiv.
 
 Vladimir is no longer in Kyiv, because Russian bombs are falling over the city. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
