@@ -31,4 +31,4 @@ If you support the actions of the Russian government (even after reading all thi
 
 Yours truly,
 
-Leaflet mantainers.
+Leaflet maintainers.
