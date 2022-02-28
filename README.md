@@ -12,7 +12,7 @@ Ukrainians are recommending the [https://savelife.in.ua/en/donate/](https://save
 
 If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukrainian citizens is the future of Leaflet.
 
-It is chilling to see Leaflet being used for [factual reporting of the war](https://liveuamap.com/) and for [coordination of humanitarian efforts](https://refugees.ro/). We commend these uses of Leaflet.
+It is chilling to see Leaflet being used for [factual reporting of the war](https://liveuamap.com/) and for coordination of humanitarian efforts [in Romaina](https://refugees.ro/) and [in Poland](https://dopomoha.pl/). We commend these uses of Leaflet.
 
 If you support the actions of the Russian government (even after reading all this), do everyone else a favour and [carry some seeds in your pocket](https://www.theguardian.com/world/video/2022/feb/25/ukrainian-woman-sunflower-seeds-russian-soldiers-video).
 
