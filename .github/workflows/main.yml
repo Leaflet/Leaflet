@@ -210,6 +210,8 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Publish to NPM
-        run: npm publish
+        run: |
+          TAG=$(echo $GITHUB_REF_NAME | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
+          npm publish --tag ${TAG:-latest}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
