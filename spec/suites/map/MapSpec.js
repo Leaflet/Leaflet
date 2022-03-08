@@ -1336,4 +1336,57 @@ describe("Map", function () {
 			}).to.not.throwException();
 		});
 	});
+
+	describe("_addZoomLimit", function () {
+		it("update zoom levels when min zoom is not NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is not NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		it("update zoom levels when min zoom is not NaN in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is not NaN in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		it("update zoom levels, with min zoom level to NaN, when min zoom is NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN}));
+			expect(isNaN(map._layersMinZoom)).to.be(true);
+		});
+
+		it("update zoom levels, with max zoom level to NaN, when max zoom is NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		it("update zoom levels, with min zoom level to NaN, when min zoom is NaN in at least one of many layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN}));
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(isNaN(map._layersMinZoom)).to.be(true);
+		});
+
+		it("update zoom levels, with max zoom level to NaN, when max zoom is NaN in at least one of many layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		it("doesn't update zoom levels when min and max zoom are both NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN, maxZoom: NaN}));
+			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be(true);
+		});
+	});
 });
