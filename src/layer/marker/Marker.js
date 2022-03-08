@@ -384,9 +384,9 @@ export var Marker = Layer.extend({
 		this._updateZIndex(0);
 	},
 
-	_panOnFocus: function(ev) {
+	_panOnFocus: function () {
 		var map = this._map;
-		if (!map) { return }
+		if (!map) { return; }
 
 		var iconOpts = this.options.icon.options;
 		var size = point(iconOpts.iconSize);
