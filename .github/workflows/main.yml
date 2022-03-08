@@ -211,6 +211,8 @@ jobs:
 
       - name: test dist-tag parse
         run: echo $VERSION | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?'
+        env:
+          VERSION: v1.8.0-alpha.1
 
       - name: Publish to NPM
         run: |
