@@ -209,6 +209,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
 
+      - name: test dist-tag parse
+        run: echo $VERSION | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?'
+
       - name: Publish to NPM
         run: |
           TAG=$(echo $VERSION | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
