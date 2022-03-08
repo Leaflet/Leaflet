@@ -194,7 +194,7 @@ jobs:
 
   publish-npm:
     needs: build
-    # if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
@@ -209,15 +209,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
 
-      - name: test dist-tag parse
-        run: echo $VERSION | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?'
-        env:
-          VERSION: v1.8.0-alpha.1
-
       - name: Publish to NPM
         run: |
-          TAG=$(echo $VERSION | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
-          npm publish --tag ${TAG:-latest} --dry-run
+          TAG=$(echo $GITHUB_REF_NAME | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
+          npm publish --tag ${TAG:-latest}
         env:
-          VERSION: v1.8.0-alpha.1
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
