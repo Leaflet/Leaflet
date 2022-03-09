@@ -177,9 +177,7 @@ jobs:
 
       - name: Determine directory for artifacts
         id: artifacts-directory
-        run: |
-          VERSION=$(git tag --points-at HEAD)
-          echo "::set-output name=path::content/leaflet/${VERSION:-main}"
+        run: echo "::set-output name=path::content/leaflet/${GITHUB_REF_NAME:-main}"
 
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
