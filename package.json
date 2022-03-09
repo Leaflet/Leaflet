@@ -36,7 +36,8 @@
     "dist",
     "src",
     "!dist/leaflet.zip",
-    "!*.leafdoc"
+    "!*.leafdoc",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "docs": "node ./build/docs.js",
