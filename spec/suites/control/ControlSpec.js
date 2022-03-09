@@ -50,4 +50,28 @@ describe("Control", function () {
 			expect(control.remove()).to.equal(control);
 		});
 	});
+
+	describe("DOM events bubbling:", function () {
+		it("click is not propagated to map", function () {
+			var spy = sinon.spy();
+			map.on('click', spy); // disableClickPropagation
+			L.DomEvent.on(container, 'mousedown touchstart dblclick', spy);
+			happen.click(control._container);
+			happen.dblclick(control._container);
+			happen.mousedown(control._container);
+			happen.mouseup(control._container);
+			happen.touchstart(control._container, {touches:[]});
+			expect(spy.called).to.not.be.ok();
+		});
+
+		it("scroll is not propagated to map", function () {
+			var control = new L.Control();
+			control.onAdd = onAdd;
+			control.addTo(map);
+			var spy = sinon.spy();
+			L.DomEvent.on(container, 'wheel', spy); // disableScrollPropagation
+			happen.once(control._container, {type: 'wheel', detail: -100});
+			expect(spy.called).to.not.be.ok();
+		});
+	});
 });
