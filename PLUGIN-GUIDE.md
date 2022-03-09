@@ -17,6 +17,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [Plugin API](#plugin-api)
 3. [Content Accessibility](#content-accessibility)
 	- [Accessibility Testing](#accessibility-testing)
+	- [Learn about web accessibility](#learn-about-web-accessibility)
 4. [Publishing on NPM](#publishing-on-npm)
 5. [Module Loaders](#module-loaders)
 6. [Adding to the plugins list](#adding-to-the-plugins-list)
@@ -141,15 +142,9 @@ Thus it's important to ensure components are keyboard-friendly,
 and non-text content (such as icon fonts and images) either have a text
 alternative or are hidden from screen readers if they're purely decorative.
 
-Learn more about web accessibility:
-
-- [WAI (Web Accessibility Initiative): Accessibility Fundamentals Overview](https://www.w3.org/WAI/fundamentals/)
-- [ARIA in HTML (Accessible Rich Internet Applications)](https://www.w3.org/TR/html-aria/)
-- [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
-- [Using ARIA](https://www.w3.org/TR/using-aria/)
-- [WCAG (Web Content Accessibility Guidelines)](https://www.w3.org/TR/WCAG/)
-
 ### Accessibility Testing
+
+#### Automated testing
 
 Tools for automated testing can help you discover common accessibility issues:
 
@@ -159,9 +154,28 @@ Tools for automated testing can help you discover common accessibility issues:
 - [Accessibility Insights](https://accessibilityinsights.io/)
 - [webhint](https://webhint.io/)
 
+#### Manual testing
+
 It is highly recommended that you test your components manually
 using only your keyboard,
 as well as using a screen reader such as Narrator, NVDA, VoiceOver, or JAWS.
+
+### Learn about web accessibility
+
+Beginner-friendly documentation:
+
+- [What is accessibility?](https://web.dev/what-is-accessibility/)
+- [Make your site keyboard accessible](https://web.dev/accessible/#make-your-site-keyboard-accessible)
+- [Understand semantics and basic screen reader support](https://web.dev/accessible/#understand-semantics-and-basic-screen-reader-support)
+- More guides at [MDN web docs: Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+
+Authoritative documentation:
+
+- [WAI (Web Accessibility Initiative): Accessibility Fundamentals Overview](https://www.w3.org/WAI/fundamentals/)
+- [ARIA in HTML (Accessible Rich Internet Applications)](https://www.w3.org/TR/html-aria/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [Using ARIA](https://www.w3.org/TR/using-aria/)
+- [WCAG (Web Content Accessibility Guidelines)](https://www.w3.org/TR/WCAG/)
 
 ## Publishing on NPM
 
