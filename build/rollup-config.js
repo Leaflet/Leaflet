@@ -13,12 +13,12 @@ const version = release ? pkg.version : `${pkg.version}+${gitRev.branch()}.${git
 const banner = createBanner(version);
 
 const outro = `var oldL = window.L;
-leaflet.noConflict = function() {
+exports.noConflict = function() {
 	window.L = oldL;
 	return this;
 }
 // Always export us to window global (see #2364)
-window.L = leaflet;`;
+window.L = exports;`;
 
 /** @type {import('rollup').RollupOptions} */
 const config = {
