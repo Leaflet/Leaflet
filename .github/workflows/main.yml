@@ -175,12 +175,6 @@ jobs:
         working-directory: dist
         run: zip -r leaflet.zip .
 
-      - name: Determine directory for artifacts
-        id: artifacts-directory
-        run: |
-          VERSION=$(git tag --points-at HEAD)
-          echo "::set-output name=path::content/leaflet/${VERSION:-main}"
-
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -190,7 +184,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SOURCE_DIR: dist
-          DEST_DIR: ${{ steps.artifacts-directory.outputs.path }}
+          DEST_DIR: content/leaflet/${{ env.GITHUB_REF_NAME }}
 
   publish-npm:
     needs: build
