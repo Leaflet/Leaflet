@@ -264,8 +264,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* general typography */
 .leaflet-container {
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-	font: 0.75rem/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
 	}
 
 
@@ -383,6 +385,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 .leaflet-control-layers label {
 	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
 	}
 .leaflet-control-layers-separator {
 	height: 0;
@@ -407,6 +411,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-scale-line {
 	padding: 0 5px;
 	color: #333;
+	line-height: 1.4;
 	}
 .leaflet-control-attribution a {
 	text-decoration: none;
@@ -414,11 +419,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a:hover,
 .leaflet-control-attribution a:focus {
 	text-decoration: underline;
-	}
-.leaflet-container .leaflet-control-attribution,
-.leaflet-container .leaflet-control-scale {
-	font-size: 11px;
-	font-size: 0.69rem;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
@@ -431,8 +431,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-top: none;
 	line-height: 1.1;
 	padding: 2px 5px 1px;
-	font-size: 11px;
-	font-size: 0.69rem;
 	white-space: nowrap;
 	overflow: hidden;
 	-moz-box-sizing: border-box;
@@ -476,10 +474,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 .leaflet-popup-content {
 	margin: 13px 19px;
-	line-height: 1.4;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
 	}
 .leaflet-popup-content p {
-	margin: 18px 0;
+	margin: 17px 0;
+	margin: 1.3em 0;
 	}
 .leaflet-popup-tip-container {
 	width: 40px;
