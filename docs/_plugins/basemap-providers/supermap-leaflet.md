@@ -4,7 +4,7 @@ category: basemap-providers
 repo: https://supermap.github.io/supermap-leaflet/
 author: SuperMap
 author-url: https://github.com/SuperMap
-demo: 
+demo: https://supermap.github.io/supermap-leaflet/example/tiledMapLayer.html
 compatible-v0:
 compatible-v1: true
 ---

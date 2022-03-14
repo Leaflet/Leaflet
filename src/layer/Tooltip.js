@@ -2,7 +2,6 @@ import {DivOverlay} from './DivOverlay';
 import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
-import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -55,10 +54,6 @@ export var Tooltip = DivOverlay.extend({
 		// If true, the tooltip will follow the mouse instead of being fixed at the feature center.
 		sticky: false,
 
-		// @option interactive: Boolean = false
-		// If true, the tooltip will listen to the feature events.
-		interactive: false,
-
 		// @option opacity: Number = 0.9
 		// Tooltip container opacity.
 		opacity: 0.9
@@ -68,13 +63,6 @@ export var Tooltip = DivOverlay.extend({
 		DivOverlay.prototype.onAdd.call(this, map);
 		this.setOpacity(this.options.opacity);
 
-		if (this.options.interactive) {
-			DomUtil.addClass(this._container, 'leaflet-interactive');
-			if (this._source) {
-				this._source.addInteractiveTarget(this._container);
-			}
-		}
-
 		// @namespace Map
 		// @section Tooltip events
 		// @event tooltipopen: TooltipEvent
@@ -82,6 +70,8 @@ export var Tooltip = DivOverlay.extend({
 		map.fire('tooltipopen', {tooltip: this});
 
 		if (this._source) {
+			this.addEventParent(this._source);
+
 			// @namespace Layer
 			// @section Tooltip events
 			// @event tooltipopen: TooltipEvent
@@ -93,13 +83,6 @@ export var Tooltip = DivOverlay.extend({
 	onRemove: function (map) {
 		DivOverlay.prototype.onRemove.call(this, map);
 
-		if (this.options.interactive) {
-			DomUtil.removeClass(this._container, 'leaflet-interactive');
-			if (this._source) {
-				this._source.removeInteractiveTarget(this._container);
-			}
-		}
-
 		// @namespace Map
 		// @section Tooltip events
 		// @event tooltipclose: TooltipEvent
@@ -107,6 +90,8 @@ export var Tooltip = DivOverlay.extend({
 		map.fire('tooltipclose', {tooltip: this});
 
 		if (this._source) {
+			this.removeEventParent(this._source);
+
 			// @namespace Layer
 			// @section Tooltip events
 			// @event tooltipclose: TooltipEvent
@@ -119,16 +104,10 @@ export var Tooltip = DivOverlay.extend({
 		var events = DivOverlay.prototype.getEvents.call(this);
 
 		if (!this.options.permanent) {
-			events.preclick = this._close;
+			events.preclick = this.close;
 		}
 
 		return events;
-	},
-
-	_close: function () {
-		if (this._map) {
-			this._map.closeTooltip(this);
-		}
 	},
 
 	_initLayout: function () {
@@ -231,25 +210,17 @@ Map.include({
 	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
 	// Creates a tooltip with the specified content and options and open it.
 	openTooltip: function (tooltip, latlng, options) {
-		if (!(tooltip instanceof Tooltip)) {
-			tooltip = new Tooltip(options).setContent(tooltip);
-		}
+		this._initOverlay(Tooltip, tooltip, latlng, options)
+		  .openOn(this);
 
-		if (latlng) {
-			tooltip.setLatLng(latlng);
-		}
-
-		if (this.hasLayer(tooltip)) {
-			return this;
-		}
-
-		return this.addLayer(tooltip);
+		return this;
 	},
 
 	// @method closeTooltip(tooltip: Tooltip): this
 	// Closes the tooltip given as parameter.
 	closeTooltip: function (tooltip) {
-		return this.removeLayer(tooltip);
+		tooltip.close();
+		return this;
 	}
 
 });
@@ -280,18 +251,7 @@ Layer.include({
 			this.unbindTooltip();
 		}
 
-		if (content instanceof Tooltip) {
-			Util.setOptions(content, options);
-			this._tooltip = content;
-			content._source = this;
-		} else {
-			if (!this._tooltip || options) {
-				this._tooltip = new Tooltip(options, this);
-			}
-			this._tooltip.setContent(content);
-
-		}
-
+		this._tooltip = this._initOverlay(Tooltip, this._tooltip, content, options);
 		this._initTooltipInteractions();
 
 		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
@@ -338,9 +298,8 @@ Layer.include({
 	openTooltip: function (latlng) {
 		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
 			// open the tooltip on the map
-			this._map.openTooltip(this._tooltip, latlng);
+			this._tooltip.openOn(this._map);
 		}
-
 		return this;
 	},
 
@@ -348,20 +307,15 @@ Layer.include({
 	// Closes the tooltip bound to this layer if it is open.
 	closeTooltip: function () {
 		if (this._tooltip) {
-			this._tooltip._close();
+			return this._tooltip.close();
 		}
-		return this;
 	},
 
 	// @method toggleTooltip(): this
 	// Opens or closes the tooltip bound to this layer depending on its current state.
 	toggleTooltip: function () {
 		if (this._tooltip) {
-			if (this._tooltip._map) {
-				this.closeTooltip();
-			} else {
-				this.openTooltip();
-			}
+			this._tooltip.toggle(this);
 		}
 		return this;
 	},

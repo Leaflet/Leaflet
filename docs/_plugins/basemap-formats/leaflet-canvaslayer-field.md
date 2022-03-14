@@ -4,7 +4,7 @@ category: basemap-formats
 repo: https://github.com/IHCantabria/Leaflet.CanvasLayer.Field
 author: Víctor Velarde
 author-url: https://github.com/VictorVelarde
-demo: 
+demo: https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/example_VectorFieldAnim.html
 compatible-v0:
 compatible-v1: true
 ---

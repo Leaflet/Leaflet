@@ -63,7 +63,7 @@ module.exports = function (config) {
 			],
 			output: {
 				format: 'umd',
-				name: 'L',
+				name: 'leaflet',
 				outro: outro,
 				freeze: false,
 			},
