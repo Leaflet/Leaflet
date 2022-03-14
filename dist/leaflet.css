@@ -185,6 +185,9 @@
 	    -ms-transform-origin: 0 0;
 	        transform-origin: 0 0;
 	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
 	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
