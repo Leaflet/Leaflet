@@ -1336,4 +1336,130 @@ describe("Map", function () {
 			}).to.not.throwException();
 		});
 	});
+
+	describe("#Map Options", function () {
+
+		beforeEach(function () {
+			container.style.width = "800px";
+			container.style.height = "600px";
+			container.style.visibility = "hidden";
+		});
+
+		describe("#Dark Mode", function () {
+
+			var matchMediaOrg;
+			before(function () {
+				matchMediaOrg = window.matchMedia;
+			});
+
+			after(function () {
+				window.matchMedia = matchMediaOrg;
+			});
+
+
+			function toHex(rgb) {
+				rgb = rgb.match(/\d+/g);
+				var r = parseInt(rgb[0]).toString(16);
+				var g = parseInt(rgb[1]).toString(16);
+				var b = parseInt(rgb[2]).toString(16);
+				return '#' + r + g + b;
+			}
+
+			it("Force Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+				expect(L.DomUtil.hasClass(container, 'leaflet-darkmode')).to.be(true);
+			});
+
+			it.skipIfNo3d("Checks if User use Color Schema - Enabled Light Mode (Default)", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				// we need to overwrite matchMedia to simulate the color-schema
+
+				window.matchMedia = function (query) {
+					if (query === '(prefers-color-scheme: light)') {
+						return {matches: true};
+					}
+					return matchMediaOrg(query);
+				};
+
+				map = L.map(container, {useUserColorScheme: true});
+				expect(L.DomUtil.hasClass(container, 'leaflet-darkmode')).to.be(false);
+			});
+
+			it.skipIfNo3d("Checks if User use Color Schema - Enabled Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				// we need to overwrite matchMedia to simulate the color-schema
+				window.matchMedia = function (query) {
+					if (query === '(prefers-color-scheme: dark)') {
+						return {matches: true};
+					}
+					return matchMediaOrg(query);
+				};
+
+				map = L.map(container, {useUserColorScheme: true});
+				expect(L.DomUtil.hasClass(container, 'leaflet-darkmode')).to.be(true);
+			});
+
+			it("Checks if Zoom Control is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+
+				var zoomControl = container.querySelectorAll('.leaflet-control-zoom-out')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+
+			it("Checks if Attribution is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+
+				var zoomControl = container.querySelectorAll('.leaflet-control-attribution.leaflet-control')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+
+			it("Checks if Layer Control is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+
+				L.control.layers(null, null).addTo(map);
+
+				var zoomControl = container.querySelectorAll('.leaflet-control-layers.leaflet-control')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+
+			it("Checks if Scale Control is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+				map.setView([0, 0], 1);
+
+				L.control.scale().addTo(map);
+
+				var zoomControl = container.querySelectorAll('.leaflet-control-scale-line')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+
+			it("Checks if Popup is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+				map.setView([0, 0], 1);
+
+				var marker = L.marker(map.getCenter()).addTo(map);
+				marker.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map).openPopup();
+
+				var zoomControl = container.querySelectorAll('.leaflet-popup-content-wrapper')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+
+			it("Checks if Tooltip is in Dark Mode", function () {
+				map.remove(); // remove the generated Map to re-created it with options
+				map = L.map(container, {darkMode: true});
+				map.setView([0, 0], 1);
+
+				var marker = L.marker(map.getCenter()).addTo(map);
+				marker.bindTooltip("This is a Tooltip", {permanent: true}).addTo(map).openTooltip();
+
+				var zoomControl = container.querySelectorAll('.leaflet-tooltip')[0];
+				expect(toHex(window.getComputedStyle(zoomControl).backgroundColor)).to.be("#333333");
+			});
+		});
+	});
 });

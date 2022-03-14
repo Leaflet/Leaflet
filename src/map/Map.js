@@ -120,7 +120,15 @@ export var Map = Evented.extend({
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true
+		trackResize: true,
+
+		// @option darkMode: Boolean = false
+		// Force Dark Mode of Leaflet
+		darkMode: false,
+
+		// @option useUserColorScheme: Boolean = true
+		// Use the user color scheme to switch between Light and Dark Mode
+		useUserColorScheme: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -1112,6 +1120,11 @@ export var Map = Evented.extend({
 
 		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
 			container.style.position = 'relative';
+		}
+
+		var userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		if (this.options.darkMode || (this.options.useUserColorScheme && userPrefersDark)) {
+			DomUtil.addClass(container, 'leaflet-darkmode');
 		}
 
 		this._initPanes();
