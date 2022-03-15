@@ -71,7 +71,7 @@ You can also style the keys when you define the objects for the layers. For exam
 Finally, you can add or remove base layers or overlays dynamically:
 
 <pre><code>var crownHill = L.marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.'),
-    rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.')
+    rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.');
     
 var parks = L.layerGroup([crownHill, rubyHill]);
 var satellite = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
