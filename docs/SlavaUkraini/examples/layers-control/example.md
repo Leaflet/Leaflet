@@ -38,6 +38,6 @@ title: Layers Control Tutorial
 	var parks = L.layerGroup([crownHill, rubyHill]);
 
 	var satellite = L.tileLayer(mbUrl, {id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
-	controlLayers.addBaseLayer(satellite, "Satellite");
-	controlLayers.addOverlay(parks, "Parks");
+	layerControl.addBaseLayer(satellite, "Satellite");
+	layerControl.addOverlay(parks, "Parks");
 </script>
