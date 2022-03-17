@@ -76,8 +76,8 @@ Finally, you can add or remove base layers or overlays dynamically:
 var parks = L.layerGroup([crownHill, rubyHill]);
 var satellite = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
 
-controlLayers.addBaseLayer(satellite, "Satellite");
-controlLayers.addOverlay(parks, "Parks");
+layerControl.addBaseLayer(satellite, "Satellite");
+layerControl.addOverlay(parks, "Parks");
 </code></pre>
 
 
