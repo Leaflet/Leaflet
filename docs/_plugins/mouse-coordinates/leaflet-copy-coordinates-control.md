@@ -4,7 +4,7 @@ category: mouse-coordinates
 repo: https://github.com/tinjaw/Leaflet-Copy-Coordinates-Control
 author: Chaim Krause
 author-url: https://github.com/tinjaw
-demo: 
+demo: https://tinjaw.github.io/Leaflet-Copy-Coordinates-Control/
 compatible-v0:
 compatible-v1: true
 ---

@@ -48,7 +48,7 @@ export var Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover or touch.
+		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
@@ -340,7 +340,7 @@ export var Layers = Control.extend({
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
-		var holder = document.createElement('div');
+		var holder = document.createElement('span');
 
 		label.appendChild(holder);
 		holder.appendChild(input);

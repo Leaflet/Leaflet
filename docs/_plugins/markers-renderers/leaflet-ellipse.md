@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/jdfergason/Leaflet.Ellipse
 author: JD Fergason
 author-url: https://github.com/jdfergason
-demo: 
+demo: https://jdfergason.github.io/Leaflet.Ellipse/
 compatible-v0:
 compatible-v1: true
 ---

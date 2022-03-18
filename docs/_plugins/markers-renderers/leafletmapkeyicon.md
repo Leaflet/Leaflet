@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/mapshakers/leaflet-mapkey-icon
 author: mapshakers
 author-url: https://github.com/mapshakers
-demo: 
+demo: http://mapshakers.com/projects/leaflet-mapkey-icon/
 compatible-v0:
 compatible-v1: true
 ---

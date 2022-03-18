@@ -3,7 +3,7 @@ describe('General', function () {
 		var leaflet = L;
 		expect(L.noConflict()).to.eql(leaflet);
 		expect(L).to.eql(undefined);
-		window.L = leaflet;
+		L = leaflet;
 	});
 
 	it('namespace extension', function () {

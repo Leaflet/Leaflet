@@ -4,7 +4,7 @@ category: routing
 repo: https://github.com/skedgo/tripkit-leaflet
 author: SkedGo
 author-url: https://skedgo.com/
-demo: 
+demo: https://skedgo.github.io/tripkit-leaflet/
 compatible-v0:
 compatible-v1: true
 ---

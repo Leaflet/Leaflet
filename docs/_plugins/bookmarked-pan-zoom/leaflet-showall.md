@@ -4,7 +4,7 @@ category: bookmarked-pan-zoom
 repo: https://github.com/florpor/Leaflet.ShowAll
 author: Mor Yariv
 author-url: https://github.com/florpor
-demo: 
+demo: http://florpor.github.io/Leaflet.ShowAll/examples/
 compatible-v0:
 compatible-v1: true
 ---

@@ -136,7 +136,9 @@ describe('Canvas', function () {
 
 		it("does fire mousedown on layer after dragging map", function (done) { // #7775
 			var spy = sinon.spy();
-			var circle = L.circle(p2ll(300, 300)).addTo(map);
+			var center = p2ll(300, 300);
+			var radius = p2ll(200, 200).distanceTo(center);
+			var circle = L.circle(center, {radius: radius}).addTo(map);
 			circle.on('mousedown', spy);
 
 			var hand = new Hand({
@@ -149,9 +151,9 @@ describe('Canvas', function () {
 			var mouse = hand.growFinger('mouse');
 
 			mouse.wait(100)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()
-				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up();
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
+				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect mousedown ok
 		});
 	});
 
