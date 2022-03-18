@@ -189,6 +189,13 @@ describe("Control.Layers", function () {
 	});
 
 	describe("collapse when collapsed: true", function () {
+		it('expands on toggle focus', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
+			happen.once(toggle, {type:'focus'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+
 		it('expands when mouse is over', function () {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(layersCtrl._container, {type:'mouseover'});
@@ -290,7 +297,7 @@ describe("Control.Layers", function () {
 				'Marker A': markerA
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker C');
@@ -316,7 +323,7 @@ describe("Control.Layers", function () {
 				sortLayers: true
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker A');
@@ -343,7 +350,7 @@ describe("Control.Layers", function () {
 				sortFunction: function (a, b) { return a.options.customOption - b.options.customOption; }
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker B');

@@ -354,6 +354,18 @@ describe('GridLayer', function () {
 
 			map.addLayer(grid);
 		});
+
+		it("redraws tiles properly after changing maxNativeZoom", function () {
+			var initialZoom = 12;
+			map.setView([0, 0], initialZoom);
+
+			var grid = L.gridLayer().addTo(map);
+			expect(grid._tileZoom).to.be(initialZoom);
+
+			grid.options.maxNativeZoom = 11;
+			grid.redraw();
+			expect(grid._tileZoom).to.be(11);
+		});
 	});
 
 	describe("number of 256px tiles loaded in synchronous non-animated grid @800x600px", function () {

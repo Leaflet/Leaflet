@@ -1,6 +1,6 @@
 import {TileLayer} from './TileLayer';
 import {extend, setOptions, getParamString} from '../../core/Util';
-import {retina} from '../../core/Browser';
+import Browser from '../../core/Browser';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
 import {toBounds} from '../../geometry/Bounds';
 
@@ -28,7 +28,7 @@ export var TileLayerWMS = TileLayer.extend({
 	// @aka TileLayer.WMS options
 	// If any custom options not documented here are used, they will be sent to the
 	// WMS server as extra parameters in each request URL. This can be useful for
-	// [non-standard vendor WMS parameters](http://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
+	// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -80,7 +80,7 @@ export var TileLayerWMS = TileLayer.extend({
 
 		options = setOptions(this, options);
 
-		var realRetina = options.detectRetina && retina ? 2 : 1;
+		var realRetina = options.detectRetina && Browser.retina ? 2 : 1;
 		var tileSize = this.getTileSize();
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;

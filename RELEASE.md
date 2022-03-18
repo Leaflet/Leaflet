@@ -1,28 +1,22 @@
-Documentation for the release process of Leaflet.
+## Releasing a new version of Leaflet
 
-**Please note that you will need to have a git remote called `origin` that points to Leaflet's GitHub repo, since the publish script assumes it**
-- [ ] Make a new release branch (for example named `prepare-X.Y.Z`)
-- [ ] Make sure you do not have any `package.lock.json` or `yarn.lock` locally, since they can potentially make you build with the wrong package versions
-- [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md) since last release and commit to the release branch
-- [ ] Write a blog post about the new release and put in `/docs/_posts` and commit to the release branch
-- [ ] Bump version number in `package.json` and commit to `master`
-- [ ] Run `npm run release`
+- [ ] Ensure all https://github.com/Leaflet/Leaflet/labels/blocker issues and pull requests are resolved.
+- [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md) since last release and commit.
+- [ ] Run `npm version <patch | minor | major>` (this will bump the version in `package.json` and create a new tag).
+- [ ] Run `git push --follow-tags` to push the commit created by NPM to Github (together with the tag).
+- [ ] Wait for the CI to complete and follow the logs to make sure it runs successfully.
 - [ ] Verify that the release was correctly published to NPM by checking:
   - [ ] [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
   - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
-- [ ] Update API docs:
-  - [ ] run `npm run docs`
-  - [ ] Copy the built docs from `dist/reference-X.Y.Z.html` to `docs/reference-X.Y.Z.html`, remove content before first and after second "CUT HERE" comment
-  - [ ] Insert YAML front matter, see old `docs/reference-X.Y.Z.html` for reference
-  - [ ] Commit the new docs to the release branch
-- [ ] Update `docs/reference.html` to redirect to the new version and commit the change to the release branch
-- [ ] Update integrity hashes:
-  - [ ] Checkout the release tag (`git checkout vX.Y.Z`)
-  - [ ] Run `npm run integrity` or simply `node ./build/integrity.js` if you're not on Debian
-  - [ ] Copy the hashes and update `integrity_hash_css`, `integrity_hash_source` and `integrity_hash_uglified` in `docs/_config.yml`; commit changes to the release branch
-- [ ] Update link to latest release in `docs/download.html`, and commit to the release branch
-- [ ] Add link to new version reference in `docs/reference-versions.html`, and commit to the release branch
-- [ ] Update `latest_leaflet_version` (and possibly `latest_leaflet_reference`) in `docs/_config.yml` and commit to the release branch
-- [ ] Update the announcement section in `docs/index.html` and commit to the release branch
-- [ ] If it looks like everything is good at this point, merge the release branch into `master`
 - [ ] Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
+
+### Updating docs after the release
+
+- [ ] Make a new branch for the update
+- [ ] Write a blog post about the new release and put it in `/docs/_posts`
+- [ ] If necessary to preserve previous version's docs, rename `dist/reference.html` to `dist/reference-X.Y.Z.html` and add it to the list in `docs/reference-versions.html`
+- [ ] Run `npm run docs` to generate the new `docs/reference.html`
+- [ ] Run `npm run integrity` and make sure `docs/_config.yml` is updated with new hashes
+- [ ] Update link to latest release in `docs/download.md`
+- [ ] Update the announcement section in `docs/index.html`
+- [ ] Commit all the changes and submit a PR for someone to review

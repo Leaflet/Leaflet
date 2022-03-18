@@ -116,7 +116,7 @@ Moreover, now if you only specify an event type to the `off` method, it will rem
 
 #### Other API Improvements
 
-Leaflet 0.4 features more than 30 new methods, options and events across different Leaflet classes that make the API more complete and powerful. Check out the [full changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#other-api-improvements) for the complete list.
+Leaflet 0.4 features more than 30 new methods, options and events across different Leaflet classes that make the API more complete and powerful. Check out the [full changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md#other-api-improvements) for the complete list.
 
 ### Performance and Usability Improvements
 
@@ -137,11 +137,11 @@ In addition, there are several usability improvements not already mentioned:
 
 Leaflet 0.4 brings around 45 bugfixes that make it more stable and reliable across all browsers and platforms. Notable bugfixes include the dreaded iOS bug that caused the map to completely disappear after pinch-zooming in some rare cases, broken zooming on IE10 beta, broken Leaflet maps on pages served with an XHTML content type, and incorrect zooming on maps inside a fixed-position element.
 
-Here's [a full list of bugfixes](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#bug-fixes) in the changelog.
+Here's [a full list of bugfixes](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md#bug-fixes) in the changelog.
 
 ### Upgrading from older versions
 
-Besides the GeoJSON and Icon changes mentioned above, here's a [list of potentially breaking changes](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#other-breaking-api-changes) --- read it carefully when updating your code (shouldn't take much time though).
+Besides the GeoJSON and Icon changes mentioned above, here's a [list of potentially breaking changes](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md#other-breaking-api-changes) --- read it carefully when updating your code (shouldn't take much time though).
 
 Download options for Leaflet 0.4 (including the actual download, the CDN-hosted version, and instructions for building manually) are listed on the [download page](../../../download.html).
 

@@ -58,7 +58,27 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
+	it("is not interactive by default", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+
+		layer.bindTooltip('Tooltip', {permanent: true});
+		layer._tooltip.on('click', spy);
+		happen.click(layer._tooltip._container);
+		expect(spy.called).to.be(false);
+	});
+
 	it("can be made interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+
+		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
+		layer._tooltip.on('click', spy);
+		happen.click(layer._tooltip._container);
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("events are propagated to bound layer", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -66,6 +86,18 @@ describe('Tooltip', function () {
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
 		happen.click(layer._tooltip._container);
 		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("has class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
+	});
+
+	it("has not class leaflet-interactive", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
 	});
 
 	it("can be forced on left direction", function () {
@@ -278,9 +310,103 @@ describe('Tooltip', function () {
 		map.openTooltip('Tooltip', center);
 	});
 
+	it("map.openTooltip considers interactive option", function () {
+		var spy = sinon.spy();
+		var tooltip = L.tooltip({interactive: true, permanent: true})
+		  .setContent('Tooltip')
+		  .on('click', spy);
+		map.openTooltip(tooltip, center);
+
+		happen.click(tooltip._container);
+		expect(spy.calledOnce).to.be(true);
+	});
+
 	it("can call closeTooltip while not on the map", function () {
 		var layer = new L.Marker(center);
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
+	});
+
+	it("opens a tooltip and follow the mouse (sticky)", function () {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		happen.at('click', 120, 120);
+		var latlng = map.containerPointToLatLng([120, 120]);
+		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+	});
+
+	it("opens a permanent tooltip and follow the mouse (sticky)", function (done) {
+		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
+		var tooltip = layer.getTooltip();
+		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
+
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				var latlng = map.containerPointToLatLng([120, 120]);
+				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
+				done();
+			}
+		});
+		var toucher = hand.growFinger('mouse');
+		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+	});
+
+	it("closes existent tooltip on new bindTooltip call", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var eventSpy = sinon.spy(layer, "unbindTooltip");
+		layer.bindTooltip('Tooltip1', {permanent: true});
+		var tooltip1 = layer.getTooltip();
+		layer.bindTooltip('Tooltip2').openTooltip();
+		layer.unbindTooltip.restore(); // unwrap the spy
+		expect(map.hasLayer(tooltip1)).to.not.be.ok();
+		expect(eventSpy.calledOnce).to.be.ok();
+	});
+
+	it("don't opens the tooltip on marker mouseover while dragging map", function () {
+		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
+		// the tooltip opened / closed.
+		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		var tooltip = layer.getTooltip();
+
+		// simulate map dragging
+		map.dragging.moving = function () {
+			return true;
+		};
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be(false);
+
+		// simulate map not dragging anymore
+		map.dragging.moving = function () {
+			return false;
+		};
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+	});
+
+	it("closes the tooltip on marker mouseout while dragging map and don't open it again", function () {
+		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
+		// the tooltip opened / closed.
+		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		var tooltip = layer.getTooltip();
+
+		// open tooltip before "dragging map"
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+
+		// simulate map dragging
+		map.dragging.moving = function () {
+			return true;
+		};
+		happen.mouseout(layer._icon, {relatedTarget: map._container});
+		expect(tooltip.isOpen()).to.be(false);
+
+		// tooltip should not open again while dragging
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be(false);
 	});
 });
