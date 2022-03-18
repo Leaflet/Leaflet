@@ -2,22 +2,17 @@ describe("Map.TouchZoom", function () {
 	var container, map;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		container.style.width = container.style.height = '600px';
-		container.style.top = container.style.left = 0;
-		container.style.position = 'absolute';
-		document.body.appendChild(container);
-
-		map = new L.Map(container, {
+		container = createContainer();
+		map = L.map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
+		container.style.width = container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 	it.skipIfNotTouch("Increases zoom when pinching out", function (done) {

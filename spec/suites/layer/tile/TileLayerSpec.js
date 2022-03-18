@@ -1,5 +1,5 @@
 describe('TileLayer', function () {
-	var div, map;
+	var container, map;
 
 	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
@@ -159,17 +159,14 @@ describe('TileLayer', function () {
 	"qQzPJJgDeASMHuOx+lAH/9k=";
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-		document.body.appendChild(div);
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	function kittenLayerFactory(options) {
@@ -290,8 +287,8 @@ describe('TileLayer', function () {
 
 	describe('url template', function () {
 		beforeEach(function () {
-			div.style.width = '400px';
-			div.style.height = '400px';
+			container.style.width = '400px';
+			container.style.height = '400px';
 			map.setView([0, 0], 2);
 		});
 
