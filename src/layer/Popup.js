@@ -361,15 +361,23 @@ Layer.include({
 	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
-		this._popup = this._initOverlay(Popup, this._popup, content, options);
-		if (!this._popupHandlersAdded) {
-			this.on({
-				click: this._openPopup,
-				keypress: this._onKeyPress,
-				remove: this.closePopup,
-				move: this._movePopup
-			});
-			this._popupHandlersAdded = true;
+		const supportedTypes = typeof content === 'string' || typeof content === 'function' ||
+			content instanceof HTMLElement || content instanceof Popup;
+
+		if (supportedTypes) {
+			this._popup = this._initOverlay(Popup, this._popup, content, options);
+			if (!this._popupHandlersAdded) {
+				this.on({
+					click: this._openPopup,
+					keypress: this._onKeyPress,
+					remove: this.closePopup,
+					move: this._movePopup
+				});
+				this._popupHandlersAdded = true;
+			}
+		} else {
+			throw new Error(`Invalid argument passed to 'bindPopup()' method: expects 'string', 'function', 'HTMLElement' or 'Popup', 
+							${typeof content} is passed instead.`);
 		}
 
 		return this;
