@@ -50,9 +50,16 @@ as well as using a screen reader.
 You may already have a screen reader pre-installed,
 for example:
 
-- Narrator on Windows
-- TalkBack on Android
-- VoiceOver on macOS and iOS
+- [Narrator](https://support.microsoft.com/en-us/windows/complete-guide-to-narrator-e4397a0d-ef4f-b386-d8ae-c172f109bdb1)
+on Windows
+- [Orca](https://help.gnome.org/users/orca/stable/introduction.html.en)
+on Linux
+- [TalkBack](https://support.google.com/accessibility/android/answer/6283677?hl=en)
+on Android
+- VoiceOver on
+[macOS](https://support.apple.com/guide/voiceover/welcome/mac)
+and
+[iOS](https://support.apple.com/guide/iphone/turn-on-and-practice-voiceover-iph3e2e415f/ios)
 
 ### Purely decorative maps
 
