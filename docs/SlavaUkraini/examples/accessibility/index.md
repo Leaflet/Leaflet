@@ -90,7 +90,7 @@ can enhance the experience for your users,
 but can also degrade it in some cases.
 Therefore it is important that you
 [test your maps](#test-your-maps)
-whenever a new plugin is added to a map.
+whenever a new plugin is added.
 
 If you find an accessibility issue in a plugin,
 please report it to the plugin's author.
