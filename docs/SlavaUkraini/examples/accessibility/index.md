@@ -5,7 +5,8 @@ title: A guide to basic Leaflet accessibility
 
 ## Accessible maps
 
-Web accessibility is the inclusive practice of ensuring no barriers exist
+[Web accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+is the inclusive practice of ensuring no barriers exist
 that would prevent interactions or information access.
 
 This guide to Leaflet accessibility can help you create maps that are usable
