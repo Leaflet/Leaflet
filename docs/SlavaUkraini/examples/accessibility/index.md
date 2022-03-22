@@ -28,7 +28,7 @@ it is vital to ensure each has a unique and descriptive
 or
 [`title`](/reference.html#marker-alt):
 
-<pre><code>var marker = L.marker([50.4501, 30.5234],
+<pre><code class="javascript">var marker = L.marker([50.4501, 30.5234],
   {alt: 'Kyiv'}).addTo(map) // "Kyiv" is the <a href="https://www.w3.org/TR/accname-1.1/#dfn-accessible-name"><em>accessible name</em></a> of this marker
   .bindPopup('Kyiv, Ukraine is the birthplace of Leaflet!');</code></pre>
 
@@ -70,9 +70,11 @@ A simple way to achieve this is to use the HTML
 [`inert` attribute](https://github.com/WICG/inert)
 polyfill:
 
-<pre><code>&lt;!-- This map is for aesthetic purposes only, and can not be interacted with! --&gt;
-&lt;div id='decorative-map' inert&gt;&lt;/div&gt;
-&lt;script src="https://unpkg.com/wicg-inert@latest/dist/inert.min.js"&gt;&lt;/script&gt;</code></pre>
+```html
+<!-- This map is for aesthetic purposes only, and can not be interacted with! -->
+<div id='decorative-map' inert></div>
+<script src='https://unpkg.com/wicg-inert@latest/dist/inert.min.js'></script>
+```
 
 ### Utilizing plugins
 
