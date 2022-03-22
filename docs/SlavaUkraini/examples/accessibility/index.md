@@ -52,7 +52,7 @@ for example:
 
 - [Narrator](https://support.microsoft.com/en-us/windows/complete-guide-to-narrator-e4397a0d-ef4f-b386-d8ae-c172f109bdb1)
 on Windows
-- [Orca](https://help.gnome.org/users/orca/stable/introduction.html.en)
+- [Orca](https://help.gnome.org/users/orca/stable/index.html.en)
 on Linux
 - [TalkBack](https://support.google.com/accessibility/android/answer/6283677?hl=en)
 on Android
