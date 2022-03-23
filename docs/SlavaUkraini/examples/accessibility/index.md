@@ -69,7 +69,7 @@ and not intended for users to interact with
 (in similar fashion to background-images and -videos).
 
 Such maps should be hidden from
-<abbr title="Assistive Technologies">ATs</abbr>,
+assistive technologies (ATs),
 and have no focusable descendants.
 This is to avoid the potential to confuse screen reader users,
 and to remove any unnecessary tab stops for keyboard users.
