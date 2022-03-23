@@ -9,10 +9,6 @@ html, body, input, select, button, textarea, table {
 	text-rendering: optimizeLegibility;
 }
 
-html {
-	overflow: auto;
-}
-
 body {
 	line-height: 1.5;
 	color: black;
