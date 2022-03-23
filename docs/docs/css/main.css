@@ -10,7 +10,6 @@ html, body, input, select, button, textarea, table {
 }
 
 html {
-	scroll-padding-top: 5em;
 	overflow: auto;
 }
 
