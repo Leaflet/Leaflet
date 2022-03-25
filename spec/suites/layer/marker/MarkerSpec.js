@@ -202,6 +202,20 @@ describe("Marker", function () {
 			var icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(false);
 		});
+
+		it("pan map to focus marker", function (done) {
+			var marker = L.marker([70, 0], {icon: L.divIcon()});
+			map.addLayer(marker);
+
+			setTimeout(function () {
+				expect(function () {
+					marker._icon.focus();
+				}).to.not.throwException();
+
+				done();
+			}, 100);
+
+		});
 	});
 
 	describe("#setLatLng", function () {
