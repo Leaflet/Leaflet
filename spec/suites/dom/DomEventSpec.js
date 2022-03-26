@@ -42,8 +42,8 @@ describe('DomEvent', function () {
 		});
 
 		it('throws when type is "click" and context is undefined', function () {
-		expect(L.DomEvent.on).withArgs(el, 'click', undefined)
-			.to.throwException();
+			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
+				.to.throwException();
 		});
 
 		it('throws when type is "click" and context is null', function () {
@@ -359,7 +359,7 @@ describe('DomEvent', function () {
 
 			happen.click(el);
 			happen.keypress(el);
-			
+
 			expect(listener.lastCall.args[0].type).to.eql('keypress');
 		});
 
@@ -406,7 +406,7 @@ describe('DomEvent', function () {
 		it('removes a previously added event when passed an event map with multiple events', function () {
 			var listener2 = sinon.spy(),
 			    events = {click: listener, keypress: listener2},
-				events2 = {click: listener};
+			events2 = {click: listener};
 
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events2);
@@ -446,14 +446,14 @@ describe('DomEvent', function () {
 		it('removes listener added with context when passed an event map with multiple events', function () {
 			var listener2 = sinon.spy(),
 			    events = {click: listener, keypress: listener2},
-				events2 = {click: listener},
+			events2 = {click: listener},
 			    ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, events, ctx);
 			L.DomEvent.off(el, events2, ctx);
 
 			happen.click(el);
-			happen.keypress(el)
+			happen.keypress(el);
 
 			sinon.assert.notCalled(listener);
 			expect(listener2.lastCall.args[0].type).to.eql('keypress');
