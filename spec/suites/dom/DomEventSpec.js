@@ -26,18 +26,128 @@ describe('DomEvent', function () {
 	});
 
 	describe('#on (addListener)', function () {
-		it('throws when types/fn are undefined/null/false', function () {
+		it('throws when type is undefined and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, undefined, L.Util.falseFn)
 				.to.throwException();
+		});
+
+		it('throws when type is null and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, null, L.Util.falseFn)
 				.to.throwException();
+		});
+
+		it('throws when types is false and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, false, L.Util.falseFn)
 				.to.throwException();
-			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
-				.to.throwException();
+		});
+
+		it('throws when types is "click" and context is undefined', function () {
+		expect(L.DomEvent.on).withArgs(el, 'click', undefined)
+			.to.throwException();
+		});
+
+		it('throws when types is "click" and context is null', function () {
 			expect(L.DomEvent.on).withArgs(el, 'click', null)
 				.to.throwException();
+		});
+
+		it('throws when types is "click" and context is false', function () {
 			expect(L.DomEvent.on).withArgs(el, 'click', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "click" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "dblclick" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "dblclick" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "dblclick" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousedown" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousedown" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousedown" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseup" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseup" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseup" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseover" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseover" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseover" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseout" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseout" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "mouseout" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', undefined)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousemove" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', null)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousemove" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', false)
+				.to.throwException();
+		});
+
+		it('throws when types is "mousemove" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', undefined)
 				.to.throwException();
 		});
 
