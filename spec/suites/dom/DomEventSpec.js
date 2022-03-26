@@ -343,7 +343,7 @@ describe('DomEvent', function () {
 		});
 	});
 
-	describe.only('#off (removeListener)', function () {
+	describe('#off (removeListener)', function () {
 		it('removes a previously added listener', function () {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener);
