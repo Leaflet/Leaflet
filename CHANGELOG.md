@@ -3,6 +3,26 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.8.0-beta.1
+
+Changes since `v1.8.0-beta.0`:
+
+### 🐞 Bug fixes
+
+- Fix `Uncaught TypeError: t is undefined` error with markers in some editing/drawing plugins ([#8084](https://github.com/Leaflet/Leaflet/pull/8084), by [@Falke-Design](https://github.com/Falke-Design))
+- Fix broken bundle when using Leaflet with Rollup/Webpack ([#8050](https://github.com/Leaflet/Leaflet/pull/8050), by [@Falke-Design](https://github.com/Falke-Design))
+- Fix SVG performance regression ([#8058](https://github.com/Leaflet/Leaflet/pull/8058), by [@mourner](https://github.com/mourner))
+
+### ✨ Improvements
+
+- Increase default font sizes and decrease attribution transparency for improved legibility ([#8057](https://github.com/Leaflet/Leaflet/pull/8057), by [@mourner](https://github.com/mourner))
+- Improve unit tests organization ([#7852](https://github.com/Leaflet/Leaflet/pull/7852), by [@Falke-Design](https://github.com/Falke-Design))
+
+### 📝 Docs
+
+- Add a new [Leaflet accessibility tutorial](https://leafletjs.com/SlavaUkraini/examples/accessibility/) ([#8081](https://github.com/Leaflet/Leaflet/pull/8081), by [@Malvoz](https://github.com/Malvoz))
+- Fix an issue with top padding on non-API pages ([#8083](https://github.com/Leaflet/Leaflet/pull/8083), by [@wyankush](https://github.com/wyankush))
+
 ## 1.8.0-beta.0
 
 ### ⚠️ Breaking Changes
