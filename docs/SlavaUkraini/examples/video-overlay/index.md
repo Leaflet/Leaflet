@@ -78,7 +78,9 @@ A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML
 		opacity: 0.8, 
                 errorOverlayUrl: errorOverlayUrl,
                 alt: altText,
-                interactive: true
+                interactive: true,
+                autoplay: true,
+                muted: true
 	}).addTo(map);
 ```
 
@@ -88,9 +90,15 @@ And just like that, you'll get the video on your map:
 
 `errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
 
-`alt` stands for the alt attribute of the image. Images alternatives ("alt" option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+`alt` stands for the alt attribute of the image. Images alternatives (`alt` option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
 
-`interactive` is 'false' by default. If true, the imageOverlay will emit mouse events when clicked or hovered. It means that no mouse events are triggered. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+`interactive` is `false` by default. If `true`, the imageOverlay will emit mouse events when clicked or hovered. It means that no mouse events are triggered. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+
+`autoplay` option defines whether the video starts playing automatically when loaded. It is `true` by default. 
+
+`muted` option defines whether the video starts on mute when loaded. It is `false` by default.
+
+It is important to know that on some browsers `autoplay` functionality will only work with `muted` option explicitly set to `true`.
 
 You can find other options of `L.videoOverlay` in [`Docs`](/reference.html#videooverlay)
 
