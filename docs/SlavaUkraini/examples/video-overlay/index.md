@@ -3,7 +3,7 @@ layout: tutorial_v2
 title: Leaflet on Mobile
 ---
 
-## Video on webpages
+## VideoOverlay - Tutorial
 
 Video used to be a hard task when building a webpage, until the [`<video>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) was made available.
 
@@ -55,9 +55,13 @@ Adding a video overlay works very similar to adding a image overlay. For just on
 
 	var overlay = L.imageOverlay( imageUrl, bounds, options );
 
+`L.imageOverlay` is used to load and display a single image over specific bounds of the map. Extends [`Layer`](/reference.html#layer).
+
 For a video overlay, just:
 
 * Use `L.videoOverlay` instead of `L.imageOverlay`
+* `L.videoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`ImageOverlay`](/reference.html#imageoverlay). 
+A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML5 element.
 * Instead of the image URL, specify one video URL *or* an array of video URLs
 
 ```
@@ -65,11 +69,16 @@ For a video overlay, just:
 		'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 	];
+        var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
+        var altText = 'Hurricane Patricia from Satellite. Source: NASA'
 
 	var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
 	var videoOverlay = L.videoOverlay( videoUrls, bounds, {
-		opacity: 0.8
+		opacity: 0.8, 
+                errorOverlayUrl: errorOverlayUrl,
+                alt: altText,
+                interactive: true
 	}).addTo(map);
 ```
 
@@ -77,6 +86,13 @@ And just like that, you'll get the video on your map:
 
 {% include frame.html url="example-nocontrols.html" %}
 
+`errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+
+`alt` stands for the alt attribute of the image. Images alternatives ("alt" option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+
+`interactive` is 'false' by default. If true, the imageOverlay will emit mouse events when clicked or hovered. It means that no mouse events are triggered. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+
+You can find other options of `L.videoOverlay` in [`Docs`](/reference.html#videooverlay)
 
 Video overlays behave like any other Leaflet layer - you can add and remove them, let the user select from several videos using a [layers control](../layers-control/), etc.
 
