@@ -389,7 +389,7 @@ export var Marker = Layer.extend({
 		if (!map) { return; }
 
 		var iconOpts = this.options.icon.options;
-		var size = point(iconOpts.iconSize);
+		var size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
 		var anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
 
 		map.panInside(this._latlng, {
