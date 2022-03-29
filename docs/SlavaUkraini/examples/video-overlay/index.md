@@ -154,7 +154,7 @@ And just like that, you'll get the video on your map:
 
 `muted` option defines whether the video starts on mute when loaded. It is `false` by default.
 
-`playsInline` option allows video to play inline without automatically entering fullscreen mode when playback begins if it is set to`true`. It is `true` by default.
+`playsInline` option allows video to play inline without automatically entering fullscreen mode when playback begins in the mobile browser if it is set to`true`. It is `true` by default.
 
 It is important to know that on some browsers `autoplay` functionality will only work with `muted` option explicitly set to `true`.
 
