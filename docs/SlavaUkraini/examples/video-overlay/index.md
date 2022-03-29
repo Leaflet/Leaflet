@@ -214,7 +214,8 @@ To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use thi
 Instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
 ### Creating SVG
-- Approach #1: Let's create SVG element:
+##### Approach #1: 
+Let's create SVG element:
 ```
     var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
@@ -222,7 +223,8 @@ Instantiates an image overlay object given an SVG element and the geographical b
     svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
 ```
 
-- Approach #2: Alternatively, you can create svg element in html code:
+#####Approach #2: 
+Alternatively, you can create svg element in html code:
 ```
     <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
 ```
