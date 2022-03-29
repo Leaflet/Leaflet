@@ -12,7 +12,7 @@ There are 3 Overlays in Leaflet API:
 
 In this tutorial, you’ll learn how to use these Overlays.
 
-## ImageOverlay
+## `ImageOverlay`
 
 `L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
 
@@ -52,19 +52,18 @@ Let's create an image overlay with multiple options:
 		interactive: true
 	}).addTo(map);
 ```
-`opacity` defines the opacity of the image overlay, it equals to `1.0` by default. Decrease this value to make an image overlay transparent and to expose the underlying map layer. 
+- `opacity` defines the opacity of the image overlay, it equals to `1.0` by default. Decrease this value to make an image overlay transparent and to expose the underlying map layer. 
 	
-`errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load.
+- `errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load.
 
-`alt` stands for the alt attribute of the image. Images alternatives (`alt` option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website.
+- `alt` stands for the alt attribute of the image. Images alternatives (`alt` option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website.
 
-`interactive` is `false` by default. If `true`: mouse events will be fired. If `false`: no mouse events are triggered.
-
+- `interactive` is `false` by default. If `true`, the image overlay will emit mouse events when clicked or hovered.
 
 You can find other options of `L.imageOverlay` in [`Docs`](/reference.html#imageoverlay)
 
 
-## VideoOverlay
+## `VideoOverlay`
 
 Video used to be a hard task when building a webpage, until the [`<video>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) was made available.
 
@@ -144,19 +143,11 @@ And just like that, you'll get the video on your map:
 
 {% include frame.html url="example-nocontrols.html" %}
 
-`errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+- `autoplay` option defines whether the video starts playing automatically when loaded. It is `true` by default. It is important to know that on some browsers `autoplay` functionality will only work with `muted` option explicitly set to `true`. It is important to know that on some browsers `autoplay` functionality will only work with `muted` option explicitly set to `true`.
 
-`alt` stands for the alt attribute of the image. Images alternatives (`alt` option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
+- `muted` option defines whether the video starts on mute when loaded. It is `false` by default.
 
-`interactive` is `false` by default. If `true`: mouse events will be fired. If `false`: no mouse events are triggered. The option is inherited from [`ImageOverlay`](/reference.html#imageoverlay).
-
-`autoplay` option defines whether the video starts playing automatically when loaded. It is `true` by default. 
-
-`muted` option defines whether the video starts on mute when loaded. It is `false` by default.
-
-`playsInline` option when it is set to `true` allows video to play inline without automatically entering fullscreen mode when playback begins in the mobile browser. It is `true` by default.
-
-It is important to know that on some browsers `autoplay` functionality will only work with `muted` option explicitly set to `true`.
+- `playsInline` option when it is set to `true` allows video to play inline without automatically entering fullscreen mode when playback begins in the mobile browser. It is `true` by default.
 
 You can find other options of `L.videoOverlay` in [`Docs`](/reference.html#videooverlay)
 
@@ -205,47 +196,47 @@ This allows us to build custom interfaces. For example, we can build a small sub
 
 {% include frame.html url="example.html" %}
 
-##SVGOverlay
+## `SVGOverlay`
 `L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 ```
 	var svgOverlay = L.svgOverlay( SVGElement, bounds, options );
 ```
-Instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
+It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
-### Creating SVG
+### 1. Creating SVG element
 ##### Approach #1: 
 Let's create SVG element:
 ```
-    var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
-    svgElement.setAttribute('viewBox', "0 0 200 200");
-    svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
+	var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+	svgElement.setAttribute('viewBox', "0 0 200 200");
+	svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
 ```
 
 ##### Approach #2: 
 Alternatively, you can create svg element in html code:
 ```
-    <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
+	<svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
 ```
 
-Then, choose this SVG element by using a querySelector:
+And choose this SVG element by using a querySelector:
 
 ```
-    var svgElement = document.querySelector('#image');
+	var svgElement = document.querySelector('#image');
 ```
 
-### Creating SVGOverlay
-Then, create svgOverlay with desired options similarly to ImageOverlay and VideOverlay:
+### 2.Creating SVG Overlay
+Create SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 ```
-    var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
-    map.fitBounds(bounds);
+	var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+	map.fitBounds(bounds);
 
-    var svgOverlay = L.svgOverlay(svgElement, bounds, {
-        opacity: 0.7,
-        interactive: true
-    }).addTo(map)
+	var svgOverlay = L.svgOverlay(svgElement, bounds, {
+		opacity: 0.7,
+		interactive: true
+	}).addTo(map)
 ```
 Although SVGOverlay does not have its own unique options, it inherited a variety of options from ImageOverlay, Interactive layer and Layer.
 Check out Documentation to find out more [`SVGOverlay`](/reference.html#svgoverlay) options.
