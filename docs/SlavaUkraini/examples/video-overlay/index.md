@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Leaflet on Mobile
+title: Overlay
 ---
 
 # Overlay - Tutorial
@@ -17,11 +17,11 @@ In this tutorial, you’ll learn how to use these Overlays.
 `L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
-
+```
 	var overlay = L.imageOverlay( imageUrl, bounds, options );
-	
+```
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
-
+```
 	var map = L.map('map').setView([37.8, -96], 4);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
@@ -30,15 +30,15 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 		tileSize: 512,
 		zoomOffset: -1
 	}).addTo(map);
-	
+```
 If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
-
+```
 	L.rectangle(bounds).addTo(map);
 
 	map.fitBounds(bounds);
-	
+```
 Let's create an image overlay with multiple options:
-
+```
 	var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
     var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 	var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
@@ -51,7 +51,7 @@ Let's create an image overlay with multiple options:
 		alt: altText,
 		interactive: true
 	}).addTo(map);
-	
+```
 `opacity` defines the opacity of the image overlay, it equals to `1.0` by default. Decrease this value to make an image overlay transparent and to expose the underlying map layer. 
 	
 `errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load.
@@ -69,12 +69,12 @@ You can find other options of `L.imageOverlay` in [`Docs`](/reference.html#image
 Video used to be a hard task when building a webpage, until the [`<video>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) was made available.
 
 Nowadays, we can use the following HTML code:
-
+```
 	<video width="500" controls>
 		<source src="https://www.mapbox.com/bites/00188/patricia_nasa.webm" type="video/webm">
 		<source src="https://www.mapbox.com/bites/00188/patricia_nasa.mp4" type="video/mp4">
 	</video>
-
+```
 To display this video:
 
 <video width="500" controls>
@@ -87,7 +87,7 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 ### Creating a map with a background
 
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
-
+```
 	var map = L.map('map').setView([37.8, -96], 4);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
@@ -96,17 +96,17 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 		tileSize: 512,
 		zoomOffset: -1
 	}).addTo(map);
-
+```
 Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:
-
+```
 	var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
-
+```
 If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
-
+```
 	L.rectangle(bounds).addTo(map);
 
 	map.fitBounds(bounds);
-
+```
 {% include frame.html url="example-bounds.html" %}
 
 ### Adding the video overlay
@@ -209,9 +209,9 @@ This allows us to build custom interfaces. For example, we can build a small sub
 `L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
-
+```
 	var svgOverlay = L.svgOverlay( SVGElement, bounds, options );
-
+```
 Instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
 ### Creating SVG
@@ -224,7 +224,7 @@ Let's create SVG element:
     svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
 ```
 
-#####Approach #2: 
+##### Approach #2: 
 Alternatively, you can create svg element in html code:
 ```
     <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
@@ -237,7 +237,7 @@ Then, choose this SVG element by using a querySelector:
 ```
 
 ### Creating SVGOverlay
-Secondly, create svgOverlay with desired options similarly to ImageOverlay and VideOverlay
+Then, create svgOverlay with desired options similarly to ImageOverlay and VideOverlay:
 ```
     var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
     map.fitBounds(bounds);
