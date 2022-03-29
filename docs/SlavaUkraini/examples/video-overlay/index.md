@@ -135,7 +135,8 @@ A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML
 		alt: altText,
 		interactive: true,
 		autoplay: true,
-		muted: true
+		muted: true,
+		playsInline: true
 	}).addTo(map);
 ```
 
