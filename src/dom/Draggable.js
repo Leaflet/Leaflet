@@ -62,7 +62,7 @@ export var Draggable = Evented.extend({
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
 		if (Draggable._dragging === this) {
-			this.finishDrag();
+			this.finishDrag(true);
 		}
 
 		DomEvent.off(this._dragStartTarget, START, this._onDown, this);
@@ -188,7 +188,7 @@ export var Draggable = Evented.extend({
 		this.finishDrag();
 	},
 
-	finishDrag: function () {
+	finishDrag: function (noInertia) {
 		DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
@@ -207,6 +207,7 @@ export var Draggable = Evented.extend({
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
+				noInertia: noInertia,
 				distance: this._newPos.distanceTo(this._startPos)
 			});
 		}

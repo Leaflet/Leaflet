@@ -187,7 +187,7 @@ export var Drag = Handler.extend({
 		var map = this._map,
 		    options = map.options,
 
-		    noInertia = !options.inertia || this._times.length < 2;
+		    noInertia = !options.inertia || e.noInertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
