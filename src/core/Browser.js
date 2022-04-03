@@ -163,17 +163,6 @@ var vml = !svg && (function () {
 	}
 }());
 
-var emoji = !!canvas && (function () { // emoji detection logic by the Modernizr team, MIT-licensed
-	var ctx = document.createElement('canvas').getContext('2d');
-	var offset = 12 * (ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio ||
-			ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 1);
-	ctx.fillStyle = '#f00';
-	ctx.textBaseline = 'top';
-	ctx.font = '32px Arial';
-	ctx.fillText('\ud83d\udc28', 0, 0);
-	return ctx.getImageData(offset, offset, 1, 1).data[0] !== 0;
-})();
-
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
@@ -211,6 +200,5 @@ export default {
 	passiveEvents: passiveEvents,
 	canvas: canvas,
 	svg: svg,
-	vml: vml,
-	emoji: emoji
+	vml: vml
 };

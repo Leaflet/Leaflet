@@ -6,6 +6,8 @@ import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import Browser from '../core/Browser';
 
+const ukrainianFlag = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
+
 /*
  * @class Control.Attribution
  * @aka L.Control.Attribution
@@ -22,8 +24,7 @@ export var Attribution = Control.extend({
 
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">' +
-				(Browser.emoji ? '&#127482;&#127462; ' : '') + 'Leaflet</a>'
+		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">' + (Browser.svg ? ukrainianFlag + ' ' : '') + 'Leaflet</a>'
 	},
 
 	initialize: function (options) {
