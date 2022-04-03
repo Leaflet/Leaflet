@@ -8,13 +8,13 @@ layout: ua
 	}
 </style>
 
-Leaflet was created 11 years ago by [Vladimir Agafonkin](https://agafonkin.com), an Ukrainian citizen living in Kyiv.
+Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
-Vladimir is no longer in Kyiv, because Russian bombs are falling over the city. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
+Volodymyr is no longer in Kyiv, because Russian bombs are falling over the city. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
-The Russian occupation of Ukraine contravenes and violates several international laws, including the United Nations Charter. It is an unprovoked, unjustifiable, and despicable action that endangers countless civilians.
+The Russian soldiers have already killed tens of thousands of civilians, including women and children, and are committing mass war crimes like gang rapes, executions, looting, and targeted bombings of civilian shelters and places of cultural significance. The death toll keeps rising, and Ukraine needs your help.
 
-As Vladimir [expressed a few days ago](https://twitter.com/LeafletJS/status/1496051256409919489):
+As Volodymyr [expressed a few days ago](https://twitter.com/LeafletJS/status/1496051256409919489):
 
 > If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest war, reach out to Ukrainian friends, donate to Ukrainian charities. Just don't be silent.
 
@@ -26,9 +26,7 @@ It is chilling to see Leaflet being used for [factual reporting of the war](http
 
 If you support the actions of the Russian government (even after reading all this), do everyone else a favour and [carry some seeds in your pocket](https://www.theguardian.com/world/video/2022/feb/25/ukrainian-woman-sunflower-seeds-russian-soldiers-video).
 
-
-<small>(The API documentation, plugins list, download info, and all other contents of the website have been temporarily moved [over here](SlavaUkraini/))</small>
+<p class="quiet">(The API documentation, plugins list, download info, and all other contents of the website have been temporarily moved <a href="SlavaUkraini/">over here</a>)</p>
 
 Yours truly,
-
 Leaflet maintainers.
