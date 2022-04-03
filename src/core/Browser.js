@@ -146,6 +146,12 @@ var canvas = (function () {
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 var svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
 
+var inlineSvg = !!svg && (function () {
+	var div = document.createElement('div');
+	div.innerHTML = '<svg/>';
+	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';
+})();
+
 // @property vml: Boolean
 // `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
 var vml = !svg && (function () {
@@ -200,5 +206,6 @@ export default {
 	passiveEvents: passiveEvents,
 	canvas: canvas,
 	svg: svg,
-	vml: vml
+	vml: vml,
+	inlineSvg: inlineSvg
 };
