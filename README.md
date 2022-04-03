@@ -16,7 +16,7 @@ It is chilling to see Leaflet being used for [factual reporting of the war](http
 
 If you support the actions of the Russian government (even after reading all this), do everyone else a favour and [carry some seeds in your pocket](https://www.theguardian.com/world/video/2022/feb/25/ukrainian-woman-sunflower-seeds-russian-soldiers-video).
 
-Yours truly,
+Yours truly,<br>
 Leaflet maintainers.
 
 ---
