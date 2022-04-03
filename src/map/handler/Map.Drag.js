@@ -14,7 +14,7 @@ import {toBounds} from '../../geometry/Bounds';
 // @section Interaction Options
 Map.mergeOptions({
 	// @option dragging: Boolean = true
-	// Whether the map be draggable with mouse/touch or not.
+	// Whether the map is draggable with mouse/touch or not.
 	dragging: true,
 
 	// @section Panning Inertia Options
