@@ -4,6 +4,7 @@ import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
+import Browser from '../core/Browser';
 
 /*
  * @class Control.Attribution
@@ -21,8 +22,8 @@ export var Attribution = Control.extend({
 
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">Leaflet</a>'
-
+		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">' +
+				(Browser.emoji ? '&#127482;&#127462; ' : '') + 'Leaflet</a>'
 	},
 
 	initialize: function (options) {
