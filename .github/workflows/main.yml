@@ -10,10 +10,10 @@ jobs:
         os: [ubuntu-latest, windows-2019]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           check-latest: true
@@ -21,7 +21,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Cache setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -44,13 +44,13 @@ jobs:
         os: [ubuntu-latest, windows-2019]
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -60,7 +60,7 @@ jobs:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -70,13 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -86,7 +86,7 @@ jobs:
           NODE_ENV: release
 
       - name: Cache release build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
@@ -96,13 +96,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -115,13 +115,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore release build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -147,13 +147,13 @@ jobs:
             os: windows-2019
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -166,7 +166,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -176,7 +176,7 @@ jobs:
         run: zip -r leaflet.zip .
 
       - name: Publish artifacts
-        uses: jakejarvis/s3-sync-action@v0.5.1
+        uses: jakejarvis/s3-sync-action@be0c4ab89158cac4278689ebedd8407dd5f35a83 # v0.5.1
         with:
           args: --acl public-read --delete --exact-timestamps
         env:
@@ -192,13 +192,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0 # v3.0.1
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
