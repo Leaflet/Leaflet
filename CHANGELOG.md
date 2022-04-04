@@ -9,7 +9,7 @@ Leaflet Changelog
 
 - Fix vector drift when dragging and immediately zooming (by [@manubb](https://github.com/manubb) [@johnd0e](https://github.com/johnd0e) [@mourner](https://github.com/mourner) in https://github.com/Leaflet/Leaflet/pull/8103)
 - Reduce the occurrence of glitches on rapid zoom (by [@mourner](https://github.com/mourner) in https://github.com/Leaflet/Leaflet/pull/8102)
-- Fix `autoPanOnFocus` on icons with no `iconSize` (by [@Falke-Design](https://github.com/Falke-Design) in https://github.com/Leaflet/Leaflet/)pull/8091
+- Fix `autoPanOnFocus` on icons with no `iconSize` (by [@Falke-Design](https://github.com/Falke-Design) in https://github.com/Leaflet/Leaflet/pull/8091)
 
 ### ✨ Improvements
 
