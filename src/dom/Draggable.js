@@ -62,7 +62,7 @@ export var Draggable = Evented.extend({
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
 		if (Draggable._dragging === this) {
-			this.finishDrag();
+			this.finishDrag(true);
 		}
 
 		DomEvent.off(this._dragStartTarget, START, this._onDown, this);
@@ -79,6 +79,14 @@ export var Draggable = Evented.extend({
 		this._moved = false;
 
 		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
+
+		if (e.touches && e.touches.length !== 1) {
+			// Finish dragging to avoid conflict with touchZoom
+			if (Draggable._dragging === this) {
+				this.finishDrag();
+			}
+			return;
+		}
 
 		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
@@ -180,7 +188,7 @@ export var Draggable = Evented.extend({
 		this.finishDrag();
 	},
 
-	finishDrag: function () {
+	finishDrag: function (noInertia) {
 		DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
@@ -199,6 +207,7 @@ export var Draggable = Evented.extend({
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
+				noInertia: noInertia,
 				distance: this._newPos.distanceTo(this._startPos)
 			});
 		}
