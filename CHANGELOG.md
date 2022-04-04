@@ -3,9 +3,24 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.8.0-beta.1
+## 1.8.0-beta.2
 
-Changes since `v1.8.0-beta.0`:
+### 🐞 Bug fixes
+
+- Fix vector drift when dragging and immediately zooming (by [@manubb](https://github.com/manubb) [@johnd0e](https://github.com/johnd0e) [@mourner](https://github.com/mourner) in https://github.com/Leaflet/Leaflet/pull/8103)
+- Reduce the occurrence of glitches on rapid zoom (by [@mourner](https://github.com/mourner) in https://github.com/Leaflet/Leaflet/pull/8102)
+- Fix `autoPanOnFocus` on icons with no `iconSize` (by [@Falke-Design](https://github.com/Falke-Design) in https://github.com/Leaflet/Leaflet/)pull/8091
+
+### ✨ Improvements
+
+- Add a Ukrainian flag to default attribution 🇺🇦 (by [@mourner](https://github.com/mourner) in https://github.com/Leaflet/Leaflet/pull/8109)
+
+### 🧪 Tests and workflow
+
+- Add GitHub Actions dependency tracking with Dependabot (by [@nathannaveen](https://github.com/nathannaveen) in https://github.com/Leaflet/)Leaflet/pull/8104
+- Cover `DomEvent` with unit tests (by [@stephenspol](https://github.com/stephenspol) in https://github.com/Leaflet/Leaflet/pull/8088)
+
+## 1.8.0-beta.1
 
 ### 🐞 Bug fixes
 
