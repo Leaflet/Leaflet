@@ -17,7 +17,7 @@ Leaflet Changelog
 
 ### 🧪 Tests and workflow
 
-- Add GitHub Actions dependency tracking with Dependabot (by [@nathannaveen](https://github.com/nathannaveen) in https://github.com/Leaflet/)Leaflet/pull/8104
+- Add GitHub Actions dependency tracking with Dependabot (by [@nathannaveen](https://github.com/nathannaveen) in https://github.com/Leaflet/Leaflet/pull/8104)
 - Cover `DomEvent` with unit tests (by [@stephenspol](https://github.com/stephenspol) in https://github.com/Leaflet/Leaflet/pull/8088)
 
 ## 1.8.0-beta.1
