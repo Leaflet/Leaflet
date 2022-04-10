@@ -31,7 +31,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	zoomOffset: -1
 }).addTo(map);
 ```
-If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
+If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
 ```
 L.rectangle(latLngBounds).addTo(map);
 
