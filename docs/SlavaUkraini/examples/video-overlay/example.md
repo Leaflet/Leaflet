@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Video Overlay Tutorial
+title: SVG Overlay Tutorial
 ---
 <script>
 	var map = L.map('map');
