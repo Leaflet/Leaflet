@@ -35,7 +35,7 @@ If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/
 ```
 L.rectangle(latLngBounds).addTo(map);
 
-map.fitBounds(bounds);
+map.fitBounds(latLngBounds);
 ```
 Let's create an image overlay with multiple options:
 ```
