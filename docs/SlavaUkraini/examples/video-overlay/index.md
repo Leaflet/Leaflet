@@ -14,11 +14,11 @@ In this tutorial, you’ll learn how to use these Overlays.
 
 ### `ImageOverlay`
 
-`L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
+`L.ImageOverlay` is used to load and display a single image over specific bounds of the map. 
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 ```
-var overlay = L.imageOverlay( imageUrl, bounds, options );
+var overlay = L.imageOverlay( imageUrl, latLngBounds, options );
 ```
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 ```
@@ -31,11 +31,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	zoomOffset: -1
 }).addTo(map);
 ```
-If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
+If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
 ```
-L.rectangle(bounds).addTo(map);
+L.rectangle(latLngBounds).addTo(map);
 
-map.fitBounds(bounds);
+map.fitBounds(latLngBounds);
 ```
 Let's create an image overlay with multiple options:
 ```
@@ -60,7 +60,7 @@ var imageOverlay = L.imageOverlay( imageUrl, bounds, {
 
 - `interactive` is `false` by default. If `true`, the image overlay will emit mouse events when clicked or hovered.
 
-You can find other options of `L.imageOverlay` in [`Docs`](/reference.html#imageoverlay)
+You can find other options of `L.ImageOverlay` in the [`docs`](/reference.html#imageoverlay)
 
 
 ### `VideoOverlay`
@@ -115,7 +115,7 @@ Adding a video overlay works very similar to adding an image overlay.
 For a video overlay, just:
 
 * Use `L.videoOverlay` instead of `L.imageOverlay`
-* `L.videoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`ImageOverlay`](/reference.html#imageoverlay). 
+* `L.videoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`L.ImageOverlay`](/reference.html#imageoverlay). 
 A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML5 element.
 * Instead of the image URL, specify one video URL *or* an array of video URLs
 
@@ -237,6 +237,6 @@ var svgOverlay = L.svgOverlay(svgElement, bounds, {
 }).addTo(map);
 ```
 Although SVGOverlay does not have its own unique options, it inherited a variety of options from ImageOverlay, Interactive layer and Layer.
-Check out Documentation to find out more [`SVGOverlay`](/reference.html#svgoverlay) options.
+Check out Documentation to find out more [`L.SVGOverlay`](/reference.html#svgoverlay) options.
 
 {% include frame.html url="example-svg.html" %}
