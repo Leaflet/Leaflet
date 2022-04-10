@@ -197,11 +197,11 @@ videoOverlay.on('load', function () {
 {% include frame.html url="example.html" %}
 
 ### `SVGOverlay`
-`L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
+`L.SVGOverlay` is used to load, display and provide DOM access to an SVG file over specific bounds of the map. 
 
-To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
+To add an SVG overlay [`L.SVGOverlay`](/reference.html#svgoverlay) use this:
 ```
-var svgOverlay = L.svgOverlay( SVGElement, bounds, options );
+var svgOverlay = L.svgOverlay( SVGElement, svgElementBounds, options );
 ```
 It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
