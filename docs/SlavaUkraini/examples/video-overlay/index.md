@@ -14,7 +14,7 @@ In this tutorial, you’ll learn how to use these Overlays.
 
 ### `ImageOverlay`
 
-`L.imageOverlay` is used to load and display a single image over specific bounds of the map. 
+`L.ImageOverlay` is used to load and display a single image over specific bounds of the map. 
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 ```
