@@ -83,7 +83,7 @@ To display this video:
 
 If a video can be shown in a webpage in this way, then Leaflet can display it inside a map. It is important that the videos are prepared in such a way that they will fit the map: The video should have a "north-up" orientation, and its proportions should fit the map. If not, it will look out of place.
 
-#### Creating a map with a background
+#### Creating a map
 
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 ```
