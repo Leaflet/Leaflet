@@ -60,7 +60,7 @@ var imageOverlay = L.imageOverlay( imageUrl, bounds, {
 
 - `interactive` is `false` by default. If `true`, the image overlay will emit mouse events when clicked or hovered.
 
-You can find other options of `L.imageOverlay` in [`Docs`](/reference.html#imageoverlay)
+You can find other options of `L.ImageOverlay` in the [`docs`](/reference.html#imageoverlay)
 
 
 ### `VideoOverlay`
