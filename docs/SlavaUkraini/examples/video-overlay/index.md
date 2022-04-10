@@ -237,6 +237,6 @@ var svgOverlay = L.svgOverlay(svgElement, bounds, {
 }).addTo(map);
 ```
 Although SVGOverlay does not have its own unique options, it inherited a variety of options from ImageOverlay, Interactive layer and Layer.
-Check out Documentation to find out more [`SVGOverlay`](/reference.html#svgoverlay) options.
+Check out Documentation to find out more [`L.SVGOverlay`](/reference.html#svgoverlay) options.
 
 {% include frame.html url="example-svg.html" %}
