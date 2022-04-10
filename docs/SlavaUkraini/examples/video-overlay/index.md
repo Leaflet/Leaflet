@@ -18,7 +18,7 @@ In this tutorial, you’ll learn how to use these Overlays.
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 ```
-var overlay = L.imageOverlay( imageUrl, bounds, options );
+var overlay = L.imageOverlay( imageUrl, latLngBounds, options );
 ```
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 ```
