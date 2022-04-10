@@ -33,7 +33,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 ```
 If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
 ```
-L.rectangle(bounds).addTo(map);
+L.rectangle(latLngBounds).addTo(map);
 
 map.fitBounds(bounds);
 ```
