@@ -42,7 +42,7 @@ Let's create an image overlay with multiple options:
 var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA'
+var altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries' Map Collection.
 var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
 var imageOverlay = L.imageOverlay( imageUrl, latLngBounds, {

@@ -17,25 +17,30 @@ title: Video Overlay Tutorial
 	var videoUrls = [
 		'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
-	],
-	bounds = L.latLngBounds([[32, -130], [13, -100]]);
+	];
+    var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
+    var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA'
+    var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
 	map.fitBounds(bounds);
 
-	var overlay = L.videoOverlay(videoUrls, bounds, {
-		opacity: 0.8,
-		interactive: false,
-		autoplay: false
-	});
-	map.addLayer(overlay);
+    var videoOverlay = L.videoOverlay( videoUrls, bounds, {
+        opacity: 0.8,
+        errorOverlayUrl: errorOverlayUrl,
+        alt: altText,
+        interactive: true,
+        autoplay: true,
+        muted: true,
+        playsInline: true
+    }).addTo(map);
 
-	overlay.on('load', function () {
+	videoOverlay.on('load', function () {
 		var MyPauseControl = L.Control.extend({
 			onAdd: function () {
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '⏸';
 				L.DomEvent.on(button, 'click', function () {
-					overlay.getElement().pause();
+					videoOverlay.getElement().pause();
 				});
 				return button;
 			}
@@ -45,7 +50,7 @@ title: Video Overlay Tutorial
 				var button = L.DomUtil.create('button');
 				button.innerHTML = '▶️';
 				L.DomEvent.on(button, 'click', function () {
-					overlay.getElement().play();
+					videoOverlay.getElement().play();
 				});
 				return button;
 			}
