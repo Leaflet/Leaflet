@@ -3,7 +3,7 @@ layout: tutorial_v2
 title: Overlays
 ---
 
-## Overlay - Tutorial
+## Overlays
 
 There are 3 Overlays in Leaflet API: 
 - [`ImageOverlay`](/reference.html#imageoverlay): Raster Layer, Extends [`Layer`](/reference.html#layer)
