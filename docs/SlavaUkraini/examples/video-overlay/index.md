@@ -228,8 +228,8 @@ var svgElement = document.querySelector('#image');
 #### `Creating SVG Overlay`
 Create SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 ```
-var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
-map.fitBounds(bounds);
+var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+map.fitBounds(latLngBounds);
 
 var svgOverlay = L.svgOverlay(svgElement, bounds, {
 	opacity: 0.7,
