@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Overlay
+title: Overlays
 ---
 
 ## Overlay - Tutorial
@@ -236,7 +236,7 @@ var svgOverlay = L.svgOverlay(svgElement, bounds, {
 	interactive: true
 }).addTo(map);
 ```
-Although SVGOverlay does not have its own unique options, it inherited a variety of options from ImageOverlay, Interactive layer and Layer.
+Although SVGOverlay does not have its own unique options, it inherits a variety of options from ImageOverlay, Interactive layer and Layer.
 Check out Documentation to find out more [`L.SVGOverlay`](/reference.html#svgoverlay) options.
 
 {% include frame.html url="example-svg.html" %}
