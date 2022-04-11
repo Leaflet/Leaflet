@@ -231,7 +231,7 @@ Create SVGOverlay with desired options similarly to ImageOverlay and VideoOverla
 var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 map.fitBounds(latLngBounds);
 
-var svgOverlay = L.svgOverlay(svgElement, bounds, {
+var svgOverlay = L.svgOverlay(svgElement, latLngBounds, {
 	opacity: 0.7,
 	interactive: true
 }).addTo(map);
