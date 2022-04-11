@@ -25,24 +25,20 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 var map = L.map('map').setView([37.8, -96], 4);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-	id: 'mapbox/satellite-v9',
+	maxZoom: 18,
 	attribution: ...,
+	id: 'mapbox/satellite-v9',
 	tileSize: 512,
 	zoomOffset: -1
 }).addTo(map);
 ```
-If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
-```
-L.rectangle(latLngBounds).addTo(map);
 
-map.fitBounds(latLngBounds);
-```
 Let's create an image overlay with multiple options:
 ```
-var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg';
 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-var altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries' Map Collection.
+var altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection.';
 var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
 var imageOverlay = L.imageOverlay( imageUrl, latLngBounds, {
@@ -51,6 +47,11 @@ var imageOverlay = L.imageOverlay( imageUrl, latLngBounds, {
 	alt: altText,
 	interactive: true
 }).addTo(map);
+```
+If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
+```
+L.rectangle(latLngBounds).addTo(map);
+map.fitBounds(latLngBounds);
 ```
 - `opacity` defines the opacity of the image overlay, it equals to `1.0` by default. Decrease this value to make an image overlay transparent and to expose the underlying map layer. 
 	
@@ -62,6 +63,7 @@ var imageOverlay = L.imageOverlay( imageUrl, latLngBounds, {
 
 You can find other options of `L.ImageOverlay` in the [`docs`](/reference.html#imageoverlay)
 
+{% include frame.html url="example-image.html" %}
 
 ### `VideoOverlay`
 
@@ -194,7 +196,7 @@ videoOverlay.on('load', function () {
 });
 ```
 
-{% include frame.html url="example.html" %}
+{% include frame.html url="example-video.html" %}
 
 ### `SVGOverlay`
 `L.SVGOverlay` is used to load, display and provide DOM access to an SVG file over specific bounds of the map. 
