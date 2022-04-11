@@ -126,9 +126,9 @@ var videoUrls = [
 ];
 var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
 var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA'
-var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
-var videoOverlay = L.videoOverlay( videoUrls, bounds, {
+var videoOverlay = L.videoOverlay( videoUrls, latLngBounds, {
 	opacity: 0.8,
 	errorOverlayUrl: errorOverlayUrl,
 	alt: altText,
