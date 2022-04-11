@@ -104,7 +104,7 @@ If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/
 ```
 L.rectangle(bounds).addTo(map);
 
-map.fitBounds(bounds);
+map.fitBounds(latLngBounds);
 ```
 {% include frame.html url="example-bounds.html" %}
 
