@@ -102,7 +102,7 @@ var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 ```
 If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
 ```
-L.rectangle(bounds).addTo(map);
+L.rectangle(latLngBounds).addTo(map);
 
 map.fitBounds(latLngBounds);
 ```
