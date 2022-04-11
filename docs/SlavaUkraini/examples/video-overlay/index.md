@@ -39,7 +39,7 @@ map.fitBounds(latLngBounds);
 ```
 Let's create an image overlay with multiple options:
 ```
-var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
 var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
 var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA'
