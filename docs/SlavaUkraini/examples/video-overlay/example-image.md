@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: SVG Overlay Tutorial
+title: Image Overlay Tutorial
 ---
 <script>
 	var map = L.map('map').setView([37.8, -96], 4);
