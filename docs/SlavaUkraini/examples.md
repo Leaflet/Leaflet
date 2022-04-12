@@ -89,8 +89,8 @@ description="How the default map panes work to display overlays on top of tiles,
 
 
 {% include tutorial_link.html
-page="video-overlay/"
-thumbnail="video-overlay/thumbnail.gif"
+page="overlays/"
+thumbnail="overlays/thumbnail.gif"
 title="Overlays: Image, Video, SVG"
 description="Leaflet can help you display images, videos and SVG elements somewhere on the map."
 %}
