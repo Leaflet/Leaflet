@@ -21,7 +21,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Cache setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -44,7 +44,7 @@ jobs:
         os: [ubuntu-latest, windows-2019]
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -60,7 +60,7 @@ jobs:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -86,7 +86,7 @@ jobs:
           NODE_ENV: release
 
       - name: Cache release build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore release build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
@@ -147,7 +147,7 @@ jobs:
             os: windows-2019
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -166,7 +166,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -192,7 +192,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.1
+        uses: actions/cache@v3.0.2
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
