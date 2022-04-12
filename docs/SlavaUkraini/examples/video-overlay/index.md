@@ -119,7 +119,7 @@ For a video overlay, just:
 
 * Use `L.videoOverlay` instead of `L.imageOverlay`
 * `L.videoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`L.ImageOverlay`](/reference.html#imageoverlay). 
-A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML5 element.
+A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element.
 * Instead of the image URL, specify one video URL *or* an array of video URLs
 
 ```
