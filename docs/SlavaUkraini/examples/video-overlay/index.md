@@ -150,7 +150,7 @@ And just like that, you'll get the video on your map:
 
 - `playsInline` option when it is set to `true` allows video to play inline without automatically entering fullscreen mode when playback begins in the mobile browser. It is `true` by default.
 
-You can find other options of `L.videoOverlay` in [`Docs`](/reference.html#videooverlay)
+You can find other options of `L.videoOverlay` in the [documentation](/reference.html#videooverlay).
 
 Video overlays behave like any other Leaflet layer - you can add and remove them, let the user select from several videos using a [layers control](../layers-control/), etc.
 
