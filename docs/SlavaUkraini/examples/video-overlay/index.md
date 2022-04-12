@@ -217,7 +217,7 @@ svgElement.setAttribute('viewBox', "0 0 200 200");
 svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
 ```
 
-Alternatively, you can create svg element in html code:
+Alternatively, you can create the SVG element in HTML code:
 ```
 <svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
 ```
