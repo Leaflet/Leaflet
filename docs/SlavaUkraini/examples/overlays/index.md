@@ -57,7 +57,7 @@ map.fitBounds(latLngBounds);
 	
 - `errorOverlayUrl` is a URL to the overlay image to show in place of the overlay that failed to load.
 
-- `alt` stands for the alt attribute of the image. Images alternatives (`alt` option) add valuable information for low vision or blind screen reader users. Image alternatives also benefit people who have poor or unstable internet, some cognitive disabilities. Moreover, it can improve the SEO of a website.
+- `alt` sets the HTML [`alt`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-alt) attribute to provide an alternative text description of the image. Alternative text is essential information for screen reader users. It can also benefit people during poor network connectivity, in the case the image fails to load. Moreover, it can improve the SEO of a website.
 
 - `interactive` is `false` by default. If `true`, the image overlay will emit mouse events when clicked or hovered.
 
