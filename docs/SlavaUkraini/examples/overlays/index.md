@@ -218,7 +218,7 @@ videoOverlay.on('load', function () {
 To add an SVG overlay [`L.SVGOverlay`](/reference.html#svgoverlay) use this:
 
 ```
-var svgOverlay = L.svgOverlay( SVGElement, svgElementBounds, options );
+var svgOverlay = L.svgOverlay(SVGElement, svgElementBounds, options);
 ```
 
 It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
