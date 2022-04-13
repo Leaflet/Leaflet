@@ -22,10 +22,8 @@ title: SVG Overlay Tutorial
 
 	map.fitBounds(latLngBounds);
 
-	var overlay = L.svgOverlay(svgElement, latLngBounds, {
+	var svgOverlay = L.svgOverlay(svgElement, latLngBounds, {
 		opacity: 0.7,
 		interactive: true
-	});
-
-	map.addLayer(overlay);
+	}).addTo(map)
 </script>
