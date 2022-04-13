@@ -251,7 +251,7 @@ var svgElement = document.querySelector('#svg');
 Create the SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 
 ```
-var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
+var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
 map.fitBounds(latLngBounds);
 
 var svgOverlay = L.svgOverlay(svgElement, latLngBounds, {
