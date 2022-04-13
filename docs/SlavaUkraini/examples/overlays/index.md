@@ -228,7 +228,7 @@ And choose this SVG element by using a querySelector:
 var svgElement = document.querySelector('#image');
 ```
 
-#### `Creating SVG Overlay`
+#### Creating the SVG Overlay
 Create SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 ```
 var latLngBounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
