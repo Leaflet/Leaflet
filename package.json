@@ -44,7 +44,7 @@
     "docs": "node ./build/docs.js",
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify && npm run minify-css",
-    "minify-css": "parcel-css --minify dist/leaflet.css -o dist/leaflet.min.css",
+    "minify-css": "parcel-css --minify dist/leaflet-src.css -o dist/leaflet.css",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
