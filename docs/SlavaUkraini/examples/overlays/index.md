@@ -208,7 +208,7 @@ var svgOverlay = L.svgOverlay( SVGElement, svgElementBounds, options );
 ```
 It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
-#### `Creating an SVG element`
+#### Creating an SVG element
 Let's create an SVG element:
 ```
 var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
