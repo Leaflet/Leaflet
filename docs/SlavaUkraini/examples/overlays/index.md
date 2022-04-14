@@ -116,14 +116,6 @@ Then, we'll define the geographical bounds that the video will cover. This is an
 var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
 ```
 
-If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
-
-```
-L.rectangle(latLngBounds).addTo(map);
-
-map.fitBounds(latLngBounds);
-```
-
 {% include frame.html url="example-bounds.html" %}
 
 #### Adding the video overlay
@@ -143,7 +135,7 @@ var videoUrls = [
 	'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 ];
 var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA'
+var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA';
 var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 var videoOverlay = L.videoOverlay(videoUrls, latLngBounds, {
