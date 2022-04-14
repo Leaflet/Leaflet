@@ -187,7 +187,8 @@ videoOverlay.on('load', function () {
 	var MyPauseControl = L.Control.extend({
 		onAdd: function() {
 			var button = L.DomUtil.create('button');
-			button.innerHTML = '⏸';
+			button.title = 'Pause';
+			button.innerHTML = '<span aria-hidden="true">⏸</span>';
 			L.DomEvent.on(button, 'click', function () {
 				videoOverlay.getElement().pause();
 			});
