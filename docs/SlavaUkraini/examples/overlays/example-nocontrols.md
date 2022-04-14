@@ -24,7 +24,7 @@ title: Video Overlay Tutorial
 
 	map.fitBounds(bounds);
 
-	var videoOverlay = L.videoOverlay( videoUrls, bounds, {
+	var videoOverlay = L.videoOverlay(videoUrls, bounds, {
 		opacity: 0.8,
 		errorOverlayUrl: errorOverlayUrl,
 		alt: altText,
