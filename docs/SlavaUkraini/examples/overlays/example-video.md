@@ -49,7 +49,8 @@ title: Video Overlay Tutorial (video with controls)
 		var MyPlayControl = L.Control.extend({
 			onAdd: function () {
 				var button = L.DomUtil.create('button');
-				button.innerHTML = '▶️';
+				button.title = 'Play';
+				button.innerHTML = '<span aria-hidden="true">▶️</span>';
 				L.DomEvent.on(button, 'click', function () {
 					videoOverlay.getElement().play();
 				});
