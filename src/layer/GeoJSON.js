@@ -271,11 +271,9 @@ export function latLngToCoords(latlng, precision) {
 export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
 	for (var i = 0, len = latlngs.length; i < len; i++) {
-		var latlng;
-		if (!levelsDeep) { latlng = toLatLng(latlngs[i]); } else { latlng = latlngs[i]; }
 		coords.push(levelsDeep ?
-			latLngsToCoords(latlng, levelsDeep - 1, closed, precision) :
-			latLngToCoords(latlng, precision));
+			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
+			latLngToCoords(toLatLng(latlngs[i]), precision));
 	}
 
 	if (!levelsDeep && closed) {
