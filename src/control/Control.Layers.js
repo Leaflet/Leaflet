@@ -1,7 +1,6 @@
 
 import {Control} from './Control';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -10,7 +9,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Layers
  * @inherits Control
  *
- * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control/)). Extends `Control`.
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
  *
  * @example
  *
@@ -49,7 +48,7 @@ export var Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover or touch.
+		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
@@ -187,24 +186,25 @@ export var Layers = Control.extend({
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
-			if (!Browser.android) {
-				DomEvent.on(container, {
-					mouseenter: this.expand,
-					mouseleave: this.collapse
-				}, this);
-			}
+			DomEvent.on(container, {
+				mouseenter: function () {
+					DomEvent.on(section, 'click', DomEvent.preventDefault);
+					this.expand();
+					setTimeout(function () {
+						DomEvent.off(section, 'click', DomEvent.preventDefault);
+					});
+				},
+				mouseleave: this.collapse
+			}, this);
 		}
 
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
+		link.setAttribute('role', 'button');
 
-		if (Browser.touch) {
-			DomEvent.on(link, 'click', DomEvent.stop);
-			DomEvent.on(link, 'click', this.expand, this);
-		} else {
-			DomEvent.on(link, 'focus', this.expand, this);
-		}
+		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
+		DomEvent.on(link, 'focus', this.expand, this);
 
 		if (!collapsed) {
 			this.expand();
@@ -289,11 +289,11 @@ export var Layers = Control.extend({
 		// @namespace Map
 		// @section Layer events
 		// @event baselayerchange: LayersControlEvent
-		// Fired when the base layer is changed through the [layer control](#control-layers).
+		// Fired when the base layer is changed through the [layers control](#control-layers).
 		// @event overlayadd: LayersControlEvent
-		// Fired when an overlay is selected through the [layer control](#control-layers).
+		// Fired when an overlay is selected through the [layers control](#control-layers).
 		// @event overlayremove: LayersControlEvent
-		// Fired when an overlay is deselected through the [layer control](#control-layers).
+		// Fired when an overlay is deselected through the [layers control](#control-layers).
 		// @namespace Control.Layers
 		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
@@ -304,7 +304,7 @@ export var Layers = Control.extend({
 		}
 	},
 
-	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
+	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see https://stackoverflow.com/a/119079)
 	_createRadioElement: function (name, checked) {
 
 		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' +
@@ -340,7 +340,7 @@ export var Layers = Control.extend({
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
-		var holder = document.createElement('div');
+		var holder = document.createElement('span');
 
 		label.appendChild(holder);
 		holder.appendChild(input);
@@ -409,23 +409,13 @@ export var Layers = Control.extend({
 			this.expand();
 		}
 		return this;
-	},
-
-	_expand: function () {
-		// Backward compatibility, remove me in 1.1.
-		return this.expand();
-	},
-
-	_collapse: function () {
-		// Backward compatibility, remove me in 1.1.
-		return this.collapse();
 	}
 
 });
 
 
 // @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
-// Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
+// Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 export var layers = function (baseLayers, overlays, options) {
 	return new Layers(baseLayers, overlays, options);
 };

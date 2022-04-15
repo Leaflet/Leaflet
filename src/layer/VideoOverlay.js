@@ -28,6 +28,7 @@ export var VideoOverlay = ImageOverlay.extend({
 	options: {
 		// @option autoplay: Boolean = true
 		// Whether the video starts playing automatically when loaded.
+		// On some browsers autoplay will only work with `muted: true`
 		autoplay: true,
 
 		// @option loop: Boolean = true
@@ -36,8 +37,16 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
-		// Relevant for supported browsers. Browser compatibility- https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
-		keepAspectRatio: true
+		// Relevant for supported browsers. See [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
+		keepAspectRatio: true,
+
+		// @option muted: Boolean = false
+		// Whether the video starts on mute when loaded.
+		muted: false,
+
+		// @option playsInline: Boolean = true
+		// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+		playsInline: true
 	},
 
 	_initImage: function () {
@@ -68,9 +77,13 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
-		if (!this.options.keepAspectRatio && vid.style.hasOwnProperty('objectFit')) { vid.style['objectFit'] = 'fill'; }
+		if (!this.options.keepAspectRatio && Object.prototype.hasOwnProperty.call(vid.style, 'objectFit')) {
+			vid.style['objectFit'] = 'fill';
+		}
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
+		vid.muted = !!this.options.muted;
+		vid.playsInline = !!this.options.playsInline;
 		for (var i = 0; i < this._url.length; i++) {
 			var source = DomUtil.create('source');
 			source.src = this._url[i];

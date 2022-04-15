@@ -1,87 +1,70 @@
-import * as Browser from '../core/Browser';
-import {_pointersCount} from './DomEvent.Pointer';
-
 /*
  * Extends the event handling code with double tap support for mobile browsers.
+ *
+ * Note: currently most browsers fire native dblclick, with only a few exceptions
+ * (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386)
  */
 
-var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'pointerdown' : 'touchstart';
-var _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup' : 'touchend';
-var _pre = '_leaflet_';
+function makeDblclick(event) {
+	// in modern browsers `type` cannot be just overridden:
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only
+	var newEvent = {},
+	    prop, i;
+	for (i in event) {
+		prop = event[i];
+		newEvent[i] = prop && prop.bind ? prop.bind(event) : prop;
+	}
+	event = newEvent;
+	newEvent.type = 'dblclick';
+	newEvent.detail = 2;
+	newEvent.isTrusted = false;
+	newEvent._simulated = true; // for debug purposes
+	return newEvent;
+}
 
-// inspired by Zepto touch code by Thomas Fuchs
-export function addDoubleTapListener(obj, handler, id) {
-	var last, touch,
-	    doubleTap = false,
-	    delay = 250;
+var delay = 200;
+export function addDoubleTapListener(obj, handler) {
+	// Most browsers handle double tap natively
+	obj.addEventListener('dblclick', handler);
 
-	function onTouchStart(e) {
-		var count;
-
-		if (Browser.pointer) {
-			if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
-			count = _pointersCount;
-		} else {
-			count = e.touches.length;
+	// On some platforms the browser doesn't fire native dblclicks for touch events.
+	// It seems that in all such cases `detail` property of `click` event is always `1`.
+	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
+	var last = 0,
+	    detail;
+	function simDblclick(e) {
+		if (e.detail !== 1) {
+			detail = e.detail; // keep in sync to avoid false dblclick in some cases
+			return;
 		}
 
-		if (count > 1) { return; }
+		if (e.pointerType === 'mouse' ||
+			(e.sourceCapabilities && !e.sourceCapabilities.firesTouchEvents)) {
 
-		var now = Date.now(),
-		    delta = now - (last || now);
+			return;
+		}
 
-		touch = e.touches ? e.touches[0] : e;
-		doubleTap = (delta > 0 && delta <= delay);
+		var now = Date.now();
+		if (now - last <= delay) {
+			detail++;
+			if (detail === 2) {
+				handler(makeDblclick(e));
+			}
+		} else {
+			detail = 1;
+		}
 		last = now;
 	}
 
-	function onTouchEnd(e) {
-		if (doubleTap && !touch.cancelBubble) {
-			if (Browser.pointer) {
-				if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
-				// work around .type being readonly with MSPointer* events
-				var newTouch = {},
-				    prop, i;
+	obj.addEventListener('click', simDblclick);
 
-				for (i in touch) {
-					prop = touch[i];
-					newTouch[i] = prop && prop.bind ? prop.bind(touch) : prop;
-				}
-				touch = newTouch;
-			}
-			touch.type = 'dblclick';
-			touch.button = 0;
-			handler(touch);
-			last = null;
-		}
-	}
-
-	obj[_pre + _touchstart + id] = onTouchStart;
-	obj[_pre + _touchend + id] = onTouchEnd;
-	obj[_pre + 'dblclick' + id] = handler;
-
-	obj.addEventListener(_touchstart, onTouchStart, false);
-	obj.addEventListener(_touchend, onTouchEnd, false);
-
-	// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
-	// the browser doesn't fire touchend/pointerup events but does fire
-	// native dblclicks. See #4127.
-	// Edge 14 also fires native dblclicks, but only for pointerType mouse, see #5180.
-	obj.addEventListener('dblclick', handler, false);
-
-	return this;
+	return {
+		dblclick: handler,
+		simDblclick: simDblclick
+	};
 }
 
-export function removeDoubleTapListener(obj, id) {
-	var touchstart = obj[_pre + _touchstart + id],
-	    touchend = obj[_pre + _touchend + id],
-	    dblclick = obj[_pre + 'dblclick' + id];
-
-	obj.removeEventListener(_touchstart, touchstart, false);
-	obj.removeEventListener(_touchend, touchend, false);
-	if (!Browser.edge) {
-		obj.removeEventListener('dblclick', dblclick, false);
-	}
-
-	return this;
+export function removeDoubleTapListener(obj, handlers) {
+	obj.removeEventListener('dblclick', handlers.dblclick);
+	obj.removeEventListener('click', handlers.simDblclick);
 }

@@ -31,7 +31,7 @@ Maximum age of detected location. If less than this amount of milliseconds
 passed since last geolocation response, `locate` will return a cached location.
 
 @option enableHighAccuracy: Boolean = false
-Enables high accuracy, see [description in the W3C spec](http://dev.w3.org/geo/api/spec-source.html#high-accuracy).
+Enables high accuracy, see [description in the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
 
 
 
@@ -72,7 +72,7 @@ Duration of animated panning, in seconds.
 
 @option easeLinearity: Number = 0.25
 The curvature factor of panning animation easing (third parameter of the
-[Cubic Bezier curve](http://cubic-bezier.com/)). 1.0 means linear animation,
+[Cubic Bezier curve](https://cubic-bezier.com/)). 1.0 means linear animation,
 and the smaller this number, the more bowed the curve.
 
 @option noMoveStart: Boolean = false
@@ -86,10 +86,8 @@ panning inertia).
 @inherits Pan options
 
 
-@miniclass FitBounds options (Map)
-@aka fitBounds options
-@inherits Zoom/pan options
-
+@miniclass Padding options (Map)
+@aka padding options
 @option paddingTopLeft: Point = [0, 0]
 Sets the amount of padding in the top left corner of a map container that
 shouldn't be accounted for when setting the view to fit bounds. Useful if you
@@ -101,6 +99,12 @@ The same for the bottom right corner of the map.
 
 @option padding: Point = [0, 0]
 Equivalent of setting both top left and bottom right padding to the same value.
+
+
+@miniclass FitBounds options (Map)
+@aka fitBounds options
+@inherits Zoom/pan options
+@inherits Padding options
 
 @option maxZoom: Number = null
 The maximum possible zoom to use.

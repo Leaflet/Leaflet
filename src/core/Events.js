@@ -69,7 +69,7 @@ export var Events = {
 	 */
 	off: function (types, fn, context) {
 
-		if (!types) {
+		if (!arguments.length) {
 			// clear all listeners if called without arguments
 			delete this._events;
 
@@ -81,8 +81,13 @@ export var Events = {
 		} else {
 			types = Util.splitWords(types);
 
+			var removeAll = arguments.length === 1;
 			for (var i = 0, len = types.length; i < len; i++) {
-				this._off(types[i], fn, context);
+				if (removeAll) {
+					this._off(types[i]);
+				} else {
+					this._off(types[i], fn, context);
+				}
 			}
 		}
 
@@ -91,6 +96,10 @@ export var Events = {
 
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context) {
+		if (typeof fn !== 'function') {
+			console.warn('wrong listener type: ' + typeof fn);
+			return;
+		}
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -130,10 +139,13 @@ export var Events = {
 			return;
 		}
 
-		if (!fn) {
-			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = Util.falseFn;
+		if (arguments.length === 1) { // remove all
+			if (this._firingCount) {
+				// Set all removed listeners to noop
+				// so they are not called if remove happens in fire
+				for (i = 0, len = listeners.length; i < len; i++) {
+					listeners[i].fn = Util.falseFn;
+				}
 			}
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
@@ -144,31 +156,32 @@ export var Events = {
 			context = undefined;
 		}
 
-		if (listeners) {
-
-			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
-				if (l.ctx !== context) { continue; }
-				if (l.fn === fn) {
-
+		if (typeof fn !== 'function') {
+			console.warn('wrong listener type: ' + typeof fn);
+			return;
+		}
+		// find fn and remove it
+		for (i = 0, len = listeners.length; i < len; i++) {
+			var l = listeners[i];
+			if (l.ctx !== context) { continue; }
+			if (l.fn === fn) {
+				if (this._firingCount) {
 					// set the removed listener to noop so that's not called if remove happens in fire
 					l.fn = Util.falseFn;
 
-					if (this._firingCount) {
-						/* copy array in case events are being fired */
-						this._events[type] = listeners = listeners.slice();
-					}
-					listeners.splice(i, 1);
-
-					return;
+					/* copy array in case events are being fired */
+					this._events[type] = listeners = listeners.slice();
 				}
+				listeners.splice(i, 1);
+
+				return;
 			}
 		}
+		console.warn('listener not found');
 	},
 
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
-	// Fires an event of the specified type. You can optionally provide an data
+	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
 	fire: function (type, data, propagate) {
@@ -202,9 +215,13 @@ export var Events = {
 		return this;
 	},
 
-	// @method listens(type: String): Boolean
+	// @method listens(type: String, propagate?: Boolean): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
+	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
 	listens: function (type, propagate) {
+		if (typeof type !== 'string') {
+			console.warn('"string" type argument expected');
+		}
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 

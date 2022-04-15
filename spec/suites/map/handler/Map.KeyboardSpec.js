@@ -1,22 +1,17 @@
 describe("Map.Keyboard", function () {
-
-	const KEYCODE_LOWERCASE_A = 65;
-	const KEYCODE_ARROW_LEFT = 37;
-	const KEYCODE_ARROW_UP = 38;
-	const KEYCODE_ARROW_RIGHT = 39;
-	const KEYCODE_ARROW_DOWN = 40;
-	const KEYCODE_PLUS = 171;
-	const KEYCODE_MINUS = 173;
-	const KEYCODE_ESC = 27;
+	var KEYCODE_LOWERCASE_A = 65;
+	var KEYCODE_ARROW_LEFT = 37;
+	var KEYCODE_ARROW_UP = 38;
+	var KEYCODE_ARROW_RIGHT = 39;
+	var KEYCODE_ARROW_DOWN = 40;
+	var KEYCODE_PLUS = 171;
+	var KEYCODE_MINUS = 173;
+	var KEYCODE_ESC = 27;
 
 	var map, container;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		container.style.width = container.style.height = '600px';
-		container.style.top = container.style.left = 0;
-		container.style.position = 'absolute';
-		document.body.appendChild(container);
+		container = createContainer();
 		map = L.map(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
@@ -30,8 +25,7 @@ describe("Map.Keyboard", function () {
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 	describe("arrow keys", function () {

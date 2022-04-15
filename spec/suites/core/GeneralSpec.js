@@ -1,15 +1,12 @@
 describe('General', function () {
-	describe('noConflict', function () {
+	it('noConflict', function () {
 		var leaflet = L;
-
-		after(function () {
-			L = leaflet;
-		});
-
 		expect(L.noConflict()).to.eql(leaflet);
+		expect(L).to.eql(undefined);
+		L = leaflet;
 	});
 
-	describe('namespace extension', function () {
+	it('namespace extension', function () {
 		L.Util.foo = 'bar';
 		L.Foo = 'Bar';
 
