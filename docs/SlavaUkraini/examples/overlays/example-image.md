@@ -19,7 +19,7 @@ title: Image Overlay Tutorial
 	var altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection.';
 	var latLngBounds = L.latLngBounds([[40.799311, -74.118464], [40.68202047785919, -74.33]]);
 
-	var imageOverlay = L.imageOverlay( imageUrl, latLngBounds, {
+	var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, {
 		opacity: 0.8,
 		errorOverlayUrl: errorOverlayUrl,
 		alt: altText,
