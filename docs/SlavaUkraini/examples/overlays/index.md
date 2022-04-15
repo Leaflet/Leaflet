@@ -110,12 +110,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(map);
 ```
 
-Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:
-
-```
-var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
-```
-
 {% include frame.html url="example-bounds.html" %}
 
 #### Adding the video overlay
