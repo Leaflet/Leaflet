@@ -340,10 +340,13 @@ export var Map = Evented.extend({
 
 		// animate pan unless animate: false specified
 		if (options.animate !== false) {
+			if (this._panAnim._inProgress) {
+				this._destinationPos = this._destinationPos.subtract(offset).round();
+			} else {
+				this._destinationPos = this._getMapPanePos().subtract(offset).round();
+			}
 			DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
-
-			var newPos = this._getMapPanePos().subtract(offset).round();
-			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
+			this._panAnim.run(this._mapPane, this._destinationPos, options.duration || 0.25, options.easeLinearity);
 		} else {
 			this._rawPanBy(offset);
 			this.fire('move').fire('moveend');
