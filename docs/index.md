@@ -33,13 +33,13 @@ Leaflet maintainers.
 
 <script>
 	var referrer = document.referrer;
-	var host = window.location.host+'/';
+	var host = window.location.host + '/';
 	if (referrer && referrer.indexOf(host) > -1) {
 		var url = referrer.split(host);
 		var target = url[1];
 		if (target) {
 			var link = document.querySelector('a[href="SlavaUkraini/"]');
-			link.href = 'https://leafletjs.com/SlavaUkraini/'+target;
+			link.href = 'https://leafletjs.com/SlavaUkraini/' + target;
 		}
 	}
 </script>
