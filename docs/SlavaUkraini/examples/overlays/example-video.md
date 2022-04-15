@@ -19,7 +19,6 @@ title: Video Overlay Tutorial (video with controls)
 		'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 	];
 	var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-	var altText = 'Video of Hurricane Patricia from Satellite. Source: NASA';
 	var bounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	map.fitBounds(bounds);
@@ -27,7 +26,6 @@ title: Video Overlay Tutorial (video with controls)
 	var videoOverlay = L.videoOverlay(videoUrls, bounds, {
 		opacity: 0.8,
 		errorOverlayUrl: errorOverlayUrl,
-		alt: altText,
 		interactive: true,
 		autoplay: true,
 		muted: true,
