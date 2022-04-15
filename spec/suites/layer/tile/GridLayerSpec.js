@@ -1,20 +1,15 @@
 describe('GridLayer', function () {
-	var div, map;
+	var container, map;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-
-		document.body.appendChild(div);
-
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	describe('#redraw', function () {
@@ -32,7 +27,7 @@ describe('GridLayer', function () {
 
 		it('works when map has fadeAnimated=false (IE8 is exempt)', function (done) {
 			map.remove();
-			map = L.map(div, {fadeAnimation: false}).setView([0, 0], 0);
+			map = L.map(container, {fadeAnimation: false}).setView([0, 0], 0);
 
 			var grid = L.gridLayer().setOpacity(0.5).addTo(map);
 			grid.on('load', function () {
@@ -90,7 +85,7 @@ describe('GridLayer', function () {
 
 		it('removes tiles for unused zoom levels', function (done) {
 			map.remove();
-			map = L.map(div, {fadeAnimation: false});
+			map = L.map(container, {fadeAnimation: false});
 			map.setView([0, 0], 1);
 
 			var grid = L.gridLayer();
@@ -124,8 +119,8 @@ describe('GridLayer', function () {
 
 		beforeEach(function () {
 			// Simpler sizes to test.
-			div.style.width = '512px';
-			div.style.height = '512px';
+			container.style.width = '512px';
+			container.style.height = '512px';
 
 			map.setView([0, 0], 10);
 
@@ -233,8 +228,8 @@ describe('GridLayer', function () {
 			map.setView([0, 0], 1);
 		});
 
-		describe("when a tilelayer is added to a map with no other layers", function () {
-			it("has the same zoomlevels as the tilelayer", function () {
+		describe("when a gridlayer is added to a map with no other layers", function () {
+			it("has the same zoomlevels as the gridlayer", function () {
 				var maxZoom = 10,
 				    minZoom = 5;
 
@@ -248,14 +243,14 @@ describe('GridLayer', function () {
 			});
 		});
 
-		describe("accessing a tilelayer's properties", function () {
+		describe("accessing a gridlayer's properties", function () {
 			it('provides a container', function () {
 				var layer = L.gridLayer().addTo(map);
 				expect(layer.getContainer()).to.be.ok();
 			});
 		});
 
-		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
+		describe("when a gridlayer is added to a map that already has a gridlayer", function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
 				L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map);
 				expect(map.getMinZoom()).to.be(10);
@@ -353,6 +348,18 @@ describe('GridLayer', function () {
 			});
 
 			map.addLayer(grid);
+		});
+
+		it("redraws tiles properly after changing maxNativeZoom", function () {
+			var initialZoom = 12;
+			map.setView([0, 0], initialZoom);
+
+			var grid = L.gridLayer().addTo(map);
+			expect(grid._tileZoom).to.be(initialZoom);
+
+			grid.options.maxNativeZoom = 11;
+			grid.redraw();
+			expect(grid._tileZoom).to.be(11);
 		});
 	});
 

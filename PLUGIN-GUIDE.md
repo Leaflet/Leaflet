@@ -15,9 +15,12 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [File Structure](#file-structure)
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
-3. [Publishing on NPM](#publishing-on-npm)
-4. [Module Loaders](#module-loaders)
-5. [Adding to the plugins list](#adding-to-the-plugins-list)
+3. [Content Accessibility](#content-accessibility)
+	- [Accessibility Testing](#accessibility-testing)
+	- [Learn about web accessibility](#learn-about-web-accessibility)
+4. [Publishing on NPM](#publishing-on-npm)
+5. [Module Loaders](#module-loaders)
+6. [Adding to the plugins list](#adding-to-the-plugins-list)
 
 ## Presentation
 
@@ -130,6 +133,50 @@ marker.myPlugin('bla', {
 
 And most importantly, keep it simple. Leaflet is all about *simplicity*.
 
+## Content Accessibility
+
+Make sure your content is accessible to users from all walks of life.
+Some users can only navigate web content using a keyboard,
+or must rely on their screen reader to be able to convey the visual information.
+Thus it's important to ensure components are keyboard-friendly,
+and non-text content (such as icon fonts and images) either have a text
+alternative or are hidden from screen readers if they're purely decorative.
+
+### Accessibility Testing
+
+#### Automated testing
+
+Tools for automated testing can help you discover common accessibility issues:
+
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
+- [axe](https://www.deque.com/axe/)
+- [WAVE](https://wave.webaim.org/)
+- [Accessibility Insights](https://accessibilityinsights.io/)
+- [webhint](https://webhint.io/)
+
+#### Manual testing
+
+It is highly recommended that you test your components manually
+using only your keyboard,
+as well as using a screen reader such as Narrator, NVDA, VoiceOver, or JAWS.
+
+### Learn about web accessibility
+
+Beginner-friendly documentation:
+
+- [What is accessibility?](https://web.dev/what-is-accessibility/)
+- [Make your site keyboard accessible](https://web.dev/accessible/#make-your-site-keyboard-accessible)
+- [Understand semantics and basic screen reader support](https://web.dev/accessible/#understand-semantics-and-basic-screen-reader-support)
+- More guides at [MDN web docs: Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+
+Authoritative documentation:
+
+- [WAI (Web Accessibility Initiative): Accessibility Fundamentals Overview](https://www.w3.org/WAI/fundamentals/)
+- [ARIA in HTML (Accessible Rich Internet Applications)](https://www.w3.org/TR/html-aria/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [Using ARIA](https://www.w3.org/TR/using-aria/)
+- [WCAG (Web Content Accessibility Guidelines)](https://www.w3.org/TR/WCAG/)
+
 ## Publishing on NPM
 
 NPM (Node Packaged Modules) is a package manager and code repository for JavaScript. Publishing your module on NPM allows other developers to quickly find and install your plugin as well as any other plugins it depends on.
@@ -213,7 +260,7 @@ Now your plugin is available as an AMD and CommonJS module and can be used in mo
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* In the `docs/plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
+* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
 * Commit the code to your fork.
 * [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
 

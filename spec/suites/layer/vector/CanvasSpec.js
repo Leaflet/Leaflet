@@ -1,29 +1,19 @@
 describe('Canvas', function () {
-	document.body.appendChild(document.createElement('div'));
-	var c, map, latLngs;
+	var container, map, latLngs;
 
 	function p2ll(x, y) {
 		return map.layerPointToLatLng([x, y]);
 	}
 
 	beforeEach(function () {
-		c = document.createElement('div');
-		c.style.width = '400px';
-		c.style.height = '400px';
-		c.style.position = 'absolute';
-		c.style.top = '0';
-		c.style.left = '0';
-		document.body.appendChild(c);
-		map = new L.Map(c, {preferCanvas: true, zoomControl: false});
+		container = createContainer();
+		map = L.map(container, {preferCanvas: true, zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});
 
 	afterEach(function () {
-		if (map._conteiner_id) {
-			map.remove();
-		}
-		document.body.removeChild(c);
+		removeMapContainer(map, container);
 	});
 
 	describe("#events", function () {
@@ -65,6 +55,40 @@ describe('Canvas', function () {
 			map.on("click", spy);
 			happen.at('click', 50, 50);
 			expect(spy.callCount).to.eql(1);
+		});
+
+		it("should be transparent for DOM events going to non-canvas features", function () {
+			var marker = L.marker(map.layerPointToLatLng([150, 150]))
+				.addTo(map);
+			var circle = L.circle(map.layerPointToLatLng([200, 200]), {
+				radius: 20000,
+				renderer: L.svg()
+			}).addTo(map);
+
+			var spyPolygon = sinon.spy();
+			var spyMap = sinon.spy();
+			var spyMarker = sinon.spy();
+			var spyCircle = sinon.spy();
+			layer.on("click", spyPolygon);
+			map.on("click", spyMap);
+			marker.on("click", spyMarker);
+			circle.on("click", spyCircle);
+
+			happen.at('click', 50, 50);   // polygon (canvas)
+			happen.at('click', 151, 151); // empty space
+			happen.at('click', 150, 148); // marker
+			happen.at('click', 200, 200); // circle (svg)
+			expect(spyPolygon.callCount).to.eql(1);
+			expect(spyMap.callCount).to.eql(3); // except marker
+			expect(spyMarker.callCount).to.eql(1);
+			expect(spyCircle.callCount).to.eql(1);
+		});
+
+		it("should not block mousemove event going to non-canvas features", function () {
+			var spyMap = sinon.spy();
+			map.on("mousemove", spyMap);
+			happen.at('mousemove', 151, 151); // empty space
+			expect(spyMap.calledOnce).to.be.ok();
 		});
 
 		it("should fire preclick before click", function () {
@@ -110,6 +134,27 @@ describe('Canvas', function () {
 				.down().moveBy(20, 10, 200).up();
 		});
 
+		it("does fire mousedown on layer after dragging map", function (done) { // #7775
+			var spy = sinon.spy();
+			var center = p2ll(300, 300);
+			var radius = p2ll(200, 200).distanceTo(center);
+			var circle = L.circle(center, {radius: radius}).addTo(map);
+			circle.on('mousedown', spy);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					expect(spy.callCount).to.eql(2);
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			mouse.wait(100)
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
+				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect mousedown ok
+		});
 	});
 
 	describe("#events(interactive=false)", function () {
@@ -173,13 +218,13 @@ describe('Canvas', function () {
 
 	describe('#bringToBack', function () {
 		it('is a no-op for layers not on a map', function () {
-			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToBack()).to.equal(path);
 		});
 
 		it('is a no-op for layers no longer in a LayerGroup', function () {
-			var group = new L.LayerGroup().addTo(map);
-			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+			var group = L.layerGroup().addTo(map);
+			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
 			group.clearLayers();
 
@@ -189,13 +234,13 @@ describe('Canvas', function () {
 
 	describe('#bringToFront', function () {
 		it('is a no-op for layers not on a map', function () {
-			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
+			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToFront()).to.equal(path);
 		});
 
 		it('is a no-op for layers no longer in a LayerGroup', function () {
-			var group = new L.LayerGroup().addTo(map);
-			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+			var group = L.layerGroup().addTo(map);
+			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
 			group.clearLayers();
 
@@ -207,6 +252,7 @@ describe('Canvas', function () {
 		it("can remove the map without errors", function (done) {
 			L.polygon(latLngs).addTo(map);
 			map.remove();
+			map = null;
 			L.Util.requestAnimFrame(function () { done(); });
 		});
 
@@ -214,12 +260,13 @@ describe('Canvas', function () {
 			map.remove();
 
 			var canvas = L.canvas();
-			map = L.map(c, {renderer: canvas});
+			map = L.map(container, {renderer: canvas});
 			map.setView([0, 0], 6);
 			L.polygon(latLngs).addTo(map);
 
 			canvas.remove();
 			map.remove();
+			map = null;
 			L.Util.requestAnimFrame(function () { done(); });
 		});
 	});

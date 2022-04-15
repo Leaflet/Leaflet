@@ -1,5 +1,5 @@
 import {Layer} from '../Layer';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';
@@ -159,8 +159,7 @@ export var GridLayer = Layer.extend({
 		this._levels = {};
 		this._tiles = {};
 
-		this._resetView();
-		this._update();
+		this._resetView(); // implicit _update() call
 	},
 
 	beforeAdd: function (map) {
@@ -229,6 +228,11 @@ export var GridLayer = Layer.extend({
 	redraw: function () {
 		if (this._map) {
 			this._removeAllTiles();
+			var tileZoom = this._clampZoom(this._map.getZoom());
+			if (tileZoom !== this._tileZoom) {
+				this._tileZoom = tileZoom;
+				this._updateLevels();
+			}
 			this._update();
 		}
 		return this;
@@ -796,12 +800,6 @@ export var GridLayer = Layer.extend({
 		// update opacity on tiles in IE7-8 because of filter inheritance problems
 		if (Browser.ielt9 && this.options.opacity < 1) {
 			DomUtil.setOpacity(tile, this.options.opacity);
-		}
-
-		// without this hack, tiles disappear after zoom on Chrome for Android
-		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (Browser.android && !Browser.android23) {
-			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
 

@@ -5,7 +5,7 @@ import * as Util from '../core/Util';
 /*
  * @class LayerGroup
  * @aka L.LayerGroup
- * @inherits Layer
+ * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,
  * any layers added or removed from the group will be added/removed on the map as
@@ -73,7 +73,6 @@ export var LayerGroup = Layer.extend({
 	// @method hasLayer(id: Number): Boolean
 	// Returns `true` if the given internal ID is currently added to the group.
 	hasLayer: function (layer) {
-		if (!layer) { return false; }
 		var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	},
