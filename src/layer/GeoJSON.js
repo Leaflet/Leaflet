@@ -273,7 +273,7 @@ export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		coords.push(levelsDeep ?
 			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
-			latLngToCoords(toLatLng(latlngs[i]), precision));
+			latLngToCoords(latlngs[i], precision));
 	}
 
 	if (!levelsDeep && closed) {
