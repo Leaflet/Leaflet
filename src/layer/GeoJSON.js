@@ -270,6 +270,7 @@ export function latLngToCoords(latlng, precision) {
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
+
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		coords.push(levelsDeep ?
 			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
