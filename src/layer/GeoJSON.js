@@ -8,6 +8,7 @@ import {Polyline} from './vector/Polyline';
 import {Polygon} from './vector/Polygon';
 import {LatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
+import {toLatLng} from '../geo/LatLng';
 
 
 /*
@@ -257,6 +258,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngToCoords(latlng, precision) {
+	latlng = toLatLng(latlng);
 	return latlng.alt !== undefined ?
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
