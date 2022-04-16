@@ -1,4 +1,4 @@
-describe.only('Rectangle', function () {
+describe('Rectangle', function () {
 	var map, container;
 
 	beforeEach(function () {
