@@ -33,35 +33,21 @@ describe.only('Rectangle', function () {
 			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it("cannot be called with an empty array", function () {
+		it.skip("cannot be called with an empty array", function () {
 			// Throws error due to undefined lat
-			expect(L.rectangle).withArgs([]).to.throwException();
+			expect(L.rectangle([])).to.throwException();
 		});
 
-		it("can be initialized with holes", function () {
+		it("can be initialized with extending bounds", function () {
 			var originalLatLngs = [
-				[[0, 10]], // external ring
-				[[20, 30]] // hole
+				[0, 10], [20, 30],
+				[40, 50], [60, 70] // extended bounds
 			];
 
 			var rectangle = L.rectangle(originalLatLngs);
 
 			expect(rectangle._latlngs).to.eql([
-				[L.latLng([0, 10]), L.latLng([20, 10]), L.latLng([20, 30]), L.latLng([0, 30])]
-			]);
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
-		});
-
-		it("cannot be initialized with more than 2 coords", function () {
-			var originalLatLngs = [
-				[0, 10], [20, 30],
-				[2, 3], [4, 5] // extra coords
-			];
-
-			var rectangle = L.rectangle(originalLatLngs);
-
-			expect(rectangle._latlngs).to.not.eql([
-				[L.latLng([0, 10]), L.latLng([20, 10]), L.latLng([20, 30]), L.latLng([0, 30])]
+				[L.latLng([0, 10]), L.latLng([60, 10]), L.latLng([60, 70]), L.latLng([0, 70])]
 			]);
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
@@ -103,40 +89,21 @@ describe.only('Rectangle', function () {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
-		it("can be set with holes", function () {
-			var originalLatLngs = [
-				[[2, 3], [4, 5]]
-			];
-
-			var newLatLngs = [
-				[[0, 10]], // external ring
-				[[20, 30]] // hole
-			];
-
-			var rectangle = L.rectangle(originalLatLngs);
-			rectangle.setBounds(newLatLngs);
-
-			expect(rectangle._latlngs).to.eql([
-				[L.latLng([0, 10]), L.latLng([20, 10]), L.latLng([20, 30]), L.latLng([0, 30])]
-			]);
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
-		});
-
-		it("cannot be set with more than 2 coords", function () {
+		it("can be set with extending bounds", function () {
 			var originalLatLngs = [
 				[[2, 3], [4, 5]]
 			];
 
 			var newLatLngs = [
 				[0, 10], [20, 30],
-				[6, 7], [8, 9] // extra coords
+				[40, 50], [60, 70] // extending bounds
 			];
 
 			var rectangle = L.rectangle(originalLatLngs);
 			rectangle.setBounds(newLatLngs);
 
-			expect(rectangle._latlngs).to.not.eql([
-				[L.latLng([0, 10]), L.latLng([20, 10]), L.latLng([20, 30]), L.latLng([0, 30])]
+			expect(rectangle._latlngs).to.eql([
+				[L.latLng([0, 10]), L.latLng([60, 10]), L.latLng([60, 70]), L.latLng([0, 70])]
 			]);
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
