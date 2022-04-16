@@ -33,9 +33,11 @@ describe('Rectangle', function () {
 			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it.skip("cannot be called with an empty array", function () {
+		it("cannot be called with an empty array", function () {
 			// Throws error due to undefined lat
-			expect(L.rectangle([])).to.throwException();
+			expect(function () {
+				L.rectangle([]);
+			}).to.throwException();
 		});
 
 		it("can be initialized with extending bounds", function () {
