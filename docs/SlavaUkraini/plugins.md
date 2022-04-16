@@ -160,6 +160,12 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 
 {% include plugin_category_table.html category="dynamic-custom-data-loading" %}
 
+### Synthetic overlays
+
+These plugins create useful overlays from scratch, no loading required.
+
+{% include plugin_category_table.html category="synthetic-overlays" %}
+
 ### Data providers
 
 Load overlay data from third-party-services. See also [basemap providers](#basemap-providers) and [plugin collections](#collections).
