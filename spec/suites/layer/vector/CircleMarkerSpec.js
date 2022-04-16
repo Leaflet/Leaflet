@@ -1,10 +1,17 @@
 ﻿describe('CircleMarker', function () {
+	var map, container;
+
+	beforeEach(function () {
+		container = container = createContainer();
+		map = L.map(container);
+		map.setView([0, 0], 1);
+	});
+
+	afterEach(function () {
+		removeMapContainer(map, container);
+	});
+
 	describe("#_radius", function () {
-		var map;
-		beforeEach(function () {
-			map = L.map(document.createElement('div'));
-			map.setView([0, 0], 1);
-		});
 		describe("when a CircleMarker is added to the map ", function () {
 			describe("with a radius set as an option", function () {
 				it("takes that radius", function () {
@@ -40,6 +47,7 @@
 					expect(marker._radius).to.be(15);
 				});
 			});
+
 			describe("and setStyle is used to change the radius before adding", function () {
 				it("takes the given radius", function () {
 					var marker = L.circleMarker([0, 0], {radius: 20});
@@ -52,20 +60,12 @@
 	});
 
 	describe("#setLatLng", function () {
-		var map;
-
-		beforeEach(function () {
-			map = L.map(document.createElement('div'));
-			map.setView([0, 0], 1);
-		});
-
 		it("fires a move event", function () {
-
-			var marker = new L.CircleMarker([0, 0]);
+			var marker = L.circleMarker([0, 0]);
 			map.addLayer(marker);
 
 			var beforeLatLng = marker._latlng;
-			var afterLatLng = new L.LatLng(1, 2);
+			var afterLatLng = L.latLng(1, 2);
 
 			var eventArgs = null;
 			marker.on('move', function (e) {

@@ -10,7 +10,7 @@ import * as Util from '../../core/Util';
 // @namespace Map
 // @section Interaction Options
 Map.mergeOptions({
-	// @section Mousewheel options
+	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
 	// it will zoom to the center of the view regardless of where the mouse was.

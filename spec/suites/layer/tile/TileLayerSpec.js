@@ -1,10 +1,7 @@
-
-
 describe('TileLayer', function () {
+	var container, map;
 
-	var div, map;
-
-	// Placekitten via http://placekitten.com/attribution.html
+	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
 	var placeKitten = "data:image/jpeg;base64," +
@@ -162,20 +159,14 @@ describe('TileLayer', function () {
 	"qQzPJJgDeASMHuOx+lAH/9k=";
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-
-		document.body.appendChild(div);
-
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		if (div) {
-			document.body.removeChild(div);
-		}
+		removeMapContainer(map, container);
 	});
 
 	function kittenLayerFactory(options) {
@@ -192,7 +183,6 @@ describe('TileLayer', function () {
 	}
 
 	describe("number of kittens loaded", function () {
-
 		var clock, kittenLayer, counts;
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
@@ -244,7 +234,6 @@ describe('TileLayer', function () {
 		});
 
 		it("Loads 8 kittens zoom 1", function (done) {
-
 			kittenLayer.on('load', function () {
 				expect(counts.tileloadstart).to.be(8);
 				expect(counts.tileload).to.be(8);
@@ -257,12 +246,11 @@ describe('TileLayer', function () {
 			clock.tick(250);
 		});
 
-
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
-
+		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
+			if (L.Browser.ie) { this.retries(3); } // It also sometimes fails in IE10 on CI
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
 
@@ -300,14 +288,9 @@ describe('TileLayer', function () {
 
 	describe('url template', function () {
 		beforeEach(function () {
-			div = document.createElement('div');
-			div.style.width = '400px';
-			div.style.height = '400px';
-			div.style.visibility = 'hidden';
-
-			document.body.appendChild(div);
-
-			map = L.map(div).setView([0, 0], 2);
+			container.style.width = '400px';
+			container.style.height = '400px';
+			map.setView([0, 0], 2);
 		});
 
 		it('replaces {y} with y coordinate', function () {
@@ -422,19 +405,10 @@ describe('TileLayer', function () {
 
 	});
 
-	describe('options', function () {
-
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		beforeEach(function () {
-			div = document.createElement('div');
-			div.style.width = '400px';
-			div.style.height = '400px';
-
-			map = L.map(div).setView([0, 0], 2);
-		});
-
-		afterEach(function () {
-			map = null;
-			div = null;
+			map.setView([0, 0], 2);
 		});
 
 		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
@@ -459,6 +433,8 @@ describe('TileLayer', function () {
 
 	describe('#setUrl', function () {
 		it('fires only one load event', function (done) {
+			if (L.Browser.ie) { this.retries(3); }
+
 			var layer = L.tileLayer(placeKitten).addTo(map);
 			var counts = {
 				load: 0,

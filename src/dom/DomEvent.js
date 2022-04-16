@@ -1,6 +1,6 @@
 import {Point} from '../geometry/Point';
 import * as Util from '../core/Util';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 import {getScale} from './DomUtil';
@@ -23,7 +23,7 @@ import {getScale} from './DomUtil';
 // Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 export function on(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
+	if (types && typeof types === 'object') {
 		for (var type in types) {
 			addOne(obj, type, types[type], fn);
 		}
@@ -48,34 +48,56 @@ var eventsKey = '_leaflet_events';
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+
+// @alternative
+// @function off(el: HTMLElement, types: String): this
+// Removes all previously added listeners of given types.
+
+// @alternative
+// @function off(el: HTMLElement): this
+// Removes all previously added listeners from given HTMLElement
 export function off(obj, types, fn, context) {
 
-	if (typeof types === 'object') {
+	if (arguments.length === 1) {
+		batchRemove(obj);
+		delete obj[eventsKey];
+
+	} else if (types && typeof types === 'object') {
 		for (var type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
-	} else if (types) {
+
+	} else {
 		types = Util.splitWords(types);
 
-		for (var i = 0, len = types.length; i < len; i++) {
-			removeOne(obj, types[i], fn, context);
+		if (arguments.length === 2) {
+			batchRemove(obj, function (type) {
+				return Util.indexOf(types, type) !== -1;
+			});
+		} else {
+			for (var i = 0, len = types.length; i < len; i++) {
+				removeOne(obj, types[i], fn, context);
+			}
 		}
-	} else {
-		for (var j in obj[eventsKey]) {
-			removeOne(obj, j, obj[eventsKey][j]);
-		}
-		delete obj[eventsKey];
 	}
 
 	return this;
 }
 
-function browserFiresNativeDblClick() {
-	// See https://github.com/w3c/pointerevents/issues/171
-	if (Browser.pointer) {
-		return !(Browser.edge || Browser.safari);
+function batchRemove(obj, filterFn) {
+	for (var id in obj[eventsKey]) {
+		var type = id.split(/\d/)[0];
+		if (!filterFn || filterFn(type)) {
+			removeOne(obj, type, null, null, id);
+		}
 	}
 }
+
+var mouseSubst = {
+	mouseenter: 'mouseover',
+	mouseleave: 'mouseout',
+	wheel: !('onwheel' in window) && 'mousewheel'
+};
 
 function addOne(obj, type, fn, context) {
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
@@ -88,35 +110,32 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (Browser.pointer && type.indexOf('touch') === 0) {
+	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
-		addPointerListener(obj, type, handler, id);
+		handler = addPointerListener(obj, type, handler);
 
-	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
-		addDoubleTapListener(obj, handler, id);
+	} else if (Browser.touch && (type === 'dblclick')) {
+		handler = addDoubleTapListener(obj, handler);
 
 	} else if ('addEventListener' in obj) {
 
-		if (type === 'mousewheel') {
-			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
+		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
+			obj.addEventListener(mouseSubst[type] || type, handler, Browser.passiveEvents ? {passive: false} : false);
 
-		} else if ((type === 'touchstart') || (type === 'touchend')) {
-			obj.addEventListener(type, handler, Browser.passiveEvents ? {passive: false} : false);
-
-		} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+		} else if (type === 'mouseenter' || type === 'mouseleave') {
 			handler = function (e) {
 				e = e || window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
 			};
-			obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);
+			obj.addEventListener(mouseSubst[type], handler, false);
 
 		} else {
 			obj.addEventListener(type, originalHandler, false);
 		}
 
-	} else if ('attachEvent' in obj) {
+	} else {
 		obj.attachEvent('on' + type, handler);
 	}
 
@@ -124,31 +143,23 @@ function addOne(obj, type, fn, context) {
 	obj[eventsKey][id] = handler;
 }
 
-function removeOne(obj, type, fn, context) {
-
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
-	    handler = obj[eventsKey] && obj[eventsKey][id];
+function removeOne(obj, type, fn, context, id) {
+	id = id || type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	var handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
-	if (Browser.pointer && type.indexOf('touch') === 0) {
-		removePointerListener(obj, type, id);
+	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
+		removePointerListener(obj, type, handler);
 
-	} else if (Browser.touch && (type === 'dblclick') && !browserFiresNativeDblClick()) {
-		removeDoubleTapListener(obj, id);
+	} else if (Browser.touch && (type === 'dblclick')) {
+		removeDoubleTapListener(obj, handler);
 
 	} else if ('removeEventListener' in obj) {
 
-		if (type === 'mousewheel') {
-			obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, Browser.passiveEvents ? {passive: false} : false);
+		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
-		} else {
-			obj.removeEventListener(
-				type === 'mouseenter' ? 'mouseover' :
-				type === 'mouseleave' ? 'mouseout' : type, handler, false);
-		}
-
-	} else if ('detachEvent' in obj) {
+	} else {
 		obj.detachEvent('on' + type, handler);
 	}
 
@@ -171,24 +182,23 @@ export function stopPropagation(e) {
 	} else {
 		e.cancelBubble = true;
 	}
-	skipped(e);
 
 	return this;
 }
 
 // @function disableScrollPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants).
+// Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
 export function disableScrollPropagation(el) {
-	addOne(el, 'mousewheel', stopPropagation);
+	addOne(el, 'wheel', stopPropagation);
 	return this;
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'doubleclick'`,
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`,
 // `'mousedown'` and `'touchstart'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	on(el, 'mousedown touchstart dblclick', stopPropagation);
-	addOne(el, 'click', fakeStop);
+	on(el, 'mousedown touchstart dblclick contextmenu', stopPropagation);
+	el['_leaflet_disable_click'] = true;
 	return this;
 }
 
@@ -240,7 +250,7 @@ var wheelPxFactor =
 	Browser.gecko ? window.devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
-// Gets normalized wheel delta from a mousewheel DOM event, in vertical
+// Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
@@ -254,20 +264,6 @@ export function getWheelDelta(e) {
 	       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 20 : // Legacy Moz lines
 	       e.detail ? e.detail / -32765 * 60 : // Legacy Moz pages
 	       0;
-}
-
-var skipEvents = {};
-
-export function fakeStop(e) {
-	// fakes stopPropagation by setting a special event flag, checked/reset with skipped(e)
-	skipEvents[e.type] = true;
-}
-
-export function skipped(e) {
-	var events = skipEvents[e.type];
-	// reset when checking, as it's only used in map container and propagates outside of the map
-	skipEvents[e.type] = false;
-	return events;
 }
 
 // check if element really left/entered the event target (for mouseenter/mouseleave)
