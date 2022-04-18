@@ -14,11 +14,11 @@ Volodymyr is no longer in Kyiv, because Russian bombs are falling over the city.
 
 The Russian soldiers have already killed tens of thousands of civilians, including women and children, and are committing mass war crimes like gang rapes, executions, looting, and targeted bombings of civilian shelters and places of cultural significance. The death toll keeps rising, and Ukraine needs your help.
 
-As Volodymyr [expressed a few days ago](https://twitter.com/LeafletJS/status/1496051256409919489):
+As Volodymyr [expressed a few days before the invasion](https://twitter.com/LeafletJS/status/1496051256409919489):
 
 > If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest war, reach out to Ukrainian friends, donate to Ukrainian charities. Just don't be silent.
 
-Ukrainians are recommending the [Come Back Alive](https://www.comebackalive.in.ua) charity. For other options, see [SupportUkraineNow.org](https://supportukrainenow.org).
+Ukrainians are recommending the [Come Back Alive](https://www.comebackalive.in.ua) charity. For other options, see [SupportUkraineNow.org](https://stand-with-ukraine.pp.ua).
 
 If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukrainian citizens is the future of Leaflet.
 
