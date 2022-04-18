@@ -110,8 +110,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(map);
 ```
 
-{% include frame.html url="example-bounds.html" %}
-
 #### Adding the video overlay
 
 Adding a video overlay works very similar to adding an image overlay. 
