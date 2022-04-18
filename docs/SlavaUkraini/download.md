@@ -12,12 +12,12 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.7.1/leaflet.zip">Leaflet 1.7.1</a></td>
-		<td>Stable version, released on September 3, 2020.</td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.8.0/leaflet.zip">Leaflet 1.8.0</a></td>
+		<td>Stable version, released on April 18, 2022.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.8.0-beta.1/leaflet.zip">Leaflet 1.8.0-beta.1</a></td>
-		<td>Beta version, released on March 26, 2022.</td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.7.1/leaflet.zip">Leaflet 1.7.1</a></td>
+		<td>Previous stable version, released on September 3, 2020.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.zip">Leaflet 1.8-dev</a></td>
