@@ -199,7 +199,7 @@ p.tagline {
 	padding: 0 30px;
 	text-align: center;
 	font-size: 1.25em;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	border-bottom: 1px solid #ccc;
 	padding-bottom: 40px;
 }
@@ -273,8 +273,8 @@ p.tagline {
 
 .map-home {
 	height: 300px;
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 .usedby-title {
@@ -795,7 +795,7 @@ table.plugins td:first-child a {
 	font-size: 14px;
 }
 
-.api-page p {
+main .api-page p {
 	margin-top: 0;
 }
 
