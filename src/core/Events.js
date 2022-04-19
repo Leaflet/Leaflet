@@ -216,19 +216,47 @@ export var Events = {
 	},
 
 	// @method listens(type: String, propagate?: Boolean): Boolean
+	// @method listens(type: String, fn: Function, context?: Object, propagate?: Boolean): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
-	listens: function (type, propagate) {
+	listens: function (type, fn, context, propagate) {
 		if (typeof type !== 'string') {
 			console.warn('"string" type argument expected');
 		}
+
+		if (typeof fn === 'boolean') {
+			propagate = fn;
+			fn = undefined;
+			context = undefined;
+		}
+
 		var listeners = this._events && this._events[type];
-		if (listeners && listeners.length) { return true; }
+		if (listeners && listeners.length) {
+			if (fn) {
+				// we don't want to overwrite the context variable, because it is propagated
+				var ctx = context;
+				if (this === ctx) {
+					ctx = undefined;
+				}
+				// find fn
+				for (var i = 0, len = listeners.length; i < len; i++) {
+					var l = listeners[i];
+					if (l.ctx !== ctx) {
+						continue;
+					}
+					if (l.fn === fn) {
+						return true;
+					}
+				}
+			} else {
+				return true;
+			}
+		}
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
 			for (var id in this._eventParents) {
-				if (this._eventParents[id].listens(type, propagate)) { return true; }
+				if (this._eventParents[id].listens(type, fn, context, propagate)) { return true; }
 			}
 		}
 		return false;

@@ -448,8 +448,11 @@ export var Map = Evented.extend({
 
 		if (!bounds.isValid()) {
 			this.options.maxBounds = null;
-			return this.off('moveend', this._panInsideMaxBounds);
-		} else if (this.options.maxBounds) {
+			if (this.listens('moveend', this._panInsideMaxBounds)) {
+				this.off('moveend', this._panInsideMaxBounds);
+			}
+			return this;
+		} else if (this.options.maxBounds && this.listens('moveend', this._panInsideMaxBounds)) {
 			this.off('moveend', this._panInsideMaxBounds);
 		}
 
