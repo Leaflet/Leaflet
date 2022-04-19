@@ -22,6 +22,8 @@ To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use thi
 var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, options);
 ```
 
+#### Creating a map
+
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
@@ -233,7 +235,7 @@ And choose this SVG element by using a querySelector:
 var svgElement = document.querySelector('#svg');
 ```
 
-#### Creating the SVG Overlay
+#### Adding the SVG overlay
 
 Create the SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 
