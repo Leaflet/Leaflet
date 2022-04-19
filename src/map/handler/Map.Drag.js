@@ -1,5 +1,4 @@
 import {Map} from '../Map';
-import * as Browser from '../../core/Browser';
 import {Handler} from '../../core/Handler';
 import {Draggable} from '../../dom/Draggable';
 import * as Util from '../../core/Util';
@@ -15,7 +14,7 @@ import {toBounds} from '../../geometry/Bounds';
 // @section Interaction Options
 Map.mergeOptions({
 	// @option dragging: Boolean = true
-	// Whether the map be draggable with mouse/touch or not.
+	// Whether the map is draggable with mouse/touch or not.
 	dragging: true,
 
 	// @section Panning Inertia Options
@@ -23,8 +22,8 @@ Map.mergeOptions({
 	// If enabled, panning of the map will have an inertia effect where
 	// the map builds momentum while dragging and continues moving in
 	// the same direction for some time. Feels especially nice on touch
-	// devices. Enabled by default unless running on old Android devices.
-	inertia: !Browser.android23,
+	// devices. Enabled by default.
+	inertia: true,
 
 	// @option inertiaDeceleration: Number = 3000
 	// The rate with which the inertial movement slows down, in pixels/second².
@@ -188,7 +187,7 @@ export var Drag = Handler.extend({
 		var map = this._map,
 		    options = map.options,
 
-		    noInertia = !options.inertia || this._times.length < 2;
+		    noInertia = !options.inertia || e.noInertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 

@@ -113,10 +113,6 @@ export var Layer = Evented.extend({
 
 		this.onAdd(map);
 
-		if (this.getAttribution && map.attributionControl) {
-			map.attributionControl.addAttribution(this.getAttribution());
-		}
-
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
 	}
@@ -189,10 +185,6 @@ Map.include({
 			layer.onRemove(this);
 		}
 
-		if (layer.getAttribution && this.attributionControl) {
-			this.attributionControl.removeAttribution(layer.getAttribution());
-		}
-
 		delete this._layers[id];
 
 		if (this._loaded) {
@@ -208,7 +200,7 @@ Map.include({
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the map
 	hasLayer: function (layer) {
-		return !!layer && (Util.stamp(layer) in this._layers);
+		return Util.stamp(layer) in this._layers;
 	},
 
 	/* @method eachLayer(fn: Function, context?: Object): this
@@ -235,7 +227,7 @@ Map.include({
 	},
 
 	_addZoomLimit: function (layer) {
-		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
 			this._zoomBoundLayers[Util.stamp(layer)] = layer;
 			this._updateZoomLevels();
 		}
