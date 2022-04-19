@@ -571,6 +571,19 @@ describe("L.GeoJSON functions", function () {
 			]
 		};
 
+		var featureCollection  = {
+			type: "FeatureCollection",
+			features: [
+				{
+					type: "Feature",
+					geometry: {
+						type: "Point",
+						coordinates: [0, 0]
+					}
+				},
+			]
+		};
+
 		function customPointToLayer(geojsonPoint, latLng) {
 			return L.circle(latLng, {
 				radius: geojsonPoint.properties.radius
@@ -588,7 +601,8 @@ describe("L.GeoJSON functions", function () {
 			[multiPoint, L.FeatureGroup],
 			[multiLine, L.Polyline],
 			[multiPolygon, L.Polygon],
-			[geometryCollection, L.FeatureGroup]
+			[geometryCollection, L.FeatureGroup],
+			[featureCollection, L.FeatureGroup]
 		].forEach(function (item) {
 			var geometry = item[0], expectedType = item[1];
 
