@@ -10,7 +10,7 @@ There are 3 Overlays in Leaflet API:
 - [`VideoOverlay`](/reference.html#videooverlay): Raster Layer, Extends [`ImageOverlay`](/reference.html#imageoverlay)
 - [`SVGOverlay`](/reference.html#svgoverlay): Vector Layer, Extends [`ImageOverlay`](/reference.html#imageoverlay)
 
-In this tutorial, you’ll learn how to use these Overlays.
+In this tutorial, you’ll learn how to use these overlays.
 
 ### `ImageOverlay`
 
