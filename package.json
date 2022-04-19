@@ -48,7 +48,7 @@
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
-    "integrity": "node ./build/integrity.js",
+    "integrity": "NODE_ENV=release npm run build && node ./build/integrity.js",
     "bundlemon": "bundlemon --subProject no-compression --defaultCompression none && bundlemon --subProject gzip-compression --defaultCompression gzip",
     "serve": "cd docs && bundle exec jekyll serve"
   },
