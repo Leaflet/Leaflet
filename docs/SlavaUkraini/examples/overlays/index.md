@@ -5,7 +5,7 @@ title: Overlays
 
 ## Overlays
 
-There are 3 Overlays in Leaflet API: 
+There are 3 overlays in the Leaflet API: 
 - [`ImageOverlay`](/reference.html#imageoverlay): Raster Layer, Extends [`Layer`](/reference.html#layer)
 - [`VideoOverlay`](/reference.html#videooverlay): Raster Layer, Extends [`ImageOverlay`](/reference.html#imageoverlay)
 - [`SVGOverlay`](/reference.html#svgoverlay): Vector Layer, Extends [`ImageOverlay`](/reference.html#imageoverlay)
