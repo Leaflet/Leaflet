@@ -132,7 +132,7 @@ describe("Map.Drag", function () {
 			});
 
 			var originalCenter = L.latLng(0, 0);
-			map.setView(originalCenter, 1);
+			map.setView(originalCenter.clone(), 1);
 
 			var spy = sinon.spy();
 			map.on('drag', spy);
@@ -142,7 +142,7 @@ describe("Map.Drag", function () {
 				onStop: function () {
 					expect(map.getZoom()).to.be(1);
 					// Expect center point to be the same as before the click
-					expect(map.getCenter()).to.be(originalCenter);
+					expect(map.getCenter()).to.eql(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 
 					done();
@@ -273,7 +273,7 @@ describe("Map.Drag", function () {
 				inertia: false
 			});
 			var originalCenter = L.latLng(0, 0);
-			map.setView(originalCenter, 1);
+			map.setView(originalCenter.clone(), 1);
 
 			map.on('mousedown', function () {
 				map.dragging.disable();
@@ -286,7 +286,7 @@ describe("Map.Drag", function () {
 				onStop: function () {
 					expect(map.getZoom()).to.be(1);
 					// Expect center point to be the same as before the click
-					expect(map.getCenter()).to.be(originalCenter);
+					expect(map.getCenter()).to.eql(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 
 					done();
