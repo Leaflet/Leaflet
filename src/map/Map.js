@@ -446,14 +446,13 @@ export var Map = Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
 
+		if (this.listens('moveend', this._panInsideMaxBounds)) {
+			this.off('moveend', this._panInsideMaxBounds);
+		}
+
 		if (!bounds.isValid()) {
 			this.options.maxBounds = null;
-			if (this.listens('moveend', this._panInsideMaxBounds)) {
-				this.off('moveend', this._panInsideMaxBounds);
-			}
 			return this;
-		} else if (this.options.maxBounds && this.listens('moveend', this._panInsideMaxBounds)) {
-			this.off('moveend', this._panInsideMaxBounds);
 		}
 
 		this.options.maxBounds = bounds;
@@ -823,7 +822,7 @@ export var Map = Evented.extend({
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
-			return this._lastCenter;
+			return this._lastCenter.clone();
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},

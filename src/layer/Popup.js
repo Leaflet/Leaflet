@@ -203,7 +203,10 @@ export var Popup = DivOverlay.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
-			DomEvent.on(closeButton, 'click', this.close, this);
+			DomEvent.on(closeButton, 'click', function (ev) {
+				DomEvent.preventDefault(ev);
+				this.close();
+			}, this);
 		}
 	},
 

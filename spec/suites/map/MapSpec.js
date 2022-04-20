@@ -119,6 +119,13 @@ describe("Map", function () {
 			map.invalidateSize();
 			expect(map.getCenter()).not.to.eql(center);
 		});
+
+		it("returns a new object that can be mutated without affecting the map", function () {
+			map.setView([10, 10], 1);
+			var center = map.getCenter();
+			center.lat += 10;
+			expect(map.getCenter()).to.eql(L.latLng(10, 10));
+		});
 	});
 
 	describe("#whenReady", function () {
@@ -299,6 +306,15 @@ describe("Map", function () {
 				done();
 			});
 			map.setView(center, 18, {animate: false});
+		});
+
+		it("does not try to remove listeners if it wasn't set before", function () {
+			L.tileLayer("", {minZoom: 0, maxZoom: 20}).addTo(map);
+			container.style.width = container.style.height = "500px";
+			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
+			map.off = sinon.spy();
+			map.setMaxBounds(bounds, {animate: false});
+			expect(map.off.called).not.to.be.ok();
 		});
 	});
 
@@ -1027,14 +1043,14 @@ describe("Map", function () {
 		beforeEach(function () {
 			container.style.height = container.style.width = "500px";
 			map.setView(L.latLng([53.0, 0.15]), 12, {animate: false});
-			center = map.getCenter();
+			center = map.getCenter().clone();
 			tl = map.getBounds().getNorthWest();
 			tlPix = map.getPixelBounds().min;
 		});
 
 		it("does not pan the map when the target is within bounds", function () {
 			map.panInside(tl, {animate:false});
-			expect(center).to.equal(map.getCenter());
+			expect(center).to.eql(map.getCenter());
 		});
 
 		it("pans the map when padding is provided and the target is within the border area", function () {
@@ -1066,13 +1082,13 @@ describe("Map", function () {
 
 		it("supports different padding values for each border", function () {
 			var p = tlPix.add([40, 0]),	// Top-Left
-			    opts = {paddingTL: [60, 20], paddingBR: [10, 10]};
+			    opts = {paddingTL: [60, 20], paddingBR: [10, 10], animate: false};
 			map.panInside(map.unproject(p), opts);
-			expect(center).to.equal(map.getCenter());
+			expect(center).to.eql(map.getCenter());
 
 			var br = map.getPixelBounds().max;	// Bottom-Right
-			map.panInside(map.unproject(L.point(br.x - 20, br.y)), opts);
-			expect(center).to.not.equal(map.getCenter);
+			map.panInside(map.unproject(L.point(br.x + 20, br.y)), opts);
+			expect(center).to.not.eql(map.getCenter());
 		});
 
 		it("pans on both X and Y axes when the target is outside of the view area and both the point's coords are outside the bounds", function () {
