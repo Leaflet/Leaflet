@@ -183,6 +183,129 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#setZoom", function () {
+		describe("when the map has not yet been loaded", function () {
+			it("changes previous zoom level", function () {
+				map.zoom = 10
+				map.setZoom(15);
+	
+				expect(map.getZoom()).to.be(15);
+			});
+	
+			it("can be passed without a zoom specified and keep previous zoom", function () {
+				var prevZoom = map.getZoom();
+				map.setZoom();
+	
+				expect(map.getZoom()).to.be(prevZoom);
+			});
+	
+			it("can be passed with a zoom level of undefined and keep previous zoom", function () {
+				var prevZoom = map.getZoom();
+				map.setZoom(undefined);
+	
+				expect(map.getZoom()).to.be(prevZoom);
+			});
+	
+			it("set zoom level is not limited by max zoom", function () {
+				map.options.maxZoom = 10;
+				map.setZoom(15);
+	
+				expect(map.getZoom()).to.be(15);
+			});
+	
+			it("overwrites zoom passed as map option", function () {
+				var map = L.map(document.createElement("div"), {zoom: 13});
+				map.setZoom(15);
+				var zoom = map.getZoom();
+	
+				map.remove(); // clean up
+				expect(zoom).to.be(15);
+			});
+		});
+
+		describe("when the map has been loaded", function () {
+			beforeEach(function () {
+				map.setView([0, 0], 0); // loads map
+			});
+
+			it("changes previous zoom level", function () {
+				map.zoom = 10
+				map.setZoom(15);
+	
+				expect(map.getZoom()).to.be(15);
+			});
+	
+			it("can be passed without a zoom specified and keep previous zoom", function () {
+				var prevZoom = map.getZoom();
+				map.setZoom();
+	
+				expect(map.getZoom()).to.be(prevZoom);
+			});
+	
+			it("can be passed with a zoom level of undefined and keep previous zoom", function () {
+				var prevZoom = map.getZoom();
+				map.setZoom(undefined);
+	
+				expect(map.getZoom()).to.be(prevZoom);
+			});
+	
+			it("set zoom level is limited by max zoom", function () {
+				map.options.maxZoom = 10;
+				map.setZoom(15);
+	
+				expect(map.getZoom()).to.be(10);
+			});
+	
+			it("overwrites zoom passed as map option", function () {
+				var map = L.map(document.createElement("div"), {zoom: 13});
+				map.setView([0, 0]);
+				map.setZoom(15);
+				var zoom = map.getZoom();
+	
+				map.remove(); // clean up
+				expect(zoom).to.be(15);
+			});
+		});
+	});
+
+	describe.only("#setZoomAround", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 0); // loads map
+		});
+
+		it("pass Point and keep in point in view", function () {
+			var point = L.point(5, 5)
+			map.setZoomAround(point, 5);
+
+			expect(map.getBounds().contains(map.containerPointToLatLng(point))).to.be(true);
+		});
+
+		it("pass Point and keep in point in view at high zoom", function () {
+			var point = L.point(5, 5)
+			map.setZoomAround(point, 18);
+
+			expect(map.getBounds().contains(map.containerPointToLatLng(point))).to.be(true);
+		});
+
+		it("pass lats and keep lats in view", function () {
+			map.setZoomAround([5, 5], 5);
+
+			expect(map.getBounds().contains([5, 5])).to.be(true);
+		});
+
+		it("pass lats and keep lats in view at high zoom fails", function () {
+			map.setZoomAround([5, 5], 18); // usually fails around 9 zoom level
+
+			expect(map.getBounds().contains([5, 5])).to.be(false);
+		});
+
+		it("throws if map is not loaded", function () {
+			var map = L.map(document.createElement("div"));
+
+			expect(map.setZoomAround).withArgs([5, 5], 4).to.throwException();
+		});
+	});
+
 	describe("#getBounds", function () {
 		it("is safe to call from within a moveend callback during initial load (#1027)", function () {
 			var map = L.map(document.createElement("div"));
