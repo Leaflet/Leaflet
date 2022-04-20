@@ -206,14 +206,24 @@ export function geometryToLayer(geojson, options) {
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
-			var layer = geometryToLayer({
+			var geoLayer = geometryToLayer({
 				geometry: geometry.geometries[i],
 				type: 'Feature',
 				properties: geojson.properties
 			}, options);
 
-			if (layer) {
-				layers.push(layer);
+			if (geoLayer) {
+				layers.push(geoLayer);
+			}
+		}
+		return new FeatureGroup(layers);
+
+	case 'FeatureCollection':
+		for (i = 0, len = geometry.features.length; i < len; i++) {
+			var featureLayer = geometryToLayer(geometry.features[i], options);
+
+			if (featureLayer) {
+				layers.push(featureLayer);
 			}
 		}
 		return new FeatureGroup(layers);
