@@ -307,6 +307,15 @@ describe("Map", function () {
 			});
 			map.setView(center, 18, {animate: false});
 		});
+
+		it("does not try to remove listeners if it wasn't set before", function () {
+			L.tileLayer("", {minZoom: 0, maxZoom: 20}).addTo(map);
+			container.style.width = container.style.height = "500px";
+			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
+			map.off = sinon.spy();
+			map.setMaxBounds(bounds, {animate: false});
+			expect(map.off.called).not.to.be.ok();
+		});
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {

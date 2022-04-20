@@ -446,11 +446,14 @@ export var Map = Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
 
-		if (!bounds.isValid()) {
-			this.options.maxBounds = null;
-			return this.off('moveend', this._panInsideMaxBounds);
-		} else if (this.options.maxBounds) {
+		if (this._maxBoundsSet) {
+			this._maxBoundsSet = false;
 			this.off('moveend', this._panInsideMaxBounds);
+
+			if (!bounds.isValid()) {
+				this.options.maxBounds = null;
+				return this;
+			}
 		}
 
 		this.options.maxBounds = bounds;
@@ -459,6 +462,7 @@ export var Map = Evented.extend({
 			this._panInsideMaxBounds();
 		}
 
+		this._maxBoundsSet = true;
 		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
