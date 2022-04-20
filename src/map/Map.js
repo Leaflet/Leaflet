@@ -820,7 +820,7 @@ export var Map = Evented.extend({
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
-			return this._lastCenter;
+			return this._lastCenter.clone();
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
