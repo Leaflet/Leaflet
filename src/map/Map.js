@@ -449,11 +449,11 @@ export var Map = Evented.extend({
 		if (this._maxBoundsSet) {
 			this._maxBoundsSet = false;
 			this.off('moveend', this._panInsideMaxBounds);
+		}
 
-			if (!bounds.isValid()) {
-				this.options.maxBounds = null;
-				return this;
-			}
+		if (!bounds.isValid()) {
+			this.options.maxBounds = null;
+			return this;
 		}
 
 		this.options.maxBounds = bounds;
