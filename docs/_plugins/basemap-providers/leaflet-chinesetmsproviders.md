@@ -4,7 +4,7 @@ category: basemap-providers
 repo: https://github.com/htoooth/Leaflet.ChineseTmsProviders
 author: Tao Huang
 author-url: https://github.com/htoooth/
-demo: 
+demo: http://htoooth.github.io/Leaflet.ChineseTmsProviders/examples/indexTianDiTu.html
 compatible-v0:
 compatible-v1: true
 ---

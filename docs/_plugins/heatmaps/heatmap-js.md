@@ -1,10 +1,10 @@
 ---
 name: heatmap.js
 category: heatmaps
-repo: https://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
+repo: https://www.patrick-wied.at/static/heatmapjs/plugin-leaflet-layer.html
 author: Patrick Wied
 author-url: https://github.com/pa7
-demo: 
+demo: https://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
 compatible-v0:
 compatible-v1: true
 ---

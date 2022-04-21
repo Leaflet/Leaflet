@@ -1,19 +1,15 @@
 /* global touchPointerMap */
 describe("Marker", function () {
 	var map,
-	    div,
+	    container,
 	    icon1,
 	    icon2;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.height = '400px';
-		div.style.width = '400px';
-		div.style.position = 'absolute';
-		div.style.top = '0';
-		document.body.appendChild(div);
+		container = container = createContainer();
+		map = L.map(container);
 
-		map = L.map(div).setView([0, 0], 0);
+		map.setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
 		icon2 = new L.Icon.Default({
 			iconUrl: icon1.options.iconUrl + '?2',
@@ -22,8 +18,7 @@ describe("Marker", function () {
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	describe("#setIcon", function () {
@@ -36,7 +31,7 @@ describe("Marker", function () {
 				iconSize: [expectedX, expectedY]
 			});
 
-			var marker = new L.Marker([0, 0], {icon: sizedIcon});
+			var marker = L.marker([0, 0], {icon: sizedIcon});
 			map.addLayer(marker);
 
 			var icon = marker._icon;
@@ -52,7 +47,7 @@ describe("Marker", function () {
 				iconSize: expectedXY
 			});
 
-			var marker = new L.Marker([0, 0], {icon: sizedIcon});
+			var marker = L.marker([0, 0], {icon: sizedIcon});
 			map.addLayer(marker);
 
 			var icon = marker._icon;
@@ -68,7 +63,7 @@ describe("Marker", function () {
 				iconSize: L.point(expectedXY, expectedXY)
 			});
 
-			var marker = new L.Marker([0, 0], {icon: sizedIcon});
+			var marker = L.marker([0, 0], {icon: sizedIcon});
 			map.addLayer(marker);
 
 			var icon = marker._icon;
@@ -78,7 +73,7 @@ describe("Marker", function () {
 		});
 
 		it("changes the icon to another image while re-using the IMG element", function () {
-			var marker = new L.Marker([0, 0], {icon: icon1});
+			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
 			var beforeIcon = marker._icon;
@@ -90,7 +85,7 @@ describe("Marker", function () {
 		});
 
 		it("preserves draggability", function () {
-			var marker = new L.Marker([0, 0], {icon: icon1});
+			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
 			marker.dragging.disable();
@@ -127,11 +122,11 @@ describe("Marker", function () {
 		});
 
 		it("changes the DivIcon to another DivIcon, while re-using the DIV element", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
+			var marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
 			var beforeIcon = marker._icon;
-			marker.setIcon(new L.DivIcon({html: 'Inner2Text'}));
+			marker.setIcon(L.divIcon({html: 'Inner2Text'}));
 			var afterIcon = marker._icon;
 
 			expect(beforeIcon).to.be(afterIcon); // Check that the <DIV> element is re-used
@@ -139,16 +134,16 @@ describe("Marker", function () {
 		});
 
 		it("removes text when changing to a blank DivIcon", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
+			var marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
-			marker.setIcon(new L.DivIcon());
+			marker.setIcon(L.divIcon());
 
 			expect(marker._icon.innerHTML).to.not.contain('Inner1Text');
 		});
 
 		it("changes a DivIcon to an image", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
+			var marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 
@@ -166,11 +161,11 @@ describe("Marker", function () {
 		});
 
 		it("changes an image to a DivIcon", function () {
-			var marker = new L.Marker([0, 0], {icon: icon1});
+			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 
-			marker.setIcon(new L.DivIcon({html: 'Inner1Text'}));
+			marker.setIcon(L.divIcon({html: 'Inner1Text'}));
 
 			expect(oldIcon).to.not.be(marker._icon); // Check that the _icon is NOT re-used
 			expect(oldIcon.parentNode).to.be(null);
@@ -180,7 +175,7 @@ describe("Marker", function () {
 		});
 
 		it("reuses the icon/shadow when changing icon", function () {
-			var marker = new L.Marker([0, 0], {icon: icon1});
+			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 			var oldShadow = marker._shadow;
@@ -194,12 +189,12 @@ describe("Marker", function () {
 			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
 		});
 
-		it("sets the alt attribute to an empty string when no alt text is passed", function () {
+		it("sets the alt attribute to a default value when no alt text is passed", function () {
 			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(true);
-			expect(icon.alt).to.be('');
+			expect(icon.alt).to.be('Marker');
 		});
 
 		it("doesn't set the alt attribute for DivIcons", function () {
@@ -208,12 +203,38 @@ describe("Marker", function () {
 			var icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(false);
 		});
+
+		it("pan map to focus marker", function (done) {
+			var marker = L.marker([70, 0], {icon: L.divIcon()});
+			map.addLayer(marker);
+
+			setTimeout(function () {
+				expect(function () {
+					marker._icon.focus();
+				}).to.not.throwException();
+
+				done();
+			}, 100);
+		});
+
+		it("pan map to focus marker with no iconSize", function (done) {
+			var marker = L.marker([70, 0], {icon: L.divIcon({iconSize: null})});
+			map.addLayer(marker);
+
+			setTimeout(function () {
+				expect(function () {
+					marker._panOnFocus();
+				}).to.not.throwException();
+
+				done();
+			}, 100);
+		});
 	});
 
 	describe("#setLatLng", function () {
 		it("fires a move event", function () {
 
-			var marker = new L.Marker([0, 0], {icon: icon1});
+			var marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
 			var beforeLatLng = marker._latlng;
@@ -248,7 +269,7 @@ describe("Marker", function () {
 		it('fires click event when clicked with DivIcon', function () {
 			var spy = sinon.spy();
 
-			var marker = L.marker([0, 0], {icon: new L.DivIcon()}).addTo(map);
+			var marker = L.marker([0, 0], {icon: L.divIcon()}).addTo(map);
 
 			marker.on('click', spy);
 			happen.click(marker._icon);
@@ -259,7 +280,7 @@ describe("Marker", function () {
 		it('fires click event when clicked on DivIcon child element', function () {
 			var spy = sinon.spy();
 
-			var marker = L.marker([0, 0], {icon: new L.DivIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'})}).addTo(map);
+			var marker = L.marker([0, 0], {icon: L.divIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'})}).addTo(map);
 
 			marker.on('click', spy);
 
@@ -274,7 +295,7 @@ describe("Marker", function () {
 			var spy = sinon.spy();
 
 			var marker = L.marker([0, 0]).addTo(map);
-			marker.setIcon(new L.DivIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'}));
+			marker.setIcon(L.divIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'}));
 
 			marker.on('click', spy);
 
@@ -289,7 +310,7 @@ describe("Marker", function () {
 			var spy = sinon.spy();
 			var spy2 = sinon.spy();
 			var mapSpy = sinon.spy();
-			var marker = new L.Marker(new L.LatLng(55.8, 37.6));
+			var marker = L.marker([55.8, 37.6]);
 			map.addLayer(marker);
 			marker.on('click', spy);
 			marker.on('click', spy2);
@@ -304,7 +325,7 @@ describe("Marker", function () {
 			var spy = sinon.spy();
 			var spy2 = sinon.spy();
 			var mapSpy = sinon.spy();
-			var marker = new L.Marker(new L.LatLng(55.8, 37.6));
+			var marker = L.marker([55.8, 37.6]);
 			map.addLayer(marker);
 			marker.on('dblclick', spy);
 			marker.on('dblclick', spy2);
@@ -316,7 +337,7 @@ describe("Marker", function () {
 		});
 
 		it("do not catch event if it does not listen to it", function (done) {
-			var marker = new L.Marker([55, 37]);
+			var marker = L.marker([55, 37]);
 			map.addLayer(marker);
 			marker.once('mousemove', function (e) {
 				// It should be the marker coordinates

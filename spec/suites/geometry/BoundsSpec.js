@@ -2,10 +2,10 @@ describe('Bounds', function () {
 	var a, b, c;
 
 	beforeEach(function () {
-		a = new L.Bounds(
+		a = L.bounds(
 			[14, 12], // left, top
 			[30, 40]); // right, bottom
-		b = new L.Bounds([
+		b = L.bounds([
 			[20, 12], // center, top
 			[14, 20], // left, middle
 			[30, 40] // right, bottom
@@ -15,31 +15,31 @@ describe('Bounds', function () {
 
 	describe('constructor', function () {
 		it('creates bounds with proper min & max on (Point, Point)', function () {
-			expect(a.min).to.eql(new L.Point(14, 12));
-			expect(a.max).to.eql(new L.Point(30, 40));
+			expect(a.min).to.eql(L.point(14, 12));
+			expect(a.max).to.eql(L.point(30, 40));
 		});
 
 		it('creates bounds with proper min & max on (Point[])', function () {
-			expect(b.min).to.eql(new L.Point(14, 12));
-			expect(b.max).to.eql(new L.Point(30, 40));
+			expect(b.min).to.eql(L.point(14, 12));
+			expect(b.max).to.eql(L.point(30, 40));
 		});
 	});
 
 	describe('#extend', function () {
 		it('extends the bounds to contain the given point', function () {
 			a.extend([50, 20]);
-			expect(a.min).to.eql(new L.Point(14, 12));
-			expect(a.max).to.eql(new L.Point(50, 40));
+			expect(a.min).to.eql(L.point(14, 12));
+			expect(a.max).to.eql(L.point(50, 40));
 
 			b.extend([25, 50]);
-			expect(b.min).to.eql(new L.Point(14, 12));
-			expect(b.max).to.eql(new L.Point(30, 50));
+			expect(b.min).to.eql(L.point(14, 12));
+			expect(b.max).to.eql(L.point(30, 50));
 		});
 	});
 
 	describe('#getCenter', function () {
 		it('returns the center point', function () {
-			expect(a.getCenter()).to.eql(new L.Point(22, 26));
+			expect(a.getCenter()).to.eql(L.point(22, 26));
 		});
 	});
 
@@ -70,7 +70,7 @@ describe('Bounds', function () {
 
 	describe('#getSize', function () {
 		it('returns the size of the bounds as point', function () {
-			expect(a.getSize()).to.eql(new L.Point(16, 28));
+			expect(a.getSize()).to.eql(L.point(16, 28));
 		});
 	});
 
@@ -107,25 +107,25 @@ describe('Bounds', function () {
 
 	describe('#getBottomLeft', function () {
 		it('returns the proper bounds bottom-left value', function () {
-			expect(a.getBottomLeft()).to.eql(new L.Point(14, 40)); // left, bottom
+			expect(a.getBottomLeft()).to.eql(L.point(14, 40)); // left, bottom
 		});
 	});
 
 	describe('#getTopRight', function () {
 		it('returns the proper bounds top-right value', function () {
-			expect(a.getTopRight()).to.eql(new L.Point(30, 12)); // right, top
+			expect(a.getTopRight()).to.eql(L.point(30, 12)); // right, top
 		});
 	});
 
 	describe('#getTopLeft', function () {
 		it('returns the proper bounds top-left value', function () {
-			expect(a.getTopLeft()).to.eql(new L.Point(14, 12)); // left, top
+			expect(a.getTopLeft()).to.eql(L.point(14, 12)); // left, top
 		});
 	});
 
 	describe('#getBottomRight', function () {
 		it('returns the proper bounds bottom-right value', function () {
-			expect(a.getBottomRight()).to.eql(new L.Point(30, 40)); // left, bottom
+			expect(a.getBottomRight()).to.eql(L.point(30, 40)); // left, bottom
 		});
 	});
 

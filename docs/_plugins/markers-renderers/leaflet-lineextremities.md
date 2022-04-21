@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/makinacorpus/Leaflet.LineExtremities
 author: Frédéric Bonifas
 author-url: https://github.com/fredericbonifas
-demo: 
+demo: https://makinacorpus.github.io/Leaflet.LineExtremities/
 compatible-v0:
 compatible-v1: true
 ---

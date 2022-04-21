@@ -4,7 +4,7 @@ category: dataviz
 repo: https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer
 author: Jacob Wasilkowski
 author-url: https://github.com/jwasilgeo
-demo: 
+demo: https://jwasilgeo.github.io/Leaflet.Canvas-Flowmap-Layer/docs/comparison/
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: mouse-coordinates
 repo: https://github.com/zimmicz/Leaflet-Coordinates-Control
 author: Michal Zimmermann
 author-url: https://github.com/zimmicz
-demo: 
+demo: https://www.zimmi.cz/Leaflet-Coordinates-Control/
 compatible-v0:
 compatible-v1: true
 ---

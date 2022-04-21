@@ -31,7 +31,7 @@ Maximum age of detected location. If less than this amount of milliseconds
 passed since last geolocation response, `locate` will return a cached location.
 
 @option enableHighAccuracy: Boolean = false
-Enables high accuracy, see [description in the W3C spec](http://dev.w3.org/geo/api/spec-source.html#high-accuracy).
+Enables high accuracy, see [description in the W3C spec](https://w3c.github.io/geolocation-api/#enablehighaccuracy-member).
 
 
 
@@ -72,7 +72,7 @@ Duration of animated panning, in seconds.
 
 @option easeLinearity: Number = 0.25
 The curvature factor of panning animation easing (third parameter of the
-[Cubic Bezier curve](http://cubic-bezier.com/)). 1.0 means linear animation,
+[Cubic Bezier curve](https://cubic-bezier.com/)). 1.0 means linear animation,
 and the smaller this number, the more bowed the curve.
 
 @option noMoveStart: Boolean = false

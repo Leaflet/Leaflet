@@ -4,7 +4,7 @@ category: measurement
 repo: https://github.com/rwev/leaflet-reticle
 author: rwev
 author-url: https://github.com/rwev
-demo: 
+demo: https://rwev.github.io/leaflet-reticle/
 compatible-v0:
 compatible-v1: true
 ---

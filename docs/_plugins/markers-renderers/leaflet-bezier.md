@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/lifeeka/leaflet.bezier
 author: Supun Praneeth
 author-url: https://github.com/spmsupun
-demo: 
+demo: https://github.com/lifeeka/leaflet.bezier#demo
 compatible-v0:
 compatible-v1: true
 ---
