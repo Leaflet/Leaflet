@@ -432,24 +432,27 @@ describe('TileLayer', function () {
 			});
 		}
 
-		it('loads tiles with matching min/maxZoom and detectRetina', function (done) {
+		it('sets min/maxZoom appropriately with detectRetina', function (done) {
+			const maxZoom = 1;
+			const minZoom = 1;
+
+			// override retina to load extra tiles
+			const originalRetina = L.Browser.retina;
 			L.Browser.retina = true;
 
 			const kittenLayer = kittenLayerFactory({
-				minZoom: 1,
-				maxZoom: 1,
+				maxZoom: maxZoom,
+				minZoom: minZoom,
 				detectRetina: true,
 			});
 
-			var tilesLoaded = 0;
-
-			kittenLayer.on('tileload', function () {
-				tilesLoaded += 1;
-			});
-
 			kittenLayer.on('load', function () {
-				// copied from loads 8 kittens zoom 1 above
-				expect(tilesLoaded).to.be(8 * 4);
+				expect(kittenLayer.options.maxZoom).to.be(maxZoom);
+				expect(kittenLayer.options.minZoom).to.be(minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
 				done();
 			});
 
