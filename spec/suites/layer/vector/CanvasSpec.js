@@ -46,13 +46,12 @@ describe('Canvas', function () {
 			map.on("touchmove", spy);
 			var layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on("touchmove", spyLayer);
-			console.log(touchPointerMap['touchmove'])
 			happen.at(touchPointerMap['touchmove'], 200, 200);
 			setTimeout(()=>{
 				expect(spy.calledOnce).to.be.ok();
 				expect(spyLayer.calledOnce).to.be.ok();
 				done();
-			},10)
+			}, 10);
 		});
 
 		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
@@ -114,7 +113,7 @@ describe('Canvas', function () {
 			setTimeout(()=>{
 				expect(spyMap.calledOnce).to.be.ok();
 				done();
-			},10)
+			}, 10);
 		});
 
 		it("should fire preclick before click", function () {
@@ -151,7 +150,7 @@ describe('Canvas', function () {
 					expect(preclickSpy.called).to.be(false);
 					setTimeout(()=>{
 						done();
-					},10)
+					}, 10);
 				}
 			});
 			var mouse = hand.growFinger('mouse');
