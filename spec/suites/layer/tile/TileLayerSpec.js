@@ -433,14 +433,14 @@ describe('TileLayer', function () {
 		}
 
 		it('sets min/maxZoom appropriately with detectRetina', function (done) {
-			const maxZoom = 1;
-			const minZoom = 1;
+			var maxZoom = 1;
+			var minZoom = 1;
 
 			// override retina to load extra tiles
-			const originalRetina = L.Browser.retina;
+			var originalRetina = L.Browser.retina;
 			L.Browser.retina = true;
 
-			const kittenLayer = kittenLayerFactory({
+			var kittenLayer = kittenLayerFactory({
 				maxZoom: maxZoom,
 				minZoom: minZoom,
 				detectRetina: true
