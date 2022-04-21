@@ -443,7 +443,7 @@ describe('TileLayer', function () {
 			const kittenLayer = kittenLayerFactory({
 				maxZoom: maxZoom,
 				minZoom: minZoom,
-				detectRetina: true,
+				detectRetina: true
 			});
 
 			kittenLayer.on('load', function () {
