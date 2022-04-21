@@ -41,7 +41,10 @@
 		var overlay = L.videoOverlay(videoUrls, bounds, {
 			opacity: 0.8,
 			interactive: true,
-			autoplay: false
+			autoplay: true,
+			loop: true,
+			muted: true,
+			playsInline: true
 		});
 		map.addLayer(overlay);
 

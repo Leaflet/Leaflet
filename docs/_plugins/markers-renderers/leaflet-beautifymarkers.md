@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/masajid390/BeautifyMarker
 author: Muhammad Arslan Sajid
 author-url: https://github.com/masajid390
-demo: 
+demo: https://masajid390.github.io/BeautifyMarker/
 compatible-v0:
 compatible-v1: true
 ---

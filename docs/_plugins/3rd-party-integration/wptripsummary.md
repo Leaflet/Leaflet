@@ -4,7 +4,7 @@ category: 3rd-party-integration
 repo: https://github.com/alexboia/WP-Trip-Summary/
 author: Alexandru Boia
 author-url: https://wordpress.org/plugins/wp-trip-summary/
-demo: 
+demo: https://github.com/alexboia/WP-Trip-Summary/#screenshots
 compatible-v0:
 compatible-v1: true
 ---

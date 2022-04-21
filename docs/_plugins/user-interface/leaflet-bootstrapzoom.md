@@ -4,7 +4,7 @@ category: user-interface
 repo: https://github.com/MAD-GooZe/Leaflet.BootstrapZoom
 author: Alexey Gusev
 author-url: https://github.com/MAD-GooZe
-demo: 
+demo: https://mad-gooze.github.io/Leaflet.BootstrapZoom/
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/MAD-GooZe/Leaflet.Arc
 author: Alexey Gusev
 author-url: https://github.com/MAD-GooZe
-demo: 
+demo: https://mad-gooze.github.io/Leaflet.Arc/
 compatible-v0:
 compatible-v1: true
 ---

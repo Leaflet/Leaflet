@@ -4,7 +4,7 @@ category: frameworks-build-systems
 repo: https://github.com/prtksxna/leaflet-map-component
 author: Prateek Saxena
 author-url: https://github.com/prtksxna
-demo: 
+demo: https://prtksxna.github.io/leaflet-map-component/
 compatible-v0:
 compatible-v1: true
 ---
