@@ -4,7 +4,7 @@ category: tile-load
 repo: https://gitlab.com/IvanSanchez/Leaflet.GridLayer.FadeOut
 author: Iván Sánchez
 author-url: https://github.com/IvanSanchez
-demo: http://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html
+demo: https://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html
 compatible-v0: false
 compatible-v1: true
 ---

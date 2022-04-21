@@ -4,7 +4,7 @@ category: print-export
 repo: https://github.com/hersle/leaflet-route-print
 author: Herman Sletmoen
 author-url: https://github.com/hersle
-demo: 
+demo: https://hersle.github.io/leaflet-route-print/
 compatible-v0:
 compatible-v1: true
 ---

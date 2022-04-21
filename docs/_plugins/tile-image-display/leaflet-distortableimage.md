@@ -4,7 +4,7 @@ category: tile-image-display
 repo: https://github.com/publiclab/Leaflet.DistortableImage
 author: Public Lab
 author-url: https://github.com/publiclab
-demo: 
+demo: https://publiclab.github.io/Leaflet.DistortableImage/examples/index.html
 compatible-v0:
 compatible-v1: true
 ---

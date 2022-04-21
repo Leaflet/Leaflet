@@ -13,27 +13,27 @@ describe("CRS.EPSG3857", function () {
 
 	describe("#pointToLatLng", function () {
 		it("reprojects a center point", function () {
-			expect(crs.pointToLatLng(new L.Point(128, 128), 0)).nearLatLng([0, 0], 0.01);
+			expect(crs.pointToLatLng(L.point(128, 128), 0)).nearLatLng([0, 0], 0.01);
 		});
 
 		it("reprojects the northeast corner of the world", function () {
-			expect(crs.pointToLatLng(new L.Point(256, 0), 0)).nearLatLng([85.0511287798, 180]);
+			expect(crs.pointToLatLng(L.point(256, 0), 0)).nearLatLng([85.0511287798, 180]);
 		});
 	});
 
 	describe("project", function () {
 		it('projects geo coords into meter coords correctly', function () {
-			expect(crs.project(new L.LatLng(50, 30))).near([3339584.7238, 6446275.84102]);
-			expect(crs.project(new L.LatLng(85.0511287798, 180))).near([20037508.34279, 20037508.34278]);
-			expect(crs.project(new L.LatLng(-85.0511287798, -180))).near([-20037508.34279, -20037508.34278]);
+			expect(crs.project(L.latLng(50, 30))).near([3339584.7238, 6446275.84102]);
+			expect(crs.project(L.latLng(85.0511287798, 180))).near([20037508.34279, 20037508.34278]);
+			expect(crs.project(L.latLng(-85.0511287798, -180))).near([-20037508.34279, -20037508.34278]);
 		});
 	});
 
 	describe("unproject", function () {
 		it('unprojects meter coords into geo coords correctly', function () {
-			expect(crs.unproject(new L.Point(3339584.7238, 6446275.84102))).nearLatLng([50, 30]);
-			expect(crs.unproject(new L.Point(20037508.34279, 20037508.34278))).nearLatLng([85.051129, 180]);
-			expect(crs.unproject(new L.Point(-20037508.34279, -20037508.34278))).nearLatLng([-85.051129, -180]);
+			expect(crs.unproject(L.point(3339584.7238, 6446275.84102))).nearLatLng([50, 30]);
+			expect(crs.unproject(L.point(20037508.34279, 20037508.34278))).nearLatLng([85.051129, 180]);
+			expect(crs.unproject(L.point(-20037508.34279, -20037508.34278))).nearLatLng([-85.051129, -180]);
 		});
 	});
 
@@ -53,22 +53,22 @@ describe("CRS.EPSG3857", function () {
 
 	describe('#wrapLatLng', function () {
 		it("wraps longitude to lie between -180 and 180 by default", function () {
-			expect(crs.wrapLatLng(new L.LatLng(0, 190)).lng).to.eql(-170);
-			expect(crs.wrapLatLng(new L.LatLng(0, 360)).lng).to.eql(0);
-			expect(crs.wrapLatLng(new L.LatLng(0, 380)).lng).to.eql(20);
-			expect(crs.wrapLatLng(new L.LatLng(0, -190)).lng).to.eql(170);
-			expect(crs.wrapLatLng(new L.LatLng(0, -360)).lng).to.eql(0);
-			expect(crs.wrapLatLng(new L.LatLng(0, -380)).lng).to.eql(-20);
-			expect(crs.wrapLatLng(new L.LatLng(0, 90)).lng).to.eql(90);
-			expect(crs.wrapLatLng(new L.LatLng(0, 180)).lng).to.eql(180);
+			expect(crs.wrapLatLng(L.latLng(0, 190)).lng).to.eql(-170);
+			expect(crs.wrapLatLng(L.latLng(0, 360)).lng).to.eql(0);
+			expect(crs.wrapLatLng(L.latLng(0, 380)).lng).to.eql(20);
+			expect(crs.wrapLatLng(L.latLng(0, -190)).lng).to.eql(170);
+			expect(crs.wrapLatLng(L.latLng(0, -360)).lng).to.eql(0);
+			expect(crs.wrapLatLng(L.latLng(0, -380)).lng).to.eql(-20);
+			expect(crs.wrapLatLng(L.latLng(0, 90)).lng).to.eql(90);
+			expect(crs.wrapLatLng(L.latLng(0, 180)).lng).to.eql(180);
 		});
 
 		it("does not drop altitude", function () {
-			expect(crs.wrapLatLng(new L.LatLng(0, 190, 1234)).lng).to.eql(-170);
-			expect(crs.wrapLatLng(new L.LatLng(0, 190, 1234)).alt).to.eql(1234);
+			expect(crs.wrapLatLng(L.latLng(0, 190, 1234)).lng).to.eql(-170);
+			expect(crs.wrapLatLng(L.latLng(0, 190, 1234)).alt).to.eql(1234);
 
-			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).lng).to.eql(20);
-			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).alt).to.eql(1234);
+			expect(crs.wrapLatLng(L.latLng(0, 380, 1234)).lng).to.eql(20);
+			expect(crs.wrapLatLng(L.latLng(0, 380, 1234)).alt).to.eql(1234);
 		});
 	});
 
@@ -174,11 +174,11 @@ describe("CRS.EPSG3395", function () {
 
 	describe("#pointToLatLng", function () {
 		it("reprojects a center point", function () {
-			expect(crs.pointToLatLng(new L.Point(128, 128), 0)).nearLatLng([0, 0], 0.01);
+			expect(crs.pointToLatLng(L.point(128, 128), 0)).nearLatLng([0, 0], 0.01);
 		});
 
 		it("reprojects the northeast corner of the world", function () {
-			expect(crs.pointToLatLng(new L.Point(256, 0), 0)).nearLatLng([85.0840591556, 180]);
+			expect(crs.pointToLatLng(L.point(256, 0), 0)).nearLatLng([85.0840591556, 180]);
 		});
 	});
 });
@@ -210,7 +210,7 @@ describe("CRS.Simple", function () {
 
 	describe("wrapLatLng", function () {
 		it("returns coords as is", function () {
-			expect(crs.wrapLatLng(new L.LatLng(270, 400)).equals(new L.LatLng(270, 400))).to.be(true);
+			expect(crs.wrapLatLng(L.latLng(270, 400)).equals(L.latLng(270, 400))).to.be(true);
 		});
 
 		it("wraps coords if configured", function () {
@@ -219,7 +219,7 @@ describe("CRS.Simple", function () {
 				wrapLat: [-200, 200]
 			});
 
-			expect(crs.wrapLatLng(new L.LatLng(300, -250))).nearLatLng([-100, 150]);
+			expect(crs.wrapLatLng(L.latLng(300, -250))).nearLatLng([-100, 150]);
 		});
 	});
 });

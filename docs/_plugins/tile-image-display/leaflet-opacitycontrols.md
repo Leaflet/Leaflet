@@ -4,7 +4,7 @@ category: tile-image-display
 repo: https://github.com/lizardtechblog/Leaflet.OpacityControls
 author: Jared Dominguez
 author-url: https://github.com/lizardtechblog/
-demo: 
+demo: https://lizardtechblog.github.io/Leaflet.OpacityControls/
 compatible-v0:
 compatible-v1: true
 ---

@@ -13,7 +13,7 @@ import {Bounds} from '../../geometry/Bounds';
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
  *
- * Due to [technical limitations](http://caniuse.com/#search=canvas), Canvas is not
+ * Due to [technical limitations](https://caniuse.com/canvas), Canvas is not
  * available in all web browsers, notably IE8, and overlapping geometries might
  * not display properly in some edge cases.
  *

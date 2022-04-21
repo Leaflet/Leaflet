@@ -1,43 +1,41 @@
 describe('Map.TapHoldSpec.js', function () {
-	var el, clock, spy, map;
+	var container, clock, spy, map;
 
 	var posStart = {clientX:1, clientY:1};
 	var posNear = {clientX:10, clientY:10};
 	var posFar = {clientX:100, clientY:100};
 
 	beforeEach(function () {
-		el = document.createElement('div');
-		document.body.appendChild(el);
+		container = createContainer();
+		map = L.map(container, {
+			center: [51.505, -0.09],
+			zoom: 13,
+			tapHold: true
+		});
 
 		clock = sinon.useFakeTimers();
 		clock.tick(1000);
 		spy = sinon.spy();
 
-		map = L.map(el, {
-			center: [51.505, -0.09],
-			zoom: 13,
-			tapHold: true
-		});
 		map.on('contextmenu', spy);
 
-		posStart.target = el;
-		posNear.target = el;
-		posFar.target = el;
+		posStart.target = container;
+		posNear.target = container;
+		posFar.target = container;
 	});
 
 	afterEach(function () {
-		happen.once(el, {type: 'touchend'});
+		happen.once(container, {type: 'touchend'});
 		for (var id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
-			happen.once(el, {type: 'pointercancel', pointerId:id});
+			happen.once(container, {type: 'pointercancel', pointerId:id});
 		}
 		clock.restore();
-		map.remove();
-		document.body.removeChild(el);
+		removeMapContainer(map, container);
 	});
 
 	it('fires synthetic contextmenu after hold delay>600', function () {
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.ok();
@@ -53,43 +51,43 @@ describe('Map.TapHoldSpec.js', function () {
 	});
 
 	it('does not fire contextmenu when touches > 1', function () {
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(100);
-		happen.once(el, {type: 'touchstart', touches: [posStart, posNear]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:1}, posNear));
+		happen.once(container, {type: 'touchstart', touches: [posStart, posNear]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:1}, posNear));
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not fire contextmenu when touches > 1 (case:2)', function () {
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(100);
-		happen.once(el, {type: 'touchstart', touches: [posStart, posNear]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:1}, posNear));
+		happen.once(container, {type: 'touchstart', touches: [posStart, posNear]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:1}, posNear));
 		clock.tick(100);
-		happen.once(el, {type: 'touchend', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerup', pointerId:0}, posNear));
+		happen.once(container, {type: 'touchend', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerup', pointerId:0}, posNear));
 		clock.tick(450);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	(L.Browser.pointer ? it : it.skip)('ignores events from mouse', function () {
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0, pointerType:'mouse'}, posStart));
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0, pointerType:'mouse'}, posStart));
 		clock.tick(650);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not conflict with native contextmenu', function () {
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
 
-		happen.once(el, {type: 'contextmenu'});
+		happen.once(container, {type: 'contextmenu'});
 
 		clock.tick(100);
 
@@ -107,22 +105,22 @@ describe('Map.TapHoldSpec.js', function () {
 		var clickSpy = sinon.spy();
 		map.on('click', clickSpy);
 
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(650);
-		happen.once(el, {type: 'touchend', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerup', pointerId:0}, posNear));
+		happen.once(container, {type: 'touchend', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerup', pointerId:0}, posNear));
 
 		expect(clickSpy.notCalled).to.be.ok();
 	});
 
 	it('allows short movements', function () {
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
 
-		happen.once(el, {type: 'touchmove', touches: [posNear]});
-		happen.once(el, L.extend({type: 'pointermove', pointerId:0}, posNear));
+		happen.once(container, {type: 'touchmove', touches: [posNear]});
+		happen.once(container, L.extend({type: 'pointermove', pointerId:0}, posNear));
 
 		clock.tick(100);
 
@@ -133,12 +131,12 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(L.point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
 		  .to.be.above(map.options.tapTolerance);
 
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
 
-		happen.once(el, {type: 'touchmove', touches: [posFar]});
-		happen.once(el, L.extend({type: 'pointermove', pointerId:0}, posFar));
+		happen.once(container, {type: 'touchmove', touches: [posFar]});
+		happen.once(container, L.extend({type: 'pointermove', pointerId:0}, posFar));
 
 		clock.tick(100);
 
@@ -151,8 +149,8 @@ describe('Map.TapHoldSpec.js', function () {
 			screenY: 2,
 		});
 
-		happen.once(el, {type: 'touchstart', touches: [posStart]});
-		happen.once(el, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		happen.once(container, {type: 'touchstart', touches: [posStart]});
+		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(650);
 
 		var originalEvent = spy.lastCall.args[0].originalEvent;
@@ -160,7 +158,7 @@ describe('Map.TapHoldSpec.js', function () {
 			type: 'contextmenu',
 			bubbles: true,
 			cancelable: true,
-			target: el
+			target: container
 		}, posStart);
 		for (var prop in expectedProps) {
 			expect(originalEvent[prop]).to.be(expectedProps[prop]);

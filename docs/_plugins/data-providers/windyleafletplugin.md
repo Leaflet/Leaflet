@@ -4,7 +4,7 @@ category: data-providers
 repo: https://github.com/windycom/API
 author: Windy.com
 author-url: https://www.windy.com/
-demo: 
+demo: https://www.windy.com/
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/lennardv2/Leaflet.awesome-markers
 author: Lennard Voogdt
 author-url: https://lennardvoogdt.nl/
-demo: 
+demo: https://github.com/lennardv2/Leaflet.awesome-markers#screenshots
 compatible-v0:
 compatible-v1: true
 ---

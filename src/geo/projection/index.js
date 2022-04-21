@@ -2,7 +2,7 @@
  * @class Projection
 
  * An object with methods for projecting geographical coordinates of the world onto
- * a flat surface (and back). See [Map projection](http://en.wikipedia.org/wiki/Map_projection).
+ * a flat surface (and back). See [Map projection](https://en.wikipedia.org/wiki/Map_projection).
 
  * @property bounds: Bounds
  * The bounds (specified in CRS units) where the projection is valid

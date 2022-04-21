@@ -4,7 +4,7 @@ category: basemap-providers
 repo: https://github.com/digidem/leaflet-bing-layer
 author: Gregor MacLennan
 author-url: https://github.com/gmaclennan
-demo: 
+demo: http://lab.digital-democracy.org/leaflet-bing-layer/
 compatible-v0: false
 compatible-v1: true
 ---
