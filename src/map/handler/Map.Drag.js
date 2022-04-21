@@ -1,5 +1,4 @@
 import {Map} from '../Map';
-import * as Browser from '../../core/Browser';
 import {Handler} from '../../core/Handler';
 import {Draggable} from '../../dom/Draggable';
 import * as Util from '../../core/Util';
@@ -23,8 +22,8 @@ Map.mergeOptions({
 	// If enabled, panning of the map will have an inertia effect where
 	// the map builds momentum while dragging and continues moving in
 	// the same direction for some time. Feels especially nice on touch
-	// devices. Enabled by default unless running on old Android devices.
-	inertia: !Browser.android23,
+	// devices. Enabled by default.
+	inertia: true,
 
 	// @option inertiaDeceleration: Number = 3000
 	// The rate with which the inertial movement slows down, in pixels/second².

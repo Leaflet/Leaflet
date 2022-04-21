@@ -407,7 +407,8 @@ describe('TileLayer', function () {
 
 	});
 
-	describe('options', function () {
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		beforeEach(function () {
 			map.setView([0, 0], 2);
 		});
