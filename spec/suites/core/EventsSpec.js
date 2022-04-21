@@ -660,7 +660,7 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(false);
 		});
 
-		it('returns true if event handler with correct function and context is existing', function () {
+		it('returns true if event handler with specific function and context is existing', function () {
 			var obj = new L.Evented(),
 			differentContext = new L.Evented(),
 			spy = sinon.spy(),

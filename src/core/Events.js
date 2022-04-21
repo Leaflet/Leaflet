@@ -100,6 +100,12 @@ export var Events = {
 			console.warn('wrong listener type: ' + typeof fn);
 			return;
 		}
+
+		// check if fn already there
+		if (this._listens(type, fn, context)) {
+			return;
+		}
+
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -113,17 +119,9 @@ export var Events = {
 			// Less memory footprint.
 			context = undefined;
 		}
-		var newListener = {fn: fn, ctx: context},
-		    listeners = typeListeners;
 
-		// check if fn already there
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return;
-			}
-		}
-
-		listeners.push(newListener);
+		var newListener = {fn: fn, ctx: context};
+		typeListeners.push(newListener);
 	},
 
 	_off: function (type, fn, context) {
@@ -160,22 +158,20 @@ export var Events = {
 			console.warn('wrong listener type: ' + typeof fn);
 			return;
 		}
+
 		// find fn and remove it
-		for (i = 0, len = listeners.length; i < len; i++) {
-			var l = listeners[i];
-			if (l.ctx !== context) { continue; }
-			if (l.fn === fn) {
-				if (this._firingCount) {
-					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = Util.falseFn;
+		var listener = this._listens(type, fn, context);
+		if (listener) {
+			if (this._firingCount) {
+				// set the removed listener to noop so that's not called if remove happens in fire
+				listener.fn = Util.falseFn;
 
-					/* copy array in case events are being fired */
-					this._events[type] = listeners = listeners.slice();
-				}
-				listeners.splice(i, 1);
-
-				return;
+				/* copy array in case events are being fired */
+				this._events[type] = listeners = listeners.slice();
 			}
+			var idx = listeners.indexOf(listener);
+			listeners.splice(idx, 1);
+			return;
 		}
 		console.warn('listener not found');
 	},
@@ -233,20 +229,8 @@ export var Events = {
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) {
 			if (fn) {
-				// we don't want to overwrite the context variable, because it is propagated
-				var ctx = context;
-				if (this === ctx) {
-					ctx = undefined;
-				}
-				// find fn
-				for (var i = 0, len = listeners.length; i < len; i++) {
-					var l = listeners[i];
-					if (l.ctx !== ctx) {
-						continue;
-					}
-					if (l.fn === fn) {
-						return true;
-					}
+				if (this._listens(type, fn, context)) {
+					return true;
 				}
 			} else {
 				return true;
@@ -260,6 +244,21 @@ export var Events = {
 			}
 		}
 		return false;
+	},
+
+	_listens(type, fn, context) {
+		var listeners = this._events && this._events[type] || [];
+		if (context === this) {
+			// Less memory footprint.
+			context = undefined;
+		}
+		for (var i = 0, len = listeners.length; i < len; i++) {
+			if (listeners[i].fn === fn && listeners[i].ctx === context) {
+				return listeners[i];
+			}
+		}
+		return false;
+
 	},
 
 	// @method once(…): this
