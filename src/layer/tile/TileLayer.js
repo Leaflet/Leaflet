@@ -154,17 +154,11 @@ export var TileLayer = GridLayer.extend({
 			tile.referrerPolicy = this.options.referrerPolicy;
 		}
 
-		/*
-		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 https://www.w3.org/TR/WCAG20-TECHS/H67
-		*/
+		// The alt attribute is set to the empty string,
+		// allowing screen readers to ignore the decorative image tiles.
+		// https://www.w3.org/WAI/tutorials/images/decorative/
+		// https://www.w3.org/TR/html-aria/#el-img-empty-alt
 		tile.alt = '';
-
-		/*
-		 Set role="presentation" to force screen readers to ignore this
-		 https://www.w3.org/TR/wai-aria/roles#textalternativecomputation
-		*/
-		tile.setAttribute('role', 'presentation');
 
 		tile.src = this.getTileUrl(coords);
 
