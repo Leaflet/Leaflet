@@ -360,7 +360,6 @@ describe('Popup', function () {
 		expect(moveEvent.args[0][0].latlng).to.be(afterLatLng);
 		expect(popup.getLatLng()).to.be(afterLatLng);
 	});
-});
 
 	describe("L.Map#openPopup", function () {
 		it("adds the popup layer to the map", function () {
