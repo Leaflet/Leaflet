@@ -4,7 +4,7 @@ category: frameworks-build-systems
 repo: https://github.com/moklick/generator-leaflet
 author: Moritz Klack
 author-url: https://github.com/moklick
-demo: 
+demo: https://leaf-gen.moritzklack.com/
 compatible-v0:
 compatible-v1: true
 ---

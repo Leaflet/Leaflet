@@ -1,7 +1,7 @@
 {
   "rules": {
     "quotes": 0,
-    "no-console": 0,
+    "no-console": 0
   },
   "env": {
     "mocha": true
@@ -11,6 +11,8 @@
     "sinon": false,
     "happen": false,
     "Hand": false,
-    "touchEventType": false /* defined in SpecHelper.js */
+    "touchEventType": false, /* defined in SpecHelper.js */
+    "createContainer": false, /* defined in SpecHelper.js */
+    "removeMapContainer": false /* defined in SpecHelper.js */
   }
 }

@@ -1,20 +1,15 @@
 describe('GridLayer', function () {
-	var div, map;
+	var container, map;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-
-		document.body.appendChild(div);
-
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	describe('#redraw', function () {
@@ -32,7 +27,7 @@ describe('GridLayer', function () {
 
 		it('works when map has fadeAnimated=false (IE8 is exempt)', function (done) {
 			map.remove();
-			map = L.map(div, {fadeAnimation: false}).setView([0, 0], 0);
+			map = L.map(container, {fadeAnimation: false}).setView([0, 0], 0);
 
 			var grid = L.gridLayer().setOpacity(0.5).addTo(map);
 			grid.on('load', function () {
@@ -90,7 +85,7 @@ describe('GridLayer', function () {
 
 		it('removes tiles for unused zoom levels', function (done) {
 			map.remove();
-			map = L.map(div, {fadeAnimation: false});
+			map = L.map(container, {fadeAnimation: false});
 			map.setView([0, 0], 1);
 
 			var grid = L.gridLayer();
@@ -124,8 +119,8 @@ describe('GridLayer', function () {
 
 		beforeEach(function () {
 			// Simpler sizes to test.
-			div.style.width = '512px';
-			div.style.height = '512px';
+			container.style.width = '512px';
+			container.style.height = '512px';
 
 			map.setView([0, 0], 10);
 

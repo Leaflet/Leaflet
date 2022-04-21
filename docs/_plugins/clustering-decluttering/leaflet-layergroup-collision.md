@@ -4,7 +4,7 @@ category: clustering-decluttering
 repo: https://github.com/MazeMap/Leaflet.LayerGroup.Collision
 author: Iván Sánchez Ortega
 author-url: https://github.com/IvanSanchez
-demo: 
+demo: http://mazemap.github.io/Leaflet.LayerGroup.Collision/demo/demo.html
 compatible-v0:
 compatible-v1: true
 ---

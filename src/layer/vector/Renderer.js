@@ -1,7 +1,7 @@
 import {Layer} from '../Layer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Util from '../../core/Util';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import {Bounds} from '../../geometry/Bounds';
 
 
@@ -85,13 +85,11 @@ export var Renderer = Layer.extend({
 
 	_updateTransform: function (center, zoom) {
 		var scale = this._map.getZoomScale(zoom, this._zoom),
-		    position = DomUtil.getPosition(this._container),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
-		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
+				  .subtract(this._map._getNewPixelOrigin(center, zoom));
 
 		if (Browser.any3d) {
 			DomUtil.setTransform(this._container, topLeftOffset, scale);

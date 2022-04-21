@@ -4,7 +4,7 @@ category: dataviz
 repo: https://ibesora.github.io/Leaflet.Quadtree/
 author: ibesora
 author-url: https://github.com/ibesora
-demo: 
+demo: https://ibesora.github.io/Leaflet.Quadtree/demos/cullingGeoJSON/demo.html
 compatible-v0:
 compatible-v1: true
 ---

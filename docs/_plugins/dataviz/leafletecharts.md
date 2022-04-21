@@ -4,7 +4,7 @@ category: dataviz
 repo: https://github.com/wandergis/leaflet-echarts
 author: wandergis
 author-url: https://github.com/wandergis
-demo: 
+demo: https://wandergis.com/leaflet-echarts/index-en.html
 compatible-v0:
 compatible-v1: true
 ---

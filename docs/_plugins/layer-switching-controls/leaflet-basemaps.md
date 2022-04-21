@@ -4,7 +4,7 @@ category: layer-switching-controls
 repo: https://github.com/consbio/Leaflet.Basemaps
 author: Brendan Ward
 author-url: https://github.com/brendan-ward
-demo: 
+demo: https://consbio.github.io/Leaflet.Basemaps/examples/toggle.html
 compatible-v0:
 compatible-v1: true
 ---

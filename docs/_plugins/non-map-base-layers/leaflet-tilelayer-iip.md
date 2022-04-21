@@ -4,7 +4,7 @@ category: non-map-base-layers
 repo: https://github.com/astromatic/Leaflet.TileLayer.IIP
 author: Emmanuel Bertin
 author-url: https://github.com/ebertin
-demo: 
+demo: http://image.iap.fr/iip/
 compatible-v0:
 compatible-v1: true
 ---
