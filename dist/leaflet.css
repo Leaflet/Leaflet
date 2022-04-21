@@ -425,6 +425,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 .leaflet-control-attribution svg {
 	display: inline !important;
+	vertical-align: baseline !important;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
