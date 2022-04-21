@@ -246,7 +246,7 @@ export var Events = {
 		return false;
 	},
 
-	_listens(type, fn, context) {
+	_listens: function (type, fn, context) {
 		var listeners = this._events && this._events[type] || [];
 		if (context === this) {
 			// Less memory footprint.
