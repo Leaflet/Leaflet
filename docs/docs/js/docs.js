@@ -73,7 +73,7 @@ if (toc) {
 
 	window.addEventListener('load', function () {
 		var currentHash = window.location.hash;
-		if (!currentHash) return;
+		if (!currentHash) { return; }
 		var elem = document.querySelector(currentHash);
 
 		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
