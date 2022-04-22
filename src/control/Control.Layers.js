@@ -9,7 +9,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Layers
  * @inherits Control
  *
- * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control/)). Extends `Control`.
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
  *
  * @example
  *
@@ -48,7 +48,7 @@ export var Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover or touch.
+		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
@@ -201,6 +201,7 @@ export var Layers = Control.extend({
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
+		link.setAttribute('role', 'button');
 
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
 		DomEvent.on(link, 'focus', this.expand, this);
@@ -339,7 +340,7 @@ export var Layers = Control.extend({
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
-		var holder = document.createElement('div');
+		var holder = document.createElement('span');
 
 		label.appendChild(holder);
 		holder.appendChild(input);

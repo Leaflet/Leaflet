@@ -117,7 +117,7 @@ Jacob Toye
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers
@@ -133,10 +133,9 @@ Jacob Toye
 	map.addControl(drawControl);
 
 	map.on('draw:created', function (e) {
-		var type = e.layerType,
-			layer = e.layer;
+		var layer = e.layer;
 
-		if (type === 'marker') {
+		if (e.layerType === 'marker') {
 			layer.bindPopup('A popup!');
 		}
 

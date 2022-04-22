@@ -16,7 +16,7 @@ Everyone is encouraged to upgrade (before Chrome 23 turns stable). As always, yo
 
 As Leaflet approaches feature-complete state and API stabilization, we naturally shift our focus from new features towards performance and usability improvements, better browser and device support, bugfixes and internal refactoring to make certain parts of Leaflet (like projections and vector rendering) easier to extend and customize for plugin developers and advanced users.
 
-Highlights of things already implemented in the `master` branch include touch interaction support for **IE10 touch devices and Metro apps** and a more smooth and responsive panning inertia. Follow the [full changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md) for more details.
+Highlights of things already implemented in the `master` branch include touch interaction support for **IE10 touch devices and Metro apps** and a more smooth and responsive panning inertia. Follow the [full changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md) for more details.
 
 We're also in the process of a major refactoring of vector rendering code to allow much simpler extension of base functionality with custom shapes, additional rendering systems (like WebGL in addition to existing SVG/VML and Canvas renderers), easy switching between renderers, also making the code simpler and easier to understand.
 
@@ -28,7 +28,7 @@ The current plan is to release 0.5 stable sometime in mid-November. Stay tuned!
 
 ### Contributing to Leaflet
 
-Leaflet is a true open source project, so we're always happy to meet new contributors, accept patches and bugreports. To help others become involved with Leaflet development and make managing contributions easier, I've put up a [Contributing to Leaflet](https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md) guide with best practices and advices &mdash; check it out!
+Leaflet is a true open source project, so we're always happy to meet new contributors, accept patches and bugreports. To help others become involved with Leaflet development and make managing contributions easier, I've put up a [Contributing to Leaflet](https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md) guide with best practices and advices &mdash; check it out!
 
 Thanks to everyone! Leaflet has got quite an amazing community which makes me really proud. Keep it up!
 
