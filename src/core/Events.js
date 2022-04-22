@@ -106,22 +106,16 @@ export var Events = {
 			return;
 		}
 
-		this._events = this._events || {};
-
-		/* get/init listeners for type */
-		var typeListeners = this._events[type];
-		if (!typeListeners) {
-			typeListeners = [];
-			this._events[type] = typeListeners;
-		}
-
 		if (context === this) {
 			// Less memory footprint.
 			context = undefined;
 		}
 
 		var newListener = {fn: fn, ctx: context};
-		typeListeners.push(newListener);
+
+		this._events = this._events || {};
+		this._events[type] = this._events[type] || [];
+		this._events[type].push(newListener);
 	},
 
 	_off: function (type, fn, context) {
@@ -129,10 +123,11 @@ export var Events = {
 		    i,
 		    len;
 
-		if (!this._events) { return; }
+		if (!this._events) {
+			return;
+		}
 
 		listeners = this._events[type];
-
 		if (!listeners) {
 			return;
 		}
@@ -148,10 +143,6 @@ export var Events = {
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
 			return;
-		}
-
-		if (context === this) {
-			context = undefined;
 		}
 
 		if (typeof fn !== 'function') {
@@ -220,19 +211,15 @@ export var Events = {
 			console.warn('"string" type argument expected');
 		}
 
-		if (typeof fn === 'boolean') {
-			propagate = fn;
+		if (typeof fn !== 'function') {
+			propagate = !!fn;
 			fn = undefined;
 			context = undefined;
 		}
 
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) {
-			if (fn) {
-				if (this._listens(type, fn, context)) {
-					return true;
-				}
-			} else {
+			if (this._listens(type, fn, context)) {
 				return true;
 			}
 		}
@@ -247,11 +234,20 @@ export var Events = {
 	},
 
 	_listens: function (type, fn, context) {
-		var listeners = this._events && this._events[type] || [];
+		if (!this._events) {
+			return false;
+		}
+
+		var listeners = this._events[type] || [];
+		if (!fn) {
+			return !!listeners.length;
+		}
+
 		if (context === this) {
 			// Less memory footprint.
 			context = undefined;
 		}
+
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn && listeners[i].ctx === context) {
 				return listeners[i];

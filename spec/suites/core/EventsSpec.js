@@ -690,9 +690,6 @@ describe('Events', function () {
 			fg.on('test', spy);
 			expect(marker.listens('test', false)).to.be(false);
 			expect(marker.listens('test', true)).to.be(true);
-
-			expect(marker.listens('test', undefined, undefined, false)).to.be(false);
-			expect(marker.listens('test', undefined, undefined, true)).to.be(true);
 		});
 
 		it('is true if there is an event handler with specific function on parent', function () {
