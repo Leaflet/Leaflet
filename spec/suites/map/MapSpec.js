@@ -188,6 +188,21 @@ describe("Map", function () {
 			expect(map.panBy.callCount).to.eql(1);
 			expect(map.panBy.args[0][1].duration).to.eql(13);
 		});
+
+		it("prevents firing movestart noMoveStart", function (done) {
+			var movestartSpy = sinon.spy();
+			map.on("movestart", movestartSpy);
+			var moveendSpy = sinon.spy();
+			map.on("moveend", moveendSpy);
+
+			map.setView([51.505, -0.09], 13, {pan: {noMoveStart: true}});
+
+			setTimeout(function () {
+				expect(movestartSpy.notCalled).to.eql(true);
+				expect(moveendSpy.calledOnce).to.eql(true);
+				done();
+			}, 100);
+		});
 	});
 
 	describe("#getBounds", function () {
