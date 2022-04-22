@@ -26,27 +26,224 @@ describe('DomEvent', function () {
 	});
 
 	describe('#on (addListener)', function () {
-		it('throws when types/fn are undefined/null/false', function () {
+		it('throws when type is undefined and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, undefined, L.Util.falseFn)
 				.to.throwException();
+		});
+
+		it('throws when type is null and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, null, L.Util.falseFn)
 				.to.throwException();
+		});
+
+		it('throws when type is false and context is falseFn', function () {
 			expect(L.DomEvent.on).withArgs(el, false, L.Util.falseFn)
 				.to.throwException();
+		});
+
+		it('throws when type is "click" and context is undefined', function () {
 			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
 				.to.throwException();
+		});
+
+		it('throws when type is "click" and context is null', function () {
 			expect(L.DomEvent.on).withArgs(el, 'click', null)
 				.to.throwException();
+		});
+
+		it('throws when type is "click" and context is false', function () {
 			expect(L.DomEvent.on).withArgs(el, 'click', false)
 				.to.throwException();
 		});
 
-		it('adds a listener and calls it on event', function () {
+		it('throws when type is "click" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'click', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "dblclick" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "dblclick" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "dblclick" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'dblclick', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousedown" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousedown" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousedown" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousedown', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseup" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseup" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseup" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseup', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseover" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseover" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseover" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseover', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseout" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseout" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "mouseout" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mouseout', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousemove" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousemove" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "mousemove" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'mousemove', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "contextmenu" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'contextmenu', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "contextmenu" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'contextmenu', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "contextmenu" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'contextmenu', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "keyup" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keyup', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "keyup" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keyup', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "keyup" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keyup', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "keypress" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keypress', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "keypress" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keypress', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "keypress" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keypress', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown', undefined)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown and click" and context is null', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown click', null)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown and click" and context is false', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown click', false)
+				.to.throwException();
+		});
+
+		it('throws when type is "keydown and click" and context is undefined', function () {
+			expect(L.DomEvent.on).withArgs(el, 'keydown click', undefined)
+				.to.throwException();
+		});
+
+		it('adds a listener and calls it on event with click', function () {
 			var listener2 = sinon.spy();
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
 			happen.click(el);
+
+			expect(listener.called).to.be.ok();
+			expect(listener2.called).to.be.ok();
+		});
+
+		it('adds a listener and calls it on event with click and keypress', function () {
+			var listener2 = sinon.spy();
+			L.DomEvent.on(el, 'click keypress', listener);
+			L.DomEvent.on(el, 'click', listener2);
+
+			happen.click(el);
+			happen.keypress(el);
 
 			expect(listener.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
@@ -62,11 +259,33 @@ describe('DomEvent', function () {
 			sinon.assert.called(listener);
 		});
 
+		it('adds 2 listener when passed an event map with multiple events', function () {
+			var listener2 = sinon.spy();
+
+			L.DomEvent.on(el, {click: listener, keypress: listener2});
+
+			happen.click(el);
+			happen.keypress(el);
+
+			sinon.assert.called(listener);
+			sinon.assert.called(listener2);
+		});
+
 		it('binds "this" to the given context', function () {
 			var obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click', listener, obj);
 
 			happen.click(el);
+
+			expect(listener.calledOn(obj)).to.be.ok();
+		});
+
+		it('binds "this" to the given context with multiple types', function () {
+			var obj = {foo: 'bar'};
+			L.DomEvent.on(el, 'click keypress', listener, obj);
+
+			happen.click(el);
+			happen.keypress(el);
 
 			expect(listener.calledOn(obj)).to.be.ok();
 		});
@@ -82,12 +301,35 @@ describe('DomEvent', function () {
 			sinon.assert.calledOn(listener, ctx);
 		});
 
+		it('binds "this" to the given context when passed an event map with multiple events', function () {
+			var listener2 = sinon.spy(),
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, {click: listener, keypress: listener2}, ctx);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			sinon.assert.calledOn(listener, ctx);
+			sinon.assert.calledOn(listener2, ctx);
+		});
+
 		it('passes an event object to the listener', function () {
 			L.DomEvent.on(el, 'click', listener);
 
 			happen.click(el);
 
 			expect(listener.lastCall.args[0].type).to.eql('click');
+		});
+
+		it('passes two event objects to the listener', function () {
+			L.DomEvent.on(el, 'click keypress', listener);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			expect(listener.firstCall.args[0].type).to.eql('click');
+			expect(listener.secondCall.args[0].type).to.eql('keypress');
 		});
 
 		it('is chainable', function () {
@@ -109,6 +351,16 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('removes a previously added event', function () {
+			L.DomEvent.on(el, 'click keypress', listener);
+			L.DomEvent.off(el, 'click', listener);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			expect(listener.lastCall.args[0].type).to.eql('keypress');
 		});
 
 		it('only removes the specified listener', function () {
@@ -137,6 +389,35 @@ describe('DomEvent', function () {
 			sinon.assert.notCalled(listener);
 		});
 
+		it('removes a previously added listener when passed an event map with multiple events', function () {
+			var listener2 = sinon.spy(),
+			    events = {click: listener, keypress: listener2};
+
+			L.DomEvent.on(el, events);
+			L.DomEvent.off(el, events);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			sinon.assert.notCalled(listener);
+			sinon.assert.notCalled(listener2);
+		});
+
+		it('removes a previously added event when passed an event map with multiple events', function () {
+			var listener2 = sinon.spy(),
+			    events = {click: listener, keypress: listener2},
+			events2 = {click: listener};
+
+			L.DomEvent.on(el, events);
+			L.DomEvent.off(el, events2);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			sinon.assert.notCalled(listener);
+			expect(listener2.lastCall.args[0].type).to.eql('keypress');
+		});
+
 		it('removes listener added with context', function () {
 			var listener = sinon.spy(),
 			    ctx = {foo: 'bar'};
@@ -160,6 +441,22 @@ describe('DomEvent', function () {
 			happen.click(el);
 
 			sinon.assert.notCalled(listener);
+		});
+
+		it('removes listener added with context when passed an event map with multiple events', function () {
+			var listener2 = sinon.spy(),
+			    events = {click: listener, keypress: listener2},
+			events2 = {click: listener},
+			    ctx = {foo: 'bar'};
+
+			L.DomEvent.on(el, events, ctx);
+			L.DomEvent.off(el, events2, ctx);
+
+			happen.click(el);
+			happen.keypress(el);
+
+			sinon.assert.notCalled(listener);
+			expect(listener2.lastCall.args[0].type).to.eql('keypress');
 		});
 
 		it('only removes listener when proper context specified', function () {

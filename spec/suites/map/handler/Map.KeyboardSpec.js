@@ -11,11 +11,7 @@ describe("Map.Keyboard", function () {
 	var map, container;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		container.style.width = container.style.height = '600px';
-		container.style.top = container.style.left = 0;
-		container.style.position = 'absolute';
-		document.body.appendChild(container);
+		container = createContainer();
 		map = L.map(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
@@ -29,8 +25,7 @@ describe("Map.Keyboard", function () {
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 	describe("arrow keys", function () {
