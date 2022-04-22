@@ -100,6 +100,12 @@ export var TileLayer = GridLayer.extend({
 			}
 
 			options.minZoom = Math.max(0, options.minZoom);
+		} else if (!options.zoomReverse) {
+			// make sure maxZoom is gte minZoom
+			options.maxZoom = Math.max(options.minZoom, options.maxZoom);
+		} else {
+			// make sure minZoom is lte maxZoom
+			options.minZoom = Math.min(options.maxZoom, options.minZoom);
 		}
 
 		if (typeof options.subdomains === 'string') {

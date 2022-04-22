@@ -458,6 +458,31 @@ describe('TileLayer', function () {
 
 			map.addLayer(kittenLayer).setView([0, 0], 1);
 		});
+
+		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', function (done) {
+			// override retina to load extra tiles
+			var originalRetina = L.Browser.retina;
+			L.Browser.retina = false;
+
+			var kittenLayer = kittenLayerFactory({
+				// invalid min/maxZoom
+				maxZoom: 9,
+				minZoom: 10,
+				detectRetina: false
+			});
+
+			kittenLayer.on('load', function () {
+				// zooms should be identical so that we can load tiles for the given zoom level
+				expect(kittenLayer.options.maxZoom).to.be(kittenLayer.options.minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
 	});
 
 	describe('#setUrl', function () {
