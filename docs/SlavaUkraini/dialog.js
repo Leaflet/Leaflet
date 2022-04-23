@@ -11,14 +11,18 @@ function openSlavaUkrainiDialog() {
 		}
 	}
 
-	var html = '<div class=\'container iframe-container\'><span class=\'close-dialog\' aria-label=\'close\'>&times;</span><iframe src=\'/SlavaUkraini/\' /></div>';
+	var html = '<div class=\'container iframe-container\'><iframe tabindex="1" src=\'/SlavaUkraini/\'></iframe><a tabindex="2" role="button" class=\'close-dialog\' aria-label=\'close\'>&times;</a></div>';
 
-	var div = document.createElement('div');
-	div.id = 'ukraini-dialog';
-	div.innerHTML = html;
+	var dialog = document.createElement('div');
+	dialog.id = 'ukraini-dialog';
+	dialog.innerHTML = html;
 
-	document.body.appendChild(div);
+	document.body.appendChild(dialog);
 	document.body.classList.add('overflowHidden');
+
+	setTimeout(function () {
+		dialog.focus();
+	}, 100);
 
 	var closeBtn = document.querySelector('.close-dialog');
 	closeBtn.addEventListener('click', function () {
@@ -28,6 +32,12 @@ function openSlavaUkrainiDialog() {
 		if (sessionStorage) {
 			sessionStorage.setItem(SESSION_KEY, Date.now());
 		}
+	});
+
+	// keep focus in dialog
+	// https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
+	dialog.addEventListener('transitionend', function () {
+		dialog.querySelector('iframe').focus();
 	});
 }
 

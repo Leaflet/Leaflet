@@ -1126,8 +1126,17 @@ iframe[src*='youtube.com'] {
 	height: 100%;
 	top: 0;
 	z-index: 10000;
-	background: #0000003d;
+	background: rgba(0, 0, 0, 0.24);
 	padding-top: 20px;
+}
+
+/*
+keep focus in dialog
+https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
+ */
+#ukraini-dialog:not(:focus-within) {
+	background-color:rgba(0, 0, 0, 0.25);
+	transition: background-color 0.01s;
 }
 
 #ukraini-dialog .iframe-container{
@@ -1160,7 +1169,11 @@ iframe[src*='youtube.com'] {
 	cursor: pointer;
 }
 
-.close-dialog:hover{
+.close-dialog{
+  color: #000;
+}
+
+.close-dialog:hover, .close-dialog:focus{
 	color: #797979;
 }
 
