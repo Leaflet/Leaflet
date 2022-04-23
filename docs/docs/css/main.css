@@ -1158,15 +1158,18 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 }
 
 .close-dialog{
-	width: 40px;
-	height: 40px;
-	text-align: center;
-	top: 10px;
-	right: 20px;
-	position: absolute;
-	font-size: 40px;
-	line-height: 40px;
-	cursor: pointer;
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  right: 20px;
+  position: absolute;
+  font-size: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
 }
 
 .close-dialog{

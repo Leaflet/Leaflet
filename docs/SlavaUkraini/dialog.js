@@ -11,13 +11,13 @@ function openSlavaUkrainiDialog() {
 		}
 	}
 
-	var html = '<div class=\'container iframe-container\'><iframe tabindex="1" src=\'/SlavaUkraini/\'></iframe><a tabindex="2" role="button" class=\'close-dialog\' aria-label=\'close\'>&times;</a></div>';
+	var html = '<div class=\'container iframe-container\'><iframe src=\'/SlavaUkraini/\'></iframe><button type="submit" class=\'close-dialog\' aria-label=\'close\'>&times;</button></div>';
 
 	var dialog = document.createElement('div');
 	dialog.id = 'ukraini-dialog';
 	dialog.innerHTML = html;
 
-	document.body.appendChild(dialog);
+	document.body.insertBefore(dialog, document.body.firstChild);
 	document.body.classList.add('overflowHidden');
 
 	setTimeout(function () {
