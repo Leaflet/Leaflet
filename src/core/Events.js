@@ -151,8 +151,9 @@ export var Events = {
 		}
 
 		// find fn and remove it
-		var listener = this._listens(type, fn, context);
-		if (listener) {
+		var listenerObj = this._listens(type, fn, context);
+		if (listenerObj) {
+			var listener = listenerObj.listener;
 			if (this._firingCount) {
 				// set the removed listener to noop so that's not called if remove happens in fire
 				listener.fn = Util.falseFn;
@@ -160,8 +161,7 @@ export var Events = {
 				/* copy array in case events are being fired */
 				this._events[type] = listeners = listeners.slice();
 			}
-			var idx = listeners.indexOf(listener);
-			listeners.splice(idx, 1);
+			listeners.splice(listenerObj.index, 1);
 			return;
 		}
 		console.warn('listener not found');
@@ -250,7 +250,10 @@ export var Events = {
 
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return listeners[i];
+				return {
+					index: i,
+					listener: listeners[i]
+				};
 			}
 		}
 		return false;
