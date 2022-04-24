@@ -423,10 +423,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a:focus {
 	text-decoration: underline;
 	}
-.leaflet-control-attribution svg {
-	display: inline !important;
-	vertical-align: baseline !important;
-	}
+/* adding class for flag */
+.leaflet-attribution-flag{
+	display: inline;
+	width: 1em;
+	height: auto;
+}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
 	}
