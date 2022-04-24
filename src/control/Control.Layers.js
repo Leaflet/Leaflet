@@ -208,6 +208,8 @@ export var Layers = Control.extend({
 
 		if (!collapsed) {
 			this.expand();
+
+			link.setAttribute('aria-label', Layers);
 		}
 
 		this._baseLayersList = DomUtil.create('div', className + '-base', section);
