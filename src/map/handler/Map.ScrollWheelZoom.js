@@ -41,7 +41,7 @@ export var ScrollWheelZoom = Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		if (this._map.options.scrollWheelZoom === 'shiftkey' && !e.shiftKey) { return false; }
+		if (this._map.options.scrollWheelZoom === 'shiftkey' && !e.shiftKey) { return; }
 
 		var delta = DomEvent.getWheelDelta(e);
 
