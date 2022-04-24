@@ -1,24 +1,43 @@
+
+import {Control} from './Control';
+import {Map} from '../map/Map';
+import * as Util from '../core/Util';
+import * as DomEvent from '../dom/DomEvent';
+import * as DomUtil from '../dom/DomUtil';
+import Browser from '../core/Browser';
+
+var ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
+
+
 /*
- * L.Control.Attribution is used for displaying attribution on the map (added by default).
+ * @class Control.Attribution
+ * @aka L.Control.Attribution
+ * @inherits Control
+ *
+ * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-L.Control.Attribution = L.Control.extend({
+export var Attribution = Control.extend({
+	// @section
+	// @aka Control.Attribution options
 	options: {
 		position: 'bottomright',
-		prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
+
+		// @option prefix: String|false = 'Leaflet'
+		// The HTML text shown before the attributions. Pass `false` to disable.
+		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">' + (Browser.inlineSvg ? ukrainianFlag + ' ' : '') + 'Leaflet</a>'
 	},
 
 	initialize: function (options) {
-		L.setOptions(this, options);
+		Util.setOptions(this, options);
 
 		this._attributions = {};
 	},
 
 	onAdd: function (map) {
-		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
-		if (L.DomEvent) {
-			L.DomEvent.disableClickPropagation(this._container);
-		}
+		map.attributionControl = this;
+		this._container = DomUtil.create('div', 'leaflet-control-attribution');
+		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
 		for (var i in map._layers) {
@@ -29,15 +48,34 @@ L.Control.Attribution = L.Control.extend({
 
 		this._update();
 
+		map.on('layeradd', this._addAttribution, this);
+
 		return this._container;
 	},
 
+	onRemove: function (map) {
+		map.off('layeradd', this._addAttribution, this);
+	},
+
+	_addAttribution: function (ev) {
+		if (ev.layer.getAttribution) {
+			this.addAttribution(ev.layer.getAttribution());
+			ev.layer.once('remove', function () {
+				this.removeAttribution(ev.layer.getAttribution());
+			}, this);
+		}
+	},
+
+	// @method setPrefix(prefix: String|false): this
+	// The HTML text shown before the attributions. Pass `false` to disable.
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
 		this._update();
 		return this;
 	},
 
+	// @method addAttribution(text: String): this
+	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
 	addAttribution: function (text) {
 		if (!text) { return this; }
 
@@ -51,6 +89,8 @@ L.Control.Attribution = L.Control.extend({
 		return this;
 	},
 
+	// @method removeAttribution(text: String): this
+	// Removes an attribution text.
 	removeAttribution: function (text) {
 		if (!text) { return this; }
 
@@ -82,20 +122,27 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' | ');
+		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
 });
 
-L.Map.mergeOptions({
+// @namespace Map
+// @section Control options
+// @option attributionControl: Boolean = true
+// Whether a [attribution control](#control-attribution) is added to the map by default.
+Map.mergeOptions({
 	attributionControl: true
 });
 
-L.Map.addInitHook(function () {
+Map.addInitHook(function () {
 	if (this.options.attributionControl) {
-		this.attributionControl = (new L.Control.Attribution()).addTo(this);
+		new Attribution().addTo(this);
 	}
 });
 
-L.control.attribution = function (options) {
-	return new L.Control.Attribution(options);
+// @namespace Control.Attribution
+// @factory L.control.attribution(options: Control.Attribution options)
+// Creates an attribution control.
+export var attribution = function (options) {
+	return new Attribution(options);
 };

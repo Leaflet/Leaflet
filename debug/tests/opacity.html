@@ -14,36 +14,37 @@
 		}
 
 	</style>
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
 	<div id="map"></div>
 
-	<script type="text/javascript">
+	<script>
 
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			latlng = new L.LatLng(50.5, 30.51);
 
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
 
 		//Create a marker, clicking it toggles opacity
-		var marker = new L.Marker(latlng, { icon: new L.DivIcon({ className: 'mybox', iconSize: new L.Point(100,100), html: 'opaque. click to toggle' }) });
+		var opaqueIcon = new L.DivIcon({ className: 'mybox', iconSize: new L.Point(100,100), html: 'opaque. click to toggle' });
+		var transparentIcon = new L.DivIcon({ className: 'mybox', iconSize: new L.Point(100,100), html: 'transparent' });
+		var marker = new L.Marker(latlng, { icon: opaqueIcon });
 		map.addLayer(marker);
 
 		var visible = true;
 		marker.on('click', function () {
-			if (visible) {
-				marker.setOpacity(0.3);
-				marker._icon.innerHTML = 'transparent';
-			} else {
-				marker.setOpacity(1);
-				marker._icon.innerHTML = 'opaque';
-			}
-			visible = !visible;
+		if (visible) {
+			marker.setOpacity(0.3);
+			marker.setIcon(transparentIcon)
+		} else {
+			marker.setOpacity(1);
+			marker.setIcon(opaqueIcon);
+		}
+		visible = !visible;
 		});
 
 		var marker2 = new L.Marker(new L.LatLng(50.5, 30.52));

@@ -1,0 +1,65 @@
+This file just defines the order of the classes in the docs.
+
+
+
+
+@class Map
+
+@class Marker
+@class DivOverlay
+@class Popup
+@class Tooltip
+
+@class TileLayer
+@class TileLayer.WMS
+@class ImageOverlay
+@class VideoOverlay
+@class SVGOverlay
+
+@class Path
+@class Polyline
+@class Polygon
+@class Rectangle
+@class Circle
+@class CircleMarker
+@class SVG
+@class Canvas
+
+@class LayerGroup
+@class FeatureGroup
+@class GeoJSON
+@class GridLayer
+
+@class LatLng
+@class LatLngBounds
+@class Point
+@class Bounds
+@class Icon
+@class DivIcon
+
+@class Control.Zoom
+@class Control.Attribution
+@class Control.Layers
+@class Control.Scale
+
+@class Browser
+@class Util
+@class Transformation
+@class LineUtil
+@class PolyUtil
+
+@class DomEvent
+@class DomUtil
+@class PosAnimation
+@class Draggable
+
+@class Class
+@class Evented
+@class Layer
+@class Interactive layer
+@class Control
+@class Handler
+@class Projection
+@class CRS
+@class Renderer
+@class Event objects

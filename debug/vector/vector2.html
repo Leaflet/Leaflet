@@ -6,19 +6,20 @@
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
 	<link rel="stylesheet" href="../css/screen.css" />
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
 
 	<script src="route.js"></script>
 	<script>
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-		var map = new L.Map('map', {layers: [osm]});
+		var svg = L.svg();
+
+		var map = new L.Map('map', {layers: [osm], renderer: svg});
 
 		map.addLayer(L.marker(route[0]));
 		map.addLayer(L.marker(route[route.length - 1]));
@@ -51,7 +52,7 @@
 			'circle': circle,
 			'circleMarker': circleMarker,
 			'canvas': canvas,
-			'svg': map._renderer,
+			'svg': svg,
 		}, {collapsed: false});
 		map.addControl(layersControl);
 	</script>

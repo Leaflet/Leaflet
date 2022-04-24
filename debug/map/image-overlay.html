@@ -9,18 +9,17 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
 	<div id="map"></div>
 	<button id="populate">Populate with 10 markers</button>
 
-	<script type="text/javascript">
+	<script>
 
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 			latlng = new L.LatLng(50.5, 30.51);
 
@@ -28,14 +27,15 @@
 		map.addLayer(osm);
 
 		var	bounds = new L.LatLngBounds(
-      		new L.LatLng(40.71222,-74.22655),
-      		new L.LatLng(40.77394,-74.12544));
+			new L.LatLng(40.71222,-74.22655),
+			new L.LatLng(40.77394,-74.12544));
 
 		map.fitBounds(bounds);
 
 		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
 			opacity: 0.5,
-			interactive: true
+			interactive: true,
+			attribution: '&copy; A.B.B Corp.'
 		});
 		map.addLayer(overlay);
 

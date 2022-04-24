@@ -7,14 +7,13 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
 
-	<script type="text/javascript">
+	<script>
 		var map = new L.Map('map');
 		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 			layers: 'nexrad-n0r-900913',

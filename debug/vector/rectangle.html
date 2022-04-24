@@ -7,18 +7,17 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
 	<div id="map" style="width: 500px; height: 500px;"></div>
 	<input type="button" value="Set blue rectangle bounds as current map extent." onclick="resetBounds();" />
 
-	<script type="text/javascript">
+	<script>
 
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
 		var bounds = new L.LatLngBounds(new L.LatLng(54.559322, -5.767822), new L.LatLng(56.1210604, -3.021240));

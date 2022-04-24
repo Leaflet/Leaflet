@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../../dist/leaflet-src.js"></script>
+
+</head>
+<body>
+
+	<div id="map"></div>
+	<button id="populate-markers">Populate with markers</button>
+	<button id="populate-circles">Populate with circles</button>
+	<button id="populate-lines">Populate with lines</button>
+	<button id="populate-polygons">Populate with polygons</button>
+
+	<script>
+
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+		var markers = new L.FeatureGroup();
+
+		function getRandomLatLng(llbounds) {
+			var s = llbounds.getSouth(),
+			    n = llbounds.getNorth(),
+			    w = llbounds.getWest(),
+			    e = llbounds.getEast();
+
+			return L.latLng(
+				s + (Math.random() * (n - s)),
+				w + (Math.random() * (e - w))
+			)
+		}
+
+		function populateMarker() {
+			for (var i = 0; i < 5; i++) {
+				L.marker(getRandomLatLng(map.getBounds())).addTo(markers);
+			}
+			return false;
+		}
+
+		function populateCircle() {
+			for (var i = 0; i < 5; i++) {
+				L.circleMarker(getRandomLatLng(map.getBounds())).addTo(markers);
+			}
+			return false;
+		}
+
+		function populateLine() {
+			var lineCoords = [];
+			for (var i = 0; i < 10; i++) {
+				lineCoords.push(getRandomLatLng(map.getBounds()));
+			}
+			L.polyline(lineCoords).addTo(map);
+			return false;
+		}
+
+		function populatePoly() {
+			var lineCoords = [];
+			for (var i = 0; i < 10; i++) {
+				lineCoords.push(getRandomLatLng(map.getBounds()));
+			}
+			L.polygon(lineCoords).addTo(map);
+			return false;
+		}
+
+		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map);
+
+		L.DomUtil.get('populate-markers').onclick = populateMarker;
+		L.DomUtil.get('populate-circles').onclick = populateCircle;
+		L.DomUtil.get('populate-lines').onclick = populateLine;
+		L.DomUtil.get('populate-polygons').onclick = populatePoly;
+
+		function logEvent(e) { console.log(e.type); }
+
+		populateMarker();
+		populateCircle();
+		populateLine();
+		populatePoly();
+		// map.on('click', logEvent);
+		// map.on('contextmenu', logEvent);
+
+		// map.on('movestart', logEvent);
+		// map.on('move', logEvent);
+		// map.on('moveend', logEvent);
+
+		// map.on('zoomstart', logEvent);
+		// map.on('zoomend', logEvent);
+
+	</script>
+</body>
+</html>

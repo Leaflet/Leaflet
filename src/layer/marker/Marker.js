@@ -1,41 +1,137 @@
+import {Layer} from '../Layer';
+import {IconDefault} from './Icon.Default';
+import * as Util from '../../core/Util';
+import {toLatLng as latLng} from '../../geo/LatLng';
+import {toPoint as point} from '../../geometry/Point';
+import * as DomUtil from '../../dom/DomUtil';
+import * as DomEvent from '../../dom/DomEvent';
+import {MarkerDrag} from './Marker.Drag';
+
 /*
- * L.Marker is used to display clickable/draggable icons on the map.
+ * @class Marker
+ * @inherits Interactive layer
+ * @aka L.Marker
+ * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
+ *
+ * @example
+ *
+ * ```js
+ * L.marker([50.5, 30.5]).addTo(map);
+ * ```
  */
 
-L.Marker = L.Layer.extend({
+export var Marker = Layer.extend({
 
+	// @section
+	// @aka Marker options
 	options: {
-		pane: 'markerPane',
-		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
+		// @option icon: Icon = *
+		// Icon instance to use for rendering the marker.
+		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
+		// If not specified, a common instance of `L.Icon.Default` is used.
+		icon: new IconDefault(),
 
-		icon: new L.Icon.Default(),
-		// title: '',
-		// alt: '',
+		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
-		// draggable: false,
+
+		// @option keyboard: Boolean = true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
+
+		// @option title: String = ''
+		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+		title: '',
+
+		// @option alt: String = 'Marker'
+		// Text for the `alt` attribute of the icon image.
+		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+		alt: 'Marker',
+
+		// @option zIndexOffset: Number = 0
+		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
 		zIndexOffset: 0,
+
+		// @option opacity: Number = 1.0
+		// The opacity of the marker.
 		opacity: 1,
-		// riseOnHover: false,
-		riseOffset: 250
+
+		// @option riseOnHover: Boolean = false
+		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		riseOnHover: false,
+
+		// @option riseOffset: Number = 250
+		// The z-index offset used for the `riseOnHover` feature.
+		riseOffset: 250,
+
+		// @option pane: String = 'markerPane'
+		// `Map pane` where the markers icon will be added.
+		pane: 'markerPane',
+
+		// @option shadowPane: String = 'shadowPane'
+		// `Map pane` where the markers shadow will be added.
+		shadowPane: 'shadowPane',
+
+		// @option bubblingMouseEvents: Boolean = false
+		// When `true`, a mouse event on this marker will trigger the same event on the map
+		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingMouseEvents: false,
+
+		// @option autoPanOnFocus: Boolean = true
+		// When `true`, the map will pan whenever the marker is focused (via
+		// e.g. pressing `tab` on the keyboard) to ensure the marker is
+		// visible within the map's bounds
+		autoPanOnFocus: true,
+
+		// @section Draggable marker options
+		// @option draggable: Boolean = false
+		// Whether the marker is draggable with mouse/touch or not.
+		draggable: false,
+
+		// @option autoPan: Boolean = false
+		// Whether to pan the map when dragging this marker near its edge or not.
+		autoPan: false,
+
+		// @option autoPanPadding: Point = Point(50, 50)
+		// Distance (in pixels to the left/right and to the top/bottom) of the
+		// map edge to start panning the map.
+		autoPanPadding: [50, 50],
+
+		// @option autoPanSpeed: Number = 10
+		// Number of pixels the map should pan by.
+		autoPanSpeed: 10
 	},
 
+	/* @section
+	 *
+	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
+	 */
+
 	initialize: function (latlng, options) {
-		L.setOptions(this, options);
-		this._latlng = L.latLng(latlng);
+		Util.setOptions(this, options);
+		this._latlng = latLng(latlng);
 	},
 
 	onAdd: function (map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
+		if (this._zoomAnimated) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._initIcon();
 		this.update();
 	},
 
-	onRemove: function () {
+	onRemove: function (map) {
 		if (this.dragging && this.dragging.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
+		}
+		delete this.dragging;
+
+		if (this._zoomAnimated) {
+			map.off('zoomanim', this._animateZoom, this);
 		}
 
 		this._removeIcon();
@@ -43,34 +139,45 @@ L.Marker = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {
+		return {
 			zoom: this.update,
 			viewreset: this.update
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	},
 
+	// @method getLatLng: LatLng
+	// Returns the current geographical position of the marker.
 	getLatLng: function () {
 		return this._latlng;
 	},
 
+	// @method setLatLng(latlng: LatLng): this
+	// Changes the marker position to the given point.
 	setLatLng: function (latlng) {
 		var oldLatLng = this._latlng;
-		this._latlng = L.latLng(latlng);
+		this._latlng = latLng(latlng);
 		this.update();
+
+		// @event move: Event
+		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
+	// @method setZIndexOffset(offset: Number): this
+	// Changes the [zIndex offset](#marker-zindexoffset) of the marker.
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	},
 
+	// @method getIcon: Icon
+	// Returns the current icon used by the marker
+	getIcon: function () {
+		return this.options.icon;
+	},
+
+	// @method setIcon(icon: Icon): this
+	// Changes the marker icon.
 	setIcon: function (icon) {
 
 		this.options.icon = icon;
@@ -93,7 +200,7 @@ L.Marker = L.Layer.extend({
 
 	update: function () {
 
-		if (this._icon) {
+		if (this._icon && this._map) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
 		}
@@ -118,15 +225,17 @@ L.Marker = L.Layer.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			if (options.alt) {
-				icon.alt = options.alt;
+
+			if (icon.tagName === 'IMG') {
+				icon.alt = options.alt || '';
 			}
 		}
 
-		L.DomUtil.addClass(icon, classToAdd);
+		DomUtil.addClass(icon, classToAdd);
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
+			icon.setAttribute('role', 'button');
 		}
 
 		this._icon = icon;
@@ -138,6 +247,10 @@ L.Marker = L.Layer.extend({
 			});
 		}
 
+		if (this.options.autoPanOnFocus) {
+			DomEvent.on(icon, 'focus', this._panOnFocus, this);
+		}
+
 		var newShadow = options.icon.createShadow(this._shadow),
 		    addShadow = false;
 
@@ -147,7 +260,8 @@ L.Marker = L.Layer.extend({
 		}
 
 		if (newShadow) {
-			L.DomUtil.addClass(newShadow, classToAdd);
+			DomUtil.addClass(newShadow, classToAdd);
+			newShadow.alt = '';
 		}
 		this._shadow = newShadow;
 
@@ -159,10 +273,10 @@ L.Marker = L.Layer.extend({
 
 		if (addIcon) {
 			this.getPane().appendChild(this._icon);
-			this._initInteraction();
 		}
+		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			this.getPane(options.shadowPane).appendChild(this._shadow);
 		}
 	},
 
@@ -174,7 +288,11 @@ L.Marker = L.Layer.extend({
 			});
 		}
 
-		L.DomUtil.remove(this._icon);
+		if (this.options.autoPanOnFocus) {
+			DomEvent.off(this._icon, 'focus', this._panOnFocus, this);
+		}
+
+		DomUtil.remove(this._icon);
 		this.removeInteractiveTarget(this._icon);
 
 		this._icon = null;
@@ -182,16 +300,19 @@ L.Marker = L.Layer.extend({
 
 	_removeShadow: function () {
 		if (this._shadow) {
-			L.DomUtil.remove(this._shadow);
+			DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;
 	},
 
 	_setPos: function (pos) {
-		L.DomUtil.setPosition(this._icon, pos);
+
+		if (this._icon) {
+			DomUtil.setPosition(this._icon, pos);
+		}
 
 		if (this._shadow) {
-			L.DomUtil.setPosition(this._shadow, pos);
+			DomUtil.setPosition(this._shadow, pos);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
@@ -200,7 +321,9 @@ L.Marker = L.Layer.extend({
 	},
 
 	_updateZIndex: function (offset) {
-		this._icon.style.zIndex = this._zIndex + offset;
+		if (this._icon) {
+			this._icon.style.zIndex = this._zIndex + offset;
+		}
 	},
 
 	_animateZoom: function (opt) {
@@ -213,18 +336,18 @@ L.Marker = L.Layer.extend({
 
 		if (!this.options.interactive) { return; }
 
-		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
+		DomUtil.addClass(this._icon, 'leaflet-interactive');
 
 		this.addInteractiveTarget(this._icon);
 
-		if (L.Handler.MarkerDrag) {
+		if (MarkerDrag) {
 			var draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
 				this.dragging.disable();
 			}
 
-			this.dragging = new L.Handler.MarkerDrag(this);
+			this.dragging = new MarkerDrag(this);
 
 			if (draggable) {
 				this.dragging.enable();
@@ -232,6 +355,8 @@ L.Marker = L.Layer.extend({
 		}
 	},
 
+	// @method setOpacity(opacity: Number): this
+	// Changes the opacity of the marker.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
@@ -244,10 +369,12 @@ L.Marker = L.Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		L.DomUtil.setOpacity(this._icon, opacity);
+		if (this._icon) {
+			DomUtil.setOpacity(this._icon, opacity);
+		}
 
 		if (this._shadow) {
-			L.DomUtil.setOpacity(this._shadow, opacity);
+			DomUtil.setOpacity(this._shadow, opacity);
 		}
 	},
 
@@ -257,9 +384,36 @@ L.Marker = L.Layer.extend({
 
 	_resetZIndex: function () {
 		this._updateZIndex(0);
+	},
+
+	_panOnFocus: function () {
+		var map = this._map;
+		if (!map) { return; }
+
+		var iconOpts = this.options.icon.options;
+		var size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
+		var anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
+
+		map.panInside(this._latlng, {
+			paddingTopLeft: anchor,
+			paddingBottomRight: size.subtract(anchor)
+		});
+	},
+
+	_getPopupAnchor: function () {
+		return this.options.icon.options.popupAnchor;
+	},
+
+	_getTooltipAnchor: function () {
+		return this.options.icon.options.tooltipAnchor;
 	}
 });
 
-L.marker = function (latlng, options) {
-	return new L.Marker(latlng, options);
-};
+
+// factory L.marker(latlng: LatLng, options? : Marker options)
+
+// @factory L.marker(latlng: LatLng, options? : Marker options)
+// Instantiates a Marker object given a geographical point and optionally an options object.
+export function marker(latlng, options) {
+	return new Marker(latlng, options);
+}

@@ -1,10 +1,21 @@
+import {CRS} from './CRS';
+import {LonLat} from '../projection/Projection.LonLat';
+import {toTransformation} from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
+
 /*
- * A simple CRS that can be used for flat non-Earth maps like panoramas or game maps.
+ * @namespace CRS
+ * @crs L.CRS.Simple
+ *
+ * A simple CRS that maps longitude and latitude into `x` and `y` directly.
+ * May be used for maps of flat surfaces (e.g. game maps). Note that the `y`
+ * axis should still be inverted (going from bottom to top). `distance()` returns
+ * simple euclidean distance.
  */
 
-L.CRS.Simple = L.extend({}, L.CRS, {
-	projection: L.Projection.LonLat,
-	transformation: new L.Transformation(1, 0, -1, 0),
+export var Simple = Util.extend({}, CRS, {
+	projection: LonLat,
+	transformation: toTransformation(1, 0, -1, 0),
 
 	scale: function (zoom) {
 		return Math.pow(2, zoom);

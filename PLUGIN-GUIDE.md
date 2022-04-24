@@ -15,14 +15,18 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [File Structure](#file-structure)
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
-3. [Publishing on NPM](#publishing-on-npm)
-4. [Module Loaders](#module-loaders)
+3. [Content Accessibility](#content-accessibility)
+	- [Accessibility Testing](#accessibility-testing)
+	- [Learn about web accessibility](#learn-about-web-accessibility)
+4. [Publishing on NPM](#publishing-on-npm)
+5. [Module Loaders](#module-loaders)
+6. [Adding to the plugins list](#adding-to-the-plugins-list)
 
 ## Presentation
 
 ### Repository
 
-The best place to put your Leaflet plugin to is a separate [GitHub](http://github.com) repository.
+The best place to put your Leaflet plugin is a separate [GitHub](http://github.com) repository.
 If you create a collection of plugins for different uses,
 don't put them in one repo &mdash;
 it's usually easier to work with small, self-contained plugins in individual repositories.
@@ -44,7 +48,7 @@ after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
 
-The next thing you need to have is a descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
+The next thing you need to have is a [good `README.md`](https://github.com/noffle/art-of-readme) in the root of the repo (or a link to a website with a similar content).
 At a minimum it should contain the following items:
 
 - name of the plugin
@@ -107,9 +111,10 @@ and putting a space after the `function` keyword.
 Never expose global variables in your plugin.<br>
 If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).<br>
 If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).<br>
+Every class should have a factory function in camelCase, e.g. (`L.tileLayer.banana`).<br>
 If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
 
-Function, method and property names should be in `camelCase`.<br>
+Function, method, property and factory names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
 
 If you have a lot of arguments in your function, consider accepting an options object instead
@@ -128,11 +133,55 @@ marker.myPlugin('bla', {
 
 And most importantly, keep it simple. Leaflet is all about *simplicity*.
 
+## Content Accessibility
+
+Make sure your content is accessible to users from all walks of life.
+Some users can only navigate web content using a keyboard,
+or must rely on their screen reader to be able to convey the visual information.
+Thus it's important to ensure components are keyboard-friendly,
+and non-text content (such as icon fonts and images) either have a text
+alternative or are hidden from screen readers if they're purely decorative.
+
+### Accessibility Testing
+
+#### Automated testing
+
+Tools for automated testing can help you discover common accessibility issues:
+
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
+- [axe](https://www.deque.com/axe/)
+- [WAVE](https://wave.webaim.org/)
+- [Accessibility Insights](https://accessibilityinsights.io/)
+- [webhint](https://webhint.io/)
+
+#### Manual testing
+
+It is highly recommended that you test your components manually
+using only your keyboard,
+as well as using a screen reader such as Narrator, NVDA, VoiceOver, or JAWS.
+
+### Learn about web accessibility
+
+Beginner-friendly documentation:
+
+- [What is accessibility?](https://web.dev/what-is-accessibility/)
+- [Make your site keyboard accessible](https://web.dev/accessible/#make-your-site-keyboard-accessible)
+- [Understand semantics and basic screen reader support](https://web.dev/accessible/#understand-semantics-and-basic-screen-reader-support)
+- More guides at [MDN web docs: Accessibility](https://developer.mozilla.org/en-US/docs/Learn/Accessibility)
+
+Authoritative documentation:
+
+- [WAI (Web Accessibility Initiative): Accessibility Fundamentals Overview](https://www.w3.org/WAI/fundamentals/)
+- [ARIA in HTML (Accessible Rich Internet Applications)](https://www.w3.org/TR/html-aria/)
+- [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
+- [Using ARIA](https://www.w3.org/TR/using-aria/)
+- [WCAG (Web Content Accessibility Guidelines)](https://www.w3.org/TR/WCAG/)
+
 ## Publishing on NPM
 
 NPM (Node Packaged Modules) is a package manager and code repository for JavaScript. Publishing your module on NPM allows other developers to quickly find and install your plugin as well as any other plugins it depends on.
 
-NPM has an excellent [developers guide](https://www.npmjs.org/doc/misc/npm-developers.html) to help you through the process.
+NPM has an excellent [developers guide](https://docs.npmjs.com/using-npm/developers.html) to help you through the process.
 
 When you publish your plugin you should add a dependency on `leaflet` to your `package.json` file. This will automatically install Leaflet when your package is installed.
 
@@ -146,17 +195,37 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "main": "my-plugin.js",
   "author": "You",
   "license": "IST",
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0"
   }
 }
 ```
 
+If possible, do not commit your minified files (e.g. `dist`) to a repo; this can
+lead to confusion when trying to debug the wrong file. Instead, use `npm` to
+trigger a build/minification just before publishing your package with a
+[`prepublish` script](https://docs.npmjs.com/misc/scripts#common-uses), for example:
+
+```json
+{
+  "name": "my-leaflet-plugin",
+  ...
+  "scripts": {
+    "prepublish": "grunt build"
+  }
+}
+```
+
+You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/)
+file to make sure the minified files are not versioned, and an
+[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package)
+to ensure that they are published to NPM.
+
 ## Module Loaders
 
 Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
 
-You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
+You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js)
 
 ```js
 (function (factory, window) {
@@ -164,7 +233,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
     // define an AMD module that relies on 'leaflet'
     if (typeof define === 'function' && define.amd) {
         define(['leaflet'], factory);
-    
+
     // define a Common JS module that relies on 'leaflet'
     } else if (typeof exports === 'object') {
         module.exports = factory(require('leaflet'));
@@ -183,4 +252,17 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 }, window));
 ```
 
-Now your plugin is available as an AMD and CommonJS module and can used used in module loaders like Browserify and RequireJS.
+Now your plugin is available as an AMD and CommonJS module and can be used in module loaders like Browserify and RequireJS.
+
+
+## Adding to the plugins list
+
+Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
+
+* [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
+* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
+* Commit the code to your fork.
+* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
+
+Once the pull request is done, a Leaflet maintainer will have a quick look at your
+plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.

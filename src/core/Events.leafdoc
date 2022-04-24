@@ -1,0 +1,143 @@
+
+@namespace Event objects
+
+
+Whenever a class inheriting from `Evented` fires an event, a listener function
+will be called with an event argument, which is a plain object containing
+information about the event. For example:
+
+```js
+map.on('click', function(ev) {
+    alert(ev.latlng); // ev is an event object (MouseEvent in this case)
+});
+```
+
+The information available depends on the event type:
+
+
+@miniclass Event (Event objects)
+@section
+The base event object. All other event objects contain these properties too.
+@property type: String
+The event type (e.g. `'click'`).
+@property target: Object
+The object that fired the event. For propagated events, the last object in
+the propagation chain that fired the event.
+@property sourceTarget: Object
+The object that originally fired the event. For non-propagated events, this will
+be the same as the `target`.
+@property propagatedFrom: Object
+For propagated events, the last object that propagated the event to its
+event parent.
+@property layer: Object
+**Deprecated.** The same as `propagatedFrom`.
+
+
+@miniclass KeyboardEvent (Event objects)
+@inherits Event
+@property originalEvent: DOMEvent
+The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this Leaflet event.
+
+@miniclass MouseEvent (Event objects)
+@inherits Event
+@property latlng: LatLng
+The geographical point where the mouse event occurred.
+@property layerPoint: Point
+Pixel coordinates of the point where the mouse event occurred relative to the map layer.
+@property containerPoint: Point
+Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.
+@property originalEvent: DOMEvent
+The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) that triggered this Leaflet event.
+
+@miniclass LocationEvent (Event objects)
+@inherits Event
+@property latlng: LatLng
+Detected geographical location of the user.
+@property bounds: LatLngBounds
+Geographical bounds of the area user is located in (with respect to the accuracy of location).
+@property accuracy: Number
+Accuracy of location in meters.
+@property altitude: Number
+Height of the position above the WGS84 ellipsoid in meters.
+@property altitudeAccuracy: Number
+Accuracy of altitude in meters.
+@property heading: Number
+The direction of travel in degrees counting clockwise from true North.
+@property speed: Number
+Current velocity in meters per second.
+@property timestamp: Number
+The time when the position was acquired.
+
+@miniclass ErrorEvent (Event objects)
+@inherits Event
+@property message: String
+Error message.
+@property code: Number
+Error code (if applicable).
+
+@miniclass LayerEvent (Event objects)
+@inherits Event
+@property layer: Layer
+The layer that was added or removed.
+
+@miniclass LayersControlEvent (Event objects)
+@inherits Event
+@property layer: Layer
+The layer that was added or removed.
+@property name: String
+The name of the layer that was added or removed.
+
+@miniclass TileEvent (Event objects)
+@inherits Event
+@property tile: HTMLElement
+The tile element (image).
+@property coords: Point
+Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates.
+
+@miniclass TileErrorEvent (Event objects)
+@inherits Event
+@property tile: HTMLElement
+The tile element (image).
+@property coords: Point
+Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates.
+@property error: *
+Error passed to the tile's `done()` callback.
+
+@miniclass ResizeEvent (Event objects)
+@inherits Event
+@property oldSize: Point
+The old size before resize event.
+@property newSize: Point
+The new size after the resize event.
+
+@miniclass GeoJSONEvent (Event objects)
+@inherits Event
+@property layer: Layer
+The layer for the GeoJSON feature that is being added to the map.
+@property properties: Object
+GeoJSON properties of the feature.
+@property geometryType: String
+GeoJSON geometry type of the feature.
+@property id: String
+GeoJSON ID of the feature (if present).
+
+@miniclass PopupEvent (Event objects)
+@inherits Event
+@property popup: Popup
+The popup that was opened or closed.
+
+@miniclass TooltipEvent (Event objects)
+@inherits Event
+@property tooltip: Tooltip
+The tooltip that was opened or closed.
+
+@miniclass DragEndEvent (Event objects)
+@inherits Event
+@property distance: Number
+The distance in pixels the draggable element was moved by.
+
+@miniclass ZoomAnimEvent (Event objects)
+@inherits Event
+@property center: LatLng; The current center of the map
+@property zoom: Number; The current zoom level of the map
+@property noUpdate: Boolean; Whether layers should update their contents due to this event

@@ -1,18 +1,46 @@
+import {Polygon} from './Polygon';
+import {toLatLngBounds} from '../../geo/LatLngBounds';
+
 /*
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
 
-L.Rectangle = L.Polygon.extend({
+/*
+ * @class Rectangle
+ * @aka L.Rectangle
+ * @inherits Polygon
+ *
+ * A class for drawing rectangle overlays on a map. Extends `Polygon`.
+ *
+ * @example
+ *
+ * ```js
+ * // define rectangle geographical bounds
+ * var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+ *
+ * // create an orange rectangle
+ * L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
+ *
+ * // zoom the map to the rectangle bounds
+ * map.fitBounds(bounds);
+ * ```
+ *
+ */
+
+
+export var Rectangle = Polygon.extend({
 	initialize: function (latLngBounds, options) {
-		L.Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
+		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},
 
+	// @method setBounds(latLngBounds: LatLngBounds): this
+	// Redraws the rectangle with the passed bounds.
 	setBounds: function (latLngBounds) {
 		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
 	},
 
 	_boundsToLatLngs: function (latLngBounds) {
-		latLngBounds = L.latLngBounds(latLngBounds);
+		latLngBounds = toLatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),
@@ -22,6 +50,8 @@ L.Rectangle = L.Polygon.extend({
 	}
 });
 
-L.rectangle = function (latLngBounds, options) {
-	return new L.Rectangle(latLngBounds, options);
-};
+
+// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
+export function rectangle(latLngBounds, options) {
+	return new Rectangle(latLngBounds, options);
+}

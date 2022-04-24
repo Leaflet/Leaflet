@@ -1,0 +1,100 @@
+
+// Class inheritances in a format that
+// http://www.yuml.me/diagram/class/draw
+// understands and draws things from
+
+
+[L.Util]
+[L.Browser]
+[L.LatLng|lat;lng]
+[L.LatLngBounds] has 2 -.-> [L.LatLng]
+[L.Point|x;y]
+[L.Bounds] has 2 -.-> [L.Point]
+[L.DomUtil]
+[L.DomEvent]
+
+
+
+[L.Class|options|extend();include();initialize()]
+
+[L.Class] ^- [L.Control|onAdd();onRemove()]
+[L.Control] ^- [L.Control.Attribution;L.Control.Layers;L.Control.Scale;L.Control.Zoom]
+
+// L.Control] ^- L.Control.Attribution]
+// L.Control] ^- L.Control.Layers]
+// L.Control] ^- L.Control.Scale]
+// L.Control] ^- L.Control.Zoom]
+
+
+[L.Class] ^- [L.Evented]
+[L.Evented|on();off();fire()]
+
+
+[L.CRS]          ^- [L.CRS.Earth]
+[L.CRS]          ^- [L.CRS.Simple]
+[L.CRS.Earth]    ^- [L.CRS.EPSG3395;L.CRS.EPSG3857;L.CRS.EPSG4326]
+
+// L.CRS]          ^-  L.CRS.Earth]
+// L.CRS]          ^-  L.CRS.Simple]
+// L.CRS.Earth]    ^-  L.CRS.EPSG3395]
+// L.CRS.Earth]    ^-  L.CRS.EPSG3857]
+// L.CRS.EPSG3857] ^-  L.CRS.EPSG900913]
+// L.CRS.Earth]    ^-  L.CRS.EPSG4326]
+
+[L.Evented] ^- [L.Layer]
+
+[L.Layer|onAdd();onRemove();getEvents();getAttribution();beforeAdd()]
+
+[L.Evented] ^- [L.Map|addHandler();addControl();removeControl();addLayer();removeLayer()]
+[L.Map] contains -.-> [L.Layer]
+[L.Map] contains -.-> [L.Control]
+[L.Map] contains -.-> [L.Handler]
+[L.Map] has one -.-> [L.CRS]
+
+[L.Class] ^- [L.Handler|addHooks();removeHooks()]
+[L.Handler] ^- [L.Map.BoxZoom;L.Map.DoubleClickZoom;L.Map.Drag;L.Map.Keyboard;L.Map.ScrollWheelZoom;L.Map.Tap;L.Map.TouchZoom]
+
+// L.Handler] ^- L.Map.BoxZoom]
+// L.Handler] ^- L.Map.DoubleClickZoom]
+// L.Handler] ^- L.Map.Drag]
+// L.Handler] ^- L.Map.Keyboard]
+// L.Handler] ^- L.Map.ScrollWheelZoom]
+// L.Handler] ^- L.Map.Tap]
+// L.Handler] ^- L.Map.TouchZoom]
+
+[L.Layer] ^- [L.Marker]
+[L.Icon] ^- [L.Icon.Default]
+[L.Icon] ^- [L.DivIcon]
+
+[L.Marker] drawn as a -.-> [L.Icon]
+
+
+[L.Layer] ^- [L.GridLayer|createTile()]
+[L.GridLayer] ^- [L.TileLayer|getTileUrl()]
+[L.TileLayer] ^- [L.TileLayer.WMS]
+
+
+[L.Layer] ^- [L.Renderer]
+[L.Renderer] ^- [L.Canvas]
+[L.Renderer] ^- [L.SVG]
+
+[L.Layer] ^- [L.Path]
+[L.CircleMarker] ^- [L.Circle]
+[L.Path] ^- [L.CircleMarker]
+[L.Path] ^- [L.Polyline]
+[L.Polyline] ^- [L.Polygon]
+[L.Polygon] ^- [L.Rectangle]
+[L.Path] drawn in a -.-> [L.Renderer]
+
+
+[L.Layer] ^- [L.LayerGroup]
+[L.LayerGroup] ^- [L.FeatureGroup]
+[L.FeatureGroup] ^- [L.GeoJSON]
+
+[L.Layer] ^- [L.DivOverlay]
+[L.DivOverlay] ^- [L.Popup]
+[L.DivOverlay] ^- [L.Tooltip]
+
+[L.Layer] ^- [L.ImageOverlay]
+
+

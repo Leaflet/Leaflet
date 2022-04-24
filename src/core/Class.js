@@ -1,14 +1,23 @@
-/*
- * L.Class powers the OOP facilities of the library.
- * Thanks to John Resig and Dean Edwards for inspiration!
- */
+import * as Util from './Util';
 
-L.Class = function () {};
+// @class Class
+// @aka L.Class
 
-L.Class.extend = function (props) {
+// @section
+// @uninheritable
 
-	// extended class with the new prototype
+// Thanks to John Resig and Dean Edwards for inspiration!
+
+export function Class() {}
+
+Class.extend = function (props) {
+
+	// @function extend(props: Object): Function
+	// [Extends the current class](#class-inheritance) given the properties to be included.
+	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	var NewClass = function () {
+
+		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
@@ -21,37 +30,39 @@ L.Class.extend = function (props) {
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = L.Util.create(parentProto);
+	var proto = Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
 
 	// inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i !== 'prototype') {
+		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
 	}
 
 	// mix static properties into the class
 	if (props.statics) {
-		L.extend(NewClass, props.statics);
-		delete props.statics;
+		Util.extend(NewClass, props.statics);
 	}
 
 	// mix includes into the prototype
 	if (props.includes) {
-		L.Util.extend.apply(null, [proto].concat(props.includes));
-		delete props.includes;
-	}
-
-	// merge options
-	if (proto.options) {
-		props.options = L.Util.extend(L.Util.create(proto.options), props.options);
+		checkDeprecatedMixinEvents(props.includes);
+		Util.extend.apply(null, [proto].concat(props.includes));
 	}
 
 	// mix given properties into the prototype
-	L.extend(proto, props);
+	Util.extend(proto, props);
+	delete proto.statics;
+	delete proto.includes;
+
+	// merge options
+	if (proto.options) {
+		proto.options = parentProto.options ? Util.create(parentProto.options) : {};
+		Util.extend(proto.options, props.options);
+	}
 
 	proto._initHooks = [];
 
@@ -75,18 +86,28 @@ L.Class.extend = function (props) {
 };
 
 
-// method for adding properties to prototype
-L.Class.include = function (props) {
-	L.extend(this.prototype, props);
+// @function include(properties: Object): this
+// [Includes a mixin](#class-includes) into the current class.
+Class.include = function (props) {
+	var parentOptions = this.prototype.options;
+	Util.extend(this.prototype, props);
+	if (props.options) {
+		this.prototype.options = parentOptions;
+		this.mergeOptions(props.options);
+	}
+	return this;
 };
 
-// merge new default options to the Class
-L.Class.mergeOptions = function (options) {
-	L.extend(this.prototype.options, options);
+// @function mergeOptions(options: Object): this
+// [Merges `options`](#class-options) into the defaults of the class.
+Class.mergeOptions = function (options) {
+	Util.extend(this.prototype.options, options);
+	return this;
 };
 
-// add a constructor hook
-L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
+// @function addInitHook(fn: Function): this
+// Adds a [constructor hook](#class-constructor-hooks) to the class.
+Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	var args = Array.prototype.slice.call(arguments, 1);
 
 	var init = typeof fn === 'function' ? fn : function () {
@@ -95,4 +116,19 @@ L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 
 	this.prototype._initHooks = this.prototype._initHooks || [];
 	this.prototype._initHooks.push(init);
+	return this;
 };
+
+function checkDeprecatedMixinEvents(includes) {
+	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
+
+	includes = Util.isArray(includes) ? includes : [includes];
+
+	for (var i = 0; i < includes.length; i++) {
+		if (includes[i] === L.Mixin.Events) {
+			console.warn('Deprecated include of L.Mixin.Events: ' +
+				'this property will be removed in future releases, ' +
+				'please inherit from L.Evented instead.', new Error().stack);
+		}
+	}
+}

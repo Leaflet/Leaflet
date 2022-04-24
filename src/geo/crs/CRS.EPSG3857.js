@@ -1,17 +1,27 @@
+import {Earth} from './CRS.Earth';
+import {SphericalMercator} from '../projection/Projection.SphericalMercator';
+import {toTransformation} from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
+
 /*
- * L.CRS.EPSG3857 (Spherical Mercator) is the most common CRS for web mapping and is used by Leaflet by default.
+ * @namespace CRS
+ * @crs L.CRS.EPSG3857
+ *
+ * The most common CRS for online maps, used by almost all free and commercial
+ * tile providers. Uses Spherical Mercator projection. Set in by default in
+ * Map's `crs` option.
  */
 
-L.CRS.EPSG3857 = L.extend({}, L.CRS.Earth, {
+export var EPSG3857 = Util.extend({}, Earth, {
 	code: 'EPSG:3857',
-	projection: L.Projection.SphericalMercator,
+	projection: SphericalMercator,
 
 	transformation: (function () {
-		var scale = 0.5 / (Math.PI * L.Projection.SphericalMercator.R);
-		return new L.Transformation(scale, 0.5, -scale, 0.5);
+		var scale = 0.5 / (Math.PI * SphericalMercator.R);
+		return toTransformation(scale, 0.5, -scale, 0.5);
 	}())
 });
 
-L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {
+export var EPSG900913 = Util.extend({}, EPSG3857, {
 	code: 'EPSG:900913'
 });

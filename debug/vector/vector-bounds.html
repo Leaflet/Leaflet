@@ -7,8 +7,7 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
@@ -16,8 +15,8 @@
     <button onclick="map.fitBounds(poly.getBounds())">Zoom to polygon</button>
 	<script src="route.js"></script>
 	<script>
-		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
 		var poly_points = [
@@ -51,9 +50,9 @@
 		var poly = new L.Polygon(latlngs2);
 
 		var map = new L.Map('map', {
-		    layers: [osm],
-		    center: new L.LatLng(39.69596043694606, -104.95084762573242),
-		    zoom: 12
+			layers: [osm],
+			center: new L.LatLng(39.69596043694606, -104.95084762573242),
+			zoom: 12
 		});
 
 		//map.fitBounds(new L.LatLngBounds(latlngs));

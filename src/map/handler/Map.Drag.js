@@ -1,28 +1,65 @@
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import {Draggable} from '../../dom/Draggable';
+import * as Util from '../../core/Util';
+import * as DomUtil from '../../dom/DomUtil';
+import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+import {toBounds} from '../../geometry/Bounds';
+
 /*
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
-L.Map.mergeOptions({
+// @namespace Map
+// @section Interaction Options
+Map.mergeOptions({
+	// @option dragging: Boolean = true
+	// Whether the map is draggable with mouse/touch or not.
 	dragging: true,
 
-	inertia: !L.Browser.android23,
+	// @section Panning Inertia Options
+	// @option inertia: Boolean = *
+	// If enabled, panning of the map will have an inertia effect where
+	// the map builds momentum while dragging and continues moving in
+	// the same direction for some time. Feels especially nice on touch
+	// devices. Enabled by default.
+	inertia: true,
+
+	// @option inertiaDeceleration: Number = 3000
+	// The rate with which the inertial movement slows down, in pixels/second².
 	inertiaDeceleration: 3400, // px/s^2
+
+	// @option inertiaMaxSpeed: Number = Infinity
+	// Max speed of the inertial movement, in pixels/second.
 	inertiaMaxSpeed: Infinity, // px/s
+
+	// @option easeLinearity: Number = 0.2
 	easeLinearity: 0.2,
 
 	// TODO refactor, move to CRS
-	worldCopyJump: false
+	// @option worldCopyJump: Boolean = false
+	// With this option enabled, the map tracks when you pan to another "copy"
+	// of the world and seamlessly jumps to the original one so that all overlays
+	// like markers and vector layers are still visible.
+	worldCopyJump: false,
+
+	// @option maxBoundsViscosity: Number = 0.0
+	// If `maxBounds` is set, this option will control how solid the bounds
+	// are when dragging the map around. The default value of `0.0` allows the
+	// user to drag outside the bounds at normal speed, higher values will
+	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+	// solid, preventing the user from dragging outside the bounds.
+	maxBoundsViscosity: 0.0
 });
 
-L.Map.Drag = L.Handler.extend({
+export var Drag = Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
 			var map = this._map;
 
-			this._draggable = new L.Draggable(map._mapPane, map._container);
+			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
-				down: this._onDown,
 				dragstart: this._onDragStart,
 				drag: this._onDrag,
 				dragend: this._onDragEnd
@@ -36,12 +73,15 @@ L.Map.Drag = L.Handler.extend({
 				map.whenReady(this._onZoomEnd, this);
 			}
 		}
-		L.DomUtil.addClass(this._map._container, 'leaflet-grab');
+		DomUtil.addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
 		this._draggable.enable();
+		this._positions = [];
+		this._times = [];
 	},
 
 	removeHooks: function () {
-		L.DomUtil.removeClass(this._map._container, 'leaflet-grab');
+		DomUtil.removeClass(this._map._container, 'leaflet-grab');
+		DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
 	},
 
@@ -53,17 +93,14 @@ L.Map.Drag = L.Handler.extend({
 		return this._draggable && this._draggable._moving;
 	},
 
-	_onDown: function () {
-		this._map.stop();
-	},
-
 	_onDragStart: function () {
 		var map = this._map;
 
+		map._stop();
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
-			var bounds = L.latLngBounds(this._map.options.maxBounds);
+			var bounds = latLngBounds(this._map.options.maxBounds);
 
-			this._offsetLimit = L.bounds(
+			this._offsetLimit = toBounds(
 				this._map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
 				this._map.latLngToContainerPoint(bounds.getSouthEast()).multiplyBy(-1)
 					.add(this._map.getSize()));
@@ -91,15 +128,19 @@ L.Map.Drag = L.Handler.extend({
 			this._positions.push(pos);
 			this._times.push(time);
 
-			if (time - this._times[0] > 50) {
-				this._positions.shift();
-				this._times.shift();
-			}
+			this._prunePositions(time);
 		}
 
 		this._map
 		    .fire('move', e)
 		    .fire('drag', e);
+	},
+
+	_prunePositions: function (time) {
+		while (this._positions.length > 1 && time - this._times[0] > 50) {
+			this._positions.shift();
+			this._times.shift();
+		}
 	},
 
 	_onZoomEnd: function () {
@@ -146,7 +187,7 @@ L.Map.Drag = L.Handler.extend({
 		var map = this._map,
 		    options = map.options,
 
-		    noInertia = !options.inertia || this._times.length < 2;
+		    noInertia = !options.inertia || e.noInertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
@@ -154,6 +195,7 @@ L.Map.Drag = L.Handler.extend({
 			map.fire('moveend');
 
 		} else {
+			this._prunePositions(+new Date());
 
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime - this._times[0]) / 1000,
@@ -174,7 +216,7 @@ L.Map.Drag = L.Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				L.Util.requestAnimFrame(function () {
+				Util.requestAnimFrame(function () {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
@@ -187,4 +229,7 @@ L.Map.Drag = L.Handler.extend({
 	}
 });
 
-L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);
+// @section Handlers
+// @property dragging: Handler
+// Map dragging handler (by both mouse and touch).
+Map.addInitHook('addHandler', 'dragging', Drag);
