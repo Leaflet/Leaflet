@@ -17,8 +17,8 @@ describe("Map.DoubleClickZoom", function () {
 		var zoom = map.getZoom();
 		happen.dblclick(container);
 
-		map.on('zoomend', function(){
-			expect(map.getCenter()).to.be.nearLatLng([ 17.308687886770034, -17.578125000000004]);
+		map.on('zoomend', function () {
+			expect(map.getCenter()).to.be.nearLatLng([17.308687886770034, -17.578125000000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
 			done();
 		});
@@ -28,8 +28,8 @@ describe("Map.DoubleClickZoom", function () {
 		var zoom = map.getZoom();
 		happen.dblclick(container, {shiftKey: true});
 
-		map.on('zoomend', function(){
-			expect(map.getCenter()).to.be.nearLatLng([ -33.137551192346145, 35.15625000000001]);
+		map.on('zoomend', function () {
+			expect(map.getCenter()).to.be.nearLatLng([-33.137551192346145, 35.15625000000001]);
 			expect(map.getZoom()).to.be.lessThan(zoom);
 			done();
 		});
