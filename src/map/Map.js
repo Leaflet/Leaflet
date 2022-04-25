@@ -446,8 +446,7 @@ export var Map = Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
 
-		if (this._maxBoundsSet) {
-			this._maxBoundsSet = false;
+		if (this.listens('moveend', this._panInsideMaxBounds)) {
 			this.off('moveend', this._panInsideMaxBounds);
 		}
 
@@ -462,7 +461,6 @@ export var Map = Evented.extend({
 			this._panInsideMaxBounds();
 		}
 
-		this._maxBoundsSet = true;
 		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
