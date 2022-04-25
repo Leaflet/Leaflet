@@ -423,9 +423,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a:focus {
 	text-decoration: underline;
 	}
-/* adding class for flag */
 .leaflet-attribution-flag{
-	display: inline;
+	display: inline !important;
+	vertical-align: baseline !important;
 	width: 1em;
 	height: auto;
 }
