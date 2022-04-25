@@ -102,7 +102,7 @@ export var Events = {
 		}
 
 		// check if fn already there
-		if (this._listens(type, fn, context)) {
+		if (this._listens(type, fn, context) !== false) {
 			return;
 		}
 
@@ -151,9 +151,9 @@ export var Events = {
 		}
 
 		// find fn and remove it
-		var listenerObj = this._listens(type, fn, context);
-		if (listenerObj) {
-			var listener = listenerObj.listener;
+		var index = this._listens(type, fn, context);
+		if (index !== false) {
+			var listener = listeners[index];
 			if (this._firingCount) {
 				// set the removed listener to noop so that's not called if remove happens in fire
 				listener.fn = Util.falseFn;
@@ -161,7 +161,7 @@ export var Events = {
 				/* copy array in case events are being fired */
 				this._events[type] = listeners = listeners.slice();
 			}
-			listeners.splice(listenerObj.index, 1);
+			listeners.splice(index, 1);
 			return;
 		}
 		console.warn('listener not found');
@@ -219,7 +219,7 @@ export var Events = {
 
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) {
-			if (this._listens(type, fn, context)) {
+			if (this._listens(type, fn, context) !== false) {
 				return true;
 			}
 		}
@@ -233,6 +233,7 @@ export var Events = {
 		return false;
 	},
 
+	// returns the index (number) or false
 	_listens: function (type, fn, context) {
 		if (!this._events) {
 			return false;
@@ -240,7 +241,7 @@ export var Events = {
 
 		var listeners = this._events[type] || [];
 		if (!fn) {
-			return !!listeners.length;
+			return listeners.length > 0 ? 0 : false;
 		}
 
 		if (context === this) {
@@ -250,10 +251,7 @@ export var Events = {
 
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return {
-					index: i,
-					listener: listeners[i]
-				};
+				return i;
 			}
 		}
 		return false;
