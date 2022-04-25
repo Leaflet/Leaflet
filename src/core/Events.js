@@ -241,7 +241,7 @@ export var Events = {
 
 		var listeners = this._events[type] || [];
 		if (!fn) {
-			return listeners.length > 0 ? 0 : false;
+			return !!listeners.length;
 		}
 
 		if (context === this) {
