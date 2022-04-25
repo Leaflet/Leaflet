@@ -26,6 +26,6 @@ title: Image Overlay Tutorial
 		interactive: true
 	}).addTo(map);
 
-	L.rectangle(latLngBounds).addTo(map);        
+	L.rectangle(latLngBounds).addTo(map);
 	map.fitBounds(latLngBounds);
 </script>
