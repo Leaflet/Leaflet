@@ -112,7 +112,7 @@ export var Events = {
 		}
 
 		var newListener = {fn: fn, ctx: context};
-		if(_once){
+		if (_once) {
 			newListener.once = true;
 		}
 
@@ -191,8 +191,8 @@ export var Events = {
 					var l = listeners[i];
 					// off overwrites l.fn, so we need to copy fn to a var
 					var fn = l.fn;
-					if(l.once){
-						this.off.call(this, type, l.fn, l.ctx);
+					if (l.once) {
+						this.off(type, l.fn, l.ctx);
 					}
 					fn.call(l.ctx || this, event);
 				}

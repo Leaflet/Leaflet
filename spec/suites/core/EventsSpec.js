@@ -532,8 +532,8 @@ describe('Events', function () {
 
 		it("doesn't call once twice", function () {
 			var obj = new L.Evented(),
-				spy = sinon.spy();
-			obj.once('test', function(){
+			spy = sinon.spy();
+			obj.once('test', function () {
 				spy();
 				obj.fire('test');
 			}, obj);
