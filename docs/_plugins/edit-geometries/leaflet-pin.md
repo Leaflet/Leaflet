@@ -4,7 +4,7 @@ category: edit-geometries
 repo: https://github.com/kklimczak/Leaflet.Pin
 author: Konrad Klimczak
 author-url: https://github.com/kklimczak
-demo: 
+demo: https://kklimczak.github.io/Leaflet.Pin/
 compatible-v0:
 compatible-v1: true
 ---

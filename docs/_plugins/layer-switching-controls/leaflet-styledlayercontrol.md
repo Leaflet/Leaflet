@@ -4,7 +4,7 @@ category: layer-switching-controls
 repo: https://github.com/davicustodio/Leaflet.StyledLayerControl
 author: Davi Custodio
 author-url: https://github.com/davicustodio
-demo: 
+demo: http://davicustodio.github.io/Leaflet.StyledLayerControl/examples/example1.html
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: mouse-coordinates
 repo: https://github.com/MrMufflon/Leaflet.Coordinates
 author: Felix Bache
 author-url: https://github.com/MrMufflon
-demo: 
+demo: http://mrmufflon.github.io/Leaflet.Coordinates/examples/demo.html
 compatible-v0:
 compatible-v1: true
 ---

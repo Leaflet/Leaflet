@@ -6,132 +6,127 @@ bodyclass: api-page
 
 <h2>Leaflet API reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.7.1</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
+<p>This reference reflects <strong>Leaflet v1.8.0</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
-	<div id="toc" class="clearfix">
-		<div class="toc-col map-col">
-			<h4>Map</h4>
-			<ul>
-				<li><a href="#map-example">Usage example</a></li>
-				<li><a href="#map-factory">Creation</a></li>
-				<li><a href="#map-option">Options</a></li>
-				<li><a href="#map-event">Events</a></li>
-			</ul>
-			<h4>Map Methods</h4>
-			<ul>
-				<li><a href="#map-methods-for-modifying-map-state">Modifying map state</a></li>
-				<li><a href="#map-methods-for-getting-map-state">Getting map state</a></li>
-				<li><a href="#map-methods-for-layers-and-controls">Layers and controls</a></li>
-				<li><a href="#map-conversion-methods">Conversion methods</a></li>
-				<li><a href="#map-other-methods">Other methods</a></li>
-			</ul>
-			<h4>Map Misc</h4>
-			<ul>
-				<li><a href="#map-property">Properties</a></li>
-				<li><a href="#map-pane">Panes</a></li>
-			</ul>
-		</div>
-		<div class="toc-col">
-			<h4>UI Layers</h4>
-			<ul>
-				<li><a href="#marker">Marker</a></li>
-				<li><a href="#popup">Popup</a></li>
-				<li><a href="#tooltip">Tooltip</a></li>
-			</ul>
-			<h4>Raster Layers</h4>
-			<ul>
-				<li><a href="#tilelayer">TileLayer</a></li>
-				<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
-				<li><a href="#imageoverlay">ImageOverlay</a></li>
-				<li><a href="#videooverlay">VideoOverlay</a></li>
-			</ul>
-			<h4>Vector Layers</h4>
-			<ul>
-				<li><a href="#path">Path</a></li>
-				<li><a href="#polyline">Polyline</a></li>
-				<li><a href="#polygon">Polygon</a></li>
-				<li><a href="#rectangle">Rectangle</a></li>
-				<li><a href="#circle">Circle</a></li>
-				<li><a href="#circlemarker">CircleMarker</a></li>
-				<li><a href="#svgoverlay">SVGOverlay</a></li>
-				<li><a href="#svg">SVG</a></li>
-				<li><a href="#canvas">Canvas</a></li>
-			</ul>
-		</div>
-		<div class="toc-col">
-			<h4>Other Layers</h4>
-			<ul>
-				<li><a href="#layergroup">LayerGroup</a></li>
-				<li><a href="#featuregroup">FeatureGroup</a></li>
-				<li><a href="#geojson">GeoJSON</a></li>
-				<li><a href="#gridlayer">GridLayer</a></li>
-			</ul>
-			<h4>Basic Types</h4>
-			<ul>
-				<li><a href="#latlng">LatLng</a></li>
-				<li><a href="#latlngbounds">LatLngBounds</a></li>
-				<li><a href="#point">Point</a></li>
-				<li><a href="#bounds">Bounds</a></li>
-				<li><a href="#icon">Icon</a></li>
-				<li><a href="#divicon">DivIcon</a></li>
-			</ul>
-			<h4>Controls</h4>
-			<ul>
-				<li><a href="#control-zoom">Zoom</a></li>
-				<li><a href="#control-attribution">Attribution</a></li>
-				<li><a href="#control-layers">Layers</a></li>
-				<li><a href="#control-scale">Scale</a></li>
-			</ul>
-		</div>
-		<div class="toc-col">
-<!-- 			<h4>Shared Methods</h4> -->
-<!-- 			<ul> -->
-<!-- 				<li><a href="#evented">Event</a></li> -->
-<!-- 				<li><a href="#layers">Layer</a></li> -->
-<!-- 				<li><a href="#popup">Popup</a></li> -->
-<!-- 			</ul> -->
-			<h4>Utility</h4>
-			<ul>
-				<li><a href="#browser">Browser</a></li>
-				<li><a href="#util">Util</a></li>
-				<li><a href="#transformation">Transformation</a></li>
-				<li><a href="#lineutil">LineUtil</a></li>
-				<li><a href="#polyutil">PolyUtil</a></li>
-			</ul>
-			<h4>DOM Utility</h4>
-			<ul>
-				<li><a href="#domevent">DomEvent</a></li>
-				<li><a href="#domutil">DomUtil</a></li>
-				<li><a href="#posanimation">PosAnimation</a></li>
-				<li><a href="#draggable">Draggable</a></li>
-			</ul>
-		</div>
-		<div class="toc-col last-col">
-			<h4>Base Classes</h4>
-			<ul>
-				<li><a href="#class">Class</a></li>
-				<li><a href="#evented">Evented</a></li>
-				<li><a href="#layer">Layer</a></li>
-				<li><a href="#interactive-layer">Interactive layer</a></li>
-				<li><a href="#control">Control</a></li>
-				<li><a href="#handler">Handler</a></li>
-				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
-				<li><a href="#projection">Projection</a></li>
-				<li><a href="#crs">CRS</a></li>
-				<li><a href="#renderer">Renderer</a></li>
-			</ul>
-
-			<h4>Misc</h4>
-			<ul>
-				<li><a href="#event-objects">Event objects</a></li>
- 				<li><a href="#global-switches">global switches</a></li>
-				<li><a href="#noconflict">noConflict</a></li>
-				<li><a href="#version">version</a></li>
-			</ul>
-		</div>
+<div id="toc" class="clearfix">
+	<div class="toc-col map-col">
+		<h4>Map</h4>
+		<ul>
+			<li><a href="#map-example">Usage example</a></li>
+			<li><a href="#map-factory">Creation</a></li>
+			<li><a href="#map-option">Options</a></li>
+			<li><a href="#map-event">Events</a></li>
+		</ul>
+		<h4>Map Methods</h4>
+		<ul>
+			<li><a href="#map-methods-for-modifying-map-state">Modifying map state</a></li>
+			<li><a href="#map-methods-for-getting-map-state">Getting map state</a></li>
+			<li><a href="#map-methods-for-layers-and-controls">Layers and controls</a></li>
+			<li><a href="#map-conversion-methods">Conversion methods</a></li>
+			<li><a href="#map-other-methods">Other methods</a></li>
+		</ul>
+		<h4>Map Misc</h4>
+		<ul>
+			<li><a href="#map-property">Properties</a></li>
+			<li><a href="#map-pane">Panes</a></li>
+		</ul>
 	</div>
+	<div class="toc-col">
+		<h4>UI Layers</h4>
+		<ul>
+			<li><a href="#marker">Marker</a></li>
+			<li><a href="#divoverlay">DivOverlay</a></li>
+			<li><a href="#popup">Popup</a></li>
+			<li><a href="#tooltip">Tooltip</a></li>
+		</ul>
+		<h4>Raster Layers</h4>
+		<ul>
+			<li><a href="#tilelayer">TileLayer</a></li>
+			<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+			<li><a href="#imageoverlay">ImageOverlay</a></li>
+			<li><a href="#videooverlay">VideoOverlay</a></li>
+		</ul>
+		<h4>Vector Layers</h4>
+		<ul>
+			<li><a href="#path">Path</a></li>
+			<li><a href="#polyline">Polyline</a></li>
+			<li><a href="#polygon">Polygon</a></li>
+			<li><a href="#rectangle">Rectangle</a></li>
+			<li><a href="#circle">Circle</a></li>
+			<li><a href="#circlemarker">CircleMarker</a></li>
+			<li><a href="#svgoverlay">SVGOverlay</a></li>
+			<li><a href="#svg">SVG</a></li>
+			<li><a href="#canvas">Canvas</a></li>
+		</ul>
+	</div>
+	<div class="toc-col">
+		<h4>Other Layers</h4>
+		<ul>
+			<li><a href="#layergroup">LayerGroup</a></li>
+			<li><a href="#featuregroup">FeatureGroup</a></li>
+			<li><a href="#geojson">GeoJSON</a></li>
+			<li><a href="#gridlayer">GridLayer</a></li>
+		</ul>
+		<h4>Basic Types</h4>
+		<ul>
+			<li><a href="#latlng">LatLng</a></li>
+			<li><a href="#latlngbounds">LatLngBounds</a></li>
+			<li><a href="#point">Point</a></li>
+			<li><a href="#bounds">Bounds</a></li>
+			<li><a href="#icon">Icon</a></li>
+			<li><a href="#divicon">DivIcon</a></li>
+		</ul>
+		<h4>Controls</h4>
+		<ul>
+			<li><a href="#control-zoom">Zoom</a></li>
+			<li><a href="#control-attribution">Attribution</a></li>
+			<li><a href="#control-layers">Layers</a></li>
+			<li><a href="#control-scale">Scale</a></li>
+		</ul>
+	</div>
+	<div class="toc-col">
+		<h4>Utility</h4>
+		<ul>
+			<li><a href="#browser">Browser</a></li>
+			<li><a href="#util">Util</a></li>
+			<li><a href="#transformation">Transformation</a></li>
+			<li><a href="#lineutil">LineUtil</a></li>
+			<li><a href="#polyutil">PolyUtil</a></li>
+		</ul>
+		<h4>DOM Utility</h4>
+		<ul>
+			<li><a href="#domevent">DomEvent</a></li>
+			<li><a href="#domutil">DomUtil</a></li>
+			<li><a href="#posanimation">PosAnimation</a></li>
+			<li><a href="#draggable">Draggable</a></li>
+		</ul>
+	</div>
+	<div class="toc-col last-col">
+		<h4>Base Classes</h4>
+		<ul>
+			<li><a href="#class">Class</a></li>
+			<li><a href="#evented">Evented</a></li>
+			<li><a href="#layer">Layer</a></li>
+			<li><a href="#interactive-layer">Interactive layer</a></li>
+			<li><a href="#control">Control</a></li>
+			<li><a href="#handler">Handler</a></li>
+			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
+			<li><a href="#projection">Projection</a></li>
+			<li><a href="#crs">CRS</a></li>
+			<li><a href="#renderer">Renderer</a></li>
+		</ul>
 
-	<h2 id='map'>Map</h2><p>The central class of the API — it is used to create a map on a page and manipulate it.</p>
+		<h4>Misc</h4>
+		<ul>
+			<li><a href="#event-objects">Event objects</a></li>
+				<li><a href="#global-switches">global switches</a></li>
+			<li><a href="#noconflict">noConflict</a></li>
+			<li><a href="#version">version</a></li>
+		</ul>
+	</div>
+</div>
+
+<h2 id='map'>Map</h2><p>The central class of the API — it is used to create a map on a page and manipulate it.</p>
 
 <section>
 <h3 id='map-example'>Usage example</h3>
@@ -299,7 +294,7 @@ view regardless of where the mouse was.</td>
 		<td><code><b>dragging</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>Whether the map be draggable with mouse/touch or not.</td>
+		<td>Whether the map is draggable with mouse/touch or not.</td>
 	</tr>
 </tbody></table>
 
@@ -446,7 +441,7 @@ the wrong place after doing a large <code>panBy</code>.</td>
 		<td>If enabled, panning of the map will have an inertia effect where
 the map builds momentum while dragging and continues moving in
 the same direction for some time. Feels especially nice on touch
-devices. Enabled by default unless running on old Android devices.</td>
+devices. Enabled by default.</td>
 	</tr>
 	<tr id='map-inertiadeceleration'>
 		<td><code><b>inertiaDeceleration</b></code></td>
@@ -564,12 +559,11 @@ faster (and vice versa).</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='map-tap'>
-		<td><code><b>tap</b></code></td>
+	<tr id='map-taphold'>
+		<td><code><b>tapHold</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Enables mobile hacks for supporting instant taps (fixing 200ms click
-delay on iOS/Android) and touch holds (fired as <code>contextmenu</code> events).</td>
+		<td><code></code></td>
+		<td>Enables simulation of <code>contextmenu</code> event, default is <code>true</code> for mobile Safari.</td>
 	</tr>
 	<tr id='map-taptolerance'>
 		<td><code><b>tapTolerance</b></code></td>
@@ -585,7 +579,7 @@ for it to be considered a valid tap.</td>
 		<td>Whether the map can be zoomed by touch-dragging with two fingers. If
 passed <code>'center'</code>, it will zoom to the center of the view regardless of
 where the touch events (fingers) were. Enabled for touch-capable web
-browsers except for old Androids.</td>
+browsers.</td>
 	</tr>
 	<tr id='map-bounceatzoomlimits'>
 		<td><code><b>bounceAtZoomLimits</b></code></td>
@@ -695,24 +689,25 @@ for the first time).</td>
 	<tr id='map-zoom'>
 		<td><code><b>zoom</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired repeatedly during any change in zoom level, including zoom
-and fly animations.</td>
+		<td>Fired repeatedly during any change in zoom level,
+including zoom and fly animations.</td>
 	</tr>
 	<tr id='map-move'>
 		<td><code><b>move</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired repeatedly during any movement of the map, including pan and
-fly animations.</td>
+		<td>Fired repeatedly during any movement of the map,
+including pan and fly animations.</td>
 	</tr>
 	<tr id='map-zoomend'>
 		<td><code><b>zoomend</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the map zoom has changed, after any animations.</td>
+		<td>Fired when the map zoom changed, after any animations.</td>
 	</tr>
 	<tr id='map-moveend'>
 		<td><code><b>moveend</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the center of the map stops changing (e.g. user stopped dragging the map or when a non-centered zoom ends).</td>
+		<td>Fired when the center of the map stops changing
+(e.g. user stopped dragging the map or after non-centered zoom).</td>
 	</tr>
 </tbody></table>
 
@@ -1005,7 +1000,7 @@ are respected, and that the renderers do exist on the map.</p>
 </td>
 	</tr>
 	<tr id='map-closetooltip'>
-		<td><code><b>closeTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip?</i>)</code></td>
+		<td><code><b>closeTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Closes the tooltip given as parameter.</p>
 </td>
@@ -1127,11 +1122,10 @@ but takes a bounds parameter like <a href="#map-fitbounds"><code>fitBounds</code
 </td>
 	</tr>
 	<tr id='map-paninside'>
-		<td><code><b>panInside</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;options&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code><b>panInside</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#padding-options'>padding options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Pans the map the minimum amount to make the <code>latlng</code> visible. Use
-<code>padding</code>, <code>paddingTopLeft</code> and <code>paddingTopRight</code> options to fit
-the display to more restricted bounds, like <a href="#map-fitbounds"><code>fitBounds</code></a>.
+padding options to fit the display to more restricted bounds.
 If <code>latlng</code> is already within the (optionally padded) display bounds,
 the map will not be panned.</p>
 </td>
@@ -1523,15 +1517,16 @@ event took place.</p>
 	<tr id='map-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='map-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='map-once'>
@@ -1654,10 +1649,10 @@ properties. The event can optionally be propagated to event parents.</p>
 		<td><code><a href='#handler'>Handler</a></code></td>
 		<td>Scroll wheel zoom handler.</td>
 	</tr>
-	<tr id='map-tap'>
-		<td><code><b>tap</b></code></td>
+	<tr id='map-taphold'>
+		<td><code><b>tapHold</b></code></td>
 		<td><code><a href='#handler'>Handler</a></code></td>
-		<td>Mobile touch hacks (quick tap and touch hold) handler.</td>
+		<td>Long tap handler to simulate <code>contextmenu</code> event (useful in mobile Safari).</td>
 	</tr>
 	<tr id='map-touchzoom'>
 		<td><code><b>touchZoom</b></code></td>
@@ -1706,13 +1701,13 @@ can access panes with <a href="#map-getpane"><code>map.getPane</code></a> or
 		<td><code><b>overlayPane</b></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><code>400</code></td>
-		<td>Pane for overlay shadows (e.g. <a href="#marker"><code>Marker</code></a> shadows)</td>
+		<td>Pane for vectors (<a href="#path"><code>Path</code></a>s, like <a href="#polyline"><code>Polyline</code></a>s and <a href="#polygon"><code>Polygon</code></a>s), <a href="#imageoverlay"><code>ImageOverlay</code></a>s and <a href="#videooverlay"><code>VideoOverlay</code></a>s</td>
 	</tr>
 	<tr id='map-shadowpane'>
 		<td><code><b>shadowPane</b></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><code>500</code></td>
-		<td>Pane for vectors (<a href="#path"><code>Path</code></a>s, like <a href="#polyline"><code>Polyline</code></a>s and <a href="#polygon"><code>Polygon</code></a>s), <a href="#imageoverlay"><code>ImageOverlay</code></a>s and <a href="#videooverlay"><code>VideoOverlay</code></a>s</td>
+		<td>Pane for overlay shadows (e.g. <a href="#marker"><code>Marker</code></a> shadows)</td>
 	</tr>
 	<tr id='map-markerpane'>
 		<td><code><b>markerPane</b></code></td>
@@ -1796,7 +1791,7 @@ passed since last geolocation response, <code>locate</code> will return a cached
 		<td><code><b>enableHighAccuracy</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>false</code></td>
-		<td>Enables high accuracy, see <a href="http://dev.w3.org/geo/api/spec-source.html#high-accuracy">description in the W3C spec</a>.</td>
+		<td>Enables high accuracy, see <a href="https://w3c.github.io/geolocation-api/#enablehighaccuracy-member">description in the W3C spec</a>.</td>
 	</tr>
 </tbody></table>
 
@@ -1879,7 +1874,7 @@ which always does the latter).</td>
 		<td><code>Number</code></td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
-<a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
+<a href="https://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
 and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='pan-options-nomovestart'>
@@ -1960,7 +1955,7 @@ without animation.</td>
 		<td><code>Number</code></td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
-<a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
+<a href="https://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
 and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='zoom/pan-options-nomovestart'>
@@ -1975,6 +1970,50 @@ panning inertia).</td>
 </section></div>
 	</div>
 </div>
+
+</section><span id='padding-options'></span>
+
+<section>
+<h3 id='padding-options-option'>Padding options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='padding-options-paddingtopleft'>
+		<td><code><b>paddingTopLeft</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>Sets the amount of padding in the top left corner of a map container that
+shouldn't be accounted for when setting the view to fit bounds. Useful if you
+have some control overlays on the map like a sidebar and you don't want them
+to obscure objects you're zooming to.</td>
+	</tr>
+	<tr id='padding-options-paddingbottomright'>
+		<td><code><b>paddingBottomRight</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>The same for the bottom right corner of the map.</td>
+	</tr>
+	<tr id='padding-options-padding'>
+		<td><code><b>padding</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
 
 </section><span id='fitbounds-options'></span>
 
@@ -1994,27 +2033,6 @@ panning inertia).</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='fitbounds-options-paddingtopleft'>
-		<td><code><b>paddingTopLeft</b></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
-		<td><code>[0, 0]</code></td>
-		<td>Sets the amount of padding in the top left corner of a map container that
-shouldn't be accounted for when setting the view to fit bounds. Useful if you
-have some control overlays on the map like a sidebar and you don't want them
-to obscure objects you're zooming to.</td>
-	</tr>
-	<tr id='fitbounds-options-paddingbottomright'>
-		<td><code><b>paddingBottomRight</b></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
-		<td><code>[0, 0]</code></td>
-		<td>The same for the bottom right corner of the map.</td>
-	</tr>
-	<tr id='fitbounds-options-padding'>
-		<td><code><b>padding</b></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
-		<td><code>[0, 0]</code></td>
-		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
-	</tr>
 	<tr id='fitbounds-options-maxzoom'>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
@@ -2084,7 +2102,7 @@ without animation.</td>
 		<td><code>Number</code></td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
-<a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
+<a href="https://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
 and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='fitbounds-options-nomovestart'>
@@ -2093,6 +2111,49 @@ and the smaller this number, the more bowed the curve.</td>
 		<td><code>false</code></td>
 		<td>If <code>true</code>, panning won't fire <code>movestart</code> event on start (used internally for
 panning inertia).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#padding-options'>Padding options</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='fitbounds-options-paddingtopleft'>
+		<td><code><b>paddingTopLeft</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>Sets the amount of padding in the top left corner of a map container that
+shouldn't be accounted for when setting the view to fit bounds. Useful if you
+have some control overlays on the map like a sidebar and you don't want them
+to obscure objects you're zooming to.</td>
+	</tr>
+	<tr id='fitbounds-options-paddingbottomright'>
+		<td><code><b>paddingBottomRight</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>The same for the bottom right corner of the map.</td>
+	</tr>
+	<tr id='fitbounds-options-padding'>
+		<td><code><b>padding</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>[0, 0]</code></td>
+		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
 	</tr>
 </tbody></table>
 
@@ -2176,13 +2237,15 @@ If not specified, a common instance of <a href="#icon-default"><code>L.Icon.Defa
 		<td><code><b>title</b></code></td>
 		<td><code>String</code></td>
 		<td><code>&#x27;&#x27;</code></td>
-		<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).</td>
+		<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).
+<a href="https://leafletjs.com/examples/accessibility/#markers-must-be-labelled">Useful for accessibility</a>.</td>
 	</tr>
 	<tr id='marker-alt'>
 		<td><code><b>alt</b></code></td>
 		<td><code>String</code></td>
-		<td><code>&#x27;&#x27;</code></td>
-		<td>Text for the <code>alt</code> attribute of the icon image (useful for accessibility).</td>
+		<td><code>&#x27;Marker&#x27;</code></td>
+		<td>Text for the <code>alt</code> attribute of the icon image.
+<a href="https://leafletjs.com/examples/accessibility/#markers-must-be-labelled">Useful for accessibility</a>.</td>
 	</tr>
 	<tr id='marker-zindexoffset'>
 		<td><code><b>zIndexOffset</b></code></td>
@@ -2226,6 +2289,14 @@ If not specified, a common instance of <a href="#icon-default"><code>L.Icon.Defa
 		<td><code>false</code></td>
 		<td>When <code>true</code>, a mouse event on this marker will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+	<tr id='marker-autopanonfocus'>
+		<td><code><b>autoPanOnFocus</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, the map will pan whenever the marker is focused (via
+e.g. pressing <code>tab</code> on the keyboard) to ensure the marker is
+visible within the map's bounds</td>
 	</tr>
 </tbody></table>
 
@@ -2611,11 +2682,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='marker-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -2870,15 +2940,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='marker-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='marker-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='marker-once'>
@@ -2969,6 +3040,704 @@ properties. The event can optionally be propagated to event parents.</p>
 </section>
 
 
+</section><h2 id='divoverlay'>DivOverlay</h2><p>Base model for L.Popup and L.Tooltip. Inherit from it for custom overlays like plugins.</p>
+
+<section>
+<h3 id='divoverlay-option'>Options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>If true, the popup/tooltip will listen to the mouse events.</td>
+	</tr>
+	<tr id='divoverlay-offset'>
+		<td><code><b>offset</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>Point(0, 0)</code></td>
+		<td>The offset of the overlay position.</td>
+	</tr>
+	<tr id='divoverlay-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom CSS class name to assign to the overlay.</td>
+	</tr>
+	<tr id='divoverlay-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code>undefined</code></td>
+		<td><code>Map pane</code> where the overlay will be added.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, e.g. &quot;© OpenStreetMap contributors&quot;. It describes the layer data and is often a legal obligation towards copyright holders and tile providers.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id='divoverlay-event'>Events</h3>
+
+<section class='collapsable'>
+
+<h4 id='divoverlay-divoverlay-events'>DivOverlay events</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-contentupdate'>
+		<td><code><b>contentupdate</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the content of the overlay is updated</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='divoverlay-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='divoverlay-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='divoverlay-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='divoverlay-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='divoverlay-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='divoverlay-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-add'>
+		<td><code><b>add</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='divoverlay-remove'>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-popupopen'>
+		<td><code><b>popupopen</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='divoverlay-popupclose'>
+		<td><code><b>popupclose</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-tooltipopen'>
+		<td><code><b>tooltipopen</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is opened.</td>
+	</tr>
+	<tr id='divoverlay-tooltipclose'>
+		<td><code><b>tooltipclose</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is closed.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id='divoverlay-method'>Methods</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-openon'>
+		<td><code><b>openOn</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the overlay to the map.
+Alternative to <code>map.openPopup(popup)</code>/<code>.openTooltip(tooltip)</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-close'>
+		<td><code><b>close</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the overlay.
+Alternative to <code>map.closePopup(popup)</code>/<code>.closeTooltip(tooltip)</code>
+and <code>layer.closePopup()</code>/<code>.closeTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-toggle'>
+		<td><code><b>toggle</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the overlay bound to layer depending on its current state.
+Argument may be omitted only for overlay bound to layer.
+Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getlatlng'>
+		<td><code><b>getLatLng</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the geographical point of the overlay.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-setlatlng'>
+		<td><code><b>setLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the geographical point where the overlay will open.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getcontent'>
+		<td><code><b>getContent</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the content of the overlay.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-setcontent'>
+		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
+The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getelement'>
+		<td><code><b>getElement</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the HTML container of the overlay.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-update'>
+		<td><code><b>update</b>()</code></td>
+		<td><code>null</code></td>
+		<td><p>Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-isopen'>
+		<td><code><b>isOpen</b>()</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> when the overlay is visible on the map.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-bringtofront'>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay in front of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+	<tr id='divoverlay-bringtoback'>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay to the back of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;Map|LayerGroup&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map or layer group.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-remove'>
+		<td><code><b>remove</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='divoverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#layergroup'>LayerGroup</a>&gt;</nobr> <i>group</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given <a href="#layergroup"><code>LayerGroup</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getattribution'>
+		<td><code><b>getAttribution</b>()</code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
+necessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-closepopup'>
+		<td><code><b>closePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the popup bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-togglepopup'>
+		<td><code><b>togglePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-ispopupopen'>
+		<td><code><b>isPopupOpen</b>()</code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the popup bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getpopup'>
+		<td><code><b>getPopup</b>()</code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td><p>Returns the popup bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-bindtooltip'>
+		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
+necessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-unbindtooltip'>
+		<td><code><b>unbindTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-opentooltip'>
+		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-closetooltip'>
+		<td><code><b>closeTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the tooltip bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-toggletooltip'>
+		<td><code><b>toggleTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-istooltipopen'>
+		<td><code><b>isTooltipOpen</b>()</code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-settooltipcontent'>
+		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the tooltip bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-gettooltip'>
+		<td><code><b>getTooltip</b>()</code></td>
+		<td><code><a href='#tooltip'>Tooltip</a></code></td>
+		<td><p>Returns the tooltip bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>'click dblclick'</code>).</p>
+</td>
+	</tr>
+	<tr id='divoverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
+</td>
+	</tr>
+	<tr id='divoverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a set of type/listener pairs.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-off'>
+		<td><code><b>off</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes all listeners to all events on the object. This includes implicitly attached events.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Fires an event of the specified type. You can optionally provide a data
+object — the first argument of the listener function will contain its
+properties. The event can optionally be propagated to event parents.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-once'>
+		<td><code><b>once</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-addeventparent'>
+		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
+</td>
+	</tr>
+	<tr id='divoverlay-removeeventparent'>
+		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
+</td>
+	</tr>
+	<tr id='divoverlay-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='divoverlay-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><h2 id='popup'>Popup</h2><p>Used to open popups in certain places of the map. Use <a href="#map-openpopup">Map.openPopup</a> to
 open popups while making sure that only one popup is open at one time
 (recommended for usability), or use <a href="#map-addlayer">Map.addLayer</a> to open as many as you want.</p>
@@ -3037,6 +3806,18 @@ Here's a more complicated way to open a popup on a map:</p>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='popup-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;popupPane&#x27;</code></td>
+		<td><code>Map pane</code> where the popup will be added.</td>
+	</tr>
+	<tr id='popup-offset'>
+		<td><code><b>offset</b></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><code>Point(0, 7)</code></td>
+		<td>The offset of the popup position.</td>
+	</tr>
 	<tr id='popup-maxwidth'>
 		<td><code><b>maxWidth</b></code></td>
 		<td><code>Number</code></td>
@@ -3144,18 +3925,40 @@ on the map. Defaults to the map's <a href="#map-closepopuponclick"><code>closePo
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='popup-offset'>
-		<td><code><b>offset</b></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
-		<td><code>Point(0, 7)</code></td>
-		<td>The offset of the popup position. Useful to control the anchor
-of the popup when opening it on some overlays.</td>
+	<tr id='popup-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>If true, the popup/tooltip will listen to the mouse events.</td>
 	</tr>
-	<tr id='popup-pane'>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;popupPane&#x27;</code></td>
-		<td><code>Map pane</code> where the popup will be added.</td>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 </tbody></table>
 
@@ -3196,6 +3999,91 @@ of the popup when opening it on some overlays.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> DivOverlay events inherited from <a href='#divoverlay'>DivOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-contentupdate'>
+		<td><code><b>contentupdate</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the content of the overlay is updated</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='popup-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='popup-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='popup-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='popup-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='popup-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='popup-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -3305,70 +4193,109 @@ of the popup when opening it on some overlays.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='popup-getlatlng'>
-		<td><code><b>getLatLng</b>()</code></td>
-		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the geographical point of popup.</p>
-</td>
-	</tr>
-	<tr id='popup-setlatlng'>
-		<td><code><b>setLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the geographical point where the popup will open.</p>
-</td>
-	</tr>
-	<tr id='popup-getcontent'>
-		<td><code><b>getContent</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
-		<td><p>Returns the content of the popup.</p>
-</td>
-	</tr>
-	<tr id='popup-setcontent'>
-		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the popup.</p>
-</td>
-	</tr>
-	<tr id='popup-getelement'>
-		<td><code><b>getElement</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
-		<td><p>Returns the HTML container of the popup.</p>
-</td>
-	</tr>
-	<tr id='popup-update'>
-		<td><code><b>update</b>()</code></td>
-		<td><code>null</code></td>
-		<td><p>Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.</p>
-</td>
-	</tr>
-	<tr id='popup-isopen'>
-		<td><code><b>isOpen</b>()</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> when the popup is visible on the map.</p>
-</td>
-	</tr>
-	<tr id='popup-bringtofront'>
-		<td><code><b>bringToFront</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Brings this popup in front of other popups (in the same map pane).</p>
-</td>
-	</tr>
-	<tr id='popup-bringtoback'>
-		<td><code><b>bringToBack</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Brings this popup to the back of other popups (in the same map pane).</p>
-</td>
-	</tr>
 	<tr id='popup-openon'>
 		<td><code><b>openOn</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Adds the popup to the map and closes the previous one. The same as <code>map.openPopup(popup)</code>.</p>
+		<td><p>Alternative to <code>map.openPopup(popup)</code>.
+Adds the popup to the map and closes the previous one.</p>
 </td>
 	</tr>
 </tbody></table>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#divoverlay'>DivOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-close'>
+		<td><code><b>close</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the overlay.
+Alternative to <code>map.closePopup(popup)</code>/<code>.closeTooltip(tooltip)</code>
+and <code>layer.closePopup()</code>/<code>.closeTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='popup-toggle'>
+		<td><code><b>toggle</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the overlay bound to layer depending on its current state.
+Argument may be omitted only for overlay bound to layer.
+Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='popup-getlatlng'>
+		<td><code><b>getLatLng</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the geographical point of the overlay.</p>
+</td>
+	</tr>
+	<tr id='popup-setlatlng'>
+		<td><code><b>setLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the geographical point where the overlay will open.</p>
+</td>
+	</tr>
+	<tr id='popup-getcontent'>
+		<td><code><b>getContent</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the content of the overlay.</p>
+</td>
+	</tr>
+	<tr id='popup-setcontent'>
+		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
+The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+</td>
+	</tr>
+	<tr id='popup-getelement'>
+		<td><code><b>getElement</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the HTML container of the overlay.</p>
+</td>
+	</tr>
+	<tr id='popup-update'>
+		<td><code><b>update</b>()</code></td>
+		<td><code>null</code></td>
+		<td><p>Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.</p>
+</td>
+	</tr>
+	<tr id='popup-isopen'>
+		<td><code><b>isOpen</b>()</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> when the overlay is visible on the map.</p>
+</td>
+	</tr>
+	<tr id='popup-bringtofront'>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay in front of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+	<tr id='popup-bringtoback'>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay to the back of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
@@ -3617,15 +4544,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='popup-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='popup-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='popup-once'>
@@ -3788,12 +4716,6 @@ position on the map.</td>
 		<td><code>false</code></td>
 		<td>If true, the tooltip will follow the mouse instead of being fixed at the feature center.</td>
 	</tr>
-	<tr id='tooltip-interactive'>
-		<td><code><b>interactive</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>false</code></td>
-		<td>If true, the tooltip will listen to the feature events.</td>
-	</tr>
 	<tr id='tooltip-opacity'>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
@@ -3821,11 +4743,46 @@ position on the map.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='tooltip-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>If true, the popup/tooltip will listen to the mouse events.</td>
+	</tr>
 	<tr id='tooltip-classname'>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code></td>
 		<td><code>&#x27;&#x27;</code></td>
-		<td>A custom CSS class name to assign to the popup.</td>
+		<td>A custom CSS class name to assign to the overlay.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 </tbody></table>
 
@@ -3866,6 +4823,91 @@ position on the map.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> DivOverlay events inherited from <a href='#divoverlay'>DivOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-contentupdate'>
+		<td><code><b>contentupdate</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the content of the overlay is updated</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='tooltip-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='tooltip-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='tooltip-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='tooltip-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='tooltip-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='tooltip-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -3965,6 +5007,105 @@ position on the map.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#divoverlay'>DivOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-openon'>
+		<td><code><b>openOn</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the overlay to the map.
+Alternative to <code>map.openPopup(popup)</code>/<code>.openTooltip(tooltip)</code>.</p>
+</td>
+	</tr>
+	<tr id='tooltip-close'>
+		<td><code><b>close</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the overlay.
+Alternative to <code>map.closePopup(popup)</code>/<code>.closeTooltip(tooltip)</code>
+and <code>layer.closePopup()</code>/<code>.closeTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='tooltip-toggle'>
+		<td><code><b>toggle</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the overlay bound to layer depending on its current state.
+Argument may be omitted only for overlay bound to layer.
+Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</p>
+</td>
+	</tr>
+	<tr id='tooltip-getlatlng'>
+		<td><code><b>getLatLng</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the geographical point of the overlay.</p>
+</td>
+	</tr>
+	<tr id='tooltip-setlatlng'>
+		<td><code><b>setLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the geographical point where the overlay will open.</p>
+</td>
+	</tr>
+	<tr id='tooltip-getcontent'>
+		<td><code><b>getContent</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the content of the overlay.</p>
+</td>
+	</tr>
+	<tr id='tooltip-setcontent'>
+		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
+The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+</td>
+	</tr>
+	<tr id='tooltip-getelement'>
+		<td><code><b>getElement</b>()</code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td><p>Returns the HTML container of the overlay.</p>
+</td>
+	</tr>
+	<tr id='tooltip-update'>
+		<td><code><b>update</b>()</code></td>
+		<td><code>null</code></td>
+		<td><p>Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.</p>
+</td>
+	</tr>
+	<tr id='tooltip-isopen'>
+		<td><code><b>isOpen</b>()</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> when the overlay is visible on the map.</p>
+</td>
+	</tr>
+	<tr id='tooltip-bringtofront'>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay in front of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+	<tr id='tooltip-bringtoback'>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Brings this overlay to the back of other overlays (in the same map pane).</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
@@ -4213,15 +5354,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tooltip-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tooltip-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='tooltip-once'>
@@ -4307,11 +5449,11 @@ properties. The event can optionally be propagated to event parents.</p>
 
 
 <p>A string of the following form:</p>
-<pre><code>'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+<pre><code>'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
 </code></pre>
 <p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> — zoom level, <code>{x}</code> and <code>{y}</code> — tile coordinates. <code>{r}</code> can be used to add &quot;@2x&quot; to the URL to load retina tiles.</p>
 <p>You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
-<pre><code>L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+<pre><code>L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
 </code></pre>
 
 
@@ -4413,6 +5555,16 @@ properties. The event can optionally be propagated to event parents.</p>
 		<td>Whether the crossOrigin attribute will be added to the tiles.
 If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes">CORS Settings</a> for valid String values.</td>
+	</tr>
+	<tr id='tilelayer-referrerpolicy'>
+		<td><code><b>referrerPolicy</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>false</code></td>
+		<td>Whether the referrerPolicy attribute will be added to the tiles.
+If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
+This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
+(e.g. to validate an API token).
+Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy">HTMLImageElement.referrerPolicy</a> for valid String values.</td>
 	</tr>
 </tbody></table>
 
@@ -4559,9 +5711,28 @@ tiles outside the CRS limits.</td>
 </div>
 
 </section><section>
-<h3 id=''>Events</h3>
+<h3 id='tilelayer-event'>Events</h3>
+
+<section class='collapsable'>
+
+<h4 id='tilelayer-extension-methods'>Extension methods</h4>
 
 
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-tileabort'>
+		<td><code><b>tileabort</b></code></td>
+		<td><code><a href='#tileevent'>TileEvent</a></code></td>
+		<td>Fired when a tile was loading but is now not wanted.</td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -5082,15 +6253,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-once'>
@@ -5209,7 +6381,7 @@ properties. The event can optionally be propagated to event parents.</p>
 
 <div class='section-comments'>If any custom options not documented here are used, they will be sent to the
 WMS server as extra parameters in each request URL. This can be useful for
-<a href="http://docs.geoserver.org/stable/en/user/services/wms/vendor.html">non-standard vendor WMS parameters</a>.</div>
+<a href="https://docs.geoserver.org/stable/en/user/services/wms/vendor.html">non-standard vendor WMS parameters</a>.</div>
 
 <table><thead>
 	<tr>
@@ -5338,6 +6510,16 @@ map CRS. Don't change this if you're not sure what it means.</td>
 		<td>Whether the crossOrigin attribute will be added to the tiles.
 If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes">CORS Settings</a> for valid String values.</td>
+	</tr>
+	<tr id='tilelayer-wms-referrerpolicy'>
+		<td><code><b>referrerPolicy</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>false</code></td>
+		<td>Whether the referrerPolicy attribute will be added to the tiles.
+If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
+This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
+(e.g. to validate an API token).
+Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy">HTMLImageElement.referrerPolicy</a> for valid String values.</td>
 	</tr>
 </tbody></table>
 
@@ -5489,6 +6671,32 @@ tiles outside the CRS limits.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#tilelayer'>TileLayer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-tileabort'>
+		<td><code><b>tileabort</b></code></td>
+		<td><code><a href='#tileevent'>TileEvent</a></code></td>
+		<td>Fired when a tile was loading but is now not wanted.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#gridlayer'>GridLayer</a></label>
@@ -6013,15 +7221,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-wms-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-once'>
@@ -6095,7 +7304,7 @@ properties. The event can optionally be propagated to event parents.</p>
 
 
 
-<pre><code class="language-js">var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+<pre><code class="language-js">var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
 	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
 </code></pre>
@@ -6503,6 +7712,12 @@ for a second (also called long press).</td>
 used by this overlay.</p>
 </td>
 	</tr>
+	<tr id='imageoverlay-getcenter'>
+		<td><code><b>getCenter</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the center of the ImageOverlay.</p>
+</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -6755,15 +7970,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='imageoverlay-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-once'>
@@ -6893,7 +8109,8 @@ geographical bounds it is tied to.</td>
 		<td><code><b>autoplay</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>Whether the video starts playing automatically when loaded.</td>
+		<td>Whether the video starts playing automatically when loaded.
+On some browsers autoplay will only work with <code>muted: true</code></td>
 	</tr>
 	<tr id='videooverlay-loop'>
 		<td><code><b>loop</b></code></td>
@@ -6913,6 +8130,12 @@ Relevant for supported browsers. See <a href="https://developer.mozilla.org/en-U
 		<td><code>Boolean</code></td>
 		<td><code>false</code></td>
 		<td>Whether the video starts on mute when loaded.</td>
+	</tr>
+	<tr id='videooverlay-playsinline'>
+		<td><code><b>playsInline</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.</td>
 	</tr>
 </tbody></table>
 
@@ -7335,6 +8558,12 @@ used by this overlay.</p>
 		<td><p>Get the bounds that this ImageOverlay covers</p>
 </td>
 	</tr>
+	<tr id='videooverlay-getcenter'>
+		<td><code><b>getCenter</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the center of the ImageOverlay.</p>
+</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -7588,15 +8817,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='videooverlay-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-once'>
@@ -8116,6 +9346,12 @@ used by this overlay.</p>
 		<td><p>Get the bounds that this ImageOverlay covers</p>
 </td>
 	</tr>
+	<tr id='svgoverlay-getcenter'>
+		<td><code><b>getCenter</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the center of the ImageOverlay.</p>
+</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -8369,15 +9605,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svgoverlay-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-once'>
@@ -9067,15 +10304,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='path-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='path-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='path-once'>
@@ -9588,11 +10826,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='polyline-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polyline (as a GeoJSON <code>LineString</code> or <code>MultiLineString</code> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polyline (as a GeoJSON <code>LineString</code> or <code>MultiLineString</code> Feature).</p>
 </td>
 	</tr>
 	<tr id='polyline-getlatlngs'>
@@ -9622,7 +10859,7 @@ Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a
 	<tr id='polyline-getcenter'>
 		<td><code><b>getCenter</b>()</code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
+		<td><p>Returns the center (<a href="https://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
 </td>
 	</tr>
 	<tr id='polyline-getbounds'>
@@ -9936,15 +11173,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polyline-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polyline-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='polyline-once'>
@@ -10464,11 +11702,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='polygon-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -10518,7 +11755,7 @@ Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a
 	<tr id='polygon-getcenter'>
 		<td><code><b>getCenter</b>()</code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
+		<td><p>Returns the center (<a href="https://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
 </td>
 	</tr>
 	<tr id='polygon-getbounds'>
@@ -10833,15 +12070,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polygon-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polygon-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='polygon-once'>
@@ -11370,11 +12608,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='rectangle-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
 </tbody></table>
@@ -11425,7 +12662,7 @@ Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a
 	<tr id='rectangle-getcenter'>
 		<td><code><b>getCenter</b>()</code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
+		<td><p>Returns the center (<a href="https://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
 </td>
 	</tr>
 	<tr id='rectangle-getbounds'>
@@ -11740,15 +12977,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='rectangle-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='rectangle-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='rectangle-once'>
@@ -12301,11 +13539,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='circle-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 	<tr id='circle-setlatlng'>
@@ -12618,15 +13855,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circle-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circle-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='circle-once'>
@@ -13110,11 +14348,10 @@ for a second (also called long press).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='circlemarker-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the circle marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
 </td>
 	</tr>
 	<tr id='circlemarker-setlatlng'>
@@ -13438,15 +14675,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circlemarker-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-once'>
@@ -13513,7 +14751,7 @@ properties. The event can optionally be propagated to event parents.</p>
 with old versions of Internet Explorer.</p>
 <p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
-<p>Due to <a href="http://caniuse.com/#search=svg">technical limitations</a>, SVG is not
+<p>Due to <a href="https://caniuse.com/svg">technical limitations</a>, SVG is not
 available in all web browsers, notably Android 2.x and 3.x.</p>
 <p>Although SVG is not available on IE7 and IE8, these browsers support
 <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>
@@ -13597,12 +14835,6 @@ var circle = L.circle( center, { renderer: myRenderer } );
 		<td><code>0.1</code></td>
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
-	</tr>
-	<tr id='svg-tolerance'>
-		<td><code><b>tolerance</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>0</code></td>
-		<td>How much to extend click tolerance round a path/object on the map</td>
 	</tr>
 </tbody></table>
 
@@ -14023,15 +15255,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svg-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='svg-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='svg-once'>
@@ -14130,7 +15363,7 @@ into &quot;M..L..L..&quot; instructions</td>
 
 </section><h2 id='canvas'>Canvas</h2><p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/API/Canvas_API"><code>&lt;canvas&gt;</code></a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
-<p>Due to <a href="http://caniuse.com/#search=canvas">technical limitations</a>, Canvas is not
+<p>Due to <a href="https://caniuse.com/canvas">technical limitations</a>, Canvas is not
 available in all web browsers, notably IE8, and overlapping geometries might
 not display properly in some edge cases.</p>
 
@@ -14184,9 +15417,30 @@ var circle = L.circle( center, { renderer: myRenderer } );
 
 
 </section><section>
-<h3 id=''>Options</h3>
+<h3 id='canvas-option'>Options</h3>
+
+<section >
 
 
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='canvas-tolerance'>
+		<td><code><b>tolerance</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>0</code></td>
+		<td>How much to extend the click tolerance around a path/object on the map.</td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -14211,12 +15465,6 @@ var circle = L.circle( center, { renderer: myRenderer } );
 		<td><code>0.1</code></td>
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
-	</tr>
-	<tr id='canvas-tolerance'>
-		<td><code><b>tolerance</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>0</code></td>
-		<td>How much to extend click tolerance round a path/object on the map</td>
 	</tr>
 </tbody></table>
 
@@ -14637,15 +15885,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='canvas-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='canvas-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='canvas-once'>
@@ -14761,6 +16010,41 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layergroup-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>If <code>false</code>, the layer will not emit mouse events and will act as a part of the underlying map.</td>
+	</tr>
+	<tr id='layergroup-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -14799,6 +16083,65 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layergroup-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='layergroup-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='layergroup-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='layergroup-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='layergroup-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='layergroup-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='layergroup-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -14909,11 +16252,10 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 	</tr>
 	</thead><tbody>
 	<tr id='layergroup-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='layergroup-addlayer'>
@@ -15246,15 +16588,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layergroup-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layergroup-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='layergroup-once'>
@@ -15376,6 +16719,41 @@ and custom events.</li>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='featuregroup-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>If <code>false</code>, the layer will not emit mouse events and will act as a part of the underlying map.</td>
+	</tr>
+	<tr id='featuregroup-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -15438,6 +16816,65 @@ and custom events.</li>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='featuregroup-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='featuregroup-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='featuregroup-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='featuregroup-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='featuregroup-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='featuregroup-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='featuregroup-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
@@ -15592,11 +17029,10 @@ and custom events.</li>
 	</tr>
 	</thead><tbody>
 	<tr id='featuregroup-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='featuregroup-addlayer'>
@@ -15930,15 +17366,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='featuregroup-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-once'>
@@ -16135,6 +17572,41 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='geojson-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>If <code>false</code>, the layer will not emit mouse events and will act as a part of the underlying map.</td>
+	</tr>
+	<tr id='geojson-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -16198,6 +17670,65 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 		<td><code><b>layerremove</b></code></td>
 		<td><code><a href='#layerevent'>LayerEvent</a></code></td>
 		<td>Fired when a layer is removed from this <a href="#featuregroup"><code>FeatureGroup</code></a></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='geojson-click'>
+		<td><code><b>click</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='geojson-dblclick'>
+		<td><code><b>dblclick</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='geojson-mousedown'>
+		<td><code><b>mousedown</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='geojson-mouseup'>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user releases the mouse button pushed on the layer.</td>
+	</tr>
+	<tr id='geojson-mouseover'>
+		<td><code><b>mouseover</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='geojson-mouseout'>
+		<td><code><b>mouseout</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='geojson-contextmenu'>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
 	</tr>
 </tbody></table>
 
@@ -16392,11 +17923,10 @@ If <code>layer</code> is omitted, the style of all features in the current layer
 	</tr>
 	</thead><tbody>
 	<tr id='geojson-togeojson'>
-		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>toGeoJSON</b>(<nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td><p><code>precision</code> is the number of decimal places for coordinates.
-The default value is 6 places.
-Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
+		<td><p>Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function with given <code>precision</code>.
+Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='geojson-addlayer'>
@@ -16730,15 +18260,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='geojson-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='geojson-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='geojson-once'>
@@ -16838,15 +18369,17 @@ or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.</td>
 Can use a custom <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a> function.</td>
 	</tr>
 	<tr id='geojson-latlngtocoords'>
-		<td><code><b>latLngToCoords</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>latLngToCoords</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Array</code></td>
-		<td>Reverse of <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a></td>
+		<td>Reverse of <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a>
+Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function.</td>
 	</tr>
 	<tr id='geojson-latlngstocoords'>
-		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>closed?</i>)</code></td>
+		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>closed?</i>, <nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Array</code></td>
 		<td>Reverse of <a href="#geojson-coordstolatlngs"><code>coordsToLatLngs</code></a>
-<code>closed</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.</td>
+<code>closed</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.
+Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function.</td>
 	</tr>
 	<tr id='geojson-asfeature'>
 		<td><code><b>asFeature</b>(<nobr>&lt;Object&gt;</nobr> <i>geojson</i>)</code></td>
@@ -17580,15 +19113,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='gridlayer-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-once'>
@@ -18502,6 +20036,14 @@ as iconAnchor if not specified).</td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
 	</tr>
+	<tr id='icon-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>false</code></td>
+		<td>Whether the crossOrigin attribute will be added to the tiles.
+If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes">CORS Settings</a> for valid String values.</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -18745,6 +20287,14 @@ as iconAnchor if not specified).</td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
 	</tr>
+	<tr id='divicon-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>false</code></td>
+		<td>Whether the crossOrigin attribute will be added to the tiles.
+If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes">CORS Settings</a> for valid String values.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -18835,7 +20385,7 @@ styled according to the options.</p>
 	<tr id='control-zoom-zoomintext'>
 		<td><code><b>zoomInText</b></code></td>
 		<td><code>String</code></td>
-		<td><code>&#x27;+&#x27;</code></td>
+		<td><code>&#x27;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;+&lt;/span&gt;&#x27;</code></td>
 		<td>The text set on the 'zoom in' button.</td>
 	</tr>
 	<tr id='control-zoom-zoomintitle'>
@@ -18847,9 +20397,8 @@ styled according to the options.</p>
 	<tr id='control-zoom-zoomouttext'>
 		<td><code><b>zoomOutText</b></code></td>
 		<td><code>String</code></td>
-		<td><code>&#x27;&amp;#x2212</code></td>
-		<td>'
-The text set on the 'zoom out' button.</td>
+		<td><code>&#x27;&lt;span aria-hidden&#x3D;&quot;true&quot;&gt;&amp;#x2212;&lt;/span&gt;&#x27;</code></td>
+		<td>The text set on the 'zoom out' button.</td>
 	</tr>
 	<tr id='control-zoom-zoomouttitle'>
 		<td><code><b>zoomOutTitle</b></code></td>
@@ -18991,7 +20540,7 @@ The text set on the 'zoom out' button.</td>
 	</thead><tbody>
 	<tr id='control-attribution-prefix'>
 		<td><code><b>prefix</b></code></td>
-		<td><code>String</code></td>
+		<td><code>String|false</code></td>
 		<td><code>&#x27;Leaflet&#x27;</code></td>
 		<td>The HTML text shown before the attributions. Pass <code>false</code> to disable.</td>
 	</tr>
@@ -19045,9 +20594,9 @@ The text set on the 'zoom out' button.</td>
 	</tr>
 	</thead><tbody>
 	<tr id='control-attribution-setprefix'>
-		<td><code><b>setPrefix</b>(<nobr>&lt;String&gt;</nobr> <i>prefix</i>)</code></td>
+		<td><code><b>setPrefix</b>(<nobr>&lt;String|false&gt;</nobr> <i>prefix</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the text before the attributions.</p>
+		<td><p>The HTML text shown before the attributions. Pass <code>false</code> to disable.</p>
 </td>
 	</tr>
 	<tr id='control-attribution-addattribution'>
@@ -19118,7 +20667,7 @@ The text set on the 'zoom out' button.</td>
 	</div>
 </div>
 
-</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control/">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
+</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="https://leafletjs.com/examples/layers-control/">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
 
 <section>
 <h3 id='control-layers-example'>Usage example</h3>
@@ -19199,7 +20748,7 @@ L.control.layers(baseLayers, overlays).addTo(map);
 		<td><code><b>collapsed</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>If <code>true</code>, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
+		<td>If <code>true</code>, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.</td>
 	</tr>
 	<tr id='control-layers-autozindex'>
 		<td><code><b>autoZIndex</b></code></td>
@@ -19591,23 +21140,23 @@ By default, it sorts layers alphabetically by their name.</td>
 	</tr>
 	<tr id='browser-webkit'>
 		<td><code><b>webkit</b></code></td>
-		<td><code>Boolean</code></td>
+		<td><code>Boolean;</code></td>
 		<td><code>true</code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
 	</tr>
 	<tr id='browser-android'>
 		<td><code><b>android</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for any browser running on an Android platform.</td>
+		<td><strong>Deprecated.</strong> <code>true</code> for any browser running on an Android platform.</td>
 	</tr>
 	<tr id='browser-android23'>
 		<td><code><b>android23</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for browsers running on Android 2 or Android 3.</td>
+		<td><strong>Deprecated.</strong> <code>true</code> for browsers running on Android 2 or Android 3.</td>
 	</tr>
 	<tr id='browser-androidstock'>
 		<td><code><b>androidStock</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Android stock browser (i.e. not Chrome)</td>
+		<td><strong>Deprecated.</strong> <code>true</code> for the Android stock browser (i.e. not Chrome)</td>
 	</tr>
 	<tr id='browser-opera'>
 		<td><code><b>opera</b></code></td>
@@ -19684,13 +21233,19 @@ By default, it sorts layers alphabetically by their name.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for all browsers supporting <a href="https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx">pointer events</a>.</td>
 	</tr>
+	<tr id='browser-touchnative'>
+		<td><code><b>touchNative</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.
+<strong>This does not necessarily mean</strong> that the browser is running in a computer with
+a touchscreen, it only means that the browser is capable of understanding
+touch events.</td>
+	</tr>
 	<tr id='browser-touch'>
 		<td><code><b>touch</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.
-This does not necessarily mean that the browser is running in a computer with
-a touchscreen, it only means that the browser is capable of understanding
-touch events.</td>
+		<td><code>true</code> for all browsers supporting either <a href="#browser-touch">touch</a> or <a href="#browser-pointer">pointer</a> events.
+Note: pointer events will be preferred (if available), and processed for all <code>touch*</code> listeners.</td>
 	</tr>
 	<tr id='browser-mobileopera'>
 		<td><code><b>mobileOpera</b></code></td>
@@ -19793,9 +21348,11 @@ Has an <code>L.throttle</code> shortcut.</td>
 		<td>Returns a function which always returns <code>false</code>.</td>
 	</tr>
 	<tr id='util-formatnum'>
-		<td><code><b>formatNum</b>(<nobr>&lt;Number&gt;</nobr> <i>num</i>, <nobr>&lt;Number&gt;</nobr> <i>digits?</i>)</code></td>
+		<td><code><b>formatNum</b>(<nobr>&lt;Number&gt;</nobr> <i>num</i>, <nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Number</code></td>
-		<td>Returns the number <code>num</code> rounded to <code>digits</code> decimals, or to 6 decimals by default.</td>
+		<td>Returns the number <code>num</code> rounded with specified <code>precision</code>.
+The default <code>precision</code> value is 6 decimal places.
+<code>false</code> can be passed to skip any processing (can be useful to avoid round-off errors).</td>
 	</tr>
 	<tr id='util-trim'>
 		<td><code><b>trim</b>(<nobr>&lt;String&gt;</nobr> <i>str</i>)</code></td>
@@ -19997,11 +21554,11 @@ by the given scale. Only accepts actual <a href="#point"><code>L.Point</code></a
 		<td><code>Point[]</code></td>
 		<td>Dramatically reduces the number of points in a polyline while retaining
 its shape and returns a new array of simplified points, using the
-<a href="http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm">Douglas-Peucker algorithm</a>.
+<a href="https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm">Ramer-Douglas-Peucker algorithm</a>.
 Used for a huge performance boost when processing/displaying Leaflet polylines for
 each zoom level and also reducing visual noise. tolerance affects the amount of
 simplification (lesser value means higher quality but slower and with more points).
-Also released as a separated micro-library <a href="http://mourner.github.com/simplify-js/">Simplify.js</a>.</td>
+Also released as a separated micro-library <a href="https://mourner.github.io/simplify-js/">Simplify.js</a>.</td>
 	</tr>
 	<tr id='lineutil-pointtosegmentdistance'>
 		<td><code><b>pointToSegmentDistance</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>p</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>p1</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>p2</i>)</code></td>
@@ -20103,6 +21660,16 @@ context to <code>off</code> in order to remove the listener.</td>
 		<td><code>this</code></td>
 		<td>Removes a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
+	<tr id='domevent-off'>
+		<td><code><b>off</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>types</i>)</code></td>
+		<td><code>this</code></td>
+		<td>Removes all previously added listeners of given types.</td>
+	</tr>
+	<tr id='domevent-off'>
+		<td><code><b>off</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
+		<td><code>this</code></td>
+		<td>Removes all previously added listeners from given HTMLElement</td>
+	</tr>
 	<tr id='domevent-stoppropagation'>
 		<td><code><b>stopPropagation</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</code></td>
 		<td><code>this</code></td>
@@ -20120,7 +21687,7 @@ context to <code>off</code> in order to remove the listener.</td>
 	<tr id='domevent-disableclickpropagation'>
 		<td><code><b>disableClickPropagation</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
 		<td><code>this</code></td>
-		<td>Adds <code>stopPropagation</code> to the element's <code>'click'</code>, <code>'doubleclick'</code>,
+		<td>Adds <code>stopPropagation</code> to the element's <code>'click'</code>, <code>'dblclick'</code>, <code>'contextmenu'</code>,
 <code>'mousedown'</code> and <code>'touchstart'</code> events (plus browser variants).</td>
 	</tr>
 	<tr id='domevent-preventdefault'>
@@ -20468,7 +22035,7 @@ fx.run(el, [300, 500], 0.5);
 		<td><code></code></td>
 		<td><p>Run an animation of a given element to a new position, optionally setting
 duration in seconds (<code>0.25</code> by default) and easing linearity factor (3rd
-argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>,
+argument of the <a href="https://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>,
 <code>0.5</code> by default).</p>
 </td>
 	</tr>
@@ -20531,15 +22098,16 @@ argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</
 	<tr id='posanimation-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='posanimation-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='posanimation-once'>
@@ -20802,15 +22370,16 @@ update of the element's position.</td>
 	<tr id='draggable-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='draggable-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='draggable-once'>
@@ -21185,15 +22754,16 @@ map.off('click', onClick);
 	<tr id='evented-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='evented-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='evented-once'>
@@ -21677,15 +23247,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layer-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layer-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='layer-once'>
@@ -22225,15 +23796,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='interactive-layer-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-once'>
@@ -22498,7 +24070,7 @@ All other controls extend from this class.</p>
 
 
 </section><h2 id='projection'>Projection</h2><p>An object with methods for projecting geographical coordinates of the world onto
-a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_projection">Map projection</a>.</p>
+a flat surface (and back). See <a href="https://en.wikipedia.org/wiki/Map_projection">Map projection</a>.</p>
 
 <section>
 <h3 id='projection-method'>Methods</h3>
@@ -22783,7 +24355,7 @@ simple euclidean distance.</td>
 		<td>Object that defines coordinate reference systems for projecting
 geographical points into pixel (screen) coordinates and back (and to
 coordinates in other units for <a href="https://en.wikipedia.org/wiki/Web_Map_Service">WMS</a> services). See
-<a href="http://en.wikipedia.org/wiki/Coordinate_reference_system">spatial reference system</a>.
+<a href="https://en.wikipedia.org/wiki/Spatial_reference_system">spatial reference system</a>.
 <p>Leaflet defines the most usual CRSs by default. If you want to use a
 CRS not defined by default, take a look at the
 <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.</p>
@@ -22826,12 +24398,6 @@ or explicit (using the <a href="#path-renderer"><code>renderer</code></a> option
 		<td><code>0.1</code></td>
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
-	</tr>
-	<tr id='renderer-tolerance'>
-		<td><code><b>tolerance</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>0</code></td>
-		<td>How much to extend click tolerance round a path/object on the map</td>
 	</tr>
 </tbody></table>
 
@@ -23244,15 +24810,16 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='renderer-fire'>
 		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
+		<td><p>Fires an event of the specified type. You can optionally provide a data
 object — the first argument of the listener function will contain its
 properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='renderer-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
 </td>
 	</tr>
 	<tr id='renderer-once'>
@@ -24529,499 +26096,6 @@ event parent.</td>
 	</div>
 </div>
 
-</section><h2 id='divoverlay'>DivOverlay</h2><p>Base model for L.Popup and L.Tooltip. Inherit from it for custom popup like plugins.</p>
-
-<section>
-<h3 id='divoverlay-option'>Options</h3>
-
-<section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-offset'>
-		<td><code><b>offset</b></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
-		<td><code>Point(0, 7)</code></td>
-		<td>The offset of the popup position. Useful to control the anchor
-of the popup when opening it on some overlays.</td>
-	</tr>
-	<tr id='divoverlay-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;&#x27;</code></td>
-		<td>A custom CSS class name to assign to the popup.</td>
-	</tr>
-	<tr id='divoverlay-pane'>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;popupPane&#x27;</code></td>
-		<td><code>Map pane</code> where the popup will be added.</td>
-	</tr>
-</tbody></table>
-
-</section>
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, e.g. &quot;© OpenStreetMap contributors&quot;. It describes the layer data and is often a legal obligation towards copyright holders and tile providers.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-</section><section>
-<h3 id=''>Events</h3>
-
-
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-add'>
-		<td><code><b>add</b></code></td>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is added to a map</td>
-	</tr>
-	<tr id='divoverlay-remove'>
-		<td><code><b>remove</b></code></td>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is removed from a map</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-popupopen'>
-		<td><code><b>popupopen</b></code></td>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is opened</td>
-	</tr>
-	<tr id='divoverlay-popupclose'>
-		<td><code><b>popupclose</b></code></td>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is closed</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-tooltipopen'>
-		<td><code><b>tooltipopen</b></code></td>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is opened.</td>
-	</tr>
-	<tr id='divoverlay-tooltipclose'>
-		<td><code><b>tooltipclose</b></code></td>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is closed.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-</section><section>
-<h3 id=''>Methods</h3>
-
-
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;Map|LayerGroup&gt;</nobr> <i>map</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map or layer group.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-remove'>
-		<td><code><b>remove</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='divoverlay-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#layergroup'>LayerGroup</a>&gt;</nobr> <i>group</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given <a href="#layergroup"><code>LayerGroup</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-getattribution'>
-		<td><code><b>getAttribution</b>()</code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-bindtooltip'>
-		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-unbindtooltip'>
-		<td><code><b>unbindTooltip</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-opentooltip'>
-		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-closetooltip'>
-		<td><code><b>closeTooltip</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the tooltip bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-toggletooltip'>
-		<td><code><b>toggleTooltip</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-istooltipopen'>
-		<td><code><b>isTooltipOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-settooltipcontent'>
-		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-gettooltip'>
-		<td><code><b>getTooltip</b>()</code></td>
-		<td><code><a href='#tooltip'>Tooltip</a></code></td>
-		<td><p>Returns the tooltip bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-on'>
-		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>'click dblclick'</code>).</p>
-</td>
-	</tr>
-	<tr id='divoverlay-on'>
-		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
-</td>
-	</tr>
-	<tr id='divoverlay-off'>
-		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-off'>
-		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a set of type/listener pairs.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-off'>
-		<td><code><b>off</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes all listeners to all events on the object. This includes implicitly attached events.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
-object — the first argument of the listener function will contain its
-properties. The event can optionally be propagated to event parents.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-once'>
-		<td><code><b>once</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-addeventparent'>
-		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
-</td>
-	</tr>
-	<tr id='divoverlay-removeeventparent'>
-		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='divoverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
 </section><h2 id='global-switches'>Global Switches</h2><p>Global switches are created for rare cases and generally make
 Leaflet to not detect a particular browser feature even if it's
 there. You need to set the switch as a global variable to true
@@ -25066,3 +26140,5 @@ var Leaflet = L.noConflict();
 <h2 id='version'>version</h2><p>A constant that represents the Leaflet version in use.</p>
 <pre><code class="language-js">L.version; // contains &quot;1.0.0&quot; (or whatever version is currently in use)
 </code></pre>
+
+

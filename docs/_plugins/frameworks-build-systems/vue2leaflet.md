@@ -4,7 +4,7 @@ category: frameworks-build-systems
 repo: https://github.com/vue-leaflet/Vue2Leaflet
 author: Mickaël KoRiGaN
 author-url: https://github.com/KoRiGaN
-demo: 
+demo: https://vue2-leaflet.netlify.app/quickstart/
 compatible-v0:
 compatible-v1: true
 ---

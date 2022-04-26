@@ -4,7 +4,7 @@ category: geoprocessing
 repo: https://github.com/w8r/GreinerHormann
 author: Alexander Milevski
 author-url: https://github.com/w8r
-demo: 
+demo: https://milevski.co/GreinerHormann/
 compatible-v0:
 compatible-v1: true
 ---

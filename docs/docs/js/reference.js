@@ -7,7 +7,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 
 		if (el.id) {
 			var anchor = document.createElement('a');
-			anchor.setAttribute('anchor', el.id);
+			anchor.setAttribute('data-anchor', el.id);
 			if (!el.children.length) {
 				// For headers, insert the anchor before.
 				el.parentNode.insertBefore(anchor, el);

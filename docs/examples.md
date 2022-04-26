@@ -34,6 +34,14 @@ description="In this pretty tutorial, you'll learn how to easily define your own
 
 
 {% include tutorial_link.html
+page="accessibility/"
+thumbnail="accessibility/thumbnail.png"
+title="Accessible maps"
+description="A guide to basic Leaflet accessibility - make your maps usable to persons of a wide range of abilities."
+%}
+
+
+{% include tutorial_link.html
 page="geojson/"
 thumbnail="geojson/thumbnail.png"
 title="Using GeoJSON with Leaflet"
@@ -89,10 +97,10 @@ description="How the default map panes work to display overlays on top of tiles,
 
 
 {% include tutorial_link.html
-page="video-overlay/"
-thumbnail="video-overlay/thumbnail.gif"
-title="Showing video files"
-description="Leaflet can help you display videos somewhere on the map."
+page="overlays/"
+thumbnail="overlays/thumbnail.gif"
+title="Overlays: Image, Video, SVG"
+description="Leaflet can help you display images, videos and SVG elements somewhere on the map."
 %}
 
 ***

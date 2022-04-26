@@ -4,7 +4,7 @@ category: search-popups
 repo: https://github.com/utahemre/Leaflet.GeoJSONAutocomplete
 author: Yunus Emre Özkaya
 author-url: https://github.com/utahemre
-demo: 
+demo: https://utahemre.github.io/geojsonautocompletedemo.html
 compatible-v0:
 compatible-v1: true
 ---

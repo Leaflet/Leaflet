@@ -4,7 +4,7 @@ category: clustering-decluttering
 repo: https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 author: George MacKerron
 author-url: http://mackerron.com/
-demo: 
+demo: http://jawj.github.io/OverlappingMarkerSpiderfier-Leaflet/demo.html
 compatible-v0:
 compatible-v1: true
 ---

@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://wbkd.github.io/leaflet-truesize/
 author: webkid
 author-url: https://webkid.io/
-demo: 
+demo: https://wbkd.github.io/leaflet-truesize/
 compatible-v0:
 compatible-v1: true
 ---

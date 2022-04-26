@@ -4,7 +4,7 @@ category: tile-load
 repo: https://github.com/ghybs/Leaflet.TileLayer.Fallback
 author: ghybs
 author-url: https://github.com/ghybs
-demo: 
+demo: https://ghybs.github.io/Leaflet.TileLayer.Fallback/examples/tileLayerFallback-demo.html
 compatible-v0:
 compatible-v1: true
 ---
