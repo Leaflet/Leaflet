@@ -152,23 +152,6 @@ var inlineSvg = !!svg && (function () {
 	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';
 })();
 
-// @property vml: Boolean
-// `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
-var vml = !svg && (function () {
-	try {
-		var div = document.createElement('div');
-		div.innerHTML = '<v:shape adj="1"/>';
-
-		var shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
-
-		return shape && (typeof shape.adj === 'object');
-
-	} catch (e) {
-		return false;
-	}
-}());
-
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
@@ -206,6 +189,5 @@ export default {
 	passiveEvents: passiveEvents,
 	canvas: canvas,
 	svg: svg,
-	vml: vml,
 	inlineSvg: inlineSvg
 };
