@@ -1,12 +1,8 @@
 ---
-layout: ua
+layout: dialog_frame
 ---
 
-<style>
-	blockquote {
-		font-style: italic;
-	}
-</style>
+<h1><img src="/docs/images/logo-ua.png" alt="Leaflet" width="300" /></h1>
 
 Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
