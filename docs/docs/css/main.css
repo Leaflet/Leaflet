@@ -1120,7 +1120,7 @@ iframe[src*='youtube.com'] {
 }
 
 /** Begin Slava Ukraini Dialog **/
-#ukraini-dialog {
+#dialog {
 	position: fixed;
 	width: 100%;
 	height: 100%;
@@ -1134,12 +1134,12 @@ iframe[src*='youtube.com'] {
 keep focus in dialog
 https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
  */
-#ukraini-dialog:not(:focus-within) {
+#dialog:not(:focus-within) {
 	background-color:rgba(0, 0, 0, 0.25);
 	transition: background-color 0.01s;
 }
 
-#ukraini-dialog .iframe-container{
+#dialog .iframe-container {
 	height: 90%;
 	border-radius: 5px;
 	padding: 10px 0px;
@@ -1148,7 +1148,7 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 	position: relative;
 }
 
-#ukraini-dialog iframe {
+#dialog iframe {
 	width: 100%;
 	height: 100%;
 }
@@ -1157,7 +1157,7 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 	overflow: hidden !important;
 }
 
-.close-dialog{
+.close-dialog {
   width: 40px;
   height: 40px;
   top: 10px;
@@ -1170,14 +1170,16 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
   justify-content: center;
   background: transparent;
   border: none;
-}
-
-.close-dialog{
   color: #000;
+	overflow: hidden;
 }
 
-.close-dialog:hover, .close-dialog:focus{
+.close-dialog:hover, .close-dialog:focus {
 	color: #797979;
+}
+
+blockquote {
+	font-style: italic;
 }
 
 /** End Slava Ukraini Dialog **/
