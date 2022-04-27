@@ -423,9 +423,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a:focus {
 	text-decoration: underline;
 	}
-.leaflet-control-attribution svg {
+.leaflet-attribution-flag {
 	display: inline !important;
 	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
 	}
 .leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
