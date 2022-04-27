@@ -530,6 +530,20 @@ describe('Events', function () {
 			expect(spy.called).to.be(false);
 		});
 
+		it("doesn't call once twice", function () {
+			var obj = new L.Evented(),
+			spy = sinon.spy();
+			obj.once('test', function () {
+				spy();
+				obj.fire('test');
+			}, obj);
+
+			obj.fire('test');
+
+			expect(spy.calledOnce).to.be(true);
+		});
+
+
 		it('works if called from a context that doesnt implement #Events', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),

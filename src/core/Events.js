@@ -95,7 +95,7 @@ export var Events = {
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type, fn, context) {
+	_on: function (type, fn, context, _once) {
 		if (typeof fn !== 'function') {
 			console.warn('wrong listener type: ' + typeof fn);
 			return;
@@ -112,6 +112,9 @@ export var Events = {
 		}
 
 		var newListener = {fn: fn, ctx: context};
+		if (_once) {
+			newListener.once = true;
+		}
 
 		this._events = this._events || {};
 		this._events[type] = this._events[type] || [];
@@ -182,12 +185,16 @@ export var Events = {
 
 		if (this._events) {
 			var listeners = this._events[type];
-
 			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
 				for (var i = 0, len = listeners.length; i < len; i++) {
 					var l = listeners[i];
-					l.fn.call(l.ctx || this, event);
+					// off overwrites l.fn, so we need to copy fn to a var
+					var fn = l.fn;
+					if (l.once) {
+						this.off(type, fn, l.ctx);
+					}
+					fn.call(l.ctx || this, event);
 				}
 
 				this._firingCount--;
@@ -262,23 +269,24 @@ export var Events = {
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
 	once: function (types, fn, context) {
 
+		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (var type in types) {
-				this.once(type, types[type], fn);
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
+				this._on(type, types[type], fn, true);
 			}
-			return this;
+
+		} else {
+			// types can be a string of space-separated words
+			types = Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._on(types[i], fn, context, true);
+			}
 		}
 
-		var handler = Util.bind(function () {
-			this
-			    .off(types, fn, context)
-			    .off(types, handler, context);
-		}, this);
-
-		// add a listener that's executed once and removed after that
-		return this
-		    .on(types, fn, context)
-		    .on(types, handler, context);
+		return this;
 	},
 
 	// @method addEventParent(obj: Evented): this
