@@ -192,7 +192,7 @@ export var Events = {
 					// off overwrites l.fn, so we need to copy fn to a var
 					var fn = l.fn;
 					if (l.once) {
-						this.off(type, l.fn, l.ctx);
+						this.off(type, fn, l.ctx);
 					}
 					fn.call(l.ctx || this, event);
 				}
