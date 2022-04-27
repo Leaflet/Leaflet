@@ -100,7 +100,7 @@ Leaflet Changelog
 
 ### 📝 Docs
 
-* Add a new [Leaflet accessibility tutorial](https://leafletjs.com/SlavaUkraini/examples/accessibility/) ([#8081](https://github.com/Leaflet/Leaflet/pull/8081), by [@Malvoz](https://github.com/Malvoz))
+* Add a new [Leaflet accessibility tutorial](https://leafletjs.com/examples/accessibility/) ([#8081](https://github.com/Leaflet/Leaflet/pull/8081), by [@Malvoz](https://github.com/Malvoz))
 * Upgrade Code of Conduct to Contributor Covenant v2 and improve its visibility ([#7984](https://github.com/Leaflet/Leaflet/pull/7984) by [@mourner](https://github.com/mourner))
 * Lint examples ([#7827](https://github.com/Leaflet/Leaflet/pull/7827) by [@mourner](https://github.com/mourner))
 * Update usability in Docs ([#7982](https://github.com/Leaflet/Leaflet/pull/7982),  [#7703](https://github.com/Leaflet/Leaflet/pull/7703), [#7950](https://github.com/Leaflet/Leaflet/pull/7950), [#7906](https://github.com/Leaflet/Leaflet/pull/7906), [#7907](https://github.com/Leaflet/Leaflet/pull/7907), [#7696](https://github.com/Leaflet/Leaflet/pull/7696), [#7816](https://github.com/Leaflet/Leaflet/pull/7816), [#7345](https://github.com/Leaflet/Leaflet/pull/7345), [#7815](https://github.com/Leaflet/Leaflet/pull/7815), [#7948](https://github.com/Leaflet/Leaflet/pull/7948), [#7901](https://github.com/Leaflet/Leaflet/pull/7901) by [@Falke-Design](https://github.com/Falke-Design), [@avioli](https://github.com/avioli), [@Malvoz](https://github.com/Malvoz), [@fulldecent](https://github.com/fulldecent), [@saerdnaer](https://github.com/saerdnaer), [@MxDui](https://github.com/MxDui))
