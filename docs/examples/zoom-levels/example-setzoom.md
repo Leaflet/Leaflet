@@ -15,30 +15,30 @@ title: Zoom Levels Tutorial
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	setInterval(function(){
+	setInterval(function () {
 
 		map.setZoom(0);
 
-		setTimeout(function(){
+		setTimeout(function () {
 			map.setZoom(1);
 		}, 2000);
 
 	}, 4000);
 
 	var ZoomViewer = L.Control.extend({
-		onAdd: function(){
+		onAdd: function () {
 			var gauge = L.DomUtil.create('div');
 			gauge.style.width = '200px';
 			gauge.style.background = 'rgba(255,255,255,0.5)';
 			gauge.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function(ev){
+			map.on('zoomstart zoom zoomend', function (ev) {
 				gauge.innerHTML = 'Zoom level: ' + map.getZoom();
-			})
+			});
 			return gauge;
 		}
 	});
 
-	(new ZoomViewer).addTo(map);
+	var zoomViewer = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
 </script>

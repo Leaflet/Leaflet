@@ -1,20 +1,15 @@
 describe('ImageOverlay', function () {
-	var c, map;
+	var container, map;
 	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
 	beforeEach(function () {
-		c = document.createElement('div');
-		c.style.width = '400px';
-		c.style.height = '400px';
-		document.body.appendChild(c);
-		map = new L.Map(c);
-		map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initilized
+		container = container = createContainer();
+		map = L.map(container);
+		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 
 	afterEach(function () {
-		map.remove();
-		map = null;
-		document.body.removeChild(c);
+		removeMapContainer(map, container);
 	});
 
 	describe('#setStyle', function () {
@@ -26,9 +21,10 @@ describe('ImageOverlay', function () {
 
 	describe('#setBounds', function () {
 		it('sets bounds', function () {
-			var bounds = new L.LatLngBounds(
-				new L.LatLng(14, 12),
-				new L.LatLng(30, 40));
+			var bounds = L.latLngBounds(
+				[14, 12],
+				[30, 40]
+			);
 			var overlay = L.imageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
@@ -49,9 +45,10 @@ describe('ImageOverlay', function () {
 			});
 			map.addLayer(overlay);
 
-			var bounds = new L.LatLngBounds(
-				new L.LatLng(14, 12),
-				new L.LatLng(30, 40));
+			var bounds = L.latLngBounds(
+				[14, 12],
+				[30, 40]
+			);
 			overlay.setBounds(bounds);
 		});
 
@@ -63,7 +60,7 @@ describe('ImageOverlay', function () {
 
 		function raiseImageEvent(event) {
 			var domEvent = document.createEvent('Event');
-			domEvent.initEvent(event);
+			domEvent.initEvent(event, false, false);
 			overlay._image.dispatchEvent(domEvent);
 		}
 
@@ -108,23 +105,23 @@ describe('ImageOverlay', function () {
 		it('should update the z-index of the image if it has allready been added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('1');
+			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should set the z-index of the image when it is added to the map', function () {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('10');
+			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should use the z-index specified in options', function () {
 			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.be('20');
+			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
 		});
 
 		it('should be fluent', function () {
@@ -133,9 +130,21 @@ describe('ImageOverlay', function () {
 		});
 	});
 
+	describe('#getCenter', function () {
+		it('should return the correct center', function () {
+			var overlay = L.imageOverlay('', imageBounds).addTo(map);
+			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
+		});
+		it('should open popup at the center', function () {
+			var overlay = L.imageOverlay('', imageBounds).addTo(map);
+			overlay.bindPopup('Center').openPopup();
+			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
+		});
+	});
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
-	describe('_image2', function () {
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
 		var overlay;
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 

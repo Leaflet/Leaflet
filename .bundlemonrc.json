@@ -1,0 +1,18 @@
+{
+  "baseDir": "dist",
+  "files": [
+    {
+      "path": "leaflet.js"
+    }
+  ],
+  "reportOutput": [
+    [
+      "github",
+      {
+        "checkRun": true,
+        "commitStatus": false,
+        "prComment": false
+      }
+    ]
+  ]
+}

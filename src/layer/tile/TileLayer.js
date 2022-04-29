@@ -1,5 +1,5 @@
 import {GridLayer} from './GridLayer';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
 import * as DomUtil from '../../dom/DomUtil';
@@ -14,7 +14,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * @example
  *
  * ```js
- * L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map);
+ * L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  * ```
  *
  * @section URL template
@@ -23,7 +23,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * A string of the following form:
  *
  * ```
- * 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+ * 'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
  * ```
  *
  * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add "&commat;2x" to the URL to load retina tiles.
@@ -31,7 +31,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
  *
  * ```
- * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
  */
 
@@ -77,7 +77,15 @@ export var TileLayer = GridLayer.extend({
 		// Whether the crossOrigin attribute will be added to the tiles.
 		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option referrerPolicy: Boolean|String = false
+		// Whether the referrerPolicy attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
+		// This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
+		// (e.g. to validate an API token).
+		// Refer to [HTMLImageElement.referrerPolicy](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for valid String values.
+		referrerPolicy: false
 	},
 
 	initialize: function (url, options) {
@@ -93,23 +101,26 @@ export var TileLayer = GridLayer.extend({
 
 			if (!options.zoomReverse) {
 				options.zoomOffset++;
-				options.maxZoom--;
+				options.maxZoom = Math.max(options.minZoom, options.maxZoom - 1);
 			} else {
 				options.zoomOffset--;
-				options.minZoom++;
+				options.minZoom = Math.min(options.maxZoom, options.minZoom + 1);
 			}
 
 			options.minZoom = Math.max(0, options.minZoom);
+		} else if (!options.zoomReverse) {
+			// make sure maxZoom is gte minZoom
+			options.maxZoom = Math.max(options.minZoom, options.maxZoom);
+		} else {
+			// make sure minZoom is lte maxZoom
+			options.minZoom = Math.min(options.maxZoom, options.minZoom);
 		}
 
 		if (typeof options.subdomains === 'string') {
 			options.subdomains = options.subdomains.split('');
 		}
 
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.android) {
-			this.on('tileunload', this._onTileRemove);
-		}
+		this.on('tileunload', this._onTileRemove);
 	},
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this
@@ -143,17 +154,17 @@ export var TileLayer = GridLayer.extend({
 			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
 		}
 
-		/*
-		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 http://www.w3.org/TR/WCAG20-TECHS/H67
-		*/
-		tile.alt = '';
+		// for this new option we follow the documented behavior
+		// more closely by only setting the property when string
+		if (typeof this.options.referrerPolicy === 'string') {
+			tile.referrerPolicy = this.options.referrerPolicy;
+		}
 
-		/*
-		 Set role="presentation" to force screen readers to ignore this
-		 https://www.w3.org/TR/wai-aria/roles#textalternativecomputation
-		*/
-		tile.setAttribute('role', 'presentation');
+		// The alt attribute is set to the empty string,
+		// allowing screen readers to ignore the decorative image tiles.
+		// https://www.w3.org/WAI/tutorials/images/decorative/
+		// https://www.w3.org/TR/html-aria/#el-img-empty-alt
+		tile.alt = '';
 
 		tile.src = this.getTileUrl(coords);
 
@@ -236,8 +247,15 @@ export var TileLayer = GridLayer.extend({
 
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
+					var coords = this._tiles[i].coords;
 					DomUtil.remove(tile);
 					delete this._tiles[i];
+					// @event tileabort: TileEvent
+					// Fired when a tile was loading but is now not wanted.
+					this.fire('tileabort', {
+						tile: tile,
+						coords: coords
+					});
 				}
 			}
 		}
@@ -248,11 +266,7 @@ export var TileLayer = GridLayer.extend({
 		if (!tile) { return; }
 
 		// Cancels any pending http requests associated with the tile
-		// unless we're on Android's stock browser,
-		// see https://github.com/Leaflet/Leaflet/issues/137
-		if (!Browser.androidStock) {
-			tile.el.setAttribute('src', Util.emptyImageUrl);
-		}
+		tile.el.setAttribute('src', Util.emptyImageUrl);
 
 		return GridLayer.prototype._removeTile.call(this, key);
 	},

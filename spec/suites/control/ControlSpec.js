@@ -8,17 +8,17 @@ describe("Control", function () {
 	    control;
 
 	beforeEach(function () {
-		container = document.createElement('div');
-		document.body.appendChild(container);
-		map = L.map(container).setView([0, 0], 1);
+		container = container = createContainer();
+		map = L.map(container);
+
+		map.setView([0, 0], 1);
 		control = new L.Control();
 		control.onAdd = onAdd;
 		control.addTo(map);
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(container);
+		removeMapContainer(map, container);
 	});
 
 	describe("#addTo", function () {
