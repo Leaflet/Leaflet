@@ -6,6 +6,8 @@ updates:
     rebase-strategy: disabled
     schedule:
       interval: weekly
+    labels:
+      - dependencies
     ignore:
       - dependency-name: eslint-config-mourner
         update-types: ["version-update:semver-major"]
@@ -17,3 +19,5 @@ updates:
     rebase-strategy: disabled
     schedule:
       interval: weekly
+    labels:
+      - dependencies
