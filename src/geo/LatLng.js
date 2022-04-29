@@ -1,6 +1,7 @@
 import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
 import {toLatLngBounds} from './LatLngBounds';
+import {_checkNumber} from '../core/Util';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -28,22 +29,18 @@ import {toLatLngBounds} from './LatLngBounds';
  */
 
 export function LatLng(lat, lng, alt) {
-	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
-	}
-
 	// @property lat: Number
 	// Latitude in degrees
-	this.lat = +lat;
+	this.lat = _checkNumber(lat);
 
 	// @property lng: Number
 	// Longitude in degrees
-	this.lng = +lng;
+	this.lng = _checkNumber(lng);
 
 	// @property alt: Number
 	// Altitude in meters (optional)
-	if (alt !== undefined) {
-		this.alt = +alt;
+	if (arguments.length === 3) {
+		this.alt = typeof alt !== 'undefined' ? _checkNumber(alt) : alt;
 	}
 }
 
@@ -122,16 +119,16 @@ export function toLatLng(a, b, c) {
 		if (a.length === 2) {
 			return new LatLng(a[0], a[1]);
 		}
-		return null;
-	}
-	if (a === undefined || a === null) {
-		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
-		return new LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
+		var lng = 'lng' in a ? a.lng : a.lon;
+		if ('alt' in a) {
+			return new LatLng(a.lat, lng, a.alt);
+		}
+		return new LatLng(a.lat, lng);
 	}
-	if (b === undefined) {
-		return null;
+	if (arguments.length === 3) {
+		return new LatLng(a, b, c);
 	}
-	return new LatLng(a, b, c);
+	return new LatLng(a, b);
 }

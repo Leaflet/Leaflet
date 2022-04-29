@@ -2,23 +2,56 @@ describe('LatLng', function () {
 	describe('constructor', function () {
 		it("sets lat and lng", function () {
 			var a = L.latLng(25, 74);
-			expect(a.lat).to.eql(25);
-			expect(a.lng).to.eql(74);
+			expect(a.lat).to.be(25);
+			expect(a.lng).to.be(74);
 
 			var b = L.latLng(-25, -74);
-			expect(b.lat).to.eql(-25);
-			expect(b.lng).to.eql(-74);
+			expect(b.lat).to.be(-25);
+			expect(b.lng).to.be(-74);
+		});
+		it("converts lat/lng/alt from string", function () {
+			var a = new L.LatLng("25", " 74", "0 ");
+			expect(a.lat).to.be(25);
+			expect(a.lng).to.be(74);
+			expect(a.alt).to.be(0);
+
+			var b = new L.LatLng("-25", "-74");
+			expect(b.lat).to.be(-25);
+			expect(b.lng).to.be(-74);
+
+			var c = new L.LatLng("010", "0x10"); // better'd throw here..
+			expect(c.lat).to.be(10);
+			expect(c.lng).to.be(16);
 		});
 
-		it('throws an error if invalid lat or lng', function () {
-			expect(function () {
-				L.latLng(NaN, NaN);
-			}).to.throwError();
+		it('throws an error if invalid lat/lng/alt', function () {
+			expect(L.latLng).withArgs(0).to.throwError();
+			expect(L.latLng).withArgs(NaN, 0).to.throwError();
+			expect(L.latLng).withArgs(Infinity, 0).to.throwError();
+			expect(L.latLng).withArgs(-Infinity, 0).to.throwError();
+			expect(L.latLng).withArgs(true, 0).to.throwError();
+			expect(L.latLng).withArgs(false, 0).to.throwError();
+			expect(L.latLng).withArgs(undefined, 0).to.throwError();
+			expect(L.latLng).withArgs(null, 0).to.throwError();
+			expect(L.latLng).withArgs('', 0).to.throwError();
+			expect(L.latLng).withArgs('\n', 0).to.throwError();
+			expect(L.latLng).withArgs('1px', 0).to.throwError();
+			expect(L.latLng).withArgs('nonsense', 0).to.throwError();
+			expect(L.latLng).withArgs([]).to.throwError();
+			expect(L.latLng).withArgs([50]).to.throwError();
+			// do not throw atm:
+			// expect(L.latLng).withArgs('0010', 0).to.throwError();
+			// expect(L.latLng).withArgs('0x10', 0).to.throwError();
+			// expect(L.latLng).withArgs('1e5', 0).to.throwError();
 		});
 
-		it('does not set altitude if undefined', function () {
-			var a = L.latLng(25, 74);
-			expect(typeof a.alt).to.eql('undefined');
+		it('does not set altitude if not specified', function () {
+			var a = new L.LatLng(25, 74);
+			expect(a).to.not.have.key('alt');
+
+			var b = new L.LatLng(25, 74, undefined);
+			expect(b).to.have.key('alt');
+			expect(typeof b.alt).to.be('undefined');
 		});
 
 		it('sets altitude', function () {
@@ -80,15 +113,8 @@ describe('LatLng', function () {
 		});
 
 		it('accepts an array of coordinates', function () {
-			expect(L.latLng([])).to.eql(null);
-			expect(L.latLng([50])).to.eql(null);
 			expect(L.latLng([50, 30])).to.eql(L.latLng(50, 30));
 			expect(L.latLng([50, 30, 100])).to.eql(L.latLng(50, 30, 100));
-		});
-
-		it('passes null or undefined as is', function () {
-			expect(L.latLng(undefined)).to.eql(undefined);
-			expect(L.latLng(null)).to.eql(null);
 		});
 
 		it('creates a LatLng object from two coordinates', function () {
@@ -101,10 +127,6 @@ describe('LatLng', function () {
 
 		it('accepts an object with lat/lon', function () {
 			expect(L.latLng({lat: 50, lon: 30})).to.eql(L.latLng(50, 30));
-		});
-
-		it('returns null if lng not specified', function () {
-			expect(L.latLng(50)).to.be(null);
 		});
 
 		it('accepts altitude as third parameter', function () {

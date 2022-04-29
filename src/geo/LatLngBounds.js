@@ -64,7 +64,13 @@ LatLngBounds.prototype = {
 			if (!sw2 || !ne2) { return this; }
 
 		} else {
-			return obj ? this.extend(toLatLng(obj) || toLatLngBounds(obj)) : this;
+			if (!obj) { return this; }
+			try {
+				obj = toLatLng(obj);
+			} catch (err) {
+				obj = toLatLngBounds(obj);
+			}
+			return this.extend(obj);
 		}
 
 		if (!sw && !ne) {
