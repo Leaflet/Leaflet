@@ -1,4 +1,4 @@
-import {isArray, formatNum} from '../core/Util';
+import {isArray, formatNum, _checkNumber} from '../core/Util';
 
 /*
  * @class Point
@@ -26,8 +26,11 @@ import {isArray, formatNum} from '../core/Util';
 
 export function Point(x, y, round) {
 	// @property x: Number; The `x` coordinate of the point
+	x = _checkNumber(x);
 	this.x = (round ? Math.round(x) : x);
+
 	// @property y: Number; The `y` coordinate of the point
+	y = _checkNumber(y);
 	this.y = (round ? Math.round(y) : y);
 }
 
@@ -211,9 +214,6 @@ export function toPoint(x, y, round) {
 	}
 	if (isArray(x)) {
 		return new Point(x[0], x[1]);
-	}
-	if (x === undefined || x === null) {
-		return x;
 	}
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
 		return new Point(x.x, x.y);
