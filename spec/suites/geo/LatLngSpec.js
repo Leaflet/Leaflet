@@ -50,7 +50,7 @@ describe('LatLng', function () {
 			expect(a).to.not.have.key('alt');
 
 			var b = new L.LatLng(25, 74, undefined);
-			expect(b).to.have.key('alt');
+			expect(b).to.not.have.key('alt');
 			expect(typeof b.alt).to.be('undefined');
 		});
 

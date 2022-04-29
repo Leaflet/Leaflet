@@ -39,8 +39,8 @@ export function LatLng(lat, lng, alt) {
 
 	// @property alt: Number
 	// Altitude in meters (optional)
-	if (arguments.length === 3) {
-		this.alt = typeof alt !== 'undefined' ? _checkNumber(alt) : alt;
+	if (arguments.length === 3 && typeof alt !== 'undefined') {
+		this.alt = _checkNumber(alt);
 	}
 }
 

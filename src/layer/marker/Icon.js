@@ -129,9 +129,10 @@ export var Icon = Class.extend({
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		var size = point(sizeOption),
-		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
-		            size && size.divideBy(2, true));
+		var size = sizeOption ? point(sizeOption) : null,
+			_anchorPoint = name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+				size && size.divideBy(2, true),
+		    anchor = _anchorPoint ? point(_anchorPoint) : null;
 
 		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
 
