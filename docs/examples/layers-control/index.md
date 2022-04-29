@@ -54,19 +54,32 @@ var overlayMaps = {
 
 Now, all that's left to do is to create a [Layers Control](/reference.html#control-layers) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional: you can pass just a base layers object by omitting the second argument, or just an overlays objects by passing `null` as the first argument. In each case, the omitted layer type will not appear for the user to select.
 
-<pre><code>L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
+<pre><code>var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
 
 Note that we added `grayscale` and `cities` layers to the map but didn't add `streets`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 
 Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
 
-Finally, you can style the keys when you define the objects for the layers. For example, this code will make the label for the grayscale map gray:
+You can also style the keys when you define the objects for the layers. For example, this code will make the label for the grayscale map gray:
 
 <pre><code>var baseMaps = {
 	"&lt;span style='color: gray'&gt;Grayscale&lt;/span&gt;": grayscale,
 	"Streets": streets
 };
 </code></pre>
+
+Finally, you can add or remove base layers or overlays dynamically:
+
+<pre><code>var crownHill = L.marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.'),
+    rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.');
+    
+var parks = L.layerGroup([crownHill, rubyHill]);
+var satellite = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
+
+layerControl.addBaseLayer(satellite, "Satellite");
+layerControl.addOverlay(parks, "Parks");
+</code></pre>
+
 
 Now let's [view the result on a separate page &rarr;](example.html)
 

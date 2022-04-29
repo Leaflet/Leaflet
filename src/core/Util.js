@@ -197,7 +197,7 @@ export function indexOf(array, el) {
 // mobile devices (by setting image `src` to this string).
 export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 function getPrefixed(name) {
 	return window['webkit' + name] || window['moz' + name] || window['ms' + name];

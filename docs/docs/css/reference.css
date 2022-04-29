@@ -1,3 +1,8 @@
+html {
+	scroll-padding-top: 5em;
+	overflow: auto;
+}
+
 h2 {
     margin-top: 2em;
 }

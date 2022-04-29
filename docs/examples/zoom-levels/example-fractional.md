@@ -17,39 +17,37 @@ title: Zoom Levels Tutorial
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	function zoomCycle(){
+	function zoomCycle() {
 		map.setZoom(0);
-		timeouts = [];
-		timeouts.push(setTimeout(function(){ map.setZoom(0.25); },  1000));
-		timeouts.push(setTimeout(function(){ map.setZoom(0.50); },  2000));
-		timeouts.push(setTimeout(function(){ map.setZoom(0.75); },  3000));
-		timeouts.push(setTimeout(function(){ map.setZoom(1);    },  4000));
-		timeouts.push(setTimeout(function(){ map.setZoom(0.75); },  5000));
-		timeouts.push(setTimeout(function(){ map.setZoom(0.50); },  6000));
-		timeouts.push(setTimeout(function(){ map.setZoom(0.25); },  7000));
+		var timeouts = [];
+		timeouts.push(setTimeout(function () { map.setZoom(0.25); }, 1000));
+		timeouts.push(setTimeout(function () { map.setZoom(0.50); }, 2000));
+		timeouts.push(setTimeout(function () { map.setZoom(0.75); }, 3000));
+		timeouts.push(setTimeout(function () { map.setZoom(1.00); }, 4000));
+		timeouts.push(setTimeout(function () { map.setZoom(0.75); }, 5000));
+		timeouts.push(setTimeout(function () { map.setZoom(0.50); }, 6000));
+		timeouts.push(setTimeout(function () { map.setZoom(0.25); }, 7000));
 	}
 	zoomCycle();
 
 	var zoomingInterval = setInterval(zoomCycle, 8000);
 
 	var ZoomViewer = L.Control.extend({
-		onAdd: function(){
-
-			var container= L.DomUtil.create('div');
+		onAdd: function () {
+			var container = L.DomUtil.create('div');
 			var gauge = L.DomUtil.create('div');
 			container.style.width = '200px';
 			container.style.background = 'rgba(255,255,255,0.5)';
 			container.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function(ev){
+			map.on('zoomstart zoom zoomend', function (ev) {
 				gauge.innerHTML = 'Zoom level: ' + map.getZoom();
-			})
+			});
 			container.appendChild(gauge);
-
 			return container;
 		}
 	});
 
-	(new ZoomViewer).addTo(map);
+	var zoomViewerControl = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
 </script>

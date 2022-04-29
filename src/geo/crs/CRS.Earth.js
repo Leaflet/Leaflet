@@ -16,7 +16,7 @@ export var Earth = Util.extend({}, CRS, {
 
 	// Mean Earth Radius, as recommended for use by
 	// the International Union of Geodesy and Geophysics,
-	// see http://rosettacode.org/wiki/Haversine_formula
+	// see https://rosettacode.org/wiki/Haversine_formula
 	R: 6371000,
 
 	// distance between two geographical points using spherical law of cosines approximation

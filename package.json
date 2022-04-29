@@ -1,32 +1,34 @@
 {
   "name": "leaflet",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
-    "eslint": "^8.1.0",
+    "bundlemon": "^1.3.2",
+    "eslint": "^8.13.0",
     "eslint-config-mourner": "^2.0.3",
-    "git-rev-sync": "^3.0.1",
+    "eslint-plugin-script-tags": "^0.5.0",
+    "git-rev-sync": "^3.0.2",
     "happen": "~0.3.2",
-    "karma": "^6.3.6",
-    "karma-chrome-launcher": "^3.1.0",
+    "karma": "^6.3.18",
+    "karma-chrome-launcher": "^3.1.1",
     "karma-edge-launcher": "^0.4.2",
     "karma-expect": "^1.1.3",
-    "karma-firefox-launcher": "^2.1.1",
+    "karma-firefox-launcher": "^2.1.2",
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^2.0.1",
-    "karma-rollup-preprocessor": "^7.0.7",
+    "karma-rollup-preprocessor": "^7.0.8",
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
     "leafdoc": "^2.3.0",
-    "mocha": "^9.1.3",
-    "prosthetic-hand": "^1.3.1",
-    "rollup": "^2.59.0",
+    "mocha": "^9.2.2",
+    "prosthetic-hand": "^1.4.0",
+    "rollup": "^2.70.2",
     "rollup-plugin-git-version": "^0.3.1",
     "sinon": "^7.5.0",
-    "ssri": "^8.0.1",
-    "uglify-js": "^3.14.2"
+    "ssri": "^9.0.0",
+    "uglify-js": "^3.15.4"
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
@@ -34,7 +36,8 @@
     "dist",
     "src",
     "!dist/leaflet.zip",
-    "!*.leafdoc"
+    "!*.leafdoc",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "docs": "node ./build/docs.js",
@@ -43,19 +46,23 @@
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.js",
-    "watch": "rollup -w -c build/rollup-watch-config.js",
+    "watch": "rollup -w -c build/rollup-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
-    "integrity": "node ./build/integrity.js",
-    "prepublishOnly": "npm ci && npm run lint && npm run test && NODE_ENV=release npm run build"
+    "integrity": "NODE_ENV=release npm run build && node ./build/integrity.js",
+    "bundlemon": "bundlemon --subProject js --defaultCompression none && bundlemon --subProject js-gzip --defaultCompression gzip",
+    "serve": "cd docs && bundle exec jekyll serve"
   },
   "eslintConfig": {
     "ignorePatterns": [
       "dist",
       "debug",
       "docs/docs/highlight",
-      "docs/examples/choropleth",
-      "docs/examples/geojson",
-      "docs/examples/map-panes"
+      "docs/examples/choropleth/us-states.js",
+      "docs/examples/geojson/sample-geojson.js",
+      "docs/examples/map-panes/eu-countries.js",
+      "docs/examples/extending/extending-2-layers.md",
+      "docs/_posts/2012*",
+      "docs/_site"
     ],
     "root": true,
     "globals": {
@@ -67,6 +74,9 @@
       "node": false
     },
     "extends": "mourner",
+    "plugins": [
+      "script-tags"
+    ],
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module"
@@ -111,6 +121,15 @@
         },
         "rules": {
           "global-require": 0
+        }
+      },
+      {
+        "files": [
+          "*.md"
+        ],
+        "rules": {
+          "eol-last": 0,
+          "no-unused-vars": 0
         }
       }
     ]

@@ -1,13 +1,15 @@
 describe('Circle', function () {
-	var map, circle;
+	var map, container, circle;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div')).setView([0, 0], 4);
+		container = container = createContainer();
+		map = L.map(container);
+		map.setView([0, 0], 4);
 		circle = L.circle([50, 30], {radius: 200}).addTo(map);
 	});
 
 	afterEach(function () {
-		map.remove();
+		removeMapContainer(map, container);
 	});
 
 	describe('#init', function () {
@@ -28,8 +30,8 @@ describe('Circle', function () {
 		it('returns bounds', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
-			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
 	});
 
@@ -37,8 +39,8 @@ describe('Circle', function () {
 		it('returns same bounds as 1.0 factory', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.99820, 29.99720));
-			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.00179, 30.00279));
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
 	});
 });
