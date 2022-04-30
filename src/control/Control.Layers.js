@@ -183,6 +183,14 @@ export var Layers = Control.extend({
 
 		var section = this._section = DomUtil.create('section', className + '-list');
 
+		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
+		link.href = '#';
+		link.title = 'Layers';
+		link.setAttribute('role', 'button');
+		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
+		DomEvent.on(link, 'focus', this.expand, this);
+		link.setAttribute('aria-expanded', 'false');
+
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
@@ -190,21 +198,19 @@ export var Layers = Control.extend({
 				mouseenter: function () {
 					DomEvent.on(section, 'click', DomEvent.preventDefault);
 					this.expand();
+					link.setAttribute('aria-expanded', 'true');
 					setTimeout(function () {
 						DomEvent.off(section, 'click', DomEvent.preventDefault);
 					});
 				},
-				mouseleave: this.collapse
+				mouseleave: function () {
+					this.collapse();
+					link.setAttribute('aria-expanded', 'false');
+				}
 			}, this);
 		}
 
-		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
-		link.href = '#';
-		link.title = 'Layers';
-		link.setAttribute('role', 'button');
 
-		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
-		DomEvent.on(link, 'focus', this.expand, this);
 
 		if (!collapsed) {
 			this.expand();
