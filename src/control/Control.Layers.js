@@ -206,7 +206,15 @@ export var Layers = Control.extend({
 				mouseleave: function () {
 					this.collapse();
 					link.setAttribute('aria-expanded', 'false');
+				},
+				focusin: function () {
+					link.setAttribute('aria-expanded', 'true');
+				},
+				focusout: function () {
+					this.collapse();
+					link.setAttribute('aria-expanded', 'false');
 				}
+
 			}, this);
 		}
 
