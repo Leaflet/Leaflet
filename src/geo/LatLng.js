@@ -1,6 +1,6 @@
-import {Class} from '../core/Class';
 import * as Util from '../core/Util';
 import {distance as earthDistance} from './crs/CRS.Earth.distance';
+import {Wrap} from './crs/CRS.wrap';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -26,38 +26,27 @@ import {distance as earthDistance} from './crs/CRS.Earth.distance';
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
-// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
-// Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
+export function LatLng(lat, lng, alt) {
+	if (isNaN(lat) || isNaN(lng)) {
+		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
+	}
 
-// @alternative
-// @factory L.latLng(coords: Array): LatLng
-// Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
+	// @property lat: Number
+	// Latitude in degrees
+	this.lat = +lat;
 
-// @alternative
-// @factory L.latLng(coords: Object): LatLng
-// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
-export var LatLng = Class.extend({
+	// @property lng: Number
+	// Longitude in degrees
+	this.lng = +lng;
 
-	initialize: function (lat, lng, alt) {
-		if (isNaN(lat) || isNaN(lng)) {
-			throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
-		}
+	// @property alt: Number
+	// Altitude in meters (optional)
+	if (alt !== undefined) {
+		this.alt = +alt;
+	}
+}
 
-		// @property lat: Number
-		// Latitude in degrees
-		this.lat = +lat;
-
-		// @property lng: Number
-		// Longitude in degrees
-		this.lng = +lng;
-
-		// @property alt: Number
-		// Altitude in meters (optional)
-		if (alt !== undefined) {
-			this.alt = +alt;
-		}
-	},
-
+LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
@@ -89,14 +78,35 @@ export var LatLng = Class.extend({
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
-		return wrapLatLng(this);
+		return this.wrapLatLng(this);
+	},
+
+	// @method wrapLatLng(latlng: LatLng): LatLng
+	// Returns a `LatLng` where lat and lng has been wrapped according to the
+	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
+	wrapLatLng: function (latlng) {
+		var lng = Wrap.lng ? Util.wrapNum(latlng.lng, Wrap.lng, true) : latlng.lng,
+		lat = Wrap.lat ? Util.wrapNum(latlng.lat, Wrap.lat, true) : latlng.lat,
+		alt = this.alt;
+
+		return new LatLng(lat, lng, alt);
 	},
 
 	clone: function () {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
-});
+};
 
+// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
+// Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
+
+// @alternative
+// @factory L.latLng(coords: Array): LatLng
+// Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
+
+// @alternative
+// @factory L.latLng(coords: Object): LatLng
+// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
 		return a;
@@ -120,12 +130,4 @@ export function toLatLng(a, b, c) {
 		return null;
 	}
 	return new LatLng(a, b, c);
-}
-
-export function wrapLatLng(latlng) {
-	var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-	lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
-	alt = latlng.alt;
-
-	return new LatLng(lat, lng, alt);
 }

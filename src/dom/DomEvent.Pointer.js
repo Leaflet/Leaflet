@@ -1,4 +1,4 @@
-import * as DomEvent from './DomEvent';
+import {preventDefault} from './preventDefault';
 import Browser from '../core/Browser';
 
 /*
@@ -90,7 +90,7 @@ function _handlePointer(handler, e) {
 function _onPointerStart(handler, e) {
 	// IE10 specific: MsTouch needs preventDefault. See #2000
 	if (e.MSPOINTER_TYPE_TOUCH && e.pointerType === e.MSPOINTER_TYPE_TOUCH) {
-		DomEvent.preventDefault(e);
+		preventDefault(e);
 	}
 	_handlePointer(handler, e);
 }

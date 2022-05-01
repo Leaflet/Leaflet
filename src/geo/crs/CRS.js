@@ -3,6 +3,7 @@ import {Bounds} from '../../geometry/Bounds';
 import {LatLng} from '../LatLng';
 import {LatLngBounds} from '../LatLngBounds';
 import * as Util from '../../core/Util';
+import {Wrap} from './CRS.wrap';
 
 /*
  * @namespace CRS
@@ -83,22 +84,31 @@ export var CRS = {
 		return new Bounds(min, max);
 	},
 
-	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
-	// Returns the distance between two geographical coordinates.
-
 	// @property code: String
 	// Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
-	//
+
 	// @property wrapLng: Number[]
 	// An array of two numbers defining whether the longitude (horizontal) coordinate
 	// axis wraps around a given range and how. Defaults to `[-180, 180]` in most
 	// geographical CRSs. If `undefined`, the longitude axis does not wrap around.
-	//
+	set wrapLng(wrapLng) {
+		Wrap.lng = wrapLng;
+	},
+	get wrapLng() {
+		return Wrap.lng;
+	},
+
 	// @property wrapLat: Number[]
 	// Like `wrapLng`, but for the latitude (vertical) axis.
-
 	// wrapLng: [min, max],
 	// wrapLat: [min, max],
+	set wrapLat(wrapLat) {
+		Wrap.lat = wrapLat;
+	},
+
+	get wrapLat() {
+		return Wrap.lat;
+	},
 
 	// @property infinite: Boolean
 	// If true, the coordinate space will be unbounded (infinite in both axes)

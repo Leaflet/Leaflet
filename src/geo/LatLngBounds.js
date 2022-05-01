@@ -30,9 +30,11 @@ import {LatLng, toLatLng} from './LatLng';
  * can't be added to it with the `include` function.
  */
 export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
-	if (!corner1) { return; }
+	if (!corner1) {
+		return;
+	}
 
-	var latlngs = corner2 ? [corner1, corner2] : [].concat(corner1);
+	var latlngs = corner2 ? [corner1, corner2] : corner1;
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
@@ -59,8 +61,8 @@ LatLngBounds.prototype = {
 	// Extend the bounds to contain the given bounds
 	extend: function (obj) {
 		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2, ne2;
+		ne = this._northEast,
+		sw2, ne2;
 
 		if (obj instanceof LatLng) {
 			sw2 = (/** @type {LatLng} */ (obj));
@@ -70,7 +72,9 @@ LatLngBounds.prototype = {
 			sw2 = obj._southWest;
 			ne2 = obj._northEast;
 
-			if (!sw2 || !ne2) { return this; }
+			if (!sw2 || !ne2) {
+				return this;
+			}
 
 		} else {
 			return obj ? this.extend(toLatLng(obj) || toLatLngBounds(obj)) : this;
@@ -95,21 +99,21 @@ LatLngBounds.prototype = {
 	// Negative values will retract the bounds.
 	pad: function (bufferRatio) {
 		var sw = this._southWest,
-		    ne = this._northEast,
-		    heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
-		    widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
+		ne = this._northEast,
+		heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
+		widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
 
 		return new LatLngBounds(
-		        new LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
-		        new LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
+			new LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+			new LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
 	// @method getCenter(): LatLng
 	// Returns the center point of the bounds.
 	getCenter: function () {
 		return new LatLng(
-		        (this._southWest.lat + this._northEast.lat) / 2,
-		        (this._southWest.lng + this._northEast.lng) / 2);
+			(this._southWest.lat + this._northEast.lat) / 2,
+			(this._southWest.lng + this._northEast.lng) / 2);
 	},
 
 	// @method getSouthWest(): LatLng
@@ -174,8 +178,8 @@ LatLngBounds.prototype = {
 		}
 
 		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2, ne2;
+		ne = this._northEast,
+		sw2, ne2;
 
 		if (obj instanceof LatLngBounds) {
 			sw2 = obj.getSouthWest();
@@ -185,7 +189,7 @@ LatLngBounds.prototype = {
 		}
 
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
-		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
+			(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
 	// @method intersects(otherBounds: LatLngBounds): Boolean
@@ -194,12 +198,12 @@ LatLngBounds.prototype = {
 		bounds = toLatLngBounds(bounds);
 
 		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2 = bounds.getSouthWest(),
-		    ne2 = bounds.getNorthEast(),
+		ne = this._northEast,
+		sw2 = bounds.getSouthWest(),
+		ne2 = bounds.getNorthEast(),
 
-		    latIntersects = (ne2.lat >= sw.lat) && (sw2.lat <= ne.lat),
-		    lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
+		latIntersects = (ne2.lat >= sw.lat) && (sw2.lat <= ne.lat),
+		lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
 
 		return latIntersects && lngIntersects;
 	},
@@ -210,12 +214,12 @@ LatLngBounds.prototype = {
 		bounds = toLatLngBounds(bounds);
 
 		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2 = bounds.getSouthWest(),
-		    ne2 = bounds.getNorthEast(),
+		ne = this._northEast,
+		sw2 = bounds.getSouthWest(),
+		ne2 = bounds.getNorthEast(),
 
-		    latOverlaps = (ne2.lat > sw.lat) && (sw2.lat < ne.lat),
-		    lngOverlaps = (ne2.lng > sw.lng) && (sw2.lng < ne.lng);
+		latOverlaps = (ne2.lat > sw.lat) && (sw2.lat < ne.lat),
+		lngOverlaps = (ne2.lng > sw.lng) && (sw2.lng < ne.lng);
 
 		return latOverlaps && lngOverlaps;
 	},
@@ -229,12 +233,14 @@ LatLngBounds.prototype = {
 	// @method equals(otherBounds: LatLngBounds, maxMargin?: Number): Boolean
 	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
 	equals: function (bounds, maxMargin) {
-		if (!bounds) { return false; }
+		if (!bounds) {
+			return false;
+		}
 
 		bounds = toLatLngBounds(bounds);
 
 		return this._southWest.equals(bounds.getSouthWest(), maxMargin) &&
-		       this._northEast.equals(bounds.getNorthEast(), maxMargin);
+			this._northEast.equals(bounds.getNorthEast(), maxMargin);
 	},
 
 	// @method isValid(): Boolean
@@ -258,3 +264,15 @@ export function toLatLngBounds(a, b) {
 	}
 	return new LatLngBounds(a, b);
 }
+
+
+// @method toBounds(sizeInMeters: Number): LatLngBounds
+// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
+LatLng.prototype.toBounds = function (sizeInMeters) {
+	var latAccuracy = 180 * sizeInMeters / 40075017,
+	lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
+
+	return toLatLngBounds(
+		[this.lat - latAccuracy, this.lng - lngAccuracy],
+		[this.lat + latAccuracy, this.lng + lngAccuracy]);
+};
