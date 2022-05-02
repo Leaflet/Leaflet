@@ -22,7 +22,7 @@
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
     "leafdoc": "^2.3.0",
-    "mocha": "^9.2.2",
+    "mocha": "^10.0.0",
     "prosthetic-hand": "^1.4.0",
     "rollup": "^2.70.2",
     "rollup-plugin-git-version": "^0.3.1",
