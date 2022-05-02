@@ -16,7 +16,7 @@ The main place for all important Leaflet-related news, tutorials, tips and devel
 		{{ post.date | date_to_string }}
 	</div>
 	<div class="post-info">
-		<h3 class="post-title"><a href="{{ post.url | replace_first: '/', '' }}">{{ post.title }}</a></h3>
+		<h3 class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
 		<p>{{ post.description }} <span class="quiet">&hellip;</span></p>
 	</div>
 </div>

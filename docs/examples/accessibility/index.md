@@ -26,7 +26,7 @@ When using markers,
 it is vital to ensure each has a unique and descriptive
 [`alt`](/reference.html#marker-alt)
 or
-[`title`](/reference.html#marker-alt):
+[`title`](/reference.html#marker-title):
 
 <pre><code class="javascript">var marker = L.marker([50.4501, 30.5234],
   {alt: 'Kyiv'}).addTo(map) // "Kyiv" is the <a href="https://www.w3.org/TR/accname-1.1/#dfn-accessible-name"><em>accessible name</em></a> of this marker
@@ -39,7 +39,7 @@ users:
 {% include frame.html url="example.html" width=600 height=400 %}
 
 In the case of `divIcon`s,
-[custom HTML](reference.html#divicon-html)
+[custom HTML](/reference.html#divicon-html)
 can otherwise provide a visual or non-visual label.
 
 ### Test your maps
@@ -85,7 +85,7 @@ polyfill:
 
 ### Utilizing plugins
 
-[Plugins](plugins.html)
+[Plugins](/plugins.html)
 can enhance the experience for your users,
 but can also degrade it in some cases.
 Therefore it is important that you

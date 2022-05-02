@@ -32,12 +32,12 @@ title: Layers Control Tutorial
 	};
 
 	var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
-	var crownHill = L.marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.'),
-	    rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.');
+	var crownHill = L.marker([39.75, -105.09]).bindPopup('This is Crown Hill Park.');
+	var rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.');
 
 	var parks = L.layerGroup([crownHill, rubyHill]);
 
 	var satellite = L.tileLayer(mbUrl, {id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
-	layerControl.addBaseLayer(satellite, "Satellite");
-	layerControl.addOverlay(parks, "Parks");
+	layerControl.addBaseLayer(satellite, 'Satellite');
+	layerControl.addOverlay(parks, 'Parks');
 </script>
