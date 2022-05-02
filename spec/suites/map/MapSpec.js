@@ -278,14 +278,14 @@ describe("Map", function () {
 				expect(map.getZoom()).to.be(10);
 			});
 
-			it("overwrites zoom passed as map option", function () {
+			it("does not overwrite zoom passed as map option", function () {
 				var map = L.map(document.createElement("div"), {zoom: 13});
 				map.setView([0, 0]);
 				map.setZoom(15);
 				var zoom = map.getZoom();
 
 				map.remove(); // clean up
-				expect(zoom).to.be(15);
+				expect(zoom).to.be(13);
 			});
 		});
 	});
