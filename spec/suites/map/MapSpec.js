@@ -279,12 +279,12 @@ describe("Map", function () {
 			});
 
 			it("does not overwrite zoom passed as map option", function () {
-				var map = L.map(document.createElement("div"), {zoom: 13});
-				map.setView([0, 0]);
-				map.setZoom(15);
-				var zoom = map.getZoom();
+				var map2 = L.map(document.createElement("div"), {zoom: 13});
+				map2.setView([0, 0]);
+				map2.setZoom(15);
+				var zoom = map2.getZoom();
 
-				map.remove(); // clean up
+				map2.remove(); // clean up
 				expect(zoom).to.be(13);
 			});
 		});
@@ -316,7 +316,7 @@ describe("Map", function () {
 		});
 
 		it("pass lats and keep specified latlang in view at high zoom fails", function () {
-			map.setZoomAround([5, 5], 18); // usually fails around 9 zoom level
+			map.setZoomAround([5, 5], 12); // usually fails around 9 zoom level
 
 			expect(map.getBounds().contains([5, 5])).to.be(false);
 		});
@@ -472,6 +472,112 @@ describe("Map", function () {
 			map.off = sinon.spy();
 			map.setMaxBounds(bounds, {animate: false});
 			expect(map.off.called).not.to.be.ok();
+		});
+	});
+
+	describe("setMinZoom and #setMaxZoom", function () {
+		describe("when map is not loaded", function () {
+			it("change min and max zoom but not zoom", function () {
+				map.setZoom(2);
+				map.setMinZoom(3);
+
+				expect(map.getZoom()).to.eql(2);
+				expect(map.getMinZoom()).to.eql(3);
+
+				map.setMaxZoom(7);
+
+				expect(map.getZoom()).to.eql(2);
+				expect(map.getMaxZoom()).to.eql(7);
+			});
+
+			it("do not fire 'zoomlevelschange'", function () {
+				var spy = sinon.spy();
+				map.on("zoomlevelschange", spy);
+
+				map.setZoom(5);
+				map.setMinZoom(3);
+				map.setMaxZoom(7);
+
+				expect(map.getZoom()).to.eql(5);
+				expect(map.getMinZoom()).to.eql(3);
+				expect(map.getMaxZoom()).to.eql(7);
+
+				expect(spy.called).to.not.be.ok();
+			});
+		});
+
+		describe("when map is loaded", function () {
+			var spy;
+
+			beforeEach(function () {
+				map.setView([0, 0], 4); // loads map
+
+				spy = sinon.spy();
+				map.on("zoomlevelschange", spy);
+			});
+
+			it("do not fire 'zoomlevelschange' if zoom level did not change", function () {
+				map.setMinZoom(2);
+				map.setMaxZoom(7);
+				
+				expect(map.getZoom()).to.eql(4);
+				expect(map.getMinZoom()).to.eql(2);
+				expect(map.getMaxZoom()).to.eql(7);
+				expect(spy.calledTwice).to.be.ok();
+
+				var postSpy = sinon.spy();
+				map.on("zoomlevelschange", postSpy);
+
+				map.setMinZoom(2);
+				map.setMaxZoom(7);
+
+				expect(postSpy.called).to.not.be.ok();
+			});
+
+			it("fire 'zoomlevelschange' but do not change zoom if max/min zoom is less/more current zoom", function () {
+				map.setMinZoom(2);
+				map.setMaxZoom(7);
+				
+				expect(map.getZoom()).to.eql(4);
+				expect(map.getMinZoom()).to.eql(2);
+				expect(map.getMaxZoom()).to.eql(7);
+				expect(spy.calledTwice).to.be.ok();
+			});
+
+			// unable to meet conditions to change zoom; can't change zoom if map is loaded due to setView
+			it.skip("fire 'zoomlevelschange' and change zoom if max/min zoom is more/less current zoom", function () {
+				map.setMinZoom(5);
+
+				expect(map.getZoom()).to.eql(5);
+				expect(map.getMinZoom()).to.eql(5);
+				expect(spy.called).to.be.ok();
+
+				map.setZoom(8);
+				map.setMaxZoom(7);
+				
+				expect(map.getZoom()).to.eql(7);
+				expect(map.getMaxZoom()).to.eql(7);
+				expect(spy.calledTwice).to.be.ok();
+			});
+		});
+
+		it("reset min/max zoom if set to undefined or missing param", function () {
+			map.setMinZoom(undefined);
+			map.setMaxZoom();
+
+			expect(map.options.minZoom).to.be(undefined);
+			expect(map.options.maxZoom).to.be(undefined);
+
+			expect(map.getMinZoom()).to.be(0); // min layer zoom used instead
+			expect(map.getMaxZoom()).to.be(0); // max layer zoom used instead
+		});
+
+		it("allow infinity to be passed", function () {
+			map.setMinZoom(Infinity);
+			map.setMaxZoom(Infinity);
+
+			expect(map.getMinZoom()).to.be(Infinity);
+			expect(map.getMaxZoom()).to.be(Infinity);
 		});
 	});
 
