@@ -519,7 +519,7 @@ describe("Map", function () {
 			it("do not fire 'zoomlevelschange' if zoom level did not change", function () {
 				map.setMinZoom(2);
 				map.setMaxZoom(7);
-				
+
 				expect(map.getZoom()).to.eql(4);
 				expect(map.getMinZoom()).to.eql(2);
 				expect(map.getMaxZoom()).to.eql(7);
@@ -537,7 +537,7 @@ describe("Map", function () {
 			it("fire 'zoomlevelschange' but do not change zoom if max/min zoom is less/more current zoom", function () {
 				map.setMinZoom(2);
 				map.setMaxZoom(7);
-				
+
 				expect(map.getZoom()).to.eql(4);
 				expect(map.getMinZoom()).to.eql(2);
 				expect(map.getMaxZoom()).to.eql(7);
@@ -554,7 +554,7 @@ describe("Map", function () {
 
 				map.setZoom(8);
 				map.setMaxZoom(7);
-				
+
 				expect(map.getZoom()).to.eql(7);
 				expect(map.getMaxZoom()).to.eql(7);
 				expect(spy.calledTwice).to.be.ok();
