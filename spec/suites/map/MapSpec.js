@@ -569,7 +569,7 @@ describe("Map", function () {
 			expect(map.options.maxZoom).to.be(undefined);
 
 			expect(map.getMinZoom()).to.be(0); // min layer zoom used instead
-			expect(map.getMaxZoom()).to.be(0); // max layer zoom used instead
+			expect(map.getMaxZoom()).to.be(Infinity); // max layer zoom used instead
 		});
 
 		it("allow infinity to be passed", function () {
