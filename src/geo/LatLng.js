@@ -29,6 +29,25 @@ import {_checkNumber} from '../core/Util';
  */
 
 export function LatLng(lat, lng, alt) {
+	if (lat instanceof LatLng) {
+		return lat;
+	}
+	if (Util.isArray(lat) && typeof lat[0] !== 'object') {
+		if (lat.length === 3) {
+			return new LatLng(lat[0], lat[1], lat[2]);
+		}
+		if (lat.length === 2) {
+			return new LatLng(lat[0], lat[1]);
+		}
+	}
+	if (typeof lat === 'object' && 'lat' in lat) {
+		var _lng = 'lng' in lat ? lat.lng : lat.lon;
+		if ('alt' in lat) {
+			return new LatLng(lat.lat, _lng, lat.alt);
+		}
+		return new LatLng(lat.lat, _lng);
+	}
+
 	// @property lat: Number
 	// Latitude in degrees
 	this.lat = _checkNumber(lat);
@@ -108,27 +127,9 @@ LatLng.prototype = {
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 
-export function toLatLng(a, b, c) {
-	if (a instanceof LatLng) {
-		return a;
-	}
-	if (Util.isArray(a) && typeof a[0] !== 'object') {
-		if (a.length === 3) {
-			return new LatLng(a[0], a[1], a[2]);
-		}
-		if (a.length === 2) {
-			return new LatLng(a[0], a[1]);
-		}
-	}
-	if (typeof a === 'object' && 'lat' in a) {
-		var lng = 'lng' in a ? a.lng : a.lon;
-		if ('alt' in a) {
-			return new LatLng(a.lat, lng, a.alt);
-		}
-		return new LatLng(a.lat, lng);
-	}
+export function toLatLng(lat, lng, alt) {
 	if (arguments.length === 3) {
-		return new LatLng(a, b, c);
+		return new LatLng(lat, lng, alt);
 	}
-	return new LatLng(a, b);
+	return new LatLng(lat, lng);
 }

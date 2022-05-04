@@ -25,6 +25,16 @@ import {isArray, formatNum, _checkNumber} from '../core/Util';
  */
 
 export function Point(x, y, round) {
+	if (x instanceof Point) {
+		return x;
+	}
+	if (isArray(x)) {
+		return new Point(x[0], x[1]);
+	}
+	if (typeof x === 'object' && 'x' in x && 'y' in x) {
+		return new Point(x.x, x.y);
+	}
+
 	// @property x: Number; The `x` coordinate of the point
 	x = _checkNumber(x);
 	this.x = (round ? Math.round(x) : x);
@@ -209,14 +219,5 @@ Point.prototype = {
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
 export function toPoint(x, y, round) {
-	if (x instanceof Point) {
-		return x;
-	}
-	if (isArray(x)) {
-		return new Point(x[0], x[1]);
-	}
-	if (typeof x === 'object' && 'x' in x && 'y' in x) {
-		return new Point(x.x, x.y);
-	}
 	return new Point(x, y, round);
 }

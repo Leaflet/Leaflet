@@ -23,6 +23,10 @@ describe('Bounds', function () {
 			expect(b.min).to.eql(L.point(14, 12));
 			expect(b.max).to.eql(L.point(30, 40));
 		});
+
+		it('class and factory returns the same', function () {
+			expect(new L.Bounds()).to.eql(L.bounds());
+		});
 	});
 
 	describe('#extend', function () {

@@ -28,6 +28,9 @@ describe('LatLngBounds', function () {
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
+		it('class and factory returns the same', function () {
+			expect(new L.LatLngBounds()).to.eql(L.latLngBounds());
+		});
 	});
 
 	describe('#extend', function () {

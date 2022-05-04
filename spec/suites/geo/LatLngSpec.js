@@ -61,6 +61,10 @@ describe('LatLng', function () {
 			var b = L.latLng(-25, -74, -50);
 			expect(b.alt).to.eql(-50);
 		});
+
+		it('class and factory returns the same', function () {
+			expect(new L.LatLng([0, 0])).to.eql(L.latLng([0, 0]));
+		});
 	});
 
 	describe('#equals', function () {

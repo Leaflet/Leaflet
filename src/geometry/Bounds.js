@@ -25,10 +25,13 @@ import {Point, toPoint} from './Point';
  * can't be added to it with the `include` function.
  */
 
-export function Bounds(a, b) {
-	if (!a) { return; }
+export function Bounds(corner1, corner2) {
+	if (corner1 instanceof Bounds) {
+		return corner1;
+	}
+	if (!corner1) { return; }
 
-	var points = b ? [a, b] : a;
+	var points = corner2 ? [corner1, corner2] : corner1;
 
 	for (var i = 0, len = points.length; i < len; i++) {
 		this.extend(points[i]);
@@ -166,8 +169,5 @@ Bounds.prototype = {
 // @factory L.bounds(points: Point[])
 // Creates a Bounds object from the given array of points.
 export function toBounds(a, b) {
-	if (!a || a instanceof Bounds) {
-		return a;
-	}
 	return new Bounds(a, b);
 }

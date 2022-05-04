@@ -131,5 +131,9 @@ describe("Point", function () {
 			// expect(L.point).withArgs('0x10', 0).to.throwError();
 			// expect(L.point).withArgs('1e5', 0).to.throwError();
 		});
+
+		it('class and factory returns the same', function () {
+			expect(new L.Point([0, 0])).to.eql(L.point([0, 0]));
+		});
 	});
 });

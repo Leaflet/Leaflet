@@ -33,6 +33,10 @@ import {LatLng, toLatLng} from './LatLng';
 export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
 	if (!corner1) { return; }
 
+	if (corner1 instanceof LatLngBounds) {
+		return corner1;
+	}
+
 	var latlngs = corner2 ? [corner1, corner2] : corner1;
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
@@ -249,9 +253,6 @@ LatLngBounds.prototype = {
 // @alternative
 // @factory L.latLngBounds(latlngs: LatLng[])
 // Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
-export function toLatLngBounds(a, b) {
-	if (a instanceof LatLngBounds) {
-		return a;
-	}
-	return new LatLngBounds(a, b);
+export function toLatLngBounds(corner1, corner2) {
+	return new LatLngBounds(corner1, corner2);
 }
