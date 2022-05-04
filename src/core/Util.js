@@ -245,7 +245,7 @@ function isNumeric(str) { // https://stackoverflow.com/a/175787/2520247
 }
 
 // keep it private intentionally, because such function implementation
-// heavily depends on it's particular application and unable to suit all the cases
+// heavily depends on its particular application and unable to suit all the cases
 export function _checkNumber(a) {
 	if (typeof a === 'string' && isNumeric(a)) {
 		a = +a;
