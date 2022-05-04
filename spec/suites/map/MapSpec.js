@@ -203,6 +203,34 @@ describe("Map", function () {
 				done();
 			}, 100);
 		});
+
+		it('checks and parses options to numbers', function () {
+			function validateNumberOption(optionName){
+				var tempContainer;
+				var tempMap;
+				expect(function(){
+					tempContainer = document.createElement("div");
+					var options = {};
+					options[optionName] = "1";
+					tempMap = L.map(tempContainer, options);
+				}).to.not.throwError();
+
+				expect(typeof tempMap.options[optionName] === 'number').to.be.ok();
+
+				expect(function(){
+					tempContainer = document.createElement("div");
+					var options = {};
+					options[optionName] = "abc";
+					tempMap = L.map(tempContainer, options);
+				}).to.throwError();
+			}
+
+			validateNumberOption("maxZoom");
+			validateNumberOption("minZoom");
+			validateNumberOption("zoomSnap");
+			validateNumberOption("zoomDelta");
+			validateNumberOption("zoom");
+		});
 	});
 
 	describe("#getBounds", function () {

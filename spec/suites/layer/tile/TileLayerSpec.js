@@ -507,4 +507,25 @@ describe('TileLayer', function () {
 			}, 250);
 		});
 	});
+
+	it('checks and parses options to numbers', function () {
+		function validateNumberOption(optionName){
+			var tileLayer;
+			expect(function(){
+				var options = {};
+				options[optionName] = "1";
+				tileLayer = L.tileLayer("",options);
+			}).to.not.throwError();
+
+			expect(typeof tileLayer.options[optionName] === 'number').to.be.ok();
+
+			expect(function(){
+				var options = {};
+				options[optionName] = "abc";
+				tileLayer = L.tileLayer("",options);
+			}).to.throwError();
+		}
+
+		validateNumberOption("zoomOffset");
+	});
 });

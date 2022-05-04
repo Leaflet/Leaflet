@@ -57,6 +57,34 @@
 				});
 			});
 		});
+
+		it('checks and parses radius to number', function () {
+			var layer;
+
+			// initial
+			expect(function(){
+				layer = L.circleMarker([0,0], {radius: '1'});
+			}).to.not.throwError();
+
+			expect(typeof layer.options.radius === 'number').to.be.ok();
+			expect(typeof layer.getRadius() === 'number').to.be.ok();
+
+			expect(function(){
+				layer = L.circleMarker([0,0], {radius: 'abc'});
+			}).to.throwError();
+
+			// setRadius
+			expect(function(){
+				layer.setRadius('1');
+			}).to.not.throwError();
+
+			expect(typeof layer.options.radius === 'number').to.be.ok();
+			expect(typeof layer.getRadius() === 'number').to.be.ok();
+
+			expect(function(){
+				layer.setRadius('abc');
+			}).to.throwError();
+		});
 	});
 
 	describe("#setLatLng", function () {

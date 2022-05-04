@@ -42,7 +42,7 @@ export var Circle = CircleMarker.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
 	setRadius: function (radius) {
-		this._mRadius = radius;
+		this._mRadius = Util._checkNumber(radius);
 		return this.redraw();
 	},
 

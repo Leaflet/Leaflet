@@ -9,6 +9,7 @@ import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
+import {_parseOptionToNumber} from '../core/Util';
 
 /*
  * @class Map
@@ -125,6 +126,12 @@ export var Map = Evented.extend({
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
 		options = Util.setOptions(this, options);
+
+		_parseOptionToNumber(this.options, "maxZoom");
+		_parseOptionToNumber(this.options, "minZoom");
+		_parseOptionToNumber(this.options, "zoomSnap");
+		_parseOptionToNumber(this.options, "zoomDelta");
+		_parseOptionToNumber(this.options, "zoom");
 
 		// Make sure to assign internal flags at the beginning,
 		// to avoid inconsistent state in some edge cases.

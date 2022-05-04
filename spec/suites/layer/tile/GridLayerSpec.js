@@ -361,6 +361,30 @@ describe('GridLayer', function () {
 			grid.redraw();
 			expect(grid._tileZoom).to.be(11);
 		});
+
+		it('checks and parses options to numbers', function () {
+			function validateNumberOption(optionName){
+				var gridLayer;
+				expect(function(){
+					var options = {};
+					options[optionName] = "1";
+					gridLayer = L.gridLayer(options);
+				}).to.not.throwError();
+
+				expect(typeof gridLayer.options[optionName] === 'number').to.be.ok();
+
+				expect(function(){
+					var options = {};
+					options[optionName] = "abc";
+					gridLayer = L.gridLayer(options);
+				}).to.throwError();
+			}
+
+			validateNumberOption("minZoom");
+			validateNumberOption("maxZoom");
+			validateNumberOption("maxNativeZoom");
+			validateNumberOption("minNativeZoom");
+		});
 	});
 
 	describe("number of 256px tiles loaded in synchronous non-animated grid @800x600px", function () {
