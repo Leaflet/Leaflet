@@ -257,8 +257,8 @@ export function _checkNumber(a) {
 }
 
 // makes sure that a option is a number
-export function _parseOptionToNumber(options, optionName){
-	if(options && options[optionName]){
+export function _parseOptionToNumber(options, optionName) {
+	if (options && options[optionName]) {
 		options[optionName] = _checkNumber(options[optionName]);
 	}
 }

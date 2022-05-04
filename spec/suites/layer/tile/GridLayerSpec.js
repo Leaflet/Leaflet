@@ -363,9 +363,9 @@ describe('GridLayer', function () {
 		});
 
 		it('checks and parses options to numbers', function () {
-			function validateNumberOption(optionName){
+			function validateNumberOption(optionName) {
 				var gridLayer;
-				expect(function(){
+				expect(function () {
 					var options = {};
 					options[optionName] = "1";
 					gridLayer = L.gridLayer(options);
@@ -373,7 +373,7 @@ describe('GridLayer', function () {
 
 				expect(typeof gridLayer.options[optionName] === 'number').to.be.ok();
 
-				expect(function(){
+				expect(function () {
 					var options = {};
 					options[optionName] = "abc";
 					gridLayer = L.gridLayer(options);

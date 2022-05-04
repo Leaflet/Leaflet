@@ -282,7 +282,7 @@ export var TileLayer = GridLayer.extend({
 	},
 
 	_validateOptions: function () {
-		_parseOptionToNumber(this.options,'zoomOffset');
+		_parseOptionToNumber(this.options, 'zoomOffset');
 		return GridLayer.prototype._validateOptions.call(this);
 	}
 });

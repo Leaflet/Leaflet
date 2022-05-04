@@ -917,11 +917,11 @@ export var GridLayer = Layer.extend({
 		return true;
 	},
 
-	_validateOptions: function() {
-		_parseOptionToNumber(this.options,'minZoom');
-		_parseOptionToNumber(this.options,'maxZoom');
-		_parseOptionToNumber(this.options,'maxNativeZoom');
-		_parseOptionToNumber(this.options,'minNativeZoom');
+	_validateOptions: function () {
+		_parseOptionToNumber(this.options, 'minZoom');
+		_parseOptionToNumber(this.options, 'maxZoom');
+		_parseOptionToNumber(this.options, 'maxNativeZoom');
+		_parseOptionToNumber(this.options, 'minNativeZoom');
 	},
 });
 

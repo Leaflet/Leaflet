@@ -509,20 +509,20 @@ describe('TileLayer', function () {
 	});
 
 	it('checks and parses options to numbers', function () {
-		function validateNumberOption(optionName){
+		function validateNumberOption(optionName) {
 			var tileLayer;
-			expect(function(){
+			expect(function () {
 				var options = {};
 				options[optionName] = "1";
-				tileLayer = L.tileLayer("",options);
+				tileLayer = L.tileLayer("", options);
 			}).to.not.throwError();
 
 			expect(typeof tileLayer.options[optionName] === 'number').to.be.ok();
 
-			expect(function(){
+			expect(function () {
 				var options = {};
 				options[optionName] = "abc";
-				tileLayer = L.tileLayer("",options);
+				tileLayer = L.tileLayer("", options);
 			}).to.throwError();
 		}
 

@@ -205,10 +205,10 @@ describe("Map", function () {
 		});
 
 		it('checks and parses options to numbers', function () {
-			function validateNumberOption(optionName){
+			function validateNumberOption(optionName) {
 				var tempContainer;
 				var tempMap;
-				expect(function(){
+				expect(function () {
 					tempContainer = document.createElement("div");
 					var options = {};
 					options[optionName] = "1";
@@ -217,7 +217,7 @@ describe("Map", function () {
 
 				expect(typeof tempMap.options[optionName] === 'number').to.be.ok();
 
-				expect(function(){
+				expect(function () {
 					tempContainer = document.createElement("div");
 					var options = {};
 					options[optionName] = "abc";

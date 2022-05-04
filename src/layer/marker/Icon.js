@@ -130,7 +130,7 @@ export var Icon = Class.extend({
 		}
 
 		var size = sizeOption ? point(sizeOption) : null,
-			_anchorPoint = name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+		_anchorPoint = name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 				size && size.divideBy(2, true),
 		    anchor = _anchorPoint ? point(_anchorPoint) : null;
 
