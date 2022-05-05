@@ -177,7 +177,6 @@ export var Layers = Control.extend({
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
-
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(container);
 
@@ -188,6 +187,7 @@ export var Layers = Control.extend({
 		link.href = '#';
 		link.title = 'Layers';
 		link.setAttribute('role', 'button');
+
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
 		DomEvent.on(link, 'focus',
 			() => {
@@ -199,8 +199,14 @@ export var Layers = Control.extend({
 				keyboardFocus = false;
 			}
 		);
-		DomEvent.on(link, 'keydown', () => {
+		DomEvent.on(container, 'click', () => {
 			if (keyboardFocus) {
+				this.expand();
+				link.setAttribute('aria-expanded', 'true');
+			}
+		});
+		DomEvent.on(link, 'keydown', (e) => {
+			if (keyboardFocus && e.key === 'Enter') {
 				this.expand();
 				link.setAttribute('aria-expanded', 'true');
 			}
