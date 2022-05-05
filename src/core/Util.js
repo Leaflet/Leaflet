@@ -252,10 +252,10 @@ export function castNumber(a) {
 	if (typeof a === 'string' && isNumeric(a)) {
 		a = +a;
 	}
-	if ((typeof a === 'number' || a instanceof Number) && (isFinite(a) || a === Infinity)) {
+	if ((typeof a === 'number' || a instanceof Number) && (isFinite(a) || a === Infinity || a === -Infinity)) {
 		return a;
 	}
-	throw new Error('Number expected');
+	throw new Error('Number expected. Value: \'' + a + '\'');
 }
 
 // makes sure that a option is a number
@@ -264,7 +264,7 @@ export function _castOptionToNumber(options, optionName) {
 		try {
 			options[optionName] = castNumber(options[optionName]);
 		} catch (e) {
-			throw new Error('Number expected for \''+optionName+'\'');
+			throw new Error('Number expected for \'' + optionName + '\'. Value: \'' + options[optionName] + '\'');
 		}
 	}
 }

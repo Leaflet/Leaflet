@@ -130,6 +130,8 @@ describe("Point", function () {
 			// expect(L.point).withArgs('1e5', 0).to.throwError();
 			// expect(L.point).withArgs(Infinity, 0).to.throwError();
 			// expect(L.point).withArgs(-Infinity, 0).to.throwError();
+			expect(L.point).withArgs(Infinity, 0).to.not.throwError();
+			expect(L.point).withArgs(-Infinity, 0).to.not.throwError();
 		});
 
 		it('class and factory returns the same', function () {

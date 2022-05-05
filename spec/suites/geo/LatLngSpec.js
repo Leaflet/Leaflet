@@ -43,6 +43,8 @@ describe('LatLng', function () {
 			// expect(L.latLng).withArgs('0010', 0).to.throwError();
 			// expect(L.latLng).withArgs('0x10', 0).to.throwError();
 			// expect(L.latLng).withArgs('1e5', 0).to.throwError();
+			expect(L.latLng).withArgs(Infinity, 0).to.not.throwError();
+			expect(L.latLng).withArgs(-Infinity, 0).to.not.throwError();
 		});
 
 		it('does not set altitude if not specified', function () {
