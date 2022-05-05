@@ -184,15 +184,34 @@ export var Layers = Control.extend({
 		var section = this._section = DomUtil.create('section', className + '-list');
 
 		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
+		var keyboardFocus = false;
 		link.href = '#';
 		link.title = 'Layers';
 		link.setAttribute('role', 'button');
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
-		DomEvent.on(link, 'focus', this.expand, this);
+		DomEvent.on(link, 'focus',
+			() => {
+				keyboardFocus = true;
+			}
+			, this);
+		DomEvent.on(link, 'focusout',
+			() => {
+				keyboardFocus = false;
+			}
+		);
+		DomEvent.on(link, 'keydown', () => {
+			if (keyboardFocus) {
+				this.expand();
+				link.setAttribute('aria-expanded', 'true');
+			}
+		});
 		link.setAttribute('aria-expanded', 'false');
 
 		if (collapsed) {
-			this._map.on('click', this.collapse, this);
+			this._map.on('click', () => {
+				this.collapse();
+				link.setAttribute('aria-expanded', 'false');
+			}, this);
 
 			DomEvent.on(container, {
 				mouseenter: function () {
@@ -207,14 +226,6 @@ export var Layers = Control.extend({
 					this.collapse();
 					link.setAttribute('aria-expanded', 'false');
 				},
-				focusin: function () {
-					link.setAttribute('aria-expanded', 'true');
-				},
-				focusout: function () {
-					this.collapse();
-					link.setAttribute('aria-expanded', 'false');
-				}
-
 			}, this);
 		}
 
