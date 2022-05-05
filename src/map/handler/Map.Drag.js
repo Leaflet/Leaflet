@@ -198,8 +198,15 @@ export var Drag = Handler.extend({
 			this._prunePositions(+new Date());
 
 			var direction = this._lastPos.subtract(this._positions[0]),
-			    duration = (this._lastTime - this._times[0]) / 1000,
-			    ease = options.easeLinearity,
+			    duration = (this._lastTime - this._times[0]) / 1000;
+
+			// if duration is 0, then the following calculations are retuning NaN
+			if (duration <= 0) {
+				map.fire('moveend');
+				return;
+			}
+
+			var ease = options.easeLinearity,
 
 			    speedVector = direction.multiplyBy(ease / duration),
 			    speed = speedVector.distanceTo([0, 0]),

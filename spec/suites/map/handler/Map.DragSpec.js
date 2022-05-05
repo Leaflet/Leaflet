@@ -299,6 +299,29 @@ describe("Map.Drag", function () {
 			mouse.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 		});
+
+		it("don't throw an error if map is dragged to fast and duration is 0", function (done) {
+			map = new MyMap(container, {
+				dragging: true,
+				inertia: true
+			});
+			map.setView([0, 0], 1);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+			mouse.moveTo(200, 200, 0)
+				.down()
+				.moveBy(20, 0, 0)
+				.moveBy(20, 0, 0)
+				.moveBy(20, 0, 0)
+				.down()
+				.wait(100).up();
+		});
 	});
 
 	describe("touch events", function () {
