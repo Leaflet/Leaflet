@@ -642,6 +642,81 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#getContainer", function () {
+		it("return container object", function () {
+			expect(map.getContainer()._leaflet_id).to.be.ok();
+		});
+
+		it("return undefined on empty container id", function () {
+			var container2 = createContainer()
+			var map2 = L.map(container2);
+			map2.remove();
+
+			expect(map2.getContainer()._leaflet_id).to.eql(undefined);
+		})
+	});
+
+	describe("#getSize", function () {
+		it("return map size in pixels", function () {
+			expect(map.getSize()).to.eql(L.point([400, 400]));
+		});
+
+		it("return map size if 0 pixels", function () {
+			container.style.width = "0px";
+			container.style.height = "0px";
+
+			expect(map.getSize()).to.eql(L.point([0, 0]));
+		});
+
+		it("return new pixels on change", function () {
+			container.style.width = "300px";
+
+			expect(map.getSize()).to.eql(L.point([300, 400]));
+		});
+
+		it("return clone of size object from map", function () {
+			expect(map.getSize() === map._size).to.eql(false);
+		});
+
+		it("return previous size on empty map", function () {
+			var container2 = createContainer();
+			var map2 = L.map(container2);
+		
+			map2.remove();
+
+			expect(map2.getSize()).to.eql(L.point([400, 400]));
+		});
+	});
+
+	describe("#getPixelBounds", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 0);
+		});
+
+		it("return map bounds in pixels", function () {
+			expect(map.getPixelBounds()).to.eql(L.bounds([-72, -72], [328, 328]));
+		});
+
+		it("return changed map bounds if really zoomed in", function () {
+			map.setZoom(20);
+
+			expect(map.getPixelBounds()).to.eql(L.bounds([134217528, 134217528], [134217928, 134217928]));
+		});
+
+		it("return new pixels on view change", function () {
+			map.setView([50, 50], 5);
+
+			expect(map.getPixelBounds()).to.eql(L.bounds([5034, 2578], [5434, 2978]));
+		});
+
+		it("throw error if center and zoom were not set", function () {
+			var container2 = createContainer();
+			var map2 = L.map(container2);
+
+			expect(map2.getPixelBounds).to.throwException();
+		});
+	});
+
 	describe("#hasLayer", function () {
 		it("throws when called without proper argument", function () {
 			var hasLayer = L.Util.bind(map.hasLayer, map);
