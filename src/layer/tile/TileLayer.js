@@ -3,7 +3,7 @@ import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
 import * as DomUtil from '../../dom/DomUtil';
-import {_parseOptionToNumber} from '../../core/Util';
+import {_castOptionToNumber} from '../../core/Util';
 
 
 /*
@@ -282,7 +282,7 @@ export var TileLayer = GridLayer.extend({
 	},
 
 	_validateOptions: function () {
-		_parseOptionToNumber(this.options, 'zoomOffset');
+		_castOptionToNumber(this.options, 'zoomOffset');
 		return GridLayer.prototype._validateOptions.call(this);
 	}
 });

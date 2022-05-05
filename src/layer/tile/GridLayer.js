@@ -5,7 +5,7 @@ import * as DomUtil from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
-import {_parseOptionToNumber} from '../../core/Util';
+import {_castOptionToNumber} from '../../core/Util';
 
 /*
  * @class GridLayer
@@ -918,10 +918,10 @@ export var GridLayer = Layer.extend({
 	},
 
 	_validateOptions: function () {
-		_parseOptionToNumber(this.options, 'minZoom');
-		_parseOptionToNumber(this.options, 'maxZoom');
-		_parseOptionToNumber(this.options, 'maxNativeZoom');
-		_parseOptionToNumber(this.options, 'minNativeZoom');
+		_castOptionToNumber(this.options, 'minZoom');
+		_castOptionToNumber(this.options, 'maxZoom');
+		_castOptionToNumber(this.options, 'maxNativeZoom');
+		_castOptionToNumber(this.options, 'minNativeZoom');
 	},
 });
 

@@ -27,7 +27,7 @@ export var CircleMarker = Path.extend({
 	initialize: function (latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
-		this._radius = this.options.radius = Util._checkNumber(this.options.radius);
+		this._radius = this.options.radius = Util.castNumber(this.options.radius);
 	},
 
 	// @method setLatLng(latLng: LatLng): this
@@ -51,7 +51,7 @@ export var CircleMarker = Path.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius: function (radius) {
-		this.options.radius = this._radius = Util._checkNumber(radius);
+		this.options.radius = this._radius = Util.castNumber(radius);
 		return this.redraw();
 	},
 

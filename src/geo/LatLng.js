@@ -1,7 +1,7 @@
 import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
 import {toLatLngBounds} from './LatLngBounds';
-import {_checkNumber} from '../core/Util';
+import {castNumber} from '../core/Util';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -50,16 +50,16 @@ export function LatLng(lat, lng, alt) {
 
 	// @property lat: Number
 	// Latitude in degrees
-	this.lat = _checkNumber(lat);
+	this.lat = castNumber(lat);
 
 	// @property lng: Number
 	// Longitude in degrees
-	this.lng = _checkNumber(lng);
+	this.lng = castNumber(lng);
 
 	// @property alt: Number
 	// Altitude in meters (optional)
 	if (arguments.length === 3 && typeof alt !== 'undefined') {
-		this.alt = _checkNumber(alt);
+		this.alt = castNumber(alt);
 	}
 }
 

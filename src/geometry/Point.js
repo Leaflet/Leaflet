@@ -1,4 +1,4 @@
-import {isArray, formatNum, _checkNumber} from '../core/Util';
+import {isArray, formatNum, castNumber} from '../core/Util';
 
 /*
  * @class Point
@@ -36,11 +36,11 @@ export function Point(x, y, round) {
 	}
 
 	// @property x: Number; The `x` coordinate of the point
-	x = _checkNumber(x);
+	x = castNumber(x);
 	this.x = (round ? Math.round(x) : x);
 
 	// @property y: Number; The `y` coordinate of the point
-	y = _checkNumber(y);
+	y = castNumber(y);
 	this.y = (round ? Math.round(y) : y);
 }
 

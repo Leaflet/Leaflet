@@ -27,8 +27,6 @@ describe('LatLng', function () {
 		it('throws an error if invalid lat/lng/alt', function () {
 			expect(L.latLng).withArgs(0).to.throwError();
 			expect(L.latLng).withArgs(NaN, 0).to.throwError();
-			expect(L.latLng).withArgs(Infinity, 0).to.throwError();
-			expect(L.latLng).withArgs(-Infinity, 0).to.throwError();
 			expect(L.latLng).withArgs(true, 0).to.throwError();
 			expect(L.latLng).withArgs(false, 0).to.throwError();
 			expect(L.latLng).withArgs(undefined, 0).to.throwError();
@@ -40,6 +38,8 @@ describe('LatLng', function () {
 			expect(L.latLng).withArgs([]).to.throwError();
 			expect(L.latLng).withArgs([50]).to.throwError();
 			// do not throw atm:
+			// expect(L.latLng).withArgs(Infinity, 0).to.throwError();
+			// expect(L.latLng).withArgs(-Infinity, 0).to.throwError();
 			// expect(L.latLng).withArgs('0010', 0).to.throwError();
 			// expect(L.latLng).withArgs('0x10', 0).to.throwError();
 			// expect(L.latLng).withArgs('1e5', 0).to.throwError();

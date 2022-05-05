@@ -244,21 +244,27 @@ function isNumeric(str) { // https://stackoverflow.com/a/175787/2520247
 	return !isNaN(str) && !isNaN(parseFloat(str));
 }
 
-// keep it private intentionally, because such function implementation
-// heavily depends on it's particular application and unable to suit all the cases
-export function _checkNumber(a) {
+// @function castNumber(data: Number|String): Number
+// Makes sure that passed `data` is a number, and returns it.
+// If string is passed - converts it to number trying to avoid coercion pitfalls.
+// Throws error in case of any failure.
+export function castNumber(a) {
 	if (typeof a === 'string' && isNumeric(a)) {
 		a = +a;
 	}
-	if ((typeof a === 'number' || a instanceof Number) && isFinite(a)) {
+	if ((typeof a === 'number' || a instanceof Number) && (isFinite(a) || a === Infinity)) {
 		return a;
 	}
 	throw new Error('Number expected');
 }
 
 // makes sure that a option is a number
-export function _parseOptionToNumber(options, optionName) {
+export function _castOptionToNumber(options, optionName) {
 	if (options && options[optionName]) {
-		options[optionName] = _checkNumber(options[optionName]);
+		try {
+			options[optionName] = castNumber(options[optionName]);
+		} catch (e) {
+			throw new Error('Number expected for \''+optionName+'\'');
+		}
 	}
 }
