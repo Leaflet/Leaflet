@@ -655,6 +655,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	/* Prevent printers from removing background-images of controls. */
 	.leaflet-control {
 		-webkit-print-color-adjust: exact;
-		color-adjust: exact;
+		print-color-adjust: exact;
 		}
 	}

@@ -11,6 +11,7 @@
     "eslint-plugin-script-tags": "^0.5.0",
     "git-rev-sync": "^3.0.2",
     "happen": "~0.3.2",
+    "husky": "^7.0.4",
     "karma": "^6.3.18",
     "karma-chrome-launcher": "^3.1.1",
     "karma-edge-launcher": "^0.4.2",
@@ -22,6 +23,7 @@
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
     "leafdoc": "^2.3.0",
+    "lint-staged": "^12.4.0",
     "mocha": "^9.2.2",
     "prosthetic-hand": "^1.4.0",
     "rollup": "^2.70.2",
@@ -50,7 +52,8 @@
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
     "integrity": "NODE_ENV=release npm run build && node ./build/integrity.js",
     "bundlemon": "bundlemon --subProject js --defaultCompression none && bundlemon --subProject js-gzip --defaultCompression gzip",
-    "serve": "cd docs && bundle exec jekyll serve"
+    "serve": "cd docs && bundle exec jekyll serve",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "ignorePatterns": [
@@ -142,5 +145,8 @@
     "gis",
     "map"
   ],
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "lint-staged": {
+    "*.(js|md)": "eslint --cache --fix"
+  }
 }

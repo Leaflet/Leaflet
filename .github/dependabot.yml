@@ -13,6 +13,8 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: sinon
         update-types: ["version-update:semver-major"]
+      - dependency-name: mocha
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     open-pull-requests-limit: 999
