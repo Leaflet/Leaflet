@@ -334,12 +334,12 @@ describe("Map", function () {
 
 	describe("#getBounds", function () {
 		it("is safe to call from within a moveend callback during initial load (#1027)", function () {
-			var map2 = L.map(document.createElement("div"));
-			map2.on("moveend", function () {
+			var map = L.map(document.createElement("div"));
+			map.on("moveend", function () {
 				map.getBounds();
 			});
-			map2.setView([51.505, -0.09], 13);
-			map2.remove(); // clean up
+			map.setView([51.505, -0.09], 13);
+			map.remove(); // clean up
 		});
 	});
 
