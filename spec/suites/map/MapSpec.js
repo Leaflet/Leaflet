@@ -627,6 +627,68 @@ describe("Map", function () {
 		});
 	});
 
+	describe("createPane", function () {
+		it("create a new pane to mapPane when container not specified", function () {
+			map.createPane('controlPane');
+
+			expect(map.getPane('controlPane').className).to.eql('leaflet-pane leaflet-control-pane');
+		});
+
+		it("create a new pane to container specified", function () {
+			map.createPane('controlPane', map.getPane('tooltipPane'));
+
+			expect(map.getPane('controlPane').parentElement.className).to.eql(
+				'leaflet-pane leaflet-tooltip-pane');
+		});
+
+		it("create a new pane to mapPane when container is invalid", function () {
+			map.createPane('controlPane', undefined);
+
+			expect(map.getPane('controlPane').parentElement.className).to.eql(
+				'leaflet-pane leaflet-map-pane');
+		});
+
+		it("replace same named pane", function () {
+			var overlayPane = map.getPane('overlayPane');
+
+			map.createPane('overlayPane');
+
+			expect(map.getPane('overlayPane')).to.not.be(overlayPane);
+		});
+	});
+
+	describe("#getPane", function () {
+		it("return pane by String", function () {
+			expect(map.getPane('tilePane').className).to.eql('leaflet-pane leaflet-tile-pane');
+		});
+
+		it("return pane by pane", function () {
+
+			expect(map.getPane(map.getPanes()['shadowPane']).className).to.eql(
+				'leaflet-pane leaflet-shadow-pane');
+		});
+
+		it("return empty pane when not found", function () {
+			expect(map.getPane('foo bar')).to.eql(undefined);
+		});
+	});
+
+	describe("#getPanes", function () {
+		it("return all default panes", function () {
+			var keys = Object.keys(map.getPanes());
+
+			expect(keys).to.eql(
+				['mapPane', 'tilePane', 'overlayPane', 'shadowPane', 'markerPane', 'tooltipPane', 'popupPane']);
+		});
+
+		it("return empty pane when map deleted", function () {
+			var map2 = L.map(document.createElement('div'));
+			map2.remove();
+
+			expect(map2.getPanes()).to.eql({});
+		});
+	});
+
 	describe("#getContainer", function () {
 		it("return container object", function () {
 			expect(map.getContainer()._leaflet_id).to.be.ok();
@@ -668,7 +730,7 @@ describe("Map", function () {
 		});
 
 		it("return clone of size object from map", function () {
-			expect(map.getSize() === map._size).to.eql(false);
+			expect(map.getSize()).to.not.be(map._size);
 		});
 
 		it("return previous size on empty map", function () {
