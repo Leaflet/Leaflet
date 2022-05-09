@@ -11,7 +11,7 @@
     "eslint-plugin-script-tags": "^0.5.0",
     "git-rev-sync": "^3.0.2",
     "happen": "~0.3.2",
-    "husky": "^7.0.4",
+    "husky": "^8.0.1",
     "karma": "^6.3.18",
     "karma-chrome-launcher": "^3.1.1",
     "karma-edge-launcher": "^0.4.2",
