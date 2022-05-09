@@ -1832,7 +1832,7 @@ describe("Map", function () {
 		});
 	});
 
-	describe.only("#distance", function () {
+	describe("#distance", function () {
 		it("measure distance in meters", function () {
 			var LA = L.latLng(34.0485672098387, -118.217781922035);
 			var columbus = L.latLng(39.95715687063701, -83.00205705857633);
