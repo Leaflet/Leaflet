@@ -287,20 +287,20 @@ describe("Map", function () {
 			expect(map.getBounds().contains(map.containerPointToLatLng(point))).to.be(true);
 		});
 
-		it("pass latlang as Point and keep point in view at high zoom", function () {
+		it("pass latLng as Point and keep point in view at high zoom", function () {
 			var point = L.point(5, 5);
 			map.setZoomAround(point, 18);
 
 			expect(map.getBounds().contains(map.containerPointToLatLng(point))).to.be(true);
 		});
 
-		it("pass latlang and keep specified latlang in view", function () {
+		it("pass latLng and keep specified latLng in view", function () {
 			map.setZoomAround([5, 5], 5);
 
 			expect(map.getBounds().contains([5, 5])).to.be(true);
 		});
 
-		it("pass lats and keep specified latlang in view at high zoom fails", function () {
+		it("pass latLng and keep specified latLng in view at high zoom fails", function () {
 			map.setZoomAround([5, 5], 12); // usually fails around 9 zoom level
 
 			expect(map.getBounds().contains([5, 5])).to.be(false);
@@ -320,11 +320,11 @@ describe("Map", function () {
 			expect(map.setZoomAround).withArgs([5, 5], undefined).to.throwException();
 		});
 
-		it("throws if latlng is undefined", function () {
+		it("throws if latLng is undefined", function () {
 			expect(map.setZoomAround).withArgs([undefined, undefined], 4).to.throwException();
 		});
 
-		it("does not throw if latlng is infinity", function () {
+		it("does not throw if latLng is infinity", function () {
 			map.setView([5, 5]); // dummy view, value is always eql to expected
 			map.setZoomAround([Infinity, Infinity], 4);
 
@@ -1829,6 +1829,47 @@ describe("Map", function () {
 			expect(function () {
 				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
 			}).to.not.throwException();
+		});
+	});
+
+	describe.only("#distance", function () {
+		it("measure distance in meters", function () {
+			var LA = L.latLng(34.0485672098387, -118.217781922035);
+			var columbus = L.latLng(39.95715687063701, -83.00205705857633);
+
+			expect(map.distance(LA, columbus)).to.be.within(3173910, 3173915);
+		});
+
+		it("accurately measure in small distances", function () {
+			var p1 = L.latLng(40.160857881285416, -83.00841851162649);
+			var p2 = L.latLng(40.16246493902907, -83.008622359483);
+
+			expect(map.distance(p1, p2)).to.be.within(175, 185);
+		});
+
+		it("accurately measure in long distances", function () {
+			var canada = L.latLng(60.01810635103154, -112.19675246283015);
+			var newZeland = L.latLng(-42.36275164460971, 172.39309066597883);
+
+			expect(map.distance(canada, newZeland)).to.be.within(13274700, 13274800);
+		});
+
+		it("throw with undefined values", function () {
+			expect(map.distance).withArgs(undefined, undefined).to.throwException();
+		});
+
+		it("throw with infinity values", function () {
+			expect(map.distance).withArgs(Infinity, Infinity).to.throwException();
+		});
+
+		it("throw with only 1 lat", function () {
+			expect(map.distance).withArgs(20, 50).to.throwException();
+		});
+
+		it("return 0 with 2 same latLng", function () {
+			var p = L.latLng(20, 50);
+
+			expect(map.distance(p, p)).to.eql(0);
 		});
 	});
 });
