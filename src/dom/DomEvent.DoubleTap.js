@@ -46,13 +46,13 @@ export function addDoubleTapListener(obj, handler) {
 
 		// When clicking on an <input>, the browser generates a click on its
 		// <label> (and vice versa) triggering two clicks in quick succession.
-		// This ignores clicks on elements which are a label with a 'ref'
+		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
 		if (e.composedPath) {
 			var path = e.composedPath();
 			if (path.some(function (el) {
-				return el instanceof HTMLLabelElement && el.attributes.ref;
+				return el instanceof HTMLLabelElement && el.attributes.for;
 			}) &&
 				!path.some(function (el) {
 					return (
