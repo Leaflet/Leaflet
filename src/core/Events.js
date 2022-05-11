@@ -165,9 +165,7 @@ export var Events = {
 				this._events[type] = listeners = listeners.slice();
 			}
 			listeners.splice(index, 1);
-			return;
 		}
-		console.warn('listener not found');
 	},
 
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
