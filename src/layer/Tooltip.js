@@ -289,9 +289,9 @@ Layer.include({
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
-				this._addFocusHooks();
+				this._addFocusListeners();
 			} else {
-				events.add = this._addFocusHooks;
+				events.add = this._addFocusListeners;
 			}
 		} else {
 			events.add = this._openTooltip;
@@ -357,7 +357,7 @@ Layer.include({
 		return this._tooltip;
 	},
 
-	_addFocusHooks: function () {
+	_addFocusListeners: function () {
 		if (this.getElement) {
 			this._addFocusListenersOnLayer(this);
 		} else if (this.eachLayer) {
