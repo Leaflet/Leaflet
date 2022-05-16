@@ -305,21 +305,18 @@ Layer.include({
 
 	_addFocusHooks: function () {
 		if (this.getElement) {
-			this._addListenersOnLayer(this);
+			this._addFocusListenersOnLayer(this);
 		} else if (this.eachLayer) {
-			this.eachLayer(this._addListenersOnLayer.bind(this));
+			this.eachLayer(this._addFocusListenersOnLayer.bind(this));
 		}
 	},
 
-	_addListenersOnLayer: function (layer) {
-		DomEvent.on(layer.getElement(), 'focus', () => this._openTooltipWithExplicitSource(layer));
+	_addFocusListenersOnLayer: function (layer) {
+		DomEvent.on(layer.getElement(), 'focus', () => {
+			this._tooltip._source = layer;
+			this.openTooltip();
+		});
 		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
-	},
-
-	// since the focus event comes from an HTML Element and does not have .layer or .map downstream, we have to explicitly set _source to the leaflet class here.
-	_openTooltipWithExplicitSource: function (layer) {
-		this._tooltip._source = layer;
-		this.openTooltip();
 	},
 
 	// @method openTooltip(latlng?: LatLng): this
