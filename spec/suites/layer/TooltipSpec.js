@@ -83,7 +83,7 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 	});
 
-	it("points in aria-describedby to bound element", function () {
+	it("is mentioned in aria-describedby of a bound layer", function () {
 		var layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
@@ -95,15 +95,19 @@ describe('Tooltip', function () {
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
 	});
 
-	it("points in aria-describedby to bound elements in layer group", function () {
-		var layer = L.marker(center).addTo(map);
+	it("is mentioned in aria-describedby of a bound layer group", function () {
+		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		group.bindTooltip(function (layer) {
+			return 'Group tooltip: ' + layer.options.description;
+		});
 
-		layer.bindTooltip('Tooltip');
-		var element = layer.getElement();
+		var element = marker2.getElement();
 
 		happen.once(element, {type:'focus'});
 
-		var tooltip = layer.getTooltip();
+		var tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
 
 	});
