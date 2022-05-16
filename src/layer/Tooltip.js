@@ -3,6 +3,8 @@ import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import * as DomUtil from '../dom/DomUtil';
+import * as DomEvent from '../dom/DomEvent';
+import * as Util from '../core/Util';
 
 /*
  * @class Tooltip
@@ -115,6 +117,9 @@ export var Tooltip = DivOverlay.extend({
 		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
 		this._contentNode = this._container = DomUtil.create('div', className);
+
+		this._container.role = 'tooltip';
+		this._container.setAttribute('id', 'tooltip-' + Util.stamp(this));
 	},
 
 	_updateLayout: function () {},
@@ -283,6 +288,11 @@ Layer.include({
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
+			if (this._map) {
+				this._addFocusHooks();
+			} else {
+				events.add = this._addFocusHooks;
+			}
 		} else {
 			events.add = this._openTooltip;
 		}
@@ -293,12 +303,39 @@ Layer.include({
 		this._tooltipHandlersAdded = !remove;
 	},
 
+	_addFocusHooks: function () {
+		if (this.getElement) {
+			this._addListenersOnLayer(this);
+		} else if (this.eachLayer) {
+			this.eachLayer(this._addListenersOnLayer.bind(this));
+		}
+	},
+
+	_addListenersOnLayer: function (layer) {
+		DomEvent.on(layer.getElement(), 'focus', () => this._openTooltipWithExplicitSource(layer));
+		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
+	},
+
+	// since the focus event comes from an HTML Element and does not have .layer or .map downstream, we have to explicitly set _source to the leaflet class here.
+	_openTooltipWithExplicitSource: function (layer) {
+		this._tooltip._source = layer;
+		this.openTooltip();
+	},
+
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (latlng) {
 		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
 			// open the tooltip on the map
 			this._tooltip.openOn(this._map);
+
+			if (this.getElement) {
+				this.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+			} else if (this.eachLayer) {
+				this.eachLayer(function (layer) {
+					layer.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+				}, this);
+			}
 		}
 		return this;
 	},
