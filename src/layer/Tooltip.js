@@ -303,22 +303,6 @@ Layer.include({
 		this._tooltipHandlersAdded = !remove;
 	},
 
-	_addFocusHooks: function () {
-		if (this.getElement) {
-			this._addFocusListenersOnLayer(this);
-		} else if (this.eachLayer) {
-			this.eachLayer(this._addFocusListenersOnLayer.bind(this));
-		}
-	},
-
-	_addFocusListenersOnLayer: function (layer) {
-		DomEvent.on(layer.getElement(), 'focus', () => {
-			this._tooltip._source = layer;
-			this.openTooltip();
-		});
-		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
-	},
-
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (latlng) {
@@ -327,11 +311,9 @@ Layer.include({
 			this._tooltip.openOn(this._map);
 
 			if (this.getElement) {
-				this.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+				this._setAriaDescribedByOnLayer(this);
 			} else if (this.eachLayer) {
-				this.eachLayer(function (layer) {
-					layer.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
-				}, this);
+				this.eachLayer(this._setAriaDescribedByOnLayer, this);
 			}
 		}
 		return this;
@@ -374,6 +356,27 @@ Layer.include({
 	getTooltip: function () {
 		return this._tooltip;
 	},
+
+	_addFocusHooks: function () {
+		if (this.getElement) {
+			this._addFocusListenersOnLayer(this);
+		} else if (this.eachLayer) {
+			this.eachLayer(this._addFocusListenersOnLayer, this);
+		}
+	},
+
+	_addFocusListenersOnLayer: function (layer) {
+		DomEvent.on(layer.getElement(), 'focus', () => {
+			this._tooltip._source = layer;
+			this.openTooltip();
+		});
+		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
+	},
+
+	_setAriaDescribedByOnLayer: function (layer) {
+		layer.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+	},
+
 
 	_openTooltip: function (e) {
 		if (!this._tooltip || !this._map || (this._map.dragging && this._map.dragging.moving())) {
