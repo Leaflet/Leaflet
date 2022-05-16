@@ -286,8 +286,7 @@ describe('Tooltip', function () {
 		expect(group._tooltip._container.innerHTML).to.be("I'm marker 1.");
 
 		// toggle popup on marker2
-		// happen.mouseover(marker2._icon, {relatedTarget: map._container});
-		happen.once(marker2._icon, {type: 'focus'});
+		happen.mouseover(marker2._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(group._tooltip)).to.be(true);
 		expect(group._tooltip._container.innerHTML).to.be("I'm marker 2.");
 	});
