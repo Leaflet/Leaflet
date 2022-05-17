@@ -118,8 +118,8 @@ export var Tooltip = DivOverlay.extend({
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
-		this._container.role = 'tooltip';
-		this._container.setAttribute('id', 'tooltip-' + Util.stamp(this));
+		this._container.setAttribute('role', 'tooltip');
+		this._container.setAttribute('id', 'leaflet-tooltip-' + Util.stamp(this));
 	},
 
 	_updateLayout: function () {},
@@ -366,10 +366,10 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer: function (layer) {
-		DomEvent.on(layer.getElement(), 'focus', () => {
+		DomEvent.on(layer.getElement(), 'focus', function () {
 			this._tooltip._source = layer;
 			this.openTooltip();
-		});
+		}, this);
 		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
 	},
 
