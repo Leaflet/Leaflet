@@ -69,7 +69,7 @@ describe('Popup', function () {
 		map.addLayer(marker);
 
 		marker.bindPopup('Popup1');
-		var element = marker.getElement()
+		var element = marker.getElement();
 		expect(element.getAttribute('aria-expanded')).to.be('false');
 
 		// toggle open popup
@@ -84,7 +84,7 @@ describe('Popup', function () {
 	it("changes the role of a marker to button", function () {
 		var marker = L.marker(center);
 		map.addLayer(marker);
-		var element = marker.getElement()
+		var element = marker.getElement();
 		expect(element.getAttribute('role')).to.be('img');
 
 		marker.bindPopup('Popup1');
