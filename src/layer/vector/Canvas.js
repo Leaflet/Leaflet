@@ -138,6 +138,13 @@ export var Canvas = Renderer.extend({
 	_initPath: function (layer) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
+		if (layer.options.keyboard) {
+			layer._path = DomUtil.create('div', 'leaflet-canvas-shadow-path', this._container);
+			layer._path.tabIndex = '0';
+			layer._path.setAttribute('role', 'img');
+			DomEvent.on(layer._path, 'focus', this._redraw, this);
+			DomEvent.on(layer._path, 'blur', this._redraw, this);
+		}
 
 		var order = layer._order = {
 			layer: layer,
@@ -269,6 +276,7 @@ export var Canvas = Renderer.extend({
 			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
+				this._ctx.drawFocusIfNeeded(layer._path);
 			}
 		}
 

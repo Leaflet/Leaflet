@@ -104,6 +104,11 @@ export var SVG = Renderer.extend({
 			DomUtil.addClass(path, 'leaflet-interactive');
 		}
 
+		if (layer.options.keyboard) {
+			path.tabIndex = '0';
+			path.setAttribute('role', 'img');
+		}
+
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
 	},

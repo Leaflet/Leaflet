@@ -71,7 +71,11 @@ export var Path = Layer.extend({
 		// @option bubblingMouseEvents: Boolean = true
 		// When `true`, a mouse event on this path will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: true
+		bubblingMouseEvents: true,
+
+		// @option keyboard: Boolean = true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+		keyboard: true
 	},
 
 	beforeAdd: function (map) {
