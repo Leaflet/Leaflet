@@ -276,7 +276,9 @@ export var Canvas = Renderer.extend({
 			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
-				this._ctx.drawFocusIfNeeded(layer._path);
+				// drawFocusIfNeeded is not supported in IE
+				// see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawFocusIfNeeded#browser_compatibility
+				this._ctx.drawFocusIfNeeded && this._ctx.drawFocusIfNeeded(layer._path);
 			}
 		}
 
