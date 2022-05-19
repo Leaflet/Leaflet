@@ -140,7 +140,7 @@ export var Canvas = Renderer.extend({
 		this._layers[Util.stamp(layer)] = layer;
 		if (layer.options.keyboard) {
 			layer._path = DomUtil.create('div', 'leaflet-canvas-accessibility-hidden', this._container);
-			layer._path.setAttribute('tabIndex', 0);
+			layer._path.setAttribute('tabindex', 0);
 			layer._path.setAttribute('role', 'graphics-symbol img');
 			layer._path.setAttribute('aria-label', layer.options.title);
 			layer._path.setAttribute('title', layer.options.description);
