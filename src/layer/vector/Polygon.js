@@ -54,7 +54,12 @@ import * as PolyUtil from '../../geometry/PolyUtil';
 export var Polygon = Polyline.extend({
 
 	options: {
-		fill: true
+		fill: true,
+
+		// @option title: String= 'Polygon'
+		// Alternative text for a Figure. Used as <title> in SVG or aria-label in Canvas renderer.
+		// Useful for accessibility.
+		title: 'Polygon',
 	},
 
 	isEmpty: function () {

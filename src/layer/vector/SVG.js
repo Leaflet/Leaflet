@@ -106,6 +106,13 @@ export var SVG = Renderer.extend({
 
 		if (layer.options.keyboard) {
 			path.setAttribute('tabIndex', '0');
+			var title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+			title.innerHTML = layer.options.title;
+			path.appendChild(title);
+
+			var desc = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
+			desc.innerHTML = layer.options.description;
+			path.appendChild(desc);
 		}
 
 		this._updateStyle(layer);

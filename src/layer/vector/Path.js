@@ -75,7 +75,17 @@ export var Path = Layer.extend({
 
 		// @option keyboard: Boolean = true
 		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
-		keyboard: true
+		keyboard: true,
+
+		// @option title: String= ''
+		// Alternative text for a Figure. Used as `<title>`` in SVG or `aria-label` in Canvas renderer.
+		// Useful for accessibility.
+		title: '',
+
+		// @option description: String= ''
+		// Text describing what is on the figure.
+		// Useful for accessibility.
+		description: '',
 	},
 
 	beforeAdd: function (map) {

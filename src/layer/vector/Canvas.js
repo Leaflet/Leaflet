@@ -142,6 +142,9 @@ export var Canvas = Renderer.extend({
 			layer._path = DomUtil.create('div', 'leaflet-canvas-accessibility-hidden', this._container);
 			layer._path.setAttribute('tabIndex', 0);
 			layer._path.setAttribute('role', 'graphics-symbol img');
+			layer._path.setAttribute('aria-label', layer.options.title);
+			layer._path.setAttribute('title', layer.options.description);
+
 			DomEvent.on(layer._path, 'focus', this._redraw, this);
 			DomEvent.on(layer._path, 'blur', this._redraw, this);
 		}
