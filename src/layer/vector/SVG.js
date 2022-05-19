@@ -105,8 +105,7 @@ export var SVG = Renderer.extend({
 		}
 
 		if (layer.options.keyboard) {
-			path.tabIndex = '0';
-			path.setAttribute('role', 'img');
+			path.setAttribute('tabIndex', '0');
 		}
 
 		this._updateStyle(layer);

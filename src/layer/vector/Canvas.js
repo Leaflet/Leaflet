@@ -139,9 +139,9 @@ export var Canvas = Renderer.extend({
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
 		if (layer.options.keyboard) {
-			layer._path = DomUtil.create('div', 'leaflet-canvas-shadow-path', this._container);
-			layer._path.tabIndex = '0';
-			layer._path.setAttribute('role', 'img');
+			layer._path = DomUtil.create('div', 'leaflet-canvas-accessibility-hidden', this._container);
+			layer._path.setAttribute('tabIndex', 0);
+			layer._path.setAttribute('role', 'graphics-symbol img');
 			DomEvent.on(layer._path, 'focus', this._redraw, this);
 			DomEvent.on(layer._path, 'blur', this._redraw, this);
 		}
