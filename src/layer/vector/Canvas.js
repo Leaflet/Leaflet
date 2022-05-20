@@ -135,13 +135,6 @@ export var Canvas = Renderer.extend({
 		}
 	},
 
-	_onKeyPress: function (layer, e) {
-		var data = {
-			originalEvent: e
-		};
-		layer.fire('keypress', data);
-	},
-
 	_initPath: function (layer) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
@@ -153,7 +146,7 @@ export var Canvas = Renderer.extend({
 			layer._path.setAttribute('title', layer.options.description);
 
 
-			DomEvent.on(layer._path, 'keypress', Util.bind(this._onKeyPress, this, layer));
+			DomEvent.on(layer._path, 'keypress keydown keyup click', Util.bind(this._fireEvent, this, [layer]));
 			DomEvent.on(layer._path, 'focus', this._redraw, this);
 			DomEvent.on(layer._path, 'blur', this._redraw, this);
 		}

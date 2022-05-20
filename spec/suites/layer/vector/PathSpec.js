@@ -2,7 +2,7 @@ describe('Path', function () {
 	var container, map;
 
 	beforeEach(function () {
-		container = container = createContainer();
+		container = createContainer();
 		map = L.map(container);
 		map.setView([0, 0], 0);
 	});
