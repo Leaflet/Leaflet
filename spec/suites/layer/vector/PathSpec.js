@@ -114,7 +114,7 @@ describe('Path', function () {
 
 			var element = path.getElement();
 
-			expect(element.querySelector('title').innerHTML).to.be('CircleMarker');
+			expect(element.querySelector('title').innerHTML).to.eql('CircleMarker');
 		});
 
 		it('should have desc', function () {
@@ -123,8 +123,8 @@ describe('Path', function () {
 
 			var element = path.getElement();
 
-			expect(element.querySelector('title').innerHTML).to.be('My Circle');
-			expect(element.querySelector('desc').innerHTML).to.be('Awesome circle');
+			expect(element.querySelector('title').innerHTML).to.eql('My Circle');
+			expect(element.querySelector('desc').innerHTML).to.eql('Awesome circle');
 		});
 
 		it('should focus and open popup on keypress', function () {
@@ -136,7 +136,7 @@ describe('Path', function () {
 			happen.once(path.getElement(), {type:'keypress', keyCode: 13});
 
 			expect(map.hasLayer(path._popup)).to.be(true);
-			expect(path._popup._contentNode.innerHTML).to.be("Popup");
+			expect(path._popup._contentNode.innerHTML).to.eql("Popup");
 		});
 
 	});

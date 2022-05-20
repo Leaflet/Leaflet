@@ -278,7 +278,7 @@ describe('Canvas', function () {
 
 			var element = path.getElement();
 
-			expect(element.getAttribute('aria-label')).to.be('CircleMarker');
+			expect(element.getAttribute('aria-label')).to.eql('CircleMarker');
 		});
 
 		it('should have desc', function () {
@@ -287,11 +287,11 @@ describe('Canvas', function () {
 
 			var element = path.getElement();
 
-			expect(element.getAttribute('aria-label')).to.be('My Circle');
-			expect(element.getAttribute('title')).to.be('Awesome circle');
+			expect(element.getAttribute('aria-label')).to.eql('My Circle');
+			expect(element.getAttribute('title')).to.eql('Awesome circle');
 		});
 
-		it('should focus and open popup on keypress', function () {
+		it('should focus and open popup on keypress', function (done) {
 			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			path.bindPopup('Popup');
 			path.addTo(map);
@@ -300,7 +300,8 @@ describe('Canvas', function () {
 			happen.once(path.getElement(), {type:'keypress', keyCode: 13});
 
 			expect(map.hasLayer(path._popup)).to.be(true);
-			expect(path._popup._contentNode.innerHTML).to.be("Popup");
+			expect(path._popup._contentNode.innerHTML).to.eql('Popup');
+			L.Util.requestAnimFrame(function () { done(); });
 		});
 	});
 
