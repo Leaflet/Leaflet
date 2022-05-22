@@ -25,7 +25,7 @@
 		}
 		var path = new L.Polyline(latlngs, {smoothFactor: 1});
 
-		var map = new L.Map('map', {layers: [osm]});
+		let map = new L.Map('map', {layers: [osm]});
 
 		map.fitBounds(new L.LatLngBounds(latlngs));
 

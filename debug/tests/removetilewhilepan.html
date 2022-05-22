@@ -17,7 +17,7 @@
 
 	<script>
 
-	var map = new L.Map('map', { center: new L.LatLng(45.50144, -122.67599), zoom: 4 });
+	let map = new L.Map('map', { center: new L.LatLng(45.50144, -122.67599), zoom: 4 });
 
 	var demoUrl='http://server.arcgisonline.com/ArcGIS/rest/services/Demographics/USA_Average_Household_Size/MapServer/tile/{z}/{y}/{x}';
 	var demoMap = new L.TileLayer(demoUrl, { maxZoom: 19, attribution: 'Tiles: &copy; Esri' });

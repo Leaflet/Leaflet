@@ -213,7 +213,7 @@ Vladimir Agafonkin, Leaflet maintainer.
  [Jacob Toye]: https://github.com/jacobtoye
 
 <script>
-	var map = L.map('map').setView([51.503, -0.09], 13);
+	let map = L.map('map').setView([51.503, -0.09], 13);
 
 	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map);
 

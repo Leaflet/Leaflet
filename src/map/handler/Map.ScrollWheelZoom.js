@@ -60,7 +60,7 @@ export var ScrollWheelZoom = Handler.extend({
 	},
 
 	_performZoom: function () {
-		var map = this._map,
+		let map = this._map,
 		    zoom = map.getZoom(),
 		    snap = this._map.options.zoomSnap || 0;
 

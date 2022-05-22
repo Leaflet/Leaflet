@@ -5,7 +5,7 @@ title: Custom Icons Tutorial
 <script type="text/javascript" src="eu-countries.js"></script>
 
 <script>
-	var map = L.map('map');
+	let map = L.map('map');
 
 	map.createPane('labels');
 

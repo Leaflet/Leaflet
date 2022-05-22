@@ -387,7 +387,7 @@ export var Marker = Layer.extend({
 	},
 
 	_panOnFocus: function () {
-		var map = this._map;
+		let map = this._map;
 		if (!map) { return; }
 
 		var iconOpts = this.options.icon.options;

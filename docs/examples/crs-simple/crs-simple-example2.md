@@ -4,7 +4,7 @@ title: CRS.Simple example
 ---
 <script>
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		crs: L.CRS.Simple,
 		minZoom: -3
 	});

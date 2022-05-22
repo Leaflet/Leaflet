@@ -27,7 +27,7 @@ export var DoubleClickZoom = Handler.extend({
 	},
 
 	_onDoubleClick: function (e) {
-		var map = this._map,
+		let map = this._map,
 		    oldZoom = map.getZoom(),
 		    delta = map.options.zoomDelta,
 		    zoom = e.originalEvent.shiftKey ? oldZoom - delta : oldZoom + delta;

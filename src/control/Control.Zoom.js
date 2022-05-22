@@ -100,7 +100,7 @@ export var Zoom = Control.extend({
 	},
 
 	_updateDisabled: function () {
-		var map = this._map,
+		let map = this._map,
 		    className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);

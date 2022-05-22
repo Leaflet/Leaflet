@@ -10,7 +10,7 @@ css: "#map {
 
 	var bounds = [[0, 0], [1570, 1910]];
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		crs: L.CRS.Simple,
 		maxZoom: 0,
 		minZoom: -4,

@@ -38,7 +38,7 @@ Leaflet.draw is designed to not only be easy for end users to use, but also for 
 Leaflet.draw is very simple to drop into you Leaflet application. The following example will add both the draw and edit toolbars to a map:
 
 	// create a map in the "map" div, set the view to a given place and zoom
-	var map = L.map('map').setView([175.30867, -37.77914], 13);
+	let map = L.map('map').setView([175.30867, -37.77914], 13);
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -113,7 +113,7 @@ Jacob Toye
 
 <script>
 	// create a map in the "map" div, set the view to a given place and zoom
-	var map = L.map('map').setView([-37.77914, 175.30867], 16);
+	let map = L.map('map').setView([-37.77914, 175.30867], 16);
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

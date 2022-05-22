@@ -27,7 +27,7 @@
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			latlng = new L.LatLng(50.5, 30.51);
 
-		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
+		let map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
 
 		//Create a marker, clicking it toggles opacity
 		var opaqueIcon = new L.DivIcon({ className: 'mybox', iconSize: new L.Point(100,100), html: 'opaque. click to toggle' });

@@ -4,7 +4,7 @@ title: Zoom Levels Tutorial
 ---
 <script>
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});

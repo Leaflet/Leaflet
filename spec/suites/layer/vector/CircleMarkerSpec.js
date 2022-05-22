@@ -1,5 +1,5 @@
 ﻿describe('CircleMarker', function () {
-	var map, container;
+	let map, container;
 
 	beforeEach(function () {
 		container = container = createContainer();

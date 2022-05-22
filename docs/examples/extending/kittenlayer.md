@@ -4,7 +4,7 @@ title: KittenLayer
 ---
 <script type='text/javascript'>
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		crs: L.CRS.Simple,
 		center: [0, 0],
 		zoom: 5

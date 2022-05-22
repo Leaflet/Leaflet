@@ -8,7 +8,7 @@ describe("Map.Keyboard", function () {
 	var KEYCODE_MINUS = 173;
 	var KEYCODE_ESC = 27;
 
-	var map, container;
+	let map, container;
 
 	beforeEach(function () {
 		container = createContainer();

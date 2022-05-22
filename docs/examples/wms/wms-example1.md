@@ -4,7 +4,7 @@ title: WMS example
 ---
 <script type='text/javascript'>
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		center: [-17, -67],
 		zoom: 3
 	});

@@ -65,7 +65,7 @@ export var Scale = Control.extend({
 	},
 
 	_update: function () {
-		var map = this._map,
+		let map = this._map,
 		    y = map.getSize().y / 2;
 
 		var maxMeters = map.distance(

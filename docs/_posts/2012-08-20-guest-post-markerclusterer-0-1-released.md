@@ -94,7 +94,7 @@ Dave Leaver.
 	var mapbox = new L.TileLayer(MB_URL, {maxZoom: 18, attribution: MB_ATTR, id: 'examples.map-i875mjb7'}),
 		latlng = new L.LatLng(-37.820, 175.217);
 
-	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [mapbox]});
+	let map = new L.Map('map', {center: latlng, zoom: 15, layers: [mapbox]});
 
 	map.attributionControl.addAttribution("Points &copy 2012 LINZ");
 

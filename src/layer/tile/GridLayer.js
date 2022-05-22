@@ -605,7 +605,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_resetGrid: function () {
-		var map = this._map,
+		let map = this._map,
 		    crs = map.options.crs,
 		    tileSize = this._tileSize = this.getTileSize(),
 		    tileZoom = this._tileZoom;
@@ -632,7 +632,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_getTiledPixelBounds: function (center) {
-		var map = this._map,
+		let map = this._map,
 		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
@@ -643,7 +643,7 @@ export var GridLayer = Layer.extend({
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
 	_update: function (center) {
-		var map = this._map;
+		let map = this._map;
 		if (!map) { return; }
 		var zoom = this._clampZoom(map.getZoom());
 
@@ -739,7 +739,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	_tileCoordsToNwSe: function (coords) {
-		var map = this._map,
+		let map = this._map,
 		    tileSize = this.getTileSize(),
 		    nwPoint = coords.scaleBy(tileSize),
 		    sePoint = nwPoint.add(tileSize),

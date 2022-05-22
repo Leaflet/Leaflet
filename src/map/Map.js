@@ -21,7 +21,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  * ```js
  * // initialize the map on the "map" div with a given center and zoom
- * var map = L.map('map', {
+ * let map = L.map('map', {
  * 	center: [51.505, -0.09],
  * 	zoom: 13
  * });
@@ -29,7 +29,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  */
 
-export var Map = Evented.extend({
+export let Map = Evented.extend({
 
 	options: {
 		// @section Map State Options

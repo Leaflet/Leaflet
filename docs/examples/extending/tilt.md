@@ -53,7 +53,7 @@ title: Tilt handler
 	
 	L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		center: [0, 0],
 		zoom: 1,
 		tilt: true

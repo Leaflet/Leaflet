@@ -52,7 +52,7 @@
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			latlng = new L.LatLng(39.05, 8.40);
 
-		var map = new L.Map('map', {center: latlng, zoom: 12, layers: [osm]});
+		let map = new L.Map('map', {center: latlng, zoom: 12, layers: [osm]});
 
 		function update(domid) {
 			return function(){

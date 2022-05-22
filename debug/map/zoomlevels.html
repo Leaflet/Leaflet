@@ -17,7 +17,7 @@
 	    // Test that changing between layers with differing zoomlevels also updates
         // the zoomlevels in the map + also
 
-		var map = L.map('map').setView(L.latLng(50.5, 30.51), 0);
+		let map = L.map('map').setView(L.latLng(50.5, 30.51), 0);
 
 		var osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: osmAttrib, minZoom: 0, maxZoom: 10}).addTo(map),

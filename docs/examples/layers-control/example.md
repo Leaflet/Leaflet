@@ -16,7 +16,7 @@ title: Layers Control Tutorial
 	var grayscale = L.tileLayer(mbUrl, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
 	var streets = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		center: [39.73, -104.99],
 		zoom: 10,
 		layers: [grayscale, cities]

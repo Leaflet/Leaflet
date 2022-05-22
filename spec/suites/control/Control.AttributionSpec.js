@@ -1,5 +1,5 @@
 describe("Control.Attribution", function () {
-	var map, control, container, controlContainer;
+	let map, control, container, controlContainer;
 
 	beforeEach(function () {
 		container = container = createContainer();

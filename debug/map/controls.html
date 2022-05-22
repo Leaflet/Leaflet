@@ -20,7 +20,7 @@
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			osm2 = new L.TileLayer(osmUrl, {attribution: 'Hello world'});
 
-		var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(50.5, 30.512), 15);
+		let map = new L.Map('map').addLayer(osm).setView(new L.LatLng(50.5, 30.512), 15);
 
 		var marker = new L.Marker(new L.LatLng(50.5, 30.505));
 		map.addLayer(marker);

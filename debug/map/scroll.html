@@ -26,7 +26,7 @@
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			latlng = new L.LatLng(50.5, 30.51);
 
-		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
+		let map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
 
 		var s = '';
 		for (var i = 0; i < 100; i++) s += 'Test<br>';

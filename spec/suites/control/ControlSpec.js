@@ -3,7 +3,7 @@ describe("Control", function () {
 		return L.DomUtil.create('div', 'leaflet-test-control');
 	}
 
-	var map,
+	let map,
 	    container,
 	    control;
 

@@ -1,5 +1,5 @@
 describe("Marker.Drag", function () {
-	var map,
+	let map,
 	    container;
 
 	beforeEach(function () {

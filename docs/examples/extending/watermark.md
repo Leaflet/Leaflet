@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Watermark control
 ---
 <script type='text/javascript'>
-	var map = L.map('map', {
+	let map = L.map('map', {
 		center: [40, 0],
 		zoom: 1
 	});

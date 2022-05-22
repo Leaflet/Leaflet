@@ -620,7 +620,7 @@ describe('DomEvent', function () {
 			var grandChild = document.createElement('div');
 			child.appendChild(grandChild);
 
-			var map = L.map(el).setView([0, 0], 0);
+			let map = L.map(el).setView([0, 0], 0);
 			var mapClickListener = sinon.spy();
 			var mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case

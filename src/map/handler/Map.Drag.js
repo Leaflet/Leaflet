@@ -55,7 +55,7 @@ Map.mergeOptions({
 export var Drag = Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
-			var map = this._map;
+			let map = this._map;
 
 			this._draggable = new Draggable(map._mapPane, map._container);
 
@@ -94,7 +94,7 @@ export var Drag = Handler.extend({
 	},
 
 	_onDragStart: function () {
-		var map = this._map;
+		let map = this._map;
 
 		map._stop();
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
@@ -184,7 +184,7 @@ export var Drag = Handler.extend({
 	},
 
 	_onDragEnd: function (e) {
-		var map = this._map,
+		let map = this._map,
 		    options = map.options,
 
 		    noInertia = !options.inertia || e.noInertia || this._times.length < 2;

@@ -24,7 +24,7 @@
 			zoom : 5
 		};
 
-		var map = L.map('map', mapopts);
+		let map = L.map('map', mapopts);
 
 		var watercolorUrl = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg';
 		var watercolor = L.tileLayer(watercolorUrl, {maxZoom: 18, attribution: 'Map by Stamen, map data OpenStreetMap'}).addTo(map);

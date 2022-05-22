@@ -142,7 +142,7 @@ bodyclass: api-page
 
 
 <pre><code class="lang-js">// initialize the map on the &quot;map&quot; div with a given center and zoom
-var map = L.map(&#39;map&#39;, {
+let map = L.map(&#39;map&#39;, {
     center: [51.505, -0.09],
     zoom: 13
 });
@@ -12423,12 +12423,12 @@ this case.</p>
 
 
 <p>Use SVG by default for all paths in the map:</p>
-<pre><code class="lang-js">var map = L.map(&#39;map&#39;, {
+<pre><code class="lang-js">let map = L.map(&#39;map&#39;, {
     renderer: L.svg()
 });
 </code></pre>
 <p>Use a SVG renderer with extra padding for specific vector geometries:</p>
-<pre><code class="lang-js">var map = L.map(&#39;map&#39;);
+<pre><code class="lang-js">let map = L.map(&#39;map&#39;);
 var myRenderer = L.svg({ padding: 0.5 });
 var line = L.polyline( coordinates, { renderer: myRenderer } );
 var circle = L.circle( center, { renderer: myRenderer } );
@@ -13002,12 +13002,12 @@ not display properly in some edge cases.</p>
 
 
 <p>Use Canvas by default for all paths in the map:</p>
-<pre><code class="lang-js">var map = L.map(&#39;map&#39;, {
+<pre><code class="lang-js">let map = L.map(&#39;map&#39;, {
     renderer: L.canvas()
 });
 </code></pre>
 <p>Use a Canvas renderer with extra padding for specific vector geometries:</p>
-<pre><code class="lang-js">var map = L.map(&#39;map&#39;);
+<pre><code class="lang-js">let map = L.map(&#39;map&#39;);
 var myRenderer = L.canvas({ padding: 0.5 });
 var line = L.polyline( coordinates, { renderer: myRenderer } );
 var circle = L.circle( center, { renderer: myRenderer } );

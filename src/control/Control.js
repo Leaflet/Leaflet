@@ -40,7 +40,7 @@ export var Control = Class.extend({
 	// @method setPosition(position: string): this
 	// Sets the position of the control.
 	setPosition: function (position) {
-		var map = this._map;
+		let map = this._map;
 
 		if (map) {
 			map.removeControl(this);

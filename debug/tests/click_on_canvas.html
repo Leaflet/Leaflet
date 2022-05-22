@@ -19,7 +19,7 @@
             osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-        var map = L.map('map', {
+        let map = L.map('map', {
             minZoom: 1,
             maxZoom: 19,
             center: [51.505, -0.09],

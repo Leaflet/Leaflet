@@ -174,14 +174,14 @@ describe("Map", function () {
 		});
 
 		it("defaults to zoom passed as map option", function () {
-			var map = L.map(document.createElement("div"), {zoom: 13});
+			let map = L.map(document.createElement("div"), {zoom: 13});
 			var zoom = map.setView([51.605, -0.11]).getZoom();
 			map.remove(); // clean up
 			expect(zoom).to.be(13);
 		});
 
 		it("passes duration option to panBy", function () {
-			var map = L.map(document.createElement("div"), {zoom: 13, center: [0, 0]});
+			let map = L.map(document.createElement("div"), {zoom: 13, center: [0, 0]});
 			map.panBy = sinon.spy();
 			map.setView([51.605, -0.11], 13, {animate: true, duration: 13});
 			map.remove(); // clean up
@@ -207,7 +207,7 @@ describe("Map", function () {
 
 	describe("#getBounds", function () {
 		it("is safe to call from within a moveend callback during initial load (#1027)", function () {
-			var map = L.map(document.createElement("div"));
+			let map = L.map(document.createElement("div"));
 			map.on("moveend", function () {
 				map.getBounds();
 			});

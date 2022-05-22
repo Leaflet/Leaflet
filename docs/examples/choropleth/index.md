@@ -34,7 +34,7 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 Let's display our states data on a map with a custom Mapbox style for nice grayscale tiles that look perfect as a background for visualizations:
 
 	var mapboxAccessToken = {your access token here};
-	var map = L.map('map').setView([37.8, -96], 4);
+	let map = L.map('map').setView([37.8, -96], 4);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 		id: 'mapbox/light-v9',

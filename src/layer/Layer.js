@@ -95,7 +95,7 @@ export var Layer = Evented.extend({
 	},
 
 	_layerAdd: function (e) {
-		var map = e.target;
+		let map = e.target;
 
 		// check in case layer gets added and then removed before the map is ready
 		if (!map.hasLayer(this)) { return; }

@@ -1,5 +1,5 @@
 describe('Rectangle', function () {
-	var map, container;
+	let map, container;
 
 	beforeEach(function () {
 		container = createContainer();

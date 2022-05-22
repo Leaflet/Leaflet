@@ -38,7 +38,7 @@ export var TouchZoom = Handler.extend({
 	},
 
 	_onTouchStart: function (e) {
-		var map = this._map;
+		let map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
@@ -67,7 +67,7 @@ export var TouchZoom = Handler.extend({
 	_onTouchMove: function (e) {
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
-		var map = this._map,
+		let map = this._map,
 		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
 		    scale = p1.distanceTo(p2) / this._startDist;

@@ -27,7 +27,7 @@ var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, options);
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-var map = L.map('map').setView([37.8, -96], 4);
+let map = L.map('map').setView([37.8, -96], 4);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 	maxZoom: 18,
@@ -101,7 +101,7 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-var map = L.map('map').setView([37.8, -96], 4);
+let map = L.map('map').setView([37.8, -96], 4);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
 	id: 'mapbox/satellite-v9',

@@ -91,7 +91,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 
 	it('respects disableClickPropagation', function () {
 		var spyMap = sinon.spy();
-		var map = L.map(container).setView([51.505, -0.09], 13);
+		let map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		var spyCtrl = sinon.spy();
@@ -115,7 +115,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 
 	it('doesn\'t fire double-click while clicking on a label with `for` attribute', function () {
 		var spyMap = sinon.spy();
-		var map = L.map(container).setView([51.505, -0.09], 13);
+		let map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		var div;

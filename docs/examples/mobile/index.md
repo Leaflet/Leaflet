@@ -31,7 +31,7 @@ Also, we need to tell the mobile browser to disable unwanted scaling of the page
 
 We'll now initialize the map in the JavaScript code like we did in the [quick start guide](../quick-start/), showing the whole world:
 
-<pre><code class="javascript">var map = L.map('map').fitWorld();
+<pre><code class="javascript">let map = L.map('map').fitWorld();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{<a href="https://docs.mapbox.com/help/glossary/style-id/">id</a>}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors, Imagery &copy; &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span>',

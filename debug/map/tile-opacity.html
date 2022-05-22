@@ -14,7 +14,7 @@
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
 
 	<script>
-		var map = new L.Map('map');
+		let map = new L.Map('map');
 		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 			layers: 'nexrad-n0r-900913',
 			format: 'image/png',

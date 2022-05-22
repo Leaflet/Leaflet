@@ -28,7 +28,7 @@ title: Grid coordinates
 
 	var trd = [63.41, 10.41];
 
-	var map = L.map('map', {
+	let map = L.map('map', {
 		center: [40, 0],
 		zoom: 1
 	});

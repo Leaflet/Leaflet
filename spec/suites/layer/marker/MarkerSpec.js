@@ -1,5 +1,5 @@
 describe("Marker", function () {
-	var map,
+	let map,
 	    container,
 	    icon1,
 	    icon2;

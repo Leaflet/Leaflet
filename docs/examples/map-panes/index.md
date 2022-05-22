@@ -60,7 +60,7 @@ We can use the defaults for the basemap tiles and some overlays like GeoJSON lay
 Custom map panes are created on a per-map basis, so first create an instance of `L.Map` and the pane:
 
 
-    var map = L.map('map');
+    let map = L.map('map');
     map.createPane('labels');
 
 

@@ -1,5 +1,5 @@
 describe('Circle', function () {
-	var map, container, circle;
+	let map, container, circle;
 
 	beforeEach(function () {
 		container = container = createContainer();

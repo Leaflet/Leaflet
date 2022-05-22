@@ -30,7 +30,7 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * Use SVG by default for all paths in the map:
  *
  * ```js
- * var map = L.map('map', {
+ * let map = L.map('map', {
  * 	renderer: L.svg()
  * });
  * ```
@@ -38,7 +38,7 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  * Use a SVG renderer with extra padding for specific vector geometries:
  *
  * ```js
- * var map = L.map('map');
+ * let map = L.map('map');
  * var myRenderer = L.svg({ padding: 0.5 });
  * var line = L.polyline( coordinates, { renderer: myRenderer } );
  * var circle = L.circle( center, { renderer: myRenderer } );

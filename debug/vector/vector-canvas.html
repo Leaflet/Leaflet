@@ -28,7 +28,7 @@
 		var canvas = L.canvas();
 		var path = new L.Polyline(latlngs, {renderer: canvas});
 
-		var map = new L.Map('map', {layers: [osm], preferCanvas: true});
+		let map = new L.Map('map', {layers: [osm], preferCanvas: true});
 
 		var group = new L.LayerGroup();
 

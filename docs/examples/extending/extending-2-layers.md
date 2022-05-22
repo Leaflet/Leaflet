@@ -60,7 +60,7 @@ And then, include that file when showing a map:
 	<script src='leaflet.js'>
 	<script src='L.KittenLayer.js'>
 	<script>
-		var map = L.map('map-div-id');
+		let map = L.map('map-div-id');
 		L.tileLayer.kitten().addTo(map);
 	</script>
 	…

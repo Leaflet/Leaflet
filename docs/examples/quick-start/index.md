@@ -44,7 +44,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 Let's create a map of the center of London with pretty Mapbox Streets tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
-	var map = L.map('map').setView([51.505, -0.09], 13);
+	let map = L.map('map').setView([51.505, -0.09], 13);
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
 

@@ -22,7 +22,7 @@
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			bounds = new L.LatLngBounds(new L.LatLng(49.5, Number.NEGATIVE_INFINITY), new L.LatLng(61.2, Number.POSITIVE_INFINITY));
 
-		var map = new L.Map('map', {
+		let map = new L.Map('map', {
 			center: L.latLng(49.5, 30),
 			zoom: 7,
 			layers: [osm],

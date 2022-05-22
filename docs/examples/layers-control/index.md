@@ -35,7 +35,7 @@ Now let's create those base layers and add the default ones to the map:
 <pre><code>var grayscale = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution}),
 	streets   = L.tileLayer(mapboxUrl, {id: '<a href="https://mapbox.com">MapID</a>', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
 
-var map = L.map('map', {
+let map = L.map('map', {
 	center: [39.73, -104.99],
 	zoom: 10,
 	layers: [grayscale, cities]
