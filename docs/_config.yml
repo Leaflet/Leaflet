@@ -1,4 +1,4 @@
-exclude: [build, debug, node_modules, spec, src, CNAME, reference-tpl.html, CHANGELOG.md, README.md, LICENSE, DOCS-TODO.md]
+exclude: [build, debug, node_modules, spec, src, CNAME, reference-tpl.html, CHANGELOG.md, README.md, LICENSE]
 
 markdown: kramdown
 
