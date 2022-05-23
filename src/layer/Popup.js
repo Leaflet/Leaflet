@@ -59,7 +59,7 @@ export var Popup = DivOverlay.extend({
 		// If set, creates a scrollable container of the given height
 		// inside a popup if its content exceeds it.
 		// The scrollable container can be styled using the
-		// `leaflet-popup-scrolled` CSS selector.
+		// `leaflet-popup-scrolled` CSS class selector.
 		maxHeight: null,
 
 		// @option autoPan: Boolean = true
