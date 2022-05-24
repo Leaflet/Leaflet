@@ -24,7 +24,7 @@ export var CircleMarker = Path.extend({
 		radius: 10,
 
 		// @option title: String= 'CircleMarker'
-		// Alternative text for a Figure. Used as <title> in SVG or aria-label in Canvas renderer.
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
 		// Useful for accessibility.
 		title: 'CircleMarker',
 	},

@@ -31,7 +31,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
 export var Rectangle = Polygon.extend({
 	options: {
 		// @option title: String= 'Rectangle'
-		// Alternative text for a Figure. Used as <title> in SVG or aria-label in Canvas renderer.
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
 		// Useful for accessibility.
 		title: 'Rectangle',
 	},

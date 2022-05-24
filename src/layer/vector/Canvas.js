@@ -142,9 +142,17 @@ export var Canvas = Renderer.extend({
 			layer._path = DomUtil.create('div', 'leaflet-canvas-interactive', this._container);
 			layer._path.setAttribute('tabindex', 0);
 			layer._path.setAttribute('role', 'graphics-symbol img');
-			layer._path.setAttribute('aria-label', layer.options.title);
-			layer._path.setAttribute('title', layer.options.desc);
+			layer._path.setAttribute('title', layer.options.title);
 
+			if (layer.options.desc) {
+				// Consider changing to `aria-description` attribute instead of `aria-describedby` with separate tag.
+				// Track support here: https://a11ysupport.io/tech/aria/aria-description_attribute#support-table-0
+				var descId = 'leaflet-canvas-interactive-desc-' + Util.stamp(layer);
+				var desc = DomUtil.create('span', null, layer._path);
+				desc.innerText = layer.options.desc;
+				desc.setAttribute('id', descId);
+				layer._path.setAttribute('aria-describedby', descId);
+			}
 
 			DomEvent.on(layer._path, 'keypress keydown keyup click', Util.bind(this._fireEvent, this, [layer]));
 			DomEvent.on(layer._path, 'focus', this._redraw, this);

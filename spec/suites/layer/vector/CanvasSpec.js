@@ -278,7 +278,7 @@ describe('Canvas', function () {
 
 			var element = path.getElement();
 
-			expect(element.getAttribute('aria-label')).to.eql('CircleMarker');
+			expect(element.getAttribute('title')).to.eql('CircleMarker');
 		});
 
 		it('should have desc', function () {
@@ -287,8 +287,8 @@ describe('Canvas', function () {
 
 			var element = path.getElement();
 
-			expect(element.getAttribute('aria-label')).to.eql('My Circle');
-			expect(element.getAttribute('title')).to.eql('Awesome circle');
+			expect(element.getAttribute('title')).to.eql('My Circle');
+			expect(element.querySelector('span').innerText).to.eql('Awesome circle');
 		});
 
 		it('should focus and open popup on keypress', function (done) {
