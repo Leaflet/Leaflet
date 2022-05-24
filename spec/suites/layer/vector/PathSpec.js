@@ -118,7 +118,7 @@ describe('Path', function () {
 		});
 
 		it('should have desc', function () {
-			var path = L.circleMarker([1, 2], {title: 'My Circle', description: 'Awesome circle'});
+			var path = L.circleMarker([1, 2], {title: 'My Circle', desc: 'Awesome circle'});
 			path.addTo(map);
 
 			var element = path.getElement();

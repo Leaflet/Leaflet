@@ -110,9 +110,9 @@ export var SVG = Renderer.extend({
 			title.innerHTML = layer.options.title;
 			path.appendChild(title);
 
-			if (layer.options.description) {
+			if (layer.options.desc) {
 				var desc = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
-				desc.innerHTML = layer.options.description;
+				desc.innerHTML = layer.options.desc;
 				path.appendChild(desc);
 			}
 		}

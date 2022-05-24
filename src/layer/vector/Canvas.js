@@ -143,7 +143,7 @@ export var Canvas = Renderer.extend({
 			layer._path.setAttribute('tabindex', 0);
 			layer._path.setAttribute('role', 'graphics-symbol img');
 			layer._path.setAttribute('aria-label', layer.options.title);
-			layer._path.setAttribute('title', layer.options.description);
+			layer._path.setAttribute('title', layer.options.desc);
 
 
 			DomEvent.on(layer._path, 'keypress keydown keyup click', Util.bind(this._fireEvent, this, [layer]));

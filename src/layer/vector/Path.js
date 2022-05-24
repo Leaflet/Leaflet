@@ -82,10 +82,10 @@ export var Path = Layer.extend({
 		// Useful for accessibility.
 		title: '',
 
-		// @option description: String= ''
+		// @option desc: String= ''
 		// Text describing what is on the figure.
 		// Useful for accessibility.
-		description: '',
+		desc: '',
 	},
 
 	beforeAdd: function (map) {
