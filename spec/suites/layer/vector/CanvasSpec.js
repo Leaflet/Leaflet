@@ -288,7 +288,7 @@ describe('Canvas', function () {
 			var element = path.getElement();
 
 			expect(element.getAttribute('title')).to.eql('My Circle');
-			expect(element.querySelector('span').innerText).to.eql('Awesome circle');
+			expect(element.querySelector('span').innerHTML).to.eql('Awesome circle');
 		});
 
 		it('should focus and open popup on keypress', function (done) {
