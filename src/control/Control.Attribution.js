@@ -75,7 +75,7 @@ export var Attribution = Control.extend({
 	},
 
 	// @method addAttribution(text: String): this
-	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
+	// Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
 	addAttribution: function (text) {
 		if (!text) { return this; }
 

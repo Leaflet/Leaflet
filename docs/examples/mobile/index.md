@@ -33,11 +33,9 @@ We'll now initialize the map in the JavaScript code like we did in the [quick st
 
 <pre><code class="javascript">var map = L.map('map').fitWorld();
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{<a href="https://docs.mapbox.com/help/glossary/style-id/">id</a>}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors, Imagery &copy; &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span>',
-	maxZoom: 18,
-	tileSize: 512,
-	zoomOffset: -1
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);</code></pre>
 
 ### Geolocation
