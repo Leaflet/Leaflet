@@ -154,8 +154,20 @@ Bounds.prototype = {
 		return xOverlaps && yOverlaps;
 	},
 
+	// @method isValid(): Boolean
+	// Returns `true` if the bounds are properly initialized.
 	isValid: function () {
 		return !!(this.min && this.max);
+	},
+
+	// @method clampPoint(point: Point): Boolean
+	// Returns a point guaranteed to be within the bounds, as close as possible
+	// to the given one.
+	clampPoint: function (point) {
+		return new L.Point(
+			Math.min(Math.max(this.min.x, point.x), this.max.x),
+			Math.min(Math.max(this.min.y, point.y), this.max.y)
+		);
 	}
 };
 
