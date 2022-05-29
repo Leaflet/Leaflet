@@ -1,0 +1,12 @@
+---
+name: Leaflet.PopupMovable
+category: search-popups
+repo: https://github.com/wrwrh/leaflet-popupmovable
+author: SUZUKI Yasuhiro
+author-url: https://github.com/wrwrh/
+demo: https://wrwrh.github.io/leaflet-popupmovable/Demo/index.html
+compatible-v0:
+compatible-v1: true
+---
+
+This plug-in makes L.Popup movable by user drag and automatically draws leads.
