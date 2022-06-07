@@ -191,7 +191,7 @@ export var Popup = DivOverlay.extend({
 		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
 		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
 
-		DomEvent.disableClickPropagation(container);
+		this.disableClickPropagation();
 		DomEvent.disableScrollPropagation(this._contentNode);
 		DomEvent.on(container, 'contextmenu', DomEvent.stopPropagation);
 

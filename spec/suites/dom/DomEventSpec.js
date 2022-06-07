@@ -611,36 +611,6 @@ describe('DomEvent', function () {
 
 			expect(listener.notCalled).to.be.ok();
 		});
-
-		it('prevents click event on map object, but propagates to DOM elements', function () { // to solve #301
-			var child = document.createElement('div');
-			el.appendChild(child);
-			L.DomEvent.disableClickPropagation(child);
-			L.DomEvent.on(el, 'click', listener);
-			var grandChild = document.createElement('div');
-			child.appendChild(grandChild);
-
-			var map = L.map(el).setView([0, 0], 0);
-			var mapClickListener = sinon.spy();
-			var mapOtherListener = sinon.spy();
-			map.on('click', mapClickListener);          // control case
-			map.on('keypress', mapOtherListener);       // control case
-
-			happen.once(grandChild, {type: 'click'});
-			happen.once(grandChild, {type: 'keypress'});
-
-			expect(mapOtherListener.called).to.be.ok(); // control case
-			expect(listener.called).to.be.ok();
-			expect(mapClickListener.notCalled).to.be.ok();
-
-			happen.once(child, {type: 'click'});
-			happen.once(child, {type: 'keypress'});
-
-			expect(listener.calledTwice).to.be.ok();
-			expect(mapClickListener.notCalled).to.be.ok();
-
-			map.remove();
-		});
 	});
 
 	describe('#preventDefault', function () {

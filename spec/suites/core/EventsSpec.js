@@ -734,4 +734,78 @@ describe('Events', function () {
 			expect(spy.called).to.be(true);
 		});
 	});
+
+	describe('#disableClickPropagation', function () {
+		var MyLayer = L.Layer.extend({
+			onAdd: function () {
+				var child = this._container = document.createElement('div');
+				this._map._container.appendChild(child);
+				this.addInteractiveTarget(child);
+			},
+			onRemove: L.Util.falseFn
+		});
+
+		var el, listener, map, layer;
+	        beforeEach(function () {
+			el = document.createElement('div');
+			document.body.appendChild(el);
+			listener = sinon.spy();
+			map = L.map(el, {zoom:0, center:[0, 0]});
+			layer = new MyLayer();
+			layer.addTo(map);
+	        });
+
+	        afterEach(function () {
+			map.remove();
+			document.body.removeChild(el);
+	        });
+
+		it('stops click events from propagation to parent features', function () {
+			layer.disableClickPropagation(layer._container);
+			map.on('preclick click dblclick contextmenu mousedown', listener);
+
+			happen.once(layer._container, {type: 'preclick'});
+			happen.once(layer._container, {type: 'click'});
+			happen.once(layer._container, {type: 'dblclick'});
+			happen.once(layer._container, {type: 'contextmenu'});
+			happen.once(layer._container, {type: 'mousedown'});
+
+			expect(listener.notCalled).to.be.ok();
+		});
+
+		it('does not stop click events from firing on feature itself', function () {
+			layer.disableClickPropagation(layer._container);
+			layer.on('click dblclick contextmenu mousedown', listener);
+
+			happen.once(layer._container, {type: 'click'});
+			happen.once(layer._container, {type: 'dblclick'});
+			happen.once(layer._container, {type: 'contextmenu'});
+			happen.once(layer._container, {type: 'mousedown'});
+
+			expect(listener.callCount).to.be(4);
+		});
+
+		it('does not stop click events from firing on feature itself', function () {
+			layer.disableClickPropagation(layer._container);
+			layer.on('click dblclick contextmenu mousedown', listener);
+
+			happen.once(layer._container, {type: 'click'});
+			happen.once(layer._container, {type: 'dblclick'});
+			happen.once(layer._container, {type: 'contextmenu'});
+			happen.once(layer._container, {type: 'mousedown'});
+
+			expect(listener.callCount).to.be(4);
+		});
+
+		it('throws when arg is not HTMLElement', function () {
+			expect(layer.disableClickPropagation.bind(layer)).withArgs({})
+				.to.throwException();
+		});
+
+		it('argument may be omitted', function () {
+			layer.disableClickPropagation();
+			expect(layer._container['_leaflet_disable_click_propagation'])
+				.to.be.ok();
+		});
+	});
 });

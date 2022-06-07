@@ -311,8 +311,22 @@ export var Events = {
 				propagatedFrom: e.target
 			}, e), true);
 		}
+	},
+
+	// @method disableClickPropagation(container?: HTMLElement): this
+	// Stop events from propagating to parent of object's container.
+	// In case if `container` arg is omitted - the `._container` object's property is implyed.
+	disableClickPropagation: function (container) {
+		container = container || this._container;
+		if (!(container instanceof HTMLElement)) {
+			throw new Error('HTMLElement expected');
+		}
+		container['_leaflet_disable_click_propagation'] = true;
+		return this;
 	}
 };
+
+
 
 // aliases; we should ditch those eventually
 
