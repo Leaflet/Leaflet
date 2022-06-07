@@ -5,7 +5,7 @@ repo: https://github.com/maneoverland/leaflet.WorldMiniMap
 author: M. Friedl
 author-url: https://github.com/maneoverland
 demo: https://maneoverland.github.io/leaflet.WorldMiniMap/
-compatible-v0:
+compatible-v0: false
 compatible-v1: true
 ---
 
