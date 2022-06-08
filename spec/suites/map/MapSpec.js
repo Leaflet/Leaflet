@@ -1376,7 +1376,7 @@ describe("Map", function () {
 			parent.appendChild(child);
 			container.appendChild(parent);
 			L.DomEvent.on(child, 'click', function () {
-				parent.remove();
+				L.DomUtil.remove(parent);
 			});
 			expect(function () {
 				happen.once(child, {type: 'click'});
