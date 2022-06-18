@@ -1397,8 +1397,14 @@ describe("Map", function () {
 			map = L.map(container);
 		});
 
-		it("adds CSS class leaflet-rtl to the map container", function () {
+		it("adds CSS class `leaflet-rtl` to the map container", function () {
 			expect(L.DomUtil.hasClass(map.getContainer(), 'leaflet-rtl')).to.be(true);
+		});
+
+		it("remove CSS class `leaflet-rtl` from the map container", function () {
+			expect(L.DomUtil.hasClass(map.getContainer(), 'leaflet-rtl')).to.be(true);
+			map.setRTLDirection(false);
+			expect(L.DomUtil.hasClass(map.getContainer(), 'leaflet-rtl')).to.be(false);
 		});
 	});
 });
