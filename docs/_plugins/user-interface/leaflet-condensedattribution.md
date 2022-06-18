@@ -4,7 +4,7 @@ category: user-interface
 repo: https://github.com/targomo/Leaflet.CondensedAttribution
 author: Targomo GmbH
 author-url: https://www.targomo.com/
-demo: 
+demo: https://route360.github.io/Leaflet.CondensedAttribution/
 compatible-v0:
 compatible-v1: true
 ---

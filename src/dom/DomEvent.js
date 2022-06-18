@@ -224,6 +224,26 @@ export function stop(e) {
 	return this;
 }
 
+// @function getPropagationPath(ev: DOMEvent): Array
+// Compatibility polyfill for [`Event.composedPath()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath).
+// Returns an array containing the `HTMLElement`s that the given DOM event
+// should propagate to (if not stopped).
+export function getPropagationPath(ev) {
+	if (ev.composedPath) {
+		return ev.composedPath();
+	}
+
+	var path = [];
+	var el = ev.target;
+
+	while (el) {
+		path.push(el);
+		el = el.parentNode;
+	}
+	return path;
+}
+
+
 // @function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
 // Gets normalized mouse position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.

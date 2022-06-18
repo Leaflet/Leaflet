@@ -42,7 +42,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 {% include frame.html url="example-basic.html" %}
 
-Let's create a map of the center of London with pretty Mapbox Streets tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+Let's create a map of the center of London with pretty OpenStreetMap tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
@@ -50,20 +50,16 @@ By default (as we didn't pass any options when creating the map instance), all m
 
 Note that the `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next, we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. In this example, we'll use the `mapbox/streets-v11` tiles from [Mapbox's Static Tiles API](https://docs.mapbox.com/api/maps/#static-tiles) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)). Because this API returns 512x512 tiles by default (instead of 256x256), we will also have to explicitly specify this and offset our zoom by a value of -1.
+Next, we'll add a tile layer to add to our map, in this case it's a OpenStreetMap tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. OpenStreetMap tiles are fine for programming your Leaflet map, but read the [Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/) of OpenStreetMap if you're going to use the tiles in production.
 
-<pre><code class="javascript">L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors, Imagery &copy; &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span>',
-	maxZoom: 18,
-	id: 'mapbox/streets-v11',
-	tileSize: 512,
-	zoomOffset: -1,
-	accessToken: 'your.mapbox.access.token'
+<pre><code class="javascript">L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);</code></pre>
 
 Make sure all the code is called after the `div` and `leaflet.js` inclusion. That's it! You have a working Leaflet map now.
 
-It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. You can try replacing `mapbox/streets-v11` with `mapbox/satellite-v9`, and see what happens. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd suggest Mapbox though, it looks beautiful).
+It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to.
 
 Whenever using anything based on OpenStreetMap, an *attribution* is obligatory as per the [copyright notice](https://www.openstreetmap.org/copyright). Most other tile providers (such as [Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/), [Stamen](http://maps.stamen.com/) or [Thunderforest](https://www.thunderforest.com/terms/)) require an attribution as well. Make sure to give credit where credit is due.
 

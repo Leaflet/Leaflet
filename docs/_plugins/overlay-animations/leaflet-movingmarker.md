@@ -4,7 +4,7 @@ category: overlay-animations
 repo: https://github.com/ewoken/Leaflet.MovingMarker
 author: Ewoken
 author-url: https://github.com/ewoken
-demo: 
+demo: http://ewoken.github.io/Leaflet.MovingMarker/
 compatible-v0:
 compatible-v1: true
 ---

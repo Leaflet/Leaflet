@@ -4,7 +4,7 @@ category: overlay-data-formats
 repo: https://github.com/mpetazzoni/leaflet-gpx
 author: Maxime Petazzoni
 author-url: https://github.com/mpetazzoni/
-demo: 
+demo: https://mpetazzoni.github.io/leaflet-gpx/
 compatible-v0:
 compatible-v1: true
 ---

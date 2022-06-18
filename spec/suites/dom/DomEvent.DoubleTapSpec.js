@@ -1,25 +1,24 @@
 describe('DomEvent.DoubleTapSpec.js', function () {
-	var el, clock, spy;
+	var container, clock, spy;
 
 	beforeEach(function () {
-		el = document.createElement('div');
-		document.body.appendChild(el);
+		container = createContainer();
 
 		clock = sinon.useFakeTimers();
 		clock.tick(1000);
 		spy = sinon.spy();
-		L.DomEvent.on(el, 'dblclick', spy);
+		L.DomEvent.on(container, 'dblclick', spy);
 	});
 
 	afterEach(function () {
 		clock.restore();
-		document.body.removeChild(el);
+		removeMapContainer(null, container);
 	});
 
 	it('fires synthetic dblclick after two clicks with delay<200', function () {
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 		clock.tick(100);
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
@@ -27,38 +26,38 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 	});
 
 	it('does not fire dblclick when delay>200', function () {
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 		clock.tick(300);
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not fire dblclick when detail !== 1', function () {
-		happen.click(el, {detail: 0}); // like in IE
+		happen.click(container, {detail: 0}); // like in IE
 		clock.tick(100);
-		happen.click(el, {detail: 0});
+		happen.click(container, {detail: 0});
 		clock.tick(100);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not fire dblclick after removeListener', function () {
-		L.DomEvent.off(el, 'dblclick', spy);
+		L.DomEvent.off(container, 'dblclick', spy);
 
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 		clock.tick(100);
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 		clock.tick(100);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not conflict with native dblclick', function () {
-		happen.click(el, {detail: 1});
+		happen.click(container, {detail: 1});
 		clock.tick(100);
-		happen.click(el, {detail: 2}); // native dblclick expected
-		happen.dblclick(el);
+		happen.click(container, {detail: 2}); // native dblclick expected
+		happen.dblclick(container);
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
 		expect(spy.lastCall.args[0]._simulated).not.to.be.ok();
@@ -72,9 +71,9 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 			screenX: 4,
 			screenY: 5
 		};
-		happen.click(el, click);
+		happen.click(container, click);
 		clock.tick(100);
-		happen.click(el, click);
+		happen.click(container, click);
 
 		var event = spy.lastCall.args[0];
 		var expectedProps = L.extend(click, {
@@ -82,7 +81,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 			// bubbles: true,    // not important, as we do not actually dispatch the event
 			// cancelable: true, //
 			detail: 2,
-			target: el
+			target: container
 		});
 		for (var prop in expectedProps) {
 			expect(event[prop]).to.be(expectedProps[prop]);
@@ -92,7 +91,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 
 	it('respects disableClickPropagation', function () {
 		var spyMap = sinon.spy();
-		var map = L.map(el).setView([51.505, -0.09], 13);
+		var map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		var spyCtrl = sinon.spy();
@@ -112,5 +111,27 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 
 		expect(spyCtrl.called).to.be.ok();
 		expect(spyMap.notCalled).to.be.ok();
+	});
+
+	it('doesn\'t fire double-click while clicking on a label with `for` attribute', function () {
+		var spyMap = sinon.spy();
+		var map = L.map(container).setView([51.505, -0.09], 13);
+		map.on('dblclick', spyMap);
+
+		var div;
+		var MyControl = L.Control.extend({
+			onAdd: function () {
+				div = L.DomUtil.create('div');
+				div.innerHTML = '<input type="checkbox" id="input">' +
+					'<label for="input" style="background: #ffffff; width: 100px; height: 100px;display: block;">Click Me</label>';
+				return div;
+			}
+		});
+		map.addControl(new MyControl());
+		// click on the label
+		happen.click(div.children[1], {detail: 1});
+		clock.tick(100);
+		expect(spyMap.notCalled).to.be.ok();
+		map.remove();
 	});
 });

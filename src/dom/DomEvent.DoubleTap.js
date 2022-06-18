@@ -1,3 +1,5 @@
+import * as DomEvent from './DomEvent';
+
 /*
  * Extends the event handling code with double tap support for mobile browsers.
  *
@@ -41,6 +43,25 @@ export function addDoubleTapListener(obj, handler) {
 		if (e.pointerType === 'mouse' ||
 			(e.sourceCapabilities && !e.sourceCapabilities.firesTouchEvents)) {
 
+			return;
+		}
+
+		// When clicking on an <input>, the browser generates a click on its
+		// <label> (and vice versa) triggering two clicks in quick succession.
+		// This ignores clicks on elements which are a label with a 'for'
+		// attribute (or children of such a label), but not children of
+		// a <input>.
+		var path = DomEvent.getPropagationPath(e);
+		if (path.some(function (el) {
+			return el instanceof HTMLLabelElement && el.attributes.for;
+		}) &&
+			!path.some(function (el) {
+				return (
+					el instanceof HTMLInputElement ||
+					el instanceof HTMLSelectElement
+				);
+			})
+		) {
 			return;
 		}
 
