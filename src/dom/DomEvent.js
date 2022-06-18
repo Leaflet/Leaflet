@@ -263,8 +263,9 @@ export function getMousePosition(e, container) {
 	);
 }
 
-// OSX (Mac), Safari and Chrome on Linux scrolls double the pixels as in other platforms (see #7403 and #4538),
-// for all other Browsers we need double the scroll pixels by our self
+
+// For all Browsers except OSX (Mac), Safari and Chrome on Linux
+// we need double the scroll pixels (see #7403 and #4538)
 var wheelPxFactor =
 	(Browser.mac || Browser.safari || (Browser.linux && Browser.chrome)) ? window.devicePixelRatio :
 	window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
