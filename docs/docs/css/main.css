@@ -1119,7 +1119,7 @@ iframe[src*='youtube.com'] {
 	border-radius: 10px;
 }
 
-/** Begin Slava Ukraini Dialog **/
+/** Begin site dialog **/
 #dialog {
 	position: fixed;
 	width: 100%;
@@ -1151,6 +1151,7 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 #dialog iframe {
 	width: 100%;
 	height: 100%;
+	border: 0;
 }
 
 .overflowHidden {
@@ -1182,4 +1183,4 @@ blockquote {
 	font-style: italic;
 }
 
-/** End Slava Ukraini Dialog **/
+/** End site dialog **/
