@@ -263,11 +263,11 @@ export function getMousePosition(e, container) {
 	);
 }
 
-// Chrome on Win scrolls double the pixels as in other platforms (see #4538),
-// and Firefox scrolls device pixels, not CSS pixels
+// OSX (Mac), Safari and Chrome on Linux scrolls double the pixels as in other platforms (see #7403 and #4538),
+// for all other Browsers we need double the scroll pixels by our self
 var wheelPxFactor =
-	(Browser.win && Browser.chrome) ? 2 * window.devicePixelRatio :
-	Browser.gecko ? window.devicePixelRatio : 1;
+	(Browser.mac || Browser.safari || (Browser.linux && Browser.chrome)) ? window.devicePixelRatio :
+	window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a wheel DOM event, in vertical
