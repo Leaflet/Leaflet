@@ -29,25 +29,25 @@ title: Tilt handler
 	var trd = [63.41, 10.41];
 	
 	L.TiltHandler = L.Handler.extend({
-		addHooks: function() {
+		addHooks: function () {
 			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 	
-		removeHooks: function() {
+		removeHooks: function () {
 			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
-		
-		_tilt: function(ev) {
+
+		_tilt: function (ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
 			var info;
-			var offset = L.point(ev.gamma, ev.beta)
+			var offset = L.point(ev.gamma, ev.beta);
 			if (offset) {
 				this._map.panBy(offset);
 				info = ev.gamma + ',' + ev.beta;
 			} else {
-				info = 'Device orientation not detected'
+				info = 'Device orientation not detected';
 			}
-			document.getElementById('info').innerHTML = info
+			document.getElementById('info').innerHTML = info;
 		}
 	});
 	
@@ -59,8 +59,9 @@ title: Tilt handler
 		tilt: true
 	});
 
-	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+	var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 	
 </script>

@@ -1,7 +1,7 @@
 import {Class} from '../../core/Class';
 import {setOptions} from '../../core/Util';
 import {toPoint as point} from '../../geometry/Point';
-import {retina} from '../../core/Browser';
+import Browser from '../../core/Browser';
 
 /*
  * @class Icon
@@ -153,7 +153,7 @@ export var Icon = Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+		return Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 

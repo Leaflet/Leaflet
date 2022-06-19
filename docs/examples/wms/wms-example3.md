@@ -27,7 +27,7 @@ title: WMS example
 		})
 	};
 
-	L.control.layers(basemaps, {}, {collapsed: false}).addTo(map);
+	var layerControl = L.control.layers(basemaps, {}, {collapsed: false}).addTo(map);
 
 	basemaps.Topography.addTo(map);
 

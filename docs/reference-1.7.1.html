@@ -4,9 +4,10 @@ title: Documentation
 bodyclass: api-page
 ---
 
+<h2>Leaflet API reference</h2>
+
 <p>This reference reflects <strong>Leaflet 1.7.1</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
-<h2>Leaflet API reference</h2>
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
 			<h4>Map</h4>
@@ -706,13 +707,12 @@ fly animations.</td>
 	<tr id='map-zoomend'>
 		<td><code><b>zoomend</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the map has changed, after any animations.</td>
+		<td>Fired when the map zoom has changed, after any animations.</td>
 	</tr>
 	<tr id='map-moveend'>
 		<td><code><b>moveend</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the center of the map stops changing (e.g. user stopped
-dragging the map).</td>
+		<td>Fired when the center of the map stops changing (e.g. user stopped dragging the map or when a non-centered zoom ends).</td>
 	</tr>
 </tbody></table>
 

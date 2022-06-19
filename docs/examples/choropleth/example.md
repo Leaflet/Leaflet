@@ -38,15 +38,10 @@ css: "#map {
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/light-v9',
-		tileSize: 512,
-		zoomOffset: -1
+	var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
-
 
 	// control that shows state info on hover
 	var info = L.control();
@@ -59,8 +54,7 @@ css: "#map {
 
 	info.update = function (props) {
 		this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-			: 'Hover over a state');
+			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>' : 'Hover over a state');
 	};
 
 	info.addTo(map);
@@ -69,13 +63,12 @@ css: "#map {
 	// get color depending on population density value
 	function getColor(d) {
 		return d > 1000 ? '#800026' :
-				d > 500  ? '#BD0026' :
-				d > 200  ? '#E31A1C' :
-				d > 100  ? '#FC4E2A' :
-				d > 50   ? '#FD8D3C' :
-				d > 20   ? '#FEB24C' :
-				d > 10   ? '#FED976' :
-							'#FFEDA0';
+			d > 500  ? '#BD0026' :
+			d > 200  ? '#E31A1C' :
+			d > 100  ? '#FC4E2A' :
+			d > 50   ? '#FD8D3C' :
+			d > 20   ? '#FEB24C' :
+			d > 10   ? '#FED976' : '#FFEDA0';
 	}
 
 	function style(feature) {
@@ -125,6 +118,7 @@ css: "#map {
 		});
 	}
 
+	/* global statesData */
 	geojson = L.geoJson(statesData, {
 		style: style,
 		onEachFeature: onEachFeature
@@ -137,10 +131,10 @@ css: "#map {
 
 	legend.onAdd = function (map) {
 
-		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-			labels = [],
-			from, to;
+		var div = L.DomUtil.create('div', 'info legend');
+		var grades = [0, 10, 20, 50, 100, 200, 500, 1000];
+		var labels = [];
+		var from, to;
 
 		for (var i = 0; i < grades.length; i++) {
 			from = grades[i];

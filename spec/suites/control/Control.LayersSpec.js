@@ -1,16 +1,15 @@
 describe("Control.Layers", function () {
-	var div, map;
+	var container, map;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		document.body.appendChild(div);
-		map = L.map(div);
+		container = container = createContainer();
+		map = L.map(container);
+
 		map.setView([0, 0], 14);
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	describe("baselayerchange event", function () {
@@ -189,6 +188,13 @@ describe("Control.Layers", function () {
 	});
 
 	describe("collapse when collapsed: true", function () {
+		it('expands on toggle focus', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
+			happen.once(toggle, {type:'focus'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+
 		it('expands when mouse is over', function () {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(layersCtrl._container, {type:'mouseover'});
@@ -235,8 +241,8 @@ describe("Control.Layers", function () {
 			// Need to create a DIV with specified height and insert it into DOM, so that the browser
 			// gives it an actual size.
 			map.remove();
-			div.style.height = div.style.width = '200px';
-			map = L.map(div);
+			container.style.height = container.style.width = '200px';
+			map = L.map(container);
 
 			for (; i < 20; i += 1) {
 				// Default text size: 12px => 12 * 20 = 240px height (not even considering padding/margin).
@@ -245,8 +251,8 @@ describe("Control.Layers", function () {
 
 			layersCtrl.addTo(map);
 
-			expect(div.clientHeight).to.be.greaterThan(0); // Make sure first that the map container has a height, otherwise this test is useless.
-			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
+			expect(container.clientHeight).to.be.greaterThan(0); // Make sure first that the map container has a height, otherwise this test is useless.
+			expect(container.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
 		});
 
@@ -257,8 +263,8 @@ describe("Control.Layers", function () {
 			// Need to create a DIV with specified height and insert it into DOM, so that the browser
 			// gives it an actual size.
 			map.remove();
-			div.style.height = div.style.width = '200px';
-			map = L.map(div);
+			container.style.height = container.style.width = '200px';
+			map = L.map(container);
 
 			layersCtrl.addTo(map);
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(false);
@@ -268,7 +274,7 @@ describe("Control.Layers", function () {
 				layersCtrl.addOverlay(L.marker([0, 0]), i);
 			}
 
-			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
+			expect(container.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
 		});
 	});
@@ -290,7 +296,7 @@ describe("Control.Layers", function () {
 				'Marker A': markerA
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker C');
@@ -316,7 +322,7 @@ describe("Control.Layers", function () {
 				sortLayers: true
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker A');
@@ -343,7 +349,7 @@ describe("Control.Layers", function () {
 				sortFunction: function (a, b) { return a.options.customOption - b.options.customOption; }
 			}).addTo(map);
 
-			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');
 			expect(elems[0].innerHTML.trim()).to.be.equal('Base Two');
 			expect(elems[1].innerHTML.trim()).to.be.equal('Base One');
 			expect(elems[2].innerHTML.trim()).to.be.equal('Marker B');

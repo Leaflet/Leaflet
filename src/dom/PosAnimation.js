@@ -11,8 +11,21 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * @example
  * ```js
- * var fx = new L.PosAnimation();
- * fx.run(el, [300, 500], 0.5);
+ * var myPositionMarker = L.marker([48.864716, 2.294694]).addTo(map);
+ *
+ * myPositionMarker.on("click", function() {
+ * 	var pos = map.latLngToLayerPoint(myPositionMarker.getLatLng());
+ * 	pos.y -= 25;
+ * 	var fx = new L.PosAnimation();
+ *
+ * 	fx.once('end',function() {
+ * 		pos.y += 25;
+ * 		fx.run(myPositionMarker._icon, pos, 0.8);
+ * 	});
+ *
+ * 	fx.run(myPositionMarker._icon, pos, 0.3);
+ * });
+ *
  * ```
  *
  * @constructor L.PosAnimation()
@@ -25,7 +38,7 @@ export var PosAnimation = Evented.extend({
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
-	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
+	// argument of the [cubic bezier curve](https://cubic-bezier.com/#0,0,.5,1),
 	// `0.5` by default).
 	run: function (el, newPos, duration, easeLinearity) {
 		this.stop();

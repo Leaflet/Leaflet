@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import * as Browser from '../core/Browser';
+import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
@@ -203,7 +203,7 @@ export var Map = Evented.extend({
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(center, zoom);
+		this._resetView(center, zoom, options.pan && options.pan.noMoveStart);
 
 		return this;
 	},
@@ -446,11 +446,13 @@ export var Map = Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
 
+		if (this.listens('moveend', this._panInsideMaxBounds)) {
+			this.off('moveend', this._panInsideMaxBounds);
+		}
+
 		if (!bounds.isValid()) {
 			this.options.maxBounds = null;
-			return this.off('moveend', this._panInsideMaxBounds);
-		} else if (this.options.maxBounds) {
-			this.off('moveend', this._panInsideMaxBounds);
+			return this;
 		}
 
 		this.options.maxBounds = bounds;
@@ -511,10 +513,9 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	// @method panInside(latlng: LatLng, options?: options): this
+	// @method panInside(latlng: LatLng, options?: padding options): this
 	// Pans the map the minimum amount to make the `latlng` visible. Use
-	// `padding`, `paddingTopLeft` and `paddingBottomRight` options to fit
-	// the display to more restricted bounds, like [`fitBounds`](#map-fitbounds).
+	// padding options to fit the display to more restricted bounds.
 	// If `latlng` is already within the (optionally padded) display bounds,
 	// the map will not be panned.
 	panInside: function (latlng, options) {
@@ -665,6 +666,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationError: function (error) {
+		if (!this._container._leaflet_id) { return; }
+
 		var c = error.code,
 		    message = error.message ||
 		            (c === 1 ? 'permission denied' :
@@ -684,6 +687,8 @@ export var Map = Evented.extend({
 	},
 
 	_handleGeolocationResponse: function (pos) {
+		if (!this._container._leaflet_id) { return; }
+
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new LatLng(lat, lng),
@@ -736,7 +741,7 @@ export var Map = Evented.extend({
 	remove: function () {
 
 		this._initEvents(true);
-		this.off('moveend', this._panInsideMaxBounds);
+		if (this.options.maxBounds) { this.off('moveend', this._panInsideMaxBounds); }
 
 		if (this._containerId !== this._container._leaflet_id) {
 			throw new Error('Map container is being reused by another instance');
@@ -817,7 +822,7 @@ export var Map = Evented.extend({
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
-			return this._lastCenter;
+			return this._lastCenter.clone();
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
@@ -1166,7 +1171,7 @@ export var Map = Evented.extend({
 	// private methods that modify map state
 
 	// @section Map state change events
-	_resetView: function (center, zoom) {
+	_resetView: function (center, zoom, noMoveStart) {
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		var loading = !this._loaded;
@@ -1177,7 +1182,7 @@ export var Map = Evented.extend({
 
 		var zoomChanged = this._zoom !== zoom;
 		this
-			._moveStart(zoomChanged, false)
+			._moveStart(zoomChanged, noMoveStart)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
@@ -1208,7 +1213,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	_move: function (center, zoom, data) {
+	_move: function (center, zoom, data, supressEvent) {
 		if (zoom === undefined) {
 			zoom = this._zoom;
 		}
@@ -1218,29 +1223,34 @@ export var Map = Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		// @event zoom: Event
-		// Fired repeatedly during any change in zoom level, including zoom
-		// and fly animations.
-		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+		if (!supressEvent) {
+			// @event zoom: Event
+			// Fired repeatedly during any change in zoom level,
+			// including zoom and fly animations.
+			if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
+				this.fire('zoom', data);
+			}
+
+			// @event move: Event
+			// Fired repeatedly during any movement of the map,
+			// including pan and fly animations.
+			this.fire('move', data);
+		} else if (data && data.pinch) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
-
-		// @event move: Event
-		// Fired repeatedly during any movement of the map, including pan and
-		// fly animations.
-		return this.fire('move', data);
+		return this;
 	},
 
 	_moveEnd: function (zoomChanged) {
 		// @event zoomend: Event
-		// Fired when the map has changed, after any animations.
+		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
 
 		// @event moveend: Event
-		// Fired when the center of the map stops changing (e.g. user stopped
-		// dragging the map).
+		// Fired when the center of the map stops changing
+		// (e.g. user stopped dragging the map or after non-centered zoom).
 		return this.fire('moveend');
 	},
 
@@ -1335,7 +1345,7 @@ export var Map = Evented.extend({
 		var pos = this._getMapPanePos();
 		if (Math.max(Math.abs(pos.x), Math.abs(pos.y)) >= this.options.transform3DLimit) {
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=1203873 but Webkit also have
-			// a pixel offset on very high values, see: http://jsfiddle.net/dg6r5hhb/
+			// a pixel offset on very high values, see: https://jsfiddle.net/dg6r5hhb/
 			this._resetView(this.getCenter(), this.getZoom());
 		}
 	},
@@ -1349,7 +1359,7 @@ export var Map = Evented.extend({
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
-			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+			if (target && (type === 'click' || type === 'preclick') && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;
@@ -1362,20 +1372,30 @@ export var Map = Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && this.listens(type, true)) {
 			targets = [this];
 		}
 		return targets;
 	},
 
+	_isClickDisabled: function (el) {
+		while (el && el !== this._container) {
+			if (el['_leaflet_disable_click']) { return true; }
+			el = el.parentNode;
+		}
+	},
+
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || DomEvent.skipped(e)) { return; }
+		var el = (e.target || e.srcElement);
+		if (!this._loaded || el['_leaflet_disable_events'] || e.type === 'click' && this._isClickDisabled(el)) {
+			return;
+		}
 
 		var type = e.type;
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			DomUtil.preventOutline(e.target || e.srcElement);
+			DomUtil.preventOutline(el);
 		}
 
 		this._fireDOMEvent(e, type);
@@ -1383,7 +1403,7 @@ export var Map = Evented.extend({
 
 	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
-	_fireDOMEvent: function (e, type, targets) {
+	_fireDOMEvent: function (e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
@@ -1393,21 +1413,29 @@ export var Map = Evented.extend({
 			// handlers start running).
 			var synth = Util.extend({}, e);
 			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, targets);
+			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}
 
-		if (e._stopped) { return; }
-
 		// Find the layer the event is propagating from and its parents.
-		targets = (targets || []).concat(this._findEventTargets(e, type));
+		var targets = this._findEventTargets(e, type);
+
+		if (canvasTargets) {
+			var filtered = []; // pick only targets with listeners
+			for (var i = 0; i < canvasTargets.length; i++) {
+				if (canvasTargets[i].listens(type, true)) {
+					filtered.push(canvasTargets[i]);
+				}
+			}
+			targets = filtered.concat(targets);
+		}
 
 		if (!targets.length) { return; }
 
-		var target = targets[0];
-		if (type === 'contextmenu' && target.listens(type, true)) {
+		if (type === 'contextmenu') {
 			DomEvent.preventDefault(e);
 		}
 
+		var target = targets[0];
 		var data = {
 			originalEvent: e
 		};
@@ -1420,7 +1448,7 @@ export var Map = Evented.extend({
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
 
-		for (var i = 0; i < targets.length; i++) {
+		for (i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
 				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
@@ -1676,6 +1704,12 @@ export var Map = Evented.extend({
 			noUpdate: noUpdate
 		});
 
+		if (!this._tempFireZoomEvent) {
+			this._tempFireZoomEvent = this._zoom !== this._animateToZoom;
+		}
+
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
+
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
 		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
 	},
@@ -1689,12 +1723,16 @@ export var Map = Evented.extend({
 
 		this._animatingZoom = false;
 
-		this._move(this._animateToCenter, this._animateToZoom);
+		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
-		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
-		Util.requestAnimFrame(function () {
-			this._moveEnd(true);
-		}, this);
+		if (this._tempFireZoomEvent) {
+			this.fire('zoom');
+		}
+		delete this._tempFireZoomEvent;
+
+		this.fire('move');
+
+		this._moveEnd(true);
 	}
 });
 
