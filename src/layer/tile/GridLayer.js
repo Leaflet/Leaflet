@@ -550,8 +550,8 @@ export var GridLayer = Layer.extend({
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
 		var tileZoom = Math.round(zoom);
-		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
-		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
+		if ((this.options.maxZoom !== undefined && zoom > this.options.maxZoom) ||
+		    (this.options.minZoom !== undefined && zoom < this.options.minZoom)) {
 			tileZoom = undefined;
 		} else {
 			tileZoom = this._clampZoom(tileZoom);
