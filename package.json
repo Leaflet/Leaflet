@@ -4,11 +4,11 @@
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
+    "@mapbox/eslint-plugin-script-tags": "^1.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "bundlemon": "^1.3.2",
     "eslint": "^8.13.0",
     "eslint-config-mourner": "^2.0.3",
-    "eslint-plugin-script-tags": "^0.5.0",
     "git-rev-sync": "^3.0.2",
     "happen": "~0.3.2",
     "husky": "^8.0.1",
@@ -78,7 +78,7 @@
     },
     "extends": "mourner",
     "plugins": [
-      "script-tags"
+      "@mapbox/eslint-plugin-script-tags"
     ],
     "parserOptions": {
       "ecmaVersion": 6,
