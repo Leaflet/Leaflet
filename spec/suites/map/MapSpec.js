@@ -1832,6 +1832,22 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#disableClickPropagation', function () {
+		it('does not break if element is not in the DOM anymore', function () {
+			map.setView([0, 0], 0);
+			var parent = document.createElement('div');
+			var child = document.createElement('div');
+			parent.appendChild(child);
+			container.appendChild(parent);
+			L.DomEvent.on(child, 'click', function () {
+				L.DomUtil.remove(parent);
+			});
+			expect(function () {
+				happen.once(child, {type: 'click'});
+			}).to.not.throwException();
+		});
+	});
+
 	describe("#distance", function () {
 		it("measure distance in meters", function () {
 			var LA = L.latLng(34.0485672098387, -118.217781922035);

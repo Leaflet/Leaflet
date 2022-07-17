@@ -29,13 +29,9 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 ```
 var map = L.map('map').setView([37.8, -96], 4);
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-	maxZoom: 18,
-	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-	id: 'mapbox/satellite-v9',
-	tileSize: 512,
-	zoomOffset: -1
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 ```
 
@@ -103,12 +99,9 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 ```
 var map = L.map('map').setView([37.8, -96], 4);
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-	id: 'mapbox/satellite-v9',
-	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-	tileSize: 512,
-	zoomOffset: -1
+var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 ```
 
