@@ -110,6 +110,12 @@ describe('Polyline', function () {
 			expect(polyline.getCenter()).to.eql(L.latLng([0, 45]));
 		});
 
+		it('should compute center of a big flat line on equator with maxZoom', function () {
+			map.setMaxZoom(18);
+			var polyline = L.polyline([[0, 0], [0, 90]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 45]);
+		});
+
 		it('should compute center of a big flat line close to the pole', function () {
 			var polyline = L.polyline([[80, 0], [80, 90]]).addTo(map);
 			expect(polyline.getCenter()).to.be.nearLatLng([80, 45], 1e-2);
@@ -117,12 +123,12 @@ describe('Polyline', function () {
 
 		it('should compute center of a big diagonal line', function () {
 			var polyline = L.polyline([[0, 0], [80, 80]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng([57, 40], 1);
+			expect(polyline.getCenter()).to.be.nearLatLng([57.04516467328689, 40], 1);
 		});
 
 		it('should compute center of a diagonal line close to the pole', function () {
 			var polyline = L.polyline([[70, 70], [84, 84]]).addTo(map);
-			expect(polyline.getCenter()).to.be.nearLatLng([79, 77], 1);
+			expect(polyline.getCenter()).to.be.nearLatLng([79.01810060159328, 77], 1);
 		});
 
 		it('should compute center of a big multiline', function () {
@@ -133,7 +139,7 @@ describe('Polyline', function () {
 		it('should compute center of a small flat line', function () {
 			var polyline = L.polyline([[0, 0], [0, 0.090]]).addTo(map);
 			map.setZoom(0);  // Make the line disappear in screen;
-			expect(polyline.getCenter()).to.be.nearLatLng([0, 0], 1e-2);
+			expect(polyline.getCenter()).to.be.nearLatLng([0, 0.045]);
 		});
 
 		it('throws error if not yet added to map', function () {
@@ -141,6 +147,19 @@ describe('Polyline', function () {
 				var polyline = L.polyline([[0, 0], [0, 0.090]]);
 				polyline.getCenter();
 			}).to.throwException('Must add layer to map before using getCenter()');
+		});
+
+		it('should compute same center for low and high zoom', function () {
+			var layer = L.polyline([[10, -80], [0, 0], [0, 10], [10, 90]]).addTo(map);
+			map.setZoom(0);
+			var center = layer.getCenter();
+			map.setZoom(18);
+			expect(layer.getCenter()).to.be.nearLatLng(center);
+		});
+
+		it('should compute center of a zick-zack line', function () {
+			var polyline = L.polyline([[0, 0], [50, 50], [30, 30], [35, 35]]).addTo(map);
+			expect(polyline.getCenter()).to.be.nearLatLng([40.551864181628666, 38.36684065813897]);
 		});
 
 	});
