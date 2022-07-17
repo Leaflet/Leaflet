@@ -111,6 +111,9 @@
 .leaflet-map-pane canvas { z-index: 100; }
 .leaflet-map-pane svg    { z-index: 200; }
 
+
+.leaflet-rtl .leaflet-tooltip-pane   {direction: ltr;}
+
 .leaflet-vml-shape {
 	width: 1px;
 	height: 1px;
@@ -271,6 +274,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font-size: 12px;
 	font-size: 0.75rem;
 	line-height: 1.5;
+	}
+
+.leaflet-rtl{
+	direction: rtl;
 	}
 
 
@@ -647,8 +654,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-right-color: #fff;
 	}
 
+.leaflet-rtl .leaflet-tooltip-pane > * {
+	direction: rtl;
+	}
+
 /* Printing */
-	
+
 @media print {
 	/* Prevent printers from removing background-images of controls. */
 	.leaflet-control {
