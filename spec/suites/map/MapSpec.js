@@ -1,4 +1,4 @@
-describe.only("Map", function () {
+describe("Map", function () {
 	var container,
 	    map;
 
