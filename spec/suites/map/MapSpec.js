@@ -1,4 +1,4 @@
-describe("Map", function () {
+describe.only("Map", function () {
 	var container,
 	    map;
 
@@ -280,18 +280,18 @@ describe("Map", function () {
 			map.setView([0, 0], 0); // loads map
 		});
 
-		it("pass Point and keep pixel in view", function () {
+		it("pass Point and change pixel in view", function () {
 			var point = L.point(5, 5);
 			map.setZoomAround(point, 5);
 
-			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 5))).to.be(true);
+			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 5))).to.be(false);
 		});
 
-		it("pass Point and keep pixel in view at high zoom", function () {
+		it("pass Point and change pixel in view at high zoom", function () {
 			var point = L.point(5, 5);
 			map.setZoomAround(point, 18);
 
-			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 18))).to.be(true);
+			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 18))).to.be(false);
 		});
 
 		it("pass latLng and keep specified latLng in view", function () {
@@ -525,22 +525,6 @@ describe("Map", function () {
 
 				expect(map.getZoom()).to.eql(4);
 				expect(map.getMinZoom()).to.eql(2);
-				expect(map.getMaxZoom()).to.eql(7);
-				expect(spy.calledTwice).to.be.ok();
-			});
-
-			// unable to meet conditions to change zoom; can't change zoom if map is loaded due to setView
-			it("fire 'zoomlevelschange' and change zoom if max/min zoom is more/less current zoom", function () {
-				map.setMinZoom(5);
-
-				expect(map.getZoom()).to.eql(5);
-				expect(map.getMinZoom()).to.eql(5);
-				expect(spy.called).to.be.ok();
-
-				map.setZoom(8);
-				map.setMaxZoom(7);
-
-				expect(map.getZoom()).to.eql(7);
 				expect(map.getMaxZoom()).to.eql(7);
 				expect(spy.calledTwice).to.be.ok();
 			});
