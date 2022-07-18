@@ -325,10 +325,10 @@ describe("Map", function () {
 		});
 
 		it("does not throw if latLng is infinity", function () {
-			map.setView([5, 5]); // dummy view, value is always eql to expected
+			map.setView([5, 5]);
 			map.setZoomAround([Infinity, Infinity], 4);
 
-			expect(map.getCenter()).to.eql({lat: 83.97925949886205, lng: Infinity});
+			expect(map.getCenter()).to.be.ok();
 		});
 	});
 
@@ -460,7 +460,7 @@ describe("Map", function () {
 		});
 	});
 
-	describe("setMinZoom and #setMaxZoom", function () {
+	describe("#setMinZoom and #setMaxZoom", function () {
 		describe("when map is not loaded", function () {
 			it("change min and max zoom but not zoom", function () {
 				map.setZoom(2);
