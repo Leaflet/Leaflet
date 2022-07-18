@@ -280,14 +280,14 @@ describe("Map", function () {
 			map.setView([0, 0], 0); // loads map
 		});
 
-		it.skip("pass Point and keep pixel in view", function () {
+		it("pass Point and keep pixel in view", function () {
 			var point = L.point(5, 5);
 			map.setZoomAround(point, 5);
 
 			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 5))).to.be(true);
 		});
 
-		it.skip("pass Point and keep pixel in view at high zoom", function () {
+		it("pass Point and keep pixel in view at high zoom", function () {
 			var point = L.point(5, 5);
 			map.setZoomAround(point, 18);
 
@@ -530,7 +530,7 @@ describe("Map", function () {
 			});
 
 			// unable to meet conditions to change zoom; can't change zoom if map is loaded due to setView
-			it.skip("fire 'zoomlevelschange' and change zoom if max/min zoom is more/less current zoom", function () {
+			it("fire 'zoomlevelschange' and change zoom if max/min zoom is more/less current zoom", function () {
 				map.setMinZoom(5);
 
 				expect(map.getZoom()).to.eql(5);
