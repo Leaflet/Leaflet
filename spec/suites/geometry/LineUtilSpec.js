@@ -113,4 +113,62 @@ describe('LineUtil', function () {
 			expect(L.Polyline._flat([L.latLng([0, 0])])).to.be(true);
 		});
 	});
+
+	describe('#polylineCenter', function () {
+		var map, crs, zoom;
+		beforeEach(function () {
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+			crs = map.options.crs;
+			zoom = map.getZoom();
+		});
+
+		afterEach(function () {
+			map.remove();
+		});
+
+		// More tests in PolylineSpec
+
+		it('computes center of line', function () {
+			var latlngs = [[80, 0], [80, 90]];
+			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			expect(center).to.be.nearLatLng([80, 45]);
+		});
+
+		it('computes center of line with maxZoom', function () {
+			L.gridLayer({maxZoom: 18}).addTo(map);
+			var latlngs = [[80, 0], [80, 90]];
+			var center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
+			expect(center).to.be.nearLatLng([80, 45]);
+		});
+
+		it('throws error if latlngs not passed', function () {
+			expect(function () {
+				L.LineUtil.polylineCenter(null, crs, zoom);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if latlng array is empty', function () {
+			expect(function () {
+				L.LineUtil.polylineCenter([], crs, zoom);
+			}).to.throwException('latlngs not passed');
+		});
+
+		it('throws error if map not passed', function () {
+			var latlngs = [[80, 0], [80, 90]];
+			expect(function () {
+				L.LineUtil.polylineCenter(latlngs, null);
+			}).to.throwException('map not passed');
+		});
+
+		it('shows warning if latlngs is not flat', function () {
+			var latlngs = [
+				[[80, 0], [80, 90]]
+			];
+			var spy = sinon.spy(console, 'warn');
+			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			console.warn.restore();
+			expect(spy.calledOnce).to.be.ok();
+			expect(center).to.be.nearLatLng([80, 45]);
+		});
+	});
 });
