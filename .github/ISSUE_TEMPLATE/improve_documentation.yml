@@ -1,0 +1,44 @@
+name: Improve documentation
+description: Suggest new additions or updates to existing documentation
+labels: ["docs", "needs triage"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      description: >
+        Please confirm the following:
+      options:
+        - label: I've searched through the [current issues](https://github.com/Leaflet/Leaflet/issues) to make sure this change hasn't been suggested already.
+          required: false
+        - label: I agree to follow the [Code of Conduct](https://github.com/Leaflet/Leaflet/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.
+          required: true
+
+  - type: input
+    attributes:
+      label: Which documents need updating?
+      description: >
+        For existing content, please provide one or more URLs of documents that need updating.
+        You may also provide [permalinks](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet) to the relevant source code.
+      placeholder: e.g. "https://leafletjs.com/reference.html#map-example"
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Motivation
+      description: >
+        Why is this change needed? Provide a clear and concise description of what the problem is.
+        Provide additional context if necessary (screenshots, video, links, etc.).
+      placeholder: >
+        e.g. "The documentation doesn't help me understand how to [...]"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Suggested changes
+      description: >
+        Provide a clear and concise description of the changes you want to see.
+        Provide additional context if necessary (screenshots, video, links, etc.).
+    validations:
+      required: true

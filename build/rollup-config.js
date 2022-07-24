@@ -12,24 +12,15 @@ const watch = process.argv.indexOf('-w') > -1 || process.argv.indexOf('--watch')
 const version = release ? pkg.version : `${pkg.version}+${gitRev.branch()}.${gitRev.short()}`;
 const banner = createBanner(version);
 
-const outro = `var oldL = window.L;
-leaflet.noConflict = function() {
-	window.L = oldL;
-	return this;
-}
-// Always export us to window global (see #2364)
-window.L = leaflet;`;
-
 /** @type {import('rollup').RollupOptions} */
 const config = {
-	input: 'src/Leaflet.js',
+	input: 'src/LeafletWithGlobals.js',
 	output: [
 		{
 			file: pkg.main,
 			format: 'umd',
 			name: 'leaflet',
 			banner: banner,
-			outro: outro,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
@@ -43,7 +34,7 @@ const config = {
 if (!watch) {
 	config.output.push(
 		{
-			file: 'dist/leaflet-src.esm.js',
+			file: pkg.module,
 			format: 'es',
 			banner: banner,
 			sourcemap: true,

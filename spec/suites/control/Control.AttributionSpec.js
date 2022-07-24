@@ -1,13 +1,19 @@
 describe("Control.Attribution", function () {
-	var map, control, container;
+	var map, control, container, controlContainer;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div'));
+		container = container = createContainer();
+		map = L.map(container);
+
 		control = new L.Control.Attribution({
 			prefix: 'prefix'
 		}).addTo(map);
 		map.setView([0, 0], 1);
-		container = control.getContainer();
+		controlContainer = control.getContainer();
+	});
+
+	afterEach(function () {
+		removeMapContainer(map, container);
 	});
 
 	function dummyLayer() {
@@ -18,25 +24,25 @@ describe("Control.Attribution", function () {
 	}
 
 	it("contains just prefix if no attributions added", function () {
-		expect(container.innerHTML).to.eql('prefix');
+		expect(controlContainer.innerHTML).to.eql('prefix');
 	});
 
 	describe('#addAttribution', function () {
 		it('adds one attribution correctly', function () {
 			control.addAttribution('foo');
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 		});
 
 		it('adds no duplicate attributions', function () {
 			control.addAttribution('foo');
 			control.addAttribution('foo');
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 		});
 
 		it('adds several attributions listed with comma', function () {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar');
 		});
 	});
 
@@ -45,7 +51,7 @@ describe("Control.Attribution", function () {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
 			control.removeAttribution('foo');
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
 		});
 		it('does nothing if removing attribution that was not present', function () {
 			control.addAttribution('foo');
@@ -54,14 +60,14 @@ describe("Control.Attribution", function () {
 			control.removeAttribution('baz');
 			control.removeAttribution('baz');
 			control.removeAttribution('');
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 		});
 	});
 
 	describe('#setPrefix', function () {
 		it('changes prefix', function () {
 			control.setPrefix('bla');
-			expect(container.innerHTML).to.eql('bla');
+			expect(controlContainer.innerHTML).to.eql('bla');
 		});
 	});
 
@@ -81,20 +87,20 @@ describe("Control.Attribution", function () {
 			barLayer.getAttribution = function () { return 'bar'; };
 			bazLayer.getAttribution = function () { return 'baz'; };
 
-			expect(container.innerHTML).to.eql('prefix');
+			expect(controlContainer.innerHTML).to.eql('prefix');
 			map.addLayer(fooLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.addLayer(barLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar');
 			map.addLayer(bazLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar, baz');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar, baz');
 
 			map.removeLayer(fooLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar, baz');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar, baz');
 			map.removeLayer(barLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> baz');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> baz');
 			map.removeLayer(bazLayer);
-			expect(container.innerHTML).to.eql('prefix');
+			expect(controlContainer.innerHTML).to.eql('prefix');
 		});
 
 		it('keeps count of duplicated attributions', function () {
@@ -105,20 +111,20 @@ describe("Control.Attribution", function () {
 			fo2Layer.getAttribution = function () { return 'foo'; };
 			fo3Layer.getAttribution = function () { return 'foo'; };
 
-			expect(container.innerHTML).to.eql('prefix');
+			expect(controlContainer.innerHTML).to.eql('prefix');
 			map.addLayer(fooLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.addLayer(fo2Layer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.addLayer(fo3Layer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 
 			map.removeLayer(fooLayer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.removeLayer(fo2Layer);
-			expect(container.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.removeLayer(fo3Layer);
-			expect(container.innerHTML).to.eql('prefix');
+			expect(controlContainer.innerHTML).to.eql('prefix');
 		});
 	});
 });

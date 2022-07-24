@@ -203,7 +203,7 @@ export var Map = Evented.extend({
 		}
 
 		// animation didn't start, just reset the map view
-		this._resetView(center, zoom);
+		this._resetView(center, zoom, options.pan && options.pan.noMoveStart);
 
 		return this;
 	},
@@ -446,11 +446,13 @@ export var Map = Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = toLatLngBounds(bounds);
 
+		if (this.listens('moveend', this._panInsideMaxBounds)) {
+			this.off('moveend', this._panInsideMaxBounds);
+		}
+
 		if (!bounds.isValid()) {
 			this.options.maxBounds = null;
-			return this.off('moveend', this._panInsideMaxBounds);
-		} else if (this.options.maxBounds) {
-			this.off('moveend', this._panInsideMaxBounds);
+			return this;
 		}
 
 		this.options.maxBounds = bounds;
@@ -820,7 +822,7 @@ export var Map = Evented.extend({
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
-			return this._lastCenter;
+			return this._lastCenter.clone();
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
@@ -1169,7 +1171,7 @@ export var Map = Evented.extend({
 	// private methods that modify map state
 
 	// @section Map state change events
-	_resetView: function (center, zoom) {
+	_resetView: function (center, zoom, noMoveStart) {
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		var loading = !this._loaded;
@@ -1180,7 +1182,7 @@ export var Map = Evented.extend({
 
 		var zoomChanged = this._zoom !== zoom;
 		this
-			._moveStart(zoomChanged, false)
+			._moveStart(zoomChanged, noMoveStart)
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
@@ -1377,7 +1379,7 @@ export var Map = Evented.extend({
 	},
 
 	_isClickDisabled: function (el) {
-		while (el !== this._container) {
+		while (el && el !== this._container) {
 			if (el['_leaflet_disable_click']) { return true; }
 			el = el.parentNode;
 		}
@@ -1730,10 +1732,7 @@ export var Map = Evented.extend({
 
 		this.fire('move');
 
-		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
-		Util.requestAnimFrame(function () {
-			this._moveEnd(true);
-		}, this);
+		this._moveEnd(true);
 	}
 });
 

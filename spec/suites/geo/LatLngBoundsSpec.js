@@ -2,24 +2,24 @@ describe('LatLngBounds', function () {
 	var a, c;
 
 	beforeEach(function () {
-		a = new L.LatLngBounds(
-			new L.LatLng(14, 12),
-			new L.LatLng(30, 40));
-		c = new L.LatLngBounds();
+		a = L.latLngBounds(
+			L.latLng(14, 12),
+			L.latLng(30, 40));
+		c = L.latLngBounds();
 	});
 
 	describe('constructor', function () {
 		it('instantiates either passing two latlngs or an array of latlngs', function () {
-			var b = new L.LatLngBounds([
-				new L.LatLng(14, 12),
-				new L.LatLng(30, 40)
+			var b = L.latLngBounds([
+				L.latLng(14, 12),
+				L.latLng(30, 40)
 			]);
 			expect(b).to.eql(a);
-			expect(b.getNorthWest()).to.eql(new L.LatLng(30, 12));
+			expect(b.getNorthWest()).to.eql(L.latLng(30, 12));
 		});
 
 		it('returns an empty bounds when not argument is given', function () {
-			var bounds = new L.LatLngBounds();
+			var bounds = L.latLngBounds();
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
@@ -32,13 +32,13 @@ describe('LatLngBounds', function () {
 
 	describe('#extend', function () {
 		it('extends the bounds by a given point', function () {
-			a.extend(new L.LatLng(20, 50));
-			expect(a.getNorthEast()).to.eql(new L.LatLng(30, 50));
+			a.extend(L.latLng(20, 50));
+			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
 		});
 
 		it('extends the bounds by given bounds', function () {
 			a.extend([[20, 50], [8, 40]]);
-			expect(a.getSouthEast()).to.eql(new L.LatLng(8, 50));
+			expect(a.getSouthEast()).to.eql(L.latLng(8, 50));
 		});
 
 		it('extends the bounds by undefined', function () {
@@ -47,17 +47,17 @@ describe('LatLngBounds', function () {
 
 		it('extends the bounds by raw object', function () {
 			a.extend({lat: 20, lng: 50});
-			expect(a.getNorthEast()).to.eql(new L.LatLng(30, 50));
+			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
 		});
 
 		it('extend the bounds by an empty bounds object', function () {
-			expect(a.extend(new L.LatLngBounds())).to.eql(a);
+			expect(a.extend(L.latLngBounds())).to.eql(a);
 		});
 	});
 
 	describe('#getCenter', function () {
 		it('returns the bounds center', function () {
-			expect(a.getCenter()).to.eql(new L.LatLng(22, 26));
+			expect(a.getCenter()).to.eql(L.latLng(22, 26));
 		});
 	});
 
@@ -132,13 +132,13 @@ describe('LatLngBounds', function () {
 
 	describe('#getNorthWest', function () {
 		it('returns a proper north-west LatLng', function () {
-			expect(a.getNorthWest()).to.eql(new L.LatLng(a.getNorth(), a.getWest()));
+			expect(a.getNorthWest()).to.eql(L.latLng(a.getNorth(), a.getWest()));
 		});
 	});
 
 	describe('#getSouthEast', function () {
 		it('returns a proper south-east LatLng', function () {
-			expect(a.getSouthEast()).to.eql(new L.LatLng(a.getSouth(), a.getEast()));
+			expect(a.getSouthEast()).to.eql(L.latLng(a.getSouth(), a.getEast()));
 		});
 	});
 

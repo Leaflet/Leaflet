@@ -84,14 +84,14 @@ be sure to check out the awesome [article about forking](https://help.github.com
 on the GitHub Help website &mdash; it will get you started quickly.
 
 You should always write each batch of changes (feature, bugfix, etc.) in **its own topic branch**.
-Please do not commit to the `main` branch, or your unrelated changes will go into the same pull request.
+Please do not commit to the `main` branch of your fork — otherwise your unrelated changes will go into the same pull request.
 
 You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
-Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them.
-If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
-so that the build system knows about them.
+Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them. 
+The same command is automatically executed while committing. 
+You can prevent it from execution with the git flag `--no-verify`: `git commit -m "WIP" --no-verify`.  
 
 Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
 
@@ -102,7 +102,7 @@ Happy coding!
 The source JavaScript code for Leaflet is a few dozen files, in the `src/` directory.
 But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
-In order to create this file, run `npm run rollup` or `yarn run rollup`.
+In order to create this file, run `npm run build` or `yarn run build`.
 
 You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
 `dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for

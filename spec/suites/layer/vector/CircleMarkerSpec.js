@@ -1,13 +1,14 @@
 ﻿describe('CircleMarker', function () {
-	var map;
+	var map, container;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div'));
+		container = container = createContainer();
+		map = L.map(container);
 		map.setView([0, 0], 1);
 	});
 
 	afterEach(function () {
-		map.remove();
+		removeMapContainer(map, container);
 	});
 
 	describe("#_radius", function () {
@@ -60,11 +61,11 @@
 
 	describe("#setLatLng", function () {
 		it("fires a move event", function () {
-			var marker = new L.CircleMarker([0, 0]);
+			var marker = L.circleMarker([0, 0]);
 			map.addLayer(marker);
 
 			var beforeLatLng = marker._latlng;
-			var afterLatLng = new L.LatLng(1, 2);
+			var afterLatLng = L.latLng(1, 2);
 
 			var eventArgs = null;
 			marker.on('move', function (e) {
@@ -77,6 +78,19 @@
 			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
 			expect(eventArgs.latlng).to.be(afterLatLng);
 			expect(marker.getLatLng()).to.be(afterLatLng);
+		});
+	});
+
+	describe("#_containsPoint", function () {
+		it("checks if a point is contained", function () {
+			var point1 = L.point(200, 200);
+			var point2 = L.point(10, 10);
+			var circlemarker = L.circleMarker([10, 10], {radius: 20});
+
+			circlemarker.addTo(map);
+
+			expect(circlemarker._containsPoint(point1)).to.be(true);
+			expect(circlemarker._containsPoint(point2)).to.be(false);
 		});
 	});
 });

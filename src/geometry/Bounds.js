@@ -38,21 +38,36 @@ export function Bounds(a, b) {
 Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
-	extend: function (point) { // (Point)
-		point = toPoint(point);
+
+	// @alternative
+	// @method extend(otherBounds: Bounds): this
+	// Extend the bounds to contain the given bounds
+	extend: function (obj) {
+		var min2, max2;
+		if (!obj) { return this; }
+
+		if (obj instanceof Point || typeof obj[0] === 'number' || 'x' in obj) {
+			min2 = max2 = toPoint(obj);
+		} else {
+			obj = toBounds(obj);
+			min2 = obj.min;
+			max2 = obj.max;
+
+			if (!min2 || !max2) { return this; }
+		}
 
 		// @property min: Point
 		// The top left corner of the rectangle.
 		// @property max: Point
 		// The bottom right corner of the rectangle.
 		if (!this.min && !this.max) {
-			this.min = point.clone();
-			this.max = point.clone();
+			this.min = min2.clone();
+			this.max = max2.clone();
 		} else {
-			this.min.x = Math.min(point.x, this.min.x);
-			this.max.x = Math.max(point.x, this.max.x);
-			this.min.y = Math.min(point.y, this.min.y);
-			this.max.y = Math.max(point.y, this.max.y);
+			this.min.x = Math.min(min2.x, this.min.x);
+			this.max.x = Math.max(max2.x, this.max.x);
+			this.min.y = Math.min(min2.y, this.min.y);
+			this.max.y = Math.max(max2.y, this.max.y);
 		}
 		return this;
 	},
@@ -60,7 +75,7 @@ Bounds.prototype = {
 	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
 	getCenter: function (round) {
-		return new Point(
+		return toPoint(
 		        (this.min.x + this.max.x) / 2,
 		        (this.min.y + this.max.y) / 2, round);
 	},
@@ -68,13 +83,13 @@ Bounds.prototype = {
 	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
 	getBottomLeft: function () {
-		return new Point(this.min.x, this.max.y);
+		return toPoint(this.min.x, this.max.y);
 	},
 
 	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
 	getTopRight: function () { // -> Point
-		return new Point(this.max.x, this.min.y);
+		return toPoint(this.max.x, this.min.y);
 	},
 
 	// @method getTopLeft(): Point
@@ -154,9 +169,40 @@ Bounds.prototype = {
 		return xOverlaps && yOverlaps;
 	},
 
+	// @method isValid(): Boolean
+	// Returns `true` if the bounds are properly initialized.
 	isValid: function () {
 		return !!(this.min && this.max);
-	}
+	},
+
+
+	// @method pad(bufferRatio: Number): Bounds
+	// Returns bounds created by extending or retracting the current bounds by a given ratio in each direction.
+	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
+	// Negative values will retract the bounds.
+	pad: function (bufferRatio) {
+		var min = this.min,
+		max = this.max,
+		heightBuffer = Math.abs(min.x - max.x) * bufferRatio,
+		widthBuffer = Math.abs(min.y - max.y) * bufferRatio;
+
+
+		return toBounds(
+			toPoint(min.x - heightBuffer, min.y - widthBuffer),
+			toPoint(max.x + heightBuffer, max.y + widthBuffer));
+	},
+
+
+	// @method equals(otherBounds: Bounds, maxMargin?: Number): Boolean
+	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
+	equals: function (bounds) {
+		if (!bounds) { return false; }
+
+		bounds = toBounds(bounds);
+
+		return this.min.equals(bounds.getTopLeft()) &&
+			this.max.equals(bounds.getBottomRight());
+	},
 };
 
 

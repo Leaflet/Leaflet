@@ -1,5 +1,5 @@
 describe('TileLayer', function () {
-	var div, map;
+	var container, map;
 
 	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
@@ -159,17 +159,14 @@ describe('TileLayer', function () {
 	"qQzPJJgDeASMHuOx+lAH/9k=";
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-		document.body.appendChild(div);
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	function kittenLayerFactory(options) {
@@ -253,6 +250,7 @@ describe('TileLayer', function () {
 		// browsers due to CSS animations!
 		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
+			if (L.Browser.ie) { this.retries(3); } // It also sometimes fails in IE10 on CI
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
 
@@ -290,8 +288,8 @@ describe('TileLayer', function () {
 
 	describe('url template', function () {
 		beforeEach(function () {
-			div.style.width = '400px';
-			div.style.height = '400px';
+			container.style.width = '400px';
+			container.style.height = '400px';
 			map.setView([0, 0], 2);
 		});
 
@@ -431,10 +429,64 @@ describe('TileLayer', function () {
 				});
 			});
 		}
+
+		it('sets min/maxZoom appropriately with detectRetina', function (done) {
+			var maxZoom = 1;
+			var minZoom = 1;
+
+			// override retina to load extra tiles
+			var originalRetina = L.Browser.retina;
+			L.Browser.retina = true;
+
+			var kittenLayer = kittenLayerFactory({
+				maxZoom: maxZoom,
+				minZoom: minZoom,
+				detectRetina: true
+			});
+
+			kittenLayer.on('load', function () {
+				expect(kittenLayer.options.maxZoom).to.be(maxZoom);
+				expect(kittenLayer.options.minZoom).to.be(minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
+
+		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', function (done) {
+			// override retina to load extra tiles
+			var originalRetina = L.Browser.retina;
+			L.Browser.retina = false;
+
+			var kittenLayer = kittenLayerFactory({
+				// invalid min/maxZoom
+				maxZoom: 9,
+				minZoom: 10,
+				detectRetina: false
+			});
+
+			kittenLayer.on('load', function () {
+				// zooms should be identical so that we can load tiles for the given zoom level
+				expect(kittenLayer.options.maxZoom).to.be(kittenLayer.options.minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
 	});
 
 	describe('#setUrl', function () {
 		it('fires only one load event', function (done) {
+			if (L.Browser.ie) { this.retries(3); }
+
 			var layer = L.tileLayer(placeKitten).addTo(map);
 			var counts = {
 				load: 0,

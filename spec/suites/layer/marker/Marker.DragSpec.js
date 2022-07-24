@@ -1,20 +1,17 @@
 describe("Marker.Drag", function () {
 	var map,
-	    div;
+	    container;
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = div.style.height = '600px';
-		div.style.top = div.style.left = 0;
-		div.style.position = 'absolute';
-		document.body.appendChild(div);
-
-		map = L.map(div).setView([0, 0], 0);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '600px';
+		container.style.height = '600px';
+		map.setView([0, 0], 0);
 	});
 
 	afterEach(function () {
-		map.remove();
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	var MyMarker = L.Marker.extend({
@@ -57,8 +54,8 @@ describe("Marker.Drag", function () {
 			var scale = L.point(2, 1.5);
 
 			beforeEach(function () {
-				div.style.webkitTransformOrigin = 'top left';
-				div.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
+				container.style.webkitTransformOrigin = 'top left';
+				container.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
 			});
 
 			(L.Browser.ie ? it.skip : it)("drags a marker with mouse, compensating for CSS scale", function (done) {

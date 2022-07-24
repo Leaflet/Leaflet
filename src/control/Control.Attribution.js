@@ -4,6 +4,10 @@ import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
+import Browser from '../core/Browser';
+
+var ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
+
 
 /*
  * @class Control.Attribution
@@ -21,8 +25,7 @@ export var Attribution = Control.extend({
 
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">Leaflet</a>'
-
+		prefix: '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">' + (Browser.inlineSvg ? ukrainianFlag + ' ' : '') + 'Leaflet</a>'
 	},
 
 	initialize: function (options) {
@@ -72,7 +75,7 @@ export var Attribution = Control.extend({
 	},
 
 	// @method addAttribution(text: String): this
-	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
+	// Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
 	addAttribution: function (text) {
 		if (!text) { return this; }
 

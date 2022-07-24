@@ -5,7 +5,7 @@
 	<title>Leaflet Spec Runner</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
-    	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css">
+	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css">
 </head>
 <body>
 	<div id="mocha"></div>
@@ -19,9 +19,22 @@
 	<script>
 		// Trick Leaflet into believing we have a touchscreen (for desktop)
 		if (window.TouchEvent) { window.ontouchstart = function(){} };
+		var oldL = window.L;
 	</script>
 
 	<script src="../dist/leaflet-src.js"></script>
+
+	<script>
+		// noConflict is defined in the rollup-config or in karma.conf.js, both are nor called while executing this
+		L.noConflict = function() {
+			window.L = oldL;
+			return this;
+		};
+
+		// sets the default imagePath to the project path like "/Leaflet/dist/images/"
+		// same as in after.js but not static
+		L.Icon.Default.imagePath = '/' + window.location.pathname.split('/')[1] + '/dist/images/';
+	</script>
 
 	<script class="mocha-init">
 		mocha.setup('bdd');
@@ -89,7 +102,6 @@
 	<script src="suites/layer/vector/PathSpec.js"></script>
 	<script src="suites/layer/vector/PolygonSpec.js"></script>
 	<script src="suites/layer/vector/PolylineSpec.js"></script>
-	<script src="suites/layer/vector/PolylineGeometrySpec.js"></script>
 	<script src="suites/layer/vector/CanvasSpec.js"></script>
 
 	<!-- /map -->
@@ -97,13 +109,17 @@
 
 	<!-- /map/handler -->
 	<script src="suites/map/handler/Map.BoxZoom.js"></script>
+	<script src="suites/map/handler/Map.DoubleClickZoomSpec.js"></script>
 	<script src="suites/map/handler/Map.DragSpec.js"></script>
-	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
 	<script src="suites/map/handler/Map.KeyboardSpec.js"></script>
+	<script src="suites/map/handler/Map.ScrollWheelZoomSpec.js"></script>
 	<script src="suites/map/handler/Map.TapHoldSpec.js"></script>
+	<script src="suites/map/handler/Map.TouchZoomSpec.js"></script>
 
 	<script class="mocha-exec">
-		window.mocha.run();
+		window.mocha
+				.globals([ '_leaflet_events' ]) // acceptable globals - fixing gloabl leaks
+				.run();
 	</script>
 </body>
 </html>

@@ -9,11 +9,6 @@ html, body, input, select, button, textarea, table {
 	text-rendering: optimizeLegibility;
 }
 
-html {
-	scroll-padding-top: 5em;
-	overflow: auto;
-}
-
 body {
 	line-height: 1.5;
 	color: black;
@@ -204,7 +199,7 @@ p.tagline {
 	padding: 0 30px;
 	text-align: center;
 	font-size: 1.25em;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	border-bottom: 1px solid #ccc;
 	padding-bottom: 40px;
 }
@@ -278,8 +273,8 @@ p.tagline {
 
 .map-home {
 	height: 300px;
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 .usedby-title {
@@ -800,7 +795,7 @@ table.plugins td:first-child a {
 	font-size: 14px;
 }
 
-.api-page p {
+main .api-page p {
 	margin-top: 0;
 }
 
@@ -1123,3 +1118,69 @@ iframe[src*='youtube.com'] {
 	padding: 5px 10px;
 	border-radius: 10px;
 }
+
+/** Begin site dialog **/
+#dialog {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	z-index: 10000;
+	background: rgba(0, 0, 0, 0.24);
+	padding-top: 20px;
+}
+
+/*
+keep focus in dialog
+https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
+ */
+#dialog:not(:focus-within) {
+	background-color:rgba(0, 0, 0, 0.25);
+	transition: background-color 0.01s;
+}
+
+#dialog .iframe-container {
+	height: 90%;
+	border-radius: 5px;
+	padding: 10px 0px;
+	background: #fff;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#dialog iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.overflowHidden {
+	overflow: hidden !important;
+}
+
+.close-dialog {
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  right: 20px;
+  position: absolute;
+  font-size: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #000;
+	overflow: hidden;
+}
+
+.close-dialog:hover, .close-dialog:focus {
+	color: #797979;
+}
+
+blockquote {
+	font-style: italic;
+}
+
+/** End site dialog **/

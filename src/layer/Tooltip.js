@@ -3,6 +3,8 @@ import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import * as DomUtil from '../dom/DomUtil';
+import * as DomEvent from '../dom/DomEvent';
+import * as Util from '../core/Util';
 
 /*
  * @class Tooltip
@@ -115,6 +117,9 @@ export var Tooltip = DivOverlay.extend({
 		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
 		this._contentNode = this._container = DomUtil.create('div', className);
+
+		this._container.setAttribute('role', 'tooltip');
+		this._container.setAttribute('id', 'leaflet-tooltip-' + Util.stamp(this));
 	},
 
 	_updateLayout: function () {},
@@ -283,6 +288,11 @@ Layer.include({
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
+			if (this._map) {
+				this._addFocusListeners();
+			} else {
+				events.add = this._addFocusListeners;
+			}
 		} else {
 			events.add = this._openTooltip;
 		}
@@ -299,6 +309,12 @@ Layer.include({
 		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
 			// open the tooltip on the map
 			this._tooltip.openOn(this._map);
+
+			if (this.getElement) {
+				this._setAriaDescribedByOnLayer(this);
+			} else if (this.eachLayer) {
+				this.eachLayer(this._setAriaDescribedByOnLayer, this);
+			}
 		}
 		return this;
 	},
@@ -340,6 +356,27 @@ Layer.include({
 	getTooltip: function () {
 		return this._tooltip;
 	},
+
+	_addFocusListeners: function () {
+		if (this.getElement) {
+			this._addFocusListenersOnLayer(this);
+		} else if (this.eachLayer) {
+			this.eachLayer(this._addFocusListenersOnLayer, this);
+		}
+	},
+
+	_addFocusListenersOnLayer: function (layer) {
+		DomEvent.on(layer.getElement(), 'focus', function () {
+			this._tooltip._source = layer;
+			this.openTooltip();
+		}, this);
+		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
+	},
+
+	_setAriaDescribedByOnLayer: function (layer) {
+		layer.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+	},
+
 
 	_openTooltip: function (e) {
 		if (!this._tooltip || !this._map || (this._map.dragging && this._map.dragging.moving())) {

@@ -58,6 +58,8 @@ export var Popup = DivOverlay.extend({
 		// @option maxHeight: Number = null
 		// If set, creates a scrollable container of the given height
 		// inside a popup if its content exceeds it.
+		// The scrollable container can be styled using the
+		// `leaflet-popup-scrolled` CSS class selector.
 		maxHeight: null,
 
 		// @option autoPan: Boolean = true
@@ -203,7 +205,10 @@ export var Popup = DivOverlay.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
-			DomEvent.on(closeButton, 'click', this.close, this);
+			DomEvent.on(closeButton, 'click', function (ev) {
+				DomEvent.preventDefault(ev);
+				this.close();
+			}, this);
 		}
 	},
 

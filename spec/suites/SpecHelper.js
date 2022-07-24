@@ -61,6 +61,9 @@ happen.makeEvent = (function (makeEvent) {
 		if (o.type.substring(0, 7) === 'pointer') {
 			evt.pointerId = o.pointerId;
 			evt.pointerType = o.pointerType;
+		} else if (o.type.indexOf('wheel') > -1) {
+			evt.deltaY = evt.deltaY || o.deltaY;
+			evt.deltaMode = evt.deltaMode || o.deltaMode;
 		}
 		return evt;
 	};
@@ -78,6 +81,30 @@ it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
 var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disable-line no-unused-vars
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
+
+function createContainer(width, height) { /* eslint-disable-line no-unused-vars */
+	width = width ? width : '400px';
+	height = height ? height : '400px';
+	var container = document.createElement("div");
+	container.style.position = 'absolute';
+	container.style.top = '0px';
+	container.style.left = '0px';
+	container.style.height = height;
+	container.style.width = width;
+	container.style.opacity = '0.4';
+	document.body.appendChild(container);
+
+	return container;
+}
+
+function removeMapContainer(map, container) { /* eslint-disable-line no-unused-vars */
+	if (map) {
+		map.remove();
+	}
+	if (container) {
+		document.body.removeChild(container);
+	}
+}
 
 console.log('L.Browser.pointer', L.Browser.pointer);
 console.log('L.Browser.touchNative', L.Browser.touchNative);
