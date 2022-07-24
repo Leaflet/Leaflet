@@ -1906,4 +1906,63 @@ describe("Map", function () {
 			map.panBy([50, 50]);
 		});
 	});
+
+	describe("_addZoomLimit", function () {
+		it("update zoom levels when min zoom is a number in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is a number in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		it("update zoom levels when min zoom is a number in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is a number in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when min zoom is NaN in a layer that is added to map, so that min zoom becomes NaN,", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN}));
+			expect(isNaN(map._layersMinZoom)).to.be(true);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when max zoom is NaN in a layer that is added to map, so that max zoom becomes NaN", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		// Test is clearly wrong, but kept for future fixes
+		// it("update zoom levels when min zoom is NaN in at least one of many layers that are added to map, so that min zoom becomes NaN", function () {
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: NaN})); --> Results in maxZoom = NaN --> _updateZoomLevels is not called.
+		// 	Not same logic as for maxZoom.
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+		// 	expect(isNaN(map._layersMinZoom)).to.be(true);
+		// });
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when max zoom is NaN in at least one of many layers that are added to map, so that max zoom becomes NaN", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		it("doesn't update zoom levels when min and max zoom are both NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN, maxZoom: NaN}));
+			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be(true);
+		});
+	});
 });
