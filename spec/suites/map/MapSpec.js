@@ -1965,4 +1965,39 @@ describe("Map", function () {
 			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be(true);
 		});
 	});
+
+	describe("#containerPointToLatLng", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.containerPointToLatLng();
+			}).to.throwError();
+		});
+
+		it("returns geographical coordinate for point relative to map container", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center, 50);
+			var p = map.containerPointToLatLng(L.point(200, 200));
+			expect(p.lat).to.be.within(10.0000000, 10.0000001);
+			expect(p.lng).to.be.within(10.0000000, 10.0000001);
+		});
+	});
+
+
+	describe("#latLngToContainerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.latLngToContainerPoint();
+			}).to.throwError();
+		});
+
+		it("returns point relative to map container for geographical coordinate", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center);
+			var p = map.latLngToContainerPoint(center);
+			expect(p.x).to.be.equal(200);
+			expect(p.y).to.be.equal(200);
+		});
+	});
 });
