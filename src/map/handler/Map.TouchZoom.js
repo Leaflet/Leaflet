@@ -74,7 +74,7 @@ export var TouchZoom = Handler.extend({
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
-		//修改移动端放大到最大级别后，图层随手指移动的问题	
+		//add by ranxu815 修改移动端放大到最大级别后，图层随手指移动的问题	
 		if(this._zoom >= map.getMaxZoom() && scale >= 1){
 			return;
 		}
