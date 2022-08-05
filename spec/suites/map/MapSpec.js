@@ -2000,4 +2000,19 @@ describe("Map", function () {
 			expect(p.y).to.be.equal(200);
 		});
 	});
+
+	describe("#panTo", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panTo();
+			}).to.throwError();
+		});
+
+		it("pans the map to accurate location", function () {
+			var center = L.latLng([50, 30]);
+			expect(map.panTo(center)).to.be(map);
+			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
+		});
+	});
 });
