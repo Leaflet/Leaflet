@@ -305,6 +305,11 @@ export var Map = Evented.extend({
 	// @method panTo(latlng: LatLng, options?: Pan options): this
 	// Pans the map to a given center.
 	panTo: function (center, options) { // (LatLng)
+
+		if (options && options.zoom !== undefined) {
+			this._zoom = this._limitZoom(options.zoom);
+		}
+
 		return this.setView(center, this._zoom, {pan: options});
 	},
 
