@@ -2015,4 +2015,26 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
+	describe("#mouseEventToLatLng", function () {
+		it("throws if map is not set before", function () {
+		  var latlng;
+		  map.on("click", function (e) {
+				latlng = map.mouseEventToLatLng(e.originalEvent);
+		  });
+		  happen.click(container);
+		  expect(latlng).not.to.be.ok();
+		});
+		it("returns geographical coordinate where the event took place.", function () {
+		  var latlng;
+		  map.setView([0, 0], 0);
+		  map.on("click", function (e) {
+				latlng = map.mouseEventToLatLng(e.originalEvent);
+		  });
+		  happen.click(container);
+		  expect(latlng.lat).to.be(89.15412403096876);
+		  expect(latlng.lng).to.be(-281.25000000000006);
+		});
+	  });
+
+
 });
