@@ -2015,4 +2015,23 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
+
+	describe("#mouseEventToLayerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.mouseEventToLayerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the coordinates where the mouse event took place", function () {
+			const mouseEvent = new MouseEvent('mouseenter', {
+				clientX: 1,
+				clientY: 2
+			});
+			const p = map.mouseEventToLayerPoint(mouseEvent);
+			expect(p.x).to.be.equal(1);
+			expect(p.y).to.be.equal(2);
+		});
+	});
 });
