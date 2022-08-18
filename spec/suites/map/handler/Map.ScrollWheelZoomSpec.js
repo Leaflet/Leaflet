@@ -108,7 +108,7 @@ describe("Map.ScrollWheelZoom", function () {
 
 				map.once('zoomend', function () {
 					expect(map.getZoom()).to.be.greaterThan(zoom);
-					expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
+					expect(map.getZoom() - zoom).to.be.equal(zoomDiff);
 					map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
 					done();
 				});
