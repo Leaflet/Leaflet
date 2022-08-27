@@ -27,7 +27,7 @@
 	 	map = new L.Map('map');
 
 		// create the tile layer with correct attribution
-		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 17 });
 		map.addLayer(osm);
 		map.fitBounds(new L.LatLngBounds([51,7],[51,7]));

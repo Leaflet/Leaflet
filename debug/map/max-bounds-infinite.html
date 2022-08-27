@@ -17,7 +17,7 @@
 
 	<script>
 
-		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
 			bounds = new L.LatLngBounds(new L.LatLng(49.5, Number.NEGATIVE_INFINITY), new L.LatLng(61.2, Number.POSITIVE_INFINITY));
