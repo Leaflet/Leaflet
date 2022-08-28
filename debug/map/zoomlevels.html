@@ -20,8 +20,8 @@
 		var map = L.map('map').setView(L.latLng(50.5, 30.51), 0);
 
 		var osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: osmAttrib, minZoom: 0, maxZoom: 10}).addTo(map),
-			osm2 = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: 'Hello world', minZoom: 5, maxZoom: 18});
+			osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: osmAttrib, minZoom: 0, maxZoom: 10}).addTo(map),
+			osm2 = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: 'Hello world', minZoom: 5, maxZoom: 18});
 
 		L.control.layers({
 			'OSM (5-18)': osm2,

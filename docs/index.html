@@ -21,7 +21,7 @@ and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" 
 
 <pre class="basic-code javascript"><code>var map = L.map('map').setView([51.505, -0.09], 13);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 }).addTo(map);
 
@@ -209,7 +209,7 @@ and spreading the word about Leaflet among your colleagues and friends.</p>
 </div>
 
 <script>
-	var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 		osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
