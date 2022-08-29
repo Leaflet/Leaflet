@@ -362,7 +362,7 @@ describe('Popup', function () {
 		expect(popup.getContent()).to.be('Test');
 	});
 
-	it("fires a move event", function () {
+	it("should fire the move event", function () {
 		var popup = new L.Popup()
 			.setLatLng([0, 0])
 			.openOn(map);

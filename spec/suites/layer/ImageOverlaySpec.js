@@ -29,7 +29,7 @@ describe('ImageOverlay', function () {
 			expect(overlay._bounds).to.equal(bounds);
 		});
 
-		it("fires a move event", function () {
+		it("should fire the move event", function () {
 			var beforeBounds = new L.LatLngBounds(
 				new L.LatLng(14, 12),
 				new L.LatLng(30, 40));
@@ -45,7 +45,6 @@ describe('ImageOverlay', function () {
 			overlay.setBounds(afterBounds);
 
 			expect(moveEvent.callCount).to.not.be(0);
-			expect(moveEvent.args[0][0].oldBounds).to.be(beforeBounds);
 			expect(moveEvent.args[0][0].bounds).to.be(afterBounds);
 			expect(overlay.getBounds()).to.be(afterBounds);
 		});

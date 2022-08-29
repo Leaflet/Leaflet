@@ -96,22 +96,21 @@
 
 
 	describe("#setRadius", function () {
-		it("fires a move event", function () {
+		it("should fire the updateradius event", function () {
 			var marker = new L.CircleMarker([0, 0]);
 			map.addLayer(marker);
 
-			var beforeRadius = marker._radius;
+			var beforeRadius = marker.getRadius();
 			var afterRadius = 30;
 
-			var moveEvent = sinon.spy();
-			marker.on('move', moveEvent);
+			var updateRadiusEvent = sinon.spy();
+			marker.on('updateradius', updateRadiusEvent);
 
 			marker.setRadius(afterRadius);
 
-			expect(moveEvent.callCount).to.not.be(0);
-			expect(moveEvent.args[0][0].oldRadius).to.be(beforeRadius);
-			expect(moveEvent.args[0][0].radius).to.be(afterRadius);
-			expect(moveEvent.args[0][0].latlng).to.be(marker.getLatLng());
+			expect(updateRadiusEvent.callCount).to.not.be(0);
+			expect(updateRadiusEvent.args[0][0].oldRadius).to.be(beforeRadius);
+			expect(updateRadiusEvent.args[0][0].radius).to.be(afterRadius);
 			expect(marker.getRadius()).to.be(afterRadius);
 		});
 	});

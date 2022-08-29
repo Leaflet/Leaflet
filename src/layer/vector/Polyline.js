@@ -74,14 +74,12 @@ export var Polyline = Path.extend({
 	// @method setLatLngs(latlngs: LatLng[]): this
 	// Replaces all the points in the polyline with the given array of geographical points.
 	setLatLngs: function (latlngs) {
-		var oldLatLngs = this._latlngs;
 		this._setLatLngs(latlngs);
 		this.redraw();
 
-		// @event move: Event
+		// @event move: LatLngsMoveEvent
 		// Fired when the Polyline is moved via [`setLatLng`](#polyline-setlatlngs).
-		// Old and new coordinates are included in event arguments as `oldLatLngs`, `latlngs`.
-		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs});
+		return this.fire('move', {latlngs: this._latlngs});
 	},
 
 	// @method isEmpty(): Boolean
@@ -142,17 +140,15 @@ export var Polyline = Path.extend({
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng: function (latlng, ring) {
-		var oldLatLngs = LineUtil.cloneLatLngs(this._latlngs);
 		ring = ring || this._defaultShape();
 		latlng = toLatLng(latlng);
 		ring.push(latlng);
 		this._bounds.extend(latlng);
 		this.redraw();
 
-		// @event move: Event
-		// Fired when the polyline is moved via [`addLatLng`](#polyline-addlatlng).
-		// Old and new coordinates, the added latlng and the edited ring are included in event arguments as `oldLatLngs`, `latlngs`, `latlng`, `ring`.
-		return this.fire('move', {oldLatLngs: oldLatLngs, latlngs: this._latlngs, latlng: latlng, ring: ring});
+		// @event move: LatLngsMoveEvent
+		// Fired when the Polyline is moved via [`addLatLng`](#polyline-addlatlng).
+		return this.fire('move', {latlngs: this._latlngs});
 	},
 
 	_setLatLngs: function (latlngs) {

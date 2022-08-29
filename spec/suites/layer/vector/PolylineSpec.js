@@ -119,7 +119,6 @@ describe('Polyline', function () {
 			polyline.on('move', moveEvent);
 			polyline.setLatLngs(newLatLngs);
 
-			expect(moveEvent.args[0][0].oldLatLngs).to.eql(originalLatLngs);
 			expect(moveEvent.args[0][0].latlngs).to.eql(newLatLngs);
 		});
 	});
@@ -268,14 +267,8 @@ describe('Polyline', function () {
 			polyline.on('move', moveEvent);
 			polyline.addLatLng(latlng);
 
-			var originalLatLngsCopy = [
-				L.latLng([1, 2]),
-				L.latLng([3, 4])
-			];
-			expect(moveEvent.args[0][0].oldLatLngs).to.eql(originalLatLngsCopy);
 			expect(moveEvent.args[0][0].latlngs[2]).to.eql(latlng);
-			expect(moveEvent.args[0][0].latlng).to.eql(latlng);
-			expect(moveEvent.args[0][0].ring).to.eql(polyline.getLatLngs());
+			expect(moveEvent.args[0][0].latlngs).to.eql(polyline.getLatLngs());
 		});
 	});
 

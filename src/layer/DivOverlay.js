@@ -155,9 +155,8 @@ export var DivOverlay = Layer.extend({
 			this._adjustPan();
 		}
 
-		// @event move: Event
+		// @event move: LatLngMoveEvent
 		// Fired when the DivOverlay is moved via [`setLatLng`](#divoverlay-setlatlng).
-		// Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 

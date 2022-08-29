@@ -138,17 +138,15 @@ export var ImageOverlay = Layer.extend({
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
 	setBounds: function (bounds) {
-		var oldBounds = this._bounds;
 		this._bounds = toLatLngBounds(bounds);
 
 		if (this._map) {
 			this._reset();
 		}
 
-		// @event move: Event
+		// @event move: BoundsMoveEvent
 		// Fired when the ImageOverlay is moved via [`setBounds`](#imageoverlay-setbounds).
-		// Old and new bounds are included in event arguments as `oldBounds`, `bounds`.
-		return this.fire('move', {oldBounds: oldBounds, bounds: this._bounds});
+		return this.fire('move', {bounds: this._bounds});
 	},
 
 	getEvents: function () {
