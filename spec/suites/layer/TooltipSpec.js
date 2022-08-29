@@ -25,6 +25,93 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
+	it("opens on marker focus and closes on blur", function () {
+		var layer = L.marker(center).addTo(map);
+
+		layer.bindTooltip('Tooltip');
+
+		var element = layer.getElement();
+
+		happen.once(element, {type:'focus'});
+
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+
+		happen.once(element, {type:'blur'});
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+	});
+
+	it("opens on marker focus and closes on blur when first bound, then added to map", function () {
+		var layer = L.marker(center);
+
+		layer.bindTooltip('Tooltip').addTo(map);
+
+		var element = layer.getElement();
+
+		happen.once(element, {type:'focus'});
+
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+
+		happen.once(element, {type:'blur'});
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+	});
+
+	it("opens on marker focus and closes on blur in layer group", function () {
+		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		group.bindTooltip(function (layer) {
+			return 'Group tooltip: ' + layer.options.description;
+		});
+
+		var element1 = marker1.getElement();
+		var element2 = marker2.getElement();
+
+		happen.once(element1, {type:'focus'});
+
+		expect(map.hasLayer(group._tooltip)).to.be(true);
+		expect(group._tooltip._container.innerHTML).to.be("Group tooltip: Marker 1");
+
+		happen.once(element1, {type:'blur'});
+		expect(map.hasLayer(group._tooltip)).to.be(false);
+
+		happen.once(element2, {type:'focus'});
+
+		expect(map.hasLayer(group._tooltip)).to.be(true);
+		expect(group._tooltip._container.innerHTML).to.be("Group tooltip: Marker 2");
+
+		happen.once(element2, {type:'blur'});
+		expect(map.hasLayer(group._tooltip)).to.be(false);
+	});
+
+	it("is mentioned in aria-describedby of a bound layer", function () {
+		var layer = L.marker(center).addTo(map);
+
+		layer.bindTooltip('Tooltip');
+		var element = layer.getElement();
+
+		happen.once(element, {type:'focus'});
+
+		var tooltip = layer.getTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
+	});
+
+	it("is mentioned in aria-describedby of a bound layer group", function () {
+		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		group.bindTooltip(function (layer) {
+			return 'Group tooltip: ' + layer.options.description;
+		});
+
+		var element = marker2.getElement();
+
+		happen.once(element, {type:'focus'});
+
+		var tooltip = group.getTooltip();
+		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
+
+	});
+
 	it("stays open on marker when permanent", function () {
 		var layer = L.marker(center).addTo(map);
 
@@ -400,5 +487,25 @@ describe('Tooltip', function () {
 		// tooltip should not open again while dragging
 		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
+	});
+
+	it("opens tooltip with passed latlng position while initializing", function () {
+		var tooltip = new L.Tooltip(center)
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+	});
+
+	it("opens tooltip with passed latlng and options position while initializing", function () {
+		var tooltip = new L.Tooltip(center, {className: 'testClass'})
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+		expect(L.DomUtil.hasClass(tooltip.getElement(), 'testClass')).to.be(true);
+	});
+
+	it("adds tooltip with passed content in options while initializing", function () {
+		var tooltip = new L.Tooltip(center, {content: 'Test'})
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+		expect(tooltip.getContent()).to.be('Test');
 	});
 });

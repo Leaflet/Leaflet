@@ -6,7 +6,7 @@ import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import Browser from '../core/Browser';
 
-var ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
+var ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 
 
 /*
@@ -75,7 +75,7 @@ export var Attribution = Control.extend({
 	},
 
 	// @method addAttribution(text: String): this
-	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
+	// Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
 	addAttribution: function (text) {
 		if (!text) { return this; }
 

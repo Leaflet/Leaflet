@@ -81,6 +81,19 @@
 		});
 	});
 
+	describe("#_containsPoint", function () {
+		it("checks if a point is contained", function () {
+			var point1 = L.point(200, 200);
+			var point2 = L.point(10, 10);
+			var circlemarker = L.circleMarker([10, 10], {radius: 20});
+
+			circlemarker.addTo(map);
+
+			expect(circlemarker._containsPoint(point1)).to.be(true);
+			expect(circlemarker._containsPoint(point2)).to.be(false);
+		});
+	});
+
 
 	describe("#setRadius", function () {
 		it("fires a move event", function () {

@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           check-latest: true
@@ -21,7 +21,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Cache setup
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
@@ -44,13 +44,13 @@ jobs:
         os: [ubuntu-latest, windows-2019]
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -60,7 +60,7 @@ jobs:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -70,13 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -86,7 +86,7 @@ jobs:
           NODE_ENV: release
 
       - name: Cache release build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
@@ -96,13 +96,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -115,13 +115,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore release build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build-release
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -147,13 +147,13 @@ jobs:
             os: windows-2019
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -166,7 +166,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
@@ -192,13 +192,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore build
-        uses: actions/cache@v3.0.2
+        uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.sha }}-build
 
       - name: Set up Node
-        uses: actions/setup-node@v3.1.1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org

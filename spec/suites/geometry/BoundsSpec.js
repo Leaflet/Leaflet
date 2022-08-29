@@ -35,11 +35,41 @@ describe('Bounds', function () {
 			expect(b.min).to.eql(L.point(14, 12));
 			expect(b.max).to.eql(L.point(30, 50));
 		});
+
+		it('extends the bounds by given bounds', function () {
+			a.extend([20, 50]);
+			expect(a.max).to.eql(L.point(30, 50));
+		});
+
+		it('extends the bounds by given bounds', function () {
+			a.extend([[20, 50], [8, 40]]);
+			expect(a.getBottomLeft()).to.eql(L.point(8, 50));
+		});
+
+		it('extends the bounds by undefined', function () {
+			expect(a.extend()).to.eql(a);
+		});
+
+		it('extends the bounds by raw object', function () {
+			a.extend({x: 20, y: 50});
+			expect(a.max).to.eql(L.point(30, 50));
+		});
+
+		it('extend the bounds by an empty bounds object', function () {
+			expect(a.extend(L.bounds())).to.eql(a);
+		});
 	});
 
 	describe('#getCenter', function () {
 		it('returns the center point', function () {
 			expect(a.getCenter()).to.eql(L.point(22, 26));
+		});
+	});
+
+	describe('#pad', function () {
+		it('pads the bounds by a given ratio', function () {
+			var bounds = a.pad(0.5);
+			expect(bounds).to.eql(L.bounds([[6, -2], [38, 54]]));
 		});
 	});
 
@@ -133,6 +163,14 @@ describe('Bounds', function () {
 		it('creates bounds from array of number arrays', function () {
 			var bounds = L.bounds([[14, 12], [30, 40]]);
 			expect(bounds).to.eql(a);
+		});
+	});
+
+	describe('#equals', function () {
+		it('returns true if bounds equal', function () {
+			expect(a.equals([[14, 12], [30, 40]])).to.eql(true);
+			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
+			expect(a.equals(null)).to.eql(false);
 		});
 	});
 });

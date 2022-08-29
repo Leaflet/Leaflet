@@ -169,6 +169,13 @@ var vml = !svg && (function () {
 	}
 }());
 
+
+// @property mac: Boolean; `true` when the browser is running in a Mac platform
+var mac = navigator.platform.indexOf('Mac') === 0;
+
+// @property mac: Boolean; `true` when the browser is running in a Linux platform
+var linux = navigator.platform.indexOf('Linux') === 0;
+
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
@@ -207,5 +214,7 @@ export default {
 	canvas: canvas,
 	svg: svg,
 	vml: vml,
-	inlineSvg: inlineSvg
+	inlineSvg: inlineSvg,
+	mac: mac,
+	linux: linux
 };
