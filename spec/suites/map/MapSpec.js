@@ -2015,4 +2015,22 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
+
+	describe.only("#panBy", function () {
+
+		it("throws if map is not set befor", function () {
+			expect(function () {
+				map.panBy();
+			}).to.throwError();
+		});
+
+		it("pans the map by given offset", function () {
+			var center = L.latLng([0, 0]);
+			map.setView(center, 10);
+			var offset = [100, 0];
+
+			expect(map.panBy(offset, {animate: false})).to.be(map);
+			expect(map.getCenter().distanceTo(center)).to.be.equal(100);
+		});
+	});
 });
