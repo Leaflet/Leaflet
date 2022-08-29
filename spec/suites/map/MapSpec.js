@@ -2016,7 +2016,7 @@ describe("Map", function () {
 		});
 	});
 
-	describe.only("#panBy", function () {
+	describe("#panBy", function () {
 
 		it("throws if map is not set befor", function () {
 			expect(function () {
@@ -2026,11 +2026,13 @@ describe("Map", function () {
 
 		it("pans the map by given offset", function () {
 			var center = L.latLng([0, 0]);
-			map.setView(center, 10);
-			var offset = [100, 0];
+			map.setView(center, 5);
+			var offset = L.point([10, 10]);
 
 			expect(map.panBy(offset, {animate: false})).to.be(map);
-			expect(map.getCenter().distanceTo(center)).to.be.equal(100);
+			var current = map.options.crs.latLngToPoint(map.getCenter(), 5);
+			var prev = map.options.crs.latLngToPoint(center, 5);
+			expect(current.distanceTo(prev)).to.be(Math.sqrt(200));
 		});
 	});
 });
