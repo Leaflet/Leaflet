@@ -2025,11 +2025,11 @@ describe("Map", function () {
 		});
 
 		it("returns the coordinates where the mouse event took place", function () {
-			const mouseEvent = new MouseEvent('mouseenter', {
+			var mouseEvent = new MouseEvent('mouseenter', {
 				clientX: 1,
 				clientY: 2
 			});
-			const p = map.mouseEventToLayerPoint(mouseEvent);
+			var p = map.mouseEventToLayerPoint(mouseEvent);
 			expect(p.x).to.be.equal(1);
 			expect(p.y).to.be.equal(2);
 		});
