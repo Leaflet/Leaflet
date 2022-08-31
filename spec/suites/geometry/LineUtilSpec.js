@@ -171,26 +171,4 @@ describe('LineUtil', function () {
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 	});
-
-	describe('#cloneLatLngs', function () {
-		it('clone a flat latlng array', function () {
-			var latLngs = [
-				L.latLng([1, 2]),
-				L.latLng([3, 4])
-			];
-			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
-			expect(latLngsClone).to.not.be(latLngs);
-			expect(latLngsClone).to.eql(latLngs);
-		});
-
-		it('clone a latlng array', function () {
-			var latLngs = [[
-				L.latLng([1, 2]),
-				L.latLng([3, 4])
-			]];
-			var latLngsClone = L.LineUtil.cloneLatLngs(latLngs);
-			expect(latLngsClone).to.not.be(latLngs);
-			expect(latLngsClone).to.eql(latLngs);
-		});
-	});
 });
