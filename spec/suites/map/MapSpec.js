@@ -2032,4 +2032,31 @@ describe("Map", function () {
 			expect(p.y).to.be.equal(200);
 		});
 	});
+
+	describe("#locate", function () {
+		var errorSpy;
+		var foundSpy;
+
+		beforeEach(function() {
+			map.setView([0,0], 0);
+
+			errorSpy = sinon.spy();
+			foundSpy = sinon.spy();
+		});
+
+		it("returns 'Geolocation not found!' error if geolocation can't be found", function () {
+			window.__defineGetter__('navigator', function () {
+				return {};
+			});
+
+			map.on('locationerror', errorSpy);
+			map.on('locationfound', foundSpy);
+
+			map.locate();
+
+			expect(errorSpy.firstCall.args[0].code).to.be(0);
+			expect(errorSpy.firstCall.args[0].message).to.be('Geolocation error: Geolocation not supported..');
+			expect(foundSpy.notCalled).to.be(true);
+		});
+	});
 });
