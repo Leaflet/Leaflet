@@ -2037,8 +2037,8 @@ describe("Map", function () {
 		var errorSpy;
 		var foundSpy;
 
-		beforeEach(function() {
-			map.setView([0,0], 0);
+		beforeEach(function () {
+			map.setView([0, 0], 0);
 
 			errorSpy = sinon.spy();
 			foundSpy = sinon.spy();
