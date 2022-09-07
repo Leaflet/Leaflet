@@ -2034,13 +2034,45 @@ describe("Map", function () {
 	});
 
 	describe("#locate", function () {
-		var errorSpy;
 		var foundSpy;
 
-		beforeEach(function () {
-			map.setView([0, 0], 0);
+		function mockGeolocation() {
+			return {
+				geolocation: {
+					getCurrentPosition: function (onSuccess) {
+						onSuccess(
+							{
+								coords:
+								{
+									latitude: 50,
+									longitude: 50,
+									accuracy: 14
+								},
 
-			errorSpy = sinon.spy();
+								timestamp: 1670000000000
+							});
+					},
+
+					watchPosition: function (onSuccess) {
+						onSuccess(
+							{
+								coords:
+								{
+									latitude: 25,
+									longitude: 25,
+									accuracy: 14
+								},
+
+								timestamp: 1660000000000
+							});
+
+						return 25;
+					}
+				}
+			};
+		}
+
+		beforeEach(function () {
 			foundSpy = sinon.spy();
 		});
 
@@ -2049,14 +2081,88 @@ describe("Map", function () {
 				return {};
 			});
 
-			map.on('locationerror', errorSpy);
+			map.on("locationerror", function (error) {
+				expect(error.code).to.be(0);
+				expect(error.message).to.eql('Geolocation error: Geolocation not supported..');
+			});
+
 			map.on('locationfound', foundSpy);
+
+			map.locate({setView: true});
+
+			expect(foundSpy.called).to.not.be.ok();
+		});
+
+		it("sets map view to geolocation coords", function () {
+			window.__defineGetter__('navigator', mockGeolocation);
+			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
+			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+
+			var expectedBounds;
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.eql(L.latLng(50, 50));
+				expect(data.timestamp).to.be(1670000000000);
+
+				expectedBounds = data.bounds;
+			});
+
+			map.locate({setView: true});
+
+			expect(map.getCenter().distanceTo([50, 50])).to.be(0);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(8);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(8);
+
+			// expect(getCurrentPosSpy.calledOnce).to.be.ok();
+			// expect(watchPosSpy.calledOnce).to.not.be.ok();
+		});
+
+		it("sets map view to geolocation coords and returns location watch ID when watch is true", function () {
+			window.__defineGetter__('navigator', mockGeolocation);
+			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
+			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+
+			var expectedBounds;
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.eql(L.latLng(25, 25));
+				expect(data.timestamp).to.be(1660000000000);
+
+				expectedBounds = data.bounds;
+			});
+
+			map.locate({setView: true, watch: true});
+
+			expect(map.getCenter().distanceTo([25, 25])).to.be(0);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(20);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(20);
+
+			expect(map._locationWatchId).to.eql(25);
+
+			// expect(getCurrentPosSpy.calledOnce).to.not.be.ok();
+			// expect(watchPosSpy.calledOnce).to.be.ok();
+		});
+
+		it("does not set map view by default", function () {
+			window.__defineGetter__('navigator', mockGeolocation);
+			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
+			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.eql(L.latLng(50, 50));
+				expect(data.timestamp).to.be(1670000000000);
+			});
 
 			map.locate();
 
-			expect(errorSpy.firstCall.args[0].code).to.be(0);
-			expect(errorSpy.firstCall.args[0].message).to.be('Geolocation error: Geolocation not supported..');
-			expect(foundSpy.notCalled).to.be(true);
+			expect(map._loaded).to.not.be(true);
+
+			// expect(getCurrentPosSpy.calledOnce).to.be.ok();
+			// expect(watchPosSpy.calledOnce).to.not.be.ok();
 		});
 	});
 });
