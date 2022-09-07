@@ -2035,68 +2035,81 @@ describe("Map", function () {
 
 	describe("#locate", function () {
 		var foundSpy;
+		var errorSpy;
 
-		function mockGeolocation() {
-			return {
-				geolocation: {
-					getCurrentPosition: function (onSuccess) {
-						onSuccess(
+		var getCurrentPosSpy;
+		var watchPosSpy;
+
+		var geolocationStub = {
+			geolocation: {
+				getCurrentPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
 							{
-								coords:
-								{
-									latitude: 50,
-									longitude: 50,
-									accuracy: 14
-								},
+								latitude: 50,
+								longitude: 50,
+								accuracy: 14
+							},
 
-								timestamp: 1670000000000
-							});
-					},
+							timestamp: 1670000000000
+						});
 
-					watchPosition: function (onSuccess) {
-						onSuccess(
+					getCurrentPosSpy();
+				},
+
+				watchPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
 							{
-								coords:
-								{
-									latitude: 25,
-									longitude: 25,
-									accuracy: 14
-								},
+								latitude: 25,
+								longitude: 25,
+								accuracy: 14
+							},
 
-								timestamp: 1660000000000
-							});
+							timestamp: 1660000000000
+						});
 
-						return 25;
-					}
+					watchPosSpy();
+
+					return 25;
 				}
-			};
-		}
+			}
+		};
 
 		beforeEach(function () {
 			foundSpy = sinon.spy();
+			errorSpy = sinon.spy();
+
+			getCurrentPosSpy = sinon.spy();
+			watchPosSpy = sinon.spy();
 		});
 
 		it("returns 'Geolocation not found!' error if geolocation can't be found", function () {
-			window.__defineGetter__('navigator', function () {
-				return {};
+			Object.defineProperty(window, 'navigator', {
+				value: {}
 			});
 
 			map.on("locationerror", function (error) {
 				expect(error.code).to.be(0);
 				expect(error.message).to.eql('Geolocation error: Geolocation not supported..');
+
+				errorSpy();
 			});
 
 			map.on('locationfound', foundSpy);
 
 			map.locate({setView: true});
 
+			expect(errorSpy.called).to.be.ok();
 			expect(foundSpy.called).to.not.be.ok();
 		});
 
 		it("sets map view to geolocation coords", function () {
-			window.__defineGetter__('navigator', mockGeolocation);
-			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
-			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
 
 			var expectedBounds;
 
@@ -2105,24 +2118,31 @@ describe("Map", function () {
 				expect(data.timestamp).to.be(1670000000000);
 
 				expectedBounds = data.bounds;
+
+				foundSpy();
 			});
 
+			map.on('locationerror', errorSpy);
+
 			map.locate({setView: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
 
 			expect(map.getCenter().distanceTo([50, 50])).to.be(0);
 
 			var currentBounds = map.getBounds();
 			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(8);
 			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(8);
-
-			// expect(getCurrentPosSpy.calledOnce).to.be.ok();
-			// expect(watchPosSpy.calledOnce).to.not.be.ok();
 		});
 
 		it("sets map view to geolocation coords and returns location watch ID when watch is true", function () {
-			window.__defineGetter__('navigator', mockGeolocation);
-			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
-			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
 
 			var expectedBounds;
 
@@ -2131,9 +2151,19 @@ describe("Map", function () {
 				expect(data.timestamp).to.be(1660000000000);
 
 				expectedBounds = data.bounds;
+
+				foundSpy();
 			});
 
+			map.on('locationerror', errorSpy);
+
 			map.locate({setView: true, watch: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.not.be.ok();
+			expect(watchPosSpy.called).to.be.ok();
 
 			expect(map.getCenter().distanceTo([25, 25])).to.be(0);
 
@@ -2142,27 +2172,31 @@ describe("Map", function () {
 			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(20);
 
 			expect(map._locationWatchId).to.eql(25);
-
-			// expect(getCurrentPosSpy.calledOnce).to.not.be.ok();
-			// expect(watchPosSpy.calledOnce).to.be.ok();
 		});
 
 		it("does not set map view by default", function () {
-			window.__defineGetter__('navigator', mockGeolocation);
-			// var getCurrentPosSpy = sinon.spy(window.navigator.geolocation, 'getCurrentPosition');
-			// var watchPosSpy = sinon.spy(window.navigator.geolocation, 'watchPosition');
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
 
 			map.on("locationfound", function (data) {
 				expect(data.latlng).to.eql(L.latLng(50, 50));
 				expect(data.timestamp).to.be(1670000000000);
+
+				foundSpy();
 			});
+
+			map.on('locationerror', errorSpy);
 
 			map.locate();
 
-			expect(map._loaded).to.not.be(true);
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
 
-			// expect(getCurrentPosSpy.calledOnce).to.be.ok();
-			// expect(watchPosSpy.calledOnce).to.not.be.ok();
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
+
+			expect(map._loaded).to.not.be(true);
 		});
 	});
 });
