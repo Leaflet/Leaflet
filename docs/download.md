@@ -30,6 +30,13 @@ bodyclass: download-page
 Note that the main version can contain incompatible changes,
 so please read the changelog carefully when upgrading to it.
 
+### Leaflet Versions Overview
+There are many ways to download and use Leaflet, the following encompass the different ways. <br />
+	-Using a Hosted Version of Leaflet <br />
+	-Using a Downloaded Version of Leaflet <br />
+	-Using a JavaScript package manager <br />
+	-Leaflet source code <br />
+
 ### Using a Hosted Version of Leaflet
 
 The latest stable Leaflet release is available on several CDN's &mdash; to start using
@@ -87,3 +94,39 @@ Here are the steps to set it up:
 Now that you have everything installed, run `npm run build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 
+### HTML Overview with Leaflet
+
+If choosing to use the hosted version of Leaflet, the example below can demonstrate how to set up the HTML page.
+```
+index.html
+<html>
+  <head>
+    <title>Leaflet Map</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin=""/>
+   
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+   
+    <!-- Main JS -->
+    <script type="module" src="./index.js"></script>
+  </head>
+  
+  <body>
+    <div id="map"></div>
+  </body>
+  
+</html>
+```
+```
+style.css
+#map {
+  height: 100%;
+}
+```
+For more information please take a look at the quick-start guide.
