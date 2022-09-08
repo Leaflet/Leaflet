@@ -1261,15 +1261,15 @@ describe("Map", function () {
 
 	describe("#flyToBounds", function () {
 
-		beforeEach(function () {
-			container.style.width = "800px";
-			container.style.height = "600px";
-			container.style.visibility = "hidden";
-		});
-
-		it("throws an error if map view is not initialized", function () {
+		it("throws an error if map view is not initialized (bounds as latlngbounds)", function () {
 			expect(function () {
 				map.flyToBounds(L.latLngBounds([20, 10], [10, 20])); // arbitrary bounds
+			}).to.throwError();
+		});
+
+		it("throws an error if map view is not initialized (bounds as array)", function () {
+			expect(function () {
+				map.flyToBounds([[20, 10], [10, 20]]); // arbitrary bounds
 			}).to.throwError();
 		});
 
@@ -1283,15 +1283,15 @@ describe("Map", function () {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var bounds = L.latLngBounds([[40, 10], [10, 40]]);
-			var expectedCenter = L.latLng([25, 25]);
+			var expectedCenter = L.latLng([25.9461, 25]);
 			map.setView([0, 0], 0);
 
 			map.on("zoomend", function () {
-				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(21);
-				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(21);
-				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(21);
-				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(21);
-				expect(map.getCenter().distanceTo(expectedCenter)).to.be.lessThan(106000);
+				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(2.7);
+				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(2.7);
+				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(2.7);
+				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(2.7);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
 			map.flyToBounds(bounds);
@@ -1301,15 +1301,15 @@ describe("Map", function () {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var bounds = L.latLngBounds([[20, 10], [10, 20]]);
-			var expectedCenter = L.latLng([15, 15]);
+			var expectedCenter = L.latLng([15.0586, 15]);
 			map.setView([0, 0], 0);
 
 			map.on("zoomend", function () {
-				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(4);
-				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(4);
-				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(4);
-				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(4);
-				expect(map.getCenter().distanceTo(expectedCenter)).to.be.lessThan(6600);
+				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(3);
+				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(3);
+				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(3);
+				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(3);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
 			map.flyToBounds(bounds);
@@ -1319,15 +1319,15 @@ describe("Map", function () {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var bounds = L.latLngBounds([[11, 10], [10, 11]]);
-			var expectedCenter = L.latLng([10.5, 10.5]);
+			var expectedCenter = L.latLng([10.5004, 10.5]);
 			map.setView([0, 0], 0);
 
 			map.on("zoomend", function () {
-				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(0.6);
-				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(0.6);
-				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(0.6);
-				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(0.6);
-				expect(map.getCenter().distanceTo(expectedCenter)).to.be.lessThan(45);
+				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(0.05);
+				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(0.05);
+				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(0.05);
+				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(0.05);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
 			map.flyToBounds(bounds);
