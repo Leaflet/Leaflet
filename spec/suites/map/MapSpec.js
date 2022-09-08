@@ -2035,7 +2035,7 @@ describe("Map", function () {
 			var bounds = L.latLngBounds([[-1, -1], [1, 1]]);
 			var expectedCenter = L.latLng([0, 0]);
 			expect(map.panInsideBounds(bounds)).to.be(map);
-			expect(map.getCenter().distanceTo(expectedCenter)).to.be.lessThan(1);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
 
 		it("pans to closest view in bounds", function () {
@@ -2043,7 +2043,7 @@ describe("Map", function () {
 			var expectedCenter = L.latLng([41.59452223189, -74.2738647460]);
 			map.setView([50.5, 30.5], 10);
 			expect(map.panInsideBounds(bounds)).to.be(map);
-			expect(map.getCenter().distanceTo(expectedCenter)).to.be.lessThan(5);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
 	});
 
