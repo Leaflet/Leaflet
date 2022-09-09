@@ -2041,7 +2041,7 @@ describe("Map", function () {
 			}).to.throwError();
 		});
 
-		it("returns the corresponding geographical coordinate relative to the origin pixel", function () {
+		it("returns the corresponding geographical coordinate for a pixel coordinate relative to the origin pixel", function () {
 			var center = L.latLng(10, 10);
 			map.setView(center);
 			var point = L.point(200,200);
