@@ -141,6 +141,75 @@ describe('LineUtil', function () {
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
+		it('computes center of a small line and test it on every zoom', function () {
+			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+
+			var layer = L.polyline(latlngs).addTo(map);
+			var i = 0;
+			function check() {
+				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
+				i++;
+				if (i < 30) { map.setZoom(i); }
+			}
+
+			map.on('zoomend', check);
+			map.setView(layer.getCenter(), i);
+		});
+
+		it('computes center of a small line and test it on every zoom - CRS.EPSG3395', function () {
+			map.remove();
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395});
+
+			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+
+			var layer = L.polyline(latlngs).addTo(map);
+			var i = 0;
+			function check() {
+				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
+				i++;
+				if (i < 30) { map.setZoom(i); }
+			}
+
+			map.on('zoomend', check);
+			map.setView(layer.getCenter(), i);
+		});
+
+		it('computes center of a small line and test it on every zoom - CRS.EPSG4326', function () {
+			map.remove();
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326});
+
+			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+
+			var layer = L.polyline(latlngs).addTo(map);
+			var i = 0;
+			function check() {
+				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
+				i++;
+				if (i < 30) { map.setZoom(i); }
+			}
+
+			map.on('zoomend', check);
+			map.setView(layer.getCenter(), i);
+		});
+
+		it('computes center of a small line and test it on every zoom - CRS.Simple', function () {
+			map.remove();
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple});
+
+			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+
+			var layer = L.polyline(latlngs).addTo(map);
+			var i = 0;
+			function check() {
+				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
+				i++;
+				if (i < 30) { map.setZoom(i); }
+			}
+
+			map.on('zoomend', check);
+			map.setView(layer.getCenter(), i);
+		});
+
 		it('throws error if latlngs not passed', function () {
 			expect(function () {
 				L.LineUtil.polylineCenter(null, crs, zoom);
