@@ -2032,4 +2032,22 @@ describe("Map", function () {
 			expect(p.y).to.be.equal(200);
 		});
 	});
+	
+	describe("#layerPointToLatLng", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.layerPointToLatLng();
+			}).to.throwError();
+		});
+
+		it("returns the corresponding geographical coordinate relative to the origin pixel", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center);
+			var point = L.point(200,200);
+			var p = map.layerPointToLatLng(point);
+			expect(p.lat).to.be.within(10.0013100, 10.0013200);
+			expect(p.lng).to.be.within(8.8989200,8.8989300);
+		});
+	});
 });
