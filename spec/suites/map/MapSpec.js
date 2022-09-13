@@ -2034,8 +2034,8 @@ describe("Map", function () {
 			expect(p.y).to.be.equal(2);
 		});
 	});
-  
-  describe("#latLngToLayerPoint", function () {
+
+	describe("#latLngToLayerPoint", function () {
 
 		it("throws if map is not set before", function () {
 			expect(function () {
@@ -2049,6 +2049,6 @@ describe("Map", function () {
 			var p = map.latLngToLayerPoint(center);
 			expect(p.x).to.be.equal(200);
 			expect(p.y).to.be.equal(200);
-    });
-  });
+		});
+	});
 });
