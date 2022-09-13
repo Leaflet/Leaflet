@@ -34,7 +34,7 @@
 			.bindPopup("I am a polygon.")
 			.addTo(map);
 
-		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}).addTo(map);
 
