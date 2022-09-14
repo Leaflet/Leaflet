@@ -342,6 +342,26 @@ describe('Popup', function () {
 		});
 	});
 
+	it("opens popup with passed latlng position while initializing", function () {
+		var popup = new L.Popup(center)
+			.openOn(map);
+		expect(map.hasLayer(popup)).to.be(true);
+	});
+
+	it("opens popup with passed latlng and options position while initializing", function () {
+		var popup = new L.Popup(center, {className: 'testClass'})
+			.addTo(map);
+		expect(map.hasLayer(popup)).to.be(true);
+		expect(L.DomUtil.hasClass(popup.getElement(), 'testClass')).to.be(true);
+	});
+
+	it("adds popup with passed content in options while initializing", function () {
+		var popup = new L.Popup(center, {content: 'Test'})
+			.addTo(map);
+		expect(map.hasLayer(popup)).to.be(true);
+		expect(popup.getContent()).to.be('Test');
+	});
+
 	describe("L.Map#openPopup", function () {
 		it("adds the popup layer to the map", function () {
 			var popup = L.popup()

@@ -23,7 +23,7 @@
 	//	buffer += text + "\r\n";
 	//}
 
-		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osm = new L.TileLayer(osmUrl, {maxZoom: 18}),
 			map = new L.Map('map', {layers: [osm], center: new L.LatLng(51.505, -0.04), zoom: 13});
 

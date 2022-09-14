@@ -55,10 +55,10 @@ export function clipPolygon(points, bounds, round) {
 	return points;
 }
 
-/* @function polygonCenter(latlngs: LatLng[] crs: CRS, zoom: Number): LatLng
+/* @function polygonCenter(latlngs: LatLng[] crs: CRS): LatLng
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
  */
-export function polygonCenter(latlngs, crs, zoom) {
+export function polygonCenter(latlngs, crs) {
 	var i, j, p1, p2, f, area, x, y, center;
 
 	if (!latlngs || latlngs.length === 0) {
@@ -72,7 +72,7 @@ export function polygonCenter(latlngs, crs, zoom) {
 
 	var points = [];
 	for (var k in latlngs) {
-		points.push(crs.latLngToPoint(toLatLng(latlngs[k]), zoom));
+		points.push(crs.project(toLatLng(latlngs[k])));
 	}
 
 	var len = points.length;
@@ -95,5 +95,5 @@ export function polygonCenter(latlngs, crs, zoom) {
 	} else {
 		center = [x / area, y / area];
 	}
-	return crs.pointToLatLng(toPoint(center), zoom);
+	return crs.unproject(toPoint(center));
 }

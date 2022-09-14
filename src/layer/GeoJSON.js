@@ -282,8 +282,9 @@ export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
+		// Check for flat arrays required to ensure unbalanced arrays are correctly converted in recursion
 		coords.push(levelsDeep ?
-			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
+			latLngsToCoords(latlngs[i], LineUtil.isFlat(latlngs[i]) ? 0 : levelsDeep - 1, closed, precision) :
 			latLngToCoords(latlngs[i], precision));
 	}
 

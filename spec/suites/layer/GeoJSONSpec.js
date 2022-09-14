@@ -838,6 +838,52 @@ describe("L.GeoJSON functions", function () {
 			var coords = L.GeoJSON.latLngsToCoords(latLngs, 0, false, 3);
 			expect(coords).to.eql([[1.123, 2.123], [3.123, 4.123]]);
 		});
+
+		it('returns a valid geojson from an unbalanced multipolygon', function () {
+			var poly = L.polygon([
+				[
+					[
+						[51.509, -0.08],
+						[51.503, -0.06],
+						[51.51, -0.046]
+					],
+					[
+						[51.508, -0.06],
+						[51.504, -0.06],
+						[51.509, -0.05]
+					]
+				], [
+					[51.499, -0.08],
+					[51.493, -0.06],
+					[51.48, -0.046]
+				]
+			]);
+
+			expect(poly.toGeoJSON(3).geometry).to.eql({
+				type: 'MultiPolygon',
+				coordinates: [
+					[
+						[
+							[-0.08, 51.509],
+							[-0.06, 51.503],
+							[-0.046, 51.51],
+							[-0.08, 51.509]
+						],
+						[
+							[-0.06, 51.508],
+							[-0.06, 51.504],
+							[-0.05, 51.509],
+							[-0.06, 51.508]
+						]
+					], [
+						[-0.08, 51.499],
+						[-0.06, 51.493],
+						[-0.046, 51.48],
+						[-0.08, 51.499]
+					]
+				]
+			});
+		});
 	});
 
 	describe("#asFeature", function () {

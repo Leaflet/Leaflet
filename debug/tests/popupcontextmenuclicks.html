@@ -22,7 +22,7 @@ var map = L.map('map').setView([36.9, -95.4], 5);
 map.on('contextmenu', function (e) {
     alert('The map has been right-clicked');
 });
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 

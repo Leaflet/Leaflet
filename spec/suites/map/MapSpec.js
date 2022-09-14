@@ -2016,6 +2016,23 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#latLngToLayerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.latLngToLayerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the corresponding pixel coordinate relative to the origin pixel", function () {
+			var center = L.latLng([10, 10]);
+			map.setView(center, 0);
+			var p = map.latLngToLayerPoint(center);
+			expect(p.x).to.be.equal(200);
+			expect(p.y).to.be.equal(200);
+		});
+	});
+
 	describe("#mouseEventToContainerPoint", function () {
 
 		it("throws if map is not set before", function () {
