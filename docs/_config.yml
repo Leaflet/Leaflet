@@ -10,9 +10,9 @@ latest_leaflet_version: 1.9.0
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
-integrity_hash_css: "sha384-kxXhFDZB0L84bBV/apPOb8zGC+fsQ1dBPpKXPUXc1zRymi4BaueVyC27iDDPdssp"
-integrity_hash_source: "sha384-OpEbGD+GgOvGzqHl/VuP+X8cGvdUoPCw+F31C8ddag7seV0wOtUIChX0wCAoyZVD"
-integrity_hash_uglified: "sha384-JZO8CJyT9g8yj13j0R/ssKw7jx+QYlck09EBe8l/UxI6bE8JDmTF/VbHAIQYXDTD"
+integrity_hash_css: "sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+integrity_hash_source: "sha256-i6wHIYawzYV3LoV0z/0LzL7YfqO5XFf2icMT+B+PiQ8="
+integrity_hash_uglified: "sha256-oH+m3EWgtpoAmoBO/v+u8H/AdwB/54Gc/SgqjUKbb4Y="
 
 
 collections:
