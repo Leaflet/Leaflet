@@ -14,8 +14,9 @@
 
 - [ ] Make a new branch for the update
 - [ ] Write a blog post about the new release and put it in `/docs/_posts`
-- [ ] If necessary to preserve previous version's docs, rename `dist/reference.html` to `dist/reference-X.Y.Z.html` and add it to the list in `docs/reference-versions.html`
+- [ ] If necessary to preserve previous version's docs, rename `docs/reference.html` to `docs/reference-X.Y.Z.html` and add it to the list in `docs/reference-versions.html`
 - [ ] Run `npm run docs` to generate the new `docs/reference.html`
+- [ ] Add the version number to the first paragraph in `docs/reference.html`
 - [ ] Run `npm run integrity` and make sure `docs/_config.yml` is updated with new hashes
 - [ ] Update link to latest release in `docs/download.md`
 - [ ] Update the announcement section in `docs/index.html`
