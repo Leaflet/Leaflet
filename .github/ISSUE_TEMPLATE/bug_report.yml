@@ -1,0 +1,78 @@
+name: Bug report
+description: Report a bug to help us improve
+labels: ["bug", "needs triage"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      description: >
+        Please confirm the following:
+      options:
+        - label: I've looked at the [documentation](https://leafletjs.com/reference.html) to make sure the behavior isn't documented and expected.
+          required: false
+        - label: I'm sure this is an issue with Leaflet, not with my app or other dependencies (Angular, Cordova, React, etc.).
+          required: false
+        - label: I've searched through the [current issues](https://github.com/Leaflet/Leaflet/issues) to make sure this hasn't been reported yet.
+          required: false
+        - label: I agree to follow the [Code of Conduct](https://github.com/Leaflet/Leaflet/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: >
+        How do you trigger this bug? Please walk us through it step by step.
+      placeholder: |
+        1. Go to [...]
+        2. Click on [...]
+        3. See error [...]
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: >
+        A clear and concise description of what you expected to happen.
+        Provide additional context if necessary (screenshots, video, links, etc.).
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Current behavior
+      description: >
+        A clear and concise description of what is actually happening.
+        Provide additional context if necessary (screenshots, video, links, etc.).
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Minimal example reproducing the issue
+      description: |
+        Please create an example using the [Leaflet Editor](https://leafletjs.com/edit.html) or any other suitable online code editor.
+        **This example should be as simple as possible, and should not rely on any third-party code!**
+      placeholder: Link to your example here
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        Please fill in the Leaflet [version](https://leafletjs.com/reference.html#version) and the name and versions of the affected browser(s), OS(es), and platform(s).
+        Example:
+          - Leaflet version: 1.7.1, 1.8.0-beta.0
+          - Browser (with version): Chrome 99.0.4844.82, Firefox 98.0.1
+          - OS/Platform (with version): Windows 10 laptop
+      placeholder: |
+        - Leaflet version:
+        - Browser (with version):
+        - OS/Platform (with version):
+      value: |
+        - Leaflet version: 
+        - Browser (with version): 
+        - OS/Platform (with version): 
+    validations:
+      required: true

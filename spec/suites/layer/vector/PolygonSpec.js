@@ -154,7 +154,7 @@ describe('Polygon', function () {
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			var layer = L.polygon(latlngs).addTo(map);
-			expect(layer.getCenter()).to.be.nearLatLng([5, 5], 1e-1);
+			expect(layer.getCenter()).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
 		it('should compute center of a small simple polygon', function () {
@@ -163,7 +163,7 @@ describe('Polygon', function () {
 			];
 			var layer = L.polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
-			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
+			expect(layer.getCenter()).to.be.nearLatLng([0.005, 0.005]);
 		});
 
 		it('throws error if not yet added to map', function () {
@@ -176,6 +176,25 @@ describe('Polygon', function () {
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
+		it('should compute same center for low and high zoom', function () {
+			var latlngs = [
+				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
+			];
+			var layer = L.polygon(latlngs).addTo(map);
+			map.setZoom(0);
+			var center = layer.getCenter();
+			map.setZoom(18);
+			expect(layer.getCenter()).to.be.nearLatLng(center);
+		});
+
+		it("should compute center for multi-polygon including hole", function () {
+			var latlngs = [
+				[[[10, 20], [30, 40], [50, 60]]],
+				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
+			];
+			var layer = L.polygon(latlngs).addTo(map);
+			expect(layer.getCenter()).to.be.nearLatLng([31.436532296911807, 39.99999999999979]);
+		});
 	});
 
 	describe("#_defaultShape", function () {

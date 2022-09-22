@@ -152,6 +152,12 @@ var inlineSvg = !!svg && (function () {
 	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';
 })();
 
+// @property mac: Boolean; `true` when the browser is running in a Mac platform
+var mac = navigator.platform.indexOf('Mac') === 0;
+
+// @property mac: Boolean; `true` when the browser is running in a Linux platform
+var linux = navigator.platform.indexOf('Linux') === 0;
+
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
 }
@@ -189,5 +195,7 @@ export default {
 	passiveEvents: passiveEvents,
 	canvas: canvas,
 	svg: svg,
-	inlineSvg: inlineSvg
+	inlineSvg: inlineSvg,
+	mac: mac,
+	linux: linux
 };

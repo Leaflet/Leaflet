@@ -1,5 +1,6 @@
-import {Point} from './Point';
+import {Point, toPoint} from './Point';
 import * as Util from '../core/Util';
+import {toLatLng} from '../geo/LatLng';
 
 
 /*
@@ -239,4 +240,53 @@ export function isFlat(latlngs) {
 export function _flat(latlngs) {
 	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
 	return isFlat(latlngs);
+}
+
+/* @function polylineCenter(latlngs: LatLng[], crs: CRS): LatLng
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
+ */
+export function polylineCenter(latlngs, crs) {
+	var i, halfDist, segDist, dist, p1, p2, ratio, center;
+
+	if (!latlngs || latlngs.length === 0) {
+		throw new Error('latlngs not passed');
+	}
+
+	if (!isFlat(latlngs)) {
+		console.warn('latlngs are not flat! Only the first ring will be used');
+		latlngs = latlngs[0];
+	}
+
+	var points = [];
+	for (var j in latlngs) {
+		points.push(crs.project(toLatLng(latlngs[j])));
+	}
+
+	var len = points.length;
+
+	for (i = 0, halfDist = 0; i < len - 1; i++) {
+		halfDist += points[i].distanceTo(points[i + 1]) / 2;
+	}
+
+	// The line is so small in the current view that all points are on the same pixel.
+	if (halfDist === 0) {
+		center = points[0];
+	} else {
+		for (i = 0, dist = 0; i < len - 1; i++) {
+			p1 = points[i];
+			p2 = points[i + 1];
+			segDist = p1.distanceTo(p2);
+			dist += segDist;
+
+			if (dist > halfDist) {
+				ratio = (dist - halfDist) / segDist;
+				center = [
+					p2.x - ratio * (p2.x - p1.x),
+					p2.y - ratio * (p2.y - p1.y)
+				];
+				break;
+			}
+		}
+	}
+	return crs.unproject(toPoint(center));
 }

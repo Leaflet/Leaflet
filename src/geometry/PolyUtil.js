@@ -1,5 +1,6 @@
 import * as LineUtil from './LineUtil';
-
+import {toLatLng} from '../geo/LatLng';
+import {toPoint} from './Point';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
@@ -52,4 +53,47 @@ export function clipPolygon(points, bounds, round) {
 	}
 
 	return points;
+}
+
+/* @function polygonCenter(latlngs: LatLng[] crs: CRS): LatLng
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
+ */
+export function polygonCenter(latlngs, crs) {
+	var i, j, p1, p2, f, area, x, y, center;
+
+	if (!latlngs || latlngs.length === 0) {
+		throw new Error('latlngs not passed');
+	}
+
+	if (!LineUtil.isFlat(latlngs)) {
+		console.warn('latlngs are not flat! Only the first ring will be used');
+		latlngs = latlngs[0];
+	}
+
+	var points = [];
+	for (var k in latlngs) {
+		points.push(crs.project(toLatLng(latlngs[k])));
+	}
+
+	var len = points.length;
+	area = x = y = 0;
+
+	// polygon centroid algorithm;
+	for (i = 0, j = len - 1; i < len; j = i++) {
+		p1 = points[i];
+		p2 = points[j];
+
+		f = p1.y * p2.x - p2.y * p1.x;
+		x += (p1.x + p2.x) * f;
+		y += (p1.y + p2.y) * f;
+		area += f * 3;
+	}
+
+	if (area === 0) {
+		// Polygon is so small that all points are on same pixel.
+		center = points[0];
+	} else {
+		center = [x / area, y / area];
+	}
+	return crs.unproject(toPoint(center));
 }

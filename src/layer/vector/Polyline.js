@@ -120,38 +120,7 @@ export var Polyline = Path.extend({
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-
-		var i, halfDist, segDist, dist, p1, p2, ratio,
-		    points = this._rings[0],
-		    len = points.length;
-
-		if (!len) { return null; }
-
-		// polyline centroid algorithm; only uses the first ring if there are multiple
-
-		for (i = 0, halfDist = 0; i < len - 1; i++) {
-			halfDist += points[i].distanceTo(points[i + 1]) / 2;
-		}
-
-		// The line is so small in the current view that all points are on the same pixel.
-		if (halfDist === 0) {
-			return this._map.layerPointToLatLng(points[0]);
-		}
-
-		for (i = 0, dist = 0; i < len - 1; i++) {
-			p1 = points[i];
-			p2 = points[i + 1];
-			segDist = p1.distanceTo(p2);
-			dist += segDist;
-
-			if (dist > halfDist) {
-				ratio = (dist - halfDist) / segDist;
-				return this._map.layerPointToLatLng([
-					p2.x - ratio * (p2.x - p1.x),
-					p2.y - ratio * (p2.y - p1.y)
-				]);
-			}
-		}
+		return LineUtil.polylineCenter(this._defaultShape(), this._map.options.crs);
 	},
 
 	// @method getBounds(): LatLngBounds

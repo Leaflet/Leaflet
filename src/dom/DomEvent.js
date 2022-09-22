@@ -224,6 +224,26 @@ export function stop(e) {
 	return this;
 }
 
+// @function getPropagationPath(ev: DOMEvent): Array
+// Compatibility polyfill for [`Event.composedPath()`](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath).
+// Returns an array containing the `HTMLElement`s that the given DOM event
+// should propagate to (if not stopped).
+export function getPropagationPath(ev) {
+	if (ev.composedPath) {
+		return ev.composedPath();
+	}
+
+	var path = [];
+	var el = ev.target;
+
+	while (el) {
+		path.push(el);
+		el = el.parentNode;
+	}
+	return path;
+}
+
+
 // @function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
 // Gets normalized mouse position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
@@ -243,12 +263,15 @@ export function getMousePosition(e, container) {
 	);
 }
 
-// Chrome on Win scrolls double the pixels as in other platforms (see #4538),
-// and Firefox scrolls device pixels, not CSS pixels
-var wheelPxFactor =
-	(Browser.win && Browser.chrome) ? 2 * window.devicePixelRatio :
-	Browser.gecko ? window.devicePixelRatio : 1;
 
+//  except , Safari and
+// We need double the scroll pixels (see #7403 and #4538) for all Browsers
+// except OSX (Mac) -> 3x, Chrome running on Linux 1x
+
+var wheelPxFactor =
+	(Browser.linux && Browser.chrome) ? window.devicePixelRatio :
+	Browser.mac ? window.devicePixelRatio * 3 :
+	window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
