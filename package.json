@@ -42,7 +42,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "docs": "node ./build/docs.js",
+    "docs": "node ./build/docs.js && node ./build/integrity.js",
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
     "lint": "eslint .",
@@ -50,7 +50,6 @@
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
-    "integrity": "NODE_ENV=release npm run build && node ./build/integrity.js",
     "bundlemon": "bundlemon --subProject js --defaultCompression none && bundlemon --subProject js-gzip --defaultCompression gzip",
     "serve": "cd docs && bundle exec jekyll serve",
     "prepare": "husky install"
@@ -65,7 +64,8 @@
       "docs/examples/map-panes/eu-countries.js",
       "docs/examples/extending/extending-2-layers.md",
       "docs/_posts/2012*",
-      "docs/_site"
+      "docs/_site",
+      "build/integrity.js"
     ],
     "root": true,
     "globals": {
