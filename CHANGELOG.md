@@ -3,6 +3,9 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.9.1 (2022-09-23)
+* Fix `Events` `listens` not propagating to parent objects, in particular fixing compatibility with **Leaflet.markercluster** plugin ([#8211](https://github.com/Leaflet/Leaflet/pull/8457) by [@Falke-Design](https://github.com/Falke-Design))
+
 ## 1.9.0 (2022-09-21)
 
 ### ⚠️ Breaking Changes
