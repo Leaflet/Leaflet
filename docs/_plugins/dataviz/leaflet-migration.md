@@ -4,8 +4,8 @@ category: dataviz
 repo: https://github.com/lin-123/leaflet.migration
 author: Kakaka Hou
 author-url: https://github.com/lin-123
-demo: https://lin-123.github.io/leaflet.migration/
-compatible-v0:
+demo: https://lin-123.github.io/leaflet.migration/demo
+compatible-v0: false
 compatible-v1: true
 ---
 
