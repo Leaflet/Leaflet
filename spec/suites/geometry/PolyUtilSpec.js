@@ -42,7 +42,7 @@ describe('PolyUtil', function () {
 	describe('#polygonCenter', function () {
 		var map, crs, zoom;
 		beforeEach(function () {
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6});
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
 			zoom = map.getZoom();
 		});
@@ -83,7 +83,7 @@ describe('PolyUtil', function () {
 
 		it('computes center of a small polygon and test it on every zoom - CRS.EPSG3395', function () {
 			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395});
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395, zoomAnimation: false});
 
 			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
@@ -101,7 +101,7 @@ describe('PolyUtil', function () {
 
 		it('computes center of a small polygon and test it on every zoom - CRS.EPSG4326', function () {
 			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326});
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326, zoomAnimation: false});
 
 			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
@@ -119,7 +119,7 @@ describe('PolyUtil', function () {
 
 		it('computes center of a small polygon and test it on every zoom - CRS.Simple', function () {
 			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple});
+			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple, zoomAnimation: false});
 
 			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
