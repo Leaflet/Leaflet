@@ -1,11 +1,11 @@
 import * as L from './Leaflet';
 export * from './Leaflet';
 
-var globalL = L.extend(L, {noConflict: noConflict});
+const globalL = L.extend(L, {noConflict});
 export default globalL;
 
-var globalObject = getGlobalObject();
-var oldL = globalObject.L;
+const globalObject = getGlobalObject();
+const oldL = globalObject.L;
 
 globalObject.L = globalL;
 

@@ -8,9 +8,6 @@ updates:
       interval: weekly
     labels:
       - dependencies
-    ignore:
-      - dependency-name: eslint-config-mourner
-        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     open-pull-requests-limit: 999

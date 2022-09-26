@@ -17,7 +17,7 @@ title: Using GeoJSON with Leaflet
 
 <p>Leaflet supports all of the GeoJSON types above, but <a href="https://tools.ietf.org/html/rfc7946#section-3.2">Features</a> and <a href="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. Here's an example of a simple GeoJSON feature:</p>
 
-<pre><code>var geojsonFeature = {
+<pre><code>const geojsonFeature = {
 	"type": "Feature",
 	"properties": {
 		"name": "Coors Field",
@@ -39,7 +39,7 @@ title: Using GeoJSON with Leaflet
 
 <p>GeoJSON objects may also be passed as an array of valid GeoJSON objects.</p>
 
-<pre><code>var myLines = [{
+<pre><code>const myLines = [{
 	"type": "LineString",
 	"coordinates": [[-100, 40], [-105, 45], [-110, 55]]
 }, {
@@ -50,7 +50,7 @@ title: Using GeoJSON with Leaflet
 
 <p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
 
-<pre><code>var myLayer = L.geoJSON().addTo(map);
+<pre><code>const myLayer = L.geoJSON().addTo(map);
 myLayer.addData(geojsonFeature);
 </code></pre>
 
@@ -60,7 +60,7 @@ myLayer.addData(geojsonFeature);
 
 <p>The <code>style</code> option can be used to style features two different ways. First, we can pass a simple object that styles all paths (polylines and polygons) the same way:</p>
 
-<pre><code>var myLines = [{
+<pre><code>const myLines = [{
 	"type": "LineString",
 	"coordinates": [[-100, 40], [-105, 45], [-110, 55]]
 }, {
@@ -68,7 +68,7 @@ myLayer.addData(geojsonFeature);
 	"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
 }];
 
-var myStyle = {
+const myStyle = {
 	"color": "#ff7800",
 	"weight": 5,
 	"opacity": 0.65
@@ -80,7 +80,7 @@ L.geoJSON(myLines, {
 
 <p>Alternatively, we can pass a function that styles individual features based on their properties. In the example below we check the "party" property and style our polygons accordingly:</p>
 
-<pre><code>var states = [{
+<pre><code>const states = [{
 	"type": "Feature",
 	"properties": {"party": "Republican"},
 	"geometry": {
@@ -123,7 +123,7 @@ L.geoJSON(states, {
 
 <p>Here we're using the <code>pointToLayer</code> option to create a CircleMarker:</p>
 
-<pre><code>var geojsonMarkerOptions = {
+<pre><code>const geojsonMarkerOptions = {
 	radius: 8,
 	fillColor: "#ff7800",
 	color: "#000",
@@ -151,7 +151,7 @@ L.geoJSON(someGeojsonFeature, {
 	}
 }
 
-var geojsonFeature = {
+const geojsonFeature = {
 	"type": "Feature",
 	"properties": {
 		"name": "Coors Field",
@@ -174,7 +174,7 @@ L.geoJSON(geojsonFeature, {
 
 <p>In the example below "Busch Field" will not be shown on the map.</p>
 
-<pre><code>var someFeatures = [{
+<pre><code>const someFeatures = [{
 	"type": "Feature",
 	"properties": {
 		"name": "Coors Field",

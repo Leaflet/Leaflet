@@ -33,9 +33,9 @@ The base WMS URL is simply the `GetCapabilities` URL, without any parameters, li
 
 And the way to use that in a Leaflet map is simply:
 
-	var map = L.map(mapDiv, mapOptions);
+	const map = L.map(mapDiv, mapOptions);
 
-	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', wmsOptions).addTo(map);
+	const wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', wmsOptions).addTo(map);
 
 An instance of `L.TileLayer.WMS` needs at least one option: `layers`. Be careful, as the concept of "layer" in Leaflet is different from the concept of "layer" in WMS!
 
@@ -45,7 +45,7 @@ WMS servers define a set of *layers* in the service. These are defined in the `G
 
 We can see that the *Mundialis* WMS has a WMS layer named `TOPO-OSM-WMS` with a basemap. Let's see how it looks:
 
-	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
 		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 
@@ -54,7 +54,7 @@ We can see that the *Mundialis* WMS has a WMS layer named `TOPO-OSM-WMS` with a 
 
 Or we can try the `SRTM30-Colored-Hillshade` WMS layer:
 
-	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
 		layers: 'SRTM30-Colored-Hillshade'
 	}).addTo(map);
 
@@ -65,7 +65,7 @@ The `layers` option is a comma-separated list of layers. If a WMS service has de
 
 For the example WMS server we're using, there is a `TOPO-WMS` WMS layer showing the world topography, and a `OSM-Overlay-WMS` WMS layer showing the names of places. The WMS server will compose both layers in one image if we request both, separated with a comma:
 
-	var topographyAndPlaces = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+	const topographyAndPlaces = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
 		layers: 'TOPO-WMS,OSM-Overlay-WMS'
 	}).addTo(map);
 
@@ -73,7 +73,7 @@ Note this will request *one* image to the WMS server. This is different than cre
 
 If we combine this with the [layers control](/examples/layers-control.html), then we can build a simple map to see the difference:
 
-	var basemaps = {
+	const basemaps = {
 		Topography: L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
 			layers: 'TOPO-WMS'
 		}),
@@ -108,11 +108,11 @@ From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `Ge
 
 Also note that Leaflet supports very few [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `CRS:3857`, `CRS:3395` and `CRS:4326` (See the documentation for `L.CRS`). If your WMS service doesn't serve images in those coordinate systems, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet. Other than that, just use the right CRS when initializing your map, and any WMS layers added will use it:
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		crs: L.CRS.EPSG4326
 	});
 
-	var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
 		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 
@@ -138,14 +138,14 @@ To use the TMS services as a `L.TileLayer`, we can check the capabilities docume
 
 And use the `tms:true` option when instantiating the layers, like so:
 
-	var tms_example = L.tileLayer('http://base_url/tms/1.0.0/example_layer@png/{z}/{x}/{y}.png', {
+	const tms_example = L.tileLayer('http://base_url/tms/1.0.0/example_layer@png/{z}/{x}/{y}.png', {
 		tms: true
 	}).addTo(map);
 
 
 A new feature in **Leaflet 1.0** is the ability to use `{-y}` in the URL instead of a `tms: true` option, e.g.:
 
-	var layer = L.tileLayer('http://base_url/tms/1.0.0/tileset/{z}/{x}/{-y}.png');
+	const layer = L.tileLayer('http://base_url/tms/1.0.0/tileset/{z}/{x}/{-y}.png');
 
 The `tms: true` option (in Leaflet 0.7) or `{-y}` (in Leaflet 1.0) are needed because the origin of coordinates of vanilla `L.TileLayer`s is the top left corner, so the Y coordinate goes *down*. In TMS, the origin of coordinates is the *bottom* left corner so the Y coordinate goes *up*.
 

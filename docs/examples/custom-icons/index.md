@@ -26,7 +26,7 @@ Note that the white area in the images is actually transparent.
 
 Marker icons in Leaflet are defined by [L.Icon](/reference.html#icon) objects, which are passed as an option when creating markers. Let's create a green leaf icon:
 
-	var greenIcon = L.icon({
+	const greenIcon = L.icon({
 		iconUrl: 'leaf-green.png',
 		shadowUrl: 'leaf-shadow.png',
 
@@ -47,7 +47,7 @@ Now putting a marker with this icon on a map is easy:
 
 What if we need to create several icons that have lots in common? Let's define our own icon class containing the shared options, inheriting from `L.Icon`! It's really easy in Leaflet:
 
-	var LeafIcon = L.Icon.extend({
+	const LeafIcon = L.Icon.extend({
 		options: {
 			shadowUrl: 'leaf-shadow.png',
 			iconSize:     [38, 95],
@@ -60,7 +60,7 @@ What if we need to create several icons that have lots in common? Let's define o
 
 Now we can create all three of our leaf icons from this class and use them:
 
-	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
+	const greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
 		redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
 		orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
 

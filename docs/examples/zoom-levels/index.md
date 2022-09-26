@@ -37,14 +37,14 @@ To understand how zoom levels work, first we need a basic introduction to <i>geo
 
 Let's have a look at a simple map locked at zoom zero:
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});
 
-	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
+	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
@@ -215,7 +215,7 @@ If you set a value of `0.1`, the valid zoom levels of the map will be `0`, `0.1`
 
 The following example uses a `zoomSnap` value of `0.25`:
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		zoomSnap: 0.25
 	});
 
@@ -242,7 +242,7 @@ option controls how fast the mousewheel zooms in or out.
 
 Here is an example with `zoomSnap` set to zero:
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		zoomDelta: 0.25,
 		zoomSnap: 0
 	});

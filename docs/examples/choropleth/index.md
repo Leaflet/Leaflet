@@ -33,9 +33,9 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 Let's display our states data on the map:
 
-	var map = L.map('map').setView([37.8, -96], 4);
+	const map = L.map('map').setView([37.8, -96], 4);
 
-	var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
@@ -85,7 +85,7 @@ Looks much better now!
 Now let's make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `mouseover` event:
 
 	function highlightFeature(e) {
-		var layer = e.target;
+		const layer = e.target;
 
 		layer.setStyle({
 			weight: 5,
@@ -109,7 +109,7 @@ Next we'll define what happens on `mouseout`:
 
 The handy `geojson.resetStyle` method will reset the layer style to its default state (defined by our `style` function). For this to work, make sure our GeoJSON layer is accessible through the `geojson` variable by defining it before our listeners and assigning the layer to it later:
 
-	var geojson;
+	const geojson;
 	// ... our listeners
 	geojson = L.geoJson(...);
 
@@ -142,7 +142,7 @@ We could use the usual popups on click to show information about different state
 
 Here's the code for our control:
 
-	var info = L.control();
+	const info = L.control();
 
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -191,16 +191,16 @@ The control also needs some CSS styles to look nice:
 
 Creating a control with a legend is easier, since it is static and doesn't change on state hover. JavaScript code:
 
-	var legend = L.control({position: 'bottomright'});
+	const legend = L.control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
 
-		var div = L.DomUtil.create('div', 'info legend'),
+		const div = L.DomUtil.create('div', 'info legend'),
 			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
 			labels = [];
 
 		// loop through our density intervals and generate a label with a colored square for each interval
-		for (var i = 0; i < grades.length; i++) {
+		for (const i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
 				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');

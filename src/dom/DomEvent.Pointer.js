@@ -6,24 +6,24 @@ import {falseFn} from '../core/Util';
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
  */
 
-var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
-var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
-var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
-var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
-var pEvent = {
+const POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
+const POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
+const POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
+const POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
+const pEvent = {
 	touchstart  : POINTER_DOWN,
 	touchmove   : POINTER_MOVE,
 	touchend    : POINTER_UP,
 	touchcancel : POINTER_CANCEL
 };
-var handle = {
+const handle = {
 	touchstart  : _onPointerStart,
 	touchmove   : _handlePointer,
 	touchend    : _handlePointer,
 	touchcancel : _handlePointer
 };
-var _pointers = {};
-var _pointerDocListener = false;
+const _pointers = {};
+let _pointerDocListener = false;
 
 // Provides a touch events wrapper for (ms)pointer events.
 // ref https://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
@@ -36,6 +36,8 @@ export function addPointerListener(obj, type, handler) {
 		console.warn('wrong event specified:', type);
 		return falseFn;
 	}
+	// TODO: See if we can re-enable this rule.
+	// eslint-disable-next-line no-invalid-this
 	handler = handle[type].bind(this, handler);
 	obj.addEventListener(pEvent[type], handler, false);
 	return handler;
@@ -80,7 +82,7 @@ function _handlePointer(handler, e) {
 	if (e.pointerType === (e.MSPOINTER_TYPE_MOUSE || 'mouse')) { return; }
 
 	e.touches = [];
-	for (var i in _pointers) {
+	for (const i in _pointers) {
 		e.touches.push(_pointers[i]);
 	}
 	e.changedTouches = [e];

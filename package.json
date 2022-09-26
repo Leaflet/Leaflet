@@ -8,7 +8,7 @@
     "@rollup/plugin-json": "^5.0.0",
     "bundlemon": "^1.4.0",
     "eslint": "^8.23.1",
-    "eslint-config-mourner": "^2.0.3",
+    "eslint-config-mourner": "^3.0.0",
     "git-rev-sync": "^3.0.2",
     "happen": "~0.3.2",
     "husky": "^8.0.1",

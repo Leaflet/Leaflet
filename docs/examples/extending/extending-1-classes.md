@@ -49,7 +49,7 @@ Even though modern JavaScript can use ES6 classes, Leaflet is not designed aroun
 
 In order to create a subclass of anything in Leaflet, use the `.extend()` method. This accepts one parameter: a plain object with key-value pairs, each key being the name of a property or method, and each value being the initial value of a property, or the implementation of a method:
 
-    var MyDemoClass = L.Class.extend({
+    const MyDemoClass = L.Class.extend({
     
         // A property with initial value = 42
         myDemoProperty: 42,   
@@ -59,7 +59,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
         
     });
 
-    var myDemoInstance = new MyDemoClass();
+    const myDemoInstance = new MyDemoClass();
     
     // This will output "42" to the development console
     console.log( myDemoInstance.myDemoMethod() );   
@@ -84,7 +84,7 @@ If a class is already defined, existing properties/methods can be redefined, or 
     
     });
 
-    var mySecondDemoInstance = new MyDemoClass();
+    const mySecondDemoInstance = new MyDemoClass();
     
     // This will output "78"
     console.log( mySecondDemoInstance.myDemoMethod() );
@@ -100,7 +100,7 @@ In OOP, classes have a constructor method. In Leaflet's `L.Class`, the construct
 If your class has some specific `options`, it's a good idea to initialize them with `L.setOptions()` in the constructor. This utility function will merge the provided options with the default options of the class.
 
 
-    var MyBoxClass = L.Class.extend({
+    const MyBoxClass = L.Class.extend({
     
         options: {
             width: 1,
@@ -114,7 +114,7 @@ If your class has some specific `options`, it's a good idea to initialize them w
         
     });
     
-    var instance = new MyBoxClass('Red', {width: 10});
+    const instance = new MyBoxClass('Red', {width: 10});
 
     console.log(instance.name); // Outputs "Red"
     console.log(instance.options.width); // Outputs "10"
@@ -122,13 +122,13 @@ If your class has some specific `options`, it's a good idea to initialize them w
     
 Leaflet handles the `options` property in a special way: options available for a parent class will be inherited by a children class:.
 
-    var MyCubeClass = MyBoxClass.extend({
+    const MyCubeClass = MyBoxClass.extend({
         options: {
             depth: 1
         }
     });
     
-    var instance = new MyCubeClass('Blue');
+    const instance = new MyCubeClass('Blue');
     
     console.log(instance.options.width); // Outputs "1", parent class default
     console.log(instance.options.height); // Outputs "1", parent class default

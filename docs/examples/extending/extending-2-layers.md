@@ -19,7 +19,7 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
 
     L.TileLayer.Kitten = L.TileLayer.extend({
         getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
+            const i = Math.ceil( Math.random() * 4 );
             return "https://placekitten.com/256/256?image=" + i;
         },
         getAttribution: function() {
@@ -45,7 +45,7 @@ For the KittenLayer, you should create a file like `L.KittenLayer.js` with:
 
     L.TileLayer.Kitten = L.TileLayer.extend({
         getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
+            const i = Math.ceil( Math.random() * 4 );
             return "https://placekitten.com/256/256?image=" + i;
         },
         getAttribution: function() {
@@ -60,7 +60,7 @@ And then, include that file when showing a map:
 	<script src='leaflet.js'>
 	<script src='L.KittenLayer.js'>
 	<script>
-		var map = L.map('map-div-id');
+		const map = L.map('map-div-id');
 		L.tileLayer.kitten().addTo(map);
 	</script>
 	…
@@ -76,7 +76,7 @@ An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`.
 
 	L.GridLayer.DebugCoords = L.GridLayer.extend({
 		createTile: function (coords) {
-			var tile = document.createElement('div');
+			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 			return tile;
@@ -93,7 +93,7 @@ An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`.
 If the element has to do some asynchronous initialization, then use the second function parameter `done` and call it back when the tile is ready (for example, when an image has been fully loaded) or when there is an error. In here, we'll just delay the tiles artificially:
 
 	createTile: function (coords, done) {
-		var tile = document.createElement('div');
+		const tile = document.createElement('div');
 		tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 		tile.style.outline = '1px solid red';
 
@@ -112,13 +112,13 @@ A very basic `<canvas>` `GridLayer` looks like:
 
 	L.GridLayer.CanvasCircles = L.GridLayer.extend({
 		createTile: function (coords) {
-			var tile = document.createElement('canvas');
+			const tile = document.createElement('canvas');
 
-			var tileSize = this.getTileSize();
+			const tileSize = this.getTileSize();
 			tile.setAttribute('width', tileSize.x);
 			tile.setAttribute('height', tileSize.y);
 
-			var ctx = tile.getContext('2d');
+			const ctx = tile.getContext('2d');
 
 			// Draw whatever is needed in the canvas context
 			// For example, circles which get bigger as we zoom in
@@ -166,7 +166,7 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 
 	L.CustomLayer = L.Layer.extend({
 		onAdd: function(map) {
-			var pane = map.getPane(this.options.pane);
+			const pane = map.getPane(this.options.pane);
 			this._container = L.DomUtil.create(…);
 
 			pane.appendChild(this._container);

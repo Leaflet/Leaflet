@@ -9,7 +9,7 @@ import Browser from '../../core/Browser';
  * which otherwise is not fired by mobile Safari.
  */
 
-var tapHoldDelay = 600;
+const tapHoldDelay = 600;
 
 // @namespace Map
 // @section Interaction Options
@@ -25,23 +25,23 @@ Map.mergeOptions({
 	tapTolerance: 15
 });
 
-export var TapHold = Handler.extend({
-	addHooks: function () {
+export const TapHold = Handler.extend({
+	addHooks() {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	removeHooks: function () {
+	removeHooks() {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	_onDown: function (e) {
+	_onDown(e) {
 		clearTimeout(this._holdTimeout);
 		if (e.touches.length !== 1) { return; }
 
-		var first = e.touches[0];
+		const first = e.touches[0];
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
-		this._holdTimeout = setTimeout((function () {
+		this._holdTimeout = setTimeout((() => {
 			this._cancel();
 			if (!this._isTapValid()) { return; }
 
@@ -49,34 +49,34 @@ export var TapHold = Handler.extend({
 			DomEvent.on(document, 'touchend', DomEvent.preventDefault);
 			DomEvent.on(document, 'touchend touchcancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', first);
-		}).bind(this), tapHoldDelay);
+		}), tapHoldDelay);
 
 		DomEvent.on(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.on(document, 'touchmove', this._onMove, this);
 	},
 
-	_cancelClickPrevent: function cancelClickPrevent() {
+	_cancelClickPrevent: function _cancelClickPrevent() {
 		DomEvent.off(document, 'touchend', DomEvent.preventDefault);
-		DomEvent.off(document, 'touchend touchcancel', cancelClickPrevent);
+		DomEvent.off(document, 'touchend touchcancel', _cancelClickPrevent);
 	},
 
-	_cancel: function () {
+	_cancel() {
 		clearTimeout(this._holdTimeout);
 		DomEvent.off(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.off(document, 'touchmove', this._onMove, this);
 	},
 
-	_onMove: function (e) {
-		var first = e.touches[0];
+	_onMove(e) {
+		const first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 	},
 
-	_isTapValid: function () {
+	_isTapValid() {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
 	},
 
-	_simulateEvent: function (type, e) {
-		var simulatedEvent = new MouseEvent(type, {
+	_simulateEvent(type, e) {
+		const simulatedEvent = new MouseEvent(type, {
 			bubbles: true,
 			cancelable: true,
 			view: window,

@@ -51,7 +51,7 @@ Now you're ready to initialize the map and do some stuff with it.
 Let's create a map of the center of London with pretty OpenStreetMap tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
 ```javascript
-var map = L.map('map').setView([51.505, -0.09], 13);
+const map = L.map('map').setView([51.505, -0.09], 13);
 ```
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
@@ -82,13 +82,13 @@ Whenever using anything based on OpenStreetMap, an *attribution* is obligatory a
 Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:
 
 ```javascript
-var marker = L.marker([51.5, -0.09]).addTo(map);
+const marker = L.marker([51.5, -0.09]).addTo(map);
 ```
 
 Adding a circle is the same (except for specifying the radius in meters as a second argument), but lets you control how it looks by passing options as the last argument when creating the object:
 
 ```javascript
-var circle = L.circle([51.508, -0.11], {
+const circle = L.circle([51.508, -0.11], {
 	color: 'red',
 	fillColor: '#f03',
 	fillOpacity: 0.5,
@@ -99,7 +99,7 @@ var circle = L.circle([51.508, -0.11], {
 Adding a polygon is as easy:
 
 ```javascript
-var polygon = L.polygon([
+const polygon = L.polygon([
 	[51.509, -0.08],
 	[51.503, -0.06],
 	[51.51, -0.047]
@@ -123,7 +123,7 @@ Try clicking on our objects. The `bindPopup` method attaches a popup with the sp
 You can also use popups as layers (when you need something more than attaching a popup to an object):
 
 ```javascript
-var popup = L.popup()
+const popup = L.popup()
 	.setLatLng([51.513, -0.09])
 	.setContent("I am a standalone popup.")
 	.openOn(map);
@@ -149,7 +149,7 @@ Each object has its own set of events --- see [documentation](/reference.html) f
 Let's improve our example by using a popup instead of an alert:
 
 ```javascript
-var popup = L.popup();
+const popup = L.popup();
 
 function onMapClick(e) {
 	popup

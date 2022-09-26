@@ -2,20 +2,18 @@
 hljs.configure({tabReplace: '    '});
 hljs.initHighlighting();
 
-var tocCopy = document.createElement('div');
+const tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
 
-var toc = document.querySelector('#toc');
+const toc = document.querySelector('#toc');
+let currentAnchor = '';
 
 if (toc) {
-	var currentAnchor = '';
-
 	// top menu
-	var menus = document.querySelectorAll('#toc a');
-	var i;
+	let menus = document.querySelectorAll('#toc a');
 
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('click', function (e) {
+	for (let i = 0; i < menus.length; i++) {
+		menus[i].addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
@@ -25,38 +23,40 @@ if (toc) {
 	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
 	menus = document.querySelectorAll('#toc-copy ul');
-	i = 0;
 
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('mouseover', function () {
-			this.previousElementSibling.classList.add('hover');
+	for (let i = 0; i < menus.length; i++) {
+		const menu = menus[i];
+
+		menu.addEventListener('mouseover', () => {
+			menu.previousElementSibling.classList.add('hover');
 		});
 
-		menus[i].addEventListener('mouseout', function () {
-			this.previousElementSibling.classList.remove('hover');
+		menu.addEventListener('mouseout', () => {
+			menu.previousElementSibling.classList.remove('hover');
 		});
 
-		menus[i].addEventListener('click', function (e) {
+		menu.addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
 
-	var labels = document.querySelectorAll('#toc-copy h4');
+	const labels = document.querySelectorAll('#toc-copy h4');
 
-	for (i = 0; i < labels.length; i++) {
-		labels[i].addEventListener('click', function () {
-			this.classList.toggle('active');
+	for (let i = 0; i < labels.length; i++) {
+		const label = labels[i];
+		label.addEventListener('click', () => {
+			label.classList.toggle('active');
 		});
 	}
 
-	tocCopy.addEventListener('click', function (e) {
+	tocCopy.addEventListener('click', (e) => {
 		if (e.target.nodeName !== 'H4') {
-			this.classList.toggle('active');
+			tocCopy.classList.toggle('active');
 		}
 	});
 
-	var scrollPos = function scrollPos() {
-		var scroll = window.scrollY;
+	const scrollPos = function scrollPos() {
+		const scroll = window.scrollY;
 
 		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
 			document.body.classList.add('scrolled');
@@ -67,17 +67,17 @@ if (toc) {
 
 	scrollPos();
 
-	window.addEventListener('scroll', function () {
+	window.addEventListener('scroll', () => {
 		scrollPos();
 	});
 
-	window.addEventListener('load', function () {
-		var currentHash = window.location.hash;
+	window.addEventListener('load', () => {
+		const currentHash = window.location.hash;
 		if (!currentHash) { return; }
-		var elem = document.querySelector(currentHash);
+		const elem = document.querySelector(currentHash);
 
 		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
-			setTimeout(()=>{
+			setTimeout(() => {
 				scrollToHeader(elem, true);
 			}, 10);
 		}
@@ -91,17 +91,17 @@ function clickOnAnchor(e) {
 		return;
 	}
 
-	var anchor = '#' + e.target.href.split('#')[1];
-	var elemHeader = document.querySelector(anchor);
+	const anchor = `#${  e.target.href.split('#')[1]}`;
+	const elemHeader = document.querySelector(anchor);
 
-	scrollToHeader(elemHeader, '#' + elemHeader.id === currentAnchor);
+	scrollToHeader(elemHeader, `#${  elemHeader.id}` === currentAnchor);
 
 	// prevent default browser anchor scroll
 	e.preventDefault();
 }
 
 function scrollToHeader(elemHeader, sameAnchor) {
-	var scrollBy = elemHeader.nextSibling.offsetTop;
+	let scrollBy = elemHeader.nextSibling.offsetTop;
 
 	if (L.Browser.chrome && sameAnchor) {
 		// chromium remove the anchor element from the scroll-position
@@ -114,5 +114,5 @@ function scrollToHeader(elemHeader, sameAnchor) {
 	// scroll to the anchor
 	window.scrollTo(0, scrollBy);
 	// apply the new anchor to the location url
-	currentAnchor = window.location.hash = '#' + elemHeader.id;
+	currentAnchor = window.location.hash = `#${  elemHeader.id}`;
 }

@@ -1,7 +1,7 @@
-describe("Map.BoxZoom", function () {
-	var container, map;
+describe("Map.BoxZoom", () => {
+	let container, map;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {
 			center: [0, 0],
@@ -9,14 +9,14 @@ describe("Map.BoxZoom", function () {
 		});
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
 
-	it("cancel boxZoom by pressing ESC and re-enable click event on the map", function () {
-		var mapClick = false;
-		map.on('click', function () {
+	it("cancel boxZoom by pressing ESC and re-enable click event on the map", () => {
+		let mapClick = false;
+		map.on('click', () => {
 			mapClick = true;
 		});
 
@@ -25,9 +25,9 @@ describe("Map.BoxZoom", function () {
 		expect(mapClick).to.be(true);
 
 		// fire mousedown event with shiftKey = true, to start drawing the boxZoom
-		var clientX = 100;
-		var clientY = 100;
-		var event = new CustomEvent("mousedown");
+		let clientX = 100;
+		let clientY = 100;
+		let event = new CustomEvent("mousedown");
 		event.shiftKey = true;
 		event.clientX = clientX;
 		event.clientY = clientY;

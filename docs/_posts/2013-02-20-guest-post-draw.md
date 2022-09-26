@@ -113,7 +113,7 @@ Jacob Toye
 
 <script>
 	// create a map in the "map" div, set the view to a given place and zoom
-	var map = L.map('map').setView([-37.77914, 175.30867], 16);
+	const map = L.map('map').setView([-37.77914, 175.30867], 16);
 
 	// add an OpenStreetMap tile layer
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -121,19 +121,19 @@ Jacob Toye
 	}).addTo(map);
 
 	// Initialize the FeatureGroup to store editable layers
-	var drawnItems = new L.FeatureGroup();
+	const drawnItems = new L.FeatureGroup();
 	map.addLayer(drawnItems);
 
 	// Initialize the draw control and pass it the FeatureGroup of editable layers
-	var drawControl = new L.Control.Draw({
+	const drawControl = new L.Control.Draw({
 		edit: {
 			featureGroup: drawnItems
 		}
 	});
 	map.addControl(drawControl);
 
-	map.on('draw:created', function (e) {
-		var layer = e.layer;
+	map.on('draw:created', (e) => {
+		const layer = e.layer;
 
 		if (e.layerType === 'marker') {
 			layer.bindPopup('A popup!');
