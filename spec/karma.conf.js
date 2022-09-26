@@ -48,6 +48,7 @@ module.exports = function (config) {
 		// Rollup the ES6 Leaflet sources into just one file, before tests
 		preprocessors: preprocessors,
 		rollupPreprocessor: {
+			onwarn: () => {}, // silence Rollup warnings
 			plugins: [
 				json()
 			],
@@ -112,6 +113,9 @@ module.exports = function (config) {
 
 		// Timeout for the client socket connection [ms].
 		browserSocketTimeout: 30000,
+
+		// Silence console.warn output in the terminal
+		browserConsoleLogOptions: {level: 'error'},
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
