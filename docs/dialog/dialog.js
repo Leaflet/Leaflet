@@ -3,10 +3,11 @@ var ONE_DAY_MILLI_SEC = 24 * 60 * 60 * 1000;
 
 function openDialog() {
 
-	if (sessionStorage) {
-		var session = sessionStorage.getItem(SESSION_KEY);
-		// open the dialog only every 24 hours
-		if (session && Date.now() - session < ONE_DAY_MILLI_SEC) {
+	// keep the last session timestamp in local storage to
+	//  re-show after 24 hours since last ack
+	if (localStorage) {
+		var sessionTimestamp = localStorage.getItem(SESSION_KEY);
+		if (sessionTimestamp && Date.now() - sessionTimestamp < ONE_DAY_MILLI_SEC) {
 			return;
 		}
 	}
@@ -30,8 +31,8 @@ function openDialog() {
 		var dialog = document.getElementById('dialog');
 		document.body.removeChild(dialog);
 		document.body.classList.remove('overflowHidden');
-		if (sessionStorage) {
-			sessionStorage.setItem(SESSION_KEY, Date.now());
+		if (localStorage) {
+			localStorage.setItem(SESSION_KEY, Date.now());
 		}
 	});
 

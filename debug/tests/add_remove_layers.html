@@ -25,7 +25,7 @@
         map = new L.Map('map', {preferCanvas: true});
 
         // create the tile layer with correct attribution
-        var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
         var osmAttrib = 'Map data © OpenStreetMap contributors';
         var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 17, attribution: osmAttrib, detectRetina: true });
         map.addLayer(osm);

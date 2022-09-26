@@ -5,9 +5,8 @@ import Browser from '../../core/Browser';
 import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
-import {vmlMixin, vmlCreate} from './SVG.VML';
 
-export var create = Browser.vml ? vmlCreate : svgCreate;
+export var create = svgCreate;
 
 /*
  * @class SVG
@@ -16,14 +15,6 @@ export var create = Browser.vml ? vmlCreate : svgCreate;
  *
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
  * Inherits `Renderer`.
- *
- * Due to [technical limitations](https://caniuse.com/svg), SVG is not
- * available in all web browsers, notably Android 2.x and 3.x.
- *
- * Although SVG is not available on IE7 and IE8, these browsers support
- * [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language)
- * (a now deprecated technology), and the SVG renderer will fall back to VML in
- * this case.
  *
  * @example
  *
@@ -195,13 +186,9 @@ export var SVG = Renderer.extend({
 	}
 });
 
-if (Browser.vml) {
-	SVG.include(vmlMixin);
-}
-
 // @namespace SVG
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
 export function svg(options) {
-	return Browser.svg || Browser.vml ? new SVG(options) : null;
+	return Browser.svg ? new SVG(options) : null;
 }

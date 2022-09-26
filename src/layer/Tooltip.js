@@ -13,10 +13,28 @@ import * as Util from '../core/Util';
  * Used to display small texts on top of map layers.
  *
  * @example
+ * If you want to just bind a tooltip to marker:
  *
  * ```js
  * marker.bindTooltip("my tooltip text").openTooltip();
  * ```
+ * Path overlays like polylines also have a `bindTooltip` method.
+ *
+ * A tooltip can be also standalone:
+ *
+ * ```js
+ * var tooltip = L.tooltip()
+ * 	.setLatLng(latlng)
+ * 	.setContent('Hello world!<br />This is a nice tooltip.')
+ * 	.addTo(map);
+ * ```
+ * or
+ * ```js
+ * var tooltip = L.tooltip(latlng, {content: 'Hello world!<br />This is a nice tooltip.'})
+ * 	.addTo(map);
+ * ```
+ *
+ *
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offsetting:
  * - the `offset` Tooltip option: it defaults to [0, 0], and it's specific to one tooltip.
@@ -200,7 +218,10 @@ export var Tooltip = DivOverlay.extend({
 
 // @namespace Tooltip
 // @factory L.tooltip(options?: Tooltip options, source?: Layer)
-// Instantiates a Tooltip object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
+// Instantiates a `Tooltip` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
+// @alternative
+// @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
+// Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
 export var tooltip = function (options, source) {
 	return new Tooltip(options, source);
 };

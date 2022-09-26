@@ -488,4 +488,24 @@ describe('Tooltip', function () {
 		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 	});
+
+	it("opens tooltip with passed latlng position while initializing", function () {
+		var tooltip = new L.Tooltip(center)
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+	});
+
+	it("opens tooltip with passed latlng and options position while initializing", function () {
+		var tooltip = new L.Tooltip(center, {className: 'testClass'})
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+		expect(L.DomUtil.hasClass(tooltip.getElement(), 'testClass')).to.be(true);
+	});
+
+	it("adds tooltip with passed content in options while initializing", function () {
+		var tooltip = new L.Tooltip(center, {content: 'Test'})
+			.addTo(map);
+		expect(map.hasLayer(tooltip)).to.be(true);
+		expect(tooltip.getContent()).to.be('Test');
+	});
 });

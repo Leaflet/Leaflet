@@ -1906,4 +1906,130 @@ describe("Map", function () {
 			map.panBy([50, 50]);
 		});
 	});
+
+	describe("_addZoomLimit", function () {
+		it("update zoom levels when min zoom is a number in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is a number in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		it("update zoom levels when min zoom is a number in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+			map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+			expect(map._layersMinZoom).to.be(4);
+		});
+
+		it("update zoom levels when max zoom is a number in two layers that are added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			expect(map._layersMaxZoom).to.be(10);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when min zoom is NaN in a layer that is added to map, so that min zoom becomes NaN,", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN}));
+			expect(isNaN(map._layersMinZoom)).to.be(true);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when max zoom is NaN in a layer that is added to map, so that max zoom becomes NaN", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		// Test is clearly wrong, but kept for future fixes
+		// it("update zoom levels when min zoom is NaN in at least one of many layers that are added to map, so that min zoom becomes NaN", function () {
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: 6}));
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: NaN})); --> Results in maxZoom = NaN --> _updateZoomLevels is not called.
+		// 	Not same logic as for maxZoom.
+		// 	map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
+		// 	expect(isNaN(map._layersMinZoom)).to.be(true);
+		// });
+
+		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
+		it("update zoom levels when max zoom is NaN in at least one of many layers that are added to map, so that max zoom becomes NaN", function () {
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 10}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: 8}));
+			map._addZoomLimit(L.tileLayer("", {maxZoom: NaN}));
+			expect(isNaN(map._layersMaxZoom)).to.be(true);
+		});
+
+		it("doesn't update zoom levels when min and max zoom are both NaN in a layer that is added to map", function () {
+			map._addZoomLimit(L.tileLayer("", {minZoom: NaN, maxZoom: NaN}));
+			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be(true);
+		});
+	});
+
+	describe("#containerPointToLatLng", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.containerPointToLatLng();
+			}).to.throwError();
+		});
+
+		it("returns geographical coordinate for point relative to map container", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center, 50);
+			var p = map.containerPointToLatLng(L.point(200, 200));
+			expect(p.lat).to.be.within(10.0000000, 10.0000001);
+			expect(p.lng).to.be.within(10.0000000, 10.0000001);
+		});
+	});
+
+
+	describe("#latLngToContainerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.latLngToContainerPoint();
+			}).to.throwError();
+		});
+
+		it("returns point relative to map container for geographical coordinate", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center);
+			var p = map.latLngToContainerPoint(center);
+			expect(p.x).to.be.equal(200);
+			expect(p.y).to.be.equal(200);
+		});
+	});
+
+	describe("#panTo", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panTo();
+			}).to.throwError();
+		});
+
+		it("pans the map to accurate location", function () {
+			var center = L.latLng([50, 30]);
+			expect(map.panTo(center)).to.be(map);
+			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
+		});
+	});
+
+	describe("#latLngToLayerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.latLngToLayerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the corresponding pixel coordinate relative to the origin pixel", function () {
+			var center = L.latLng([10, 10]);
+			map.setView(center, 0);
+			var p = map.latLngToLayerPoint(center);
+			expect(p.x).to.be.equal(200);
+			expect(p.y).to.be.equal(200);
+		});
+	});
 });
