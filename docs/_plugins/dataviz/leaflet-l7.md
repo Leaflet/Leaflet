@@ -8,5 +8,4 @@ demo: http://l7-leaflet.antv.vision/leaflet_l7_layer
 compatible-v0:
 compatible-v1: true
 ---
-
-Enhance Leaflet Large Scale Geospatial data visualization
+use [L7](https://github.com/antvis/l7) Large-scale WebGL-powered Geospatial data visualization analysis engine, Enhance Leaflet Large Scale Geospatial data visualization
