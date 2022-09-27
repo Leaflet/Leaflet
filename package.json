@@ -21,6 +21,7 @@
     "karma-rollup-preprocessor": "^7.0.8",
     "karma-safari-launcher": "~1.0.0",
     "karma-sinon": "^1.0.5",
+    "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",
     "lint-staged": "^13.0.3",
     "mocha": "^10.0.0",

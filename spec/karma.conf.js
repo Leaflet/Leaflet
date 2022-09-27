@@ -33,7 +33,9 @@ module.exports = function (config) {
 			'karma-edge-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
-			'karma-firefox-launcher'],
+			'karma-firefox-launcher',
+			'karma-time-stats-reporter'
+		],
 
 		// frameworks to use
 		frameworks: ['mocha', 'sinon', 'expect'],
@@ -61,7 +63,12 @@ module.exports = function (config) {
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		// reporters: ['dots'],
+		reporters: ['progress', 'time-stats'],
+
+		timeStatsReporter: {
+			reportTimeStats: false,
+			longestTestsCount: 10
+		},
 
 		// web server port
 		port: 9876,
