@@ -1240,7 +1240,7 @@ describe("Map", function () {
 				done();
 			};
 			map.setView([0, 0], 0);
-			map.on("zoomend", callback).flyTo(newCenter, newZoom);
+			map.on("zoomend", callback).flyTo(newCenter, newZoom, {duration: 0.1});
 		});
 
 		it("flyTo start latlng == end latlng", function (done) {
@@ -1255,7 +1255,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.flyTo(dc, 4);
+			map.flyTo(dc, 4, {duration: 0.1});
 		});
 	});
 
