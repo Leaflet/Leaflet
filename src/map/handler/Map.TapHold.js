@@ -2,7 +2,6 @@ import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
 import {Point} from '../../geometry/Point';
-import * as Util from '../../core/Util';
 import Browser from '../../core/Browser';
 
 /*
@@ -42,7 +41,7 @@ export var TapHold = Handler.extend({
 		var first = e.touches[0];
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
-		this._holdTimeout = setTimeout(Util.bind(function () {
+		this._holdTimeout = setTimeout((function () {
 			this._cancel();
 			if (!this._isTapValid()) { return; }
 
@@ -50,7 +49,7 @@ export var TapHold = Handler.extend({
 			DomEvent.on(document, 'touchend', DomEvent.preventDefault);
 			DomEvent.on(document, 'touchend touchcancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', first);
-		}, this), tapHoldDelay);
+		}).bind(this), tapHoldDelay);
 
 		DomEvent.on(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.on(document, 'touchmove', this._onMove, this);

@@ -147,8 +147,8 @@ export var TileLayer = GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile));
-		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile));
+		DomEvent.on(tile, 'load', this._tileOnLoad.bind(this, done, tile));
+		DomEvent.on(tile, 'error', this._tileOnError.bind(this, done, tile));
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
@@ -197,12 +197,7 @@ export var TileLayer = GridLayer.extend({
 	},
 
 	_tileOnLoad: function (done, tile) {
-		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (Browser.ielt9) {
-			setTimeout(Util.bind(done, this, null, tile), 0);
-		} else {
-			done(null, tile);
-		}
+		done(null, tile);
 	},
 
 	_tileOnError: function (done, tile, e) {
