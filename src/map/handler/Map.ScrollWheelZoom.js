@@ -1,7 +1,6 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
-import * as Util from '../../core/Util';
 
 /*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
@@ -54,7 +53,7 @@ export var ScrollWheelZoom = Handler.extend({
 		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(Util.bind(this._performZoom, this), left);
+		this._timer = setTimeout(this._performZoom.bind(this), left);
 
 		DomEvent.stop(e);
 	},

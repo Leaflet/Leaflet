@@ -12,4 +12,4 @@ export {Handler} from './Handler';
 
 import * as Util from './Util';
 export {Util};
-export {extend, bind, stamp, setOptions} from './Util';
+export {extend, stamp, setOptions} from './Util';

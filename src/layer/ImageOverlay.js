@@ -193,8 +193,8 @@ export var ImageOverlay = Layer.extend({
 
 		// @event load: Event
 		// Fired when the ImageOverlay layer has loaded its image
-		img.onload = Util.bind(this.fire, this, 'load');
-		img.onerror = Util.bind(this._overlayOnError, this, 'error');
+		img.onload = this.fire.bind(this, 'load');
+		img.onerror = this._overlayOnError.bind(this);
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
