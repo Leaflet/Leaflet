@@ -1,5 +1,14 @@
 var json = require('@rollup/plugin-json');
 
+const outro = `var oldL = window.L;
+exports.noConflict = function() {
+	window.L = oldL;
+	return this;
+}
+
+// Always export us to window global (see #2364)
+window.L = exports;`;
+
 // Karma configuration
 module.exports = function (config) {
 
@@ -7,7 +16,7 @@ module.exports = function (config) {
 
 	var files = [
 		"spec/before.js",
-		"src/LeafletWithGlobals.js",
+		"src/Leaflet.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -19,7 +28,7 @@ module.exports = function (config) {
 
 	var preprocessors = {};
 
-	preprocessors['src/LeafletWithGlobals.js'] = ['rollup'];
+	preprocessors['src/Leaflet.js'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
@@ -55,6 +64,7 @@ module.exports = function (config) {
 			output: {
 				format: 'umd',
 				name: 'leaflet',
+				outro: outro,
 				freeze: false,
 			},
 		},

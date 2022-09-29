@@ -33,7 +33,6 @@
     "uglify-js": "^3.17.0"
   },
   "main": "dist/leaflet-src.js",
-  "module": "dist/leaflet-src.esm.js",
   "style": "dist/leaflet.css",
   "files": [
     "dist",
@@ -70,8 +69,7 @@
     ],
     "root": true,
     "globals": {
-      "L": true,
-      "globalThis": true
+      "L": true
     },
     "env": {
       "commonjs": true,
