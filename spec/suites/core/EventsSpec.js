@@ -706,6 +706,17 @@ describe('Events', function () {
 			expect(marker.listens('test', true)).to.be(true);
 		});
 
+		it('is true if there is an event handler on parent parent', function () {
+			var fgP = L.featureGroup(),
+			fg = L.featureGroup().addTo(fgP),
+			marker = L.marker([0, 0]).addTo(fg),
+			spy = sinon.spy();
+
+			fgP.on('test', spy);
+			expect(marker.listens('test', false)).to.be(false);
+			expect(marker.listens('test', true)).to.be(true);
+		});
+
 		it('is true if there is an event handler with specific function on parent', function () {
 			var fg = L.featureGroup(),
 			marker = L.marker([0, 0]).addTo(fg),

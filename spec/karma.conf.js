@@ -1,14 +1,5 @@
 var json = require('@rollup/plugin-json');
 
-const outro = `var oldL = window.L;
-exports.noConflict = function() {
-	window.L = oldL;
-	return this;
-}
-
-// Always export us to window global (see #2364)
-window.L = exports;`;
-
 // Karma configuration
 module.exports = function (config) {
 
@@ -16,7 +7,7 @@ module.exports = function (config) {
 
 	var files = [
 		"spec/before.js",
-		"src/Leaflet.js",
+		"src/LeafletWithGlobals.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -28,7 +19,7 @@ module.exports = function (config) {
 
 	var preprocessors = {};
 
-	preprocessors['src/Leaflet.js'] = ['rollup'];
+	preprocessors['src/LeafletWithGlobals.js'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
@@ -40,10 +31,11 @@ module.exports = function (config) {
 			'karma-sinon',
 			'karma-expect',
 			'karma-edge-launcher',
-			'karma-ie-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
-			'karma-firefox-launcher'],
+			'karma-firefox-launcher',
+			'karma-time-stats-reporter'
+		],
 
 		// frameworks to use
 		frameworks: ['mocha', 'sinon', 'expect'],
@@ -58,20 +50,25 @@ module.exports = function (config) {
 		// Rollup the ES6 Leaflet sources into just one file, before tests
 		preprocessors: preprocessors,
 		rollupPreprocessor: {
+			onwarn: () => {}, // silence Rollup warnings
 			plugins: [
 				json()
 			],
 			output: {
 				format: 'umd',
 				name: 'leaflet',
-				outro: outro,
 				freeze: false,
 			},
 		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		// reporters: ['dots'],
+		reporters: ['progress', 'time-stats'],
+
+		timeStatsReporter: {
+			reportTimeStats: false,
+			longestTestsCount: 10
+		},
 
 		// web server port
 		port: 9876,
@@ -114,10 +111,6 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 0
 				}
 			},
-			IE10: {
-				base: 'IE',
-				'x-ua-compatible': 'IE=EmulateIE10'
-			}
 		},
 
 		concurrency: 1,
@@ -127,6 +120,9 @@ module.exports = function (config) {
 
 		// Timeout for the client socket connection [ms].
 		browserSocketTimeout: 30000,
+
+		// Silence console.warn output in the terminal
+		browserConsoleLogOptions: {level: 'error'},
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit

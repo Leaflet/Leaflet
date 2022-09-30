@@ -18,7 +18,7 @@
 		// Check the 'center' setting of the scroll-wheel, double-click and touch-zoom
 		// handlers
 
-		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {minZoom: 14, attribution: osmAttrib}),
 			latlng = new L.LatLng(51.1788409,-1.82618);

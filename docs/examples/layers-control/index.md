@@ -32,7 +32,7 @@ There are two types of layers: (1) base layers that are mutually exclusive (only
 
 Now let's create those base layers and add the default ones to the map:
 
-<pre><code>var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+<pre><code>var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });

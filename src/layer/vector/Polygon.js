@@ -61,39 +61,14 @@ export var Polygon = Polyline.extend({
 		return !this._latlngs.length || !this._latlngs[0].length;
 	},
 
+	// @method getCenter(): LatLng
+	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
 	getCenter: function () {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-
-		var i, j, p1, p2, f, area, x, y, center,
-		    points = this._rings[0],
-		    len = points.length;
-
-		if (!len) { return null; }
-
-		// polygon centroid algorithm; only uses the first ring if there are multiple
-
-		area = x = y = 0;
-
-		for (i = 0, j = len - 1; i < len; j = i++) {
-			p1 = points[i];
-			p2 = points[j];
-
-			f = p1.y * p2.x - p2.y * p1.x;
-			x += (p1.x + p2.x) * f;
-			y += (p1.y + p2.y) * f;
-			area += f * 3;
-		}
-
-		if (area === 0) {
-			// Polygon is so small that all points are on same pixel.
-			center = points[0];
-		} else {
-			center = [x / area, y / area];
-		}
-		return this._map.layerPointToLatLng(center);
+		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
 	},
 
 	_convertLatLngs: function (latlngs) {
