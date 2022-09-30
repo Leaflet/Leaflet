@@ -22,12 +22,18 @@ import {Path} from './vector/Path';
  * marker.bindPopup(popupContent).openPopup();
  * ```
  * Path overlays like polylines also have a `bindPopup` method.
- * Here's a more complicated way to open a popup on a map:
+ *
+ * A popup can be also standalone:
  *
  * ```js
  * var popup = L.popup()
  * 	.setLatLng(latlng)
  * 	.setContent('<p>Hello world!<br />This is a nice popup.</p>')
+ * 	.openOn(map);
+ * ```
+ * or
+ * ```js
+ * var popup = L.popup(latlng, {content: '<p>Hello world!<br />This is a nice popup.</p>')
  * 	.openOn(map);
  * ```
  */
@@ -302,6 +308,9 @@ export var Popup = DivOverlay.extend({
 // @namespace Popup
 // @factory L.popup(options?: Popup options, source?: Layer)
 // Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
+// @alternative
+// @factory L.popup(latlng: LatLng, options?: Popup options)
+// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
 export var popup = function (options, source) {
 	return new Popup(options, source);
 };

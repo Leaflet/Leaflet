@@ -52,7 +52,7 @@ Note that the `setView` call also returns the map object --- most Leaflet method
 
 Next, we'll add a tile layer to add to our map, in this case it's a OpenStreetMap tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. OpenStreetMap tiles are fine for programming your Leaflet map, but read the [Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/) of OpenStreetMap if you're going to use the tiles in production.
 
-<pre><code class="javascript">L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+<pre><code class="javascript">L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);</code></pre>

@@ -825,7 +825,7 @@ describe("Map", function () {
 
 	describe("#hasLayer", function () {
 		it("throws when called without proper argument", function () {
-			var hasLayer = L.Util.bind(map.hasLayer, map);
+			var hasLayer = map.hasLayer.bind(map);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
 
 			expect(hasLayer).withArgs(undefined).to.throwException();
@@ -1240,7 +1240,7 @@ describe("Map", function () {
 				done();
 			};
 			map.setView([0, 0], 0);
-			map.on("zoomend", callback).flyTo(newCenter, newZoom);
+			map.on("zoomend", callback).flyTo(newCenter, newZoom, {duration: 0.1});
 		});
 
 		it("flyTo start latlng == end latlng", function (done) {
@@ -1255,7 +1255,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.flyTo(dc, 4);
+			map.flyTo(dc, 4, {duration: 0.1});
 		});
 	});
 
@@ -1798,7 +1798,7 @@ describe("Map", function () {
 
 	describe("#Geolocation", function () {
 		it("doesn't throw error if location is found and map is not existing", function () {
-			var fn = L.Util.bind(map._handleGeolocationResponse, map);
+			var fn = map._handleGeolocationResponse.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
@@ -1807,7 +1807,7 @@ describe("Map", function () {
 		});
 		it("doesn't throw error if location is not found and map is not existing", function () {
 			map._locateOptions = {setView: true};
-			var fn = L.Util.bind(map._handleGeolocationError, map);
+			var fn = map._handleGeolocationError.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
@@ -2015,7 +2015,57 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
+
+	describe('#panInsideBounds', function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panInsideBounds();
+			}).to.throwError();
+		});
+
+		it("throws if passed invalid bounds", function () {
+			expect(function () {
+				map.panInsideBounds(0, 0);
+			}).to.throwError();
+		});
+
+		it("doesn't pan if already in bounds", function () {
+			map.setView([0, 0]);
+			var bounds = L.latLngBounds([[-1, -1], [1, 1]]);
+			var expectedCenter = L.latLng([0, 0]);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+
+		it("pans to closest view in bounds", function () {
+			var bounds = L.latLngBounds([[41.8, -87.6], [40.7, -74]]);
+			var expectedCenter = L.latLng([41.59452223189, -74.2738647460]);
+			map.setView([50.5, 30.5], 10);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
+	describe("#latLngToLayerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.latLngToLayerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the corresponding pixel coordinate relative to the origin pixel", function () {
+			var center = L.latLng([10, 10]);
+			map.setView(center, 0);
+			var p = map.latLngToLayerPoint(center);
+			expect(p.x).to.be.equal(200);
+			expect(p.y).to.be.equal(200);
+		});
+	});
+
 	describe("#mouseEventToLatLng", function () {
+
 		it("throws if map is not set before", function () {
 		  var latlng;
 		  map.on("click", function (e) {
@@ -2024,6 +2074,7 @@ describe("Map", function () {
 		  happen.click(container);
 		  expect(latlng).not.to.be.ok();
 		});
+
 		it("returns geographical coordinate where the event took place.", function () {
 		  var latlng;
 		  map.setView([0, 0], 0);

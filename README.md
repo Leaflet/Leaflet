@@ -1,6 +1,6 @@
 Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
-Volodymyr is no longer in Kyiv, because Russian bombs are falling over the city. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
+Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
 The Russian soldiers have already killed tens of thousands of civilians, including women and children, and are committing mass war crimes like gang rapes, executions, looting, and targeted bombings of civilian shelters and places of cultural significance. The death toll keeps rising, and Ukraine needs your help.
 
@@ -8,7 +8,7 @@ As Volodymyr [expressed a few days before the invasion](https://twitter.com/Leaf
 
 > If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest war, reach out to Ukrainian friends, donate to Ukrainian charities. Just don't be silent.
 
-Ukrainians are recommending the [Come Back Alive](https://www.comebackalive.in.ua) charity. For other options, see [SupportUkraineNow.org](https://stand-with-ukraine.pp.ua).
+Ukrainians are recommending the [Come Back Alive](https://savelife.in.ua/en/) charity. For other options, see [StandWithUkraine](https://stand-with-ukraine.pp.ua).
 
 If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukrainian citizens is the future of Leaflet.
 
@@ -24,7 +24,7 @@ Leaflet maintainers.
 <img width="600" src="https://rawgit.com/Leaflet/Leaflet/main/src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
-Weighing just about 39 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,

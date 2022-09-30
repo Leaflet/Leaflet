@@ -137,7 +137,7 @@ export var Map = Evented.extend({
 		this._initLayout();
 
 		// hack for https://github.com/Leaflet/Leaflet/issues/1980
-		this._onResize = Util.bind(this._onResize, this);
+		this._onResize = this._onResize.bind(this);
 
 		this._initEvents();
 
@@ -585,7 +585,7 @@ export var Map = Evented.extend({
 
 			if (options.debounceMoveend) {
 				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(Util.bind(this.fire, this, 'moveend'), 200);
+				this._sizeTimer = setTimeout(this.fire.bind(this, 'moveend'), 200);
 			} else {
 				this.fire('moveend');
 			}
@@ -639,8 +639,8 @@ export var Map = Evented.extend({
 			return this;
 		}
 
-		var onResponse = Util.bind(this._handleGeolocationResponse, this),
-		    onError = Util.bind(this._handleGeolocationError, this);
+		var onResponse = this._handleGeolocationResponse.bind(this),
+		    onError = this._handleGeolocationError.bind(this);
 
 		if (options.watch) {
 			this._locationWatchId =
@@ -1711,7 +1711,7 @@ export var Map = Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
+		setTimeout(this._onZoomTransitionEnd.bind(this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {
