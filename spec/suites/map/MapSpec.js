@@ -2016,6 +2016,37 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#panInsideBounds', function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panInsideBounds();
+			}).to.throwError();
+		});
+
+		it("throws if passed invalid bounds", function () {
+			expect(function () {
+				map.panInsideBounds(0, 0);
+			}).to.throwError();
+		});
+
+		it("doesn't pan if already in bounds", function () {
+			map.setView([0, 0]);
+			var bounds = L.latLngBounds([[-1, -1], [1, 1]]);
+			var expectedCenter = L.latLng([0, 0]);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+
+		it("pans to closest view in bounds", function () {
+			var bounds = L.latLngBounds([[41.8, -87.6], [40.7, -74]]);
+			var expectedCenter = L.latLng([41.59452223189, -74.2738647460]);
+			map.setView([50.5, 30.5], 10);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
 	describe("#latLngToLayerPoint", function () {
 
 		it("throws if map is not set before", function () {
