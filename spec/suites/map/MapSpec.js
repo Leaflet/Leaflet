@@ -2067,23 +2067,21 @@ describe("Map", function () {
 	describe("#mouseEventToLatLng", function () {
 
 		it("throws if map is not set before", function () {
-		  var latlng;
-		  map.on("click", function (e) {
-				latlng = map.mouseEventToLatLng(e.originalEvent);
-		  });
-		  happen.click(container);
-		  expect(latlng).not.to.be.ok();
+			expect(function () {
+				map.mouseEventToLatLng({clientX: 10, clientY: 10});
+			}).to.throwException();
 		});
 
 		it("returns geographical coordinate where the event took place.", function () {
-		  var latlng;
-		  map.setView([0, 0], 0);
-		  map.on("click", function (e) {
+			var latlng;
+			map.setView([0, 0], 0);
+			map.on("click", function (e) {
 				latlng = map.mouseEventToLatLng(e.originalEvent);
-		  });
-		  happen.click(container);
-		  expect(latlng.lat).to.be(89.15412403096876);
-		  expect(latlng.lng).to.be(-281.25000000000006);
+			});
+			happen.at('click', 100, 100);
+
+			var expectedCenter = [80.178713496, -140.625];
+			expect(latlng).to.be.nearLatLng(expectedCenter);
 		});
 	  });
 
