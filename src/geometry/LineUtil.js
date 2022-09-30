@@ -242,10 +242,10 @@ export function _flat(latlngs) {
 	return isFlat(latlngs);
 }
 
-/* @function polylineCenter(latlngs: LatLng[], crs: CRS, zoom: Number): LatLng
+/* @function polylineCenter(latlngs: LatLng[], crs: CRS): LatLng
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
  */
-export function polylineCenter(latlngs, crs, zoom) {
+export function polylineCenter(latlngs, crs) {
 	var i, halfDist, segDist, dist, p1, p2, ratio, center;
 
 	if (!latlngs || latlngs.length === 0) {
@@ -259,7 +259,7 @@ export function polylineCenter(latlngs, crs, zoom) {
 
 	var points = [];
 	for (var j in latlngs) {
-		points.push(crs.latLngToPoint(toLatLng(latlngs[j]), zoom));
+		points.push(crs.project(toLatLng(latlngs[j])));
 	}
 
 	var len = points.length;
@@ -288,5 +288,5 @@ export function polylineCenter(latlngs, crs, zoom) {
 			}
 		}
 	}
-	return crs.pointToLatLng(toPoint(center), zoom);
+	return crs.unproject(toPoint(center));
 }

@@ -127,7 +127,7 @@ export var DivOverlay = Layer.extend({
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
 			DomUtil.setOpacity(this._container, 0);
-			this._removeTimeout = setTimeout(Util.bind(DomUtil.remove, undefined, this._container), 200);
+			this._removeTimeout = setTimeout(DomUtil.remove.bind(null, this._container), 200);
 		} else {
 			DomUtil.remove(this._container);
 		}

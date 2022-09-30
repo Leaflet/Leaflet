@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>Leaflet API reference</h2>
 
-<p>This reference reflects <strong>Leaflet v1.8.0</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
+<p>This reference reflects <strong>Leaflet v1.9.1</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 <div id="toc" class="clearfix">
 	<div class="toc-col map-col">
@@ -3082,6 +3082,13 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code>undefined</code></td>
 		<td><code>Map pane</code> where the overlay will be added.</td>
 	</tr>
+	<tr id='divoverlay-content'>
+		<td><code><b>content</b></code></td>
+		<td><code>String|HTMLElement|Function</code></td>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -3754,11 +3761,15 @@ open popups while making sure that only one popup is open at one time
 <p>If you want to just bind a popup to marker click and then open it, it's really easy:</p>
 <pre><code class="language-js">marker.bindPopup(popupContent).openPopup();
 </code></pre>
-<p>Path overlays like polylines also have a <code>bindPopup</code> method.
-Here's a more complicated way to open a popup on a map:</p>
+<p>Path overlays like polylines also have a <code>bindPopup</code> method.</p>
+<p>A popup can be also standalone:</p>
 <pre><code class="language-js">var popup = L.popup()
 	.setLatLng(latlng)
 	.setContent('&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;')
+	.openOn(map);
+</code></pre>
+<p>or</p>
+<pre><code class="language-js">var popup = L.popup(latlng, {content: '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;')
 	.openOn(map);
 </code></pre>
 
@@ -3784,6 +3795,10 @@ Here's a more complicated way to open a popup on a map:</p>
 	<tr id='popup-l-popup'>
 		<td><code><b>L.popup</b>(<nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>, <nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>source?</i>)</code></td>
 		<td>Instantiates a <a href="#popup"><code>Popup</code></a> object given an optional <code>options</code> object that describes its appearance and location and an optional <code>source</code> object that is used to tag the popup with a reference to the Layer to which it refers.</td>
+	</tr>
+	<tr id='popup-l-popup'>
+		<td><code><b>L.popup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td>Instantiates a <a href="#popup"><code>Popup</code></a> object given <code>latlng</code> where the popup will open and an optional <code>options</code> object that describes its appearance and location.</td>
 	</tr>
 </tbody></table>
 
@@ -3835,7 +3850,9 @@ Here's a more complicated way to open a popup on a map:</p>
 		<td><code>Number</code></td>
 		<td><code>null</code></td>
 		<td>If set, creates a scrollable container of the given height
-inside a popup if its content exceeds it.</td>
+inside a popup if its content exceeds it.
+The scrollable container can be styled using the
+<code>leaflet-popup-scrolled</code> CSS class selector.</td>
 	</tr>
 	<tr id='popup-autopan'>
 		<td><code><b>autoPan</b></code></td>
@@ -3930,6 +3947,13 @@ on the map. Defaults to the map's <a href="#map-closepopuponclick"><code>closePo
 		<td><code>Boolean</code></td>
 		<td><code>false</code></td>
 		<td>If true, the popup/tooltip will listen to the mouse events.</td>
+	</tr>
+	<tr id='popup-content'>
+		<td><code><b>content</b></code></td>
+		<td><code>String|HTMLElement|Function</code></td>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
 	</tr>
 </tbody></table>
 
@@ -4627,7 +4651,19 @@ The verification can optionally be propagated, it will return <code>true</code> 
 
 
 
+<p>If you want to just bind a tooltip to marker:</p>
 <pre><code class="language-js">marker.bindTooltip(&quot;my tooltip text&quot;).openTooltip();
+</code></pre>
+<p>Path overlays like polylines also have a <code>bindTooltip</code> method.</p>
+<p>A tooltip can be also standalone:</p>
+<pre><code class="language-js">var tooltip = L.tooltip()
+	.setLatLng(latlng)
+	.setContent('Hello world!&lt;br /&gt;This is a nice tooltip.')
+	.addTo(map);
+</code></pre>
+<p>or</p>
+<pre><code class="language-js">var tooltip = L.tooltip(latlng, {content: 'Hello world!&lt;br /&gt;This is a nice tooltip.'})
+	.addTo(map);
 </code></pre>
 <p>Note about tooltip offset. Leaflet takes two options in consideration
 for computing tooltip offsetting:</p>
@@ -4660,7 +4696,11 @@ should adapt this value if you use a custom icon.</li>
 	</thead><tbody>
 	<tr id='tooltip-l-tooltip'>
 		<td><code><b>L.tooltip</b>(<nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>, <nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>source?</i>)</code></td>
-		<td>Instantiates a Tooltip object given an optional <code>options</code> object that describes its appearance and location and an optional <code>source</code> object that is used to tag the tooltip with a reference to the Layer to which it refers.</td>
+		<td>Instantiates a <a href="#tooltip"><code>Tooltip</code></a> object given an optional <code>options</code> object that describes its appearance and location and an optional <code>source</code> object that is used to tag the tooltip with a reference to the Layer to which it refers.</td>
+	</tr>
+	<tr id='tooltip-l-tooltip'>
+		<td><code><b>L.tooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td>Instantiates a <a href="#tooltip"><code>Tooltip</code></a> object given <code>latlng</code> where the tooltip will open and an optional <code>options</code> object that describes its appearance and location.</td>
 	</tr>
 </tbody></table>
 
@@ -4754,6 +4794,13 @@ position on the map.</td>
 		<td><code>String</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom CSS class name to assign to the overlay.</td>
+	</tr>
+	<tr id='tooltip-content'>
+		<td><code><b>content</b></code></td>
+		<td><code>String|HTMLElement|Function</code></td>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
 	</tr>
 </tbody></table>
 
@@ -11708,6 +11755,12 @@ for a second (also called long press).</td>
 Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
+	<tr id='polygon-getcenter'>
+		<td><code><b>getCenter</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the Polygon.</p>
+</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -11750,12 +11803,6 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code><b>closestLayerPoint</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>p</i>)</code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns the point closest to <code>p</code> on the Polyline.</p>
-</td>
-	</tr>
-	<tr id='polygon-getcenter'>
-		<td><code><b>getCenter</b>()</code></td>
-		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the center (<a href="https://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
 </td>
 	</tr>
 	<tr id='polygon-getbounds'>
@@ -12614,6 +12661,12 @@ for a second (also called long press).</td>
 Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></a> representation of the polygon (as a GeoJSON <a href="#polygon"><code>Polygon</code></a> or <code>MultiPolygon</code> Feature).</p>
 </td>
 	</tr>
+	<tr id='rectangle-getcenter'>
+		<td><code><b>getCenter</b>()</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><p>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the Polygon.</p>
+</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -12657,12 +12710,6 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code><b>closestLayerPoint</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>p</i>)</code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns the point closest to <code>p</code> on the Polyline.</p>
-</td>
-	</tr>
-	<tr id='rectangle-getcenter'>
-		<td><code><b>getCenter</b>()</code></td>
-		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>Returns the center (<a href="https://en.wikipedia.org/wiki/Centroid">centroid</a>) of the polyline.</p>
 </td>
 	</tr>
 	<tr id='rectangle-getbounds'>
@@ -19799,6 +19846,12 @@ can't be added to it with the <code>include</code> function.</p>
 		<td><p>Extends the bounds to contain the given point.</p>
 </td>
 	</tr>
+	<tr id='bounds-extend'>
+		<td><code><b>extend</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Extend the bounds to contain the given bounds</p>
+</td>
+	</tr>
 	<tr id='bounds-getcenter'>
 		<td><code><b>getCenter</b>(<nobr>&lt;Boolean&gt;</nobr> <i>round?</i>)</code></td>
 		<td><code><a href='#point'>Point</a></code></td>
@@ -19859,6 +19912,26 @@ intersect if they have at least one point in common.</p>
 		<td><code>Boolean</code></td>
 		<td><p>Returns <code>true</code> if the rectangle overlaps the given bounds. Two bounds
 overlap if their intersection is an area.</p>
+</td>
+	</tr>
+	<tr id='bounds-isvalid'>
+		<td><code><b>isValid</b>()</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the bounds are properly initialized.</p>
+</td>
+	</tr>
+	<tr id='bounds-pad'>
+		<td><code><b>pad</b>(<nobr>&lt;Number&gt;</nobr> <i>bufferRatio</i>)</code></td>
+		<td><code><a href='#bounds'>Bounds</a></code></td>
+		<td><p>Returns bounds created by extending or retracting the current bounds by a given ratio in each direction.
+For example, a ratio of 0.5 extends the bounds by 50% in each direction.
+Negative values will retract the bounds.</p>
+</td>
+	</tr>
+	<tr id='bounds-equals'>
+		<td><code><b>equals</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>, <nobr>&lt;Number&gt;</nobr> <i>maxMargin?</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting <code>maxMargin</code> to a small number.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -20602,7 +20675,7 @@ styled according to the options.</p>
 	<tr id='control-attribution-addattribution'>
 		<td><code><b>addAttribution</b>(<nobr>&lt;String&gt;</nobr> <i>text</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Adds an attribution text (e.g. <code>'Vector data &amp;copy; Mapbox'</code>).</p>
+		<td><p>Adds an attribution text (e.g. <code>'&amp;copy; OpenStreetMap contributors'</code>).</p>
 </td>
 	</tr>
 	<tr id='control-attribution-removeattribution'>
@@ -21282,6 +21355,12 @@ Note: pointer events will be preferred (if available), and processed for all <co
 		<td><code>Boolean</code></td>
 		<td><code>true</code> if the browser supports <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>.</td>
 	</tr>
+	<tr id='browser-mac'>
+		<td><code><b>mac</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> when the browser is running in a Mac platform
+<code>true</code> when the browser is running in a Linux platform</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -21583,6 +21662,11 @@ points that are on the screen or near, increasing performance.</td>
 		<td><code>Boolean</code></td>
 		<td>Returns true if <code>latlngs</code> is a flat array, false is nested.</td>
 	</tr>
+	<tr id='lineutil-polylinecenter'>
+		<td><code><b>polylineCenter</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>, <nobr>&lt;<a href='#crs'>CRS</a>&gt;</nobr> <i>crs</i>)</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the passed LatLngs (first ring) from a polyline.</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -21612,6 +21696,11 @@ points that are on the screen or near, increasing performance.</td>
 Used by Leaflet to only show polygon points that are on the screen or near, increasing
 performance. Note that polygon points needs different algorithm for clipping
 than polyline, so there's a separate method for it.</td>
+	</tr>
+	<tr id='polyutil-polygoncenter'>
+		<td><code><b>polygonCenter</b>(<nobr>&lt;LatLng[] crs: CRS&gt;</nobr> <i>latlngs</i>)</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the passed LatLngs (first ring) from a polygon.</td>
 	</tr>
 </tbody></table>
 
@@ -21702,6 +21791,13 @@ Use it inside listener functions.</td>
 		<td><code><b>stop</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</code></td>
 		<td><code>this</code></td>
 		<td>Does <code>stopPropagation</code> and <code>preventDefault</code> at the same time.</td>
+	</tr>
+	<tr id='domevent-getpropagationpath'>
+		<td><code><b>getPropagationPath</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</code></td>
+		<td><code>Array</code></td>
+		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath"><code>Event.composedPath()</code></a>.
+Returns an array containing the <code>HTMLElement</code>s that the given DOM event
+should propagate to (if not stopped).</td>
 	</tr>
 	<tr id='domevent-getmouseposition'>
 		<td><code><b>getMousePosition</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>container?</i>)</code></td>
@@ -21947,8 +22043,21 @@ and <code>boundingClientRect</code> as the result of <a href="https://developer.
 
 
 
-<pre><code class="language-js">var fx = new L.PosAnimation();
-fx.run(el, [300, 500], 0.5);
+<pre><code class="language-js">var myPositionMarker = L.marker([48.864716, 2.294694]).addTo(map);
+
+myPositionMarker.on(&quot;click&quot;, function() {
+	var pos = map.latLngToLayerPoint(myPositionMarker.getLatLng());
+	pos.y -= 25;
+	var fx = new L.PosAnimation();
+
+	fx.once('end',function() {
+		pos.y += 25;
+		fx.run(myPositionMarker._icon, pos, 0.8);
+	});
+
+	fx.run(myPositionMarker._icon, pos, 0.3);
+});
+
 </code></pre>
 
 

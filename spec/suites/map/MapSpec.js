@@ -825,7 +825,7 @@ describe("Map", function () {
 
 	describe("#hasLayer", function () {
 		it("throws when called without proper argument", function () {
-			var hasLayer = L.Util.bind(map.hasLayer, map);
+			var hasLayer = map.hasLayer.bind(map);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
 
 			expect(hasLayer).withArgs(undefined).to.throwException();
@@ -1240,7 +1240,7 @@ describe("Map", function () {
 				done();
 			};
 			map.setView([0, 0], 0);
-			map.on("zoomend", callback).flyTo(newCenter, newZoom);
+			map.on("zoomend", callback).flyTo(newCenter, newZoom, {duration: 0.1});
 		});
 
 		it("flyTo start latlng == end latlng", function (done) {
@@ -1255,7 +1255,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.flyTo(dc, 4);
+			map.flyTo(dc, 4, {duration: 0.1});
 		});
 	});
 
@@ -1798,7 +1798,7 @@ describe("Map", function () {
 
 	describe("#Geolocation", function () {
 		it("doesn't throw error if location is found and map is not existing", function () {
-			var fn = L.Util.bind(map._handleGeolocationResponse, map);
+			var fn = map._handleGeolocationResponse.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
@@ -1807,7 +1807,7 @@ describe("Map", function () {
 		});
 		it("doesn't throw error if location is not found and map is not existing", function () {
 			map._locateOptions = {setView: true};
-			var fn = L.Util.bind(map._handleGeolocationError, map);
+			var fn = map._handleGeolocationError.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
