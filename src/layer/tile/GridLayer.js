@@ -807,7 +807,7 @@ export var GridLayer = Layer.extend({
 		var tilePos = this._getTilePos(coords),
 		    key = this._tileCoordsToKey(coords);
 
-		var tile = this.createTile(this._wrapCoords(coords), Util.bind(this._tileReady, this, coords));
+		var tile = this.createTile(this._wrapCoords(coords), this._tileReady.bind(this, coords));
 
 		this._initTile(tile);
 
@@ -815,7 +815,7 @@ export var GridLayer = Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			Util.requestAnimFrame(Util.bind(this._tileReady, this, coords, null, tile));
+			Util.requestAnimFrame(this._tileReady.bind(this, coords, null, tile));
 		}
 
 		DomUtil.setPosition(tile, tilePos);
@@ -884,7 +884,7 @@ export var GridLayer = Layer.extend({
 			} else {
 				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
 				// to trigger a pruning.
-				setTimeout(Util.bind(this._pruneTiles, this), 250);
+				setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
 	},

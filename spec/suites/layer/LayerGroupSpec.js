@@ -2,7 +2,7 @@
 	describe("#hasLayer", function () {
 		it("throws when called without proper argument", function () {
 			var lg = L.layerGroup();
-			var hasLayer = L.Util.bind(lg.hasLayer, lg);
+			var hasLayer = lg.hasLayer.bind(lg);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
 
 			expect(hasLayer).withArgs(undefined).to.throwException();

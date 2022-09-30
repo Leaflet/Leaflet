@@ -216,15 +216,17 @@ export var Events = {
 			console.warn('"string" type argument expected');
 		}
 
+		// we don't overwrite the input `fn` value, because we need to use it for propagation
+		var _fn = fn;
 		if (typeof fn !== 'function') {
 			propagate = !!fn;
-			fn = undefined;
+			_fn = undefined;
 			context = undefined;
 		}
 
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) {
-			if (this._listens(type, fn, context) !== false) {
+			if (this._listens(type, _fn, context) !== false) {
 				return true;
 			}
 		}
