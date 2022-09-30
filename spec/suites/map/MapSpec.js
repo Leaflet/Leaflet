@@ -2063,4 +2063,27 @@ describe("Map", function () {
 			expect(p.y).to.be.equal(200);
 		});
 	});
+
+	describe("#mouseEventToLatLng", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.mouseEventToLatLng({clientX: 10, clientY: 10});
+			}).to.throwException();
+		});
+
+		it("returns geographical coordinate where the event took place.", function () {
+			var latlng;
+			map.setView([0, 0], 0);
+			map.on("click", function (e) {
+				latlng = map.mouseEventToLatLng(e.originalEvent);
+			});
+			happen.at('click', 100, 100);
+
+			var expectedCenter = [80.178713496, -140.625];
+			expect(latlng).to.be.nearLatLng(expectedCenter);
+		});
+	  });
+
+
 });
