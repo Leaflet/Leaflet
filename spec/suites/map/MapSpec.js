@@ -2162,4 +2162,23 @@ describe("Map", function () {
 			expect(map._locateOptions.setView).to.equal(false);
 		});
 	});
+
+	describe("#mouseEventToContainerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.mouseEventToContainerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the pixel coordinate relative to the map container where the event took place", function () {
+			const mouseEvent = new MouseEvent('mouseenter', {
+				clientX: 1,
+				clientY: 2
+			});
+			const p = map.mouseEventToContainerPoint(mouseEvent);
+			expect(p.x).to.be.equal(1);
+			expect(p.y).to.be.equal(2);
+		});
+	});
 });
