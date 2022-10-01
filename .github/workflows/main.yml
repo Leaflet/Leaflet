@@ -93,9 +93,6 @@ jobs:
           bundler-cache: true
           working-directory: ./docs
 
-      - name: Install jekyll
-        run: gem install jekyll
-
       - name: Run jekyll build
         working-directory: ./docs
         run: bundle exec jekyll build
