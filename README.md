@@ -6,7 +6,7 @@ The Russian soldiers have already killed tens of thousands of civilians, includi
 
 As Volodymyr [expressed a few days before the invasion](https://twitter.com/LeafletJS/status/1496051256409919489):
 
-> If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest war, reach out to Ukrainian friends, donate to Ukrainian charities. Just don't be silent.
+> If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest the war, reach out to Ukrainian friends, and donate to Ukrainian charities. Just don't be silent.
 
 Ukrainians are recommending the [Come Back Alive](https://savelife.in.ua/en/) charity. For other options, see [StandWithUkraine](https://stand-with-ukraine.pp.ua).
 
