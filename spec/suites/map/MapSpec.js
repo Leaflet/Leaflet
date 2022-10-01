@@ -611,6 +611,64 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#addHandler", function () {
+		function getHandler(callback = () => {}) {
+			return L.Handler.extend({
+				addHooks: function () {
+					L.DomEvent.on(window, 'click', this.handleClick, this);
+				},
+
+				removeHooks: function () {
+					L.DomEvent.off(window, 'click', this.handleClick, this);
+				},
+
+				handleClick: callback
+			});
+		}
+
+		it("checking enabled method", function () {
+			L.ClickHandler = getHandler();
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			expect(map.clickHandler.enabled()).to.eql(false);
+
+			map.clickHandler.enable();
+			expect(map.clickHandler.enabled()).to.eql(true);
+
+			map.clickHandler.disable();
+			expect(map.clickHandler.enabled()).to.eql(false);
+		});
+
+		it("automatically enabled, when has a property named the same as the handler", function () {
+			map.remove();
+			map = L.map(container, {clickHandler: true});
+
+			L.ClickHandler = getHandler();
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			expect(map.clickHandler.enabled()).to.eql(true);
+		});
+
+		it("checking handling events when enabled/disabled", function () {
+			var spy = sinon.spy();
+			L.ClickHandler = getHandler(spy);
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			happen.once(window, {type: 'click'});
+			expect(spy.called).not.to.be.ok();
+
+			map.clickHandler.enable();
+
+			happen.once(window, {type: 'click'});
+			expect(spy.called).to.be.ok();
+
+			map.clickHandler.disable();
+
+			happen.once(window, {type: 'click'});
+			expect(spy.callCount).to.eql(1);
+		});
+	});
+
 	describe("createPane", function () {
 		it("create a new pane to mapPane when container not specified", function () {
 			map.createPane('controlPane');
