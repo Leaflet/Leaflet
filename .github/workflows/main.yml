@@ -81,27 +81,20 @@ jobs:
           key: ${{ github.ref }}-${{ github.sha }}-build-release
 
   build-docs:
-    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Restore setup
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+      - name: Check out repository
+        uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
+          working-directory: ./docs
 
       - name: Install jekyll
         run: gem install jekyll
-
-      - name: Run bundle install
-        working-directory: ./docs
-        run: bundle install
 
       - name: Run jekyll build
         working-directory: ./docs
