@@ -31,10 +31,11 @@ module.exports = function (config) {
 			'karma-sinon',
 			'karma-expect',
 			'karma-edge-launcher',
-			'karma-ie-launcher',
 			'karma-chrome-launcher',
 			'karma-safari-launcher',
-			'karma-firefox-launcher'],
+			'karma-firefox-launcher',
+			'karma-time-stats-reporter'
+		],
 
 		// frameworks to use
 		frameworks: ['mocha', 'sinon', 'expect'],
@@ -49,6 +50,7 @@ module.exports = function (config) {
 		// Rollup the ES6 Leaflet sources into just one file, before tests
 		preprocessors: preprocessors,
 		rollupPreprocessor: {
+			onwarn: () => {}, // silence Rollup warnings
 			plugins: [
 				json()
 			],
@@ -61,7 +63,12 @@ module.exports = function (config) {
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		// reporters: ['dots'],
+		reporters: ['progress', 'time-stats'],
+
+		timeStatsReporter: {
+			reportTimeStats: false,
+			longestTestsCount: 10
+		},
 
 		// web server port
 		port: 9876,
@@ -104,10 +111,6 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 0
 				}
 			},
-			IE10: {
-				base: 'IE',
-				'x-ua-compatible': 'IE=EmulateIE10'
-			}
 		},
 
 		concurrency: 1,
@@ -117,6 +120,9 @@ module.exports = function (config) {
 
 		// Timeout for the client socket connection [ms].
 		browserSocketTimeout: 30000,
+
+		// Silence console.warn output in the terminal
+		browserConsoleLogOptions: {level: 'error'},
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit

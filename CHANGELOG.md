@@ -3,6 +3,85 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.9.1 (2022-09-23)
+* Fix `Events` `listens` not propagating to parent objects, in particular fixing compatibility with **Leaflet.markercluster** plugin ([#8211](https://github.com/Leaflet/Leaflet/pull/8457) by [@Falke-Design](https://github.com/Falke-Design))
+
+## 1.9.0 (2022-09-21)
+
+### ⚠️ Breaking Changes
+* Update `color-adjust` to `print-color-adjust` ([#8211](https://github.com/Leaflet/Leaflet/pull/8211) by [@Malvoz](https://github.com/Malvoz))
+
+### ❇️ API changes
+* Add `content` and `latLng` options to `Popup` / `Tooltip` constructors ([#7783](https://github.com/Leaflet/Leaflet/pull/7783) by [@Falke-Design](https://github.com/Falke-Design))
+* Extend `Bounds` to have the same functions as `LatLngBounds` ([#7882](https://github.com/Leaflet/Leaflet/pull/7882) by [@Falke-Design](https://github.com/Falke-Design))
+
+### ✨ Improvements
+* Expose ESM entrypoint with Leaflet global ([#8329](https://github.com/Leaflet/Leaflet/pull/8329) by [@jonkoops](https://github.com/Falke-Design))
+* Update `getCenter()` calculation and move it to `PolyUtil` / `LineUtil` ([#7603](https://github.com/Leaflet/Leaflet/pull/7603) by [@Falke-Design](https://github.com/Falke-Design))
+* Remove border styles in overflowing popups ([#8260](https://github.com/Leaflet/Leaflet/pull/8260) by [@Malvoz](https://github.com/Malvoz))
+* Fix "listener not found" warning when setting `maxBounds` ([#8168](https://github.com/Leaflet/Leaflet/pull/8168))
+* Remove "listener not found" warning ([#8234](https://github.com/Leaflet/Leaflet/pull/8234) by [@Falke-Design](https://github.com/Falke-Design))
+* Extend `Events.listens` to search for specific function ([#8161](https://github.com/Leaflet/Leaflet/pull/8161) by [@Falke-Design](https://github.com/Falke-Design))
+* Add `noMoveStart` option to `panTo` ([#6685](https://github.com/Leaflet/Leaflet/pull/6685) by [@Chivano](https://github.com/Chivano))
+* Add `FeatureCollection` handling to `geometryToLayer` ([#8163](https://github.com/Leaflet/Leaflet/pull/8163) by [@Falke-Design](https://github.com/Falke-Design))
+
+### 🙌 Accessibility
+* Improve `Tooltip` accessibility (focus and voice over) ([#8247](https://github.com/Leaflet/Leaflet/pull/8247) by [@alekzvik](https://github.com/alekzvik))
+* Fix links in accessibility guide ([#8198](https://github.com/Leaflet/Leaflet/pull/8198) by [@Malvoz](https://github.com/Malvoz))
+* Remove redundant `role="presentation"` from image tiles ([#8172](https://github.com/Leaflet/Leaflet/pull/8172) by [@Malvoz](https://github.com/Malvoz))
+
+### 🐞 Bug fixes
+* Fix invalid GeoJSON on unbalanced arrays ([#7637](https://github.com/Leaflet/Leaflet/pull/7637) by [@steff1986](https://github.com/steff1986))
+* Fix 2 step zooming while using mouse wheel scrolling ([#8298](https://github.com/Leaflet/Leaflet/pull/8298) by [@Falke-Design](https://github.com/Falke-Design))
+* Fix wrong assigned parameter while calling `map._move` over `requestAnimFrame` ([#8328](https://github.com/Leaflet/Leaflet/pull/8328) by [@AMDvsTMD](https://github.com/AMDvsTMD))
+* Fix `_isClickDisabled` to not throw no error if parent is removed from DOM ([#8288](https://github.com/Leaflet/Leaflet/pull/8288) by [@Falke-Design](https://github.com/Falke-Design))
+* Fix `DomEvent.DoubleTap` to ignore clicks on `<label>`s with a `for` attribute ([#8227](https://github.com/Leaflet/Leaflet/pull/8227) by [@IvanSanchez](https://github.com/IvanSanchez))
+* Fix calling `once()` twice if same event is fired inside `once` ([#8190](https://github.com/Leaflet/Leaflet/pull/8190) by [@Falke-Design](https://github.com/Falke-Design))
+* Fix `map.getCenter()` returning a mutable object ([#8167](https://github.com/Leaflet/Leaflet/pull/8167))
+* Fix regression about popup close button modifying the URL ([#8160](https://github.com/Leaflet/Leaflet/pull/8160) by [@IvanSanchez](https://github.com/IvanSanchez))
+* Fix `min/maxZoom` when used in combination with `detectRetina` ([#7328](https://github.com/Leaflet/Leaflet/pull/7328) by [@bozdoz](https://github.com/bozdoz))
+
+### 📝 Docs
+* Use preferred tile.openstreetmap.org URL ([#8418](https://github.com/Leaflet/Leaflet/pull/8418) by [@Firefishy](https://github.com/Firefishy))
+* Use LocalStorage for dialog sessions ([#8382](https://github.com/Leaflet/Leaflet/pull/8382) by [@ChristopherWirtOfficial](https://github.com/ChristopherWirtOfficial))
+* Update anchor links for headers and in collapsed accordions ([#7780](https://github.com/Leaflet/Leaflet/pull/7780) by [@Falke-Design](https://github.com/Falke-Design))
+* Fix typo in reference-1.6.0.html ([#8330](https://github.com/Leaflet/Leaflet/pull/8330) by [@eltociear](https://github.com/eltociear))
+* Add pre-commit linting to CONTRIBUTING.md ([#8299](https://github.com/Leaflet/Leaflet/pull/8299) by [@Falke-Design](https://github.com/Falke-Design))
+* Ensure no borders on dialog iframe ([#8296](https://github.com/Leaflet/Leaflet/pull/8296) by [@Malvoz](https://github.com/Malvoz))
+* Replace Mapbox with OpenStreetMap in tutorials and examples ([#7818](https://github.com/Leaflet/Leaflet/pull/7818) by [@Falke-Design](https://github.com/Falke-Design))
+* Remove DOCS-TODO.md ([#8259](https://github.com/Leaflet/Leaflet/pull/8296) by [@Malvoz](https://github.com/Malvoz))
+* Better PosAnimation example ([#7386](https://github.com/Leaflet/Leaflet/pull/7386) by [@stell](https://github.com/stell))
+* Correct heading level in GeoJSON example ([#8230](https://github.com/Leaflet/Leaflet/pull/8230) by [@Malvoz](https://github.com/Malvoz))
+* Update Overlay Tutorial (ImageOverlay, VideoOverlay, SVGOverlay) ([#8090](https://github.com/Leaflet/Leaflet/pull/8090) by [@KonstantinBiryukov](https://github.com/KonstantinBiryukov))
+* Change attribute `anchor` to `data-anchor` ([#8174](https://github.com/Leaflet/Leaflet/pull/8174) by [@KnightJam1](https://github.com/KnightJam1))
+* Fix bad markdown causing link to not work ([#8156](https://github.com/Leaflet/Leaflet/pull/8156) by [@freyfogle](https://github.com/freyfogle))
+* A couple of site SEO fixes ([#8229](https://github.com/Leaflet/Leaflet/pull/8229) by [@Malvoz](https://github.com/Malvoz))
+* Fix attribution flag 1px misalignment on some websites ([#8170](https://github.com/Leaflet/Leaflet/pull/8170))
+* Attribution flag now resizes with font-size changes ([#8183](https://github.com/Leaflet/Leaflet/pull/8183) by [@sumitsaurabh927](https://github.com/sumitsaurabh927))
+* Add Dialog to website ([#8177](https://github.com/Leaflet/Leaflet/pull/8177) by [@Falke-Design](https://github.com/Falke-Design) and [#8193](https://github.com/Leaflet/Leaflet/pull/8193), [#8194](https://github.com/Leaflet/Leaflet/pull/8194) by [@Malvoz](https://github.com/Malvoz))
+
+### 🔧 Workflow
+* Improve GitHub Workflows security ([#8419](https://github.com/Leaflet/Leaflet/pull/8419) by [@sashashura](https://github.com/sashashura))
+* Update development dependencies
+* Replace deprecated `eslint-plugin-script-tags` ([#8331](https://github.com/Leaflet/Leaflet/pull/8331) by [@jonkoops](https://github.com/Falke-Design))
+* Use major version ranges for Github Actions ([#8286](https://github.com/Leaflet/Leaflet/pull/8286) by [@jonkoops](https://github.com/Falke-Design))
+* Configure YAML issue forms ([#8246](https://github.com/Leaflet/Leaflet/pull/8246) by [@Malvoz](https://github.com/Malvoz))
+* Add FUNDING.yml
+* Add pre-commit hook to fix linting issues ([#8212](https://github.com/Leaflet/Leaflet/pull/8212) by [@jonkoops](https://github.com/Falke-Design))
+* Remove Dependabot specific labels ([#8199](https://github.com/Leaflet/Leaflet/pull/8199) by [@jonkoops](https://github.com/Falke-Design))
+* Use shorter bundlemon names ([#8195](https://github.com/Leaflet/Leaflet/pull/8195))
+* Make sure integrity hashes are generated for the built version
+
+### 🧪 Tests
+* Added test cases for `map.latLngToLayerPoint` method ([#8407](https://github.com/Leaflet/Leaflet/pull/8407) by [@kreloaded](https://github.com/kreloaded))
+* Add test for `map.panTo` ([#8390](https://github.com/Leaflet/Leaflet/pull/8390) by [@anurag-dhamala](https://github.com/anurag-dhamala))
+* Add test for `map.containerPointToLatLng` and `map.latLngToContainerPoint` ([#8384](https://github.com/Leaflet/Leaflet/pull/8384) by [@abhi3315](https://github.com/abhi3315))
+* Add test for `Layer._addZoomLimit` ([#8037](https://github.com/Leaflet/Leaflet/pull/8037) by [@zishiwu123](https://github.com/zishiwu123))
+* Add tests for `Map` ([#8206](https://github.com/Leaflet/Leaflet/pull/8206) by [@stephenspol](https://github.com/stephenspol))
+* Add test for `CircleMarker._containsPoint` ([#8340](https://github.com/Leaflet/Leaflet/pull/8340) by [@gernhard1337](https://github.com/gernhard1337))
+* Add missing handler tests ([#8182](https://github.com/Leaflet/Leaflet/pull/8182) by [@Falke-Design](https://github.com/Falke-Design))
+* Cover Rectangle with unit Tests ([#8144](https://github.com/Leaflet/Leaflet/pull/8144) by [@stephenspol](https://github.com/stephenspol))
+
 ## 1.8.0 (2022-04-18)
 
 ### ⚠️ Breaking Changes

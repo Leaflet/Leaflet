@@ -62,7 +62,7 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
-		vid.onloadeddata = Util.bind(this.fire, this, 'load');
+		vid.onloadeddata = this.fire.bind(this, 'load');
 
 		if (wasElementSupplied) {
 			var sourceElements = vid.getElementsByTagName('source');

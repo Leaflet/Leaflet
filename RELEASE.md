@@ -13,10 +13,11 @@
 ### Updating docs after the release
 
 - [ ] Make a new branch for the update
-- [ ] Write a blog post about the new release and put it in `/docs/_posts`
-- [ ] If necessary to preserve previous version's docs, rename `dist/reference.html` to `dist/reference-X.Y.Z.html` and add it to the list in `docs/reference-versions.html`
-- [ ] Run `npm run docs` to generate the new `docs/reference.html`
-- [ ] Run `npm run integrity` and make sure `docs/_config.yml` is updated with new hashes
+- [ ] Write a blog post about the new release and put it in `/docs/_posts/`
+- [ ] [Click here to save a snapshot](https://web.archive.org/save/https://leafletjs.com/reference.html)
+of the version of docs prior to this release to the Internet Archive's Wayback Machine
+(and optionally, add a link to the snapshot in `docs/reference-versions.html`).
+- [ ] Run `npm run docs` to generate the new `docs/reference.html` and update integrity hashes in `docs/_config.yml`
 - [ ] Update link to latest release in `docs/download.md`
 - [ ] Update the announcement section in `docs/index.html`
 - [ ] Commit all the changes and submit a PR for someone to review
