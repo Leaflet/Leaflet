@@ -93,6 +93,11 @@ jobs:
           bundler-cache: true
           working-directory: ./docs
 
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
       - name: Run jekyll build
         uses: epstechtheatre/Jekyll-Tester@v1.2.0
         with:
