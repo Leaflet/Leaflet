@@ -612,51 +612,48 @@ describe("Map", function () {
 	});
 
 	describe("#addHandler", function () {
-		let clickCounter = 0;
+		function getHandler(spy) {
+			return L.Handler.extend({
+				addHooks: function () {
+					L.DomEvent.on(window, 'click', this.handleClick, this);
+				},
 
-		L.ClickHandler = L.Handler.extend({
-			addHooks: function () {
-				L.DomEvent.on(window, 'click', this.handleClick, this);
-			},
+				removeHooks: function () {
+					L.DomEvent.off(window, 'click', this.handleClick, this);
+				},
 
-			removeHooks: function () {
-				L.DomEvent.off(window, 'click', this.handleClick, this);
-			},
+				handleClick: spy
+			});
+		}
 
-			handleClick: function () {
-				clickCounter++;
-			}
+		it("checking enabled method", function () {
+			L.ClickHandler = getHandler(() => {});
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			map.clickHandler.enable();
+			expect(map.clickHandler.enabled()).to.eql(true);
+
+			map.clickHandler.disable();
+			expect(map.clickHandler.enabled()).to.eql(false);
 		});
 
-
-		it("not enabled addHandler", function () {
+		it("checking handling events when enabled/disabled", function () {
+			var spy = sinon.spy();
+			L.ClickHandler = getHandler(spy);
 			map.addHandler('clickHandler', L.ClickHandler);
 
 			happen.once(window, {type: 'click'});
-			expect(clickCounter).to.eql(0);
-		});
+			expect(spy.called).not.to.be.ok();
 
-		it("enabled addHandler", function () {
-			map.addHandler('clickHandler', L.ClickHandler);
 			map.clickHandler.enable();
 
 			happen.once(window, {type: 'click'});
-
-			expect(clickCounter).to.eql(1);
-
-		});
-
-		it("disabled handler", function () {
-			map.addHandler('clickHandler', L.ClickHandler);
-			map.clickHandler.enable();
-
-			happen.once(window, {type: 'click'});
+			expect(spy.called).to.be.ok();
 
 			map.clickHandler.disable();
 
 			happen.once(window, {type: 'click'});
-
-			expect(clickCounter).to.eql(1);
+			expect(spy.callCount).to.eql(1);
 		});
 	});
 
