@@ -612,7 +612,7 @@ describe("Map", function () {
 	});
 
 	describe("#addHandler", function () {
-		function getHandler(spy) {
+		function getHandler(callback = () => {}) {
 			return L.Handler.extend({
 				addHooks: function () {
 					L.DomEvent.on(window, 'click', this.handleClick, this);
@@ -622,12 +622,12 @@ describe("Map", function () {
 					L.DomEvent.off(window, 'click', this.handleClick, this);
 				},
 
-				handleClick: spy
+				handleClick: callback
 			});
 		}
 
 		it("checking enabled method", function () {
-			L.ClickHandler = getHandler(() => {});
+			L.ClickHandler = getHandler();
 			map.addHandler('clickHandler', L.ClickHandler);
 
 			map.clickHandler.enable();
@@ -635,6 +635,16 @@ describe("Map", function () {
 
 			map.clickHandler.disable();
 			expect(map.clickHandler.enabled()).to.eql(false);
+		});
+
+		it("automatically enabled, when has a property named the same as the handler", function () {
+			container = createContainer();
+			map = L.map(container, {clickHandler: true});
+
+			L.ClickHandler = getHandler();
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			expect(map.clickHandler.enabled()).to.eql(true);
 		});
 
 		it("checking handling events when enabled/disabled", function () {
