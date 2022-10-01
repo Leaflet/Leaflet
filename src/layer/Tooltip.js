@@ -387,15 +387,21 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer: function (layer) {
-		DomEvent.on(layer.getElement(), 'focus', function () {
-			this._tooltip._source = layer;
-			this.openTooltip();
-		}, this);
-		DomEvent.on(layer.getElement(), 'blur', this.closeTooltip, this);
+		var el = layer.getElement();
+		if (el) {
+			DomEvent.on(el, 'focus', function () {
+				this._tooltip._source = layer;
+				this.openTooltip();
+			}, this);
+			DomEvent.on(el, 'blur', this.closeTooltip, this);
+		}
 	},
 
 	_setAriaDescribedByOnLayer: function (layer) {
-		layer.getElement().setAttribute('aria-describedby', this._tooltip._container.id);
+		var el = layer.getElement();
+		if (el) {
+			el.setAttribute('aria-describedby', this._tooltip._container.id);
+		}
 	},
 
 
