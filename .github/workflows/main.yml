@@ -94,8 +94,13 @@ jobs:
           working-directory: ./docs
 
       - name: Run jekyll build
-        working-directory: ./docs
-        run: bundle exec jekyll build
+        uses: epstechtheatre/Jekyll-Tester@v1.2.0
+        with:
+          path: docs
+        env:
+          LC_ALL: "C.UTF-8"
+          LANG: "en_US.UTF-8"
+          LANGUAGE: "en_US.UTF-8"
 
   lint:
     needs: setup
