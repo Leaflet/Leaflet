@@ -611,6 +611,55 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#addHandler", function () {
+		let clickCounter = 0;
+
+		L.ClickHandler = L.Handler.extend({
+			addHooks: function () {
+				L.DomEvent.on(window, 'click', this.handleClick, this);
+			},
+
+			removeHooks: function () {
+				L.DomEvent.off(window, 'click', this.handleClick, this);
+			},
+
+			handleClick: function () {
+				clickCounter++;
+			}
+		});
+
+
+		it("not enabled addHandler", function () {
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			happen.once(window, {type: 'click'});
+			expect(clickCounter).to.eql(0);
+		});
+
+		it("enabled addHandler", function () {
+			map.addHandler('clickHandler', L.ClickHandler);
+			map.clickHandler.enable();
+
+			happen.once(window, {type: 'click'});
+
+			expect(clickCounter).to.eql(1);
+
+		});
+
+		it("disabled handler", function () {
+			map.addHandler('clickHandler', L.ClickHandler);
+			map.clickHandler.enable();
+
+			happen.once(window, {type: 'click'});
+
+			map.clickHandler.disable();
+
+			happen.once(window, {type: 'click'});
+
+			expect(clickCounter).to.eql(1);
+		});
+	});
+
 	describe("createPane", function () {
 		it("create a new pane to mapPane when container not specified", function () {
 			map.createPane('controlPane');
