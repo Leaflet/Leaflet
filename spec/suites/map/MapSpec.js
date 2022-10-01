@@ -2083,7 +2083,25 @@ describe("Map", function () {
 			var expectedCenter = [80.178713496, -140.625];
 			expect(latlng).to.be.nearLatLng(expectedCenter);
 		});
-	  });
+	});
 
+	describe("#stopLocate", function () {
+		it("clears the watch handler registered with the geolocation API", function () {
+			var locationWatchId = 123;
+			map._locationWatchId = locationWatchId;
+			navigator.geolocation.clearWatch = sinon.spy();
 
+			map.stopLocate();
+
+			expect(navigator.geolocation.clearWatch.calledOnceWith(locationWatchId)).to.equal(true);
+		});
+
+		it("resets the setView option to false", function () {
+			map._locateOptions = {setView: true};
+
+			map.stopLocate();
+
+			expect(map._locateOptions.setView).to.equal(false);
+		});
+	});
 });
