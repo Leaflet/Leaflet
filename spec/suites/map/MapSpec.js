@@ -630,6 +630,8 @@ describe("Map", function () {
 			L.ClickHandler = getHandler();
 			map.addHandler('clickHandler', L.ClickHandler);
 
+			expect(map.clickHandler.enabled()).to.eql(false);
+
 			map.clickHandler.enable();
 			expect(map.clickHandler.enabled()).to.eql(true);
 
@@ -638,7 +640,7 @@ describe("Map", function () {
 		});
 
 		it("automatically enabled, when has a property named the same as the handler", function () {
-			container = createContainer();
+			map.remove();
 			map = L.map(container, {clickHandler: true});
 
 			L.ClickHandler = getHandler();
