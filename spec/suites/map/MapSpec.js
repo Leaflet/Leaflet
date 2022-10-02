@@ -2122,6 +2122,175 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#locate", function () {
+		var foundSpy;
+		var errorSpy;
+
+		var getCurrentPosSpy;
+		var watchPosSpy;
+
+		var geolocationStub = {
+			geolocation: {
+				getCurrentPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
+							{
+								latitude: 50,
+								longitude: 50,
+								accuracy: 14
+							},
+
+							timestamp: 1670000000000
+						});
+
+					getCurrentPosSpy();
+				},
+
+				watchPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
+							{
+								latitude: 25,
+								longitude: 25,
+								accuracy: 14
+							},
+
+							timestamp: 1660000000000
+						});
+
+					watchPosSpy();
+
+					return 25;
+				}
+			}
+		};
+
+		beforeEach(function () {
+			foundSpy = sinon.spy();
+			errorSpy = sinon.spy();
+
+			getCurrentPosSpy = sinon.spy();
+			watchPosSpy = sinon.spy();
+		});
+
+		it("returns 'Geolocation not found!' error if geolocation can't be found", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: {}
+			});
+
+			map.on("locationerror", function (error) {
+				expect(error.code).to.be(0);
+				expect(error.message).to.eql('Geolocation error: Geolocation not supported..');
+
+				errorSpy();
+			});
+
+			map.on('locationfound', foundSpy);
+
+			map.locate({setView: true});
+
+			expect(errorSpy.called).to.be.ok();
+			expect(foundSpy.called).to.not.be.ok();
+		});
+
+		it("sets map view to geolocation coords", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			var expectedBounds;
+			var expectedLatLngs = [50, 50];
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
+				expect(data.timestamp).to.be(1670000000000);
+
+				expectedBounds = data.bounds;
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate({setView: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
+
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(8);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(8);
+		});
+
+		it("sets map view to geolocation coords and returns location watch ID when watch is true", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			var expectedBounds;
+			var expectedLatLngs = [25, 25];
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
+				expect(data.timestamp).to.be(1660000000000);
+
+				expectedBounds = data.bounds;
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate({setView: true, watch: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.not.be.ok();
+			expect(watchPosSpy.called).to.be.ok();
+
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(20);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(20);
+
+			expect(map._locationWatchId).to.eql(25);
+		});
+
+		it("does not set map view by default", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng([50, 50]);
+				expect(data.timestamp).to.be(1670000000000);
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate();
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
+
+			expect(map._loaded).to.not.be.ok();
+		});
+	});
+
 	describe("#mouseEventToLatLng", function () {
 
 		it("throws if map is not set before", function () {
