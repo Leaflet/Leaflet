@@ -9,7 +9,7 @@
   - [ ] [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
   - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
 - [ ] Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
-- [ ] Create a zipfile containing all the files inside the `dist` directory, and upload it as an "asset" of the GitHub release
+- [ ] Download zip archiv from https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/vX.X.X/leaflet.zip and upload it as an "asset" of the GitHub release
 
 ### Updating docs after the release
 
