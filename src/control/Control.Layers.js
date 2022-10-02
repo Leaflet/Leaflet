@@ -238,9 +238,9 @@ export var Layers = Control.extend({
 		});
 
 		if (this.options.sortLayers) {
-			this._layers.sort(Util.bind(function (a, b) {
+			this._layers.sort((function (a, b) {
 				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
-			}, this));
+			}).bind(this));
 		}
 
 		if (this.options.autoZIndex && layer.setZIndex) {

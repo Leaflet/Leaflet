@@ -1,4 +1,3 @@
-import Browser from '../../core/Browser';
 
 // @namespace SVG; @section
 // There are several static functions which can be called without instantiating L.SVG:
@@ -26,14 +25,10 @@ export function pointsToPath(rings, closed) {
 			str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 		}
 
-		// closes the ring for polygons; "x" is VML syntax
-		str += closed ? (Browser.svg ? 'z' : 'x') : '';
+		// closes the ring for polygons
+		str += closed ? 'z' : '';
 	}
 
 	// SVG complains about empty path strings
 	return str || 'M0 0';
 }
-
-
-
-

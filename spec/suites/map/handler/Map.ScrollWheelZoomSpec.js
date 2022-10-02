@@ -98,21 +98,18 @@ describe("Map.ScrollWheelZoom", function () {
 			expect(map.getZoom()).to.be.greaterThan(zoom);
 			var zoomDiff = map.getZoom() - zoom;
 
-			// Bug 1.8.0: .once('zoomend') is called twice if call `setZoom` in its function
-			setTimeout(function () {
-				map.setZoom(zoom, {animate: false});
-				expect(map.getZoom()).to.be(zoom);
+			map.setZoom(zoom, {animate: false});
+			expect(map.getZoom()).to.be(zoom);
 
-				map.options.wheelPxPerZoomLevel = 30;
-				happen.once(container, scrollIn);
+			map.options.wheelPxPerZoomLevel = 20;
+			happen.once(container, scrollIn);
 
-				map.once('zoomend', function () {
-					expect(map.getZoom()).to.be.greaterThan(zoom);
-					expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
-					map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
-					done();
-				});
-			}, 10);
+			map.once('zoomend', function () {
+				expect(map.getZoom()).to.be.greaterThan(zoom);
+				expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
+				map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
+				done();
+			});
 		});
 	});
 });
