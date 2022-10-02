@@ -4,6 +4,7 @@ permissions:
   contents: read
 env:
   NODE_VERSION: 16
+  RUBY_VERSION: 3.1.2
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -78,6 +79,23 @@ jobs:
         with:
           path: ./*
           key: ${{ github.ref }}-${{ github.sha }}-build-release
+
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: ./docs
+
+      - name: Run jekyll build
+        working-directory: ./docs
+        run: bundle exec jekyll build --strict_front_matter
 
   lint:
     needs: setup
