@@ -2112,9 +2112,10 @@ describe("Map", function () {
 			});
 
 			var expectedBounds;
+			var expectedLatLngs = [50, 50];
 
 			map.on("locationfound", function (data) {
-				expect(data.latlng).to.eql(L.latLng(50, 50));
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
 				expect(data.timestamp).to.be(1670000000000);
 
 				expectedBounds = data.bounds;
@@ -2132,7 +2133,7 @@ describe("Map", function () {
 			expect(getCurrentPosSpy.called).to.be.ok();
 			expect(watchPosSpy.called).to.not.be.ok();
 
-			expect(map.getCenter().distanceTo([50, 50])).to.be(0);
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
 
 			var currentBounds = map.getBounds();
 			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(8);
@@ -2145,9 +2146,10 @@ describe("Map", function () {
 			});
 
 			var expectedBounds;
+			var expectedLatLngs = [25, 25];
 
 			map.on("locationfound", function (data) {
-				expect(data.latlng).to.eql(L.latLng(25, 25));
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
 				expect(data.timestamp).to.be(1660000000000);
 
 				expectedBounds = data.bounds;
@@ -2165,7 +2167,7 @@ describe("Map", function () {
 			expect(getCurrentPosSpy.called).to.not.be.ok();
 			expect(watchPosSpy.called).to.be.ok();
 
-			expect(map.getCenter().distanceTo([25, 25])).to.be(0);
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
 
 			var currentBounds = map.getBounds();
 			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(20);
@@ -2180,7 +2182,7 @@ describe("Map", function () {
 			});
 
 			map.on("locationfound", function (data) {
-				expect(data.latlng).to.eql(L.latLng(50, 50));
+				expect(data.latlng).to.be.nearLatLng([50, 50]);
 				expect(data.timestamp).to.be(1670000000000);
 
 				foundSpy();
@@ -2196,7 +2198,7 @@ describe("Map", function () {
 			expect(getCurrentPosSpy.called).to.be.ok();
 			expect(watchPosSpy.called).to.not.be.ok();
 
-			expect(map._loaded).to.not.be(true);
+			expect(map._loaded).to.not.be.ok();
 		});
 	});
 });
