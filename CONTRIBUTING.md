@@ -107,7 +107,7 @@ In order to create this file, run `npm run build` or `yarn run build`.
 You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
 `dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
 development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
-for deployment.
+for production.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
