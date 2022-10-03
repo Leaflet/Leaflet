@@ -2073,6 +2073,21 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
+	describe("#panBy", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panBy();
+			}).to.throwError();
+		});
+
+		it("pans the map by the given number of pixels", function () {
+			var center = L.latLng(10, 10);
+			map.setView(center);
+			var change = L.point(200, 300);
+			expect(map.panBy(change)).to.be(map);
+		});
+	});
 
 	describe('#panInsideBounds', function () {
 
