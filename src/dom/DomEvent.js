@@ -263,15 +263,17 @@ export function getMousePosition(e, container) {
 	);
 }
 
+// @function getWheelPxFactor(): Number
+// Gets the wheel pixel factor based on the devicePixelRatio
+export function getWheelPxFactor() {
+	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
+	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
+	var ratio = window.devicePixelRatio;
+	return Browser.linux && Browser.chrome ? ratio :
+		Browser.mac ? ratio * 3 :
+		ratio > 0 ? 2 * ratio : 1;
+}
 
-//  except , Safari and
-// We need double the scroll pixels (see #7403 and #4538) for all Browsers
-// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-
-var wheelPxFactor =
-	(Browser.linux && Browser.chrome) ? window.devicePixelRatio :
-	Browser.mac ? window.devicePixelRatio * 3 :
-	window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a wheel DOM event, in vertical
 // pixels scrolled (negative if scrolling down).
@@ -279,7 +281,7 @@ var wheelPxFactor =
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
 	return (Browser.edge) ? e.wheelDeltaY / 2 : // Don't trust window-geometry-based delta
-	       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / wheelPxFactor : // Pixels
+	       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
 	       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
 	       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
 	       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
