@@ -71,7 +71,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 					return el.parentNode && (' ' + el.parentNode.className + ' ').indexOf(' accordion ') > -1 ? el.parentNode : null;
 				};
 
-				var elm = document.getElementById(urlAnchor.substr(1));
+				var elm = document.getElementById(urlAnchor.substring(1));
 				if (elm) {
 					var parent = getParentAccordion(elm);
 					if (parent) {

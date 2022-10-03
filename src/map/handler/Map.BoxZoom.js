@@ -1,6 +1,5 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
-import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
 import {LatLngBounds} from '../../geo/LatLngBounds';
@@ -126,7 +125,7 @@ export var BoxZoom = Handler.extend({
 		// Postpone to next JS tick so internal click event handling
 		// still see it as "moved".
 		this._clearDeferredResetState();
-		this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
+		this._resetStateTimeout = setTimeout(this._resetState.bind(this), 0);
 
 		var bounds = new LatLngBounds(
 		        this._map.containerPointToLatLng(this._startPoint),

@@ -19,3 +19,4 @@ Gemfile.lock
 yarn.lock
 *.log
 .eslintcache
+.jekyll-cache
