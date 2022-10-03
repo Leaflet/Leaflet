@@ -18,7 +18,7 @@
                 js: "var map = L.map('map', {\n\tlayers: [\n\t\tL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
             };
 
-            var hash = location.hash.substr(1);
+            var hash = location.hash.substring(1);
 
             if (hash) {
                 hash.split(';').forEach(function (str) {
