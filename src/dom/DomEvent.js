@@ -268,9 +268,10 @@ export function getMousePosition(e, container) {
 export function getWheelPxFactor() {
 	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
 	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-	return (Browser.linux && Browser.chrome) ? window.devicePixelRatio :
-		Browser.mac ? window.devicePixelRatio * 3 :
-		window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
+	var ratio = window.devicePixelRatio;
+	return Browser.linux && Browser.chrome ? ratio :
+		Browser.mac ? ratio * 3 :
+		ratio > 0 ? 2 * ratio : 1;
 }
 
 // @function getWheelDelta(ev: DOMEvent): Number
