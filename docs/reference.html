@@ -19248,7 +19248,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 <p>All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:</p>
 <pre><code>map.panTo([50, 30]);
 map.panTo({lng: 30, lat: 50});
-map.panTo({lat: 50, lng: 30});
+map.panTo({lat: 50, lng: 30}); // Note: `lon` can be used interchangably with `lng` in objects.
 map.panTo(L.latLng(50, 30));
 </code></pre>
 <p>Note that <a href="#latlng"><code>LatLng</code></a> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
@@ -19284,7 +19284,7 @@ can't be added to it with the <code>include</code> function.</p>
 	</tr>
 	<tr id='latlng-l-latlng'>
 		<td><code><b>L.latLng</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>)</code></td>
-		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.</td>
+		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.  As noted previously, <code>lon</code> can be used in place of <code>lng</code> when passing in an object to this function.</td>
 	</tr>
 </tbody></table>
 
