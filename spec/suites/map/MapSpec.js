@@ -1305,10 +1305,10 @@ describe("Map", function () {
 			map.setView([0, 0], 0);
 
 			map.on("zoomend", function () {
-				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(3);
-				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(3);
-				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(3);
-				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(3);
+				expect(Math.abs(map.getBounds().getEast() - bounds.getEast())).to.be.lessThan(4);
+				expect(Math.abs(map.getBounds().getWest() - bounds.getWest())).to.be.lessThan(4);
+				expect(Math.abs(map.getBounds().getNorth() - bounds.getNorth())).to.be.lessThan(4);
+				expect(Math.abs(map.getBounds().getSouth() - bounds.getSouth())).to.be.lessThan(4);
 				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
