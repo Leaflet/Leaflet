@@ -16,6 +16,9 @@ describe("Map.Keyboard", function () {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 
+		// make keyboard-caused panning instant to cut down on test running time
+		map.panBy = function (offset) { return L.Map.prototype.panBy.call(this, offset, {animate: false}); };
+
 		map.setView([0, 0], 5);
 
 		// Keyboard functionality expects the map to be focused (clicked or cycle-tabbed)
@@ -29,83 +32,59 @@ describe("Map.Keyboard", function () {
 	});
 
 	describe("arrow keys", function () {
-		it("move the map north", function (done) {
-
+		it("move the map north", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_UP});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_UP});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_UP});
 
-			setTimeout(function () {
-				expect(map.getCenter().lat).to.be.greaterThan(0);
-				done();
-			}, 300);
+			expect(map.getCenter().lat).to.be.greaterThan(0);
 		});
 
-		it("move the map south", function (done) {
-
+		it("move the map south", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_DOWN});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_DOWN});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_DOWN});
 
-			setTimeout(function () {
-				expect(map.getCenter().lat).to.be.lessThan(0);
-				done();
-			}, 300);
+			expect(map.getCenter().lat).to.be.lessThan(0);
 		});
 
-		it("move the map west", function (done) {
-
+		it("move the map west", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_LEFT});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_LEFT});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_LEFT});
 
-			setTimeout(function () {
-				expect(map.getCenter().lng).to.be.lessThan(0);
-				done();
-			}, 300);
+			expect(map.getCenter().lng).to.be.lessThan(0);
 		});
 
-		it("move the map east", function (done) {
-
+		it("move the map east", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_RIGHT});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_RIGHT});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_RIGHT});
 
-			setTimeout(function () {
-				expect(map.getCenter().lng).to.be.greaterThan(0);
-				done();
-			}, 300);
+			expect(map.getCenter().lng).to.be.greaterThan(0);
 		});
 	});
 
 	describe("plus/minus keys", function () {
-		it("zoom in", function (done) {
-
+		it("zoom in", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_PLUS});
 			happen.keypress(document, {keyCode: KEYCODE_PLUS});
 			happen.keyup(document,    {keyCode: KEYCODE_PLUS});
 
-			setTimeout(function () {
-				expect(map.getZoom()).to.be.greaterThan(5);
-				done();
-			}, 300);
+			expect(map.getZoom()).to.be.greaterThan(5);
 		});
 
-		it("zoom out", function (done) {
-
+		it("zoom out", function () {
 			happen.keydown(document,  {keyCode: KEYCODE_MINUS});
 			happen.keypress(document, {keyCode: KEYCODE_MINUS});
 			happen.keyup(document,    {keyCode: KEYCODE_MINUS});
 
-			setTimeout(function () {
-				expect(map.getZoom()).to.be.lessThan(5);
-				done();
-			}, 300);
+			expect(map.getZoom()).to.be.lessThan(5);
 		});
 	});
 
 	describe("does not move the map if disabled", function () {
-		it("no zoom in", function (done) {
+		it("no zoom in", function () {
 
 			map.keyboard.disable();
 
@@ -113,13 +92,10 @@ describe("Map.Keyboard", function () {
 			happen.keypress(document, {keyCode: KEYCODE_PLUS});
 			happen.keyup(document,    {keyCode: KEYCODE_PLUS});
 
-			setTimeout(function () {
-				expect(map.getZoom()).to.eql(5);
-				done();
-			}, 300);
+			expect(map.getZoom()).to.eql(5);
 		});
 
-		it("no move north", function (done) {
+		it("no move north", function () {
 
 			map.keyboard.disable();
 
@@ -127,10 +103,7 @@ describe("Map.Keyboard", function () {
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_UP});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_UP});
 
-			setTimeout(function () {
-				expect(map.getCenter().lat).to.eql(0);
-				done();
-			}, 300);
+			expect(map.getCenter().lat).to.eql(0);
 		});
 	});
 

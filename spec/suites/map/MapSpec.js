@@ -611,6 +611,64 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#addHandler", function () {
+		function getHandler(callback = () => {}) {
+			return L.Handler.extend({
+				addHooks: function () {
+					L.DomEvent.on(window, 'click', this.handleClick, this);
+				},
+
+				removeHooks: function () {
+					L.DomEvent.off(window, 'click', this.handleClick, this);
+				},
+
+				handleClick: callback
+			});
+		}
+
+		it("checking enabled method", function () {
+			L.ClickHandler = getHandler();
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			expect(map.clickHandler.enabled()).to.eql(false);
+
+			map.clickHandler.enable();
+			expect(map.clickHandler.enabled()).to.eql(true);
+
+			map.clickHandler.disable();
+			expect(map.clickHandler.enabled()).to.eql(false);
+		});
+
+		it("automatically enabled, when has a property named the same as the handler", function () {
+			map.remove();
+			map = L.map(container, {clickHandler: true});
+
+			L.ClickHandler = getHandler();
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			expect(map.clickHandler.enabled()).to.eql(true);
+		});
+
+		it("checking handling events when enabled/disabled", function () {
+			var spy = sinon.spy();
+			L.ClickHandler = getHandler(spy);
+			map.addHandler('clickHandler', L.ClickHandler);
+
+			happen.once(window, {type: 'click'});
+			expect(spy.called).not.to.be.ok();
+
+			map.clickHandler.enable();
+
+			happen.once(window, {type: 'click'});
+			expect(spy.called).to.be.ok();
+
+			map.clickHandler.disable();
+
+			happen.once(window, {type: 'click'});
+			expect(spy.callCount).to.eql(1);
+		});
+	});
+
 	describe("createPane", function () {
 		it("create a new pane to mapPane when container not specified", function () {
 			map.createPane('controlPane');
@@ -825,7 +883,7 @@ describe("Map", function () {
 
 	describe("#hasLayer", function () {
 		it("throws when called without proper argument", function () {
-			var hasLayer = L.Util.bind(map.hasLayer, map);
+			var hasLayer = map.hasLayer.bind(map);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
 
 			expect(hasLayer).withArgs(undefined).to.throwException();
@@ -1240,7 +1298,7 @@ describe("Map", function () {
 				done();
 			};
 			map.setView([0, 0], 0);
-			map.on("zoomend", callback).flyTo(newCenter, newZoom);
+			map.on("zoomend", callback).flyTo(newCenter, newZoom, {duration: 0.1});
 		});
 
 		it("flyTo start latlng == end latlng", function (done) {
@@ -1255,7 +1313,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.flyTo(dc, 4);
+			map.flyTo(dc, 4, {duration: 0.1});
 		});
 	});
 
@@ -1875,7 +1933,7 @@ describe("Map", function () {
 
 	describe("#Geolocation", function () {
 		it("doesn't throw error if location is found and map is not existing", function () {
-			var fn = L.Util.bind(map._handleGeolocationResponse, map);
+			var fn = map._handleGeolocationResponse.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
@@ -1884,7 +1942,7 @@ describe("Map", function () {
 		});
 		it("doesn't throw error if location is not found and map is not existing", function () {
 			map._locateOptions = {setView: true};
-			var fn = L.Util.bind(map._handleGeolocationError, map);
+			var fn = map._handleGeolocationError.bind(map);
 			map.remove();
 			map = null;
 			expect(function () {
@@ -2093,6 +2151,37 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#panInsideBounds', function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panInsideBounds();
+			}).to.throwError();
+		});
+
+		it("throws if passed invalid bounds", function () {
+			expect(function () {
+				map.panInsideBounds(0, 0);
+			}).to.throwError();
+		});
+
+		it("doesn't pan if already in bounds", function () {
+			map.setView([0, 0]);
+			var bounds = L.latLngBounds([[-1, -1], [1, 1]]);
+			var expectedCenter = L.latLng([0, 0]);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+
+		it("pans to closest view in bounds", function () {
+			var bounds = L.latLngBounds([[41.8, -87.6], [40.7, -74]]);
+			var expectedCenter = L.latLng([41.59452223189, -74.2738647460]);
+			map.setView([50.5, 30.5], 10);
+			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
 	describe("#latLngToLayerPoint", function () {
 
 		it("throws if map is not set before", function () {
@@ -2107,6 +2196,235 @@ describe("Map", function () {
 			var p = map.latLngToLayerPoint(center);
 			expect(p.x).to.be.equal(200);
 			expect(p.y).to.be.equal(200);
+		});
+	});
+
+	describe("#locate", function () {
+		var foundSpy;
+		var errorSpy;
+
+		var getCurrentPosSpy;
+		var watchPosSpy;
+
+		var geolocationStub = {
+			geolocation: {
+				getCurrentPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
+							{
+								latitude: 50,
+								longitude: 50,
+								accuracy: 14
+							},
+
+							timestamp: 1670000000000
+						});
+
+					getCurrentPosSpy();
+				},
+
+				watchPosition: function (onSuccess) {
+					onSuccess(
+						{
+							coords:
+							{
+								latitude: 25,
+								longitude: 25,
+								accuracy: 14
+							},
+
+							timestamp: 1660000000000
+						});
+
+					watchPosSpy();
+
+					return 25;
+				}
+			}
+		};
+
+		beforeEach(function () {
+			foundSpy = sinon.spy();
+			errorSpy = sinon.spy();
+
+			getCurrentPosSpy = sinon.spy();
+			watchPosSpy = sinon.spy();
+		});
+
+		it("returns 'Geolocation not found!' error if geolocation can't be found", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: {}
+			});
+
+			map.on("locationerror", function (error) {
+				expect(error.code).to.be(0);
+				expect(error.message).to.eql('Geolocation error: Geolocation not supported..');
+
+				errorSpy();
+			});
+
+			map.on('locationfound', foundSpy);
+
+			map.locate({setView: true});
+
+			expect(errorSpy.called).to.be.ok();
+			expect(foundSpy.called).to.not.be.ok();
+		});
+
+		it("sets map view to geolocation coords", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			var expectedBounds;
+			var expectedLatLngs = [50, 50];
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
+				expect(data.timestamp).to.be(1670000000000);
+
+				expectedBounds = data.bounds;
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate({setView: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
+
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(8);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(8);
+		});
+
+		it("sets map view to geolocation coords and returns location watch ID when watch is true", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			var expectedBounds;
+			var expectedLatLngs = [25, 25];
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
+				expect(data.timestamp).to.be(1660000000000);
+
+				expectedBounds = data.bounds;
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate({setView: true, watch: true});
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.not.be.ok();
+			expect(watchPosSpy.called).to.be.ok();
+
+			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
+
+			var currentBounds = map.getBounds();
+			expect(currentBounds._southWest.distanceTo(expectedBounds._southWest)).to.be.lessThan(20);
+			expect(currentBounds._northEast.distanceTo(expectedBounds._northEast)).to.be.lessThan(20);
+
+			expect(map._locationWatchId).to.eql(25);
+		});
+
+		it("does not set map view by default", function () {
+			Object.defineProperty(window, 'navigator', {
+				value: geolocationStub
+			});
+
+			map.on("locationfound", function (data) {
+				expect(data.latlng).to.be.nearLatLng([50, 50]);
+				expect(data.timestamp).to.be(1670000000000);
+
+				foundSpy();
+			});
+
+			map.on('locationerror', errorSpy);
+
+			map.locate();
+
+			expect(errorSpy.called).to.not.be.ok();
+			expect(foundSpy.called).to.be.ok();
+
+			expect(getCurrentPosSpy.called).to.be.ok();
+			expect(watchPosSpy.called).to.not.be.ok();
+
+			expect(map._loaded).to.not.be.ok();
+		});
+	});
+
+	describe("#mouseEventToLatLng", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.mouseEventToLatLng({clientX: 10, clientY: 10});
+			}).to.throwException();
+		});
+
+		it("returns geographical coordinate where the event took place.", function () {
+			var latlng;
+			map.setView([0, 0], 0);
+			map.on("click", function (e) {
+				latlng = map.mouseEventToLatLng(e.originalEvent);
+			});
+			happen.at('click', 100, 100);
+
+			var expectedCenter = [80.178713496, -140.625];
+			expect(latlng).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
+	describe("#stopLocate", function () {
+		it("clears the watch handler registered with the geolocation API", function () {
+			var locationWatchId = 123;
+			map._locationWatchId = locationWatchId;
+			navigator.geolocation.clearWatch = sinon.spy();
+
+			map.stopLocate();
+
+			expect(navigator.geolocation.clearWatch.calledOnceWith(locationWatchId)).to.equal(true);
+		});
+
+		it("resets the setView option to false", function () {
+			map._locateOptions = {setView: true};
+
+			map.stopLocate();
+
+			expect(map._locateOptions.setView).to.equal(false);
+		});
+	});
+
+	describe("#mouseEventToContainerPoint", function () {
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.mouseEventToContainerPoint();
+			}).to.throwError();
+		});
+
+		it("returns the pixel coordinate relative to the map container where the event took place", function () {
+			const mouseEvent = new MouseEvent('mouseenter', {
+				clientX: 1,
+				clientY: 2
+			});
+			const p = map.mouseEventToContainerPoint(mouseEvent);
+			expect(p.x).to.be.equal(1);
+			expect(p.y).to.be.equal(2);
 		});
 	});
 });

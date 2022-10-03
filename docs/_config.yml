@@ -1,18 +1,18 @@
-exclude: [build, debug, node_modules, spec, src, CNAME, reference-tpl.html, CHANGELOG.md, README.md, LICENSE]
+exclude: [build, debug, node_modules, spec, src, CNAME, reference-tpl.html, CHANGELOG.md, README.md, LICENSE, vendor/bundle, vendor/cache, vendor/gems, vendor/ruby]
 
 markdown: kramdown
 
 kramdown:
   entity_output: as_input
 
-latest_leaflet_version: 1.8.0
+latest_leaflet_version: 1.9.1
 
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
-integrity_hash_css: "sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-integrity_hash_source: "sha512-Uj3ED3j6dg1xxMgtj4kF4W60Tc1HGboQ5gweT+hG1z8sBIc0ncFuoh3qV5XZF8ZqlEGlV9mt9E6MZhLN3zFDJg=="
-integrity_hash_uglified: "sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+integrity_hash_css: "sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+integrity_hash_source: "sha256-2v7IA113a+VnAGVd65BWs5RbBxpRATX1TzB3R1Yra9U="
+integrity_hash_uglified: "sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s="
 
 
 collections:

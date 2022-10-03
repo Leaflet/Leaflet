@@ -33,32 +33,6 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#bind', function () {
-		it('returns the given function with the given context', function () {
-			var fn = function () {
-				return this;
-			};
-
-			var fn2 = L.Util.bind(fn, {foo: 'bar'});
-
-			expect(fn2()).to.eql({foo: 'bar'});
-		});
-
-		it('passes additional arguments to the bound function', function () {
-			var fn = sinon.spy(),
-			    foo = {},
-			    a = {},
-			    b = {},
-			    c = {};
-
-			var fn2 = L.Util.bind(fn, foo, a, b);
-
-			fn2(c);
-
-			expect(fn.calledWith(a, b, c)).to.be.ok();
-		});
-	});
-
 	describe('#stamp', function () {
 		it('sets a unique id on the given object and returns it', function () {
 			var a = {},

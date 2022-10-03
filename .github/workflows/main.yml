@@ -4,12 +4,10 @@ permissions:
   contents: read
 env:
   NODE_VERSION: 16
+  RUBY_VERSION: 3.1.2
 jobs:
   setup:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-2019]
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -21,35 +19,24 @@ jobs:
           check-latest: true
           cache: npm
 
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Install dependencies
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Cache setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-setup
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
   build:
     needs: setup
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-2019]
+    runs-on: ubuntu-latest
     steps:
       - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-setup
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -65,7 +52,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-build
 
   build-release:
     needs: setup
@@ -75,7 +62,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-setup
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -91,7 +78,24 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build-release
+          key: ${{ github.ref }}-${{ github.sha }}-build-release
+
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: ./docs
+
+      - name: Run jekyll build
+        working-directory: ./docs
+        run: bundle exec jekyll build --strict_front_matter
 
   lint:
     needs: setup
@@ -101,7 +105,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-setup
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -120,7 +124,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build-release
+          key: ${{ github.ref }}-${{ github.sha }}-build-release
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -135,7 +139,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -143,16 +147,12 @@ jobs:
           - browser: Chrome1280x1024
           - browser: FirefoxTouch
           - browser: FirefoxNoTouch
-          - browser: IE
-            os: windows-2019
-          - browser: IE10
-            os: windows-2019
     steps:
       - name: Restore build
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-build
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -171,7 +171,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-build
 
       - name: Compress artifacts
         working-directory: dist
@@ -197,7 +197,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ runner.os }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-build
 
       - name: Set up Node
         uses: actions/setup-node@v3

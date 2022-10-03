@@ -28,23 +28,6 @@ export var create = Object.create || (function () {
 	};
 })();
 
-// @function bind(fn: Function, …): Function
-// Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
-// Has a `L.bind()` shortcut.
-export function bind(fn, obj) {
-	var slice = Array.prototype.slice;
-
-	if (fn.bind) {
-		return fn.bind.apply(fn, slice.call(arguments, 1));
-	}
-
-	var args = slice.call(arguments, 2);
-
-	return function () {
-		return fn.apply(obj, args.length ? args.concat(slice.call(arguments)) : arguments);
-	};
-}
-
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
 export var lastId = 0;
@@ -228,7 +211,7 @@ export function requestAnimFrame(fn, context, immediate) {
 	if (immediate && requestFn === timeoutDefer) {
 		fn.call(context);
 	} else {
-		return requestFn.call(window, bind(fn, context));
+		return requestFn.call(window, fn.bind(context));
 	}
 }
 
