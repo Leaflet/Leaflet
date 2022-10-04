@@ -17,7 +17,8 @@ import {toLatLngBounds} from './LatLngBounds';
  *
  * ```
  * map.panTo([50, 30]);
- * map.panTo({lat: 50, lng: 30}); // Note: `lon` can be used interchangably with `lng` in objects.
+ * map.panTo({lat: 50, lng: 30});
+ * map.panTo({lat: 50, lon: 30});
  * map.panTo(L.latLng(50, 30));
  * ```
  *
