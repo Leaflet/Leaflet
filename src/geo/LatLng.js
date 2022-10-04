@@ -109,7 +109,7 @@ LatLng.prototype = {
 // @alternative
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
-// As noted previously, `lon` can be used in place of `lng` when passing in an object to this function.
+//  You can also use `lon` in place of `lng` in the object form.
 
 export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
