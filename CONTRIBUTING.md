@@ -145,14 +145,17 @@ browse the [`docs/ directory`](https://github.com/Leaflet/Leaflet/tree/main/docs
 choose a certain file for editing, click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
 
+To work on the documentation locally ensure you have Ruby installed. You can download it from the [Ruby website](https://www.ruby-lang.org/en/downloads/) or use [`rbenv`](https://github.com/rbenv/rbenv) (recommended).
+
+You'll need to install the same Ruby version as specified in [`.ruby-version`](./docs/.ruby-version). If you are using `rbenv` you can install this by running `rbenv install` from the `docs/` directory.
+
 If you need to make edits in a local repository to see how it looks in the process, do the following:
 
- 1. [Install Ruby](https://www.ruby-lang.org/en/downloads/) if you don't have it yet.
- 2. Run `gem install jekyll`.
- 3. Enter the directory where you cloned the Leaflet repository
- 4. Make sure you are in the `main` branch by running `git checkout main`
- 5. Run `npm run serve`
- 6. Open `localhost:4000` in your web browser.
+1. Open a terminal in the `docs/` directory.
+2. Make sure you are on the `main` branch by running `git checkout main`.
+3. Run `bundle install` to install the dependencies.
+4. Run `npm run serve` to serve the documentation.
+5. Open [http://localhost:4000](http://localhost:4000) in your web browser.
 
 Now any file changes in `docs/` will be applied when you reload pages.
 After committing the changes, just send a pull request.
