@@ -408,8 +408,8 @@ Layer.include({
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (latlng) {
-		var _latlng = latlng ? latlng : this._latlng;
-		if (this._popup && this._popup._prepareOpen(_latlng)) {
+		if (this._popup && this._popup._prepareOpen(latlng || this._latlng)) {
+
 			// open the popup on the map
 			this._popup.openOn(this._map);
 		}
