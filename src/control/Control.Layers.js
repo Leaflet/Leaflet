@@ -181,7 +181,7 @@ export var Layers = Control.extend({
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(container);
 
-		var section = this._section = DomUtil.create('section', className + '-list');
+		var section = this._section = DomUtil.create('fieldset', className + '-list');
 
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
