@@ -3,6 +3,18 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.9.2 (2022-10-04)
+
+### 🐞 Bug fixes
+* Drop ESM entrypoint from package ([#8493](https://github.com/Leaflet/Leaflet/pull/8493) by [@jonkoops](https://github.com/jonkoops))
+* Check if `getElement()` is undefined before adding focus listener ([#8498](https://github.com/Leaflet/Leaflet/pull/8498) by [@Falke-Design](https://github.com/Falke-Design))
+
+### 🧪 Tests
+* Fix unit tests suite stopping abruptly on Mac ([#8478](https://github.com/Leaflet/Leaflet/pull/8478))
+
+### 📝 Docs
+* Fix `Bounds` `equals` parameters in docs ([#8500](https://github.com/Leaflet/Leaflet/pull/8500) by [@Falke-Design](https://github.com/Falke-Design))
+
 ## 1.9.1 (2022-09-23)
 * Fix `Events` `listens` not propagating to parent objects, in particular fixing compatibility with **Leaflet.markercluster** plugin ([#8211](https://github.com/Leaflet/Leaflet/pull/8457) by [@Falke-Design](https://github.com/Falke-Design))
 
