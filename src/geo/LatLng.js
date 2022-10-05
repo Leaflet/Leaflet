@@ -18,6 +18,7 @@ import {toLatLngBounds} from './LatLngBounds';
  * ```
  * map.panTo([50, 30]);
  * map.panTo({lat: 50, lng: 30});
+ * map.panTo({lat: 50, lon: 30});
  * map.panTo(L.latLng(50, 30));
  * ```
  *
@@ -109,6 +110,7 @@ LatLng.prototype = {
 // @alternative
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+//  You can also use `lon` in place of `lng` in the object form.
 
 export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
