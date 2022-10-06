@@ -458,6 +458,20 @@ describe("Map", function () {
 			map.setMaxBounds(bounds, {animate: false});
 			expect(map.off.called).not.to.be.ok();
 		});
+
+		it("avoid subpixel / floating point related wobble (#8532)", function (done) {
+			map.setView([50.450036, 30.5241361], 13);
+
+			var spy = sinon.spy();
+			map.on('moveend', spy);
+			map.setMaxBounds(map.getBounds());
+
+			// Unfortunately this is one of those tests where we need to allow at least one animation tick
+			setTimeout(function () {
+				expect(spy.called).to.be(false);
+				done();
+			}, 300);
+		});
 	});
 
 	describe("#setMinZoom and #setMaxZoom", function () {
