@@ -2065,22 +2065,22 @@ describe("Map", function () {
 	});
 
 	describe("#panBy", function () {
+		var offset = L.point(1000, 1000);
 
-		it("throws if map is not set befor", function () {
+		it("throws if map is not set before", function () {
 			expect(function () {
-				map.panBy();
+				map.panBy(offset);
 			}).to.throwError();
 		});
 
 		it("pans the map by given offset", function () {
 			var center = L.latLng([0, 0]);
-			map.setView(center, 5);
-			var offset = L.point([10, 10]);
+			map.setView(center, 7);
+			var offsetCenterPoint = map.options.crs.latLngToPoint(center, 7).add(offset);
+			var target = map.options.crs.pointToLatLng(offsetCenterPoint, 7);
 
 			expect(map.panBy(offset, {animate: false})).to.be(map);
-			var current = map.options.crs.latLngToPoint(map.getCenter(), 5);
-			var prev = map.options.crs.latLngToPoint(center, 5);
-			expect(current.distanceTo(prev)).to.be(Math.sqrt(200));
+			expect(map.getCenter().distanceTo(target)).to.be.lessThan(5);
 		});
 	});
 });
