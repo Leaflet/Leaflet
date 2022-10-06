@@ -265,7 +265,6 @@ export var Popup = DivOverlay.extend({
 			return;
 		}
 
-
 		var map = this._map,
 		    marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
 		    containerHeight = this._container.offsetHeight + marginBottom,
