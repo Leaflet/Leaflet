@@ -258,9 +258,10 @@ export var Popup = DivOverlay.extend({
 		if (!this.options.autoPan) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
 
-		// We can endlessly recursive if keepInView is set with animations disabled. Let's guard against that by exiting
-		// early if we're in the middle of an earlier pan.
-		if (this._autopanning) {
+		// We can endlessly recurse if keepInView is set and the view resets.
+		// Let's guard against that by exiting early if we're responding to our
+		// own autopan.
+		if (this._autopanning && this.options.keepInView) {
 			this._autopanning = false;
 			return;
 		}
@@ -299,7 +300,12 @@ export var Popup = DivOverlay.extend({
 		// @event autopanstart: Event
 		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
-			this._autopanning = true;
+			// Track that we're autopanning, as this function will be re-ran
+			// on moveend
+			if (this.options.keepInView) {
+				this._autopanning = true;
+			}
+
 			map
 			    .fire('autopanstart')
 			    .panBy([dx, dy]);

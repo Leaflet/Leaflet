@@ -16,9 +16,11 @@
   <div id="map"></div>
 
   <div>
+    <label><input type="checkbox" id="keepInView" checked>Set keepInView</label>
     <button id="popupWithinBounds">Add popup within bounds</button>
     <button id="popupSlightlyBeyondBounds">Add popup slightly beyond bounds</button>
     <button id="popupBeyondBounds">Add popup far away</button>
+    <button id="movePopup">Move last popup</button>
   </div>
     
   <script>
@@ -31,6 +33,9 @@
     var map = L.map('map')
         .setView(center, 15)
         .addLayer(osm);
+
+    var lastPopup;
+    var keepInViewCheckbox = document.querySelector('#keepInView');
 
     function getRandomLatLng(llbounds, expandRange) {
       // How many degrees to expand the search range by
@@ -52,27 +57,35 @@
     });
     
     document.querySelector('#popupWithinBounds').addEventListener('click', function() {
-      var p = L.popup({keepInView: true})
+      lastPopup = L.popup({keepInView: keepInViewCheckbox.checked})
         .setContent('Popup')
         .setLatLng(getRandomLatLng(map.getBounds()));
 
-      map.openPopup(p);
+      map.openPopup(lastPopup);
     });
     
     document.querySelector('#popupSlightlyBeyondBounds').addEventListener('click', function() {
-      var p = L.popup({keepInView: true})
+      lastPopup = L.popup({keepInView: keepInViewCheckbox.checked})
         .setContent('Popup')
         .setLatLng(getRandomLatLng(map.getBounds(), .01));
 
-      map.openPopup(p);
+      map.openPopup(lastPopup);
     });
     
     document.querySelector('#popupBeyondBounds').addEventListener('click', function() {
-      var p = L.popup({keepInView: true})
+      lastPopup = L.popup({keepInView: keepInViewCheckbox.checked})
         .setContent('Popup')
         .setLatLng(getRandomLatLng(map.getBounds(), 1));
 
-      map.openPopup(p);
+      map.openPopup(lastPopup);
+    });
+
+    document.querySelector('#movePopup').addEventListener('click', function() {
+      if (!lastPopup) {
+        alert("No popup to move!");
+        return;
+      }
+      lastPopup.setLatLng(map.getBounds().getNorthEast());
     });
     
   </script>
