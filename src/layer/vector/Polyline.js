@@ -302,6 +302,3 @@ export var Polyline = Path.extend({
 export function polyline(latlngs, options) {
 	return new Polyline(latlngs, options);
 }
-
-// Retrocompat. Allow plugins to support Leaflet versions before and after 1.1.
-Polyline._flat = LineUtil._flat;
