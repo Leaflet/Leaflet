@@ -1,6 +1,6 @@
 import * as DomEvent from './DomEvent';
 import Browser from '../core/Browser';
-import {Util} from '../core';
+import * as Util from '../core/Util';
 
 /*
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
