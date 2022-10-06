@@ -70,7 +70,6 @@
     ],
     "root": true,
     "globals": {
-      "L": true,
       "globalThis": true
     },
     "env": {
