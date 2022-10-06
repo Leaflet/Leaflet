@@ -1543,7 +1543,7 @@ export var Map = Evented.extend({
 		// If offset is less than a pixel, ignore.
 		// This prevents unstable projections from getting into
 		// an infinite loop of tiny offsets.
-		if (offset.round().equals([0, 0])) {
+		if (Math.abs(offset.x) <= 1 && Math.abs(offset.y) <= 1) {
 			return center;
 		}
 
