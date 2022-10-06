@@ -2,7 +2,7 @@ import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
-import {toLatLng} from '../geo/LatLng';
+import {toLatLng, LatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -42,7 +42,7 @@ export var DivOverlay = Layer.extend({
 	},
 
 	initialize: function (options, source) {
-		if (options && (options instanceof L.LatLng || Util.isArray(options))) {
+		if (options && (options instanceof LatLng || Util.isArray(options))) {
 			this._latlng = toLatLng(options);
 			Util.setOptions(this, source);
 		} else {

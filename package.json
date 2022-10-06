@@ -68,9 +68,6 @@
       "build/integrity.js"
     ],
     "root": true,
-    "globals": {
-      "L": true
-    },
     "env": {
       "commonjs": true,
       "amd": true,
