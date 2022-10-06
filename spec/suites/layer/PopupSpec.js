@@ -423,7 +423,7 @@ describe('Popup', function () {
 				.down().moveBy(10, 10, 20).up();
 		});
 
-		it('moves the map over a long distance to the popup if it is not in the view (keepInView)', function () {
+		it('moves the map over a short distance to the popup if it is not in the view (keepInView)', function (done) {
 			container.style.position = 'absolute';
 			container.style.left = 0;
 			container.style.top = 0;
@@ -431,15 +431,40 @@ describe('Popup', function () {
 
 			// to prevent waiting until the animation is finished
 			map.options.inertia = false;
-			map.options.animate = false;
 
 			var spy = sinon.spy();
 			map.on('autopanstart', spy);
-			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
-			map.openPopup(p);
 
-			expect(spy.called).to.be(true);
-			expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+			// Short hop to the edge of the map (at time of writing, will trigger an animated pan)
+			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng(map.getBounds()._northEast);
+			map.once('moveend', function () {
+				expect(spy.callCount).to.be(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				done();
+			});
+			map.openPopup(p);
+		});
+
+		it('moves the map over a long distance to the popup if it is not in the view (keepInView)', function (done) {
+			container.style.position = 'absolute';
+			container.style.left = 0;
+			container.style.top = 0;
+			container.style.zIndex = 10000;
+
+			// to prevent waiting until the animation is finished
+			map.options.inertia = false;
+
+			var spy = sinon.spy();
+			map.on('autopanstart', spy);
+
+			// Long hop (at time of writing, will trigger a view reset)
+			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
+			map.once('moveend', function () {
+				expect(spy.callCount).to.be(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				done();
+			});
+			map.openPopup(p);
 		});
 	});
 
