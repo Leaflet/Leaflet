@@ -466,6 +466,21 @@ describe('Popup', function () {
 			});
 			map.openPopup(p);
 		});
+
+		it('moves on setLatLng after initial autopan', function (done) {
+			var p = L.popup().setContent('Popup').setLatLng(map.getBounds().getNorthEast());
+
+			map.once('moveend', function () {
+				map.once('moveend', function () {
+					expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+					done();
+				});
+
+				p.setLatLng(map.getBounds().getNorthEast());
+			});
+
+			map.openPopup(p);
+		});
 	});
 
 	describe('L.Layer#_popup', function () {
