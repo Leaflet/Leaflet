@@ -110,9 +110,25 @@ describe("Point", function () {
 			expect(L.point({x: 50, y: 30})).to.eql(L.point(50, 30));
 		});
 
-		it('does not fail on invalid arguments', function () {
-			expect(L.point(undefined)).to.be(undefined);
-			expect(L.point(null)).to.be(null);
+		it('throws on invalid arguments', function () {
+			expect(L.point).withArgs(0).to.throwError();
+			expect(L.point).withArgs(NaN, 0).to.throwError();
+			expect(L.point).withArgs(Infinity, 0).to.throwError();
+			expect(L.point).withArgs(-Infinity, 0).to.throwError();
+			expect(L.point).withArgs(true, 0).to.throwError();
+			expect(L.point).withArgs(false, 0).to.throwError();
+			expect(L.point).withArgs(undefined, 0).to.throwError();
+			expect(L.point).withArgs(null, 0).to.throwError();
+			expect(L.point).withArgs('', 0).to.throwError();
+			expect(L.point).withArgs('\n', 0).to.throwError();
+			expect(L.point).withArgs('1px', 0).to.throwError();
+			expect(L.point).withArgs('nonsense', 0).to.throwError();
+			expect(L.point).withArgs([]).to.throwError();
+			expect(L.point).withArgs([50]).to.throwError();
+			// do not throw atm:
+			// expect(L.point).withArgs('0010', 0).to.throwError();
+			// expect(L.point).withArgs('0x10', 0).to.throwError();
+			// expect(L.point).withArgs('1e5', 0).to.throwError();
 		});
 	});
 });
