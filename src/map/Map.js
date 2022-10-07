@@ -50,13 +50,13 @@ export var Map = Evented.extend({
 		// Minimum zoom level of the map.
 		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
 		// the lowest of their `minZoom` options will be used instead.
-		minZoom: undefined,
+		minZoom: -Infinity,
 
 		// @option maxZoom: Number = *
 		// Maximum zoom level of the map.
 		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
 		// the highest of their `maxZoom` options will be used instead.
-		maxZoom: undefined,
+		maxZoom: Infinity,
 
 		// @option layers: Layer[] = []
 		// Array of layers that will be added to the map initially
@@ -145,6 +145,9 @@ export var Map = Evented.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
+		this._addLayers(this.options.layers);
+		this._updateZoomLevels();
+
 		if (options.zoom !== undefined) {
 			this._zoom = this._limitZoom(options.zoom);
 		}
@@ -165,8 +168,6 @@ export var Map = Evented.extend({
 			this._createAnimProxy();
 			DomEvent.on(this._proxy, DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
-
-		this._addLayers(this.options.layers);
 	},
 
 
@@ -844,17 +845,21 @@ export var Map = Evented.extend({
 	},
 
 	// @method getMinZoom(): Number
-	// Returns the minimum zoom level of the map (if set in the `minZoom` option of the map or of any layers), or `0` by default.
+	// Returns the minimum zoom level of the map (if set in the `minZoom` option of the map or of any layers), or the CRS's minimum zoom level by default.
 	getMinZoom: function () {
-		return this.options.minZoom === undefined ? this._layersMinZoom || 0 : this.options.minZoom;
+		return Math.max(
+			this.options.minZoom,
+			this._layersMinZoom,
+			this.options.crs.minZoom);
 	},
 
 	// @method getMaxZoom(): Number
-	// Returns the maximum zoom level of the map (if set in the `maxZoom` option of the map or of any layers).
+	// Returns the maximum zoom level of the map (if set in the `maxZoom` option of the map or of any layers), or the CRS's maximum zoom level by default.
 	getMaxZoom: function () {
-		return this.options.maxZoom === undefined ?
-			(this._layersMaxZoom === undefined ? Infinity : this._layersMaxZoom) :
-			this.options.maxZoom;
+		return Math.min(
+			this.options.maxZoom,
+			this._layersMaxZoom,
+			this.options.crs.maxZoom);
 	},
 
 	// @method getBoundsZoom(bounds: LatLngBounds, inside?: Boolean, padding?: Point): Number

@@ -254,8 +254,8 @@ Map.include({
 			maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
 		}
 
-		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
-		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
+		this._layersMaxZoom = isFinite(maxZoom) ? maxZoom : Infinity;
+		this._layersMinZoom = isFinite(minZoom) ? minZoom : -Infinity;
 
 		// @section Map state change events
 		// @event zoomlevelschange: Event
@@ -265,10 +265,10 @@ Map.include({
 			this.fire('zoomlevelschange');
 		}
 
-		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+		if (this.getZoom() > this.getMaxZoom()) {
 			this.setZoom(this._layersMaxZoom);
 		}
-		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+		if (this.getZoom() < this.getMinZoom()) {
 			this.setZoom(this._layersMinZoom);
 		}
 	}
