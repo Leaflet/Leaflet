@@ -41,6 +41,13 @@ export var LayerGroup = Layer.extend({
 	addLayer: function (layer) {
 		var id = this.getLayerId(layer);
 
+		// @option membersPane: String = undefined
+		// When set, forces members of this group to belong to the given [map pane](#map-pane).
+		// This overrides the `pane` option of the individual layers
+		if ('membersPane' in this.options) {
+			layer.options._groupPane = this.options.membersPane;
+		}
+
 		this._layers[id] = layer;
 
 		if (this._map) {
