@@ -317,11 +317,15 @@ export var GridLayer = Layer.extend({
 
 		var now = +new Date(),
 		    nextFrame = false,
-		    willPrune = false;
+		    willPrune = false,
+		    endPrune = false;
 
 		for (var key in this._tiles) {
 			var tile = this._tiles[key];
-			if (!tile.current || !tile.loaded) { continue; }
+			if (!tile.current || !tile.loaded) {
+			  if (tile.active) { endPrune = true; }
+			  continue;
+			}
 
 			var fade = Math.min(1, (now - tile.loaded) / 200);
 
@@ -338,6 +342,7 @@ export var GridLayer = Layer.extend({
 			}
 		}
 
+		if (!nextFrame && endPrune) { willPrune = true; }
 		if (willPrune && !this._noPrune) { this._pruneTiles(); }
 
 		if (nextFrame) {
