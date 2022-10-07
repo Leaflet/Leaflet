@@ -435,7 +435,7 @@ export var GridLayer = Layer.extend({
 			tile = this._tiles[key];
 			if (tile.current && !tile.active) {
 				var coords = tile.coords;
-				if (!this._retainParent(coords.x, coords.y, coords.z, coords.z - 5)) {
+				if (!this._retainParents(coords.x, coords.y, coords.z, coords.z - 5)) {
 					this._retainChildren(coords.x, coords.y, coords.z, coords.z + 2);
 				}
 			}
@@ -474,38 +474,24 @@ export var GridLayer = Layer.extend({
 		this._tileZoom = undefined;
 	},
 
-	_retainParent: function (x, y, z, minZoom) {
-		var x2 = Math.floor(x / 2),
-		    y2 = Math.floor(y / 2),
-		    z2 = z - 1,
-		    coords2 = new Point(+x2, +y2);
-		coords2.z = +z2;
-
-		var key = this._tileCoordsToKey(coords2),
-		    tile = this._tiles[key];
-
-		if (tile && tile.active) {
-			tile.retain = true;
-			return true;
-
-		} else if (tile && tile.loaded) {
-			tile.retain = true;
+	_retainParents: function (x, y, z, minZoom) {
+		if (z <= this._map.getMinZoom()) {
+			return false;
 		}
 
-		if (z2 > minZoom) {
-			return this._retainParent(x2, y2, z2, minZoom);
-		}
+		var z2 = z - 1,
+		    scale = this._map.getZoomScale(z2, z),
+		    xMin = Math.floor(x * scale),
+		    xMax = (x + 1) * scale,
+		    yMin = Math.floor(y * scale),
+		    yMax = (y + 1) * scale,
+		    loaded = true;
 
-		return false;
-	},
-
-	_retainChildren: function (x, y, z, maxZoom) {
-
-		for (var i = 2 * x; i < 2 * x + 2; i++) {
-			for (var j = 2 * y; j < 2 * y + 2; j++) {
+		for (var i = xMin; i < xMax; i++) {
+			for (var j = yMin; j < yMax; j++) {
 
 				var coords = new Point(i, j);
-				coords.z = z + 1;
+				coords.z = z2;
 
 				var key = this._tileCoordsToKey(coords),
 				    tile = this._tiles[key];
@@ -518,8 +504,48 @@ export var GridLayer = Layer.extend({
 					tile.retain = true;
 				}
 
-				if (z + 1 < maxZoom) {
-					this._retainChildren(i, j, z + 1, maxZoom);
+				if (z2 > minZoom) {
+					loaded = loaded && this._retainParents(i, j, z2, minZoom);
+				} else {
+					loaded = false;
+				}
+			}
+		}
+
+		return loaded;
+	},
+
+	_retainChildren: function (x, y, z, maxZoom) {
+		if (z >= this._map.getMaxZoom()) {
+			return false;
+		}
+
+		var z2 = z + 1,
+		    scale = this._map.getZoomScale(z2, z),
+		    xMin = Math.floor(x * scale),
+		    xMax = (x + 1) * scale,
+		    yMin = Math.floor(y * scale),
+		    yMax = (y + 1) * scale;
+
+		for (var i = xMin; i < xMax; i++) {
+			for (var j = yMin; j < yMax; j++) {
+
+				var coords = new Point(i, j);
+				coords.z = z2;
+
+				var key = this._tileCoordsToKey(coords),
+				    tile = this._tiles[key];
+
+				if (tile && tile.active) {
+					tile.retain = true;
+					continue;
+
+				} else if (tile && tile.loaded) {
+					tile.retain = true;
+				}
+
+				if (z2 < maxZoom) {
+					this._retainChildren(i, j, z2, maxZoom);
 				}
 			}
 		}
