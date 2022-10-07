@@ -1416,7 +1416,7 @@ describe("Map", function () {
 	describe("#_getBoundsCenterZoom", function () {
 		var center = L.latLng(50.5, 30.51);
 
-		it("Returns valid center on empty bounds in unitialized map", function () {
+		it("Returns valid center on empty bounds in uninitialized map", function () {
 			// Edge case from #5153
 			var centerAndZoom = map._getBoundsCenterZoom([center, center]);
 			expect(centerAndZoom.center).to.eql(center);
@@ -1521,6 +1521,15 @@ describe("Map", function () {
 			bounds = L.latLngBounds([90, -180], [-90, 180]);
 			boundsCenter = bounds.getCenter();
 			map.setZoom(22);
+		});
+
+		it("Do not set Infinite zoom on empty bounds in initialized map", function () {
+			// Edge case from #6709
+			map.setView([0, 0], 0);
+			expect(isFinite(map.getMaxZoom())).not.to.be.ok(); // control condition
+
+			map.fitBounds([[0, 0], [0, 0]]);
+			expect(isFinite(map.getZoom())).to.be.ok();
 		});
 	});
 
