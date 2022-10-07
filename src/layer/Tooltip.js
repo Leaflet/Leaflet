@@ -76,7 +76,11 @@ export var Tooltip = DivOverlay.extend({
 
 		// @option opacity: Number = 0.9
 		// Tooltip container opacity.
-		opacity: 0.9
+		opacity: 0.9,
+
+		// @option rotate: Number = 0
+		// Tooltip label rotation angle, in degrees.
+		rotate: 0
 	},
 
 	onAdd: function (map) {
