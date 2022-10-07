@@ -345,6 +345,28 @@ describe('Polygon', function () {
 		});
 	});
 
+
+	describe("#DOM change", function () {
+		it("should move polygon to another pane", function () {
+			var map = new L.Map(document.createElement('div'));
+			map.setView([0, 0], 0);
+			map.createPane('draw');
+
+			var polygon = new L.Polygon([[0, 0], [1, 1]]).addTo(map);
+
+			var overlayPane = map.getPane('overlayPane');
+			var drawPane = map.getPane('draw');
+
+			var pane = polygon._renderer._container.parentNode;
+			expect(pane).to.be(overlayPane);
+
+			polygon.setPane('draw');
+			pane = polygon._renderer._container.parentNode;
+			expect(pane).to.not.be(overlayPane);
+			expect(pane).to.be(drawPane);
+		});
+	});
+
 	describe("#setStyle", function () {
 		it("succeeds for empty Polygon already added to the map", function () {
 			var style = {

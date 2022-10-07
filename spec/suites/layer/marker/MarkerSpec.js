@@ -352,4 +352,25 @@ describe("Marker", function () {
 			happen.mousemove(marker._icon);
 		});
 	});
+
+	describe("#DOM change", function () {
+		it("should move marker to another pane", function () {
+			var map = new L.Map(document.createElement('div'));
+			map.setView([0, 0], 0);
+			map.createPane('draw');
+
+			var marker = new L.Marker([0, 0]).addTo(map);
+
+			var markerPane = map.getPane('markerPane');
+			var drawPane = map.getPane('draw');
+
+			var pane = marker._icon.parentNode;
+			expect(pane).to.be(markerPane);
+
+			marker.setPane('draw');
+			pane = marker._icon.parentNode;
+			expect(pane).to.not.be(markerPane);
+			expect(pane).to.be(drawPane);
+		});
+	});
 });
