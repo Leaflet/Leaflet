@@ -111,6 +111,12 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 0
 				}
 			},
+			'FirefoxRetina': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'layout.css.devPixelsPerPx': 2
+				}
+			}
 		},
 
 		concurrency: 1,
