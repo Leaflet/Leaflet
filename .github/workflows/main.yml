@@ -157,7 +157,7 @@ jobs:
             os: macos-latest
           - browser: FirefoxRetina
             os: ubuntu-latest
-          - browser: Safari
+          - browser: SafariNative
             os: macos-latest
     steps:
       - name: Restore build

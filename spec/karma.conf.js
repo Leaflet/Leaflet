@@ -32,7 +32,7 @@ module.exports = function (config) {
 			'karma-expect',
 			'karma-edge-launcher',
 			'karma-chrome-launcher',
-			'karma-safari-launcher',
+			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
 			'karma-time-stats-reporter'
 		],
@@ -90,7 +90,7 @@ module.exports = function (config) {
 		// - Opera
 		// - Safari (only Mac)
 		// - IE (only Windows)
-		browsers: ['Chrome1280x1024'],
+		browsers: ['Chrome1280x1024', 'SafariNative'],
 
 		customLaunchers: {
 			'Chrome1280x1024': {
