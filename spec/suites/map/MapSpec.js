@@ -2382,6 +2382,7 @@ describe("Map", function () {
 
 			expect(map.panBy(offset, {animate: false})).to.be(map);
 			expect(map.getCenter().distanceTo(target)).to.be.lessThan(5);
+			expect(map.getCenter()).to.be.nearLatLng([-10.9196177602, 10.9863281250]);
 		});
 	});
 });
