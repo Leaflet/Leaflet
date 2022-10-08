@@ -9,6 +9,12 @@ import Browser from '../core/Browser';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
+import {Attribution} from '../control/Control.Attribution';
+import {Zoom} from '../control/Control.Zoom';
+import {Popup} from '../layer/Popup';
+import {canvas} from '../layer/vector/Canvas';
+import {svg} from '../layer/vector/SVG';
+import {Tooltip} from '../layer/Tooltip';
 
 /*
  * @class Map
@@ -120,7 +126,22 @@ export var Map = Evented.extend({
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true
+		trackResize: true,
+
+		// @section Control options
+		// @option attributionControl: Boolean = true
+		// Whether a [attribution control](#control-attribution) is added to the map by default.
+		attributionControl: true,
+
+		// @section Control options
+		// @option zoomControl: Boolean = true
+		// Whether a [zoom control](#control-zoom) is added to the map by default.
+		zoomControl: true,
+
+		// @section Interaction Options
+		// @option closePopupOnClick: Boolean = true
+		// Set it to `false` if you don't want popups to close when user clicks the map.
+		closePopupOnClick: true,
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -167,6 +188,19 @@ export var Map = Evented.extend({
 		}
 
 		this._addLayers(this.options.layers);
+
+		if (options.attributionControl) {
+			new Attribution().addTo(this);
+		}
+
+		if (options.zoomControl) {
+			// @section Controls
+			// @property zoomControl: Control.Zoom
+			// The default zoom control (only available if the
+			// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
+			this.zoomControl = new Zoom();
+			this.addControl(this.zoomControl);
+		}
 	},
 
 
@@ -1733,6 +1767,271 @@ export var Map = Evented.extend({
 		this.fire('move');
 
 		this._moveEnd(true);
+	},
+
+	// @method addControl(control: Control): this
+	// Adds the given control to the map
+	addControl: function (control) {
+		control.addTo(this);
+		return this;
+	},
+
+	// @method removeControl(control: Control): this
+	// Removes the given control from the map
+	removeControl: function (control) {
+		control.remove();
+		return this;
+	},
+
+	_initControlPos: function () {
+		var corners = this._controlCorners = {},
+		    l = 'leaflet-',
+		    container = this._controlContainer =
+		            DomUtil.create('div', l + 'control-container', this._container);
+
+		function createCorner(vSide, hSide) {
+			var className = l + vSide + ' ' + l + hSide;
+
+			corners[vSide + hSide] = DomUtil.create('div', className, container);
+		}
+
+		createCorner('top', 'left');
+		createCorner('top', 'right');
+		createCorner('bottom', 'left');
+		createCorner('bottom', 'right');
+	},
+
+	_clearControlPos: function () {
+		for (var i in this._controlCorners) {
+			DomUtil.remove(this._controlCorners[i]);
+		}
+		DomUtil.remove(this._controlContainer);
+		delete this._controlCorners;
+		delete this._controlContainer;
+	},
+
+	// @section Methods for Layers and Controls
+	// @method openPopup(popup: Popup): this
+	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
+	// @alternative
+	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
+	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	openPopup: function (popup, latlng, options) {
+		this._initOverlay(Popup, popup, latlng, options)
+		  .openOn(this);
+
+		return this;
+	},
+
+	// @method closePopup(popup?: Popup): this
+	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
+	closePopup: function (popup) {
+		popup = arguments.length ? popup : this._popup;
+		if (popup) {
+			popup.close();
+		}
+		return this;
+	},
+
+	// @namespace Map; @method getRenderer(layer: Path): Renderer
+	// Returns the instance of `Renderer` that should be used to render the given
+	// `Path`. It will ensure that the `renderer` options of the map and paths
+	// are respected, and that the renderers do exist on the map.
+	getRenderer: function (layer) {
+		// @namespace Path; @option renderer: Renderer
+		// Use this specific instance of `Renderer` for this path. Takes
+		// precedence over the map's [default renderer](#map-renderer).
+		var renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
+
+		if (!renderer) {
+			renderer = this._renderer = this._createRenderer();
+		}
+
+		if (!this.hasLayer(renderer)) {
+			this.addLayer(renderer);
+		}
+		return renderer;
+	},
+
+	_getPaneRenderer: function (name) {
+		if (name === 'overlayPane' || name === undefined) {
+			return false;
+		}
+
+		var renderer = this._paneRenderers[name];
+		if (renderer === undefined) {
+			renderer = this._createRenderer({pane: name});
+			this._paneRenderers[name] = renderer;
+		}
+		return renderer;
+	},
+
+	_createRenderer: function (options) {
+		// @namespace Map; @option preferCanvas: Boolean = false
+		// Whether `Path`s should be rendered on a `Canvas` renderer.
+		// By default, all `Path`s are rendered in a `SVG` renderer.
+		return (this.options.preferCanvas && canvas(options)) || svg(options);
+	},
+
+	// @section Methods for Layers and Controls
+	// @method openTooltip(tooltip: Tooltip): this
+	// Opens the specified tooltip.
+	// @alternative
+	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
+	// Creates a tooltip with the specified content and options and open it.
+	openTooltip: function (tooltip, latlng, options) {
+		this._initOverlay(Tooltip, tooltip, latlng, options)
+		  .openOn(this);
+
+		return this;
+	},
+
+	// @method closeTooltip(tooltip: Tooltip): this
+	// Closes the tooltip given as parameter.
+	closeTooltip: function (tooltip) {
+		tooltip.close();
+		return this;
+	},
+
+	_initOverlay: function (OverlayClass, content, latlng, options) {
+		var overlay = content;
+		if (!(overlay instanceof OverlayClass)) {
+			overlay = new OverlayClass(options).setContent(content);
+		}
+		if (latlng) {
+			overlay.setLatLng(latlng);
+		}
+		return overlay;
+	},
+
+	// @section Layer events
+	//
+	// @event layeradd: LayerEvent
+	// Fired when a new layer is added to the map.
+	//
+	// @event layerremove: LayerEvent
+	// Fired when some layer is removed from the map
+	//
+	// @section Methods for Layers and Controls
+	// @method addLayer(layer: Layer): this
+	// Adds the given layer to the map
+	addLayer: function (layer) {
+		if (!layer._layerAdd) {
+			throw new Error('The provided object is not a Layer.');
+		}
+
+		var id = Util.stamp(layer);
+		if (this._layers[id]) { return this; }
+		this._layers[id] = layer;
+
+		layer._mapToAdd = this;
+
+		if (layer.beforeAdd) {
+			layer.beforeAdd(this);
+		}
+
+		this.whenReady(layer._layerAdd, layer);
+
+		return this;
+	},
+
+	// @method removeLayer(layer: Layer): this
+	// Removes the given layer from the map.
+	removeLayer: function (layer) {
+		var id = Util.stamp(layer);
+
+		if (!this._layers[id]) { return this; }
+
+		if (this._loaded) {
+			layer.onRemove(this);
+		}
+
+		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer: layer});
+			layer.fire('remove');
+		}
+
+		layer._map = layer._mapToAdd = null;
+
+		return this;
+	},
+
+	// @method hasLayer(layer: Layer): Boolean
+	// Returns `true` if the given layer is currently added to the map
+	hasLayer: function (layer) {
+		return Util.stamp(layer) in this._layers;
+	},
+
+	/* @method eachLayer(fn: Function, context?: Object): this
+	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
+	 * ```
+	 * map.eachLayer(function(layer){
+	 *     layer.bindPopup('Hello');
+	 * });
+	 * ```
+	 */
+	eachLayer: function (method, context) {
+		for (var i in this._layers) {
+			method.call(context, this._layers[i]);
+		}
+		return this;
+	},
+
+	_addLayers: function (layers) {
+		layers = layers ? (Util.isArray(layers) ? layers : [layers]) : [];
+
+		for (var i = 0, len = layers.length; i < len; i++) {
+			this.addLayer(layers[i]);
+		}
+	},
+
+	_addZoomLimit: function (layer) {
+		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+			this._zoomBoundLayers[Util.stamp(layer)] = layer;
+			this._updateZoomLevels();
+		}
+	},
+
+	_removeZoomLimit: function (layer) {
+		var id = Util.stamp(layer);
+
+		if (this._zoomBoundLayers[id]) {
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
+	},
+
+	_updateZoomLevels: function () {
+		var minZoom = Infinity,
+		    maxZoom = -Infinity,
+		    oldZoomSpan = this._getZoomSpan();
+
+		for (var i in this._zoomBoundLayers) {
+			var options = this._zoomBoundLayers[i].options;
+
+			minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
+			maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
+		}
+
+		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
+		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
+
+		// @section Map state change events
+		// @event zoomlevelschange: Event
+		// Fired when the number of zoomlevels on the map is changed due
+		// to adding or removing a layer.
+		if (oldZoomSpan !== this._getZoomSpan()) {
+			this.fire('zoomlevelschange');
+		}
+
+		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+			this.setZoom(this._layersMaxZoom);
+		}
+		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+			this.setZoom(this._layersMinZoom);
+		}
 	}
 });
 

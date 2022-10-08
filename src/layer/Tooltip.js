@@ -1,6 +1,5 @@
 import {DivOverlay} from './DivOverlay';
 import {toPoint} from '../geometry/Point';
-import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
@@ -225,31 +224,6 @@ export var Tooltip = DivOverlay.extend({
 export var tooltip = function (options, source) {
 	return new Tooltip(options, source);
 };
-
-// @namespace Map
-// @section Methods for Layers and Controls
-Map.include({
-
-	// @method openTooltip(tooltip: Tooltip): this
-	// Opens the specified tooltip.
-	// @alternative
-	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
-	// Creates a tooltip with the specified content and options and open it.
-	openTooltip: function (tooltip, latlng, options) {
-		this._initOverlay(Tooltip, tooltip, latlng, options)
-		  .openOn(this);
-
-		return this;
-	},
-
-	// @method closeTooltip(tooltip: Tooltip): this
-	// Closes the tooltip given as parameter.
-	closeTooltip: function (tooltip) {
-		tooltip.close();
-		return this;
-	}
-
-});
 
 /*
  * @namespace Layer

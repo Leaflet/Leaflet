@@ -1,6 +1,4 @@
-
 import {Control} from './Control';
-import {Map} from '../map/Map';
 import * as Util from '../core/Util';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
@@ -123,20 +121,6 @@ export var Attribution = Control.extend({
 		}
 
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
-	}
-});
-
-// @namespace Map
-// @section Control options
-// @option attributionControl: Boolean = true
-// Whether a [attribution control](#control-attribution) is added to the map by default.
-Map.mergeOptions({
-	attributionControl: true
-});
-
-Map.addInitHook(function () {
-	if (this.options.attributionControl) {
-		new Attribution().addTo(this);
 	}
 });
 

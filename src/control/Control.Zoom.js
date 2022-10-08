@@ -1,6 +1,4 @@
-
 import {Control} from './Control';
-import {Map} from '../map/Map';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
 
@@ -116,25 +114,6 @@ export var Zoom = Control.extend({
 			DomUtil.addClass(this._zoomInButton, className);
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
-	}
-});
-
-// @namespace Map
-// @section Control options
-// @option zoomControl: Boolean = true
-// Whether a [zoom control](#control-zoom) is added to the map by default.
-Map.mergeOptions({
-	zoomControl: true
-});
-
-Map.addInitHook(function () {
-	if (this.options.zoomControl) {
-		// @section Controls
-		// @property zoomControl: Control.Zoom
-		// The default zoom control (only available if the
-		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new Zoom();
-		this.addControl(this.zoomControl);
 	}
 });
 

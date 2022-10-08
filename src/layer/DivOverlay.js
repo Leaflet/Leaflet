@@ -1,4 +1,3 @@
-import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
@@ -318,20 +317,6 @@ export var DivOverlay = Layer.extend({
 	}
 
 });
-
-Map.include({
-	_initOverlay: function (OverlayClass, content, latlng, options) {
-		var overlay = content;
-		if (!(overlay instanceof OverlayClass)) {
-			overlay = new OverlayClass(options).setContent(content);
-		}
-		if (latlng) {
-			overlay.setLatLng(latlng);
-		}
-		return overlay;
-	}
-});
-
 
 Layer.include({
 	_initOverlay: function (OverlayClass, old, content, options) {

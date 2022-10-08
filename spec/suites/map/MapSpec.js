@@ -1958,7 +1958,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.panBy([50, 50]);
+			map.panBy([50, 50], {animate: false});
 		});
 	});
 
@@ -1975,7 +1975,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.panBy([50, 50]);
+			map.panBy([50, 50], {animate: false});
 		});
 	});
 
@@ -2362,6 +2362,27 @@ describe("Map", function () {
 			const p = map.mouseEventToContainerPoint(mouseEvent);
 			expect(p.x).to.be.equal(1);
 			expect(p.y).to.be.equal(2);
+		});
+	});
+
+	describe("#panBy", function () {
+		var offset = L.point(1000, 1000);
+
+		it("throws if map is not set before", function () {
+			expect(function () {
+				map.panBy(offset);
+			}).to.throwError();
+		});
+
+		it("pans the map by given offset", function () {
+			var center = L.latLng([0, 0]);
+			map.setView(center, 7);
+			var offsetCenterPoint = map.options.crs.latLngToPoint(center, 7).add(offset);
+			var target = map.options.crs.pointToLatLng(offsetCenterPoint, 7);
+
+			expect(map.panBy(offset, {animate: false})).to.be(map);
+			expect(map.getCenter().distanceTo(target)).to.be.lessThan(5);
+			expect(map.getCenter()).to.be.nearLatLng([-10.9196177602, 10.9863281250]);
 		});
 	});
 });

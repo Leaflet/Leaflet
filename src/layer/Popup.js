@@ -2,7 +2,6 @@ import {DivOverlay} from './DivOverlay';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
-import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {Path} from './vector/Path';
 
@@ -254,9 +253,16 @@ export var Popup = DivOverlay.extend({
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
-	_adjustPan: function (e) {
+	_adjustPan: function () {
 		if (!this.options.autoPan) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
+
+		// We can endlessly recurse if keepInView is set and the view resets.
+		// Let's guard against that by exiting early if we're responding to our own autopan.
+		if (this._autopanning) {
+			this._autopanning = false;
+			return;
+		}
 
 		var map = this._map,
 		    marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
@@ -292,9 +298,14 @@ export var Popup = DivOverlay.extend({
 		// @event autopanstart: Event
 		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
+			// Track that we're autopanning, as this function will be re-ran on moveend
+			if (this.options.keepInView) {
+				this._autopanning = true;
+			}
+
 			map
 			    .fire('autopanstart')
-			    .panBy([dx, dy], {animate: e && e.type === 'moveend'});
+			    .panBy([dx, dy]);
 		}
 	},
 
@@ -314,58 +325,6 @@ export var Popup = DivOverlay.extend({
 export var popup = function (options, source) {
 	return new Popup(options, source);
 };
-
-
-/* @namespace Map
- * @section Interaction Options
- * @option closePopupOnClick: Boolean = true
- * Set it to `false` if you don't want popups to close when user clicks the map.
- */
-Map.mergeOptions({
-	closePopupOnClick: true
-});
-
-
-// @namespace Map
-// @section Methods for Layers and Controls
-Map.include({
-	// @method openPopup(popup: Popup): this
-	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
-	// @alternative
-	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
-	// Creates a popup with the specified content and options and opens it in the given point on a map.
-	openPopup: function (popup, latlng, options) {
-		this._initOverlay(Popup, popup, latlng, options)
-		  .openOn(this);
-
-		return this;
-	},
-
-	// @method closePopup(popup?: Popup): this
-	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
-	closePopup: function (popup) {
-		popup = arguments.length ? popup : this._popup;
-		if (popup) {
-			popup.close();
-		}
-		return this;
-	}
-});
-
-/*
- * @namespace Layer
- * @section Popup methods example
- *
- * All layers share a set of methods convenient for binding popups to it.
- *
- * ```js
- * var layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
- * layer.openPopup();
- * layer.closePopup();
- * ```
- *
- * Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.
- */
 
 // @section Popup methods
 Layer.include({
