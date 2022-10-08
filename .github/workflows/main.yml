@@ -79,6 +79,22 @@ jobs:
           path: ./*
           key: ${{ github.ref }}-${{ github.sha }}-build-release
 
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          working-directory: ./docs
+
+      - name: Run jekyll build
+        working-directory: ./docs
+        run: bundle exec jekyll build --strict_front_matter
+
   lint:
     needs: setup
     runs-on: ubuntu-latest

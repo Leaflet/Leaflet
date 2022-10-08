@@ -110,4 +110,16 @@ describe('Rectangle', function () {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 	});
+
+	describe("#Canvas", function () {
+		it("doesn't apply `focus` listener if element is undefined", function () {
+			map.remove();
+
+			map = L.map(container, {renderer: L.canvas()});
+			map.setView([0, 0], 6);
+			expect(function () {
+				L.polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');
+			}).to.not.throwException();
+		});
+	});
 });

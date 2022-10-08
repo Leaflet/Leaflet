@@ -3,6 +3,19 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.9.2 (2022-10-04)
+
+### 🐞 Bug fixes
+* ⚠️ Drop ESM entrypoint from package because of numerous compatibility issues with plugins (import `leaflet/dist/leaflet-src.esm.js` explicitly instead to take advantage; ESM by default will come in v2) ([#8493](https://github.com/Leaflet/Leaflet/pull/8493) by [@jonkoops](https://github.com/jonkoops))
+* Fix a bug where tooltips could throw an error with canvas renderer ([#8498](https://github.com/Leaflet/Leaflet/pull/8498) by [@Falke-Design](https://github.com/Falke-Design))
+* Fix a bug with incorrect marker popup location when there are multiple markers registered to the same popup ([#8523](https://github.com/Leaflet/Leaflet/pull/8523) by [@raychanks](https://github.com/raychanks)).
+
+### 🧪 Tests
+* Fix unit tests suite stopping abruptly on Mac ([#8478](https://github.com/Leaflet/Leaflet/pull/8478))
+
+### 📝 Docs
+* Fix `Bounds` `equals` parameters in docs ([#8500](https://github.com/Leaflet/Leaflet/pull/8500) by [@Falke-Design](https://github.com/Falke-Design))
+
 ## 1.9.1 (2022-09-23)
 * Fix `Events` `listens` not propagating to parent objects, in particular fixing compatibility with **Leaflet.markercluster** plugin ([#8211](https://github.com/Leaflet/Leaflet/pull/8457) by [@Falke-Design](https://github.com/Falke-Design))
 

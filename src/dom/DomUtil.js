@@ -316,7 +316,7 @@ export function preventOutline(element) {
 }
 
 // @function restoreOutline()
-// Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
+// Cancels the effects of a previous [`L.DomUtil.preventOutline`](#domutil-preventoutline).
 export function restoreOutline() {
 	if (!_outlineElement) { return; }
 	_outlineElement.style.outline = _outlineStyle;

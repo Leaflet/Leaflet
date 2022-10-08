@@ -193,8 +193,8 @@ Bounds.prototype = {
 	},
 
 
-	// @method equals(otherBounds: Bounds, maxMargin?: Number): Boolean
-	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
+	// @method equals(otherBounds: Bounds): Boolean
+	// Returns `true` if the rectangle is equivalent to the given bounds.
 	equals: function (bounds) {
 		if (!bounds) { return false; }
 

@@ -68,7 +68,7 @@ describe('Path', function () {
 			expect(mapSpy.called).to.be.ok();
 		});
 
-		it('can add a layer while being inside a moveend handler', function (done) {
+		it('can add a layer while being inside a moveend handler', function () {
 			var zoneLayer = L.layerGroup();
 			var polygon;
 			map.addLayer(zoneLayer);
@@ -82,15 +82,11 @@ describe('Path', function () {
 			map.invalidateSize();
 			map.setView([1, 2], 12, {animate: false});
 
-			map.panBy([-260, 0]);
-			setTimeout(function () {
-				expect(polygon._parts.length).to.be(0);
-				map.panBy([260, 0]);
-				setTimeout(function () {
-					expect(polygon._parts.length).to.be(1);
-					done();
-				}, 300);
-			}, 300);
+			map.panBy([-260, 0], {animate: false});
+			expect(polygon._parts.length).to.be(0);
+
+			map.panBy([260, 0], {animate: false});
+			expect(polygon._parts.length).to.be(1);
 		});
 
 		it('it should return tolerance with stroke', function () {

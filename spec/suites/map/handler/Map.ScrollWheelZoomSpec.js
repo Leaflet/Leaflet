@@ -16,7 +16,8 @@ describe("Map.ScrollWheelZoom", function () {
 		container = createContainer();
 		map = L.map(container, {
 			center: [0, 0],
-			zoom: 3
+			zoom: 3,
+			zoomAnimation: false
 		});
 	});
 
@@ -101,7 +102,7 @@ describe("Map.ScrollWheelZoom", function () {
 			map.setZoom(zoom, {animate: false});
 			expect(map.getZoom()).to.be(zoom);
 
-			map.options.wheelPxPerZoomLevel = 20;
+			map.options.wheelPxPerZoomLevel = 30 / L.DomEvent.getWheelPxFactor();
 			happen.once(container, scrollIn);
 
 			map.once('zoomend', function () {

@@ -1,5 +1,5 @@
 ---
-name: @antv/l7-leaflet
+name: antv/l7-leaflet
 category: dataviz
 repo: https://github.com/antvis/L7-Leaflet
 author: lzxue

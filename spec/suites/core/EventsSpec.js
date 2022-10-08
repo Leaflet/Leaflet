@@ -729,20 +729,4 @@ describe('Events', function () {
 			expect(marker.listens('test', spy, fg, true)).to.be(true);
 		});
 	});
-
-	describe('#L.Mixin.Events', function () {
-		it('can be used from includes', function () {
-			var EventClass = L.Class.extend({
-				includes: L.Mixin.Events
-			});
-			var obj = new EventClass();
-			var spy = sinon.spy();
-
-			obj.on('test', spy);
-
-			obj.fire('test');
-
-			expect(spy.called).to.be(true);
-		});
-	});
 });

@@ -361,6 +361,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	display: block;
 	position: relative;
 	}
+.leaflet-control-layers-list {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	}
 .leaflet-control-layers-expanded {
 	padding: 6px 10px 6px 6px;
 	color: #333;

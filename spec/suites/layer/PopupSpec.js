@@ -443,6 +443,20 @@ describe('Popup', function () {
 				done();
 			}, 800);
 		});
+
+		it("shows the popup at the correct location when multiple markers are registered", function () {
+			var popup = L.popup();
+			var marker1 = L.marker([86, 32]).bindPopup(popup).addTo(map);
+			var marker2 = L.marker([26.3, 83.9]).bindPopup(popup).addTo(map);
+
+			expect(popup.getLatLng()).to.be(undefined);
+
+			marker1.openPopup();
+			expect(popup.getLatLng()).to.be.nearLatLng([86, 32]);
+
+			marker2.openPopup();
+			expect(popup.getLatLng()).to.be.nearLatLng([26.3, 83.9]);
+		});
 	});
 
 	describe('L.Layer#_popup', function () {
