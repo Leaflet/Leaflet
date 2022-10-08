@@ -212,17 +212,13 @@ describe("Marker", function () {
 			}).to.not.throwException();
 		});
 
-		it("pan map to focus marker with no iconSize", function (done) {
+		it("pan map to focus marker with no iconSize", function () {
 			var marker = L.marker([70, 0], {icon: L.divIcon({iconSize: null})});
 			map.addLayer(marker);
 
-			setTimeout(function () {
-				expect(function () {
-					marker._panOnFocus();
-				}).to.not.throwException();
-
-				done();
-			}, 100);
+			expect(function () {
+				marker._panOnFocus();
+			}).to.not.throwException();
 		});
 	});
 
