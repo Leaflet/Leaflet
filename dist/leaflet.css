@@ -433,6 +433,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-scale-line {
 	border: 2px solid #777;
 	border-top: none;
+	font-size: 10px;
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	white-space: nowrap;
