@@ -156,7 +156,6 @@ jobs:
           - browser: Chrome1280x1024
             os: macos-latest
           - browser: FirefoxRetina
-            os: ubuntu-latest
           - browser: SafariNative
             os: macos-latest
     steps:

@@ -88,9 +88,8 @@ module.exports = function (config) {
 		// - ChromeCanary
 		// - Firefox
 		// - Opera
-		// - Safari (only Mac)
-		// - IE (only Windows)
-		browsers: ['Chrome1280x1024', 'SafariNative'],
+		// - SafariNative (only Mac)
+		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
 			'Chrome1280x1024': {
