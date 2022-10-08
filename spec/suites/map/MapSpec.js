@@ -1975,7 +1975,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.panBy([50, 50]);
+			map.panBy([50, 50], {animate: false});
 		});
 	});
 
