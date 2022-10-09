@@ -446,7 +446,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	     box-sizing: border-box;
 
 	background: #fff;
-	background: rgba(255, 255, 255, 0.5);
+	background: rgba(255, 255, 255, 0.8);
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
