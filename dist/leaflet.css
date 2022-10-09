@@ -439,7 +439,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	-moz-box-sizing: border-box;
 	     box-sizing: border-box;
 	background: rgba(255, 255, 255, 0.8);
-  text-shadow: 1px 1px #fff;
+	text-shadow: 1px 1px #fff;
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
