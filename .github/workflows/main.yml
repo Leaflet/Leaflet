@@ -6,7 +6,10 @@ env:
   NODE_VERSION: 16
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2019, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -29,7 +32,10 @@ jobs:
 
   build:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2019, macos-latest]
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -137,7 +143,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
@@ -145,6 +151,13 @@ jobs:
           - browser: Chrome1280x1024
           - browser: FirefoxTouch
           - browser: FirefoxNoTouch
+          - browser: FirefoxRetina
+          - browser: Chrome1280x1024
+            os: windows-2019
+          - browser: Chrome1280x1024
+            os: macos-latest
+          - browser: SafariNative
+            os: macos-latest
     steps:
       - name: Restore build
         uses: actions/cache@v3
