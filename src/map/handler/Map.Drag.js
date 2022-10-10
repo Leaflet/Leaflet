@@ -36,13 +36,6 @@ Map.mergeOptions({
 	// @option easeLinearity: Number = 0.2
 	easeLinearity: 0.2,
 
-	// TODO refactor, move to CRS
-	// @option worldCopyJump: Boolean = false
-	// With this option enabled, the map tracks when you pan to another "copy"
-	// of the world and seamlessly jumps to the original one so that all overlays
-	// like markers and vector layers are still visible.
-	worldCopyJump: false,
-
 	// @option maxBoundsViscosity: Number = 0.0
 	// If `maxBounds` is set, this option will control how solid the bounds
 	// are when dragging the map around. The default value of `0.0` allows the
@@ -170,7 +163,6 @@ export var Drag = Handler.extend({
 	},
 
 	_onPreDragWrap: function () {
-		// TODO refactor to be able to adjust map pane position after zoom
 		var worldWidth = this._worldWidth,
 		    halfWidth = Math.round(worldWidth / 2),
 		    dx = this._initialWorldOffset,
