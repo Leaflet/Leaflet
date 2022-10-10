@@ -204,7 +204,15 @@ export var Layers = Control.extend({
 		link.setAttribute('role', 'button');
 
 		DomEvent.on(link, 'click', DomEvent.preventDefault); // prevent link function
-		DomEvent.on(link, 'focus', this.expand, this);
+		DomEvent.on(link, 'keydown', function (e) {
+			if (e.keyCode === 13) {
+				DomEvent.on(section, 'click', DomEvent.preventDefault);
+				this.expand();
+				setTimeout(function () {
+					DomEvent.off(section, 'click', DomEvent.preventDefault);
+				});
+			}
+		}, this);
 
 		if (!collapsed) {
 			this.expand();
