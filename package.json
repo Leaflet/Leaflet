@@ -5,7 +5,7 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.0",
     "bundlemon": "^1.4.0",
     "eslint": "^8.23.1",
     "eslint-config-mourner": "^2.0.3",
