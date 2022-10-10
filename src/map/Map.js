@@ -1146,7 +1146,7 @@ export var Map = Evented.extend({
 
 		var position = DomUtil.getStyle(container, 'position');
 
-		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
+		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
 			container.style.position = 'relative';
 		}
 

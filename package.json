@@ -5,7 +5,7 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.0",
     "bundlemon": "^1.4.0",
     "eslint": "^8.23.1",
     "eslint-config-mourner": "^2.0.3",
@@ -19,7 +19,7 @@
     "karma-firefox-launcher": "^2.1.2",
     "karma-mocha": "^2.0.1",
     "karma-rollup-preprocessor": "^7.0.8",
-    "karma-safari-launcher": "~1.0.0",
+    "karma-safarinative-launcher": "^1.1.0",
     "karma-sinon": "^1.0.5",
     "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",

@@ -32,7 +32,7 @@ module.exports = function (config) {
 			'karma-expect',
 			'karma-edge-launcher',
 			'karma-chrome-launcher',
-			'karma-safari-launcher',
+			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
 			'karma-time-stats-reporter'
 		],
@@ -88,8 +88,7 @@ module.exports = function (config) {
 		// - ChromeCanary
 		// - Firefox
 		// - Opera
-		// - Safari (only Mac)
-		// - IE (only Windows)
+		// - SafariNative (only Mac)
 		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
@@ -111,6 +110,12 @@ module.exports = function (config) {
 					'dom.w3c_touch_events.enabled': 0
 				}
 			},
+			'FirefoxRetina': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'layout.css.devPixelsPerPx': 2
+				}
+			}
 		},
 
 		concurrency: 1,
