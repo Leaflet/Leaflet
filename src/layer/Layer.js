@@ -116,3 +116,24 @@ export var Layer = Evented.extend({
 		map.fire('layeradd', {layer: this});
 	}
 });
+
+/* @section Extension methods
+ * @uninheritable
+ *
+ * Every layer should extend from `L.Layer` and (re-)implement the following methods.
+ *
+ * @method onAdd(map: Map): this
+ * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
+ *
+ * @method onRemove(map: Map): this
+ * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
+ *
+ * @method getEvents(): Object
+ * This optional method should return an object like `{ viewreset: this._reset }` for [`addEventListener`](#evented-addeventlistener). The event handlers in this object will be automatically added and removed from the map with your layer.
+ *
+ * @method getAttribution(): String
+ * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
+ *
+ * @method beforeAdd(map: Map): this
+ * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.
+ */

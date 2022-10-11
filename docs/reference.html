@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>Leaflet API reference</h2>
 
-<p>This reference reflects <strong>Leaflet v1.9.2</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
+<p>This reference reflects <strong>Leaflet </strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 <div id="toc" class="clearfix">
 	<div class="toc-col map-col">
@@ -156,6 +156,7 @@ var map = L.map('map', {
 
 
 
+<div class='section-comments'></div>
 
 <table><thead>
 	<tr>
@@ -200,101 +201,6 @@ and optionally an object literal with <code>Map options</code>.</td>
 		<td><code>false</code></td>
 		<td>Whether <a href="#path"><code>Path</code></a>s should be rendered on a <a href="#canvas"><code>Canvas</code></a> renderer.
 By default, all <a href="#path"><code>Path</code></a>s are rendered in a <a href="#svg"><code>SVG</code></a> renderer.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-control-options'>Control options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-attributioncontrol'>
-		<td><code><b>attributionControl</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether a <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
-	</tr>
-	<tr id='map-zoomcontrol'>
-		<td><code><b>zoomControl</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether a <a href="#control-zoom">zoom control</a> is added to the map by default.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-interaction-options'>Interaction Options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-closepopuponclick'>
-		<td><code><b>closePopupOnClick</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
-	</tr>
-	<tr id='map-zoomsnap'>
-		<td><code><b>zoomSnap</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>1</code></td>
-		<td>Forces the map's zoom level to always be a multiple of this, particularly
-right after a <a href="#map-fitbounds"><code>fitBounds()</code></a> or a pinch-zoom.
-By default, the zoom level snaps to the nearest integer; lower values
-(e.g. <code>0.5</code> or <code>0.1</code>) allow for greater granularity. A value of <code>0</code>
-means the zoom level will not be snapped after <code>fitBounds</code> or a pinch-zoom.</td>
-	</tr>
-	<tr id='map-zoomdelta'>
-		<td><code><b>zoomDelta</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>1</code></td>
-		<td>Controls how much the map's zoom level will change after a
-<a href="#map-zoomin"><code>zoomIn()</code></a>, <a href="#map-zoomout"><code>zoomOut()</code></a>, pressing <code>+</code>
-or <code>-</code> on the keyboard, or using the <a href="#control-zoom">zoom controls</a>.
-Values smaller than <code>1</code> (e.g. <code>0.5</code>) allow for greater granularity.</td>
-	</tr>
-	<tr id='map-trackresize'>
-		<td><code><b>trackResize</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map automatically handles browser window resize to update itself.</td>
-	</tr>
-	<tr id='map-boxzoom'>
-		<td><code><b>boxZoom</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed to a rectangular area specified by
-dragging the mouse while pressing the shift key.</td>
-	</tr>
-	<tr id='map-doubleclickzoom'>
-		<td><code><b>doubleClickZoom</b></code></td>
-		<td><code>Boolean|String</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed in by double clicking on it and
-zoomed out by double clicking while holding shift. If passed
-<code>'center'</code>, double-click zoom will zoom to the center of the
-view regardless of where the mouse was.</td>
-	</tr>
-	<tr id='map-dragging'>
-		<td><code><b>dragging</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map is draggable with mouse/touch or not.</td>
 	</tr>
 </tbody></table>
 
@@ -418,6 +324,101 @@ enabled in all browsers that support CSS3 Transitions except Android.</td>
 		<td>Defines the maximum size of a CSS translation transform. The default
 value should not be changed unless a web browser positions layers in
 the wrong place after doing a large <code>panBy</code>.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-interaction-options'>Interaction Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-zoomsnap'>
+		<td><code><b>zoomSnap</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>1</code></td>
+		<td>Forces the map's zoom level to always be a multiple of this, particularly
+right after a <a href="#map-fitbounds"><code>fitBounds()</code></a> or a pinch-zoom.
+By default, the zoom level snaps to the nearest integer; lower values
+(e.g. <code>0.5</code> or <code>0.1</code>) allow for greater granularity. A value of <code>0</code>
+means the zoom level will not be snapped after <code>fitBounds</code> or a pinch-zoom.</td>
+	</tr>
+	<tr id='map-zoomdelta'>
+		<td><code><b>zoomDelta</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>1</code></td>
+		<td>Controls how much the map's zoom level will change after a
+<a href="#map-zoomin"><code>zoomIn()</code></a>, <a href="#map-zoomout"><code>zoomOut()</code></a>, pressing <code>+</code>
+or <code>-</code> on the keyboard, or using the <a href="#control-zoom">zoom controls</a>.
+Values smaller than <code>1</code> (e.g. <code>0.5</code>) allow for greater granularity.</td>
+	</tr>
+	<tr id='map-trackresize'>
+		<td><code><b>trackResize</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map automatically handles browser window resize to update itself.</td>
+	</tr>
+	<tr id='map-closepopuponclick'>
+		<td><code><b>closePopupOnClick</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
+	</tr>
+	<tr id='map-boxzoom'>
+		<td><code><b>boxZoom</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed to a rectangular area specified by
+dragging the mouse while pressing the shift key.</td>
+	</tr>
+	<tr id='map-doubleclickzoom'>
+		<td><code><b>doubleClickZoom</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed in by double clicking on it and
+zoomed out by double clicking while holding shift. If passed
+<code>'center'</code>, double-click zoom will zoom to the center of the
+view regardless of where the mouse was.</td>
+	</tr>
+	<tr id='map-dragging'>
+		<td><code><b>dragging</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map is draggable with mouse/touch or not.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-control-options'>Control options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-attributioncontrol'>
+		<td><code><b>attributionControl</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether a <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
+	</tr>
+	<tr id='map-zoomcontrol'>
+		<td><code><b>zoomControl</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether a <a href="#control-zoom">zoom control</a> is added to the map by default.</td>
 	</tr>
 </tbody></table>
 
@@ -637,9 +638,8 @@ and then bounce back when pinch-zooming.</td>
 
 </section><section class='collapsable'>
 
-<h4 id='map-map-state-change-events'>Map state change events</h4>
+<h4 id='map-popup-events'>Popup events</h4>
 
-<div class='section-comments'></div>
 
 <table><thead>
 	<tr>
@@ -648,12 +648,59 @@ and then bounce back when pinch-zooming.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='map-zoomlevelschange'>
-		<td><code><b>zoomlevelschange</b></code></td>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the number of zoomlevels on the map is changed due
-to adding or removing a layer.</td>
+	<tr id='map-popupopen'>
+		<td><code><b>popupopen</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup is opened in the map</td>
 	</tr>
+	<tr id='map-popupclose'>
+		<td><code><b>popupclose</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup in the map is closed</td>
+	</tr>
+	<tr id='map-autopanstart'>
+		<td><code><b>autopanstart</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the map starts autopanning when opening a popup.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-tooltip-events'>Tooltip events</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-tooltipopen'>
+		<td><code><b>tooltipopen</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip is opened in the map.</td>
+	</tr>
+	<tr id='map-tooltipclose'>
+		<td><code><b>tooltipclose</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip in the map is closed.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-map-state-change-events'>Map state change events</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
 	<tr id='map-resize'>
 		<td><code><b>resize</b></code></td>
 		<td><code><a href='#resizeevent'>ResizeEvent</a></code></td>
@@ -709,58 +756,11 @@ including pan and fly animations.</td>
 		<td>Fired when the center of the map stops changing
 (e.g. user stopped dragging the map or after non-centered zoom).</td>
 	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-popup-events'>Popup events</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-popupopen'>
-		<td><code><b>popupopen</b></code></td>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup is opened in the map</td>
-	</tr>
-	<tr id='map-popupclose'>
-		<td><code><b>popupclose</b></code></td>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup in the map is closed</td>
-	</tr>
-	<tr id='map-autopanstart'>
-		<td><code><b>autopanstart</b></code></td>
+	<tr id='map-zoomlevelschange'>
+		<td><code><b>zoomlevelschange</b></code></td>
 		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired when the map starts autopanning when opening a popup.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-tooltip-events'>Tooltip events</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-tooltipopen'>
-		<td><code><b>tooltipopen</b></code></td>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip is opened in the map.</td>
-	</tr>
-	<tr id='map-tooltipclose'>
-		<td><code><b>tooltipclose</b></code></td>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip in the map is closed.</td>
+		<td>Fired when the number of zoomlevels on the map is changed due
+to adding or removing a layer.</td>
 	</tr>
 </tbody></table>
 
@@ -913,96 +913,6 @@ handlers start running).</td>
 		<td><p>Returns the instance of <a href="#renderer"><code>Renderer</code></a> that should be used to render the given
 <a href="#path"><code>Path</code></a>. It will ensure that the <code>renderer</code> options of the map and paths
 are respected, and that the renderers do exist on the map.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-addcontrol'>
-		<td><code><b>addControl</b>(<nobr>&lt;<a href='#control'>Control</a>&gt;</nobr> <i>control</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the given control to the map</p>
-</td>
-	</tr>
-	<tr id='map-removecontrol'>
-		<td><code><b>removeControl</b>(<nobr>&lt;<a href='#control'>Control</a>&gt;</nobr> <i>control</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the given control from the map</p>
-</td>
-	</tr>
-	<tr id='map-addlayer'>
-		<td><code><b>addLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the given layer to the map</p>
-</td>
-	</tr>
-	<tr id='map-removelayer'>
-		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the given layer from the map.</p>
-</td>
-	</tr>
-	<tr id='map-haslayer'>
-		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if the given layer is currently added to the map</p>
-</td>
-	</tr>
-	<tr id='map-eachlayer'>
-		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Iterates over the layers of the map, optionally specifying context of the iterator function.</p>
-<pre><code>map.eachLayer(function(layer){
-    layer.bindPopup('Hello');
-});
-</code></pre>
-</td>
-	</tr>
-	<tr id='map-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</p>
-</td>
-	</tr>
-	<tr id='map-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Creates a popup with the specified content and options and opens it in the given point on a map.</p>
-</td>
-	</tr>
-	<tr id='map-closepopup'>
-		<td><code><b>closePopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</p>
-</td>
-	</tr>
-	<tr id='map-opentooltip'>
-		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the specified tooltip.</p>
-</td>
-	</tr>
-	<tr id='map-opentooltip'>
-		<td><code><b>openTooltip</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Creates a tooltip with the specified content and options and open it.</p>
-</td>
-	</tr>
-	<tr id='map-closetooltip'>
-		<td><code><b>closeTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the tooltip given as parameter.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -1462,6 +1372,110 @@ the <a href="#map-getpixelorigin">origin pixel</a> where the event took place.</
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>Given a MouseEvent object, returns geographical coordinate where the
 event took place.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-other-events'>Other Events</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-addcontrol'>
+		<td><code><b>addControl</b>(<nobr>&lt;<a href='#control'>Control</a>&gt;</nobr> <i>control</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the given control to the map</p>
+</td>
+	</tr>
+	<tr id='map-removecontrol'>
+		<td><code><b>removeControl</b>(<nobr>&lt;<a href='#control'>Control</a>&gt;</nobr> <i>control</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the given control from the map</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</p>
+</td>
+	</tr>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Creates a popup with the specified content and options and opens it in the given point on a map.</p>
+</td>
+	</tr>
+	<tr id='map-closepopup'>
+		<td><code><b>closePopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</p>
+</td>
+	</tr>
+	<tr id='map-opentooltip'>
+		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the specified tooltip.</p>
+</td>
+	</tr>
+	<tr id='map-opentooltip'>
+		<td><code><b>openTooltip</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Creates a tooltip with the specified content and options and open it.</p>
+</td>
+	</tr>
+	<tr id='map-closetooltip'>
+		<td><code><b>closeTooltip</b>(<nobr>&lt;<a href='#tooltip'>Tooltip</a>&gt;</nobr> <i>tooltip</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the tooltip given as parameter.</p>
+</td>
+	</tr>
+	<tr id='map-addlayer'>
+		<td><code><b>addLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the given layer to the map</p>
+</td>
+	</tr>
+	<tr id='map-removelayer'>
+		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the given layer from the map.</p>
+</td>
+	</tr>
+	<tr id='map-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the given layer is currently added to the map</p>
+</td>
+	</tr>
+	<tr id='map-eachlayer'>
+		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Iterates over the layers of the map, optionally specifying context of the iterator function.</p>
+<pre><code>map.eachLayer(function(layer){
+    layer.bindPopup('Hello');
+});
+</code></pre>
 </td>
 	</tr>
 </tbody></table>
@@ -2751,77 +2765,6 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='marker-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='marker-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='marker-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='marker-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='marker-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='marker-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='marker-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='marker-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -3475,77 +3418,6 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divoverlay-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='divoverlay-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -4226,6 +4098,70 @@ Adds the popup to the map and closes the previous one.</p>
 	</tr>
 </tbody></table>
 
+</section><section class='collapsable'>
+
+<h4 id='popup-popup-methods'>Popup methods</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
+necessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='popup-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
+</td>
+	</tr>
+	<tr id='popup-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='popup-closepopup'>
+		<td><code><b>closePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the popup bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='popup-togglepopup'>
+		<td><code><b>togglePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='popup-ispopupopen'>
+		<td><code><b>isPopupOpen</b>()</code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='popup-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the popup bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='popup-getpopup'>
+		<td><code><b>getPopup</b>()</code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td><p>Returns the popup bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
 </section>
 
 
@@ -4370,77 +4306,6 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='popup-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='popup-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='popup-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='popup-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='popup-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='popup-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='popup-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='popup-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -5203,77 +5068,6 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tooltip-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='tooltip-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='tooltip-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='tooltip-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='tooltip-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='tooltip-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='tooltip-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='tooltip-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -6102,77 +5896,6 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tilelayer-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -7079,77 +6802,6 @@ callback is called when the tile has been loaded.</p>
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tilelayer-wms-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -7819,77 +7471,6 @@ used by this overlay.</p>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='imageoverlay-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -8675,77 +8256,6 @@ used by this overlay.</p>
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='videooverlay-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='videooverlay-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -9463,77 +8973,6 @@ used by this overlay.</p>
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='svgoverlay-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='svgoverlay-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -9822,18 +9261,18 @@ overlays (Polygon, Polyline, Circle). Do not use it directly. Extends <a href="#
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='path-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='path-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='path-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -10153,77 +9592,6 @@ for a second (also called long press).</td>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='path-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='path-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='path-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='path-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='path-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='path-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='path-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='path-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -10618,18 +9986,18 @@ better performance and smoother look, and less means more accurate representatio
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='polyline-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='polyline-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='polyline-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -11031,77 +10399,6 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='polyline-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='polyline-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='polyline-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='polyline-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='polyline-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='polyline-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='polyline-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='polyline-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -11494,18 +10791,18 @@ better performance and smoother look, and less means more accurate representatio
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='polygon-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='polygon-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='polygon-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -11928,77 +11225,6 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='polygon-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='polygon-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='polygon-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='polygon-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='polygon-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='polygon-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='polygon-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='polygon-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -12374,18 +11600,18 @@ better performance and smoother look, and less means more accurate representatio
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='rectangle-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='rectangle-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='rectangle-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -12835,77 +12061,6 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='rectangle-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='rectangle-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='rectangle-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='rectangle-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='rectangle-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='rectangle-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='rectangle-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='rectangle-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -13267,18 +12422,18 @@ Do not use in new applications or plugins.</td>
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='circle-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='circle-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='circle-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -13713,77 +12868,6 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='circle-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='circle-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='circle-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='circle-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='circle-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='circle-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='circle-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='circle-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -14121,18 +13205,18 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
 (unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
+	<tr id='circlemarker-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>Custom class name set on an element. Only for SVG renderer.</td>
+	</tr>
 	<tr id='circlemarker-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code></td>
 		<td><code></code></td>
 		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> for this path. Takes
 precedence over the map's <a href="#map-renderer">default renderer</a>.</td>
-	</tr>
-	<tr id='circlemarker-classname'>
-		<td><code><b>className</b></code></td>
-		<td><code>String</code></td>
-		<td><code>null</code></td>
-		<td>Custom class name set on an element. Only for SVG renderer.</td>
 	</tr>
 </tbody></table>
 
@@ -14533,77 +13617,6 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='circlemarker-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -14794,16 +13807,8 @@ The verification can optionally be propagated, it will return <code>true</code> 
 	</div>
 </div>
 
-</section><h2 id='svg'>SVG</h2><p>VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
-with old versions of Internet Explorer.</p>
-<p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
+</section><h2 id='svg'>SVG</h2><p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
-<p>Due to <a href="https://caniuse.com/svg">technical limitations</a>, SVG is not
-available in all web browsers, notably Android 2.x and 3.x.</p>
-<p>Although SVG is not available on IE7 and IE8, these browsers support
-<a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>
-(a now deprecated technology), and the SVG renderer will fall back to VML in
-this case.</p>
 
 <section>
 <h3 id='svg-example'>Usage example</h3>
@@ -15104,77 +14109,6 @@ its map has moved</td>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='svg-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='svg-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='svg-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='svg-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='svg-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='svg-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='svg-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='svg-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -15734,77 +14668,6 @@ its map has moved</td>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='canvas-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='canvas-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='canvas-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='canvas-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='canvas-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='canvas-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='canvas-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='canvas-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -16437,77 +15300,6 @@ implement <code>methodName</code>.</p>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='layergroup-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='layergroup-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='layergroup-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='layergroup-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='layergroup-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='layergroup-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='layergroup-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='layergroup-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -17215,77 +16007,6 @@ implement <code>methodName</code>.</p>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='featuregroup-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -18118,77 +16839,6 @@ implement <code>methodName</code>.</p>
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='geojson-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='geojson-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='geojson-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='geojson-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='geojson-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='geojson-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='geojson-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='geojson-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -18971,77 +17621,6 @@ is specified, it must be called when the tile has finished loading and drawing.<
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='gridlayer-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -19247,8 +17826,8 @@ The verification can optionally be propagated, it will return <code>true</code> 
 </code></pre>
 <p>All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:</p>
 <pre><code>map.panTo([50, 30]);
-map.panTo({lng: 30, lat: 50});
 map.panTo({lat: 50, lng: 30});
+map.panTo({lat: 50, lon: 30});
 map.panTo(L.latLng(50, 30));
 </code></pre>
 <p>Note that <a href="#latlng"><code>LatLng</code></a> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
@@ -19284,7 +17863,8 @@ can't be added to it with the <code>include</code> function.</p>
 	</tr>
 	<tr id='latlng-l-latlng'>
 		<td><code><b>L.latLng</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>)</code></td>
-		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.</td>
+		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.
+You can also use <code>lon</code> in place of <code>lng</code> in the object form.</td>
 	</tr>
 </tbody></table>
 
@@ -21350,11 +19930,6 @@ Note: pointer events will be preferred (if available), and processed for all <co
 		<td><code>Boolean</code></td>
 		<td><code>true</code> when the browser supports <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.</td>
 	</tr>
-	<tr id='browser-vml'>
-		<td><code><b>vml</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> if the browser supports <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>.</td>
-	</tr>
 	<tr id='browser-mac'>
 		<td><code><b>mac</b></code></td>
 		<td><code>Boolean</code></td>
@@ -21392,12 +19967,6 @@ Note: pointer events will be preferred (if available), and processed for all <co
 		<td><code><b>create</b>(<nobr>&lt;Object&gt;</nobr> <i>proto</i>, <nobr>&lt;Object&gt;</nobr> <i>properties?</i>)</code></td>
 		<td><code>Object</code></td>
 		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a></td>
-	</tr>
-	<tr id='util-bind'>
-		<td><code><b>bind</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <i>…</i>)</code></td>
-		<td><code>Function</code></td>
-		<td>Returns a new function bound to the arguments passed, like <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">Function.prototype.bind</a>.
-Has a <code>L.bind()</code> shortcut.</td>
 	</tr>
 	<tr id='util-stamp'>
 		<td><code><b>stamp</b>(<nobr>&lt;Object&gt;</nobr> <i>obj</i>)</code></td>
@@ -21805,6 +20374,11 @@ should propagate to (if not stopped).</td>
 		<td>Gets normalized mouse position from a DOM event relative to the
 <code>container</code> (border excluded) or to the whole page if not specified.</td>
 	</tr>
+	<tr id='domevent-getwheelpxfactor'>
+		<td><code><b>getWheelPxFactor</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Gets the wheel pixel factor based on the devicePixelRatio</td>
+	</tr>
 	<tr id='domevent-getwheeldelta'>
 		<td><code><b>getWheelDelta</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</code></td>
 		<td><code>Number</code></td>
@@ -21978,7 +20552,7 @@ drag interaction on them.</td>
 	<tr id='domutil-restoreoutline'>
 		<td><code><b>restoreOutline</b>()</code></td>
 		<td><code></code></td>
-		<td>Cancels the effects of a previous <a href=""><code>L.DomUtil.preventOutline</code></a>.</td>
+		<td>Cancels the effects of a previous <a href="#domutil-preventoutline"><code>L.DomUtil.preventOutline</code></a>.</td>
 	</tr>
 	<tr id='domutil-getsizedparentnode'>
 		<td><code><b>getSizedParentNode</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
@@ -23168,76 +21742,6 @@ layer.remove();
 
 </section><section class='collapsable'>
 
-<h4 id='layer-popup-methods'>Popup methods</h4>
-
-<div class='section-comments'>All layers share a set of methods convenient for binding popups to it.
-<pre><code class="language-js">var layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
-layer.openPopup();
-layer.closePopup();
-</code></pre>
-<p>Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.</p></div>
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='layer-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='layer-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='layer-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='layer-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='layer-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='layer-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='layer-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='layer-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
 <h4 id='layer-tooltip-methods'>Tooltip methods</h4>
 
 <div class='section-comments'>All layers share a set of methods convenient for binding tooltips to it.
@@ -23707,77 +22211,6 @@ for a second (also called long press).</td>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='interactive-layer-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='interactive-layer-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -24721,77 +23154,6 @@ its map has moved</td>
 		<td><code><b>getAttribution</b>()</code></td>
 		<td><code>String</code></td>
 		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='renderer-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='renderer-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='renderer-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='renderer-closepopup'>
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='renderer-togglepopup'>
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='renderer-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='renderer-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='renderer-getpopup'>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
 </td>
 	</tr>
 </tbody></table>
