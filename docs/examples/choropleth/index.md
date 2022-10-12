@@ -94,7 +94,7 @@ Now let's make the states highlighted visually in some way when they are hovered
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+		if (!L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
 	}

@@ -310,9 +310,6 @@ export var GridLayer = Layer.extend({
 	_updateOpacity: function () {
 		if (!this._map) { return; }
 
-		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-		if (Browser.ielt9) { return; }
-
 		DomUtil.setOpacity(this._container, this.options.opacity);
 
 		var now = +new Date(),
@@ -796,11 +793,6 @@ export var GridLayer = Layer.extend({
 
 		tile.onselectstart = Util.falseFn;
 		tile.onmousemove = Util.falseFn;
-
-		// update opacity on tiles in IE7-8 because of filter inheritance problems
-		if (Browser.ielt9 && this.options.opacity < 1) {
-			DomUtil.setOpacity(tile, this.options.opacity);
-		}
 	},
 
 	_addTile: function (coords, container) {
@@ -879,7 +871,7 @@ export var GridLayer = Layer.extend({
 			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
 
-			if (Browser.ielt9 || !this._map._fadeAnimated) {
+			if (!this._map._fadeAnimated) {
 				Util.requestAnimFrame(this._pruneTiles, this);
 			} else {
 				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
