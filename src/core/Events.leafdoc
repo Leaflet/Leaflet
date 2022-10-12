@@ -141,3 +141,21 @@ The distance in pixels the draggable element was moved by.
 @property center: LatLng; The current center of the map
 @property zoom: Number; The current zoom level of the map
 @property noUpdate: Boolean; Whether layers should update their contents due to this event
+
+@miniclass LatLngMoveEvent (Event objects)
+@inherits Event
+@property oldLatLng: LatLng; The old position.
+@property latlng: LatLng; The current position.
+
+@miniclass LatLngsMoveEvent (Event objects)
+@inherits Event
+@property latlngs: LatLng[]; The current position.
+
+@miniclass BoundsMoveEvent (Event objects)
+@inherits Event
+@property bounds: LatLngBounds; The current position.
+
+@miniclass UpdateRadiusEvent (Event objects)
+@inherits Event
+@property oldRadius: Number; The old radius.
+@property radius: Number; The current radius.

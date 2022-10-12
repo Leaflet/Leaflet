@@ -37,8 +37,8 @@ export var CircleMarker = Path.extend({
 		this._latlng = toLatLng(latlng);
 		this.redraw();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+		// @event move: LatLngMoveEvent
+		// Fired when the CircleMarker is moved via [`setLatLng`](#circlemarker-setlatlng).
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
@@ -51,8 +51,13 @@ export var CircleMarker = Path.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius: function (radius) {
+		var oldRadius = this._radius;
 		this.options.radius = this._radius = radius;
-		return this.redraw();
+		this.redraw();
+
+		// @event updateradius: UpdateRadiusEvent
+		// Fired when the CircleMarker radius is changed via [`setRadius`](#circlemarker-setradius).
+		return this.fire('updateradius', {oldRadius: oldRadius, radius: this._radius});
 	},
 
 	// @method getRadius(): Number

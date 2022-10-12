@@ -75,7 +75,11 @@ export var Polyline = Path.extend({
 	// Replaces all the points in the polyline with the given array of geographical points.
 	setLatLngs: function (latlngs) {
 		this._setLatLngs(latlngs);
-		return this.redraw();
+		this.redraw();
+
+		// @event move: LatLngsMoveEvent
+		// Fired when the Polyline is moved via [`setLatLng`](#polyline-setlatlngs).
+		return this.fire('move', {latlngs: this._latlngs});
 	},
 
 	// @method isEmpty(): Boolean
@@ -133,12 +137,16 @@ export var Polyline = Path.extend({
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
-	addLatLng: function (latlng, latlngs) {
-		latlngs = latlngs || this._defaultShape();
+	addLatLng: function (latlng, ring) {
+		ring = ring || this._defaultShape();
 		latlng = toLatLng(latlng);
-		latlngs.push(latlng);
+		ring.push(latlng);
 		this._bounds.extend(latlng);
-		return this.redraw();
+		this.redraw();
+
+		// @event move: LatLngsMoveEvent
+		// Fired when the Polyline is moved via [`addLatLng`](#polyline-addlatlng).
+		return this.fire('move', {latlngs: this._latlngs});
 	},
 
 	_setLatLngs: function (latlngs) {

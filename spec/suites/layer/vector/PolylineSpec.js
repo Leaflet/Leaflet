@@ -102,6 +102,25 @@ describe('Polyline', function () {
 			expect(polyline._latlngs[0]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
 			expect(polyline._latlngs[1]).to.eql([L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]);
 		});
+
+		it("should fire the move event", function () {
+			var originalLatLngs = [
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			];
+			var newLatLngs = [
+				L.latLng([5, 6]),
+				L.latLng([7, 8])
+			];
+
+			var polyline = new L.Polyline(originalLatLngs);
+
+			var moveEvent = sinon.spy();
+			polyline.on('move', moveEvent);
+			polyline.setLatLngs(newLatLngs);
+
+			expect(moveEvent.args[0][0].latlngs).to.eql(newLatLngs);
+		});
 	});
 
 	describe('#getCenter', function () {
@@ -234,6 +253,22 @@ describe('Polyline', function () {
 			polyline.addLatLng([1, 2]);
 
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
+		});
+
+		it("should fire the move event", function () {
+			var originalLatLngs = [
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			];
+			var latlng = L.latLng([5, 6]);
+
+			var polyline = new L.Polyline(originalLatLngs);
+			var moveEvent = sinon.spy();
+			polyline.on('move', moveEvent);
+			polyline.addLatLng(latlng);
+
+			expect(moveEvent.args[0][0].latlngs[2]).to.eql(latlng);
+			expect(moveEvent.args[0][0].latlngs).to.eql(polyline.getLatLngs());
 		});
 	});
 

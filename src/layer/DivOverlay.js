@@ -148,12 +148,16 @@ export var DivOverlay = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the overlay will open.
 	setLatLng: function (latlng) {
+		var oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
 			this._adjustPan();
 		}
-		return this;
+
+		// @event move: LatLngMoveEvent
+		// Fired when the DivOverlay is moved via [`setLatLng`](#divoverlay-setlatlng).
+		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
 	// @method getContent: String|HTMLElement

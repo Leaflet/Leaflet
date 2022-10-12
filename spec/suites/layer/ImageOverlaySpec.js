@@ -28,6 +28,26 @@ describe('ImageOverlay', function () {
 			var overlay = L.imageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
+
+		it("should fire the move event", function () {
+			var beforeBounds = new L.LatLngBounds(
+				new L.LatLng(14, 12),
+				new L.LatLng(30, 40));
+
+			var afterBounds = new L.LatLngBounds(
+				new L.LatLng(0, 0),
+				new L.LatLng(10, 10));
+
+			var overlay = L.imageOverlay().setBounds(beforeBounds);
+
+			var moveEvent = sinon.spy();
+			overlay.on('move', moveEvent);
+			overlay.setBounds(afterBounds);
+
+			expect(moveEvent.callCount).to.not.be(0);
+			expect(moveEvent.args[0][0].bounds).to.be(afterBounds);
+			expect(overlay.getBounds()).to.be(afterBounds);
+		});
 	});
 
 	describe("_image", function () {

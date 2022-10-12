@@ -143,7 +143,10 @@ export var ImageOverlay = Layer.extend({
 		if (this._map) {
 			this._reset();
 		}
-		return this;
+
+		// @event move: BoundsMoveEvent
+		// Fired when the ImageOverlay is moved via [`setBounds`](#imageoverlay-setbounds).
+		return this.fire('move', {bounds: this._bounds});
 	},
 
 	getEvents: function () {

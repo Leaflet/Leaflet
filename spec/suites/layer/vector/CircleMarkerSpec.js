@@ -93,4 +93,25 @@
 			expect(circlemarker._containsPoint(point2)).to.be(false);
 		});
 	});
+
+
+	describe("#setRadius", function () {
+		it("should fire the updateradius event", function () {
+			var marker = new L.CircleMarker([0, 0]);
+			map.addLayer(marker);
+
+			var beforeRadius = marker.getRadius();
+			var afterRadius = 30;
+
+			var updateRadiusEvent = sinon.spy();
+			marker.on('updateradius', updateRadiusEvent);
+
+			marker.setRadius(afterRadius);
+
+			expect(updateRadiusEvent.callCount).to.not.be(0);
+			expect(updateRadiusEvent.args[0][0].oldRadius).to.be(beforeRadius);
+			expect(updateRadiusEvent.args[0][0].radius).to.be(afterRadius);
+			expect(marker.getRadius()).to.be(afterRadius);
+		});
+	});
 });

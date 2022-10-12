@@ -362,6 +362,25 @@ describe('Popup', function () {
 		expect(popup.getContent()).to.be('Test');
 	});
 
+	it("should fire the move event", function () {
+		var popup = new L.Popup()
+			.setLatLng([0, 0])
+			.openOn(map);
+
+		var beforeLatLng = popup._latlng;
+		var afterLatLng = new L.LatLng(1, 2);
+
+		var moveEvent = sinon.spy();
+		popup.on('move', moveEvent);
+
+		popup.setLatLng(afterLatLng);
+
+		expect(moveEvent.callCount).to.not.be(0);
+		expect(moveEvent.args[0][0].oldLatLng).to.be(beforeLatLng);
+		expect(moveEvent.args[0][0].latlng).to.be(afterLatLng);
+		expect(popup.getLatLng()).to.be(afterLatLng);
+	});
+
 	describe("L.Map#openPopup", function () {
 		it("adds the popup layer to the map", function () {
 			var popup = L.popup()

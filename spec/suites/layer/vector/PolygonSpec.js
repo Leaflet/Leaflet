@@ -146,6 +146,24 @@ describe('Polygon', function () {
 			]);
 		});
 
+		it("should fire the move event", function () {
+			var originalLatLngs = [[
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			]];
+			var newLatLngs = [[
+				L.latLng([5, 6]),
+				L.latLng([7, 8])
+			]];
+
+			var polygon = new L.Polygon(originalLatLngs);
+
+			var moveEvent = sinon.spy();
+			polygon.on('move', moveEvent);
+			polygon.setLatLngs(newLatLngs);
+
+			expect(moveEvent.args[0][0].latlngs).to.eql(newLatLngs);
+		});
 	});
 
 	describe('#getCenter', function () {
@@ -342,6 +360,22 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[0][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
 			expect(polygon._latlngs[1][0]).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
 			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
+		});
+
+		it("should fire the move event", function () {
+			var originalLatLngs = [[
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			]];
+			var latlng = L.latLng([5, 6]);
+
+			var polygon = new L.Polygon(originalLatLngs);
+			var moveEvent = sinon.spy();
+			polygon.on('move', moveEvent);
+			polygon.addLatLng(latlng);
+
+			expect(moveEvent.args[0][0].latlngs[0][2]).to.eql(latlng);
+			expect(moveEvent.args[0][0].latlngs).to.eql(polygon.getLatLngs());
 		});
 	});
 
