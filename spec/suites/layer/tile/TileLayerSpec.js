@@ -494,17 +494,21 @@ describe('TileLayer', function () {
 			};
 			map.setView([0, 0], 1);
 
+			var timer;
 			layer.on('tileload load', function (e) {
 				counts[e.type]++;
+
+				// Assets are in memory so all of these events should fire within <1ms of eachother
+				// Let's check assertions after a 10ms debounce
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					expect(counts.load).to.equal(1);
+					expect(counts.tileload).to.equal(8);
+					done();
+				}, 10);
 			});
 
 			layer.setUrl(placeKitten);
-
-			setTimeout(function () {
-				expect(counts.load).to.equal(1);
-				expect(counts.tileload).to.equal(8);
-				done();
-			}, 250);
 		});
 	});
 });

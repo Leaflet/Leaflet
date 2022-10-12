@@ -1,13 +1,6 @@
-import Browser from './Browser';
-export {Browser};
-
+export {default as Browser} from './Browser';
 export {Class} from './Class';
-
-import {Evented} from './Events';
-import {Events} from './Events';
-export {Evented};
-export var Mixin = {Events: Events};
-
+export {Evented} from './Events';
 export {Handler} from './Handler';
 
 import * as Util from './Util';

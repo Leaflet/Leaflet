@@ -254,9 +254,16 @@ export var Popup = DivOverlay.extend({
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
-	_adjustPan: function (e) {
+	_adjustPan: function () {
 		if (!this.options.autoPan) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
+
+		// We can endlessly recurse if keepInView is set and the view resets.
+		// Let's guard against that by exiting early if we're responding to our own autopan.
+		if (this._autopanning) {
+			this._autopanning = false;
+			return;
+		}
 
 		var map = this._map,
 		    marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
@@ -292,9 +299,14 @@ export var Popup = DivOverlay.extend({
 		// @event autopanstart: Event
 		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
+			// Track that we're autopanning, as this function will be re-ran on moveend
+			if (this.options.keepInView) {
+				this._autopanning = true;
+			}
+
 			map
 			    .fire('autopanstart')
-			    .panBy([dx, dy], {animate: e && e.type === 'moveend'});
+			    .panBy([dx, dy]);
 		}
 	},
 
@@ -408,7 +420,8 @@ Layer.include({
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (latlng) {
-		if (this._popup && this._popup._prepareOpen(latlng)) {
+		if (this._popup && this._popup._prepareOpen(latlng || this._latlng)) {
+
 			// open the popup on the map
 			this._popup.openOn(this._map);
 		}

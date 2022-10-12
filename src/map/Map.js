@@ -1112,7 +1112,7 @@ export var Map = Evented.extend({
 
 		var position = DomUtil.getStyle(container, 'position');
 
-		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
+		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
 			container.style.position = 'relative';
 		}
 
@@ -1543,7 +1543,7 @@ export var Map = Evented.extend({
 		// If offset is less than a pixel, ignore.
 		// This prevents unstable projections from getting into
 		// an infinite loop of tiny offsets.
-		if (offset.round().equals([0, 0])) {
+		if (Math.abs(offset.x) <= 1 && Math.abs(offset.y) <= 1) {
 			return center;
 		}
 

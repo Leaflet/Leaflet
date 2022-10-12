@@ -237,11 +237,6 @@ export function isFlat(latlngs) {
 	return !Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }
 
-export function _flat(latlngs) {
-	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
-	return isFlat(latlngs);
-}
-
 /* @function polylineCenter(latlngs: LatLng[], crs: CRS): LatLng
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
  */

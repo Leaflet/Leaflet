@@ -49,7 +49,6 @@ Class.extend = function (props) {
 
 	// mix includes into the prototype
 	if (props.includes) {
-		checkDeprecatedMixinEvents(props.includes);
 		Util.extend.apply(null, [proto].concat(props.includes));
 	}
 
@@ -118,17 +117,3 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	this.prototype._initHooks.push(init);
 	return this;
 };
-
-function checkDeprecatedMixinEvents(includes) {
-	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
-
-	includes = Util.isArray(includes) ? includes : [includes];
-
-	for (var i = 0; i < includes.length; i++) {
-		if (includes[i] === L.Mixin.Events) {
-			console.warn('Deprecated include of L.Mixin.Events: ' +
-				'this property will be removed in future releases, ' +
-				'please inherit from L.Evented instead.', new Error().stack);
-		}
-	}
-}

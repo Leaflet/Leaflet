@@ -423,6 +423,28 @@ describe('Popup', function () {
 				.down().moveBy(10, 10, 20).up();
 		});
 
+		it('moves the map over a short distance to the popup if it is not in the view (keepInView)', function (done) {
+			container.style.position = 'absolute';
+			container.style.left = 0;
+			container.style.top = 0;
+			container.style.zIndex = 10000;
+
+			// to prevent waiting until the animation is finished
+			map.options.inertia = false;
+
+			var spy = sinon.spy();
+			map.on('autopanstart', spy);
+
+			// Short hop to the edge of the map (at time of writing, will trigger an animated pan)
+			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng(map.getBounds()._northEast);
+			map.once('moveend', function () {
+				expect(spy.callCount).to.be(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				done();
+			});
+			map.openPopup(p);
+		});
+
 		it('moves the map over a long distance to the popup if it is not in the view (keepInView)', function (done) {
 			container.style.position = 'absolute';
 			container.style.left = 0;
@@ -434,14 +456,44 @@ describe('Popup', function () {
 
 			var spy = sinon.spy();
 			map.on('autopanstart', spy);
-			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
-			map.openPopup(p);
 
-			setTimeout(function () {
-				expect(spy.called).to.be(true);
+			// Long hop (at time of writing, will trigger a view reset)
+			var p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
+			map.once('moveend', function () {
+				expect(spy.callCount).to.be(1);
 				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
 				done();
-			}, 800);
+			});
+			map.openPopup(p);
+		});
+
+		it('moves on setLatLng after initial autopan', function (done) {
+			var p = L.popup().setContent('Popup').setLatLng(map.getBounds().getNorthEast());
+
+			map.once('moveend', function () {
+				map.once('moveend', function () {
+					expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+					done();
+				});
+
+				p.setLatLng(map.getBounds().getNorthEast());
+			});
+
+			map.openPopup(p);
+		});
+
+		it("shows the popup at the correct location when multiple markers are registered", function () {
+			var popup = L.popup();
+			var marker1 = L.marker([86, 32]).bindPopup(popup).addTo(map);
+			var marker2 = L.marker([26.3, 83.9]).bindPopup(popup).addTo(map);
+
+			expect(popup.getLatLng()).to.be(undefined);
+
+			marker1.openPopup();
+			expect(popup.getLatLng()).to.be.nearLatLng([86, 32]);
+
+			marker2.openPopup();
+			expect(popup.getLatLng()).to.be.nearLatLng([26.3, 83.9]);
 		});
 	});
 

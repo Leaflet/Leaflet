@@ -16,7 +16,8 @@ describe("Map.ScrollWheelZoom", function () {
 		container = createContainer();
 		map = L.map(container, {
 			center: [0, 0],
-			zoom: 3
+			zoom: 3,
+			zoomAnimation: false
 		});
 	});
 

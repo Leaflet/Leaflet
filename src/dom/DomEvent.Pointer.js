@@ -1,5 +1,6 @@
 import * as DomEvent from './DomEvent';
 import Browser from '../core/Browser';
+import {falseFn} from '../core/Util';
 
 /*
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
@@ -33,7 +34,7 @@ export function addPointerListener(obj, type, handler) {
 	}
 	if (!handle[type]) {
 		console.warn('wrong event specified:', type);
-		return L.Util.falseFn;
+		return falseFn;
 	}
 	handler = handle[type].bind(this, handler);
 	obj.addEventListener(pEvent[type], handler, false);
