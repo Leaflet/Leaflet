@@ -1331,7 +1331,7 @@ describe("Map", function () {
 		});
 	});
 
-	describe("#flyToBounds", function () {
+	describe.only("#flyToBounds", function () {
 
 		it("throws an error if map view is not initialized (bounds as latlngbounds)", function () {
 			expect(function () {
@@ -1366,7 +1366,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
-			map.flyToBounds(bounds);
+			map.flyToBounds(bounds, {duration: 0.1});
 		});
 
 		it("moves approximately to requested bounds and corresponding center (middle zoom case)", function (done) {
@@ -1384,7 +1384,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
-			map.flyToBounds(bounds);
+			map.flyToBounds(bounds, {duration: 0.1});
 		});
 
 		it("moves approximately to requested bounds and corresponding center (high zoom case)", function (done) {
@@ -1402,7 +1402,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 				done();
 			});
-			map.flyToBounds(bounds);
+			map.flyToBounds(bounds, {duration: 0.1});
 		});
 
 
