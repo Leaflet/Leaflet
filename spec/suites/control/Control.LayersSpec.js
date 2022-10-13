@@ -188,11 +188,24 @@ describe("Control.Layers", function () {
 	});
 
 	describe("collapse when collapsed: true", function () {
-		it('expands on toggle focus', function () {
+		it('expands on "Enter" keydown when toggle is focused', function () {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
-			happen.once(toggle, {type:'focus'});
+			happen.once(toggle, {type:'keydown', keyCode:13});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+
+		it('expands on click', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
+			happen.once(toggle, {type:'click'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+
+		it('does not expand on "Enter" keydown when toggle is not focused', function () {
+			L.control.layers(null, null, {collapsed: true}).addTo(map);
+			happen.once(document, {type:'keydown', keyCode:13});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
 		it('expands when mouse is over', function () {
