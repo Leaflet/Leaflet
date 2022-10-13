@@ -60,7 +60,7 @@ describe('DomUtil', function () {
 			expect(L.DomUtil.getStyle(el, 'color')).to.eql('green');
 		});
 
-		(L.Browser.ie ? it.skip : it)("returns empty string if style isn't defined", function () {
+		it("returns empty string if style isn't defined", function () {
 			var e = document.createElement('div');
 			expect(L.DomUtil.getStyle(e, "position")).to.be('');
 		});
@@ -217,7 +217,7 @@ describe('DomUtil', function () {
 	});
 
 	describe('#testProp', function () {
-		(L.Browser.ie ? it.skip : it)('check array of style names return first valid style name for element', function () {
+		it('check array of style names return first valid style name for element', function () {
 			var hasProp;
 			hasProp = L.DomUtil.testProp(['-webkit-transform', '-webkit-transform', '-ms-tranform', '-o-transform']);
 			expect(hasProp).to.match(/(?:-webkit-transform|-webkit-transform|-ms-tranform|-o-transform)/);
@@ -244,26 +244,25 @@ describe('DomUtil', function () {
 			expect(L.DomUtil.getStyle(el, 'transform')).to.not.be.equal(transform);
 		});
 
-		(L.Browser.ie ? it.skip : it)("reset the 3d CSS transform when offset and scale aren't specified", function () {
+		it("reset the 3d CSS transform when offset and scale aren't specified", function () {
 			L.DomUtil.setTransform(el);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(' + 0 + 'px, ' + 0 + 'px, 0px)');
 		});
 
-		(L.Browser.ie ? it.skip : it)("set the 3d CSS transform with just the specified point if scale isn't specified", function () {
+		it("set the 3d CSS transform with just the specified point if scale isn't specified", function () {
 			L.DomUtil.setTransform(el, new L.Point(1, 1));
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(' + 1 + 'px, ' + 1 + 'px, 0px)');
 		});
 
-		(L.Browser.ie ? it.skip : it)("set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified", function () {
+		it("set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified", function () {
 			L.DomUtil.setTransform(el, undefined, 5);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(' + 0 + 'px, ' + 0 + 'px, 0px) scale(' + 5 + ')');
 		});
 
-		(L.Browser.ie ? it.skip : it)("set the 3d CSS transform with the specified point ant the corresponding scale", function () {
+		it("set the 3d CSS transform with the specified point ant the corresponding scale", function () {
 			L.DomUtil.setTransform(el, new L.Point(1, 1), 5);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(' + 1 + 'px, ' + 1 + 'px, 0px) scale(' + 5 + ')');
 		});
-		// TODO: test with Browser.ie3d to true
 	});
 
 	describe('#setPosition, #getPosition', function () {
@@ -347,7 +346,7 @@ describe('DomUtil', function () {
 			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
 		});
 
-		(L.Browser.ie ? it.skip : it)("returns x and y to 1 with all boundingClientRect's values to 0 for empty element not added yet to the body", function () {
+		it("returns x and y to 1 with all boundingClientRect's values to 0 for empty element not added yet to the body", function () {
 			var newElement = document.createElement("div");
 			var scale = L.DomUtil.getScale(newElement);
 			expect(scale.x).to.eql(1);
@@ -413,7 +412,7 @@ describe('DomUtil', function () {
 	});
 
 	describe('#preventOutline, #restoreOutline', function () {
-		(L.Browser.ie ? it.skip : it)('prevent / restore outline for the element', function () {
+		it('prevent / restore outline for the element', function () {
 			var child = document.createElement('div');
 			el.appendChild(child);
 			child.tabIndex = 0;

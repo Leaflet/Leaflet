@@ -1106,7 +1106,6 @@ export var Map = Evented.extend({
 		DomUtil.addClass(container, 'leaflet-container' +
 			(Browser.touch ? ' leaflet-touch' : '') +
 			(Browser.retina ? ' leaflet-retina' : '') +
-			(Browser.ielt9 ? ' leaflet-oldie' : '') +
 			(Browser.safari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
