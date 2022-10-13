@@ -58,7 +58,7 @@ describe("Marker.Drag", function () {
 				container.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
 			});
 
-			(L.Browser.ie ? it.skip : it)("drags a marker with mouse, compensating for CSS scale", function (done) {
+			it("drags a marker with mouse, compensating for CSS scale", function (done) {
 				var marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				var start = L.point(300, 280);

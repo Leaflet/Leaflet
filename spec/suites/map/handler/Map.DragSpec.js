@@ -94,7 +94,7 @@ describe("Map.Drag", function () {
 				container.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
 			});
 
-			(L.Browser.ie ? it.skip : it)("change the center of the map, compensating for CSS scale", function (done) {
+			it("change the center of the map, compensating for CSS scale", function (done) {
 				map = new MyMap(container, {
 				    dragging: true,
 				    inertia: false

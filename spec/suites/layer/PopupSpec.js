@@ -560,7 +560,6 @@ describe('Popup', function () {
 		});
 
 		it("does not close popup when clicking on it's tip", function () {
-			if (L.Browser.ie) { this.skip(); } // fixme
 			container.style.position = "absolute";
 			container.style.top = "0";
 			container.style.left = "0";
