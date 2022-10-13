@@ -1331,7 +1331,7 @@ describe("Map", function () {
 		});
 	});
 
-	describe.only("#flyToBounds", function () {
+	describe("#flyToBounds", function () {
 
 		it("throws an error if map view is not initialized (bounds as latlngbounds)", function () {
 			expect(function () {
