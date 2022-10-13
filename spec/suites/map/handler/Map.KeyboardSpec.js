@@ -63,6 +63,17 @@ describe("Map.Keyboard", function () {
 
 			expect(map.getCenter().lng).to.be.greaterThan(0);
 		});
+
+		it("move the map over 180° with worldCopyJump true", function () {
+			map.panTo([0, 178], {animate: false});
+			map.options.worldCopyJump = true;
+
+			happen.keydown(document,  {keyCode: KEYCODE_ARROW_RIGHT});
+			happen.keypress(document, {keyCode: KEYCODE_ARROW_RIGHT});
+			happen.keyup(document,    {keyCode: KEYCODE_ARROW_RIGHT});
+
+			expect(map.getCenter().lng).to.be.lessThan(-178);
+		});
 	});
 
 	describe("plus/minus keys", function () {
