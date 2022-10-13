@@ -13,6 +13,7 @@ Map.mergeOptions({
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
 	// it will zoom to the center of the view regardless of where the mouse was.
+	// If passed `'shiftkey'`, zooming will happen only when the shift key is being held down.
 	scrollWheelZoom: true,
 
 	// @option wheelDebounceTime: Number = 40
@@ -39,6 +40,8 @@ export var ScrollWheelZoom = Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
+		if (this._map.options.scrollWheelZoom === 'shiftkey' && !e.shiftKey) { return; }
+
 		var delta = DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
