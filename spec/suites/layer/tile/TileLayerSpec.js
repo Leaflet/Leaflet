@@ -1,10 +1,7 @@
-
-
 describe('TileLayer', function () {
+	var container, map;
 
-	var div, map;
-
-	// Placekitten via http://placekitten.com/attribution.html
+	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
 	var placeKitten = "data:image/jpeg;base64," +
@@ -162,26 +159,30 @@ describe('TileLayer', function () {
 	"qQzPJJgDeASMHuOx+lAH/9k=";
 
 	beforeEach(function () {
-		div = document.createElement('div');
-		div.style.width = '800px';
-		div.style.height = '600px';
-		div.style.visibility = 'hidden';
-
-		document.body.appendChild(div);
-
-		map = L.map(div);
+		container = createContainer();
+		map = L.map(container);
+		container.style.width = '800px';
+		container.style.height = '600px';
 	});
 
 	afterEach(function () {
-		document.body.removeChild(div);
+		removeMapContainer(map, container);
 	});
 
 	function kittenLayerFactory(options) {
 		return L.tileLayer(placeKitten, options || {});
 	}
 
-	describe("number of kittens loaded", function () {
+	function eachImg(layer, callback) {
+		var imgtags = layer._container.children[0].children;
+		for (var i in imgtags) {
+			if (imgtags[i].tagName === 'IMG') {
+				callback(imgtags[i]);
+			}
+		}
+	}
 
+	describe("number of kittens loaded", function () {
 		var clock, kittenLayer, counts;
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
@@ -204,7 +205,7 @@ describe('TileLayer', function () {
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
 
-			kittenLayer = kittenLayerFactory();
+			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
 			counts = {
 				tileload: 0,
@@ -214,12 +215,12 @@ describe('TileLayer', function () {
 			};
 
 			kittenLayer.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -233,7 +234,6 @@ describe('TileLayer', function () {
 		});
 
 		it("Loads 8 kittens zoom 1", function (done) {
-
 			kittenLayer.on('load', function () {
 				expect(counts.tileloadstart).to.be(8);
 				expect(counts.tileload).to.be(8);
@@ -246,11 +246,9 @@ describe('TileLayer', function () {
 			clock.tick(250);
 		});
 
-
 		// NOTE: This test has different behaviour in PhantomJS and graphical
 		// browsers due to CSS animations!
-		it.skipInPhantom("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
-
+		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			var mad = [40.40, -3.7], trd = [63.41, 10.41];
@@ -274,9 +272,9 @@ describe('TileLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-	// 				map.on('_frame', function () {
-	// 					console.log('frame', counts);
-	// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});
@@ -289,24 +287,10 @@ describe('TileLayer', function () {
 
 	describe('url template', function () {
 		beforeEach(function () {
-			div = document.createElement('div');
-			div.style.width = '400px';
-			div.style.height = '400px';
-			div.style.visibility = 'hidden';
-
-			document.body.appendChild(div);
-
-			map = L.map(div).setView([0, 0], 2);
+			container.style.width = '400px';
+			container.style.height = '400px';
+			map.setView([0, 0], 2);
 		});
-
-		function eachImg(layer, callback) {
-			var imgtags = layer._container.children[0].children;
-			for (var i in imgtags) {
-				if (imgtags[i].tagName === 'IMG') {
-					callback(imgtags[i]);
-				}
-			}
-		}
 
 		it('replaces {y} with y coordinate', function () {
 			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
@@ -376,6 +360,152 @@ describe('TileLayer', function () {
 			eachImg(layer, function (img) {
 				expect(['q', 'r', 's'].indexOf(img.src[7]) >= 0).to.eql(true);
 			});
+		});
+
+		it('uses zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/3/1/1.png',
+				'http://example.com/3/1/2.png',
+				'http://example.com/3/2/1.png',
+				'http://example.com/3/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+		it('uses negative zoomOffset option', function () {
+			// Map view is set at zoom 2 in beforeEach.
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
+			}).addTo(map);
+
+			var urls = [
+				'http://example.com/-1/1/1.png',
+				'http://example.com/-1/1/2.png',
+				'http://example.com/-1/2/1.png',
+				'http://example.com/-1/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+	});
+
+	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	_describe('crossOrigin option', function () {
+		beforeEach(function () {
+			map.setView([0, 0], 2);
+		});
+
+		// https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
+		testCrossOriginValue(undefined, null); // Falsy value (other than empty string '') => no attribute set.
+		testCrossOriginValue(true, '');
+		testCrossOriginValue('', '');
+		testCrossOriginValue('anonymous', 'anonymous');
+		testCrossOriginValue('use-credentials', 'use-credentials');
+
+		function testCrossOriginValue(crossOrigin, expectedValue) {
+			it('uses crossOrigin value ' + crossOrigin, function () {
+				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+					crossOrigin: crossOrigin
+				}).addTo(map);
+
+				eachImg(layer, function (img) {
+					expect(img.getAttribute('crossorigin')).to.be(expectedValue);
+				});
+			});
+		}
+
+		it('sets min/maxZoom appropriately with detectRetina', function (done) {
+			var maxZoom = 1;
+			var minZoom = 1;
+
+			// override retina to load extra tiles
+			var originalRetina = L.Browser.retina;
+			L.Browser.retina = true;
+
+			var kittenLayer = kittenLayerFactory({
+				maxZoom: maxZoom,
+				minZoom: minZoom,
+				detectRetina: true
+			});
+
+			kittenLayer.on('load', function () {
+				expect(kittenLayer.options.maxZoom).to.be(maxZoom);
+				expect(kittenLayer.options.minZoom).to.be(minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
+
+		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', function (done) {
+			// override retina to load extra tiles
+			var originalRetina = L.Browser.retina;
+			L.Browser.retina = false;
+
+			var kittenLayer = kittenLayerFactory({
+				// invalid min/maxZoom
+				maxZoom: 9,
+				minZoom: 10,
+				detectRetina: false
+			});
+
+			kittenLayer.on('load', function () {
+				// zooms should be identical so that we can load tiles for the given zoom level
+				expect(kittenLayer.options.maxZoom).to.be(kittenLayer.options.minZoom);
+
+				// reset retina value
+				L.Browser.retina = originalRetina;
+
+				done();
+			});
+
+			map.addLayer(kittenLayer).setView([0, 0], 1);
+		});
+	});
+
+	describe('#setUrl', function () {
+		it('fires only one load event', function (done) {
+			var layer = L.tileLayer(placeKitten).addTo(map);
+			var counts = {
+				load: 0,
+				tileload: 0
+			};
+			map.setView([0, 0], 1);
+
+			var timer;
+			layer.on('tileload load', function (e) {
+				counts[e.type]++;
+
+				// Assets are in memory so all of these events should fire within <1ms of eachother
+				// Let's check assertions after a 10ms debounce
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					expect(counts.load).to.equal(1);
+					expect(counts.tileload).to.equal(8);
+					done();
+				}, 10);
+			});
+
+			layer.setUrl(placeKitten);
 		});
 	});
 });

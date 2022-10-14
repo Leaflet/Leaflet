@@ -1,0 +1,10 @@
+<table role="presentation">
+<tr><td style='text-align: center; border: none; padding: 0;'>
+<iframe src='{{ include.url }}'
+	width='{% if include.width %}{{ include.width }}{% else %}600{% endif %}'
+	height='{% if include.height %}{{ include.height }}{% else %}400{% endif %}'
+	style="max-width: 100%; max-height: 90vh; box-sizing: border-box;"></iframe>
+</td></tr>
+<tr><td style='text-align: center; border: none'>
+<small><a href='{{ include.url }}'>See this example stand-alone.</a></small>
+</td></tr></table>

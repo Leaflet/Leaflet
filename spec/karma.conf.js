@@ -1,12 +1,13 @@
+var json = require('@rollup/plugin-json');
+
 // Karma configuration
 module.exports = function (config) {
 
-	var libSources = require(__dirname + '/../build/build.js').getFiles();
+	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
-		"spec/sinon.js",
-		"spec/expect.js"
-	].concat(libSources, [
+		"spec/before.js",
+		"src/LeafletWithGlobals.js",
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
@@ -14,22 +15,30 @@ module.exports = function (config) {
 		"spec/suites/**/*.js",
 		"dist/*.css",
 		{pattern: "dist/images/*.png", included: false, serve: true}
-	]);
+	];
+
+	var preprocessors = {};
+
+	preprocessors['src/LeafletWithGlobals.js'] = ['rollup'];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
 
 		plugins: [
+			'karma-rollup-preprocessor',
 			'karma-mocha',
-			'karma-coverage',
-			'karma-phantomjs-launcher',
+			'karma-sinon',
+			'karma-expect',
+			'karma-edge-launcher',
 			'karma-chrome-launcher',
-			'karma-safari-launcher',
-			'karma-firefox-launcher'],
+			'karma-safarinative-launcher',
+			'karma-firefox-launcher',
+			'karma-time-stats-reporter'
+		],
 
 		// frameworks to use
-		frameworks: ['mocha'],
+		frameworks: ['mocha', 'sinon', 'expect'],
 
 		// list of files / patterns to load in the browser
 		files: files,
@@ -38,9 +47,28 @@ module.exports = function (config) {
 		},
 		exclude: [],
 
+		// Rollup the ES6 Leaflet sources into just one file, before tests
+		preprocessors: preprocessors,
+		rollupPreprocessor: {
+			onwarn: () => {}, // silence Rollup warnings
+			plugins: [
+				json()
+			],
+			output: {
+				format: 'umd',
+				name: 'leaflet',
+				freeze: false,
+			},
+		},
+
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: ['dots'],
+		reporters: ['progress', 'time-stats'],
+
+		timeStatsReporter: {
+			reportTimeStats: false,
+			longestTestsCount: 10
+		},
 
 		// web server port
 		port: 9876,
@@ -60,34 +88,56 @@ module.exports = function (config) {
 		// - ChromeCanary
 		// - Firefox
 		// - Opera
-		// - Safari (only Mac)
-		// - PhantomJS
-		// - IE (only Windows)
-		browsers: ['PhantomJSCustom'],
+		// - SafariNative (only Mac)
+		browsers: ['Chrome1280x1024'],
 
 		customLaunchers: {
-			'PhantomJSCustom': {
-				base: 'PhantomJS',
-				flags: ['--load-images=true'],
-				options: {
-					onCallback: function (data) {
-						if (data.render) {
-							page.render(data.render);
-						}
-					}
+			'Chrome1280x1024': {
+				base: 'ChromeHeadless',
+				// increased viewport is required for some tests (TODO fix tests)
+				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
+				flags: ['--window-size=1280,1024']
+			},
+			'FirefoxTouch': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'dom.w3c_touch_events.enabled': 1
+				}
+			},
+			'FirefoxNoTouch': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'dom.w3c_touch_events.enabled': 0
+				}
+			},
+			'FirefoxRetina': {
+				base: 'FirefoxHeadless',
+				prefs: {
+					'layout.css.devPixelsPerPx': 2
 				}
 			}
 		},
 
-		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 5000,
+		concurrency: 1,
 
-		// Workaround for PhantomJS random DISCONNECTED error
-		browserDisconnectTimeout: 10000, // default 2000
-		browserDisconnectTolerance: 1, // default 0
+		// If browser does not capture in given timeout [ms], kill it
+		captureTimeout: 60000,
+
+		// Timeout for the client socket connection [ms].
+		browserSocketTimeout: 30000,
+
+		// Silence console.warn output in the terminal
+		browserConsoleLogOptions: {level: 'error'},
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
-		singleRun: true
+		singleRun: true,
+
+		client: {
+			mocha: {
+				// eslint-disable-next-line no-undef
+				forbidOnly: process.env.CI || false
+			}
+		}
 	});
 };

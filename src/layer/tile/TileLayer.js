@@ -1,13 +1,20 @@
+import {GridLayer} from './GridLayer';
+import Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import * as DomEvent from '../../dom/DomEvent';
+import * as DomUtil from '../../dom/DomUtil';
+
+
 /*
  * @class TileLayer
  * @inherits GridLayer
  * @aka L.TileLayer
- * Used to load and display tile layers on the map. Extends `GridLayer`.
+ * Used to load and display tile layers on the map. Note that most tile servers require attribution, which you can set under `Layer`. Extends `GridLayer`.
  *
  * @example
  *
  * ```js
- * L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+ * L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  * ```
  *
  * @section URL template
@@ -16,37 +23,31 @@
  * A string of the following form:
  *
  * ```
- * 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+ * 'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
  * ```
  *
- * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add @2x to the URL to load retina tiles.
+ * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add "&commat;2x" to the URL to load retina tiles.
  *
  * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
  *
  * ```
- * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
  */
 
 
-L.TileLayer = L.GridLayer.extend({
+export var TileLayer = GridLayer.extend({
 
 	// @section
 	// @aka TileLayer options
 	options: {
 		// @option minZoom: Number = 0
-		// Minimum zoom number.
+		// The minimum zoom level down to which this layer will be displayed (inclusive).
 		minZoom: 0,
 
 		// @option maxZoom: Number = 18
-		// Maximum zoom number.
+		// The maximum zoom level up to which this layer will be displayed (inclusive).
 		maxZoom: 18,
-
-		// @option maxNativeZoom: Number = null
-		// Maximum zoom number the tile source has available. If it is specified,
-		// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-		// from `maxNativeZoom` level and auto-scaled.
-		maxNativeZoom: null,
 
 		// @option subdomains: String|String[] = 'abc'
 		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
@@ -72,46 +73,65 @@ L.TileLayer = L.GridLayer.extend({
 		// If `true` and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
 		detectRetina: false,
 
-		// @option crossOrigin: Boolean = false
-		// If true, all tiles will have their crossOrigin attribute set to ''. This is needed if you want to access tile pixel data.
-		crossOrigin: false
+		// @option crossOrigin: Boolean|String = false
+		// Whether the crossOrigin attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		crossOrigin: false,
+
+		// @option referrerPolicy: Boolean|String = false
+		// Whether the referrerPolicy attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
+		// This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
+		// (e.g. to validate an API token).
+		// Refer to [HTMLImageElement.referrerPolicy](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for valid String values.
+		referrerPolicy: false
 	},
 
 	initialize: function (url, options) {
 
 		this._url = url;
 
-		options = L.setOptions(this, options);
+		options = Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
+		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 
 			if (!options.zoomReverse) {
 				options.zoomOffset++;
-				options.maxZoom--;
+				options.maxZoom = Math.max(options.minZoom, options.maxZoom - 1);
 			} else {
 				options.zoomOffset--;
-				options.minZoom++;
+				options.minZoom = Math.min(options.maxZoom, options.minZoom + 1);
 			}
 
 			options.minZoom = Math.max(0, options.minZoom);
+		} else if (!options.zoomReverse) {
+			// make sure maxZoom is gte minZoom
+			options.maxZoom = Math.max(options.minZoom, options.maxZoom);
+		} else {
+			// make sure minZoom is lte maxZoom
+			options.minZoom = Math.min(options.maxZoom, options.minZoom);
 		}
 
 		if (typeof options.subdomains === 'string') {
 			options.subdomains = options.subdomains.split('');
 		}
 
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!L.Browser.android) {
-			this.on('tileunload', this._onTileRemove);
-		}
+		this.on('tileunload', this._onTileRemove);
 	},
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this
 	// Updates the layer's URL template and redraws it (unless `noRedraw` is set to `true`).
+	// If the URL does not change, the layer will not be redrawn unless
+	// the noRedraw parameter is set to false.
 	setUrl: function (url, noRedraw) {
+		if (this._url === url && noRedraw === undefined) {
+			noRedraw = true;
+		}
+
 		this._url = url;
 
 		if (!noRedraw) {
@@ -122,22 +142,28 @@ L.TileLayer = L.GridLayer.extend({
 
 	// @method createTile(coords: Object, done?: Function): HTMLElement
 	// Called only internally, overrides GridLayer's [`createTile()`](#gridlayer-createtile)
-	// to return an `<img>` HTML element with the appropiate image URL given `coords`. The `done`
+	// to return an `<img>` HTML element with the appropriate image URL given `coords`. The `done`
 	// callback is called when the tile has been loaded.
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		L.DomEvent.on(tile, 'load', L.bind(this._tileOnLoad, this, done, tile));
-		L.DomEvent.on(tile, 'error', L.bind(this._tileOnError, this, done, tile));
+		DomEvent.on(tile, 'load', this._tileOnLoad.bind(this, done, tile));
+		DomEvent.on(tile, 'error', this._tileOnError.bind(this, done, tile));
 
-		if (this.options.crossOrigin) {
-			tile.crossOrigin = '';
+		if (this.options.crossOrigin || this.options.crossOrigin === '') {
+			tile.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
 		}
 
-		/*
-		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 http://www.w3.org/TR/WCAG20-TECHS/H67
-		*/
+		// for this new option we follow the documented behavior
+		// more closely by only setting the property when string
+		if (typeof this.options.referrerPolicy === 'string') {
+			tile.referrerPolicy = this.options.referrerPolicy;
+		}
+
+		// The alt attribute is set to the empty string,
+		// allowing screen readers to ignore the decorative image tiles.
+		// https://www.w3.org/WAI/tutorials/images/decorative/
+		// https://www.w3.org/TR/html-aria/#el-img-empty-alt
 		tile.alt = '';
 
 		tile.src = this.getTileUrl(coords);
@@ -153,7 +179,7 @@ L.TileLayer = L.GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl: function (coords) {
 		var data = {
-			r: L.Browser.retina ? '@2x' : '',
+			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
@@ -167,36 +193,19 @@ L.TileLayer = L.GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return L.Util.template(this._url, L.extend(data, this.options));
+		return Util.template(this._url, Util.extend(data, this.options));
 	},
 
 	_tileOnLoad: function (done, tile) {
-		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (L.Browser.ielt9) {
-			setTimeout(L.bind(done, this, null, tile), 0);
-		} else {
-			done(null, tile);
-		}
+		done(null, tile);
 	},
 
 	_tileOnError: function (done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
-		if (errorUrl) {
+		if (errorUrl && tile.getAttribute('src') !== errorUrl) {
 			tile.src = errorUrl;
 		}
 		done(e, tile);
-	},
-
-	getTileSize: function () {
-		var map = this._map,
-		    tileSize = L.GridLayer.prototype.getTileSize.call(this),
-		    zoom = this._tileZoom + this.options.zoomOffset,
-		    zoomN = this.options.maxNativeZoom;
-
-		// increase tile size when overscaling
-		return zoomN !== null && zoom > zoomN ?
-				tileSize.divideBy(map.getZoomScale(zoomN, zoom)).round() :
-				tileSize;
 	},
 
 	_onTileRemove: function (e) {
@@ -204,17 +213,16 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	_getZoomForUrl: function () {
+		var zoom = this._tileZoom,
+		maxZoom = this.options.maxZoom,
+		zoomReverse = this.options.zoomReverse,
+		zoomOffset = this.options.zoomOffset;
 
-		var options = this.options,
-		    zoom = this._tileZoom;
-
-		if (options.zoomReverse) {
-			zoom = options.maxZoom - zoom;
+		if (zoomReverse) {
+			zoom = maxZoom - zoom;
 		}
 
-		zoom += options.zoomOffset;
-
-		return options.maxNativeZoom !== null ? Math.min(zoom, options.maxNativeZoom) : zoom;
+		return zoom + zoomOffset;
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -229,15 +237,41 @@ L.TileLayer = L.GridLayer.extend({
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
-				tile.onload = L.Util.falseFn;
-				tile.onerror = L.Util.falseFn;
+				tile.onload = Util.falseFn;
+				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
-					tile.src = L.Util.emptyImageUrl;
-					L.DomUtil.remove(tile);
+					tile.src = Util.emptyImageUrl;
+					var coords = this._tiles[i].coords;
+					DomUtil.remove(tile);
+					delete this._tiles[i];
+					// @event tileabort: TileEvent
+					// Fired when a tile was loading but is now not wanted.
+					this.fire('tileabort', {
+						tile: tile,
+						coords: coords
+					});
 				}
 			}
 		}
+	},
+
+	_removeTile: function (key) {
+		var tile = this._tiles[key];
+		if (!tile) { return; }
+
+		// Cancels any pending http requests associated with the tile
+		tile.el.setAttribute('src', Util.emptyImageUrl);
+
+		return GridLayer.prototype._removeTile.call(this, key);
+	},
+
+	_tileReady: function (coords, err, tile) {
+		if (!this._map || (tile && tile.getAttribute('src') === Util.emptyImageUrl)) {
+			return;
+		}
+
+		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
 	}
 });
 
@@ -245,6 +279,6 @@ L.TileLayer = L.GridLayer.extend({
 // @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
-L.tileLayer = function (url, options) {
-	return new L.TileLayer(url, options);
-};
+export function tileLayer(url, options) {
+	return new TileLayer(url, options);
+}

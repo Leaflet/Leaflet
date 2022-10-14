@@ -1,3 +1,11 @@
+import {Layer} from '../Layer';
+import * as DomUtil from '../../dom/DomUtil';
+import * as Util from '../../core/Util';
+import Browser from '../../core/Browser';
+import {Bounds} from '../../geometry/Bounds';
+
+
+
 /*
  * @class Renderer
  * @inherits Layer
@@ -13,9 +21,12 @@
  *
  * Do not use this class directly, use `SVG` and `Canvas` instead.
  *
+ * @event update: Event
+ * Fired when the renderer updates its bounds, center and zoom, for example when
+ * its map has moved
  */
 
-L.Renderer = L.Layer.extend({
+export var Renderer = Layer.extend({
 
 	// @section
 	// @aka Renderer options
@@ -27,8 +38,9 @@ L.Renderer = L.Layer.extend({
 	},
 
 	initialize: function (options) {
-		L.setOptions(this, options);
-		L.stamp(this);
+		Util.setOptions(this, options);
+		Util.stamp(this);
+		this._layers = this._layers || {};
 	},
 
 	onAdd: function () {
@@ -36,23 +48,26 @@ L.Renderer = L.Layer.extend({
 			this._initContainer(); // defined by renderer implementations
 
 			if (this._zoomAnimated) {
-				L.DomUtil.addClass(this._container, 'leaflet-zoom-animated');
+				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
 			}
 		}
 
 		this.getPane().appendChild(this._container);
 		this._update();
+		this.on('update', this._updatePaths, this);
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._container);
+		this.off('update', this._updatePaths, this);
+		this._destroyContainer();
 	},
 
 	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
-			moveend: this._update
+			moveend: this._update,
+			zoomend: this._onZoomEnd
 		};
 		if (this._zoomAnimated) {
 			events.zoomanim = this._onAnimZoom;
@@ -70,74 +85,50 @@ L.Renderer = L.Layer.extend({
 
 	_updateTransform: function (center, zoom) {
 		var scale = this._map.getZoomScale(zoom, this._zoom),
-		    position = L.DomUtil.getPosition(this._container),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
-		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
+				  .subtract(this._map._getNewPixelOrigin(center, zoom));
 
-		if (L.Browser.any3d) {
-			L.DomUtil.setTransform(this._container, topLeftOffset, scale);
+		if (Browser.any3d) {
+			DomUtil.setTransform(this._container, topLeftOffset, scale);
 		} else {
-			L.DomUtil.setPosition(this._container, topLeftOffset);
+			DomUtil.setPosition(this._container, topLeftOffset);
 		}
 	},
 
 	_reset: function () {
 		this._update();
 		this._updateTransform(this._center, this._zoom);
+
+		for (var id in this._layers) {
+			this._layers[id]._reset();
+		}
+	},
+
+	_onZoomEnd: function () {
+		for (var id in this._layers) {
+			this._layers[id]._project();
+		}
+	},
+
+	_updatePaths: function () {
+		for (var id in this._layers) {
+			this._layers[id]._update();
+		}
 	},
 
 	_update: function () {
-		// update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Subclasses are responsible of firing the 'update' event.
 		var p = this.options.padding,
 		    size = this._map.getSize(),
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
-		this._bounds = new L.Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
-	}
-});
-
-
-L.Map.include({
-	// @namespace Map; @method getRenderer(layer: Path): Renderer
-	// Returns the instance of `Renderer` that should be used to render the given
-	// `Path`. It will ensure that the `renderer` options of the map and paths
-	// are respected, and that the renderers do exist on the map.
-	getRenderer: function (layer) {
-		// @namespace Path; @option renderer: Renderer
-		// Use this specific instance of `Renderer` for this path. Takes
-		// precedence over the map's [default renderer](#map-renderer).
-		var renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
-
-		if (!renderer) {
-			// @namespace Map; @option preferCanvas: Boolean = false
-			// Whether `Path`s should be rendered on a `Canvas` renderer.
-			// By default, all `Path`s are rendered in a `SVG` renderer.
-			renderer = this._renderer = (this.options.preferCanvas && L.canvas()) || L.svg();
-		}
-
-		if (!this.hasLayer(renderer)) {
-			this.addLayer(renderer);
-		}
-		return renderer;
-	},
-
-	_getPaneRenderer: function (name) {
-		if (name === 'overlayPane' || name === undefined) {
-			return false;
-		}
-
-		var renderer = this._paneRenderers[name];
-		if (renderer === undefined) {
-			renderer = (L.SVG && L.svg({pane: name})) || (L.Canvas && L.canvas({pane: name}));
-			this._paneRenderers[name] = renderer;
-		}
-		return renderer;
 	}
 });

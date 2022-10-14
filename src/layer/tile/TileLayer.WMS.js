@@ -1,3 +1,9 @@
+import {TileLayer} from './TileLayer';
+import {extend, setOptions, getParamString} from '../../core/Util';
+import Browser from '../../core/Browser';
+import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
+import {toBounds} from '../../geometry/Bounds';
+
 /*
  * @class TileLayer.WMS
  * @inherits TileLayer
@@ -16,13 +22,13 @@
  * ```
  */
 
-L.TileLayer.WMS = L.TileLayer.extend({
+export var TileLayerWMS = TileLayer.extend({
 
 	// @section
 	// @aka TileLayer.WMS options
 	// If any custom options not documented here are used, they will be sent to the
 	// WMS server as extra parameters in each request URL. This can be useful for
-	// [non-standard vendor WMS parameters](http://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
+	// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -63,7 +69,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		this._url = url;
 
-		var wmsParams = L.extend({}, this.defaultWmsParams);
+		var wmsParams = extend({}, this.defaultWmsParams);
 
 		// all keys that are not TileLayer options go to WMS params
 		for (var i in options) {
@@ -72,9 +78,12 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			}
 		}
 
-		options = L.setOptions(this, options);
+		options = setOptions(this, options);
 
-		wmsParams.width = wmsParams.height = options.tileSize * (options.detectRetina && L.Browser.retina ? 2 : 1);
+		var realRetina = options.detectRetina && Browser.retina ? 2 : 1;
+		var tileSize = this.getTileSize();
+		wmsParams.width = tileSize.x * realRetina;
+		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
 	},
@@ -87,23 +96,22 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		var projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = this._crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map);
+		TileLayer.prototype.onAdd.call(this, map);
 	},
 
 	getTileUrl: function (coords) {
 
-		var tileBounds = this._tileCoordsToBounds(coords),
-		    nw = this._crs.project(tileBounds.getNorthWest()),
-		    se = this._crs.project(tileBounds.getSouthEast()),
-
-		    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
-			    [se.y, nw.x, nw.y, se.x] :
-			    [nw.x, se.y, se.x, nw.y]).join(','),
-
-		    url = L.TileLayer.prototype.getTileUrl.call(this, coords);
-
+		var tileBounds = this._tileCoordsToNwSe(coords),
+		    crs = this._crs,
+		    bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
+		    min = bounds.min,
+		    max = bounds.max,
+		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
+		    [min.y, min.x, max.y, max.x] :
+		    [min.x, min.y, max.x, max.y]).join(','),
+		    url = TileLayer.prototype.getTileUrl.call(this, coords);
 		return url +
-			L.Util.getParamString(this.wmsParams, url, this.options.uppercase) +
+			getParamString(this.wmsParams, url, this.options.uppercase) +
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
@@ -111,7 +119,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
 	setParams: function (params, noRedraw) {
 
-		L.extend(this.wmsParams, params);
+		extend(this.wmsParams, params);
 
 		if (!noRedraw) {
 			this.redraw();
@@ -124,6 +132,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 // @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer.WMS(url, options);
-};
+export function tileLayerWMS(url, options) {
+	return new TileLayerWMS(url, options);
+}

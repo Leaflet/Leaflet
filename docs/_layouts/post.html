@@ -1,0 +1,15 @@
+---
+root: "../../../"
+layout: v2
+post: true
+bodyclass: post-page
+---
+
+<p><a href="../../../blog.html">&larr; Back to the list of blog posts</a></p>
+
+<h2>{{ page.title }}</h2>
+
+<p class="post-meta">Posted on {{ page.date | date_to_long_string }} by <a href="{{ page.authorsite }}">{{ page.author }}</a></p>
+
+{{ content }}
+

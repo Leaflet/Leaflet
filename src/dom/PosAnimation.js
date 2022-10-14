@@ -1,3 +1,8 @@
+import * as Util from '../core/Util';
+import {Evented} from '../core/Events';
+import * as DomUtil from '../dom/DomUtil';
+
+
 /*
  * @class PosAnimation
  * @aka L.PosAnimation
@@ -6,8 +11,21 @@
  *
  * @example
  * ```js
- * var fx = new L.PosAnimation();
- * fx.run(el, [300, 500], 0.5);
+ * var myPositionMarker = L.marker([48.864716, 2.294694]).addTo(map);
+ *
+ * myPositionMarker.on("click", function() {
+ * 	var pos = map.latLngToLayerPoint(myPositionMarker.getLatLng());
+ * 	pos.y -= 25;
+ * 	var fx = new L.PosAnimation();
+ *
+ * 	fx.once('end',function() {
+ * 		pos.y += 25;
+ * 		fx.run(myPositionMarker._icon, pos, 0.8);
+ * 	});
+ *
+ * 	fx.run(myPositionMarker._icon, pos, 0.3);
+ * });
+ *
  * ```
  *
  * @constructor L.PosAnimation()
@@ -15,12 +33,12 @@
  *
  */
 
-L.PosAnimation = L.Evented.extend({
+export var PosAnimation = Evented.extend({
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
-	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
+	// argument of the [cubic bezier curve](https://cubic-bezier.com/#0,0,.5,1),
 	// `0.5` by default).
 	run: function (el, newPos, duration, easeLinearity) {
 		this.stop();
@@ -30,7 +48,7 @@ L.PosAnimation = L.Evented.extend({
 		this._duration = duration || 0.25;
 		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
 
-		this._startPos = L.DomUtil.getPosition(el);
+		this._startPos = DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = +new Date();
 
@@ -52,7 +70,7 @@ L.PosAnimation = L.Evented.extend({
 
 	_animate: function () {
 		// animation loop
-		this._animId = L.Util.requestAnimFrame(this._animate, this);
+		this._animId = Util.requestAnimFrame(this._animate, this);
 		this._step();
 	},
 
@@ -73,7 +91,7 @@ L.PosAnimation = L.Evented.extend({
 		if (round) {
 			pos._round();
 		}
-		L.DomUtil.setPosition(this._el, pos);
+		DomUtil.setPosition(this._el, pos);
 
 		// @event step: Event
 		// Fired continuously during the animation.
@@ -81,7 +99,7 @@ L.PosAnimation = L.Evented.extend({
 	},
 
 	_complete: function () {
-		L.Util.cancelAnimFrame(this._animId);
+		Util.cancelAnimFrame(this._animId);
 
 		this._inProgress = false;
 		// @event end: Event

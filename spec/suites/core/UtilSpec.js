@@ -1,5 +1,4 @@
 describe('Util', function () {
-
 	describe('#extend', function () {
 		var a;
 
@@ -34,32 +33,6 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#bind', function () {
-		it('returns the given function with the given context', function () {
-			var fn = function () {
-				return this;
-			};
-
-			var fn2 = L.Util.bind(fn, {foo: 'bar'});
-
-			expect(fn2()).to.eql({foo: 'bar'});
-		});
-
-		it('passes additional arguments to the bound function', function () {
-			var fn = sinon.spy(),
-			    foo = {},
-			    a = {},
-			    b = {},
-			    c = {};
-
-			var fn2 = L.Util.bind(fn, foo, a, b);
-
-			fn2(c);
-
-			expect(fn.calledWith(a, b, c)).to.be.ok();
-		});
-	});
-
 	describe('#stamp', function () {
 		it('sets a unique id on the given object and returns it', function () {
 			var a = {},
@@ -84,7 +57,10 @@ describe('Util', function () {
 	describe('#formatNum', function () {
 		it('formats numbers with a given precision', function () {
 			expect(L.Util.formatNum(13.12325555, 3)).to.eql(13.123);
-			expect(L.Util.formatNum(13.12325555)).to.eql(13.12326);
+			expect(L.Util.formatNum(13.12325555)).to.eql(13.123256);
+			expect(L.Util.formatNum(13.12325555, 0)).to.eql(13);
+			expect(L.Util.formatNum(13.12325555, false)).to.eql(13.12325555);
+			expect(isNaN(L.Util.formatNum(-7.993322e-10))).to.eql(false);
 		});
 	});
 
@@ -228,9 +204,10 @@ describe('Util', function () {
 			}).to.throwError();
 		});
 
-		it('allows underscores and dashes in placeholders', function () {
+		it('allows underscores, dashes and spaces in placeholders', function () {
 			expect(L.Util.template('{nice_stuff}', {'nice_stuff': 'foo'})).to.eql('foo');
 			expect(L.Util.template('{-y}', {'-y': 1})).to.eql('1');
+			expect(L.Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
 	});
 

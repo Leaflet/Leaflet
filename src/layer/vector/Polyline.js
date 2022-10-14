@@ -1,3 +1,11 @@
+import {Path} from './Path';
+import * as Util from '../../core/Util';
+import * as LineUtil from '../../geometry/LineUtil';
+import {LatLng, toLatLng} from '../../geo/LatLng';
+import {LatLngBounds} from '../../geo/LatLngBounds';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
+
 /*
  * @class Polyline
  * @aka L.Polyline
@@ -10,9 +18,9 @@
  * ```js
  * // create a red polyline from an array of LatLng points
  * var latlngs = [
- * 	[-122.68, 45.51],
- * 	[-122.43, 37.77],
- * 	[-118.2, 34.04]
+ * 	[45.51, -122.68],
+ * 	[37.77, -122.43],
+ * 	[34.04, -118.2]
  * ];
  *
  * var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
@@ -26,17 +34,18 @@
  * ```js
  * // create a red polyline from an array of arrays of LatLng points
  * var latlngs = [
- * 	[[-122.68, 45.51],
- * 	 [-122.43, 37.77],
- * 	 [-118.2, 34.04]],
- * 	[[-73.91, 40.78],
- * 	 [-87.62, 41.83],
- * 	 [-96.72, 32.76]]
+ * 	[[45.51, -122.68],
+ * 	 [37.77, -122.43],
+ * 	 [34.04, -118.2]],
+ * 	[[40.78, -73.91],
+ * 	 [41.83, -87.62],
+ * 	 [32.76, -96.72]]
  * ];
  * ```
  */
 
-L.Polyline = L.Path.extend({
+
+export var Polyline = Path.extend({
 
 	// @section
 	// @aka Polyline options
@@ -52,7 +61,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	initialize: function (latlngs, options) {
-		L.setOptions(this, options);
+		Util.setOptions(this, options);
 		this._setLatLngs(latlngs);
 	},
 
@@ -75,10 +84,12 @@ L.Polyline = L.Path.extend({
 		return !this._latlngs.length;
 	},
 
+	// @method closestLayerPoint(p: Point): Point
+	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint: function (p) {
 		var minDistance = Infinity,
 		    minPoint = null,
-		    closest = L.LineUtil._sqClosestPointOnSegment,
+		    closest = LineUtil._sqClosestPointOnSegment,
 		    p1, p2;
 
 		for (var j = 0, jLen = this._parts.length; j < jLen; j++) {
@@ -103,39 +114,13 @@ L.Polyline = L.Path.extend({
 	},
 
 	// @method getCenter(): LatLng
-	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the polyline.
+	// Returns the center ([centroid](https://en.wikipedia.org/wiki/Centroid)) of the polyline.
 	getCenter: function () {
-		var i, halfDist, segDist, dist, p1, p2, ratio,
-		    points = this._rings[0],
-		    len = points.length;
-
-		if (!len) { return null; }
-
-		// polyline centroid algorithm; only uses the first ring if there are multiple
-
-		for (i = 0, halfDist = 0; i < len - 1; i++) {
-			halfDist += points[i].distanceTo(points[i + 1]) / 2;
+		// throws error when not yet added to map as this center calculation requires projected coordinates
+		if (!this._map) {
+			throw new Error('Must add layer to map before using getCenter()');
 		}
-
-		// The line is so small in the current view that all points are on the same pixel.
-		if (halfDist === 0) {
-			return this._map.layerPointToLatLng(points[0]);
-		}
-
-		for (i = 0, dist = 0; i < len - 1; i++) {
-			p1 = points[i];
-			p2 = points[i + 1];
-			segDist = p1.distanceTo(p2);
-			dist += segDist;
-
-			if (dist > halfDist) {
-				ratio = (dist - halfDist) / segDist;
-				return this._map.layerPointToLatLng([
-					p2.x - ratio * (p2.x - p1.x),
-					p2.y - ratio * (p2.y - p1.y)
-				]);
-			}
-		}
+		return LineUtil.polylineCenter(this._defaultShape(), this._map.options.crs);
 	},
 
 	// @method getBounds(): LatLngBounds
@@ -144,35 +129,35 @@ L.Polyline = L.Path.extend({
 		return this._bounds;
 	},
 
-	// @method addLatLng(latlng: LatLng, latlngs? LatLng[]): this
+	// @method addLatLng(latlng: LatLng, latlngs?: LatLng[]): this
 	// Adds a given point to the polyline. By default, adds to the first ring of
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng: function (latlng, latlngs) {
 		latlngs = latlngs || this._defaultShape();
-		latlng = L.latLng(latlng);
+		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
 		this._bounds.extend(latlng);
 		return this.redraw();
 	},
 
 	_setLatLngs: function (latlngs) {
-		this._bounds = new L.LatLngBounds();
+		this._bounds = new LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
 	},
 
 	_defaultShape: function () {
-		return L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = L.Polyline._flat(latlngs);
+		    flat = LineUtil.isFlat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
-				result[i] = L.latLng(latlngs[i]);
+				result[i] = toLatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
 			} else {
 				result[i] = this._convertLatLngs(latlngs[i]);
@@ -183,23 +168,33 @@ L.Polyline = L.Path.extend({
 	},
 
 	_project: function () {
-		var pxBounds = new L.Bounds();
+		var pxBounds = new Bounds();
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
-		var w = this._clickTolerance(),
-		    p = new L.Point(w, w);
-
 		if (this._bounds.isValid() && pxBounds.isValid()) {
-			pxBounds.min._subtract(p);
-			pxBounds.max._add(p);
-			this._pxBounds = pxBounds;
+			this._rawPxBounds = pxBounds;
+			this._updateBounds();
 		}
+	},
+
+	_updateBounds: function () {
+		var w = this._clickTolerance(),
+		    p = new Point(w, w);
+
+		if (!this._rawPxBounds) {
+			return;
+		}
+
+		this._pxBounds = new Bounds([
+			this._rawPxBounds.min.subtract(p),
+			this._rawPxBounds.max.add(p)
+		]);
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs: function (latlngs, result, projectedBounds) {
-		var flat = latlngs[0] instanceof L.LatLng,
+		var flat = latlngs[0] instanceof LatLng,
 		    len = latlngs.length,
 		    i, ring;
 
@@ -238,7 +233,7 @@ L.Polyline = L.Path.extend({
 			points = this._rings[i];
 
 			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-				segment = L.LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
+				segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
 
 				if (!segment) { continue; }
 
@@ -260,7 +255,7 @@ L.Polyline = L.Path.extend({
 		    tolerance = this.options.smoothFactor;
 
 		for (var i = 0, len = parts.length; i < len; i++) {
-			parts[i] = L.LineUtil.simplify(parts[i], tolerance);
+			parts[i] = LineUtil.simplify(parts[i], tolerance);
 		}
 	},
 
@@ -274,6 +269,28 @@ L.Polyline = L.Path.extend({
 
 	_updatePath: function () {
 		this._renderer._updatePoly(this);
+	},
+
+	// Needed by the `Canvas` renderer for interactivity
+	_containsPoint: function (p, closed) {
+		var i, j, k, len, len2, part,
+		    w = this._clickTolerance();
+
+		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
+
+		// hit detection for polylines
+		for (i = 0, len = this._parts.length; i < len; i++) {
+			part = this._parts[i];
+
+			for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
+				if (!closed && (j === 0)) { continue; }
+
+				if (LineUtil.pointToSegmentDistance(p, part[k], part[j]) <= w) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 });
 
@@ -282,11 +299,6 @@ L.Polyline = L.Path.extend({
 // optionally an options object. You can create a `Polyline` object with
 // multiple separate lines (`MultiPolyline`) by passing an array of arrays
 // of geographic points.
-L.polyline = function (latlngs, options) {
-	return new L.Polyline(latlngs, options);
-};
-
-L.Polyline._flat = function (latlngs) {
-	// true if it's a flat array of latlngs; false if nested
-	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
-};
+export function polyline(latlngs, options) {
+	return new Polyline(latlngs, options);
+}

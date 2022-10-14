@@ -1,7 +1,11 @@
+
+import {Layer} from './Layer';
+import * as Util from '../core/Util';
+
 /*
  * @class LayerGroup
  * @aka L.LayerGroup
- * @inherits Layer
+ * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,
  * any layers added or removed from the group will be added/removed on the map as
@@ -16,9 +20,11 @@
  * ```
  */
 
-L.LayerGroup = L.Layer.extend({
+export var LayerGroup = Layer.extend({
 
-	initialize: function (layers) {
+	initialize: function (layers, options) {
+		Util.setOptions(this, options);
+
 		this._layers = {};
 
 		var i, len;
@@ -63,17 +69,18 @@ L.LayerGroup = L.Layer.extend({
 
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the group.
+	// @alternative
+	// @method hasLayer(id: Number): Boolean
+	// Returns `true` if the given internal ID is currently added to the group.
 	hasLayer: function (layer) {
-		return !!layer && (layer in this._layers || this.getLayerId(layer) in this._layers);
+		var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
+		return layerId in this._layers;
 	},
 
 	// @method clearLayers(): this
 	// Removes all the layers from the group.
 	clearLayers: function () {
-		for (var i in this._layers) {
-			this.removeLayer(this._layers[i]);
-		}
-		return this;
+		return this.eachLayer(this.removeLayer, this);
 	},
 
 	// @method invoke(methodName: String, …): this
@@ -96,15 +103,11 @@ L.LayerGroup = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		for (var i in this._layers) {
-			map.addLayer(this._layers[i]);
-		}
+		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
-		for (var i in this._layers) {
-			map.removeLayer(this._layers[i]);
-		}
+		this.eachLayer(map.removeLayer, map);
 	},
 
 	// @method eachLayer(fn: Function, context?: Object): this
@@ -131,10 +134,7 @@ L.LayerGroup = L.Layer.extend({
 	// Returns an array of all the layers added to the group.
 	getLayers: function () {
 		var layers = [];
-
-		for (var i in this._layers) {
-			layers.push(this._layers[i]);
-		}
+		this.eachLayer(layers.push, layers);
 		return layers;
 	},
 
@@ -147,13 +147,13 @@ L.LayerGroup = L.Layer.extend({
 	// @method getLayerId(layer: Layer): Number
 	// Returns the internal ID for a layer
 	getLayerId: function (layer) {
-		return L.stamp(layer);
+		return Util.stamp(layer);
 	}
 });
 
 
-// @factory L.layerGroup(layers: Layer[])
-// Create a layer group, optionally given an initial set of layers.
-L.layerGroup = function (layers) {
-	return new L.LayerGroup(layers);
+// @factory L.layerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
+export var layerGroup = function (layers, options) {
+	return new LayerGroup(layers, options);
 };

@@ -19,8 +19,7 @@
 	}
 	</style>
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
@@ -44,7 +43,7 @@
 		<tr><td>on grid load</td><td id='load'></td></tr>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 
 		var kyiv = [50.5, 30.5],
 			lnd = [51.51, -0.12],
@@ -59,7 +58,7 @@
         }).setView(dc, 14);
 
 		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 		}).addTo(map);
 
 		var path = new L.Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);

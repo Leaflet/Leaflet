@@ -1,3 +1,4 @@
+/* eslint no-extend-native: 0 */
 if (!Array.prototype.map) {
 	Array.prototype.map = function (fun) {
 		"use strict";
@@ -25,6 +26,7 @@ if (!Array.prototype.map) {
 }
 
 expect.Assertion.prototype.near = function (expected, delta) {
+	expected = L.point(expected);
 	delta = delta || 1;
 	expect(this.obj.x).to
 		.be.within(expected.x - delta, expected.x + delta);
@@ -33,6 +35,7 @@ expect.Assertion.prototype.near = function (expected, delta) {
 };
 
 expect.Assertion.prototype.nearLatLng = function (expected, delta) {
+	expected = L.latLng(expected);
 	delta = delta || 1e-4;
 	expect(this.obj.lat).to
 		.be.within(expected.lat - delta, expected.lat + delta);
@@ -49,19 +52,59 @@ happen.at = function (what, x, y, props) {
 		screenY: y,
 		which: 1,
 		button: 0
-	}, props || {}));
+	}, props || {}));
 };
 
+happen.makeEvent = (function (makeEvent) {
+	return function (o) {
+		var evt = makeEvent(o);
+		if (o.type.substring(0, 7) === 'pointer') {
+			evt.pointerId = o.pointerId;
+			evt.pointerType = o.pointerType;
+		} else if (o.type.indexOf('wheel') > -1) {
+			evt.deltaY = evt.deltaY || o.deltaY;
+			evt.deltaMode = evt.deltaMode || o.deltaMode;
+		}
+		return evt;
+	};
+})(happen.makeEvent);
+
 // We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
-it.skipInPhantom = L.Browser.any3d ? it : it.skip;
+it.skipIfNo3d = L.Browser.any3d ? it : it.skip;
+
+// Viceversa: some tests we want only to run in browsers without CSS animations.
+it.skipIf3d = L.Browser.any3d ? it.skip : it;
 
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = window.TouchEvent ? it : it.skip;
+it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
 
-// A couple of tests need the browser to be pointer-capable
-it.skipIfNotEdge = window.PointerEvent ? it : it.skip;
+var touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disable-line no-unused-vars
+// Note: this override is needed to workaround prosthetic-hand fail,
+//       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
+function createContainer(width, height) { /* eslint-disable-line no-unused-vars */
+	width = width ? width : '400px';
+	height = height ? height : '400px';
+	var container = document.createElement("div");
+	container.style.position = 'absolute';
+	container.style.top = '0px';
+	container.style.left = '0px';
+	container.style.height = height;
+	container.style.width = width;
+	container.style.opacity = '0.4';
+	document.body.appendChild(container);
 
-function takeScreenshot(path) {
-	window.top.callPhantom({'render': path || 'screenshot.png'});
+	return container;
 }
+
+function removeMapContainer(map, container) { /* eslint-disable-line no-unused-vars */
+	if (map) {
+		map.remove();
+	}
+	if (container) {
+		document.body.removeChild(container);
+	}
+}
+
+console.log('L.Browser.pointer', L.Browser.pointer);
+console.log('L.Browser.touchNative', L.Browser.touchNative);
