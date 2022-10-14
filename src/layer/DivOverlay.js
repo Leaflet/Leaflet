@@ -230,20 +230,23 @@ export var DivOverlay = Layer.extend({
 	},
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
-	_prepareOpen: function (latlng, parent) {
-		var source = parent;
+	_prepareOpen: function (latlng) {
+		var source = this._source;
 		if (!source._map) { return false; }
 
 		if (source instanceof FeatureGroup) {
 			source = null;
-			var layers = parent._layers;
+			var layers = this._source._layers;
 			for (var id in layers) {
-				if (layers[id]._map && (Number(id) === Util.stamp(this._source) || this._source instanceof FeatureGroup)) {
+				if (layers[id]._map) {
 					source = layers[id];
 					break;
 				}
 			}
 			if (!source) { return false; } // Unable to get source layer.
+
+			// set overlay source to this layer
+			this._source = source;
 		}
 
 		if (!latlng) {
@@ -257,9 +260,6 @@ export var DivOverlay = Layer.extend({
 				throw new Error('Unable to get source layer LatLng.');
 			}
 		}
-
-		// set overlay source to this layer
-		this._source = source;
 
 		this.setLatLng(latlng);
 
