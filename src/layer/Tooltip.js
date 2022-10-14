@@ -327,7 +327,7 @@ Layer.include({
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (latlng) {
-		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
+		if (this._tooltip && this._tooltip._prepareOpen(latlng, this)) {
 			// open the tooltip on the map
 			this._tooltip.openOn(this._map);
 

@@ -165,6 +165,39 @@ describe('Popup', function () {
 		expect(spy.called).to.be(true);
 	});
 
+	// Related to #8558
+	it("references the correct targets in popupopen event with multiple markers bound to same popup", function () {
+		var marker1 = L.marker(center, {testId: 'markerA'});
+		var marker2 = L.marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
+		map.addLayer(marker1);
+		map.addLayer(marker2);
+
+		var popup = L.popup().setContent('test');
+
+		marker2.bindPopup(popup);
+		marker1.bindPopup(popup);
+
+		var spy = sinon.spy();
+		var spy2 = sinon.spy();
+
+		marker1.on('popupopen', function (e) {
+			spy();
+			expect(e.target.options.testId).to.eql('markerA');
+		});
+
+		marker2.on('popupopen', function (e) {
+			spy2();
+			expect(e.target.options.testId).to.eql('markerB');
+		});
+
+		expect(spy.called).to.be(false);
+		marker2.openPopup();
+		expect(spy.called).to.be(false);
+		expect(spy2.called).to.be(true);
+		marker1.closePopup().openPopup();
+		expect(spy.called).to.be(true);
+	});
+
 	it("triggers popupclose on marker when popup closes", function () {
 		var marker1 = L.marker(center);
 		var marker2 = L.marker([57.123076977278, 44.861962891635]);
