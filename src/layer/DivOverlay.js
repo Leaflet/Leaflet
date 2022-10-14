@@ -260,7 +260,6 @@ export var DivOverlay = Layer.extend({
 				throw new Error('Unable to get source layer LatLng.');
 			}
 		}
-
 		this.setLatLng(latlng);
 
 		if (this._map) {
