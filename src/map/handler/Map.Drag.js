@@ -43,6 +43,13 @@ Map.mergeOptions({
 	// like markers and vector layers are still visible.
 	worldCopyJump: false,
 
+	// @option worldCopyJumpCenter: Number = 0.0
+	// If worldCopyJump is enabled, this option sets the central longitude that
+	// the map will jump to stay near.  For example, if your map is focused on
+	// the Pacific, you could add all your features with longitudes in the
+	// range [0,360] and set worldCopyJumpCenter to 180.
+	worldCopyJumpCenter: 0.0,
+
 	// @option maxBoundsViscosity: Number = 0.0
 	// If `maxBounds` is set, this option will control how solid the bounds
 	// are when dragging the map around. The default value of `0.0` allows the
@@ -145,7 +152,8 @@ export var Drag = Handler.extend({
 
 	_onZoomEnd: function () {
 		var pxCenter = this._map.getSize().divideBy(2),
-		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
+		    lng = this._map.options.worldCopyJumpCenter,
+		    pxWorldCenter = this._map.latLngToLayerPoint([0, lng]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
