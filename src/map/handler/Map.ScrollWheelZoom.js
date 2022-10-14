@@ -39,8 +39,13 @@ export var ScrollWheelZoom = Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = DomEvent.getWheelDelta(e);
 
+		// detect gesture
+		if (e.deltaMode === e.DOM_DELTA_PIXEL) {
+			return;
+		}
+
+		var delta = e.deltaY;
 		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;

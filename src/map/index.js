@@ -9,6 +9,8 @@ import {Keyboard} from './handler/Map.Keyboard';
 Map.Keyboard = Keyboard;
 import {ScrollWheelZoom} from './handler/Map.ScrollWheelZoom';
 Map.ScrollWheelZoom = ScrollWheelZoom;
+import {Touchpad} from './handler/Map.Touchpad';
+Map.Touchpad = Touchpad;
 import {TapHold} from './handler/Map.TapHold';
 Map.TapHold = TapHold;
 import {TouchZoom} from './handler/Map.TouchZoom';
