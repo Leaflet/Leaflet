@@ -20,6 +20,9 @@ export var Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
+		// @option position: String = 'bottomleft'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'bottomleft',
 
 		// @option maxWidth: Number = 100
