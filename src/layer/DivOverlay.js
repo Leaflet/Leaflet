@@ -238,7 +238,7 @@ export var DivOverlay = Layer.extend({
 			source = null;
 			var layers = parent._layers;
 			for (var id in layers) {
-				if (layers[id]._map && (Number(id) === this._source._leaflet_id || this._source instanceof FeatureGroup)) {
+				if (layers[id]._map && (Number(id) === Util.stamp(this._source) || this._source instanceof FeatureGroup)) {
 					source = layers[id];
 					break;
 				}
