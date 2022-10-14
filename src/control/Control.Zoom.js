@@ -16,6 +16,9 @@ export var Zoom = Control.extend({
 	// @section
 	// @aka Control.Zoom options
 	options: {
+		// @option position: String = 'topleft'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'topleft',
 
 		// @option zoomInText: String = '<span aria-hidden="true">+</span>'

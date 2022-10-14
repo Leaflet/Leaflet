@@ -21,6 +21,9 @@ export var Attribution = Control.extend({
 	// @section
 	// @aka Control.Attribution options
 	options: {
+		// @option position: String = 'bottomright'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'bottomright',
 
 		// @option prefix: String|false = 'Leaflet'
