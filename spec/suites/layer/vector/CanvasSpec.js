@@ -185,7 +185,7 @@ describe('Canvas', function () {
 	});
 
 	it('removes vector on next animation frame', function (done) {
-		var layer = L.circle([0, 0]).addTo(map),
+		var layer = L.circle([0, 0], 10).addTo(map),
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
 
@@ -200,7 +200,7 @@ describe('Canvas', function () {
 	});
 
 	it('adds vectors even if they have been removed just before', function (done) {
-		var layer = L.circle([0, 0]).addTo(map),
+		var layer = L.circle([0, 0], 10).addTo(map),
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
 

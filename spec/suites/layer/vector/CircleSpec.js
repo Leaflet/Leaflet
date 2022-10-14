@@ -13,9 +13,10 @@ describe('Circle', function () {
 	});
 
 	describe('#init', function () {
-		it('uses default radius if not given', function () {
-			var circle = L.circle([0, 0]);
-			expect(circle.getRadius()).to.eql(10);
+		it('throws error if radius is not given', function () {
+			expect(function () {
+				L.circle([0, 0]);
+			}).to.throwException('Circle radius cannot be NaN');
 		});
 
 		it('throws error if radius is NaN', function () {
