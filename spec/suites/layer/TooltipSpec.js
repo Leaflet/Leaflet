@@ -508,4 +508,37 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(tooltip)).to.be(true);
 		expect(tooltip.getContent()).to.be('Test');
 	});
+
+	// Related to #8558
+	it("references the correct targets in tooltipopen event with multiple markers bound to same tooltip", function () {
+		var marker1 = L.marker(center, {testId: 'markerA'});
+		var marker2 = L.marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
+		map.addLayer(marker1);
+		map.addLayer(marker2);
+
+		var tooltip = L.tooltip().setContent('test');
+
+		var layer1 = marker1.bindTooltip(tooltip);
+		var layer2 = marker2.bindTooltip(tooltip);
+
+		var spy = sinon.spy();
+		var spy2 = sinon.spy();
+
+		layer1.on('tooltipopen', function (e) {
+			spy();
+			expect(e.target.options.testId).to.eql('markerA');
+		});
+
+		layer2.on('tooltipopen', function (e) {
+			spy2();
+			expect(e.target.options.testId).to.eql('markerB');
+		});
+
+		expect(spy.called).to.be(false);
+		layer1.openTooltip().closeTooltip();
+		expect(spy.called).to.be(true);
+		expect(spy2.called).to.be(false);
+		layer2.openTooltip();
+		expect(spy2.called).to.be(true);
+	});
 });
