@@ -206,8 +206,10 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
-		this._setPosition(pos);
+		if (this._map) {
+			var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+			this._setPosition(pos);
+		}
 	},
 
 	_getAnchor: function () {

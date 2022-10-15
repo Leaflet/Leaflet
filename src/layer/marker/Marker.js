@@ -327,9 +327,11 @@ export var Marker = Layer.extend({
 	},
 
 	_animateZoom: function (opt) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+		if (this._map) {
+			var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
-		this._setPos(pos);
+			this._setPos(pos);
+		}
 	},
 
 	_initInteraction: function () {
