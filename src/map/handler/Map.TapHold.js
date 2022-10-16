@@ -55,9 +55,9 @@ export var TapHold = Handler.extend({
 		DomEvent.on(document, 'touchmove', this._onMove, this);
 	},
 
-	_cancelClickPrevent: function cancelClickPrevent() {
+	_cancelClickPrevent: function _cancelClickPrevent() {
 		DomEvent.off(document, 'touchend', DomEvent.preventDefault);
-		DomEvent.off(document, 'touchend touchcancel', cancelClickPrevent);
+		DomEvent.off(document, 'touchend touchcancel', _cancelClickPrevent);
 	},
 
 	_cancel: function () {
