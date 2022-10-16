@@ -290,6 +290,14 @@ describe("Map", function () {
 			map.stop();
 			expect(map.stop.called).to.be.ok();
 		});
+
+		it("stops the execution of the panTo animation", function () {
+			map.setView([0, 0]);
+			map.stop = sinon.spy();
+			map.panTo([51.505, -0.09]);
+			map.stop();
+			expect(map.stop.called).to.be.ok();
+		});
 	});
 
 	describe("#setZoomAround", function () {
