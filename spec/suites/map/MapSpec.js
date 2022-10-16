@@ -288,7 +288,7 @@ describe("Map", function () {
 			map.stop = sinon.spy();
 			map.flyTo([51.505, -0.09]);
 			map.stop();
-			expect(map.stop.called).to.be.ok();
+			expect(map.stop.calledOnce).to.be.ok();
 		});
 
 		it("stops the execution of the panTo animation", function () {
@@ -296,7 +296,7 @@ describe("Map", function () {
 			map.stop = sinon.spy();
 			map.panTo([51.505, -0.09]);
 			map.stop();
-			expect(map.stop.called).to.be.ok();
+			expect(map.stop.calledOnce).to.be.ok();
 		});
 	});
 
