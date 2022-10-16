@@ -292,6 +292,26 @@ describe('TileLayer', function () {
 			map.setView([0, 0], 2);
 		});
 
+		it("requests tiles with an integeral {z} when the map's zoom level is fractional", function () {
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			map.options.zoomSnap = 0;
+			map._resetView(L.latLng(0, 0), 2.3);
+
+			layer.redraw();
+
+			var urls = [
+				'http://example.com/2/1/1.png',
+				'http://example.com/2/1/2.png',
+				'http://example.com/2/2/1.png',
+				'http://example.com/2/2/2.png',
+			];
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
 		it('replaces {y} with y coordinate', function () {
 			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 
