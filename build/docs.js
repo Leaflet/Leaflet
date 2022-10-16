@@ -28,4 +28,4 @@ var path = 'docs/reference.html';
 var fs = require('fs');
 
 fs.writeFileSync(path, out);
-console.log('Successfully built ' + path);
+console.log(`Successfully built ${path}`);

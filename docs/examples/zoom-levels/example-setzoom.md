@@ -32,7 +32,7 @@ title: Zoom Levels Tutorial
 			gauge.style.background = 'rgba(255,255,255,0.5)';
 			gauge.style.textAlign = 'left';
 			map.on('zoomstart zoom zoomend', function (ev) {
-				gauge.innerHTML = 'Zoom level: ' + map.getZoom();
+				gauge.innerHTML = `Zoom level: ${map.getZoom()}`;
 			});
 			return gauge;
 		}

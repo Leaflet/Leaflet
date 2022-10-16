@@ -161,13 +161,13 @@ export var SVG = Renderer.extend({
 		var p = layer._point,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
-		    arc = 'a' + r + ',' + r2 + ' 0 1,0 ';
+		    arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
 		var d = layer._empty() ? 'M0 0' :
-			'M' + (p.x - r) + ',' + p.y +
-			arc + (r * 2) + ',0 ' +
-			arc + (-r * 2) + ',0 ';
+			`M${p.x - r},${p.y
+			}${arc}${r * 2},0 ${
+				arc}${-r * 2},0 `;
 
 		this._setPath(layer, d);
 	},

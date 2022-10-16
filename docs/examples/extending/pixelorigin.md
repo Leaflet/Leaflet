@@ -70,10 +70,10 @@ title: Grid coordinates
 
 		document.getElementById('info').innerHTML =
 			'<div style="color: green">CRS origin: 0,0</div>' +
-			'<div style="color: red">px origin: &Delta;' + pixelOrigin.x + ',' + pixelOrigin.y + '</div>' +
-			'<div style="color: blue">marker px coords:' + markerPixelCoords.x.toFixed(2) + ',' + markerPixelCoords.y.toFixed(2) + '</div>' +
-			'<div style="color: blue">marker anchor: &Delta;' + markerAnchor[0] + ',' + markerAnchor[1] + '</div>' +
-			'<div style="color: skyblue">marker pane offset: &Delta;' + markerOffset.x + ',' + markerOffset.y + '</div>';
+			`<div style="color: red">px origin: &Delta;${pixelOrigin.x},${pixelOrigin.y}</div>` +
+			`<div style="color: blue">marker px coords:${markerPixelCoords.x.toFixed(2)},${markerPixelCoords.y.toFixed(2)}</div>` +
+			`<div style="color: blue">marker anchor: &Delta;${markerAnchor[0]},${markerAnchor[1]}</div>` +
+			`<div style="color: skyblue">marker pane offset: &Delta;${markerOffset.x},${markerOffset.y}</div>`;
 
 		markerOffsetLine.setLatLngs([map.unproject(pixelOrigin), map.unproject(pixelOrigin.add(markerOffset))]);
 		iconOffsetLine.setLatLngs([map.unproject(pixelOrigin.add(markerOffset)), map.unproject(pixelOrigin.add(markerOffset).subtract(markerAnchor))]);

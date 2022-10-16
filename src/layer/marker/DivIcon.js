@@ -55,7 +55,7 @@ export var DivIcon = Icon.extend({
 
 		if (options.bgPos) {
 			var bgPos = point(options.bgPos);
-			div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
+			div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
 		}
 		this._setIconStyles(div, 'icon');
 

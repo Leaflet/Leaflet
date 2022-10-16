@@ -133,7 +133,7 @@ export function setOptions(obj, options) {
 export function getParamString(obj, existingUrl, uppercase) {
 	var params = [];
 	for (var i in obj) {
-		params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
+		params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
 	}
 	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 }
@@ -150,7 +150,7 @@ export function template(str, data) {
 		var value = data[key];
 
 		if (value === undefined) {
-			throw new Error('No value provided for variable ' + str);
+			throw new Error(`No value provided for variable ${str}`);
 
 		} else if (typeof value === 'function') {
 			value = value(data);
@@ -183,7 +183,7 @@ export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA
 // inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 function getPrefixed(name) {
-	return window['webkit' + name] || window['moz' + name] || window['ms' + name];
+	return window[`webkit${name}`] || window[`moz${name}`] || window[`ms${name}`];
 }
 
 var lastTime = 0;

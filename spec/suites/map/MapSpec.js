@@ -1173,7 +1173,7 @@ describe("Map", function () {
 
 		beforeEach(function () {
 			container.style.height = "100px";
-			container.style.width = origWidth + "px";
+			container.style.width = `${origWidth}px`;
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
 			clock = sinon.useFakeTimers();
@@ -1184,38 +1184,38 @@ describe("Map", function () {
 		});
 
 		it("pans by the right amount when growing in 1px increments", function () {
-			container.style.width = (origWidth + 1) + "px";
+			container.style.width = `${origWidth + 1}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(1);
 
-			container.style.width = (origWidth + 2) + "px";
+			container.style.width = `${origWidth + 2}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(1);
 
-			container.style.width = (origWidth + 3) + "px";
+			container.style.width = `${origWidth + 3}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(2);
 		});
 
 		it("pans by the right amount when shrinking in 1px increments", function () {
-			container.style.width = (origWidth - 1) + "px";
+			container.style.width = `${origWidth - 1}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(0);
 
-			container.style.width = (origWidth - 2) + "px";
+			container.style.width = `${origWidth - 2}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(-1);
 
-			container.style.width = (origWidth - 3) + "px";
+			container.style.width = `${origWidth - 3}px`;
 			map.invalidateSize();
 			expect(map._getMapPanePos().x).to.be(-1);
 		});
 
 		it("pans back to the original position after growing by an odd size and back", function () {
-			container.style.width = (origWidth + 5) + "px";
+			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize();
 
-			container.style.width = origWidth + "px";
+			container.style.width = `${origWidth}px`;
 			map.invalidateSize();
 
 			expect(map._getMapPanePos().x).to.be(0);
@@ -1234,7 +1234,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("move", spy);
 
-			container.style.width = (origWidth + 5) + "px";
+			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize();
 
 			expect(spy.called).to.be.ok();
@@ -1244,7 +1244,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("moveend", spy);
 
-			container.style.width = (origWidth + 5) + "px";
+			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize();
 
 			expect(spy.called).to.be.ok();
@@ -1254,7 +1254,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("moveend", spy);
 
-			container.style.width = (origWidth + 5) + "px";
+			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize({debounceMoveend: true});
 
 			expect(spy.called).not.to.be.ok();

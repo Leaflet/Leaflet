@@ -97,7 +97,7 @@ export var Events = {
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context, _once) {
 		if (typeof fn !== 'function') {
-			console.warn('wrong listener type: ' + typeof fn);
+			console.warn(`wrong listener type: ${typeof fn}`);
 			return;
 		}
 
@@ -149,7 +149,7 @@ export var Events = {
 		}
 
 		if (typeof fn !== 'function') {
-			console.warn('wrong listener type: ' + typeof fn);
+			console.warn(`wrong listener type: ${typeof fn}`);
 			return;
 		}
 
