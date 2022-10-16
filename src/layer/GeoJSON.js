@@ -6,9 +6,8 @@ import {Circle} from './vector/Circle';
 import {CircleMarker} from './vector/CircleMarker';
 import {Polyline} from './vector/Polyline';
 import {Polygon} from './vector/Polygon';
-import {LatLng} from '../geo/LatLng';
+import {LatLng, toLatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
-import {toLatLng} from '../geo/LatLng';
 
 
 /*
