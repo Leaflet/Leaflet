@@ -77,7 +77,7 @@ if (toc) {
 		var elem = document.querySelector(currentHash);
 
 		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
-			setTimeout(()=>{
+			setTimeout(() => {
 				scrollToHeader(elem, true);
 			}, 10);
 		}
