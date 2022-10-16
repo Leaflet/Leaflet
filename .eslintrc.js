@@ -40,7 +40,6 @@ module.exports = {
 		'strict': 'off',
 		'wrap-iife': 'off',
 		// TODO: Re-enable the rules below and fix the linting issues.
-		'func-name-matching': 'off',
 		'no-duplicate-imports': 'off',
 		'no-invalid-this': 'off',
 		'no-var': 'off',
