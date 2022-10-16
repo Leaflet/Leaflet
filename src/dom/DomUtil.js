@@ -31,7 +31,7 @@ export var TRANSITION = testProp(
 // @property TRANSITION_END: String
 // Vendor-prefixed transitionend event name.
 export var TRANSITION_END =
-	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
+	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? `${TRANSITION}End` : 'transitionend';
 
 
 // @function get(id: String|HTMLElement): HTMLElement
@@ -108,7 +108,7 @@ export function hasClass(el, name) {
 		return el.classList.contains(name);
 	}
 	var className = getClass(el);
-	return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
+	return className.length > 0 && new RegExp(`(^|\\s)${name}(\\s|$)`).test(className);
 }
 
 // @function addClass(el: HTMLElement, name: String)
@@ -121,7 +121,7 @@ export function addClass(el, name) {
 		}
 	} else if (!hasClass(el, name)) {
 		var className = getClass(el);
-		setClass(el, (className ? className + ' ' : '') + name);
+		setClass(el, (className ? `${className} ` : '') + name);
 	}
 }
 
@@ -131,7 +131,7 @@ export function removeClass(el, name) {
 	if (el.classList !== undefined) {
 		el.classList.remove(name);
 	} else {
-		setClass(el, Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+		setClass(el, Util.trim((` ${getClass(el)} `).replace(` ${name} `, ' ')));
 	}
 }
 
@@ -187,7 +187,7 @@ function _setOpacityIE(el, value) {
 		filter.Enabled = (value !== 100);
 		filter.Opacity = value;
 	} else {
-		el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
+		el.style.filter += ` progid:${filterName}(opacity=${value})`;
 	}
 }
 
@@ -213,9 +213,7 @@ export function testProp(props) {
 export function setTransform(el, offset, scale) {
 	var pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] =
-		'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)' +
-		(scale ? ' scale(' + scale + ')' : '');
+	el.style[TRANSFORM] = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
 
 // @function setPosition(el: HTMLElement, position: Point)
@@ -231,8 +229,8 @@ export function setPosition(el, point) {
 	if (Browser.any3d) {
 		setTransform(el, point);
 	} else {
-		el.style.left = point.x + 'px';
-		el.style.top = point.y + 'px';
+		el.style.left = `${point.x}px`;
+		el.style.top = `${point.y}px`;
 	}
 }
 

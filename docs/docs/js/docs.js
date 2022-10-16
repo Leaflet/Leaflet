@@ -91,10 +91,10 @@ function clickOnAnchor(e) {
 		return;
 	}
 
-	var anchor = '#' + e.target.href.split('#')[1];
+	var anchor = `#${e.target.href.split('#')[1]}`;
 	var elemHeader = document.querySelector(anchor);
 
-	scrollToHeader(elemHeader, '#' + elemHeader.id === currentAnchor);
+	scrollToHeader(elemHeader, `#${elemHeader.id}` === currentAnchor);
 
 	// prevent default browser anchor scroll
 	e.preventDefault();
@@ -114,5 +114,5 @@ function scrollToHeader(elemHeader, sameAnchor) {
 	// scroll to the anchor
 	window.scrollTo(0, scrollBy);
 	// apply the new anchor to the location url
-	currentAnchor = window.location.hash = '#' + elemHeader.id;
+	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }

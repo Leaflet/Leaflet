@@ -38,7 +38,7 @@ customMapContainer: "true"
 	function onMapClick(e) {
 		popup
 			.setLatLng(e.latlng)
-			.setContent('You clicked the map at ' + e.latlng.toString())
+			.setContent(`You clicked the map at ${e.latlng.toString()}`)
 			.openOn(map);
 	}
 

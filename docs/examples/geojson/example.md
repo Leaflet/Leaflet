@@ -20,8 +20,7 @@ title: GeoJSON tutorial
 	});
 
 	function onEachFeature(feature, layer) {
-		var popupContent = '<p>I started out as a GeoJSON ' +
-				feature.geometry.type + ', but now I\'m a Leaflet vector!</p>';
+		var popupContent = `<p>I started out as a GeoJSON ${feature.geometry.type}, but now I'm a Leaflet vector!</p>`;
 
 		if (feature.properties && feature.properties.popupContent) {
 			popupContent += feature.properties.popupContent;

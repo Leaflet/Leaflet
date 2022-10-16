@@ -53,8 +53,8 @@ css: "#map {
 	};
 
 	info.update = function (props) {
-		this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>' : 'Hover over a state');
+		var contents = props ? `<b>${props.name}</b><br />${props.density} people / mi<sup>2</sup>` : 'Hover over a state';
+		this._div.innerHTML = `<h4>US Population Density</h4>${contents}`;
 	};
 
 	info.addTo(map);
@@ -140,9 +140,7 @@ css: "#map {
 			from = grades[i];
 			to = grades[i + 1];
 
-			labels.push(
-				'<i style="background:' + getColor(from + 1) + '"></i> ' +
-				from + (to ? '&ndash;' + to : '+'));
+			labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
 		}
 
 		div.innerHTML = labels.join('<br>');

@@ -210,7 +210,7 @@ export var Marker = Layer.extend({
 
 	_initIcon: function () {
 		var options = this.options,
-		    classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
+		    classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		var icon = options.icon.createIcon(this._icon),
 		    addIcon = false;

@@ -29,7 +29,7 @@ import {toLatLngBounds} from './LatLngBounds';
 
 export function LatLng(lat, lng, alt) {
 	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
+		throw new Error(`Invalid LatLng object: (${lat}, ${lng})`);
 	}
 
 	// @property lat: Number
@@ -65,9 +65,7 @@ LatLng.prototype = {
 	// @method toString(): String
 	// Returns a string representation of the point (for debugging purposes).
 	toString: function (precision) {
-		return 'LatLng(' +
-		        Util.formatNum(this.lat, precision) + ', ' +
-		        Util.formatNum(this.lng, precision) + ')';
+		return `LatLng(${Util.formatNum(this.lat, precision)}, ${Util.formatNum(this.lng, precision)})`;
 	},
 
 	// @method distanceTo(otherLatLng: LatLng): Number

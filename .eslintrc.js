@@ -45,8 +45,7 @@ module.exports = {
 		'object-shorthand': 'off',
 		'prefer-arrow-callback': 'off',
 		'prefer-rest-params': 'off',
-		'prefer-spread': 'off',
-		'prefer-template': 'off'
+		'prefer-spread': 'off'
 	},
 	overrides: [
 		{
