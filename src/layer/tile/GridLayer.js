@@ -108,6 +108,10 @@ export var GridLayer = Layer.extend({
 		// If set, tiles will only be loaded inside the set `LatLngBounds`.
 		bounds: null,
 
+		// @option ignoreBounds: LatLngBounds = undefined
+		// If set, tiles will not be loaded inside the set `LatLngBounds`.
+		ignoreBounds: null,
+
 		// @option minZoom: Number = 0
 		// The minimum zoom level down to which this layer will be displayed (inclusive).
 		minZoom: 0,
@@ -724,11 +728,18 @@ export var GridLayer = Layer.extend({
 			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
 		}
 
-		if (!this.options.bounds) { return true; }
-
-		// don't load tile if it doesn't intersect the bounds in options
+		// don't load tile if it doesn't intersect the bounds in options or it intersect the ignoreBounds in options
 		var tileBounds = this._tileCoordsToBounds(coords);
-		return latLngBounds(this.options.bounds).overlaps(tileBounds);
+		var loadTile = true;
+		// if bounds are set they must intersect the tile
+		if (this.options.bounds) {
+			loadTile = loadTile && latLngBounds(this.options.bounds).overlaps(tileBounds);
+		}
+		// if ignoreBounds are set they must not intersect the tile
+		if (loadTile && this.options.ignoreBounds) {
+			loadTile = loadTile && !latLngBounds(this.options.ignoreBounds).overlaps(tileBounds);
+		}
+		return loadTile;
 	},
 
 	_keyToBounds: function (key) {
