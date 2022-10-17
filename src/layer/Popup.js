@@ -97,6 +97,10 @@ export const Popup = DivOverlay.extend({
 		// Controls the presence of a close button in the popup.
 		closeButton: true,
 
+		// @option closeButtonLabel: String = 'Close popup'
+		// Specifies the 'aria-label' attribute of the close button.
+		closeButtonLabel: 'Close popup',
+
 		// @option autoClose: Boolean = true
 		// Set it to `false` if you want to override the default behavior of
 		// the popup closing when another popup is opened.
@@ -206,7 +210,8 @@ export const Popup = DivOverlay.extend({
 		if (this.options.closeButton) {
 			const closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
 			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
-			closeButton.setAttribute('aria-label', 'Close popup');
+			closeButton.setAttribute('aria-label', this.options.closeButtonLabel);
+
 			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
