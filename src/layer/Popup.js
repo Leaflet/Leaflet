@@ -97,7 +97,7 @@ export var Popup = DivOverlay.extend({
 		// Controls the presence of a close button in the popup.
 		closeButton: true,
 
-		//@option closeButtonAriaLabel: String = 'Close popup'
+		// @option closeButtonAriaLabel: String = 'Close popup'
 		// specifies aria-label attribute of the close button
 		closeButtonAriaLabel: 'Close popup',
 
