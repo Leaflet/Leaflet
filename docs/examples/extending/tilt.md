@@ -43,7 +43,7 @@ title: Tilt handler
 			var offset = L.point(ev.gamma, ev.beta);
 			if (offset) {
 				this._map.panBy(offset);
-				info = ev.gamma + ',' + ev.beta;
+				info = `${ev.gamma},${ev.beta}`;
 			} else {
 				info = 'Device orientation not detected';
 			}

@@ -155,7 +155,7 @@ export var Layers = Control.extend({
 		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
 			DomUtil.addClass(this._section, 'leaflet-control-layers-scrollbar');
-			this._section.style.height = acceptableHeight + 'px';
+			this._section.style.height = `${acceptableHeight}px`;
 		} else {
 			DomUtil.removeClass(this._section, 'leaflet-control-layers-scrollbar');
 		}
@@ -181,7 +181,7 @@ export var Layers = Control.extend({
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(container);
 
-		var section = this._section = DomUtil.create('fieldset', className + '-list');
+		var section = this._section = DomUtil.create('fieldset', `${className}-list`);
 
 		if (collapsed) {
 			this._map.on('click', this.collapse, this);
@@ -192,7 +192,7 @@ export var Layers = Control.extend({
 			}, this);
 		}
 
-		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
+		var link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
 		link.href = '#';
 		link.title = 'Layers';
 		link.setAttribute('role', 'button');
@@ -214,9 +214,9 @@ export var Layers = Control.extend({
 			this.expand();
 		}
 
-		this._baseLayersList = DomUtil.create('div', className + '-base', section);
-		this._separator = DomUtil.create('div', className + '-separator', section);
-		this._overlaysList = DomUtil.create('div', className + '-overlays', section);
+		this._baseLayersList = DomUtil.create('div', `${className}-base`, section);
+		this._separator = DomUtil.create('div', `${className}-separator`, section);
+		this._overlaysList = DomUtil.create('div', `${className}-overlays`, section);
 
 		container.appendChild(section);
 	},
@@ -311,8 +311,7 @@ export var Layers = Control.extend({
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see https://stackoverflow.com/a/119079)
 	_createRadioElement: function (name, checked) {
 
-		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' +
-				name + '"' + (checked ? ' checked="checked"' : '') + '/>';
+		var radioHtml = `<input type="radio" class="leaflet-control-layers-selector" name="${name}"${checked ? ' checked="checked"' : ''}/>`;
 
 		var radioFragment = document.createElement('div');
 		radioFragment.innerHTML = radioHtml;
@@ -331,7 +330,7 @@ export var Layers = Control.extend({
 			input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
-			input = this._createRadioElement('leaflet-base-layers_' + Util.stamp(this), checked);
+			input = this._createRadioElement(`leaflet-base-layers_${Util.stamp(this)}`, checked);
 		}
 
 		this._layerControlInputs.push(input);
@@ -340,7 +339,7 @@ export var Layers = Control.extend({
 		DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createElement('span');
-		name.innerHTML = ' ' + obj.name;
+		name.innerHTML = ` ${obj.name}`;
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771

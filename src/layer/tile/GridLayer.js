@@ -348,7 +348,7 @@ export var GridLayer = Layer.extend({
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = DomUtil.create('div', 'leaflet-layer ' + (this.options.className || ''));
+		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className || ''}`);
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -757,7 +757,7 @@ export var GridLayer = Layer.extend({
 	},
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
-		return coords.x + ':' + coords.y + ':' + coords.z;
+		return `${coords.x}:${coords.y}:${coords.z}`;
 	},
 
 	// converts tile cache key to coordinates
@@ -788,8 +788,8 @@ export var GridLayer = Layer.extend({
 		DomUtil.addClass(tile, 'leaflet-tile');
 
 		var tileSize = this.getTileSize();
-		tile.style.width = tileSize.x + 'px';
-		tile.style.height = tileSize.y + 'px';
+		tile.style.width = `${tileSize.x}px`;
+		tile.style.height = `${tileSize.y}px`;
 
 		tile.onselectstart = Util.falseFn;
 		tile.onmousemove = Util.falseFn;

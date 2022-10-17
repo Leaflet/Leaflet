@@ -100,7 +100,7 @@ var mouseSubst = {
 };
 
 function addOne(obj, type, fn, context) {
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	var id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
@@ -136,7 +136,7 @@ function addOne(obj, type, fn, context) {
 		}
 
 	} else {
-		obj.attachEvent('on' + type, handler);
+		obj.attachEvent(`on${type}`, handler);
 	}
 
 	obj[eventsKey] = obj[eventsKey] || {};
@@ -144,7 +144,7 @@ function addOne(obj, type, fn, context) {
 }
 
 function removeOne(obj, type, fn, context, id) {
-	id = id || type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	id = id || type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 	var handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
@@ -160,7 +160,7 @@ function removeOne(obj, type, fn, context, id) {
 		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
 	} else {
-		obj.detachEvent('on' + type, handler);
+		obj.detachEvent(`on${type}`, handler);
 	}
 
 	obj[eventsKey][id] = null;

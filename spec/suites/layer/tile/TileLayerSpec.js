@@ -418,7 +418,7 @@ describe('TileLayer', function () {
 		testCrossOriginValue('use-credentials', 'use-credentials');
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
-			it('uses crossOrigin value ' + crossOrigin, function () {
+			it(`uses crossOrigin value ${crossOrigin}`, function () {
 				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 					crossOrigin: crossOrigin
 				}).addTo(map);

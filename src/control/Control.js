@@ -149,10 +149,10 @@ Map.include({
 		var corners = this._controlCorners = {},
 		    l = 'leaflet-',
 		    container = this._controlContainer =
-		            DomUtil.create('div', l + 'control-container', this._container);
+		            DomUtil.create('div', `${l}control-container`, this._container);
 
 		function createCorner(vSide, hSide) {
-			var className = l + vSide + ' ' + l + hSide;
+			var className = `${l + vSide} ${l}${hSide}`;
 
 			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}

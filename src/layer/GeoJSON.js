@@ -349,7 +349,7 @@ Polyline.include({
 		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
 		return getFeature(this, {
-			type: (multi ? 'Multi' : '') + 'LineString',
+			type: `${multi ? 'Multi' : ''}LineString`,
 			coordinates: coords
 		});
 	}
@@ -371,7 +371,7 @@ Polygon.include({
 		}
 
 		return getFeature(this, {
-			type: (multi ? 'Multi' : '') + 'Polygon',
+			type: `${multi ? 'Multi' : ''}Polygon`,
 			coordinates: coords
 		});
 	}

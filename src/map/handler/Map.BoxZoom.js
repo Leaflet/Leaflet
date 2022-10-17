@@ -95,8 +95,8 @@ export var BoxZoom = Handler.extend({
 
 		DomUtil.setPosition(this._box, bounds.min);
 
-		this._box.style.width  = size.x + 'px';
-		this._box.style.height = size.y + 'px';
+		this._box.style.width  = `${size.x}px`;
+		this._box.style.height = `${size.y}px`;
 	},
 
 	_finish: function () {

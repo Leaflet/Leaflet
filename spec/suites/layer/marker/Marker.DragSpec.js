@@ -55,7 +55,7 @@ describe("Marker.Drag", function () {
 
 			beforeEach(function () {
 				container.style.webkitTransformOrigin = 'top left';
-				container.style.webkitTransform = 'scale(' + scale.x + ', ' + scale.y + ')';
+				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
 			it("drags a marker with mouse, compensating for CSS scale", function (done) {

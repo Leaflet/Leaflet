@@ -606,7 +606,7 @@ describe("L.GeoJSON functions", function () {
 		].forEach(function (item) {
 			var geometry = item[0], expectedType = item[1];
 
-			it("creates a Layer from a GeoJSON feature (type='" + geometry.type + "')", function () {
+			it(`creates a Layer from a GeoJSON feature (type='${geometry.type}')`, function () {
 				var layer = L.GeoJSON.geometryToLayer({
 					type: "Feature",
 					geometry: geometry
@@ -614,7 +614,7 @@ describe("L.GeoJSON functions", function () {
 				expect(layer).to.be.a(expectedType);
 			});
 
-			it("creates a Layer from a GeoJSON geometry (type='" + geometry.type + "')", function () {
+			it(`creates a Layer from a GeoJSON geometry (type='${geometry.type}')`, function () {
 				var layer = L.GeoJSON.geometryToLayer(geometry);
 				expect(layer).to.be.a(expectedType);
 			});

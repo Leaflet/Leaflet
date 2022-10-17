@@ -191,22 +191,20 @@ export var Popup = DivOverlay.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-		    container = this._container = DomUtil.create('div',
-			prefix + ' ' + (this.options.className || '') +
-			' leaflet-zoom-animated');
+		    container = this._container = DomUtil.create('div', `${prefix} ${this.options.className || ''} leaflet-zoom-animated`);
 
-		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
-		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
+		var wrapper = this._wrapper = DomUtil.create('div', `${prefix}-content-wrapper`, container);
+		this._contentNode = DomUtil.create('div', `${prefix}-content`, wrapper);
 
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(this._contentNode);
 		DomEvent.on(container, 'contextmenu', DomEvent.stopPropagation);
 
-		this._tipContainer = DomUtil.create('div', prefix + '-tip-container', container);
-		this._tip = DomUtil.create('div', prefix + '-tip', this._tipContainer);
+		this._tipContainer = DomUtil.create('div', `${prefix}-tip-container`, container);
+		this._tip = DomUtil.create('div', `${prefix}-tip`, this._tipContainer);
 
 		if (this.options.closeButton) {
-			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
+			var closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
 			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
 			closeButton.setAttribute('aria-label', 'Close popup');
 			closeButton.href = '#close';
@@ -230,7 +228,7 @@ export var Popup = DivOverlay.extend({
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		style.width = (width + 1) + 'px';
+		style.width = `${width + 1}px`;
 		style.whiteSpace = '';
 
 		style.height = '';
@@ -240,7 +238,7 @@ export var Popup = DivOverlay.extend({
 		    scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
-			style.height = maxHeight + 'px';
+			style.height = `${maxHeight}px`;
 			DomUtil.addClass(container, scrolledClass);
 		} else {
 			DomUtil.removeClass(container, scrolledClass);

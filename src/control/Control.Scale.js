@@ -46,7 +46,7 @@ export var Scale = Control.extend({
 		    container = DomUtil.create('div', className),
 		    options = this.options;
 
-		this._addScales(options, className + '-line', container);
+		this._addScales(options, `${className}-line`, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		map.whenReady(this._update, this);
@@ -89,7 +89,7 @@ export var Scale = Control.extend({
 
 	_updateMetric: function (maxMeters) {
 		var meters = this._getRoundNum(maxMeters),
-		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
+		    label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	},
@@ -101,21 +101,21 @@ export var Scale = Control.extend({
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
 			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, miles + ' mi', miles / maxMiles);
+			this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
 
 		} else {
 			feet = this._getRoundNum(maxFeet);
-			this._updateScale(this._iScale, feet + ' ft', feet / maxFeet);
+			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
 		}
 	},
 
 	_updateScale: function (scale, text, ratio) {
-		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
+		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
 		scale.innerHTML = text;
 	},
 
 	_getRoundNum: function (num) {
-		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
+		var pow10 = Math.pow(10, (`${Math.floor(num)}`).length - 1),
 		    d = num / pow10;
 
 		d = d >= 10 ? 10 :

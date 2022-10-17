@@ -112,8 +112,8 @@ export var Canvas = Renderer.extend({
 		// set canvas size (also clearing it); use double size on retina
 		container.width = m * size.x;
 		container.height = m * size.y;
-		container.style.width = size.x + 'px';
-		container.style.height = size.y + 'px';
+		container.style.width = `${size.x}px`;
+		container.style.height = `${size.y}px`;
 
 		if (Browser.retina) {
 			this._ctx.scale(2, 2);
