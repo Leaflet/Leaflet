@@ -11,8 +11,8 @@ describe("Marker", function () {
 		map.setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
 		icon2 = new L.Icon.Default({
-			iconUrl: icon1.options.iconUrl + '?2',
-			shadowUrl: icon1.options.shadowUrl + '?2'
+			iconUrl: `${icon1.options.iconUrl}?2`,
+			shadowUrl: `${icon1.options.shadowUrl}?2`
 		});
 	});
 
@@ -26,7 +26,7 @@ describe("Marker", function () {
 			var expectedX = 96;
 			var expectedY = 100;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1.options.iconUrl + '?3',
+				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: [expectedX, expectedY]
 			});
 
@@ -35,14 +35,14 @@ describe("Marker", function () {
 
 			var icon = marker._icon;
 
-			expect(icon.style.width).to.be(expectedX + 'px');
-			expect(icon.style.height).to.be(expectedY + 'px');
+			expect(icon.style.width).to.be(`${expectedX}px`);
+			expect(icon.style.height).to.be(`${expectedY}px`);
 		});
 
 		it("set the correct x and y size attributes passing only one value", function () {
 			var expectedXY = 96;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1.options.iconUrl + '?3',
+				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: expectedXY
 			});
 
@@ -51,14 +51,14 @@ describe("Marker", function () {
 
 			var icon = marker._icon;
 
-			expect(icon.style.width).to.be(expectedXY + 'px');
-			expect(icon.style.height).to.be(expectedXY + 'px');
+			expect(icon.style.width).to.be(`${expectedXY}px`);
+			expect(icon.style.height).to.be(`${expectedXY}px`);
 		});
 
 		it("set the correct x and y size attributes passing a L.Point instance", function () {
 			var expectedXY = 96;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1.options.iconUrl + '?3',
+				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: L.point(expectedXY, expectedXY)
 			});
 
@@ -67,8 +67,8 @@ describe("Marker", function () {
 
 			var icon = marker._icon;
 
-			expect(icon.style.width).to.be(expectedXY + 'px');
-			expect(icon.style.height).to.be(expectedXY + 'px');
+			expect(icon.style.width).to.be(`${expectedXY}px`);
+			expect(icon.style.height).to.be(`${expectedXY}px`);
 		});
 
 		it("changes the icon to another image while re-using the IMG element", function () {

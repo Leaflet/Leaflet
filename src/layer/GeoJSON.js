@@ -6,9 +6,8 @@ import {Circle} from './vector/Circle';
 import {CircleMarker} from './vector/CircleMarker';
 import {Polyline} from './vector/Polyline';
 import {Polygon} from './vector/Polygon';
-import {LatLng} from '../geo/LatLng';
+import {LatLng, toLatLng} from '../geo/LatLng';
 import * as LineUtil from '../geometry/LineUtil';
-import {toLatLng} from '../geo/LatLng';
 
 
 /*
@@ -350,7 +349,7 @@ Polyline.include({
 		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
 		return getFeature(this, {
-			type: (multi ? 'Multi' : '') + 'LineString',
+			type: `${multi ? 'Multi' : ''}LineString`,
 			coordinates: coords
 		});
 	}
@@ -372,7 +371,7 @@ Polygon.include({
 		}
 
 		return getFeature(this, {
-			type: (multi ? 'Multi' : '') + 'Polygon',
+			type: `${multi ? 'Multi' : ''}Polygon`,
 			coordinates: coords
 		});
 	}

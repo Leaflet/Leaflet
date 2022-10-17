@@ -229,8 +229,8 @@ export var ImageOverlay = Layer.extend({
 
 		DomUtil.setPosition(image, bounds.min);
 
-		image.style.width  = size.x + 'px';
-		image.style.height = size.y + 'px';
+		image.style.width  = `${size.x}px`;
+		image.style.height = `${size.y}px`;
 	},
 
 	_updateOpacity: function () {

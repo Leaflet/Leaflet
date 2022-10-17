@@ -682,7 +682,7 @@ export var Map = Evented.extend({
 		// Fired when geolocation (using the [`locate`](#map-locate) method) failed.
 		this.fire('locationerror', {
 			code: c,
-			message: 'Geolocation error: ' + message + '.'
+			message: `Geolocation error: ${message}.`
 		});
 	},
 
@@ -805,7 +805,7 @@ export var Map = Evented.extend({
 	// then returns it. The pane is created as a child of `container`, or
 	// as a child of the main map pane if not set.
 	createPane: function (name, container) {
-		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
+		var className = `leaflet-pane${name ? ` leaflet-${name.replace('Pane', '')}-pane` : ''}`,
 		    pane = DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
@@ -1103,11 +1103,11 @@ export var Map = Evented.extend({
 
 		this._fadeAnimated = this.options.fadeAnimation && Browser.any3d;
 
-		DomUtil.addClass(container, 'leaflet-container' +
-			(Browser.touch ? ' leaflet-touch' : '') +
-			(Browser.retina ? ' leaflet-retina' : '') +
-			(Browser.safari ? ' leaflet-safari' : '') +
-			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
+		DomUtil.addClass(container, `leaflet-container${
+			Browser.touch ? ' leaflet-touch' : ''
+		}${Browser.retina ? ' leaflet-retina' : ''
+		}${Browser.safari ? ' leaflet-safari' : ''
+		}${this._fadeAnimated ? ' leaflet-fade-anim' : ''}`);
 
 		var position = DomUtil.getStyle(container, 'position');
 

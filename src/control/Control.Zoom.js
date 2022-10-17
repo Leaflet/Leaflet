@@ -40,13 +40,13 @@ export var Zoom = Control.extend({
 
 	onAdd: function (map) {
 		var zoomName = 'leaflet-control-zoom',
-		    container = DomUtil.create('div', zoomName + ' leaflet-bar'),
+		    container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		    options = this.options;
 
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
-		        zoomName + '-in',  container, this._zoomIn);
+		        `${zoomName}-in`,  container, this._zoomIn);
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-		        zoomName + '-out', container, this._zoomOut);
+		        `${zoomName}-out`, container, this._zoomOut);
 
 		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);

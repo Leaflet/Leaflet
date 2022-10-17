@@ -123,7 +123,7 @@ export var Icon = Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options;
-		var sizeOption = options[name + 'Size'];
+		var sizeOption = options[`${name}Size`];
 
 		if (typeof sizeOption === 'number') {
 			sizeOption = [sizeOption, sizeOption];
@@ -133,16 +133,16 @@ export var Icon = Class.extend({
 		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
-		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
+		img.className = `leaflet-marker-${name} ${options.className || ''}`;
 
 		if (anchor) {
-			img.style.marginLeft = (-anchor.x) + 'px';
-			img.style.marginTop  = (-anchor.y) + 'px';
+			img.style.marginLeft = `${-anchor.x}px`;
+			img.style.marginTop  = `${-anchor.y}px`;
 		}
 
 		if (size) {
-			img.style.width  = size.x + 'px';
-			img.style.height = size.y + 'px';
+			img.style.width  = `${size.x}px`;
+			img.style.height = `${size.y}px`;
 		}
 	},
 
@@ -153,7 +153,7 @@ export var Icon = Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		return Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
 });
 

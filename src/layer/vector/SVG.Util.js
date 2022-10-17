@@ -22,7 +22,7 @@ export function pointsToPath(rings, closed) {
 
 		for (j = 0, len2 = points.length; j < len2; j++) {
 			p = points[j];
-			str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
+			str += `${(j ? 'L' : 'M') + p.x} ${p.y}`;
 		}
 
 		// closes the ring for polygons

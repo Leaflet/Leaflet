@@ -156,7 +156,7 @@ describe('ImageOverlay', function () {
 		testCrossOriginValue('use-credentials', 'use-credentials');
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
-			it('uses crossOrigin option value ' + crossOrigin, function () {
+			it(`uses crossOrigin option value ${crossOrigin}`, function () {
 				overlay = L.imageOverlay(blankUrl, imageBounds, {
 					crossOrigin: crossOrigin
 				});

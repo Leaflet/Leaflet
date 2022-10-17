@@ -309,8 +309,8 @@ export var DivOverlay = Layer.extend({
 		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the overlay in case the height of the overlay changes (images loading etc)
-		this._container.style.bottom = bottom + 'px';
-		this._container.style.left = left + 'px';
+		this._container.style.bottom = `${bottom}px`;
+		this._container.style.left = `${left}px`;
 	},
 
 	_getAnchor: function () {

@@ -133,12 +133,12 @@ export var Tooltip = DivOverlay.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-tooltip',
-		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
+		    className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
 		this._container.setAttribute('role', 'tooltip');
-		this._container.setAttribute('id', 'leaflet-tooltip-' + Util.stamp(this));
+		this._container.setAttribute('id', `leaflet-tooltip-${Util.stamp(this)}`);
 	},
 
 	_updateLayout: function () {},
@@ -188,7 +188,7 @@ export var Tooltip = DivOverlay.extend({
 		DomUtil.removeClass(container, 'leaflet-tooltip-left');
 		DomUtil.removeClass(container, 'leaflet-tooltip-top');
 		DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
-		DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
+		DomUtil.addClass(container, `leaflet-tooltip-${direction}`);
 		DomUtil.setPosition(container, pos);
 	},
 
@@ -305,7 +305,7 @@ Layer.include({
 		    events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		    };
+		  };
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;

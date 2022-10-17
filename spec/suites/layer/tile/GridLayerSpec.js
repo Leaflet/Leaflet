@@ -57,7 +57,7 @@ describe('GridLayer', function () {
 			var coords = tiles[i].coords,
 			    pos = L.DomUtil.getPosition(tiles[i].tile);
 
-			loaded[pos.x + ':' + pos.y] = [coords.x, coords.y];
+			loaded[`${pos.x}:${pos.y}`] = [coords.x, coords.y];
 		}
 
 		expect(loaded).to.eql({
@@ -1022,7 +1022,7 @@ describe('GridLayer', function () {
 			var loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
-				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				loadedTileKeys.push(`${coords.x}:${coords.y}:${coords.z}`);
 				return document.createElement('div');
 			};
 
@@ -1043,7 +1043,7 @@ describe('GridLayer', function () {
 			var loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
-				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				loadedTileKeys.push(`${coords.x}:${coords.y}:${coords.z}`);
 				return document.createElement('div');
 			};
 
@@ -1065,7 +1065,7 @@ describe('GridLayer', function () {
 			var loadedTileKeys = [];
 
 			grid.createTile = function (coords) {
-				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				loadedTileKeys.push(`${coords.x}:${coords.y}:${coords.z}`);
 				return document.createElement('div');
 			};
 

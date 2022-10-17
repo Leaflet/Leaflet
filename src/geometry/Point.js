@@ -189,9 +189,7 @@ Point.prototype = {
 	// @method toString(): String
 	// Returns a string representation of the point for debugging purposes.
 	toString: function () {
-		return 'Point(' +
-		        formatNum(this.x) + ', ' +
-		        formatNum(this.y) + ')';
+		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
 	}
 };
 

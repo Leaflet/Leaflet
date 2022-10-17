@@ -60,7 +60,7 @@ describe('Tooltip', function () {
 		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
 		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 		group.bindTooltip(function (layer) {
-			return 'Group tooltip: ' + layer.options.description;
+			return `Group tooltip: ${layer.options.description}`;
 		});
 
 		var element1 = marker1.getElement();
@@ -100,7 +100,7 @@ describe('Tooltip', function () {
 		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
 		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 		group.bindTooltip(function (layer) {
-			return 'Group tooltip: ' + layer.options.description;
+			return `Group tooltip: ${layer.options.description}`;
 		});
 
 		var element = marker2.getElement();

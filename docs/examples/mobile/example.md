@@ -22,7 +22,7 @@ css: "body {
 		var radius = e.accuracy / 2;
 
 		var locationMarker = L.marker(e.latlng).addTo(map)
-			.bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
 		var locationCircle = L.circle(e.latlng, radius).addTo(map);
 	}

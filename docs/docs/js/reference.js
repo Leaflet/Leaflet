@@ -17,7 +17,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 				el.onclick = function () {
 					return function (ev) {
 						if (ev.offsetX < 0) {
-							window.location.hash = '#' + ev.target.id;
+							window.location.hash = `#${ev.target.id}`;
 						}
 					};
 				}(el.id);
@@ -30,7 +30,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 				el.parentNode.onclick = function () {
 					return function (ev) {
 						if (ev.offsetX < 0) {
-							window.location.hash = '#' + ev.target.parentNode.id;
+							window.location.hash = `#${ev.target.parentNode.id}`;
 						}
 					};
 				}(el.id);
@@ -65,10 +65,10 @@ if (document.body.className.indexOf('api-page') !== -1) {
 			setTimeout(function () {
 				// .closest('.accordion') would be a alternative but is not working in IE
 				var getParentAccordion = function (el) {
-					while (el.parentNode && (' ' + el.parentNode.className + ' ').indexOf(' accordion ') === -1) {
+					while (el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') === -1) {
 						el = el.parentNode;
 					}
-					return el.parentNode && (' ' + el.parentNode.className + ' ').indexOf(' accordion ') > -1 ? el.parentNode : null;
+					return el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') > -1 ? el.parentNode : null;
 				};
 
 				var elm = document.getElementById(urlAnchor.substring(1));
