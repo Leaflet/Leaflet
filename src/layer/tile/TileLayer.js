@@ -185,17 +185,14 @@ export var TileLayer = GridLayer.extend({
 			y: coords.y,
 			z: this._getZoomForUrl()
 		};
-		
-		if(this._map) {
-			var invertedY = this._globalTileRange.max.y - coords.y;
+		if (this._map) {
 			if (!this._map.options.crs.infinite) {
 				var invertedY = this._globalTileRange.max.y - coords.y;
 				if (this.options.tms) {
 					data['y'] = invertedY;
 				}
 				data['-y'] = invertedY;
-			}
-			else if (this._map.options.crs.transformation._c == -1) {
+			} else if (this._map.options.crs.transformation._c === -1) {
 				data['-y'] = (-1 * coords.y) - 1;  // invert y, offset origin to bottom/left corner
 			}
 		}
