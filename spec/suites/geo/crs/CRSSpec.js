@@ -239,10 +239,10 @@ describe("CRS", function () {
 
 describe("CRS.ZoomNotPowerOfTwo", function () {
 	var crs = L.extend({}, L.CRS, {
-		scale: function (zoom) {
+		scale(zoom) {
 			return 256 * Math.pow(1.5, zoom);
 		},
-		zoom: function (scale) {
+		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);
 		}
 	});

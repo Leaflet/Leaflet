@@ -609,7 +609,7 @@ describe("L.GeoJSON functions", function () {
 			it(`creates a Layer from a GeoJSON feature (type='${geometry.type}')`, function () {
 				var layer = L.GeoJSON.geometryToLayer({
 					type: "Feature",
-					geometry: geometry
+					geometry
 				});
 				expect(layer).to.be.a(expectedType);
 			});

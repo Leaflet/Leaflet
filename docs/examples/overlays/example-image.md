@@ -17,7 +17,7 @@ title: Image Overlay Tutorial
 
 	var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, {
 		opacity: 0.8,
-		errorOverlayUrl: errorOverlayUrl,
+		errorOverlayUrl,
 		alt: altText,
 		interactive: true
 	}).addTo(map);

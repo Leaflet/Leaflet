@@ -41,7 +41,7 @@ export var DivOverlay = Layer.extend({
 		content: ''
 	},
 
-	initialize: function (options, source) {
+	initialize(options, source) {
 		if (options && (options instanceof LatLng || Util.isArray(options))) {
 			this._latlng = toLatLng(options);
 			Util.setOptions(this, source);
@@ -57,7 +57,7 @@ export var DivOverlay = Layer.extend({
 	// @method openOn(map: Map): this
 	// Adds the overlay to the map.
 	// Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
-	openOn: function (map) {
+	openOn(map) {
 		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
 		if (!map.hasLayer(this)) {
 			map.addLayer(this);
@@ -69,7 +69,7 @@ export var DivOverlay = Layer.extend({
 	// Closes the overlay.
 	// Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
 	// and `layer.closePopup()`/`.closeTooltip()`.
-	close: function () {
+	close() {
 		if (this._map) {
 			this._map.removeLayer(this);
 		}
@@ -80,7 +80,7 @@ export var DivOverlay = Layer.extend({
 	// Opens or closes the overlay bound to layer depending on its current state.
 	// Argument may be omitted only for overlay bound to layer.
 	// Alternative to `layer.togglePopup()`/`.toggleTooltip()`.
-	toggle: function (layer) {
+	toggle(layer) {
 		if (this._map) {
 			this.close();
 		} else {
@@ -97,7 +97,7 @@ export var DivOverlay = Layer.extend({
 		return this;
 	},
 
-	onAdd: function (map) {
+	onAdd(map) {
 		this._zoomAnimated = map._zoomAnimated;
 
 		if (!this._container) {
@@ -124,7 +124,7 @@ export var DivOverlay = Layer.extend({
 		}
 	},
 
-	onRemove: function (map) {
+	onRemove(map) {
 		if (map._fadeAnimated) {
 			DomUtil.setOpacity(this._container, 0);
 			this._removeTimeout = setTimeout(DomUtil.remove.bind(null, this._container), 200);
@@ -141,13 +141,13 @@ export var DivOverlay = Layer.extend({
 	// @namespace DivOverlay
 	// @method getLatLng: LatLng
 	// Returns the geographical point of the overlay.
-	getLatLng: function () {
+	getLatLng() {
 		return this._latlng;
 	},
 
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the overlay will open.
-	setLatLng: function (latlng) {
+	setLatLng(latlng) {
 		this._latlng = toLatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
@@ -158,14 +158,14 @@ export var DivOverlay = Layer.extend({
 
 	// @method getContent: String|HTMLElement
 	// Returns the content of the overlay.
-	getContent: function () {
+	getContent() {
 		return this._content;
 	},
 
 	// @method setContent(htmlContent: String|HTMLElement|Function): this
 	// Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
 	// The function should return a `String` or `HTMLElement` to be used in the overlay.
-	setContent: function (content) {
+	setContent(content) {
 		this._content = content;
 		this.update();
 		return this;
@@ -173,13 +173,13 @@ export var DivOverlay = Layer.extend({
 
 	// @method getElement: String|HTMLElement
 	// Returns the HTML container of the overlay.
-	getElement: function () {
+	getElement() {
 		return this._container;
 	},
 
 	// @method update: null
 	// Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.
-	update: function () {
+	update() {
 		if (!this._map) { return; }
 
 		this._container.style.visibility = 'hidden';
@@ -193,7 +193,7 @@ export var DivOverlay = Layer.extend({
 		this._adjustPan();
 	},
 
-	getEvents: function () {
+	getEvents() {
 		var events = {
 			zoom: this._updatePosition,
 			viewreset: this._updatePosition
@@ -207,13 +207,13 @@ export var DivOverlay = Layer.extend({
 
 	// @method isOpen: Boolean
 	// Returns `true` when the overlay is visible on the map.
-	isOpen: function () {
+	isOpen() {
 		return !!this._map && this._map.hasLayer(this);
 	},
 
 	// @method bringToFront: this
 	// Brings this overlay in front of other overlays (in the same map pane).
-	bringToFront: function () {
+	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
 		}
@@ -222,7 +222,7 @@ export var DivOverlay = Layer.extend({
 
 	// @method bringToBack: this
 	// Brings this overlay to the back of other overlays (in the same map pane).
-	bringToBack: function () {
+	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
 		}
@@ -230,7 +230,7 @@ export var DivOverlay = Layer.extend({
 	},
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
-	_prepareOpen: function (latlng) {
+	_prepareOpen(latlng) {
 		var source = this._source;
 		if (!source._map) { return false; }
 
@@ -270,7 +270,7 @@ export var DivOverlay = Layer.extend({
 		return true;
 	},
 
-	_updateContent: function () {
+	_updateContent() {
 		if (!this._content) { return; }
 
 		var node = this._contentNode;
@@ -292,7 +292,7 @@ export var DivOverlay = Layer.extend({
 		this.fire('contentupdate');
 	},
 
-	_updatePosition: function () {
+	_updatePosition() {
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
@@ -313,14 +313,14 @@ export var DivOverlay = Layer.extend({
 		this._container.style.left = `${left}px`;
 	},
 
-	_getAnchor: function () {
+	_getAnchor() {
 		return [0, 0];
 	}
 
 });
 
 Map.include({
-	_initOverlay: function (OverlayClass, content, latlng, options) {
+	_initOverlay(OverlayClass, content, latlng, options) {
 		var overlay = content;
 		if (!(overlay instanceof OverlayClass)) {
 			overlay = new OverlayClass(options).setContent(content);
@@ -334,7 +334,7 @@ Map.include({
 
 
 Layer.include({
-	_initOverlay: function (OverlayClass, old, content, options) {
+	_initOverlay(OverlayClass, old, content, options) {
 		var overlay = content;
 		if (overlay instanceof OverlayClass) {
 			Util.setOptions(overlay, options);

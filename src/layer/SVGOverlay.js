@@ -24,7 +24,7 @@ import * as Util from '../core/Util';
  */
 
 export var SVGOverlay = ImageOverlay.extend({
-	_initImage: function () {
+	_initImage() {
 		var el = this._image = this._url;
 
 		DomUtil.addClass(el, 'leaflet-image-layer');

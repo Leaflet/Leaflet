@@ -17,15 +17,15 @@ export var Simple = Util.extend({}, CRS, {
 	projection: LonLat,
 	transformation: toTransformation(1, 0, -1, 0),
 
-	scale: function (zoom) {
+	scale(zoom) {
 		return Math.pow(2, zoom);
 	},
 
-	zoom: function (scale) {
+	zoom(scale) {
 		return Math.log(scale) / Math.LN2;
 	},
 
-	distance: function (latlng1, latlng2) {
+	distance(latlng1, latlng2) {
 		var dx = latlng2.lng - latlng1.lng,
 		    dy = latlng2.lat - latlng1.lat;
 

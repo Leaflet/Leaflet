@@ -41,14 +41,14 @@ module.exports = function (config) {
 		frameworks: ['mocha', 'sinon', 'expect'],
 
 		// list of files / patterns to load in the browser
-		files: files,
+		files,
 		proxies: {
 			'/base/dist/images/': 'dist/images/'
 		},
 		exclude: [],
 
 		// Rollup the ES6 Leaflet sources into just one file, before tests
-		preprocessors: preprocessors,
+		preprocessors,
 		rollupPreprocessor: {
 			onwarn: () => {}, // silence Rollup warnings
 			plugins: [

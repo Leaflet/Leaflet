@@ -32,13 +32,13 @@ title: GeoJSON tutorial
 	/* global campus, bicycleRental, freeBus, coorsField */
 	var bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
 
-		style: function (feature) {
+		style(feature) {
 			return feature.properties && feature.properties.style;
 		},
 
-		onEachFeature: onEachFeature,
+		onEachFeature,
 
-		pointToLayer: function (feature, latlng) {
+		pointToLayer(feature, latlng) {
 			return L.circleMarker(latlng, {
 				radius: 8,
 				fillColor: '#ff7800',
@@ -52,7 +52,7 @@ title: GeoJSON tutorial
 
 	var freeBusLayer = L.geoJSON(freeBus, {
 
-		filter: function (feature, layer) {
+		filter(feature, layer) {
 			if (feature.properties) {
 				// If the property "underConstruction" exists and is true, return false (don't render features under construction)
 				return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
@@ -60,16 +60,16 @@ title: GeoJSON tutorial
 			return false;
 		},
 
-		onEachFeature: onEachFeature
+		onEachFeature
 	}).addTo(map);
 
 	var coorsLayer = L.geoJSON(coorsField, {
 
-		pointToLayer: function (feature, latlng) {
+		pointToLayer(feature, latlng) {
 			return L.marker(latlng, {icon: baseballIcon});
 		},
 
-		onEachFeature: onEachFeature
+		onEachFeature
 	}).addTo(map);
 
 </script>
