@@ -6,11 +6,11 @@
 
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
-export function extend(dest) {
+export function extend(dest, ...args) {
 	var i, j, len, src;
 
-	for (j = 1, len = arguments.length; j < len; j++) {
-		src = arguments[j];
+	for (j = 0, len = args.length; j < len; j++) {
+		src = args[j];
 		for (i in src) {
 			dest[i] = src[i];
 		}
@@ -49,25 +49,25 @@ export function stamp(obj) {
 // function, followed by any arguments passed when invoking the bound function.
 // Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
-	var lock, args, wrapperFn, later;
+	var lock, queuedArgs, wrapperFn, later;
 
 	later = function () {
 		// reset lock and call if queued
 		lock = false;
-		if (args) {
-			wrapperFn.apply(context, args);
-			args = false;
+		if (queuedArgs) {
+			wrapperFn.apply(context, queuedArgs);
+			queuedArgs = false;
 		}
 	};
 
-	wrapperFn = function () {
+	wrapperFn = function (...args) {
 		if (lock) {
 			// called too soon, queue to call later
-			args = arguments;
+			queuedArgs = args;
 
 		} else {
 			// call and lock until later
-			fn.apply(context, arguments);
+			fn.apply(context, args);
 			setTimeout(later, time);
 			lock = true;
 		}
