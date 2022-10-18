@@ -1,30 +1,3 @@
-/* eslint no-extend-native: 0 */
-if (!Array.prototype.map) {
-	Array.prototype.map = function (fun) {
-		"use strict";
-
-		if (this === undefined || this === null) {
-			throw new TypeError();
-		}
-
-		var t = Object(this);
-		var len = t.length >>> 0;
-		if (typeof fun !== "function") {
-			throw new TypeError();
-		}
-
-		var res = new Array(len);
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
-			if (i in t) {
-				res[i] = fun.call(thisp, t[i], i, t);
-			}
-		}
-
-		return res;
-	};
-}
-
 expect.Assertion.prototype.near = function (expected, delta) {
 	expected = L.point(expected);
 	delta = delta || 1;

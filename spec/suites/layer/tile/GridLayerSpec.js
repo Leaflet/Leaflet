@@ -210,8 +210,8 @@ describe('GridLayer', function () {
 
 			var onAdd = layer.onAdd,
 			    onAddSpy = sinon.spy();
-			layer.onAdd = function () {
-				onAdd.apply(this, arguments);
+			layer.onAdd = function (...args) {
+				onAdd.apply(this, args);
 				onAddSpy();
 			};
 
