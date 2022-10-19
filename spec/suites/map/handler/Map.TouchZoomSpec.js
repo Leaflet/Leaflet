@@ -103,7 +103,7 @@ describe("Map.TouchZoom", function () {
 
 		var hand = new Hand({
 			timing: 'fastframe',
-			onStop: function () {
+			onStop() {
 				expect(map.getCenter().lat).to.be(0);
 				expect(map.getCenter().lng > 5).to.be(true);
 				done();

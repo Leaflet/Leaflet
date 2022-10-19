@@ -84,24 +84,24 @@ export var Icon = Class.extend({
 		crossOrigin: false
 	},
 
-	initialize: function (options) {
+	initialize(options) {
 		setOptions(this, options);
 	},
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
 	// Called internally when the icon has to be shown, returns a `<img>` HTML element
 	// styled according to the options.
-	createIcon: function (oldIcon) {
+	createIcon(oldIcon) {
 		return this._createIcon('icon', oldIcon);
 	},
 
 	// @method createShadow(oldIcon?: HTMLElement): HTMLElement
 	// As `createIcon`, but for the shadow beneath it.
-	createShadow: function (oldIcon) {
+	createShadow(oldIcon) {
 		return this._createIcon('shadow', oldIcon);
 	},
 
-	_createIcon: function (name, oldIcon) {
+	_createIcon(name, oldIcon) {
 		var src = this._getIconUrl(name);
 
 		if (!src) {
@@ -121,7 +121,7 @@ export var Icon = Class.extend({
 		return img;
 	},
 
-	_setIconStyles: function (img, name) {
+	_setIconStyles(img, name) {
 		var options = this.options;
 		var sizeOption = options[`${name}Size`];
 
@@ -146,13 +146,13 @@ export var Icon = Class.extend({
 		}
 	},
 
-	_createImg: function (src, el) {
+	_createImg(src, el) {
 		el = el || document.createElement('img');
 		el.src = src;
 		return el;
 	},
 
-	_getIconUrl: function (name) {
+	_getIconUrl(name) {
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
 });

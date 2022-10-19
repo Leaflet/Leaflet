@@ -16,11 +16,11 @@ import {Point} from '../../geometry/Point';
  */
 
 export var LonLat = {
-	project: function (latlng) {
+	project(latlng) {
 		return new Point(latlng.lng, latlng.lat);
 	},
 
-	unproject: function (point) {
+	unproject(point) {
 		return new LatLng(point.y, point.x);
 	},
 

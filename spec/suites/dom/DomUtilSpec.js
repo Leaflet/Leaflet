@@ -274,7 +274,7 @@ describe('DomUtil', function () {
 			var y = 55;
 			var position = L.point(x, y);
 			L.DomUtil.setPosition(el, position);
-			expect(L.DomUtil.getPosition(el)).to.be.eql({x: x, y: y});
+			expect(L.DomUtil.getPosition(el)).to.be.eql({x, y});
 
 			var newX = 333;
 			var newY = 666;

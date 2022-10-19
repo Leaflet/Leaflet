@@ -120,8 +120,8 @@ css: "#map {
 
 	/* global statesData */
 	geojson = L.geoJson(statesData, {
-		style: style,
-		onEachFeature: onEachFeature
+		style,
+		onEachFeature
 	}).addTo(map);
 
 	map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
