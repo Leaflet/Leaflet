@@ -107,12 +107,12 @@ export var Marker = Layer.extend({
 	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
 	 */
 
-	initialize: function (latlng, options) {
+	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = latLng(latlng);
 	},
 
-	onAdd: function (map) {
+	onAdd(map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
 		if (this._zoomAnimated) {
@@ -123,7 +123,7 @@ export var Marker = Layer.extend({
 		this.update();
 	},
 
-	onRemove: function (map) {
+	onRemove(map) {
 		if (this.dragging && this.dragging.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
@@ -138,7 +138,7 @@ export var Marker = Layer.extend({
 		this._removeShadow();
 	},
 
-	getEvents: function () {
+	getEvents() {
 		return {
 			zoom: this.update,
 			viewreset: this.update
@@ -147,38 +147,38 @@ export var Marker = Layer.extend({
 
 	// @method getLatLng: LatLng
 	// Returns the current geographical position of the marker.
-	getLatLng: function () {
+	getLatLng() {
 		return this._latlng;
 	},
 
 	// @method setLatLng(latlng: LatLng): this
 	// Changes the marker position to the given point.
-	setLatLng: function (latlng) {
+	setLatLng(latlng) {
 		var oldLatLng = this._latlng;
 		this._latlng = latLng(latlng);
 		this.update();
 
 		// @event move: Event
 		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
-		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
+		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	},
 
 	// @method setZIndexOffset(offset: Number): this
 	// Changes the [zIndex offset](#marker-zindexoffset) of the marker.
-	setZIndexOffset: function (offset) {
+	setZIndexOffset(offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	},
 
 	// @method getIcon: Icon
 	// Returns the current icon used by the marker
-	getIcon: function () {
+	getIcon() {
 		return this.options.icon;
 	},
 
 	// @method setIcon(icon: Icon): this
 	// Changes the marker icon.
-	setIcon: function (icon) {
+	setIcon(icon) {
 
 		this.options.icon = icon;
 
@@ -194,11 +194,11 @@ export var Marker = Layer.extend({
 		return this;
 	},
 
-	getElement: function () {
+	getElement() {
 		return this._icon;
 	},
 
-	update: function () {
+	update() {
 
 		if (this._icon && this._map) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
@@ -208,7 +208,7 @@ export var Marker = Layer.extend({
 		return this;
 	},
 
-	_initIcon: function () {
+	_initIcon() {
 		var options = this.options,
 		    classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
@@ -280,7 +280,7 @@ export var Marker = Layer.extend({
 		}
 	},
 
-	_removeIcon: function () {
+	_removeIcon() {
 		if (this.options.riseOnHover) {
 			this.off({
 				mouseover: this._bringToFront,
@@ -298,14 +298,14 @@ export var Marker = Layer.extend({
 		this._icon = null;
 	},
 
-	_removeShadow: function () {
+	_removeShadow() {
 		if (this._shadow) {
 			DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;
 	},
 
-	_setPos: function (pos) {
+	_setPos(pos) {
 
 		if (this._icon) {
 			DomUtil.setPosition(this._icon, pos);
@@ -320,21 +320,19 @@ export var Marker = Layer.extend({
 		this._resetZIndex();
 	},
 
-	_updateZIndex: function (offset) {
+	_updateZIndex(offset) {
 		if (this._icon) {
 			this._icon.style.zIndex = this._zIndex + offset;
 		}
 	},
 
 	_animateZoom(opt) {
-		if (this._map) {
-			var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
-			this._setPos(pos);
-		}
+		this._setPos(pos);
 	},
 
-	_initInteraction: function () {
+	_initInteraction() {
 
 		if (!this.options.interactive) { return; }
 
@@ -359,7 +357,7 @@ export var Marker = Layer.extend({
 
 	// @method setOpacity(opacity: Number): this
 	// Changes the opacity of the marker.
-	setOpacity: function (opacity) {
+	setOpacity(opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
 			this._updateOpacity();
@@ -368,7 +366,7 @@ export var Marker = Layer.extend({
 		return this;
 	},
 
-	_updateOpacity: function () {
+	_updateOpacity() {
 		var opacity = this.options.opacity;
 
 		if (this._icon) {
@@ -380,15 +378,15 @@ export var Marker = Layer.extend({
 		}
 	},
 
-	_bringToFront: function () {
+	_bringToFront() {
 		this._updateZIndex(this.options.riseOffset);
 	},
 
-	_resetZIndex: function () {
+	_resetZIndex() {
 		this._updateZIndex(0);
 	},
 
-	_panOnFocus: function () {
+	_panOnFocus() {
 		var map = this._map;
 		if (!map) { return; }
 
@@ -402,11 +400,11 @@ export var Marker = Layer.extend({
 		});
 	},
 
-	_getPopupAnchor: function () {
+	_getPopupAnchor() {
 		return this.options.icon.options.popupAnchor;
 	},
 
-	_getTooltipAnchor: function () {
+	_getTooltipAnchor() {
 		return this.options.icon.options.tooltipAnchor;
 	}
 });
