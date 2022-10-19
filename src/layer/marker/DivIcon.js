@@ -42,7 +42,7 @@ export var DivIcon = Icon.extend({
 		className: 'leaflet-div-icon'
 	},
 
-	createIcon: function (oldIcon) {
+	createIcon(oldIcon) {
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
@@ -62,7 +62,7 @@ export var DivIcon = Icon.extend({
 		return div;
 	},
 
-	createShadow: function () {
+	createShadow() {
 		return null;
 	}
 });

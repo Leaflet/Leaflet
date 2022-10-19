@@ -14,7 +14,7 @@ title: Watermark control
 	}).addTo(map);
 
 	L.Control.Watermark = L.Control.extend({
-		onAdd: function (map) {
+		onAdd(map) {
 			var img = L.DomUtil.create('img');
 
 			img.src = '../../docs/images/logo.png';
@@ -23,7 +23,7 @@ title: Watermark control
 			return img;
 		},
 
-		onRemove: function (map) {
+		onRemove(map) {
 			// Nothing to do here
 		}
 	});

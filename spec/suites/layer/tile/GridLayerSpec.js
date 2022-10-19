@@ -45,7 +45,7 @@ describe('GridLayer', function () {
 		var grid = L.gridLayer();
 		grid.createTile = function (coords) {
 			var tile = document.createElement('div');
-			tiles.push({coords: coords, tile: tile});
+			tiles.push({coords, tile});
 			return tile;
 		};
 
@@ -210,8 +210,8 @@ describe('GridLayer', function () {
 
 			var onAdd = layer.onAdd,
 			    onAddSpy = sinon.spy();
-			layer.onAdd = function () {
-				onAdd.apply(this, arguments);
+			layer.onAdd = function (...args) {
+				onAdd.apply(this, args);
 				onAddSpy();
 			};
 
@@ -234,8 +234,8 @@ describe('GridLayer', function () {
 				    minZoom = 5;
 
 				L.gridLayer({
-					maxZoom: maxZoom,
-					minZoom: minZoom
+					maxZoom,
+					minZoom
 				}).addTo(map);
 
 				expect(map.getMaxZoom()).to.be(maxZoom);

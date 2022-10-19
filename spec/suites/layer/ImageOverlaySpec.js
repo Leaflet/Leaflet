@@ -158,7 +158,7 @@ describe('ImageOverlay', function () {
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin option value ${crossOrigin}`, function () {
 				overlay = L.imageOverlay(blankUrl, imageBounds, {
-					crossOrigin: crossOrigin
+					crossOrigin
 				});
 				map.addLayer(overlay);
 

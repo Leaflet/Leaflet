@@ -30,7 +30,7 @@ export var IconDefault = Icon.extend({
 		shadowSize:  [41, 41]
 	},
 
-	_getIconUrl: function (name) {
+	_getIconUrl(name) {
 		if (typeof IconDefault.imagePath !== 'string') {	// Deprecated, backwards-compatibility only
 			IconDefault.imagePath = this._detectIconPath();
 		}
@@ -42,7 +42,7 @@ export var IconDefault = Icon.extend({
 		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
 	},
 
-	_stripUrl: function (path) {	// separate function to use in tests
+	_stripUrl(path) {	// separate function to use in tests
 		var strip = function (str, re, idx) {
 			var match = re.exec(str);
 			return match && match[idx];
@@ -51,7 +51,7 @@ export var IconDefault = Icon.extend({
 		return path && strip(path, /^(.*)marker-icon\.png$/, 1);
 	},
 
-	_detectIconPath: function () {
+	_detectIconPath() {
 		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
 		var path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8

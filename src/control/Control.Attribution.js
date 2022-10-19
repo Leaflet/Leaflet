@@ -31,13 +31,13 @@ export var Attribution = Control.extend({
 		prefix: `<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">${Browser.inlineSvg ? `${ukrainianFlag} ` : ''}Leaflet</a>`
 	},
 
-	initialize: function (options) {
+	initialize(options) {
 		Util.setOptions(this, options);
 
 		this._attributions = {};
 	},
 
-	onAdd: function (map) {
+	onAdd(map) {
 		map.attributionControl = this;
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
@@ -56,11 +56,11 @@ export var Attribution = Control.extend({
 		return this._container;
 	},
 
-	onRemove: function (map) {
+	onRemove(map) {
 		map.off('layeradd', this._addAttribution, this);
 	},
 
-	_addAttribution: function (ev) {
+	_addAttribution(ev) {
 		if (ev.layer.getAttribution) {
 			this.addAttribution(ev.layer.getAttribution());
 			ev.layer.once('remove', function () {
@@ -71,7 +71,7 @@ export var Attribution = Control.extend({
 
 	// @method setPrefix(prefix: String|false): this
 	// The HTML text shown before the attributions. Pass `false` to disable.
-	setPrefix: function (prefix) {
+	setPrefix(prefix) {
 		this.options.prefix = prefix;
 		this._update();
 		return this;
@@ -79,7 +79,7 @@ export var Attribution = Control.extend({
 
 	// @method addAttribution(text: String): this
 	// Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
-	addAttribution: function (text) {
+	addAttribution(text) {
 		if (!text) { return this; }
 
 		if (!this._attributions[text]) {
@@ -94,7 +94,7 @@ export var Attribution = Control.extend({
 
 	// @method removeAttribution(text: String): this
 	// Removes an attribution text.
-	removeAttribution: function (text) {
+	removeAttribution(text) {
 		if (!text) { return this; }
 
 		if (this._attributions[text]) {
@@ -105,7 +105,7 @@ export var Attribution = Control.extend({
 		return this;
 	},
 
-	_update: function () {
+	_update() {
 		if (!this._map) { return; }
 
 		var attribs = [];

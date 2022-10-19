@@ -65,7 +65,7 @@ export var TileLayerWMS = TileLayer.extend({
 		uppercase: false
 	},
 
-	initialize: function (url, options) {
+	initialize(url, options) {
 
 		this._url = url;
 
@@ -88,7 +88,7 @@ export var TileLayerWMS = TileLayer.extend({
 		this.wmsParams = wmsParams;
 	},
 
-	onAdd: function (map) {
+	onAdd(map) {
 
 		this._crs = this.options.crs || map.options.crs;
 		this._wmsVersion = parseFloat(this.wmsParams.version);
@@ -99,7 +99,7 @@ export var TileLayerWMS = TileLayer.extend({
 		TileLayer.prototype.onAdd.call(this, map);
 	},
 
-	getTileUrl: function (coords) {
+	getTileUrl(coords) {
 
 		var tileBounds = this._tileCoordsToNwSe(coords),
 		    crs = this._crs,
@@ -117,7 +117,7 @@ export var TileLayerWMS = TileLayer.extend({
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
-	setParams: function (params, noRedraw) {
+	setParams(params, noRedraw) {
 
 		extend(this.wmsParams, params);
 
