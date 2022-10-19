@@ -70,7 +70,7 @@ export function create(tagName, className, container) {
 // Removes `el` from its parent element
 export function remove(el) {
 	var parent = el.parentNode;
-	if (parent) {
+	if (parent && parent.contains(el)) {
 		parent.removeChild(el);
 	}
 }
