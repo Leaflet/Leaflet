@@ -326,7 +326,7 @@ export var Marker = Layer.extend({
 		}
 	},
 
-	_animateZoom: function (opt) {
+	_animateZoom(opt) {
 		if (this._map) {
 			var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
