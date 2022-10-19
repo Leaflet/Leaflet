@@ -24,38 +24,6 @@ import {LatLngBounds} from '../geo/LatLngBounds';
  */
 
 export var FeatureGroup = LayerGroup.extend({
-
-	addLayer: function (layer) {
-		if (this.hasLayer(layer)) {
-			return this;
-		}
-
-		layer.addEventParent(this);
-
-		LayerGroup.prototype.addLayer.call(this, layer);
-
-		// @event layeradd: LayerEvent
-		// Fired when a layer is added to this `FeatureGroup`
-		return this.fire('layeradd', {layer: layer});
-	},
-
-	removeLayer: function (layer) {
-		if (!this.hasLayer(layer)) {
-			return this;
-		}
-		if (layer in this._layers) {
-			layer = this._layers[layer];
-		}
-
-		layer.removeEventParent(this);
-
-		LayerGroup.prototype.removeLayer.call(this, layer);
-
-		// @event layerremove: LayerEvent
-		// Fired when a layer is removed from this `FeatureGroup`
-		return this.fire('layerremove', {layer: layer});
-	},
-
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
 	setStyle: function (style) {

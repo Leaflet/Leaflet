@@ -21,6 +21,22 @@
 
 			expect(lg.hasLayer(marker)).to.be(true);
 		});
+
+		it('fires layeradd event', function () {
+			var lg = L.layerGroup(),
+			    marker = L.marker([0, 0]),
+			    spy = sinon.spy();
+
+			lg.on('layeradd', spy);
+
+			expect(lg.addLayer(marker)).to.eql(lg);
+			expect(spy.calledWith({
+				layer: marker,
+				type: 'layeradd',
+				target: lg,
+				sourceTarget: lg
+			})).to.be.ok();
+		});
 	});
 
 	describe("#removeLayer", function () {
@@ -32,6 +48,22 @@
 			expect(lg.removeLayer(marker)).to.eql(lg);
 
 			expect(lg.hasLayer(marker)).to.be(false);
+		});
+		it('fires layerremove event', function () {
+			var lg = L.layerGroup(),
+			    marker = L.marker([0, 0]),
+			    spy = sinon.spy();
+			lg.addLayer(marker);
+
+			lg.on('layerremove', spy);
+
+			expect(lg.removeLayer(marker)).to.eql(lg);
+			expect(spy.calledWith({
+				layer: marker,
+				type: 'layerremove',
+				target: lg,
+				sourceTarget: lg
+			})).to.be.ok();
 		});
 	});
 

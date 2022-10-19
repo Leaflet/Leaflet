@@ -39,6 +39,12 @@ export var LayerGroup = Layer.extend({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
 	addLayer: function (layer) {
+		if (this.hasLayer(layer)) {
+			return this;
+		}
+
+		layer.addEventParent(this);
+
 		var id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
@@ -47,7 +53,9 @@ export var LayerGroup = Layer.extend({
 			this._map.addLayer(layer);
 		}
 
-		return this;
+		// @event layeradd: LayerEvent
+		// Fired when a layer is added to this `FeatureGroup`
+		return this.fire('layeradd', {layer: layer});
 	},
 
 	// @method removeLayer(layer: Layer): this
@@ -56,6 +64,15 @@ export var LayerGroup = Layer.extend({
 	// @method removeLayer(id: Number): this
 	// Removes the layer with the given internal ID from the group.
 	removeLayer: function (layer) {
+		if (!this.hasLayer(layer)) {
+			return this;
+		}
+		if (layer in this._layers) {
+			layer = this._layers[layer];
+		}
+
+		layer.removeEventParent(this);
+
 		var id = layer in this._layers ? layer : this.getLayerId(layer);
 
 		if (this._map && this._layers[id]) {
@@ -64,7 +81,9 @@ export var LayerGroup = Layer.extend({
 
 		delete this._layers[id];
 
-		return this;
+		// @event layerremove: LayerEvent
+		// Fired when a layer is removed from this `FeatureGroup`
+		return this.fire('layerremove', {layer: layer});
 	},
 
 	// @method hasLayer(layer: Layer): Boolean
