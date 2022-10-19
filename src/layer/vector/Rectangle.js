@@ -29,17 +29,17 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
 
 
 export var Rectangle = Polygon.extend({
-	initialize: function (latLngBounds, options) {
+	initialize(latLngBounds, options) {
 		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},
 
 	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
-	setBounds: function (latLngBounds) {
+	setBounds(latLngBounds) {
 		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
 	},
 
-	_boundsToLatLngs: function (latLngBounds) {
+	_boundsToLatLngs(latLngBounds) {
 		latLngBounds = toLatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),

@@ -18,7 +18,7 @@ title: Zoom Levels Tutorial
 	}).addTo(map);
 
 	var ZoomViewer = L.Control.extend({
-		onAdd: function () {
+		onAdd() {
 			var container = L.DomUtil.create('div');
 			var gauge = L.DomUtil.create('div');
 			container.style.width = '200px';

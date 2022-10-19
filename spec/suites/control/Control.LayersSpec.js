@@ -359,7 +359,7 @@ describe("Control.Layers", function () {
 				'Marker C': markerC
 			}, {
 				sortLayers: true,
-				sortFunction: function (a, b) { return a.options.customOption - b.options.customOption; }
+				sortFunction(a, b) { return a.options.customOption - b.options.customOption; }
 			}).addTo(map);
 
 			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span span');

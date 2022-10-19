@@ -21,7 +21,7 @@ title: Video Overlay Tutorial (video with controls)
 
 	var videoOverlay = L.videoOverlay(videoUrls, bounds, {
 		opacity: 0.8,
-		errorOverlayUrl: errorOverlayUrl,
+		errorOverlayUrl,
 		interactive: true,
 		autoplay: true,
 		muted: true,
@@ -30,7 +30,7 @@ title: Video Overlay Tutorial (video with controls)
 
 	videoOverlay.on('load', function () {
 		var MyPauseControl = L.Control.extend({
-			onAdd: function () {
+			onAdd() {
 				var button = L.DomUtil.create('button');
 				button.title = 'Pause';
 				button.innerHTML = '<span aria-hidden="true">⏸</span>';
@@ -41,7 +41,7 @@ title: Video Overlay Tutorial (video with controls)
 			}
 		});
 		var MyPlayControl = L.Control.extend({
-			onAdd: function () {
+			onAdd() {
 				var button = L.DomUtil.create('button');
 				button.title = 'Play';
 				button.innerHTML = '<span aria-hidden="true">▶️</span>';

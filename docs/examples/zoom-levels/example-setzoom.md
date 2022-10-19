@@ -26,7 +26,7 @@ title: Zoom Levels Tutorial
 	}, 4000);
 
 	var ZoomViewer = L.Control.extend({
-		onAdd: function () {
+		onAdd() {
 			var gauge = L.DomUtil.create('div');
 			gauge.style.width = '200px';
 			gauge.style.background = 'rgba(255,255,255,0.5)';

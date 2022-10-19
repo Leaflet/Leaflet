@@ -26,15 +26,15 @@ Map.mergeOptions({
 });
 
 export var TapHold = Handler.extend({
-	addHooks: function () {
+	addHooks() {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	removeHooks: function () {
+	removeHooks() {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
-	_onDown: function (e) {
+	_onDown(e) {
 		clearTimeout(this._holdTimeout);
 		if (e.touches.length !== 1) { return; }
 
@@ -60,22 +60,22 @@ export var TapHold = Handler.extend({
 		DomEvent.off(document, 'touchend touchcancel', _cancelClickPrevent);
 	},
 
-	_cancel: function () {
+	_cancel() {
 		clearTimeout(this._holdTimeout);
 		DomEvent.off(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.off(document, 'touchmove', this._onMove, this);
 	},
 
-	_onMove: function (e) {
+	_onMove(e) {
 		var first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 	},
 
-	_isTapValid: function () {
+	_isTapValid() {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
 	},
 
-	_simulateEvent: function (type, e) {
+	_simulateEvent(type, e) {
 		var simulatedEvent = new MouseEvent(type, {
 			bubbles: true,
 			cancelable: true,

@@ -88,7 +88,7 @@ export var TileLayer = GridLayer.extend({
 		referrerPolicy: false
 	},
 
-	initialize: function (url, options) {
+	initialize(url, options) {
 
 		this._url = url;
 
@@ -127,7 +127,7 @@ export var TileLayer = GridLayer.extend({
 	// Updates the layer's URL template and redraws it (unless `noRedraw` is set to `true`).
 	// If the URL does not change, the layer will not be redrawn unless
 	// the noRedraw parameter is set to false.
-	setUrl: function (url, noRedraw) {
+	setUrl(url, noRedraw) {
 		if (this._url === url && noRedraw === undefined) {
 			noRedraw = true;
 		}
@@ -144,7 +144,7 @@ export var TileLayer = GridLayer.extend({
 	// Called only internally, overrides GridLayer's [`createTile()`](#gridlayer-createtile)
 	// to return an `<img>` HTML element with the appropriate image URL given `coords`. The `done`
 	// callback is called when the tile has been loaded.
-	createTile: function (coords, done) {
+	createTile(coords, done) {
 		var tile = document.createElement('img');
 
 		DomEvent.on(tile, 'load', this._tileOnLoad.bind(this, done, tile));
@@ -177,7 +177,7 @@ export var TileLayer = GridLayer.extend({
 	// @method getTileUrl(coords: Object): String
 	// Called only internally, returns the URL for a tile given its coordinates.
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
-	getTileUrl: function (coords) {
+	getTileUrl(coords) {
 		var data = {
 			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
@@ -196,11 +196,11 @@ export var TileLayer = GridLayer.extend({
 		return Util.template(this._url, Util.extend(data, this.options));
 	},
 
-	_tileOnLoad: function (done, tile) {
+	_tileOnLoad(done, tile) {
 		done(null, tile);
 	},
 
-	_tileOnError: function (done, tile, e) {
+	_tileOnError(done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
 		if (errorUrl && tile.getAttribute('src') !== errorUrl) {
 			tile.src = errorUrl;
@@ -208,11 +208,11 @@ export var TileLayer = GridLayer.extend({
 		done(e, tile);
 	},
 
-	_onTileRemove: function (e) {
+	_onTileRemove(e) {
 		e.tile.onload = null;
 	},
 
-	_getZoomForUrl: function () {
+	_getZoomForUrl() {
 		var zoom = this._tileZoom,
 		maxZoom = this.options.maxZoom,
 		zoomReverse = this.options.zoomReverse,
@@ -225,13 +225,13 @@ export var TileLayer = GridLayer.extend({
 		return zoom + zoomOffset;
 	},
 
-	_getSubdomain: function (tilePoint) {
+	_getSubdomain(tilePoint) {
 		var index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	},
 
 	// stops loading all tiles in the background layer
-	_abortLoading: function () {
+	_abortLoading() {
 		var i, tile;
 		for (i in this._tiles) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
@@ -248,15 +248,15 @@ export var TileLayer = GridLayer.extend({
 					// @event tileabort: TileEvent
 					// Fired when a tile was loading but is now not wanted.
 					this.fire('tileabort', {
-						tile: tile,
-						coords: coords
+						tile,
+						coords
 					});
 				}
 			}
 		}
 	},
 
-	_removeTile: function (key) {
+	_removeTile(key) {
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
@@ -266,7 +266,7 @@ export var TileLayer = GridLayer.extend({
 		return GridLayer.prototype._removeTile.call(this, key);
 	},
 
-	_tileReady: function (coords, err, tile) {
+	_tileReady(coords, err, tile) {
 		if (!this._map || (tile && tile.getAttribute('src') === Util.emptyImageUrl)) {
 			return;
 		}

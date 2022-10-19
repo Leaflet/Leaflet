@@ -57,13 +57,13 @@ export var Polygon = Polyline.extend({
 		fill: true
 	},
 
-	isEmpty: function () {
+	isEmpty() {
 		return !this._latlngs.length || !this._latlngs[0].length;
 	},
 
 	// @method getCenter(): LatLng
 	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
-	getCenter: function () {
+	getCenter() {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
@@ -71,7 +71,7 @@ export var Polygon = Polyline.extend({
 		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
 	},
 
-	_convertLatLngs: function (latlngs) {
+	_convertLatLngs(latlngs) {
 		var result = Polyline.prototype._convertLatLngs.call(this, latlngs),
 		    len = result.length;
 
@@ -82,18 +82,18 @@ export var Polygon = Polyline.extend({
 		return result;
 	},
 
-	_setLatLngs: function (latlngs) {
+	_setLatLngs(latlngs) {
 		Polyline.prototype._setLatLngs.call(this, latlngs);
 		if (LineUtil.isFlat(this._latlngs)) {
 			this._latlngs = [this._latlngs];
 		}
 	},
 
-	_defaultShape: function () {
+	_defaultShape() {
 		return LineUtil.isFlat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
 	},
 
-	_clipPoints: function () {
+	_clipPoints() {
 		// polygons need a different clipping algorithm so we redefine that
 
 		var bounds = this._renderer._bounds,
@@ -121,12 +121,12 @@ export var Polygon = Polyline.extend({
 		}
 	},
 
-	_updatePath: function () {
+	_updatePath() {
 		this._renderer._updatePoly(this, true);
 	},
 
 	// Needed by the `Canvas` renderer for interactivity
-	_containsPoint: function (p) {
+	_containsPoint(p) {
 		var inside = false,
 		    part, p1, p2, i, j, k, len, len2;
 

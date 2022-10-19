@@ -7,7 +7,7 @@ Map.include({
 	// Returns the instance of `Renderer` that should be used to render the given
 	// `Path`. It will ensure that the `renderer` options of the map and paths
 	// are respected, and that the renderers do exist on the map.
-	getRenderer: function (layer) {
+	getRenderer(layer) {
 		// @namespace Path; @option renderer: Renderer
 		// Use this specific instance of `Renderer` for this path. Takes
 		// precedence over the map's [default renderer](#map-renderer).
@@ -23,7 +23,7 @@ Map.include({
 		return renderer;
 	},
 
-	_getPaneRenderer: function (name) {
+	_getPaneRenderer(name) {
 		if (name === 'overlayPane' || name === undefined) {
 			return false;
 		}
@@ -36,7 +36,7 @@ Map.include({
 		return renderer;
 	},
 
-	_createRenderer: function (options) {
+	_createRenderer(options) {
 		// @namespace Map; @option preferCanvas: Boolean = false
 		// Whether `Path`s should be rendered on a `Canvas` renderer.
 		// By default, all `Path`s are rendered in a `SVG` renderer.
