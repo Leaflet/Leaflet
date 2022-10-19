@@ -29,15 +29,15 @@ title: Tilt handler
 	var trd = [63.41, 10.41];
 	
 	L.TiltHandler = L.Handler.extend({
-		addHooks: function () {
+		addHooks() {
 			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 	
-		removeHooks: function () {
+		removeHooks() {
 			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
 
-		_tilt: function (ev) {
+		_tilt(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
 			var info;
 			var offset = L.point(ev.gamma, ev.beta);

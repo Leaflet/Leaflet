@@ -24,7 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth';
 
 export var Circle = CircleMarker.extend({
 
-	initialize: function (latlng, options, legacyOptions) {
+	initialize(latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
 			options = Util.extend({}, legacyOptions, {radius: options});
@@ -42,20 +42,20 @@ export var Circle = CircleMarker.extend({
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
-	setRadius: function (radius) {
+	setRadius(radius) {
 		this._mRadius = radius;
 		return this.redraw();
 	},
 
 	// @method getRadius(): Number
 	// Returns the current radius of a circle. Units are in meters.
-	getRadius: function () {
+	getRadius() {
 		return this._mRadius;
 	},
 
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
-	getBounds: function () {
+	getBounds() {
 		var half = [this._radius, this._radiusY || this._radius];
 
 		return new LatLngBounds(
@@ -65,7 +65,7 @@ export var Circle = CircleMarker.extend({
 
 	setStyle: Path.prototype.setStyle,
 
-	_project: function () {
+	_project() {
 
 		var lng = this._latlng.lng,
 		    lat = this._latlng.lat,

@@ -149,11 +149,11 @@ export var GridLayer = Layer.extend({
 		keepBuffer: 2
 	},
 
-	initialize: function (options) {
+	initialize(options) {
 		Util.setOptions(this, options);
 	},
 
-	onAdd: function () {
+	onAdd() {
 		this._initContainer();
 
 		this._levels = {};
@@ -162,11 +162,11 @@ export var GridLayer = Layer.extend({
 		this._resetView(); // implicit _update() call
 	},
 
-	beforeAdd: function (map) {
+	beforeAdd(map) {
 		map._addZoomLimit(this);
 	},
 
-	onRemove: function (map) {
+	onRemove(map) {
 		this._removeAllTiles();
 		DomUtil.remove(this._container);
 		map._removeZoomLimit(this);
@@ -176,7 +176,7 @@ export var GridLayer = Layer.extend({
 
 	// @method bringToFront: this
 	// Brings the tile layer to the top of all tile layers.
-	bringToFront: function () {
+	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
 			this._setAutoZIndex(Math.max);
@@ -186,7 +186,7 @@ export var GridLayer = Layer.extend({
 
 	// @method bringToBack: this
 	// Brings the tile layer to the bottom of all tile layers.
-	bringToBack: function () {
+	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
 			this._setAutoZIndex(Math.min);
@@ -196,13 +196,13 @@ export var GridLayer = Layer.extend({
 
 	// @method getContainer: HTMLElement
 	// Returns the HTML element that contains the tiles for this layer.
-	getContainer: function () {
+	getContainer() {
 		return this._container;
 	},
 
 	// @method setOpacity(opacity: Number): this
 	// Changes the [opacity](#gridlayer-opacity) of the grid layer.
-	setOpacity: function (opacity) {
+	setOpacity(opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
 		return this;
@@ -210,7 +210,7 @@ export var GridLayer = Layer.extend({
 
 	// @method setZIndex(zIndex: Number): this
 	// Changes the [zIndex](#gridlayer-zindex) of the grid layer.
-	setZIndex: function (zIndex) {
+	setZIndex(zIndex) {
 		this.options.zIndex = zIndex;
 		this._updateZIndex();
 
@@ -219,13 +219,13 @@ export var GridLayer = Layer.extend({
 
 	// @method isLoading: Boolean
 	// Returns `true` if any tile in the grid layer has not finished loading.
-	isLoading: function () {
+	isLoading() {
 		return this._loading;
 	},
 
 	// @method redraw: this
 	// Causes the layer to clear all the tiles and request them again.
-	redraw: function () {
+	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
 			var tileZoom = this._clampZoom(this._map.getZoom());
@@ -238,7 +238,7 @@ export var GridLayer = Layer.extend({
 		return this;
 	},
 
-	getEvents: function () {
+	getEvents() {
 		var events = {
 			viewprereset: this._invalidateAll,
 			viewreset: this._resetView,
@@ -268,25 +268,25 @@ export var GridLayer = Layer.extend({
 	// Called only internally, must be overridden by classes extending `GridLayer`.
 	// Returns the `HTMLElement` corresponding to the given `coords`. If the `done` callback
 	// is specified, it must be called when the tile has finished loading and drawing.
-	createTile: function () {
+	createTile() {
 		return document.createElement('div');
 	},
 
 	// @section
 	// @method getTileSize: Point
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
-	getTileSize: function () {
+	getTileSize() {
 		var s = this.options.tileSize;
 		return s instanceof Point ? s : new Point(s, s);
 	},
 
-	_updateZIndex: function () {
+	_updateZIndex() {
 		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
 			this._container.style.zIndex = this.options.zIndex;
 		}
 	},
 
-	_setAutoZIndex: function (compare) {
+	_setAutoZIndex(compare) {
 		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
 		var layers = this.getPane().children,
@@ -307,7 +307,7 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_updateOpacity: function () {
+	_updateOpacity() {
 		if (!this._map) { return; }
 
 		DomUtil.setOpacity(this._container, this.options.opacity);
@@ -345,7 +345,7 @@ export var GridLayer = Layer.extend({
 
 	_onOpaqueTile: Util.falseFn,
 
-	_initContainer: function () {
+	_initContainer() {
 		if (this._container) { return; }
 
 		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className || ''}`);
@@ -358,7 +358,7 @@ export var GridLayer = Layer.extend({
 		this.getPane().appendChild(this._container);
 	},
 
-	_updateLevels: function () {
+	_updateLevels() {
 
 		var zoom = this._tileZoom,
 		    maxZoom = this.options.maxZoom;
@@ -409,7 +409,7 @@ export var GridLayer = Layer.extend({
 
 	_onCreateLevel: Util.falseFn,
 
-	_pruneTiles: function () {
+	_pruneTiles() {
 		if (!this._map) {
 			return;
 		}
@@ -445,7 +445,7 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_removeTilesAtZoom: function (zoom) {
+	_removeTilesAtZoom(zoom) {
 		for (var key in this._tiles) {
 			if (this._tiles[key].coords.z !== zoom) {
 				continue;
@@ -454,13 +454,13 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_removeAllTiles: function () {
+	_removeAllTiles() {
 		for (var key in this._tiles) {
 			this._removeTile(key);
 		}
 	},
 
-	_invalidateAll: function () {
+	_invalidateAll() {
 		for (var z in this._levels) {
 			DomUtil.remove(this._levels[z].el);
 			this._onRemoveLevel(Number(z));
@@ -471,7 +471,7 @@ export var GridLayer = Layer.extend({
 		this._tileZoom = undefined;
 	},
 
-	_retainParent: function (x, y, z, minZoom) {
+	_retainParent(x, y, z, minZoom) {
 		var x2 = Math.floor(x / 2),
 		    y2 = Math.floor(y / 2),
 		    z2 = z - 1,
@@ -496,7 +496,7 @@ export var GridLayer = Layer.extend({
 		return false;
 	},
 
-	_retainChildren: function (x, y, z, maxZoom) {
+	_retainChildren(x, y, z, maxZoom) {
 
 		for (var i = 2 * x; i < 2 * x + 2; i++) {
 			for (var j = 2 * y; j < 2 * y + 2; j++) {
@@ -522,16 +522,16 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_resetView: function (e) {
+	_resetView(e) {
 		var animating = e && (e.pinch || e.flyTo);
 		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
 	},
 
-	_animateZoom: function (e) {
+	_animateZoom(e) {
 		this._setView(e.center, e.zoom, true, e.noUpdate);
 	},
 
-	_clampZoom: function (zoom) {
+	_clampZoom(zoom) {
 		var options = this.options;
 
 		if (undefined !== options.minNativeZoom && zoom < options.minNativeZoom) {
@@ -545,7 +545,7 @@ export var GridLayer = Layer.extend({
 		return zoom;
 	},
 
-	_setView: function (center, zoom, noPrune, noUpdate) {
+	_setView(center, zoom, noPrune, noUpdate) {
 		var tileZoom = Math.round(zoom);
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
@@ -583,13 +583,13 @@ export var GridLayer = Layer.extend({
 		this._setZoomTransforms(center, zoom);
 	},
 
-	_setZoomTransforms: function (center, zoom) {
+	_setZoomTransforms(center, zoom) {
 		for (var i in this._levels) {
 			this._setZoomTransform(this._levels[i], center, zoom);
 		}
 	},
 
-	_setZoomTransform: function (level, center, zoom) {
+	_setZoomTransform(level, center, zoom) {
 		var scale = this._map.getZoomScale(zoom, level.zoom),
 		    translate = level.origin.multiplyBy(scale)
 		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
@@ -601,7 +601,7 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_resetGrid: function () {
+	_resetGrid() {
 		var map = this._map,
 		    crs = map.options.crs,
 		    tileSize = this._tileSize = this.getTileSize(),
@@ -622,13 +622,13 @@ export var GridLayer = Layer.extend({
 		];
 	},
 
-	_onMoveEnd: function () {
+	_onMoveEnd() {
 		if (!this._map || this._map._animatingZoom) { return; }
 
 		this._update();
 	},
 
-	_getTiledPixelBounds: function (center) {
+	_getTiledPixelBounds(center) {
 		var map = this._map,
 		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
@@ -639,7 +639,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
-	_update: function (center) {
+	_update(center) {
 		var map = this._map;
 		if (!map) { return; }
 		var zoom = this._clampZoom(map.getZoom());
@@ -714,7 +714,7 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_isValidTile: function (coords) {
+	_isValidTile(coords) {
 		var crs = this._map.options.crs;
 
 		if (!crs.infinite) {
@@ -731,11 +731,11 @@ export var GridLayer = Layer.extend({
 		return latLngBounds(this.options.bounds).overlaps(tileBounds);
 	},
 
-	_keyToBounds: function (key) {
+	_keyToBounds(key) {
 		return this._tileCoordsToBounds(this._keyToTileCoords(key));
 	},
 
-	_tileCoordsToNwSe: function (coords) {
+	_tileCoordsToNwSe(coords) {
 		var map = this._map,
 		    tileSize = this.getTileSize(),
 		    nwPoint = coords.scaleBy(tileSize),
@@ -746,7 +746,7 @@ export var GridLayer = Layer.extend({
 	},
 
 	// converts tile coordinates to its geographical bounds
-	_tileCoordsToBounds: function (coords) {
+	_tileCoordsToBounds(coords) {
 		var bp = this._tileCoordsToNwSe(coords),
 		    bounds = new LatLngBounds(bp[0], bp[1]);
 
@@ -756,19 +756,19 @@ export var GridLayer = Layer.extend({
 		return bounds;
 	},
 	// converts tile coordinates to key for the tile cache
-	_tileCoordsToKey: function (coords) {
+	_tileCoordsToKey(coords) {
 		return `${coords.x}:${coords.y}:${coords.z}`;
 	},
 
 	// converts tile cache key to coordinates
-	_keyToTileCoords: function (key) {
+	_keyToTileCoords(key) {
 		var k = key.split(':'),
 		    coords = new Point(+k[0], +k[1]);
 		coords.z = +k[2];
 		return coords;
 	},
 
-	_removeTile: function (key) {
+	_removeTile(key) {
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
@@ -784,7 +784,7 @@ export var GridLayer = Layer.extend({
 		});
 	},
 
-	_initTile: function (tile) {
+	_initTile(tile) {
 		DomUtil.addClass(tile, 'leaflet-tile');
 
 		var tileSize = this.getTileSize();
@@ -795,7 +795,7 @@ export var GridLayer = Layer.extend({
 		tile.onmousemove = Util.falseFn;
 	},
 
-	_addTile: function (coords, container) {
+	_addTile(coords, container) {
 		var tilePos = this._getTilePos(coords),
 		    key = this._tileCoordsToKey(coords);
 
@@ -815,7 +815,7 @@ export var GridLayer = Layer.extend({
 		// save tile in cache
 		this._tiles[key] = {
 			el: tile,
-			coords: coords,
+			coords,
 			current: true
 		};
 
@@ -823,19 +823,19 @@ export var GridLayer = Layer.extend({
 		// @event tileloadstart: TileEvent
 		// Fired when a tile is requested and starts loading.
 		this.fire('tileloadstart', {
-			tile: tile,
-			coords: coords
+			tile,
+			coords
 		});
 	},
 
-	_tileReady: function (coords, err, tile) {
+	_tileReady(coords, err, tile) {
 		if (err) {
 			// @event tileerror: TileErrorEvent
 			// Fired when there is an error loading a tile.
 			this.fire('tileerror', {
 				error: err,
-				tile: tile,
-				coords: coords
+				tile,
+				coords
 			});
 		}
 
@@ -861,7 +861,7 @@ export var GridLayer = Layer.extend({
 			// Fired when a tile loads.
 			this.fire('tileload', {
 				tile: tile.el,
-				coords: coords
+				coords
 			});
 		}
 
@@ -881,11 +881,11 @@ export var GridLayer = Layer.extend({
 		}
 	},
 
-	_getTilePos: function (coords) {
+	_getTilePos(coords) {
 		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin);
 	},
 
-	_wrapCoords: function (coords) {
+	_wrapCoords(coords) {
 		var newCoords = new Point(
 			this._wrapX ? Util.wrapNum(coords.x, this._wrapX) : coords.x,
 			this._wrapY ? Util.wrapNum(coords.y, this._wrapY) : coords.y);
@@ -893,14 +893,14 @@ export var GridLayer = Layer.extend({
 		return newCoords;
 	},
 
-	_pxBoundsToTileRange: function (bounds) {
+	_pxBoundsToTileRange(bounds) {
 		var tileSize = this.getTileSize();
 		return new Bounds(
 			bounds.min.unscaleBy(tileSize).floor(),
 			bounds.max.unscaleBy(tileSize).ceil().subtract([1, 1]));
 	},
 
-	_noTilesToLoad: function () {
+	_noTilesToLoad() {
 		for (var key in this._tiles) {
 			if (!this._tiles[key].loaded) { return false; }
 		}

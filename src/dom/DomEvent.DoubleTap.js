@@ -81,7 +81,7 @@ export function addDoubleTapListener(obj, handler) {
 
 	return {
 		dblclick: handler,
-		simDblclick: simDblclick
+		simDblclick
 	};
 }
 

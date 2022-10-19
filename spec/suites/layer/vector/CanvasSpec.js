@@ -116,7 +116,7 @@ describe('Canvas', function () {
 			layer.on('mousedown', downSpy);
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					// Prosthetic does not fire a click when we down+up, but it real world
 					// browsers would, so let's simulate it.
 					happen.at('click', 70, 60);
@@ -138,12 +138,12 @@ describe('Canvas', function () {
 			var spy = sinon.spy();
 			var center = p2ll(300, 300);
 			var radius = p2ll(200, 200).distanceTo(center);
-			var circle = L.circle(center, {radius: radius}).addTo(map);
+			var circle = L.circle(center, {radius}).addTo(map);
 			circle.on('mousedown', spy);
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(spy.callCount).to.eql(2);
 					done();
 				}

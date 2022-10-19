@@ -37,7 +37,7 @@ title: Choropleth Tutorial
 
 	/* global statesData */
 	var geojson = L.geoJson(statesData, {
-		style: style,
+		style,
 	}).addTo(map);
 
 </script>

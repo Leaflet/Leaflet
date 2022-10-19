@@ -34,7 +34,7 @@ export var Events = {
 	 * @method on(eventMap: Object): this
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	 */
-	on: function (types, fn, context) {
+	on(types, fn, context) {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -67,7 +67,7 @@ export var Events = {
 	 * @method off: this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
-	off: function (types, fn, context) {
+	off(types, fn, context) {
 
 		if (!arguments.length) {
 			// clear all listeners if called without arguments
@@ -95,7 +95,7 @@ export var Events = {
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type, fn, context, _once) {
+	_on(type, fn, context, _once) {
 		if (typeof fn !== 'function') {
 			console.warn(`wrong listener type: ${typeof fn}`);
 			return;
@@ -111,7 +111,7 @@ export var Events = {
 			context = undefined;
 		}
 
-		var newListener = {fn: fn, ctx: context};
+		var newListener = {fn, ctx: context};
 		if (_once) {
 			newListener.once = true;
 		}
@@ -121,7 +121,7 @@ export var Events = {
 		this._events[type].push(newListener);
 	},
 
-	_off: function (type, fn, context) {
+	_off(type, fn, context) {
 		var listeners,
 		    i,
 		    len;
@@ -172,11 +172,11 @@ export var Events = {
 	// Fires an event of the specified type. You can optionally provide a data
 	// object — the first argument of the listener function will contain its
 	// properties. The event can optionally be propagated to event parents.
-	fire: function (type, data, propagate) {
+	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
 		var event = Util.extend({}, data, {
-			type: type,
+			type,
 			target: this,
 			sourceTarget: data && data.sourceTarget || this
 		});
@@ -211,7 +211,7 @@ export var Events = {
 	// @method listens(type: String, fn: Function, context?: Object, propagate?: Boolean): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
-	listens: function (type, fn, context, propagate) {
+	listens(type, fn, context, propagate) {
 		if (typeof type !== 'string') {
 			console.warn('"string" type argument expected');
 		}
@@ -241,7 +241,7 @@ export var Events = {
 	},
 
 	// returns the index (number) or false
-	_listens: function (type, fn, context) {
+	_listens(type, fn, context) {
 		if (!this._events) {
 			return false;
 		}
@@ -267,7 +267,7 @@ export var Events = {
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
-	once: function (types, fn, context) {
+	once(types, fn, context) {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -291,7 +291,7 @@ export var Events = {
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
-	addEventParent: function (obj) {
+	addEventParent(obj) {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
@@ -299,14 +299,14 @@ export var Events = {
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
-	removeEventParent: function (obj) {
+	removeEventParent(obj) {
 		if (this._eventParents) {
 			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
 	},
 
-	_propagateEvent: function (e) {
+	_propagateEvent(e) {
 		for (var id in this._eventParents) {
 			this._eventParents[id].fire(e.type, Util.extend({
 				layer: e.target,

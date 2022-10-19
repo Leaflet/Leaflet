@@ -48,14 +48,14 @@ export var Layer = Evented.extend({
 	 * @method addTo(map: Map|LayerGroup): this
 	 * Adds the layer to the given map or layer group.
 	 */
-	addTo: function (map) {
+	addTo(map) {
 		map.addLayer(this);
 		return this;
 	},
 
 	// @method remove: this
 	// Removes the layer from the map it is currently active on.
-	remove: function () {
+	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
 	},
 
@@ -65,7 +65,7 @@ export var Layer = Evented.extend({
 	// @alternative
 	// @method removeFrom(group: LayerGroup): this
 	// Removes the layer from the given `LayerGroup`
-	removeFrom: function (obj) {
+	removeFrom(obj) {
 		if (obj) {
 			obj.removeLayer(this);
 		}
@@ -74,27 +74,27 @@ export var Layer = Evented.extend({
 
 	// @method getPane(name? : String): HTMLElement
 	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
-	getPane: function (name) {
+	getPane(name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	},
 
-	addInteractiveTarget: function (targetEl) {
+	addInteractiveTarget(targetEl) {
 		this._map._targets[Util.stamp(targetEl)] = this;
 		return this;
 	},
 
-	removeInteractiveTarget: function (targetEl) {
+	removeInteractiveTarget(targetEl) {
 		delete this._map._targets[Util.stamp(targetEl)];
 		return this;
 	},
 
 	// @method getAttribution: String
 	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
-	getAttribution: function () {
+	getAttribution() {
 		return this.options.attribution;
 	},
 
-	_layerAdd: function (e) {
+	_layerAdd(e) {
 		var map = e.target;
 
 		// check in case layer gets added and then removed before the map is ready
@@ -154,7 +154,7 @@ export var Layer = Evented.extend({
 Map.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
-	addLayer: function (layer) {
+	addLayer(layer) {
 		if (!layer._layerAdd) {
 			throw new Error('The provided object is not a Layer.');
 		}
@@ -176,7 +176,7 @@ Map.include({
 
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the map.
-	removeLayer: function (layer) {
+	removeLayer(layer) {
 		var id = Util.stamp(layer);
 
 		if (!this._layers[id]) { return this; }
@@ -188,7 +188,7 @@ Map.include({
 		delete this._layers[id];
 
 		if (this._loaded) {
-			this.fire('layerremove', {layer: layer});
+			this.fire('layerremove', {layer});
 			layer.fire('remove');
 		}
 
@@ -199,7 +199,7 @@ Map.include({
 
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the map
-	hasLayer: function (layer) {
+	hasLayer(layer) {
 		return Util.stamp(layer) in this._layers;
 	},
 
@@ -211,14 +211,14 @@ Map.include({
 	 * });
 	 * ```
 	 */
-	eachLayer: function (method, context) {
+	eachLayer(method, context) {
 		for (var i in this._layers) {
 			method.call(context, this._layers[i]);
 		}
 		return this;
 	},
 
-	_addLayers: function (layers) {
+	_addLayers(layers) {
 		layers = layers ? (Util.isArray(layers) ? layers : [layers]) : [];
 
 		for (var i = 0, len = layers.length; i < len; i++) {
@@ -226,14 +226,14 @@ Map.include({
 		}
 	},
 
-	_addZoomLimit: function (layer) {
+	_addZoomLimit(layer) {
 		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
 			this._zoomBoundLayers[Util.stamp(layer)] = layer;
 			this._updateZoomLevels();
 		}
 	},
 
-	_removeZoomLimit: function (layer) {
+	_removeZoomLimit(layer) {
 		var id = Util.stamp(layer);
 
 		if (this._zoomBoundLayers[id]) {
@@ -242,7 +242,7 @@ Map.include({
 		}
 	},
 
-	_updateZoomLevels: function () {
+	_updateZoomLevels() {
 		var minZoom = Infinity,
 		    maxZoom = -Infinity,
 		    oldZoomSpan = this._getZoomSpan();

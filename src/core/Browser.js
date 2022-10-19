@@ -115,7 +115,7 @@ var passiveEvents = (function () {
 	var supportsPassiveOption = false;
 	try {
 		var opts = Object.defineProperty({}, 'passive', {
-			get: function () { // eslint-disable-line getter-return
+			get() { // eslint-disable-line getter-return
 				supportsPassiveOption = true;
 			}
 		});
@@ -155,35 +155,35 @@ function userAgentContains(str) {
 
 
 export default {
-	edge: edge,
-	webkit: webkit,
-	android: android,
-	android23: android23,
-	androidStock: androidStock,
-	opera: opera,
-	chrome: chrome,
-	gecko: gecko,
-	safari: safari,
-	phantom: phantom,
-	opera12: opera12,
-	win: win,
-	webkit3d: webkit3d,
-	gecko3d: gecko3d,
-	any3d: any3d,
-	mobile: mobile,
-	mobileWebkit: mobileWebkit,
-	mobileWebkit3d: mobileWebkit3d,
-	msPointer: msPointer,
-	pointer: pointer,
-	touch: touch,
-	touchNative: touchNative,
-	mobileOpera: mobileOpera,
-	mobileGecko: mobileGecko,
-	retina: retina,
-	passiveEvents: passiveEvents,
-	canvas: canvas,
-	svg: svg,
-	inlineSvg: inlineSvg,
-	mac: mac,
-	linux: linux
+	edge,
+	webkit,
+	android,
+	android23,
+	androidStock,
+	opera,
+	chrome,
+	gecko,
+	safari,
+	phantom,
+	opera12,
+	win,
+	webkit3d,
+	gecko3d,
+	any3d,
+	mobile,
+	mobileWebkit,
+	mobileWebkit3d,
+	msPointer,
+	pointer,
+	touch,
+	touchNative,
+	mobileOpera,
+	mobileGecko,
+	retina,
+	passiveEvents,
+	canvas,
+	svg,
+	inlineSvg,
+	mac,
+	linux
 };

@@ -47,10 +47,10 @@ describe("Map.Drag", function () {
 	});
 
 	var MyMap = L.Map.extend({
-		_getPosition: function () {
+		_getPosition() {
 			return L.DomUtil.getPosition(this.dragging._draggable._element);
 		},
-		getOffset: function () {
+		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
 	}).addInitHook('on', 'load', function () {
@@ -71,7 +71,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(map.getOffset()).to.eql(offset);
 
 					expect(map.getZoom()).to.be(1);
@@ -107,7 +107,7 @@ describe("Map.Drag", function () {
 
 				var hand = new Hand({
 					timing: 'fastframe',
-					onStop: function () {
+					onStop() {
 						expect(map.getOffset()).to.eql(offset);
 
 						expect(map.getZoom()).to.be(1);
@@ -139,7 +139,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(map.getZoom()).to.be(1);
 					// Expect center point to be the same as before the click
 					expect(map.getCenter()).to.eql(originalCenter);
@@ -171,7 +171,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					happen.click(container);
@@ -208,7 +208,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					happen.click(container);
@@ -248,7 +248,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					happen.click(marker._icon);
@@ -283,7 +283,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(map.getZoom()).to.be(1);
 					// Expect center point to be the same as before the click
 					expect(map.getCenter()).to.eql(originalCenter);
@@ -315,7 +315,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(map.getOffset()).to.eql(offset);
 
 					expect(map.getZoom()).to.be(1);
@@ -344,7 +344,7 @@ describe("Map.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(map.getZoom()).to.be(1);
 					// Expect center point to be the same as before the click
 					expect(map.getCenter().equals(originalCenter)).to.be.ok(); // small margin of error allowed
@@ -384,7 +384,7 @@ describe("Map.Drag", function () {
 			var mouseHand = new Hand({
 				timing: 'fastframe',
 				onStart: savePos,
-				onStop: function () {
+				onStop() {
 					expect(map.getCenter()).to.eql(center);
 					expect(map.getZoom()).to.eql(zoom);
 
@@ -395,7 +395,7 @@ describe("Map.Drag", function () {
 			var hand = new Hand({
 				timing: 'fastframe',
 				onStart: savePos,
-				onStop: function () {
+				onStop() {
 					expect(map.getCenter()).not.to.eql(center);
 					expect(map.getZoom()).not.to.eql(zoom);
 

@@ -15,10 +15,10 @@ describe("Marker.Drag", function () {
 	});
 
 	var MyMarker = L.Marker.extend({
-		_getPosition: function () {
+		_getPosition() {
 			return L.DomUtil.getPosition(this.dragging._draggable._element);
 		},
-		getOffset: function () {
+		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
 	}).addInitHook('on', 'add', function () {
@@ -35,7 +35,7 @@ describe("Marker.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(marker.getOffset()).to.eql(offset);
 
 					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
@@ -67,7 +67,7 @@ describe("Marker.Drag", function () {
 
 				var hand = new Hand({
 					timing: 'fastframe',
-					onStop: function () {
+					onStop() {
 						expect(marker.getOffset()).to.eql(offset);
 
 						expect(map.getCenter()).to.be.nearLatLng([0, 0]);
@@ -97,7 +97,7 @@ describe("Marker.Drag", function () {
 
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(marker.getOffset()).to.eql(offset);
 
 					// small margin of error allowed

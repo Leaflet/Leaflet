@@ -42,7 +42,6 @@ module.exports = {
 		// TODO: Re-enable the rules below and fix the linting issues.
 		'no-invalid-this': 'off',
 		'no-var': 'off',
-		'object-shorthand': 'off',
 		'prefer-arrow-callback': 'off',
 		'prefer-spread': 'off'
 	},

@@ -32,14 +32,14 @@ export var Keyboard = Handler.extend({
 		zoomOut: [189, 109, 54, 173]
 	},
 
-	initialize: function (map) {
+	initialize(map) {
 		this._map = map;
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
 	},
 
-	addHooks: function () {
+	addHooks() {
 		var container = this._map._container;
 
 		// make the container focusable by tabbing
@@ -59,7 +59,7 @@ export var Keyboard = Handler.extend({
 		}, this);
 	},
 
-	removeHooks: function () {
+	removeHooks() {
 		this._removeHooks();
 
 		off(this._map._container, {
@@ -74,7 +74,7 @@ export var Keyboard = Handler.extend({
 		}, this);
 	},
 
-	_onMouseDown: function () {
+	_onMouseDown() {
 		if (this._focused) { return; }
 
 		var body = document.body,
@@ -87,17 +87,17 @@ export var Keyboard = Handler.extend({
 		window.scrollTo(left, top);
 	},
 
-	_onFocus: function () {
+	_onFocus() {
 		this._focused = true;
 		this._map.fire('focus');
 	},
 
-	_onBlur: function () {
+	_onBlur() {
 		this._focused = false;
 		this._map.fire('blur');
 	},
 
-	_setPanDelta: function (panDelta) {
+	_setPanDelta(panDelta) {
 		var keys = this._panKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
@@ -116,7 +116,7 @@ export var Keyboard = Handler.extend({
 		}
 	},
 
-	_setZoomDelta: function (zoomDelta) {
+	_setZoomDelta(zoomDelta) {
 		var keys = this._zoomKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
@@ -129,15 +129,15 @@ export var Keyboard = Handler.extend({
 		}
 	},
 
-	_addHooks: function () {
+	_addHooks() {
 		on(document, 'keydown', this._onKeyDown, this);
 	},
 
-	_removeHooks: function () {
+	_removeHooks() {
 		off(document, 'keydown', this._onKeyDown, this);
 	},
 
-	_onKeyDown: function (e) {
+	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		var key = e.keyCode,
