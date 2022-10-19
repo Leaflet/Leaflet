@@ -720,14 +720,23 @@ export var Map = Evented.extend({
 
 	// TODO Appropriate docs section?
 	// @section Other Methods
-	// @method addHandler(name: String, HandlerClass: Function): this
+	// @method addHandler(name: String, HandlerClass: Function, index: Number): this
 	// Adds a new `Handler` to the map, given its name and constructor function.
-	addHandler: function (name, HandlerClass) {
+	// Optional handler index may be speficied.
+	// When handler index is specified the handler is inserted at specified position in the `_handlers` array.
+	// This enables to control the order in which handlers are removed when the map is being destroyed.
+	// Some handlers may need to be removed prior to not cause any errors in the code.
+	// When index is not specified the handler is added to the end of the `_handlers` array.
+	addHandler: function (name, HandlerClass, index) {
 		if (!HandlerClass) { return this; }
 
 		var handler = this[name] = new HandlerClass(this);
 
-		this._handlers.push(handler);
+		if (index === undefined || index >= this._handlers.length) {
+		    index = this._handlers.length;
+		}
+
+		this._handlers.splice(index, 0, handler);
 
 		if (this.options[name]) {
 			handler.enable();
