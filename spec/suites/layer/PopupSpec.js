@@ -1,3 +1,5 @@
+import { DomUtil } from "../../../src/dom";
+
 describe('Popup', function () {
 	var container, map, center = [55.8, 37.6];
 
@@ -46,6 +48,19 @@ describe('Popup', function () {
 		happen.click(container);
 
 		expect(map.hasLayer(popup)).to.be(true);
+	});
+
+	it("assigns closeButtonAriaLabel option value to close button's aria-label attribute", function () {
+		var testLabel = "TestLabel";
+		map.options.closeButtonAriaLabel = testLabel;
+
+		var popup = L.popup()
+			.setLatLng(center)
+			.openOn(map);
+		
+		expect(popup.closeButtonAriaLabel).toEqual(testLabel);
+		expect(DomUtil.get("leaflet-label-close-button")
+		.getAttribute("aria-label")).toEqual(testLabel);
 	});
 
 	it("toggles its visibility when marker is clicked", function () {
@@ -293,7 +308,10 @@ describe('Popup', function () {
 			expect(offsetTop - offset.y).to.eql(defaultTop);
 		});
 	});
+	
+	//===
 
+	//===
 	it("prevents an underlying map click for Layer", function () {
 		var layer = L.polygon([center, [55.9, 37.7], [56.0, 37.8]]).addTo(map);
 		layer.bindPopup("layer popup");
