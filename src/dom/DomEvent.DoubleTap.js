@@ -52,15 +52,11 @@ export function addDoubleTapListener(obj, handler) {
 		// attribute (or children of such a label), but not children of
 		// a <input>.
 		var path = DomEvent.getPropagationPath(e);
-		if (path.some(function (el) {
-			return el instanceof HTMLLabelElement && el.attributes.for;
-		}) &&
-			!path.some(function (el) {
-				return (
-					el instanceof HTMLInputElement ||
+		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
+			!path.some(el => (
+				el instanceof HTMLInputElement ||
 					el instanceof HTMLSelectElement
-				);
-			})
+			))
 		) {
 			return;
 		}

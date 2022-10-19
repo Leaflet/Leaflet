@@ -1,20 +1,20 @@
-describe('DomEvent.Pointer', function () {
+describe('DomEvent.Pointer', () => {
 	var el,
 	    listeners = {};
 
 	var pointerEvents = ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'];
 	var touchEvents = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
-	beforeEach(function () {
+	beforeEach(() => {
 		el = document.createElement('div');
 		document.body.appendChild(el);
-		touchEvents.forEach(function (type) {
+		touchEvents.forEach((type) => {
 			listeners[type] = sinon.spy();
 			L.DomEvent.on(el, type, listeners[type]);
 		});
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		happen.once(el, {type: 'pointercancel'}); // to reset prosphetic-hand
 		happen.once(el, {type: 'touchcancel'});   //
 		document.body.removeChild(el);
@@ -23,58 +23,56 @@ describe('DomEvent.Pointer', function () {
 	var skip = describe.skip;
 
 	var pointerToTouch = L.Browser.pointer && !L.Browser.touchNative;
-	(pointerToTouch ? describe : skip)('#Simulates touch based on pointer events', function () {
-		it('adds a listener and calls it on pointer event', function () {
-			pointerEvents.forEach(function (type) {
+	(pointerToTouch ? describe : skip)('#Simulates touch based on pointer events', () => {
+		it('adds a listener and calls it on pointer event', () => {
+			pointerEvents.forEach((type) => {
 				happen.once(el, {type});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].called).to.be.ok();
 				expect(listeners[type].calledOnce).to.be.ok();
 			});
 		});
 
-		it('does not call removed listener', function () {
-			touchEvents.forEach(function (type) {
+		it('does not call removed listener', () => {
+			touchEvents.forEach((type) => {
 				L.DomEvent.off(el, type, listeners[type]);
 			});
-			pointerEvents.forEach(function (type) {
+			pointerEvents.forEach((type) => {
 				happen.once(el, {type});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
 			});
 		});
 
-		it('ignores events from mouse', function () {
-			pointerEvents.forEach(function (type) {
+		it('ignores events from mouse', () => {
+			pointerEvents.forEach((type) => {
 				happen.once(el, {type, pointerType: 'mouse'});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
 			});
 		});
 
-		it('ignores native touch events', function () {
-			touchEvents.forEach(function (type) {
+		it('ignores native touch events', () => {
+			touchEvents.forEach((type) => {
 				happen.once(el, {type});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
 			});
 		});
 
-		it('does not throw on invalid event names', function () {
+		it('does not throw on invalid event names', () => {
 			L.DomEvent.on(el, 'touchleave', L.Util.falseFn);
 			L.DomEvent.off(el, 'touchleave', L.Util.falseFn);
 		});
 
-		it('simulates touch events with correct properties', function () {
+		it('simulates touch events with correct properties', () => {
 			function containIn(props, evt) {
 				if (Array.isArray(props)) {
-					return props.every(function (props0) {
-						return containIn(props0, evt);
-					});
+					return props.every(props0 => containIn(props0, evt));
 				}
 				if ('length' in evt) {
 					return Array.prototype.some.call(evt, containIn.bind(this, props));
@@ -157,21 +155,21 @@ describe('DomEvent.Pointer', function () {
 		});
 	});
 
-	(L.Browser.pointer ? skip : describe)('#Does not intrude if pointer events are not available', function () {
-		it('adds a listener and calls it on touch event', function () {
-			touchEvents.forEach(function (type) {
+	(L.Browser.pointer ? skip : describe)('#Does not intrude if pointer events are not available', () => {
+		it('adds a listener and calls it on touch event', () => {
+			touchEvents.forEach((type) => {
 				happen.once(el, {type});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].calledOnce).to.be.ok();
 			});
 		});
 
-		it('ignores pointer events', function () {
-			pointerEvents.forEach(function (type) {
+		it('ignores pointer events', () => {
+			pointerEvents.forEach((type) => {
 				happen.once(el, {type});
 			});
-			touchEvents.forEach(function (type) {
+			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
 			});
 		});

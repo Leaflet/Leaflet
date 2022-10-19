@@ -383,7 +383,7 @@ LayerGroup.include({
 	toMultiPoint(precision) {
 		var coords = [];
 
-		this.eachLayer(function (layer) {
+		this.eachLayer((layer) => {
 			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
 		});
 
@@ -407,7 +407,7 @@ LayerGroup.include({
 		var isGeometryCollection = type === 'GeometryCollection',
 		    jsons = [];
 
-		this.eachLayer(function (layer) {
+		this.eachLayer((layer) => {
 			if (layer.toGeoJSON) {
 				var json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {

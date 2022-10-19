@@ -690,9 +690,7 @@ export var GridLayer = Layer.extend({
 		}
 
 		// sort tile queue to load tiles in order of their distance to center
-		queue.sort(function (a, b) {
-			return a.distanceTo(tileCenter) - b.distanceTo(tileCenter);
-		});
+		queue.sort((a, b) => a.distanceTo(tileCenter) - b.distanceTo(tileCenter));
 
 		if (queue.length !== 0) {
 			// if it's the first batch of tiles to load

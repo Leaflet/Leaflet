@@ -15,7 +15,7 @@ if (toc) {
 	var i;
 
 	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('click', function (e) {
+		menus[i].addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
@@ -36,7 +36,7 @@ if (toc) {
 			this.previousElementSibling.classList.remove('hover');
 		});
 
-		menus[i].addEventListener('click', function (e) {
+		menus[i].addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
@@ -67,11 +67,11 @@ if (toc) {
 
 	scrollPos();
 
-	window.addEventListener('scroll', function () {
+	window.addEventListener('scroll', () => {
 		scrollPos();
 	});
 
-	window.addEventListener('load', function () {
+	window.addEventListener('load', () => {
 		var currentHash = window.location.hash;
 		if (!currentHash) { return; }
 		var elem = document.querySelector(currentHash);

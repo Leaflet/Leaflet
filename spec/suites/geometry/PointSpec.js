@@ -1,68 +1,68 @@
-describe("Point", function () {
-	describe('constructor', function () {
-		it("creates a point with the given x and y", function () {
+describe("Point", () => {
+	describe('constructor', () => {
+		it("creates a point with the given x and y", () => {
 			var p = L.point(1.5, 2.5);
 			expect(p.x).to.eql(1.5);
 			expect(p.y).to.eql(2.5);
 		});
 
-		it("rounds the given x and y if the third argument is true", function () {
+		it("rounds the given x and y if the third argument is true", () => {
 			var p = L.point(1.3, 2.7, true);
 			expect(p.x).to.eql(1);
 			expect(p.y).to.eql(3);
 		});
 	});
 
-	describe('#subtract', function () {
-		it('subtracts the given point from this one', function () {
+	describe('#subtract', () => {
+		it('subtracts the given point from this one', () => {
 			var a = L.point(50, 30),
 			    b = L.point(20, 10);
 			expect(a.subtract(b)).to.eql(L.point(30, 20));
 		});
 	});
 
-	describe('#add', function () {
-		it('adds given point to this one', function () {
+	describe('#add', () => {
+		it('adds given point to this one', () => {
 			expect(L.point(50, 30).add(L.point(20, 10))).to.eql(L.point(70, 40));
 		});
 	});
 
-	describe('#divideBy', function () {
-		it('divides this point by the given amount', function () {
+	describe('#divideBy', () => {
+		it('divides this point by the given amount', () => {
 			expect(L.point(50, 30).divideBy(5)).to.eql(L.point(10, 6));
 		});
 	});
 
-	describe('#multiplyBy', function () {
-		it('multiplies this point by the given amount', function () {
+	describe('#multiplyBy', () => {
+		it('multiplies this point by the given amount', () => {
 			expect(L.point(50, 30).multiplyBy(2)).to.eql(L.point(100, 60));
 		});
 	});
 
-	describe('#floor', function () {
-		it('returns a new point with floored coordinates', function () {
+	describe('#floor', () => {
+		it('returns a new point with floored coordinates', () => {
 			expect(L.point(50.56, 30.123).floor()).to.eql(L.point(50, 30));
 			expect(L.point(-50.56, -30.123).floor()).to.eql(L.point(-51, -31));
 		});
 	});
 
-	describe('#trunc', function () {
-		it('returns a new point with truncated coordinates', function () {
+	describe('#trunc', () => {
+		it('returns a new point with truncated coordinates', () => {
 			expect(L.point(50.56, 30.123).trunc()).to.eql(L.point(50, 30));
 			expect(L.point(-50.56, -30.123).trunc()).to.eql(L.point(-50, -30));
 		});
 	});
 
-	describe('#distanceTo', function () {
-		it('calculates distance between two points', function () {
+	describe('#distanceTo', () => {
+		it('calculates distance between two points', () => {
 			var p1 = L.point(0, 30);
 			var p2 = L.point(40, 0);
 			expect(p1.distanceTo(p2)).to.eql(50.0);
 		});
 	});
 
-	describe('#equals', function () {
-		it('returns true if points are equal', function () {
+	describe('#equals', () => {
+		it('returns true if points are equal', () => {
 			var p1 = L.point(20.4, 50.12);
 			var p2 = L.point(20.4, 50.12);
 			var p3 = L.point(20.5, 50.13);
@@ -72,8 +72,8 @@ describe("Point", function () {
 		});
 	});
 
-	describe('#contains', function () {
-		it('returns true if the point is bigger in absolute dimensions than the passed one', function () {
+	describe('#contains', () => {
+		it('returns true if the point is bigger in absolute dimensions than the passed one', () => {
 			var p1 = L.point(50, 30),
 			    p2 = L.point(-40, 20),
 			    p3 = L.point(60, -20),
@@ -85,32 +85,32 @@ describe("Point", function () {
 		});
 	});
 
-	describe('#toString', function () {
-		it('formats a string out of point coordinates', function () {
+	describe('#toString', () => {
+		it('formats a string out of point coordinates', () => {
 			expect(`${L.point(50, 30)}`).to.eql('Point(50, 30)');
 			expect(`${L.point(50.1234567, 30.1234567)}`).to.eql('Point(50.123457, 30.123457)');
 		});
 	});
 
-	describe('L.point factory', function () {
-		it('leaves L.Point instances as is', function () {
+	describe('L.point factory', () => {
+		it('leaves L.Point instances as is', () => {
 			var p = L.point(50, 30);
 			expect(L.point(p)).to.be(p);
 		});
 
-		it('creates a point out of three arguments', function () {
+		it('creates a point out of three arguments', () => {
 			expect(L.point(50.1, 30.1, true)).to.eql(L.point(50, 30));
 		});
 
-		it('creates a point from an array of coordinates', function () {
+		it('creates a point from an array of coordinates', () => {
 			expect(L.point([50, 30])).to.eql(L.point(50, 30));
 		});
 
-		it("creates a point from an object with x and y properties", function () {
+		it("creates a point from an object with x and y properties", () => {
 			expect(L.point({x: 50, y: 30})).to.eql(L.point(50, 30));
 		});
 
-		it('does not fail on invalid arguments', function () {
+		it('does not fail on invalid arguments', () => {
 			expect(L.point(undefined)).to.be(undefined);
 			expect(L.point(null)).to.be(null);
 		});

@@ -71,9 +71,7 @@ export function off(obj, types, fn, context) {
 		types = Util.splitWords(types);
 
 		if (arguments.length === 2) {
-			batchRemove(obj, function (type) {
-				return Util.indexOf(types, type) !== -1;
-			});
+			batchRemove(obj, type => Util.indexOf(types, type) !== -1);
 		} else {
 			for (var i = 0, len = types.length; i < len; i++) {
 				removeOne(obj, types[i], fn, context);

@@ -24,7 +24,7 @@ title: Zoom Levels Tutorial
 			container.style.width = '200px';
 			container.style.background = 'rgba(255,255,255,0.5)';
 			container.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function (ev) {
+			map.on('zoomstart zoom zoomend', (ev) => {
 				gauge.innerHTML = `Zoom level: ${map.getZoom()}`;
 			});
 			container.appendChild(gauge);

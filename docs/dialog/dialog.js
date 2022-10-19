@@ -22,12 +22,12 @@ function openDialog() {
 	document.body.insertBefore(dialog, document.body.firstChild);
 	document.body.classList.add('overflowHidden');
 
-	setTimeout(function () {
+	setTimeout(() => {
 		dialog.focus();
 	}, 100);
 
 	var closeBtn = document.querySelector('.close-dialog');
-	closeBtn.addEventListener('click', function () {
+	closeBtn.addEventListener('click', () => {
 		var dialog = document.getElementById('dialog');
 		document.body.removeChild(dialog);
 		document.body.classList.remove('overflowHidden');
@@ -38,7 +38,7 @@ function openDialog() {
 
 	// keep focus in dialog
 	// https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
-	dialog.addEventListener('transitionend', function () {
+	dialog.addEventListener('transitionend', () => {
 		dialog.querySelector('iframe').focus();
 	});
 }

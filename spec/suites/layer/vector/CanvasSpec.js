@@ -1,29 +1,29 @@
-describe('Canvas', function () {
+describe('Canvas', () => {
 	var container, map, latLngs;
 
 	function p2ll(x, y) {
 		return map.layerPointToLatLng([x, y]);
 	}
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {preferCanvas: true, zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#events", function () {
+	describe("#events", () => {
 		var layer;
 
-		beforeEach(function () {
+		beforeEach(() => {
 			layer = L.polygon(latLngs).addTo(map);
 		});
 
-		it("should fire event when layer contains mouse", function () {
+		it("should fire event when layer contains mouse", () => {
 			var spy = sinon.spy();
 			layer.on('click', spy);
 			happen.at('click', 50, 50);  // Click on the layer.
@@ -32,14 +32,14 @@ describe('Canvas', function () {
 			expect(spy.callCount).to.eql(1);
 		});
 
-		it("DOM events propagate from canvas polygon to map", function () {
+		it("DOM events propagate from canvas polygon to map", () => {
 			var spy = sinon.spy();
 			map.on("click", spy);
 			happen.at('click', 50, 50);
 			expect(spy.callCount).to.eql(1);
 		});
 
-		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
+		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", () => {
 			var mapSpy = sinon.spy();
 			var layerSpy = sinon.spy();
 			map.on("click", mapSpy);
@@ -49,7 +49,7 @@ describe('Canvas', function () {
 			expect(mapSpy.callCount).to.eql(0);
 		});
 
-		it("DOM events fired on canvas polygon are propagated only once to the map even when two layers contains the event", function () {
+		it("DOM events fired on canvas polygon are propagated only once to the map even when two layers contains the event", () => {
 			var spy = sinon.spy();
 			L.polygon(latLngs).addTo(map); // layer 2
 			map.on("click", spy);
@@ -57,7 +57,7 @@ describe('Canvas', function () {
 			expect(spy.callCount).to.eql(1);
 		});
 
-		it("should be transparent for DOM events going to non-canvas features", function () {
+		it("should be transparent for DOM events going to non-canvas features", () => {
 			var marker = L.marker(map.layerPointToLatLng([150, 150]))
 				.addTo(map);
 			var circle = L.circle(map.layerPointToLatLng([200, 200]), {
@@ -84,19 +84,19 @@ describe('Canvas', function () {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
-		it("should not block mousemove event going to non-canvas features", function () {
+		it("should not block mousemove event going to non-canvas features", () => {
 			var spyMap = sinon.spy();
 			map.on("mousemove", spyMap);
 			happen.at('mousemove', 151, 151); // empty space
 			expect(spyMap.calledOnce).to.be.ok();
 		});
 
-		it("should fire preclick before click", function () {
+		it("should fire preclick before click", () => {
 			var clickSpy = sinon.spy();
 			var preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
-			layer.once('preclick', function () {
+			layer.once('preclick', () => {
 				expect(clickSpy.called).to.be(false);
 			});
 			happen.at('click', 50, 50);  // Click on the layer.
@@ -107,7 +107,7 @@ describe('Canvas', function () {
 			expect(preclickSpy.callCount).to.eql(1);
 		});
 
-		it("should not fire click when dragging the map on top of it", function (done) {
+		it("should not fire click when dragging the map on top of it", (done) => {
 			var downSpy = sinon.spy();
 			var clickSpy = sinon.spy();
 			var preclickSpy = sinon.spy();
@@ -134,7 +134,7 @@ describe('Canvas', function () {
 				.down().moveBy(20, 10, 200).up();
 		});
 
-		it("does fire mousedown on layer after dragging map", function (done) { // #7775
+		it("does fire mousedown on layer after dragging map", (done) => { // #7775
 			var spy = sinon.spy();
 			var center = p2ll(300, 300);
 			var radius = p2ll(200, 200).distanceTo(center);
@@ -157,8 +157,8 @@ describe('Canvas', function () {
 		});
 	});
 
-	describe("#events(interactive=false)", function () {
-		it("should not fire click when not interactive", function () {
+	describe("#events(interactive=false)", () => {
+		it("should not fire click when not interactive", () => {
 			var layer = L.polygon(latLngs, {interactive: false}).addTo(map);
 			var spy = sinon.spy();
 			layer.on('click', spy);
@@ -169,14 +169,14 @@ describe('Canvas', function () {
 		});
 	});
 
-	describe('#dashArray', function () {
-		it('can add polyline with dashArray', function () {
+	describe('#dashArray', () => {
+		it('can add polyline with dashArray', () => {
 			L.polygon(latLngs, {
 				dashArray: "5,5"
 			}).addTo(map);
 		});
 
-		it('can setStyle with dashArray', function () {
+		it('can setStyle with dashArray', () => {
 			var layer = L.polygon(latLngs).addTo(map);
 			layer.setStyle({
 				dashArray: "5,5"
@@ -193,7 +193,7 @@ describe('Canvas', function () {
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
-		L.Util.requestAnimFrame(function () {
+		L.Util.requestAnimFrame(() => {
 			expect(canvas._layers).to.not.have.property(layerId);
 			done();
 		}, this);
@@ -210,19 +210,19 @@ describe('Canvas', function () {
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
-		L.Util.requestAnimFrame(function () {
+		L.Util.requestAnimFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
 		}, this);
 	});
 
-	describe('#bringToBack', function () {
-		it('is a no-op for layers not on a map', function () {
+	describe('#bringToBack', () => {
+		it('is a no-op for layers not on a map', () => {
 			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToBack()).to.equal(path);
 		});
 
-		it('is a no-op for layers no longer in a LayerGroup', function () {
+		it('is a no-op for layers no longer in a LayerGroup', () => {
 			var group = L.layerGroup().addTo(map);
 			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
@@ -232,13 +232,13 @@ describe('Canvas', function () {
 		});
 	});
 
-	describe('#bringToFront', function () {
-		it('is a no-op for layers not on a map', function () {
+	describe('#bringToFront', () => {
+		it('is a no-op for layers not on a map', () => {
 			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToFront()).to.equal(path);
 		});
 
-		it('is a no-op for layers no longer in a LayerGroup', function () {
+		it('is a no-op for layers no longer in a LayerGroup', () => {
 			var group = L.layerGroup().addTo(map);
 			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
@@ -248,15 +248,15 @@ describe('Canvas', function () {
 		});
 	});
 
-	describe('Canvas #remove', function () {
-		it("can remove the map without errors", function (done) {
+	describe('Canvas #remove', () => {
+		it("can remove the map without errors", (done) => {
 			L.polygon(latLngs).addTo(map);
 			map.remove();
 			map = null;
-			L.Util.requestAnimFrame(function () { done(); });
+			L.Util.requestAnimFrame(() => { done(); });
 		});
 
-		it("can remove renderer without errors", function (done) {
+		it("can remove renderer without errors", (done) => {
 			map.remove();
 
 			var canvas = L.canvas();
@@ -267,7 +267,7 @@ describe('Canvas', function () {
 			canvas.remove();
 			map.remove();
 			map = null;
-			L.Util.requestAnimFrame(function () { done(); });
+			L.Util.requestAnimFrame(() => { done(); });
 		});
 	});
 });

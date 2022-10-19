@@ -1,17 +1,17 @@
-describe('Polygon', function () {
+describe('Polygon', () => {
 	var map, container;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {center: [55.8, 37.6], zoom: 6});
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#initialize", function () {
-		it("should never be flat", function () {
+	describe("#initialize", () => {
+		it("should never be flat", () => {
 			var latLngs = [[1, 2], [3, 4]];
 
 			var polygon = L.polygon(latLngs);
@@ -20,7 +20,7 @@ describe('Polygon', function () {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("doesn't overwrite the given latlng array", function () {
+		it("doesn't overwrite the given latlng array", () => {
 			var originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -33,13 +33,13 @@ describe('Polygon', function () {
 			expect(polygon._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it("can be called with an empty array", function () {
+		it("can be called with an empty array", () => {
 			var polygon = L.polygon([]);
 			expect(polygon._latlngs).to.eql([[]]);
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be initialized with holes", function () {
+		it("can be initialized with holes", () => {
 			var originalLatLngs = [
 				[[0, 10], [10, 10], [10, 0]], // external ring
 				[[2, 3], [2, 4], [3, 4]] // hole
@@ -54,7 +54,7 @@ describe('Polygon', function () {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be initialized with multi including hole", function () {
+		it("can be initialized with multi including hole", () => {
 			var latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -69,7 +69,7 @@ describe('Polygon', function () {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be added to the map when empty", function () {
+		it("can be added to the map when empty", () => {
 			var polygon = L.polygon([]).addTo(map);
 			var isAdded = map.hasLayer(polygon);
 			expect(isAdded).to.be(true);
@@ -77,20 +77,20 @@ describe('Polygon', function () {
 
 	});
 
-	describe("#isEmpty", function () {
+	describe("#isEmpty", () => {
 
-		it('should return true for a polygon with no latlngs', function () {
+		it('should return true for a polygon with no latlngs', () => {
 			var layer = L.polygon([]);
 			expect(layer.isEmpty()).to.be(true);
 		});
 
-		it('should return false for simple polygon', function () {
+		it('should return false for simple polygon', () => {
 			var latLngs = [[1, 2], [3, 4], [5, 6]];
 			var layer = L.polygon(latLngs);
 			expect(layer.isEmpty()).to.be(false);
 		});
 
-		it('should return false for a multi-polygon', function () {
+		it('should return false for a multi-polygon', () => {
 			var latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -101,8 +101,8 @@ describe('Polygon', function () {
 
 	});
 
-	describe("#setLatLngs", function () {
-		it("doesn't overwrite the given latlng array", function () {
+	describe("#setLatLngs", () => {
+		it("doesn't overwrite the given latlng array", () => {
 			var originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -116,7 +116,7 @@ describe('Polygon', function () {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 
-		it("can be set external ring and holes", function () {
+		it("can be set external ring and holes", () => {
 			var latLngs = [
 				[[0, 10], [10, 10], [10, 0]], // external ring
 				[[2, 3], [2, 4], [3, 4]] // hole
@@ -131,7 +131,7 @@ describe('Polygon', function () {
 			]);
 		});
 
-		it("can be set multi including hole", function () {
+		it("can be set multi including hole", () => {
 			var latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -148,8 +148,8 @@ describe('Polygon', function () {
 
 	});
 
-	describe('#getCenter', function () {
-		it('should compute center of a big simple polygon around equator', function () {
+	describe('#getCenter', () => {
+		it('should compute center of a big simple polygon around equator', () => {
 			var latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
@@ -157,7 +157,7 @@ describe('Polygon', function () {
 			expect(layer.getCenter()).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
-		it('should compute center of a small simple polygon', function () {
+		it('should compute center of a small simple polygon', () => {
 			var latlngs = [
 				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
 			];
@@ -166,8 +166,8 @@ describe('Polygon', function () {
 			expect(layer.getCenter()).to.be.nearLatLng([0.005, 0.005]);
 		});
 
-		it('throws error if not yet added to map', function () {
-			expect(function () {
+		it('throws error if not yet added to map', () => {
+			expect(() => {
 				var latlngs = [
 					[[0, 0], [10, 0], [10, 10], [0, 10]]
 				];
@@ -176,7 +176,7 @@ describe('Polygon', function () {
 			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
-		it('should compute same center for low and high zoom', function () {
+		it('should compute same center for low and high zoom', () => {
 			var latlngs = [
 				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
 			];
@@ -187,7 +187,7 @@ describe('Polygon', function () {
 			expect(layer.getCenter()).to.be.nearLatLng(center);
 		});
 
-		it("should compute center for multi-polygon including hole", function () {
+		it("should compute center for multi-polygon including hole", () => {
 			var latlngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -197,8 +197,8 @@ describe('Polygon', function () {
 		});
 	});
 
-	describe("#_defaultShape", function () {
-		it("should return latlngs on a simple polygon", function () {
+	describe("#_defaultShape", () => {
+		it("should return latlngs on a simple polygon", () => {
 			var latlngs = [
 				L.latLng([1, 2]),
 				L.latLng([3, 4])
@@ -209,7 +209,7 @@ describe('Polygon', function () {
 			expect(polygon._defaultShape()).to.eql(latlngs);
 		});
 
-		it("should return first latlngs on a polygon with hole", function () {
+		it("should return first latlngs on a polygon with hole", () => {
 			var latlngs = [
 				[L.latLng([0, 12]), L.latLng([13, 14]), L.latLng([15, 16])],
 				[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]
@@ -220,7 +220,7 @@ describe('Polygon', function () {
 			expect(polygon._defaultShape()).to.eql(latlngs[0]);
 		});
 
-		it("should return first latlngs on a multipolygon", function () {
+		it("should return first latlngs on a multipolygon", () => {
 			var latlngs = [
 				[[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]],
 				[[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]
@@ -231,7 +231,7 @@ describe('Polygon', function () {
 			expect(polygon._defaultShape()).to.eql(latlngs[0][0]);
 		});
 
-		it("should return first latlngs on a multipolygon with hole", function () {
+		it("should return first latlngs on a multipolygon with hole", () => {
 			var latlngs = [
 				[[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
 				 [L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]],
@@ -244,8 +244,8 @@ describe('Polygon', function () {
 		});
 	});
 
-	describe("#addLatLng", function () {
-		it("should add latlng to latlngs", function () {
+	describe("#addLatLng", () => {
+		it("should add latlng to latlngs", () => {
 			var latLngs = [
 				[1, 2],
 				[3, 4]
@@ -258,7 +258,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs).to.eql([[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]]);
 		});
 
-		it("should add latlng to first latlngs on a polygon with hole", function () {
+		it("should add latlng to first latlngs on a polygon with hole", () => {
 			var latLngs = [
 				[[0, 12], [13, 14], [15, 16]],
 				[[1, 2], [3, 4], [5, 6]]
@@ -272,7 +272,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
 		});
 
-		it("should add latlng by reference on a polygon with hole", function () {
+		it("should add latlng by reference on a polygon with hole", () => {
 			var latLngs = [
 				[[0, 12], [13, 14], [15, 16]],
 				[[1, 2], [3, 4], [5, 6]]
@@ -286,7 +286,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6]), L.latLng([7, 8])]);
 		});
 
-		it("should add latlng to first latlngs on a multi", function () {
+		it("should add latlng to first latlngs on a multi", () => {
 			var latLngs = [
 				[[[1, 2], [3, 4]]],
 				[[[11, 12], [13, 14], [15, 16]]]
@@ -300,7 +300,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
 		});
 
-		it("should add latlng to latlngs by reference on a multi", function () {
+		it("should add latlng to latlngs by reference on a multi", () => {
 			var latLngs = [
 				[[[11, 12], [13, 14], [15, 16]]],
 				[[[1, 2], [3, 4]]]
@@ -314,7 +314,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[0]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
 		});
 
-		it("should add latlng on first latlngs by default on a multipolygon with hole", function () {
+		it("should add latlng on first latlngs by default on a multipolygon with hole", () => {
 			var latLngs = [
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]],
 				[[[10, 20], [30, 40], [50, 60]]]
@@ -329,7 +329,7 @@ describe('Polygon', function () {
 			expect(polygon._latlngs[1][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
 		});
 
-		it("should add latlng by reference on a multipolygon with hole", function () {
+		it("should add latlng by reference on a multipolygon with hole", () => {
 			var latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -345,8 +345,8 @@ describe('Polygon', function () {
 		});
 	});
 
-	describe("#setStyle", function () {
-		it("succeeds for empty Polygon already added to the map", function () {
+	describe("#setStyle", () => {
+		it("succeeds for empty Polygon already added to the map", () => {
 			var style = {
 				weight: 3
 			};

@@ -41,7 +41,7 @@ export var TapHold = Handler.extend({
 		var first = e.touches[0];
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
-		this._holdTimeout = setTimeout((function () {
+		this._holdTimeout = setTimeout((() => {
 			this._cancel();
 			if (!this._isTapValid()) { return; }
 
@@ -49,7 +49,7 @@ export var TapHold = Handler.extend({
 			DomEvent.on(document, 'touchend', DomEvent.preventDefault);
 			DomEvent.on(document, 'touchend touchcancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', first);
-		}).bind(this), tapHoldDelay);
+		}), tapHoldDelay);
 
 		DomEvent.on(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.on(document, 'touchmove', this._onMove, this);
