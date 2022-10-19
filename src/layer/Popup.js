@@ -1,6 +1,7 @@
 import {DivOverlay} from './DivOverlay';
 import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
+import * as Util from '../core/Util';
 import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
@@ -392,8 +393,15 @@ Layer.include({
 				click: this._openPopup,
 				keypress: this._onKeyPress,
 				remove: this.closePopup,
-				move: this._movePopup
+				move: this._movePopup,
+				popupopen: Util.bind(this._setAriaExpanded, this, true),
+				popupclose: Util.bind(this._setAriaExpanded, this, false),
 			});
+			if (this._map) {
+				this._setAccessibilityDefaults();
+			} else {
+				this._popup.on('add', this._setAccessibilityDefaults, this);
+			}
 			this._popupHandlersAdded = true;
 		}
 
@@ -408,7 +416,9 @@ Layer.include({
 				click: this._openPopup,
 				keypress: this._onKeyPress,
 				remove: this.closePopup,
-				move: this._movePopup
+				move: this._movePopup,
+				popupopen: Util.bind(this._setAriaExpanded, this, true),
+				popupclose: Util.bind(this._setAriaExpanded, this, false),
 			});
 			this._popupHandlersAdded = false;
 			this._popup = null;
@@ -468,6 +478,18 @@ Layer.include({
 	// Returns the popup bound to this layer.
 	getPopup: function () {
 		return this._popup;
+	},
+
+	_setAccessibilityDefaults: function () {
+		if (this.getElement) {
+			var element = this.getElement();
+			element.setAttribute('role', 'button');
+			element.setAttribute('aria-expanded', false);
+		}
+	},
+
+	_setAriaExpanded: function (state) {
+		this.getElement && this.getElement() && this.getElement().setAttribute('aria-expanded', state);
 	},
 
 	_openPopup: function (e) {

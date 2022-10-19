@@ -64,6 +64,33 @@ describe('Popup', function () {
 		expect(map.hasLayer(marker._popup)).to.be(false);
 	});
 
+	it("reflects its visibility when marker is clicked in aria-expanded", function () {
+		var marker = L.marker(center);
+		map.addLayer(marker);
+
+		marker.bindPopup('Popup1');
+		var element = marker.getElement();
+		expect(element.getAttribute('aria-expanded')).to.be('false');
+
+		// toggle open popup
+		happen.click(marker._icon);
+		expect(element.getAttribute('aria-expanded')).to.be('true');
+
+		// toggle close popup
+		happen.click(marker._icon);
+		expect(element.getAttribute('aria-expanded')).to.be('false');
+	});
+
+	it("changes the role of a marker to button", function () {
+		var marker = L.marker(center);
+		map.addLayer(marker);
+		var element = marker.getElement();
+		expect(element.getAttribute('role')).to.be('img');
+
+		marker.bindPopup('Popup1');
+		expect(element.getAttribute('role')).to.be('button');
+	});
+
 	it("it should use a popup with a function as content with a FeatureGroup", function () {
 		var marker1 = L.marker(center);
 		var marker2 = L.marker([54.6, 38.2]);

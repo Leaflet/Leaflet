@@ -235,7 +235,7 @@ export var Marker = Layer.extend({
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
-			icon.setAttribute('role', 'button');
+			icon.setAttribute('role', 'img');
 		}
 
 		this._icon = icon;
