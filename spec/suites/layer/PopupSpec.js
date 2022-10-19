@@ -309,9 +309,6 @@ describe('Popup', function () {
 		});
 	});
 	
-	//===
-
-	//===
 	it("prevents an underlying map click for Layer", function () {
 		var layer = L.polygon([center, [55.9, 37.7], [56.0, 37.8]]).addTo(map);
 		layer.bindPopup("layer popup");
@@ -330,7 +327,6 @@ describe('Popup', function () {
 		expect(mapClicked).to.be(false);
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
-
 
 	it("can open a popup with enter keypress when marker has focus", function () {
 		var layer = L.marker(center).addTo(map);
