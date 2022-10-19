@@ -95,6 +95,19 @@ export var SVG = Renderer.extend({
 			DomUtil.addClass(path, 'leaflet-interactive');
 		}
 
+		if (layer.options.keyboard) {
+			path.setAttribute('tabindex', '0');
+			var title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+			title.innerHTML = layer.options.title;
+			path.appendChild(title);
+
+			if (layer.options.desc) {
+				var desc = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
+				desc.innerHTML = layer.options.desc;
+				path.appendChild(desc);
+			}
+		}
+
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
 	},

@@ -21,7 +21,12 @@ export var CircleMarker = Path.extend({
 
 		// @option radius: Number = 10
 		// Radius of the circle marker, in pixels
-		radius: 10
+		radius: 10,
+
+		// @option title: String= 'CircleMarker'
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
+		// Useful for accessibility.
+		title: 'CircleMarker',
 	},
 
 	initialize: function (latlng, options) {

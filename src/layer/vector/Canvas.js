@@ -138,6 +138,26 @@ export var Canvas = Renderer.extend({
 	_initPath: function (layer) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
+		if (layer.options.keyboard) {
+			layer._path = DomUtil.create('div', 'leaflet-canvas-interactive', this._container);
+			layer._path.setAttribute('tabindex', 0);
+			layer._path.setAttribute('role', 'graphics-symbol img');
+			layer._path.setAttribute('title', layer.options.title);
+
+			if (layer.options.desc) {
+				// Consider changing to `aria-description` attribute instead of `aria-describedby` with separate tag.
+				// Track support here: https://a11ysupport.io/tech/aria/aria-description_attribute#support-table-0
+				var descId = 'leaflet-canvas-interactive-desc-' + Util.stamp(layer);
+				var desc = DomUtil.create('span', null, layer._path);
+				desc.innerText = layer.options.desc;
+				desc.setAttribute('id', descId);
+				layer._path.setAttribute('aria-describedby', descId);
+			}
+
+			DomEvent.on(layer._path, 'keypress keydown keyup click', Util.bind(this._fireEvent, this, [layer]));
+			DomEvent.on(layer._path, 'focus', this._redraw, this);
+			DomEvent.on(layer._path, 'blur', this._redraw, this);
+		}
 
 		var order = layer._order = {
 			layer: layer,
@@ -269,6 +289,9 @@ export var Canvas = Renderer.extend({
 			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
+				// drawFocusIfNeeded is not supported in IE
+				// see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawFocusIfNeeded#browser_compatibility
+				this._ctx.drawFocusIfNeeded && this._ctx.drawFocusIfNeeded(layer._path);
 			}
 		}
 

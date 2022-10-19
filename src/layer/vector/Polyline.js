@@ -57,7 +57,12 @@ export var Polyline = Path.extend({
 
 		// @option noClip: Boolean = false
 		// Disable polyline clipping.
-		noClip: false
+		noClip: false,
+
+		// @option title: String= 'Polyline'
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
+		// Useful for accessibility.
+		title: 'Polyline',
 	},
 
 	initialize: function (latlngs, options) {

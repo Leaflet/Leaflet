@@ -29,6 +29,13 @@ import {toLatLngBounds} from '../../geo/LatLngBounds';
 
 
 export var Rectangle = Polygon.extend({
+	options: {
+		// @option title: String= 'Rectangle'
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
+		// Useful for accessibility.
+		title: 'Rectangle',
+	},
+
 	initialize: function (latLngBounds, options) {
 		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},

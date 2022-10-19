@@ -71,7 +71,21 @@ export var Path = Layer.extend({
 		// @option bubblingMouseEvents: Boolean = true
 		// When `true`, a mouse event on this path will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: true
+		bubblingMouseEvents: true,
+
+		// @option keyboard: Boolean = true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+		keyboard: true,
+
+		// @option title: String= ''
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
+		// Useful for accessibility.
+		title: '',
+
+		// @option desc: String= ''
+		// Text describing what is on the figure.
+		// Useful for accessibility.
+		desc: '',
 	},
 
 	beforeAdd: function (map) {

@@ -24,6 +24,13 @@ import {Earth} from '../../geo/crs/CRS.Earth';
 
 export var Circle = CircleMarker.extend({
 
+	options: {
+		// @option title: String= 'Circle'
+		// Alternative text for a Figure. Used as `<title>` tag in SVG or `title` attribute in Canvas renderer.
+		// Useful for accessibility.
+		title: 'Circle',
+	},
+
 	initialize: function (latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)

@@ -2,7 +2,7 @@ describe('Path', function () {
 	var container, map;
 
 	beforeEach(function () {
-		container = container = createContainer();
+		container = createContainer();
 		map = L.map(container);
 		map.setView([0, 0], 0);
 	});
@@ -102,4 +102,39 @@ describe('Path', function () {
 			expect(path._clickTolerance()).to.equal(0);
 		});
 	});
+
+	describe('#accessibility', function () {
+		it('should have title', function () {
+			var path = L.circleMarker([1, 2]);
+			path.addTo(map);
+
+			var element = path.getElement();
+
+			expect(element.querySelector('title').innerHTML).to.eql('CircleMarker');
+		});
+
+		it('should have desc', function () {
+			var path = L.circleMarker([1, 2], {title: 'My Circle', desc: 'Awesome circle'});
+			path.addTo(map);
+
+			var element = path.getElement();
+
+			expect(element.querySelector('title').innerHTML).to.eql('My Circle');
+			expect(element.querySelector('desc').innerHTML).to.eql('Awesome circle');
+		});
+
+		it('should focus and open popup on keypress', function () {
+			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
+			path.bindPopup('Popup');
+			path.addTo(map);
+
+			happen.once(path.getElement(), {type:'focus'});
+			happen.once(path.getElement(), {type:'keypress', keyCode: 13});
+
+			expect(map.hasLayer(path._popup)).to.be(true);
+			expect(path._popup._contentNode.innerHTML).to.eql("Popup");
+		});
+
+	});
+
 });
