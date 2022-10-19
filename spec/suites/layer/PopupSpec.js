@@ -258,7 +258,7 @@ describe('Popup', function () {
 		beforeEach(function () {
 			icon = L.divIcon({popupAnchor: offset});
 			marker1 = L.marker(latlng);
-			marker2 = L.marker(latlng, {icon: icon});
+			marker2 = L.marker(latlng, {icon});
 		});
 
 		after(function () {
@@ -464,7 +464,7 @@ describe('Popup', function () {
 			map.on('drag', spy);
 			var hand = new Hand({
 				timing: 'fastframe',
-				onStop: function () {
+				onStop() {
 					expect(spy.called).to.be(true);
 					expect(map.hasLayer(p)).to.be(true);
 					done();

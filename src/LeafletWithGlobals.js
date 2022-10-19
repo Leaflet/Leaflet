@@ -1,7 +1,7 @@
 import * as L from './Leaflet';
 export * from './Leaflet';
 
-var globalL = L.extend(L, {noConflict: noConflict});
+var globalL = L.extend(L, {noConflict});
 export default globalL;
 
 var globalObject = getGlobalObject();

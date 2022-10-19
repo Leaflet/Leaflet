@@ -98,7 +98,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		var ctrl = L.DomUtil.create('div');
 		L.DomEvent.disableClickPropagation(ctrl);
 		var MyControl = L.Control.extend({
-			onAdd: function () {
+			onAdd() {
 				return ctrl;
 			}
 		});
@@ -120,7 +120,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 
 		var div;
 		var MyControl = L.Control.extend({
-			onAdd: function () {
+			onAdd() {
 				div = L.DomUtil.create('div');
 				div.innerHTML = '<input type="checkbox" id="input">' +
 					'<label for="input" style="background: #ffffff; width: 100px; height: 100px;display: block;">Click Me</label>';

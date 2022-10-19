@@ -56,14 +56,14 @@ export var ImageOverlay = Layer.extend({
 		className: ''
 	},
 
-	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
+	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
 		this._bounds = toLatLngBounds(bounds);
 
 		Util.setOptions(this, options);
 	},
 
-	onAdd: function () {
+	onAdd() {
 		if (!this._image) {
 			this._initImage();
 
@@ -81,7 +81,7 @@ export var ImageOverlay = Layer.extend({
 		this._reset();
 	},
 
-	onRemove: function () {
+	onRemove() {
 		DomUtil.remove(this._image);
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
@@ -90,7 +90,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method setOpacity(opacity: Number): this
 	// Sets the opacity of the overlay.
-	setOpacity: function (opacity) {
+	setOpacity(opacity) {
 		this.options.opacity = opacity;
 
 		if (this._image) {
@@ -99,7 +99,7 @@ export var ImageOverlay = Layer.extend({
 		return this;
 	},
 
-	setStyle: function (styleOpts) {
+	setStyle(styleOpts) {
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
 		}
@@ -108,7 +108,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method bringToFront(): this
 	// Brings the layer to the top of all overlays.
-	bringToFront: function () {
+	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._image);
 		}
@@ -117,7 +117,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method bringToBack(): this
 	// Brings the layer to the bottom of all overlays.
-	bringToBack: function () {
+	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._image);
 		}
@@ -126,7 +126,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method setUrl(url: String): this
 	// Changes the URL of the image.
-	setUrl: function (url) {
+	setUrl(url) {
 		this._url = url;
 
 		if (this._image) {
@@ -137,7 +137,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
-	setBounds: function (bounds) {
+	setBounds(bounds) {
 		this._bounds = toLatLngBounds(bounds);
 
 		if (this._map) {
@@ -146,7 +146,7 @@ export var ImageOverlay = Layer.extend({
 		return this;
 	},
 
-	getEvents: function () {
+	getEvents() {
 		var events = {
 			zoom: this._reset,
 			viewreset: this._reset
@@ -161,7 +161,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method setZIndex(value: Number): this
 	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
-	setZIndex: function (value) {
+	setZIndex(value) {
 		this.options.zIndex = value;
 		this._updateZIndex();
 		return this;
@@ -169,18 +169,18 @@ export var ImageOverlay = Layer.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Get the bounds that this ImageOverlay covers
-	getBounds: function () {
+	getBounds() {
 		return this._bounds;
 	},
 
 	// @method getElement(): HTMLElement
 	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
 	// used by this overlay.
-	getElement: function () {
+	getElement() {
 		return this._image;
 	},
 
-	_initImage: function () {
+	_initImage() {
 		var wasElementSupplied = this._url.tagName === 'IMG';
 		var img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
@@ -213,14 +213,14 @@ export var ImageOverlay = Layer.extend({
 		img.alt = this.options.alt;
 	},
 
-	_animateZoom: function (e) {
+	_animateZoom(e) {
 		var scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
 	},
 
-	_reset: function () {
+	_reset() {
 		var image = this._image,
 		    bounds = new Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
@@ -233,17 +233,17 @@ export var ImageOverlay = Layer.extend({
 		image.style.height = `${size.y}px`;
 	},
 
-	_updateOpacity: function () {
+	_updateOpacity() {
 		DomUtil.setOpacity(this._image, this.options.opacity);
 	},
 
-	_updateZIndex: function () {
+	_updateZIndex() {
 		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
 			this._image.style.zIndex = this.options.zIndex;
 		}
 	},
 
-	_overlayOnError: function () {
+	_overlayOnError() {
 		// @event error: Event
 		// Fired when the ImageOverlay layer fails to load its image
 		this.fire('error');
@@ -257,7 +257,7 @@ export var ImageOverlay = Layer.extend({
 
 	// @method getCenter(): LatLng
 	// Returns the center of the ImageOverlay.
-	getCenter: function () {
+	getCenter() {
 		return this._bounds.getCenter();
 	}
 });

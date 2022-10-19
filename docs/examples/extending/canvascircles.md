@@ -10,7 +10,7 @@ title: CanvasCircles
 	});
 
 	L.GridLayer.CanvasCircles = L.GridLayer.extend({
-		createTile: function (coords) {
+		createTile(coords) {
 			var tile = document.createElement('canvas');
 
 			var tileSize = this.getTileSize();

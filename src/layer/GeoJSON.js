@@ -83,7 +83,7 @@ export var GeoJSON = FeatureGroup.extend({
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize: function (geojson, options) {
+	initialize(geojson, options) {
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -95,7 +95,7 @@ export var GeoJSON = FeatureGroup.extend({
 
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
-	addData: function (geojson) {
+	addData(geojson) {
 		var features = Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len, feature;
 
@@ -133,7 +133,7 @@ export var GeoJSON = FeatureGroup.extend({
 	// @method resetStyle( <Path> layer? ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
 	// If `layer` is omitted, the style of all features in the current layer is reset.
-	resetStyle: function (layer) {
+	resetStyle(layer) {
 		if (layer === undefined) {
 			return this.eachLayer(this.resetStyle, this);
 		}
@@ -145,13 +145,13 @@ export var GeoJSON = FeatureGroup.extend({
 
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
-	setStyle: function (style) {
+	setStyle(style) {
 		return this.eachLayer(function (layer) {
 			this._setLayerStyle(layer, style);
 		}, this);
 	},
 
-	_setLayerStyle: function (layer, style) {
+	_setLayerStyle(layer, style) {
 		if (layer.setStyle) {
 			if (typeof style === 'function') {
 				style = style(layer.feature);
@@ -315,7 +315,7 @@ export function asFeature(geojson) {
 }
 
 var PointToGeoJSON = {
-	toGeoJSON: function (precision) {
+	toGeoJSON(precision) {
 		return getFeature(this, {
 			type: 'Point',
 			coordinates: latLngToCoords(this.getLatLng(), precision)
@@ -343,7 +343,7 @@ CircleMarker.include(PointToGeoJSON);
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
-	toGeoJSON: function (precision) {
+	toGeoJSON(precision) {
 		var multi = !LineUtil.isFlat(this._latlngs);
 
 		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
@@ -360,7 +360,7 @@ Polyline.include({
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 // Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
-	toGeoJSON: function (precision) {
+	toGeoJSON(precision) {
 		var holes = !LineUtil.isFlat(this._latlngs),
 		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
@@ -380,7 +380,7 @@ Polygon.include({
 
 // @namespace LayerGroup
 LayerGroup.include({
-	toMultiPoint: function (precision) {
+	toMultiPoint(precision) {
 		var coords = [];
 
 		this.eachLayer(function (layer) {
@@ -396,7 +396,7 @@ LayerGroup.include({
 	// @method toGeoJSON(precision?: Number|false): Object
 	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
 	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
-	toGeoJSON: function (precision) {
+	toGeoJSON(precision) {
 
 		var type = this.feature && this.feature.geometry && this.feature.geometry.type;
 

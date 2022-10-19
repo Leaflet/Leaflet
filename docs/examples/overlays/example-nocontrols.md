@@ -21,7 +21,7 @@ title: Video Overlay Tutorial
 
 	var videoOverlay = L.videoOverlay(videoUrls, bounds, {
 		opacity: 0.8,
-		errorOverlayUrl: errorOverlayUrl,
+		errorOverlayUrl,
 		interactive: true,
 		autoplay: true,
 		muted: true,

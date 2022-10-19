@@ -653,11 +653,11 @@ describe("Map", function () {
 	describe("#addHandler", function () {
 		function getHandler(callback = () => {}) {
 			return L.Handler.extend({
-				addHooks: function () {
+				addHooks() {
 					L.DomEvent.on(window, 'click', this.handleClick, this);
 				},
 
-				removeHooks: function () {
+				removeHooks() {
 					L.DomEvent.off(window, 'click', this.handleClick, this);
 				},
 
@@ -1297,7 +1297,7 @@ describe("Map", function () {
 
 			// The edge case is only if view is set directly during map initialization
 			map = L.map(container, {
-				center: center,
+				center,
 				zoom: 0
 			});
 
@@ -1617,25 +1617,25 @@ describe("Map", function () {
 			var padding = [40, 20],
 			    p = tlPix.add([30, 0]),	// Top-left
 			    distanceMoved;
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-10, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 10, map.getPixelBounds().min.y];	// Top-right
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([30, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().min.x + 35, map.getPixelBounds().max.y];	// Bottom-left
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-5, 20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 15, map.getPixelBounds().max.y]; // Bottom-right
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([25, 20]))).to.eql(true);
 		});
@@ -1756,7 +1756,7 @@ describe("Map", function () {
 			});
 			var mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map);
+			    layer = L.marker([1, 2], {icon}).addTo(map);
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
 			happen.mouseout(layer._icon, {relatedTarget: container});
@@ -1771,7 +1771,7 @@ describe("Map", function () {
 			});
 			var mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -1787,7 +1787,7 @@ describe("Map", function () {
 			});
 			var mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -2170,7 +2170,7 @@ describe("Map", function () {
 
 		var geolocationStub = {
 			geolocation: {
-				getCurrentPosition: function (onSuccess) {
+				getCurrentPosition(onSuccess) {
 					onSuccess(
 						{
 							coords:
@@ -2186,7 +2186,7 @@ describe("Map", function () {
 					getCurrentPosSpy();
 				},
 
-				watchPosition: function (onSuccess) {
+				watchPosition(onSuccess) {
 					onSuccess(
 						{
 							coords:

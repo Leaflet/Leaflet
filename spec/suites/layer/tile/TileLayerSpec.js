@@ -420,7 +420,7 @@ describe('TileLayer', function () {
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin value ${crossOrigin}`, function () {
 				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
-					crossOrigin: crossOrigin
+					crossOrigin
 				}).addTo(map);
 
 				eachImg(layer, function (img) {
@@ -438,8 +438,8 @@ describe('TileLayer', function () {
 			L.Browser.retina = true;
 
 			var kittenLayer = kittenLayerFactory({
-				maxZoom: maxZoom,
-				minZoom: minZoom,
+				maxZoom,
+				minZoom,
 				detectRetina: true
 			});
 
