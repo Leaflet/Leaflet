@@ -1,5 +1,3 @@
-import { DomUtil } from "../../../src/dom";
-
 describe('Popup', function () {
 	var container, map, center = [55.8, 37.6];
 
@@ -59,7 +57,7 @@ describe('Popup', function () {
 			.openOn(map);
 		
 		expect(popup.closeButtonAriaLabel).toEqual(testLabel);
-		expect(DomUtil.get("leaflet-label-close-button")
+		expect(L.DomUtil.get("leaflet-label-close-button")
 		.getAttribute("aria-label")).toEqual(testLabel);
 	});
 
