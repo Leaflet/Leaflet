@@ -413,9 +413,9 @@ export var Canvas = Renderer.extend({
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
-		setTimeout((function () {
+		setTimeout((() => {
 			this._mouseHoverThrottled = false;
-		}).bind(this), 32);
+		}), 32);
 	},
 
 	_fireEvent(layers, e, type) {

@@ -146,7 +146,7 @@ var templateRe = /\{ *([\w_ -]+) *\}/g;
 // `('Hello foo, bar')`. You can also specify functions instead of strings for
 // data values — they will be evaluated passing `data` as an argument.
 export function template(str, data) {
-	return str.replace(templateRe, function (str, key) {
+	return str.replace(templateRe, (str, key) => {
 		var value = data[key];
 
 		if (value === undefined) {

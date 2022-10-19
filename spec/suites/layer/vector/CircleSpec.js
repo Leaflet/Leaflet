@@ -1,33 +1,33 @@
-describe('Circle', function () {
+describe('Circle', () => {
 	var map, container, circle;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 		map.setView([0, 0], 4);
 		circle = L.circle([50, 30], {radius: 200}).addTo(map);
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe('#init', function () {
-		it('uses default radius if not given', function () {
+	describe('#init', () => {
+		it('uses default radius if not given', () => {
 			var circle = L.circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
 
-		it('throws error if radius is NaN', function () {
-			expect(function () {
+		it('throws error if radius is NaN', () => {
+			expect(() => {
 				L.circle([0, 0], NaN);
 			}).to.throwException('Circle radius cannot be NaN');
 		});
 
 	});
 
-	describe('#getBounds', function () {
-		it('returns bounds', function () {
+	describe('#getBounds', () => {
+		it('returns bounds', () => {
 			var bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
@@ -35,8 +35,8 @@ describe('Circle', function () {
 		});
 	});
 
-	describe('Legacy factory', function () {
-		it('returns same bounds as 1.0 factory', function () {
+	describe('Legacy factory', () => {
+		it('returns same bounds as 1.0 factory', () => {
 			var bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);

@@ -1,4 +1,4 @@
-describe("Control", function () {
+describe("Control", () => {
 	function onAdd() {
 		return L.DomUtil.create('div', 'leaflet-test-control');
 	}
@@ -7,7 +7,7 @@ describe("Control", function () {
 	    container,
 	    control;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 
@@ -17,35 +17,35 @@ describe("Control", function () {
 		control.addTo(map);
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#addTo", function () {
-		it("adds the container to the map", function () {
+	describe("#addTo", () => {
+		it("adds the container to the map", () => {
 			expect(map.getContainer().querySelector('.leaflet-test-control')).to.equal(control.getContainer());
 		});
 
-		it("removes the control from any existing map", function () {
+		it("removes the control from any existing map", () => {
 			control.addTo(map);
 			expect(map.getContainer().querySelectorAll('.leaflet-test-control').length).to.equal(1);
 			expect(map.getContainer().querySelector('.leaflet-test-control')).to.equal(control.getContainer());
 		});
 	});
 
-	describe("#remove", function () {
-		it("removes the container from the map", function () {
+	describe("#remove", () => {
+		it("removes the container from the map", () => {
 			control.remove();
 			expect(map.getContainer().querySelector('.leaflet-test-control')).to.equal(null);
 		});
 
-		it("calls onRemove if defined", function () {
+		it("calls onRemove if defined", () => {
 			control.onRemove = sinon.spy();
 			control.remove();
 			expect(control.onRemove.called).to.be(true);
 		});
 
-		it("is a no-op if the control has not been added", function () {
+		it("is a no-op if the control has not been added", () => {
 			var control = new L.Control();
 			expect(control.remove()).to.equal(control);
 		});

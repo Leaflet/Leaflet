@@ -1,17 +1,17 @@
-describe('Rectangle', function () {
+describe('Rectangle', () => {
 	var map, container;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {center: [55.8, 37.6], zoom: 6});
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#initialize", function () {
-		it("should never be flat", function () {
+	describe("#initialize", () => {
+		it("should never be flat", () => {
 			var latLngs = [[1, 2], [3, 4]];
 
 			var rectangle = L.rectangle(latLngs);
@@ -20,7 +20,7 @@ describe('Rectangle', function () {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
-		it("doesn't overwrite the given latlng array", function () {
+		it("doesn't overwrite the given latlng array", () => {
 			var originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -33,14 +33,14 @@ describe('Rectangle', function () {
 			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it("cannot be called with an empty array", function () {
+		it("cannot be called with an empty array", () => {
 			// Throws error due to undefined lat
-			expect(function () {
+			expect(() => {
 				L.rectangle([]);
 			}).to.throwException();
 		});
 
-		it("can be initialized with extending bounds", function () {
+		it("can be initialized with extending bounds", () => {
 			var originalLatLngs = [
 				[0, 10], [20, 30],
 				[40, 50], [60, 70] // extended bounds
@@ -55,8 +55,8 @@ describe('Rectangle', function () {
 		});
 	});
 
-	describe("#setBounds", function () {
-		it("doesn't overwrite the given latlng array", function () {
+	describe("#setBounds", () => {
+		it("doesn't overwrite the given latlng array", () => {
 			var originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -70,7 +70,7 @@ describe('Rectangle', function () {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 
-		it("changes original bounds to new bounds", function () {
+		it("changes original bounds to new bounds", () => {
 			var originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -91,7 +91,7 @@ describe('Rectangle', function () {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
-		it("can be set with extending bounds", function () {
+		it("can be set with extending bounds", () => {
 			var originalLatLngs = [
 				[[2, 3], [4, 5]]
 			];
@@ -111,13 +111,13 @@ describe('Rectangle', function () {
 		});
 	});
 
-	describe("#Canvas", function () {
-		it("doesn't apply `focus` listener if element is undefined", function () {
+	describe("#Canvas", () => {
+		it("doesn't apply `focus` listener if element is undefined", () => {
 			map.remove();
 
 			map = L.map(container, {renderer: L.canvas()});
 			map.setView([0, 0], 6);
-			expect(function () {
+			expect(() => {
 				L.polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');
 			}).to.not.throwException();
 		});

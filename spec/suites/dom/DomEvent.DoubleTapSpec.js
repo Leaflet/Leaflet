@@ -1,7 +1,7 @@
-describe('DomEvent.DoubleTapSpec.js', function () {
+describe('DomEvent.DoubleTapSpec.js', () => {
 	var container, clock, spy;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 
 		clock = sinon.useFakeTimers();
@@ -10,12 +10,12 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		L.DomEvent.on(container, 'dblclick', spy);
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		clock.restore();
 		removeMapContainer(null, container);
 	});
 
-	it('fires synthetic dblclick after two clicks with delay<200', function () {
+	it('fires synthetic dblclick after two clicks with delay<200', () => {
 		happen.click(container, {detail: 1});
 		clock.tick(100);
 		happen.click(container, {detail: 1});
@@ -25,7 +25,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spy.lastCall.args[0]._simulated).to.be.ok();
 	});
 
-	it('does not fire dblclick when delay>200', function () {
+	it('does not fire dblclick when delay>200', () => {
 		happen.click(container, {detail: 1});
 		clock.tick(300);
 		happen.click(container, {detail: 1});
@@ -33,7 +33,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('does not fire dblclick when detail !== 1', function () {
+	it('does not fire dblclick when detail !== 1', () => {
 		happen.click(container, {detail: 0}); // like in IE
 		clock.tick(100);
 		happen.click(container, {detail: 0});
@@ -42,7 +42,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('does not fire dblclick after removeListener', function () {
+	it('does not fire dblclick after removeListener', () => {
 		L.DomEvent.off(container, 'dblclick', spy);
 
 		happen.click(container, {detail: 1});
@@ -53,7 +53,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('does not conflict with native dblclick', function () {
+	it('does not conflict with native dblclick', () => {
 		happen.click(container, {detail: 1});
 		clock.tick(100);
 		happen.click(container, {detail: 2}); // native dblclick expected
@@ -63,7 +63,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spy.lastCall.args[0]._simulated).not.to.be.ok();
 	});
 
-	it('synthetic dblclick event has expected properties', function () {
+	it('synthetic dblclick event has expected properties', () => {
 		var click = {
 			detail: 1,
 			clientX: 2,
@@ -89,7 +89,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(event.isTrusted).not.to.be.ok();
 	});
 
-	it('respects disableClickPropagation', function () {
+	it('respects disableClickPropagation', () => {
 		var spyMap = sinon.spy();
 		var map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
@@ -113,7 +113,7 @@ describe('DomEvent.DoubleTapSpec.js', function () {
 		expect(spyMap.notCalled).to.be.ok();
 	});
 
-	it('doesn\'t fire double-click while clicking on a label with `for` attribute', function () {
+	it('doesn\'t fire double-click while clicking on a label with `for` attribute', () => {
 		var spyMap = sinon.spy();
 		var map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);

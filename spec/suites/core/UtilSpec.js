@@ -1,15 +1,15 @@
-describe('Util', function () {
-	describe('#extend', function () {
+describe('Util', () => {
+	describe('#extend', () => {
 		var a;
 
-		beforeEach(function () {
+		beforeEach(() => {
 			a = {
 				foo: 5,
 				bar: 'asd'
 			};
 		});
 
-		it('extends the first argument with the properties of the second', function () {
+		it('extends the first argument with the properties of the second', () => {
 			L.Util.extend(a, {
 				bar: 7,
 				baz: 3
@@ -22,7 +22,7 @@ describe('Util', function () {
 			});
 		});
 
-		it('accepts more than 2 arguments', function () {
+		it('accepts more than 2 arguments', () => {
 			L.Util.extend(a, {bar: 7}, {baz: 3});
 
 			expect(a).to.eql({
@@ -33,8 +33,8 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#stamp', function () {
-		it('sets a unique id on the given object and returns it', function () {
+	describe('#stamp', () => {
+		it('sets a unique id on the given object and returns it', () => {
 			var a = {},
 			    id = L.Util.stamp(a);
 
@@ -48,14 +48,14 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#falseFn', function () {
-		it('returns false', function () {
+	describe('#falseFn', () => {
+		it('returns false', () => {
 			expect(L.Util.falseFn()).to.be(false);
 		});
 	});
 
-	describe('#formatNum', function () {
-		it('formats numbers with a given precision', function () {
+	describe('#formatNum', () => {
+		it('formats numbers with a given precision', () => {
 			expect(L.Util.formatNum(13.12325555, 3)).to.eql(13.123);
 			expect(L.Util.formatNum(13.12325555)).to.eql(13.123256);
 			expect(L.Util.formatNum(13.12325555, 0)).to.eql(13);
@@ -65,8 +65,8 @@ describe('Util', function () {
 	});
 
 
-	describe('#getParamString', function () {
-		it('creates a valid query string for appending depending on url input', function () {
+	describe('#getParamString', () => {
+		it('creates a valid query string for appending depending on url input', () => {
 			var a = {
 				url: 'http://example.com/get',
 				obj: {bar: 7, baz: 3},
@@ -93,8 +93,8 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#requestAnimFrame', function () {
-		it('calles a function on next frame, unless canceled', function (done) {
+	describe('#requestAnimFrame', () => {
+		it('calles a function on next frame, unless canceled', (done) => {
 			var spy = sinon.spy(),
 			    foo = {};
 
@@ -109,8 +109,8 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#throttle', function () {
-		it('limits execution to not more often than specified time interval', function (done) {
+	describe('#throttle', () => {
+		it('limits execution to not more often than specified time interval', (done) => {
 			var spy = sinon.spy();
 
 			var fn = L.Util.throttle(spy, 20);
@@ -121,53 +121,53 @@ describe('Util', function () {
 
 			expect(spy.callCount).to.eql(1);
 
-			setTimeout(function () {
+			setTimeout(() => {
 				expect(spy.callCount).to.eql(2);
 				done();
 			}, 30);
 		});
 	});
 
-	describe('#splitWords', function () {
-		it('splits words into an array', function () {
+	describe('#splitWords', () => {
+		it('splits words into an array', () => {
 			expect(L.Util.splitWords('foo bar baz')).to.eql(['foo', 'bar', 'baz']);
 		});
 	});
 
-	describe('#setOptions', function () {
-		it('sets specified options on object', function () {
+	describe('#setOptions', () => {
+		it('sets specified options on object', () => {
 			var o = {};
 			L.Util.setOptions(o, {foo: 'bar'});
 			expect(o.options.foo).to.eql('bar');
 		});
 
-		it('returns options', function () {
+		it('returns options', () => {
 			var o = {};
 			var r = L.Util.setOptions(o, {foo: 'bar'});
 			expect(r).to.equal(o.options);
 		});
 
-		it('accepts undefined', function () {
+		it('accepts undefined', () => {
 			var o = {};
 			L.Util.setOptions(o, undefined);
 			expect(o.options).to.eql({});
 		});
 
-		it('creates a distinct options object', function () {
+		it('creates a distinct options object', () => {
 			var opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
 
-		it("doesn't create a distinct options object if object already has own options", function () {
+		it("doesn't create a distinct options object if object already has own options", () => {
 			var opts = {},
 			    o = {options: opts};
 			L.Util.setOptions(o, {});
 			expect(o.options).to.equal(opts);
 		});
 
-		it('inherits options prototypally', function () {
+		it('inherits options prototypally', () => {
 			var opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
@@ -176,8 +176,8 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#template', function () {
-		it('evaluates templates with a given data object', function () {
+	describe('#template', () => {
+		it('evaluates templates with a given data object', () => {
 			var tpl = 'Hello {foo} and {bar}!';
 
 			var str = L.Util.template(tpl, {
@@ -188,30 +188,30 @@ describe('Util', function () {
 			expect(str).to.eql('Hello Vlad and Dave!');
 		});
 
-		it('does not modify text without a token variable', function () {
+		it('does not modify text without a token variable', () => {
 			expect(L.Util.template('foo', {})).to.eql('foo');
 		});
 
-		it('supports templates with double quotes', function () {
+		it('supports templates with double quotes', () => {
 			expect(L.Util.template('He said: "{foo}"!', {
 				foo: 'Hello'
 			})).to.eql('He said: "Hello"!');
 		});
 
-		it('throws when a template token is not given', function () {
-			expect(function () {
+		it('throws when a template token is not given', () => {
+			expect(() => {
 				L.Util.template(undefined, {foo: 'bar'});
 			}).to.throwError();
 		});
 
-		it('allows underscores, dashes and spaces in placeholders', function () {
+		it('allows underscores, dashes and spaces in placeholders', () => {
 			expect(L.Util.template('{nice_stuff}', {'nice_stuff': 'foo'})).to.eql('foo');
 			expect(L.Util.template('{-y}', {'-y': 1})).to.eql('1');
 			expect(L.Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
 	});
 
-	describe('#isArray', function () {
+	describe('#isArray', () => {
 		expect(L.Util.isArray([1, 2, 3])).to.be(true);
 		/* eslint no-array-constructor: 0 */
 		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);

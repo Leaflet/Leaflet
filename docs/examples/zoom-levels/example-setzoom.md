@@ -15,11 +15,11 @@ title: Zoom Levels Tutorial
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	setInterval(function () {
+	setInterval(() => {
 
 		map.setZoom(0);
 
-		setTimeout(function () {
+		setTimeout(() => {
 			map.setZoom(1);
 		}, 2000);
 
@@ -31,7 +31,7 @@ title: Zoom Levels Tutorial
 			gauge.style.width = '200px';
 			gauge.style.background = 'rgba(255,255,255,0.5)';
 			gauge.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function (ev) {
+			map.on('zoomstart zoom zoomend', (ev) => {
 				gauge.innerHTML = `Zoom level: ${map.getZoom()}`;
 			});
 			return gauge;

@@ -1,17 +1,17 @@
-describe("Map.Drag", function () {
+describe("Map.Drag", () => {
 	var container, map;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = undefined;
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#addHook", function () {
-		it("calls the map with dragging enabled", function () {
+	describe("#addHook", () => {
+		it("calls the map with dragging enabled", () => {
 			map = L.map(container, {
 				dragging: true
 			});
@@ -21,7 +21,7 @@ describe("Map.Drag", function () {
 			expect(map.dragging.enabled()).to.be(true);
 		});
 
-		it("calls the map with dragging and worldCopyJump enabled", function () {
+		it("calls the map with dragging and worldCopyJump enabled", () => {
 			map = L.map(container, {
 				dragging: true,
 				worldCopyJump: true
@@ -33,7 +33,7 @@ describe("Map.Drag", function () {
 		});
 
 		it("calls the map with dragging disabled and worldCopyJump enabled; " +
-			"enables dragging after setting center and zoom", function () {
+			"enables dragging after setting center and zoom", () => {
 			map = L.map(container, {
 				dragging: false,
 				worldCopyJump: true
@@ -57,8 +57,8 @@ describe("Map.Drag", function () {
 		this._initialPos = this._getPosition();
 	});
 
-	describe("mouse events", function () {
-		it("change the center of the map", function (done) {
+	describe("mouse events", () => {
+		it("change the center of the map", (done) => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -86,15 +86,15 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		describe("in CSS scaled container", function () {
+		describe("in CSS scaled container", () => {
 			var scale = L.point(2, 1.5);
 
-			beforeEach(function () {
+			beforeEach(() => {
 				container.style.webkitTransformOrigin = 'top left';
 				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it("change the center of the map, compensating for CSS scale", function (done) {
+			it("change the center of the map, compensating for CSS scale", (done) => {
 				map = new MyMap(container, {
 				    dragging: true,
 				    inertia: false
@@ -125,7 +125,7 @@ describe("Map.Drag", function () {
 			});
 		});
 
-		it("does not change the center of the map when mouse is moved less than the drag threshold", function (done) {
+		it("does not change the center of the map when mouse is moved less than the drag threshold", (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -156,7 +156,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it("does not trigger preclick nor click", function (done) {
+		it("does not trigger preclick nor click", (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -187,7 +187,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
 		});
 
-		it("does not trigger preclick nor click when dragging on top of a static marker", function (done) {
+		it("does not trigger preclick nor click when dragging on top of a static marker", (done) => {
 			container.style.width = container.style.height = '600px';
 			map = L.map(container, {
 				dragging: true,
@@ -227,7 +227,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveBy(20, 20, 100).up();
 		});
 
-		it("does not trigger preclick nor click when dragging a marker", function (done) {
+		it("does not trigger preclick nor click when dragging a marker", (done) => {
 			container.style.width = container.style.height = '600px';
 			map = L.map(container, {
 				dragging: true,
@@ -267,7 +267,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
 		});
 
-		it("does not change the center of the map when drag is disabled on click", function (done) {
+		it("does not change the center of the map when drag is disabled on click", (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -275,7 +275,7 @@ describe("Map.Drag", function () {
 			var originalCenter = L.latLng(0, 0);
 			map.setView(originalCenter.clone(), 1);
 
-			map.on('mousedown', function () {
+			map.on('mousedown', () => {
 				map.dragging.disable();
 			});
 			var spy = sinon.spy();
@@ -301,8 +301,8 @@ describe("Map.Drag", function () {
 		});
 	});
 
-	describe("touch events", function () {
-		it.skipIfNotTouch("change the center of the map", function (done) {
+	describe("touch events", () => {
+		it.skipIfNotTouch("change the center of the map", (done) => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -330,7 +330,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
+		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -362,7 +362,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it.skipIfNotTouch('reset itself after touchend', function (done) {
+		it.skipIfNotTouch('reset itself after touchend', (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false,
