@@ -87,9 +87,8 @@ export var LayerGroup = Layer.extend({
 	// Calls `methodName` on every layer contained in this group, passing any
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
-	invoke: function (methodName) {
-		var args = Array.prototype.slice.call(arguments, 1),
-		    i, layer;
+	invoke: function (methodName, ...args) {
+		var i, layer;
 
 		for (i in this._layers) {
 			layer = this._layers[i];

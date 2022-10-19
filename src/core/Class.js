@@ -15,13 +15,13 @@ Class.extend = function (props) {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+	var NewClass = function (...args) {
 
 		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
-			this.initialize.apply(this, arguments);
+			this.initialize.apply(this, args);
 		}
 
 		// call all constructor hooks
@@ -106,9 +106,7 @@ Class.mergeOptions = function (options) {
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn) { // (Function) || (String, args...)
-	var args = Array.prototype.slice.call(arguments, 1);
-
+Class.addInitHook = function (fn, ...args) { // (Function) || (String, args...)
 	var init = typeof fn === 'function' ? fn : function () {
 		this[fn].apply(this, args);
 	};
