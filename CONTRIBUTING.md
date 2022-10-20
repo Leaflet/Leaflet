@@ -1,13 +1,12 @@
-Contributing to Leaflet
-=======================
+# Contributing to Leaflet
 
  1. [Getting Involved](#getting-involved)
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
- 6. [Improving Documentation](#improving-documentation)
- 7. [Code of Conduct](#code-of-conduct)
- 8. [Thank You](#thank-you)
+ 5. [Improving Documentation](#improving-documentation)
+ 6. [Code of Conduct](#code-of-conduct)
+ 7. [Thank You](#thank-you)
 
 ## Getting Involved
 
@@ -32,13 +31,13 @@ and if it's already reported, just add any additional details in the comments.
 After you've made sure that you've found a new Leaflet bug,
 here are some tips for creating a helpful report that will make fixing it much easier and quicker:
 
- * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
- * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](http://leafletjs.com/edit.html)).
- * Check whether the bug can be reproduced in **other browsers**.
- * Check if the bug occurs in the stable version, main, or both.
- * *Bonus tip:* if the bug only appears in the main version but the stable version is fine,
-   use `git bisect` to find the exact commit that introduced the bug.
+* Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
+* Include **browser, OS and Leaflet version** info in the description.
+* Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](http://leafletjs.com/edit.html)).
+* Check whether the bug can be reproduced in **other browsers**.
+* Check if the bug occurs in the stable version, main, or both.
+* *Bonus tip:* if the bug only appears in the main version but the stable version is fine,
+  use `git bisect` to find the exact commit that introduced the bug.
 
 If you just want some help with your project,
 try asking on [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet)
@@ -69,11 +68,13 @@ The Leaflet build system uses [NodeJS](http://nodejs.org/).
 To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
 Then run the following commands in the project root to install dependencies:
 
-```
+```text
 npm install
 ```
+
 or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
-```
+
+```text
 yarn install
 ```
 
@@ -89,8 +90,8 @@ Please do not commit to the `main` branch of your fork — otherwise your unrela
 You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
-Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them. 
-The same command is automatically executed while committing. 
+Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them.
+The same command is automatically executed while committing.
 You can prevent it from execution with the git flag `--no-verify`: `git commit -m "WIP" --no-verify`.  
 
 Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
@@ -120,13 +121,13 @@ on rebuilding the bundles whenever any source file changes.
 
 To run the tests from the command line, install [Google Chrome](https://www.google.com/chrome/) then run:
 
-```
+```text
 npm test
 ```
 
 To run the tests in other browsers at the same time, you can do:
 
-```
+```text
 npm test -- -- --browsers Firefox,Chrome,Safari,IE
 ```
 
@@ -171,7 +172,7 @@ source code.
 In order to generate the documentation, make sure that the development dependencies
 are installed (run either `npm install` or `yarn install`), then just run
 
-```
+```text
 npm run docs
 ```
 
