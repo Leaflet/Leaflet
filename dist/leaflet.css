@@ -25,10 +25,6 @@
 	        user-select: none;
 	  -webkit-user-drag: none;
 	}
-/* Prevents IE11 from highlighting tiles in blue */
-.leaflet-tile::selection {
-	background: transparent;
-}
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
 .leaflet-safari .leaflet-tile {
 	image-rendering: -webkit-optimize-contrast;
@@ -61,17 +57,14 @@
 	}
 
 .leaflet-container.leaflet-touch-zoom {
-	-ms-touch-action: pan-x pan-y;
 	touch-action: pan-x pan-y;
 	}
 .leaflet-container.leaflet-touch-drag {
-	-ms-touch-action: pinch-zoom;
 	/* Fallback for FF which doesn't support pinch-zoom */
 	touch-action: none;
 	touch-action: pinch-zoom;
 }
 .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
-	-ms-touch-action: none;
 	touch-action: none;
 }
 .leaflet-container {
@@ -117,7 +110,6 @@
 .leaflet-control {
 	position: relative;
 	z-index: 800;
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
 	pointer-events: auto;
 	}
 .leaflet-top,
@@ -172,7 +164,6 @@
 	}
 .leaflet-zoom-animated {
 	-webkit-transform-origin: 0 0;
-	    -ms-transform-origin: 0 0;
 	        transform-origin: 0 0;
 	}
 svg.leaflet-zoom-animated {
@@ -236,7 +227,6 @@ svg.leaflet-zoom-animated {
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.leaflet-interactive path {
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
 	pointer-events: auto;
 	}
 
@@ -505,7 +495,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 	-webkit-transform: rotate(45deg);
 	   -moz-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
 	        transform: rotate(45deg);
 	}
 .leaflet-popup-content-wrapper,
@@ -555,7 +544,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	white-space: nowrap;
 	-webkit-user-select: none;
 	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
@@ -630,3 +618,4 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		print-color-adjust: exact;
 		}
 	}
+}
