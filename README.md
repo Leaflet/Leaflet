@@ -1,4 +1,4 @@
-Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
+# Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv
 
 Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
@@ -16,7 +16,7 @@ It is chilling to see Leaflet being used for [documenting Russia's war crimes](h
 
 If you support the actions of the Russian government (even after reading all this), do everyone else a favour and [carry some seeds in your pocket](https://www.theguardian.com/world/video/2022/feb/25/ukrainian-woman-sunflower-seeds-russian-soldiers-video).
 
-Yours truly,<br>
+Yours truly,\
 Leaflet maintainers.
 
 ---
@@ -33,10 +33,10 @@ It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
-For more info, docs and tutorials, check out the [official website][].<br>
+For more info, docs and tutorials, check out the [official website][].\
 For **Leaflet downloads** (including the built main version), check out the [download page][].
 
-We're happy to meet new contributors.
+We're happy to meet new [contributors].
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
 Let's make the best mapping library that will ever exist,
 and push the limits of what's possible with online maps!
@@ -48,8 +48,6 @@ and push the limits of what's possible with online maps!
  [plugins]: http://leafletjs.com/plugins.html
  [well-documented]: http://leafletjs.com/reference.html "Leaflet API reference"
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
- [hosted on GitHub]: http://github.com/Leaflet/Leaflet
  [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
  [download page]: http://leafletjs.com/download.html
-
