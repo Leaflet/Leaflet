@@ -21,7 +21,7 @@ Map.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export var Keyboard = Handler.extend({
+export const Keyboard = Handler.extend({
 
 	keyCodes: {
 		left:    [37],
@@ -40,7 +40,7 @@ export var Keyboard = Handler.extend({
 	},
 
 	addHooks() {
-		var container = this._map._container;
+		const container = this._map._container;
 
 		// make the container focusable by tabbing
 		if (container.tabIndex <= 0) {
@@ -77,7 +77,7 @@ export var Keyboard = Handler.extend({
 	_onMouseDown() {
 		if (this._focused) { return; }
 
-		var body = document.body,
+		const body = document.body,
 		    docEl = document.documentElement,
 		    top = body.scrollTop || docEl.scrollTop,
 		    left = body.scrollLeft || docEl.scrollLeft;
@@ -98,9 +98,9 @@ export var Keyboard = Handler.extend({
 	},
 
 	_setPanDelta(panDelta) {
-		var keys = this._panKeys = {},
-		    codes = this.keyCodes,
-		    i, len;
+		const keys = this._panKeys = {},
+		    codes = this.keyCodes;
+		let i, len;
 
 		for (i = 0, len = codes.left.length; i < len; i++) {
 			keys[codes.left[i]] = [-1 * panDelta, 0];
@@ -117,9 +117,9 @@ export var Keyboard = Handler.extend({
 	},
 
 	_setZoomDelta(zoomDelta) {
-		var keys = this._zoomKeys = {},
-		    codes = this.keyCodes,
-		    i, len;
+		const keys = this._zoomKeys = {},
+		      codes = this.keyCodes;
+		let i, len;
 
 		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
 			keys[codes.zoomIn[i]] = zoomDelta;
@@ -140,9 +140,9 @@ export var Keyboard = Handler.extend({
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
-		var key = e.keyCode,
-		    map = this._map,
-		    offset;
+		const key = e.keyCode,
+		     map = this._map;
+		let offset;
 
 		if (key in this._panKeys) {
 			if (!map._panAnim || !map._panAnim._inProgress) {

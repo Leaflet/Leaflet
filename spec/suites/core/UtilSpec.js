@@ -1,6 +1,6 @@
 describe('Util', () => {
 	describe('#extend', () => {
-		var a;
+		let a;
 
 		beforeEach(() => {
 			a = {
@@ -35,13 +35,13 @@ describe('Util', () => {
 
 	describe('#stamp', () => {
 		it('sets a unique id on the given object and returns it', () => {
-			var a = {},
+			const a = {},
 			    id = L.Util.stamp(a);
 
 			expect(typeof id).to.eql('number');
 			expect(L.Util.stamp(a)).to.eql(id);
 
-			var b = {},
+			const b = {},
 			    id2 = L.Util.stamp(b);
 
 			expect(id2).not.to.eql(id);
@@ -67,7 +67,7 @@ describe('Util', () => {
 
 	describe('#getParamString', () => {
 		it('creates a valid query string for appending depending on url input', () => {
-			var a = {
+			const a = {
 				url: 'http://example.com/get',
 				obj: {bar: 7, baz: 3},
 				result: '?bar=7&baz=3'
@@ -75,7 +75,7 @@ describe('Util', () => {
 
 			expect(L.Util.getParamString(a.obj, a.url)).to.eql(a.result);
 
-			var b = {
+			const b = {
 				url: 'http://example.com/get?justone=qs',
 				obj: {bar: 7, baz: 3},
 				result: '&bar=7&baz=3'
@@ -83,7 +83,7 @@ describe('Util', () => {
 
 			expect(L.Util.getParamString(b.obj, b.url)).to.eql(b.result);
 
-			var c = {
+			const c = {
 				url: undefined,
 				obj: {bar: 7, baz: 3},
 				result: '?bar=7&baz=3'
@@ -95,7 +95,7 @@ describe('Util', () => {
 
 	describe('#requestAnimFrame', () => {
 		it('calles a function on next frame, unless canceled', (done) => {
-			var spy = sinon.spy(),
+			const spy = sinon.spy(),
 			    foo = {};
 
 			L.Util.requestAnimFrame(spy);
@@ -111,9 +111,9 @@ describe('Util', () => {
 
 	describe('#throttle', () => {
 		it('limits execution to not more often than specified time interval', (done) => {
-			var spy = sinon.spy();
+			const spy = sinon.spy();
 
-			var fn = L.Util.throttle(spy, 20);
+			const fn = L.Util.throttle(spy, 20);
 
 			fn();
 			fn();
@@ -136,39 +136,39 @@ describe('Util', () => {
 
 	describe('#setOptions', () => {
 		it('sets specified options on object', () => {
-			var o = {};
+			const o = {};
 			L.Util.setOptions(o, {foo: 'bar'});
 			expect(o.options.foo).to.eql('bar');
 		});
 
 		it('returns options', () => {
-			var o = {};
-			var r = L.Util.setOptions(o, {foo: 'bar'});
+			const o = {};
+			const r = L.Util.setOptions(o, {foo: 'bar'});
 			expect(r).to.equal(o.options);
 		});
 
 		it('accepts undefined', () => {
-			var o = {};
+			const o = {};
 			L.Util.setOptions(o, undefined);
 			expect(o.options).to.eql({});
 		});
 
 		it('creates a distinct options object', () => {
-			var opts = {},
+			const opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
 
 		it("doesn't create a distinct options object if object already has own options", () => {
-			var opts = {},
+			const opts = {},
 			    o = {options: opts};
 			L.Util.setOptions(o, {});
 			expect(o.options).to.equal(opts);
 		});
 
 		it('inherits options prototypally', () => {
-			var opts = {},
+			const opts = {},
 			    o = L.Util.create({options: opts});
 			L.Util.setOptions(o, {});
 			opts.foo = 'bar';
@@ -178,9 +178,9 @@ describe('Util', () => {
 
 	describe('#template', () => {
 		it('evaluates templates with a given data object', () => {
-			var tpl = 'Hello {foo} and {bar}!';
+			const tpl = 'Hello {foo} and {bar}!';
 
-			var str = L.Util.template(tpl, {
+			const str = L.Util.template(tpl, {
 				foo: 'Vlad',
 				bar: 'Dave'
 			});

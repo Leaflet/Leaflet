@@ -45,7 +45,7 @@ import {Point} from '../../geometry/Point';
  */
 
 
-export var Polyline = Path.extend({
+export const Polyline = Path.extend({
 
 	// @section
 	// @aka Polyline options
@@ -87,19 +87,19 @@ export var Polyline = Path.extend({
 	// @method closestLayerPoint(p: Point): Point
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint(p) {
-		var minDistance = Infinity,
+		let minDistance = Infinity,
 		    minPoint = null,
-		    closest = LineUtil._sqClosestPointOnSegment,
 		    p1, p2;
+		const closest = LineUtil._sqClosestPointOnSegment;
 
-		for (var j = 0, jLen = this._parts.length; j < jLen; j++) {
-			var points = this._parts[j];
+		for (let j = 0, jLen = this._parts.length; j < jLen; j++) {
+			const points = this._parts[j];
 
-			for (var i = 1, len = points.length; i < len; i++) {
+			for (let i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
 
-				var sqDist = closest(p, p1, p2, true);
+				const sqDist = closest(p, p1, p2, true);
 
 				if (sqDist < minDistance) {
 					minDistance = sqDist;
@@ -152,10 +152,10 @@ export var Polyline = Path.extend({
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs(latlngs) {
-		var result = [],
+		const result = [],
 		    flat = LineUtil.isFlat(latlngs);
 
-		for (var i = 0, len = latlngs.length; i < len; i++) {
+		for (let i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
 				result[i] = toLatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
@@ -168,7 +168,7 @@ export var Polyline = Path.extend({
 	},
 
 	_project() {
-		var pxBounds = new Bounds();
+		const pxBounds = new Bounds();
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
@@ -179,7 +179,7 @@ export var Polyline = Path.extend({
 	},
 
 	_updateBounds() {
-		var w = this._clickTolerance(),
+		const w = this._clickTolerance(),
 		    p = new Point(w, w);
 
 		if (!this._rawPxBounds) {
@@ -194,9 +194,9 @@ export var Polyline = Path.extend({
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs(latlngs, result, projectedBounds) {
-		var flat = latlngs[0] instanceof LatLng,
-		    len = latlngs.length,
-		    i, ring;
+		const flat = latlngs[0] instanceof LatLng,
+		      len = latlngs.length;
+		let i, ring;
 
 		if (flat) {
 			ring = [];
@@ -214,7 +214,7 @@ export var Polyline = Path.extend({
 
 	// clip polyline by renderer bounds so that we have less to render for performance
 	_clipPoints() {
-		var bounds = this._renderer._bounds;
+		const bounds = this._renderer._bounds;
 
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
@@ -226,8 +226,8 @@ export var Polyline = Path.extend({
 			return;
 		}
 
-		var parts = this._parts,
-		    i, j, k, len, len2, segment, points;
+		const parts = this._parts;
+		let i, j, k, len, len2, segment, points;
 
 		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
 			points = this._rings[i];
@@ -251,10 +251,10 @@ export var Polyline = Path.extend({
 
 	// simplify each clipped part of the polyline for performance
 	_simplifyPoints() {
-		var parts = this._parts,
+		const parts = this._parts,
 		    tolerance = this.options.smoothFactor;
 
-		for (var i = 0, len = parts.length; i < len; i++) {
+		for (let i = 0, len = parts.length; i < len; i++) {
 			parts[i] = LineUtil.simplify(parts[i], tolerance);
 		}
 	},
@@ -273,8 +273,8 @@ export var Polyline = Path.extend({
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p, closed) {
-		var i, j, k, len, len2, part,
-		    w = this._clickTolerance();
+		let i, j, k, len, len2, part;
+		const w = this._clickTolerance();
 
 		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
 

@@ -26,7 +26,7 @@ import {Bounds} from '../../geometry/Bounds';
  * its map has moved
  */
 
-export var Renderer = Layer.extend({
+export const Renderer = Layer.extend({
 
 	// @section
 	// @aka Renderer options
@@ -63,7 +63,7 @@ export var Renderer = Layer.extend({
 	},
 
 	getEvents() {
-		var events = {
+		const events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
 			moveend: this._update,
@@ -84,7 +84,7 @@ export var Renderer = Layer.extend({
 	},
 
 	_updateTransform(center, zoom) {
-		var scale = this._map.getZoomScale(zoom, this._zoom),
+		const scale = this._map.getZoomScale(zoom, this._zoom),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
 
@@ -102,19 +102,19 @@ export var Renderer = Layer.extend({
 		this._update();
 		this._updateTransform(this._center, this._zoom);
 
-		for (var id in this._layers) {
+		for (const id in this._layers) {
 			this._layers[id]._reset();
 		}
 	},
 
 	_onZoomEnd() {
-		for (var id in this._layers) {
+		for (const id in this._layers) {
 			this._layers[id]._project();
 		}
 	},
 
 	_updatePaths() {
-		for (var id in this._layers) {
+		for (const id in this._layers) {
 			this._layers[id]._update();
 		}
 	},
@@ -122,7 +122,7 @@ export var Renderer = Layer.extend({
 	_update() {
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		// Subclasses are responsible of firing the 'update' event.
-		var p = this.options.padding,
+		const p = this.options.padding,
 		    size = this._map.getSize(),
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 

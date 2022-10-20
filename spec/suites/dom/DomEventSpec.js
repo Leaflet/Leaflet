@@ -1,5 +1,5 @@
 describe('DomEvent', () => {
-	var el, listener;
+	let el, listener;
 
 	beforeEach(() => {
 		el = document.createElement('div');
@@ -227,7 +227,7 @@ describe('DomEvent', () => {
 		});
 
 		it('adds a listener and calls it on event with click', () => {
-			var listener2 = sinon.spy();
+			const listener2 = sinon.spy();
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
@@ -238,7 +238,7 @@ describe('DomEvent', () => {
 		});
 
 		it('adds a listener and calls it on event with click and keypress', () => {
-			var listener2 = sinon.spy();
+			const listener2 = sinon.spy();
 			L.DomEvent.on(el, 'click keypress', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
@@ -250,7 +250,7 @@ describe('DomEvent', () => {
 		});
 
 		it('adds a listener when passed an event map', () => {
-			var listener = sinon.spy();
+			const listener = sinon.spy();
 
 			L.DomEvent.on(el, {click: listener});
 
@@ -260,7 +260,7 @@ describe('DomEvent', () => {
 		});
 
 		it('adds 2 listener when passed an event map with multiple events', () => {
-			var listener2 = sinon.spy();
+			const listener2 = sinon.spy();
 
 			L.DomEvent.on(el, {click: listener, keypress: listener2});
 
@@ -272,7 +272,7 @@ describe('DomEvent', () => {
 		});
 
 		it('binds "this" to the given context', () => {
-			var obj = {foo: 'bar'};
+			const obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click', listener, obj);
 
 			happen.click(el);
@@ -281,7 +281,7 @@ describe('DomEvent', () => {
 		});
 
 		it('binds "this" to the given context with multiple types', () => {
-			var obj = {foo: 'bar'};
+			const obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click keypress', listener, obj);
 
 			happen.click(el);
@@ -291,7 +291,7 @@ describe('DomEvent', () => {
 		});
 
 		it('binds "this" to the given context when passed an event map', () => {
-			var listener = sinon.spy(),
+			const listener = sinon.spy(),
 			    ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, {click: listener}, ctx);
@@ -302,7 +302,7 @@ describe('DomEvent', () => {
 		});
 
 		it('binds "this" to the given context when passed an event map with multiple events', () => {
-			var listener2 = sinon.spy(),
+			const listener2 = sinon.spy(),
 			    ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, {click: listener, keypress: listener2}, ctx);
@@ -333,7 +333,7 @@ describe('DomEvent', () => {
 		});
 
 		it('is chainable', () => {
-			var res = L.DomEvent.on(el, 'click', () => {});
+			const res = L.DomEvent.on(el, 'click', () => {});
 
 			expect(res).to.be(L.DomEvent);
 		});
@@ -364,7 +364,7 @@ describe('DomEvent', () => {
 		});
 
 		it('only removes the specified listener', () => {
-			var listenerA = sinon.spy(),
+			const listenerA = sinon.spy(),
 			listenerB = sinon.spy();
 
 			L.DomEvent.on(el, 'click', listenerA);
@@ -378,7 +378,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes a previously added listener when passed an event map', () => {
-			var listener = sinon.spy(),
+			const listener = sinon.spy(),
 			    events = {click: listener};
 
 			L.DomEvent.on(el, events);
@@ -390,7 +390,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes a previously added listener when passed an event map with multiple events', () => {
-			var listener2 = sinon.spy(),
+			const listener2 = sinon.spy(),
 			    events = {click: listener, keypress: listener2};
 
 			L.DomEvent.on(el, events);
@@ -404,7 +404,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes a previously added event when passed an event map with multiple events', () => {
-			var listener2 = sinon.spy(),
+			const listener2 = sinon.spy(),
 			    events = {click: listener, keypress: listener2},
 			events2 = {click: listener};
 
@@ -419,7 +419,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes listener added with context', () => {
-			var listener = sinon.spy(),
+			const listener = sinon.spy(),
 			    ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, 'click', listener, ctx);
@@ -431,7 +431,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes listener added with context when passed an event map', () => {
-			var listener = sinon.spy(),
+			const listener = sinon.spy(),
 			    events = {click: listener},
 			    ctx = {foo: 'bar'};
 
@@ -444,7 +444,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes listener added with context when passed an event map with multiple events', () => {
-			var listener2 = sinon.spy(),
+			const listener2 = sinon.spy(),
 			    events = {click: listener, keypress: listener2},
 			events2 = {click: listener},
 			    ctx = {foo: 'bar'};
@@ -460,8 +460,8 @@ describe('DomEvent', () => {
 		});
 
 		it('only removes listener when proper context specified', () => {
-			var listener = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			let listener = sinon.spy();
+			const ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener, ctx);
@@ -481,9 +481,9 @@ describe('DomEvent', () => {
 		});
 
 		it('only removes listener when proper context specified when passed an event map', () => {
-			var listener = sinon.spy(),
-			    events = {click: listener},
-			    ctx = {foo: 'bar'};
+			let listener = sinon.spy(),
+			    events = {click: listener};
+			const ctx = {foo: 'bar'};
 
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events, ctx);
@@ -505,7 +505,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes all listeners when only passed the HTMLElement', () => {
-			var listenerA = sinon.spy(),
+			const listenerA = sinon.spy(),
 			listenerB = sinon.spy();
 
 			L.DomEvent.on(el, 'click', listenerA);
@@ -519,7 +519,7 @@ describe('DomEvent', () => {
 		});
 
 		it('only removes specified listeners type', () => {
-			var listenerClick = sinon.spy(),
+			const listenerClick = sinon.spy(),
 			listenerDblClick = sinon.spy();
 
 			L.DomEvent.on(el, 'click', listenerClick);
@@ -549,7 +549,7 @@ describe('DomEvent', () => {
 		});
 
 		it('removes listener when passed an event map', () => {
-			var listener = sinon.spy();
+			const listener = sinon.spy();
 
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, {'click': listener});
@@ -560,7 +560,7 @@ describe('DomEvent', () => {
 		});
 
 		it('is chainable', () => {
-			var res = L.DomEvent.off(el, 'click', () => {});
+			const res = L.DomEvent.off(el, 'click', () => {});
 
 			expect(res).to.be(L.DomEvent);
 		});
@@ -572,7 +572,7 @@ describe('DomEvent', () => {
 
 	describe('#stopPropagation', () => {
 		it('stops propagation of the given event', () => {
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.on(el, 'click', listener);
@@ -585,9 +585,9 @@ describe('DomEvent', () => {
 
 	describe('#disableScrollPropagation', () => {
 		it('stops wheel events from propagation to parent elements', () => {
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
-			var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+			const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 			L.DomEvent.on(el, wheel, listener);
 
 			L.DomEvent.disableScrollPropagation(child);
@@ -599,7 +599,7 @@ describe('DomEvent', () => {
 
 	describe('#disableClickPropagation', () => {
 		it('stops click events from propagation to parent elements', () => { // except 'click'
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(el, 'dblclick contextmenu mousedown touchstart', listener);
@@ -613,16 +613,16 @@ describe('DomEvent', () => {
 		});
 
 		it('prevents click event on map object, but propagates to DOM elements', () => { // to solve #301
-			var child = document.createElement('div');
+			const child = document.createElement('div');
 			el.appendChild(child);
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(el, 'click', listener);
-			var grandChild = document.createElement('div');
+			const grandChild = document.createElement('div');
 			child.appendChild(grandChild);
 
-			var map = L.map(el).setView([0, 0], 0);
-			var mapClickListener = sinon.spy();
-			var mapOtherListener = sinon.spy();
+			const map = L.map(el).setView([0, 0], 0);
+			const mapClickListener = sinon.spy();
+			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case
 			map.on('keypress', mapOtherListener);       // control case
 

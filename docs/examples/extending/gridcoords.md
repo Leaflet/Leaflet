@@ -4,14 +4,14 @@ title: Grid coordinates
 ---
 <script type='text/javascript'>
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		center: [0, 0],
 		zoom: 0
 	});
 
 	L.GridLayer.DebugCoords = L.GridLayer.extend({
 		createTile(coords, done) {
-			var tile = document.createElement('div');
+			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 
@@ -27,7 +27,7 @@ title: Grid coordinates
 		return new L.GridLayer.DebugCoords(opts);
 	};
 
-	var debugCoordsGrid = L.gridLayer.debugCoords();
+	const debugCoordsGrid = L.gridLayer.debugCoords();
 	map.addLayer(debugCoordsGrid);
 	
 </script>

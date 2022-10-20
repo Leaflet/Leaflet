@@ -17,7 +17,7 @@ import * as DomUtil from '../../dom/DomUtil';
  * `L.Marker.prototype.options.icon` with your own icon instead.
  */
 
-export var IconDefault = Icon.extend({
+export const IconDefault = Icon.extend({
 
 	options: {
 		iconUrl:       'marker-icon.png',
@@ -43,8 +43,8 @@ export var IconDefault = Icon.extend({
 	},
 
 	_stripUrl(path) {	// separate function to use in tests
-		var strip = function (str, re, idx) {
-			var match = re.exec(str);
+		const strip = function (str, re, idx) {
+			const match = re.exec(str);
 			return match && match[idx];
 		};
 		path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
@@ -52,14 +52,14 @@ export var IconDefault = Icon.extend({
 	},
 
 	_detectIconPath() {
-		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-		var path = DomUtil.getStyle(el, 'background-image') ||
+		const el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+		let path = DomUtil.getStyle(el, 'background-image') ||
 		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
 		path = this._stripUrl(path);
 		if (path) { return path; }
-		var link = document.querySelector('link[href$="leaflet.css"]');
+		const link = document.querySelector('link[href$="leaflet.css"]');
 		if (!link) { return ''; }
 		return link.href.substring(0, link.href.length - 'leaflet.css'.length - 1);
 	}

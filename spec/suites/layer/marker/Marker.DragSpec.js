@@ -1,5 +1,5 @@
 describe("Marker.Drag", () => {
-	var map,
+	let map,
 	    container;
 
 	beforeEach(() => {
@@ -14,7 +14,7 @@ describe("Marker.Drag", () => {
 		removeMapContainer(map, container);
 	});
 
-	var MyMarker = L.Marker.extend({
+	const MyMarker = L.Marker.extend({
 		_getPosition() {
 			return L.DomUtil.getPosition(this.dragging._draggable._element);
 		},
@@ -27,13 +27,13 @@ describe("Marker.Drag", () => {
 
 	describe("drag", () => {
 		it("drags a marker with mouse", (done) => {
-			var marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
-			var start = L.point(300, 280);
-			var offset = L.point(256, 32);
-			var finish = start.add(offset);
+			const start = L.point(300, 280);
+			const offset = L.point(256, 32);
+			const finish = start.add(offset);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
 					expect(marker.getOffset()).to.eql(offset);
@@ -44,14 +44,14 @@ describe("Marker.Drag", () => {
 					done();
 				}
 			});
-			var toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger('mouse');
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
 		describe("in CSS scaled container", () => {
-			var scale = L.point(2, 1.5);
+			const scale = L.point(2, 1.5);
 
 			beforeEach(() => {
 				container.style.webkitTransformOrigin = 'top left';
@@ -59,13 +59,13 @@ describe("Marker.Drag", () => {
 			});
 
 			it("drags a marker with mouse, compensating for CSS scale", (done) => {
-				var marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
-				var start = L.point(300, 280);
-				var offset = L.point(256, 32);
-				var finish = start.add(offset);
+				const start = L.point(300, 280);
+				const offset = L.point(256, 32);
+				const finish = start.add(offset);
 
-				var hand = new Hand({
+				const hand = new Hand({
 					timing: 'fastframe',
 					onStop() {
 						expect(marker.getOffset()).to.eql(offset);
@@ -76,26 +76,26 @@ describe("Marker.Drag", () => {
 						done();
 					}
 				});
-				var toucher = hand.growFinger('mouse');
+				const toucher = hand.growFinger('mouse');
 
-				var startScaled = start.scaleBy(scale);
-				var finishScaled = finish.scaleBy(scale);
+				const startScaled = start.scaleBy(scale);
+				const finishScaled = finish.scaleBy(scale);
 				toucher.wait(0).moveTo(startScaled.x, startScaled.y, 0)
 					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
 			});
 		});
 
 		it("pans map when autoPan is enabled", (done) => {
-			var marker = new MyMarker([0, 0], {
+			const marker = new MyMarker([0, 0], {
 				draggable: true,
 				autoPan: true
 			}).addTo(map);
 
-			var start = L.point(300, 280);
-			var offset = L.point(290, 32);
-			var finish = start.add(offset);
+			const start = L.point(300, 280);
+			const offset = L.point(290, 32);
+			const finish = start.add(offset);
 
-			var hand = new Hand({
+			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
 					expect(marker.getOffset()).to.eql(offset);
@@ -107,7 +107,7 @@ describe("Marker.Drag", () => {
 					done();
 				}
 			});
-			var toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger('mouse');
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();

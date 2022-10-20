@@ -23,7 +23,7 @@ import {LatLngBounds} from '../geo/LatLngBounds';
  * ```
  */
 
-export var FeatureGroup = LayerGroup.extend({
+export const FeatureGroup = LayerGroup.extend({
 
 	addLayer(layer) {
 		if (this.hasLayer(layer)) {
@@ -77,10 +77,10 @@ export var FeatureGroup = LayerGroup.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
 	getBounds() {
-		var bounds = new LatLngBounds();
+		const bounds = new LatLngBounds();
 
-		for (var id in this._layers) {
-			var layer = this._layers[id];
+		for (const id in this._layers) {
+			const layer = this._layers[id];
 			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		}
 		return bounds;
@@ -89,6 +89,6 @@ export var FeatureGroup = LayerGroup.extend({
 
 // @factory L.featureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
-export var featureGroup = function (layers, options) {
+export const featureGroup = function (layers, options) {
 	return new FeatureGroup(layers, options);
 };

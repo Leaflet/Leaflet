@@ -1,10 +1,10 @@
 describe('TileLayer', () => {
-	var container, map;
+	let container, map;
 
 	// Placekitten via https://placekitten.com/attribution.html
 	// Image licensed under CC-by-sa by http://flickr.com/photos/lachlanrogers/
 
-	var placeKitten = "data:image/jpeg;base64," +
+	const placeKitten = "data:image/jpeg;base64," +
 	"/9j/4AAQSkZJRgABAQAAAQABAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBF" +
 	"RyB2NjIpLCBxdWFsaXR5ID0gNjUK/9sAQwALCAgKCAcLCgkKDQwLDREcEhEPDxEiGRoUHCkkKyooJCcn" +
 	"LTJANy0wPTAnJzhMOT1DRUhJSCs2T1VORlRAR0hF/9sAQwEMDQ0RDxEhEhIhRS4nLkVFRUVFRUVFRUVF" +
@@ -174,8 +174,8 @@ describe('TileLayer', () => {
 	}
 
 	function eachImg(layer, callback) {
-		var imgtags = layer._container.children[0].children;
-		for (var i in imgtags) {
+		const imgtags = layer._container.children[0].children;
+		for (const i in imgtags) {
 			if (imgtags[i].tagName === 'IMG') {
 				callback(imgtags[i]);
 			}
@@ -183,7 +183,7 @@ describe('TileLayer', () => {
 	}
 
 	describe("number of kittens loaded", () => {
-		var clock, kittenLayer, counts;
+		let clock, kittenLayer, counts;
 
 		// animationFrame helper, just runs requestAnimFrame() a given number of times
 		function runFrames(n) {
@@ -251,7 +251,7 @@ describe('TileLayer', () => {
 		it.skipIfNo3d("Loads 290, unloads 275 kittens on MAD-TRD flyTo()", function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			var mad = [40.40, -3.7], trd = [63.41, 10.41];
+			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.on('load', () => {
 				expect(counts.tileloadstart).to.be(12);
@@ -293,16 +293,16 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {y} with y coordinate', () => {
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/2/1/1.png',
 				'http://example.com/2/1/2.png',
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, (img) => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -310,14 +310,14 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {-y} with inverse y coordinate', () => {
-			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
-			var urls = [
+			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
+			const urls = [
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png',
 				'http://example.com/2/1/1.png',
 				'http://example.com/2/1/2.png'
 			];
-			var i = 0;
+			let i = 0;
 			eachImg(layer, (img) => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -325,16 +325,16 @@ describe('TileLayer', () => {
 		});
 
 		it('Does not replace {-y} on map with infinite CRS', () => {
-			var simplediv = document.createElement('div');
+			const simplediv = document.createElement('div');
 			simplediv.style.width = '400px';
 			simplediv.style.height = '400px';
 			simplediv.style.visibility = 'hidden';
 
 			document.body.appendChild(simplediv);
-			var simpleMap = L.map(simplediv, {
+			const simpleMap = L.map(simplediv, {
 				crs: L.CRS.Simple
 			}).setView([0, 0], 5);
-			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
+			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
 
 			expect(() => {
 				layer.addTo(simpleMap);
@@ -345,7 +345,7 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {s} with [abc] by default', () => {
-			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
+			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
 
 			eachImg(layer, (img) => {
 				expect(['a', 'b', 'c'].indexOf(img.src[7]) >= 0).to.eql(true);
@@ -353,7 +353,7 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {s} with specified prefixes', () => {
-			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
 				subdomains: 'qrs'
 			}).addTo(map);
 
@@ -364,18 +364,18 @@ describe('TileLayer', () => {
 
 		it('uses zoomOffset option', () => {
 			// Map view is set at zoom 2 in beforeEach.
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
 			}).addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/3/1/1.png',
 				'http://example.com/3/1/2.png',
 				'http://example.com/3/2/1.png',
 				'http://example.com/3/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, (img) => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -384,18 +384,18 @@ describe('TileLayer', () => {
 
 		it('uses negative zoomOffset option', () => {
 			// Map view is set at zoom 2 in beforeEach.
-			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
 			}).addTo(map);
 
-			var urls = [
+			const urls = [
 				'http://example.com/-1/1/1.png',
 				'http://example.com/-1/1/2.png',
 				'http://example.com/-1/2/1.png',
 				'http://example.com/-1/2/2.png'
 			];
 
-			var i = 0;
+			let i = 0;
 			eachImg(layer, (img) => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
@@ -404,7 +404,7 @@ describe('TileLayer', () => {
 
 	});
 
-	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	const _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
 	_describe('crossOrigin option', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 2);
@@ -419,7 +419,7 @@ describe('TileLayer', () => {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin value ${crossOrigin}`, () => {
-				var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
 					crossOrigin
 				}).addTo(map);
 
@@ -430,14 +430,14 @@ describe('TileLayer', () => {
 		}
 
 		it('sets min/maxZoom appropriately with detectRetina', (done) => {
-			var maxZoom = 1;
-			var minZoom = 1;
+			const maxZoom = 1;
+			const minZoom = 1;
 
 			// override retina to load extra tiles
-			var originalRetina = L.Browser.retina;
+			const originalRetina = L.Browser.retina;
 			L.Browser.retina = true;
 
-			var kittenLayer = kittenLayerFactory({
+			const kittenLayer = kittenLayerFactory({
 				maxZoom,
 				minZoom,
 				detectRetina: true
@@ -458,10 +458,10 @@ describe('TileLayer', () => {
 
 		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', (done) => {
 			// override retina to load extra tiles
-			var originalRetina = L.Browser.retina;
+			const originalRetina = L.Browser.retina;
 			L.Browser.retina = false;
 
-			var kittenLayer = kittenLayerFactory({
+			const kittenLayer = kittenLayerFactory({
 				// invalid min/maxZoom
 				maxZoom: 9,
 				minZoom: 10,
@@ -484,14 +484,14 @@ describe('TileLayer', () => {
 
 	describe('#setUrl', () => {
 		it('fires only one load event', (done) => {
-			var layer = L.tileLayer(placeKitten).addTo(map);
-			var counts = {
+			const layer = L.tileLayer(placeKitten).addTo(map);
+			const counts = {
 				load: 0,
 				tileload: 0
 			};
 			map.setView([0, 0], 1);
 
-			var timer;
+			let timer;
 			layer.on('tileload load', (e) => {
 				counts[e.type]++;
 

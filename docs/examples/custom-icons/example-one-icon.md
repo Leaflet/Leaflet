@@ -3,13 +3,13 @@ layout: tutorial_frame
 title: Custom Icons Tutorial
 ---
 <script>
-	var map = L.map('map').setView([51.5, -0.09], 13);
+	const map = L.map('map').setView([51.5, -0.09], 13);
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
-	var LeafIcon = L.Icon.extend({
+	const LeafIcon = L.Icon.extend({
 		options: {
 			shadowUrl: 'leaf-shadow.png',
 			iconSize:     [38, 95],
@@ -20,8 +20,8 @@ title: Custom Icons Tutorial
 		}
 	});
 
-	var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
+	const greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 
-	var mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
+	const mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
 </script>

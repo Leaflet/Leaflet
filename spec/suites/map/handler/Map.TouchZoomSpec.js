@@ -1,5 +1,5 @@
 describe("Map.TouchZoom", () => {
-	var container, map;
+	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -25,9 +25,9 @@ describe("Map.TouchZoom", () => {
 			done();
 		});
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -46,9 +46,9 @@ describe("Map.TouchZoom", () => {
 			done();
 		});
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -60,10 +60,10 @@ describe("Map.TouchZoom", () => {
 	it.skipIfNotTouch("fires zoom event while pinch zoom", (done) => {
 		map.setView([0, 0], 4);
 
-		var spy = sinon.spy();
+		const spy = sinon.spy();
 		map.on('zoom', spy);
 
-		var pinchZoomEvent = false;
+		let pinchZoomEvent = false;
 		map.on('zoom', (e) => {
 			pinchZoomEvent = e.pinch || pinchZoomEvent;
 		});
@@ -80,9 +80,9 @@ describe("Map.TouchZoom", () => {
 
 		L.rectangle(map.getBounds().pad(-0.2)).addTo(map);
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -101,7 +101,7 @@ describe("Map.TouchZoom", () => {
 			[1, 0]
 		]).addTo(map);
 
-		var hand = new Hand({
+		const hand = new Hand({
 			timing: 'fastframe',
 			onStop() {
 				expect(map.getCenter().lat).to.be(0);
@@ -110,8 +110,8 @@ describe("Map.TouchZoom", () => {
 			}
 		});
 
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0).down()
@@ -146,9 +146,9 @@ describe("Map.TouchZoom", () => {
 			done();
 		});
 
-		var hand = new Hand({timing: 'fastframe'});
-		var f1 = hand.growFinger(touchEventType);
-		var f2 = hand.growFinger(touchEventType);
+		const hand = new Hand({timing: 'fastframe'});
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)

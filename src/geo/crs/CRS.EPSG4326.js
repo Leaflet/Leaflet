@@ -16,7 +16,7 @@ import * as Util from '../../core/Util';
  * or (-180,-90) for `TileLayer`s with [the `tms` option](#tilelayer-tms) set.
  */
 
-export var EPSG4326 = Util.extend({}, Earth, {
+export const EPSG4326 = Util.extend({}, Earth, {
 	code: 'EPSG:4326',
 	projection: LonLat,
 	transformation: toTransformation(1 / 180, 1, -1 / 180, 0.5)

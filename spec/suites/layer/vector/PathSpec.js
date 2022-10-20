@@ -1,5 +1,5 @@
 describe('Path', () => {
-	var container, map;
+	let container, map;
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -15,13 +15,13 @@ describe('Path', () => {
 	// means that L.Path is no longer visible.
 	describe('#bringToBack', () => {
 		it('is a no-op for layers not on a map', () => {
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToBack()).to.equal(path);
 		});
 
 		it('is a no-op for layers no longer in a LayerGroup', () => {
-			var group = L.layerGroup().addTo(map);
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+			const group = L.layerGroup().addTo(map);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
 			group.clearLayers();
 
@@ -31,13 +31,13 @@ describe('Path', () => {
 
 	describe('#bringToFront', () => {
 		it('is a no-op for layers not on a map', () => {
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToFront()).to.equal(path);
 		});
 
 		it('is a no-op for layers no longer in a LayerGroup', () => {
-			var group = L.layerGroup().addTo(map);
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
+			const group = L.layerGroup().addTo(map);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]).addTo(group);
 
 			group.clearLayers();
 
@@ -47,18 +47,18 @@ describe('Path', () => {
 
 	describe('#events', () => {
 		it('fires click event', () => {
-			var spy = sinon.spy();
-			var layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			const spy = sinon.spy();
+			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('click', spy);
 			happen.click(layer._path);
 			expect(spy.called).to.be.ok();
 		});
 
 		it('propagates click event by default', () => {
-			var spy = sinon.spy();
-			var spy2 = sinon.spy();
-			var mapSpy = sinon.spy();
-			var layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			const spy = sinon.spy();
+			const spy2 = sinon.spy();
+			const mapSpy = sinon.spy();
+			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('click', spy);
 			layer.on('click', spy2);
 			map.on('click', mapSpy);
@@ -69,8 +69,8 @@ describe('Path', () => {
 		});
 
 		it('can add a layer while being inside a moveend handler', () => {
-			var zoneLayer = L.layerGroup();
-			var polygon;
+			const zoneLayer = L.layerGroup();
+			let polygon;
 			map.addLayer(zoneLayer);
 
 			map.on('moveend', () => {
@@ -90,13 +90,13 @@ describe('Path', () => {
 		});
 
 		it('it should return tolerance with stroke', () => {
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			path.addTo(map);
 			expect(path._clickTolerance()).to.equal(path.options.weight / 2);
 		});
 
 		it('it should return zero tolerance without stroke', () => {
-			var path = L.polyline([[1, 2], [3, 4], [5, 6]]);
+			const path = L.polyline([[1, 2], [3, 4], [5, 6]]);
 			path.addTo(map);
 			path.options.stroke = false;
 			expect(path._clickTolerance()).to.equal(0);

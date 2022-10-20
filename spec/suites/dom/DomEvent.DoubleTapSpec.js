@@ -1,5 +1,5 @@
 describe('DomEvent.DoubleTapSpec.js', () => {
-	var container, clock, spy;
+	let container, clock, spy;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -64,7 +64,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	});
 
 	it('synthetic dblclick event has expected properties', () => {
-		var click = {
+		const click = {
 			detail: 1,
 			clientX: 2,
 			clientY: 3,
@@ -75,29 +75,29 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock.tick(100);
 		happen.click(container, click);
 
-		var event = spy.lastCall.args[0];
-		var expectedProps = L.extend(click, {
+		const event = spy.lastCall.args[0];
+		const expectedProps = L.extend(click, {
 			type: 'dblclick',
 			// bubbles: true,    // not important, as we do not actually dispatch the event
 			// cancelable: true, //
 			detail: 2,
 			target: container
 		});
-		for (var prop in expectedProps) {
+		for (const prop in expectedProps) {
 			expect(event[prop]).to.be(expectedProps[prop]);
 		}
 		expect(event.isTrusted).not.to.be.ok();
 	});
 
 	it('respects disableClickPropagation', () => {
-		var spyMap = sinon.spy();
-		var map = L.map(container).setView([51.505, -0.09], 13);
+		const spyMap = sinon.spy();
+		const map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
-		var spyCtrl = sinon.spy();
-		var ctrl = L.DomUtil.create('div');
+		const spyCtrl = sinon.spy();
+		const ctrl = L.DomUtil.create('div');
 		L.DomEvent.disableClickPropagation(ctrl);
-		var MyControl = L.Control.extend({
+		const MyControl = L.Control.extend({
 			onAdd() {
 				return ctrl;
 			}
@@ -114,12 +114,12 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	});
 
 	it('doesn\'t fire double-click while clicking on a label with `for` attribute', () => {
-		var spyMap = sinon.spy();
-		var map = L.map(container).setView([51.505, -0.09], 13);
+		const spyMap = sinon.spy();
+		const map = L.map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
-		var div;
-		var MyControl = L.Control.extend({
+		let div;
+		const MyControl = L.Control.extend({
 			onAdd() {
 				div = L.DomUtil.create('div');
 				div.innerHTML = '<input type="checkbox" id="input">' +

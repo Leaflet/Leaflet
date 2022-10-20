@@ -33,9 +33,9 @@ import {LatLng, toLatLng} from './LatLng';
 export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
 	if (!corner1) { return; }
 
-	var latlngs = corner2 ? [corner1, corner2] : corner1;
+	const latlngs = corner2 ? [corner1, corner2] : corner1;
 
-	for (var i = 0, len = latlngs.length; i < len; i++) {
+	for (let i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
 	}
 }
@@ -49,9 +49,9 @@ LatLngBounds.prototype = {
 	// @method extend(otherBounds: LatLngBounds): this
 	// Extend the bounds to contain the given bounds
 	extend(obj) {
-		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2, ne2;
+		const sw = this._southWest,
+		      ne = this._northEast;
+		let sw2, ne2;
 
 		if (obj instanceof LatLng) {
 			sw2 = obj;
@@ -85,7 +85,7 @@ LatLngBounds.prototype = {
 	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
 	// Negative values will retract the bounds.
 	pad(bufferRatio) {
-		var sw = this._southWest,
+		const sw = this._southWest,
 		    ne = this._northEast,
 		    heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
 		    widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
@@ -164,9 +164,9 @@ LatLngBounds.prototype = {
 			obj = toLatLngBounds(obj);
 		}
 
-		var sw = this._southWest,
-		    ne = this._northEast,
-		    sw2, ne2;
+		const sw = this._southWest,
+		      ne = this._northEast;
+		let sw2, ne2;
 
 		if (obj instanceof LatLngBounds) {
 			sw2 = obj.getSouthWest();
@@ -184,7 +184,7 @@ LatLngBounds.prototype = {
 	intersects(bounds) {
 		bounds = toLatLngBounds(bounds);
 
-		var sw = this._southWest,
+		const sw = this._southWest,
 		    ne = this._northEast,
 		    sw2 = bounds.getSouthWest(),
 		    ne2 = bounds.getNorthEast(),
@@ -200,7 +200,7 @@ LatLngBounds.prototype = {
 	overlaps(bounds) {
 		bounds = toLatLngBounds(bounds);
 
-		var sw = this._southWest,
+		const sw = this._southWest,
 		    ne = this._northEast,
 		    sw2 = bounds.getSouthWest(),
 		    ne2 = bounds.getNorthEast(),

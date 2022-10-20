@@ -9,7 +9,7 @@ import {Class} from './Class';
 // @aka L.Handler
 // Abstract class for map interaction handlers
 
-export var Handler = Class.extend({
+export const Handler = Class.extend({
 	initialize(map) {
 		this._map = map;
 	},

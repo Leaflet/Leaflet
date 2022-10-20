@@ -19,7 +19,7 @@ Map.mergeOptions({
 	boxZoom: true
 });
 
-export var BoxZoom = Handler.extend({
+export const BoxZoom = Handler.extend({
 	initialize(map) {
 		this._map = map;
 		this._container = map._container;
@@ -90,7 +90,7 @@ export var BoxZoom = Handler.extend({
 
 		this._point = this._map.mouseEventToContainerPoint(e);
 
-		var bounds = new Bounds(this._point, this._startPoint),
+		const bounds = new Bounds(this._point, this._startPoint),
 		    size = bounds.getSize();
 
 		DomUtil.setPosition(this._box, bounds.min);
@@ -127,7 +127,7 @@ export var BoxZoom = Handler.extend({
 		this._clearDeferredResetState();
 		this._resetStateTimeout = setTimeout(this._resetState.bind(this), 0);
 
-		var bounds = new LatLngBounds(
+		const bounds = new LatLngBounds(
 		        this._map.containerPointToLatLng(this._startPoint),
 		        this._map.containerPointToLatLng(this._point));
 
