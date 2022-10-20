@@ -1,6 +1,6 @@
-## Releasing a new version of Leaflet
+# Releasing a new version of Leaflet
 
-- [ ] Ensure all https://github.com/Leaflet/Leaflet/labels/blocker issues and pull requests are resolved.
+- [ ] Ensure all [blocker issues](https://github.com/Leaflet/Leaflet/labels/blocker) and pull requests are resolved.
 - [ ] Update [the changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md) since last release and commit.
 - [ ] Run `npm version <patch | minor | major>` (this will bump the version in `package.json` and create a new tag).
 - [ ] Run `git push --follow-tags` to push the commit created by NPM to Github (together with the tag).
@@ -9,9 +9,9 @@
   - [ ] [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
   - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
 - [ ] Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
-- [ ] Download zip archive from https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/vX.X.X/leaflet.zip (where `X.X.X` is the new version number) and upload it as an "asset" of the GitHub release.
+- [ ] Download zip archive from `https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/vX.X.X/leaflet.zip` (where `X.X.X` is the new version number) and upload it as an "asset" of the GitHub release.
 
-### Updating docs after the release
+## Updating docs after the release
 
 - [ ] Make a new branch for the update
 - [ ] Write a blog post about the new release and put it in `/docs/_posts/`
