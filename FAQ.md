@@ -10,7 +10,7 @@ This is a collection of answers to the most frequently asked questions about Lea
 
 ## Data Providers
 
-#### The map is wrong in my neighborhood, could you fix it?
+### The map is wrong in my neighborhood, could you fix it?
 
 Nope, but you can.
 The map you see on Leaflet examples is based on [OpenStreetMap](https://www.openstreetmap.org/),
@@ -63,7 +63,7 @@ Alternatively, you can [extract](https://github.com/mapbox/mbutil) the tiled ima
 
 ## Commercial Use and Licensing
 
-#### I have an app that gets lots of hits a day, and I want to switch from Google/Bing/whatever to Leaflet. Is there a fee for using it?
+### I have an app that gets lots of hits a day, and I want to switch from Google/Bing/whatever to Leaflet. Is there a fee for using it?
 
 Leaflet, unlike Google Maps and other all-in-one solutions, is just a JavaScript library.
 It's free to use, but doesn't provide map imagery on its own &mdash;
@@ -82,10 +82,9 @@ Just make sure to attribute the use of the library somewhere in the app UI or th
 That only applies to the code though.
 Make sure you conform to the terms of use of the tile images provider(s) that you choose as well.
 
-
 ## Features
 
-#### What's the best way to put the data I have on a Leaflet map?
+### What's the best way to put the data I have on a Leaflet map?
 
 Check out [this awesome cheatsheet](https://github.com/tmcw/mapmakers-cheatsheet).
 
@@ -101,10 +100,9 @@ focusing on _quality_ instead of _quantity_, and leaving all the rest to plugin 
 Check out [this video](http://www.youtube.com/watch?v=_P2SaCPbJ4w) of a talk by the Leaflet creator for more background on the story and philosophy behind Leaflet.
 Another essential read is [Advocating Simplicity in Open Source](http://blog.universalmind.com/advocating-simplicity-in-open-source/) by the same guy.
 
-
 ## Performance
 
-#### I have thousands of markers on my map. How do I make it faster and more usable?
+### I have thousands of markers on my map. How do I make it faster and more usable?
 
 Check out the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plugin. It's amazing.
 
@@ -126,10 +124,9 @@ along with additional data to enable interactivity like hovering shapes
 (e.g. done using [UTFGrid](https://www.mapbox.com/developers/utfgrid/) &mdash;
 Leaflet [has a nice plugin](https://github.com/danzel/Leaflet.utfgrid) for it).
 
-
 ## Misc
 
-#### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
+### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
 
 You can download the built versions using links from the [download page](http://leafletjs.com/download.html).
 It even includes the latest build of the development version (`main` branch),
