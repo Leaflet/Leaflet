@@ -18,9 +18,6 @@ import {svgCreate} from '../layer/vector/SVG.Util';
 
 var style = document.documentElement.style;
 
-// @property edge: Boolean; `true` for the Edge web browser.
-var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
-
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
 var webkit = userAgentContains('webkit');
@@ -29,7 +26,7 @@ var webkit = userAgentContains('webkit');
 var opera = !!window.opera;
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-var chrome = !edge && userAgentContains('chrome');
+var chrome = userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 var gecko = userAgentContains('gecko') && !webkit && !opera;
@@ -139,7 +136,6 @@ function userAgentContains(str) {
 
 
 export default {
-	edge,
 	webkit,
 	opera,
 	chrome,
