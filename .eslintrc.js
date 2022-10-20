@@ -10,7 +10,6 @@ module.exports = {
 		'docs/examples/extending/extending-2-layers.md',
 		'docs/_posts/201*',
 		'docs/_site',
-		'build/integrity.js'
 	],
 	root: true,
 	globals: {

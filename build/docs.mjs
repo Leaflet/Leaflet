@@ -1,6 +1,8 @@
+import LeafDoc from 'leafdoc';
+import {writeFileSync} from 'node:fs';
+
 console.log('Building Leaflet documentation with Leafdoc ...');
 
-const LeafDoc = require('leafdoc');
 const doc = new LeafDoc({
 	templateDir: 'build/leafdoc-templates',
 	showInheritancesWhenEmpty: true,
@@ -25,7 +27,5 @@ doc.addFile('build/docs-misc.leafdoc', false);
 const out = doc.outputStr();
 const path = 'docs/reference.html';
 
-const fs = require('fs');
-
-fs.writeFileSync(path, out);
+writeFileSync(path, out);
 console.log(`Successfully built ${path}`);
