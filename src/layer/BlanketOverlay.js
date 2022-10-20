@@ -18,7 +18,7 @@ import * as DomEvent from '../dom/DomEvent.js';
 
 export const BlanketOverlay = Layer.extend({
 	// @section
-	// @aka Blanket options
+	// @aka BlanketOverlay options
 	options: {
 		// @option padding: Number = 0.1
 		// How much to extend the clip area around the map view (relative to its size)
