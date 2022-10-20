@@ -78,13 +78,9 @@ var mobileWebkit = mobile && webkit;
 // `true` for all webkit-based browsers in a mobile device supporting CSS transforms.
 var mobileWebkit3d = mobile && webkit3d;
 
-// @property msPointer: Boolean
-// `true` for browsers implementing the Microsoft touch events model (notably IE10).
-var msPointer = !window.PointerEvent && window.MSPointerEvent;
-
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-var pointer = !!(window.PointerEvent || msPointer);
+var pointer = !!window.PointerEvent;
 
 // @property touchNative: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
@@ -173,7 +169,6 @@ export default {
 	mobile,
 	mobileWebkit,
 	mobileWebkit3d,
-	msPointer,
 	pointer,
 	touch,
 	touchNative,
