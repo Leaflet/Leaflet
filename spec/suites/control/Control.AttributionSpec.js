@@ -1,7 +1,7 @@
-describe("Control.Attribution", function () {
+describe("Control.Attribution", () => {
 	var map, control, container, controlContainer;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 
@@ -12,7 +12,7 @@ describe("Control.Attribution", function () {
 		controlContainer = control.getContainer();
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
@@ -23,37 +23,37 @@ describe("Control.Attribution", function () {
 		return layer;
 	}
 
-	it("contains just prefix if no attributions added", function () {
+	it("contains just prefix if no attributions added", () => {
 		expect(controlContainer.innerHTML).to.eql('prefix');
 	});
 
-	describe('#addAttribution', function () {
-		it('adds one attribution correctly', function () {
+	describe('#addAttribution', () => {
+		it('adds one attribution correctly', () => {
 			control.addAttribution('foo');
 			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 		});
 
-		it('adds no duplicate attributions', function () {
+		it('adds no duplicate attributions', () => {
 			control.addAttribution('foo');
 			control.addAttribution('foo');
 			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 		});
 
-		it('adds several attributions listed with comma', function () {
+		it('adds several attributions listed with comma', () => {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
 			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo, bar');
 		});
 	});
 
-	describe('#removeAttribution', function () {
-		it('removes attribution correctly', function () {
+	describe('#removeAttribution', () => {
+		it('removes attribution correctly', () => {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
 			control.removeAttribution('foo');
 			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
 		});
-		it('does nothing if removing attribution that was not present', function () {
+		it('does nothing if removing attribution that was not present', () => {
 			control.addAttribution('foo');
 			control.addAttribution('baz');
 			control.removeAttribution('bar');
@@ -64,22 +64,22 @@ describe("Control.Attribution", function () {
 		});
 	});
 
-	describe('#setPrefix', function () {
-		it('changes prefix', function () {
+	describe('#setPrefix', () => {
+		it('changes prefix', () => {
 			control.setPrefix('bla');
 			expect(controlContainer.innerHTML).to.eql('bla');
 		});
 	});
 
-	describe('control.attribution factory', function () {
-		it('creates Control.Attribution instance', function () {
+	describe('control.attribution factory', () => {
+		it('creates Control.Attribution instance', () => {
 			var options = {prefix: 'prefix'};
 			expect(L.control.attribution(options)).to.eql(new L.Control.Attribution(options));
 		});
 	});
 
-	describe('on layer add/remove', function () {
-		it('changes text', function () {
+	describe('on layer add/remove', () => {
+		it('changes text', () => {
 			var fooLayer = dummyLayer();
 			var barLayer = dummyLayer();
 			var bazLayer = dummyLayer();
@@ -103,7 +103,7 @@ describe("Control.Attribution", function () {
 			expect(controlContainer.innerHTML).to.eql('prefix');
 		});
 
-		it('keeps count of duplicated attributions', function () {
+		it('keeps count of duplicated attributions', () => {
 			var fooLayer = dummyLayer();
 			var fo2Layer = dummyLayer();
 			var fo3Layer = dummyLayer();

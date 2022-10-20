@@ -1,6 +1,6 @@
-describe('LatLng', function () {
-	describe('constructor', function () {
-		it("sets lat and lng", function () {
+describe('LatLng', () => {
+	describe('constructor', () => {
+		it("sets lat and lng", () => {
 			var a = L.latLng(25, 74);
 			expect(a.lat).to.eql(25);
 			expect(a.lng).to.eql(74);
@@ -10,18 +10,18 @@ describe('LatLng', function () {
 			expect(b.lng).to.eql(-74);
 		});
 
-		it('throws an error if invalid lat or lng', function () {
-			expect(function () {
+		it('throws an error if invalid lat or lng', () => {
+			expect(() => {
 				L.latLng(NaN, NaN);
 			}).to.throwError();
 		});
 
-		it('does not set altitude if undefined', function () {
+		it('does not set altitude if undefined', () => {
 			var a = L.latLng(25, 74);
 			expect(typeof a.alt).to.eql('undefined');
 		});
 
-		it('sets altitude', function () {
+		it('sets altitude', () => {
 			var a = L.latLng(25, 74, 50);
 			expect(a.alt).to.eql(50);
 
@@ -30,41 +30,41 @@ describe('LatLng', function () {
 		});
 	});
 
-	describe('#equals', function () {
-		it("returns true if compared objects are equal within a certain margin", function () {
+	describe('#equals', () => {
+		it("returns true if compared objects are equal within a certain margin", () => {
 			var a = L.latLng(10, 20);
 			var b = L.latLng(10 + 1.0E-10, 20 - 1.0E-10);
 			expect(a.equals(b)).to.eql(true);
 		});
 
-		it("returns false if compared objects are not equal within a certain margin", function () {
+		it("returns false if compared objects are not equal within a certain margin", () => {
 			var a = L.latLng(10, 20);
 			var b = L.latLng(10, 23.3);
 			expect(a.equals(b)).to.eql(false);
 		});
 
-		it('returns false if passed non-valid object', function () {
+		it('returns false if passed non-valid object', () => {
 			var a = L.latLng(10, 20);
 			expect(a.equals(null)).to.eql(false);
 		});
 	});
 
-	describe('#toString', function () {
-		it('formats a string', function () {
+	describe('#toString', () => {
+		it('formats a string', () => {
 			var a = L.latLng(10.333333333, 20.2222222);
 			expect(a.toString(3)).to.eql('LatLng(10.333, 20.222)');
 			expect(a.toString()).to.eql('LatLng(10.333333, 20.222222)');
 		});
 	});
 
-	describe('#distanceTo', function () {
-		it('calculates distance in meters', function () {
+	describe('#distanceTo', () => {
+		it('calculates distance in meters', () => {
 			var a = L.latLng(50.5, 30.5);
 			var b = L.latLng(50, 1);
 
 			expect(Math.abs(Math.round(a.distanceTo(b) / 1000) - 2084) < 5).to.eql(true);
 		});
-		it('does not return NaN if input points are equal', function () {
+		it('does not return NaN if input points are equal', () => {
 			var a = L.latLng(50.5, 30.5);
 			var b = L.latLng(50.5, 30.5);
 
@@ -72,53 +72,53 @@ describe('LatLng', function () {
 		});
 	});
 
-	describe('L.latLng factory', function () {
-		it('returns LatLng instance as is', function () {
+	describe('L.latLng factory', () => {
+		it('returns LatLng instance as is', () => {
 			var a = L.latLng(50, 30);
 
 			expect(L.latLng(a)).to.eql(a);
 		});
 
-		it('accepts an array of coordinates', function () {
+		it('accepts an array of coordinates', () => {
 			expect(L.latLng([])).to.eql(null);
 			expect(L.latLng([50])).to.eql(null);
 			expect(L.latLng([50, 30])).to.eql(L.latLng(50, 30));
 			expect(L.latLng([50, 30, 100])).to.eql(L.latLng(50, 30, 100));
 		});
 
-		it('passes null or undefined as is', function () {
+		it('passes null or undefined as is', () => {
 			expect(L.latLng(undefined)).to.eql(undefined);
 			expect(L.latLng(null)).to.eql(null);
 		});
 
-		it('creates a LatLng object from two coordinates', function () {
+		it('creates a LatLng object from two coordinates', () => {
 			expect(L.latLng(50, 30)).to.eql(L.latLng(50, 30));
 		});
 
-		it('accepts an object with lat/lng', function () {
+		it('accepts an object with lat/lng', () => {
 			expect(L.latLng({lat: 50, lng: 30})).to.eql(L.latLng(50, 30));
 		});
 
-		it('accepts an object with lat/lon', function () {
+		it('accepts an object with lat/lon', () => {
 			expect(L.latLng({lat: 50, lon: 30})).to.eql(L.latLng(50, 30));
 		});
 
-		it('returns null if lng not specified', function () {
+		it('returns null if lng not specified', () => {
 			expect(L.latLng(50)).to.be(null);
 		});
 
-		it('accepts altitude as third parameter', function () {
+		it('accepts altitude as third parameter', () => {
 			expect(L.latLng(50, 30, 100)).to.eql(L.latLng(50, 30, 100));
 		});
 
-		it('accepts an object with alt', function () {
+		it('accepts an object with alt', () => {
 			expect(L.latLng({lat: 50, lng: 30, alt: 100})).to.eql(L.latLng(50, 30, 100));
 			expect(L.latLng({lat: 50, lon: 30, alt: 100})).to.eql(L.latLng(50, 30, 100));
 		});
 	});
 
-	describe('#clone', function () {
-		it('should clone attributes', function () {
+	describe('#clone', () => {
+		it('should clone attributes', () => {
 			var a = L.latLng(50.5, 30.5, 100);
 			var b = a.clone();
 
@@ -127,7 +127,7 @@ describe('LatLng', function () {
 			expect(b.alt).to.equal(100);
 		});
 
-		it('should create another reference', function () {
+		it('should create another reference', () => {
 			var a = L.latLng(50.5, 30.5, 100);
 			var b = a.clone();
 

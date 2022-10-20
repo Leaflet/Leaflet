@@ -15,7 +15,7 @@ title: Grid coordinates
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 
-			setTimeout(function () {
+			setTimeout(() => {
 				done(null, tile); // Syntax is 'done(error, tile)'
 			}, 500 + Math.random() * 1500);
 

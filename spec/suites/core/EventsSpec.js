@@ -1,6 +1,6 @@
-describe('Events', function () {
-	describe('#fireEvent', function () {
-		it('fires all listeners added through #addEventListener', function () {
+describe('Events', () => {
+	describe('#fireEvent', () => {
+		it('fires all listeners added through #addEventListener', () => {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -33,7 +33,7 @@ describe('Events', function () {
 			// expect(spy6.callCount).to.be(1);
 		});
 
-		it('fires all listeners in the order they are added', function () {
+		it('fires all listeners in the order they are added', () => {
 			var obj = new L.Evented(),
 			    ctx1 = new L.Class(),
 			    ctx2 = new L.Class(),
@@ -89,7 +89,7 @@ describe('Events', function () {
 			expect(count.four).to.be(1);
 		});
 
-		it('provides event object to listeners and executes them in the right context', function () {
+		it('provides event object to listeners and executes them in the right context', () => {
 			var obj = new L.Evented(),
 			    obj2 = new L.Evented(),
 			    obj3 = new L.Evented(),
@@ -135,7 +135,7 @@ describe('Events', function () {
 			obj4.fireEvent('test', {baz: 4});
 		});
 
-		it('calls no listeners removed through #removeEventListener', function () {
+		it('calls no listeners removed through #removeEventListener', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -173,7 +173,7 @@ describe('Events', function () {
 			expect(spy5.called).to.be(false);
 		});
 
-		it('can handle calls to #removeEventListener on objects with no registered event listeners', function () {
+		it('can handle calls to #removeEventListener on objects with no registered event listeners', () => {
 			var obj = new L.Evented();
 			var removeNonExistentListener = function () {
 				obj.removeEventListener('test');
@@ -182,7 +182,7 @@ describe('Events', function () {
 		});
 
 		// added due to context-sensitive removeListener optimization
-		it('fires multiple listeners with the same context with id', function () {
+		it('fires multiple listeners with the same context with id', () => {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -199,7 +199,7 @@ describe('Events', function () {
 			expect(spy2.called).to.be(true);
 		});
 
-		it('removes listeners with stamped contexts', function () {
+		it('removes listeners with stamped contexts', () => {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -218,7 +218,7 @@ describe('Events', function () {
 			expect(spy2.called).to.be(true);
 		});
 
-		it('removes listeners with a stamp originally added without one', function () {
+		it('removes listeners with a stamp originally added without one', () => {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -237,7 +237,7 @@ describe('Events', function () {
 			expect(spy2.called).to.be(false);
 		});
 
-		it('removes listeners with context == this and a stamp originally added without one', function () {
+		it('removes listeners with context == this and a stamp originally added without one', () => {
 			var obj = new L.Evented(),
 			    obj2 = new L.Evented(),
 			    spy1 = sinon.spy(),
@@ -260,7 +260,7 @@ describe('Events', function () {
 			expect(spy3.called).to.be(false);
 		});
 
-		it('doesnt lose track of listeners when removing non existent ones', function () {
+		it('doesnt lose track of listeners when removing non existent ones', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -282,7 +282,7 @@ describe('Events', function () {
 			expect(spy.called).to.be(false);
 		});
 
-		it('correctly removes all listeners if given no fn', function () {
+		it('correctly removes all listeners if given no fn', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    foo2 = {},
@@ -308,47 +308,47 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(false);
 		});
 
-		it('makes sure an event is not triggered if a listener is removed during dispatch', function () {
+		it('makes sure an event is not triggered if a listener is removed during dispatch', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
 			    foo = {};
 
 			/* without context */
-			obj.addEventListener('test', function () { obj.removeEventListener('test', spy); });
+			obj.addEventListener('test', () => { obj.removeEventListener('test', spy); });
 			obj.addEventListener('test', spy);
 			obj.fireEvent('test');
 
 			expect(spy.called).to.be(false);
 
 			/* with context */
-			obj.addEventListener('test2', function () { obj.removeEventListener('test2', spy2, foo); }, foo);
+			obj.addEventListener('test2', () => { obj.removeEventListener('test2', spy2, foo); }, foo);
 			obj.addEventListener('test2', spy2, foo);
 			obj.fireEvent('test2');
 		});
 
-		it('makes sure an event is not triggered if all listeners are removed during dispatch', function () {
+		it('makes sure an event is not triggered if all listeners are removed during dispatch', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
-			obj.addEventListener('test', function () { obj.removeEventListener('test'); });
+			obj.addEventListener('test', () => { obj.removeEventListener('test'); });
 			obj.addEventListener('test', spy);
 			obj.fire('test');
 
 			expect(spy.called).to.be(false);
 		});
 
-		it('handles reentrant event firing', function () {
+		it('handles reentrant event firing', () => {
 			var obj = new L.Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy();
 
 			obj
-				.addEventListener('test1', function () {
+				.addEventListener('test1', () => {
 					obj.fire('test2');
 				})
 				.addEventListener('test2', spy1)
-				.addEventListener('test1', function () {
+				.addEventListener('test1', () => {
 					obj.removeEventListener('test1', spy2);
 				})
 				.addEventListener('test1', spy2);
@@ -358,7 +358,7 @@ describe('Events', function () {
 			expect(spy2.called).to.be(false);
 		});
 
-		it('can remove an event listener while firing', function () {
+		it('can remove an event listener while firing', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -377,8 +377,8 @@ describe('Events', function () {
 		});
 	});
 
-	describe('#on, #off & #fire', function () {
-		it('does not remove all listeners when any fn argument specified', function () {
+	describe('#on, #off & #fire', () => {
+		it('does not remove all listeners when any fn argument specified', () => {
 			var obj = new L.Evented();
 			obj.on('test', L.Util.falseFn);
 			obj.off('test', undefined);
@@ -387,22 +387,22 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(true);
 		});
 
-		it('ignores non-function listeners passed', function () {
+		it('ignores non-function listeners passed', () => {
 			var obj = new L.Evented();
 			var off = obj.off.bind(obj);
-			['string', {}, [], true, false, undefined].forEach(function (fn) {
+			['string', {}, [], true, false, undefined].forEach((fn) => {
 				obj.on('test', fn);
 				expect(obj.listens('test')).to.be(false);
 				expect(off).withArgs('test', fn).to.not.throwException();
 			});
 		});
 
-		it('throws with wrong types passed', function () {
+		it('throws with wrong types passed', () => {
 			var obj = new L.Evented();
 			var on = obj.on.bind(obj);
 			var off = obj.off.bind(obj);
 			// todo? make it throw  with []
-			[true, false, undefined, 1].forEach(function (type) {
+			[true, false, undefined, 1].forEach((type) => {
 				expect(on).withArgs(type, L.Util.falseFn).to.throwException();
 				expect(off).withArgs(type, L.Util.falseFn).to.throwException();
 			});
@@ -410,7 +410,7 @@ describe('Events', function () {
 			// todo? make `fire` and `listen` to throw with wrong type
 		});
 
-		it('works like #addEventListener && #removeEventListener', function () {
+		it('works like #addEventListener && #removeEventListener', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -425,7 +425,7 @@ describe('Events', function () {
 			expect(spy.callCount).to.be.lessThan(2);
 		});
 
-		it('does not override existing methods with the same name', function () {
+		it('does not override existing methods with the same name', () => {
 			var spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
 			    spy3 = sinon.spy();
@@ -448,7 +448,7 @@ describe('Events', function () {
 			expect(spy3.called).to.be(true);
 		});
 
-		it('does not add twice the same function', function () {
+		it('does not add twice the same function', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -463,8 +463,8 @@ describe('Events', function () {
 		});
 	});
 
-	describe("#clearEventListeners", function () {
-		it("clears all registered listeners on an object", function () {
+	describe("#clearEventListeners", () => {
+		it("clears all registered listeners on an object", () => {
 			var spy = sinon.spy(),
 			    obj = new L.Evented(),
 			    otherObj = new L.Evented();
@@ -480,8 +480,8 @@ describe('Events', function () {
 		});
 	});
 
-	describe('#once', function () {
-		it('removes event listeners after first trigger', function () {
+	describe('#once', () => {
+		it('removes event listeners after first trigger', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -495,7 +495,7 @@ describe('Events', function () {
 			expect(spy.callCount).to.be.lessThan(2);
 		});
 
-		it('works with an object hash', function () {
+		it('works with an object hash', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    otherSpy = sinon.spy();
@@ -518,7 +518,7 @@ describe('Events', function () {
 			expect(otherSpy.callCount).to.be.lessThan(2);
 		});
 
-		it("doesn't call listeners to events that have been removed", function () {
+		it("doesn't call listeners to events that have been removed", () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -530,10 +530,10 @@ describe('Events', function () {
 			expect(spy.called).to.be(false);
 		});
 
-		it("doesn't call once twice", function () {
+		it("doesn't call once twice", () => {
 			var obj = new L.Evented(),
 			spy = sinon.spy();
-			obj.once('test', function () {
+			obj.once('test', () => {
 				spy();
 				obj.fire('test');
 			}, obj);
@@ -544,7 +544,7 @@ describe('Events', function () {
 		});
 
 
-		it('works if called from a context that doesnt implement #Events', function () {
+		it('works if called from a context that doesnt implement #Events', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    foo = {};
@@ -557,8 +557,8 @@ describe('Events', function () {
 		});
 	});
 
-	describe('addEventParent && removeEventParent', function () {
-		it('makes the object propagate events with to the given one if fired with propagate=true', function () {
+	describe('addEventParent && removeEventParent', () => {
+		it('makes the object propagate events with to the given one if fired with propagate=true', () => {
 			var obj = new L.Evented(),
 			    parent1 = new L.Evented(),
 			    parent2 = new L.Evented(),
@@ -588,7 +588,7 @@ describe('Events', function () {
 			expect(spy2.callCount).to.be(2);
 		});
 
-		it('can fire event where child has no listeners', function () {
+		it('can fire event where child has no listeners', () => {
 			var obj = new L.Evented(),
 			    parent = new L.Evented(),
 			    spy1 = sinon.spy(),
@@ -607,7 +607,7 @@ describe('Events', function () {
 			expect(spy2.callCount).to.eql(1);
 		});
 
-		it('sets target, sourceTarget and layer correctly', function () {
+		it('sets target, sourceTarget and layer correctly', () => {
 			var obj = new L.Evented(),
 			    parent = new L.Evented(),
 			    spy1 = sinon.spy(),
@@ -639,14 +639,14 @@ describe('Events', function () {
 		});
 	});
 
-	describe('#listens', function () {
-		it('is false if there is no event handler', function () {
+	describe('#listens', () => {
+		it('is false if there is no event handler', () => {
 			var obj = new L.Evented();
 
 			expect(obj.listens('test')).to.be(false);
 		});
 
-		it('is true if there is an event handler', function () {
+		it('is true if there is an event handler', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -654,7 +654,7 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(true);
 		});
 
-		it('is false if event handler has been removed', function () {
+		it('is false if event handler has been removed', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -663,7 +663,7 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(false);
 		});
 
-		it('changes for a "once" handler', function () {
+		it('changes for a "once" handler', () => {
 			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -674,7 +674,7 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(false);
 		});
 
-		it('returns true if event handler with specific function and context is existing', function () {
+		it('returns true if event handler with specific function and context is existing', () => {
 			var obj = new L.Evented(),
 			differentContext = new L.Evented(),
 			spy = sinon.spy(),
@@ -696,7 +696,7 @@ describe('Events', function () {
 			expect(obj.listens('test', diffentFnc)).to.be(false);
 		});
 
-		it('is true if there is an event handler on parent', function () {
+		it('is true if there is an event handler on parent', () => {
 			var fg = L.featureGroup(),
 			marker = L.marker([0, 0]).addTo(fg),
 			spy = sinon.spy();
@@ -706,7 +706,7 @@ describe('Events', function () {
 			expect(marker.listens('test', true)).to.be(true);
 		});
 
-		it('is true if there is an event handler on parent parent', function () {
+		it('is true if there is an event handler on parent parent', () => {
 			var fgP = L.featureGroup(),
 			fg = L.featureGroup().addTo(fgP),
 			marker = L.marker([0, 0]).addTo(fg),
@@ -717,7 +717,7 @@ describe('Events', function () {
 			expect(marker.listens('test', true)).to.be(true);
 		});
 
-		it('is true if there is an event handler with specific function on parent', function () {
+		it('is true if there is an event handler with specific function on parent', () => {
 			var fg = L.featureGroup(),
 			marker = L.marker([0, 0]).addTo(fg),
 			spy = sinon.spy();

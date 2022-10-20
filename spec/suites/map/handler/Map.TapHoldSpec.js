@@ -1,11 +1,11 @@
-describe('Map.TapHoldSpec.js', function () {
+describe('Map.TapHoldSpec.js', () => {
 	var container, clock, spy, map;
 
 	var posStart = {clientX:1, clientY:1};
 	var posNear = {clientX:10, clientY:10};
 	var posFar = {clientX:100, clientY:100};
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {
 			center: [51.505, -0.09],
@@ -24,7 +24,7 @@ describe('Map.TapHoldSpec.js', function () {
 		posFar.target = container;
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		happen.once(container, {type: 'touchend'});
 		for (var id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
 			happen.once(container, {type: 'pointercancel', pointerId:id});
@@ -33,7 +33,7 @@ describe('Map.TapHoldSpec.js', function () {
 		removeMapContainer(map, container);
 	});
 
-	it('fires synthetic contextmenu after hold delay>600', function () {
+	it('fires synthetic contextmenu after hold delay>600', () => {
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
@@ -50,7 +50,7 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(event.originalEvent._simulated).to.be.ok();
 	});
 
-	it('does not fire contextmenu when touches > 1', function () {
+	it('does not fire contextmenu when touches > 1', () => {
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(100);
@@ -61,7 +61,7 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('does not fire contextmenu when touches > 1 (case:2)', function () {
+	it('does not fire contextmenu when touches > 1 (case:2)', () => {
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(100);
@@ -75,14 +75,14 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	(L.Browser.pointer ? it : it.skip)('ignores events from mouse', function () {
+	(L.Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0, pointerType:'mouse'}, posStart));
 		clock.tick(650);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('does not conflict with native contextmenu', function () {
+	it('does not conflict with native contextmenu', () => {
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
@@ -100,7 +100,7 @@ describe('Map.TapHoldSpec.js', function () {
 		//       Anyway that is edge case, as tapHold is meant for browsers where native contextmenu is not fired on touch.
 	});
 
-	it.skip('prevents native click', function () { // to be performed by hand
+	it.skip('prevents native click', () => { // to be performed by hand
 		// Not valid here, as there is no way to initiate native click with fake touch
 		var clickSpy = sinon.spy();
 		map.on('click', clickSpy);
@@ -114,7 +114,7 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(clickSpy.notCalled).to.be.ok();
 	});
 
-	it('allows short movements', function () {
+	it('allows short movements', () => {
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(550);
@@ -127,7 +127,7 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(spy.called).to.be.ok();
 	});
 
-	it('ignores long movements', function () {
+	it('ignores long movements', () => {
 		expect(L.point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
 		  .to.be.above(map.options.tapTolerance);
 
@@ -143,7 +143,7 @@ describe('Map.TapHoldSpec.js', function () {
 		expect(spy.notCalled).to.be.ok();
 	});
 
-	it('.originalEvent has expected properties', function () {
+	it('.originalEvent has expected properties', () => {
 		L.extend(posStart, {
 			screenX: 2,
 			screenY: 2,

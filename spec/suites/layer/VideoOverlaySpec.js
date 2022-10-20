@@ -1,14 +1,14 @@
-describe('VideoOverlay', function () {
+describe('VideoOverlay', () => {
 	var container, map;
 	var videoBounds = L.latLngBounds([[32, -130], [13, -100]]);
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 

@@ -62,7 +62,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 	if (urlAnchor) {
 		var fnc = function () {
 			// timeout because the page is not finished loading with collapsed accordions
-			setTimeout(function () {
+			setTimeout(() => {
 				// .closest('.accordion') would be a alternative but is not working in IE
 				var getParentAccordion = function (el) {
 					while (el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') === -1) {
@@ -78,7 +78,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 						parent.className = 'accordion expanded';
 					}
 					// For Firefox: Accordion have to be expanded before scrolling
-					setTimeout(function () {
+					setTimeout(() => {
 						elm.scrollIntoView();
 					}, 10);
 				}

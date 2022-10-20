@@ -1,28 +1,28 @@
-﻿describe('CircleMarker', function () {
+﻿describe('CircleMarker', () => {
 	var map, container;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 		map.setView([0, 0], 1);
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#_radius", function () {
-		describe("when a CircleMarker is added to the map ", function () {
-			describe("with a radius set as an option", function () {
-				it("takes that radius", function () {
+	describe("#_radius", () => {
+		describe("when a CircleMarker is added to the map ", () => {
+			describe("with a radius set as an option", () => {
+				it("takes that radius", () => {
 					var marker = L.circleMarker([0, 0], {radius: 20}).addTo(map);
 
 					expect(marker._radius).to.be(20);
 				});
 			});
 
-			describe("and radius is set before adding it", function () {
-				it("takes that radius", function () {
+			describe("and radius is set before adding it", () => {
+				it("takes that radius", () => {
 					var marker = L.circleMarker([0, 0], {radius: 20});
 					marker.setRadius(15);
 					marker.addTo(map);
@@ -30,8 +30,8 @@
 				});
 			});
 
-			describe("and radius is set after adding it", function () {
-				it("takes that radius", function () {
+			describe("and radius is set after adding it", () => {
+				it("takes that radius", () => {
 					var marker = L.circleMarker([0, 0], {radius: 20});
 					marker.addTo(map);
 					marker.setRadius(15);
@@ -39,8 +39,8 @@
 				});
 			});
 
-			describe("and setStyle is used to change the radius after adding", function () {
-				it("takes the given radius", function () {
+			describe("and setStyle is used to change the radius after adding", () => {
+				it("takes the given radius", () => {
 					var marker = L.circleMarker([0, 0], {radius: 20});
 					marker.addTo(map);
 					marker.setStyle({radius: 15});
@@ -48,8 +48,8 @@
 				});
 			});
 
-			describe("and setStyle is used to change the radius before adding", function () {
-				it("takes the given radius", function () {
+			describe("and setStyle is used to change the radius before adding", () => {
+				it("takes the given radius", () => {
 					var marker = L.circleMarker([0, 0], {radius: 20});
 					marker.setStyle({radius: 15});
 					marker.addTo(map);
@@ -59,8 +59,8 @@
 		});
 	});
 
-	describe("#setLatLng", function () {
-		it("fires a move event", function () {
+	describe("#setLatLng", () => {
+		it("fires a move event", () => {
 			var marker = L.circleMarker([0, 0]);
 			map.addLayer(marker);
 
@@ -68,7 +68,7 @@
 			var afterLatLng = L.latLng(1, 2);
 
 			var eventArgs = null;
-			marker.on('move', function (e) {
+			marker.on('move', (e) => {
 				eventArgs = e;
 			});
 
@@ -81,8 +81,8 @@
 		});
 	});
 
-	describe("#_containsPoint", function () {
-		it("checks if a point is contained", function () {
+	describe("#_containsPoint", () => {
+		it("checks if a point is contained", () => {
 			var point1 = L.point(200, 200);
 			var point2 = L.point(10, 10);
 			var circlemarker = L.circleMarker([10, 10], {radius: 20});

@@ -1,19 +1,19 @@
-describe("Control.Layers", function () {
+describe("Control.Layers", () => {
 	var container, map;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 
 		map.setView([0, 0], 14);
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe("baselayerchange event", function () {
-		it("is fired on input that changes the base layer", function () {
+	describe("baselayerchange event", () => {
+		it("is fired on input that changes the base layer", () => {
 			var baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
 			    layers = L.control.layers(baseLayers).addTo(map),
 			    spy = sinon.spy();
@@ -29,7 +29,7 @@ describe("Control.Layers", function () {
 			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
 		});
 
-		it("works after removing and readding the Control.Layers to the map", function () {
+		it("works after removing and readding the Control.Layers to the map", () => {
 			var baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
 			    layers = L.control.layers(baseLayers).addTo(map),
 			    spy = sinon.spy();
@@ -49,7 +49,7 @@ describe("Control.Layers", function () {
 			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
 		});
 
-		it("is not fired on input that doesn't change the base layer", function () {
+		it("is not fired on input that doesn't change the base layer", () => {
 			var overlays = {"Marker 1": L.marker([0, 0]), "Marker 2": L.marker([0, 0])},
 			    layers = L.control.layers({}, overlays).addTo(map),
 			    spy = sinon.spy();
@@ -61,8 +61,8 @@ describe("Control.Layers", function () {
 		});
 	});
 
-	describe("updates", function () {
-		it("when an included layer is added or removed from the map", function () {
+	describe("updates", () => {
+		it("when an included layer is added or removed from the map", () => {
 			var baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
 			    layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
@@ -76,7 +76,7 @@ describe("Control.Layers", function () {
 			expect(spy.callCount).to.eql(2);
 		});
 
-		it("when an included layer is added or removed from the map, it's (un)checked", function () {
+		it("when an included layer is added or removed from the map, it's (un)checked", () => {
 			var baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]);
 			L.control.layers({"Baselayer": baseLayer}, {"Overlay": overlay}).addTo(map);
@@ -92,7 +92,7 @@ describe("Control.Layers", function () {
 			expect(isChecked()).to.not.be.ok();
 		});
 
-		it("not when a non-included layer is added or removed", function () {
+		it("not when a non-included layer is added or removed", () => {
 			var baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
 			    layers = L.control.layers({"Base": baseLayer}).addTo(map);
@@ -105,7 +105,7 @@ describe("Control.Layers", function () {
 			expect(spy.called).to.not.be.ok();
 		});
 
-		it("updates when an included layer is removed from the control", function () {
+		it("updates when an included layer is removed from the control", () => {
 			var baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
 			    layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
@@ -115,17 +115,17 @@ describe("Control.Layers", function () {
 				.to.be.equal(0);
 		});
 
-		it('silently returns when trying to remove a non-existing layer from the control', function () {
+		it('silently returns when trying to remove a non-existing layer from the control', () => {
 			var layers = L.control.layers({'base': L.tileLayer()}).addTo(map);
 
-			expect(function () {
+			expect(() => {
 				layers.removeLayer(L.marker([0, 0]));
 			}).to.not.throwException();
 
 			expect(layers._layers.length).to.be.equal(1);
 		});
 
-		it("having repeated layers works as expected", function () {
+		it("having repeated layers works as expected", () => {
 			var layerA = L.tileLayer(''), layerB = L.tileLayer(''),
 			    baseLayers = {"Layer 1": layerA, "Layer 2": layerB, "Layer 3": layerA},
 			    layers = L.control.layers(baseLayers).addTo(map);
@@ -152,76 +152,76 @@ describe("Control.Layers", function () {
 		});
 	});
 
-	describe("is removed cleanly", function () {
-		it("and layers in the control can still be removed", function () {
+	describe("is removed cleanly", () => {
+		it("and layers in the control can still be removed", () => {
 			var baseLayer = L.tileLayer('').addTo(map);
 			var layersCtrl = L.control.layers({'Base': baseLayer}).addTo(map);
 			map.removeControl(layersCtrl);
 
-			expect(function () {
+			expect(() => {
 				map.removeLayer(baseLayer);
 			}).to.not.throwException();
 		});
 
-		it("and layers in the control can still be removed when added after removing control from map", function () {
+		it("and layers in the control can still be removed when added after removing control from map", () => {
 			var baseLayer = L.tileLayer('').addTo(map);
 			var layersCtrl = L.control.layers().addTo(map);
 			map.removeControl(layersCtrl);
 			layersCtrl.addBaseLayer(baseLayer, 'Base');
 
-			expect(function () {
+			expect(() => {
 				map.removeLayer(baseLayer);
 			}).to.not.throwException();
 		});
 	});
 
-	describe("is created with an expand link", function ()  {
-		it("when collapsed", function () {
+	describe("is created with an expand link", ()  => {
+		it("when collapsed", () => {
 			L.control.layers(null, null, {collapsed: true}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 
-		it("when not collapsed", function () {
+		it("when not collapsed", () => {
 			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 	});
 
-	describe("collapse when collapsed: true", function () {
-		it('expands on "Enter" keydown when toggle is focused', function () {
+	describe("collapse when collapsed: true", () => {
+		it('expands on "Enter" keydown when toggle is focused', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			happen.once(toggle, {type:'keydown', keyCode:13});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('expands on click', function () {
+		it('expands on click', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			var toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			happen.once(toggle, {type:'click'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('does not expand on "Enter" keydown when toggle is not focused', function () {
+		it('does not expand on "Enter" keydown when toggle is not focused', () => {
 			L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(document, {type:'keydown', keyCode:13});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
-		it('expands when mouse is over', function () {
+		it('expands when mouse is over', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(layersCtrl._container, {type:'mouseover'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('collapses when mouse is out', function () {
+		it('collapses when mouse is out', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(layersCtrl._container, {type:'mouseover'});
 			happen.once(layersCtrl._container, {type:'mouseout'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
-		it('collapses when map is clicked', function () {
+		it('collapses when map is clicked', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			happen.once(layersCtrl._container, {type:'mouseover'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
@@ -230,8 +230,8 @@ describe("Control.Layers", function () {
 		});
 	});
 
-	describe("does not collapse when collapsed: false", function () {
-		it('does not collapse when mouse enters or leaves', function () {
+	describe("does not collapse when collapsed: false", () => {
+		it('does not collapse when mouse enters or leaves', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 			happen.once(layersCtrl._container, {type:'mouseover'});
@@ -240,14 +240,14 @@ describe("Control.Layers", function () {
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('does not collapse when map is clicked', function () {
+		it('does not collapse when map is clicked', () => {
 			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 			happen.click(map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('is scrollable if necessary when added on map', function () {
+		it('is scrollable if necessary when added on map', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: false}),
 			    i = 0;
 
@@ -269,7 +269,7 @@ describe("Control.Layers", function () {
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
 		});
 
-		it('becomes scrollable if necessary when too many layers are added while it is already on map', function () {
+		it('becomes scrollable if necessary when too many layers are added while it is already on map', () => {
 			var layersCtrl = L.control.layers(null, null, {collapsed: false}),
 			    i = 0;
 
@@ -292,8 +292,8 @@ describe("Control.Layers", function () {
 		});
 	});
 
-	describe("sortLayers", function () {
-		it("keeps original order by default", function () {
+	describe("sortLayers", () => {
+		it("keeps original order by default", () => {
 			var baseLayerOne = L.tileLayer('').addTo(map);
 			var baseLayerTwo = L.tileLayer('').addTo(map);
 			var markerC = L.marker([0, 2]).addTo(map);
@@ -317,7 +317,7 @@ describe("Control.Layers", function () {
 			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
 		});
 
-		it("sorts alphabetically if no function is specified", function () {
+		it("sorts alphabetically if no function is specified", () => {
 			var baseLayerOne = L.tileLayer('').addTo(map);
 			var baseLayerTwo = L.tileLayer('').addTo(map);
 			var markerA = L.marker([0, 0]).addTo(map);
@@ -343,7 +343,7 @@ describe("Control.Layers", function () {
 			expect(elems[4].innerHTML.trim()).to.be.equal('Marker C');
 		});
 
-		it("uses the compare function to sort layers", function () {
+		it("uses the compare function to sort layers", () => {
 			var baseLayerOne = L.tileLayer('', {customOption: 999}).addTo(map);
 			var baseLayerTwo = L.tileLayer('', {customOption: 998}).addTo(map);
 			var markerA = L.marker([0, 0], {customOption: 102}).addTo(map);

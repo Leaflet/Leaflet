@@ -242,9 +242,7 @@ export var Layers = Control.extend({
 		});
 
 		if (this.options.sortLayers) {
-			this._layers.sort((function (a, b) {
-				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
-			}).bind(this));
+			this._layers.sort(((a, b) => this.options.sortFunction(a.layer, b.layer, a.name, b.name)));
 		}
 
 		if (this.options.autoZIndex && layer.setZIndex) {
@@ -418,7 +416,7 @@ export var Layers = Control.extend({
 		var section = this._section;
 		DomEvent.on(section, 'click', DomEvent.preventDefault);
 		this.expand();
-		setTimeout(function () {
+		setTimeout(() => {
 			DomEvent.off(section, 'click', DomEvent.preventDefault);
 		});
 	}

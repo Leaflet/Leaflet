@@ -30,7 +30,6 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-edge-launcher',
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',

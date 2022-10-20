@@ -20,13 +20,13 @@ title: Zoom Levels Tutorial
 	function zoomCycle() {
 		map.setZoom(0);
 		var timeouts = [];
-		timeouts.push(setTimeout(function () { map.setZoom(0.25); }, 1000));
-		timeouts.push(setTimeout(function () { map.setZoom(0.50); }, 2000));
-		timeouts.push(setTimeout(function () { map.setZoom(0.75); }, 3000));
-		timeouts.push(setTimeout(function () { map.setZoom(1.00); }, 4000));
-		timeouts.push(setTimeout(function () { map.setZoom(0.75); }, 5000));
-		timeouts.push(setTimeout(function () { map.setZoom(0.50); }, 6000));
-		timeouts.push(setTimeout(function () { map.setZoom(0.25); }, 7000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.25); }, 1000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.50); }, 2000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.75); }, 3000));
+		timeouts.push(setTimeout(() => { map.setZoom(1.00); }, 4000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.75); }, 5000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.50); }, 6000));
+		timeouts.push(setTimeout(() => { map.setZoom(0.25); }, 7000));
 	}
 	zoomCycle();
 
@@ -39,7 +39,7 @@ title: Zoom Levels Tutorial
 			container.style.width = '200px';
 			container.style.background = 'rgba(255,255,255,0.5)';
 			container.style.textAlign = 'left';
-			map.on('zoomstart zoom zoomend', function (ev) {
+			map.on('zoomstart zoom zoomend', (ev) => {
 				gauge.innerHTML = `Zoom level: ${map.getZoom()}`;
 			});
 			container.appendChild(gauge);

@@ -29,7 +29,7 @@ title: Custom Icons Tutorial
 	/* global euCountries */
 	var geojson = L.geoJson(euCountries).addTo(map);
 
-	geojson.eachLayer(function (layer) {
+	geojson.eachLayer((layer) => {
 		layer.bindPopup(layer.feature.properties.name);
 	});
 

@@ -20,15 +20,9 @@
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	        user-select: none;
-	  -webkit-user-drag: none;
+	user-select: none;
+	-webkit-user-drag: none;
 	}
-/* Prevents IE11 from highlighting tiles in blue */
-.leaflet-tile::selection {
-	background: transparent;
-}
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
 .leaflet-safari .leaflet-tile {
 	image-rendering: -webkit-optimize-contrast;
@@ -61,17 +55,14 @@
 	}
 
 .leaflet-container.leaflet-touch-zoom {
-	-ms-touch-action: pan-x pan-y;
 	touch-action: pan-x pan-y;
 	}
 .leaflet-container.leaflet-touch-drag {
-	-ms-touch-action: pinch-zoom;
 	/* Fallback for FF which doesn't support pinch-zoom */
 	touch-action: none;
 	touch-action: pinch-zoom;
 }
 .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
-	-ms-touch-action: none;
 	touch-action: none;
 }
 .leaflet-container {
@@ -90,13 +81,8 @@
 .leaflet-zoom-box {
 	width: 0;
 	height: 0;
-	-moz-box-sizing: border-box;
-	     box-sizing: border-box;
+	box-sizing: border-box;
 	z-index: 800;
-	}
-/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
-.leaflet-overlay-pane svg {
-	-moz-user-select: none;
 	}
 
 .leaflet-pane         { z-index: 400; }
@@ -117,7 +103,6 @@
 .leaflet-control {
 	position: relative;
 	z-index: 800;
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
 	pointer-events: auto;
 	}
 .leaflet-top,
@@ -163,32 +148,24 @@
 
 .leaflet-fade-anim .leaflet-popup {
 	opacity: 0;
-	-webkit-transition: opacity 0.2s linear;
-	   -moz-transition: opacity 0.2s linear;
-	        transition: opacity 0.2s linear;
+	transition: opacity 0.2s linear;
 	}
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 	}
 .leaflet-zoom-animated {
-	-webkit-transform-origin: 0 0;
-	    -ms-transform-origin: 0 0;
-	        transform-origin: 0 0;
+	transform-origin: 0 0;
 	}
 svg.leaflet-zoom-animated {
 	will-change: transform;
 }
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
-	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
-	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
-	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	transition: transform 0.25s cubic-bezier(0,0,0.25,1);
 	}
 .leaflet-zoom-anim .leaflet-tile,
 .leaflet-pan-anim .leaflet-tile {
-	-webkit-transition: none;
-	   -moz-transition: none;
-	        transition: none;
+	transition: none;
 	}
 
 .leaflet-zoom-anim .leaflet-zoom-hide {
@@ -202,9 +179,7 @@ svg.leaflet-zoom-animated {
 	cursor: pointer;
 	}
 .leaflet-grab {
-	cursor: -webkit-grab;
-	cursor:    -moz-grab;
-	cursor:         grab;
+	cursor: grab;
 	}
 .leaflet-crosshair,
 .leaflet-crosshair .leaflet-interactive {
@@ -217,10 +192,7 @@ svg.leaflet-zoom-animated {
 .leaflet-dragging .leaflet-grab,
 .leaflet-dragging .leaflet-grab .leaflet-interactive,
 .leaflet-dragging .leaflet-marker-draggable {
-	cursor: move;
-	cursor: -webkit-grabbing;
-	cursor:    -moz-grabbing;
-	cursor:         grabbing;
+	cursor: grabbing;
 	}
 
 /* marker & overlays interactivity */
@@ -236,7 +208,6 @@ svg.leaflet-zoom-animated {
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.leaflet-interactive path {
-	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
 	pointer-events: auto;
 	}
 
@@ -436,8 +407,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	white-space: nowrap;
-	-moz-box-sizing: border-box;
-	     box-sizing: border-box;
+	box-sizing: border-box;
 	background: rgba(255, 255, 255, 0.8);
 	text-shadow: 1px 1px #fff;
 	}
@@ -503,10 +473,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	margin: -10px auto 0;
 	pointer-events: auto;
 
-	-webkit-transform: rotate(45deg);
-	   -moz-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
-	        transform: rotate(45deg);
+	transform: rotate(45deg);
 	}
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
@@ -553,9 +520,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-radius: 3px;
 	color: #222;
 	white-space: nowrap;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
@@ -630,3 +594,4 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		print-color-adjust: exact;
 		}
 	}
+}

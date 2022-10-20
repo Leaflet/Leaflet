@@ -216,7 +216,7 @@ export var Drag = Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				Util.requestAnimFrame(function () {
+				Util.requestAnimFrame(() => {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,

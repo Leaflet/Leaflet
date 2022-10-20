@@ -1,26 +1,26 @@
-describe('ImageOverlay', function () {
+describe('ImageOverlay', () => {
 	var container, map;
 	var imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = container = createContainer();
 		map = L.map(container);
 		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	describe('#setStyle', function () {
-		it('sets opacity', function () {
+	describe('#setStyle', () => {
+		it('sets opacity', () => {
 			var overlay = L.imageOverlay().setStyle({opacity: 0.5});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
 
-	describe('#setBounds', function () {
-		it('sets bounds', function () {
+	describe('#setBounds', () => {
+		it('sets bounds', () => {
 			var bounds = L.latLngBounds(
 				[14, 12],
 				[30, 40]
@@ -30,7 +30,7 @@ describe('ImageOverlay', function () {
 		});
 	});
 
-	describe("_image", function () {
+	describe("_image", () => {
 		var overlay;
 
 		// Url for testing errors
@@ -38,7 +38,7 @@ describe('ImageOverlay', function () {
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
 		// Create overlay for each test
-		beforeEach(function () {
+		beforeEach(() => {
 			overlay = L.imageOverlay(blankUrl, imageBounds, {
 				errorOverlayUrl: errorUrl,
 				className: 'my-custom-image-class'
@@ -53,7 +53,7 @@ describe('ImageOverlay', function () {
 		});
 
 		// Clean up after each test run
-		afterEach(function () {
+		afterEach(() => {
 			map.removeLayer(overlay);
 			overlay = null;
 		});
@@ -64,8 +64,8 @@ describe('ImageOverlay', function () {
 			overlay._image.dispatchEvent(domEvent);
 		}
 
-		describe('when loaded', function () {
-			it('should raise the load event', function () {
+		describe('when loaded', () => {
+			it('should raise the load event', () => {
 				var loadRaised = sinon.spy();
 				overlay.once('load', loadRaised);
 				raiseImageEvent('load');
@@ -73,36 +73,36 @@ describe('ImageOverlay', function () {
 			});
 		});
 
-		describe('when load fails', function () {
-			it('should raise the error event', function () {
+		describe('when load fails', () => {
+			it('should raise the error event', () => {
 				var errorRaised  = sinon.spy();
 				overlay.once('error', errorRaised);
 				raiseImageEvent('error');
 				expect(errorRaised.called).to.be(true);
 			});
 
-			it('should change the image to errorOverlayUrl', function () {
+			it('should change the image to errorOverlayUrl', () => {
 				raiseImageEvent('error');
 				expect(overlay._url).to.be(errorUrl);
 				expect(overlay._image.src).to.be(errorUrl);
 			});
 		});
 
-		describe('className', function () {
-			it('should set image\'s class', function () {
+		describe('className', () => {
+			it('should set image\'s class', () => {
 				expect(L.DomUtil.hasClass(overlay._image, 'my-custom-image-class')).to.be(true);
 			});
 		});
 	});
 
-	describe('#setZIndex', function () {
-		it('sets the z-index of the image', function () {
+	describe('#setZIndex', () => {
+		it('sets the z-index of the image', () => {
 			var overlay = L.imageOverlay();
 			overlay.setZIndex(10);
 			expect(overlay.options.zIndex).to.equal(10);
 		});
 
-		it('should update the z-index of the image if it has allready been added to the map', function () {
+		it('should update the z-index of the image if it has allready been added to the map', () => {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
@@ -111,31 +111,31 @@ describe('ImageOverlay', function () {
 			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
-		it('should set the z-index of the image when it is added to the map', function () {
+		it('should set the z-index of the image when it is added to the map', () => {
 			var overlay = L.imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
-		it('should use the z-index specified in options', function () {
+		it('should use the z-index specified in options', () => {
 			var overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
 		});
 
-		it('should be fluent', function () {
+		it('should be fluent', () => {
 			var overlay = L.imageOverlay();
 			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
 
-	describe('#getCenter', function () {
-		it('should return the correct center', function () {
+	describe('#getCenter', () => {
+		it('should return the correct center', () => {
 			var overlay = L.imageOverlay('', imageBounds).addTo(map);
 			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
-		it('should open popup at the center', function () {
+		it('should open popup at the center', () => {
 			var overlay = L.imageOverlay('', imageBounds).addTo(map);
 			overlay.bindPopup('Center').openPopup();
 			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
@@ -144,7 +144,7 @@ describe('ImageOverlay', function () {
 	// For tests that do not actually need to append the map container to the document.
 	// This saves PhantomJS memory.
 	var _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
-	_describe('crossOrigin option', function () {
+	_describe('crossOrigin option', () => {
 		var overlay;
 		var blankUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
@@ -156,7 +156,7 @@ describe('ImageOverlay', function () {
 		testCrossOriginValue('use-credentials', 'use-credentials');
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
-			it(`uses crossOrigin option value ${crossOrigin}`, function () {
+			it(`uses crossOrigin option value ${crossOrigin}`, () => {
 				overlay = L.imageOverlay(blankUrl, imageBounds, {
 					crossOrigin
 				});

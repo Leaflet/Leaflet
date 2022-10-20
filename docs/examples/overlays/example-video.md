@@ -28,13 +28,13 @@ title: Video Overlay Tutorial (video with controls)
 		playsInline: true
 	}).addTo(map);
 
-	videoOverlay.on('load', function () {
+	videoOverlay.on('load', () => {
 		var MyPauseControl = L.Control.extend({
 			onAdd() {
 				var button = L.DomUtil.create('button');
 				button.title = 'Pause';
 				button.innerHTML = '<span aria-hidden="true">⏸</span>';
-				L.DomEvent.on(button, 'click', function () {
+				L.DomEvent.on(button, 'click', () => {
 					videoOverlay.getElement().pause();
 				});
 				return button;
@@ -45,7 +45,7 @@ title: Video Overlay Tutorial (video with controls)
 				var button = L.DomUtil.create('button');
 				button.title = 'Play';
 				button.innerHTML = '<span aria-hidden="true">▶️</span>';
-				L.DomEvent.on(button, 'click', function () {
+				L.DomEvent.on(button, 'click', () => {
 					videoOverlay.getElement().play();
 				});
 				return button;
