@@ -10,8 +10,8 @@ import {svgCreate} from '../layer/vector/SVG.Util';
  * @example
  *
  * ```js
- * if (L.Browser.android23) {
- *   alert('Upgrade your browser, dude!');
+ * if (L.Browser.chrome) {
+ *   alert('You are running Chrome!');
  * }
  * ```
  */
@@ -24,18 +24,6 @@ var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
 var webkit = userAgentContains('webkit');
-
-// @property android: Boolean
-// **Deprecated.** `true` for any browser running on an Android platform.
-var android = userAgentContains('android');
-
-// @property android23: Boolean; **Deprecated.** `true` for browsers running on Android 2 or Android 3.
-var android23 = userAgentContains('android 2') || userAgentContains('android 3');
-
-/* See https://stackoverflow.com/a/17961266 for details on detecting stock Android */
-var webkitVer = parseInt(/WebKit\/([0-9]+)|$/.exec(navigator.userAgent)[1], 10); // also matches AppleWebKit
-// @property androidStock: Boolean; **Deprecated.** `true` for the Android stock browser (i.e. not Chrome)
-var androidStock = android && userAgentContains('Google') && webkitVer < 537 && !('AudioNode' in window);
 
 // @property opera: Boolean; `true` for the Opera browser
 var opera = !!window.opera;
@@ -59,7 +47,7 @@ var opera12 = 'OTransition' in style;
 var win = navigator.platform.indexOf('Win') === 0;
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
-var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
+var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix());
 
 // @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
 var gecko3d = 'MozPerspective' in style;
@@ -153,9 +141,6 @@ function userAgentContains(str) {
 export default {
 	edge,
 	webkit,
-	android,
-	android23,
-	androidStock,
 	opera,
 	chrome,
 	gecko,
