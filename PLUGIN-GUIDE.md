@@ -6,18 +6,18 @@ The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of aw
 This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself.
 
 1. [Presentation](#presentation)
-	- [Repository](#repository)
-	- [Name](#name)
-	- [Demo](#demo)
-	- [Readme](#readme)
-	- [License](#license)
+   - [Repository](#repository)
+   - [Name](#name)
+   - [Demo](#demo)
+   - [Readme](#readme)
+   - [License](#license)
 2. [Code](#code)
-	- [File Structure](#file-structure)
-	- [Code Conventions](#code-conventions)
-	- [Plugin API](#plugin-api)
+   - [File Structure](#file-structure)
+   - [Code Conventions](#code-conventions)
+   - [Plugin API](#plugin-api)
 3. [Content Accessibility](#content-accessibility)
-	- [Accessibility Testing](#accessibility-testing)
-	- [Learn about web accessibility](#learn-about-web-accessibility)
+   - [Accessibility Testing](#accessibility-testing)
+   - [Learn about web accessibility](#learn-about-web-accessibility)
 4. [Publishing on NPM](#publishing-on-npm)
 5. [Module Loaders](#module-loaders)
 6. [Adding to the plugins list](#adding-to-the-plugins-list)
@@ -54,9 +54,9 @@ At a minimum it should contain the following items:
 - name of the plugin
 - a simple, concise description of what it does
 - requirements
-	- Leaflet version
-	- other external dependencies (if any)
-	- browser / device compatibility
+  - Leaflet version
+  - other external dependencies (if any)
+  - browser / device compatibility
 - links to demos
 - instructions for including the plugin
 - simple usage code example
@@ -79,14 +79,14 @@ make it easy for a new person to find their way in your repo.
 
 A barebones repo for a simple plugin would look like this:
 
-```
+```text
 my-plugin.js
 README.md
 ```
 
 An example of a more sophisticated plugin file structure:
 
-```
+```text
 /src        - JS source files
 /dist       - minified plugin JS, CSS, images
 /spec       - test files
@@ -126,8 +126,8 @@ marker.myPlugin('bla', 'foo', null, {}, 5, 0);
 
  // good
 marker.myPlugin('bla', {
-	optionOne: 'foo',
-	optionThree: 5
+    optionOne: 'foo',
+    optionThree: 5
 });
 ```
 
@@ -254,15 +254,14 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 
 Now your plugin is available as an AMD and CommonJS module and can be used in module loaders like Browserify and RequireJS.
 
-
 ## Adding to the plugins list
 
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
 
-* [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
-* Commit the code to your fork.
-* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
+- [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
+- In the `docs/_plugins/` folder, copy the `template.md` file and add it to a category folder. Then put the information and links about your plugin into the new plugin file.
+- Commit the code to your fork.
+- [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
 
 Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.
