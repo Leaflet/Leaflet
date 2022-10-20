@@ -1,14 +1,10 @@
 import {falseFn} from '../core/Util';
 
-var POINTER_DOWN =   'pointerdown';
-var POINTER_MOVE =   'pointermove';
-var POINTER_UP =     'pointerup';
-var POINTER_CANCEL = 'pointercancel';
 var pEvent = {
-	touchstart  : POINTER_DOWN,
-	touchmove   : POINTER_MOVE,
-	touchend    : POINTER_UP,
-	touchcancel : POINTER_CANCEL
+	touchstart  : 'pointerdown',
+	touchmove   : 'pointermove',
+	touchend    : 'pointerup',
+	touchcancel : 'pointercancel'
 };
 var handle = {
 	touchstart  : _onPointerStart,
@@ -61,10 +57,10 @@ function _addPointerDocListener() {
 	// need to keep track of what pointers and how many are active to provide e.touches emulation
 	if (!_pointerDocListener) {
 		// we listen document as any drags that end by moving the touch off the screen get fired there
-		document.addEventListener(POINTER_DOWN, _globalPointerDown, true);
-		document.addEventListener(POINTER_MOVE, _globalPointerMove, true);
-		document.addEventListener(POINTER_UP, _globalPointerUp, true);
-		document.addEventListener(POINTER_CANCEL, _globalPointerUp, true);
+		document.addEventListener('pointerdown', _globalPointerDown, true);
+		document.addEventListener('pointermove', _globalPointerMove, true);
+		document.addEventListener('pointerup', _globalPointerUp, true);
+		document.addEventListener('pointercancel', _globalPointerUp, true);
 
 		_pointerDocListener = true;
 	}
