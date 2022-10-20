@@ -393,7 +393,7 @@ export var GridLayer = Layer.extend({
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
 			// force reading offsetWidth so the browser considers the newly added element for transition
-			Util.falseFn(level.el.offsetWidth);	// eslint-disable-line
+			Util.falseFn(level.el.offsetWidth);
 
 			this._onCreateLevel(level);
 		}
