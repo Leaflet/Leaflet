@@ -185,12 +185,20 @@ export var TileLayer = GridLayer.extend({
 			y: coords.y,
 			z: this._getZoomForUrl()
 		};
-		if (this._map && !this._map.options.crs.infinite) {
-			var invertedY = this._globalTileRange.max.y - coords.y;
-			if (this.options.tms) {
-				data['y'] = invertedY;
+		if (this._map) {
+			// treat all !crs.infinite as before -- inverting by subtract from globalTileRange
+			if (!this._map.options.crs.infinite) {
+				var invertedY = this._globalTileRange.max.y - coords.y;
+				if (this.options.tms) {
+					data['y'] = invertedY;
+				}
+				data['-y'] = invertedY;
 			}
-			data['-y'] = invertedY;
+			// Infinite? Yes.  But if we have also inverted (typically by CRS.Simple) the Y axis
+			// then we can supply -y by just inverting (and offset by 1, to get origin bottom left)
+			else if (this._map.options.crs.transformation._c == -1) {
+				data['-y'] = (-1 * coords.y) - 1;  // invert y, offset origin to bottom/left corner
+			}
 		}
 
 		return Util.template(this._url, Util.extend(data, this.options));
