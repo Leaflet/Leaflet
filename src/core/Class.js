@@ -15,7 +15,7 @@ Class.extend = function (props) {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function (...args) {
+	const NewClass = function (...args) {
 
 		Util.setOptions(this);
 
@@ -28,15 +28,15 @@ Class.extend = function (props) {
 		this.callInitHooks();
 	};
 
-	var parentProto = NewClass.__super__ = this.prototype;
+	const parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = Util.create(parentProto);
+	const proto = Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
 
 	// inherit parent's statics
-	for (var i in this) {
+	for (const i in this) {
 		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
@@ -76,7 +76,7 @@ Class.extend = function (props) {
 
 		this._initHooksCalled = true;
 
-		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+		for (let i = 0, len = proto._initHooks.length; i < len; i++) {
 			proto._initHooks[i].call(this);
 		}
 	};
@@ -88,7 +88,7 @@ Class.extend = function (props) {
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
-	var parentOptions = this.prototype.options;
+	const parentOptions = this.prototype.options;
 	Util.extend(this.prototype, props);
 	if (props.options) {
 		this.prototype.options = parentOptions;
@@ -107,7 +107,7 @@ Class.mergeOptions = function (options) {
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
 Class.addInitHook = function (fn, ...args) { // (Function) || (String, args...)
-	var init = typeof fn === 'function' ? fn : function () {
+	const init = typeof fn === 'function' ? fn : function () {
 		this[fn].apply(this, args);
 	};
 

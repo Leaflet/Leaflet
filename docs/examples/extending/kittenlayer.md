@@ -4,7 +4,7 @@ title: KittenLayer
 ---
 <script type='text/javascript'>
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		crs: L.CRS.Simple,
 		center: [0, 0],
 		zoom: 5
@@ -12,7 +12,7 @@ title: KittenLayer
 
 	L.TileLayer.Kitten = L.TileLayer.extend({
 		getTileUrl(coords) {
-			var i = Math.ceil(Math.random() * 4);
+			const i = Math.ceil(Math.random() * 4);
 			return `https://placekitten.com/256/256?image=${i}`;
 		},
 		getAttribution() {
@@ -24,7 +24,7 @@ title: KittenLayer
 		return new L.TileLayer.Kitten();
 	};
 
-	var kittenTiles = L.tileLayer.kitten();
+	const kittenTiles = L.tileLayer.kitten();
 	map.addLayer(kittenTiles);
 	
 </script>

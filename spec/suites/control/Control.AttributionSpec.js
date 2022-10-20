@@ -1,5 +1,5 @@
 describe("Control.Attribution", () => {
-	var map, control, container, controlContainer;
+	let map, control, container, controlContainer;
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -17,7 +17,7 @@ describe("Control.Attribution", () => {
 	});
 
 	function dummyLayer() {
-		var layer = new L.Layer();
+		const layer = new L.Layer();
 		layer.onAdd = function () { };
 		layer.onRemove = function () { };
 		return layer;
@@ -73,16 +73,16 @@ describe("Control.Attribution", () => {
 
 	describe('control.attribution factory', () => {
 		it('creates Control.Attribution instance', () => {
-			var options = {prefix: 'prefix'};
+			const options = {prefix: 'prefix'};
 			expect(L.control.attribution(options)).to.eql(new L.Control.Attribution(options));
 		});
 	});
 
 	describe('on layer add/remove', () => {
 		it('changes text', () => {
-			var fooLayer = dummyLayer();
-			var barLayer = dummyLayer();
-			var bazLayer = dummyLayer();
+			const fooLayer = dummyLayer();
+			const barLayer = dummyLayer();
+			const bazLayer = dummyLayer();
 			fooLayer.getAttribution = function () { return 'foo'; };
 			barLayer.getAttribution = function () { return 'bar'; };
 			bazLayer.getAttribution = function () { return 'baz'; };
@@ -104,9 +104,9 @@ describe("Control.Attribution", () => {
 		});
 
 		it('keeps count of duplicated attributions', () => {
-			var fooLayer = dummyLayer();
-			var fo2Layer = dummyLayer();
-			var fo3Layer = dummyLayer();
+			const fooLayer = dummyLayer();
+			const fo2Layer = dummyLayer();
+			const fo3Layer = dummyLayer();
 			fooLayer.getAttribution = function () { return 'foo'; };
 			fo2Layer.getAttribution = function () { return 'foo'; };
 			fo3Layer.getAttribution = function () { return 'foo'; };

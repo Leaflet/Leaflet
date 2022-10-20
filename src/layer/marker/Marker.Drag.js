@@ -23,13 +23,13 @@ import {requestAnimFrame, cancelAnimFrame} from '../../core/Util';
  * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-export var MarkerDrag = Handler.extend({
+export const MarkerDrag = Handler.extend({
 	initialize(marker) {
 		this._marker = marker;
 	},
 
 	addHooks() {
-		var icon = this._marker._icon;
+		const icon = this._marker._icon;
 
 		if (!this._draggable) {
 			this._draggable = new Draggable(icon, icon, true);
@@ -63,7 +63,7 @@ export var MarkerDrag = Handler.extend({
 	},
 
 	_adjustPan(e) {
-		var marker = this._marker,
+		const marker = this._marker,
 		    map = marker._map,
 		    speed = this._marker.options.autoPanSpeed,
 		    padding = this._marker.options.autoPanPadding,
@@ -71,14 +71,14 @@ export var MarkerDrag = Handler.extend({
 		    bounds = map.getPixelBounds(),
 		    origin = map.getPixelOrigin();
 
-		var panBounds = toBounds(
+		const panBounds = toBounds(
 			bounds.min._subtract(origin).add(padding),
 			bounds.max._subtract(origin).subtract(padding)
 		);
 
 		if (!panBounds.contains(iconPos)) {
 			// Compute incremental movement
-			var movement = toPoint(
+			const movement = toPoint(
 				(Math.max(panBounds.max.x, iconPos.x) - panBounds.max.x) / (bounds.max.x - panBounds.max.x) -
 				(Math.min(panBounds.min.x, iconPos.x) - panBounds.min.x) / (bounds.min.x - panBounds.min.x),
 
@@ -124,7 +124,7 @@ export var MarkerDrag = Handler.extend({
 	},
 
 	_onDrag(e) {
-		var marker = this._marker,
+		const marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = DomUtil.getPosition(marker._icon),
 		    latlng = marker._map.layerPointToLatLng(iconPos);

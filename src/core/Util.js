@@ -7,7 +7,7 @@
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest, ...args) {
-	var i, j, len, src;
+	let i, j, len, src;
 
 	for (j = 0, len = args.length; j < len; j++) {
 		src = args[j];
@@ -20,7 +20,7 @@ export function extend(dest, ...args) {
 
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export var create = Object.create || (function () {
+export const create = Object.create || (function () {
 	function F() {}
 	return function (proto) {
 		F.prototype = proto;
@@ -30,7 +30,7 @@ export var create = Object.create || (function () {
 
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
-export var lastId = 0;
+export let lastId = 0;
 
 // @function stamp(obj: Object): Number
 // Returns the unique ID of an object, assigning it one if it doesn't have it.
@@ -49,18 +49,18 @@ export function stamp(obj) {
 // function, followed by any arguments passed when invoking the bound function.
 // Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
-	var lock, queuedArgs, wrapperFn, later;
+	let lock, queuedArgs;
 
-	later = function () {
+	function later() {
 		// reset lock and call if queued
 		lock = false;
 		if (queuedArgs) {
 			wrapperFn.apply(context, queuedArgs);
 			queuedArgs = false;
 		}
-	};
+	}
 
-	wrapperFn = function (...args) {
+	function wrapperFn(...args) {
 		if (lock) {
 			// called too soon, queue to call later
 			queuedArgs = args;
@@ -71,7 +71,7 @@ export function throttle(fn, time, context) {
 			setTimeout(later, time);
 			lock = true;
 		}
-	};
+	}
 
 	return wrapperFn;
 }
@@ -81,7 +81,7 @@ export function throttle(fn, time, context) {
 // `range[0]` and `range[1]`. The returned value will be always smaller than
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
-	var max = range[1],
+	const max = range[1],
 	    min = range[0],
 	    d = max - min;
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
@@ -97,7 +97,7 @@ export function falseFn() { return false; }
 // `false` can be passed to skip any processing (can be useful to avoid round-off errors).
 export function formatNum(num, precision) {
 	if (precision === false) { return num; }
-	var pow = Math.pow(10, precision === undefined ? 6 : precision);
+	const pow = Math.pow(10, precision === undefined ? 6 : precision);
 	return Math.round(num * pow) / pow;
 }
 
@@ -119,7 +119,7 @@ export function setOptions(obj, options) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
-	for (var i in options) {
+	for (const i in options) {
 		obj.options[i] = options[i];
 	}
 	return obj.options;
@@ -131,14 +131,14 @@ export function setOptions(obj, options) {
 // be appended at the end. If `uppercase` is `true`, the parameter names will
 // be uppercased (e.g. `'?A=foo&B=bar'`)
 export function getParamString(obj, existingUrl, uppercase) {
-	var params = [];
-	for (var i in obj) {
+	const params = [];
+	for (const i in obj) {
 		params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
 	}
 	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 }
 
-var templateRe = /\{ *([\w_ -]+) *\}/g;
+const templateRe = /\{ *([\w_ -]+) *\}/g;
 
 // @function template(str: String, data: Object): String
 // Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
@@ -147,7 +147,7 @@ var templateRe = /\{ *([\w_ -]+) *\}/g;
 // data values — they will be evaluated passing `data` as an argument.
 export function template(str, data) {
 	return str.replace(templateRe, (str, key) => {
-		var value = data[key];
+		let value = data[key];
 
 		if (value === undefined) {
 			throw new Error(`No value provided for variable ${str}`);
@@ -161,14 +161,14 @@ export function template(str, data) {
 
 // @function isArray(obj): Boolean
 // Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export var isArray = Array.isArray || function (obj) {
+export const isArray = Array.isArray || function (obj) {
 	return (Object.prototype.toString.call(obj) === '[object Array]');
 };
 
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 export function indexOf(array, el) {
-	for (var i = 0; i < array.length; i++) {
+	for (let i = 0; i < array.length; i++) {
 		if (array[i] === el) { return i; }
 	}
 	return -1;
@@ -178,7 +178,7 @@ export function indexOf(array, el) {
 // Data URI string containing a base64-encoded empty GIF image.
 // Used as a hack to free memory from unused images on WebKit-powered
 // mobile devices (by setting image `src` to this string).
-export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 // inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
@@ -186,19 +186,19 @@ function getPrefixed(name) {
 	return window[`webkit${name}`] || window[`moz${name}`] || window[`ms${name}`];
 }
 
-var lastTime = 0;
+let lastTime = 0;
 
 // fallback for IE 7-8
 function timeoutDefer(fn) {
-	var time = +new Date(),
+	const time = +new Date(),
 	    timeToCall = Math.max(0, 16 - (time - lastTime));
 
 	lastTime = time + timeToCall;
 	return window.setTimeout(fn, timeToCall);
 }
 
-export var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+export const requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
+export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
 		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number

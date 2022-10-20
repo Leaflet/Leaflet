@@ -1,5 +1,5 @@
 describe("Map.BoxZoom", () => {
-	var container, map;
+	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -15,7 +15,7 @@ describe("Map.BoxZoom", () => {
 
 
 	it("cancel boxZoom by pressing ESC and re-enable click event on the map", () => {
-		var mapClick = false;
+		let mapClick = false;
 		map.on('click', () => {
 			mapClick = true;
 		});
@@ -25,9 +25,9 @@ describe("Map.BoxZoom", () => {
 		expect(mapClick).to.be(true);
 
 		// fire mousedown event with shiftKey = true, to start drawing the boxZoom
-		var clientX = 100;
-		var clientY = 100;
-		var event = new CustomEvent("mousedown");
+		let clientX = 100;
+		let clientY = 100;
+		let event = new CustomEvent("mousedown");
 		event.shiftKey = true;
 		event.clientX = clientX;
 		event.clientY = clientY;

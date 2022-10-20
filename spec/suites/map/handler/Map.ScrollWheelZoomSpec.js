@@ -1,12 +1,12 @@
 describe("Map.ScrollWheelZoom", () => {
-	var container, map;
-	var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
-	var scrollIn = {
+	let container, map;
+	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+	const scrollIn = {
 		type: wheel,
 		deltaY: -120,
 		deltaMode: 0
 	};
-	var scrollOut = {
+	const scrollOut = {
 		type: wheel,
 		deltaY: 120,
 		deltaMode: 0
@@ -26,7 +26,7 @@ describe("Map.ScrollWheelZoom", () => {
 	});
 
 	it("zooms out while firing 'wheel' event", (done) => {
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollOut);
 
 		map.on('zoomend', () => {
@@ -38,7 +38,7 @@ describe("Map.ScrollWheelZoom", () => {
 	});
 
 	it("zooms in while firing 'wheel' event", (done) => {
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
 		map.on('zoomend', () => {
@@ -50,9 +50,9 @@ describe("Map.ScrollWheelZoom", () => {
 	});
 
 	it("scrollWheelZoom: 'center'", (done) => {
-		var scrollWheelZoomBefore = map.options.scrollWheelZoom;
+		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
 		map.on('zoomend', () => {
@@ -64,11 +64,11 @@ describe("Map.ScrollWheelZoom", () => {
 	});
 
 	it("changes the option 'wheelDebounceTime'", (done) => {
-		var wheelDebounceTimeBefore = map.options.wheelDebounceTime;
+		const wheelDebounceTimeBefore = map.options.wheelDebounceTime;
 		map.options.wheelDebounceTime = 100;
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 
-		var spy = sinon.spy();
+		const spy = sinon.spy();
 		map.on('zoomend', spy);
 
 		happen.once(container, scrollIn);
@@ -89,15 +89,15 @@ describe("Map.ScrollWheelZoom", () => {
 	});
 
 	it("changes the option 'wheelPxPerZoomLevel'", (done) => {
-		var wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
+		const wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
 		map.setZoom(15, {animate: false});
 
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
 		map.once('zoomend', () => {
 			expect(map.getZoom()).to.be.greaterThan(zoom);
-			var zoomDiff = map.getZoom() - zoom;
+			const zoomDiff = map.getZoom() - zoom;
 
 			map.setZoom(zoom, {animate: false});
 			expect(map.getZoom()).to.be(zoom);

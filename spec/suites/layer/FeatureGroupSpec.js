@@ -1,6 +1,6 @@
 ﻿describe('FeatureGroup', () => {
 	describe("#_propagateEvent", () => {
-		var marker;
+		let marker;
 
 		beforeEach(() => {
 			marker = L.marker([0, 0]);
@@ -8,13 +8,13 @@
 
 		describe("when a Marker is added to multiple FeatureGroups ", () => {
 			it("e.propagatedFrom should be the Marker", () => {
-				var fg1 = L.featureGroup(),
+				const fg1 = L.featureGroup(),
 				    fg2 = L.featureGroup();
 
 				fg1.addLayer(marker);
 				fg2.addLayer(marker);
 
-				var wasClicked1,
+				let wasClicked1,
 				    wasClicked2;
 
 				fg2.on('click', (e) => {
@@ -39,7 +39,7 @@
 
 	describe('addLayer', () => {
 		it('adds the layer', () => {
-			var fg = L.featureGroup(),
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			expect(fg.hasLayer(marker)).to.be(false);
@@ -50,7 +50,7 @@
 		});
 
 		it('supports non-evented layers', () => {
-			var fg = L.featureGroup(),
+			const fg = L.featureGroup(),
 			    g = L.layerGroup();
 
 			expect(fg.hasLayer(g)).to.be(false);
@@ -63,7 +63,7 @@
 
 	describe('removeLayer', () => {
 		it('removes the layer passed to it', () => {
-			var fg = L.featureGroup(),
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);
@@ -74,7 +74,7 @@
 		});
 
 		it('removes the layer passed to it by id', () => {
-			var fg = L.featureGroup(),
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);

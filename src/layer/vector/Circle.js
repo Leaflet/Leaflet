@@ -22,7 +22,7 @@ import {Earth} from '../../geo/crs/CRS.Earth';
  * ```
  */
 
-export var Circle = CircleMarker.extend({
+export const Circle = CircleMarker.extend({
 
 	initialize(latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
@@ -56,7 +56,7 @@ export var Circle = CircleMarker.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
 	getBounds() {
-		var half = [this._radius, this._radiusY || this._radius];
+		const half = [this._radius, this._radiusY || this._radius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
@@ -67,19 +67,19 @@ export var Circle = CircleMarker.extend({
 
 	_project() {
 
-		var lng = this._latlng.lng,
+		const lng = this._latlng.lng,
 		    lat = this._latlng.lat,
 		    map = this._map,
 		    crs = map.options.crs;
 
 		if (crs.distance === Earth.distance) {
-			var d = Math.PI / 180,
-			    latR = (this._mRadius / Earth.R) / d,
-			    top = map.project([lat + latR, lng]),
-			    bottom = map.project([lat - latR, lng]),
-			    p = top.add(bottom).divideBy(2),
-			    lat2 = map.unproject(p).lat,
-			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
+			const d = Math.PI / 180,
+			      latR = (this._mRadius / Earth.R) / d,
+			      top = map.project([lat + latR, lng]),
+			      bottom = map.project([lat - latR, lng]),
+			      p = top.add(bottom).divideBy(2),
+			      lat2 = map.unproject(p).lat;
+			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
 			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
@@ -91,7 +91,7 @@ export var Circle = CircleMarker.extend({
 			this._radiusY = p.y - top.y;
 
 		} else {
-			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
 			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;

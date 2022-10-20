@@ -13,7 +13,7 @@ import * as Util from '../../core/Util';
  * simple euclidean distance.
  */
 
-export var Simple = Util.extend({}, CRS, {
+export const Simple = Util.extend({}, CRS, {
 	projection: LonLat,
 	transformation: toTransformation(1, 0, -1, 0),
 
@@ -26,7 +26,7 @@ export var Simple = Util.extend({}, CRS, {
 	},
 
 	distance(latlng1, latlng2) {
-		var dx = latlng2.lng - latlng1.lng,
+		const dx = latlng2.lng - latlng1.lng,
 		    dy = latlng2.lat - latlng1.lat;
 
 		return Math.sqrt(dx * dx + dy * dy);

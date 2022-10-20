@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  * All other controls extend from this class.
  */
 
-export var Control = Class.extend({
+export const Control = Class.extend({
 	// @section
 	// @aka Control Options
 	options: {
@@ -40,7 +40,7 @@ export var Control = Class.extend({
 	// @method setPosition(position: string): this
 	// Sets the position of the control.
 	setPosition(position) {
-		var map = this._map;
+		const map = this._map;
 
 		if (map) {
 			map.removeControl(this);
@@ -67,7 +67,7 @@ export var Control = Class.extend({
 		this.remove();
 		this._map = map;
 
-		var container = this._container = this.onAdd(map),
+		const container = this._container = this.onAdd(map),
 		    pos = this.getPosition(),
 		    corner = map._controlCorners[pos];
 
@@ -111,7 +111,7 @@ export var Control = Class.extend({
 	}
 });
 
-export var control = function (options) {
+export const control = function (options) {
 	return new Control(options);
 };
 
@@ -146,13 +146,13 @@ Map.include({
 	},
 
 	_initControlPos() {
-		var corners = this._controlCorners = {},
+		const corners = this._controlCorners = {},
 		    l = 'leaflet-',
 		    container = this._controlContainer =
 		            DomUtil.create('div', `${l}control-container`, this._container);
 
 		function createCorner(vSide, hSide) {
-			var className = `${l + vSide} ${l}${hSide}`;
+			const className = `${l + vSide} ${l}${hSide}`;
 
 			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}
@@ -164,7 +164,7 @@ Map.include({
 	},
 
 	_clearControlPos() {
-		for (var i in this._controlCorners) {
+		for (const i in this._controlCorners) {
 			DomUtil.remove(this._controlCorners[i]);
 		}
 		DomUtil.remove(this._controlContainer);

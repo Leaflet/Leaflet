@@ -1,47 +1,47 @@
 describe('LineUtil', () => {
 	describe('#clipSegment', () => {
-		var bounds;
+		let bounds;
 
 		beforeEach(() => {
 			bounds = L.bounds([5, 0], [15, 10]);
 		});
 
 		it('clips a segment by bounds', () => {
-			var a = L.point(0, 0);
-			var b = L.point(15, 15);
+			const a = L.point(0, 0);
+			const b = L.point(15, 15);
 
-			var segment = L.LineUtil.clipSegment(a, b, bounds);
+			const segment = L.LineUtil.clipSegment(a, b, bounds);
 
 			expect(segment[0]).to.eql(L.point(5, 5));
 			expect(segment[1]).to.eql(L.point(10, 10));
 
-			var c = L.point(5, -5);
-			var d = L.point(20, 10);
+			const c = L.point(5, -5);
+			const d = L.point(20, 10);
 
-			var segment2 = L.LineUtil.clipSegment(c, d, bounds);
+			const segment2 = L.LineUtil.clipSegment(c, d, bounds);
 
 			expect(segment2[0]).to.eql(L.point(10, 0));
 			expect(segment2[1]).to.eql(L.point(15, 5));
 		});
 
 		it('uses last bit code and reject segments out of bounds', () => {
-			var a = L.point(15, 15);
-			var b = L.point(25, 20);
-			var segment = L.LineUtil.clipSegment(a, b, bounds, true);
+			const a = L.point(15, 15);
+			const b = L.point(25, 20);
+			const segment = L.LineUtil.clipSegment(a, b, bounds, true);
 
 			expect(segment).to.be(false);
 		});
 
 		it('can round numbers in clipped bounds', () => {
-			var a = L.point(4, 5);
-			var b = L.point(8, 6);
+			const a = L.point(4, 5);
+			const b = L.point(8, 6);
 
-			var segment1 = L.LineUtil.clipSegment(a, b, bounds);
+			const segment1 = L.LineUtil.clipSegment(a, b, bounds);
 
 			expect(segment1[0]).to.eql(L.point(5, 5.25));
 			expect(segment1[1]).to.eql(b);
 
-			var segment2 = L.LineUtil.clipSegment(a, b, bounds, false, true);
+			const segment2 = L.LineUtil.clipSegment(a, b, bounds, false, true);
 
 			expect(segment2[0]).to.eql(L.point(5, 5));
 			expect(segment2[1]).to.eql(b);
@@ -49,9 +49,9 @@ describe('LineUtil', () => {
 	});
 
 	describe('#pointToSegmentDistance & #closestPointOnSegment', () => {
-		var p1 = L.point(0, 10);
-		var p2 = L.point(10, 0);
-		var p = L.point(0, 0);
+		const p1 = L.point(0, 10);
+		const p2 = L.point(10, 0);
+		const p = L.point(0, 0);
 
 		it('calculates distance from point to segment', () => {
 			expect(L.LineUtil.pointToSegmentDistance(p, p1, p2)).to.eql(Math.sqrt(200) / 2);
@@ -64,7 +64,7 @@ describe('LineUtil', () => {
 
 	describe('#simplify', () => {
 		it('simplifies polylines according to tolerance', () => {
-			var points = [
+			const points = [
 				L.point(0, 0),
 				L.point(0.01, 0),
 				L.point(0.5, 0.01),
@@ -74,7 +74,7 @@ describe('LineUtil', () => {
 				L.point(2, 1)
 			];
 
-			var simplified = L.LineUtil.simplify(points, 0.1);
+			const simplified = L.LineUtil.simplify(points, 0.1);
 
 			expect(simplified).to.eql([
 				L.point(0, 0),
@@ -107,7 +107,7 @@ describe('LineUtil', () => {
 	});
 
 	describe('#polylineCenter', () => {
-		var map, crs, zoom;
+		let map, crs, zoom;
 		beforeEach(() => {
 			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
@@ -121,23 +121,23 @@ describe('LineUtil', () => {
 		// More tests in PolylineSpec
 
 		it('computes center of line', () => {
-			var latlngs = [[80, 0], [80, 90]];
-			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			const latlngs = [[80, 0], [80, 90]];
+			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
 		it('computes center of line with maxZoom', () => {
 			L.gridLayer({maxZoom: 18}).addTo(map);
-			var latlngs = [[80, 0], [80, 90]];
-			var center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
+			const latlngs = [[80, 0], [80, 90]];
+			const center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
 		it('computes center of a small line and test it on every zoom', () => {
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
-			var layer = L.polyline(latlngs).addTo(map);
-			var i = 0;
+			const layer = L.polyline(latlngs).addTo(map);
+			let i = 0;
 			function check() {
 				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 				i++;
@@ -152,10 +152,10 @@ describe('LineUtil', () => {
 			map.remove();
 			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395, zoomAnimation: false});
 
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
-			var layer = L.polyline(latlngs).addTo(map);
-			var i = 0;
+			const layer = L.polyline(latlngs).addTo(map);
+			let i = 0;
 			function check() {
 				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 				i++;
@@ -170,10 +170,10 @@ describe('LineUtil', () => {
 			map.remove();
 			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326, zoomAnimation: false});
 
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
-			var layer = L.polyline(latlngs).addTo(map);
-			var i = 0;
+			const layer = L.polyline(latlngs).addTo(map);
+			let i = 0;
 			function check() {
 				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 				i++;
@@ -188,10 +188,10 @@ describe('LineUtil', () => {
 			map.remove();
 			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple, zoomAnimation: false});
 
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
+			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
 
-			var layer = L.polyline(latlngs).addTo(map);
-			var i = 0;
+			const layer = L.polyline(latlngs).addTo(map);
+			let i = 0;
 			function check() {
 				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 				i++;
@@ -215,18 +215,18 @@ describe('LineUtil', () => {
 		});
 
 		it('throws error if map not passed', () => {
-			var latlngs = [[80, 0], [80, 90]];
+			const latlngs = [[80, 0], [80, 90]];
 			expect(() => {
 				L.LineUtil.polylineCenter(latlngs, null);
 			}).to.throwException('map not passed');
 		});
 
 		it('shows warning if latlngs is not flat', () => {
-			var latlngs = [
+			const latlngs = [
 				[[80, 0], [80, 90]]
 			];
-			var spy = sinon.spy(console, 'warn');
-			var center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			const spy = sinon.spy(console, 'warn');
+			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
 			console.warn.restore();
 			expect(spy.calledOnce).to.be.ok();
 			expect(center).to.be.nearLatLng([80, 45]);

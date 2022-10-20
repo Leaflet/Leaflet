@@ -1,5 +1,5 @@
 describe('Rectangle', () => {
-	var map, container;
+	let map, container;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -12,22 +12,22 @@ describe('Rectangle', () => {
 
 	describe("#initialize", () => {
 		it("should never be flat", () => {
-			var latLngs = [[1, 2], [3, 4]];
+			const latLngs = [[1, 2], [3, 4]];
 
-			var rectangle = L.rectangle(latLngs);
+			const rectangle = L.rectangle(latLngs);
 
 			expect(L.LineUtil.isFlat(rectangle._latlngs)).to.be(false);
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
 		it("doesn't overwrite the given latlng array", () => {
-			var originalLatLngs = [
+			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
 			];
-			var sourceLatLngs = originalLatLngs.slice();
+			const sourceLatLngs = originalLatLngs.slice();
 
-			var rectangle = L.rectangle(sourceLatLngs);
+			const rectangle = L.rectangle(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
@@ -41,12 +41,12 @@ describe('Rectangle', () => {
 		});
 
 		it("can be initialized with extending bounds", () => {
-			var originalLatLngs = [
+			const originalLatLngs = [
 				[0, 10], [20, 30],
 				[40, 50], [60, 70] // extended bounds
 			];
 
-			var rectangle = L.rectangle(originalLatLngs);
+			const rectangle = L.rectangle(originalLatLngs);
 
 			expect(rectangle._latlngs).to.eql([
 				[L.latLng([0, 10]), L.latLng([60, 10]), L.latLng([60, 70]), L.latLng([0, 70])]
@@ -57,13 +57,13 @@ describe('Rectangle', () => {
 
 	describe("#setBounds", () => {
 		it("doesn't overwrite the given latlng array", () => {
-			var originalLatLngs = [
+			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
 			];
-			var sourceLatLngs = originalLatLngs.slice();
+			const sourceLatLngs = originalLatLngs.slice();
 
-			var rectangle = L.rectangle(sourceLatLngs);
+			const rectangle = L.rectangle(sourceLatLngs);
 
 			rectangle.setBounds(sourceLatLngs);
 
@@ -71,17 +71,17 @@ describe('Rectangle', () => {
 		});
 
 		it("changes original bounds to new bounds", () => {
-			var originalLatLngs = [
+			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
 			];
 
-			var newLatLngs = [
+			const newLatLngs = [
 				[5, 6],
 				[7, 8]
 			];
 
-			var rectangle = L.rectangle(originalLatLngs);
+			const rectangle = L.rectangle(originalLatLngs);
 			rectangle.setBounds(newLatLngs);
 
 			expect(rectangle._latlngs).to.eql([
@@ -92,16 +92,16 @@ describe('Rectangle', () => {
 		});
 
 		it("can be set with extending bounds", () => {
-			var originalLatLngs = [
+			const originalLatLngs = [
 				[[2, 3], [4, 5]]
 			];
 
-			var newLatLngs = [
+			const newLatLngs = [
 				[0, 10], [20, 30],
 				[40, 50], [60, 70] // extending bounds
 			];
 
-			var rectangle = L.rectangle(originalLatLngs);
+			const rectangle = L.rectangle(originalLatLngs);
 			rectangle.setBounds(newLatLngs);
 
 			expect(rectangle._latlngs).to.eql([

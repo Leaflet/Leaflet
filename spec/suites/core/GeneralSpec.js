@@ -1,6 +1,6 @@
 describe('General', () => {
 	it('noConflict', () => {
-		var leaflet = L;
+		const leaflet = L;
 		expect(L.noConflict()).to.eql(leaflet);
 		expect(L).to.eql(undefined);
 		L = leaflet;

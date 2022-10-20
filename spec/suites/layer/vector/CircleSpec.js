@@ -1,5 +1,5 @@
 describe('Circle', () => {
-	var map, container, circle;
+	let map, container, circle;
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -14,7 +14,7 @@ describe('Circle', () => {
 
 	describe('#init', () => {
 		it('uses default radius if not given', () => {
-			var circle = L.circle([0, 0]);
+			const circle = L.circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
 
@@ -28,7 +28,7 @@ describe('Circle', () => {
 
 	describe('#getBounds', () => {
 		it('returns bounds', () => {
-			var bounds = circle.getBounds();
+			const bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
 			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
@@ -37,7 +37,7 @@ describe('Circle', () => {
 
 	describe('Legacy factory', () => {
 		it('returns same bounds as 1.0 factory', () => {
-			var bounds = circle.getBounds();
+			const bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
 			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);

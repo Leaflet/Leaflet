@@ -1,9 +1,9 @@
 describe('Map.TapHoldSpec.js', () => {
-	var container, clock, spy, map;
+	let container, clock, spy, map;
 
-	var posStart = {clientX:1, clientY:1};
-	var posNear = {clientX:10, clientY:10};
-	var posFar = {clientX:100, clientY:100};
+	const posStart = {clientX:1, clientY:1};
+	const posNear = {clientX:10, clientY:10};
+	const posFar = {clientX:100, clientY:100};
 
 	beforeEach(() => {
 		container = createContainer();
@@ -26,7 +26,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	afterEach(() => {
 		happen.once(container, {type: 'touchend'});
-		for (var id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
+		for (let id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
 			happen.once(container, {type: 'pointercancel', pointerId:id});
 		}
 		clock.restore();
@@ -45,7 +45,7 @@ describe('Map.TapHoldSpec.js', () => {
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
 
-		var event = spy.lastCall.args[0];
+		const event = spy.lastCall.args[0];
 		expect(event.type).to.be('contextmenu');
 		expect(event.originalEvent._simulated).to.be.ok();
 	});
@@ -102,7 +102,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	it.skip('prevents native click', () => { // to be performed by hand
 		// Not valid here, as there is no way to initiate native click with fake touch
-		var clickSpy = sinon.spy();
+		const clickSpy = sinon.spy();
 		map.on('click', clickSpy);
 
 		happen.once(container, {type: 'touchstart', touches: [posStart]});
@@ -153,14 +153,14 @@ describe('Map.TapHoldSpec.js', () => {
 		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
 		clock.tick(650);
 
-		var originalEvent = spy.lastCall.args[0].originalEvent;
-		var expectedProps = L.extend({
+		const originalEvent = spy.lastCall.args[0].originalEvent;
+		const expectedProps = L.extend({
 			type: 'contextmenu',
 			bubbles: true,
 			cancelable: true,
 			target: container
 		}, posStart);
-		for (var prop in expectedProps) {
+		for (const prop in expectedProps) {
 			expect(originalEvent[prop]).to.be(expectedProps[prop]);
 		}
 	});
@@ -178,9 +178,9 @@ describe('Map.TapHoldSpec.js', () => {
 	}
 
 	// Polyfills DOM4 MouseEvent
-	var MouseEventPolyfill = function (eventType, params) {
+	const MouseEventPolyfill = function (eventType, params) {
 		params = params || {bubbles: false, cancelable: false};
-		var mouseEvent = document.createEvent('MouseEvent');
+		const mouseEvent = document.createEvent('MouseEvent');
 		mouseEvent.initMouseEvent(eventType,
 			params.bubbles,
 			params.cancelable,

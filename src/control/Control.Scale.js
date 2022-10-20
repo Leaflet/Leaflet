@@ -16,7 +16,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var Scale = Control.extend({
+export const Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
@@ -42,7 +42,7 @@ export var Scale = Control.extend({
 	},
 
 	onAdd(map) {
-		var className = 'leaflet-control-scale',
+		const className = 'leaflet-control-scale',
 		    container = DomUtil.create('div', className),
 		    options = this.options;
 
@@ -68,10 +68,10 @@ export var Scale = Control.extend({
 	},
 
 	_update() {
-		var map = this._map,
+		const map = this._map,
 		    y = map.getSize().y / 2;
 
-		var maxMeters = map.distance(
+		const maxMeters = map.distance(
 			map.containerPointToLatLng([0, y]),
 			map.containerPointToLatLng([this.options.maxWidth, y]));
 
@@ -88,15 +88,15 @@ export var Scale = Control.extend({
 	},
 
 	_updateMetric(maxMeters) {
-		var meters = this._getRoundNum(maxMeters),
+		const meters = this._getRoundNum(maxMeters),
 		    label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	},
 
 	_updateImperial(maxMeters) {
-		var maxFeet = maxMeters * 3.2808399,
-		    maxMiles, miles, feet;
+		const maxFeet = maxMeters * 3.2808399;
+		let maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
@@ -115,8 +115,8 @@ export var Scale = Control.extend({
 	},
 
 	_getRoundNum(num) {
-		var pow10 = Math.pow(10, (`${Math.floor(num)}`).length - 1),
-		    d = num / pow10;
+		const pow10 = Math.pow(10, (`${Math.floor(num)}`).length - 1);
+		let d = num / pow10;
 
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
@@ -130,6 +130,6 @@ export var Scale = Control.extend({
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-export var scale = function (options) {
+export const scale = function (options) {
 	return new Scale(options);
 };

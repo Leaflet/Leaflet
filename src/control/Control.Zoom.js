@@ -12,7 +12,7 @@ import * as DomEvent from '../dom/DomEvent';
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
-export var Zoom = Control.extend({
+export const Zoom = Control.extend({
 	// @section
 	// @aka Control.Zoom options
 	options: {
@@ -39,7 +39,7 @@ export var Zoom = Control.extend({
 	},
 
 	onAdd(map) {
-		var zoomName = 'leaflet-control-zoom',
+		const zoomName = 'leaflet-control-zoom',
 		    container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		    options = this.options;
 
@@ -83,7 +83,7 @@ export var Zoom = Control.extend({
 	},
 
 	_createButton(html, title, className, container, fn) {
-		var link = DomUtil.create('a', className, container);
+		const link = DomUtil.create('a', className, container);
 		link.innerHTML = html;
 		link.href = '#';
 		link.title = title;
@@ -103,7 +103,7 @@ export var Zoom = Control.extend({
 	},
 
 	_updateDisabled() {
-		var map = this._map,
+		const map = this._map,
 		    className = 'leaflet-disabled';
 
 		DomUtil.removeClass(this._zoomInButton, className);
@@ -144,6 +144,6 @@ Map.addInitHook(function () {
 // @namespace Control.Zoom
 // @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
-export var zoom = function (options) {
+export const zoom = function (options) {
 	return new Zoom(options);
 };

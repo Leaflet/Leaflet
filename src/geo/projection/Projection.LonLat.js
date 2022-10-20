@@ -15,7 +15,7 @@ import {Point} from '../../geometry/Point';
  * `EPSG:4326` and `Simple` CRS.
  */
 
-export var LonLat = {
+export const LonLat = {
 	project(latlng) {
 		return new Point(latlng.lng, latlng.lat);
 	},

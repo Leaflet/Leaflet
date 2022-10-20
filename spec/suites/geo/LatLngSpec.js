@@ -1,11 +1,11 @@
 describe('LatLng', () => {
 	describe('constructor', () => {
 		it("sets lat and lng", () => {
-			var a = L.latLng(25, 74);
+			const a = L.latLng(25, 74);
 			expect(a.lat).to.eql(25);
 			expect(a.lng).to.eql(74);
 
-			var b = L.latLng(-25, -74);
+			const b = L.latLng(-25, -74);
 			expect(b.lat).to.eql(-25);
 			expect(b.lng).to.eql(-74);
 		});
@@ -17,41 +17,41 @@ describe('LatLng', () => {
 		});
 
 		it('does not set altitude if undefined', () => {
-			var a = L.latLng(25, 74);
+			const a = L.latLng(25, 74);
 			expect(typeof a.alt).to.eql('undefined');
 		});
 
 		it('sets altitude', () => {
-			var a = L.latLng(25, 74, 50);
+			const a = L.latLng(25, 74, 50);
 			expect(a.alt).to.eql(50);
 
-			var b = L.latLng(-25, -74, -50);
+			const b = L.latLng(-25, -74, -50);
 			expect(b.alt).to.eql(-50);
 		});
 	});
 
 	describe('#equals', () => {
 		it("returns true if compared objects are equal within a certain margin", () => {
-			var a = L.latLng(10, 20);
-			var b = L.latLng(10 + 1.0E-10, 20 - 1.0E-10);
+			const a = L.latLng(10, 20);
+			const b = L.latLng(10 + 1.0E-10, 20 - 1.0E-10);
 			expect(a.equals(b)).to.eql(true);
 		});
 
 		it("returns false if compared objects are not equal within a certain margin", () => {
-			var a = L.latLng(10, 20);
-			var b = L.latLng(10, 23.3);
+			const a = L.latLng(10, 20);
+			const b = L.latLng(10, 23.3);
 			expect(a.equals(b)).to.eql(false);
 		});
 
 		it('returns false if passed non-valid object', () => {
-			var a = L.latLng(10, 20);
+			const a = L.latLng(10, 20);
 			expect(a.equals(null)).to.eql(false);
 		});
 	});
 
 	describe('#toString', () => {
 		it('formats a string', () => {
-			var a = L.latLng(10.333333333, 20.2222222);
+			const a = L.latLng(10.333333333, 20.2222222);
 			expect(a.toString(3)).to.eql('LatLng(10.333, 20.222)');
 			expect(a.toString()).to.eql('LatLng(10.333333, 20.222222)');
 		});
@@ -59,14 +59,14 @@ describe('LatLng', () => {
 
 	describe('#distanceTo', () => {
 		it('calculates distance in meters', () => {
-			var a = L.latLng(50.5, 30.5);
-			var b = L.latLng(50, 1);
+			const a = L.latLng(50.5, 30.5);
+			const b = L.latLng(50, 1);
 
 			expect(Math.abs(Math.round(a.distanceTo(b) / 1000) - 2084) < 5).to.eql(true);
 		});
 		it('does not return NaN if input points are equal', () => {
-			var a = L.latLng(50.5, 30.5);
-			var b = L.latLng(50.5, 30.5);
+			const a = L.latLng(50.5, 30.5);
+			const b = L.latLng(50.5, 30.5);
 
 			expect(a.distanceTo(b)).to.eql(0);
 		});
@@ -74,7 +74,7 @@ describe('LatLng', () => {
 
 	describe('L.latLng factory', () => {
 		it('returns LatLng instance as is', () => {
-			var a = L.latLng(50, 30);
+			const a = L.latLng(50, 30);
 
 			expect(L.latLng(a)).to.eql(a);
 		});
@@ -119,8 +119,8 @@ describe('LatLng', () => {
 
 	describe('#clone', () => {
 		it('should clone attributes', () => {
-			var a = L.latLng(50.5, 30.5, 100);
-			var b = a.clone();
+			const a = L.latLng(50.5, 30.5, 100);
+			const b = a.clone();
 
 			expect(b.lat).to.equal(50.5);
 			expect(b.lng).to.equal(30.5);
@@ -128,8 +128,8 @@ describe('LatLng', () => {
 		});
 
 		it('should create another reference', () => {
-			var a = L.latLng(50.5, 30.5, 100);
-			var b = a.clone();
+			const a = L.latLng(50.5, 30.5, 100);
+			const b = a.clone();
 
 			expect(a === b).to.be(false);
 		});
