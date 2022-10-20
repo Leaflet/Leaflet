@@ -55,7 +55,7 @@ LatLng.prototype = {
 
 		obj = toLatLng(obj);
 
-		var margin = Math.max(
+		const margin = Math.max(
 		        Math.abs(this.lat - obj.lat),
 		        Math.abs(this.lng - obj.lng));
 
@@ -83,7 +83,7 @@ LatLng.prototype = {
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
 	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters/2` meters apart from the `LatLng`.
 	toBounds(sizeInMeters) {
-		var latAccuracy = 180 * sizeInMeters / 40075017,
+		const latAccuracy = 180 * sizeInMeters / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
 		return toLatLngBounds(

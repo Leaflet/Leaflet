@@ -1,19 +1,19 @@
 import {falseFn} from '../core/Util';
 
-var pEvent = {
+const pEvent = {
 	touchstart  : 'pointerdown',
 	touchmove   : 'pointermove',
 	touchend    : 'pointerup',
 	touchcancel : 'pointercancel'
 };
-var handle = {
+const handle = {
 	touchstart  : _onPointerStart,
 	touchmove   : _handlePointer,
 	touchend    : _handlePointer,
 	touchcancel : _handlePointer
 };
-var _pointers = {};
-var _pointerDocListener = false;
+const _pointers = {};
+let _pointerDocListener = false;
 
 // Provides a touch events wrapper for pointer events.
 // ref https://www.w3.org/TR/pointerevents/
@@ -70,7 +70,7 @@ function _handlePointer(handler, e) {
 	if (e.pointerType === 'mouse') { return; }
 
 	e.touches = [];
-	for (var i in _pointers) {
+	for (const i in _pointers) {
 		e.touches.push(_pointers[i]);
 	}
 	e.changedTouches = [e];

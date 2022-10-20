@@ -20,7 +20,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var ImageOverlay = Layer.extend({
+export const ImageOverlay = Layer.extend({
 
 	// @section
 	// @aka ImageOverlay options
@@ -147,7 +147,7 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	getEvents() {
-		var events = {
+		const events = {
 			zoom: this._reset,
 			viewreset: this._reset
 		};
@@ -181,8 +181,8 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_initImage() {
-		var wasElementSupplied = this._url.tagName === 'IMG';
-		var img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
+		const wasElementSupplied = this._url.tagName === 'IMG';
+		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
 		DomUtil.addClass(img, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(img, 'leaflet-zoom-animated'); }
@@ -214,14 +214,14 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_animateZoom(e) {
-		var scale = this._map.getZoomScale(e.zoom),
+		const scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
 	},
 
 	_reset() {
-		var image = this._image,
+		const image = this._image,
 		    bounds = new Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
@@ -248,7 +248,7 @@ export var ImageOverlay = Layer.extend({
 		// Fired when the ImageOverlay layer fails to load its image
 		this.fire('error');
 
-		var errorUrl = this.options.errorOverlayUrl;
+		const errorUrl = this.options.errorOverlayUrl;
 		if (errorUrl && this._url !== errorUrl) {
 			this._url = errorUrl;
 			this._image.src = errorUrl;
@@ -265,6 +265,6 @@ export var ImageOverlay = Layer.extend({
 // @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
-export var imageOverlay = function (url, bounds, options) {
+export const imageOverlay = function (url, bounds, options) {
 	return new ImageOverlay(url, bounds, options);
 };

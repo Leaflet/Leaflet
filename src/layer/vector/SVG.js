@@ -6,7 +6,7 @@ import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 
-export var create = svgCreate;
+export const create = svgCreate;
 
 /*
  * @class SVG
@@ -36,7 +36,7 @@ export var create = svgCreate;
  * ```
  */
 
-export var SVG = Renderer.extend({
+export const SVG = Renderer.extend({
 
 	_initContainer() {
 		this._container = create('svg');
@@ -61,7 +61,7 @@ export var SVG = Renderer.extend({
 
 		Renderer.prototype._update.call(this);
 
-		var b = this._bounds,
+		const b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
 
@@ -82,7 +82,7 @@ export var SVG = Renderer.extend({
 	// methods below are called by vector layers implementations
 
 	_initPath(layer) {
-		var path = layer._path = create('path');
+		const path = layer._path = create('path');
 
 		// @namespace Path
 		// @option className: String = null
@@ -117,7 +117,7 @@ export var SVG = Renderer.extend({
 	},
 
 	_updateStyle(layer) {
-		var path = layer._path,
+		const path = layer._path,
 		    options = layer.options;
 
 		if (!path) { return; }
@@ -158,13 +158,13 @@ export var SVG = Renderer.extend({
 	},
 
 	_updateCircle(layer) {
-		var p = layer._point,
+		const p = layer._point,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
 		    arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
-		var d = layer._empty() ? 'M0 0' :
+		const d = layer._empty() ? 'M0 0' :
 			`M${p.x - r},${p.y
 			}${arc}${r * 2},0 ${
 				arc}${-r * 2},0 `;

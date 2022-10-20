@@ -1,5 +1,5 @@
 describe('Bounds', () => {
-	var a, b, c;
+	let a, b, c;
 
 	beforeEach(() => {
 		a = L.bounds(
@@ -68,7 +68,7 @@ describe('Bounds', () => {
 
 	describe('#pad', () => {
 		it('pads the bounds by a given ratio', () => {
-			var bounds = a.pad(0.5);
+			const bounds = a.pad(0.5);
 			expect(bounds).to.eql(L.bounds([[6, -2], [38, 54]]));
 		});
 	});
@@ -161,7 +161,7 @@ describe('Bounds', () => {
 
 	describe('L.bounds factory', () => {
 		it('creates bounds from array of number arrays', () => {
-			var bounds = L.bounds([[14, 12], [30, 40]]);
+			const bounds = L.bounds([[14, 12], [30, 40]]);
 			expect(bounds).to.eql(a);
 		});
 	});

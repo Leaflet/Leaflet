@@ -1,13 +1,13 @@
 describe("Point", () => {
 	describe('constructor', () => {
 		it("creates a point with the given x and y", () => {
-			var p = L.point(1.5, 2.5);
+			const p = L.point(1.5, 2.5);
 			expect(p.x).to.eql(1.5);
 			expect(p.y).to.eql(2.5);
 		});
 
 		it("rounds the given x and y if the third argument is true", () => {
-			var p = L.point(1.3, 2.7, true);
+			const p = L.point(1.3, 2.7, true);
 			expect(p.x).to.eql(1);
 			expect(p.y).to.eql(3);
 		});
@@ -15,7 +15,7 @@ describe("Point", () => {
 
 	describe('#subtract', () => {
 		it('subtracts the given point from this one', () => {
-			var a = L.point(50, 30),
+			const a = L.point(50, 30),
 			    b = L.point(20, 10);
 			expect(a.subtract(b)).to.eql(L.point(30, 20));
 		});
@@ -55,17 +55,17 @@ describe("Point", () => {
 
 	describe('#distanceTo', () => {
 		it('calculates distance between two points', () => {
-			var p1 = L.point(0, 30);
-			var p2 = L.point(40, 0);
+			const p1 = L.point(0, 30);
+			const p2 = L.point(40, 0);
 			expect(p1.distanceTo(p2)).to.eql(50.0);
 		});
 	});
 
 	describe('#equals', () => {
 		it('returns true if points are equal', () => {
-			var p1 = L.point(20.4, 50.12);
-			var p2 = L.point(20.4, 50.12);
-			var p3 = L.point(20.5, 50.13);
+			const p1 = L.point(20.4, 50.12);
+			const p2 = L.point(20.4, 50.12);
+			const p3 = L.point(20.5, 50.13);
 
 			expect(p1.equals(p2)).to.be(true);
 			expect(p1.equals(p3)).to.be(false);
@@ -74,7 +74,7 @@ describe("Point", () => {
 
 	describe('#contains', () => {
 		it('returns true if the point is bigger in absolute dimensions than the passed one', () => {
-			var p1 = L.point(50, 30),
+			const p1 = L.point(50, 30),
 			    p2 = L.point(-40, 20),
 			    p3 = L.point(60, -20),
 			    p4 = L.point(-40, -40);
@@ -94,7 +94,7 @@ describe("Point", () => {
 
 	describe('L.point factory', () => {
 		it('leaves L.Point instances as is', () => {
-			var p = L.point(50, 30);
+			const p = L.point(50, 30);
 			expect(L.point(p)).to.be(p);
 		});
 

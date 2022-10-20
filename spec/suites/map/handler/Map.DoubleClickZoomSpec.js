@@ -1,5 +1,5 @@
 describe("Map.DoubleClickZoom", () => {
-	var container, map;
+	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -15,7 +15,7 @@ describe("Map.DoubleClickZoom", () => {
 	});
 
 	it("zooms in while dblclick", (done) => {
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([17.308687886770034, -17.578125000000004]);
@@ -27,7 +27,7 @@ describe("Map.DoubleClickZoom", () => {
 	});
 
 	it("zooms out while dblclick and holding shift", (done) => {
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([-33.137551192346145, 35.15625000000001]);
@@ -39,9 +39,9 @@ describe("Map.DoubleClickZoom", () => {
 	});
 
 	it("doubleClickZoom: 'center'", (done) => {
-		var doubleClickZoomBefore = map.options.doubleClickZoom;
+		const doubleClickZoomBefore = map.options.doubleClickZoom;
 		map.options.doubleClickZoom = 'center';
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);

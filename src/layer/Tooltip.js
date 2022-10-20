@@ -47,7 +47,7 @@ import {FeatureGroup} from './FeatureGroup';
 
 
 // @namespace Tooltip
-export var Tooltip = DivOverlay.extend({
+export const Tooltip = DivOverlay.extend({
 
 	// @section
 	// @aka Tooltip options
@@ -122,7 +122,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	getEvents() {
-		var events = DivOverlay.prototype.getEvents.call(this);
+		const events = DivOverlay.prototype.getEvents.call(this);
 
 		if (!this.options.permanent) {
 			events.preclick = this.close;
@@ -132,7 +132,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_initLayout() {
-		var prefix = 'leaflet-tooltip',
+		const prefix = 'leaflet-tooltip',
 		    className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
@@ -146,16 +146,15 @@ export var Tooltip = DivOverlay.extend({
 	_adjustPan() {},
 
 	_setPosition(pos) {
-		var subX, subY,
-		    map = this._map,
-		    container = this._container,
-		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
-		    tooltipPoint = map.layerPointToContainerPoint(pos),
-		    direction = this.options.direction,
-		    tooltipWidth = container.offsetWidth,
-		    tooltipHeight = container.offsetHeight,
-		    offset = toPoint(this.options.offset),
-		    anchor = this._getAnchor();
+		let subX, subY, direction = this.options.direction;
+		const map = this._map,
+		      container = this._container,
+		      centerPoint = map.latLngToContainerPoint(map.getCenter()),
+		      tooltipPoint = map.layerPointToContainerPoint(pos),
+		      tooltipWidth = container.offsetWidth,
+		      tooltipHeight = container.offsetHeight,
+		      offset = toPoint(this.options.offset),
+		      anchor = this._getAnchor();
 
 		if (direction === 'top') {
 			subX = tooltipWidth / 2;
@@ -193,7 +192,7 @@ export var Tooltip = DivOverlay.extend({
 	},
 
 	_updatePosition() {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		const pos = this._map.latLngToLayerPoint(this._latlng);
 		this._setPosition(pos);
 	},
 
@@ -207,7 +206,7 @@ export var Tooltip = DivOverlay.extend({
 
 	_animateZoom(e) {
 		if (this._map) {
-			var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+			const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 			this._setPosition(pos);
 		}
 	},
@@ -225,7 +224,7 @@ export var Tooltip = DivOverlay.extend({
 // @alternative
 // @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export var tooltip = function (options, source) {
+export const tooltip = function (options, source) {
 	return new Tooltip(options, source);
 };
 
@@ -303,7 +302,7 @@ Layer.include({
 
 	_initTooltipInteractions(remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
-		var onOff = remove ? 'off' : 'on',
+		const onOff = remove ? 'off' : 'on',
 		    events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
@@ -395,7 +394,7 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer(layer) {
-		var el = layer.getElement();
+		const el = layer.getElement();
 		if (el) {
 			DomEvent.on(el, 'focus', function () {
 				this._tooltip._source = layer;
@@ -406,7 +405,7 @@ Layer.include({
 	},
 
 	_setAriaDescribedByOnLayer(layer) {
-		var el = layer.getElement();
+		const el = layer.getElement();
 		if (el) {
 			el.setAttribute('aria-describedby', this._tooltip._container.id);
 		}
@@ -423,7 +422,7 @@ Layer.include({
 	},
 
 	_moveTooltip(e) {
-		var latlng = e.latlng, containerPoint, layerPoint;
+		let latlng = e.latlng, containerPoint, layerPoint;
 		if (this._tooltip.options.sticky && e.originalEvent) {
 			containerPoint = this._map.mouseEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);

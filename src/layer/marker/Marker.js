@@ -20,7 +20,7 @@ import {MarkerDrag} from './Marker.Drag';
  * ```
  */
 
-export var Marker = Layer.extend({
+export const Marker = Layer.extend({
 
 	// @section
 	// @aka Marker options
@@ -154,7 +154,7 @@ export var Marker = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Changes the marker position to the given point.
 	setLatLng(latlng) {
-		var oldLatLng = this._latlng;
+		const oldLatLng = this._latlng;
 		this._latlng = latLng(latlng);
 		this.update();
 
@@ -201,7 +201,7 @@ export var Marker = Layer.extend({
 	update() {
 
 		if (this._icon && this._map) {
-			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			const pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
 		}
 
@@ -209,11 +209,11 @@ export var Marker = Layer.extend({
 	},
 
 	_initIcon() {
-		var options = this.options,
+		const options = this.options,
 		    classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
-		var icon = options.icon.createIcon(this._icon),
-		    addIcon = false;
+		const icon = options.icon.createIcon(this._icon);
+		let addIcon = false;
 
 		// if we're not reusing the icon, remove the old one and init new one
 		if (icon !== this._icon) {
@@ -251,8 +251,8 @@ export var Marker = Layer.extend({
 			DomEvent.on(icon, 'focus', this._panOnFocus, this);
 		}
 
-		var newShadow = options.icon.createShadow(this._shadow),
-		    addShadow = false;
+		const newShadow = options.icon.createShadow(this._shadow);
+		let addShadow = false;
 
 		if (newShadow !== this._shadow) {
 			this._removeShadow();
@@ -328,7 +328,7 @@ export var Marker = Layer.extend({
 
 	_animateZoom(opt) {
 		if (this._map) {
-			var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+			const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
 			this._setPos(pos);
 		}
@@ -343,7 +343,7 @@ export var Marker = Layer.extend({
 		this.addInteractiveTarget(this._icon);
 
 		if (MarkerDrag) {
-			var draggable = this.options.draggable;
+			let draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
 				this.dragging.disable();
@@ -369,7 +369,7 @@ export var Marker = Layer.extend({
 	},
 
 	_updateOpacity() {
-		var opacity = this.options.opacity;
+		const opacity = this.options.opacity;
 
 		if (this._icon) {
 			DomUtil.setOpacity(this._icon, opacity);
@@ -389,12 +389,12 @@ export var Marker = Layer.extend({
 	},
 
 	_panOnFocus() {
-		var map = this._map;
+		const map = this._map;
 		if (!map) { return; }
 
-		var iconOpts = this.options.icon.options;
-		var size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
-		var anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
+		const iconOpts = this.options.icon.options;
+		const size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
+		const anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
 
 		map.panInside(this._latlng, {
 			paddingTopLeft: anchor,

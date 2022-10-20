@@ -31,7 +31,7 @@ import Browser from '../../core/Browser';
  *
  */
 
-export var Icon = Class.extend({
+export const Icon = Class.extend({
 
 	/* @section
 	 * @aka Icon options
@@ -102,7 +102,7 @@ export var Icon = Class.extend({
 	},
 
 	_createIcon(name, oldIcon) {
-		var src = this._getIconUrl(name);
+		const src = this._getIconUrl(name);
 
 		if (!src) {
 			if (name === 'icon') {
@@ -111,7 +111,7 @@ export var Icon = Class.extend({
 			return null;
 		}
 
-		var img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
+		const img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
 		this._setIconStyles(img, name);
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
@@ -122,14 +122,14 @@ export var Icon = Class.extend({
 	},
 
 	_setIconStyles(img, name) {
-		var options = this.options;
-		var sizeOption = options[`${name}Size`];
+		const options = this.options;
+		let sizeOption = options[`${name}Size`];
 
 		if (typeof sizeOption === 'number') {
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		var size = point(sizeOption),
+		const size = point(sizeOption),
 		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 

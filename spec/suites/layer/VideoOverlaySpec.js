@@ -1,6 +1,6 @@
 describe('VideoOverlay', () => {
-	var container, map;
-	var videoBounds = L.latLngBounds([[32, -130], [13, -100]]);
+	let container, map;
+	const videoBounds = L.latLngBounds([[32, -130], [13, -100]]);
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -16,12 +16,12 @@ describe('VideoOverlay', () => {
 	it('create VideoOverlay', function () {
 		this.timeout(10000); // This test takes longer than usual in IE
 
-		var videoUrls = [
+		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 		];
 
-		var videoOverlay = L.videoOverlay(videoUrls, videoBounds).addTo(map);
+		const videoOverlay = L.videoOverlay(videoUrls, videoBounds).addTo(map);
 
 		expect(map.hasLayer(videoOverlay)).to.be.ok();
 	});

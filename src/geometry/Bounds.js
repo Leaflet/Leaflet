@@ -28,9 +28,9 @@ import {Point, toPoint} from './Point';
 export function Bounds(a, b) {
 	if (!a) { return; }
 
-	var points = b ? [a, b] : a;
+	const points = b ? [a, b] : a;
 
-	for (var i = 0, len = points.length; i < len; i++) {
+	for (let i = 0, len = points.length; i < len; i++) {
 		this.extend(points[i]);
 	}
 }
@@ -43,7 +43,7 @@ Bounds.prototype = {
 	// @method extend(otherBounds: Bounds): this
 	// Extend the bounds to contain the given bounds
 	extend(obj) {
-		var min2, max2;
+		let min2, max2;
 		if (!obj) { return this; }
 
 		if (obj instanceof Point || typeof obj[0] === 'number' || 'x' in obj) {
@@ -116,7 +116,7 @@ Bounds.prototype = {
 	// @method contains(point: Point): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains(obj) {
-		var min, max;
+		let min, max;
 
 		if (typeof obj[0] === 'number' || obj instanceof Point) {
 			obj = toPoint(obj);
@@ -143,7 +143,7 @@ Bounds.prototype = {
 	intersects(bounds) { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
-		var min = this.min,
+		const min = this.min,
 		    max = this.max,
 		    min2 = bounds.min,
 		    max2 = bounds.max,
@@ -159,7 +159,7 @@ Bounds.prototype = {
 	overlaps(bounds) { // (Bounds) -> Boolean
 		bounds = toBounds(bounds);
 
-		var min = this.min,
+		const min = this.min,
 		    max = this.max,
 		    min2 = bounds.min,
 		    max2 = bounds.max,
@@ -181,7 +181,7 @@ Bounds.prototype = {
 	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
 	// Negative values will retract the bounds.
 	pad(bufferRatio) {
-		var min = this.min,
+		const min = this.min,
 		max = this.max,
 		heightBuffer = Math.abs(min.x - max.x) * bufferRatio,
 		widthBuffer = Math.abs(min.y - max.y) * bufferRatio;

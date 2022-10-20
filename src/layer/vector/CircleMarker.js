@@ -12,7 +12,7 @@ import {Bounds} from '../../geometry/Bounds';
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.
  */
 
-export var CircleMarker = Path.extend({
+export const CircleMarker = Path.extend({
 
 	// @section
 	// @aka CircleMarker options
@@ -33,7 +33,7 @@ export var CircleMarker = Path.extend({
 	// @method setLatLng(latLng: LatLng): this
 	// Sets the position of a circle marker to a new location.
 	setLatLng(latlng) {
-		var oldLatLng = this._latlng;
+		const oldLatLng = this._latlng;
 		this._latlng = toLatLng(latlng);
 		this.redraw();
 
@@ -62,7 +62,7 @@ export var CircleMarker = Path.extend({
 	},
 
 	setStyle(options) {
-		var radius = options && options.radius || this._radius;
+		const radius = options && options.radius || this._radius;
 		Path.prototype.setStyle.call(this, options);
 		this.setRadius(radius);
 		return this;
@@ -74,7 +74,7 @@ export var CircleMarker = Path.extend({
 	},
 
 	_updateBounds() {
-		var r = this._radius,
+		const r = this._radius,
 		    r2 = this._radiusY || r,
 		    w = this._clickTolerance(),
 		    p = [r + w, r2 + w];

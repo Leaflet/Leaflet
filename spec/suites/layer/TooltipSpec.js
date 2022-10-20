@@ -1,6 +1,6 @@
 describe('Tooltip', () => {
-	var container, map,
-	    center = [55.8, 37.6];
+	let container, map;
+	const center = [55.8, 37.6];
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -13,7 +13,7 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on marker mouseover and close on mouseout", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 
@@ -26,11 +26,11 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on marker focus and closes on blur", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 
-		var element = layer.getElement();
+		const element = layer.getElement();
 
 		happen.once(element, {type:'focus'});
 
@@ -41,11 +41,11 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on marker focus and closes on blur when first bound, then added to map", () => {
-		var layer = L.marker(center);
+		const layer = L.marker(center);
 
 		layer.bindTooltip('Tooltip').addTo(map);
 
-		var element = layer.getElement();
+		const element = layer.getElement();
 
 		happen.once(element, {type:'focus'});
 
@@ -56,13 +56,13 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on marker focus and closes on blur in layer group", () => {
-		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
-		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
-		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		const marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		const marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		const group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 		group.bindTooltip(layer => `Group tooltip: ${layer.options.description}`);
 
-		var element1 = marker1.getElement();
-		var element2 = marker2.getElement();
+		const element1 = marker1.getElement();
+		const element2 = marker2.getElement();
 
 		happen.once(element1, {type:'focus'});
 
@@ -82,41 +82,41 @@ describe('Tooltip', () => {
 	});
 
 	it("is mentioned in aria-describedby of a bound layer", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
-		var element = layer.getElement();
+		const element = layer.getElement();
 
 		happen.once(element, {type:'focus'});
 
-		var tooltip = layer.getTooltip();
+		const tooltip = layer.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
 	});
 
 	it("is mentioned in aria-describedby of a bound layer group", () => {
-		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
-		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
-		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		const marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		const marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		const group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 		group.bindTooltip(layer => `Group tooltip: ${layer.options.description}`);
 
-		var element = marker2.getElement();
+		const element = marker2.getElement();
 
 		happen.once(element, {type:'focus'});
 
-		var tooltip = group.getTooltip();
+		const tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
 
 	});
 
 	it("stays open on marker when permanent", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
 	it("can be added with bindTooltip before added to the map", () => {
-		var layer = L.marker(center);
+		const layer = L.marker(center);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
@@ -125,7 +125,7 @@ describe('Tooltip', () => {
 	});
 
 	it("is removed when removing marker", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
@@ -134,8 +134,8 @@ describe('Tooltip', () => {
 	});
 
 	it("is not interactive by default", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		layer._tooltip.on('click', spy);
@@ -144,8 +144,8 @@ describe('Tooltip', () => {
 	});
 
 	it("can be made interactive", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
 		layer._tooltip.on('click', spy);
@@ -154,8 +154,8 @@ describe('Tooltip', () => {
 	});
 
 	it("events are propagated to bound layer", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
@@ -164,20 +164,20 @@ describe('Tooltip', () => {
 	});
 
 	it("has class leaflet-interactive", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
 		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
 	});
 
 	it("has not class leaflet-interactive", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
 	});
 
 	it("can be forced on left direction", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A long tooltip that should be displayed on the left', {permanent: true, direction: 'left', interactive: true});
@@ -187,8 +187,8 @@ describe('Tooltip', () => {
 	});
 
 	it("honours offset on left direction", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A long tooltip that should be displayed on the left', {permanent: true, direction: 'left', interactive: true, offset: [-20, -20]});
@@ -200,8 +200,8 @@ describe('Tooltip', () => {
 	});
 
 	it("can be forced on top direction", () => {
-		var layer = L.circleMarker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.circleMarker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true});
@@ -211,8 +211,8 @@ describe('Tooltip', () => {
 	});
 
 	it("honours offset on top direction", () => {
-		var layer = L.circleMarker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.circleMarker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true, offset: [-20, -20]});
@@ -223,8 +223,8 @@ describe('Tooltip', () => {
 	});
 
 	it("can be forced on bottom direction", () => {
-		var layer = L.circleMarker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.circleMarker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true});
@@ -234,8 +234,8 @@ describe('Tooltip', () => {
 	});
 
 	it("honours offset on bottom direction", () => {
-		var layer = L.circleMarker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.circleMarker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true, offset: [20, 20]});
@@ -247,8 +247,8 @@ describe('Tooltip', () => {
 	});
 
 	it("can be forced on center", () => {
-		var layer = L.marker(center).addTo(map);
-		var spy = sinon.spy();
+		const layer = L.marker(center).addTo(map);
+		const spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the center', {permanent: true, direction: 'center', interactive: true});
@@ -258,13 +258,13 @@ describe('Tooltip', () => {
 	});
 
 	it("honours opacity option", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, opacity: 0.57});
 		expect(layer._tooltip._container.style.opacity).to.eql(0.57);
 	});
 
 	it("can change opacity with setOpacity", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(layer._tooltip._container.style.opacity).to.eql(0.9);
 		layer._tooltip.setOpacity(0.57);
@@ -272,9 +272,9 @@ describe('Tooltip', () => {
 	});
 
 	it("it should use a tooltip with a function as content with a FeatureGroup", () => {
-		var marker1 = L.marker([55.8, 37.6], {description: "I'm marker 1."});
-		var marker2 = L.marker([54.6, 38.2], {description: "I'm marker 2."});
-		var group = L.featureGroup([marker1, marker2]).addTo(map);
+		const marker1 = L.marker([55.8, 37.6], {description: "I'm marker 1."});
+		const marker2 = L.marker([54.6, 38.2], {description: "I'm marker 2."});
+		const group = L.featureGroup([marker1, marker2]).addTo(map);
 
 		group.bindTooltip(layer => layer.options.description);
 
@@ -290,7 +290,7 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on polygon mouseover and close on mouseout", () => {
-		var layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
+		const layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 
@@ -303,14 +303,14 @@ describe('Tooltip', () => {
 	});
 
 	it("stays open on polygon when permanent", () => {
-		var layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
+		const layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
 	it("can be added on polygon with bindTooltip before beind added to the map", () => {
-		var layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
+		const layer = L.polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
@@ -323,7 +323,7 @@ describe('Tooltip', () => {
 	});
 
 	it("opens on polyline mouseover and close on mouseout", () => {
-		var layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
+		const layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 
@@ -336,14 +336,14 @@ describe('Tooltip', () => {
 	});
 
 	it("stays open on polyline when permanent", () => {
-		var layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
+		const layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
 	it("can be added on polyline with bindTooltip before added to the map", () => {
-		var layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
+		const layer = L.polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
@@ -356,7 +356,7 @@ describe('Tooltip', () => {
 	});
 
 	it.skipIfNotTouch("is opened when tapping on touch", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
@@ -365,7 +365,7 @@ describe('Tooltip', () => {
 	});
 
 	it.skipIfNotTouch("is closed if not permanent when clicking on the map elsewhere on touch", () => {
-		var layer = L.marker(center).addTo(map);
+		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
 		happen.click(layer._icon);
@@ -384,8 +384,8 @@ describe('Tooltip', () => {
 	});
 
 	it("map.openTooltip considers interactive option", () => {
-		var spy = sinon.spy();
-		var tooltip = L.tooltip({interactive: true, permanent: true})
+		const spy = sinon.spy();
+		const tooltip = L.tooltip({interactive: true, permanent: true})
 		  .setContent('Tooltip')
 		  .on('click', spy);
 		map.openTooltip(tooltip, center);
@@ -395,45 +395,45 @@ describe('Tooltip', () => {
 	});
 
 	it("can call closeTooltip while not on the map", () => {
-		var layer = L.marker(center);
+		const layer = L.marker(center);
 		layer.bindTooltip('Tooltip', {interactive: true});
 		layer.closeTooltip();
 	});
 
 	it("opens a tooltip and follow the mouse (sticky)", () => {
-		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		const layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
 		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
-		var tooltip = layer.getTooltip();
+		const tooltip = layer.getTooltip();
 		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
 
 		happen.at('click', 120, 120);
-		var latlng = map.containerPointToLatLng([120, 120]);
+		const latlng = map.containerPointToLatLng([120, 120]);
 		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
 	});
 
 	it("opens a permanent tooltip and follow the mouse (sticky)", (done) => {
-		var layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
+		const layer = L.rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
 		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
-		var tooltip = layer.getTooltip();
+		const tooltip = layer.getTooltip();
 		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
 
-		var hand = new Hand({
+		const hand = new Hand({
 			timing: 'fastframe',
 			onStop() {
-				var latlng = map.containerPointToLatLng([120, 120]);
+				const latlng = map.containerPointToLatLng([120, 120]);
 				expect(tooltip.getLatLng().equals(latlng)).to.be(true);
 				done();
 			}
 		});
-		var toucher = hand.growFinger('mouse');
+		const toucher = hand.growFinger('mouse');
 		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
 	});
 
 	it("closes existent tooltip on new bindTooltip call", () => {
-		var layer = L.marker(center).addTo(map);
-		var eventSpy = sinon.spy(layer, "unbindTooltip");
+		const layer = L.marker(center).addTo(map);
+		const eventSpy = sinon.spy(layer, "unbindTooltip");
 		layer.bindTooltip('Tooltip1', {permanent: true});
-		var tooltip1 = layer.getTooltip();
+		const tooltip1 = layer.getTooltip();
 		layer.bindTooltip('Tooltip2').openTooltip();
 		layer.unbindTooltip.restore(); // unwrap the spy
 		expect(map.hasLayer(tooltip1)).to.not.be.ok();
@@ -443,8 +443,8 @@ describe('Tooltip', () => {
 	it("don't opens the tooltip on marker mouseover while dragging map", () => {
 		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
 		// the tooltip opened / closed.
-		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
-		var tooltip = layer.getTooltip();
+		const layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		const tooltip = layer.getTooltip();
 
 		// simulate map dragging
 		map.dragging.moving = function () {
@@ -464,8 +464,8 @@ describe('Tooltip', () => {
 	it("closes the tooltip on marker mouseout while dragging map and don't open it again", () => {
 		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
 		// the tooltip opened / closed.
-		var layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
-		var tooltip = layer.getTooltip();
+		const layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		const tooltip = layer.getTooltip();
 
 		// open tooltip before "dragging map"
 		happen.at('mouseover', 210, 195);
@@ -484,20 +484,20 @@ describe('Tooltip', () => {
 	});
 
 	it("opens tooltip with passed latlng position while initializing", () => {
-		var tooltip = new L.Tooltip(center)
+		const tooltip = new L.Tooltip(center)
 			.addTo(map);
 		expect(map.hasLayer(tooltip)).to.be(true);
 	});
 
 	it("opens tooltip with passed latlng and options position while initializing", () => {
-		var tooltip = new L.Tooltip(center, {className: 'testClass'})
+		const tooltip = new L.Tooltip(center, {className: 'testClass'})
 			.addTo(map);
 		expect(map.hasLayer(tooltip)).to.be(true);
 		expect(L.DomUtil.hasClass(tooltip.getElement(), 'testClass')).to.be(true);
 	});
 
 	it("adds tooltip with passed content in options while initializing", () => {
-		var tooltip = new L.Tooltip(center, {content: 'Test'})
+		const tooltip = new L.Tooltip(center, {content: 'Test'})
 			.addTo(map);
 		expect(map.hasLayer(tooltip)).to.be(true);
 		expect(tooltip.getContent()).to.be('Test');
@@ -505,18 +505,18 @@ describe('Tooltip', () => {
 
 	// Related to #8558
 	it("references the correct targets in tooltipopen event with multiple markers bound to same tooltip", () => {
-		var marker1 = L.marker(center, {testId: 'markerA'});
-		var marker2 = L.marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
+		const marker1 = L.marker(center, {testId: 'markerA'});
+		const marker2 = L.marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
 		map.addLayer(marker1);
 		map.addLayer(marker2);
 
-		var tooltip = L.tooltip().setContent('test');
+		const tooltip = L.tooltip().setContent('test');
 
-		var layer1 = marker1.bindTooltip(tooltip);
-		var layer2 = marker2.bindTooltip(tooltip);
+		const layer1 = marker1.bindTooltip(tooltip);
+		const layer2 = marker2.bindTooltip(tooltip);
 
-		var spy = sinon.spy();
-		var spy2 = sinon.spy();
+		const spy = sinon.spy();
+		const spy2 = sinon.spy();
 
 		layer1.on('tooltipopen', (e) => {
 			spy();

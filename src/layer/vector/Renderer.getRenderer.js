@@ -11,7 +11,7 @@ Map.include({
 		// @namespace Path; @option renderer: Renderer
 		// Use this specific instance of `Renderer` for this path. Takes
 		// precedence over the map's [default renderer](#map-renderer).
-		var renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
+		let renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
 
 		if (!renderer) {
 			renderer = this._renderer = this._createRenderer();
@@ -28,7 +28,7 @@ Map.include({
 			return false;
 		}
 
-		var renderer = this._paneRenderers[name];
+		let renderer = this._paneRenderers[name];
 		if (renderer === undefined) {
 			renderer = this._createRenderer({pane: name});
 			this._paneRenderers[name] = renderer;
