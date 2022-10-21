@@ -136,9 +136,6 @@ export const Map = Evented.extend({
 		this._initContainer(id);
 		this._initLayout();
 
-		// hack for https://github.com/Leaflet/Leaflet/issues/1980
-		this._onResize = this._onResize.bind(this);
-
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -1321,7 +1318,14 @@ export const Map = Evented.extend({
 			'mouseover mouseout mousemove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
-			onOff(window, 'resize', this._onResize, this);
+			if (!remove) {
+				if (!this._resizeObserver) {
+					this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
+				}
+				this._resizeObserver.observe(this._container);
+			} else {
+				this._resizeObserver.disconnect();
+			}
 		}
 
 		if (Browser.any3d && this.options.transform3DLimit) {
