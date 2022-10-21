@@ -24,13 +24,13 @@ import {getScale} from './DomUtil';
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
-		for (var type in types) {
+		for (const type in types) {
 			addOne(obj, type, types[type], fn);
 		}
 	} else {
 		types = Util.splitWords(types);
 
-		for (var i = 0, len = types.length; i < len; i++) {
+		for (let i = 0, len = types.length; i < len; i++) {
 			addOne(obj, types[i], fn, context);
 		}
 	}
@@ -38,7 +38,7 @@ export function on(obj, types, fn, context) {
 	return this;
 }
 
-var eventsKey = '_leaflet_events';
+const eventsKey = '_leaflet_events';
 
 // @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
 // Removes a previously added listener function.
@@ -63,7 +63,7 @@ export function off(obj, types, fn, context) {
 		delete obj[eventsKey];
 
 	} else if (types && typeof types === 'object') {
-		for (var type in types) {
+		for (const type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
 
@@ -71,11 +71,9 @@ export function off(obj, types, fn, context) {
 		types = Util.splitWords(types);
 
 		if (arguments.length === 2) {
-			batchRemove(obj, function (type) {
-				return Util.indexOf(types, type) !== -1;
-			});
+			batchRemove(obj, type => Util.indexOf(types, type) !== -1);
 		} else {
-			for (var i = 0, len = types.length; i < len; i++) {
+			for (let i = 0, len = types.length; i < len; i++) {
 				removeOne(obj, types[i], fn, context);
 			}
 		}
@@ -85,30 +83,30 @@ export function off(obj, types, fn, context) {
 }
 
 function batchRemove(obj, filterFn) {
-	for (var id in obj[eventsKey]) {
-		var type = id.split(/\d/)[0];
+	for (const id in obj[eventsKey]) {
+		const type = id.split(/\d/)[0];
 		if (!filterFn || filterFn(type)) {
 			removeOne(obj, type, null, null, id);
 		}
 	}
 }
 
-var mouseSubst = {
+const mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
 	wheel: !('onwheel' in window) && 'mousewheel'
 };
 
 function addOne(obj, type, fn, context) {
-	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
+	const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
-	var handler = function (e) {
+	let handler = function (e) {
 		return fn.call(context || obj, e || window.event);
 	};
 
-	var originalHandler = handler;
+	const originalHandler = handler;
 
 	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
@@ -136,7 +134,7 @@ function addOne(obj, type, fn, context) {
 		}
 
 	} else {
-		obj.attachEvent('on' + type, handler);
+		obj.attachEvent(`on${type}`, handler);
 	}
 
 	obj[eventsKey] = obj[eventsKey] || {};
@@ -144,8 +142,8 @@ function addOne(obj, type, fn, context) {
 }
 
 function removeOne(obj, type, fn, context, id) {
-	id = id || type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
-	var handler = obj[eventsKey] && obj[eventsKey][id];
+	id = id || type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
+	const handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
@@ -160,7 +158,7 @@ function removeOne(obj, type, fn, context, id) {
 		obj.removeEventListener(mouseSubst[type] || type, handler, false);
 
 	} else {
-		obj.detachEvent('on' + type, handler);
+		obj.detachEvent(`on${type}`, handler);
 	}
 
 	obj[eventsKey][id] = null;
@@ -233,8 +231,8 @@ export function getPropagationPath(ev) {
 		return ev.composedPath();
 	}
 
-	var path = [];
-	var el = ev.target;
+	const path = [];
+	let el = ev.target;
 
 	while (el) {
 		path.push(el);
@@ -252,7 +250,7 @@ export function getMousePosition(e, container) {
 		return new Point(e.clientX, e.clientY);
 	}
 
-	var scale = getScale(container),
+	const scale = getScale(container),
 	    offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
 
 	return new Point(
@@ -268,7 +266,7 @@ export function getMousePosition(e, container) {
 export function getWheelPxFactor() {
 	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
 	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-	var ratio = window.devicePixelRatio;
+	const ratio = window.devicePixelRatio;
 	return Browser.linux && Browser.chrome ? ratio :
 		Browser.mac ? ratio * 3 :
 		ratio > 0 ? 2 * ratio : 1;
@@ -280,8 +278,7 @@ export function getWheelPxFactor() {
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
-	return (Browser.edge) ? e.wheelDeltaY / 2 : // Don't trust window-geometry-based delta
-	       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
+	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
 	       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
 	       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
 	       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
@@ -294,7 +291,7 @@ export function getWheelDelta(e) {
 // check if element really left/entered the event target (for mouseenter/mouseleave)
 export function isExternalTarget(el, e) {
 
-	var related = e.relatedTarget;
+	let related = e.relatedTarget;
 
 	if (!related) { return true; }
 

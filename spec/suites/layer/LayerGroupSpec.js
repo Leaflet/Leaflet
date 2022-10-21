@@ -1,8 +1,8 @@
-﻿describe('LayerGroup', function () {
-	describe("#hasLayer", function () {
-		it("throws when called without proper argument", function () {
-			var lg = L.layerGroup();
-			var hasLayer = lg.hasLayer.bind(lg);
+﻿describe('LayerGroup', () => {
+	describe("#hasLayer", () => {
+		it("throws when called without proper argument", () => {
+			const lg = L.layerGroup();
+			const hasLayer = lg.hasLayer.bind(lg);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
 
 			expect(hasLayer).withArgs(undefined).to.throwException();
@@ -12,9 +12,9 @@
 		});
 	});
 
-	describe("#addLayer", function () {
-		it('adds a layer', function () {
-			var lg = L.layerGroup(),
+	describe("#addLayer", () => {
+		it('adds a layer', () => {
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
@@ -23,9 +23,9 @@
 		});
 	});
 
-	describe("#removeLayer", function () {
-		it('removes a layer', function () {
-			var lg = L.layerGroup(),
+	describe("#removeLayer", () => {
+		it('removes a layer', () => {
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -35,9 +35,9 @@
 		});
 	});
 
-	describe("#clearLayers", function () {
-		it('removes all layers', function () {
-			var lg = L.layerGroup(),
+	describe("#clearLayers", () => {
+		it('removes all layers', () => {
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -47,9 +47,9 @@
 		});
 	});
 
-	describe("#getLayers", function () {
-		it('gets all layers', function () {
-			var lg = L.layerGroup(),
+	describe("#getLayers", () => {
+		it('gets all layers', () => {
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
@@ -58,9 +58,9 @@
 		});
 	});
 
-	describe("#eachLayer", function () {
-		it('iterates over all layers', function () {
-			var lg = L.layerGroup(),
+	describe("#eachLayer", () => {
+		it('iterates over all layers', () => {
+			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]),
 			    ctx = {foo: 'bar'};
 
@@ -73,9 +73,9 @@
 		});
 	});
 
-	describe("#toGeoJSON", function () {
-		it('should return valid GeoJSON for a layer with a FeatureCollection', function () {
-			var geoJSON = {
+	describe("#toGeoJSON", () => {
+		it('should return valid GeoJSON for a layer with a FeatureCollection', () => {
+			const geoJSON = {
 				"type":"FeatureCollection",
 				"features":[
 					{
@@ -89,22 +89,22 @@
 				]
 			};
 
-			var layerGroup = L.layerGroup();
-			var layer = L.geoJSON(geoJSON);
+			const layerGroup = L.layerGroup();
+			const layer = L.geoJSON(geoJSON);
 			layerGroup.addLayer(layer);
 
 			L.geoJson(layerGroup.toGeoJSON());
 		});
 	});
 
-	describe("#invoke", function () {
-		it('should invoke `setOpacity` method on every layer', function () {
-			var layers = [
+	describe("#invoke", () => {
+		it('should invoke `setOpacity` method on every layer', () => {
+			const layers = [
 				L.marker([0, 0]),
 				L.marker([1, 1])
 			];
-			var lg = L.layerGroup(layers);
-			var opacity = 0.5;
+			const lg = L.layerGroup(layers);
+			const opacity = 0.5;
 
 			expect(layers[0].options.opacity).to.not.eql(opacity);
 			lg.invoke('setOpacity', opacity);

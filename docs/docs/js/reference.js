@@ -1,12 +1,12 @@
 if (document.body.className.indexOf('api-page') !== -1) {
 
-	var elems = document.querySelectorAll('h2, h3, h4, tr');
+	let elems = document.querySelectorAll('h2, h3, h4, tr');
 
-	for (var i = 0, len = elems.length; i < len; i++) {
-		var el = elems[i];
+	for (let i = 0, len = elems.length; i < len; i++) {
+		const el = elems[i];
 
 		if (el.id) {
-			var anchor = document.createElement('a');
+			const anchor = document.createElement('a');
 			anchor.setAttribute('data-anchor', el.id);
 			if (!el.children.length) {
 				// For headers, insert the anchor before.
@@ -17,7 +17,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 				el.onclick = function () {
 					return function (ev) {
 						if (ev.offsetX < 0) {
-							window.location.hash = '#' + ev.target.id;
+							window.location.hash = `#${ev.target.id}`;
 						}
 					};
 				}(el.id);
@@ -30,7 +30,7 @@ if (document.body.className.indexOf('api-page') !== -1) {
 				el.parentNode.onclick = function () {
 					return function (ev) {
 						if (ev.offsetX < 0) {
-							window.location.hash = '#' + ev.target.parentNode.id;
+							window.location.hash = `#${ev.target.parentNode.id}`;
 						}
 					};
 				}(el.id);
@@ -39,8 +39,8 @@ if (document.body.className.indexOf('api-page') !== -1) {
 	}
 
 	elems = document.querySelectorAll('div.accordion');
-	for (i = 0, len = elems.length; i < len; i++) {
-		el = elems[i];
+	for (let i = 0, len = elems.length; i < len; i++) {
+		const el = elems[i];
 
 		el.querySelector('label').addEventListener('click', function (c) {
 			return function () {
@@ -58,27 +58,27 @@ if (document.body.className.indexOf('api-page') !== -1) {
 
 
 	// open accordion of anchor if collapsed
-	var urlAnchor = location.hash;
+	const urlAnchor = location.hash;
 	if (urlAnchor) {
-		var fnc = function () {
+		const fnc = function () {
 			// timeout because the page is not finished loading with collapsed accordions
-			setTimeout(function () {
+			setTimeout(() => {
 				// .closest('.accordion') would be a alternative but is not working in IE
-				var getParentAccordion = function (el) {
-					while (el.parentNode && (' ' + el.parentNode.className + ' ').indexOf(' accordion ') === -1) {
+				const getParentAccordion = function (el) {
+					while (el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') === -1) {
 						el = el.parentNode;
 					}
-					return el.parentNode && (' ' + el.parentNode.className + ' ').indexOf(' accordion ') > -1 ? el.parentNode : null;
+					return el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') > -1 ? el.parentNode : null;
 				};
 
-				var elm = document.getElementById(urlAnchor.substring(1));
+				const elm = document.getElementById(urlAnchor.substring(1));
 				if (elm) {
-					var parent = getParentAccordion(elm);
+					const parent = getParentAccordion(elm);
 					if (parent) {
 						parent.className = 'accordion expanded';
 					}
 					// For Firefox: Accordion have to be expanded before scrolling
-					setTimeout(function () {
+					setTimeout(() => {
 						elm.scrollIntoView();
 					}, 10);
 				}

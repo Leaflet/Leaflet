@@ -6,7 +6,7 @@ import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 
-export var create = svgCreate;
+export const create = svgCreate;
 
 /*
  * @class SVG
@@ -36,9 +36,9 @@ export var create = svgCreate;
  * ```
  */
 
-export var SVG = Renderer.extend({
+export const SVG = Renderer.extend({
 
-	_initContainer: function () {
+	_initContainer() {
 		this._container = create('svg');
 
 		// makes it possible to click through svg root; we'll reset it back in individual paths
@@ -48,7 +48,7 @@ export var SVG = Renderer.extend({
 		this._container.appendChild(this._rootGroup);
 	},
 
-	_destroyContainer: function () {
+	_destroyContainer() {
 		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
 		delete this._container;
@@ -56,12 +56,12 @@ export var SVG = Renderer.extend({
 		delete this._svgSize;
 	},
 
-	_update: function () {
+	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		Renderer.prototype._update.call(this);
 
-		var b = this._bounds,
+		const b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
 
@@ -81,8 +81,8 @@ export var SVG = Renderer.extend({
 
 	// methods below are called by vector layers implementations
 
-	_initPath: function (layer) {
-		var path = layer._path = create('path');
+	_initPath(layer) {
+		const path = layer._path = create('path');
 
 		// @namespace Path
 		// @option className: String = null
@@ -99,25 +99,25 @@ export var SVG = Renderer.extend({
 		this._layers[stamp(layer)] = layer;
 	},
 
-	_addPath: function (layer) {
+	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	},
 
-	_removePath: function (layer) {
+	_removePath(layer) {
 		DomUtil.remove(layer._path);
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[stamp(layer)];
 	},
 
-	_updatePath: function (layer) {
+	_updatePath(layer) {
 		layer._project();
 		layer._update();
 	},
 
-	_updateStyle: function (layer) {
-		var path = layer._path,
+	_updateStyle(layer) {
+		const path = layer._path,
 		    options = layer.options;
 
 		if (!path) { return; }
@@ -153,35 +153,35 @@ export var SVG = Renderer.extend({
 		}
 	},
 
-	_updatePoly: function (layer, closed) {
+	_updatePoly(layer, closed) {
 		this._setPath(layer, pointsToPath(layer._parts, closed));
 	},
 
-	_updateCircle: function (layer) {
-		var p = layer._point,
+	_updateCircle(layer) {
+		const p = layer._point,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
-		    arc = 'a' + r + ',' + r2 + ' 0 1,0 ';
+		    arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
-		var d = layer._empty() ? 'M0 0' :
-			'M' + (p.x - r) + ',' + p.y +
-			arc + (r * 2) + ',0 ' +
-			arc + (-r * 2) + ',0 ';
+		const d = layer._empty() ? 'M0 0' :
+			`M${p.x - r},${p.y
+			}${arc}${r * 2},0 ${
+				arc}${-r * 2},0 `;
 
 		this._setPath(layer, d);
 	},
 
-	_setPath: function (layer, path) {
+	_setPath(layer, path) {
 		layer._path.setAttribute('d', path);
 	},
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
-	_bringToFront: function (layer) {
+	_bringToFront(layer) {
 		DomUtil.toFront(layer._path);
 	},
 
-	_bringToBack: function (layer) {
+	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
 });

@@ -23,9 +23,9 @@ import {LatLngBounds} from '../geo/LatLngBounds';
  * ```
  */
 
-export var FeatureGroup = LayerGroup.extend({
+export const FeatureGroup = LayerGroup.extend({
 
-	addLayer: function (layer) {
+	addLayer(layer) {
 		if (this.hasLayer(layer)) {
 			return this;
 		}
@@ -36,10 +36,10 @@ export var FeatureGroup = LayerGroup.extend({
 
 		// @event layeradd: LayerEvent
 		// Fired when a layer is added to this `FeatureGroup`
-		return this.fire('layeradd', {layer: layer});
+		return this.fire('layeradd', {layer});
 	},
 
-	removeLayer: function (layer) {
+	removeLayer(layer) {
 		if (!this.hasLayer(layer)) {
 			return this;
 		}
@@ -53,34 +53,34 @@ export var FeatureGroup = LayerGroup.extend({
 
 		// @event layerremove: LayerEvent
 		// Fired when a layer is removed from this `FeatureGroup`
-		return this.fire('layerremove', {layer: layer});
+		return this.fire('layerremove', {layer});
 	},
 
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
-	setStyle: function (style) {
+	setStyle(style) {
 		return this.invoke('setStyle', style);
 	},
 
 	// @method bringToFront(): this
 	// Brings the layer group to the top of all other layers
-	bringToFront: function () {
+	bringToFront() {
 		return this.invoke('bringToFront');
 	},
 
 	// @method bringToBack(): this
 	// Brings the layer group to the back of all other layers
-	bringToBack: function () {
+	bringToBack() {
 		return this.invoke('bringToBack');
 	},
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
-	getBounds: function () {
-		var bounds = new LatLngBounds();
+	getBounds() {
+		const bounds = new LatLngBounds();
 
-		for (var id in this._layers) {
-			var layer = this._layers[id];
+		for (const id in this._layers) {
+			const layer = this._layers[id];
 			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		}
 		return bounds;
@@ -89,6 +89,6 @@ export var FeatureGroup = LayerGroup.extend({
 
 // @factory L.featureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
-export var featureGroup = function (layers, options) {
+export const featureGroup = function (layers, options) {
 	return new FeatureGroup(layers, options);
 };

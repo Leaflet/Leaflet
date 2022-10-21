@@ -21,7 +21,7 @@ import {empty} from '../../dom/DomUtil';
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
  */
 
-export var DivIcon = Icon.extend({
+export const DivIcon = Icon.extend({
 	options: {
 		// @section
 		// @aka DivIcon options
@@ -42,8 +42,8 @@ export var DivIcon = Icon.extend({
 		className: 'leaflet-div-icon'
 	},
 
-	createIcon: function (oldIcon) {
-		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
+	createIcon(oldIcon) {
+		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
 		if (options.html instanceof Element) {
@@ -54,15 +54,15 @@ export var DivIcon = Icon.extend({
 		}
 
 		if (options.bgPos) {
-			var bgPos = point(options.bgPos);
-			div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
+			const bgPos = point(options.bgPos);
+			div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
 		}
 		this._setIconStyles(div, 'icon');
 
 		return div;
 	},
 
-	createShadow: function () {
+	createShadow() {
 		return null;
 	}
 });

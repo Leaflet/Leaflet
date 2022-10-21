@@ -21,9 +21,9 @@ import {Point} from '../geometry/Point';
  * ```
  */
 
-var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
+const START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 
-export var Draggable = Evented.extend({
+export const Draggable = Evented.extend({
 
 	options: {
 		// @section
@@ -36,7 +36,7 @@ export var Draggable = Evented.extend({
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline, options) {
+	initialize(element, dragStartTarget, preventOutline, options) {
 		Util.setOptions(this, options);
 
 		this._element = element;
@@ -46,7 +46,7 @@ export var Draggable = Evented.extend({
 
 	// @method enable()
 	// Enables the dragging ability
-	enable: function () {
+	enable() {
 		if (this._enabled) { return; }
 
 		DomEvent.on(this._dragStartTarget, START, this._onDown, this);
@@ -56,7 +56,7 @@ export var Draggable = Evented.extend({
 
 	// @method disable()
 	// Disables the dragging ability
-	disable: function () {
+	disable() {
 		if (!this._enabled) { return; }
 
 		// If we're currently dragging this draggable,
@@ -71,7 +71,7 @@ export var Draggable = Evented.extend({
 		this._moved = false;
 	},
 
-	_onDown: function (e) {
+	_onDown(e) {
 		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (!this._enabled) { return; }
@@ -104,7 +104,7 @@ export var Draggable = Evented.extend({
 		// Fired when a drag is about to start.
 		this.fire('down');
 
-		var first = e.touches ? e.touches[0] : e,
+		const first = e.touches ? e.touches[0] : e,
 		    sizedParent = DomUtil.getSizedParentNode(this._element);
 
 		this._startPoint = new Point(first.clientX, first.clientY);
@@ -113,12 +113,12 @@ export var Draggable = Evented.extend({
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
 
-		var mouseevent = e.type === 'mousedown';
+		const mouseevent = e.type === 'mousedown';
 		DomEvent.on(document, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
 		DomEvent.on(document, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
 	},
 
-	_onMove: function (e) {
+	_onMove(e) {
 		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (!this._enabled) { return; }
@@ -128,7 +128,7 @@ export var Draggable = Evented.extend({
 			return;
 		}
 
-		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+		const first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
@@ -167,8 +167,8 @@ export var Draggable = Evented.extend({
 		this._updatePosition();
 	},
 
-	_updatePosition: function () {
-		var e = {originalEvent: this._lastEvent};
+	_updatePosition() {
+		const e = {originalEvent: this._lastEvent};
 
 		// @event predrag: Event
 		// Fired continuously during dragging *before* each corresponding
@@ -181,14 +181,14 @@ export var Draggable = Evented.extend({
 		this.fire('drag', e);
 	},
 
-	_onUp: function () {
+	_onUp() {
 		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (!this._enabled) { return; }
 		this.finishDrag();
 	},
 
-	finishDrag: function (noInertia) {
+	finishDrag(noInertia) {
 		DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
@@ -207,7 +207,7 @@ export var Draggable = Evented.extend({
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
-				noInertia: noInertia,
+				noInertia,
 				distance: this._newPos.distanceTo(this._startPos)
 			});
 		}

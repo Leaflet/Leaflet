@@ -17,7 +17,7 @@ import Browser from '../core/Browser';
 
 // @property TRANSFORM: String
 // Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
-export var TRANSFORM = testProp(
+export const TRANSFORM = testProp(
 	['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
 // webkitTransition comes first because some browser versions that drop vendor prefix don't do
@@ -25,13 +25,13 @@ export var TRANSFORM = testProp(
 
 // @property TRANSITION: String
 // Vendor-prefixed transition style name.
-export var TRANSITION = testProp(
+export const TRANSITION = testProp(
 	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
 // @property TRANSITION_END: String
 // Vendor-prefixed transitionend event name.
-export var TRANSITION_END =
-	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
+export const TRANSITION_END =
+	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? `${TRANSITION}End` : 'transitionend';
 
 
 // @function get(id: String|HTMLElement): HTMLElement
@@ -45,10 +45,10 @@ export function get(id) {
 // Returns the value for a certain style attribute on an element,
 // including computed values or values set through CSS.
 export function getStyle(el, style) {
-	var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
+	let value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
 
 	if ((!value || value === 'auto') && document.defaultView) {
-		var css = document.defaultView.getComputedStyle(el, null);
+		const css = document.defaultView.getComputedStyle(el, null);
 		value = css ? css[style] : null;
 	}
 	return value === 'auto' ? null : value;
@@ -57,7 +57,7 @@ export function getStyle(el, style) {
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
 export function create(tagName, className, container) {
-	var el = document.createElement(tagName);
+	const el = document.createElement(tagName);
 	el.className = className || '';
 
 	if (container) {
@@ -69,7 +69,7 @@ export function create(tagName, className, container) {
 // @function remove(el: HTMLElement)
 // Removes `el` from its parent element
 export function remove(el) {
-	var parent = el.parentNode;
+	const parent = el.parentNode;
 	if (parent) {
 		parent.removeChild(el);
 	}
@@ -86,7 +86,7 @@ export function empty(el) {
 // @function toFront(el: HTMLElement)
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
-	var parent = el.parentNode;
+	const parent = el.parentNode;
 	if (parent && parent.lastChild !== el) {
 		parent.appendChild(el);
 	}
@@ -95,7 +95,7 @@ export function toFront(el) {
 // @function toBack(el: HTMLElement)
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
-	var parent = el.parentNode;
+	const parent = el.parentNode;
 	if (parent && parent.firstChild !== el) {
 		parent.insertBefore(el, parent.firstChild);
 	}
@@ -107,21 +107,21 @@ export function hasClass(el, name) {
 	if (el.classList !== undefined) {
 		return el.classList.contains(name);
 	}
-	var className = getClass(el);
-	return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
+	const className = getClass(el);
+	return className.length > 0 && new RegExp(`(^|\\s)${name}(\\s|$)`).test(className);
 }
 
 // @function addClass(el: HTMLElement, name: String)
 // Adds `name` to the element's class attribute.
 export function addClass(el, name) {
 	if (el.classList !== undefined) {
-		var classes = Util.splitWords(name);
-		for (var i = 0, len = classes.length; i < len; i++) {
+		const classes = Util.splitWords(name);
+		for (let i = 0, len = classes.length; i < len; i++) {
 			el.classList.add(classes[i]);
 		}
 	} else if (!hasClass(el, name)) {
-		var className = getClass(el);
-		setClass(el, (className ? className + ' ' : '') + name);
+		const className = getClass(el);
+		setClass(el, (className ? `${className} ` : '') + name);
 	}
 }
 
@@ -131,7 +131,7 @@ export function removeClass(el, name) {
 	if (el.classList !== undefined) {
 		el.classList.remove(name);
 	} else {
-		setClass(el, Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+		setClass(el, Util.trim((` ${getClass(el)} `).replace(` ${name} `, ' ')));
 	}
 }
 
@@ -169,8 +169,8 @@ export function setOpacity(el, value) {
 }
 
 function _setOpacityIE(el, value) {
-	var filter = false,
-	    filterName = 'DXImageTransform.Microsoft.Alpha';
+	let filter = false;
+	const filterName = 'DXImageTransform.Microsoft.Alpha';
 
 	// filters collection throws an error if we try to retrieve a filter that doesn't exist
 	try {
@@ -187,7 +187,7 @@ function _setOpacityIE(el, value) {
 		filter.Enabled = (value !== 100);
 		filter.Opacity = value;
 	} else {
-		el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
+		el.style.filter += ` progid:${filterName}(opacity=${value})`;
 	}
 }
 
@@ -196,9 +196,9 @@ function _setOpacityIE(el, value) {
 // that is a valid style name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
 export function testProp(props) {
-	var style = document.documentElement.style;
+	const style = document.documentElement.style;
 
-	for (var i = 0; i < props.length; i++) {
+	for (let i = 0; i < props.length; i++) {
 		if (props[i] in style) {
 			return props[i];
 		}
@@ -211,11 +211,9 @@ export function testProp(props) {
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
 export function setTransform(el, offset, scale) {
-	var pos = offset || new Point(0, 0);
+	const pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] =
-		'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)' +
-		(scale ? ' scale(' + scale + ')' : '');
+	el.style[TRANSFORM] = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
 
 // @function setPosition(el: HTMLElement, position: Point)
@@ -231,8 +229,8 @@ export function setPosition(el, point) {
 	if (Browser.any3d) {
 		setTransform(el, point);
 	} else {
-		el.style.left = point.x + 'px';
-		el.style.top = point.y + 'px';
+		el.style.left = `${point.x}px`;
+		el.style.top = `${point.y}px`;
 	}
 }
 
@@ -253,9 +251,9 @@ export function getPosition(el) {
 
 // @function enableTextSelection()
 // Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export var disableTextSelection;
-export var enableTextSelection;
-var _userSelect;
+export let disableTextSelection;
+export let enableTextSelection;
+let _userSelect;
 if ('onselectstart' in document) {
 	disableTextSelection = function () {
 		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
@@ -264,12 +262,12 @@ if ('onselectstart' in document) {
 		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
 	};
 } else {
-	var userSelectProperty = testProp(
+	const userSelectProperty = testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
 	disableTextSelection = function () {
 		if (userSelectProperty) {
-			var style = document.documentElement.style;
+			const style = document.documentElement.style;
 			_userSelect = style[userSelectProperty];
 			style[userSelectProperty] = 'none';
 		}
@@ -295,7 +293,7 @@ export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
 
-var _outlineElement, _outlineStyle;
+let _outlineElement, _outlineStyle;
 // @function preventOutline(el: HTMLElement)
 // Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
 // of the element `el` invisible. Used internally by Leaflet to prevent
@@ -337,7 +335,7 @@ export function getSizedParentNode(element) {
 // Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
 // and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
 export function getScale(element) {
-	var rect = element.getBoundingClientRect(); // Read-only in old browsers.
+	const rect = element.getBoundingClientRect(); // Read-only in old browsers.
 
 	return {
 		x: rect.width / element.offsetWidth || 1,

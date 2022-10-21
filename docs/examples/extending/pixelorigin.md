@@ -26,22 +26,22 @@ title: Grid coordinates
 
 <script type='text/javascript'>
 
-	var trd = [63.41, 10.41];
+	const trd = [63.41, 10.41];
 
-	var map = L.map('map', {
+	const map = L.map('map', {
 		center: [40, 0],
 		zoom: 1
 	});
 
-	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
 	}).addTo(map);
 
-	var marker = L.marker(trd).addTo(map);
+	const marker = L.marker(trd).addTo(map);
 
-	var pane = map.getPane('markerPane');
+	const pane = map.getPane('markerPane');
 
-	var paneCorner = document.createElement('div');
+	const paneCorner = document.createElement('div');
 	paneCorner.style.width = '12px';
 	paneCorner.style.height = '12px';
 	paneCorner.style.borderTop = '2px red solid';
@@ -51,7 +51,7 @@ title: Grid coordinates
 
 	marker._icon.style.border = '1px solid blue';
 
-	var crsMarker = L.marker(map.unproject([0, 0]), {
+	const crsMarker = L.marker(map.unproject([0, 0]), {
 		icon: L.divIcon({
 			className: 'crsMarker',
 			iconAnchor: [0, 0]
@@ -59,21 +59,21 @@ title: Grid coordinates
 	}).addTo(map);
 
 
-	var markerOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'skyblue'}).addTo(map);
-	var iconOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'blue'}).addTo(map);
+	const markerOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'skyblue'}).addTo(map);
+	const iconOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'blue'}).addTo(map);
 	
 	function info() {
-		var pixelOrigin = map.getPixelOrigin();
-		var markerPixelCoords = map.project(trd, map.getZoom());
-		var markerAnchor = marker.options.icon.options.iconAnchor;
-		var markerOffset = marker._icon._leaflet_pos;
+		const pixelOrigin = map.getPixelOrigin();
+		const markerPixelCoords = map.project(trd, map.getZoom());
+		const markerAnchor = marker.options.icon.options.iconAnchor;
+		const markerOffset = marker._icon._leaflet_pos;
 
 		document.getElementById('info').innerHTML =
 			'<div style="color: green">CRS origin: 0,0</div>' +
-			'<div style="color: red">px origin: &Delta;' + pixelOrigin.x + ',' + pixelOrigin.y + '</div>' +
-			'<div style="color: blue">marker px coords:' + markerPixelCoords.x.toFixed(2) + ',' + markerPixelCoords.y.toFixed(2) + '</div>' +
-			'<div style="color: blue">marker anchor: &Delta;' + markerAnchor[0] + ',' + markerAnchor[1] + '</div>' +
-			'<div style="color: skyblue">marker pane offset: &Delta;' + markerOffset.x + ',' + markerOffset.y + '</div>';
+			`<div style="color: red">px origin: &Delta;${pixelOrigin.x},${pixelOrigin.y}</div>` +
+			`<div style="color: blue">marker px coords:${markerPixelCoords.x.toFixed(2)},${markerPixelCoords.y.toFixed(2)}</div>` +
+			`<div style="color: blue">marker anchor: &Delta;${markerAnchor[0]},${markerAnchor[1]}</div>` +
+			`<div style="color: skyblue">marker pane offset: &Delta;${markerOffset.x},${markerOffset.y}</div>`;
 
 		markerOffsetLine.setLatLngs([map.unproject(pixelOrigin), map.unproject(pixelOrigin.add(markerOffset))]);
 		iconOffsetLine.setLatLngs([map.unproject(pixelOrigin.add(markerOffset)), map.unproject(pixelOrigin.add(markerOffset).subtract(markerAnchor))]);

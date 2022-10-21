@@ -31,7 +31,7 @@ export function Point(x, y, round) {
 	this.y = (round ? Math.round(y) : y);
 }
 
-var trunc = Math.trunc || function (v) {
+const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
 };
 
@@ -39,18 +39,18 @@ Point.prototype = {
 
 	// @method clone(): Point
 	// Returns a copy of the current point.
-	clone: function () {
+	clone() {
 		return new Point(this.x, this.y);
 	},
 
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
-	add: function (point) {
+	add(point) {
 		// non-destructive, returns a new point
 		return this.clone()._add(toPoint(point));
 	},
 
-	_add: function (point) {
+	_add(point) {
 		// destructive, used directly for performance in situations where it's safe to modify existing point
 		this.x += point.x;
 		this.y += point.y;
@@ -59,11 +59,11 @@ Point.prototype = {
 
 	// @method subtract(otherPoint: Point): Point
 	// Returns the result of subtraction of the given point from the current.
-	subtract: function (point) {
+	subtract(point) {
 		return this.clone()._subtract(toPoint(point));
 	},
 
-	_subtract: function (point) {
+	_subtract(point) {
 		this.x -= point.x;
 		this.y -= point.y;
 		return this;
@@ -71,11 +71,11 @@ Point.prototype = {
 
 	// @method divideBy(num: Number): Point
 	// Returns the result of division of the current point by the given number.
-	divideBy: function (num) {
+	divideBy(num) {
 		return this.clone()._divideBy(num);
 	},
 
-	_divideBy: function (num) {
+	_divideBy(num) {
 		this.x /= num;
 		this.y /= num;
 		return this;
@@ -83,11 +83,11 @@ Point.prototype = {
 
 	// @method multiplyBy(num: Number): Point
 	// Returns the result of multiplication of the current point by the given number.
-	multiplyBy: function (num) {
+	multiplyBy(num) {
 		return this.clone()._multiplyBy(num);
 	},
 
-	_multiplyBy: function (num) {
+	_multiplyBy(num) {
 		this.x *= num;
 		this.y *= num;
 		return this;
@@ -98,24 +98,24 @@ Point.prototype = {
 	// `scale`. In linear algebra terms, multiply the point by the
 	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
 	// defined by `scale`.
-	scaleBy: function (point) {
+	scaleBy(point) {
 		return new Point(this.x * point.x, this.y * point.y);
 	},
 
 	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
-	unscaleBy: function (point) {
+	unscaleBy(point) {
 		return new Point(this.x / point.x, this.y / point.y);
 	},
 
 	// @method round(): Point
 	// Returns a copy of the current point with rounded coordinates.
-	round: function () {
+	round() {
 		return this.clone()._round();
 	},
 
-	_round: function () {
+	_round() {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
 		return this;
@@ -123,11 +123,11 @@ Point.prototype = {
 
 	// @method floor(): Point
 	// Returns a copy of the current point with floored coordinates (rounded down).
-	floor: function () {
+	floor() {
 		return this.clone()._floor();
 	},
 
-	_floor: function () {
+	_floor() {
 		this.x = Math.floor(this.x);
 		this.y = Math.floor(this.y);
 		return this;
@@ -135,11 +135,11 @@ Point.prototype = {
 
 	// @method ceil(): Point
 	// Returns a copy of the current point with ceiled coordinates (rounded up).
-	ceil: function () {
+	ceil() {
 		return this.clone()._ceil();
 	},
 
-	_ceil: function () {
+	_ceil() {
 		this.x = Math.ceil(this.x);
 		this.y = Math.ceil(this.y);
 		return this;
@@ -147,11 +147,11 @@ Point.prototype = {
 
 	// @method trunc(): Point
 	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
-	trunc: function () {
+	trunc() {
 		return this.clone()._trunc();
 	},
 
-	_trunc: function () {
+	_trunc() {
 		this.x = trunc(this.x);
 		this.y = trunc(this.y);
 		return this;
@@ -159,10 +159,10 @@ Point.prototype = {
 
 	// @method distanceTo(otherPoint: Point): Number
 	// Returns the cartesian distance between the current and the given points.
-	distanceTo: function (point) {
+	distanceTo(point) {
 		point = toPoint(point);
 
-		var x = point.x - this.x,
+		const x = point.x - this.x,
 		    y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);
@@ -170,7 +170,7 @@ Point.prototype = {
 
 	// @method equals(otherPoint: Point): Boolean
 	// Returns `true` if the given point has the same coordinates.
-	equals: function (point) {
+	equals(point) {
 		point = toPoint(point);
 
 		return point.x === this.x &&
@@ -179,7 +179,7 @@ Point.prototype = {
 
 	// @method contains(otherPoint: Point): Boolean
 	// Returns `true` if both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).
-	contains: function (point) {
+	contains(point) {
 		point = toPoint(point);
 
 		return Math.abs(point.x) <= Math.abs(this.x) &&
@@ -188,10 +188,8 @@ Point.prototype = {
 
 	// @method toString(): String
 	// Returns a string representation of the point for debugging purposes.
-	toString: function () {
-		return 'Point(' +
-		        formatNum(this.x) + ', ' +
-		        formatNum(this.y) + ')';
+	toString() {
+		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
 	}
 };
 

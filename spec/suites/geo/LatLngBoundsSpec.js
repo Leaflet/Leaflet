@@ -1,16 +1,16 @@
-describe('LatLngBounds', function () {
-	var a, c;
+describe('LatLngBounds', () => {
+	let a, c;
 
-	beforeEach(function () {
+	beforeEach(() => {
 		a = L.latLngBounds(
 			L.latLng(14, 12),
 			L.latLng(30, 40));
 		c = L.latLngBounds();
 	});
 
-	describe('constructor', function () {
-		it('instantiates either passing two latlngs or an array of latlngs', function () {
-			var b = L.latLngBounds([
+	describe('constructor', () => {
+		it('instantiates either passing two latlngs or an array of latlngs', () => {
+			const b = L.latLngBounds([
 				L.latLng(14, 12),
 				L.latLng(30, 40)
 			]);
@@ -18,169 +18,169 @@ describe('LatLngBounds', function () {
 			expect(b.getNorthWest()).to.eql(L.latLng(30, 12));
 		});
 
-		it('returns an empty bounds when not argument is given', function () {
-			var bounds = L.latLngBounds();
+		it('returns an empty bounds when not argument is given', () => {
+			const bounds = L.latLngBounds();
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
-		it('returns an empty bounds when not argument is given to factory', function () {
-			var bounds = L.latLngBounds();
+		it('returns an empty bounds when not argument is given to factory', () => {
+			const bounds = L.latLngBounds();
 			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
 		});
 
 	});
 
-	describe('#extend', function () {
-		it('extends the bounds by a given point', function () {
+	describe('#extend', () => {
+		it('extends the bounds by a given point', () => {
 			a.extend(L.latLng(20, 50));
 			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
 		});
 
-		it('extends the bounds by given bounds', function () {
+		it('extends the bounds by given bounds', () => {
 			a.extend([[20, 50], [8, 40]]);
 			expect(a.getSouthEast()).to.eql(L.latLng(8, 50));
 		});
 
-		it('extends the bounds by undefined', function () {
+		it('extends the bounds by undefined', () => {
 			expect(a.extend()).to.eql(a);
 		});
 
-		it('extends the bounds by raw object', function () {
+		it('extends the bounds by raw object', () => {
 			a.extend({lat: 20, lng: 50});
 			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
 		});
 
-		it('extend the bounds by an empty bounds object', function () {
+		it('extend the bounds by an empty bounds object', () => {
 			expect(a.extend(L.latLngBounds())).to.eql(a);
 		});
 	});
 
-	describe('#getCenter', function () {
-		it('returns the bounds center', function () {
+	describe('#getCenter', () => {
+		it('returns the bounds center', () => {
 			expect(a.getCenter()).to.eql(L.latLng(22, 26));
 		});
 	});
 
-	describe('#pad', function () {
-		it('pads the bounds by a given ratio', function () {
-			var b = a.pad(0.5);
+	describe('#pad', () => {
+		it('pads the bounds by a given ratio', () => {
+			const b = a.pad(0.5);
 
 			expect(b).to.eql(L.latLngBounds([[6, -2], [38, 54]]));
 		});
 	});
 
-	describe('#equals', function () {
-		it('returns true if bounds equal', function () {
+	describe('#equals', () => {
+		it('returns true if bounds equal', () => {
 			expect(a.equals([[14, 12], [30, 40]])).to.eql(true);
 			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
 			expect(a.equals(null)).to.eql(false);
 		});
 
-		it("returns true if compared objects are equal within a certain margin", function () {
+		it("returns true if compared objects are equal within a certain margin", () => {
 			expect(a.equals([[15, 11], [29, 41]], 1)).to.eql(true);
 		});
 
-		it("returns false if compared objects are not equal within a certain margin", function () {
+		it("returns false if compared objects are not equal within a certain margin", () => {
 			expect(a.equals([[15, 11], [29, 41]], 0.5)).to.eql(false);
 		});
 	});
 
-	describe('#isValid', function () {
-		it('returns true if properly set up', function () {
+	describe('#isValid', () => {
+		it('returns true if properly set up', () => {
 			expect(a.isValid()).to.be.ok();
 		});
 
-		it('returns false if is invalid', function () {
+		it('returns false if is invalid', () => {
 			expect(c.isValid()).to.not.be.ok();
 		});
 
-		it('returns true if extended', function () {
+		it('returns true if extended', () => {
 			c.extend([0, 0]);
 			expect(c.isValid()).to.be.ok();
 		});
 	});
 
-	describe('#getWest', function () {
-		it('returns a proper bbox west value', function () {
+	describe('#getWest', () => {
+		it('returns a proper bbox west value', () => {
 			expect(a.getWest()).to.eql(12);
 		});
 	});
 
-	describe('#getSouth', function () {
-		it('returns a proper bbox south value', function () {
+	describe('#getSouth', () => {
+		it('returns a proper bbox south value', () => {
 			expect(a.getSouth()).to.eql(14);
 		});
 	});
 
-	describe('#getEast', function () {
-		it('returns a proper bbox east value', function () {
+	describe('#getEast', () => {
+		it('returns a proper bbox east value', () => {
 			expect(a.getEast()).to.eql(40);
 		});
 	});
 
-	describe('#getNorth', function () {
-		it('returns a proper bbox north value', function () {
+	describe('#getNorth', () => {
+		it('returns a proper bbox north value', () => {
 			expect(a.getNorth()).to.eql(30);
 		});
 	});
 
-	describe('#toBBoxString', function () {
-		it('returns a proper left,bottom,right,top bbox', function () {
+	describe('#toBBoxString', () => {
+		it('returns a proper left,bottom,right,top bbox', () => {
 			expect(a.toBBoxString()).to.eql("12,14,40,30");
 		});
 	});
 
-	describe('#getNorthWest', function () {
-		it('returns a proper north-west LatLng', function () {
+	describe('#getNorthWest', () => {
+		it('returns a proper north-west LatLng', () => {
 			expect(a.getNorthWest()).to.eql(L.latLng(a.getNorth(), a.getWest()));
 		});
 	});
 
-	describe('#getSouthEast', function () {
-		it('returns a proper south-east LatLng', function () {
+	describe('#getSouthEast', () => {
+		it('returns a proper south-east LatLng', () => {
 			expect(a.getSouthEast()).to.eql(L.latLng(a.getSouth(), a.getEast()));
 		});
 	});
 
-	describe('#contains', function () {
-		it('returns true if contains latlng point as array', function () {
+	describe('#contains', () => {
+		it('returns true if contains latlng point as array', () => {
 			expect(a.contains([16, 20])).to.eql(true);
 			expect(L.latLngBounds(a).contains([5, 20])).to.eql(false);
 		});
 
-		it('returns true if contains latlng point as {lat:, lng:} object', function () {
+		it('returns true if contains latlng point as {lat:, lng:} object', () => {
 			expect(a.contains({lat: 16, lng: 20})).to.eql(true);
 			expect(L.latLngBounds(a).contains({lat: 5, lng: 20})).to.eql(false);
 		});
 
-		it('returns true if contains latlng point as L.LatLng instance', function () {
+		it('returns true if contains latlng point as L.LatLng instance', () => {
 			expect(a.contains(L.latLng([16, 20]))).to.eql(true);
 			expect(L.latLngBounds(a).contains(L.latLng([5, 20]))).to.eql(false);
 		});
 
-		it('returns true if contains bounds', function () {
+		it('returns true if contains bounds', () => {
 			expect(a.contains([[16, 20], [20, 40]])).to.eql(true);
 			expect(a.contains([[16, 50], [8, 40]])).to.eql(false);
 		});
 	});
 
-	describe('#intersects', function () {
-		it('returns true if intersects the given bounds', function () {
+	describe('#intersects', () => {
+		it('returns true if intersects the given bounds', () => {
 			expect(a.intersects([[16, 20], [50, 60]])).to.eql(true);
 			expect(a.contains([[40, 50], [50, 60]])).to.eql(false);
 		});
 
-		it('returns true if just touches the boundary of the given bounds', function () {
+		it('returns true if just touches the boundary of the given bounds', () => {
 			expect(a.intersects([[25, 40], [55, 50]])).to.eql(true);
 		});
 	});
 
-	describe('#overlaps', function () {
-		it('returns true if overlaps the given bounds', function () {
+	describe('#overlaps', () => {
+		it('returns true if overlaps the given bounds', () => {
 			expect(a.overlaps([[16, 20], [50, 60]])).to.eql(true);
 		});
 
-		it('returns false if just touches the boundary of the given bounds', function () {
+		it('returns false if just touches the boundary of the given bounds', () => {
 			expect(a.overlaps([[25, 40], [55, 50]])).to.eql(false);
 		});
 	});

@@ -1,29 +1,29 @@
-﻿describe('FeatureGroup', function () {
-	describe("#_propagateEvent", function () {
-		var marker;
+﻿describe('FeatureGroup', () => {
+	describe("#_propagateEvent", () => {
+		let marker;
 
-		beforeEach(function () {
+		beforeEach(() => {
 			marker = L.marker([0, 0]);
 		});
 
-		describe("when a Marker is added to multiple FeatureGroups ", function () {
-			it("e.propagatedFrom should be the Marker", function () {
-				var fg1 = L.featureGroup(),
+		describe("when a Marker is added to multiple FeatureGroups ", () => {
+			it("e.propagatedFrom should be the Marker", () => {
+				const fg1 = L.featureGroup(),
 				    fg2 = L.featureGroup();
 
 				fg1.addLayer(marker);
 				fg2.addLayer(marker);
 
-				var wasClicked1,
+				let wasClicked1,
 				    wasClicked2;
 
-				fg2.on('click', function (e) {
+				fg2.on('click', (e) => {
 					expect(e.propagatedFrom).to.be(marker);
 					expect(e.target).to.be(fg2);
 					wasClicked2 = true;
 				});
 
-				fg1.on('click', function (e) {
+				fg1.on('click', (e) => {
 					expect(e.propagatedFrom).to.be(marker);
 					expect(e.target).to.be(fg1);
 					wasClicked1 = true;
@@ -37,9 +37,9 @@
 		});
 	});
 
-	describe('addLayer', function () {
-		it('adds the layer', function () {
-			var fg = L.featureGroup(),
+	describe('addLayer', () => {
+		it('adds the layer', () => {
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			expect(fg.hasLayer(marker)).to.be(false);
@@ -49,8 +49,8 @@
 			expect(fg.hasLayer(marker)).to.be(true);
 		});
 
-		it('supports non-evented layers', function () {
-			var fg = L.featureGroup(),
+		it('supports non-evented layers', () => {
+			const fg = L.featureGroup(),
 			    g = L.layerGroup();
 
 			expect(fg.hasLayer(g)).to.be(false);
@@ -61,9 +61,9 @@
 		});
 	});
 
-	describe('removeLayer', function () {
-		it('removes the layer passed to it', function () {
-			var fg = L.featureGroup(),
+	describe('removeLayer', () => {
+		it('removes the layer passed to it', () => {
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);
@@ -73,8 +73,8 @@
 			expect(fg.hasLayer(marker)).to.be(false);
 		});
 
-		it('removes the layer passed to it by id', function () {
-			var fg = L.featureGroup(),
+		it('removes the layer passed to it by id', () => {
+			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);

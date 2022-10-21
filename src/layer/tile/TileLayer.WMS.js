@@ -22,7 +22,7 @@ import {toBounds} from '../../geometry/Bounds';
  * ```
  */
 
-export var TileLayerWMS = TileLayer.extend({
+export const TileLayerWMS = TileLayer.extend({
 
 	// @section
 	// @aka TileLayer.WMS options
@@ -65,14 +65,14 @@ export var TileLayerWMS = TileLayer.extend({
 		uppercase: false
 	},
 
-	initialize: function (url, options) {
+	initialize(url, options) {
 
 		this._url = url;
 
-		var wmsParams = extend({}, this.defaultWmsParams);
+		const wmsParams = extend({}, this.defaultWmsParams);
 
 		// all keys that are not TileLayer options go to WMS params
-		for (var i in options) {
+		for (const i in options) {
 			if (!(i in this.options)) {
 				wmsParams[i] = options[i];
 			}
@@ -80,28 +80,28 @@ export var TileLayerWMS = TileLayer.extend({
 
 		options = setOptions(this, options);
 
-		var realRetina = options.detectRetina && Browser.retina ? 2 : 1;
-		var tileSize = this.getTileSize();
+		const realRetina = options.detectRetina && Browser.retina ? 2 : 1;
+		const tileSize = this.getTileSize();
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
 	},
 
-	onAdd: function (map) {
+	onAdd(map) {
 
 		this._crs = this.options.crs || map.options.crs;
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
-		var projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
+		const projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = this._crs.code;
 
 		TileLayer.prototype.onAdd.call(this, map);
 	},
 
-	getTileUrl: function (coords) {
+	getTileUrl(coords) {
 
-		var tileBounds = this._tileCoordsToNwSe(coords),
+		const tileBounds = this._tileCoordsToNwSe(coords),
 		    crs = this._crs,
 		    bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
 		    min = bounds.min,
@@ -117,7 +117,7 @@ export var TileLayerWMS = TileLayer.extend({
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
-	setParams: function (params, noRedraw) {
+	setParams(params, noRedraw) {
 
 		extend(this.wmsParams, params);
 

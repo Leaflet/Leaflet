@@ -1,11 +1,11 @@
-var json = require('@rollup/plugin-json');
+const json = require('@rollup/plugin-json');
 
 // Karma configuration
 module.exports = function (config) {
 
 	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
-	var files = [
+	const files = [
 		"spec/before.js",
 		"src/LeafletWithGlobals.js",
 		"spec/after.js",
@@ -17,7 +17,7 @@ module.exports = function (config) {
 		{pattern: "dist/images/*.png", included: false, serve: true}
 	];
 
-	var preprocessors = {};
+	const preprocessors = {};
 
 	preprocessors['src/LeafletWithGlobals.js'] = ['rollup'];
 
@@ -30,7 +30,6 @@ module.exports = function (config) {
 			'karma-mocha',
 			'karma-sinon',
 			'karma-expect',
-			'karma-edge-launcher',
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
@@ -41,14 +40,14 @@ module.exports = function (config) {
 		frameworks: ['mocha', 'sinon', 'expect'],
 
 		// list of files / patterns to load in the browser
-		files: files,
+		files,
 		proxies: {
 			'/base/dist/images/': 'dist/images/'
 		},
 		exclude: [],
 
 		// Rollup the ES6 Leaflet sources into just one file, before tests
-		preprocessors: preprocessors,
+		preprocessors,
 		rollupPreprocessor: {
 			onwarn: () => {}, // silence Rollup warnings
 			plugins: [

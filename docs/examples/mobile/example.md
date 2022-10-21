@@ -11,20 +11,20 @@ css: "body {
 	}"
 ---
 <script>
-	var map = L.map('map').fitWorld();
+	const map = L.map('map').fitWorld();
 
-	var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
 	function onLocationFound(e) {
-		var radius = e.accuracy / 2;
+		const radius = e.accuracy / 2;
 
-		var locationMarker = L.marker(e.latlng).addTo(map)
-			.bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+		const locationMarker = L.marker(e.latlng).addTo(map)
+			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
-		var locationCircle = L.circle(e.latlng, radius).addTo(map);
+		const locationCircle = L.circle(e.latlng, radius).addTo(map);
 	}
 
 	function onLocationError(e) {

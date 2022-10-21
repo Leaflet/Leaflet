@@ -13,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil';
  * All other controls extend from this class.
  */
 
-export var Control = Class.extend({
+export const Control = Class.extend({
 	// @section
 	// @aka Control Options
 	options: {
@@ -23,7 +23,7 @@ export var Control = Class.extend({
 		position: 'topright'
 	},
 
-	initialize: function (options) {
+	initialize(options) {
 		Util.setOptions(this, options);
 	},
 
@@ -33,14 +33,14 @@ export var Control = Class.extend({
 	 * @method getPosition: string
 	 * Returns the position of the control.
 	 */
-	getPosition: function () {
+	getPosition() {
 		return this.options.position;
 	},
 
 	// @method setPosition(position: string): this
 	// Sets the position of the control.
-	setPosition: function (position) {
-		var map = this._map;
+	setPosition(position) {
+		const map = this._map;
 
 		if (map) {
 			map.removeControl(this);
@@ -57,17 +57,17 @@ export var Control = Class.extend({
 
 	// @method getContainer: HTMLElement
 	// Returns the HTMLElement that contains the control.
-	getContainer: function () {
+	getContainer() {
 		return this._container;
 	},
 
 	// @method addTo(map: Map): this
 	// Adds the control to the given map.
-	addTo: function (map) {
+	addTo(map) {
 		this.remove();
 		this._map = map;
 
-		var container = this._container = this.onAdd(map),
+		const container = this._container = this.onAdd(map),
 		    pos = this.getPosition(),
 		    corner = map._controlCorners[pos];
 
@@ -86,7 +86,7 @@ export var Control = Class.extend({
 
 	// @method remove: this
 	// Removes the control from the map it is currently active on.
-	remove: function () {
+	remove() {
 		if (!this._map) {
 			return this;
 		}
@@ -103,7 +103,7 @@ export var Control = Class.extend({
 		return this;
 	},
 
-	_refocusOnMap: function (e) {
+	_refocusOnMap(e) {
 		// if map exists and event is not a keyboard event
 		if (this._map && e && e.screenX > 0 && e.screenY > 0) {
 			this._map.getContainer().focus();
@@ -111,7 +111,7 @@ export var Control = Class.extend({
 	}
 });
 
-export var control = function (options) {
+export const control = function (options) {
 	return new Control(options);
 };
 
@@ -133,26 +133,26 @@ export var control = function (options) {
 Map.include({
 	// @method addControl(control: Control): this
 	// Adds the given control to the map
-	addControl: function (control) {
+	addControl(control) {
 		control.addTo(this);
 		return this;
 	},
 
 	// @method removeControl(control: Control): this
 	// Removes the given control from the map
-	removeControl: function (control) {
+	removeControl(control) {
 		control.remove();
 		return this;
 	},
 
-	_initControlPos: function () {
-		var corners = this._controlCorners = {},
+	_initControlPos() {
+		const corners = this._controlCorners = {},
 		    l = 'leaflet-',
 		    container = this._controlContainer =
-		            DomUtil.create('div', l + 'control-container', this._container);
+		            DomUtil.create('div', `${l}control-container`, this._container);
 
 		function createCorner(vSide, hSide) {
-			var className = l + vSide + ' ' + l + hSide;
+			const className = `${l + vSide} ${l}${hSide}`;
 
 			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}
@@ -163,8 +163,8 @@ Map.include({
 		createCorner('bottom', 'right');
 	},
 
-	_clearControlPos: function () {
-		for (var i in this._controlCorners) {
+	_clearControlPos() {
+		for (const i in this._controlCorners) {
 			DomUtil.remove(this._controlCorners[i]);
 		}
 		DomUtil.remove(this._controlContainer);
