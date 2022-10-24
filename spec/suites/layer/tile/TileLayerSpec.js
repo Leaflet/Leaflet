@@ -348,7 +348,7 @@ describe('TileLayer', () => {
 			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
 
 			eachImg(layer, (img) => {
-				expect(['a', 'b', 'c'].indexOf(img.src[7]) >= 0).to.eql(true);
+				expect(['a', 'b', 'c'].includes(img.src[7])).to.eql(true);
 			});
 		});
 
@@ -358,7 +358,7 @@ describe('TileLayer', () => {
 			}).addTo(map);
 
 			eachImg(layer, (img) => {
-				expect(['q', 'r', 's'].indexOf(img.src[7]) >= 0).to.eql(true);
+				expect(['q', 'r', 's'].includes(img.src[7])).to.eql(true);
 			});
 		});
 
