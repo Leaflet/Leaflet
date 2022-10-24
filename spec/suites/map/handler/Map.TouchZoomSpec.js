@@ -157,4 +157,57 @@ describe("Map.TouchZoom", function () {
 			.down().moveBy(-200, 0, 500).up(100);
 	});
 
+	it.skipIfNotTouch("Layer is rendered correctly while pinch zoom when zoomAnim is true", function (done) {
+		map.remove();
+
+		map = new L.Map(container, {
+			touchZoom: true,
+			inertia: false,
+			zoomAnimation: true
+		});
+
+		map.setView([0, 0], 8);
+
+		var polygon = L.polygon([
+			[0, 0],
+			[0, 1],
+			[1, 1],
+			[1, 0]
+		]).addTo(map);
+
+		var f1, f2;
+		var alreadyCalled = false;
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop() {
+				if (alreadyCalled) {
+					// because of f1/f2.up() onStop will called again
+					return;
+				}
+				alreadyCalled = true;
+				setTimeout(function () {
+					var width = polygon._path.getBoundingClientRect().width;
+					var height = polygon._path.getBoundingClientRect().height;
+
+					expect(height < 50).to.be(true);
+					expect(width < 50).to.be(true);
+					expect(height + width > 0).to.be(true);
+
+					f1.up();
+					f2.up();
+					setTimeout(function () {
+						done();
+					}, 100);
+				}, 100);
+			}
+		});
+		f1 = hand.growFinger(touchEventType);
+		f2 = hand.growFinger(touchEventType);
+
+		hand.sync(5);
+		f1.wait(100).moveTo(75, 300, 0)
+			.down().moveBy(200, 0, 500);
+		f2.wait(100).moveTo(525, 300, 0)
+			.down().moveBy(-200, 0, 500);
+	});
 });
