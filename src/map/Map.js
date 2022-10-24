@@ -155,9 +155,8 @@ export const Map = Evented.extend({
 
 		this.callInitHooks();
 
-		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && !Browser.mobileOpera &&
-				this.options.zoomAnimation;
+		// don't animate on browsers without hardware-accelerated transitions or old Android
+		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
