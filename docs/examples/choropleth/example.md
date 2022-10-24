@@ -92,9 +92,7 @@ css: "#map {
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.opera) {
-			layer.bringToFront();
-		}
+		layer.bringToFront();
 
 		info.update(layer.feature.properties);
 	}
