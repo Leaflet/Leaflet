@@ -34,7 +34,7 @@ happen.makeEvent = (function (makeEvent) {
 		if (o.type.substring(0, 7) === 'pointer') {
 			evt.pointerId = o.pointerId;
 			evt.pointerType = o.pointerType;
-		} else if (o.type.indexOf('wheel') > -1) {
+		} else if (o.type.includes('wheel')) {
 			evt.deltaY = evt.deltaY || o.deltaY;
 			evt.deltaMode = evt.deltaMode || o.deltaMode;
 		}

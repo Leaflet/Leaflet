@@ -71,7 +71,7 @@ export function off(obj, types, fn, context) {
 		types = Util.splitWords(types);
 
 		if (arguments.length === 2) {
-			batchRemove(obj, type => Util.indexOf(types, type) !== -1);
+			batchRemove(obj, type => types.includes(type));
 		} else {
 			for (let i = 0, len = types.length; i < len; i++) {
 				removeOne(obj, types[i], fn, context);
@@ -108,7 +108,7 @@ function addOne(obj, type, fn, context) {
 
 	const originalHandler = handler;
 
-	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
+	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
 		// Needs DomEvent.Pointer.js
 		handler = addPointerListener(obj, type, handler);
 
@@ -147,7 +147,7 @@ function removeOne(obj, type, fn, context, id) {
 
 	if (!handler) { return this; }
 
-	if (!Browser.touchNative && Browser.pointer && type.indexOf('touch') === 0) {
+	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
 		removePointerListener(obj, type, handler);
 
 	} else if (Browser.touch && (type === 'dblclick')) {

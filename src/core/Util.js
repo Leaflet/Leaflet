@@ -135,7 +135,7 @@ export function getParamString(obj, existingUrl, uppercase) {
 	for (const i in obj) {
 		params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
 	}
-	return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
+	return ((!existingUrl || !existingUrl.includes('?')) ? '?' : '&') + params.join('&');
 }
 
 const templateRe = /\{ *([\w_ -]+) *\}/g;
@@ -164,15 +164,6 @@ export function template(str, data) {
 export const isArray = Array.isArray || function (obj) {
 	return (Object.prototype.toString.call(obj) === '[object Array]');
 };
-
-// @function indexOf(array: Array, el: Object): Number
-// Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
-export function indexOf(array, el) {
-	for (let i = 0; i < array.length; i++) {
-		if (array[i] === el) { return i; }
-	}
-	return -1;
-}
 
 // @property emptyImageUrl: String
 // Data URI string containing a base64-encoded empty GIF image.
