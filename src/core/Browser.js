@@ -22,26 +22,17 @@ const style = document.documentElement.style;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
 const webkit = userAgentContains('webkit');
 
-// @property opera: Boolean; `true` for the Opera browser
-const opera = !!window.opera;
-
 // @property chrome: Boolean; `true` for the Chrome browser.
 const chrome = userAgentContains('chrome');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
-const gecko = userAgentContains('gecko') && !webkit && !opera;
+const gecko = userAgentContains('gecko') && !webkit;
 
 // @property safari: Boolean; `true` for the Safari browser.
 const safari = !chrome && userAgentContains('safari');
 
-const phantom = userAgentContains('phantom');
-
-// @property opera12: Boolean
-// `true` for the Opera browser supporting CSS transforms (version 12 or later).
-const opera12 = 'OTransition' in style;
-
 // @property win: Boolean; `true` when the browser is running in a Windows platform
-const win = navigator.platform.indexOf('Win') === 0;
+const win = navigator.platform.startsWith('Win');
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
 const webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix());
@@ -51,7 +42,7 @@ const gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-const any3d = !window.L_DISABLE_3D && (webkit3d || gecko3d) && !opera12 && !phantom;
+const any3d = !window.L_DISABLE_3D && (webkit3d || gecko3d);
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
@@ -78,9 +69,6 @@ const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
 // `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
 // Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
 const touch = !window.L_NO_TOUCH && (touchNative || pointer);
-
-// @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
-const mobileOpera = mobile && opera;
 
 // @property mobileGecko: Boolean
 // `true` for gecko-based browsers running in a mobile device.
@@ -125,24 +113,21 @@ const inlineSvg = !!svg && (function () {
 })();
 
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = navigator.platform.indexOf('Mac') === 0;
+const mac = navigator.platform.startsWith('Mac');
 
 // @property mac: Boolean; `true` when the browser is running in a Linux platform
-const linux = navigator.platform.indexOf('Linux') === 0;
+const linux = navigator.platform.startsWith('Linux');
 
 function userAgentContains(str) {
-	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
+	return navigator.userAgent.toLowerCase().includes(str);
 }
 
 
 export default {
 	webkit,
-	opera,
 	chrome,
 	gecko,
 	safari,
-	phantom,
-	opera12,
 	win,
 	webkit3d,
 	gecko3d,
@@ -153,7 +138,6 @@ export default {
 	pointer,
 	touch,
 	touchNative,
-	mobileOpera,
 	mobileGecko,
 	retina,
 	passiveEvents,

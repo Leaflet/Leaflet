@@ -152,9 +152,8 @@ export const Map = Evented.extend({
 
 		this.callInitHooks();
 
-		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && !Browser.mobileOpera &&
-				this.options.zoomAnimation;
+		// don't animate on browsers without hardware-accelerated transitions or old Android
+		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
@@ -1454,7 +1453,7 @@ export const Map = Evented.extend({
 		for (let i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
+				(targets[i].options.bubblingMouseEvents === false && this._mouseEvents.includes(type))) { return; }
 		}
 	},
 
@@ -1650,7 +1649,7 @@ export const Map = Evented.extend({
 	},
 
 	_catchTransitionEnd(e) {
-		if (this._animatingZoom && e.propertyName.indexOf('transform') >= 0) {
+		if (this._animatingZoom && e.propertyName.includes('transform')) {
 			this._onZoomTransitionEnd();
 		}
 	},
