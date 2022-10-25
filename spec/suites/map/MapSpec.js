@@ -653,11 +653,11 @@ describe("Map", () => {
 	describe("#addHandler", () => {
 		function getHandler(callback = () => {}) {
 			return L.Handler.extend({
-				addHooks() {
+				addHooks: function () {
 					L.DomEvent.on(window, 'click', this.handleClick, this);
 				},
 
-				removeHooks() {
+				removeHooks: function () {
 					L.DomEvent.off(window, 'click', this.handleClick, this);
 				},
 
@@ -1163,6 +1163,21 @@ describe("Map", () => {
 				expect(spy.called).to.be.ok();
 			});
 		});
+
+		it("invalidateSize after container resize", function (done) {
+			map.setView([0, 0], 0);
+			var spy = sinon.spy();
+			map.on("resize", spy);
+
+			expect(spy.called).to.not.be.ok();
+
+			map.getContainer().style.width = '200px';
+
+			map.on("resize", ()=>{
+				expect(spy.called).to.be.ok();
+				done();
+			});
+		});
 	});
 
 	describe("#eachLayer", () => {
@@ -1297,7 +1312,7 @@ describe("Map", () => {
 
 			// The edge case is only if view is set directly during map initialization
 			map = L.map(container, {
-				center,
+				center: center,
 				zoom: 0
 			});
 
@@ -1617,25 +1632,25 @@ describe("Map", () => {
 			const padding = [40, 20];
 			let p = tlPix.add([30, 0]),	// Top-left
 			    distanceMoved;
-			map.panInside(map.unproject(p), {padding, animate: false});
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-10, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 10, map.getPixelBounds().min.y];	// Top-right
-			map.panInside(map.unproject(p), {padding, animate: false});
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([30, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().min.x + 35, map.getPixelBounds().max.y];	// Bottom-left
-			map.panInside(map.unproject(p), {padding, animate: false});
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-5, 20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 15, map.getPixelBounds().max.y]; // Bottom-right
-			map.panInside(map.unproject(p), {padding, animate: false});
+			map.panInside(map.unproject(p), {padding: padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([25, 20]))).to.eql(true);
 		});
@@ -1756,7 +1771,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon}).addTo(map);
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map);
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
 			happen.mouseout(layer._icon, {relatedTarget: container});
@@ -1771,7 +1786,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -1787,7 +1802,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -2170,7 +2185,7 @@ describe("Map", () => {
 
 		const geolocationStub = {
 			geolocation: {
-				getCurrentPosition(onSuccess) {
+				getCurrentPosition: function (onSuccess) {
 					onSuccess(
 						{
 							coords:
@@ -2186,7 +2201,7 @@ describe("Map", () => {
 					getCurrentPosSpy();
 				},
 
-				watchPosition(onSuccess) {
+				watchPosition: function (onSuccess) {
 					onSuccess(
 						{
 							coords:
