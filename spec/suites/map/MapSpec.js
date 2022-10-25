@@ -653,11 +653,11 @@ describe("Map", () => {
 	describe("#addHandler", () => {
 		function getHandler(callback = () => {}) {
 			return L.Handler.extend({
-				addHooks: function () {
+				addHooks() {
 					L.DomEvent.on(window, 'click', this.handleClick, this);
 				},
 
-				removeHooks: function () {
+				removeHooks() {
 					L.DomEvent.off(window, 'click', this.handleClick, this);
 				},
 
@@ -1297,7 +1297,7 @@ describe("Map", () => {
 
 			// The edge case is only if view is set directly during map initialization
 			map = L.map(container, {
-				center: center,
+				center,
 				zoom: 0
 			});
 
@@ -1316,6 +1316,68 @@ describe("Map", () => {
 
 			expect(map.getSize().x).to.equal(600);
 			expect(map.latLngToContainerPoint(center).x).to.equal(300);
+		});
+
+		it("auto invalidateSize after container resize", (done) => {
+			map.setView([0, 0], 0);
+			const spy = sinon.spy();
+			map.on("resize", spy);
+
+			expect(spy.called).to.not.be.ok();
+
+			map.getContainer().style.width = '200px';
+
+			map.on("resize", () => {
+				expect(spy.called).to.be.ok();
+				done();
+			});
+		});
+
+		it("disables auto invalidateSize", (done) => {
+			clock.restore();
+			map.remove();
+
+			const center = [0, 0];
+
+			// The edge case is only if view is set directly during map initialization
+			map = L.map(container, {
+				center,
+				zoom: 0,
+				trackResize: false
+			});
+
+			const spy = sinon.spy();
+			map.invalidateSize = spy;
+
+			expect(spy.called).to.not.be.ok();
+
+			map.getContainer().style.width = '200px';
+
+			setTimeout(() => {
+				expect(spy.called).to.not.be.ok();
+				done();
+				// we need the 10 ms to be sure that the ResizeObserver is not triggered
+			}, 10);
+		});
+
+		it("makes sure that auto invalidateSize is removed", (done) => {
+			clock.restore();
+			map.remove();
+
+			const spy = sinon.spy();
+			map.invalidateSize = spy;
+			expect(spy.called).to.not.be.ok();
+
+			map.getContainer().style.width = '200px';
+
+			setTimeout(() => {
+				expect(spy.called).to.not.be.ok();
+
+				// make sure afterEach works correctly
+				map = L.map(container);
+				done();
+				// we need the 10 ms to be sure that the ResizeObserver is not triggered
+			}, 10);
 		});
 	});
 
@@ -1617,25 +1679,25 @@ describe("Map", () => {
 			const padding = [40, 20];
 			let p = tlPix.add([30, 0]),	// Top-left
 			    distanceMoved;
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-10, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 10, map.getPixelBounds().min.y];	// Top-right
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([30, -20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().min.x + 35, map.getPixelBounds().max.y];	// Bottom-left
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([-5, 20]))).to.eql(true);
 
 			tlPix = map.getPixelBounds().min;
 			p = [map.getPixelBounds().max.x - 15, map.getPixelBounds().max.y]; // Bottom-right
-			map.panInside(map.unproject(p), {padding: padding, animate: false});
+			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(L.point([25, 20]))).to.eql(true);
 		});
@@ -1756,7 +1818,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map);
+			    layer = L.marker([1, 2], {icon}).addTo(map);
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
 			happen.mouseout(layer._icon, {relatedTarget: container});
@@ -1771,7 +1833,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -1787,7 +1849,7 @@ describe("Map", () => {
 			});
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
-			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    layer = L.marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector("p");
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
@@ -2170,7 +2232,7 @@ describe("Map", () => {
 
 		const geolocationStub = {
 			geolocation: {
-				getCurrentPosition: function (onSuccess) {
+				getCurrentPosition(onSuccess) {
 					onSuccess(
 						{
 							coords:
@@ -2186,7 +2248,7 @@ describe("Map", () => {
 					getCurrentPosSpy();
 				},
 
-				watchPosition: function (onSuccess) {
+				watchPosition(onSuccess) {
 					onSuccess(
 						{
 							coords:
