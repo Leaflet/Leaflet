@@ -1163,21 +1163,6 @@ describe("Map", () => {
 				expect(spy.called).to.be.ok();
 			});
 		});
-
-		it("invalidateSize after container resize", function (done) {
-			map.setView([0, 0], 0);
-			var spy = sinon.spy();
-			map.on("resize", spy);
-
-			expect(spy.called).to.not.be.ok();
-
-			map.getContainer().style.width = '200px';
-
-			map.on("resize", ()=>{
-				expect(spy.called).to.be.ok();
-				done();
-			});
-		});
 	});
 
 	describe("#eachLayer", () => {
