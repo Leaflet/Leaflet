@@ -42,7 +42,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "docs": "node ./build/docs.js && node ./build/integrity.js",
+    "docs": "node ./build/docs.mjs && node ./build/integrity.mjs",
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
     "lint": "eslint .",
@@ -64,6 +64,6 @@
   ],
   "license": "BSD-2-Clause",
   "lint-staged": {
-    "*.(js|md)": "eslint --cache --fix"
+    "*.(js|mjs|md)": "eslint --cache --fix"
   }
 }
