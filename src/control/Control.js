@@ -73,7 +73,7 @@ export const Control = Class.extend({
 
 		DomUtil.addClass(container, 'leaflet-control');
 
-		if (pos.indexOf('bottom') !== -1) {
+		if (pos.includes('bottom')) {
 			corner.insertBefore(container, corner.firstChild);
 		} else {
 			corner.appendChild(container);
