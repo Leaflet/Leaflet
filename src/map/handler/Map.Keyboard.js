@@ -156,7 +156,7 @@ export const Keyboard = Handler.extend({
 				}
 
 				if (map.options.worldCopyJump) {
-					var newLatLng = map.wrapLatLng(map.unproject(map.project(map.getCenter()).add(offset)));
+					const newLatLng = map.wrapLatLng(map.unproject(map.project(map.getCenter()).add(offset)));
 					map.panTo(newLatLng);
 				} else {
 					map.panBy(offset);

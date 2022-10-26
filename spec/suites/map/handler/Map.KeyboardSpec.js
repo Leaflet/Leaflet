@@ -64,7 +64,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getCenter().lng).to.be.greaterThan(0);
 		});
 
-		it("move the map over 180° with worldCopyJump true", function () {
+		it("move the map over 180° with worldCopyJump true", () => {
 			map.panTo([0, 178], {animate: false});
 			map.options.worldCopyJump = true;
 
