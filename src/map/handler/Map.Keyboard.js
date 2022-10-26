@@ -151,10 +151,15 @@ export var Keyboard = Handler.extend({
 					offset = toPoint(offset).multiplyBy(3);
 				}
 
-				map.panBy(offset);
-
 				if (map.options.maxBounds) {
-					map.panInsideBounds(map.options.maxBounds);
+					offset = map._limitOffset(toPoint(offset), map.options.maxBounds);
+				}
+
+				if (map.options.worldCopyJump) {
+					var newLatLng = map.wrapLatLng(map.unproject(map.project(map.getCenter()).add(offset)));
+					map.panTo(newLatLng);
+				} else {
+					map.panBy(offset);
 				}
 			}
 		} else if (key in this._zoomKeys) {
