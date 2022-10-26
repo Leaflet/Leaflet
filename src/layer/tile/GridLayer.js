@@ -392,7 +392,7 @@ export const GridLayer = Layer.extend({
 
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
-			// force the browser to consider the newly added element for transition
+			// force reading offsetWidth so the browser considers the newly added element for transition
 			Util.falseFn(level.el.offsetWidth);
 
 			this._onCreateLevel(level);
