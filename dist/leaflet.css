@@ -592,6 +592,5 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	.leaflet-control {
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
-		}
 	}
 }
