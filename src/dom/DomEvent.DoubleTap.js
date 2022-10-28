@@ -10,8 +10,8 @@ import * as DomEvent from './DomEvent';
 function makeDblclick(event) {
 	// in modern browsers `type` cannot be just overridden:
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only
-	var newEvent = {},
-	    prop, i;
+	const newEvent = {};
+	let prop, i;
 	for (i in event) {
 		prop = event[i];
 		newEvent[i] = prop && prop.bind ? prop.bind(event) : prop;
@@ -24,7 +24,7 @@ function makeDblclick(event) {
 	return newEvent;
 }
 
-var delay = 200;
+const delay = 200;
 export function addDoubleTapListener(obj, handler) {
 	// Most browsers handle double tap natively
 	obj.addEventListener('dblclick', handler);
@@ -32,7 +32,7 @@ export function addDoubleTapListener(obj, handler) {
 	// On some platforms the browser doesn't fire native dblclicks for touch events.
 	// It seems that in all such cases `detail` property of `click` event is always `1`.
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
-	var last = 0,
+	let last = 0,
 	    detail;
 	function simDblclick(e) {
 		if (e.detail !== 1) {
@@ -51,21 +51,17 @@ export function addDoubleTapListener(obj, handler) {
 		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
-		var path = DomEvent.getPropagationPath(e);
-		if (path.some(function (el) {
-			return el instanceof HTMLLabelElement && el.attributes.for;
-		}) &&
-			!path.some(function (el) {
-				return (
-					el instanceof HTMLInputElement ||
+		const path = DomEvent.getPropagationPath(e);
+		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
+			!path.some(el => (
+				el instanceof HTMLInputElement ||
 					el instanceof HTMLSelectElement
-				);
-			})
+			))
 		) {
 			return;
 		}
 
-		var now = Date.now();
+		const now = Date.now();
 		if (now - last <= delay) {
 			detail++;
 			if (detail === 2) {
@@ -81,7 +77,7 @@ export function addDoubleTapListener(obj, handler) {
 
 	return {
 		dblclick: handler,
-		simDblclick: simDblclick
+		simDblclick
 	};
 }
 

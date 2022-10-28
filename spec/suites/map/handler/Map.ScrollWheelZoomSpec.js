@@ -1,34 +1,35 @@
-describe("Map.ScrollWheelZoom", function () {
-	var container, map;
-	var wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
-	var scrollIn = {
+describe("Map.ScrollWheelZoom", () => {
+	let container, map;
+	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
+	const scrollIn = {
 		type: wheel,
 		deltaY: -120,
 		deltaMode: 0
 	};
-	var scrollOut = {
+	const scrollOut = {
 		type: wheel,
 		deltaY: 120,
 		deltaMode: 0
 	};
 
-	beforeEach(function () {
+	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container, {
 			center: [0, 0],
-			zoom: 3
+			zoom: 3,
+			zoomAnimation: false
 		});
 	});
 
-	afterEach(function () {
+	afterEach(() => {
 		removeMapContainer(map, container);
 	});
 
-	it("zooms out while firing 'wheel' event", function (done) {
-		var zoom = map.getZoom();
+	it("zooms out while firing 'wheel' event", (done) => {
+		const zoom = map.getZoom();
 		happen.once(container, scrollOut);
 
-		map.on('zoomend', function () {
+		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
 			// expect(map.getCenter()).to.be.nearLatLng([-33.137551192346145, 35.15625000000001]);
 			expect(map.getZoom()).to.be.lessThan(zoom);
@@ -36,11 +37,11 @@ describe("Map.ScrollWheelZoom", function () {
 		});
 	});
 
-	it("zooms in while firing 'wheel' event", function (done) {
-		var zoom = map.getZoom();
+	it("zooms in while firing 'wheel' event", (done) => {
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
-		map.on('zoomend', function () {
+		map.on('zoomend', () => {
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
 			// expect(map.getCenter()).to.be.nearLatLng([17.308687886770034, -17.578125000000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -48,13 +49,13 @@ describe("Map.ScrollWheelZoom", function () {
 		});
 	});
 
-	it("scrollWheelZoom: 'center'", function (done) {
-		var scrollWheelZoomBefore = map.options.scrollWheelZoom;
+	it("scrollWheelZoom: 'center'", (done) => {
+		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
-		map.on('zoomend', function () {
+		map.on('zoomend', () => {
 			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
 			map.options.scrollWheelZoom = scrollWheelZoomBefore;
@@ -62,22 +63,22 @@ describe("Map.ScrollWheelZoom", function () {
 		});
 	});
 
-	it("changes the option 'wheelDebounceTime'", function (done) {
-		var wheelDebounceTimeBefore = map.options.wheelDebounceTime;
+	it("changes the option 'wheelDebounceTime'", (done) => {
+		const wheelDebounceTimeBefore = map.options.wheelDebounceTime;
 		map.options.wheelDebounceTime = 100;
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 
-		var spy = sinon.spy();
+		const spy = sinon.spy();
 		map.on('zoomend', spy);
 
 		happen.once(container, scrollIn);
-		setTimeout(function () {
+		setTimeout(() => {
 			happen.once(container, scrollIn);
 
 			expect(spy.notCalled).to.be.ok();
 		}, 50);
 
-		map.on('zoomend', function () {
+		map.on('zoomend', () => {
 			expect(spy.calledOnce).to.be.ok();
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
 			// expect(map.getCenter()).to.be.nearLatLng([25.48295117535531, -26.367187500000004]);
@@ -87,32 +88,29 @@ describe("Map.ScrollWheelZoom", function () {
 		});
 	});
 
-	it("changes the option 'wheelPxPerZoomLevel'", function (done) {
-		var wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
+	it("changes the option 'wheelPxPerZoomLevel'", (done) => {
+		const wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
 		map.setZoom(15, {animate: false});
 
-		var zoom = map.getZoom();
+		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
-		map.once('zoomend', function () {
+		map.once('zoomend', () => {
 			expect(map.getZoom()).to.be.greaterThan(zoom);
-			var zoomDiff = map.getZoom() - zoom;
+			const zoomDiff = map.getZoom() - zoom;
 
-			// Bug 1.8.0: .once('zoomend') is called twice if call `setZoom` in its function
-			setTimeout(function () {
-				map.setZoom(zoom, {animate: false});
-				expect(map.getZoom()).to.be(zoom);
+			map.setZoom(zoom, {animate: false});
+			expect(map.getZoom()).to.be(zoom);
 
-				map.options.wheelPxPerZoomLevel = 30;
-				happen.once(container, scrollIn);
+			map.options.wheelPxPerZoomLevel = 30 / L.DomEvent.getWheelPxFactor();
+			happen.once(container, scrollIn);
 
-				map.once('zoomend', function () {
-					expect(map.getZoom()).to.be.greaterThan(zoom);
-					expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
-					map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
-					done();
-				});
-			}, 10);
+			map.once('zoomend', () => {
+				expect(map.getZoom()).to.be.greaterThan(zoom);
+				expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
+				map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
+				done();
+			});
 		});
 	});
 });

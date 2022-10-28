@@ -10,15 +10,15 @@
             var config = {
                 provider: 'plunker',
                 title: 'Leaflet',
-                description: "Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 37 KB of gzipped JS code, it has all the mapping features most developers ever need.",
-                html: '<div id="leaflet"></div>',
+                description: "Leaflet example",
+                html: '<div id="map"></div>',
                 cssFile: 'https://unpkg.com/leaflet/dist/leaflet.css',
-                css: 'body {\n\tmargin: 0;\n}\nhtml, body, #leaflet {\n\theight: 100%\n}',
+                css: 'body {\n\tmargin: 0;\n}\nhtml, body, #map {\n\theight: 100%\n}',
                 jsFile: 'https://unpkg.com/leaflet/dist/leaflet-src.js',
-                js: "var map = new L.Map('leaflet', {\n\tlayers: [\n\t\tnew L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
+                js: "var map = L.map('map', {\n\tlayers: [\n\t\tL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
             };
 
-            var hash = location.hash.substr(1);
+            var hash = location.hash.substring(1);
 
             if (hash) {
                 hash.split(';').forEach(function (str) {
