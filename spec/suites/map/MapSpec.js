@@ -2223,6 +2223,23 @@ describe("Map", () => {
 		});
 	});
 
+	describe("#layerPointToLatLng", () => {
+
+		it("throws if map is not set before", () => {
+			expect(() => {
+				map.layerPointToLatLng();
+			}).to.throwError();
+		});
+
+		it("returns the corresponding geographical coordinate for a pixel coordinate relative to the origin pixel", () => {
+			const center = L.latLng(10, 10);
+			map.setView(center, 10);
+			const point = L.point(200, 200);
+			const latlng = map.layerPointToLatLng(point);
+			expect(latlng).to.be.nearLatLng([9.9999579356371, 10.000305175781252]);
+		});
+	});
+
 	describe("#locate", () => {
 		let foundSpy;
 		let errorSpy;
