@@ -2222,7 +2222,7 @@ describe("Map", () => {
 			expect(p.y).to.be.equal(200);
 		});
 	});
-  
+
 	describe("#layerPointToLatLng", () => {
 
 		it("throws if map is not set before", () => {
@@ -2233,11 +2233,10 @@ describe("Map", () => {
 
 		it("returns the corresponding geographical coordinate for a pixel coordinate relative to the origin pixel", () => {
 			const center = L.latLng(10, 10);
-			map.setView(center);
+			map.setView(center, 10);
 			const point = L.point(200, 200);
-			const p = map.layerPointToLatLng(point);
-			expect(p.lat).to.be.within(10.0013100, 10.0013200);
-			expect(p.lng).to.be.within(8.8989200, 8.8989300);
+			const latlng = map.layerPointToLatLng(point);
+			expect(latlng).to.be.nearLatLng([9.9999579356371, 10.000305175781252]);
 		});
 	});
 
