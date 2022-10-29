@@ -3,7 +3,7 @@ import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
-import * as Browser from '../../core/Browser';
+import Browser from '../../core/Browser';
 
 /*
  * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
@@ -17,8 +17,8 @@ Map.mergeOptions({
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
-	// browsers except for old Androids.
-	touchZoom: Browser.touch && !Browser.android23,
+	// browsers.
+	touchZoom: Browser.touch,
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
@@ -26,22 +26,22 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export var TouchZoom = Handler.extend({
-	addHooks: function () {
+export const TouchZoom = Handler.extend({
+	addHooks() {
 		DomUtil.addClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
-	removeHooks: function () {
+	removeHooks() {
 		DomUtil.removeClass(this._map._container, 'leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
-	_onTouchStart: function (e) {
-		var map = this._map;
+	_onTouchStart(e) {
+		const map = this._map;
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
+		const p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
 
 		this._centerPoint = map.getSize()._divideBy(2);
@@ -59,15 +59,15 @@ export var TouchZoom = Handler.extend({
 		map._stop();
 
 		DomEvent.on(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.on(document, 'touchend', this._onTouchEnd, this);
+		DomEvent.on(document, 'touchend touchcancel', this._onTouchEnd, this);
 
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchMove: function (e) {
+	_onTouchMove(e) {
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
-		var map = this._map,
+		const map = this._map,
 		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
 		    scale = p1.distanceTo(p2) / this._startDist;
@@ -85,7 +85,7 @@ export var TouchZoom = Handler.extend({
 			if (scale === 1) { return; }
 		} else {
 			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
-			var delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
+			const delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
 			if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
 			this._center = map.unproject(map.project(this._pinchStartLatLng, this._zoom).subtract(delta), this._zoom);
 		}
@@ -97,13 +97,13 @@ export var TouchZoom = Handler.extend({
 
 		Util.cancelAnimFrame(this._animRequest);
 
-		var moveFn = Util.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
+		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
 		this._animRequest = Util.requestAnimFrame(moveFn, this, true);
 
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchEnd: function () {
+	_onTouchEnd() {
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
@@ -113,7 +113,7 @@ export var TouchZoom = Handler.extend({
 		Util.cancelAnimFrame(this._animRequest);
 
 		DomEvent.off(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.off(document, 'touchend', this._onTouchEnd, this);
+		DomEvent.off(document, 'touchend touchcancel', this._onTouchEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {

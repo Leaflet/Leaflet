@@ -2,10 +2,10 @@
 layout: v2
 ---
 
-<div class="announcement">Nov 17, 2019 — <a href="/2019/11/17/leaflet-1.6.0.html">Leaflet 1.6.0</a> has been released!</div>
+<div class="announcement">Sep 21, 2022 — <a href="/2022/09/21/leaflet-1.9.0.html">Leaflet 1.9</a> has been released!</div>
 
 <p>Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps.
-Weighing just about <abbr title="38 KB gzipped &mdash; that's 133 KB minified and 378 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 11 KB of images.">38 KB of JS</abbr>,
+Weighing just about <abbr title="42 KB gzipped &mdash; that's 142 KB minified and 431 KB in the source form, with 14.5 KB of CSS (3.5 KB gzipped) and 6 KB of images.">42 KB of JS</abbr>,
 it&nbsp;has all the mapping <a href="#features">features</a> most developers ever need.</p>
 
 <p>Leaflet is designed with <em>simplicity</em>, <em>performance</em> and <em>usability</em> in mind.
@@ -13,7 +13,7 @@ It works efficiently across all major desktop and mobile platforms,
 can be extended with lots of <a href="plugins.html">plugins</a>,
 has a beautiful, easy to use and <a title="Leaflet API reference" href="reference.html">well-documented API</a>
 and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" href="https://github.com/Leaflet/Leaflet">source code</a> that is a&nbsp;joy to
-<a title="A guide to contributing to Leaflet" href="https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md">contribute</a> to.</p>
+<a title="A guide to contributing to Leaflet" href="https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md">contribute</a> to.</p>
 
 <div id="map" class="map map-home" style="height: 300px; margin-top: 50px"></div>
 
@@ -21,7 +21,7 @@ and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" 
 
 <pre class="basic-code javascript"><code>var map = L.map('map').setView([51.505, -0.09], 13);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 }).addTo(map);
 
@@ -31,7 +31,7 @@ L.marker([51.5, -0.09]).addTo(map)
 
 <p>Learn more with the <a href="examples/quick-start/">quick start guide</a>, check out <a href="examples.html">other tutorials</a>,
 or head straight to the <a href="reference.html">API documentation</a>.
-If you have any questions, take a look at the <a href="https://github.com/Leaflet/Leaflet/blob/master/FAQ.md">FAQ</a> first.</p>
+If you have any questions, take a look at the <a href="https://github.com/Leaflet/Leaflet/blob/main/FAQ.md">FAQ</a> first.</p>
 
 
 </div>
@@ -152,7 +152,7 @@ If you have any questions, take a look at the <a href="https://github.com/Leafle
             <li>Firefox</li>
             <li>Safari 5+</li>
             <li>Opera 12+</li>
-            <li>IE 7&ndash;11</li>
+            <li>IE 9&ndash;11</li>
             <li>Edge</li>
         </ul>
     </div>
@@ -162,7 +162,6 @@ If you have any questions, take a look at the <a href="https://github.com/Leafle
 
         <ul>
             <li>Safari for iOS 7+</li>
-            <li>Android browser 2.2+,&nbsp;3.1+,&nbsp;4+</li>
             <li>Chrome for mobile</li>
             <li>Firefox for mobile</li>
             <li>IE10+ for Win8 devices</li>
@@ -186,18 +185,18 @@ If not, please open a new GitHub issue.</p>
 <h2>Getting Involved</h2>
 
 <p>Let's create the best mapping library in the world!
-Leaflet was originally created by <a href="https://agafonkin.com">Vladimir Agafonkin</a>,
+Leaflet was originally created by <a href="https://agafonkin.com">Volodymyr Agafonkin</a>,
 but is now developed by a big community of <a href="https://github.com/Leaflet/Leaflet/graphs/contributors">contributors</a>.
 <a href="https://github.com/Leaflet/Leaflet">Pull requests</a> are always welcome.
 However, there are many more ways to get involved with the development of Leaflet.</p>
 
-<p>You can help the project tremendously by discovering and <a href="https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md#reporting-bugs">reporting bugs</a>, <a href="https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md#improving-documentation">improving documentation</a>,
+<p>You can help the project tremendously by discovering and <a href="https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md#reporting-bugs">reporting bugs</a>, <a href="https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md#improving-documentation">improving documentation</a>,
 helping others on <a href="https://stackoverflow.com/questions/tagged/leaflet">Stack Overflow</a>, <a href="https://gis.stackexchange.com/questions/tagged/leaflet">GIS Stack Exchange</a>
 and <a href="https://github.com/Leaflet/Leaflet/issues">GitHub issues</a>,
 tweeting to <a href="https://twitter.com/LeafletJS">@LeafletJS</a>
 and spreading the word about Leaflet among your colleagues and friends.</p>
 
-<p>Check out the <a href="https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md">contribution guide</a> for more information on getting involved with Leaflet development.</p>
+<p>Check out the <a href="https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md">contribution guide</a> for more information on getting involved with Leaflet development.</p>
 
 <div class="social-buttons">
     <iframe src="https://ghbtns.com/github-btn.html?user=Leaflet&amp;repo=Leaflet&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="104px" height="20px"></iframe>
@@ -210,7 +209,7 @@ and spreading the word about Leaflet among your colleagues and friends.</p>
 </div>
 
 <script>
-	var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 		osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 

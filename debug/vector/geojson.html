@@ -40,7 +40,7 @@
 		}
 	</style>
 
-	<script src="../leaflet-include.js"></script>
+	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
 
@@ -51,7 +51,7 @@
 
 		var map = L.map('map').setView([37.8, -96], 4);
 
-		var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		}).addTo(map);
 
@@ -107,9 +107,7 @@
 				fillOpacity: 0.7
 			});
 
-			if (!L.Browser.ie) {
-				layer.bringToFront();
-			}
+			layer.bringToFront();
 
 			info.update(layer.feature.properties);
 		}

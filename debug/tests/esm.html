@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <link rel="stylesheet" href="../css/screen.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="module">
+      import L from '../../dist/leaflet-src.esm.js';
+
+      var map = L.map('map', {
+        center: [39.84, -96.591],
+        zoom: 4,
+      });
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    </script>
+  </body>
+</html>

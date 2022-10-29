@@ -13,7 +13,7 @@ Every tutorial here comes with step-by-step code explanation and is easy enough 
 page="quick-start/"
 thumbnail="quick-start/thumbnail.png"
 title="Leaflet Quick Start Guide"
-description="A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with Mapbox tiles) on your page, working with markers, polylines and popups, and dealing with events."
+description="A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with OpenStreetMap tiles) on your page, working with markers, polylines and popups, and dealing with events."
 %}
 
 
@@ -30,6 +30,14 @@ page="custom-icons/"
 thumbnail="custom-icons/thumbnail.png"
 title="Markers with Custom Icons"
 description="In this pretty tutorial, you'll learn how to easily define your own icons for use by the markers you put on the map."
+%}
+
+
+{% include tutorial_link.html
+page="accessibility/"
+thumbnail="accessibility/thumbnail.png"
+title="Accessible maps"
+description="A guide to basic Leaflet accessibility - make your maps usable to persons of a wide range of abilities."
 %}
 
 
@@ -89,10 +97,10 @@ description="How the default map panes work to display overlays on top of tiles,
 
 
 {% include tutorial_link.html
-page="video-overlay/"
-thumbnail="video-overlay/thumbnail.gif"
-title="Showing video files"
-description="Leaflet can help you display videos somewhere on the map."
+page="overlays/"
+thumbnail="overlays/thumbnail.gif"
+title="Overlays: Image, Video, SVG"
+description="Leaflet can help you display images, videos and SVG elements somewhere on the map."
 %}
 
 ***

@@ -21,13 +21,14 @@ import * as Util from '../core/Util';
  * ```
  */
 
-export var VideoOverlay = ImageOverlay.extend({
+export const VideoOverlay = ImageOverlay.extend({
 
 	// @section
 	// @aka VideoOverlay options
 	options: {
 		// @option autoplay: Boolean = true
 		// Whether the video starts playing automatically when loaded.
+		// On some browsers autoplay will only work with `muted: true`
 		autoplay: true,
 
 		// @option loop: Boolean = true
@@ -36,17 +37,21 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
-		// Relevant for supported browsers. Browser compatibility- https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
+		// Relevant for supported browsers. See [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 		keepAspectRatio: true,
 
 		// @option muted: Boolean = false
 		// Whether the video starts on mute when loaded.
-		muted: false
+		muted: false,
+
+		// @option playsInline: Boolean = true
+		// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+		playsInline: true
 	},
 
-	_initImage: function () {
-		var wasElementSupplied = this._url.tagName === 'VIDEO';
-		var vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
+	_initImage() {
+		const wasElementSupplied = this._url.tagName === 'VIDEO';
+		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
 
 		DomUtil.addClass(vid, 'leaflet-image-layer');
 		if (this._zoomAnimated) { DomUtil.addClass(vid, 'leaflet-zoom-animated'); }
@@ -57,12 +62,12 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
-		vid.onloadeddata = Util.bind(this.fire, this, 'load');
+		vid.onloadeddata = this.fire.bind(this, 'load');
 
 		if (wasElementSupplied) {
-			var sourceElements = vid.getElementsByTagName('source');
-			var sources = [];
-			for (var j = 0; j < sourceElements.length; j++) {
+			const sourceElements = vid.getElementsByTagName('source');
+			const sources = [];
+			for (let j = 0; j < sourceElements.length; j++) {
 				sources.push(sourceElements[j].src);
 			}
 
@@ -72,12 +77,15 @@ export var VideoOverlay = ImageOverlay.extend({
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
-		if (!this.options.keepAspectRatio && vid.style.hasOwnProperty('objectFit')) { vid.style['objectFit'] = 'fill'; }
+		if (!this.options.keepAspectRatio && Object.prototype.hasOwnProperty.call(vid.style, 'objectFit')) {
+			vid.style['objectFit'] = 'fill';
+		}
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
-		for (var i = 0; i < this._url.length; i++) {
-			var source = DomUtil.create('source');
+		vid.playsInline = !!this.options.playsInline;
+		for (let i = 0; i < this._url.length; i++) {
+			const source = DomUtil.create('source');
 			source.src = this._url[i];
 			vid.appendChild(source);
 		}

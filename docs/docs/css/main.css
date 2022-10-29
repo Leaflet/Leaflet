@@ -88,6 +88,14 @@ iframe {
 	border: none;
 }
 
+img {
+	height: auto;
+}
+
+img,
+video {
+	max-width: 100%;
+}
 
 /* headings */
 
@@ -175,7 +183,7 @@ h1 a:hover, h1 a:focus {
 	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
 }
 
-h3.tagline {
+p.tagline {
 	font-weight: 300;
 	font-size: 1.5em;
 	margin-top: -.75em;
@@ -191,7 +199,7 @@ h3.tagline {
 	padding: 0 30px;
 	text-align: center;
 	font-size: 1.25em;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	border-bottom: 1px solid #ccc;
 	padding-bottom: 40px;
 }
@@ -265,8 +273,8 @@ h3.tagline {
 
 .map-home {
 	height: 300px;
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 40px;
+	margin-bottom: 40px;
 }
 
 .usedby-title {
@@ -488,6 +496,10 @@ table.plugins td:first-child a {
 	color: #333;
 	border-bottom: 3px solid #555;
 	transition: border-color .25s ease;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: white;
 }
 .api-page #toc ~ h2:target {
 	border-color: #1EB300;
@@ -524,6 +536,7 @@ table.plugins td:first-child a {
 
 #toc-copy {
 	display: none;
+	z-index: 1;
 }
 
 #toc-copy div {
@@ -782,7 +795,7 @@ table.plugins td:first-child a {
 	font-size: 14px;
 }
 
-.api-page p {
+main .api-page p {
 	margin-top: 0;
 }
 
@@ -823,6 +836,18 @@ tr:target {
 .api-page h2[id]:before {
 	margin-left: -32px;
 	margin-top: 14px;
+}
+
+.api-page h2[id]:after {
+	content: '';
+	margin-left: -32px;
+	margin-top: 19px;
+	width: 23px;
+	height: 23px;
+	background-color: #fff;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 
 .api-page tr[id] td:first-child:before {
@@ -994,7 +1019,7 @@ tr:target {
 		margin: 1em 0;
 	}
 
-	h3.tagline {
+	p.tagline {
 		font-size: 1.05em;
 		margin: 0 1em;
 	}
@@ -1093,3 +1118,69 @@ iframe[src*='youtube.com'] {
 	padding: 5px 10px;
 	border-radius: 10px;
 }
+
+/** Begin site dialog **/
+#dialog {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	z-index: 10000;
+	background: rgba(0, 0, 0, 0.24);
+	padding-top: 20px;
+}
+
+/*
+keep focus in dialog
+https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
+ */
+#dialog:not(:focus-within) {
+	background-color:rgba(0, 0, 0, 0.25);
+	transition: background-color 0.01s;
+}
+
+#dialog .iframe-container {
+	height: 90%;
+	border-radius: 5px;
+	padding: 10px 0px;
+	background: #fff;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#dialog iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.overflowHidden {
+	overflow: hidden !important;
+}
+
+.close-dialog {
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  right: 20px;
+  position: absolute;
+  font-size: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #000;
+	overflow: hidden;
+}
+
+.close-dialog:hover, .close-dialog:focus {
+	color: #797979;
+}
+
+blockquote {
+	font-style: italic;
+}
+
+/** End site dialog **/

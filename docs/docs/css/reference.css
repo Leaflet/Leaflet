@@ -1,3 +1,8 @@
+html {
+	scroll-padding-top: 5em;
+	overflow: auto;
+}
+
 h2 {
     margin-top: 2em;
 }
@@ -22,6 +27,15 @@ section > h4 {
     display: block;
     font-weight: 500;
     margin: 1em 0 0.25em;
+}
+div.accordion.expanded label,
+section > h4 {
+    margin: 0.75em 0 0;
+    padding: 0.25em 0;
+    position: sticky;
+    top: 2.8em;
+    background-color: white;
+    border-bottom: 1px solid #eee;
 }
 
 label {

@@ -13,7 +13,7 @@ title: Leaflet Developer Blog Atom Feed
 	<id>https://leafletjs.com/</id>
 
 	<author>
-		<name>Vladimir Agafonkin</name>
+		<name>Volodymyr Agafonkin</name>
 	</author>
 
 	{% for post in site.posts %}
