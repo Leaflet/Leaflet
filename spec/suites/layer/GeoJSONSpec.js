@@ -882,6 +882,11 @@ describe("L.GeoJSON functions", () => {
 				]
 			});
 		});
+		it("has no reference between first and last coordinates", () => {
+			const coords = L.GeoJSON.latLngsToCoords([[2, 1, 3], [5, 4, 6]], null, true);
+			expect(coords).to.eql([[1, 2, 3], [4, 5, 6], [1, 2, 3]]);
+			expect(coords[0] === coords[2]).to.not.ok();
+		});
 	});
 
 	describe("#asFeature", () => {
