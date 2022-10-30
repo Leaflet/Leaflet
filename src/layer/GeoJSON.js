@@ -289,7 +289,7 @@ export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	}
 
 	if (!levelsDeep && closed) {
-		coords.push(coords[0]);
+		coords.push(coords[0].slice());
 	}
 
 	return coords;
