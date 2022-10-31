@@ -3,6 +3,7 @@ import * as Util from '../core/Util';
 import {toLatLngBounds} from '../geo/LatLngBounds';
 import {Bounds} from '../geometry/Bounds';
 import * as DomUtil from '../dom/DomUtil';
+import Browser from '../core/Browser';
 
 /*
  * @class ImageOverlay
@@ -190,6 +191,7 @@ export const ImageOverlay = Layer.extend({
 
 		img.onselectstart = Util.falseFn;
 		img.onmousemove = Util.falseFn;
+		img.decoding = Browser.safari ? 'async' : 'auto';
 
 		// @event load: Event
 		// Fired when the ImageOverlay layer has loaded its image
