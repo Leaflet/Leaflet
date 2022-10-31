@@ -33,6 +33,7 @@ function makeDblclick(ev) {
 		region: ev.region,
 	};
 
+	let newEvent;
 	// The `click` event received should be a PointerEvent - but some
 	// Firefox versions still use MouseEvent.
 	if (ev instanceof PointerEvent) {
@@ -49,10 +50,12 @@ function makeDblclick(ev) {
 			pointerType: ev.pointerType,
 			isPrimary: ev.isPrimary,
 		};
-		return new PointerEvent('dblclick', init);
+		newEvent = new PointerEvent('dblclick', init);
 	} else {
-		return new MouseEvent('dblclick', init);
+		newEvent = new MouseEvent('dblclick', init);
 	}
+	newEvent._simulated = true; // for debug purposes
+	return newEvent;
 }
 
 const delay = 200;
