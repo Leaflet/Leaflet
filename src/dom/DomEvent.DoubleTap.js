@@ -7,21 +7,52 @@ import * as DomEvent from './DomEvent.js';
  * (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386)
  */
 
-function makeDblclick(event) {
-	// in modern browsers `type` cannot be just overridden:
-	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only
-	const newEvent = {};
-	let prop, i;
-	for (i in event) {
-		prop = event[i];
-		newEvent[i] = prop && prop.bind ? prop.bind(event) : prop;
+function makeDblclick(ev) {
+	let init = {
+		// EventInit
+		bubbles: ev.bubbles,
+		cancelable: ev.cancelable,
+		composed: ev.composed,
+
+		// UIEventInit
+		detail: 2,
+		view: ev.view,
+
+		// mouseEventInit
+		screenX: ev.screenX,
+		screenY: ev.screenY,
+		clientX: ev.clientX,
+		clientY: ev.clientY,
+		ctrlKey: ev.ctrlKey,
+		shiftKey: ev.shiftKey,
+		altKey: ev.altKey,
+		metaKey: ev.metaKey,
+		button: ev.button,
+		buttons: ev.buttons,
+		relatedTarget: ev.relatedTarget,
+		region: ev.region,
+	};
+
+	// The `click` event received should be a PointerEvent - but some
+	// Firefox versions still use MouseEvent.
+	if (ev instanceof PointerEvent) {
+		init = {
+			...init,
+			pointerId: ev.pointerId,
+			width: ev.width,
+			height: ev.height,
+			pressure: ev.pressure,
+			tangentialPressure: ev.tangentialPressure,
+			tiltX: ev.tiltX,
+			tiltY: ev.tiltY,
+			twist: ev.twist,
+			pointerType: ev.pointerType,
+			isPrimary: ev.isPrimary,
+		};
+		return new PointerEvent('dblclick', init);
+	} else {
+		return new MouseEvent('dblclick', init);
 	}
-	event = newEvent;
-	newEvent.type = 'dblclick';
-	newEvent.detail = 2;
-	newEvent.isTrusted = false;
-	newEvent._simulated = true; // for debug purposes
-	return newEvent;
 }
 
 const delay = 200;
