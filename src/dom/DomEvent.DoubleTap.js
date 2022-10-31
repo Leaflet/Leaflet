@@ -68,14 +68,14 @@ export function addDoubleTapListener(obj, handler) {
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
 	    detail;
-	function simDblclick(e) {
-		if (e.detail !== 1) {
-			detail = e.detail; // keep in sync to avoid false dblclick in some cases
+	function simDblclick(ev) {
+		if (ev.detail !== 1) {
+			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
 			return;
 		}
 
-		if (e.pointerType === 'mouse' ||
-			(e.sourceCapabilities && !e.sourceCapabilities.firesTouchEvents)) {
+		if (ev.pointerType === 'mouse' ||
+			(ev.sourceCapabilities && !ev.sourceCapabilities.firesTouchEvents)) {
 
 			return;
 		}
@@ -85,7 +85,7 @@ export function addDoubleTapListener(obj, handler) {
 		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
-		const path = DomEvent.getPropagationPath(e);
+		const path = DomEvent.getPropagationPath(ev);
 		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
 			!path.some(el => (
 				el instanceof HTMLInputElement ||
@@ -99,7 +99,7 @@ export function addDoubleTapListener(obj, handler) {
 		if (now - last <= delay) {
 			detail++;
 			if (detail === 2) {
-				handler(makeDblclick(e));
+				ev.target.dispatchEvent(makeDblclick(ev));
 			}
 		} else {
 			detail = 1;
