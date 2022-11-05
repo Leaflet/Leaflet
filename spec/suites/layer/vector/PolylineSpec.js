@@ -293,7 +293,7 @@ describe('Polyline', () => {
 			expect(point.distance).to.be.lessThan(point2.distance);
 		});
 	});
-	describe.only("#_containsPoint", () => {
+	describe("#_containsPoint", () => {
 		const points = [[50, 50], [50, 51]];
 		it("return true when the point is on the line", () => {
 			map.setZoom(0);
