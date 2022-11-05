@@ -2206,6 +2206,31 @@ describe("Map", () => {
 		});
 	});
 
+	describe("#project", () => {
+
+		it("throws if map is not set before", () => {
+			expect(() => {
+				map.panInsideBounds();
+			}).to.throwError();
+		});
+
+		it("returns geographical coordinate relative to the CRS origin", () => {
+			map.setView([40, -83], 5);
+			const x = L.latLng([40, -83]);
+			const a = map.project(x, 5);
+			expect(a.x).to.be.equal(2207.2888888888892);
+			expect(a.y).to.be.equal(3101.3204602149353);
+		});
+
+		it("test the other corridinates", () => {
+			map.setView([40, 83], 5);
+			const x = L.latLng([40, 83]);
+			const b = map.project(x, 5);
+			expect(b.x).to.be.equal(5984.711111111111);
+			expect(b.y).to.be.equal(3101.3204602149353);
+		});
+	});
+
 	describe("#latLngToLayerPoint", () => {
 
 		it("throws if map is not set before", () => {
