@@ -177,33 +177,35 @@ describe("Map.TouchZoom", () => {
 
 		let alreadyCalled = false;
 		const hand = new Hand({
-			timing: 'frame',
+			timing: 'fastframe',
 			onStop() {
-				if (alreadyCalled) {
-					return; // Will recursivly call itself otherwise
-				}
-				alreadyCalled = true;
+				setTimeout(() => {
+					if (alreadyCalled) {
+						return; // Will recursivly call itself otherwise
+					}
+					alreadyCalled = true;
 
-				const renderedRect = polygon._path.getBoundingClientRect();
+					const renderedRect = polygon._path.getBoundingClientRect();
 
-				const width = renderedRect.width;
-				const height = renderedRect.height;
+					const width = renderedRect.width;
+					const height = renderedRect.height;
 
-				expect(height < 50).to.be(true);
-				expect(width < 50).to.be(true);
-				expect(height + width > 0).to.be(true);
+					expect(height < 50).to.be(true);
+					expect(width < 50).to.be(true);
+					expect(height + width > 0).to.be(true);
 
-				const x = renderedRect.x;
-				const y = renderedRect.y;
+					const x = renderedRect.x;
+					const y = renderedRect.y;
 
-				expect(x).to.be.within(299, 301);
-				expect(y).to.be.within(270, 280);
+					expect(x).to.be.within(299, 301);
+					expect(y).to.be.within(270, 280);
 
-				// Fingers lifted after expects as bug goes away when lifted
-				this._fingers[0].up();
-				this._fingers[1].up();
+					// Fingers lifted after expects as bug goes away when lifted
+					this._fingers[0].up();
+					this._fingers[1].up();
 
-				done();
+					done();
+				}, 100);
 			}
 		});
 
