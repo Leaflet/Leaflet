@@ -3,7 +3,7 @@ on: [push, pull_request]
 permissions:
   contents: read
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 18
 jobs:
   setup:
     runs-on: ${{ matrix.os }}
