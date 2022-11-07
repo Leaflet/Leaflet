@@ -20,14 +20,14 @@ import * as Util from '../core/Util';
  * ```
  */
 
-export var LayerGroup = Layer.extend({
+export const LayerGroup = Layer.extend({
 
 	initialize(layers, options) {
 		Util.setOptions(this, options);
 
 		this._layers = {};
 
-		var i, len;
+		let i, len;
 
 		if (layers) {
 			for (i = 0, len = layers.length; i < len; i++) {
@@ -39,7 +39,7 @@ export var LayerGroup = Layer.extend({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
 	addLayer(layer) {
-		var id = this.getLayerId(layer);
+		const id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
 
@@ -56,7 +56,7 @@ export var LayerGroup = Layer.extend({
 	// @method removeLayer(id: Number): this
 	// Removes the layer with the given internal ID from the group.
 	removeLayer(layer) {
-		var id = layer in this._layers ? layer : this.getLayerId(layer);
+		const id = layer in this._layers ? layer : this.getLayerId(layer);
 
 		if (this._map && this._layers[id]) {
 			this._map.removeLayer(this._layers[id]);
@@ -73,7 +73,7 @@ export var LayerGroup = Layer.extend({
 	// @method hasLayer(id: Number): Boolean
 	// Returns `true` if the given internal ID is currently added to the group.
 	hasLayer(layer) {
-		var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
+		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	},
 
@@ -88,7 +88,7 @@ export var LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke(methodName, ...args) {
-		var i, layer;
+		let i, layer;
 
 		for (i in this._layers) {
 			layer = this._layers[i];
@@ -117,7 +117,7 @@ export var LayerGroup = Layer.extend({
 	// });
 	// ```
 	eachLayer(method, context) {
-		for (var i in this._layers) {
+		for (const i in this._layers) {
 			method.call(context, this._layers[i]);
 		}
 		return this;
@@ -132,7 +132,7 @@ export var LayerGroup = Layer.extend({
 	// @method getLayers(): Layer[]
 	// Returns an array of all the layers added to the group.
 	getLayers() {
-		var layers = [];
+		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
 	},
@@ -153,6 +153,6 @@ export var LayerGroup = Layer.extend({
 
 // @factory L.layerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
-export var layerGroup = function (layers, options) {
+export const layerGroup = function (layers, options) {
 	return new LayerGroup(layers, options);
 };

@@ -31,7 +31,7 @@ export function Point(x, y, round) {
 	this.y = (round ? Math.round(y) : y);
 }
 
-var trunc = Math.trunc || function (v) {
+const trunc = Math.trunc || function (v) {
 	return v > 0 ? Math.floor(v) : Math.ceil(v);
 };
 
@@ -162,7 +162,7 @@ Point.prototype = {
 	distanceTo(point) {
 		point = toPoint(point);
 
-		var x = point.x - this.x,
+		const x = point.x - this.x,
 		    y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);

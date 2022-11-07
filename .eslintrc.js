@@ -8,9 +8,8 @@ module.exports = {
 		'docs/examples/geojson/sample-geojson.js',
 		'docs/examples/map-panes/eu-countries.js',
 		'docs/examples/extending/extending-2-layers.md',
-		'docs/_posts/2012*',
+		'docs/_posts/201*',
 		'docs/_site',
-		'build/integrity.js'
 	],
 	root: true,
 	globals: {
@@ -41,8 +40,6 @@ module.exports = {
 		'wrap-iife': 'off',
 		// TODO: Re-enable the rules below and fix the linting issues.
 		'no-invalid-this': 'off',
-		'no-var': 'off',
-		'prefer-arrow-callback': 'off',
 		'prefer-spread': 'off'
 	},
 	overrides: [

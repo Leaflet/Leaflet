@@ -37,7 +37,7 @@ import {Bounds} from '../../geometry/Bounds';
  * ```
  */
 
-export var Canvas = Renderer.extend({
+export const Canvas = Renderer.extend({
 
 	// @section
 	// @aka Canvas options
@@ -48,7 +48,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	getEvents() {
-		var events = Renderer.prototype.getEvents.call(this);
+		const events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
 		return events;
 	},
@@ -67,7 +67,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_initContainer() {
-		var container = this._container = document.createElement('canvas');
+		const container = this._container = document.createElement('canvas');
 
 		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
@@ -88,9 +88,9 @@ export var Canvas = Renderer.extend({
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
 
-		var layer;
+		let layer;
 		this._redrawBounds = null;
-		for (var id in this._layers) {
+		for (const id in this._layers) {
 			layer = this._layers[id];
 			layer._update();
 		}
@@ -102,7 +102,7 @@ export var Canvas = Renderer.extend({
 
 		Renderer.prototype._update.call(this);
 
-		var b = this._bounds,
+		const b = this._bounds,
 		    container = this._container,
 		    size = b.getSize(),
 		    m = Browser.retina ? 2 : 1;
@@ -139,7 +139,7 @@ export var Canvas = Renderer.extend({
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
 
-		var order = layer._order = {
+		const order = layer._order = {
 			layer,
 			prev: this._drawLast,
 			next: null
@@ -154,9 +154,9 @@ export var Canvas = Renderer.extend({
 	},
 
 	_removePath(layer) {
-		var order = layer._order;
-		var next = order.next;
-		var prev = order.prev;
+		const order = layer._order;
+		const next = order.next;
+		const prev = order.prev;
 
 		if (next) {
 			next.prev = prev;
@@ -194,9 +194,9 @@ export var Canvas = Renderer.extend({
 
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
-			var parts = layer.options.dashArray.split(/[, ]+/),
-			    dashArray = [],
-			    dashValue,
+			const parts = layer.options.dashArray.split(/[, ]+/),
+			      dashArray = [];
+			let dashValue,
 			    i;
 			for (i = 0; i < parts.length; i++) {
 				dashValue = Number(parts[i]);
@@ -219,7 +219,7 @@ export var Canvas = Renderer.extend({
 
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
-			var padding = (layer.options.weight || 0) + 1;
+			const padding = (layer.options.weight || 0) + 1;
 			this._redrawBounds = this._redrawBounds || new Bounds();
 			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
@@ -241,9 +241,9 @@ export var Canvas = Renderer.extend({
 	},
 
 	_clear() {
-		var bounds = this._redrawBounds;
+		const bounds = this._redrawBounds;
 		if (bounds) {
-			var size = bounds.getSize();
+			const size = bounds.getSize();
 			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
 		} else {
 			this._ctx.save();
@@ -254,10 +254,11 @@ export var Canvas = Renderer.extend({
 	},
 
 	_draw() {
-		var layer, bounds = this._redrawBounds;
+		let layer;
+		const bounds = this._redrawBounds;
 		this._ctx.save();
 		if (bounds) {
-			var size = bounds.getSize();
+			const size = bounds.getSize();
 			this._ctx.beginPath();
 			this._ctx.rect(bounds.min.x, bounds.min.y, size.x, size.y);
 			this._ctx.clip();
@@ -265,7 +266,7 @@ export var Canvas = Renderer.extend({
 
 		this._drawing = true;
 
-		for (var order = this._drawFirst; order; order = order.next) {
+		for (let order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
@@ -280,10 +281,10 @@ export var Canvas = Renderer.extend({
 	_updatePoly(layer, closed) {
 		if (!this._drawing) { return; }
 
-		var i, j, len2, p,
-		    parts = layer._parts,
-		    len = parts.length,
-		    ctx = this._ctx;
+		let i, j, len2, p;
+		const parts = layer._parts,
+		      len = parts.length,
+		      ctx = this._ctx;
 
 		if (!len) { return; }
 
@@ -308,7 +309,7 @@ export var Canvas = Renderer.extend({
 
 		if (!this._drawing || layer._empty()) { return; }
 
-		var p = layer._point,
+		const p = layer._point,
 		    ctx = this._ctx,
 		    r = Math.max(Math.round(layer._radius), 1),
 		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
@@ -329,7 +330,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_fillStroke(ctx, layer) {
-		var options = layer.options;
+		const options = layer.options;
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
@@ -354,9 +355,10 @@ export var Canvas = Renderer.extend({
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
 	_onClick(e) {
-		var point = this._map.mouseEventToLayerPoint(e), layer, clickedLayer;
+		const point = this._map.mouseEventToLayerPoint(e);
+		let layer, clickedLayer;
 
-		for (var order = this._drawFirst; order; order = order.next) {
+		for (let order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
 			if (layer.options.interactive && layer._containsPoint(point)) {
 				if (!(e.type === 'click' || e.type === 'preclick') || !this._map._draggableMoved(layer)) {
@@ -370,13 +372,13 @@ export var Canvas = Renderer.extend({
 	_onMouseMove(e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
-		var point = this._map.mouseEventToLayerPoint(e);
+		const point = this._map.mouseEventToLayerPoint(e);
 		this._handleMouseHover(e, point);
 	},
 
 
 	_handleMouseOut(e) {
-		var layer = this._hoveredLayer;
+		const layer = this._hoveredLayer;
 		if (layer) {
 			// if we're leaving the layer, fire mouseout
 			DomUtil.removeClass(this._container, 'leaflet-interactive');
@@ -391,9 +393,9 @@ export var Canvas = Renderer.extend({
 			return;
 		}
 
-		var layer, candidateHoveredLayer;
+		let layer, candidateHoveredLayer;
 
-		for (var order = this._drawFirst; order; order = order.next) {
+		for (let order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
 			if (layer.options.interactive && layer._containsPoint(point)) {
 				candidateHoveredLayer = layer;
@@ -413,9 +415,9 @@ export var Canvas = Renderer.extend({
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
-		setTimeout((function () {
+		setTimeout((() => {
 			this._mouseHoverThrottled = false;
-		}).bind(this), 32);
+		}), 32);
 	},
 
 	_fireEvent(layers, e, type) {
@@ -423,12 +425,12 @@ export var Canvas = Renderer.extend({
 	},
 
 	_bringToFront(layer) {
-		var order = layer._order;
+		const order = layer._order;
 
 		if (!order) { return; }
 
-		var next = order.next;
-		var prev = order.prev;
+		const next = order.next;
+		const prev = order.prev;
 
 		if (next) {
 			next.prev = prev;
@@ -454,12 +456,12 @@ export var Canvas = Renderer.extend({
 	},
 
 	_bringToBack(layer) {
-		var order = layer._order;
+		const order = layer._order;
 
 		if (!order) { return; }
 
-		var next = order.next;
-		var prev = order.prev;
+		const next = order.next;
+		const prev = order.prev;
 
 		if (prev) {
 			prev.next = next;

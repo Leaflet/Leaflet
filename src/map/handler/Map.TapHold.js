@@ -9,7 +9,7 @@ import Browser from '../../core/Browser';
  * which otherwise is not fired by mobile Safari.
  */
 
-var tapHoldDelay = 600;
+const tapHoldDelay = 600;
 
 // @namespace Map
 // @section Interaction Options
@@ -25,7 +25,7 @@ Map.mergeOptions({
 	tapTolerance: 15
 });
 
-export var TapHold = Handler.extend({
+export const TapHold = Handler.extend({
 	addHooks() {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
@@ -38,10 +38,10 @@ export var TapHold = Handler.extend({
 		clearTimeout(this._holdTimeout);
 		if (e.touches.length !== 1) { return; }
 
-		var first = e.touches[0];
+		const first = e.touches[0];
 		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
-		this._holdTimeout = setTimeout((function () {
+		this._holdTimeout = setTimeout((() => {
 			this._cancel();
 			if (!this._isTapValid()) { return; }
 
@@ -49,7 +49,7 @@ export var TapHold = Handler.extend({
 			DomEvent.on(document, 'touchend', DomEvent.preventDefault);
 			DomEvent.on(document, 'touchend touchcancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', first);
-		}).bind(this), tapHoldDelay);
+		}), tapHoldDelay);
 
 		DomEvent.on(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.on(document, 'touchmove', this._onMove, this);
@@ -67,7 +67,7 @@ export var TapHold = Handler.extend({
 	},
 
 	_onMove(e) {
-		var first = e.touches[0];
+		const first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
 	},
 
@@ -76,7 +76,7 @@ export var TapHold = Handler.extend({
 	},
 
 	_simulateEvent(type, e) {
-		var simulatedEvent = new MouseEvent(type, {
+		const simulatedEvent = new MouseEvent(type, {
 			bubbles: true,
 			cancelable: true,
 			view: window,

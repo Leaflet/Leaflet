@@ -5,14 +5,14 @@ title: GeoJSON tutorial
 <script src="sample-geojson.js" type="text/javascript"></script>
 
 <script>
-	var map = L.map('map').setView([39.74739, -105], 13);
+	const map = L.map('map').setView([39.74739, -105], 13);
 
-	var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	var baseballIcon = L.icon({
+	const baseballIcon = L.icon({
 		iconUrl: 'baseball-marker.png',
 		iconSize: [32, 37],
 		iconAnchor: [16, 37],
@@ -20,7 +20,7 @@ title: GeoJSON tutorial
 	});
 
 	function onEachFeature(feature, layer) {
-		var popupContent = `<p>I started out as a GeoJSON ${feature.geometry.type}, but now I'm a Leaflet vector!</p>`;
+		let popupContent = `<p>I started out as a GeoJSON ${feature.geometry.type}, but now I'm a Leaflet vector!</p>`;
 
 		if (feature.properties && feature.properties.popupContent) {
 			popupContent += feature.properties.popupContent;
@@ -30,7 +30,7 @@ title: GeoJSON tutorial
 	}
 
 	/* global campus, bicycleRental, freeBus, coorsField */
-	var bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
+	const bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
 
 		style(feature) {
 			return feature.properties && feature.properties.style;
@@ -50,7 +50,7 @@ title: GeoJSON tutorial
 		}
 	}).addTo(map);
 
-	var freeBusLayer = L.geoJSON(freeBus, {
+	const freeBusLayer = L.geoJSON(freeBus, {
 
 		filter(feature, layer) {
 			if (feature.properties) {
@@ -63,7 +63,7 @@ title: GeoJSON tutorial
 		onEachFeature
 	}).addTo(map);
 
-	var coorsLayer = L.geoJSON(coorsField, {
+	const coorsLayer = L.geoJSON(coorsField, {
 
 		pointToLayer(feature, latlng) {
 			return L.marker(latlng, {icon: baseballIcon});

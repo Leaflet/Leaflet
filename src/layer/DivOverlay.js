@@ -14,7 +14,7 @@ import * as DomUtil from '../dom/DomUtil';
  */
 
 // @namespace DivOverlay
-export var DivOverlay = Layer.extend({
+export const DivOverlay = Layer.extend({
 
 	// @section
 	// @aka DivOverlay options
@@ -194,7 +194,7 @@ export var DivOverlay = Layer.extend({
 	},
 
 	getEvents() {
-		var events = {
+		const events = {
 			zoom: this._updatePosition,
 			viewreset: this._updatePosition
 		};
@@ -231,13 +231,13 @@ export var DivOverlay = Layer.extend({
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
 	_prepareOpen(latlng) {
-		var source = this._source;
+		let source = this._source;
 		if (!source._map) { return false; }
 
 		if (source instanceof FeatureGroup) {
 			source = null;
-			var layers = this._source._layers;
-			for (var id in layers) {
+			const layers = this._source._layers;
+			for (const id in layers) {
 				if (layers[id]._map) {
 					source = layers[id];
 					break;
@@ -273,8 +273,8 @@ export var DivOverlay = Layer.extend({
 	_updateContent() {
 		if (!this._content) { return; }
 
-		var node = this._contentNode;
-		var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+		const node = this._contentNode;
+		const content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
@@ -295,9 +295,9 @@ export var DivOverlay = Layer.extend({
 	_updatePosition() {
 		if (!this._map) { return; }
 
-		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    offset = toPoint(this.options.offset),
-		    anchor = this._getAnchor();
+		const pos = this._map.latLngToLayerPoint(this._latlng),
+		      anchor = this._getAnchor();
+		let offset = toPoint(this.options.offset);
 
 		if (this._zoomAnimated) {
 			DomUtil.setPosition(this._container, pos.add(anchor));
@@ -305,7 +305,7 @@ export var DivOverlay = Layer.extend({
 			offset = offset.add(pos).add(anchor);
 		}
 
-		var bottom = this._containerBottom = -offset.y,
+		const bottom = this._containerBottom = -offset.y,
 		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the overlay in case the height of the overlay changes (images loading etc)
@@ -321,7 +321,7 @@ export var DivOverlay = Layer.extend({
 
 Map.include({
 	_initOverlay(OverlayClass, content, latlng, options) {
-		var overlay = content;
+		let overlay = content;
 		if (!(overlay instanceof OverlayClass)) {
 			overlay = new OverlayClass(options).setContent(content);
 		}
@@ -335,7 +335,7 @@ Map.include({
 
 Layer.include({
 	_initOverlay(OverlayClass, old, content, options) {
-		var overlay = content;
+		let overlay = content;
 		if (overlay instanceof OverlayClass) {
 			Util.setOptions(overlay, options);
 			overlay._source = this;
