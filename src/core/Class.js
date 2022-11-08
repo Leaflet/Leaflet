@@ -15,28 +15,28 @@ Class.extend = function (props) {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+	const NewClass = function (...args) {
 
 		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
-			this.initialize.apply(this, arguments);
+			this.initialize.apply(this, args);
 		}
 
 		// call all constructor hooks
 		this.callInitHooks();
 	};
 
-	var parentProto = NewClass.__super__ = this.prototype;
+	const parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = Util.create(parentProto);
+	const proto = Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
 
 	// inherit parent's statics
-	for (var i in this) {
+	for (const i in this) {
 		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
@@ -49,7 +49,6 @@ Class.extend = function (props) {
 
 	// mix includes into the prototype
 	if (props.includes) {
-		checkDeprecatedMixinEvents(props.includes);
 		Util.extend.apply(null, [proto].concat(props.includes));
 	}
 
@@ -77,7 +76,7 @@ Class.extend = function (props) {
 
 		this._initHooksCalled = true;
 
-		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+		for (let i = 0, len = proto._initHooks.length; i < len; i++) {
 			proto._initHooks[i].call(this);
 		}
 	};
@@ -89,7 +88,7 @@ Class.extend = function (props) {
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
-	var parentOptions = this.prototype.options;
+	const parentOptions = this.prototype.options;
 	Util.extend(this.prototype, props);
 	if (props.options) {
 		this.prototype.options = parentOptions;
@@ -107,10 +106,8 @@ Class.mergeOptions = function (options) {
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn) { // (Function) || (String, args...)
-	var args = Array.prototype.slice.call(arguments, 1);
-
-	var init = typeof fn === 'function' ? fn : function () {
+Class.addInitHook = function (fn, ...args) { // (Function) || (String, args...)
+	const init = typeof fn === 'function' ? fn : function () {
 		this[fn].apply(this, args);
 	};
 
@@ -118,17 +115,3 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	this.prototype._initHooks.push(init);
 	return this;
 };
-
-function checkDeprecatedMixinEvents(includes) {
-	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
-
-	includes = Util.isArray(includes) ? includes : [includes];
-
-	for (var i = 0; i < includes.length; i++) {
-		if (includes[i] === L.Mixin.Events) {
-			console.warn('Deprecated include of L.Mixin.Events: ' +
-				'this property will be removed in future releases, ' +
-				'please inherit from L.Evented instead.', new Error().stack);
-		}
-	}
-}

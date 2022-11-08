@@ -23,13 +23,13 @@ import {requestAnimFrame, cancelAnimFrame} from '../../core/Util';
  * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-export var MarkerDrag = Handler.extend({
-	initialize: function (marker) {
+export const MarkerDrag = Handler.extend({
+	initialize(marker) {
 		this._marker = marker;
 	},
 
-	addHooks: function () {
-		var icon = this._marker._icon;
+	addHooks() {
+		const icon = this._marker._icon;
 
 		if (!this._draggable) {
 			this._draggable = new Draggable(icon, icon, true);
@@ -45,7 +45,7 @@ export var MarkerDrag = Handler.extend({
 		DomUtil.addClass(icon, 'leaflet-marker-draggable');
 	},
 
-	removeHooks: function () {
+	removeHooks() {
 		this._draggable.off({
 			dragstart: this._onDragStart,
 			predrag: this._onPreDrag,
@@ -58,12 +58,12 @@ export var MarkerDrag = Handler.extend({
 		}
 	},
 
-	moved: function () {
+	moved() {
 		return this._draggable && this._draggable._moved;
 	},
 
-	_adjustPan: function (e) {
-		var marker = this._marker,
+	_adjustPan(e) {
+		const marker = this._marker,
 		    map = marker._map,
 		    speed = this._marker.options.autoPanSpeed,
 		    padding = this._marker.options.autoPanPadding,
@@ -71,14 +71,14 @@ export var MarkerDrag = Handler.extend({
 		    bounds = map.getPixelBounds(),
 		    origin = map.getPixelOrigin();
 
-		var panBounds = toBounds(
+		const panBounds = toBounds(
 			bounds.min._subtract(origin).add(padding),
 			bounds.max._subtract(origin).subtract(padding)
 		);
 
 		if (!panBounds.contains(iconPos)) {
 			// Compute incremental movement
-			var movement = toPoint(
+			const movement = toPoint(
 				(Math.max(panBounds.max.x, iconPos.x) - panBounds.max.x) / (bounds.max.x - panBounds.max.x) -
 				(Math.min(panBounds.min.x, iconPos.x) - panBounds.min.x) / (bounds.min.x - panBounds.min.x),
 
@@ -98,7 +98,7 @@ export var MarkerDrag = Handler.extend({
 		}
 	},
 
-	_onDragStart: function () {
+	_onDragStart() {
 		// @section Dragging events
 		// @event dragstart: Event
 		// Fired when the user starts dragging the marker.
@@ -116,15 +116,15 @@ export var MarkerDrag = Handler.extend({
 			.fire('dragstart');
 	},
 
-	_onPreDrag: function (e) {
+	_onPreDrag(e) {
 		if (this._marker.options.autoPan) {
 			cancelAnimFrame(this._panRequest);
 			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
 		}
 	},
 
-	_onDrag: function (e) {
-		var marker = this._marker,
+	_onDrag(e) {
+		const marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = DomUtil.getPosition(marker._icon),
 		    latlng = marker._map.layerPointToLatLng(iconPos);
@@ -145,7 +145,7 @@ export var MarkerDrag = Handler.extend({
 		    .fire('drag', e);
 	},
 
-	_onDragEnd: function (e) {
+	_onDragEnd(e) {
 		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
 

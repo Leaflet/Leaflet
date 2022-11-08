@@ -13,11 +13,11 @@ import {toPoint} from './Point';
  * than polyline, so there's a separate method for it.
  */
 export function clipPolygon(points, bounds, round) {
-	var clippedPoints,
-	    edges = [1, 4, 2, 8],
+	let clippedPoints,
 	    i, j, k,
 	    a, b,
 	    len, edge, p;
+	const edges = [1, 4, 2, 8];
 
 	for (i = 0, len = points.length; i < len; i++) {
 		points[i]._code = LineUtil._getBitCode(points[i], bounds);
@@ -55,11 +55,11 @@ export function clipPolygon(points, bounds, round) {
 	return points;
 }
 
-/* @function polygonCenter(latlngs: LatLng[] crs: CRS, zoom: Number): LatLng
+/* @function polygonCenter(latlngs: LatLng[] crs: CRS): LatLng
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
  */
-export function polygonCenter(latlngs, crs, zoom) {
-	var i, j, p1, p2, f, area, x, y, center;
+export function polygonCenter(latlngs, crs) {
+	let i, j, p1, p2, f, area, x, y, center;
 
 	if (!latlngs || latlngs.length === 0) {
 		throw new Error('latlngs not passed');
@@ -70,12 +70,12 @@ export function polygonCenter(latlngs, crs, zoom) {
 		latlngs = latlngs[0];
 	}
 
-	var points = [];
-	for (var k in latlngs) {
-		points.push(crs.latLngToPoint(toLatLng(latlngs[k]), zoom));
+	const points = [];
+	for (const k in latlngs) {
+		points.push(crs.project(toLatLng(latlngs[k])));
 	}
 
-	var len = points.length;
+	const len = points.length;
 	area = x = y = 0;
 
 	// polygon centroid algorithm;
@@ -95,5 +95,5 @@ export function polygonCenter(latlngs, crs, zoom) {
 	} else {
 		center = [x / area, y / area];
 	}
-	return crs.pointToLatLng(toPoint(center), zoom);
+	return crs.unproject(toPoint(center));
 }

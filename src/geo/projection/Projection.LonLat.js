@@ -15,12 +15,12 @@ import {Point} from '../../geometry/Point';
  * `EPSG:4326` and `Simple` CRS.
  */
 
-export var LonLat = {
-	project: function (latlng) {
+export const LonLat = {
+	project(latlng) {
 		return new Point(latlng.lng, latlng.lat);
 	},
 
-	unproject: function (point) {
+	unproject(point) {
 		return new LatLng(point.y, point.x);
 	},
 
