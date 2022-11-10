@@ -4,20 +4,6 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-// @function extend(dest: Object, src?: Object): Object
-// Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
-export function extend(dest, ...args) {
-	let i, j, len, src;
-
-	for (j = 0, len = args.length; j < len; j++) {
-		src = args[j];
-		for (i in src) {
-			dest[i] = src[i];
-		}
-	}
-	return dest;
-}
-
 // @function create(proto: Object, properties?: Object): Object
 // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 export const create = Object.create || (function () {

@@ -76,7 +76,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		happen.click(container, click);
 
 		const event = spy.lastCall.args[0];
-		const expectedProps = L.extend(click, {
+		const expectedProps = Object.assign(click, {
 			type: 'dblclick',
 			// bubbles: true,    // not important, as we do not actually dispatch the event
 			// cancelable: true, //

@@ -1,5 +1,5 @@
 import {TileLayer} from './TileLayer';
-import {extend, setOptions, getParamString} from '../../core/Util';
+import {setOptions, getParamString} from '../../core/Util';
 import Browser from '../../core/Browser';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
 import {toBounds} from '../../geometry/Bounds';
@@ -69,7 +69,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 		this._url = url;
 
-		const wmsParams = extend({}, this.defaultWmsParams);
+		const wmsParams = {...this.defaultWmsParams};
 
 		// all keys that are not TileLayer options go to WMS params
 		for (const i in options) {
@@ -119,7 +119,7 @@ export const TileLayerWMS = TileLayer.extend({
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
 	setParams(params, noRedraw) {
 
-		extend(this.wmsParams, params);
+		Object.assign(this.wmsParams, params);
 
 		if (!noRedraw) {
 			this.redraw();

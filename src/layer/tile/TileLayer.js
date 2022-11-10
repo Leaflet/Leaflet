@@ -193,7 +193,7 @@ export const TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return Util.template(this._url, Util.extend(data, this.options));
+		return Util.template(this._url, Object.assign(data, this.options));
 	},
 
 	_tileOnLoad(done, tile) {

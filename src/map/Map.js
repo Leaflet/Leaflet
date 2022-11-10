@@ -182,8 +182,8 @@ export const Map = Evented.extend({
 		if (this._loaded && !options.reset && options !== true) {
 
 			if (options.animate !== undefined) {
-				options.zoom = Util.extend({animate: options.animate}, options.zoom);
-				options.pan = Util.extend({animate: options.animate, duration: options.duration}, options.pan);
+				options.zoom = {animate: options.animate, ...options.zoom};
+				options.pan = {animate: options.animate, duration: options.duration, ...options.pan};
 			}
 
 			// try animating pan or zoom
@@ -553,7 +553,7 @@ export const Map = Evented.extend({
 	invalidateSize(options) {
 		if (!this._loaded) { return this; }
 
-		options = Util.extend({
+		options = Object.assign({
 			animate: false,
 			pan: true
 		}, options === true ? {animate: true} : options);
@@ -618,14 +618,15 @@ export const Map = Evented.extend({
 	// See `Locate options` for more details.
 	locate(options) {
 
-		options = this._locateOptions = Util.extend({
+		options = this._locateOptions = {
 			timeout: 10000,
-			watch: false
+			watch: false,
 			// setView: false
 			// maxZoom: <Number>
 			// maximumAge: 0
 			// enableHighAccuracy: false
-		}, options);
+			...options
+		};
 
 		if (!('geolocation' in navigator)) {
 			this._handleGeolocationError({
@@ -1413,7 +1414,7 @@ export const Map = Evented.extend({
 			// Fired before mouse click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
-			const synth = Util.extend({}, e);
+			const synth = {...e};
 			synth.type = 'preclick';
 			this._fireDOMEvent(synth, synth.type, canvasTargets);
 		}

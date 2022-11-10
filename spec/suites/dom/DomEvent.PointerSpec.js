@@ -99,7 +99,7 @@ describe('DomEvent.Pointer', () => {
 
 			// pointerdown/touchstart
 			const pointer1 = {clientX:1, clientY:1, pointerId: 1};
-			happen.once(el, L.extend({type: 'pointerdown'}, pointer1));
+			happen.once(el, {type: 'pointerdown', ...pointer1}));
 			let evt = listeners.touchstart.lastCall.args[0];
 			expect(evt.type).to.be('pointerdown');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -110,7 +110,7 @@ describe('DomEvent.Pointer', () => {
 
 			// another pointerdown/touchstart (multitouch)
 			const pointer2 = {clientX:2, clientY:2, pointerId: 2};
-			happen.once(el, L.extend({type: 'pointerdown'}, pointer2));
+			happen.once(el, {type: 'pointerdown', ...pointer2});
 			evt = listeners.touchstart.lastCall.args[0];
 			expect(evt.type).to.be('pointerdown');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -120,8 +120,8 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
 
 			// pointermove/touchmove (multitouch)
-			L.extend(pointer1, {clientX:11, clientY:11});
-			happen.once(el, L.extend({type: 'pointermove'}, pointer1));
+			Object.assign(pointer1, {clientX:11, clientY:11});
+			happen.once(el, {type: 'pointermove', ...pointer1});
 			evt = listeners.touchmove.lastCall.args[0];
 			expect(evt.type).to.be('pointermove');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -131,7 +131,7 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
 
 			// pointerup/touchend (multitouch)
-			happen.once(el, L.extend({type: 'pointerup'}, pointer2));
+			happen.once(el, {type: 'pointerup', ...pointer2});
 			evt = listeners.touchend.lastCall.args[0];
 			expect(evt.type).to.be('pointerup');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -141,7 +141,7 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
 
 			// pointercancel/touchcancel
-			happen.once(el, L.extend({type: 'pointercancel'}, pointer1));
+			happen.once(el, {type: 'pointercancel', ...pointer1});
 			evt = listeners.touchcancel.lastCall.args[0];
 			expect(evt.type).to.be('pointercancel');
 			expect(evt).to.have.keys('touches', 'changedTouches');

@@ -175,11 +175,12 @@ export const Events = {
 	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		const event = Util.extend({}, data, {
+		const event = {
+			...data,
 			type,
 			target: this,
 			sourceTarget: data && data.sourceTarget || this
-		});
+		};
 
 		if (this._events) {
 			const listeners = this._events[type];
@@ -308,10 +309,11 @@ export const Events = {
 
 	_propagateEvent(e) {
 		for (const id in this._eventParents) {
-			this._eventParents[id].fire(e.type, Util.extend({
+			this._eventParents[id].fire(e.type, {
 				layer: e.target,
-				propagatedFrom: e.target
-			}, e), true);
+				propagatedFrom: e.target,
+				...e
+			}, true);
 		}
 	}
 };

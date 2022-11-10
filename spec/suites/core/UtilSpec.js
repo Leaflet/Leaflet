@@ -1,38 +1,4 @@
 describe('Util', () => {
-	describe('#extend', () => {
-		let a;
-
-		beforeEach(() => {
-			a = {
-				foo: 5,
-				bar: 'asd'
-			};
-		});
-
-		it('extends the first argument with the properties of the second', () => {
-			L.Util.extend(a, {
-				bar: 7,
-				baz: 3
-			});
-
-			expect(a).to.eql({
-				foo: 5,
-				bar: 7,
-				baz: 3
-			});
-		});
-
-		it('accepts more than 2 arguments', () => {
-			L.Util.extend(a, {bar: 7}, {baz: 3});
-
-			expect(a).to.eql({
-				foo: 5,
-				bar: 7,
-				baz: 3
-			});
-		});
-	});
-
 	describe('#stamp', () => {
 		it('sets a unique id on the given object and returns it', () => {
 			const a = {},

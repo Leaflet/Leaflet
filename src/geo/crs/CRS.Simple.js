@@ -1,7 +1,6 @@
 import {CRS} from './CRS';
 import {LonLat} from '../projection/Projection.LonLat';
 import {toTransformation} from '../../geometry/Transformation';
-import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -13,7 +12,8 @@ import * as Util from '../../core/Util';
  * simple euclidean distance.
  */
 
-export const Simple = Util.extend({}, CRS, {
+export const Simple = {
+	...CRS,
 	projection: LonLat,
 	transformation: toTransformation(1, 0, -1, 0),
 
@@ -33,4 +33,4 @@ export const Simple = Util.extend({}, CRS, {
 	},
 
 	infinite: true
-});
+};

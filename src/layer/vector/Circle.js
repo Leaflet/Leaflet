@@ -27,7 +27,7 @@ export const Circle = CircleMarker.extend({
 	initialize(latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = Util.extend({}, legacyOptions, {radius: options});
+			options = {...legacyOptions, radius: options};
 		}
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);

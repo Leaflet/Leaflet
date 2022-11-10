@@ -16,16 +16,17 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 		.be.within(expected.lng - delta, expected.lng + delta);
 };
 
-happen.at = function (what, x, y, props) {
-	this.once(document.elementFromPoint(x, y), L.Util.extend({
+happen.at = function (what, x, y, props = {}) {
+	this.once(document.elementFromPoint(x, y), {
 		type: what,
 		clientX: x,
 		clientY: y,
 		screenX: x,
 		screenY: y,
 		which: 1,
-		button: 0
-	}, props || {}));
+		button: 0,
+		...props
+	});
 };
 
 happen.makeEvent = (function (makeEvent) {
