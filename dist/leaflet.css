@@ -72,7 +72,6 @@
 	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
 }
 .leaflet-tile {
-	filter: inherit;
 	visibility: hidden;
 	}
 .leaflet-tile-loaded {
