@@ -57,7 +57,7 @@ export const ImageOverlay = Layer.extend({
 
 		// @option decoding: String = 'auto'
 		// Tells the browser whether to decode the image in a synchronous fashion,
-		// as per the [`decoding` HTML attribute (https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
+		// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
 		// If the image overlay is flickering when being added/removed, set
 		// this option to `'sync'`.
 		decoding: 'auto'
