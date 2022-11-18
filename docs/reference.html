@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>Leaflet API reference</h2>
 
-<p>This reference reflects <strong>Leaflet v1.9.2</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
+<p>This reference reflects <strong>Leaflet </strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 <div id="toc" class="clearfix">
 	<div class="toc-col map-col">
@@ -249,6 +249,28 @@ By default, all <a href="#path"><code>Path</code></a>s are rendered in a <a href
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
 	</tr>
+	<tr id='map-boxzoom'>
+		<td><code><b>boxZoom</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed to a rectangular area specified by
+dragging the mouse while pressing the shift key.</td>
+	</tr>
+	<tr id='map-doubleclickzoom'>
+		<td><code><b>doubleClickZoom</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed in by double clicking on it and
+zoomed out by double clicking while holding shift. If passed
+<code>'center'</code>, double-click zoom will zoom to the center of the
+view regardless of where the mouse was.</td>
+	</tr>
+	<tr id='map-dragging'>
+		<td><code><b>dragging</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map is draggable with mouse/touch or not.</td>
+	</tr>
 	<tr id='map-zoomsnap'>
 		<td><code><b>zoomSnap</b></code></td>
 		<td><code>Number</code></td>
@@ -273,151 +295,6 @@ Values smaller than <code>1</code> (e.g. <code>0.5</code>) allow for greater gra
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
 		<td>Whether the map automatically handles browser window resize to update itself.</td>
-	</tr>
-	<tr id='map-boxzoom'>
-		<td><code><b>boxZoom</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed to a rectangular area specified by
-dragging the mouse while pressing the shift key.</td>
-	</tr>
-	<tr id='map-doubleclickzoom'>
-		<td><code><b>doubleClickZoom</b></code></td>
-		<td><code>Boolean|String</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed in by double clicking on it and
-zoomed out by double clicking while holding shift. If passed
-<code>'center'</code>, double-click zoom will zoom to the center of the
-view regardless of where the mouse was.</td>
-	</tr>
-	<tr id='map-dragging'>
-		<td><code><b>dragging</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map is draggable with mouse/touch or not.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-map-state-options'>Map State Options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-crs'>
-		<td><code><b>crs</b></code></td>
-		<td><code><a href='#crs'>CRS</a></code></td>
-		<td><code>L.CRS.EPSG3857</code></td>
-		<td>The <a href="#crs">Coordinate Reference System</a> to use. Don't change this if you're not
-sure what it means.</td>
-	</tr>
-	<tr id='map-center'>
-		<td><code><b>center</b></code></td>
-		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><code>undefined</code></td>
-		<td>Initial geographic center of the map</td>
-	</tr>
-	<tr id='map-zoom'>
-		<td><code><b>zoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>undefined</code></td>
-		<td>Initial map zoom level</td>
-	</tr>
-	<tr id='map-minzoom'>
-		<td><code><b>minZoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>*</code></td>
-		<td>Minimum zoom level of the map.
-If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
-the lowest of their <code>minZoom</code> options will be used instead.</td>
-	</tr>
-	<tr id='map-maxzoom'>
-		<td><code><b>maxZoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>*</code></td>
-		<td>Maximum zoom level of the map.
-If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
-the highest of their <code>maxZoom</code> options will be used instead.</td>
-	</tr>
-	<tr id='map-layers'>
-		<td><code><b>layers</b></code></td>
-		<td><code>Layer[]</code></td>
-		<td><code>[]</code></td>
-		<td>Array of layers that will be added to the map initially</td>
-	</tr>
-	<tr id='map-maxbounds'>
-		<td><code><b>maxBounds</b></code></td>
-		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
-		<td><code>null</code></td>
-		<td>When this option is set, the map restricts the view to the given
-geographical bounds, bouncing the user back if the user tries to pan
-outside the view. To set the restriction dynamically, use
-<a href="#map-setmaxbounds"><code>setMaxBounds</code></a> method.</td>
-	</tr>
-	<tr id='map-renderer'>
-		<td><code><b>renderer</b></code></td>
-		<td><code><a href='#renderer'>Renderer</a></code></td>
-		<td><code>*</code></td>
-		<td>The default method for drawing vector layers on the map. <a href="#svg"><code>L.SVG</code></a>
-or <a href="#canvas"><code>L.Canvas</code></a> by default depending on browser support.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-animation-options'>Animation Options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map zoom animation is enabled. By default it's enabled
-in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-zoomanimationthreshold'>
-		<td><code><b>zoomAnimationThreshold</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>4</code></td>
-		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
-	</tr>
-	<tr id='map-fadeanimation'>
-		<td><code><b>fadeAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the tile fade animation is enabled. By default it's enabled
-in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-markerzoomanimation'>
-		<td><code><b>markerZoomAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether markers animate their zoom with the zoom animation, if disabled
-they will disappear for the length of the animation. By default it's
-enabled in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-transform3dlimit'>
-		<td><code><b>transform3DLimit</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>2^23</code></td>
-		<td>Defines the maximum size of a CSS translation transform. The default
-value should not be changed unless a web browser positions layers in
-the wrong place after doing a large <code>panBy</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -587,6 +464,129 @@ browsers.</td>
 		<td><code>true</code></td>
 		<td>Set it to false if you don't want the map to zoom beyond min/max zoom
 and then bounce back when pinch-zooming.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-map-state-options'>Map State Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-crs'>
+		<td><code><b>crs</b></code></td>
+		<td><code><a href='#crs'>CRS</a></code></td>
+		<td><code>L.CRS.EPSG3857</code></td>
+		<td>The <a href="#crs">Coordinate Reference System</a> to use. Don't change this if you're not
+sure what it means.</td>
+	</tr>
+	<tr id='map-center'>
+		<td><code><b>center</b></code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><code>undefined</code></td>
+		<td>Initial geographic center of the map</td>
+	</tr>
+	<tr id='map-zoom'>
+		<td><code><b>zoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>undefined</code></td>
+		<td>Initial map zoom level</td>
+	</tr>
+	<tr id='map-minzoom'>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>*</code></td>
+		<td>Minimum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the lowest of their <code>minZoom</code> options will be used instead.</td>
+	</tr>
+	<tr id='map-maxzoom'>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>*</code></td>
+		<td>Maximum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the highest of their <code>maxZoom</code> options will be used instead.</td>
+	</tr>
+	<tr id='map-layers'>
+		<td><code><b>layers</b></code></td>
+		<td><code>Layer[]</code></td>
+		<td><code>[]</code></td>
+		<td>Array of layers that will be added to the map initially</td>
+	</tr>
+	<tr id='map-maxbounds'>
+		<td><code><b>maxBounds</b></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><code>null</code></td>
+		<td>When this option is set, the map restricts the view to the given
+geographical bounds, bouncing the user back if the user tries to pan
+outside the view. To set the restriction dynamically, use
+<a href="#map-setmaxbounds"><code>setMaxBounds</code></a> method.</td>
+	</tr>
+	<tr id='map-renderer'>
+		<td><code><b>renderer</b></code></td>
+		<td><code><a href='#renderer'>Renderer</a></code></td>
+		<td><code>*</code></td>
+		<td>The default method for drawing vector layers on the map. <a href="#svg"><code>L.SVG</code></a>
+or <a href="#canvas"><code>L.Canvas</code></a> by default depending on browser support.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-animation-options'>Animation Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-zoomanimation'>
+		<td><code><b>zoomAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map zoom animation is enabled. By default it's enabled
+in all browsers that support CSS3 Transitions except Android.</td>
+	</tr>
+	<tr id='map-zoomanimationthreshold'>
+		<td><code><b>zoomAnimationThreshold</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>4</code></td>
+		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
+	</tr>
+	<tr id='map-fadeanimation'>
+		<td><code><b>fadeAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the tile fade animation is enabled. By default it's enabled
+in all browsers that support CSS3 Transitions except Android.</td>
+	</tr>
+	<tr id='map-markerzoomanimation'>
+		<td><code><b>markerZoomAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether markers animate their zoom with the zoom animation, if disabled
+they will disappear for the length of the animation. By default it's
+enabled in all browsers that support CSS3 Transitions except Android.</td>
+	</tr>
+	<tr id='map-transform3dlimit'>
+		<td><code><b>transform3DLimit</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>2^23</code></td>
+		<td>Defines the maximum size of a CSS translation transform. The default
+value should not be changed unless a web browser positions layers in
+the wrong place after doing a large <code>panBy</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -14794,9 +14794,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 	</div>
 </div>
 
-</section><h2 id='svg'>SVG</h2><p>VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
-with old versions of Internet Explorer.</p>
-<p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
+</section><h2 id='svg'>SVG</h2><p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
 <p>Due to <a href="https://caniuse.com/svg">technical limitations</a>, SVG is not
 available in all web browsers, notably Android 2.x and 3.x.</p>
@@ -14804,6 +14802,8 @@ available in all web browsers, notably Android 2.x and 3.x.</p>
 <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>
 (a now deprecated technology), and the SVG renderer will fall back to VML in
 this case.</p>
+<p>VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
+with old versions of Internet Explorer.</p>
 
 <section>
 <h3 id='svg-example'>Usage example</h3>
@@ -24426,6 +24426,13 @@ geographical CRSs. If <code>undefined</code>, the longitude axis does not wrap a
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='crs-l-crs-earth'>
+		<td><code><b>L.CRS.Earth</b></code></td>
+		<td>Serves as the base for CRS that are global such that they cover the earth.
+Can only be used as the base for other CRS and cannot be used directly,
+since it does not have a <code>code</code>, <code>projection</code> or <code>transformation</code>. <code>distance()</code> returns
+meters.</td>
+	</tr>
 	<tr id='crs-l-crs-epsg3395'>
 		<td><code><b>L.CRS.EPSG3395</b></code></td>
 		<td>Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.</td>
@@ -24445,20 +24452,6 @@ with this CRS, ensure that there are two 256x256 pixel tiles covering the
 whole earth at zoom level zero, and that the tile coordinate origin is (-180,+90),
 or (-180,-90) for <a href="#tilelayer"><code>TileLayer</code></a>s with <a href="#tilelayer-tms">the <code>tms</code> option</a> set.</p></td>
 	</tr>
-	<tr id='crs-l-crs-earth'>
-		<td><code><b>L.CRS.Earth</b></code></td>
-		<td>Serves as the base for CRS that are global such that they cover the earth.
-Can only be used as the base for other CRS and cannot be used directly,
-since it does not have a <code>code</code>, <code>projection</code> or <code>transformation</code>. <code>distance()</code> returns
-meters.</td>
-	</tr>
-	<tr id='crs-l-crs-simple'>
-		<td><code><b>L.CRS.Simple</b></code></td>
-		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly.
-May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code>
-axis should still be inverted (going from bottom to top). <code>distance()</code> returns
-simple euclidean distance.</td>
-	</tr>
 	<tr id='crs-l-crs-base'>
 		<td><code><b>L.CRS.Base</b></code></td>
 		<td>Object that defines coordinate reference systems for projecting
@@ -24471,6 +24464,13 @@ CRS not defined by default, take a look at the
 <p>Note that the CRS instances do not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
 and can't be instantiated. Also, new classes can't inherit from them,
 and methods can't be added to them with the <code>include</code> function.</p></td>
+	</tr>
+	<tr id='crs-l-crs-simple'>
+		<td><code><b>L.CRS.Simple</b></code></td>
+		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly.
+May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code>
+axis should still be inverted (going from bottom to top). <code>distance()</code> returns
+simple euclidean distance.</td>
 	</tr>
 </tbody></table>
 
