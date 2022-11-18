@@ -24,66 +24,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Cache setup
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
-
-  build:
-    needs: setup
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, windows-2019, macos-latest]
-    steps:
-      - name: Restore setup
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
       - name: Build project
         run: npm run build
         env:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
-      - name: Cache build
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
-
-  build-release:
-    needs: setup
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Restore setup
+      - name: Cache setup
         uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ github.ref }}-${{ github.sha }}-setup
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Build project
-        run: npm run build
-        env:
-          NODE_ENV: release
-
-      - name: Cache release build
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build-release
 
   build-docs:
     runs-on: ubuntu-20.04
@@ -120,20 +70,25 @@ jobs:
         run: npm run lint
 
   bundlemon:
-    needs: build-release
+    needs: setup
     if: github.repository_owner == 'Leaflet'
     runs-on: ubuntu-20.04
     steps:
-      - name: Restore release build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build-release
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: release
 
       - name: Run bundlemon task
         run: npm run bundlemon
@@ -142,7 +97,7 @@ jobs:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test:
-    needs: build
+    needs: setup
     runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
     strategy:
       fail-fast: false
@@ -159,11 +114,11 @@ jobs:
           - browser: SafariNative
             os: macos-latest
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -174,15 +129,15 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }}
 
   publish-artifacts:
-    needs: build
+    needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-20.04
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Compress artifacts
         working-directory: dist
@@ -200,15 +155,15 @@ jobs:
           DEST_DIR: content/leaflet/${{ github.ref_name }}
 
   publish-npm:
-    needs: build
+    needs: setup
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-20.04
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
