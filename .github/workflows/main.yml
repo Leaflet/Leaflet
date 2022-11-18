@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
+        os: [ubuntu-22.04, windows-2019, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
+        os: [ubuntu-22.04, windows-2019, macos-latest]
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -61,7 +61,7 @@ jobs:
 
   build-release:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -86,7 +86,7 @@ jobs:
           key: ${{ github.ref }}-${{ github.sha }}-build-release
 
   build-docs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -103,7 +103,7 @@ jobs:
 
   lint:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -122,7 +122,7 @@ jobs:
   bundlemon:
     needs: build-release
     if: github.repository_owner == 'Leaflet'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Restore release build
         uses: actions/cache@v3
@@ -143,7 +143,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.os || 'ubuntu-22.04' }}
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +176,7 @@ jobs:
   publish-artifacts:
     needs: build
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Restore build
         uses: actions/cache@v3
@@ -202,7 +202,7 @@ jobs:
   publish-npm:
     needs: build
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Restore build
         uses: actions/cache@v3
