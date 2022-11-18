@@ -3,6 +3,22 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 1.9.3 (2022-11-18)
+
+### 🙌 Accessibility
+- Expand the layers control on <kbd>Enter</kbd> keydown ([#8556](https://github.com/Leaflet/Leaflet/pull/8556) by [@larsgw](https://github.com/larsgw))
+- Align the scale control's alpha transparency with the attribution control ([#8547](https://github.com/Leaflet/Leaflet/pull/8547) by [@Malvoz](https://github.com/Malvoz))
+- Allow the scale control's text to overflow the container ([#8548](https://github.com/Leaflet/Leaflet/pull/8548) by [@Malvoz](https://github.com/Malvoz))
+
+### 🐞 Bug fixes
+- Remove internal usage of `L` global ([#8536](https://github.com/Leaflet/Leaflet/pull/8536) by [@mourner](https://github.com/mourner))
+- Fix intermittent wobble when using `setMaxBounds(map.getBounds())` ([#8534](https://github.com/Leaflet/Leaflet/pull/8534) by [@rjackson](https://github.com/rjackson))
+- Ensure that `latLngsToCoords()` does not return references passed to it ([#7344](https://github.com/Leaflet/Leaflet/pull/7344) by [@marlo22](https://github.com/marlo22]))
+- Ensure `worldCopyJump()` behavior is consistent when using a keyboard ([#8562](https://github.com/Leaflet/Leaflet/pull/8562) by [@Falke-Design](https://github.com/Falke-Design))
+- Ensure correct target is used for the `popupopen` event ([#8571](https://github.com/Leaflet/Leaflet/pull/8571) by [@Belair34](https://github.com/Belair34))
+-  Prevent recursion when panning a `Popup` ([#8520](https://github.com/Leaflet/Leaflet/pull/8520) by [@rjackson](https://github.com/rjackson))
+- Support CSS [`position: sticky`](https://developer.mozilla.org/en-US/docs/Web/CSS/position#sticky) for map container ([#8550](https://github.com/Leaflet/Leaflet/pull/8550) by [@tmiaa](https://github.com/tmiaa))
+
 ## 1.9.2 (2022-10-04)
 
 ### 🐞 Bug fixes
