@@ -418,7 +418,7 @@ Layer.include({
 		}
 
 		// If the map is moving, we will show the tooltip after it's done.
-		if (this._map.dragging?.moving()) {
+		if (this._map.dragging && this._map.dragging.moving()) {
 			this._map.once('moveend zoomend', () => {
 				this._openTooltip(e);
 			});
