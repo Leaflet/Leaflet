@@ -447,25 +447,21 @@ describe('Tooltip', () => {
 		const tooltip = layer.getTooltip();
 
 		// simulate map dragging
-		map.dragging.moving = function () {
-			return true;
-		};
+		map.dragging.moving = () => true;
+
 		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 
 		// simulate map not dragging anymore
-		map.dragging.moving = function () {
-			return false;
-		};
+		map.dragging.moving = () => false;
+
 		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be.ok();
 	});
 
 	it('opens the tooltip if the tooltip is loaded while the map is dragging.', () => {
 		// simulate map dragging
-		map.dragging.moving = function () {
-			return true;
-		};
+		map.dragging.moving = () => true;
 
 		// If tooltips are dynamically loaded while the map is dragging, they need
 		// to be loaded when the dragging stops.
@@ -473,9 +469,7 @@ describe('Tooltip', () => {
 		map.addLayer(layer);
 
 		// simulate map not dragging anymore
-		map.dragging.moving = function () {
-			return false;
-		};
+		map.dragging.moving = () => false;
 
 		// Actually triggers both movestart and moveend.
 		map.setView([51.505, -0.09], 13);
@@ -497,9 +491,8 @@ describe('Tooltip', () => {
 		expect(tooltip.isOpen()).to.be.ok();
 
 		// simulate map dragging
-		map.dragging.moving = function () {
-			return true;
-		};
+		map.dragging.moving = () => true;
+
 		happen.mouseout(layer._icon, {relatedTarget: map._container});
 		expect(tooltip.isOpen()).to.be(false);
 
