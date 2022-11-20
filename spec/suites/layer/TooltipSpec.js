@@ -482,9 +482,7 @@ describe('Tooltip', () => {
 
 	it('closes the tooltip on marker mouseout while dragging map and don\'t open it again', () => {
 		// simulate map dragging
-		map.dragging.moving = function () {
-			return true;
-		};
+		map.dragging.moving = () => true;
 
 		// If tooltips are dynamically loaded while the map is dragging, they need
 		// to be loaded when the dragging stops.
@@ -492,9 +490,7 @@ describe('Tooltip', () => {
 		map.addLayer(layer);
 
 		// simulate map not dragging anymore
-		map.dragging.moving = function () {
-			return false;
-		};
+		map.dragging.moving = () => false;
 
 		// Actually triggers both movestart and moveend.
 		map.setView([51.505, -0.09], 13);
