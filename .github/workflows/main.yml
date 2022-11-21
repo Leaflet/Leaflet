@@ -93,7 +93,6 @@ jobs:
       - name: Run bundlemon task
         run: npm run bundlemon
         env:
-          BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test:
