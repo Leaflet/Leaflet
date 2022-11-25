@@ -42,7 +42,7 @@ export const DivOverlay = Layer.extend({
 	},
 
 	initialize(options, source) {
-		if (options && (options instanceof LatLng || Util.isArray(options))) {
+		if (options && (options instanceof LatLng || Array.isArray(options))) {
 			this._latlng = toLatLng(options);
 			Util.setOptions(this, source);
 		} else {

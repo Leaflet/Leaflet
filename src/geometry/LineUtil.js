@@ -1,5 +1,4 @@
 import {Point, toPoint} from './Point';
-import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 
 
@@ -235,7 +234,7 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 // @function isFlat(latlngs: LatLng[]): Boolean
 // Returns true if `latlngs` is a flat array, false is nested.
 export function isFlat(latlngs) {
-	return !Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
+	return !Array.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }
 
 /* @function polylineCenter(latlngs: LatLng[], crs: CRS): LatLng
