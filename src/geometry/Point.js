@@ -1,4 +1,4 @@
-import {isArray, formatNum} from '../core/Util';
+import {formatNum} from '../core/Util';
 
 /*
  * @class Point
@@ -207,7 +207,7 @@ export function toPoint(x, y, round) {
 	if (x instanceof Point) {
 		return x;
 	}
-	if (isArray(x)) {
+	if (Array.isArray(x)) {
 		return new Point(x[0], x[1]);
 	}
 	if (x === undefined || x === null) {

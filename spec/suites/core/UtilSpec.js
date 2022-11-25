@@ -210,12 +210,4 @@ describe('Util', () => {
 			expect(L.Util.template('{Day Of Month}', {'Day Of Month': 30})).to.eql('30');
 		});
 	});
-
-	describe('#isArray', () => {
-		expect(L.Util.isArray([1, 2, 3])).to.be(true);
-		/* eslint no-array-constructor: 0 */
-		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
-		expect(L.Util.isArray('blabla')).to.be(false);
-		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);
-	});
 });
