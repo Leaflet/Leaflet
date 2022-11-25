@@ -155,7 +155,7 @@ describe('Util', () => {
 
 		it('creates a distinct options object', () => {
 			const opts = {},
-			    o = L.Util.create({options: opts});
+			    o = Object.create({options: opts});
 			L.Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
@@ -169,7 +169,7 @@ describe('Util', () => {
 
 		it('inherits options prototypally', () => {
 			const opts = {},
-			    o = L.Util.create({options: opts});
+			    o = Object.create({options: opts});
 			L.Util.setOptions(o, {});
 			opts.foo = 'bar';
 			expect(o.options.foo).to.eql('bar');

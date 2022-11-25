@@ -18,16 +18,6 @@ export function extend(dest, ...args) {
 	return dest;
 }
 
-// @function create(proto: Object, properties?: Object): Object
-// Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export const create = Object.create || (function () {
-	function F() {}
-	return function (proto) {
-		F.prototype = proto;
-		return new F();
-	};
-})();
-
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
 export let lastId = 0;
@@ -117,7 +107,7 @@ export function splitWords(str) {
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
-		obj.options = obj.options ? create(obj.options) : {};
+		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (const i in options) {
 		obj.options[i] = options[i];
