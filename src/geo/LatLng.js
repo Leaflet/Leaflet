@@ -91,6 +91,14 @@ LatLng.prototype = {
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
 	},
 
+	// @method setPrecision(precision: Number): this
+	// set precision current coordinates
+	setPrecision(precision) {
+		this.lat = Util.formatNum(this.lat, precision);
+		this.lng = Util.formatNum(this.lng, precision);
+		return this;
+	},
+
 	clone() {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
