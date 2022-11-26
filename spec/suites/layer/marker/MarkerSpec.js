@@ -1,4 +1,4 @@
-describe("Marker", () => {
+describe('Marker', () => {
 	let map,
 	    container,
 	    icon1,
@@ -20,9 +20,9 @@ describe("Marker", () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#setIcon", () => {
+	describe('#setIcon', () => {
 
-		it("set the correct x and y size attributes", () => {
+		it('set the correct x and y size attributes', () => {
 			const expectedX = 96;
 			const expectedY = 100;
 			const sizedIcon = new L.Icon.Default({
@@ -39,7 +39,7 @@ describe("Marker", () => {
 			expect(icon.style.height).to.be(`${expectedY}px`);
 		});
 
-		it("set the correct x and y size attributes passing only one value", () => {
+		it('set the correct x and y size attributes passing only one value', () => {
 			const expectedXY = 96;
 			const sizedIcon = new L.Icon.Default({
 				iconUrl: `${icon1.options.iconUrl}?3`,
@@ -55,7 +55,7 @@ describe("Marker", () => {
 			expect(icon.style.height).to.be(`${expectedXY}px`);
 		});
 
-		it("set the correct x and y size attributes passing a L.Point instance", () => {
+		it('set the correct x and y size attributes passing a L.Point instance', () => {
 			const expectedXY = 96;
 			const sizedIcon = new L.Icon.Default({
 				iconUrl: `${icon1.options.iconUrl}?3`,
@@ -71,7 +71,7 @@ describe("Marker", () => {
 			expect(icon.style.height).to.be(`${expectedXY}px`);
 		});
 
-		it("changes the icon to another image while re-using the IMG element", () => {
+		it('changes the icon to another image while re-using the IMG element', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
@@ -83,7 +83,7 @@ describe("Marker", () => {
 			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
 		});
 
-		it("preserves draggability", () => {
+		it('preserves draggability', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
@@ -120,7 +120,7 @@ describe("Marker", () => {
 			expect(marker.dragging.enabled()).to.be(true);
 		});
 
-		it("changes the DivIcon to another DivIcon, while re-using the DIV element", () => {
+		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
@@ -132,7 +132,7 @@ describe("Marker", () => {
 			expect(afterIcon.innerHTML).to.contain('Inner2Text');
 		});
 
-		it("removes text when changing to a blank DivIcon", () => {
+		it('removes text when changing to a blank DivIcon', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
@@ -141,7 +141,7 @@ describe("Marker", () => {
 			expect(marker._icon.innerHTML).to.not.contain('Inner1Text');
 		});
 
-		it("changes a DivIcon to an image", () => {
+		it('changes a DivIcon to an image', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 			const oldIcon = marker._icon;
@@ -159,7 +159,7 @@ describe("Marker", () => {
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
-		it("changes an image to a DivIcon", () => {
+		it('changes an image to a DivIcon', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			const oldIcon = marker._icon;
@@ -173,7 +173,7 @@ describe("Marker", () => {
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
-		it("reuses the icon/shadow when changing icon", () => {
+		it('reuses the icon/shadow when changing icon', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			const oldIcon = marker._icon;
@@ -188,7 +188,7 @@ describe("Marker", () => {
 			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
 		});
 
-		it("sets the alt attribute to a default value when no alt text is passed", () => {
+		it('sets the alt attribute to a default value when no alt text is passed', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			const icon = marker._icon;
@@ -196,14 +196,14 @@ describe("Marker", () => {
 			expect(icon.alt).to.be('Marker');
 		});
 
-		it("doesn't set the alt attribute for DivIcons", () => {
+		it('doesn\'t set the alt attribute for DivIcons', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon(), alt: 'test'});
 			map.addLayer(marker);
 			const icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be(false);
 		});
 
-		it("pan map to focus marker", () => {
+		it('pan map to focus marker', () => {
 			const marker = L.marker([70, 0], {icon: L.divIcon()});
 			map.addLayer(marker);
 
@@ -212,7 +212,7 @@ describe("Marker", () => {
 			}).to.not.throwException();
 		});
 
-		it("pan map to focus marker with no iconSize", () => {
+		it('pan map to focus marker with no iconSize', () => {
 			const marker = L.marker([70, 0], {icon: L.divIcon({iconSize: null})});
 			map.addLayer(marker);
 
@@ -222,8 +222,8 @@ describe("Marker", () => {
 		});
 	});
 
-	describe("#setLatLng", () => {
-		it("fires a move event", () => {
+	describe('#setLatLng', () => {
+		it('fires a move event', () => {
 
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
@@ -297,7 +297,7 @@ describe("Marker", () => {
 			expect(spy.calledTwice).to.be.ok();
 		});
 
-		it("do not propagate click event", () => {
+		it('do not propagate click event', () => {
 			const spy = sinon.spy();
 			const spy2 = sinon.spy();
 			const mapSpy = sinon.spy();
@@ -312,7 +312,7 @@ describe("Marker", () => {
 			expect(mapSpy.called).not.to.be.ok();
 		});
 
-		it("do not propagate dblclick event", () => {
+		it('do not propagate dblclick event', () => {
 			const spy = sinon.spy();
 			const spy2 = sinon.spy();
 			const mapSpy = sinon.spy();
@@ -327,7 +327,7 @@ describe("Marker", () => {
 			expect(mapSpy.called).not.to.be.ok();
 		});
 
-		it("do not catch event if it does not listen to it", (done) => {
+		it('do not catch event if it does not listen to it', (done) => {
 			const marker = L.marker([55, 37]);
 			map.addLayer(marker);
 			marker.once('mousemove', (e) => {

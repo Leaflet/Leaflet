@@ -1,13 +1,13 @@
 ﻿describe('FeatureGroup', () => {
-	describe("#_propagateEvent", () => {
+	describe('#_propagateEvent', () => {
 		let marker;
 
 		beforeEach(() => {
 			marker = L.marker([0, 0]);
 		});
 
-		describe("when a Marker is added to multiple FeatureGroups ", () => {
-			it("e.propagatedFrom should be the Marker", () => {
+		describe('when a Marker is added to multiple FeatureGroups ', () => {
+			it('e.propagatedFrom should be the Marker', () => {
 				const fg1 = L.featureGroup(),
 				    fg2 = L.featureGroup();
 

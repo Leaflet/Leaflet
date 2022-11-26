@@ -1,6 +1,6 @@
 ﻿describe('LayerGroup', () => {
-	describe("#hasLayer", () => {
-		it("throws when called without proper argument", () => {
+	describe('#hasLayer', () => {
+		it('throws when called without proper argument', () => {
 			const lg = L.layerGroup();
 			const hasLayer = lg.hasLayer.bind(lg);
 			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
@@ -12,7 +12,7 @@
 		});
 	});
 
-	describe("#addLayer", () => {
+	describe('#addLayer', () => {
 		it('adds a layer', () => {
 			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
@@ -23,7 +23,7 @@
 		});
 	});
 
-	describe("#removeLayer", () => {
+	describe('#removeLayer', () => {
 		it('removes a layer', () => {
 			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
@@ -35,7 +35,7 @@
 		});
 	});
 
-	describe("#clearLayers", () => {
+	describe('#clearLayers', () => {
 		it('removes all layers', () => {
 			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
@@ -47,7 +47,7 @@
 		});
 	});
 
-	describe("#getLayers", () => {
+	describe('#getLayers', () => {
 		it('gets all layers', () => {
 			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]);
@@ -58,7 +58,7 @@
 		});
 	});
 
-	describe("#eachLayer", () => {
+	describe('#eachLayer', () => {
 		it('iterates over all layers', () => {
 			const lg = L.layerGroup(),
 			    marker = L.marker([0, 0]),
@@ -73,17 +73,17 @@
 		});
 	});
 
-	describe("#toGeoJSON", () => {
+	describe('#toGeoJSON', () => {
 		it('should return valid GeoJSON for a layer with a FeatureCollection', () => {
 			const geoJSON = {
-				"type":"FeatureCollection",
-				"features":[
+				'type':'FeatureCollection',
+				'features':[
 					{
-						"type":"Feature",
-						"properties":{},
-						"geometry": {
-							"type":"Point",
-							"coordinates": [78.3984375, 56.9449741808516]
+						'type':'Feature',
+						'properties':{},
+						'geometry': {
+							'type':'Point',
+							'coordinates': [78.3984375, 56.9449741808516]
 						}
 					}
 				]
@@ -97,7 +97,7 @@
 		});
 	});
 
-	describe("#invoke", () => {
+	describe('#invoke', () => {
 		it('should invoke `setOpacity` method on every layer', () => {
 			const layers = [
 				L.marker([0, 0]),

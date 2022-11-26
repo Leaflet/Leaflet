@@ -10,8 +10,8 @@ describe('Polyline', () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#initialize", () => {
-		it("doesn't overwrite the given latlng array", () => {
+	describe('#initialize', () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -25,7 +25,7 @@ describe('Polyline', () => {
 			expect(polyline.getLatLngs()).to.eql(polyline._latlngs);
 		});
 
-		it("should accept a multi", () => {
+		it('should accept a multi', () => {
 			const latLngs = [
 				[[1, 2], [3, 4], [5, 6]],
 				[[11, 12], [13, 14], [15, 16]]
@@ -38,21 +38,21 @@ describe('Polyline', () => {
 			expect(polyline.getLatLngs()).to.eql(polyline._latlngs);
 		});
 
-		it("should accept an empty array", () => {
+		it('should accept an empty array', () => {
 			const polyline = L.polyline([]);
 
 			expect(polyline._latlngs).to.eql([]);
 			expect(polyline.getLatLngs()).to.eql(polyline._latlngs);
 		});
 
-		it("can be added to the map when empty", () => {
+		it('can be added to the map when empty', () => {
 			const polyline = L.polyline([]).addTo(map);
 			expect(map.hasLayer(polyline)).to.be(true);
 		});
 
 	});
 
-	describe("#isEmpty", () => {
+	describe('#isEmpty', () => {
 		it('should return true for a polyline with no latlngs', () => {
 			const polyline = L.polyline([]);
 			expect(polyline.isEmpty()).to.be(true);
@@ -75,8 +75,8 @@ describe('Polyline', () => {
 
 	});
 
-	describe("#setLatLngs", () => {
-		it("doesn't overwrite the given latlng array", () => {
+	describe('#setLatLngs', () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -90,7 +90,7 @@ describe('Polyline', () => {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 
-		it("can be set a multi", () => {
+		it('can be set a multi', () => {
 			const latLngs = [
 				[[1, 2], [3, 4], [5, 6]],
 				[[11, 12], [13, 14], [15, 16]]
@@ -164,8 +164,8 @@ describe('Polyline', () => {
 
 	});
 
-	describe("#_defaultShape", () => {
-		it("should return latlngs when flat", () => {
+	describe('#_defaultShape', () => {
+		it('should return latlngs when flat', () => {
 			const latLngs = [L.latLng([1, 2]), L.latLng([3, 4])];
 
 			const polyline = L.polyline(latLngs);
@@ -173,7 +173,7 @@ describe('Polyline', () => {
 			expect(polyline._defaultShape()).to.eql(latLngs);
 		});
 
-		it("should return first latlngs on a multi", () => {
+		it('should return first latlngs on a multi', () => {
 			const latLngs = [
 				[L.latLng([1, 2]), L.latLng([3, 4])],
 				[L.latLng([11, 12]), L.latLng([13, 14])]
@@ -186,8 +186,8 @@ describe('Polyline', () => {
 
 	});
 
-	describe("#addLatLng", () => {
-		it("should add latlng to latlngs", () => {
+	describe('#addLatLng', () => {
+		it('should add latlng to latlngs', () => {
 			const latLngs = [
 				[1, 2],
 				[3, 4]
@@ -200,7 +200,7 @@ describe('Polyline', () => {
 			expect(polyline._latlngs).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
 		});
 
-		it("should add latlng to first latlngs on a multi", () => {
+		it('should add latlng to first latlngs on a multi', () => {
 			const latLngs = [
 				[[1, 2], [3, 4]],
 				[[11, 12], [13, 14]]
@@ -214,7 +214,7 @@ describe('Polyline', () => {
 			expect(polyline._latlngs[1]).to.eql([L.latLng([11, 12]), L.latLng([13, 14])]);
 		});
 
-		it("should add latlng to latlngs by reference", () => {
+		it('should add latlng to latlngs by reference', () => {
 			const latLngs = [
 				[[11, 12], [13, 14]],
 				[[1, 2], [3, 4]]
@@ -228,7 +228,7 @@ describe('Polyline', () => {
 			expect(polyline._latlngs[0]).to.eql([L.latLng([11, 12]), L.latLng([13, 14])]);
 		});
 
-		it("should add latlng on empty polyline", () => {
+		it('should add latlng on empty polyline', () => {
 			const polyline = L.polyline([]);
 
 			polyline.addLatLng([1, 2]);
@@ -237,8 +237,8 @@ describe('Polyline', () => {
 		});
 	});
 
-	describe("#setStyle", () => {
-		it("succeeds for empty Polyline already added to the map", () => {
+	describe('#setStyle', () => {
+		it('succeeds for empty Polyline already added to the map', () => {
 			const style = {
 				weight: 3
 			};
@@ -253,8 +253,8 @@ describe('Polyline', () => {
 		});
 	});
 
-	describe("#setStyle", () => {
-		it("succeeds for empty Polyline already added to the map", () => {
+	describe('#setStyle', () => {
+		it('succeeds for empty Polyline already added to the map', () => {
 			const style = {
 				weight: 3
 			};
@@ -269,8 +269,8 @@ describe('Polyline', () => {
 		});
 	});
 
-	describe("#distance", () => {
-		it("calculates closestLayerPoint", () => {
+	describe('#distance', () => {
+		it('calculates closestLayerPoint', () => {
 			const p1 = map.latLngToLayerPoint([55.8, 37.6]);
 			const p2 = map.latLngToLayerPoint([57.123076977278, 44.861962891635]);
 			const latlngs = [[56.485503424111, 35.545556640339], [55.972522915346, 36.116845702918], [55.502459116923, 34.930322265253], [55.31534617509, 38.973291015816]]

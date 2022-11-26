@@ -1,4 +1,4 @@
-describe("Map.TouchZoom", () => {
+describe('Map.TouchZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -15,7 +15,7 @@ describe("Map.TouchZoom", () => {
 		removeMapContainer(map, container);
 	});
 
-	it.skipIfNotTouch("Increases zoom when pinching out", (done) => {
+	it.skipIfNotTouch('Increases zoom when pinching out', (done) => {
 		map.setView([0, 0], 1);
 		map.once('zoomend', () => {
 			expect(map.getCenter()).to.eql({lat:0, lng:0});
@@ -36,7 +36,7 @@ describe("Map.TouchZoom", () => {
 			.down().moveBy(200, 0, 500).up(100);
 	});
 
-	it.skipIfNotTouch("Decreases zoom when pinching in", (done) => {
+	it.skipIfNotTouch('Decreases zoom when pinching in', (done) => {
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
 			expect(map.getCenter()).to.eql({lat:0, lng:0});
@@ -57,7 +57,7 @@ describe("Map.TouchZoom", () => {
 			.down().moveBy(-200, 0, 500).up(100);
 	});
 
-	it.skipIfNotTouch("fires zoom event while pinch zoom", (done) => {
+	it.skipIfNotTouch('fires zoom event while pinch zoom', (done) => {
 		map.setView([0, 0], 4);
 
 		const spy = sinon.spy();
@@ -91,7 +91,7 @@ describe("Map.TouchZoom", () => {
 			.down().moveBy(-200, 0, 500).up(100);
 	});
 
-	it.skipIfNotTouch("Dragging is possible after pinch zoom", (done) => {
+	it.skipIfNotTouch('Dragging is possible after pinch zoom', (done) => {
 		map.setView([0, 0], 8);
 
 		L.polygon([
@@ -127,7 +127,7 @@ describe("Map.TouchZoom", () => {
 
 	});
 
-	it.skipIfNotTouch("TouchZoom works with disabled map dragging", (done) => {
+	it.skipIfNotTouch('TouchZoom works with disabled map dragging', (done) => {
 		map.remove();
 
 		map = new L.Map(container, {

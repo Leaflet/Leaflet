@@ -58,7 +58,7 @@ const touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-di
 function createContainer(width, height) { /* eslint-disable-line no-unused-vars */
 	width = width ? width : '400px';
 	height = height ? height : '400px';
-	const container = document.createElement("div");
+	const container = document.createElement('div');
 	container.style.position = 'absolute';
 	container.style.top = '0px';
 	container.style.left = '0px';

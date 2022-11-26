@@ -1,4 +1,4 @@
-describe("Control.Layers", () => {
+describe('Control.Layers', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -12,25 +12,25 @@ describe("Control.Layers", () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("baselayerchange event", () => {
-		it("is fired on input that changes the base layer", () => {
-			const baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
+	describe('baselayerchange event', () => {
+		it('is fired on input that changes the base layer', () => {
+			const baseLayers = {'Layer 1': L.tileLayer(''), 'Layer 2': L.tileLayer('')},
 			    layers = L.control.layers(baseLayers).addTo(map),
 			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
 			expect(spy.called).to.be.ok();
-			expect(spy.args[0][0].name).to.be("Layer 1");
-			expect(spy.args[0][0].layer).to.be(baseLayers["Layer 1"]);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[1]);
+			expect(spy.args[0][0].name).to.be('Layer 1');
+			expect(spy.args[0][0].layer).to.be(baseLayers['Layer 1']);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
 			expect(spy.calledTwice).to.be.ok();
-			expect(spy.args[1][0].name).to.be("Layer 2");
-			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
+			expect(spy.args[1][0].name).to.be('Layer 2');
+			expect(spy.args[1][0].layer).to.be(baseLayers['Layer 2']);
 		});
 
-		it("works after removing and readding the Control.Layers to the map", () => {
-			const baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
+		it('works after removing and readding the Control.Layers to the map', () => {
+			const baseLayers = {'Layer 1': L.tileLayer(''), 'Layer 2': L.tileLayer('')},
 			    layers = L.control.layers(baseLayers).addTo(map),
 			    spy = sinon.spy();
 
@@ -39,33 +39,33 @@ describe("Control.Layers", () => {
 			map.removeControl(layers);
 			map.addControl(layers);
 
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
 			expect(spy.called).to.be.ok();
-			expect(spy.args[0][0].name).to.be("Layer 1");
-			expect(spy.args[0][0].layer).to.be(baseLayers["Layer 1"]);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[1]);
+			expect(spy.args[0][0].name).to.be('Layer 1');
+			expect(spy.args[0][0].layer).to.be(baseLayers['Layer 1']);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
 			expect(spy.calledTwice).to.be.ok();
-			expect(spy.args[1][0].name).to.be("Layer 2");
-			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
+			expect(spy.args[1][0].name).to.be('Layer 2');
+			expect(spy.args[1][0].layer).to.be(baseLayers['Layer 2']);
 		});
 
-		it("is not fired on input that doesn't change the base layer", () => {
-			const overlays = {"Marker 1": L.marker([0, 0]), "Marker 2": L.marker([0, 0])},
+		it('is not fired on input that doesn\'t change the base layer', () => {
+			const overlays = {'Marker 1': L.marker([0, 0]), 'Marker 2': L.marker([0, 0])},
 			    layers = L.control.layers({}, overlays).addTo(map),
 			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
-			happen.click(layers._overlaysList.getElementsByTagName("input")[0]);
+			happen.click(layers._overlaysList.getElementsByTagName('input')[0]);
 
 			expect(spy.called).to.not.be.ok();
 		});
 	});
 
-	describe("updates", () => {
-		it("when an included layer is added or removed from the map", () => {
+	describe('updates', () => {
+		it('when an included layer is added or removed from the map', () => {
 			const baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
-			    layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
+			    layers = L.control.layers({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			const spy = sinon.spy(layers, '_update');
 
@@ -76,10 +76,10 @@ describe("Control.Layers", () => {
 			expect(spy.callCount).to.eql(2);
 		});
 
-		it("when an included layer is added or removed from the map, it's (un)checked", () => {
+		it('when an included layer is added or removed from the map, it\'s (un)checked', () => {
 			const baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]);
-			L.control.layers({"Baselayer": baseLayer}, {"Overlay": overlay}).addTo(map);
+			L.control.layers({'Baselayer': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			function isChecked() {
 				return !!(map._container.querySelector('.leaflet-control-layers-overlays input').checked);
@@ -92,10 +92,10 @@ describe("Control.Layers", () => {
 			expect(isChecked()).to.not.be.ok();
 		});
 
-		it("not when a non-included layer is added or removed", () => {
+		it('not when a non-included layer is added or removed', () => {
 			const baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
-			    layers = L.control.layers({"Base": baseLayer}).addTo(map);
+			    layers = L.control.layers({'Base': baseLayer}).addTo(map);
 
 			const spy = sinon.spy(layers, '_update');
 
@@ -105,10 +105,10 @@ describe("Control.Layers", () => {
 			expect(spy.called).to.not.be.ok();
 		});
 
-		it("updates when an included layer is removed from the control", () => {
+		it('updates when an included layer is removed from the control', () => {
 			const baseLayer = L.tileLayer(),
 			    overlay = L.marker([0, 0]),
-			    layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
+			    layers = L.control.layers({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			layers.removeLayer(overlay);
 			expect(map._container.querySelector('.leaflet-control-layers-overlays').children.length)
@@ -125,9 +125,9 @@ describe("Control.Layers", () => {
 			expect(layers._layers.length).to.be.equal(1);
 		});
 
-		it("having repeated layers works as expected", () => {
+		it('having repeated layers works as expected', () => {
 			const layerA = L.tileLayer(''), layerB = L.tileLayer(''),
-			    baseLayers = {"Layer 1": layerA, "Layer 2": layerB, "Layer 3": layerA},
+			    baseLayers = {'Layer 1': layerA, 'Layer 2': layerB, 'Layer 3': layerA},
 			    layers = L.control.layers(baseLayers).addTo(map);
 
 			function checkInputs(idx) {
@@ -137,23 +137,23 @@ describe("Control.Layers", () => {
 				}
 			}
 
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[1]);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
 			checkInputs(1);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(layerB);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(undefined);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
 			checkInputs(0);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[2]);
+			happen.click(layers._baseLayersList.getElementsByTagName('input')[2]);
 			checkInputs(2);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
 		});
 	});
 
-	describe("is removed cleanly", () => {
-		it("and layers in the control can still be removed", () => {
+	describe('is removed cleanly', () => {
+		it('and layers in the control can still be removed', () => {
 			const baseLayer = L.tileLayer('').addTo(map);
 			const layersCtrl = L.control.layers({'Base': baseLayer}).addTo(map);
 			map.removeControl(layersCtrl);
@@ -163,7 +163,7 @@ describe("Control.Layers", () => {
 			}).to.not.throwException();
 		});
 
-		it("and layers in the control can still be removed when added after removing control from map", () => {
+		it('and layers in the control can still be removed when added after removing control from map', () => {
 			const baseLayer = L.tileLayer('').addTo(map);
 			const layersCtrl = L.control.layers().addTo(map);
 			map.removeControl(layersCtrl);
@@ -175,19 +175,19 @@ describe("Control.Layers", () => {
 		});
 	});
 
-	describe("is created with an expand link", ()  => {
-		it("when collapsed", () => {
+	describe('is created with an expand link', ()  => {
+		it('when collapsed', () => {
 			L.control.layers(null, null, {collapsed: true}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 
-		it("when not collapsed", () => {
+		it('when not collapsed', () => {
 			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
 		});
 	});
 
-	describe("collapse when collapsed: true", () => {
+	describe('collapse when collapsed: true', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
@@ -230,7 +230,7 @@ describe("Control.Layers", () => {
 		});
 	});
 
-	describe("does not collapse when collapsed: false", () => {
+	describe('does not collapse when collapsed: false', () => {
 		it('does not collapse when mouse enters or leaves', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
@@ -292,8 +292,8 @@ describe("Control.Layers", () => {
 		});
 	});
 
-	describe("sortLayers", () => {
-		it("keeps original order by default", () => {
+	describe('sortLayers', () => {
+		it('keeps original order by default', () => {
 			const baseLayerOne = L.tileLayer('').addTo(map);
 			const baseLayerTwo = L.tileLayer('').addTo(map);
 			const markerC = L.marker([0, 2]).addTo(map);
@@ -317,7 +317,7 @@ describe("Control.Layers", () => {
 			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
 		});
 
-		it("sorts alphabetically if no function is specified", () => {
+		it('sorts alphabetically if no function is specified', () => {
 			const baseLayerOne = L.tileLayer('').addTo(map);
 			const baseLayerTwo = L.tileLayer('').addTo(map);
 			const markerA = L.marker([0, 0]).addTo(map);
@@ -343,7 +343,7 @@ describe("Control.Layers", () => {
 			expect(elems[4].innerHTML.trim()).to.be.equal('Marker C');
 		});
 
-		it("uses the compare function to sort layers", () => {
+		it('uses the compare function to sort layers', () => {
 			const baseLayerOne = L.tileLayer('', {customOption: 999}).addTo(map);
 			const baseLayerTwo = L.tileLayer('', {customOption: 998}).addTo(map);
 			const markerA = L.marker([0, 0], {customOption: 102}).addTo(map);

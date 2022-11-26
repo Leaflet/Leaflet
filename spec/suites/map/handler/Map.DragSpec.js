@@ -1,4 +1,4 @@
-describe("Map.Drag", () => {
+describe('Map.Drag', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -10,8 +10,8 @@ describe("Map.Drag", () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#addHook", () => {
-		it("calls the map with dragging enabled", () => {
+	describe('#addHook', () => {
+		it('calls the map with dragging enabled', () => {
 			map = L.map(container, {
 				dragging: true
 			});
@@ -21,7 +21,7 @@ describe("Map.Drag", () => {
 			expect(map.dragging.enabled()).to.be(true);
 		});
 
-		it("calls the map with dragging and worldCopyJump enabled", () => {
+		it('calls the map with dragging and worldCopyJump enabled', () => {
 			map = L.map(container, {
 				dragging: true,
 				worldCopyJump: true
@@ -32,8 +32,8 @@ describe("Map.Drag", () => {
 			expect(map.dragging.enabled()).to.be(true);
 		});
 
-		it("calls the map with dragging disabled and worldCopyJump enabled; " +
-			"enables dragging after setting center and zoom", () => {
+		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
+			'enables dragging after setting center and zoom', () => {
 			map = L.map(container, {
 				dragging: false,
 				worldCopyJump: true
@@ -57,8 +57,8 @@ describe("Map.Drag", () => {
 		this._initialPos = this._getPosition();
 	});
 
-	describe("mouse events", () => {
-		it("change the center of the map", (done) => {
+	describe('mouse events', () => {
+		it('change the center of the map', (done) => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -86,7 +86,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		describe("in CSS scaled container", () => {
+		describe('in CSS scaled container', () => {
 			const scale = L.point(2, 1.5);
 
 			beforeEach(() => {
@@ -94,7 +94,7 @@ describe("Map.Drag", () => {
 				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it("change the center of the map, compensating for CSS scale", (done) => {
+			it('change the center of the map, compensating for CSS scale', (done) => {
 				map = new MyMap(container, {
 				    dragging: true,
 				    inertia: false
@@ -125,7 +125,7 @@ describe("Map.Drag", () => {
 			});
 		});
 
-		it("does not change the center of the map when mouse is moved less than the drag threshold", (done) => {
+		it('does not change the center of the map when mouse is moved less than the drag threshold', (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -156,7 +156,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it("does not trigger preclick nor click", (done) => {
+		it('does not trigger preclick nor click', (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -187,7 +187,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
 		});
 
-		it("does not trigger preclick nor click when dragging on top of a static marker", (done) => {
+		it('does not trigger preclick nor click when dragging on top of a static marker', (done) => {
 			container.style.width = container.style.height = '600px';
 			map = L.map(container, {
 				dragging: true,
@@ -227,7 +227,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(5, 0, 20).moveBy(20, 20, 100).up();
 		});
 
-		it("does not trigger preclick nor click when dragging a marker", (done) => {
+		it('does not trigger preclick nor click when dragging a marker', (done) => {
 			container.style.width = container.style.height = '600px';
 			map = L.map(container, {
 				dragging: true,
@@ -267,7 +267,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
 		});
 
-		it("does not change the center of the map when drag is disabled on click", (done) => {
+		it('does not change the center of the map when drag is disabled on click', (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false
@@ -301,8 +301,8 @@ describe("Map.Drag", () => {
 		});
 	});
 
-	describe("touch events", () => {
-		it.skipIfNotTouch("change the center of the map", (done) => {
+	describe('touch events', () => {
+		it.skipIfNotTouch('change the center of the map', (done) => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -330,7 +330,7 @@ describe("Map.Drag", () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", (done) => {
+		it.skipIfNotTouch('does not change the center of the map when finger is moved less than the drag threshold', (done) => {
 			map = L.map(container, {
 				dragging: true,
 				inertia: false

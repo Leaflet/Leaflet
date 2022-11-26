@@ -160,7 +160,7 @@ describe('Util', () => {
 			expect(o.options).not.to.equal(opts);
 		});
 
-		it("doesn't create a distinct options object if object already has own options", () => {
+		it('doesn\'t create a distinct options object if object already has own options', () => {
 			const opts = {},
 			    o = {options: opts};
 			L.Util.setOptions(o, {});

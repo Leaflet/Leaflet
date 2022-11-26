@@ -60,63 +60,63 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getStyle(el, 'color')).to.eql('green');
 		});
 
-		it("returns empty string if style isn't defined", () => {
+		it('returns empty string if style isn\'t defined', () => {
 			const e = document.createElement('div');
-			expect(L.DomUtil.getStyle(e, "position")).to.be('');
+			expect(L.DomUtil.getStyle(e, 'position')).to.be('');
 		});
 
-		it("returns undefined if style don't exist on HTML element or default css", () => {
-			expect(L.DomUtil.getStyle(el, "random_name_for_style")).to.be(undefined);
+		it('returns undefined if style don\'t exist on HTML element or default css', () => {
+			expect(L.DomUtil.getStyle(el, 'random_name_for_style')).to.be(undefined);
 		});
 	});
 
-	describe("#create", () => {
-		it("creates an HTML element div without any class name", () => {
-			const e = L.DomUtil.create("div");
+	describe('#create', () => {
+		it('creates an HTML element div without any class name', () => {
+			const e = L.DomUtil.create('div');
 			expect(e.className).to.eql('');
-			expect(e.tagName).to.eql("DIV");
+			expect(e.tagName).to.eql('DIV');
 		});
 
-		it("creates an HTML element div with specified class name", () => {
-			const e = L.DomUtil.create("div", "test");
+		it('creates an HTML element div with specified class name', () => {
+			const e = L.DomUtil.create('div', 'test');
 			expect(e.className).to.eql('test');
-			expect(e.tagName).to.eql("DIV");
+			expect(e.tagName).to.eql('DIV');
 		});
 
-		it("creates an p element with a div as parent", () => {
-			const parent = L.DomUtil.create("div");
+		it('creates an p element with a div as parent', () => {
+			const parent = L.DomUtil.create('div');
 			expect(parent.children.length).to.equal(0);
-			const child = L.DomUtil.create("p", "test", parent);
+			const child = L.DomUtil.create('p', 'test', parent);
 			expect(child.parentNode === parent).to.be(true);
 			expect(parent.children.length).to.equal(1);
 		});
 	});
 
 
-	describe("#remove", () => {
-		it("removes element", () => {
-			const e = L.DomUtil.create("div", "test", el);
+	describe('#remove', () => {
+		it('removes element', () => {
+			const e = L.DomUtil.create('div', 'test', el);
 			L.DomUtil.remove(e);
 			expect(el.contains(e)).to.be(false);
 		});
 
-		it("does nothing if element hasn't a parent", () => {
-			const e = L.DomUtil.create("div", "test");
+		it('does nothing if element hasn\'t a parent', () => {
+			const e = L.DomUtil.create('div', 'test');
 			L.DomUtil.remove(e);
 			expect(document.body.contains(e)).to.be(false);
 		});
 	});
 
-	describe("#empty", () => {
-		it("removes all children of element", () => {
-			L.DomUtil.create("div", "test", el);
-			L.DomUtil.create("div", "test1", el);
-			L.DomUtil.create("div", "test2", el);
+	describe('#empty', () => {
+		it('removes all children of element', () => {
+			L.DomUtil.create('div', 'test', el);
+			L.DomUtil.create('div', 'test1', el);
+			L.DomUtil.create('div', 'test2', el);
 			L.DomUtil.empty(el);
 			expect(el.childNodes.length).to.be(0);
 		});
 
-		it("does nothing if element doesn't have children", () => {
+		it('does nothing if element doesn\'t have children', () => {
 			expect(el.childNodes.length).to.be(0);
 			L.DomUtil.empty(el);
 			expect(el.childNodes.length).to.be(0);
@@ -126,33 +126,33 @@ describe('DomUtil', () => {
 	describe('#toFront', () => {
 		it('moves el to last child position parent element', () => {
 			const elm = L.DomUtil.create('div', 'childContainer', el);
-			L.DomUtil.create("div", "test", el);
-			L.DomUtil.create("div", "test1", el);
+			L.DomUtil.create('div', 'test', el);
+			L.DomUtil.create('div', 'test1', el);
 			expect(el.children.length).to.equal(3);
 			expect(Array.from(el.children).indexOf(elm)).to.be(0);
 			L.DomUtil.toFront(elm);
 			expect(Array.from(el.children).indexOf(elm)).to.be(2);
 		});
 
-		it("doesn't move an element if he's already in the front", () => {
-			L.DomUtil.create("div", "test", el);
-			L.DomUtil.create("div", "test1", el);
-			const e1 = L.DomUtil.create("div", "test2", el);
+		it('doesn\'t move an element if he\'s already in the front', () => {
+			L.DomUtil.create('div', 'test', el);
+			L.DomUtil.create('div', 'test1', el);
+			const e1 = L.DomUtil.create('div', 'test2', el);
 			expect(el.lastChild).to.eql(e1);
 			L.DomUtil.toFront(e1);
 			expect(el.lastChild).to.eql(e1);
 		});
 
-		it("doesn't crash if element doesn't have a parent", () => {
-			const e = L.DomUtil.create("div");
+		it('doesn\'t crash if element doesn\'t have a parent', () => {
+			const e = L.DomUtil.create('div');
 			L.DomUtil.toFront(e);
 		});
 	});
 
 	describe('#toBack', () => {
 		it('moves el to first child position parent element', () => {
-			L.DomUtil.create("div", "test", el);
-			L.DomUtil.create("div", "test1", el);
+			L.DomUtil.create('div', 'test', el);
+			L.DomUtil.create('div', 'test1', el);
 			const elm = L.DomUtil.create('div', 'childContainer', el);
 			expect(el.children.length).to.equal(3);
 			expect(Array.from(el.children).indexOf(elm)).to.be(2);
@@ -160,17 +160,17 @@ describe('DomUtil', () => {
 			expect(Array.from(el.children).indexOf(elm)).to.be(0);
 		});
 
-		it("doesn't move an element if it is already in the back", () => {
-			const e1 = L.DomUtil.create("div", "test", el);
-			L.DomUtil.create("div", "test1", el);
-			L.DomUtil.create("div", "test2", el);
+		it('doesn\'t move an element if it is already in the back', () => {
+			const e1 = L.DomUtil.create('div', 'test', el);
+			L.DomUtil.create('div', 'test1', el);
+			L.DomUtil.create('div', 'test2', el);
 			expect(el.firstChild).to.be(e1);
 			L.DomUtil.toBack(el);
 			expect(el.firstChild).to.be(e1);
 		});
 
-		it("doesn't crash if an element doesn't have a parent", () => {
-			const e = L.DomUtil.create("div");
+		it('doesn\'t crash if an element doesn\'t have a parent', () => {
+			const e = L.DomUtil.create('div');
 			L.DomUtil.toBack(e);
 		});
 	});
@@ -199,16 +199,16 @@ describe('DomUtil', () => {
 			expect(el.style.opacity).to.equal('0');
 		});
 
-		it("replaces the class of SGV element by the specified argument", () => {
-			const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-			L.DomUtil.setClass(svg, "testclass");
-			expect(svg.className.baseVal).to.be("testclass");
+		it('replaces the class of SGV element by the specified argument', () => {
+			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			L.DomUtil.setClass(svg, 'testclass');
+			expect(svg.className.baseVal).to.be('testclass');
 		});
 
-		it("gets the class name of SVG element", () => {
-			const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-			svg.className.baseVal = "testclass";
-			expect(L.DomUtil.getClass(svg)).to.be("testclass");
+		it('gets the class name of SVG element', () => {
+			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+			svg.className.baseVal = 'testclass';
+			expect(L.DomUtil.getClass(svg)).to.be('testclass');
 		});
 
 		it('returns empty string if it has no classes', () => {
@@ -222,13 +222,13 @@ describe('DomUtil', () => {
 			expect(hasProp).to.match(/(?:-webkit-transform|-webkit-transform|-ms-tranform|-o-transform)/);
 		});
 
-		it("returns false if property doesn't exist", () => {
-			expect(L.DomUtil.testProp(["testprop"])).to.be(false);
+		it('returns false if property doesn\'t exist', () => {
+			expect(L.DomUtil.testProp(['testprop'])).to.be(false);
 		});
 	});
 
 	describe('#setTransform', () => {
-		it("resets the transform style of an el.", () => {
+		it('resets the transform style of an el.', () => {
 			expect(L.DomUtil.getStyle(el, 'transform')).to.be.equal('none');
 
 			const offset = L.point(200, 200);
@@ -243,29 +243,29 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getStyle(el, 'transform')).to.not.be.equal(transform);
 		});
 
-		it("reset the 3d CSS transform when offset and scale aren't specified", () => {
+		it('reset the 3d CSS transform when offset and scale aren\'t specified', () => {
 			L.DomUtil.setTransform(el);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(0px, 0px, 0px)');
 		});
 
-		it("set the 3d CSS transform with just the specified point if scale isn't specified", () => {
+		it('set the 3d CSS transform with just the specified point if scale isn\'t specified', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1));
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(1px, 1px, 0px)');
 		});
 
-		it("set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified", () => {
+		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified', () => {
 			L.DomUtil.setTransform(el, undefined, 5);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(0px, 0px, 0px) scale(5)');
 		});
 
-		it("set the 3d CSS transform with the specified point ant the corresponding scale", () => {
+		it('set the 3d CSS transform with the specified point ant the corresponding scale', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1), 5);
 			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(1px, 1px, 0px) scale(5)');
 		});
 	});
 
 	describe('#setPosition, #getPosition', () => {
-		it("sets position of el to coordinates specified by position.", () => {
+		it('sets position of el to coordinates specified by position.', () => {
 			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('0px');
 			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('0px');
 
@@ -282,7 +282,7 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getPosition(el)).to.be.eql({x: newX, y: newY});
 		});
 
-		it("returns position of an element positioned with setPosition.", () => {
+		it('returns position of an element positioned with setPosition.', () => {
 			const coordinates = {x: 333, y: 666};
 			const position = L.point(coordinates);
 			expect(L.DomUtil.getPosition(el)).to.not.eql(coordinates);
@@ -291,7 +291,7 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getPosition(el)).to.eql(coordinates);
 		});
 
-		it("returns [0, 0] point if the HTML element wasn't positioned before", () => {
+		it('returns [0, 0] point if the HTML element wasn\'t positioned before', () => {
 			expect(L.DomUtil.getPosition(el)).to.eql(new L.Point(0, 0));
 		});
 	});
@@ -306,7 +306,7 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getSizedParentNode(grandChild)).to.eql(child);
 		});
 
-		it("throws an error if the element hasn't a parent", () => {
+		it('throws an error if the element hasn\'t a parent', () => {
 			expect(() => {
 				L.DomUtil.getSizedParentNode(document.createElement('div'));
 			}).to.throwException();
@@ -345,8 +345,8 @@ describe('DomUtil', () => {
 			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
 		});
 
-		it("returns x and y to 1 with all boundingClientRect's values to 0 for empty element not added yet to the body", () => {
-			const newElement = document.createElement("div");
+		it('returns x and y to 1 with all boundingClientRect\'s values to 0 for empty element not added yet to the body', () => {
+			const newElement = document.createElement('div');
 			const scale = L.DomUtil.getScale(newElement);
 			expect(scale.x).to.eql(1);
 			expect(scale.y).to.eql(1);

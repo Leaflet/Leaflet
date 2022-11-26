@@ -453,18 +453,18 @@ describe('Events', () => {
 			    spy = sinon.spy();
 
 			/* register without context */
-			obj.on("test", spy);
-			obj.on("test", spy);
+			obj.on('test', spy);
+			obj.on('test', spy);
 
 			/* Should be called once */
-			obj.fire("test");
+			obj.fire('test');
 
 			expect(spy.callCount).to.eql(1);
 		});
 	});
 
-	describe("#clearEventListeners", () => {
-		it("clears all registered listeners on an object", () => {
+	describe('#clearEventListeners', () => {
+		it('clears all registered listeners on an object', () => {
 			const spy = sinon.spy(),
 			    obj = new L.Evented(),
 			    otherObj = new L.Evented();
@@ -518,7 +518,7 @@ describe('Events', () => {
 			expect(otherSpy.callCount).to.be.lessThan(2);
 		});
 
-		it("doesn't call listeners to events that have been removed", () => {
+		it('doesn\'t call listeners to events that have been removed', () => {
 			const obj = new L.Evented(),
 			    spy = sinon.spy();
 
@@ -530,7 +530,7 @@ describe('Events', () => {
 			expect(spy.called).to.be(false);
 		});
 
-		it("doesn't call once twice", () => {
+		it('doesn\'t call once twice', () => {
 			const obj = new L.Evented(),
 			spy = sinon.spy();
 			obj.once('test', () => {

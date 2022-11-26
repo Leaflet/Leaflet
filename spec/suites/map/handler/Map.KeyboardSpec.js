@@ -1,4 +1,4 @@
-describe("Map.Keyboard", () => {
+describe('Map.Keyboard', () => {
 	const KEYCODE_LOWERCASE_A = 65;
 	const KEYCODE_ARROW_LEFT = 37;
 	const KEYCODE_ARROW_UP = 38;
@@ -31,8 +31,8 @@ describe("Map.Keyboard", () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("arrow keys", () => {
-		it("move the map north", () => {
+	describe('arrow keys', () => {
+		it('move the map north', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_UP});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_UP});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_UP});
@@ -40,7 +40,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getCenter().lat).to.be.greaterThan(0);
 		});
 
-		it("move the map south", () => {
+		it('move the map south', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_DOWN});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_DOWN});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_DOWN});
@@ -48,7 +48,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getCenter().lat).to.be.lessThan(0);
 		});
 
-		it("move the map west", () => {
+		it('move the map west', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_LEFT});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_LEFT});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_LEFT});
@@ -56,7 +56,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getCenter().lng).to.be.lessThan(0);
 		});
 
-		it("move the map east", () => {
+		it('move the map east', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_ARROW_RIGHT});
 			happen.keypress(document, {keyCode: KEYCODE_ARROW_RIGHT});
 			happen.keyup(document,    {keyCode: KEYCODE_ARROW_RIGHT});
@@ -64,7 +64,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getCenter().lng).to.be.greaterThan(0);
 		});
 
-		it("move the map over 180° with worldCopyJump true", () => {
+		it('move the map over 180° with worldCopyJump true', () => {
 			map.panTo([0, 178], {animate: false});
 			map.options.worldCopyJump = true;
 
@@ -76,8 +76,8 @@ describe("Map.Keyboard", () => {
 		});
 	});
 
-	describe("plus/minus keys", () => {
-		it("zoom in", () => {
+	describe('plus/minus keys', () => {
+		it('zoom in', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_PLUS});
 			happen.keypress(document, {keyCode: KEYCODE_PLUS});
 			happen.keyup(document,    {keyCode: KEYCODE_PLUS});
@@ -85,7 +85,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getZoom()).to.be.greaterThan(5);
 		});
 
-		it("zoom out", () => {
+		it('zoom out', () => {
 			happen.keydown(document,  {keyCode: KEYCODE_MINUS});
 			happen.keypress(document, {keyCode: KEYCODE_MINUS});
 			happen.keyup(document,    {keyCode: KEYCODE_MINUS});
@@ -94,8 +94,8 @@ describe("Map.Keyboard", () => {
 		});
 	});
 
-	describe("does not move the map if disabled", () => {
-		it("no zoom in", () => {
+	describe('does not move the map if disabled', () => {
+		it('no zoom in', () => {
 
 			map.keyboard.disable();
 
@@ -106,7 +106,7 @@ describe("Map.Keyboard", () => {
 			expect(map.getZoom()).to.eql(5);
 		});
 
-		it("no move north", () => {
+		it('no move north', () => {
 
 			map.keyboard.disable();
 
@@ -119,8 +119,8 @@ describe("Map.Keyboard", () => {
 	});
 
 
-	describe("popup closing", () => {
-		it("closes a popup when pressing escape", () => {
+	describe('popup closing', () => {
+		it('closes a popup when pressing escape', () => {
 
 			const popup = L.popup().setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
@@ -134,8 +134,8 @@ describe("Map.Keyboard", () => {
 		});
 	});
 
-	describe("popup closing disabled", () => {
-		it("close of popup when pressing escape disabled via options", () => {
+	describe('popup closing disabled', () => {
+		it('close of popup when pressing escape disabled via options', () => {
 
 			const popup = L.popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
@@ -149,8 +149,8 @@ describe("Map.Keyboard", () => {
 		});
 	});
 
-	describe("keys events binding", () => {
-		it("keypress", (done) => {
+	describe('keys events binding', () => {
+		it('keypress', (done) => {
 			const keyDownSpy = sinon.spy();
 			const keyPressSpy = sinon.spy();
 			const keyUpSpy = sinon.spy();
@@ -166,7 +166,7 @@ describe("Map.Keyboard", () => {
 			}, 50);
 		});
 
-		it("keydown", (done) => {
+		it('keydown', (done) => {
 			const keyDownSpy = sinon.spy();
 			const keyPressSpy = sinon.spy();
 			const keyUpSpy = sinon.spy();
@@ -182,7 +182,7 @@ describe("Map.Keyboard", () => {
 			}, 50);
 		});
 
-		it("keyup", (done) => {
+		it('keyup', (done) => {
 			const keyDownSpy = sinon.spy();
 			const keyPressSpy = sinon.spy();
 			const keyUpSpy = sinon.spy();

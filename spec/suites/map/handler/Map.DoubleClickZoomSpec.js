@@ -1,4 +1,4 @@
-describe("Map.DoubleClickZoom", () => {
+describe('Map.DoubleClickZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -14,7 +14,7 @@ describe("Map.DoubleClickZoom", () => {
 		removeMapContainer(map, container);
 	});
 
-	it("zooms in while dblclick", (done) => {
+	it('zooms in while dblclick', (done) => {
 		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
@@ -26,7 +26,7 @@ describe("Map.DoubleClickZoom", () => {
 		happen.dblclick(container);
 	});
 
-	it("zooms out while dblclick and holding shift", (done) => {
+	it('zooms out while dblclick and holding shift', (done) => {
 		const zoom = map.getZoom();
 
 		map.on('zoomend', () => {
@@ -38,7 +38,7 @@ describe("Map.DoubleClickZoom", () => {
 		happen.dblclick(container, {shiftKey: true});
 	});
 
-	it("doubleClickZoom: 'center'", (done) => {
+	it('doubleClickZoom: \'center\'', (done) => {
 		const doubleClickZoomBefore = map.options.doubleClickZoom;
 		map.options.doubleClickZoom = 'center';
 		const zoom = map.getZoom();
