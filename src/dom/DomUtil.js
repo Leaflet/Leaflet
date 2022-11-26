@@ -101,61 +101,29 @@ export function toBack(el) {
 	}
 }
 
-// @function hasClass(el: HTMLElement, name: String): Boolean
-// Returns `true` if the element's class attribute contains `name`.
-export function hasClass(el, name) {
-	if (el.classList !== undefined) {
-		return el.classList.contains(name);
-	}
-	const className = getClass(el);
-	return className.length > 0 && new RegExp(`(^|\\s)${name}(\\s|$)`).test(className);
-}
+// @function hasClass(el: Element, name: String): Boolean
+// Returns `true` if the element's `class` attribute contains `name`.
+export const hasClass = (el, name) => el.classList.contains(name);
 
-// @function addClass(el: HTMLElement, name: String)
-// Adds `name` to the element's class attribute.
+// @function addClass(el: Element, name: String)
+// Adds `name` to the element's `class` attribute.
+// Multiple values can be added by providing a value for `name` delimited by a space character.
 export function addClass(el, name) {
-	if (el.classList !== undefined) {
-		const classes = Util.splitWords(name);
-		for (let i = 0, len = classes.length; i < len; i++) {
-			el.classList.add(classes[i]);
-		}
-	} else if (!hasClass(el, name)) {
-		const className = getClass(el);
-		setClass(el, (className ? `${className} ` : '') + name);
-	}
+	const classes = Util.splitWords(name);
+	el.classList.add(...classes);
 }
 
-// @function removeClass(el: HTMLElement, name: String)
-// Removes `name` from the element's class attribute.
-export function removeClass(el, name) {
-	if (el.classList !== undefined) {
-		el.classList.remove(name);
-	} else {
-		setClass(el, ` ${getClass(el)} `.replace(` ${name} `, ' ').trim());
-	}
-}
+// @function removeClass(el: Element, name: String)
+// Removes `name` from the element's `class` attribute.
+export const removeClass = (el, name) => el.classList.remove(name);
 
-// @function setClass(el: HTMLElement, name: String)
-// Sets the element's class.
-export function setClass(el, name) {
-	if (el.className.baseVal === undefined) {
-		el.className = name;
-	} else {
-		// in case of SVG element
-		el.className.baseVal = name;
-	}
-}
+// @function setClass(el: Element, name: String)
+// Sets the element's `class` attribute to the value of `name`.
+export const setClass = (el, name) => { el.classList.value = name; };
 
-// @function getClass(el: HTMLElement): String
-// Returns the element's class.
-export function getClass(el) {
-	// Check if the element is an SVGElementInstance and use the correspondingElement instead
-	// (Required for linked SVG elements in IE11.)
-	if (el.correspondingElement) {
-		el = el.correspondingElement;
-	}
-	return el.className.baseVal === undefined ? el.className : el.className.baseVal;
-}
+// @function getClass(el: Element): String
+// Returns the value of the element's `class` attribute.
+export const getClass = el => el.classList.value;
 
 // @function setOpacity(el: HTMLElement, opacity: Number)
 // Set the opacity of an element (including old IE support).
