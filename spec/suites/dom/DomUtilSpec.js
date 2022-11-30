@@ -146,7 +146,7 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe("#hasClass", () => {
+	describe('#hasClass', () => {
 		it('determines if an HTML element has a class', () => {
 			const element = document.createElement('div');
 			element.classList.add('newClass', 'someOtherClass');
@@ -160,7 +160,7 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe("#addClass", () => {
+	describe('#addClass', () => {
 		it('adds a class to an HTML element', () => {
 			const element = document.createElement('div');
 			L.DomUtil.addClass(element, 'newClass');
