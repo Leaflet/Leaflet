@@ -10,8 +10,8 @@ describe('Polygon', () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#initialize", () => {
-		it("should never be flat", () => {
+	describe('#initialize', () => {
+		it('should never be flat', () => {
 			const latLngs = [[1, 2], [3, 4]];
 
 			const polygon = L.polygon(latLngs);
@@ -20,7 +20,7 @@ describe('Polygon', () => {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("doesn't overwrite the given latlng array", () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -33,13 +33,13 @@ describe('Polygon', () => {
 			expect(polygon._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it("can be called with an empty array", () => {
+		it('can be called with an empty array', () => {
 			const polygon = L.polygon([]);
 			expect(polygon._latlngs).to.eql([[]]);
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be initialized with holes", () => {
+		it('can be initialized with holes', () => {
 			const originalLatLngs = [
 				[[0, 10], [10, 10], [10, 0]], // external ring
 				[[2, 3], [2, 4], [3, 4]] // hole
@@ -54,7 +54,7 @@ describe('Polygon', () => {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be initialized with multi including hole", () => {
+		it('can be initialized with multi including hole', () => {
 			const latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -69,7 +69,7 @@ describe('Polygon', () => {
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
-		it("can be added to the map when empty", () => {
+		it('can be added to the map when empty', () => {
 			const polygon = L.polygon([]).addTo(map);
 			const isAdded = map.hasLayer(polygon);
 			expect(isAdded).to.be(true);
@@ -77,7 +77,7 @@ describe('Polygon', () => {
 
 	});
 
-	describe("#isEmpty", () => {
+	describe('#isEmpty', () => {
 
 		it('should return true for a polygon with no latlngs', () => {
 			const layer = L.polygon([]);
@@ -101,8 +101,8 @@ describe('Polygon', () => {
 
 	});
 
-	describe("#setLatLngs", () => {
-		it("doesn't overwrite the given latlng array", () => {
+	describe('#setLatLngs', () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -116,7 +116,7 @@ describe('Polygon', () => {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 
-		it("can be set external ring and holes", () => {
+		it('can be set external ring and holes', () => {
 			const latLngs = [
 				[[0, 10], [10, 10], [10, 0]], // external ring
 				[[2, 3], [2, 4], [3, 4]] // hole
@@ -131,7 +131,7 @@ describe('Polygon', () => {
 			]);
 		});
 
-		it("can be set multi including hole", () => {
+		it('can be set multi including hole', () => {
 			const latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -187,7 +187,7 @@ describe('Polygon', () => {
 			expect(layer.getCenter()).to.be.nearLatLng(center);
 		});
 
-		it("should compute center for multi-polygon including hole", () => {
+		it('should compute center for multi-polygon including hole', () => {
 			const latlngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -197,8 +197,8 @@ describe('Polygon', () => {
 		});
 	});
 
-	describe("#_defaultShape", () => {
-		it("should return latlngs on a simple polygon", () => {
+	describe('#_defaultShape', () => {
+		it('should return latlngs on a simple polygon', () => {
 			const latlngs = [
 				L.latLng([1, 2]),
 				L.latLng([3, 4])
@@ -209,7 +209,7 @@ describe('Polygon', () => {
 			expect(polygon._defaultShape()).to.eql(latlngs);
 		});
 
-		it("should return first latlngs on a polygon with hole", () => {
+		it('should return first latlngs on a polygon with hole', () => {
 			const latlngs = [
 				[L.latLng([0, 12]), L.latLng([13, 14]), L.latLng([15, 16])],
 				[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]
@@ -220,7 +220,7 @@ describe('Polygon', () => {
 			expect(polygon._defaultShape()).to.eql(latlngs[0]);
 		});
 
-		it("should return first latlngs on a multipolygon", () => {
+		it('should return first latlngs on a multipolygon', () => {
 			const latlngs = [
 				[[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]],
 				[[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]
@@ -231,7 +231,7 @@ describe('Polygon', () => {
 			expect(polygon._defaultShape()).to.eql(latlngs[0][0]);
 		});
 
-		it("should return first latlngs on a multipolygon with hole", () => {
+		it('should return first latlngs on a multipolygon with hole', () => {
 			const latlngs = [
 				[[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
 				 [L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]],
@@ -244,8 +244,8 @@ describe('Polygon', () => {
 		});
 	});
 
-	describe("#addLatLng", () => {
-		it("should add latlng to latlngs", () => {
+	describe('#addLatLng', () => {
+		it('should add latlng to latlngs', () => {
 			const latLngs = [
 				[1, 2],
 				[3, 4]
@@ -258,7 +258,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs).to.eql([[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]]);
 		});
 
-		it("should add latlng to first latlngs on a polygon with hole", () => {
+		it('should add latlng to first latlngs on a polygon with hole', () => {
 			const latLngs = [
 				[[0, 12], [13, 14], [15, 16]],
 				[[1, 2], [3, 4], [5, 6]]
@@ -272,7 +272,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
 		});
 
-		it("should add latlng by reference on a polygon with hole", () => {
+		it('should add latlng by reference on a polygon with hole', () => {
 			const latLngs = [
 				[[0, 12], [13, 14], [15, 16]],
 				[[1, 2], [3, 4], [5, 6]]
@@ -286,7 +286,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6]), L.latLng([7, 8])]);
 		});
 
-		it("should add latlng to first latlngs on a multi", () => {
+		it('should add latlng to first latlngs on a multi', () => {
 			const latLngs = [
 				[[[1, 2], [3, 4]]],
 				[[[11, 12], [13, 14], [15, 16]]]
@@ -300,7 +300,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs[1]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
 		});
 
-		it("should add latlng to latlngs by reference on a multi", () => {
+		it('should add latlng to latlngs by reference on a multi', () => {
 			const latLngs = [
 				[[[11, 12], [13, 14], [15, 16]]],
 				[[[1, 2], [3, 4]]]
@@ -314,7 +314,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs[0]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
 		});
 
-		it("should add latlng on first latlngs by default on a multipolygon with hole", () => {
+		it('should add latlng on first latlngs by default on a multipolygon with hole', () => {
 			const latLngs = [
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]],
 				[[[10, 20], [30, 40], [50, 60]]]
@@ -329,7 +329,7 @@ describe('Polygon', () => {
 			expect(polygon._latlngs[1][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
 		});
 
-		it("should add latlng by reference on a multipolygon with hole", () => {
+		it('should add latlng by reference on a multipolygon with hole', () => {
 			const latLngs = [
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
@@ -345,8 +345,8 @@ describe('Polygon', () => {
 		});
 	});
 
-	describe("#setStyle", () => {
-		it("succeeds for empty Polygon already added to the map", () => {
+	describe('#setStyle', () => {
+		it('succeeds for empty Polygon already added to the map', () => {
 			const style = {
 				weight: 3
 			};

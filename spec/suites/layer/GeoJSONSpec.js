@@ -1,5 +1,5 @@
-describe("L.GeoJSON", () => {
-	describe("addData", () => {
+describe('L.GeoJSON', () => {
+	describe('addData', () => {
 		const geojson = {
 			type: 'Feature',
 			properties: {},
@@ -13,28 +13,28 @@ describe("L.GeoJSON", () => {
 			geometry: null
 		};
 
-		it("sets feature property on member layers", () => {
+		it('sets feature property on member layers', () => {
 			const layer = L.geoJSON();
 			layer.addData(geojson);
 			expect(layer.getLayers()[0].feature).to.eql(geojson);
 		});
 
-		it("normalizes a geometry to a Feature", () => {
+		it('normalizes a geometry to a Feature', () => {
 			const layer = L.geoJSON();
 			layer.addData(geojson.geometry);
 			expect(layer.getLayers()[0].feature).to.eql(geojson);
 		});
 
-		it("accepts geojson with null geometry", () => {
+		it('accepts geojson with null geometry', () => {
 			const layer = L.geoJSON();
 			layer.addData(geojsonEmpty);
 			expect(layer.getLayers().length).to.eql(0);
 		});
 
-		it("makes default marker inherit group options if explicitly requested", () => {
+		it('makes default marker inherit group options if explicitly requested', () => {
 			// Check first that it does not inherit group options by default
 			const options = {
-				customOption: "My Custom Option"
+				customOption: 'My Custom Option'
 			};
 			const layer = L.geoJSON(null, options);
 			layer.addData(geojson);
@@ -98,8 +98,8 @@ describe("L.GeoJSON", () => {
 	});
 });
 
-describe("L.Marker#toGeoJSON", () => {
-	it("returns a 2D Point object", () => {
+describe('L.Marker#toGeoJSON', () => {
+	it('returns a 2D Point object', () => {
 		const marker = L.marker([10, 20]);
 		expect(marker.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -107,7 +107,7 @@ describe("L.Marker#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D Point object", () => {
+	it('returns a 3D Point object', () => {
 		const marker = L.marker([10, 20, 30]);
 		expect(marker.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -124,8 +124,8 @@ describe("L.Marker#toGeoJSON", () => {
 	});
 });
 
-describe("L.Circle#toGeoJSON", () => {
-	it("returns a 2D Point object", () => {
+describe('L.Circle#toGeoJSON', () => {
+	it('returns a 2D Point object', () => {
 		const circle = L.circle([10, 20], 100);
 		expect(circle.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -133,7 +133,7 @@ describe("L.Circle#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D Point object", () => {
+	it('returns a 3D Point object', () => {
 		const circle = L.circle([10, 20, 30], 100);
 		expect(circle.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -150,8 +150,8 @@ describe("L.Circle#toGeoJSON", () => {
 	});
 });
 
-describe("L.CircleMarker#toGeoJSON", () => {
-	it("returns a 2D Point object", () => {
+describe('L.CircleMarker#toGeoJSON', () => {
+	it('returns a 2D Point object', () => {
 		const marker = L.circleMarker([10, 20]);
 		expect(marker.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -159,7 +159,7 @@ describe("L.CircleMarker#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D Point object", () => {
+	it('returns a 3D Point object', () => {
 		const marker = L.circleMarker([10, 20, 30]);
 		expect(marker.toGeoJSON().geometry).to.eql({
 			type: 'Point',
@@ -167,7 +167,7 @@ describe("L.CircleMarker#toGeoJSON", () => {
 		});
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const marker = L.circleMarker([10.1234, 20.1234]);
 		expect(marker.toGeoJSON(3).geometry).to.eql({
 			type: 'Point',
@@ -176,8 +176,8 @@ describe("L.CircleMarker#toGeoJSON", () => {
 	});
 });
 
-describe("L.Polyline#toGeoJSON", () => {
-	it("returns a 2D LineString object", () => {
+describe('L.Polyline#toGeoJSON', () => {
+	it('returns a 2D LineString object', () => {
 		const polyline = L.polyline([[10, 20], [2, 5]]);
 		expect(polyline.toGeoJSON().geometry).to.eql({
 			type: 'LineString',
@@ -185,7 +185,7 @@ describe("L.Polyline#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D LineString object", () => {
+	it('returns a 3D LineString object', () => {
 		const polyline = L.polyline([[10, 20, 30], [2, 5, 10]]);
 		expect(polyline.toGeoJSON().geometry).to.eql({
 			type: 'LineString',
@@ -193,7 +193,7 @@ describe("L.Polyline#toGeoJSON", () => {
 		});
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const polyline = L.polyline([[10.1234, 20.1234, 30.1234], [2.1234, 5.1234, 10.1234]]);
 		expect(polyline.toGeoJSON(3).geometry).to.eql({
 			type: 'LineString',
@@ -202,8 +202,8 @@ describe("L.Polyline#toGeoJSON", () => {
 	});
 });
 
-describe("L.Polyline (multi) #toGeoJSON", () => {
-	it("returns a 2D MultiLineString object", () => {
+describe('L.Polyline (multi) #toGeoJSON', () => {
+	it('returns a 2D MultiLineString object', () => {
 		const multiPolyline = L.polyline([[[10, 20], [2, 5]], [[1, 2], [3, 4]]]);
 		expect(multiPolyline.toGeoJSON().geometry).to.eql({
 			type: 'MultiLineString',
@@ -214,7 +214,7 @@ describe("L.Polyline (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D MultiLineString object", () => {
+	it('returns a 3D MultiLineString object', () => {
 		const multiPolyline = L.polyline([[[10, 20, 30], [2, 5, 10]], [[1, 2, 3], [4, 5, 6]]]);
 		expect(multiPolyline.toGeoJSON().geometry).to.eql({
 			type: 'MultiLineString',
@@ -225,7 +225,7 @@ describe("L.Polyline (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const multiPolyline = L.polyline([[[10.1234, 20.1234, 30.1234], [2.1234, 5.1234, 10.1234]], [[1.1234, 2.1234, 3.1234], [4.1234, 5.1234, 6.1234]]]);
 		expect(multiPolyline.toGeoJSON(3).geometry).to.eql({
 			type: 'MultiLineString',
@@ -237,8 +237,8 @@ describe("L.Polyline (multi) #toGeoJSON", () => {
 	});
 });
 
-describe("L.Polygon#toGeoJSON", () => {
-	it("returns a 2D Polygon object (no holes) from a flat LatLngs array", () => {
+describe('L.Polygon#toGeoJSON', () => {
+	it('returns a 2D Polygon object (no holes) from a flat LatLngs array', () => {
 		const polygon = L.polygon([[1, 2], [3, 4], [5, 6]]);
 		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -246,7 +246,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D Polygon object (no holes) from a flat LatLngs array", () => {
+	it('returns a 3D Polygon object (no holes) from a flat LatLngs array', () => {
 		const polygon = L.polygon([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -254,7 +254,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 2D Polygon object from a simple GeoJSON like input", () => {
+	it('returns a 2D Polygon object from a simple GeoJSON like input', () => {
 		const multiPolygon = L.polygon([[[1, 2], [3, 4], [5, 6]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -264,7 +264,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D MultiPolygon object from a simple GeoJSON like input", () => {
+	it('returns a 3D MultiPolygon object from a simple GeoJSON like input', () => {
 		const multiPolygon = L.polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -274,7 +274,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 2D Polygon object (with holes)", () => {
+	it('returns a 2D Polygon object (with holes)', () => {
 		const polygon = L.polygon([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]]);
 		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -285,7 +285,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D Polygon object (with holes)", () => {
+	it('returns a 3D Polygon object (with holes)', () => {
 		const polygon = L.polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[10, 11, 12], [13, 14, 15], [16, 17, 18]]]);
 		expect(polygon.toGeoJSON().geometry).to.eql({
 			type: 'Polygon',
@@ -296,7 +296,7 @@ describe("L.Polygon#toGeoJSON", () => {
 		});
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const polygon = L.polygon([[1.1234, 2.1234], [3.1234, 4.1234], [5.1234, 6.1234]]);
 		expect(polygon.toGeoJSON(3).geometry).to.eql({
 			type: 'Polygon',
@@ -305,8 +305,8 @@ describe("L.Polygon#toGeoJSON", () => {
 	});
 });
 
-describe("L.Polygon (multi) #toGeoJSON", () => {
-	it("returns a 2D MultiPolygon object", () => {
+describe('L.Polygon (multi) #toGeoJSON', () => {
+	it('returns a 2D MultiPolygon object', () => {
 		const multiPolygon = L.polygon([[[[1, 2], [3, 4], [5, 6]]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
@@ -316,7 +316,7 @@ describe("L.Polygon (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D MultiPolygon object", () => {
+	it('returns a 3D MultiPolygon object', () => {
 		const multiPolygon = L.polygon([[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
@@ -326,7 +326,7 @@ describe("L.Polygon (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 2D MultiPolygon object with two polygons", () => {
+	it('returns a 2D MultiPolygon object with two polygons', () => {
 		const multiPolygon = L.polygon([[[[1, 2], [3, 4], [5, 6]]], [[[7, 8], [9, 10], [11, 12]]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
@@ -337,7 +337,7 @@ describe("L.Polygon (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 2D MultiPolygon object with polygon having a hole", () => {
+	it('returns a 2D MultiPolygon object with polygon having a hole', () => {
 		const multiPolygon = L.polygon([[[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
@@ -347,7 +347,7 @@ describe("L.Polygon (multi) #toGeoJSON", () => {
 		});
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const multiPolygon = L.polygon([[[[1.1234, 2.1234], [3.1234, 4.1234], [5.1234, 6.1234]]]]);
 		expect(multiPolygon.toGeoJSON(3).geometry).to.eql({
 			type: 'MultiPolygon',
@@ -358,8 +358,8 @@ describe("L.Polygon (multi) #toGeoJSON", () => {
 	});
 });
 
-describe("L.LayerGroup#toGeoJSON", () => {
-	it("returns a 2D FeatureCollection object", () => {
+describe('L.LayerGroup#toGeoJSON', () => {
+	it('returns a 2D FeatureCollection object', () => {
 		const marker = L.marker([10, 20]),
 		    polyline = L.polyline([[10, 20], [2, 5]]),
 		    layerGroup = L.layerGroup([marker, polyline]);
@@ -369,7 +369,7 @@ describe("L.LayerGroup#toGeoJSON", () => {
 		});
 	});
 
-	it("returns a 3D FeatureCollection object", () => {
+	it('returns a 3D FeatureCollection object', () => {
 		const marker = L.marker([10, 20, 30]),
 		    polyline = L.polyline([[10, 20, 30], [2, 5, 10]]),
 		    layerGroup = L.layerGroup([marker, polyline]);
@@ -379,7 +379,7 @@ describe("L.LayerGroup#toGeoJSON", () => {
 		});
 	});
 
-	it("ensures that every member is a Feature", () => {
+	it('ensures that every member is a Feature', () => {
 		const tileLayer = L.tileLayer(),
 		    layerGroup = L.layerGroup([tileLayer]);
 
@@ -405,44 +405,44 @@ describe("L.LayerGroup#toGeoJSON", () => {
 
 	it('roundtrips GeometryCollection features', () => {
 		const json = {
-			"type": "FeatureCollection",
-			"features": [{
-				"type": "Feature",
-				"geometry": {
-					"type": "GeometryCollection",
-					"geometries": [{
-						"type": "LineString",
-						"coordinates": [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
+			'type': 'FeatureCollection',
+			'features': [{
+				'type': 'Feature',
+				'geometry': {
+					'type': 'GeometryCollection',
+					'geometries': [{
+						'type': 'LineString',
+						'coordinates': [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
 					}, {
-						"type": "LineString",
-						"coordinates": [
+						'type': 'LineString',
+						'coordinates': [
 							[-122.4425509770566, 37.80662588061205],
 							[-122.4428340530617, 37.8065999493009]
 						]
 					}]
 				},
-				"properties": {
-					"name": "SF Marina Harbor Master"
+				'properties': {
+					'name': 'SF Marina Harbor Master'
 				}
 			}]
 		};
 
 		const expected = {
-			"type": "FeatureCollection",
-			"features": [{
-				"type": "Feature",
-				"geometry": {
-					"type": "GeometryCollection",
-					"geometries": [{
-						"type": "LineString",
-						"coordinates": [[-122.442559, 37.806664], [-122.442838, 37.806636]]
+			'type': 'FeatureCollection',
+			'features': [{
+				'type': 'Feature',
+				'geometry': {
+					'type': 'GeometryCollection',
+					'geometries': [{
+						'type': 'LineString',
+						'coordinates': [[-122.442559, 37.806664], [-122.442838, 37.806636]]
 					}, {
-						"type": "LineString",
-						"coordinates": [[-122.442551, 37.806626], [-122.442834, 37.8066]]
+						'type': 'LineString',
+						'coordinates': [[-122.442551, 37.806626], [-122.442834, 37.8066]]
 					}]
 				},
-				"properties": {
-					"name": "SF Marina Harbor Master"
+				'properties': {
+					'name': 'SF Marina Harbor Master'
 				}
 			}]
 		};
@@ -451,36 +451,36 @@ describe("L.LayerGroup#toGeoJSON", () => {
 
 	it('roundtrips MultiPoint features', () => {
 		const json = {
-			"type": "FeatureCollection",
-			"features": [{
-				"type": "Feature",
-				"geometry": {
-					"type": "MultiPoint",
-					"coordinates": [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
+			'type': 'FeatureCollection',
+			'features': [{
+				'type': 'Feature',
+				'geometry': {
+					'type': 'MultiPoint',
+					'coordinates': [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
 				},
-				"properties": {
-					"name": "Test MultiPoints"
+				'properties': {
+					'name': 'Test MultiPoints'
 				}
 			}]
 		};
 
 		const expected = {
-			"type": "FeatureCollection",
-			"features": [{
-				"type": "Feature",
-				"geometry": {
-					"type": "MultiPoint",
-					"coordinates": [[-122.442559, 37.806664], [-122.442838, 37.806636]]
+			'type': 'FeatureCollection',
+			'features': [{
+				'type': 'Feature',
+				'geometry': {
+					'type': 'MultiPoint',
+					'coordinates': [[-122.442559, 37.806664], [-122.442838, 37.806636]]
 				},
-				"properties": {
-					"name": "Test MultiPoints"
+				'properties': {
+					'name': 'Test MultiPoints'
 				}
 			}]
 		};
 		expect(L.geoJSON(json).toGeoJSON()).to.eql(expected);
 	});
 
-	it("omits layers which do not implement toGeoJSON", () => {
+	it('omits layers which do not implement toGeoJSON', () => {
 		const tileLayer = L.tileLayer(),
 		    layerGroup = L.layerGroup([tileLayer]);
 		expect(layerGroup.toGeoJSON()).to.eql({
@@ -498,11 +498,11 @@ describe("L.LayerGroup#toGeoJSON", () => {
 		const geoJSON = layerGroup.toGeoJSON();
 
 		expect(geoJSON.features.length).to.eql(2);
-		expect(geoJSON.features[0].type).to.eql("Feature");
-		expect(geoJSON.features[1].type).to.eql("Feature");
+		expect(geoJSON.features[0].type).to.eql('Feature');
+		expect(geoJSON.features[1].type).to.eql('Feature');
 	});
 
-	it("should allow specific precisions", () => {
+	it('should allow specific precisions', () => {
 		const marker = L.marker([10, 20]),
 		    polyline = L.polyline([[10, 20], [2, 5]]),
 		    layerGroup = L.layerGroup([marker, polyline]);
@@ -513,39 +513,39 @@ describe("L.LayerGroup#toGeoJSON", () => {
 	});
 });
 
-describe("L.GeoJSON functions", () => {
-	describe("#geometryToLayer", () => {
+describe('L.GeoJSON functions', () => {
+	describe('#geometryToLayer', () => {
 		const point = {
-			type: "Point",
+			type: 'Point',
 			coordinates: [0, 0]
 		};
 		const multiPoint  = {
-			type: "MultiPoint",
+			type: 'MultiPoint',
 			coordinates: [
 				[0, 0], [10, 10]
 			]
 		};
 		const line =  {
-			type: "LineString",
+			type: 'LineString',
 			coordinates: [
 				[0, 0], [10, 10], [20, 20]
 			]
 		};
 		const multiLine = {
-			type: "MultiLineString",
+			type: 'MultiLineString',
 			coordinates: [
 				[[10, 10], [20, 20], [30, 30]],
 				[[50, 50], [60, 60], [70, 70]]
 			]
 		};
 		const polygon = {
-			type: "Polygon",
+			type: 'Polygon',
 			coordinates: [
 				[[30, 10], [40, 40], [20, 40], [10, 20], [30, 10]]
 			]
 		};
 		const multiPolygon = {
-			type: "MultiPolygon",
+			type: 'MultiPolygon',
 			coordinates: [
 				[
 					[[30, 20], [45, 40], [10, 40], [30, 20]]
@@ -556,14 +556,14 @@ describe("L.GeoJSON functions", () => {
 			]
 		};
 		const geometryCollection  = {
-			type: "GeometryCollection",
+			type: 'GeometryCollection',
 			geometries: [
 				{
-					type: "Point",
+					type: 'Point',
 					coordinates: [0, 0]
 				},
 				{
-					type: "LineString",
+					type: 'LineString',
 					coordinates: [
 						[10, 10], [20, 20]
 					]
@@ -572,12 +572,12 @@ describe("L.GeoJSON functions", () => {
 		};
 
 		const featureCollection  = {
-			type: "FeatureCollection",
+			type: 'FeatureCollection',
 			features: [
 				{
-					type: "Feature",
+					type: 'Feature',
 					geometry: {
-						type: "Point",
+						type: 'Point',
 						coordinates: [0, 0]
 					}
 				},
@@ -608,7 +608,7 @@ describe("L.GeoJSON functions", () => {
 
 			it(`creates a Layer from a GeoJSON feature (type='${geometry.type}')`, () => {
 				const layer = L.GeoJSON.geometryToLayer({
-					type: "Feature",
+					type: 'Feature',
 					geometry
 				});
 				expect(layer).to.be.a(expectedType);
@@ -620,24 +620,24 @@ describe("L.GeoJSON functions", () => {
 			});
 		});
 
-		it("throws an error if feature is an invalid GeoJSON object", () => {
+		it('throws an error if feature is an invalid GeoJSON object', () => {
 			expect(L.GeoJSON.geometryToLayer).withArgs({
-				type: "Feature",
+				type: 'Feature',
 				geometry: {
-					type: "invalid",
+					type: 'invalid',
 					coordinates: [0, 0]
 				}
-			}).to.throwError("Invalid GeoJSON object.");
+			}).to.throwError('Invalid GeoJSON object.');
 		});
 
-		it("returns nothing if feature does not have a geometry property", () => {
-			const ret = L.GeoJSON.geometryToLayer({type: "Feature"});
+		it('returns nothing if feature does not have a geometry property', () => {
+			const ret = L.GeoJSON.geometryToLayer({type: 'Feature'});
 			expect(ret).not.to.be.ok();
 		});
 
-		it("creates a Layer using pointToLayer option (Point)", () => {
+		it('creates a Layer using pointToLayer option (Point)', () => {
 			const layer = L.GeoJSON.geometryToLayer({
-				type: "Feature",
+				type: 'Feature',
 				geometry: point,
 				properties: {radius: 100}
 			}, {
@@ -647,9 +647,9 @@ describe("L.GeoJSON functions", () => {
 			expect(layer.options.radius).to.be(100);
 		});
 
-		it("creates a Layer using pointToLayer option (MultiPoint)", () => {
+		it('creates a Layer using pointToLayer option (MultiPoint)', () => {
 			const layer = L.GeoJSON.geometryToLayer({
-				type: "Feature",
+				type: 'Feature',
 				geometry: multiPoint,
 				properties: {radius: 100}
 			}, {
@@ -661,11 +661,11 @@ describe("L.GeoJSON functions", () => {
 			});
 		});
 
-		it("creates a Layer using coordsToLatLng option (Point)", () => {
+		it('creates a Layer using coordsToLatLng option (Point)', () => {
 			const layer = L.GeoJSON.geometryToLayer({
-				type: "Feature",
+				type: 'Feature',
 				geometry: {
-					type: "Point",
+					type: 'Point',
 					coordinates: [1, 2, 3]
 				}
 			}, {
@@ -674,11 +674,11 @@ describe("L.GeoJSON functions", () => {
 			expect(layer.getLatLng()).to.eql({lat: 3, lng: 2, alt: 4});
 		});
 
-		it("creates a Layer using coordsToLatLng option (MultiPoint)", () => {
+		it('creates a Layer using coordsToLatLng option (MultiPoint)', () => {
 			const layer = L.GeoJSON.geometryToLayer({
-				type: "Feature",
+				type: 'Feature',
 				geometry: {
-					type: "MultiPoint",
+					type: 'MultiPoint',
 					coordinates: [
 						[1, 2, 3], [4, 5, 6]
 					]
@@ -693,8 +693,8 @@ describe("L.GeoJSON functions", () => {
 		});
 	});
 
-	describe("#coordsToLatLng", () => {
-		it("creates a LatLng object with given coordinates", () => {
+	describe('#coordsToLatLng', () => {
+		it('creates a LatLng object with given coordinates', () => {
 			const latLng = L.GeoJSON.coordsToLatLng([1, 2]);
 			const latLngWithAlt = L.GeoJSON.coordsToLatLng([3, 4, 5]);
 			expect(latLng).to.be.a(L.LatLng);
@@ -704,13 +704,13 @@ describe("L.GeoJSON functions", () => {
 		});
 	});
 
-	describe("#coordsToLatLngs", () => {
+	describe('#coordsToLatLngs', () => {
 
 		function customCoordsToLatLng(coords) {
 			return L.latLng(coords[1] + 1, coords[0] + 1, coords[2] + 1);
 		}
 
-		it("creates a multidimensional array of LatLngs", () => {
+		it('creates a multidimensional array of LatLngs', () => {
 			const latLngs = L.GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
 			expect(latLngs).to.eql([{lng: 1, lat: 2}, {lng: 3, lat: 4}, {lng: 5, lat: 6}]);
 			latLngs.forEach((latLng) => {
@@ -718,7 +718,7 @@ describe("L.GeoJSON functions", () => {
 			});
 		});
 
-		it("creates a multidimensional array of LatLngs (levelsDeep=1)", () => {
+		it('creates a multidimensional array of LatLngs (levelsDeep=1)', () => {
 			const latLngs = L.GeoJSON.coordsToLatLngs([
 				[[1, 2], [3, 4], [5, 6]],
 				[[5, 6], [7, 8], [9, 10]]
@@ -734,7 +734,7 @@ describe("L.GeoJSON functions", () => {
 			});
 		});
 
-		it("creates a multidimensional array of LatLngs with custom coordsToLatLng", () => {
+		it('creates a multidimensional array of LatLngs with custom coordsToLatLng', () => {
 			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
 			expect(latLngs).to.eql([
@@ -744,7 +744,7 @@ describe("L.GeoJSON functions", () => {
 			]);
 		});
 
-		it("creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)", () => {
+		it('creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)', () => {
 			const coords = [
 				[[1, 2, 3], [4, 5, 6]],
 				[[12, 13, 14], [15, 16, 17]]
@@ -763,20 +763,20 @@ describe("L.GeoJSON functions", () => {
 		});
 	});
 
-	describe("#latLngToCoords", () => {
-		it("accepts latlng array", () => {
+	describe('#latLngToCoords', () => {
+		it('accepts latlng array', () => {
 			const coords = L.GeoJSON.latLngToCoords([2, 1, 3]);
 			expect(coords).to.eql([1, 2, 3]);
 		});
 
-		it("returns an array of coordinates and altitude", () => {
+		it('returns an array of coordinates and altitude', () => {
 			const coords = L.GeoJSON.latLngToCoords(L.latLng(2, 1));
 			const coordsWithAlt = L.GeoJSON.latLngToCoords(L.latLng(2, 1, 3));
 			expect(coords).to.eql([1, 2]);
 			expect(coordsWithAlt).to.eql([1, 2, 3]);
 		});
 
-		it("returns an array of coordinates with given precision", () => {
+		it('returns an array of coordinates with given precision', () => {
 			const coords = L.GeoJSON.latLngToCoords(L.latLng(
 				2.123456, 1.123456
 			), 3);
@@ -788,20 +788,20 @@ describe("L.GeoJSON functions", () => {
 		});
 	});
 
-	describe("#latLngsToCoords", () => {
-		it("accepts multidimensional latlng array", () => {
+	describe('#latLngsToCoords', () => {
+		it('accepts multidimensional latlng array', () => {
 			const coords = L.GeoJSON.latLngsToCoords([[2, 1, 3], [5, 4, 6]]);
 			expect(coords).to.eql([[1, 2, 3], [4, 5, 6]]);
 		});
 
-		it("returns a multidimensional array of coordinates", () => {
+		it('returns a multidimensional array of coordinates', () => {
 			const coords = L.GeoJSON.latLngsToCoords([L.latLng(2, 1), L.latLng(4, 3)]);
 			const coordWithAlt = L.GeoJSON.latLngsToCoords([L.latLng(2, 1, 3), L.latLng(5, 4, 6)]);
 			expect(coords).to.eql([[1, 2], [3, 4]]);
 			expect(coordWithAlt).to.eql([[1, 2, 3], [4, 5, 6]]);
 		});
 
-		it("returns a multidimensional array of coordinates (levelDeep=1)", () => {
+		it('returns a multidimensional array of coordinates (levelDeep=1)', () => {
 			const latLngs = [
 				[L.latLng(2, 1), L.latLng(4, 3)],
 				[L.latLng(6, 5), L.latLng(8, 7)]
@@ -813,13 +813,13 @@ describe("L.GeoJSON functions", () => {
 			]);
 		});
 
-		it("returns a multidimensional array of coordinates (closed=True)", () => {
+		it('returns a multidimensional array of coordinates (closed=True)', () => {
 			const latLngs = [L.latLng(2, 1), L.latLng(4, 3), L.latLng(6, 5)];
 			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, true);
 			expect(coords).to.eql([[1, 2], [3, 4], [5, 6], [1, 2]]);
 		});
 
-		it("returns a multidimensional array of coordinates (levelsDeep=1, closed=True)", () => {
+		it('returns a multidimensional array of coordinates (levelsDeep=1, closed=True)', () => {
 			const latLngs = [
 				[L.latLng(2, 1), L.latLng(4, 3), L.latLng(6, 5)],
 				[L.latLng(8, 7), L.latLng(10, 9), L.latLng(12, 11)]
@@ -831,7 +831,7 @@ describe("L.GeoJSON functions", () => {
 			]);
 		});
 
-		it("returns a multidimensional array of coordinates with given precision", () => {
+		it('returns a multidimensional array of coordinates with given precision', () => {
 			const latLngs = [L.latLng(2.123456, 1.123456), L.latLng(4.123456, 3.123456)];
 			const coords = L.GeoJSON.latLngsToCoords(latLngs, 0, false, 3);
 			expect(coords).to.eql([[1.123, 2.123], [3.123, 4.123]]);
@@ -882,59 +882,59 @@ describe("L.GeoJSON functions", () => {
 				]
 			});
 		});
-		it("has no reference between first and last coordinates", () => {
+		it('has no reference between first and last coordinates', () => {
 			const coords = L.GeoJSON.latLngsToCoords([[2, 1, 3], [5, 4, 6]], null, true);
 			expect(coords).to.eql([[1, 2, 3], [4, 5, 6], [1, 2, 3]]);
 			expect(coords[0] === coords[2]).to.not.ok();
 		});
 	});
 
-	describe("#asFeature", () => {
+	describe('#asFeature', () => {
 		const geometry1 = {
-			type: "Point",
+			type: 'Point',
 			coordinates: [0, 0]
 		};
 
 		const geometry2 = {
-			type: "Point",
+			type: 'Point',
 			coordinates: [1, 1]
 		};
 
 		const feature1 = {
-			type: "Feature",
+			type: 'Feature',
 			geometry: geometry1,
 			properties: {a: 1}
 		};
 
 		const feature2 = {
-			type: "Feature",
+			type: 'Feature',
 			geometry: geometry2,
 			properties: {b: 2}
 		};
 
 		const featureCollection = {
-			type: "FeatureCollection",
+			type: 'FeatureCollection',
 			features: [
 				feature1,
 				feature2
 			]
 		};
 
-		it("given a bare geometry returns a GeoJSON-like feature", () => {
+		it('given a bare geometry returns a GeoJSON-like feature', () => {
 			const ret = L.GeoJSON.asFeature(geometry1);
 			expect(ret).to.eql({
-				type: "Feature",
+				type: 'Feature',
 				properties: {},
 				geometry: geometry1
 			});
 		});
 
-		it("given a GeoJSON feature directly returns it", () => {
+		it('given a GeoJSON feature directly returns it', () => {
 			const ret = L.GeoJSON.asFeature(feature1);
 			expect(ret).to.eql(feature1);
 		});
 
-		it("given a GeoJSON feature collection directly returns it", () => {
+		it('given a GeoJSON feature collection directly returns it', () => {
 			const ret = L.GeoJSON.asFeature(featureCollection);
 			expect(ret).to.eql(featureCollection);
 		});

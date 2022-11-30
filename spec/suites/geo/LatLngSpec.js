@@ -1,6 +1,6 @@
 describe('LatLng', () => {
 	describe('constructor', () => {
-		it("sets lat and lng", () => {
+		it('sets lat and lng', () => {
 			const a = L.latLng(25, 74);
 			expect(a.lat).to.eql(25);
 			expect(a.lng).to.eql(74);
@@ -31,13 +31,13 @@ describe('LatLng', () => {
 	});
 
 	describe('#equals', () => {
-		it("returns true if compared objects are equal within a certain margin", () => {
+		it('returns true if compared objects are equal within a certain margin', () => {
 			const a = L.latLng(10, 20);
 			const b = L.latLng(10 + 1.0E-10, 20 - 1.0E-10);
 			expect(a.equals(b)).to.eql(true);
 		});
 
-		it("returns false if compared objects are not equal within a certain margin", () => {
+		it('returns false if compared objects are not equal within a certain margin', () => {
 			const a = L.latLng(10, 20);
 			const b = L.latLng(10, 23.3);
 			expect(a.equals(b)).to.eql(false);

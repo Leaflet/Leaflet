@@ -6,15 +6,15 @@ module.exports = function (config) {
 	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	const files = [
-		"spec/before.js",
-		"src/LeafletWithGlobals.js",
-		"spec/after.js",
-		"node_modules/happen/happen.js",
-		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
-		"spec/suites/SpecHelper.js",
-		"spec/suites/**/*.js",
-		"dist/*.css",
-		{pattern: "dist/images/*.png", included: false, serve: true}
+		'spec/before.js',
+		'src/LeafletWithGlobals.js',
+		'spec/after.js',
+		'node_modules/happen/happen.js',
+		'node_modules/prosthetic-hand/dist/prosthetic-hand.js',
+		'spec/suites/SpecHelper.js',
+		'spec/suites/**/*.js',
+		'dist/*.css',
+		{pattern: 'dist/images/*.png', included: false, serve: true}
 	];
 
 	const preprocessors = {};
