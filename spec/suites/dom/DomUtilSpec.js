@@ -23,35 +23,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#addClass, #removeClass, #hasClass', () => {
-		it('has defined class for test element', () => {
-			el.className = 'bar foo baz ';
-			expect(L.DomUtil.hasClass(el, 'foo')).to.be.ok();
-			expect(L.DomUtil.hasClass(el, 'bar')).to.be.ok();
-			expect(L.DomUtil.hasClass(el, 'baz')).to.be.ok();
-			expect(L.DomUtil.hasClass(el, 'boo')).to.not.be.ok();
-		});
-
-		it('adds or removes the class', () => {
-			el.className = '';
-			L.DomUtil.addClass(el, 'foo');
-
-			expect(el.className).to.eql('foo');
-			expect(L.DomUtil.hasClass(el, 'foo')).to.be.ok();
-
-			L.DomUtil.addClass(el, 'bar');
-			expect(el.className).to.eql('foo bar');
-			expect(L.DomUtil.hasClass(el, 'foo')).to.be.ok();
-
-			L.DomUtil.removeClass(el, 'foo');
-			expect(el.className).to.eql('bar');
-			expect(L.DomUtil.hasClass(el, 'foo')).to.not.be.ok();
-
-			el.className = 'foo bar barz';
-			L.DomUtil.removeClass(el, 'bar');
-			expect(el.className).to.eql('foo barz');
-		});
-	});
 	describe('#getStyle', () => {
 		it('gets the value for a certain style attribute on an element,', () => {
 			el.style.color = 'black';
@@ -175,17 +146,89 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#setClass, #getClass', () => {
-		it('sets the elements class', () => {
-			expect(el.classList.contains('newClass')).to.not.be.ok();
-			L.DomUtil.setClass(el, 'newClass');
-			expect(el.classList.contains('newClass')).to.be.ok();
+	describe("#hasClass", () => {
+		it('determines if an HTML element has a class', () => {
+			const element = document.createElement('div');
+			element.classList.add('newClass', 'someOtherClass');
+			expect(L.DomUtil.hasClass(element, 'newClass')).to.be(true);
 		});
 
-		it('gets the elements class', () => {
-			expect(L.DomUtil.getClass(el)).to.not.equal('newClass');
-			L.DomUtil.setClass(el, 'newClass');
-			expect(L.DomUtil.getClass(el)).to.equal('newClass');
+		it('determines if an SVG element has a class', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			element.classList.add('newClass', 'someOtherClass');
+			expect(L.DomUtil.hasClass(element, 'newClass')).to.be(true);
+		});
+	});
+
+	describe("#addClass", () => {
+		it('adds a class to an HTML element', () => {
+			const element = document.createElement('div');
+			L.DomUtil.addClass(element, 'newClass');
+			expect(element.classList.value).to.be('newClass');
+		});
+
+		it('adds multiple classes to an HTML element', () => {
+			const element = document.createElement('div');
+			L.DomUtil.addClass(element, 'newClass someOtherClass');
+			expect(element.classList.value).to.be('newClass someOtherClass');
+		});
+
+		it('adds a class to an SVG element', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			L.DomUtil.addClass(element, 'newClass');
+			expect(element.classList.value).to.be('newClass');
+		});
+
+		it('adds multiple classes to an SVG element', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			L.DomUtil.addClass(element, 'newClass someOtherClass');
+			expect(element.classList.value).to.be('newClass someOtherClass');
+		});
+	});
+
+	describe('#removeClass', () => {
+		it('removes the class from an HTML element', () => {
+			const element = document.createElement('div');
+			element.classList.add('newClass');
+			L.DomUtil.removeClass(element, 'newClass');
+			expect(element.classList.value).to.be('');
+		});
+
+		it('removes the class from an SVG element', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			element.classList.add('newClass');
+			L.DomUtil.removeClass(element, 'newClass');
+			expect(element.classList.value).to.be('');
+		});
+	});
+
+	describe('#setClass', () => {
+		it('sets the class on an HTML element', () => {
+			const element = document.createElement('div');
+			element.classList.add('someOtherClass');
+			L.DomUtil.setClass(element, 'newClass');
+			expect(element.classList.value).to.be('newClass');
+		});
+
+		it('sets the class on an SVG element', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			element.classList.add('someOtherClass');
+			L.DomUtil.setClass(element, 'newClass');
+			expect(element.classList.value).to.be('newClass');
+		});
+	});
+
+	describe('#getClass', () => {
+		it('gets the class of an HTML element', () => {
+			const element = document.createElement('div');
+			element.classList.add('newClass');
+			expect(L.DomUtil.getClass(element)).to.equal('newClass');
+		});
+
+		it('gets the class of an SVG element', () => {
+			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			element.classList.add('newClass');
+			expect(L.DomUtil.getClass(element)).to.equal('newClass');
 		});
 	});
 
