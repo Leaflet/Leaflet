@@ -481,6 +481,28 @@ describe('Tooltip', () => {
 	});
 
 	it('closes the tooltip on marker mouseout while dragging map and don\'t open it again', () => {
+		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
+		// the tooltip opened / closed.
+		const layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
+		const tooltip = layer.getTooltip();
+
+		// open tooltip before "dragging map"
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+
+		// simulate map dragging
+		map.dragging.moving = function () {
+			return true;
+		};
+		happen.mouseout(layer._icon, {relatedTarget: map._container});
+		expect(tooltip.isOpen()).to.be(false);
+
+		// tooltip should not open again while dragging
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be(false);
+	});
+
+	it('opens the tooltip if the tooltip is loaded while the map is dragging.', () => {
 		// simulate map dragging
 		map.dragging.moving = () => true;
 
@@ -501,25 +523,44 @@ describe('Tooltip', () => {
 		expect(tooltip.isOpen()).to.be.ok();
 	});
 
-	it('opens the tooltip if the tooltip is loaded while the map is dragging.', () => {
+	it('don\'t opens the tooltip on marker mouseover while dragging map', () => {
 		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
 		// the tooltip opened / closed.
 		const layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
 		const tooltip = layer.getTooltip();
 
-		// open tooltip before "dragging map"
-		happen.at('mouseover', 210, 195);
-		expect(tooltip.isOpen()).to.be.ok();
-
 		// simulate map dragging
 		map.dragging.moving = () => true;
 
-		happen.mouseout(layer._icon, {relatedTarget: map._container});
-		expect(tooltip.isOpen()).to.be(false);
-
-		// tooltip should not open again while dragging
 		happen.at('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
+
+		// simulate map not dragging anymore
+		map.dragging.moving = () => false;
+
+		happen.at('mouseover', 210, 195);
+		expect(tooltip.isOpen()).to.be.ok();
+	});
+
+	it('opens the tooltip if the tooltip is loaded while the map is dragging.', () => {
+		// simulate map dragging
+		map.dragging.moving = () => true;
+
+		// If tooltips are dynamically loaded while the map is dragging, they need
+		// to be loaded when the dragging stops.
+		const layer = L.marker(center).bindTooltip('Tooltip', {permanent: true});
+		map.addLayer(layer);
+
+		// simulate map not dragging anymore
+		map.dragging.moving = () => false;
+
+		// Actually triggers both movestart and moveend.
+		map.setView([51.505, -0.09], 13);
+
+		// The tooltip is loaded now!
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		const tooltip = layer.getTooltip();
+		expect(tooltip.isOpen()).to.be.ok();
 	});
 
 	it('opens tooltip with passed latlng position while initializing', () => {
