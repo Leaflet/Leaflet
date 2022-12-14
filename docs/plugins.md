@@ -393,49 +393,46 @@ Once your plugin is ready, you can submit it: just send a pull request with a ne
 
 <script>
 function loadRepoData() {
-	const tables = document.querySelectorAll('.plugins');
-	tables.forEach((table) => {
-		const rows = table.querySelectorAll('tr');
-		rows.forEach((row) => {
-			try {
-				const repoData = row.querySelector('.repo-data');
-				if (repoData) {
-					const link = row.querySelector('.plugin-repo-url').href;
-					let badges = [];
-					if (link.indexOf('github.com') > -1) {
-						const repo = link.split('github.com/')[1];
-						badges = [
-							`https://badgen.net/github/stars/${repo}`,
-							`https://badgen.net/github/last-commit/${repo}`
-						];
-					}
-					if (link.indexOf('github.io') > -1) {
-						const linkData = link.split('.github.io/');
-						const user = linkData[0].split('//')[1];
-						const repo = `${user}/${linkData[1]}`;
-						badges = [
-							`https://badgen.net/github/stars/${repo}`,
-							`https://badgen.net/github/last-commit/${repo}`
-						];
-					}
-
-					if (link.indexOf('gitlab.com') > -1) {
-						const repo = link.split('gitlab.com/')[1];
-						badges = [
-							`https://badgen.net/gitlab/stars/${repo}`,
-							`https://badgen.net/gitlab/last-commit/${repo}`
-						];
-					}
-
-					const html = '';
-					badges.forEach((badge) => {
-						repoData.innerHTML += `<img src="${badge}" alt=""/><br>`;
-					});
+	const rows = document.querySelectorAll('.plugins table tr');
+	rows.forEach((row) => {
+		try {
+			const repoData = row.querySelector('.repo-data');
+			if (repoData) {
+				const link = row.querySelector('.plugin-repo-url').href;
+				let badges = [];
+				if (link.indexOf('github.com') > -1) {
+					const repo = link.split('github.com/')[1];
+					badges = [
+						`https://badgen.net/github/stars/${repo}`,
+						`https://badgen.net/github/last-commit/${repo}`
+					];
 				}
-			} catch (e) {
-				console.error(e);
+				if (link.indexOf('github.io') > -1) {
+					const linkData = link.split('.github.io/');
+					const user = linkData[0].split('//')[1];
+					const repo = `${user}/${linkData[1]}`;
+					badges = [
+						`https://badgen.net/github/stars/${repo}`,
+						`https://badgen.net/github/last-commit/${repo}`
+					];
+				}
+
+				if (link.indexOf('gitlab.com') > -1) {
+					const repo = link.split('gitlab.com/')[1];
+					badges = [
+						`https://badgen.net/gitlab/stars/${repo}`,
+						`https://badgen.net/gitlab/last-commit/${repo}`
+					];
+				}
+
+				const html = '';
+				badges.forEach((badge) => {
+					repoData.innerHTML += `<img src="${badge}" alt=""/><br>`;
+				});
 			}
-		});
+		} catch (e) {
+			console.error(e);
+		}
 	});
 }
 loadRepoData();
