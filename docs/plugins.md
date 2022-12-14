@@ -9,6 +9,16 @@ table.plugins td > p {
 	margin-top: 0;
 	margin-bottom: 0;
 }
+.repo-data{
+	margin-top: 10px;
+	white-space: nowrap;
+}
+
+.repo-data > img {
+	height: 20px;
+	max-width: none;
+	margin-right: 5px;
+}
 </style>
 
 ## Leaflet Plugins database
@@ -393,41 +403,46 @@ Once your plugin is ready, you can submit it: just send a pull request with a ne
 
 <script>
 function loadRepoData() {
-	const rows = document.querySelectorAll('.plugins table tr');
+	const rows = document.querySelectorAll('table.plugins tr');
 	rows.forEach((row) => {
 		try {
 			const repoData = row.querySelector('.repo-data');
 			if (repoData) {
 				const link = row.querySelector('.plugin-repo-url').href;
 				let badges = [];
-				if (link.indexOf('github.com') > -1) {
-					const repo = link.split('github.com/')[1];
-					badges = [
-						`https://badgen.net/github/stars/${repo}`,
-						`https://badgen.net/github/last-commit/${repo}`
-					];
-				}
-				if (link.indexOf('github.io') > -1) {
-					const linkData = link.split('.github.io/');
-					const user = linkData[0].split('//')[1];
-					const repo = `${user}/${linkData[1]}`;
+
+				const regexpGithubCom = /^https?:\/\/(?:www\.)?github\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
+				const matchGithubCom = link.match(regexpGithubCom);
+				if (matchGithubCom) {
+					const repo = `${matchGithubCom[1]}/${matchGithubCom[2]}`;
 					badges = [
 						`https://badgen.net/github/stars/${repo}`,
 						`https://badgen.net/github/last-commit/${repo}`
 					];
 				}
 
-				if (link.indexOf('gitlab.com') > -1) {
-					const repo = link.split('gitlab.com/')[1];
+				const regexpGithubIO = /^https?:\/\/([\w\d-_.]+)\.github\.io\/([\w\d-_.]+)\/?/;
+				const matchGithubIO = link.match(regexpGithubIO);
+				if (matchGithubIO) {
+					const repo = `${matchGithubIO[1]}/${matchGithubIO[2]}`;
+					badges = [
+						`https://badgen.net/github/stars/${repo}`,
+						`https://badgen.net/github/last-commit/${repo}`
+					];
+				}
+
+				const regexpGitlabCom = /^https?:\/\/(?:www\.)?gitlab\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
+				const matchGitlabCom = link.match(regexpGitlabCom);
+				if (matchGitlabCom) {
+					const repo = `${matchGitlabCom[1]}/${matchGitlabCom[2]}`;
 					badges = [
 						`https://badgen.net/gitlab/stars/${repo}`,
 						`https://badgen.net/gitlab/last-commit/${repo}`
 					];
 				}
 
-				const html = '';
 				badges.forEach((badge) => {
-					repoData.innerHTML += `<img src="${badge}" alt=""/><br>`;
+					repoData.innerHTML += `<img src="${badge}" alt=""/>`;
 				});
 			}
 		} catch (e) {
