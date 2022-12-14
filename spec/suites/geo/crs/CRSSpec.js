@@ -1,27 +1,27 @@
-describe("CRS.EPSG3857", () => {
+describe('CRS.EPSG3857', () => {
 	const crs = L.CRS.EPSG3857;
 
-	describe("#latLngToPoint", () => {
-		it("projects a center point", () => {
+	describe('#latLngToPoint', () => {
+		it('projects a center point', () => {
 			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([128, 128], 0.01);
 		});
 
-		it("projects the northeast corner of the world", () => {
+		it('projects the northeast corner of the world', () => {
 			expect(crs.latLngToPoint(L.latLng(85.0511287798, 180), 0)).near([256, 0]);
 		});
 	});
 
-	describe("#pointToLatLng", () => {
-		it("reprojects a center point", () => {
+	describe('#pointToLatLng', () => {
+		it('reprojects a center point', () => {
 			expect(crs.pointToLatLng(L.point(128, 128), 0)).nearLatLng([0, 0], 0.01);
 		});
 
-		it("reprojects the northeast corner of the world", () => {
+		it('reprojects the northeast corner of the world', () => {
 			expect(crs.pointToLatLng(L.point(256, 0), 0)).nearLatLng([85.0511287798, 180]);
 		});
 	});
 
-	describe("project", () => {
+	describe('project', () => {
 		it('projects geo coords into meter coords correctly', () => {
 			expect(crs.project(L.latLng(50, 30))).near([3339584.7238, 6446275.84102]);
 			expect(crs.project(L.latLng(85.0511287798, 180))).near([20037508.34279, 20037508.34278]);
@@ -29,7 +29,7 @@ describe("CRS.EPSG3857", () => {
 		});
 	});
 
-	describe("unproject", () => {
+	describe('unproject', () => {
 		it('unprojects meter coords into geo coords correctly', () => {
 			expect(crs.unproject(L.point(3339584.7238, 6446275.84102))).nearLatLng([50, 30]);
 			expect(crs.unproject(L.point(20037508.34279, 20037508.34278))).nearLatLng([85.051129, 180]);
@@ -37,8 +37,8 @@ describe("CRS.EPSG3857", () => {
 		});
 	});
 
-	describe("#getProjectedBounds", () => {
-		it("gives correct size", () => {
+	describe('#getProjectedBounds', () => {
+		it('gives correct size', () => {
 			let i,
 			    worldSize = 256,
 			    crsSize;
@@ -52,7 +52,7 @@ describe("CRS.EPSG3857", () => {
 	});
 
 	describe('#wrapLatLng', () => {
-		it("wraps longitude to lie between -180 and 180 by default", () => {
+		it('wraps longitude to lie between -180 and 180 by default', () => {
 			expect(crs.wrapLatLng(L.latLng(0, 190)).lng).to.eql(-170);
 			expect(crs.wrapLatLng(L.latLng(0, 360)).lng).to.eql(0);
 			expect(crs.wrapLatLng(L.latLng(0, 380)).lng).to.eql(20);
@@ -63,7 +63,7 @@ describe("CRS.EPSG3857", () => {
 			expect(crs.wrapLatLng(L.latLng(0, 180)).lng).to.eql(180);
 		});
 
-		it("does not drop altitude", () => {
+		it('does not drop altitude', () => {
 			expect(crs.wrapLatLng(L.latLng(0, 190, 1234)).lng).to.eql(-170);
 			expect(crs.wrapLatLng(L.latLng(0, 190, 1234)).alt).to.eql(1234);
 
@@ -73,7 +73,7 @@ describe("CRS.EPSG3857", () => {
 	});
 
 	describe('#wrapLatLngBounds', () => {
-		it("does not wrap bounds between -180 and 180 longitude", () => {
+		it('does not wrap bounds between -180 and 180 longitude', () => {
 
 			let bounds1 = L.latLngBounds([-10, -10], [10, 10]);
 			let bounds2 = L.latLngBounds([-80, -180], [-70, -170]);
@@ -100,7 +100,7 @@ describe("CRS.EPSG3857", () => {
 
 		});
 
-		it("wraps bounds when center longitude is less than -180", () => {
+		it('wraps bounds when center longitude is less than -180', () => {
 			let bounds1 = L.latLngBounds([0, -185], [10, -170]);
 			let bounds2 = L.latLngBounds([0, -190], [10, -175]);
 
@@ -118,7 +118,7 @@ describe("CRS.EPSG3857", () => {
 			expect(bounds2.getEast()).to.eql(185);
 		});
 
-		it("wraps bounds when center longitude is larger than +180", () => {
+		it('wraps bounds when center longitude is larger than +180', () => {
 			let bounds1 = L.latLngBounds([0, 185], [10, 170]);
 			let bounds2 = L.latLngBounds([0, 190], [10, 175]);
 
@@ -140,11 +140,11 @@ describe("CRS.EPSG3857", () => {
 
 });
 
-describe("CRS.EPSG4326", () => {
+describe('CRS.EPSG4326', () => {
 	const crs = L.CRS.EPSG4326;
 
-	describe("#getSize", () => {
-		it("gives correct size", () => {
+	describe('#getSize', () => {
+		it('gives correct size', () => {
 			let i,
 			    worldSize = 256,
 			    crsSize;
@@ -159,61 +159,61 @@ describe("CRS.EPSG4326", () => {
 	});
 });
 
-describe("CRS.EPSG3395", () => {
+describe('CRS.EPSG3395', () => {
 	const crs = L.CRS.EPSG3395;
 
-	describe("#latLngToPoint", () => {
-		it("projects a center point", () => {
+	describe('#latLngToPoint', () => {
+		it('projects a center point', () => {
 			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([128, 128], 0.01);
 		});
 
-		it("projects the northeast corner of the world", () => {
+		it('projects the northeast corner of the world', () => {
 			expect(crs.latLngToPoint(L.latLng(85.0840591556, 180), 0)).near([256, 0]);
 		});
 	});
 
-	describe("#pointToLatLng", () => {
-		it("reprojects a center point", () => {
+	describe('#pointToLatLng', () => {
+		it('reprojects a center point', () => {
 			expect(crs.pointToLatLng(L.point(128, 128), 0)).nearLatLng([0, 0], 0.01);
 		});
 
-		it("reprojects the northeast corner of the world", () => {
+		it('reprojects the northeast corner of the world', () => {
 			expect(crs.pointToLatLng(L.point(256, 0), 0)).nearLatLng([85.0840591556, 180]);
 		});
 	});
 });
 
-describe("CRS.Simple", () => {
+describe('CRS.Simple', () => {
 	const crs = L.CRS.Simple;
 
-	describe("#latLngToPoint", () => {
-		it("converts LatLng coords to pixels", () => {
+	describe('#latLngToPoint', () => {
+		it('converts LatLng coords to pixels', () => {
 			expect(crs.latLngToPoint(L.latLng(0, 0), 0)).near([0, 0]);
 			expect(crs.latLngToPoint(L.latLng(700, 300), 0)).near([300, -700]);
 			expect(crs.latLngToPoint(L.latLng(-200, 1000), 1)).near([2000, 400]);
 		});
 	});
 
-	describe("#pointToLatLng", () => {
-		it("converts pixels to LatLng coords", () => {
+	describe('#pointToLatLng', () => {
+		it('converts pixels to LatLng coords', () => {
 			expect(crs.pointToLatLng(L.point(0, 0), 0)).nearLatLng([0, 0]);
 			expect(crs.pointToLatLng(L.point(300, -700), 0)).nearLatLng([700, 300]);
 			expect(crs.pointToLatLng(L.point(2000, 400), 1)).nearLatLng([-200, 1000]);
 		});
 	});
 
-	describe("getProjectedBounds", () => {
-		it("returns nothing", () => {
+	describe('getProjectedBounds', () => {
+		it('returns nothing', () => {
 			expect(crs.getProjectedBounds(5)).to.be(null);
 		});
 	});
 
-	describe("wrapLatLng", () => {
-		it("returns coords as is", () => {
+	describe('wrapLatLng', () => {
+		it('returns coords as is', () => {
 			expect(crs.wrapLatLng(L.latLng(270, 400)).equals(L.latLng(270, 400))).to.be(true);
 		});
 
-		it("wraps coords if configured", () => {
+		it('wraps coords if configured', () => {
 			const crs = L.extend({}, L.CRS.Simple, {
 				wrapLng: [-200, 200],
 				wrapLat: [-200, 200]
@@ -224,11 +224,11 @@ describe("CRS.Simple", () => {
 	});
 });
 
-describe("CRS", () => {
+describe('CRS', () => {
 	const crs = L.CRS;
 
-	describe("#zoom && #scale", () => {
-		it("convert zoom to scale and viceversa and return the same values", () => {
+	describe('#zoom && #scale', () => {
+		it('convert zoom to scale and viceversa and return the same values', () => {
 			const zoom = 2.5;
 			const scale = crs.scale(zoom);
 			const zoom2 = crs.zoom(scale);
@@ -237,7 +237,7 @@ describe("CRS", () => {
 	});
 });
 
-describe("CRS.ZoomNotPowerOfTwo", () => {
+describe('CRS.ZoomNotPowerOfTwo', () => {
 	const crs = L.extend({}, L.CRS, {
 		scale(zoom) {
 			return 256 * Math.pow(1.5, zoom);
@@ -247,8 +247,8 @@ describe("CRS.ZoomNotPowerOfTwo", () => {
 		}
 	});
 
-	describe("#scale", () => {
-		it("of zoom levels are related by a power of 1.5", () => {
+	describe('#scale', () => {
+		it('of zoom levels are related by a power of 1.5', () => {
 			const zoom = 5;
 			const scale = crs.scale(zoom);
 			expect(crs.scale(zoom + 1)).to.eql(1.5 * scale);
@@ -256,8 +256,8 @@ describe("CRS.ZoomNotPowerOfTwo", () => {
 		});
 	});
 
-	describe("#zoom && #scale", () => {
-		it("convert zoom to scale and viceversa and return the same values", () => {
+	describe('#zoom && #scale', () => {
+		it('convert zoom to scale and viceversa and return the same values', () => {
 			const zoom = 2;
 			const scale = crs.scale(zoom);
 			expect(crs.zoom(scale)).to.eql(zoom);
@@ -265,8 +265,8 @@ describe("CRS.ZoomNotPowerOfTwo", () => {
 	});
 });
 
-describe("CRS.Earth", () => {
-	describe("#distance", () => {
+describe('CRS.Earth', () => {
+	describe('#distance', () => {
 		// Test values from http://rosettacode.org/wiki/Haversine_formula,
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
 		// is correct, since that's what International Union of Geodesy and Geophysics recommends,

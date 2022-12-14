@@ -76,11 +76,11 @@ describe('LatLngBounds', () => {
 			expect(a.equals(null)).to.eql(false);
 		});
 
-		it("returns true if compared objects are equal within a certain margin", () => {
+		it('returns true if compared objects are equal within a certain margin', () => {
 			expect(a.equals([[15, 11], [29, 41]], 1)).to.eql(true);
 		});
 
-		it("returns false if compared objects are not equal within a certain margin", () => {
+		it('returns false if compared objects are not equal within a certain margin', () => {
 			expect(a.equals([[15, 11], [29, 41]], 0.5)).to.eql(false);
 		});
 	});
@@ -126,7 +126,7 @@ describe('LatLngBounds', () => {
 
 	describe('#toBBoxString', () => {
 		it('returns a proper left,bottom,right,top bbox', () => {
-			expect(a.toBBoxString()).to.eql("12,14,40,30");
+			expect(a.toBBoxString()).to.eql('12,14,40,30');
 		});
 	});
 

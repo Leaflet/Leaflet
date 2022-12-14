@@ -1,12 +1,12 @@
-describe("Point", () => {
+describe('Point', () => {
 	describe('constructor', () => {
-		it("creates a point with the given x and y", () => {
+		it('creates a point with the given x and y', () => {
 			const p = L.point(1.5, 2.5);
 			expect(p.x).to.eql(1.5);
 			expect(p.y).to.eql(2.5);
 		});
 
-		it("rounds the given x and y if the third argument is true", () => {
+		it('rounds the given x and y if the third argument is true', () => {
 			const p = L.point(1.3, 2.7, true);
 			expect(p.x).to.eql(1);
 			expect(p.y).to.eql(3);
@@ -106,7 +106,7 @@ describe("Point", () => {
 			expect(L.point([50, 30])).to.eql(L.point(50, 30));
 		});
 
-		it("creates a point from an object with x and y properties", () => {
+		it('creates a point from an object with x and y properties', () => {
 			expect(L.point({x: 50, y: 30})).to.eql(L.point(50, 30));
 		});
 

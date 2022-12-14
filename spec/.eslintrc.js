@@ -1,8 +1,7 @@
 /** @type {import('eslint').Linter.Config } */
 module.exports = {
 	rules: {
-		'no-console': 'off',
-		'quotes': 'off'
+		'no-console': 'off'
 	},
 	env: {
 		mocha: true,

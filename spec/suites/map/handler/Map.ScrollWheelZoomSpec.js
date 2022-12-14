@@ -1,4 +1,4 @@
-describe("Map.ScrollWheelZoom", () => {
+describe('Map.ScrollWheelZoom', () => {
 	let container, map;
 	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 	const scrollIn = {
@@ -25,7 +25,7 @@ describe("Map.ScrollWheelZoom", () => {
 		removeMapContainer(map, container);
 	});
 
-	it("zooms out while firing 'wheel' event", (done) => {
+	it('zooms out while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
 		happen.once(container, scrollOut);
 
@@ -37,7 +37,7 @@ describe("Map.ScrollWheelZoom", () => {
 		});
 	});
 
-	it("zooms in while firing 'wheel' event", (done) => {
+	it('zooms in while firing \'wheel\' event', (done) => {
 		const zoom = map.getZoom();
 		happen.once(container, scrollIn);
 
@@ -49,7 +49,7 @@ describe("Map.ScrollWheelZoom", () => {
 		});
 	});
 
-	it("scrollWheelZoom: 'center'", (done) => {
+	it('scrollWheelZoom: \'center\'', (done) => {
 		const scrollWheelZoomBefore = map.options.scrollWheelZoom;
 		map.options.scrollWheelZoom = 'center';
 		const zoom = map.getZoom();
@@ -63,7 +63,7 @@ describe("Map.ScrollWheelZoom", () => {
 		});
 	});
 
-	it("changes the option 'wheelDebounceTime'", (done) => {
+	it('changes the option \'wheelDebounceTime\'', (done) => {
 		const wheelDebounceTimeBefore = map.options.wheelDebounceTime;
 		map.options.wheelDebounceTime = 100;
 		const zoom = map.getZoom();
@@ -88,7 +88,7 @@ describe("Map.ScrollWheelZoom", () => {
 		});
 	});
 
-	it("changes the option 'wheelPxPerZoomLevel'", (done) => {
+	it('changes the option \'wheelPxPerZoomLevel\'', (done) => {
 		const wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
 		map.setZoom(15, {animate: false});
 

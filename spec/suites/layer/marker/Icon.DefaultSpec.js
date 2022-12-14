@@ -1,4 +1,4 @@
-describe("Icon.Default", () => {
+describe('Icon.Default', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -13,7 +13,7 @@ describe("Icon.Default", () => {
 		removeMapContainer(map, container);
 	});
 
-	it("detect icon images path", () => {
+	it('detect icon images path', () => {
 		const origPath = L.Icon.Default.imagePath; // set in after.js
 		expect(origPath).to.be.ok();
 		delete L.Icon.Default.imagePath;
@@ -28,7 +28,7 @@ describe("Icon.Default", () => {
 		const properPath = 'http://localhost:8000/base/dist/images/';
 		[ // valid
 			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox
-			"url('http://localhost:8000/base/dist/images/marker-icon.png')",
+			'url(\'http://localhost:8000/base/dist/images/marker-icon.png\')',
 			'url(http://localhost:8000/base/dist/images/marker-icon.png)',    // IE, Edge
 		].map(stripUrl).forEach((str) => { expect(str).to.be(properPath); });
 
@@ -38,13 +38,13 @@ describe("Icon.Default", () => {
 		].map(stripUrl).forEach((str) => { expect(str).not.to.be.ok(); });
 	});
 
-	it("icon measures 25x41px", () => {
+	it('icon measures 25x41px', () => {
 		const img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(25);
 	});
 
-	it("shadow measures 41x41px", () => {
+	it('shadow measures 41x41px', () => {
 		const img = map.getPane('shadowPane').querySelector('img');
 		expect(img.clientHeight).to.be(41);
 		expect(img.clientWidth).to.be(41);

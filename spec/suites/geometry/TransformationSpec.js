@@ -1,4 +1,4 @@
-describe("Transformation", () => {
+describe('Transformation', () => {
 	let t, p;
 
 	beforeEach(() => {
@@ -7,7 +7,7 @@ describe("Transformation", () => {
 	});
 
 	describe('#transform', () => {
-		it("performs a transformation", () => {
+		it('performs a transformation', () => {
 			const p2 = t.transform(p, 2);
 			expect(p2).to.eql(L.point(24, 128));
 		});
@@ -19,7 +19,7 @@ describe("Transformation", () => {
 	});
 
 	describe('#untransform', () => {
-		it("performs a reverse transformation", () => {
+		it('performs a reverse transformation', () => {
 			const p2 = t.transform(p, 2);
 			const p3 = t.untransform(p2, 2);
 			expect(p3).to.eql(p);
@@ -31,7 +31,7 @@ describe("Transformation", () => {
 	});
 
 	describe('#constructor', () => {
-		it("allows an array property for a", () => {
+		it('allows an array property for a', () => {
 			const t2 = L.transformation([1, 2, 3, 4]);
 			expect(t._a).to.eql(t2._a);
 			expect(t._b).to.eql(t2._b);

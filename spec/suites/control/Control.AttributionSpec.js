@@ -1,4 +1,4 @@
-describe("Control.Attribution", () => {
+describe('Control.Attribution', () => {
 	let map, control, container, controlContainer;
 
 	beforeEach(() => {
@@ -23,7 +23,7 @@ describe("Control.Attribution", () => {
 		return layer;
 	}
 
-	it("contains just prefix if no attributions added", () => {
+	it('contains just prefix if no attributions added', () => {
 		expect(controlContainer.innerHTML).to.eql('prefix');
 	});
 

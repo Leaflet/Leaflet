@@ -1,21 +1,21 @@
-describe("Projection.Mercator", () => {
+describe('Projection.Mercator', () => {
 	const p = L.Projection.Mercator;
 
-	describe("#project", () => {
-		it("projects a center point", () => {
+	describe('#project', () => {
+		it('projects a center point', () => {
 			// edge cases
 			expect(p.project(L.latLng(0, 0))).near([0, 0]);
 		});
 
-		it("projects the northeast corner of the world", () => {
+		it('projects the northeast corner of the world', () => {
 			expect(p.project(L.latLng(85.0840591556, 180))).near([20037508, 20037508]);
 		});
 
-		it("projects the southwest corner of the world", () => {
+		it('projects the southwest corner of the world', () => {
 			expect(p.project(L.latLng(-85.0840591556, -180))).near([-20037508, -20037508]);
 		});
 
-		it("projects other points", () => {
+		it('projects other points', () => {
 			expect(p.project(L.latLng(50, 30))).near([3339584, 6413524]);
 
 			// from https://github.com/Leaflet/Leaflet/issues/1578
@@ -24,16 +24,16 @@ describe("Projection.Mercator", () => {
 		});
 	});
 
-	describe("#unproject", () => {
+	describe('#unproject', () => {
 		function pr(point) {
 			return p.project(p.unproject(point));
 		}
 
-		it("unprojects a center point", () => {
+		it('unprojects a center point', () => {
 			expect(pr(L.point(0, 0))).near([0, 0]);
 		});
 
-		it("unprojects pi points", () => {
+		it('unprojects pi points', () => {
 			expect(pr(L.point(-Math.PI, Math.PI))).near([-Math.PI, Math.PI]);
 			expect(pr(L.point(-Math.PI, -Math.PI))).near([-Math.PI, -Math.PI]);
 
@@ -47,24 +47,24 @@ describe("Projection.Mercator", () => {
 	});
 });
 
-describe("Projection.SphericalMercator", () => {
+describe('Projection.SphericalMercator', () => {
 	const p = L.Projection.SphericalMercator;
 
-	describe("#project", () => {
-		it("projects a center point", () => {
+	describe('#project', () => {
+		it('projects a center point', () => {
 			// edge cases
 			expect(p.project(L.latLng(0, 0))).near([0, 0]);
 		});
 
-		it("projects the northeast corner of the world", () => {
+		it('projects the northeast corner of the world', () => {
 			expect(p.project(L.latLng(85.0511287798, 180))).near([20037508, 20037508]);
 		});
 
-		it("projects the southwest corner of the world", () => {
+		it('projects the southwest corner of the world', () => {
 			expect(p.project(L.latLng(-85.0511287798, -180))).near([-20037508, -20037508]);
 		});
 
-		it("projects other points", () => {
+		it('projects other points', () => {
 			expect(p.project(L.latLng(50, 30))).near([3339584, 6446275]);
 
 			// from https://github.com/Leaflet/Leaflet/issues/1578
@@ -73,16 +73,16 @@ describe("Projection.SphericalMercator", () => {
 		});
 	});
 
-	describe("#unproject", () => {
+	describe('#unproject', () => {
 		function pr(point) {
 			return p.project(p.unproject(point));
 		}
 
-		it("unprojects a center point", () => {
+		it('unprojects a center point', () => {
 			expect(pr(L.point(0, 0))).near([0, 0]);
 		});
 
-		it("unprojects pi points", () => {
+		it('unprojects pi points', () => {
 			expect(pr(L.point(-Math.PI, Math.PI))).near([-Math.PI, Math.PI]);
 			expect(pr(L.point(-Math.PI, -Math.PI))).near([-Math.PI, -Math.PI]);
 

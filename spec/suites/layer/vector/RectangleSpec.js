@@ -10,8 +10,8 @@ describe('Rectangle', () => {
 		removeMapContainer(map, container);
 	});
 
-	describe("#initialize", () => {
-		it("should never be flat", () => {
+	describe('#initialize', () => {
+		it('should never be flat', () => {
 			const latLngs = [[1, 2], [3, 4]];
 
 			const rectangle = L.rectangle(latLngs);
@@ -20,7 +20,7 @@ describe('Rectangle', () => {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
-		it("doesn't overwrite the given latlng array", () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -33,14 +33,14 @@ describe('Rectangle', () => {
 			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
 		});
 
-		it("cannot be called with an empty array", () => {
+		it('cannot be called with an empty array', () => {
 			// Throws error due to undefined lat
 			expect(() => {
 				L.rectangle([]);
 			}).to.throwException();
 		});
 
-		it("can be initialized with extending bounds", () => {
+		it('can be initialized with extending bounds', () => {
 			const originalLatLngs = [
 				[0, 10], [20, 30],
 				[40, 50], [60, 70] // extended bounds
@@ -55,8 +55,8 @@ describe('Rectangle', () => {
 		});
 	});
 
-	describe("#setBounds", () => {
-		it("doesn't overwrite the given latlng array", () => {
+	describe('#setBounds', () => {
+		it('doesn\'t overwrite the given latlng array', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -70,7 +70,7 @@ describe('Rectangle', () => {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 
-		it("changes original bounds to new bounds", () => {
+		it('changes original bounds to new bounds', () => {
 			const originalLatLngs = [
 				[1, 2],
 				[3, 4]
@@ -91,7 +91,7 @@ describe('Rectangle', () => {
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
-		it("can be set with extending bounds", () => {
+		it('can be set with extending bounds', () => {
 			const originalLatLngs = [
 				[[2, 3], [4, 5]]
 			];
@@ -111,8 +111,8 @@ describe('Rectangle', () => {
 		});
 	});
 
-	describe("#Canvas", () => {
-		it("doesn't apply `focus` listener if element is undefined", () => {
+	describe('#Canvas', () => {
+		it('doesn\'t apply `focus` listener if element is undefined', () => {
 			map.remove();
 
 			map = L.map(container, {renderer: L.canvas()});

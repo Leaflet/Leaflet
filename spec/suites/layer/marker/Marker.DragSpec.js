@@ -1,4 +1,4 @@
-describe("Marker.Drag", () => {
+describe('Marker.Drag', () => {
 	let map,
 	    container;
 
@@ -25,8 +25,8 @@ describe("Marker.Drag", () => {
 		this._initialPos = this._getPosition();
 	});
 
-	describe("drag", () => {
-		it("drags a marker with mouse", (done) => {
+	describe('drag', () => {
+		it('drags a marker with mouse', (done) => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 			const start = L.point(300, 280);
@@ -50,7 +50,7 @@ describe("Marker.Drag", () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		describe("in CSS scaled container", () => {
+		describe('in CSS scaled container', () => {
 			const scale = L.point(2, 1.5);
 
 			beforeEach(() => {
@@ -58,7 +58,7 @@ describe("Marker.Drag", () => {
 				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it("drags a marker with mouse, compensating for CSS scale", (done) => {
+			it('drags a marker with mouse, compensating for CSS scale', (done) => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				const start = L.point(300, 280);
@@ -85,7 +85,7 @@ describe("Marker.Drag", () => {
 			});
 		});
 
-		it("pans map when autoPan is enabled", (done) => {
+		it('pans map when autoPan is enabled', (done) => {
 			const marker = new MyMarker([0, 0], {
 				draggable: true,
 				autoPan: true

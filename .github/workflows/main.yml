@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
+        os: [ubuntu-20.04, windows-2019, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -24,18 +24,36 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
+
       - name: Cache setup
         uses: actions/cache@v3
         with:
           path: ./*
           key: ${{ github.ref }}-${{ github.sha }}-setup
 
-  build:
+  build-docs:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          working-directory: ./docs
+
+      - name: Run jekyll build
+        working-directory: ./docs
+        run: bundle exec jekyll build --strict_front_matter
+
+  lint:
     needs: setup
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
+    runs-on: ubuntu-20.04
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -48,20 +66,13 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Build project
-        run: npm run build
-        env:
-          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
+      - name: Run lint task
+        run: npm run lint
 
-      - name: Cache build
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
-
-  build-release:
+  bundlemon:
     needs: setup
-    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Leaflet'
+    runs-on: ubuntu-20.04
     steps:
       - name: Restore setup
         uses: actions/cache@v3
@@ -79,71 +90,14 @@ jobs:
         env:
           NODE_ENV: release
 
-      - name: Cache release build
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build-release
-
-  build-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          working-directory: ./docs
-
-      - name: Run jekyll build
-        working-directory: ./docs
-        run: bundle exec jekyll build --strict_front_matter
-
-  lint:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore setup
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Run lint task
-        run: npm run lint
-
-  bundlemon:
-    needs: build-release
-    if: github.repository_owner == 'Leaflet'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore release build
-        uses: actions/cache@v3
-        with:
-          path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build-release
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
       - name: Run bundlemon task
         run: npm run bundlemon
         env:
-          BUNDLEMON_PROJECT_ID: 61e0545915f6c3000980d0ed
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
   test:
-    needs: build
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    needs: setup
+    runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
     strategy:
       fail-fast: false
       matrix:
@@ -159,11 +113,11 @@ jobs:
           - browser: SafariNative
             os: macos-latest
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -174,15 +128,15 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }}
 
   publish-artifacts:
-    needs: build
+    needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Compress artifacts
         working-directory: dist
@@ -200,15 +154,15 @@ jobs:
           DEST_DIR: content/leaflet/${{ github.ref_name }}
 
   publish-npm:
-    needs: build
+    needs: setup
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - name: Restore build
+      - name: Restore setup
         uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-build
+          key: ${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3

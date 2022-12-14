@@ -30,14 +30,14 @@ Class.extend = function (props) {
 
 	const parentProto = NewClass.__super__ = this.prototype;
 
-	const proto = Util.create(parentProto);
+	const proto = Object.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
 
 	// inherit parent's statics
 	for (const i in this) {
-		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
+		if (Object.hasOwn(this, i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
 	}
@@ -59,7 +59,7 @@ Class.extend = function (props) {
 
 	// merge options
 	if (proto.options) {
-		proto.options = parentProto.options ? Util.create(parentProto.options) : {};
+		proto.options = parentProto.options ? Object.create(parentProto.options) : {};
 		Util.extend(proto.options, props.options);
 	}
 

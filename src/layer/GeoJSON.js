@@ -96,7 +96,7 @@ export const GeoJSON = FeatureGroup.extend({
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
 	addData(geojson) {
-		const features = Util.isArray(geojson) ? geojson : geojson.features;
+		const features = Array.isArray(geojson) ? geojson : geojson.features;
 		let i, len, feature;
 
 		if (features) {

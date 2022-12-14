@@ -1,4 +1,4 @@
-describe("Map.BoxZoom", () => {
+describe('Map.BoxZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -14,7 +14,7 @@ describe("Map.BoxZoom", () => {
 	});
 
 
-	it("cancel boxZoom by pressing ESC and re-enable click event on the map", () => {
+	it('cancel boxZoom by pressing ESC and re-enable click event on the map', () => {
 		let mapClick = false;
 		map.on('click', () => {
 			mapClick = true;
@@ -27,7 +27,7 @@ describe("Map.BoxZoom", () => {
 		// fire mousedown event with shiftKey = true, to start drawing the boxZoom
 		let clientX = 100;
 		let clientY = 100;
-		let event = new CustomEvent("mousedown");
+		let event = new CustomEvent('mousedown');
 		event.shiftKey = true;
 		event.clientX = clientX;
 		event.clientY = clientY;
@@ -37,7 +37,7 @@ describe("Map.BoxZoom", () => {
 		// fire mousemove event with shiftKey = true, to draw the boxZoom
 		clientX += 100;
 		clientY += 100;
-		event = new CustomEvent("mousemove");
+		event = new CustomEvent('mousemove');
 		event.shiftKey = true;
 		event.clientX = clientX;
 		event.clientY = clientY;
@@ -45,7 +45,7 @@ describe("Map.BoxZoom", () => {
 		document.dispatchEvent(event);
 
 		// fire keydown event with keyCode = 27 (ESC) to cancel boxZoom
-		event = new CustomEvent("keydown");
+		event = new CustomEvent('keydown');
 		event.keyCode = 27;
 		document.dispatchEvent(event);
 

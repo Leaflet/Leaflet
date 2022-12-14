@@ -18,16 +18,6 @@ export function extend(dest, ...args) {
 	return dest;
 }
 
-// @function create(proto: Object, properties?: Object): Object
-// Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-export const create = Object.create || (function () {
-	function F() {}
-	return function (proto) {
-		F.prototype = proto;
-		return new F();
-	};
-})();
-
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
 export let lastId = 0;
@@ -101,23 +91,17 @@ export function formatNum(num, precision) {
 	return Math.round(num * pow) / pow;
 }
 
-// @function trim(str: String): String
-// Compatibility polyfill for [String.prototype.trim](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim)
-export function trim(str) {
-	return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
-}
-
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
 export function splitWords(str) {
-	return trim(str).split(/\s+/);
+	return str.trim().split(/\s+/);
 }
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
-	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
-		obj.options = obj.options ? create(obj.options) : {};
+	if (!Object.hasOwn(obj, 'options')) {
+		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (const i in options) {
 		obj.options[i] = options[i];
@@ -158,12 +142,6 @@ export function template(str, data) {
 		return value;
 	});
 }
-
-// @function isArray(obj): Boolean
-// Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
-export const isArray = Array.isArray || function (obj) {
-	return (Object.prototype.toString.call(obj) === '[object Array]');
-};
 
 // @property emptyImageUrl: String
 // Data URI string containing a base64-encoded empty GIF image.

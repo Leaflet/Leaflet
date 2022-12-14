@@ -12,7 +12,7 @@ title: CRS.Simple example
 	const yx = L.latLng;
 
 	function xy(x, y) {
-		if (L.Util.isArray(x)) { // When doing xy([x, y]);
+		if (Array.isArray(x)) { // When doing xy([x, y]);
 			return yx(x[1], x[0]);
 		}
 		return yx(y, x); // When doing xy(x, y);
