@@ -403,6 +403,10 @@ Once your plugin is ready, you can submit it: just send a pull request with a ne
 
 <script>
 function loadRepoData() {
+	const regexpGithubCom = /^https?:\/\/(?:www\.)?github\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
+	const regexpGithubIO = /^https?:\/\/([\w\d-_.]+)\.github\.io\/([\w\d-_.]+)\/?/;
+	const regexpGitlabCom = /^https?:\/\/(?:www\.)?gitlab\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
+
 	const rows = document.querySelectorAll('table.plugins tr');
 	rows.forEach((row) => {
 		try {
@@ -411,7 +415,6 @@ function loadRepoData() {
 				const link = row.querySelector('.plugin-repo-url').href;
 				let badges = [];
 
-				const regexpGithubCom = /^https?:\/\/(?:www\.)?github\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
 				const matchGithubCom = link.match(regexpGithubCom);
 				if (matchGithubCom) {
 					const repo = `${matchGithubCom[1]}/${matchGithubCom[2]}`;
@@ -421,7 +424,6 @@ function loadRepoData() {
 					];
 				}
 
-				const regexpGithubIO = /^https?:\/\/([\w\d-_.]+)\.github\.io\/([\w\d-_.]+)\/?/;
 				const matchGithubIO = link.match(regexpGithubIO);
 				if (matchGithubIO) {
 					const repo = `${matchGithubIO[1]}/${matchGithubIO[2]}`;
@@ -431,7 +433,6 @@ function loadRepoData() {
 					];
 				}
 
-				const regexpGitlabCom = /^https?:\/\/(?:www\.)?gitlab\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
 				const matchGitlabCom = link.match(regexpGitlabCom);
 				if (matchGitlabCom) {
 					const repo = `${matchGitlabCom[1]}/${matchGitlabCom[2]}`;
