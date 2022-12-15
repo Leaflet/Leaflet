@@ -3,8 +3,11 @@
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Demo</th><th>Maintainer</th></tr>
 {% for plugin in filteredplugins %}
 	<tr>
-		<td><a href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
-		<td>{{ plugin.content }}</td>
+		<td><a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
+		<td>
+			{{ plugin.content }}
+			<div class="repo-data"></div>
+		</td>
 		<td>
 		{% if plugin.demo %}
 			<a href="{{ plugin.demo }}">Demo</a>
