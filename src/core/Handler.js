@@ -21,58 +21,6 @@ export const Handler = Class.extend({
 
 		this._enabled = true;
 		this.addHooks();
-
-
-		function loadRepoData() {
-			const rows = document.querySelectorAll('table.plugins tr');
-			rows.forEach((row) => {
-				try {
-					const repoData = row.querySelector('.repo-data');
-					if (repoData) {
-						const link = row.querySelector('.plugin-repo-url').href;
-						let badges = [];
-
-						const regexpGithubCom = /^https?:\/\/(?:www\.)?github\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
-						const matchGithubCom = link.match(regexpGithubCom);
-						if (matchGithubCom) {
-							const repo = `${matchGithubCom[1]}/${matchGithubCom[2]}`;
-							badges = [
-								`https://badgen.net/github/stars/${repo}`,
-								`https://badgen.net/github/last-commit/${repo}`
-							];
-						}
-
-						const regexpGithubIO = /^https?:\/\/([\w\d-_.]+)\.github\.io\/([\w\d-_.]+)\/?/;
-						const matchGithubIO = link.match(regexpGithubIO);
-						if (matchGithubIO) {
-							const repo = `${matchGithubIO[1]}/${matchGithubIO[2]}`;
-							badges = [
-								`https://badgen.net/github/stars/${repo}`,
-								`https://badgen.net/github/last-commit/${repo}`
-							];
-						}
-
-						const regexpGitlabCom = /^https?:\/\/(?:www\.)?gitlab\.com\/([\w\d-_.]+)\/([\w\d-_.]+)\/?/;
-						const matchGitlabCom = link.match(regexpGitlabCom);
-						if (matchGitlabCom) {
-							const repo = `${matchGitlabCom[1]}/${matchGitlabCom[2]}`;
-							badges = [
-								`https://badgen.net/gitlab/stars/${repo}`,
-								`https://badgen.net/gitlab/last-commit/${repo}`
-							];
-						}
-
-						badges.forEach((badge) => {
-							repoData.innerHTML += `<img src="${badge}" alt=""/>`;
-						});
-					}
-				} catch (e) {
-					console.error(e);
-				}
-			});
-		}
-		loadRepoData();
-
 		return this;
 	},
 
