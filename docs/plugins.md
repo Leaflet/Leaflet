@@ -442,9 +442,11 @@ function loadRepoData() {
 					];
 				}
 
-				badges.forEach((badge) => {
-					repoData.innerHTML += `<img src="${badge}" alt=""/>`;
-				});
+				if (badges.length) {
+					repoData.innerHTML = badges
+						.map(b => `<img src="${b}" alt="" loading="lazy"/>`)
+						.join('');
+				}
 			}
 		} catch (e) {
 			console.error(e);
