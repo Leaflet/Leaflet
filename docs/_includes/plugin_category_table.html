@@ -6,7 +6,7 @@
 		<td><a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
 		<td>
 			{{ plugin.content }}
-			<div class="repo-data"></div>
+			<div class="repo-data">{{ plugin.repo | createBadges }}</div>
 		</td>
 		<td>
 		{% if plugin.demo %}
