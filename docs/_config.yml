@@ -18,3 +18,5 @@ integrity_hash_uglified: "sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
 collections:
   plugins:
     output: false
+
+plugins_dir: modules
