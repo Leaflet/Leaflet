@@ -10,11 +10,11 @@ module Jekyll
       repoGitlab = "#{input}".gsub(RegexpGitlabCom,'\1/\2');
 
       if input != repoGithub
-      	html = "<img src='https://badgen.net/github/stars/#{repoGithub}'' alt='' /><img src='https://badgen.net/github/last-commit/#{repoGithub}'' alt='' />"
+      	html = "<img src='https://badgen.net/github/stars/#{repoGithub}' alt='' loading='lazy' /><img src='https://badgen.net/github/last-commit/#{repoGithub}' alt='' loading='lazy' />"
       elsif input != repoGithubIO
-      	html = "<img src='https://badgen.net/github/stars/#{repoGithubIO}'' alt='' /><img src='https://badgen.net/github/last-commit/#{repoGithubIO}'' alt='' />"
+      	html = "<img src='https://badgen.net/github/stars/#{repoGithubIO}' alt='' loading='lazy' /><img src='https://badgen.net/github/last-commit/#{repoGithubIO}' alt='' loading='lazy' />"
       elsif input != repoGitlab
-      	html = "<img src='https://badgen.net/gitlab/stars/#{repoGitlab}'' alt='' /><img src='https://badgen.net/gitlab/last-commit/#{repoGitlab}'' alt='' />"
+      	html = "<img src='https://badgen.net/gitlab/stars/#{repoGitlab}' alt='' loading='lazy' /><img src='https://badgen.net/gitlab/last-commit/#{repoGitlab}' alt='' loading='lazy' />"
       end
 
       "#{html}"
