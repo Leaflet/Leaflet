@@ -11,6 +11,8 @@ import * as DomUtil from '../dom/DomUtil';
  *
  * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
  *
+ * An image overlay uses the [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) HTML element.
+ *
  * @example
  *
  * ```js
