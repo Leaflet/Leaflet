@@ -14,7 +14,7 @@ In this tutorial, you’ll learn how to use these overlays.
 
 ### `ImageOverlay`
 
-`L.ImageOverlay` is used to load and display a single image over specific bounds of the map. 
+`L.ImageOverlay` is used to load and display a single image over specific bounds of the map. The image must be a file type [displayed natively](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#supported_image_formats) in web-browsers and most commonly will be a PNG, SVG or JPEG. The image must be orientated the same way as the map, typically "north-up".
 
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 
