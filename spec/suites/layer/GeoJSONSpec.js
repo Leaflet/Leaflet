@@ -889,7 +889,7 @@ describe("L.GeoJSON functions", function () {
 			expect(coords).to.eql([[1, 2, 3], [4, 5, 6], [1, 2, 3]]);
 			expect(coords[0] === coords[2]).to.not.ok();
 		});
-		it('still works if no values in coords array', () => {
+		it('still works if no values in coords array', function () {
 			expect(function () {
 				L.GeoJSON.latLngsToCoords([[]], 1, true);
 			}).to.not.throwException();
