@@ -146,22 +146,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#removeClass', () => {
-		it('removes the class from an HTML element', () => {
-			const element = document.createElement('div');
-			element.classList.add('newClass');
-			L.DomUtil.removeClass(element, 'newClass');
-			expect(element.classList.value).to.be('');
-		});
-
-		it('removes the class from an SVG element', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			element.classList.add('newClass');
-			L.DomUtil.removeClass(element, 'newClass');
-			expect(element.classList.value).to.be('');
-		});
-	});
-
 	describe('#testProp', () => {
 		it('check array of style names return first valid style name for element', () => {
 			const hasProp = L.DomUtil.testProp(['-webkit-transform', '-webkit-transform', '-ms-tranform', '-o-transform']);

@@ -102,7 +102,7 @@ export const BoxZoom = Handler.extend({
 	_finish() {
 		if (this._moved) {
 			DomUtil.remove(this._box);
-			DomUtil.removeClass(this._container, 'leaflet-crosshair');
+			this._container.classList.remove('leaflet-crosshair');
 		}
 
 		DomUtil.enableTextSelection();

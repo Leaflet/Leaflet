@@ -2,7 +2,6 @@ import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Util from '../../core/Util';
-import * as DomUtil from '../../dom/DomUtil';
 import Browser from '../../core/Browser';
 
 /*
@@ -33,7 +32,7 @@ export const TouchZoom = Handler.extend({
 	},
 
 	removeHooks() {
-		DomUtil.removeClass(this._map._container, 'leaflet-touch-zoom');
+		this._map._container.classList.remove('leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 

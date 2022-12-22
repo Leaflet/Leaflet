@@ -54,7 +54,7 @@ export const MarkerDrag = Handler.extend({
 		}, this).disable();
 
 		if (this._marker._icon) {
-			DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
+			this._marker._icon.classList.remove('leaflet-marker-draggable');
 		}
 	},
 

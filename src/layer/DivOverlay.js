@@ -133,7 +133,7 @@ export const DivOverlay = Layer.extend({
 		}
 
 		if (this.options.interactive) {
-			DomUtil.removeClass(this._container, 'leaflet-interactive');
+			this._container.classList.remove('leaflet-interactive');
 			this.removeInteractiveTarget(this._container);
 		}
 	},
