@@ -183,10 +183,12 @@ export const Tooltip = DivOverlay.extend({
 
 		pos = pos.subtract(toPoint(subX, subY, true)).add(offset).add(anchor);
 
-		DomUtil.removeClass(container, 'leaflet-tooltip-right');
-		DomUtil.removeClass(container, 'leaflet-tooltip-left');
-		DomUtil.removeClass(container, 'leaflet-tooltip-top');
-		DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
+		container.classList.remove(
+			'leaflet-tooltip-right',
+			'leaflet-tooltip-left',
+			'leaflet-tooltip-top',
+			'leaflet-tooltip-bottom'
+		);
 		container.classList.add(`leaflet-tooltip-${direction}`);
 		DomUtil.setPosition(container, pos);
 	},

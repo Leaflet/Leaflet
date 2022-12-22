@@ -106,8 +106,8 @@ export const Zoom = Control.extend({
 		const map = this._map,
 		    className = 'leaflet-disabled';
 
-		DomUtil.removeClass(this._zoomInButton, className);
-		DomUtil.removeClass(this._zoomOutButton, className);
+		this._zoomInButton.classList.remove(className);
+		this._zoomOutButton.classList.remove(className);
 		this._zoomInButton.setAttribute('aria-disabled', 'false');
 		this._zoomOutButton.setAttribute('aria-disabled', 'false');
 

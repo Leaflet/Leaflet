@@ -100,10 +100,6 @@ export function toBack(el) {
 	}
 }
 
-// @function removeClass(el: Element, name: String)
-// Removes `name` from the element's `class` attribute.
-export const removeClass = (el, name) => el.classList.remove(name);
-
 // @function testProp(props: String[]): String|false
 // Goes through the array of style names and returns the first name
 // that is a valid style name for an element. If no such name is found,

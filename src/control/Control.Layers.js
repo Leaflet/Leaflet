@@ -157,7 +157,7 @@ export const Layers = Control.extend({
 			this._section.classList.add('leaflet-control-layers-scrollbar');
 			this._section.style.height = `${acceptableHeight}px`;
 		} else {
-			DomUtil.removeClass(this._section, 'leaflet-control-layers-scrollbar');
+			this._section.classList.remove('leaflet-control-layers-scrollbar');
 		}
 		this._checkDisabledLayers();
 		return this;
@@ -166,7 +166,7 @@ export const Layers = Control.extend({
 	// @method collapse(): this
 	// Collapse the control container if expanded.
 	collapse() {
-		DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+		this._container.classList.remove('leaflet-control-layers-expanded');
 		return this;
 	},
 

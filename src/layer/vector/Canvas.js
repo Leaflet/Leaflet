@@ -381,7 +381,7 @@ export const Canvas = Renderer.extend({
 		const layer = this._hoveredLayer;
 		if (layer) {
 			// if we're leaving the layer, fire mouseout
-			DomUtil.removeClass(this._container, 'leaflet-interactive');
+			this._container.classList.remove('leaflet-interactive');
 			this._fireEvent([layer], e, 'mouseout');
 			this._hoveredLayer = null;
 			this._mouseHoverThrottled = false;

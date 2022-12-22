@@ -189,10 +189,10 @@ export const Draggable = Evented.extend({
 	},
 
 	finishDrag(noInertia) {
-		DomUtil.removeClass(document.body, 'leaflet-dragging');
+		document.body.classList.remove('leaflet-dragging');
 
 		if (this._lastTarget) {
-			DomUtil.removeClass(this._lastTarget, 'leaflet-drag-target');
+			this._lastTarget.classList.remove('leaflet-drag-target');
 			this._lastTarget = null;
 		}
 

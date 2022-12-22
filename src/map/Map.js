@@ -1601,7 +1601,7 @@ export const Map = Evented.extend({
 	},
 
 	_onPanTransitionEnd() {
-		DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
+		this._mapPane.classList.remove('leaflet-pan-anim');
 		this.fire('moveend');
 	},
 
@@ -1723,7 +1723,7 @@ export const Map = Evented.extend({
 		if (!this._animatingZoom) { return; }
 
 		if (this._mapPane) {
-			DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+			this._mapPane.classList.remove('leaflet-zoom-anim');
 		}
 
 		this._animatingZoom = false;
