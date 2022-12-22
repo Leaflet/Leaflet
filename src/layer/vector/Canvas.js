@@ -406,7 +406,7 @@ export const Canvas = Renderer.extend({
 			this._handleMouseOut(e);
 
 			if (candidateHoveredLayer) {
-				DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
+				this._container.classList.add('leaflet-interactive'); // change cursor
 				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
 				this._hoveredLayer = candidateHoveredLayer;
 			}

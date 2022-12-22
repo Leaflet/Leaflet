@@ -119,7 +119,7 @@ export const DivOverlay = Layer.extend({
 		this.bringToFront();
 
 		if (this.options.interactive) {
-			DomUtil.addClass(this._container, 'leaflet-interactive');
+			this._container.classList.add('leaflet-interactive');
 			this.addInteractiveTarget(this._container);
 		}
 	},

@@ -149,7 +149,7 @@ export const Draggable = Evented.extend({
 
 			this._moved = true;
 
-			DomUtil.addClass(document.body, 'leaflet-dragging');
+			document.body.classList.add('leaflet-dragging');
 
 			this._lastTarget = e.target || e.srcElement;
 			// IE and Edge do not give the <use> element, so fetch it
@@ -157,7 +157,7 @@ export const Draggable = Evented.extend({
 			if (window.SVGElementInstance && this._lastTarget instanceof window.SVGElementInstance) {
 				this._lastTarget = this._lastTarget.correspondingUseElement;
 			}
-			DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
+			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
 		this._newPos = this._startPos.add(offset);

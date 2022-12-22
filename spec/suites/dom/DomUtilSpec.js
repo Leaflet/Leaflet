@@ -146,32 +146,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#addClass', () => {
-		it('adds a class to an HTML element', () => {
-			const element = document.createElement('div');
-			L.DomUtil.addClass(element, 'newClass');
-			expect(element.classList.value).to.be('newClass');
-		});
-
-		it('adds multiple classes to an HTML element', () => {
-			const element = document.createElement('div');
-			L.DomUtil.addClass(element, 'newClass someOtherClass');
-			expect(element.classList.value).to.be('newClass someOtherClass');
-		});
-
-		it('adds a class to an SVG element', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			L.DomUtil.addClass(element, 'newClass');
-			expect(element.classList.value).to.be('newClass');
-		});
-
-		it('adds multiple classes to an SVG element', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			L.DomUtil.addClass(element, 'newClass someOtherClass');
-			expect(element.classList.value).to.be('newClass someOtherClass');
-		});
-	});
-
 	describe('#removeClass', () => {
 		it('removes the class from an HTML element', () => {
 			const element = document.createElement('div');

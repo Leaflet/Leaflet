@@ -244,7 +244,7 @@ export const Popup = DivOverlay.extend({
 
 		if (maxHeight && height > maxHeight) {
 			style.height = `${maxHeight}px`;
-			DomUtil.addClass(container, scrolledClass);
+			container.classList.add(scrolledClass);
 		} else {
 			DomUtil.removeClass(container, scrolledClass);
 		}

@@ -783,7 +783,7 @@ export const GridLayer = Layer.extend({
 	},
 
 	_initTile(tile) {
-		DomUtil.addClass(tile, 'leaflet-tile');
+		tile.classList.add('leaflet-tile');
 
 		const tileSize = this.getTileSize();
 		tile.style.width = `${tileSize.x}px`;
@@ -853,7 +853,7 @@ export const GridLayer = Layer.extend({
 		}
 
 		if (!err) {
-			DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
+			tile.el.classList.add('leaflet-tile-loaded');
 
 			// @event tileload: TileEvent
 			// Fired when a tile loads.

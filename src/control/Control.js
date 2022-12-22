@@ -71,7 +71,7 @@ export const Control = Class.extend({
 		    pos = this.getPosition(),
 		    corner = map._controlCorners[pos];
 
-		DomUtil.addClass(container, 'leaflet-control');
+		container.classList.add('leaflet-control');
 
 		if (pos.includes('bottom')) {
 			corner.insertBefore(container, corner.firstChild);

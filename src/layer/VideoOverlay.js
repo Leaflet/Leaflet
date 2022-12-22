@@ -53,9 +53,9 @@ export const VideoOverlay = ImageOverlay.extend({
 		const wasElementSupplied = this._url.tagName === 'VIDEO';
 		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
 
-		DomUtil.addClass(vid, 'leaflet-image-layer');
-		if (this._zoomAnimated) { DomUtil.addClass(vid, 'leaflet-zoom-animated'); }
-		if (this.options.className) { DomUtil.addClass(vid, this.options.className); }
+		vid.classList.add('leaflet-image-layer');
+		if (this._zoomAnimated) { vid.classList.add('leaflet-zoom-animated'); }
+		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
 		vid.onselectstart = Util.falseFn;
 		vid.onmousemove = Util.falseFn;

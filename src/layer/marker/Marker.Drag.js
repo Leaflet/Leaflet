@@ -42,7 +42,7 @@ export const MarkerDrag = Handler.extend({
 			dragend: this._onDragEnd
 		}, this).enable();
 
-		DomUtil.addClass(icon, 'leaflet-marker-draggable');
+		icon.classList.add('leaflet-marker-draggable');
 	},
 
 	removeHooks() {

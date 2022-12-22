@@ -112,11 +112,11 @@ export const Zoom = Control.extend({
 		this._zoomOutButton.setAttribute('aria-disabled', 'false');
 
 		if (this._disabled || map._zoom === map.getMinZoom()) {
-			DomUtil.addClass(this._zoomOutButton, className);
+			this._zoomOutButton.classList.add(className);
 			this._zoomOutButton.setAttribute('aria-disabled', 'true');
 		}
 		if (this._disabled || map._zoom === map.getMaxZoom()) {
-			DomUtil.addClass(this._zoomInButton, className);
+			this._zoomInButton.classList.add(className);
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}

@@ -48,7 +48,7 @@ export const Renderer = Layer.extend({
 			this._initContainer(); // defined by renderer implementations
 
 			if (this._zoomAnimated) {
-				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
+				this._container.classList.add('leaflet-zoom-animated');
 			}
 		}
 
