@@ -1623,13 +1623,12 @@ export const Map = Evented.extend({
 		this._panes.mapPane.appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
-			const prop = DomUtil.TRANSFORM,
-			    transform = this._proxy.style[prop];
+			const transform = this._proxy.style.transform;
 
 			DomUtil.setTransform(this._proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
 			// workaround for case when transform is the same and so transitionend event is not fired
-			if (transform === this._proxy.style[prop] && this._animatingZoom) {
+			if (transform === this._proxy.style.transform && this._animatingZoom) {
 				this._onZoomTransitionEnd();
 			}
 		}, this);
