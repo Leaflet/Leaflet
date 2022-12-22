@@ -146,20 +146,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#hasClass', () => {
-		it('determines if an HTML element has a class', () => {
-			const element = document.createElement('div');
-			element.classList.add('newClass', 'someOtherClass');
-			expect(L.DomUtil.hasClass(element, 'newClass')).to.be(true);
-		});
-
-		it('determines if an SVG element has a class', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			element.classList.add('newClass', 'someOtherClass');
-			expect(L.DomUtil.hasClass(element, 'newClass')).to.be(true);
-		});
-	});
-
 	describe('#addClass', () => {
 		it('adds a class to an HTML element', () => {
 			const element = document.createElement('div');

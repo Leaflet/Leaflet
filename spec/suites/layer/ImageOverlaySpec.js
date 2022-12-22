@@ -90,7 +90,7 @@ describe('ImageOverlay', () => {
 
 		describe('className', () => {
 			it('should set image\'s class', () => {
-				expect(L.DomUtil.hasClass(overlay._image, 'my-custom-image-class')).to.be(true);
+				expect(overlay._image.classList.contains('my-custom-image-class')).to.be(true);
 			});
 		});
 	});

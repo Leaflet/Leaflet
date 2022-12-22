@@ -101,10 +101,6 @@ export function toBack(el) {
 	}
 }
 
-// @function hasClass(el: Element, name: String): Boolean
-// Returns `true` if the element's `class` attribute contains `name`.
-export const hasClass = (el, name) => el.classList.contains(name);
-
 // @function addClass(el: Element, name: String)
 // Adds `name` to the element's `class` attribute.
 // Multiple values can be added by providing a value for `name` delimited by a space character.

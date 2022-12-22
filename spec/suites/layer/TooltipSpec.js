@@ -166,13 +166,13 @@ describe('Tooltip', () => {
 	it('has class leaflet-interactive', () => {
 		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
-		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(true);
+		expect(layer._tooltip._container.classList.contains('leaflet-interactive')).to.be(true);
 	});
 
 	it('has not class leaflet-interactive', () => {
 		const layer = L.marker(center).addTo(map);
 		layer.bindTooltip('Tooltip', {permanent: true});
-		expect(L.DomUtil.hasClass(layer._tooltip._container, 'leaflet-interactive')).to.be(false);
+		expect(layer._tooltip._container.classList.contains('leaflet-interactive')).to.be(false);
 	});
 
 	it('can be forced on left direction', () => {
@@ -493,7 +493,7 @@ describe('Tooltip', () => {
 		const tooltip = new L.Tooltip(center, {className: 'testClass'})
 			.addTo(map);
 		expect(map.hasLayer(tooltip)).to.be(true);
-		expect(L.DomUtil.hasClass(tooltip.getElement(), 'testClass')).to.be(true);
+		expect(tooltip.getElement().classList.contains('testClass')).to.be(true);
 	});
 
 	it('adds tooltip with passed content in options while initializing', () => {

@@ -397,7 +397,7 @@ describe('Popup', () => {
 		const popup = new L.Popup(center, {className: 'testClass'})
 			.addTo(map);
 		expect(map.hasLayer(popup)).to.be(true);
-		expect(L.DomUtil.hasClass(popup.getElement(), 'testClass')).to.be(true);
+		expect(popup.getElement().classList.contains('testClass')).to.be(true);
 	});
 
 	it('adds popup with passed content in options while initializing', () => {
