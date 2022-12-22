@@ -200,7 +200,7 @@ export const Tooltip = DivOverlay.extend({
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			DomUtil.setOpacity(this._container, opacity);
+			this._container.style.opacity = opacity;
 		}
 	},
 

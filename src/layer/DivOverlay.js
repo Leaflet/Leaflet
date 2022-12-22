@@ -105,7 +105,7 @@ export const DivOverlay = Layer.extend({
 		}
 
 		if (map._fadeAnimated) {
-			DomUtil.setOpacity(this._container, 0);
+			this._container.style.opacity = 0;
 		}
 
 		clearTimeout(this._removeTimeout);
@@ -113,7 +113,7 @@ export const DivOverlay = Layer.extend({
 		this.update();
 
 		if (map._fadeAnimated) {
-			DomUtil.setOpacity(this._container, 1);
+			this._container.style.opacity = 1;
 		}
 
 		this.bringToFront();
@@ -126,7 +126,7 @@ export const DivOverlay = Layer.extend({
 
 	onRemove(map) {
 		if (map._fadeAnimated) {
-			DomUtil.setOpacity(this._container, 0);
+			this._container.style.opacity = 0;
 			this._removeTimeout = setTimeout(DomUtil.remove.bind(null, this._container), 200);
 		} else {
 			DomUtil.remove(this._container);

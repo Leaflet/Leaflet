@@ -243,7 +243,7 @@ export const ImageOverlay = Layer.extend({
 	},
 
 	_updateOpacity() {
-		DomUtil.setOpacity(this._image, this.options.opacity);
+		this._image.style.opacity = this.options.opacity;
 	},
 
 	_updateZIndex() {

@@ -370,11 +370,11 @@ export const Marker = Layer.extend({
 		const opacity = this.options.opacity;
 
 		if (this._icon) {
-			DomUtil.setOpacity(this._icon, opacity);
+			this._icon.style.opacity = opacity;
 		}
 
 		if (this._shadow) {
-			DomUtil.setOpacity(this._shadow, opacity);
+			this._shadow.style.opacity = opacity;
 		}
 	},
 
