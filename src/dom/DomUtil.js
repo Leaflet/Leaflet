@@ -13,20 +13,6 @@ import Browser from '../core/Browser';
  * in HTML and SVG classes in SVG.
  */
 
-// webkitTransition comes first because some browser versions that drop vendor prefix don't do
-// the same for the transitionend event, in particular the Android 4.1 stock browser
-
-// @property TRANSITION: String
-// Vendor-prefixed transition style name.
-export const TRANSITION = testProp(
-	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
-
-// @property TRANSITION_END: String
-// Vendor-prefixed transitionend event name.
-export const TRANSITION_END =
-	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? `${TRANSITION}End` : 'transitionend';
-
-
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
