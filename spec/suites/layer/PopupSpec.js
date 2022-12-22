@@ -49,6 +49,23 @@ describe('Popup', () => {
 		expect(map.hasLayer(popup)).to.be(true);
 	});
 
+	it('sets the default \'closeButtonLabel\' on the close button', () => {
+		const popup = L.popup()
+			.setLatLng(center)
+			.openOn(map);
+
+		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.be(null);
+	});
+
+	it('sets a custom \'closeButtonLabel\' on the close button', () => {
+		const closeButtonLabel = 'TestLabel';
+		const popup = L.popup({closeButtonLabel})
+			.setLatLng(center)
+			.openOn(map);
+
+		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.be(null);
+	});
+
 	it('toggles its visibility when marker is clicked', () => {
 		const marker = L.marker(center);
 		map.addLayer(marker);
