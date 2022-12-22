@@ -78,7 +78,7 @@ export const Draggable = Evented.extend({
 
 		this._moved = false;
 
-		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
+		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
 
 		if (e.touches && e.touches.length !== 1) {
 			// Finish dragging to avoid conflict with touchZoom

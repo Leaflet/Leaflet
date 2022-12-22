@@ -190,7 +190,7 @@ describe('GridLayer', () => {
 			it('does not add the .leaflet-tile-loaded class to tile elements', (done) => {
 				let count = 0;
 				grid.on('tileerror', (e) => {
-					if (!L.DomUtil.hasClass(e.tile, 'leaflet-tile-loaded')) {
+					if (!e.tile.classList.contains('leaflet-tile-loaded')) {
 						count++;
 					}
 					if (keys.length === 4) {
