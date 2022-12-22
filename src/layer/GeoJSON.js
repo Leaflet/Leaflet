@@ -273,21 +273,21 @@ export function latLngToCoords(latlng, precision) {
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
 }
 
-// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean, precision?: Number|false): Array
+// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, close?: Boolean, precision?: Number|false): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
-// `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
+// `close` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
-export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
+export function latLngsToCoords(latlngs, levelsDeep, close, precision) {
 	const coords = [];
 
 	for (let i = 0, len = latlngs.length; i < len; i++) {
 		// Check for flat arrays required to ensure unbalanced arrays are correctly converted in recursion
 		coords.push(levelsDeep ?
-			latLngsToCoords(latlngs[i], LineUtil.isFlat(latlngs[i]) ? 0 : levelsDeep - 1, closed, precision) :
+			latLngsToCoords(latlngs[i], LineUtil.isFlat(latlngs[i]) ? 0 : levelsDeep - 1, close, precision) :
 			latLngToCoords(latlngs[i], precision));
 	}
 
-	if (!levelsDeep && closed) {
+	if (!levelsDeep && close) {
 		coords.push(coords[0].slice());
 	}
 
