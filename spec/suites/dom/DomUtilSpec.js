@@ -188,17 +188,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#setOpacity', () => {
-		it('sets opacity of element', () => {
-			L.DomUtil.setOpacity(el, 1);
-			expect(el.style.opacity).to.equal('1');
-			L.DomUtil.setOpacity(el, 0.5);
-			expect(el.style.opacity).to.equal('0.5');
-			L.DomUtil.setOpacity(el, '0');
-			expect(el.style.opacity).to.equal('0');
-		});
-	});
-
 	describe('#testProp', () => {
 		it('check array of style names return first valid style name for element', () => {
 			const hasProp = L.DomUtil.testProp(['-webkit-transform', '-webkit-transform', '-ms-tranform', '-o-transform']);

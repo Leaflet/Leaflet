@@ -310,7 +310,7 @@ export const GridLayer = Layer.extend({
 	_updateOpacity() {
 		if (!this._map) { return; }
 
-		DomUtil.setOpacity(this._container, this.options.opacity);
+		this._container.style.opacity = this.options.opacity;
 
 		const now = +new Date();
 		let nextFrame = false,
@@ -322,7 +322,7 @@ export const GridLayer = Layer.extend({
 
 			const fade = Math.min(1, (now - tile.loaded) / 200);
 
-			DomUtil.setOpacity(tile.el, fade);
+			tile.el.style.opacity = fade;
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
@@ -844,7 +844,7 @@ export const GridLayer = Layer.extend({
 
 		tile.loaded = +new Date();
 		if (this._map._fadeAnimated) {
-			DomUtil.setOpacity(tile.el, 0);
+			tile.el.style.opacity = 0;
 			Util.cancelAnimFrame(this._fadeFrame);
 			this._fadeFrame = Util.requestAnimFrame(this._updateOpacity, this);
 		} else {

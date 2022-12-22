@@ -113,40 +113,6 @@ export function addClass(el, name) {
 // Removes `name` from the element's `class` attribute.
 export const removeClass = (el, name) => el.classList.remove(name);
 
-// @function setOpacity(el: HTMLElement, opacity: Number)
-// Set the opacity of an element (including old IE support).
-// `opacity` must be a number from `0` to `1`.
-export function setOpacity(el, value) {
-	if ('opacity' in el.style) {
-		el.style.opacity = value;
-	} else if ('filter' in el.style) {
-		_setOpacityIE(el, value);
-	}
-}
-
-function _setOpacityIE(el, value) {
-	let filter = false;
-	const filterName = 'DXImageTransform.Microsoft.Alpha';
-
-	// filters collection throws an error if we try to retrieve a filter that doesn't exist
-	try {
-		filter = el.filters.item(filterName);
-	} catch (e) {
-		// don't set opacity to 1 if we haven't already set an opacity,
-		// it isn't needed and breaks transparent pngs.
-		if (value === 1) { return; }
-	}
-
-	value = Math.round(value * 100);
-
-	if (filter) {
-		filter.Enabled = (value !== 100);
-		filter.Opacity = value;
-	} else {
-		el.style.filter += ` progid:${filterName}(opacity=${value})`;
-	}
-}
-
 // @function testProp(props: String[]): String|false
 // Goes through the array of style names and returns the first name
 // that is a valid style name for an element. If no such name is found,
