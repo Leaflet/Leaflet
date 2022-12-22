@@ -256,8 +256,8 @@ export const Layers = Control.extend({
 	_update() {
 		if (!this._container) { return this; }
 
-		DomUtil.empty(this._baseLayersList);
-		DomUtil.empty(this._overlaysList);
+		this._baseLayersList.replaceChildren();
+		this._overlaysList.replaceChildren();
 
 		this._layerControlInputs = [];
 		let baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;

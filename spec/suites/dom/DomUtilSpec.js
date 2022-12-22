@@ -63,22 +63,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#empty', () => {
-		it('removes all children of element', () => {
-			L.DomUtil.create('div', 'test', el);
-			L.DomUtil.create('div', 'test1', el);
-			L.DomUtil.create('div', 'test2', el);
-			L.DomUtil.empty(el);
-			expect(el.childNodes.length).to.be(0);
-		});
-
-		it('does nothing if element doesn\'t have children', () => {
-			expect(el.childNodes.length).to.be(0);
-			L.DomUtil.empty(el);
-			expect(el.childNodes.length).to.be(0);
-		});
-	});
-
 	describe('#toFront', () => {
 		it('moves el to last child position parent element', () => {
 			const elm = L.DomUtil.create('div', 'childContainer', el);
