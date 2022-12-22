@@ -115,17 +115,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#testProp', () => {
-		it('check array of style names return first valid style name for element', () => {
-			const hasProp = L.DomUtil.testProp(['-webkit-transform', '-webkit-transform', '-ms-tranform', '-o-transform']);
-			expect(hasProp).to.match(/(?:-webkit-transform|-webkit-transform|-ms-tranform|-o-transform)/);
-		});
-
-		it('returns false if property doesn\'t exist', () => {
-			expect(L.DomUtil.testProp(['testprop'])).to.be(false);
-		});
-	});
-
 	describe('#setTransform', () => {
 		it('resets the transform style of an el.', () => {
 			expect(L.DomUtil.getStyle(el, 'transform')).to.be.equal('none');
