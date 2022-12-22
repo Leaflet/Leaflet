@@ -45,14 +45,6 @@ export function create(tagName, className, container) {
 	return el;
 }
 
-// @function empty(el: HTMLElement)
-// Removes all of `el`'s children elements from `el`
-export function empty(el) {
-	while (el.firstChild) {
-		el.removeChild(el.firstChild);
-	}
-}
-
 // @function toFront(el: HTMLElement)
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
