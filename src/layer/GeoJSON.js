@@ -287,7 +287,7 @@ export function latLngsToCoords(latlngs, levelsDeep, close, precision) {
 			latLngToCoords(latlngs[i], precision));
 	}
 
-	if (!levelsDeep && close) {
+	if (!levelsDeep && close && coords.length > 0) {
 		coords.push(coords[0].slice());
 	}
 
