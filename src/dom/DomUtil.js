@@ -13,12 +13,6 @@ import Browser from '../core/Browser';
  * in HTML and SVG classes in SVG.
  */
 
-
-// @property TRANSFORM: String
-// Vendor-prefixed transform style name (e.g. `'webkitTransform'` for WebKit).
-export const TRANSFORM = testProp(
-	['transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
-
 // webkitTransition comes first because some browser versions that drop vendor prefix don't do
 // the same for the transitionend event, in particular the Android 4.1 stock browser
 
@@ -122,7 +116,7 @@ export function testProp(props) {
 export function setTransform(el, offset, scale) {
 	const pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
+	el.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
 
 // @function setPosition(el: HTMLElement, position: Point)

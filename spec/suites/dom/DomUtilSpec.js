@@ -175,22 +175,22 @@ describe('DomUtil', () => {
 
 		it('reset the 3d CSS transform when offset and scale aren\'t specified', () => {
 			L.DomUtil.setTransform(el);
-			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(0px, 0px, 0px)');
+			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px)');
 		});
 
 		it('set the 3d CSS transform with just the specified point if scale isn\'t specified', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1));
-			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(1px, 1px, 0px)');
+			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px)');
 		});
 
 		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified', () => {
 			L.DomUtil.setTransform(el, undefined, 5);
-			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(0px, 0px, 0px) scale(5)');
+			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px) scale(5)');
 		});
 
 		it('set the 3d CSS transform with the specified point ant the corresponding scale', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1), 5);
-			expect(el.style[L.DomUtil.TRANSFORM]).to.be('translate3d(1px, 1px, 0px) scale(5)');
+			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px) scale(5)');
 		});
 	});
 
