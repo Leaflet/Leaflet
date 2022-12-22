@@ -501,25 +501,6 @@ describe('Tooltip', () => {
 		expect(tooltip.isOpen()).to.be.ok();
 	});
 
-	it('don\'t opens the tooltip on marker mouseover while dragging map', () => {
-		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
-		// the tooltip opened / closed.
-		const layer = L.marker(center).addTo(map).bindTooltip('Tooltip');
-		const tooltip = layer.getTooltip();
-
-		// simulate map dragging
-		map.dragging.moving = () => true;
-
-		happen.at('mouseover', 210, 195);
-		expect(tooltip.isOpen()).to.be(false);
-
-		// simulate map not dragging anymore
-		map.dragging.moving = () => false;
-
-		happen.at('mouseover', 210, 195);
-		expect(tooltip.isOpen()).to.be.ok();
-	});
-
 	it('opens tooltip with passed latlng position while initializing', () => {
 		const tooltip = new L.Tooltip(center)
 			.addTo(map);
