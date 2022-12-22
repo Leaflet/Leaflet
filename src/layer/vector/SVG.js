@@ -49,7 +49,7 @@ export const SVG = Renderer.extend({
 	},
 
 	_destroyContainer() {
-		DomUtil.remove(this._container);
+		this._container.remove();
 		DomEvent.off(this._container);
 		delete this._container;
 		delete this._rootGroup;
@@ -106,7 +106,7 @@ export const SVG = Renderer.extend({
 	},
 
 	_removePath(layer) {
-		DomUtil.remove(layer._path);
+		layer._path.remove();
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[stamp(layer)];
 	},

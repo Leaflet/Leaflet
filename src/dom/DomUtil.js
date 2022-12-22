@@ -45,15 +45,6 @@ export function create(tagName, className, container) {
 	return el;
 }
 
-// @function remove(el: HTMLElement)
-// Removes `el` from its parent element
-export function remove(el) {
-	const parent = el.parentNode;
-	if (parent) {
-		parent.removeChild(el);
-	}
-}
-
 // @function empty(el: HTMLElement)
 // Removes all of `el`'s children elements from `el`
 export function empty(el) {

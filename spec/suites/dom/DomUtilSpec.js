@@ -63,21 +63,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-
-	describe('#remove', () => {
-		it('removes element', () => {
-			const e = L.DomUtil.create('div', 'test', el);
-			L.DomUtil.remove(e);
-			expect(el.contains(e)).to.be(false);
-		});
-
-		it('does nothing if element hasn\'t a parent', () => {
-			const e = L.DomUtil.create('div', 'test');
-			L.DomUtil.remove(e);
-			expect(document.body.contains(e)).to.be(false);
-		});
-	});
-
 	describe('#empty', () => {
 		it('removes all children of element', () => {
 			L.DomUtil.create('div', 'test', el);

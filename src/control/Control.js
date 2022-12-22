@@ -91,7 +91,7 @@ export const Control = Class.extend({
 			return this;
 		}
 
-		DomUtil.remove(this._container);
+		this._container.remove();
 
 		if (this.onRemove) {
 			this.onRemove(this._map);
@@ -165,9 +165,9 @@ Map.include({
 
 	_clearControlPos() {
 		for (const i in this._controlCorners) {
-			DomUtil.remove(this._controlCorners[i]);
+			this._controlCorners[i].remove();
 		}
-		DomUtil.remove(this._controlContainer);
+		this._controlContainer.remove();
 		delete this._controlCorners;
 		delete this._controlContainer;
 	}

@@ -89,7 +89,7 @@ export const ImageOverlay = Layer.extend({
 	},
 
 	onRemove() {
-		DomUtil.remove(this._image);
+		this._image.remove();
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
 		}

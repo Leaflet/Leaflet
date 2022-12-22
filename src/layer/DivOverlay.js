@@ -127,9 +127,9 @@ export const DivOverlay = Layer.extend({
 	onRemove(map) {
 		if (map._fadeAnimated) {
 			this._container.style.opacity = 0;
-			this._removeTimeout = setTimeout(DomUtil.remove.bind(null, this._container), 200);
+			this._removeTimeout = setTimeout(() => this._container.remove(), 200);
 		} else {
-			DomUtil.remove(this._container);
+			this._container.remove();
 		}
 
 		if (this.options.interactive) {

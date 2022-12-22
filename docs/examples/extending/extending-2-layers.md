@@ -181,7 +181,7 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 		},
 
 		onRemove: function(map) {
-			L.DomUtil.remove(this._container);
+			this._container.remove();
 			map.off('zoomend viewreset', this._update, this);
 		},
 
