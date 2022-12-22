@@ -231,7 +231,7 @@ export const Marker = Layer.extend({
 			}
 		}
 
-		DomUtil.addClass(icon, classToAdd);
+		icon.classList.add(classToAdd);
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
@@ -260,7 +260,7 @@ export const Marker = Layer.extend({
 		}
 
 		if (newShadow) {
-			DomUtil.addClass(newShadow, classToAdd);
+			newShadow.classList.add(classToAdd);
 			newShadow.alt = '';
 		}
 		this._shadow = newShadow;
@@ -336,7 +336,7 @@ export const Marker = Layer.extend({
 
 		if (!this.options.interactive) { return; }
 
-		DomUtil.addClass(this._icon, 'leaflet-interactive');
+		this._icon.classList.add('leaflet-interactive');
 
 		this.addInteractiveTarget(this._icon);
 

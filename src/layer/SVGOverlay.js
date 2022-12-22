@@ -1,5 +1,4 @@
 import {ImageOverlay} from './ImageOverlay';
-import * as DomUtil from '../dom/DomUtil';
 import * as Util from '../core/Util';
 
 /*
@@ -27,9 +26,9 @@ export const SVGOverlay = ImageOverlay.extend({
 	_initImage() {
 		const el = this._image = this._url;
 
-		DomUtil.addClass(el, 'leaflet-image-layer');
-		if (this._zoomAnimated) { DomUtil.addClass(el, 'leaflet-zoom-animated'); }
-		if (this.options.className) { DomUtil.addClass(el, this.options.className); }
+		el.classList.add('leaflet-image-layer');
+		if (this._zoomAnimated) { el.classList.add('leaflet-zoom-animated'); }
+		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
 
 		el.onselectstart = Util.falseFn;
 		el.onmousemove = Util.falseFn;

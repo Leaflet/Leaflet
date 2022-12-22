@@ -73,7 +73,7 @@ export const Drag = Handler.extend({
 				map.whenReady(this._onZoomEnd, this);
 			}
 		}
-		DomUtil.addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
+		this._map._container.classList.add('leaflet-grab', 'leaflet-touch-drag');
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];

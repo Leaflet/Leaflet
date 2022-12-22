@@ -336,7 +336,7 @@ export const Map = Evented.extend({
 
 		// animate pan unless animate: false specified
 		if (options.animate !== false) {
-			DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
+			this._mapPane.classList.add('leaflet-pan-anim');
 
 			const newPos = this._getMapPanePos().subtract(offset).round();
 			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
@@ -1099,11 +1099,14 @@ export const Map = Evented.extend({
 
 		this._fadeAnimated = this.options.fadeAnimation && Browser.any3d;
 
-		DomUtil.addClass(container, `leaflet-container${
-			Browser.touch ? ' leaflet-touch' : ''
-		}${Browser.retina ? ' leaflet-retina' : ''
-		}${Browser.safari ? ' leaflet-safari' : ''
-		}${this._fadeAnimated ? ' leaflet-fade-anim' : ''}`);
+		const classes = ['leaflet-container'];
+
+		if (Browser.touch) { classes.push('leaflet-touch'); }
+		if (Browser.retina) { classes.push('leaflet-retina'); }
+		if (Browser.safari) { classes.push('leaflet-safari'); }
+		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
+
+		container.classList.add(...classes);
 
 		const position = DomUtil.getStyle(container, 'position');
 
@@ -1157,8 +1160,8 @@ export const Map = Evented.extend({
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
-			DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
-			DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
+			panes.markerPane.classList.add('leaflet-zoom-hide');
+			panes.shadowPane.classList.add('leaflet-zoom-hide');
 		}
 	},
 
@@ -1694,7 +1697,7 @@ export const Map = Evented.extend({
 			this._animateToCenter = center;
 			this._animateToZoom = zoom;
 
-			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+			this._mapPane.classList.add('leaflet-zoom-anim');
 		}
 
 		// @section Other Events

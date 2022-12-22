@@ -2,7 +2,7 @@ import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
 import Browser from '../../core/Browser';
-import {stamp} from '../../core/Util';
+import {splitWords, stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 
@@ -88,11 +88,11 @@ export const SVG = Renderer.extend({
 		// @option className: String = null
 		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
-			DomUtil.addClass(path, layer.options.className);
+			path.classList.add(...splitWords(layer.options.className));
 		}
 
 		if (layer.options.interactive) {
-			DomUtil.addClass(path, 'leaflet-interactive');
+			path.classList.add('leaflet-interactive');
 		}
 
 		this._updateStyle(layer);

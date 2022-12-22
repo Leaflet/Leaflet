@@ -1,5 +1,4 @@
 import * as DomEvent from './DomEvent';
-import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 import Browser from '../core/Browser';
 
@@ -99,14 +98,6 @@ export function toBack(el) {
 	if (parent && parent.firstChild !== el) {
 		parent.insertBefore(el, parent.firstChild);
 	}
-}
-
-// @function addClass(el: Element, name: String)
-// Adds `name` to the element's `class` attribute.
-// Multiple values can be added by providing a value for `name` delimited by a space character.
-export function addClass(el, name) {
-	const classes = Util.splitWords(name);
-	el.classList.add(...classes);
 }
 
 // @function removeClass(el: Element, name: String)

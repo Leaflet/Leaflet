@@ -83,7 +83,7 @@ export const BoxZoom = Handler.extend({
 			this._moved = true;
 
 			this._box = DomUtil.create('div', 'leaflet-zoom-box', this._container);
-			DomUtil.addClass(this._container, 'leaflet-crosshair');
+			this._container.classList.add('leaflet-crosshair');
 
 			this._map.fire('boxzoomstart');
 		}
