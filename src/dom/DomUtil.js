@@ -117,10 +117,6 @@ export const removeClass = (el, name) => el.classList.remove(name);
 // Sets the element's `class` attribute to the value of `name`.
 export const setClass = (el, name) => { el.classList.value = name; };
 
-// @function getClass(el: Element): String
-// Returns the value of the element's `class` attribute.
-export const getClass = el => el.classList.value;
-
 // @function setOpacity(el: HTMLElement, opacity: Number)
 // Set the opacity of an element (including old IE support).
 // `opacity` must be a number from `0` to `1`.
