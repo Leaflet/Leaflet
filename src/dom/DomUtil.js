@@ -134,21 +134,14 @@ if ('onselectstart' in document) {
 		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
 	};
 } else {
-	const userSelectProperty = testProp(
-		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
-
 	disableTextSelection = function () {
-		if (userSelectProperty) {
-			const style = document.documentElement.style;
-			_userSelect = style[userSelectProperty];
-			style[userSelectProperty] = 'none';
-		}
+		const style = document.documentElement.style;
+		_userSelect = style.userSelect;
+		style.userSelect = 'none';
 	};
 	enableTextSelection = function () {
-		if (userSelectProperty) {
-			document.documentElement.style[userSelectProperty] = _userSelect;
-			_userSelect = undefined;
-		}
+		document.documentElement.style.userSelect = _userSelect;
+		_userSelect = undefined;
 	};
 }
 
