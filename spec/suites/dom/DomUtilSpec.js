@@ -204,20 +204,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#getClass', () => {
-		it('gets the class of an HTML element', () => {
-			const element = document.createElement('div');
-			element.classList.add('newClass');
-			expect(L.DomUtil.getClass(element)).to.equal('newClass');
-		});
-
-		it('gets the class of an SVG element', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			element.classList.add('newClass');
-			expect(L.DomUtil.getClass(element)).to.equal('newClass');
-		});
-	});
-
 	describe('#setOpacity', () => {
 		it('sets opacity of element', () => {
 			L.DomUtil.setOpacity(el, 1);
@@ -232,16 +218,6 @@ describe('DomUtil', () => {
 			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 			L.DomUtil.setClass(svg, 'testclass');
 			expect(svg.className.baseVal).to.be('testclass');
-		});
-
-		it('gets the class name of SVG element', () => {
-			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-			svg.className.baseVal = 'testclass';
-			expect(L.DomUtil.getClass(svg)).to.be('testclass');
-		});
-
-		it('returns empty string if it has no classes', () => {
-			expect(L.DomUtil.getClass(el)).to.be('');
 		});
 	});
 
