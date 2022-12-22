@@ -2,8 +2,6 @@ import {GridLayer} from './GridLayer';
 import Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
-import * as DomUtil from '../../dom/DomUtil';
-
 
 /*
  * @class TileLayer
@@ -243,7 +241,7 @@ export const TileLayer = GridLayer.extend({
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
 					const coords = this._tiles[i].coords;
-					DomUtil.remove(tile);
+					tile.remove();
 					delete this._tiles[i];
 					// @event tileabort: TileEvent
 					// Fired when a tile was loading but is now not wanted.

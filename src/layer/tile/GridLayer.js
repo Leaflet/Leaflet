@@ -168,7 +168,7 @@ export const GridLayer = Layer.extend({
 
 	onRemove(map) {
 		this._removeAllTiles();
-		DomUtil.remove(this._container);
+		this._container.remove();
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = undefined;
@@ -371,7 +371,7 @@ export const GridLayer = Layer.extend({
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
 				this._onUpdateLevel(z);
 			} else {
-				DomUtil.remove(this._levels[z].el);
+				this._levels[z].el.remove();
 				this._removeTilesAtZoom(z);
 				this._onRemoveLevel(z);
 				delete this._levels[z];
@@ -462,7 +462,7 @@ export const GridLayer = Layer.extend({
 
 	_invalidateAll() {
 		for (const z in this._levels) {
-			DomUtil.remove(this._levels[z].el);
+			this._levels[z].el.remove();
 			this._onRemoveLevel(Number(z));
 			delete this._levels[z];
 		}
@@ -770,7 +770,7 @@ export const GridLayer = Layer.extend({
 		const tile = this._tiles[key];
 		if (!tile) { return; }
 
-		DomUtil.remove(tile.el);
+		tile.el.remove();
 
 		delete this._tiles[key];
 

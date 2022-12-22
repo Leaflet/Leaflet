@@ -41,7 +41,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_destroy() {
-		DomUtil.remove(this._pane);
+		this._pane.remove();
 		delete this._pane;
 	},
 
@@ -101,7 +101,7 @@ export const BoxZoom = Handler.extend({
 
 	_finish() {
 		if (this._moved) {
-			DomUtil.remove(this._box);
+			this._box.remove();
 			this._container.classList.remove('leaflet-crosshair');
 		}
 

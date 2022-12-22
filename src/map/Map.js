@@ -760,7 +760,7 @@ export const Map = Evented.extend({
 
 		this._stop();
 
-		DomUtil.remove(this._mapPane);
+		this._mapPane.remove();
 
 		if (this._clearControlPos) {
 			this._clearControlPos();
@@ -784,7 +784,7 @@ export const Map = Evented.extend({
 			this._layers[i].remove();
 		}
 		for (i in this._panes) {
-			DomUtil.remove(this._panes[i]);
+			this._panes[i].remove();
 		}
 
 		this._layers = [];
@@ -1639,7 +1639,7 @@ export const Map = Evented.extend({
 	},
 
 	_destroyAnimProxy() {
-		DomUtil.remove(this._proxy);
+		this._proxy.remove();
 		this.off('load moveend', this._animMoveEnd, this);
 		delete this._proxy;
 	},

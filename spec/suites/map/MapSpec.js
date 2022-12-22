@@ -1983,7 +1983,7 @@ describe('Map', () => {
 			parent.appendChild(child);
 			container.appendChild(parent);
 			L.DomEvent.on(child, 'click', () => {
-				L.DomUtil.remove(parent);
+				parent.remove();
 			});
 			expect(() => {
 				happen.once(child, {type: 'click'});

@@ -292,7 +292,7 @@ export const Marker = Layer.extend({
 			DomEvent.off(this._icon, 'focus', this._panOnFocus, this);
 		}
 
-		DomUtil.remove(this._icon);
+		this._icon.remove();
 		this.removeInteractiveTarget(this._icon);
 
 		this._icon = null;
@@ -300,7 +300,7 @@ export const Marker = Layer.extend({
 
 	_removeShadow() {
 		if (this._shadow) {
-			DomUtil.remove(this._shadow);
+			this._shadow.remove();
 		}
 		this._shadow = null;
 	},
