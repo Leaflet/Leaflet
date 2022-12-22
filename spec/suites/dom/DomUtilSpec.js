@@ -188,22 +188,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#setClass', () => {
-		it('sets the class on an HTML element', () => {
-			const element = document.createElement('div');
-			element.classList.add('someOtherClass');
-			L.DomUtil.setClass(element, 'newClass');
-			expect(element.classList.value).to.be('newClass');
-		});
-
-		it('sets the class on an SVG element', () => {
-			const element = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			element.classList.add('someOtherClass');
-			L.DomUtil.setClass(element, 'newClass');
-			expect(element.classList.value).to.be('newClass');
-		});
-	});
-
 	describe('#setOpacity', () => {
 		it('sets opacity of element', () => {
 			L.DomUtil.setOpacity(el, 1);
@@ -212,12 +196,6 @@ describe('DomUtil', () => {
 			expect(el.style.opacity).to.equal('0.5');
 			L.DomUtil.setOpacity(el, '0');
 			expect(el.style.opacity).to.equal('0');
-		});
-
-		it('replaces the class of SGV element by the specified argument', () => {
-			const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-			L.DomUtil.setClass(svg, 'testclass');
-			expect(svg.className.baseVal).to.be('testclass');
 		});
 	});
 
