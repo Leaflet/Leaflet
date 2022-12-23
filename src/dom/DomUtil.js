@@ -100,45 +100,45 @@ export function getPosition(el) {
 	return el._leaflet_pos || new Point(0, 0);
 }
 
+const documentStyle = document.documentElement.style;
+// Safari still needs a vendor prefix, we need to detect with property name is supported.
+const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
+let prevUserSelect;
+
 // @function disableTextSelection()
-// Prevents the user from generating `selectstart` DOM events, usually generated
-// when the user drags the mouse through a page with text. Used internally
+// Prevents the user from selecting text in the document. Used internally
 // by Leaflet to override the behaviour of any click-and-drag interaction on
 // the map. Affects drag interactions on the whole document.
+export function disableTextSelection() {
+	const value = documentStyle[userSelectProp];
+
+	if (value === 'none') {
+		return;
+	}
+
+	prevUserSelect = value;
+	documentStyle[userSelectProp] = 'none';
+}
 
 // @function enableTextSelection()
 // Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export let disableTextSelection;
-export let enableTextSelection;
-let _userSelect;
-if ('onselectstart' in document) {
-	disableTextSelection = function () {
-		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
-	};
-	enableTextSelection = function () {
-		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
-	};
-} else {
-	disableTextSelection = function () {
-		const style = document.documentElement.style;
-		_userSelect = style.userSelect;
-		style.userSelect = 'none';
-	};
-	enableTextSelection = function () {
-		document.documentElement.style.userSelect = _userSelect;
-		_userSelect = undefined;
-	};
+export function enableTextSelection() {
+	if (typeof prevUserSelect === 'undefined') {
+		return;
+	}
+
+	documentStyle[userSelectProp] = prevUserSelect;
+	prevUserSelect = undefined;
 }
 
 // @function disableImageDrag()
-// As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
-// for `dragstart` DOM events, usually generated when the user drags an image.
+// Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
 	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 // @function enableImageDrag()
-// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
+// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }

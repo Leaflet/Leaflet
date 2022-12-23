@@ -249,28 +249,33 @@ describe('DomUtil', () => {
 		});
 	});
 
-
 	describe('#disableTextSelection, #enableTextSelection', () => {
-		it('disable / enable the selectstart DOM events for the user ', () => {
-			let selectionPrevented;
-			function checkPrevented(e) {
-				if (e.defaultPrevented) {
-					selectionPrevented = true;
-				} else {
-					selectionPrevented = false;
-				}
-			}
-			const child = document.createElement('div');
-			el.appendChild(child);
+		const documentStyle = document.documentElement.style;
+		// Safari still needs a vendor prefix, we need to detect with property name is supported.
+		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 
+		beforeEach(() => expect(documentStyle[userSelectProp]).to.be(''));
+		afterEach(() => { documentStyle[userSelectProp] = ''; });
+
+		it('disables and enables text selection', () => {
 			L.DomUtil.disableTextSelection();
-			window.addEventListener('selectstart', checkPrevented);
-			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.be.ok();
-
+			expect(documentStyle[userSelectProp]).to.be('none');
 			L.DomUtil.enableTextSelection();
-			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.not.be.ok();
+			expect(documentStyle[userSelectProp]).to.be('');
+		});
+
+		it('restores the text selection previously set', () => {
+			documentStyle[userSelectProp] = 'text';
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.be('text');
+		});
+
+		it('restores the text selection previously set when disabling multiple times', () => {
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.be('');
 		});
 	});
 
