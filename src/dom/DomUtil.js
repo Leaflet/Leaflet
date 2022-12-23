@@ -63,21 +63,6 @@ export function toBack(el) {
 	}
 }
 
-// @function testProp(props: String[]): String|false
-// Goes through the array of style names and returns the first name
-// that is a valid style name for an element. If no such name is found,
-// it returns false. Useful for vendor-prefixed styles like `transform`.
-export function testProp(props) {
-	const style = document.documentElement.style;
-
-	for (let i = 0; i < props.length; i++) {
-		if (props[i] in style) {
-			return props[i];
-		}
-	}
-	return false;
-}
-
 // @function setTransform(el: HTMLElement, offset: Point, scale?: Number)
 // Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 // and optionally scaled by `scale`. Does not have an effect if the
