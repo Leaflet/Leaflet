@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-latest]
+        os: [ubuntu-latest, windows-2019, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -36,7 +36,7 @@ jobs:
           key: ${{ github.ref }}-${{ github.sha }}-setup
 
   build-docs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
 
   lint:
     needs: setup
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Restore setup
         uses: actions/cache@v3.2.0
@@ -72,7 +72,7 @@ jobs:
   bundlemon:
     needs: setup
     if: github.repository_owner == 'Leaflet'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Restore setup
         uses: actions/cache@v3.2.0
@@ -97,7 +97,7 @@ jobs:
 
   test:
     needs: setup
-    runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
@@ -130,7 +130,7 @@ jobs:
   publish-artifacts:
     needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Restore setup
         uses: actions/cache@v3.2.0
@@ -156,7 +156,7 @@ jobs:
   publish-npm:
     needs: setup
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Restore setup
         uses: actions/cache@v3.2.0
