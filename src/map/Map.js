@@ -1108,7 +1108,7 @@ export const Map = Evented.extend({
 
 		container.classList.add(...classes);
 
-		const position = DomUtil.getStyle(container, 'position');
+		const {position} = getComputedStyle(container);
 
 		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
 			container.style.position = 'relative';

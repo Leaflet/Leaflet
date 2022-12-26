@@ -20,19 +20,6 @@ export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
-// @function getStyle(el: HTMLElement, styleAttrib: String): String
-// Returns the value for a certain style attribute on an element,
-// including computed values or values set through CSS.
-export function getStyle(el, style) {
-	let value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
-
-	if ((!value || value === 'auto') && document.defaultView) {
-		const css = document.defaultView.getComputedStyle(el, null);
-		value = css ? css[style] : null;
-	}
-	return value === 'auto' ? null : value;
-}
-
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
 export function create(tagName, className, container) {
