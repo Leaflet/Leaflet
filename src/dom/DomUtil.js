@@ -1,6 +1,5 @@
 import * as DomEvent from './DomEvent';
 import {Point} from '../geometry/Point';
-import Browser from '../core/Browser';
 
 /*
  * @namespace DomUtil
@@ -70,12 +69,7 @@ export function setPosition(el, point) {
 	el._leaflet_pos = point;
 	/* eslint-enable */
 
-	if (Browser.any3d) {
-		setTransform(el, point);
-	} else {
-		el.style.left = `${point.x}px`;
-		el.style.top = `${point.y}px`;
-	}
+	setTransform(el, point);
 }
 
 // @function getPosition(el: HTMLElement): Point

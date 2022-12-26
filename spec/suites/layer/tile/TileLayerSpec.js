@@ -246,9 +246,7 @@ describe('TileLayer', () => {
 			clock.tick(250);
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		it.skipIfNo3d('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', function (done) {
+		it('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];

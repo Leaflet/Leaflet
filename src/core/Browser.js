@@ -40,10 +40,6 @@ const webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSS
 // @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
 const gecko3d = 'MozPerspective' in style;
 
-// @property any3d: Boolean
-// `true` for all browsers supporting CSS transforms.
-const any3d = !window.L_DISABLE_3D && (webkit3d || gecko3d);
-
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
 
@@ -131,7 +127,6 @@ export default {
 	win,
 	webkit3d,
 	gecko3d,
-	any3d,
 	mobile,
 	mobileWebkit,
 	mobileWebkit3d,

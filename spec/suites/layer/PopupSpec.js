@@ -236,74 +236,40 @@ describe('Popup', () => {
 		expect(spy.callCount).to.be(2);
 	});
 
-	describe('should take into account icon popupAnchor option on', () => {
+	it('should take into account icon popupAnchor option', () => {
 		const latlng = center;
 		const offset = L.point(20, 30);
-		let autoPanBefore;
-		let popupAnchorBefore;
-		let icon;
-		let marker1;
-		let marker2;
 
-		before(() => {
-			autoPanBefore = L.Popup.prototype.options.autoPan;
-			L.Popup.prototype.options.autoPan = false;
-			popupAnchorBefore = L.Icon.Default.prototype.options.popupAnchor;
-			L.Icon.Default.prototype.options.popupAnchor = [0, 0];
-		});
+		const autoPanBefore = L.Popup.prototype.options.autoPan;
+		L.Popup.prototype.options.autoPan = false;
+		const popupAnchorBefore = L.Icon.Default.prototype.options.popupAnchor;
+		L.Icon.Default.prototype.options.popupAnchor = [0, 0];
 
-		beforeEach(() => {
-			icon = L.divIcon({popupAnchor: offset});
-			marker1 = L.marker(latlng);
-			marker2 = L.marker(latlng, {icon});
-		});
+		const icon = L.divIcon({popupAnchor: offset});
+		const marker1 = L.marker(latlng);
+		const marker2 = L.marker(latlng, {icon});
 
-		after(() => {
-			L.Popup.prototype.options.autoPan = autoPanBefore;
-			L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
-		});
+		marker1.bindPopup('Popup').addTo(map);
+		marker1.openPopup();
+		const defaultLeft = marker1._popup._container._leaflet_pos.x;
+		const defaultTop = marker1._popup._container._leaflet_pos.y;
+		marker2.bindPopup('Popup').addTo(map);
+		marker2.openPopup();
+		let offsetLeft = marker2._popup._container._leaflet_pos.x;
+		let offsetTop = marker2._popup._container._leaflet_pos.y;
+		expect(offsetLeft - offset.x).to.eql(defaultLeft);
+		expect(offsetTop - offset.y).to.eql(defaultTop);
 
-		it.skipIf3d('non-any3d browsers', () => {
-			marker1.bindPopup('Popup').addTo(map);
-			marker1.openPopup();
-			const defaultLeft = parseInt(marker1._popup._container.style.left, 10);
-			const defaultBottom = parseInt(marker1._popup._container.style.bottom, 10);
-			marker2.bindPopup('Popup').addTo(map);
-			marker2.openPopup();
-			let offsetLeft = parseInt(marker2._popup._container.style.left, 10);
-			let offsetBottom = parseInt(marker2._popup._container.style.bottom, 10);
-			expect(offsetLeft - offset.x).to.eql(defaultLeft);
-			expect(offsetBottom + offset.y).to.eql(defaultBottom);
+		// Now retry passing a popup instance to bindPopup
+		marker2.bindPopup(L.popup());
+		marker2.openPopup();
+		offsetLeft = marker2._popup._container._leaflet_pos.x;
+		offsetTop = marker2._popup._container._leaflet_pos.y;
+		expect(offsetLeft - offset.x).to.eql(defaultLeft);
+		expect(offsetTop - offset.y).to.eql(defaultTop);
 
-			// Now retry passing a popup instance to bindPopup
-			marker2.bindPopup(L.popup());
-			marker2.openPopup();
-			offsetLeft = parseInt(marker2._popup._container.style.left, 10);
-			offsetBottom = parseInt(marker2._popup._container.style.bottom, 10);
-			expect(offsetLeft - offset.x).to.eql(defaultLeft);
-			expect(offsetBottom + offset.y).to.eql(defaultBottom);
-		});
-
-		it.skipIfNo3d('any3d browsers', () => {
-			marker1.bindPopup('Popup').addTo(map);
-			marker1.openPopup();
-			const defaultLeft = marker1._popup._container._leaflet_pos.x;
-			const defaultTop = marker1._popup._container._leaflet_pos.y;
-			marker2.bindPopup('Popup').addTo(map);
-			marker2.openPopup();
-			let offsetLeft = marker2._popup._container._leaflet_pos.x;
-			let offsetTop = marker2._popup._container._leaflet_pos.y;
-			expect(offsetLeft - offset.x).to.eql(defaultLeft);
-			expect(offsetTop - offset.y).to.eql(defaultTop);
-
-			// Now retry passing a popup instance to bindPopup
-			marker2.bindPopup(L.popup());
-			marker2.openPopup();
-			offsetLeft = marker2._popup._container._leaflet_pos.x;
-			offsetTop = marker2._popup._container._leaflet_pos.y;
-			expect(offsetLeft - offset.x).to.eql(defaultLeft);
-			expect(offsetTop - offset.y).to.eql(defaultTop);
-		});
+		L.Popup.prototype.options.autoPan = autoPanBefore;
+		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {

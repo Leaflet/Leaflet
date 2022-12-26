@@ -380,7 +380,7 @@ describe('Map', () => {
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19);
 		});
 
-		it.skipIfNo3d('returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers', () => {
+		it('returns multiples of zoomSnap when zoomSnap > 0', () => {
 			container.style.height = height;
 			map.options.zoomSnap = 0.5;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
@@ -1442,18 +1442,7 @@ describe('Map', () => {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it.skipIf3d('zoomIn ignores the zoomDelta option on non-any3d browsers', (done) => {
-			map.options.zoomSnap = 0.25;
-			map.options.zoomDelta = 0.25;
-			map.once('zoomend', () => {
-				expect(map.getZoom()).to.eql(11);
-				expect(map.getCenter()).to.eql(center);
-				done();
-			});
-			map.zoomIn(null, {animate: false});
-		});
-
-		it.skipIfNo3d('zoomIn respects the zoomDelta option on any3d browsers', (done) => {
+		it('zoomIn respects the zoomDelta option', (done) => {
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -1465,7 +1454,7 @@ describe('Map', () => {
 			map.zoomIn(null, {animate: false});
 		});
 
-		it.skipIfNo3d('zoomOut respects the zoomDelta option on any3d browsers', (done) => {
+		it('zoomOut respects the zoomDelta option', (done) => {
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -1477,7 +1466,7 @@ describe('Map', () => {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it.skipIfNo3d('zoomIn snaps to zoomSnap on any3d browsers', (done) => {
+		it('zoomIn snaps to zoomSnap', (done) => {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', () => {
@@ -1488,7 +1477,7 @@ describe('Map', () => {
 			map.zoomIn(0.22, {animate: false});
 		});
 
-		it.skipIfNo3d('zoomOut snaps to zoomSnap on any3d browsers', (done) => {
+		it('zoomOut snaps to zoomSnap', (done) => {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', () => {
@@ -1531,20 +1520,10 @@ describe('Map', () => {
 			map.fitBounds(bounds, {animate: false});
 		});
 
-		it.skipIfNo3d('Snaps zoom to zoomSnap on any3d browsers', (done) => {
+		it('Snaps zoom to zoomSnap', (done) => {
 			map.options.zoomSnap = 0.25;
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(2.75);
-				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
-				done();
-			});
-			map.fitBounds(bounds, {animate: false});
-		});
-
-		it.skipIf3d('Ignores zoomSnap on non-any3d browsers', (done) => {
-			map.options.zoomSnap = 0.25;
-			map.once('zoomend', () => {
-				expect(map.getZoom()).to.eql(2);
 				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
 				done();
 			});
@@ -1621,7 +1600,6 @@ describe('Map', () => {
 		});
 
 		it('Snaps to a number after adding tile layer', () => {
-			// expect(L.Browser.any3d).to.be.ok(); // precondition
 			map.addLayer(L.tileLayer(''));
 			expect(map.getZoom()).to.be(undefined);
 			map.fitBounds(bounds);
@@ -1629,7 +1607,6 @@ describe('Map', () => {
 		});
 
 		it('Snaps to a number after adding marker', () => {
-			// expect(L.Browser.any3d).to.be.ok(); // precondition
 			map.addLayer(L.marker(center));
 			expect(map.getZoom()).to.be(undefined);
 			map.fitBounds(bounds);
