@@ -92,12 +92,6 @@ const passiveEvents = (function () {
 	return supportsPassiveOption;
 }());
 
-// @property canvas: Boolean
-// `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
-const canvas = (function () {
-	return !!document.createElement('canvas').getContext;
-}());
-
 // @property svg: Boolean
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 const svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
@@ -136,7 +130,6 @@ export default {
 	mobileGecko,
 	retina,
 	passiveEvents,
-	canvas,
 	svg,
 	inlineSvg,
 	mac,

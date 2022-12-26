@@ -1873,9 +1873,7 @@ describe('Map', () => {
 			expect(called).to.eql(4);
 		});
 
-		it('prevents default action of contextmenu if there is any listener', function () {
-			if (!L.Browser.canvas) { this.skip(); }
-
+		it('prevents default action of contextmenu if there is any listener', () => {
 			removeMapContainer(map, container);
 			container = createContainer();
 			map = L.map(container, {
