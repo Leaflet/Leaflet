@@ -20,26 +20,6 @@ before including Leaflet on the page, like this:
 | `L_DISABLE_3D` | Forces Leaflet to not use hardware-accelerated CSS 3D transforms for positioning (which may cause glitches in some rare environments) even if they're supported. |
 
 
-@namespace noConflict
-
-This method restores the `L` global variable to the original value
-it had before Leaflet inclusion, and returns the real Leaflet
-namespace so you can put it elsewhere, like this:
-
-```html
-<script src='libs/l.js'>
-<!-- L points to some other library -->
-
-<script src='leaflet.js'>
-<!-- you include Leaflet, it replaces the L variable to Leaflet namespace -->
-
-<script>
-var Leaflet = L.noConflict();
-// now L points to that other library again, and you can use Leaflet.Map etc.
-</script>
-```
-
-
 @namespace version
 
 A constant that represents the Leaflet version in use.
