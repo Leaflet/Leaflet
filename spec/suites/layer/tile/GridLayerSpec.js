@@ -579,9 +579,7 @@ describe('GridLayer', () => {
 			}
 		}
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		it.skipIfNo3d('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
+		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -689,9 +687,7 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		it.skipIfNo3d('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
+		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
@@ -791,9 +787,7 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
-		it.skipIfNo3d('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', function (done) {
+		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
@@ -903,9 +897,6 @@ describe('GridLayer', () => {
 
 						// Wait for a frame to let _updateOpacity starting
 						// It will prune the 12 tiles outside the new bounds.
-						// PhantomJS has Browser.any3d === false, so it actually
-						// does not perform the fade animation and does not need
-						// this rAF, but it does not harm either.
 						L.Util.requestAnimFrame(() => {
 							expect(counts.tileunload).to.be(12);
 							done();
@@ -947,9 +938,6 @@ describe('GridLayer', () => {
 
 					// Wait for a frame to let _updateOpacity starting
 					// It will prune the 12 tiles outside the new bounds.
-					// PhantomJS has Browser.any3d === false, so it actually
-					// does not perform the fade animation and does not need
-					// this rAF, but it does not harm either.
 					L.Util.requestAnimFrame(() => {
 						expect(counts.tileunload).to.be(12);
 

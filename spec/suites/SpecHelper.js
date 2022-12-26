@@ -42,12 +42,6 @@ happen.makeEvent = (function (makeEvent) {
 	};
 })(happen.makeEvent);
 
-// We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
-it.skipIfNo3d = L.Browser.any3d ? it : it.skip;
-
-// Viceversa: some tests we want only to run in browsers without CSS animations.
-it.skipIf3d = L.Browser.any3d ? it.skip : it;
-
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
 
