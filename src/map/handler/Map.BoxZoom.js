@@ -29,11 +29,11 @@ export const BoxZoom = Handler.extend({
 	},
 
 	addHooks() {
-		DomEvent.on(this._container, 'mousedown', this._onMouseDown, this);
+		DomEvent.on(this._container, 'pointerdown', this._onPointerDown, this);
 	},
 
 	removeHooks() {
-		DomEvent.off(this._container, 'mousedown', this._onMouseDown, this);
+		DomEvent.off(this._container, 'pointerdown', this._onPointerDown, this);
 	},
 
 	moved() {
@@ -57,7 +57,7 @@ export const BoxZoom = Handler.extend({
 		}
 	},
 
-	_onMouseDown(e) {
+	_onPointerDown(e) {
 		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
