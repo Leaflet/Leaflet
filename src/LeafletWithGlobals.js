@@ -1,18 +1,9 @@
 import * as L from './Leaflet';
 export * from './Leaflet';
 
-const globalL = L.extend(L, {noConflict});
-export default globalL;
+export default L;
 
-const globalObject = getGlobalObject();
-const oldL = globalObject.L;
-
-globalObject.L = globalL;
-
-export function noConflict() {
-	globalObject.L = oldL;
-	return globalL;
-}
+getGlobalObject().L = L;
 
 function getGlobalObject() {
 	if (typeof globalThis !== 'undefined') { return globalThis; }

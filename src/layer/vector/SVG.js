@@ -1,7 +1,6 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
-import Browser from '../../core/Browser';
 import {splitWords, stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
@@ -190,5 +189,5 @@ export const SVG = Renderer.extend({
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
 export function svg(options) {
-	return Browser.svg ? new SVG(options) : null;
+	return new SVG(options);
 }

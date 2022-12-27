@@ -59,16 +59,14 @@ export function setTransform(el, offset, scale) {
 	el.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
 
+const positions = new WeakMap();
+
 // @function setPosition(el: HTMLElement, position: Point)
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
 export function setPosition(el, point) {
-
-	/*eslint-disable */
-	el._leaflet_pos = point;
-	/* eslint-enable */
-
+	positions.set(el, point);
 	setTransform(el, point);
 }
 
@@ -77,8 +75,7 @@ export function setPosition(el, point) {
 export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
-
-	return el._leaflet_pos || new Point(0, 0);
+	return positions.get(el) ?? new Point(0, 0);
 }
 
 const documentStyle = document.documentElement.style;
