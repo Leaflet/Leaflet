@@ -1,5 +1,4 @@
 import * as Util from './Util';
-import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
  * @namespace Browser
@@ -15,8 +14,6 @@ import {svgCreate} from '../layer/vector/SVG.Util';
  * }
  * ```
  */
-
-const style = document.documentElement.style;
 
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
@@ -34,21 +31,11 @@ const safari = !chrome && userAgentContains('safari');
 // @property win: Boolean; `true` when the browser is running in a Windows platform
 const win = navigator.platform.startsWith('Win');
 
-// @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
-const webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix());
-
-// @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
-const gecko3d = 'MozPerspective' in style;
-
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
 
 // @property mobileWebkit: Boolean; `true` for all webkit-based browsers in a mobile device.
 const mobileWebkit = mobile && webkit;
-
-// @property mobileWebkit3d: Boolean
-// `true` for all webkit-based browsers in a mobile device supporting CSS transforms.
-const mobileWebkit3d = mobile && webkit3d;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
@@ -64,7 +51,7 @@ const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
 // @property touch: Boolean
 // `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
 // Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
-const touch = !window.L_NO_TOUCH && (touchNative || pointer);
+const touch = touchNative || pointer;
 
 // @property mobileGecko: Boolean
 // `true` for gecko-based browsers running in a mobile device.
@@ -92,16 +79,6 @@ const passiveEvents = (function () {
 	return supportsPassiveOption;
 }());
 
-// @property svg: Boolean
-// `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
-const svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
-
-const inlineSvg = !!svg && (function () {
-	const div = document.createElement('div');
-	div.innerHTML = '<svg/>';
-	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';
-})();
-
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = navigator.platform.startsWith('Mac');
 
@@ -119,19 +96,14 @@ export default {
 	gecko,
 	safari,
 	win,
-	webkit3d,
-	gecko3d,
 	mobile,
 	mobileWebkit,
-	mobileWebkit3d,
 	pointer,
 	touch,
 	touchNative,
 	mobileGecko,
 	retina,
 	passiveEvents,
-	svg,
-	inlineSvg,
 	mac,
 	linux
 };

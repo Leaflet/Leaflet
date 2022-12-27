@@ -251,20 +251,20 @@ describe('Popup', () => {
 
 		marker1.bindPopup('Popup').addTo(map);
 		marker1.openPopup();
-		const defaultLeft = marker1._popup._container._leaflet_pos.x;
-		const defaultTop = marker1._popup._container._leaflet_pos.y;
+		const defaultLeft = L.DomUtil.getPosition(marker1._popup._container).x;
+		const defaultTop = L.DomUtil.getPosition(marker1._popup._container).y;
 		marker2.bindPopup('Popup').addTo(map);
 		marker2.openPopup();
-		let offsetLeft = marker2._popup._container._leaflet_pos.x;
-		let offsetTop = marker2._popup._container._leaflet_pos.y;
+		let offsetLeft = L.DomUtil.getPosition(marker2._popup._container).x;
+		let offsetTop = L.DomUtil.getPosition(marker2._popup._container).y;
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
 		// Now retry passing a popup instance to bindPopup
 		marker2.bindPopup(L.popup());
 		marker2.openPopup();
-		offsetLeft = marker2._popup._container._leaflet_pos.x;
-		offsetTop = marker2._popup._container._leaflet_pos.y;
+		offsetLeft = L.DomUtil.getPosition(marker2._popup._container).x;
+		offsetTop = L.DomUtil.getPosition(marker2._popup._container).y;
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
