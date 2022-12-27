@@ -51,7 +51,7 @@ const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
 // @property touch: Boolean
 // `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
 // Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
-const touch = !window.L_NO_TOUCH && (touchNative || pointer);
+const touch = touchNative || pointer;
 
 // @property mobileGecko: Boolean
 // `true` for gecko-based browsers running in a mobile device.
