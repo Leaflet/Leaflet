@@ -1,5 +1,4 @@
 import * as Util from './Util';
-import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
  * @namespace Browser
@@ -98,16 +97,6 @@ const canvas = (function () {
 	return !!document.createElement('canvas').getContext;
 }());
 
-// @property svg: Boolean
-// `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
-const svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
-
-const inlineSvg = !!svg && (function () {
-	const div = document.createElement('div');
-	div.innerHTML = '<svg/>';
-	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';
-})();
-
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = navigator.platform.startsWith('Mac');
 
@@ -137,8 +126,6 @@ export default {
 	retina,
 	passiveEvents,
 	canvas,
-	svg,
-	inlineSvg,
 	mac,
 	linux
 };
