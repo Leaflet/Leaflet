@@ -79,12 +79,6 @@ const passiveEvents = (function () {
 	return supportsPassiveOption;
 }());
 
-// @property canvas: Boolean
-// `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
-const canvas = (function () {
-	return !!document.createElement('canvas').getContext;
-}());
-
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = navigator.platform.startsWith('Mac');
 
@@ -110,7 +104,6 @@ export default {
 	mobileGecko,
 	retina,
 	passiveEvents,
-	canvas,
 	mac,
 	linux
 };
