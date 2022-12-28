@@ -165,7 +165,10 @@ export const Layers = Control.extend({
 
 	// @method collapse(): this
 	// Collapse the control container if expanded.
-	collapse() {
+	collapse(e) {
+		if (e.type === 'pointerleave' && e.pointerType !== 'mouse') {
+			return;
+		}
 		this._container.classList.remove('leaflet-control-layers-expanded');
 		return this;
 	},
@@ -187,8 +190,8 @@ export const Layers = Control.extend({
 			this._map.on('click', this.collapse, this);
 
 			DomEvent.on(container, {
-				mouseenter: this._expandSafely,
-				mouseleave: this.collapse
+				pointerenter: this._expandSafely,
+				pointerleave: this.collapse
 			}, this);
 		}
 
