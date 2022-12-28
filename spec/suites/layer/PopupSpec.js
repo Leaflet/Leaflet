@@ -297,7 +297,7 @@ describe('Popup', () => {
 		layer.bindPopup('layer popup');
 
 		happen.keypress(layer._icon, {
-			keyCode: 13
+			code: 'Enter'
 		});
 
 		expect(map.hasLayer(layer._popup)).to.be(true);

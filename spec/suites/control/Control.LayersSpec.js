@@ -191,7 +191,7 @@ describe('Control.Layers', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
-			happen.once(toggle, {type:'keydown', keyCode:13});
+			happen.once(toggle, {type:'keydown', code:'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
@@ -204,7 +204,7 @@ describe('Control.Layers', () => {
 
 		it('does not expand on "Enter" keydown when toggle is not focused', () => {
 			L.control.layers(null, null, {collapsed: true}).addTo(map);
-			happen.once(document, {type:'keydown', keyCode:13});
+			happen.once(document, {type:'keydown', code:'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
