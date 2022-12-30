@@ -50,7 +50,7 @@ describe('Path', () => {
 			const spy = sinon.spy();
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('click', spy);
-			happen.click(layer._path);
+			UIEventSimulator.fire('click', layer._path);
 			expect(spy.called).to.be.ok();
 		});
 
@@ -62,7 +62,7 @@ describe('Path', () => {
 			layer.on('click', spy);
 			layer.on('click', spy2);
 			map.on('click', mapSpy);
-			happen.click(layer._path);
+			UIEventSimulator.fire('click', layer._path);
 			expect(spy.called).to.be.ok();
 			expect(spy2.called).to.be.ok();
 			expect(mapSpy.called).to.be.ok();

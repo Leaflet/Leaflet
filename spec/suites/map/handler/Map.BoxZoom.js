@@ -21,15 +21,14 @@ describe('Map.BoxZoom', () => {
 		});
 
 		// check if click event on the map is fired
-		happen.click(map._container);
+		UIEventSimulator.fire('click', map._container);
 		expect(mapClick).to.be(true);
 
 		let clientX = 100;
 		let clientY = 100;
 
 		// fire mousedown event with shiftKey = true, to start drawing the boxZoom
-		happen.once(map._container, {
-			type: 'mousedown',
+		UIEventSimulator.fire('mousedown', map._container, {
 			shiftKey: true,
 			clientX,
 			clientY,
@@ -39,22 +38,20 @@ describe('Map.BoxZoom', () => {
 		clientY += 100;
 
 		// fire mousemove event with shiftKey = true, to draw the boxZoom
-		happen.once(map._container, {
-			type: 'mousemove',
+		UIEventSimulator.fire('mousemove', map._container, {
 			shiftKey: true,
 			clientX,
 			clientY,
 		});
 
 		// fire keydown event ESC to cancel boxZoom
-		happen.once(document, {
-			type: 'keydown',
+		UIEventSimulator.fire('keydown', document, {
 			code: 'Escape'
 		});
 
 		// check if click event on the map is fired
 		mapClick = false;
-		happen.click(map._container);
+		UIEventSimulator.fire('click', map._container);
 		expect(mapClick).to.be(true);
 	});
 
