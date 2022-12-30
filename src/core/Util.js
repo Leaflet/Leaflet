@@ -191,3 +191,32 @@ export function cancelAnimFrame(id) {
 		cancelFn.call(window, id);
 	}
 }
+
+// @function polarPoint(x: number, y: number, rad: number, radius: number): Point
+// Calculate a point position by polar relative parameters.
+export function polarPoint(x, y, rad, radius) {
+	return {x: x + Math.cos(rad) * radius, y: y + Math.sin(rad) * radius};
+}
+
+// @function createStar(n: Number, x: Number, y: Number, radius: Number, radOffset: Number = 0): Point[]
+// Calculate all vertice points of a N-Corner-Star, n > 2.
+export function createStar(n, x, y, radius, radOffset = 0) {
+	const verts = [];
+	if (n > 2) {
+		if (n < 5) {
+			for (let k = 0; k < n; k++) {
+				verts.push(polarPoint(x, y, 2 * k * Math.PI / n + radOffset, radius));
+			}
+		} else {
+			const cornerGap = Math.round(0.375 * n); // connect corners gap N: Math.round((3 / 8) * n)
+			const rad1 = Math.PI / 2 - cornerGap * Math.PI / n; // intersect between connect-line & radius-line: (Math.PI - (lineN / n) * (2 * Math.PI)) / 2
+			const rad2 = Math.PI / n; // intersect two corners: 2 * Math.PI / (2 * n)
+			const rad3 = Math.PI - rad1 - rad2;
+			const r1 = Math.sin(rad1) * radius / Math.sin(rad3); // The Law of Sines: (Math.sin(rad1) * radius) / Math.sin(rad3)
+			for (let j = 0; j < 2 * n; j++) {
+				verts.push(polarPoint(x, y, j * Math.PI / n + radOffset, j % 2 === 0 ? radius : r1));
+			}
+		}
+	}
+	return verts;
+}

@@ -38,6 +38,7 @@ export const Circle = CircleMarker.extend({
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
+		this._star = this.options.star;
 	},
 
 	// @method setRadius(radius: Number): this

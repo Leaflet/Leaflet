@@ -1,7 +1,7 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
-import {splitWords, stamp} from '../../core/Util';
+import {createStar, splitWords, stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 
@@ -158,17 +158,21 @@ export const SVG = Renderer.extend({
 
 	_updateCircle(layer) {
 		const p = layer._point,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
-		    arc = `a${r},${r2} 0 1,0 `;
+		r = Math.max(Math.round(layer._radius), 1);
+		if (layer._star > 2) {
+			this._setPath(layer, pointsToPath([createStar(layer._star, p.x, p.y, r)], closed));
+		} else {
+		  const r2 = Math.max(Math.round(layer._radiusY), 1) || r,
+			arc = `a${r},${r2} 0 1,0 `;
 
-		// drawing a circle with two half-arcs
-		const d = layer._empty() ? 'M0 0' :
-			`M${p.x - r},${p.y
-			}${arc}${r * 2},0 ${
-				arc}${-r * 2},0 `;
+			// drawing a circle with two half-arcs
+			const d = layer._empty() ? 'M0 0' :
+				`M${p.x - r},${p.y
+				}${arc}${r * 2},0 ${
+					arc}${-r * 2},0 `;
 
-		this._setPath(layer, d);
+			this._setPath(layer, d);
+		}
 	},
 
 	_setPath(layer, path) {

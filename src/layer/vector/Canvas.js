@@ -310,20 +310,31 @@ export const Canvas = Renderer.extend({
 		if (!this._drawing || layer._empty()) { return; }
 
 		const p = layer._point,
-		    ctx = this._ctx,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
-
-		if (s !== 1) {
-			ctx.save();
-			ctx.scale(1, s);
-		}
-
+		r = Math.max(Math.round(layer._radius), 1),
+		ctx = this._ctx;
 		ctx.beginPath();
-		ctx.arc(p.x, p.y / s, r, 0, Math.PI * 2, false);
 
-		if (s !== 1) {
-			ctx.restore();
+		if (layer._star > 2) {
+			const verts = Util.createStar(layer._star, p.x, p.y, r);
+			for (let i = 0; i < verts.length; i++) {
+				const p2 = verts[i];
+				ctx[i ? 'lineTo' : 'moveTo'](p2.x, p2.y);
+			}
+			ctx.closePath();
+		} else {
+			const s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
+
+			if (s !== 1) {
+				ctx.save();
+				ctx.scale(1, s);
+			}
+
+			ctx.beginPath();
+			ctx.arc(p.x, p.y / s, r, 0, Math.PI * 2, false);
+
+			if (s !== 1) {
+				ctx.restore();
+			}
 		}
 
 		this._fillStroke(ctx, layer);
