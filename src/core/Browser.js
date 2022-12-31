@@ -28,9 +28,6 @@ const gecko = userAgentContains('gecko') && !webkit;
 // @property safari: Boolean; `true` for the Safari browser.
 const safari = !chrome && userAgentContains('safari');
 
-// @property win: Boolean; `true` when the browser is running in a Windows platform
-const win = navigator.platform.startsWith('Win');
-
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
 
@@ -95,7 +92,6 @@ export default {
 	chrome,
 	gecko,
 	safari,
-	win,
 	mobile,
 	mobileWebkit,
 	pointer,
