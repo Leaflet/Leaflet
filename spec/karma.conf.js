@@ -14,7 +14,7 @@ module.exports = function (config) {
 		'spec/suites/SpecHelper.js',
 		'spec/suites/**/*.js',
 		'dist/*.css',
-		{pattern: 'dist/images/*.png', included: false, serve: true}
+		{pattern: 'dist/images/*', included: false, serve: true},
 	];
 
 	const preprocessors = {};

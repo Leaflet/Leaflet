@@ -311,13 +311,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-radius: 5px;
 	}
 .leaflet-control-layers-toggle {
-	background-image: url(images/layers.png);
+	background-image: url(images/layers.svg);
 	width: 36px;
 	height: 36px;
-	}
-.leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(images/layers-2x.png);
-	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-layers-toggle {
 	width: 44px;
@@ -364,7 +360,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* Default icon URLs */
 .leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(images/marker-icon.png);
+	background-image: url(images/marker.svg);
 	}
 
 
