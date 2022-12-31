@@ -20,9 +20,9 @@ export class IconDefault extends Icon {
 
 	static {
 		this.setDefaultOptions({
-			iconUrl:       'marker-icon.png',
-			iconRetinaUrl: 'marker-icon-2x.png',
-			shadowUrl:     'marker-shadow.png',
+			iconUrl:       'marker.svg',
+			iconRetinaUrl: 'marker.svg',
+			shadowUrl:     'marker-shadow.svg',
 			iconSize:    [25, 41],
 			iconAnchor:  [12, 41],
 			popupAnchor: [1, -34],
@@ -55,7 +55,7 @@ export class IconDefault extends Icon {
 			return match && match[idx];
 		};
 		path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
-		return path && strip(path, /^(.*)marker-icon\.png$/, 1);
+		return path && strip(path, /^(.*)marker-icon\.svg$/, 1);
 	}
 
 	_detectIconPath() {
