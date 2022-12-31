@@ -152,9 +152,9 @@ describe('Marker', () => {
 			expect(oldIcon.parentNode).to.be(null);
 
 			if (L.Browser.retina) {
-				expect(marker._icon.src).to.contain('marker-icon-2x.png');
+				expect(marker._icon.src).to.contain('marker.svg');
 			} else {
-				expect(marker._icon.src).to.contain('marker-icon.png');
+				expect(marker._icon.src).to.contain('marker.svg');
 			}
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
