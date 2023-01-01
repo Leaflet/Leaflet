@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 viewBox="0 0 817.2 820" style="enable-background:new 0 0 817.2 820;" xml:space="preserve">
+	<style type="text/css">
+		.shadow{fill-rule:evenodd;clip-rule:evenodd;fill:url(#gradient); fill-opacity:0.7; filter: blur(15px);}
+	</style>
+	<radialGradient id="gradient" cx="526.5995" cy="486.8359" r="478.1535" fx="275.8764" fy="893.9829" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:#5C5C5C;stop-opacity:0.9477"/>
+		<stop  offset="0.1123" style="stop-color:#474747;stop-opacity:0.7805"/>
+		<stop  offset="0.3403" style="stop-color:#202020;stop-opacity:0.4413"/>
+		<stop  offset="0.5232" style="stop-color:#090909;stop-opacity:0.1692"/>
+		<stop  offset="0.6369" style="stop-color:#000000;stop-opacity:0"/>
+	</radialGradient>
+	<path class="shadow" d="M778.8,483.2c-34.3,52.8-101.9,94.1-150.3,124.6L255.7,820L169,522l170.8-299.6l0-0.1l9.8-17.3
+		C421.3,94.6,585,56.3,702.5,132.5S850.3,372.8,778.8,483.2z"/>
+</svg>
