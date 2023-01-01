@@ -1103,7 +1103,6 @@ export const Map = Evented.extend({
 
 		if (Browser.touch) { classes.push('leaflet-touch'); }
 		if (Browser.retina) { classes.push('leaflet-retina'); }
-		if (Browser.safari) { classes.push('leaflet-safari'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
 
 		container.classList.add(...classes);
