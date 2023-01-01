@@ -421,7 +421,7 @@ describe('Map', () => {
 
 		it('respects the \'inside\' parameter', () => {
 			container.style.height = height;
-			container.style.width = '1024px'; // Make sure the width is defined for browsers other than PhantomJS (in particular Firefox).
+			container.style.width = '1024px'; // Make sure the width is defined
 			expect(map.getBoundsZoom(wideBounds, false, padding)).to.be.equal(17);
 			expect(map.getBoundsZoom(wideBounds, true, padding)).to.be.equal(20);
 		});
