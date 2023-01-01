@@ -22,9 +22,6 @@ const webkit = userAgentContains('webkit');
 // @property chrome: Boolean; `true` for the Chrome browser.
 const chrome = userAgentContains('chrome');
 
-// @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
-const gecko = userAgentContains('gecko') && !webkit;
-
 // @property safari: Boolean; `true` for the Safari browser.
 const safari = !chrome && userAgentContains('safari');
 
@@ -49,10 +46,6 @@ const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
 // `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
 // Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
 const touch = touchNative || pointer;
-
-// @property mobileGecko: Boolean
-// `true` for gecko-based browsers running in a mobile device.
-const mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
@@ -90,14 +83,12 @@ function userAgentContains(str) {
 export default {
 	webkit,
 	chrome,
-	gecko,
 	safari,
 	mobile,
 	mobileWebkit,
 	pointer,
 	touch,
 	touchNative,
-	mobileGecko,
 	retina,
 	passiveEvents,
 	mac,
