@@ -1,5 +1,3 @@
-import * as Util from './Util';
-
 /*
  * @namespace Browser
  * @aka L.Browser
@@ -51,24 +49,6 @@ const touch = touchNative || pointer;
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
 const retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
-// @property passiveEvents: Boolean
-// `true` for browsers that support passive events.
-const passiveEvents = (function () {
-	let supportsPassiveOption = false;
-	try {
-		const opts = Object.defineProperty({}, 'passive', {
-			get() { // eslint-disable-line getter-return
-				supportsPassiveOption = true;
-			}
-		});
-		window.addEventListener('testPassiveEventSupport', Util.falseFn, opts);
-		window.removeEventListener('testPassiveEventSupport', Util.falseFn, opts);
-	} catch (e) {
-		// Errors can safely be ignored since this is only a browser support test.
-	}
-	return supportsPassiveOption;
-}());
-
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = navigator.platform.startsWith('Mac');
 
@@ -90,7 +70,6 @@ export default {
 	touch,
 	touchNative,
 	retina,
-	passiveEvents,
 	mac,
 	linux
 };
