@@ -231,7 +231,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listener.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
@@ -242,8 +242,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click keypress', listener);
 			L.DomEvent.on(el, 'click', listener2);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			expect(listener.called).to.be.ok();
 			expect(listener2.called).to.be.ok();
@@ -254,7 +254,7 @@ describe('DomEvent', () => {
 
 			L.DomEvent.on(el, {click: listener});
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.called(listener);
 		});
@@ -264,8 +264,8 @@ describe('DomEvent', () => {
 
 			L.DomEvent.on(el, {click: listener, keypress: listener2});
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			sinon.assert.called(listener);
 			sinon.assert.called(listener2);
@@ -275,7 +275,7 @@ describe('DomEvent', () => {
 			const obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click', listener, obj);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listener.calledOn(obj)).to.be.ok();
 		});
@@ -284,8 +284,8 @@ describe('DomEvent', () => {
 			const obj = {foo: 'bar'};
 			L.DomEvent.on(el, 'click keypress', listener, obj);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			expect(listener.calledOn(obj)).to.be.ok();
 		});
@@ -296,7 +296,7 @@ describe('DomEvent', () => {
 
 			L.DomEvent.on(el, {click: listener}, ctx);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.calledOn(listener, ctx);
 		});
@@ -307,8 +307,8 @@ describe('DomEvent', () => {
 
 			L.DomEvent.on(el, {click: listener, keypress: listener2}, ctx);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			sinon.assert.calledOn(listener, ctx);
 			sinon.assert.calledOn(listener2, ctx);
@@ -317,7 +317,7 @@ describe('DomEvent', () => {
 		it('passes an event object to the listener', () => {
 			L.DomEvent.on(el, 'click', listener);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listener.lastCall.args[0].type).to.eql('click');
 		});
@@ -325,8 +325,8 @@ describe('DomEvent', () => {
 		it('passes two event objects to the listener', () => {
 			L.DomEvent.on(el, 'click keypress', listener);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			expect(listener.firstCall.args[0].type).to.eql('click');
 			expect(listener.secondCall.args[0].type).to.eql('keypress');
@@ -348,7 +348,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listener.notCalled).to.be.ok();
 		});
@@ -357,8 +357,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click keypress', listener);
 			L.DomEvent.off(el, 'click', listener);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			expect(listener.lastCall.args[0].type).to.eql('keypress');
 		});
@@ -371,7 +371,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listenerB);
 			L.DomEvent.off(el, 'click', listenerA);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listenerA.called).to.not.be.ok();
 			expect(listenerB.called).to.be.ok();
@@ -384,7 +384,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.notCalled(listener);
 		});
@@ -396,8 +396,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			sinon.assert.notCalled(listener);
 			sinon.assert.notCalled(listener2);
@@ -411,8 +411,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events2);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			sinon.assert.notCalled(listener);
 			expect(listener2.lastCall.args[0].type).to.eql('keypress');
@@ -425,7 +425,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listener, ctx);
 			L.DomEvent.off(el, 'click', listener, ctx);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.notCalled(listener);
 		});
@@ -438,7 +438,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events, ctx);
 			L.DomEvent.off(el, events, ctx);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.notCalled(listener);
 		});
@@ -452,8 +452,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events, ctx);
 			L.DomEvent.off(el, events2, ctx);
 
-			happen.click(el);
-			happen.keypress(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('keypress', el);
 
 			sinon.assert.notCalled(listener);
 			expect(listener2.lastCall.args[0].type).to.eql('keypress');
@@ -466,7 +466,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, 'click', listener, ctx);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.called(listener);
 
@@ -475,7 +475,7 @@ describe('DomEvent', () => {
 			L.DomEvent.off(el, 'click', listener, {}); // wrong context
 			L.DomEvent.off(el, 'click', listener);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.called(listener);
 		});
@@ -488,7 +488,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, events);
 			L.DomEvent.off(el, events, ctx);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.called(listener);
 
@@ -499,7 +499,7 @@ describe('DomEvent', () => {
 			L.DomEvent.off(el, events);
 			L.DomEvent.off(el, events, {}); // wrong context
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			sinon.assert.called(listener);
 		});
@@ -512,7 +512,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listenerB, {});
 			L.DomEvent.off(el);
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listenerA.called).to.not.be.ok();
 			expect(listenerB.called).to.not.be.ok();
@@ -525,8 +525,8 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listenerClick);
 			L.DomEvent.on(el, 'dblclick', listenerDblClick);
 			L.DomEvent.off(el, 'click');
-			happen.click(el);
-			happen.dblclick(el);
+			UIEventSimulator.fire('click', el);
+			UIEventSimulator.fire('dblclick', el);
 
 			sinon.assert.notCalled(listenerClick);
 			sinon.assert.called(listenerDblClick);
@@ -554,7 +554,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, 'click', listener);
 			L.DomEvent.off(el, {'click': listener});
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 
 			expect(listener.called).to.not.be.ok();
 		});
@@ -577,7 +577,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.on(el, 'click', listener);
 
-			happen.click(child);
+			UIEventSimulator.fire('click', child);
 
 			expect(listener.notCalled).to.be.ok();
 		});
@@ -591,7 +591,7 @@ describe('DomEvent', () => {
 			L.DomEvent.on(el, wheel, listener);
 
 			L.DomEvent.disableScrollPropagation(child);
-			happen.once(child, {type: wheel});
+			UIEventSimulator.fire(wheel, child);
 
 			expect(listener.notCalled).to.be.ok();
 		});
@@ -604,10 +604,10 @@ describe('DomEvent', () => {
 			L.DomEvent.disableClickPropagation(child);
 			L.DomEvent.on(el, 'dblclick contextmenu mousedown touchstart', listener);
 
-			happen.once(child, {type: 'dblclick'});
-			happen.once(child, {type: 'contextmenu'});
-			happen.once(child, {type: 'mousedown'});
-			happen.once(child, {type: 'touchstart', touches: []});
+			UIEventSimulator.fire('dblclick', child);
+			UIEventSimulator.fire('contextmenu', child);
+			UIEventSimulator.fire('mousedown', child);
+			UIEventSimulator.fire('touchstart', child, {touches: []});
 
 			expect(listener.notCalled).to.be.ok();
 		});
@@ -626,15 +626,15 @@ describe('DomEvent', () => {
 			map.on('click', mapClickListener);          // control case
 			map.on('keypress', mapOtherListener);       // control case
 
-			happen.once(grandChild, {type: 'click'});
-			happen.once(grandChild, {type: 'keypress'});
+			UIEventSimulator.fire('click', grandChild);
+			UIEventSimulator.fire('keypress', grandChild);
 
 			expect(mapOtherListener.called).to.be.ok(); // control case
 			expect(listener.called).to.be.ok();
 			expect(mapClickListener.notCalled).to.be.ok();
 
-			happen.once(child, {type: 'click'});
-			happen.once(child, {type: 'keypress'});
+			UIEventSimulator.fire('click', child);
+			UIEventSimulator.fire('keypress', child);
 
 			expect(listener.calledTwice).to.be.ok();
 			expect(mapClickListener.notCalled).to.be.ok();
@@ -662,7 +662,7 @@ describe('DomEvent', () => {
 				done();
 			});
 
-			happen.click(el);
+			UIEventSimulator.fire('click', el);
 		});
 	});
 });

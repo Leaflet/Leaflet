@@ -19,11 +19,11 @@ describe('Control.Layers', () => {
 			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[0]);
 			expect(spy.called).to.be.ok();
 			expect(spy.args[0][0].name).to.be('Layer 1');
 			expect(spy.args[0][0].layer).to.be(baseLayers['Layer 1']);
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[1]);
 			expect(spy.calledTwice).to.be.ok();
 			expect(spy.args[1][0].name).to.be('Layer 2');
 			expect(spy.args[1][0].layer).to.be(baseLayers['Layer 2']);
@@ -39,11 +39,11 @@ describe('Control.Layers', () => {
 			map.removeControl(layers);
 			map.addControl(layers);
 
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[0]);
 			expect(spy.called).to.be.ok();
 			expect(spy.args[0][0].name).to.be('Layer 1');
 			expect(spy.args[0][0].layer).to.be(baseLayers['Layer 1']);
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[1]);
 			expect(spy.calledTwice).to.be.ok();
 			expect(spy.args[1][0].name).to.be('Layer 2');
 			expect(spy.args[1][0].layer).to.be(baseLayers['Layer 2']);
@@ -55,7 +55,7 @@ describe('Control.Layers', () => {
 			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
-			happen.click(layers._overlaysList.getElementsByTagName('input')[0]);
+			UIEventSimulator.fire('click', layers._overlaysList.getElementsByTagName('input')[0]);
 
 			expect(spy.called).to.not.be.ok();
 		});
@@ -137,15 +137,15 @@ describe('Control.Layers', () => {
 				}
 			}
 
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[1]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[1]);
 			checkInputs(1);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(layerB);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(undefined);
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[0]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[0]);
 			checkInputs(0);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
-			happen.click(layers._baseLayersList.getElementsByTagName('input')[2]);
+			UIEventSimulator.fire('click', layers._baseLayersList.getElementsByTagName('input')[2]);
 			checkInputs(2);
 			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
 			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
@@ -191,41 +191,41 @@ describe('Control.Layers', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
-			happen.once(toggle, {type:'keydown', keyCode:13});
+			UIEventSimulator.fire('keydown', toggle, {code: 'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
 		it('expands on click', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
-			happen.once(toggle, {type:'click'});
+			UIEventSimulator.fire('click', toggle);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
 		it('does not expand on "Enter" keydown when toggle is not focused', () => {
 			L.control.layers(null, null, {collapsed: true}).addTo(map);
-			happen.once(document, {type:'keydown', keyCode:13});
+			UIEventSimulator.fire('keydown', document, {code:'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
 		it('expands when mouse is over', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
-			happen.once(layersCtrl._container, {type:'mouseover'});
+			UIEventSimulator.fire('mouseover', layersCtrl._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
 		it('collapses when mouse is out', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
-			happen.once(layersCtrl._container, {type:'mouseover'});
-			happen.once(layersCtrl._container, {type:'mouseout'});
+			UIEventSimulator.fire('mouseover', layersCtrl._container);
+			UIEventSimulator.fire('mouseout', layersCtrl._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 
 		it('collapses when map is clicked', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
-			happen.once(layersCtrl._container, {type:'mouseover'});
+			UIEventSimulator.fire('mouseover', layersCtrl._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
-			happen.click(map._container);
+			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
 		});
 	});
@@ -234,16 +234,16 @@ describe('Control.Layers', () => {
 		it('does not collapse when mouse enters or leaves', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
-			happen.once(layersCtrl._container, {type:'mouseover'});
+			UIEventSimulator.fire('mouseover', layersCtrl._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
-			happen.once(layersCtrl._container, {type:'mouseout'});
+			UIEventSimulator.fire('mouseout', layersCtrl._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
 		it('does not collapse when map is clicked', () => {
 			L.control.layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
-			happen.click(map._container);
+			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 

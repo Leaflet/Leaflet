@@ -24,12 +24,12 @@ Map.mergeOptions({
 export const Keyboard = Handler.extend({
 
 	keyCodes: {
-		left:    [37],
-		right:   [39],
-		down:    [40],
-		up:      [38],
-		zoomIn:  [187, 107, 61, 171],
-		zoomOut: [189, 109, 54, 173]
+		left:    ['ArrowLeft'],
+		right:   ['ArrowRight'],
+		down:    ['ArrowDown'],
+		up:      ['ArrowUp'],
+		zoomIn:  ['Equal', 'NumpadAdd', 'BracketRight'],
+		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
 	},
 
 	initialize(map) {
@@ -140,7 +140,7 @@ export const Keyboard = Handler.extend({
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
-		const key = e.keyCode,
+		const key = e.code,
 		     map = this._map;
 		let offset;
 
@@ -165,7 +165,7 @@ export const Keyboard = Handler.extend({
 		} else if (key in this._zoomKeys) {
 			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
 
-		} else if (key === 27 && map._popup && map._popup.options.closeOnEscapeKey) {
+		} else if (key === 'Escape' && map._popup && map._popup.options.closeOnEscapeKey) {
 			map.closePopup();
 
 		} else {

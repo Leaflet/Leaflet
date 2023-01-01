@@ -137,7 +137,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onKeyDown(e) {
-		if (e.keyCode === 27) {
+		if (e.code === 'Escape') {
 			this._finish();
 			this._clearDeferredResetState();
 			this._resetState();

@@ -16,9 +16,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	});
 
 	it('fires synthetic dblclick after two clicks with delay<200', () => {
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
@@ -26,17 +26,17 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	});
 
 	it('does not fire dblclick when delay>200', () => {
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(300);
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not fire dblclick when detail !== 1', () => {
-		happen.click(container, {detail: 0}); // like in IE
+		UIEventSimulator.fire('click', container, {detail: 0}); // like in IE
 		clock.tick(100);
-		happen.click(container, {detail: 0});
+		UIEventSimulator.fire('click', container, {detail: 0});
 		clock.tick(100);
 
 		expect(spy.notCalled).to.be.ok();
@@ -45,19 +45,19 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	it('does not fire dblclick after removeListener', () => {
 		L.DomEvent.off(container, 'dblclick', spy);
 
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not conflict with native dblclick', () => {
-		happen.click(container, {detail: 1});
+		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
-		happen.click(container, {detail: 2}); // native dblclick expected
-		happen.dblclick(container);
+		UIEventSimulator.fire('click', container, {detail: 2}); // native dblclick expected
+		UIEventSimulator.fire('dblclick', container); // native dblclick expected
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
 		expect(spy.lastCall.args[0]._simulated).not.to.be.ok();
@@ -71,9 +71,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 			screenX: 4,
 			screenY: 5
 		};
-		happen.click(container, click);
+		UIEventSimulator.fire('click', container, click);
 		clock.tick(100);
-		happen.click(container, click);
+		UIEventSimulator.fire('click', container, click);
 
 		const event = spy.lastCall.args[0];
 		const expectedProps = L.extend(click, {
@@ -105,9 +105,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		map.addControl(new MyControl());
 		L.DomEvent.on(ctrl, 'dblclick', spyCtrl);
 
-		happen.click(ctrl, {detail: 1});
+		UIEventSimulator.fire('click', ctrl, {detail: 1});
 		clock.tick(100);
-		happen.click(ctrl, {detail: 1});
+		UIEventSimulator.fire('click', ctrl, {detail: 1});
 
 		expect(spyCtrl.called).to.be.ok();
 		expect(spyMap.notCalled).to.be.ok();
@@ -129,7 +129,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		});
 		map.addControl(new MyControl());
 		// click on the label
-		happen.click(div.children[1], {detail: 1});
+		UIEventSimulator.fire('click', div.children[1], {detail: 1});
 		clock.tick(100);
 		expect(spyMap.notCalled).to.be.ok();
 		map.remove();
