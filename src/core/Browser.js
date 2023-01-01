@@ -13,10 +13,6 @@
  * ```
  */
 
-// @property webkit: Boolean;
-// `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
-const webkit = userAgentContains('webkit');
-
 // @property chrome: Boolean; `true` for the Chrome browser.
 const chrome = userAgentContains('chrome');
 
@@ -25,9 +21,6 @@ const safari = !chrome && userAgentContains('safari');
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
-
-// @property mobileWebkit: Boolean; `true` for all webkit-based browsers in a mobile device.
-const mobileWebkit = mobile && webkit;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
@@ -61,11 +54,9 @@ function userAgentContains(str) {
 
 
 export default {
-	webkit,
 	chrome,
 	safari,
 	mobile,
-	mobileWebkit,
 	pointer,
 	touch,
 	touchNative,
