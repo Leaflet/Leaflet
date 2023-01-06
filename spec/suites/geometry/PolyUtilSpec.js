@@ -59,91 +59,27 @@ describe('PolyUtil', function () {
 			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
-		it('computes center of polygon with maxZoom', function () {
-			L.gridLayer({maxZoom: 18}).addTo(map);
-			var latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
-			var center = L.PolyUtil.polygonCenter(latlngs, crs, map.getMaxZoom());
-			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
+		it('computes center of a small polygon', function () {
+			var latlngs = [[42.87097909758862, -81.12594320566181], [42.87108302016597, -81.12594320566181], [42.87108302016597, -81.12576504805303], [42.87097909758862, -81.12576504805303]];
+			var layer = L.polygon(latlngs).addTo(map);
+			expect(layer.getCenter()).to.be.nearLatLng([42.87103105887729, -81.12585412685742]);
 		});
 
-		it('computes center of a small polygon and test it on every zoom', function () {
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
+		it('computes center of a big polygon', function () {
+			var latlngs = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
 			var layer = L.polygon(latlngs).addTo(map);
-			var i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.EPSG3395', function () {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395, zoomAnimation: false});
-
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			var layer = L.polygon(latlngs).addTo(map);
-			var i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.EPSG4326', function () {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326, zoomAnimation: false});
-
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			var layer = L.polygon(latlngs).addTo(map);
-			var i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.Simple', function () {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple, zoomAnimation: false});
-
-			var latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			var layer = L.polygon(latlngs).addTo(map);
-			var i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
+			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
 		});
 
 		it('throws error if latlngs not passed', function () {
 			expect(function () {
-				L.PolyUtil.polygonCenter(null,  crs, zoom);
+				L.PolyUtil.polygonCenter(null,  crs);
 			}).to.throwException('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', function () {
 			expect(function () {
-				L.PolyUtil.polygonCenter([], crs, zoom);
+				L.PolyUtil.polygonCenter([], crs);
 			}).to.throwException('latlngs not passed');
 		});
 
@@ -152,7 +88,7 @@ describe('PolyUtil', function () {
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			var spy = sinon.spy(console, 'warn');
-			var center = L.PolyUtil.polygonCenter(latlngs, crs, zoom);
+			var center = L.PolyUtil.polygonCenter(latlngs, crs);
 			console.warn.restore();
 			expect(spy.calledOnce).to.be.ok();
 			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
