@@ -31,7 +31,12 @@ export const Draggable = Evented.extend({
 		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
-		clickTolerance: 3
+		clickTolerance: 3,
+
+		// @option shiftDisable: Boolean = true
+		// Whether dragging should be disabled when Shift key is down.
+		// Should be `true` to allow [`boxZoom` handler](#map-boxzoom) to function properly.
+		shiftDisable: true
 	},
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
@@ -88,7 +93,9 @@ export const Draggable = Evented.extend({
 			return;
 		}
 
-		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (e.shiftKey && this.options.shiftDisable) { return; }
+
+		if (Draggable._dragging || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
