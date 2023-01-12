@@ -235,7 +235,7 @@ export function geometryToLayer(geojson, options) {
 function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 	return pointToLayerFn ?
 		pointToLayerFn(geojson, latlng) :
-		new Marker(latlng, options && options.markersInheritOptions && options);
+		new Marker(latlng, options && options.markersInheritOptions);
 }
 
 // @function coordsToLatLng(coords: Array): LatLng
