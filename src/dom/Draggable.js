@@ -88,7 +88,7 @@ export const Draggable = Evented.extend({
 			return;
 		}
 
-		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (Draggable._dragging || e.shiftKey || ((e.button !== 0) && !e.touches)) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
