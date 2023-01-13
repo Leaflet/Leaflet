@@ -157,7 +157,7 @@ describe('Map.TouchZoom', () => {
 			.down().moveBy(-200, 0, 500).up(100);
 	});
 
-	it.skipIfNotTouch("Layer is rendered correctly while pinch zoom when zoomAnim is true", (done) => {
+	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is true', (done) => {
 		map.remove();
 
 		map = new L.Map(container, {
