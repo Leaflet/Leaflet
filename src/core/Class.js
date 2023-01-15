@@ -28,7 +28,7 @@ Class.extend = function (props) {
 		this.callInitHooks();
 	};
 
-	const parentProto = NewClass.__super__ = this.prototype;
+	const parentProto = this.prototype;
 
 	const proto = Object.create(parentProto);
 	proto.constructor = NewClass;
@@ -37,7 +37,7 @@ Class.extend = function (props) {
 
 	// inherit parent's statics
 	for (const i in this) {
-		if (Object.hasOwn(this, i) && i !== 'prototype' && i !== '__super__') {
+		if (Object.hasOwn(this, i) && i !== 'prototype') {
 			NewClass[i] = this[i];
 		}
 	}
