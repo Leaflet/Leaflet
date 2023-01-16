@@ -4,114 +4,112 @@ import * as Util from './Util';
 // @aka L.Class
 
 // @section
-// @uninheritable
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
-export function Class() {}
+export class Class {
+	_initHooksCalled = false;
 
-Class.extend = function (props) {
-
-	// @function extend(props: Object): Function
-	// [Extends the current class](#class-inheritance) given the properties to be included.
-	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	const NewClass = function (...args) {
-
+	constructor(...args) {
 		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
-			this.initialize.apply(this, args);
+			this.initialize(...args);
 		}
 
 		// call all constructor hooks
 		this.callInitHooks();
-	};
-
-	const parentProto = this.prototype;
-
-	const proto = Object.create(parentProto);
-	proto.constructor = NewClass;
-
-	NewClass.prototype = proto;
-
-	// inherit parent's statics
-	for (const i in this) {
-		if (Object.hasOwn(this, i) && i !== 'prototype') {
-			NewClass[i] = this[i];
-		}
 	}
 
-	// mix static properties into the class
-	if (props.statics) {
-		Util.extend(NewClass, props.statics);
-	}
-
-	// mix includes into the prototype
-	if (props.includes) {
-		Util.extend.apply(null, [proto].concat(props.includes));
-	}
-
-	// mix given properties into the prototype
-	Util.extend(proto, props);
-	delete proto.statics;
-	delete proto.includes;
-
-	// merge options
-	if (proto.options) {
-		proto.options = parentProto.options ? Object.create(parentProto.options) : {};
-		Util.extend(proto.options, props.options);
-	}
-
-	proto._initHooks = [];
-
-	// add method for calling all hooks
-	proto.callInitHooks = function () {
-
+	callInitHooks() {
 		if (this._initHooksCalled) { return; }
 
-		if (parentProto.callInitHooks) {
-			parentProto.callInitHooks.call(this);
+		// collect all prototypes in chain
+		const protos = [];
+		let proto = Object.getPrototypeOf(this);
+
+		while (proto !== null) {
+			protos.push(proto);
+			proto = Object.getPrototypeOf(proto);
+		}
+
+		// reverse so the parent prototype is first
+		protos.reverse();
+
+		// call init hooks on each prototype
+		for (const proto of protos) {
+			const initHooks = proto._initHooks ?? [];
+			for (const hook of initHooks) { hook.call(this); }
 		}
 
 		this._initHooksCalled = true;
-
-		for (let i = 0, len = proto._initHooks.length; i < len; i++) {
-			proto._initHooks[i].call(this);
-		}
-	};
-
-	return NewClass;
-};
-
-
-// @function include(properties: Object): this
-// [Includes a mixin](#class-includes) into the current class.
-Class.include = function (props) {
-	const parentOptions = this.prototype.options;
-	Util.extend(this.prototype, props);
-	if (props.options) {
-		this.prototype.options = parentOptions;
-		this.mergeOptions(props.options);
 	}
-	return this;
-};
 
-// @function mergeOptions(options: Object): this
-// [Merges `options`](#class-options) into the defaults of the class.
-Class.mergeOptions = function (options) {
-	Util.extend(this.prototype.options, options);
-	return this;
-};
+	// @function extend(props: Object): Function
+	// [Extends the current class](#class-inheritance) given the properties to be included.
+	// Returns a Javascript function that is a class constructor (to be called with `new`).
+	static extend({statics, includes, ...props}) {
+		const NewClass = class extends this {};
 
-// @function addInitHook(fn: Function): this
-// Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn, ...args) { // (Function) || (String, args...)
-	const init = typeof fn === 'function' ? fn : function () {
-		this[fn].apply(this, args);
-	};
+		// hook up the static properties
+		Object.setPrototypeOf(NewClass, this);
 
-	this.prototype._initHooks = this.prototype._initHooks || [];
-	this.prototype._initHooks.push(init);
-	return this;
-};
+		// mix static properties into the class
+		if (statics) {
+			Util.extend(NewClass, statics);
+		}
+
+		const proto = NewClass.prototype;
+
+		// mix includes into the prototype
+		if (includes) {
+			Util.extend.apply(null, [proto].concat(includes));
+		}
+
+		// mix given properties into the prototype
+		Util.extend(proto, props);
+
+		// merge options
+		if (proto.options) {
+			proto.options = Object.create(this.prototype.options ?? {});
+			Util.extend(proto.options, props.options);
+		}
+
+		proto._initHooks = [];
+
+		return NewClass;
+	}
+
+	// @function include(properties: Object): this
+	// [Includes a mixin](#class-includes) into the current class.
+	static include(props) {
+		const parentOptions = this.prototype.options;
+		Util.extend(this.prototype, props);
+		if (props.options) {
+			this.prototype.options = parentOptions;
+			this.mergeOptions(props.options);
+		}
+		return this;
+	}
+
+	// @function mergeOptions(options: Object): this
+	// [Merges `options`](#class-options) into the defaults of the class.
+	static mergeOptions(options) {
+		Util.extend(this.prototype.options, options);
+		return this;
+	}
+
+
+	// @function addInitHook(fn: Function): this
+	// Adds a [constructor hook](#class-constructor-hooks) to the class.
+	static addInitHook(fn, ...args) { // (Function) || (String, args...)
+		const init = typeof fn === 'function' ? fn : function () {
+			this[fn](...args);
+		};
+
+		this.prototype._initHooks ??= [];
+		this.prototype._initHooks.push(init);
+		return this;
+	}
+}
