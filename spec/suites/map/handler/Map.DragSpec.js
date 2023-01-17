@@ -174,7 +174,7 @@ describe('Map.Drag', () => {
 				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
-					happen.click(container);
+					UIEventSimulator.fire('click', container);
 					expect(dragSpy.called).to.be(true);
 					expect(clickSpy.called).to.be(false);
 					expect(preclickSpy.called).to.be(false);
@@ -211,7 +211,7 @@ describe('Map.Drag', () => {
 				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
-					happen.click(container);
+					UIEventSimulator.fire('click', container);
 					expect(mapDragSpy.called).to.be(true);
 					expect(markerDragSpy.called).to.be(false);
 					expect(clickSpy.called).to.be(false);
@@ -251,7 +251,7 @@ describe('Map.Drag', () => {
 				onStop() {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
-					happen.click(marker._icon);
+					UIEventSimulator.fire('click', marker._icon);
 					expect(markerDragSpy.called).to.be(true);
 					expect(mapDragSpy.called).to.be(false);
 					expect(clickSpy.called).to.be(false);

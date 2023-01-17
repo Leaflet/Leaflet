@@ -118,7 +118,7 @@ function addOne(obj, type, fn, context) {
 	} else if ('addEventListener' in obj) {
 
 		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
-			obj.addEventListener(mouseSubst[type] || type, handler, Browser.passiveEvents ? {passive: false} : false);
+			obj.addEventListener(mouseSubst[type] || type, handler, {passive: false});
 
 		} else if (type === 'mouseenter' || type === 'mouseleave') {
 			handler = function (e) {

@@ -1,6 +1,5 @@
 import * as DomEvent from './DomEvent';
 import {Point} from '../geometry/Point';
-import Browser from '../core/Browser';
 
 /*
  * @namespace DomUtil
@@ -18,19 +17,6 @@ import Browser from '../core/Browser';
 // if it was passed directly.
 export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
-}
-
-// @function getStyle(el: HTMLElement, styleAttrib: String): String
-// Returns the value for a certain style attribute on an element,
-// including computed values or values set through CSS.
-export function getStyle(el, style) {
-	let value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
-
-	if ((!value || value === 'auto') && document.defaultView) {
-		const css = document.defaultView.getComputedStyle(el, null);
-		value = css ? css[style] : null;
-	}
-	return value === 'auto' ? null : value;
 }
 
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
@@ -73,22 +59,15 @@ export function setTransform(el, offset, scale) {
 	el.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
 
+const positions = new WeakMap();
+
 // @function setPosition(el: HTMLElement, position: Point)
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
 export function setPosition(el, point) {
-
-	/*eslint-disable */
-	el._leaflet_pos = point;
-	/* eslint-enable */
-
-	if (Browser.any3d) {
-		setTransform(el, point);
-	} else {
-		el.style.left = `${point.x}px`;
-		el.style.top = `${point.y}px`;
-	}
+	positions.set(el, point);
+	setTransform(el, point);
 }
 
 // @function getPosition(el: HTMLElement): Point
@@ -96,49 +75,48 @@ export function setPosition(el, point) {
 export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
-
-	return el._leaflet_pos || new Point(0, 0);
+	return positions.get(el) ?? new Point(0, 0);
 }
 
+const documentStyle = document.documentElement.style;
+// Safari still needs a vendor prefix, we need to detect with property name is supported.
+const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
+let prevUserSelect;
+
 // @function disableTextSelection()
-// Prevents the user from generating `selectstart` DOM events, usually generated
-// when the user drags the mouse through a page with text. Used internally
+// Prevents the user from selecting text in the document. Used internally
 // by Leaflet to override the behaviour of any click-and-drag interaction on
 // the map. Affects drag interactions on the whole document.
+export function disableTextSelection() {
+	const value = documentStyle[userSelectProp];
+
+	if (value === 'none') {
+		return;
+	}
+
+	prevUserSelect = value;
+	documentStyle[userSelectProp] = 'none';
+}
 
 // @function enableTextSelection()
 // Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export let disableTextSelection;
-export let enableTextSelection;
-let _userSelect;
-if ('onselectstart' in document) {
-	disableTextSelection = function () {
-		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
-	};
-	enableTextSelection = function () {
-		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
-	};
-} else {
-	disableTextSelection = function () {
-		const style = document.documentElement.style;
-		_userSelect = style.userSelect;
-		style.userSelect = 'none';
-	};
-	enableTextSelection = function () {
-		document.documentElement.style.userSelect = _userSelect;
-		_userSelect = undefined;
-	};
+export function enableTextSelection() {
+	if (typeof prevUserSelect === 'undefined') {
+		return;
+	}
+
+	documentStyle[userSelectProp] = prevUserSelect;
+	prevUserSelect = undefined;
 }
 
 // @function disableImageDrag()
-// As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
-// for `dragstart` DOM events, usually generated when the user drags an image.
+// Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
 	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 // @function enableImageDrag()
-// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
+// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }

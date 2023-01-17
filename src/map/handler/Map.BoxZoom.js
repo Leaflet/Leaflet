@@ -58,7 +58,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onMouseDown(e) {
-		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
+		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
 		// will interrupt the interaction and orphan a box element in the container.
@@ -117,7 +117,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onMouseUp(e) {
-		if ((e.which !== 1) && (e.button !== 1)) { return; }
+		if (e.button !== 0) { return; }
 
 		this._finish();
 
@@ -137,7 +137,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onKeyDown(e) {
-		if (e.keyCode === 27) {
+		if (e.code === 'Escape') {
 			this._finish();
 			this._clearDeferredResetState();
 			this._resetState();

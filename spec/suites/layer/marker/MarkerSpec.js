@@ -252,7 +252,7 @@ describe('Marker', () => {
 			const marker = L.marker([0, 0]).addTo(map);
 
 			marker.on('click', spy);
-			happen.click(marker._icon);
+			UIEventSimulator.fire('click', marker._icon);
 
 			expect(spy.called).to.be.ok();
 		});
@@ -263,7 +263,7 @@ describe('Marker', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon()}).addTo(map);
 
 			marker.on('click', spy);
-			happen.click(marker._icon);
+			UIEventSimulator.fire('click', marker._icon);
 
 			expect(spy.called).to.be.ok();
 		});
@@ -275,10 +275,10 @@ describe('Marker', () => {
 
 			marker.on('click', spy);
 
-			happen.click(marker._icon);
+			UIEventSimulator.fire('click', marker._icon);
 			expect(spy.called).to.be.ok();
 
-			happen.click(marker._icon.querySelector('img'));
+			UIEventSimulator.fire('click', marker._icon.querySelector('img'));
 			expect(spy.calledTwice).to.be.ok();
 		});
 
@@ -290,10 +290,10 @@ describe('Marker', () => {
 
 			marker.on('click', spy);
 
-			happen.click(marker._icon);
+			UIEventSimulator.fire('click', marker._icon);
 			expect(spy.called).to.be.ok();
 
-			happen.click(marker._icon.querySelector('img'));
+			UIEventSimulator.fire('click', marker._icon.querySelector('img'));
 			expect(spy.calledTwice).to.be.ok();
 		});
 
@@ -306,7 +306,7 @@ describe('Marker', () => {
 			marker.on('click', spy);
 			marker.on('click', spy2);
 			map.on('click', mapSpy);
-			happen.click(marker._icon);
+			UIEventSimulator.fire('click', marker._icon);
 			expect(spy.called).to.be.ok();
 			expect(spy2.called).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
@@ -321,7 +321,7 @@ describe('Marker', () => {
 			marker.on('dblclick', spy);
 			marker.on('dblclick', spy2);
 			map.on('dblclick', mapSpy);
-			happen.dblclick(marker._icon);
+			UIEventSimulator.fire('dblclick', marker._icon);
 			expect(spy.called).to.be.ok();
 			expect(spy2.called).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
@@ -334,14 +334,14 @@ describe('Marker', () => {
 				// It should be the marker coordinates
 				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(true);
 			});
-			happen.mousemove(marker._icon);
+			UIEventSimulator.fire('mousemove', marker._icon);
 
 			map.once('mousemove', (e) => {
 				// It should be the mouse coordinates, not the marker ones
 				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(false);
 				done();
 			});
-			happen.mousemove(marker._icon);
+			UIEventSimulator.fire('mousemove', marker._icon);
 		});
 	});
 });

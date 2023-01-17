@@ -66,7 +66,7 @@ title: Grid coordinates
 		const pixelOrigin = map.getPixelOrigin();
 		const markerPixelCoords = map.project(trd, map.getZoom());
 		const markerAnchor = marker.options.icon.options.iconAnchor;
-		const markerOffset = marker._icon._leaflet_pos;
+		const markerOffset = L.DomUtil.getPosition(marker._icon);
 
 		document.getElementById('info').innerHTML =
 			'<div style="color: green">CRS origin: 0,0</div>' +

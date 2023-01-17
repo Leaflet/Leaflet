@@ -199,7 +199,7 @@ export const Layers = Control.extend({
 
 		DomEvent.on(link, {
 			keydown(e) {
-				if (e.keyCode === 13) {
+				if (e.code === 'Enter') {
 					this._expandSafely();
 				}
 			},

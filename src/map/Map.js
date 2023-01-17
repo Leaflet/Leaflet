@@ -153,7 +153,7 @@ export const Map = Evented.extend({
 		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android
-		this._zoomAnimated = Browser.any3d && this.options.zoomAnimation;
+		this._zoomAnimated = this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
@@ -217,14 +217,14 @@ export const Map = Evented.extend({
 	// @method zoomIn(delta?: Number, options?: Zoom options): this
 	// Increases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomIn(delta, options) {
-		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
+		delta = delta || this.options.zoomDelta;
 		return this.setZoom(this._zoom + delta, options);
 	},
 
 	// @method zoomOut(delta?: Number, options?: Zoom options): this
 	// Decreases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomOut(delta, options) {
-		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
+		delta = delta || this.options.zoomDelta;
 		return this.setZoom(this._zoom - delta, options);
 	},
 
@@ -354,7 +354,7 @@ export const Map = Evented.extend({
 	flyTo(targetCenter, targetZoom, options) {
 
 		options = options || {};
-		if (options.animate === false || !Browser.any3d) {
+		if (options.animate === false) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
@@ -869,7 +869,7 @@ export const Map = Evented.extend({
 		      se = bounds.getSouthEast(),
 		      size = this.getSize().subtract(padding),
 		      boundsSize = toBounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
-		      snap = Browser.any3d ? this.options.zoomSnap : 1,
+		      snap = this.options.zoomSnap,
 		      scalex = size.x / boundsSize.x,
 		      scaley = size.y / boundsSize.y,
 		      scale = inside ? Math.max(scalex, scaley) : Math.min(scalex, scaley);
@@ -1097,7 +1097,7 @@ export const Map = Evented.extend({
 	_initLayout() {
 		const container = this._container;
 
-		this._fadeAnimated = this.options.fadeAnimation && Browser.any3d;
+		this._fadeAnimated = this.options.fadeAnimation;
 
 		const classes = ['leaflet-container'];
 
@@ -1108,7 +1108,7 @@ export const Map = Evented.extend({
 
 		container.classList.add(...classes);
 
-		const position = DomUtil.getStyle(container, 'position');
+		const {position} = getComputedStyle(container);
 
 		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
 			container.style.position = 'relative';
@@ -1330,7 +1330,7 @@ export const Map = Evented.extend({
 			}
 		}
 
-		if (Browser.any3d && this.options.transform3DLimit) {
+		if (this.options.transform3DLimit) {
 			(remove ? this.off : this.on).call(this, 'moveend', this._onMoveEnd);
 		}
 	},
@@ -1589,7 +1589,7 @@ export const Map = Evented.extend({
 	_limitZoom(zoom) {
 		const min = this.getMinZoom(),
 		    max = this.getMaxZoom(),
-		    snap = Browser.any3d ? this.options.zoomSnap : 1;
+		    snap = this.options.zoomSnap;
 		if (snap) {
 			zoom = Math.round(zoom / snap) * snap;
 		}

@@ -9,7 +9,7 @@ module.exports = function (config) {
 		'spec/before.js',
 		'src/LeafletWithGlobals.js',
 		'spec/after.js',
-		'node_modules/happen/happen.js',
+		'node_modules/ui-event-simulator/ui-event-simulator.js',
 		'node_modules/prosthetic-hand/dist/prosthetic-hand.js',
 		'spec/suites/SpecHelper.js',
 		'spec/suites/**/*.js',

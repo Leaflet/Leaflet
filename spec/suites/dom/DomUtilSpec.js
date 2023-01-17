@@ -23,24 +23,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#getStyle', () => {
-		it('gets the value for a certain style attribute on an element,', () => {
-			el.style.color = 'black';
-			expect(L.DomUtil.getStyle(el, 'color')).to.eql('black');
-			el.style.color = 'green';
-			expect(L.DomUtil.getStyle(el, 'color')).to.eql('green');
-		});
-
-		it('returns empty string if style isn\'t defined', () => {
-			const e = document.createElement('div');
-			expect(L.DomUtil.getStyle(e, 'position')).to.be('');
-		});
-
-		it('returns undefined if style don\'t exist on HTML element or default css', () => {
-			expect(L.DomUtil.getStyle(el, 'random_name_for_style')).to.be(undefined);
-		});
-	});
-
 	describe('#create', () => {
 		it('creates an HTML element div without any class name', () => {
 			const e = L.DomUtil.create('div');
@@ -117,18 +99,18 @@ describe('DomUtil', () => {
 
 	describe('#setTransform', () => {
 		it('resets the transform style of an el.', () => {
-			expect(L.DomUtil.getStyle(el, 'transform')).to.be.equal('none');
+			expect(el.style.transform).to.be.equal('');
 
 			const offset = L.point(200, 200);
 			const scale = 10;
 			L.DomUtil.setTransform(el, offset, scale);
-			const transform = L.DomUtil.getStyle(el, 'transform');
-			expect(L.DomUtil.getStyle(el, 'transform')).to.be.equal(transform);
+			const transform = el.style.transform;
+			expect(el.style.transform).to.be.equal(transform);
 
 			const newScale = 20;
 			const newOffset = L.point(400, 400);
 			L.DomUtil.setTransform(el, newOffset, newScale);
-			expect(L.DomUtil.getStyle(el, 'transform')).to.not.be.equal(transform);
+			expect(el.style.transform).to.not.be.equal(transform);
 		});
 
 		it('reset the 3d CSS transform when offset and scale aren\'t specified', () => {
@@ -154,8 +136,8 @@ describe('DomUtil', () => {
 
 	describe('#setPosition, #getPosition', () => {
 		it('sets position of el to coordinates specified by position.', () => {
-			expect(L.DomUtil.getStyle(el, 'left')).to.be.equal('0px');
-			expect(L.DomUtil.getStyle(el, 'top')).to.be.equal('0px');
+			expect(el.style.left).to.be.equal('0px');
+			expect(el.style.top).to.be.equal('0px');
 
 			const x = 50;
 			const y = 55;
@@ -249,28 +231,33 @@ describe('DomUtil', () => {
 		});
 	});
 
-
 	describe('#disableTextSelection, #enableTextSelection', () => {
-		it('disable / enable the selectstart DOM events for the user ', () => {
-			let selectionPrevented;
-			function checkPrevented(e) {
-				if (e.defaultPrevented) {
-					selectionPrevented = true;
-				} else {
-					selectionPrevented = false;
-				}
-			}
-			const child = document.createElement('div');
-			el.appendChild(child);
+		const documentStyle = document.documentElement.style;
+		// Safari still needs a vendor prefix, we need to detect with property name is supported.
+		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 
+		beforeEach(() => expect(documentStyle[userSelectProp]).to.be(''));
+		afterEach(() => { documentStyle[userSelectProp] = ''; });
+
+		it('disables and enables text selection', () => {
 			L.DomUtil.disableTextSelection();
-			window.addEventListener('selectstart', checkPrevented);
-			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.be.ok();
-
+			expect(documentStyle[userSelectProp]).to.be('none');
 			L.DomUtil.enableTextSelection();
-			happen.once(child, {type: 'selectstart'});
-			expect(selectionPrevented).to.not.be.ok();
+			expect(documentStyle[userSelectProp]).to.be('');
+		});
+
+		it('restores the text selection previously set', () => {
+			documentStyle[userSelectProp] = 'text';
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.be('text');
+		});
+
+		it('restores the text selection previously set when disabling multiple times', () => {
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.disableTextSelection();
+			L.DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.be('');
 		});
 	});
 
@@ -289,11 +276,11 @@ describe('DomUtil', () => {
 
 			L.DomUtil.disableImageDrag();
 			window.addEventListener('dragstart', checkPrevented);
-			happen.once(child, {type: 'dragstart'});
+			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.be.ok();
 
 			L.DomUtil.enableImageDrag();
-			happen.once(child, {type: 'dragstart'});
+			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.not.be.ok();
 		});
 	});
@@ -315,7 +302,7 @@ describe('DomUtil', () => {
 			//	Implicit #restoreOutline test through simulation
 			L.DomUtil.preventOutline(child);
 			expect(child.style.outline).to.match(/(?:none)/);
-			happen.once(child, {type: 'keydown'});
+			UIEventSimulator.fire('keydown', child);
 			expect(child.style.outline).to.be.equal(child.style.outline);
 		});
 	});

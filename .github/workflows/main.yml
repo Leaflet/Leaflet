@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -30,10 +30,10 @@ jobs:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
   build-docs:
     runs-on: ubuntu-latest
@@ -56,10 +56,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -75,10 +75,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -107,17 +107,17 @@ jobs:
           - browser: FirefoxNoTouch
           - browser: FirefoxRetina
           - browser: Chrome1280x1024
-            os: windows-2019
+            os: windows-latest
           - browser: Chrome1280x1024
             os: macos-latest
           - browser: SafariNative
             os: macos-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -133,10 +133,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Compress artifacts
         working-directory: dist
@@ -159,10 +159,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3.2.0
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.ref }}-${{ github.sha }}-setup
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
         uses: actions/setup-node@v3

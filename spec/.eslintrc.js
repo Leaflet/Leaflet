@@ -10,7 +10,7 @@ module.exports = {
 		L: true,
 		expect: false,
 		sinon: false,
-		happen: false,
+		UIEventSimulator: false,
 		Hand: false,
 		touchEventType: false, /* defined in SpecHelper.js */
 		createContainer: false, /* defined in SpecHelper.js */

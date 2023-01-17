@@ -23,7 +23,7 @@ describe('Map.DoubleClickZoom', () => {
 			done();
 		});
 
-		happen.dblclick(container);
+		UIEventSimulator.fire('dblclick', container);
 	});
 
 	it('zooms out while dblclick and holding shift', (done) => {
@@ -35,7 +35,7 @@ describe('Map.DoubleClickZoom', () => {
 			done();
 		});
 
-		happen.dblclick(container, {shiftKey: true});
+		UIEventSimulator.fire('dblclick', container, {shiftKey: true});
 	});
 
 	it('doubleClickZoom: \'center\'', (done) => {
@@ -50,7 +50,7 @@ describe('Map.DoubleClickZoom', () => {
 			done();
 		});
 
-		happen.dblclick(container);
+		UIEventSimulator.fire('dblclick', container);
 	});
 
 });
