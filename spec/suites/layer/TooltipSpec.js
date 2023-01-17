@@ -448,7 +448,7 @@ describe('Tooltip', () => {
 
 		// simulate map dragging
 		map.dragging.moving =  () => true;
-    
+
 		UIEventSimulator.fireAt('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 
