@@ -70,7 +70,7 @@ export const PosAnimation = Evented.extend({
 
 	_animate() {
 		// animation loop
-		this._animId = Util.requestAnimFrame(this._animate, this);
+		this._animId = requestAnimationFrame(this._animate.bind(this));
 		this._step();
 	},
 
@@ -99,7 +99,7 @@ export const PosAnimation = Evented.extend({
 	},
 
 	_complete() {
-		Util.cancelAnimFrame(this._animId);
+		cancelAnimationFrame(this._animId);
 
 		this._inProgress = false;
 		// @event end: Event

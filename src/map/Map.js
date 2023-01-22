@@ -409,7 +409,7 @@ export const Map = Evented.extend({
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				this._flyToFrame = Util.requestAnimFrame(frame, this);
+				this._flyToFrame = requestAnimationFrame(frame.bind(this));
 
 				this._move(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
@@ -766,7 +766,7 @@ export const Map = Evented.extend({
 			this._clearControlPos();
 		}
 		if (this._resizeRequest) {
-			Util.cancelAnimFrame(this._resizeRequest);
+			cancelAnimationFrame(this._resizeRequest);
 			this._resizeRequest = null;
 		}
 
@@ -1260,7 +1260,7 @@ export const Map = Evented.extend({
 	},
 
 	_stop() {
-		Util.cancelAnimFrame(this._flyToFrame);
+		cancelAnimationFrame(this._flyToFrame);
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
@@ -1343,9 +1343,8 @@ export const Map = Evented.extend({
 	},
 
 	_onResize() {
-		Util.cancelAnimFrame(this._resizeRequest);
-		this._resizeRequest = Util.requestAnimFrame(
-		        function () { this.invalidateSize({debounceMoveend: true}); }, this);
+		cancelAnimationFrame(this._resizeRequest);
+		this._resizeRequest = (() => { this.invalidateSize({debounceMoveend: true}); });
 	},
 
 	_onScroll() {
@@ -1684,11 +1683,11 @@ export const Map = Evented.extend({
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		Util.requestAnimFrame(function () {
+		requestAnimationFrame(() => {
 			this
 			    ._moveStart(true, options.noMoveStart ?? false)
 			    ._animateZoom(center, zoom, true);
-		}, this);
+		});
 
 		return true;
 	},

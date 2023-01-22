@@ -78,7 +78,7 @@ export const Canvas = Renderer.extend({
 	},
 
 	_destroyContainer() {
-		Util.cancelAnimFrame(this._redrawRequest);
+		cancelAnimationFrame(this._redrawRequest);
 		delete this._ctx;
 		Renderer.prototype._destroyContainer.call(this);
 	},
@@ -210,7 +210,7 @@ export const Canvas = Renderer.extend({
 		if (!this._map) { return; }
 
 		this._extendRedrawBounds(layer);
-		this._redrawRequest = this._redrawRequest || Util.requestAnimFrame(this._redraw, this);
+		this._redrawRequest = this._redrawRequest || requestAnimationFrame(this._redraw.bind(this));
 	},
 
 	_extendRedrawBounds(layer) {

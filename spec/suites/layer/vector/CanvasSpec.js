@@ -199,10 +199,10 @@ describe('Canvas', () => {
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.not.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
 	it('adds vectors even if they have been removed just before', function (done) {
@@ -216,10 +216,10 @@ describe('Canvas', () => {
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
 	describe('#bringToBack', () => {
@@ -259,7 +259,7 @@ describe('Canvas', () => {
 			new Polygon(latLngs).addTo(map);
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 
 		it('can remove renderer without errors', (done) => {
@@ -273,7 +273,7 @@ describe('Canvas', () => {
 			canvas.remove();
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 	});
 });
