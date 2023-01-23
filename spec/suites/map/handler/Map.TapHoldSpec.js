@@ -19,7 +19,9 @@ describe('Map.TapHoldSpec.js', () => {
 			tapHold: true
 		});
 
-		clock = sinon.useFakeTimers();
+		clock = sinon.useFakeTimers({
+			toFake: ['setTimeout', 'clearTimeout', 'Date']
+		});
 		clock.tick(1000);
 		spy = sinon.spy();
 

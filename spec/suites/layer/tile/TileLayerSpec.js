@@ -207,7 +207,9 @@ describe('TileLayer', () => {
 		}
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 
 			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
