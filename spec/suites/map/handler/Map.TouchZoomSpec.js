@@ -157,4 +157,137 @@ describe("Map.TouchZoom", function () {
 			.down().moveBy(-200, 0, 500).up(100);
 	});
 
+	it.skipIfNotTouch("Layer is rendered correctly while pinch zoom when zoomAnim is true", function (done) {
+		if (L.Browser.ie) {
+			// getBoundingClientRect doesn't return valid values in IE
+			done();
+			return;
+		}
+		map.remove();
+
+		map = new L.Map(container, {
+			touchZoom: true,
+			inertia: false,
+			zoomAnimation: true
+		});
+
+		map.setView([0, 0], 8);
+
+		var polygon = L.polygon([
+			[0, 0],
+			[0, 1],
+			[1, 1],
+			[1, 0]
+		]).addTo(map);
+
+		var alreadyCalled = false;
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				setTimeout(function () {
+					if (alreadyCalled) {
+						return; // Will recursivly call itself otherwise
+					}
+					alreadyCalled = true;
+
+					var renderedRect = polygon._path.getBoundingClientRect();
+
+					var width = renderedRect.width;
+					var height = renderedRect.height;
+
+					expect(height < 50).to.be(true);
+					expect(width < 50).to.be(true);
+					expect(height + width > 0).to.be(true);
+
+					var x = renderedRect.x;
+					var y = renderedRect.y;
+
+					expect(x).to.be.within(299, 301);
+					expect(y).to.be.within(270, 280);
+
+					// Fingers lifted after expects as bug goes away when lifted
+					hand._fingers[0].up();
+					hand._fingers[1].up();
+
+					done();
+				}, 100);
+			}
+		});
+
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
+
+		hand.sync(5);
+		f1.wait(100).moveTo(75, 300, 0)
+			.down().moveBy(200, 0, 500);
+		f2.wait(100).moveTo(525, 300, 0)
+			.down().moveBy(-200, 0, 500);
+	});
+
+	it.skipIfNotTouch("Layer is rendered correctly while pinch zoom when zoomAnim is false", function (done) {
+		if (L.Browser.ie) {
+			// getBoundingClientRect doesn't return valid values in IE
+			done();
+			return;
+		}
+		map.remove();
+
+		map = new L.Map(container, {
+			touchZoom: true,
+			inertia: false,
+			zoomAnimation: false
+		});
+
+		map.setView([0, 0], 8);
+
+		var polygon = L.polygon([
+			[0, 0],
+			[0, 1],
+			[1, 1],
+			[1, 0]
+		]).addTo(map);
+
+		var alreadyCalled = false;
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				setTimeout(function () {
+					if (alreadyCalled) {
+						return; // Will recursivly call itself otherwise
+					}
+					alreadyCalled = true;
+
+					var renderedRect = polygon._path.getBoundingClientRect();
+
+					var width = renderedRect.width;
+					var height = renderedRect.height;
+
+					expect(height < 50).to.be(true);
+					expect(width < 50).to.be(true);
+					expect(height + width > 0).to.be(true);
+
+					var x = renderedRect.x;
+					var y = renderedRect.y;
+
+					expect(x).to.be.within(299, 301);
+					expect(y).to.be.within(270, 280);
+
+					// Fingers lifted after expects as bug goes away when lifted
+					hand._fingers[0].up();
+					hand._fingers[1].up();
+
+					done();
+				}, 100);
+			}
+		});
+
+		var f1 = hand.growFinger(touchEventType);
+		var f2 = hand.growFinger(touchEventType);
+
+		hand.sync(5);
+		f1.wait(100).moveTo(75, 300, 0)
+			.down().moveBy(200, 0, 500);
+		f2.wait(100).moveTo(525, 300, 0)
+			.down().moveBy(-200, 0, 500);
+	});
 });

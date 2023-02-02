@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<link rel="stylesheet" href="../css/screen.css" />
+	<script src="../../dist/leaflet-src.js"></script>
+</head>
+<body>
+	<button id="btn-1">A</button>
+	<button id="btn-2">B</button>
+	<div id="map"></div>
+
+	<script>
+		var map = L.map('map', {
+			zoomAnimation: false,
+			// preferCanvas: true
+		}).setView([0, 0], 7);
+
+		var markerA = L.marker([1, 0]).addTo(map);
+		var markerB = L.marker([1, 2]).addTo(map);
+		L.polygon([
+			[0, 0],
+			[2, 0],
+			[2, 2],
+			[0, 2],
+			[0, 0],
+		])
+		.bindPopup('Hello world')
+		.addTo(map);
+
+		// or pinch zoom in mobile
+		document.getElementById('btn-1').addEventListener('click', function () {
+			map.flyTo(markerA.getLatLng(), 6);
+		});
+		document.getElementById('btn-2').addEventListener('click', function () {
+			map.flyTo(markerB.getLatLng(), 7);
+		});
+	</script>
+</body>
+</html>

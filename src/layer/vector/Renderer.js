@@ -47,9 +47,8 @@ export var Renderer = Layer.extend({
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
-			if (this._zoomAnimated) {
-				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
-			}
+			// always keep transform-origin as 0 0
+			DomUtil.addClass(this._container, 'leaflet-zoom-animated');
 		}
 
 		this.getPane().appendChild(this._container);
