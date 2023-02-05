@@ -16,15 +16,6 @@ const config = {
 	output: [
 		{
 			file: pkg.main,
-			format: 'umd',
-			name: 'leaflet',
-			banner,
-			sourcemap: true,
-			freeze: false,
-			esModule: false
-		},
-		{
-			file: pkg.module,
 			format: 'es',
 			banner,
 			sourcemap: true,
