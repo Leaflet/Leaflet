@@ -45,7 +45,7 @@
     "docs": "node ./build/docs.mjs && node ./build/integrity.mjs",
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
-    "lint": "eslint .",
+    "lint": "eslint . --ext js,mjs,cjs",
     "lintfix": "npm run lint -- --fix",
     "rollup": "rollup -c build/rollup-config.mjs",
     "watch": "rollup -w -c build/rollup-config.mjs",
