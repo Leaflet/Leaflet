@@ -1,5 +1,5 @@
-import {Point, toPoint} from './Point';
-import {toLatLng} from '../geo/LatLng';
+import {Point, toPoint} from './Point.js';
+import {toLatLng} from '../geo/LatLng.js';
 
 
 /*

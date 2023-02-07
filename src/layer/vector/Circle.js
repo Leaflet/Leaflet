@@ -1,9 +1,9 @@
-import {CircleMarker} from './CircleMarker';
-import {Path} from './Path';
-import * as Util from '../../core/Util';
-import {toLatLng} from '../../geo/LatLng';
-import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Earth} from '../../geo/crs/CRS.Earth';
+import {CircleMarker} from './CircleMarker.js';
+import {Path} from './Path.js';
+import * as Util from '../../core/Util.js';
+import {toLatLng} from '../../geo/LatLng.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 
 /*

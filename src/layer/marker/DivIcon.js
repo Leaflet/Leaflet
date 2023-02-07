@@ -1,5 +1,5 @@
-import {Icon} from './Icon';
-import {toPoint as point} from '../../geometry/Point';
+import {Icon} from './Icon.js';
+import {toPoint as point} from '../../geometry/Point.js';
 
 /*
  * @class DivIcon

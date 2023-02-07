@@ -1,8 +1,8 @@
 
-import {Control} from './Control';
-import {Map} from '../map/Map';
-import * as DomUtil from '../dom/DomUtil';
-import * as DomEvent from '../dom/DomEvent';
+import {Control} from './Control.js';
+import {Map} from '../map/Map.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import * as DomEvent from '../dom/DomEvent.js';
 
 /*
  * @class Control.Zoom

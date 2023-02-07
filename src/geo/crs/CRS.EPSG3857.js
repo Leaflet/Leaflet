@@ -1,7 +1,7 @@
-import {Earth} from './CRS.Earth';
-import {SphericalMercator} from '../projection/Projection.SphericalMercator';
-import {toTransformation} from '../../geometry/Transformation';
-import * as Util from '../../core/Util';
+import {Earth} from './CRS.Earth.js';
+import {SphericalMercator} from '../projection/Projection.SphericalMercator.js';
+import {toTransformation} from '../../geometry/Transformation.js';
+import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
