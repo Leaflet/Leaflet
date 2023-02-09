@@ -28,6 +28,16 @@ Map.mergeOptions({
 });
 
 export const ScrollWheelZoom = Handler.extend({
+    // @method enableCenter(): this
+	// Sets ScrollWheelZoom to 'center'
+	enableCenter() {
+		if (this._enabled === 'center') { return this; }
+
+		this._enabled = 'center';
+		this.addHooks();
+		return this;
+	},
+
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
