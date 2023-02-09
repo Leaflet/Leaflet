@@ -1,9 +1,9 @@
-import {Point} from '../geometry/Point';
-import * as Util from '../core/Util';
-import Browser from '../core/Browser';
-import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
-import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
-import {getScale} from './DomUtil';
+import {Point} from '../geometry/Point.js';
+import * as Util from '../core/Util.js';
+import Browser from '../core/Browser.js';
+import {addPointerListener, removePointerListener} from './DomEvent.Pointer.js';
+import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
+import {getScale} from './DomUtil.js';
 
 /*
  * @namespace DomEvent

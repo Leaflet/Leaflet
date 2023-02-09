@@ -1,7 +1,7 @@
-import {Path} from './Path';
-import * as Util from '../../core/Util';
-import {toLatLng} from '../../geo/LatLng';
-import {Bounds} from '../../geometry/Bounds';
+import {Path} from './Path.js';
+import * as Util from '../../core/Util.js';
+import {toLatLng} from '../../geo/LatLng.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 
 /*

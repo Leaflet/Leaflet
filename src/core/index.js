@@ -1,8 +1,8 @@
-export {default as Browser} from './Browser';
-export {Class} from './Class';
-export {Evented} from './Events';
-export {Handler} from './Handler';
+export {default as Browser} from './Browser.js';
+export {Class} from './Class.js';
+export {Evented} from './Events.js';
+export {Handler} from './Handler.js';
 
-import * as Util from './Util';
+import * as Util from './Util.js';
 export {Util};
-export {extend, stamp, setOptions} from './Util';
+export {extend, stamp, setOptions} from './Util.js';

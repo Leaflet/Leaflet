@@ -1,10 +1,10 @@
-import {Layer} from '../Layer';
-import Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import * as DomUtil from '../../dom/DomUtil';
-import {Point} from '../../geometry/Point';
-import {Bounds} from '../../geometry/Bounds';
-import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+import {Layer} from '../Layer.js';
+import Browser from '../../core/Browser.js';
+import * as Util from '../../core/Util.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import {Point} from '../../geometry/Point.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * @class GridLayer

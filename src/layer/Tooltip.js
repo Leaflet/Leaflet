@@ -1,11 +1,11 @@
-import {DivOverlay} from './DivOverlay';
-import {toPoint} from '../geometry/Point';
-import {Map} from '../map/Map';
-import {Layer} from './Layer';
-import * as DomUtil from '../dom/DomUtil';
-import * as DomEvent from '../dom/DomEvent';
-import * as Util from '../core/Util';
-import {FeatureGroup} from './FeatureGroup';
+import {DivOverlay} from './DivOverlay.js';
+import {toPoint} from '../geometry/Point.js';
+import {Map} from '../map/Map.js';
+import {Layer} from './Layer.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import * as DomEvent from '../dom/DomEvent.js';
+import * as Util from '../core/Util.js';
+import {FeatureGroup} from './FeatureGroup.js';
 
 /*
  * @class Tooltip

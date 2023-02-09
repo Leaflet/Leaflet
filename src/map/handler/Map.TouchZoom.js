@@ -1,8 +1,8 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import * as DomEvent from '../../dom/DomEvent';
-import * as Util from '../../core/Util';
-import Browser from '../../core/Browser';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import * as Util from '../../core/Util.js';
+import Browser from '../../core/Browser.js';
 
 /*
  * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.

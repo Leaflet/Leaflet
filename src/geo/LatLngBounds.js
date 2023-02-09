@@ -1,4 +1,4 @@
-import {LatLng, toLatLng} from './LatLng';
+import {LatLng, toLatLng} from './LatLng.js';
 
 /*
  * @class LatLngBounds

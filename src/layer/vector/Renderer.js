@@ -1,7 +1,7 @@
-import {Layer} from '../Layer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as Util from '../../core/Util';
-import {Bounds} from '../../geometry/Bounds';
+import {Layer} from '../Layer.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as Util from '../../core/Util.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 
 

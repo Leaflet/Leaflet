@@ -1,7 +1,7 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import {on, off, stop} from '../../dom/DomEvent';
-import {toPoint} from '../../geometry/Point';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import {on, off, stop} from '../../dom/DomEvent.js';
+import {toPoint} from '../../geometry/Point.js';
 
 
 /*

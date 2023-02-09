@@ -1,4 +1,4 @@
-import * as Util from './Util';
+import * as Util from './Util.js';
 
 // @class Class
 // @aka L.Class

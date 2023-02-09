@@ -1,8 +1,8 @@
-import {Layer} from './Layer';
-import * as Util from '../core/Util';
-import {toLatLngBounds} from '../geo/LatLngBounds';
-import {Bounds} from '../geometry/Bounds';
-import * as DomUtil from '../dom/DomUtil';
+import {Layer} from './Layer.js';
+import * as Util from '../core/Util.js';
+import {toLatLngBounds} from '../geo/LatLngBounds.js';
+import {Bounds} from '../geometry/Bounds.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class ImageOverlay

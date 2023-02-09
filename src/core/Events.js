@@ -1,5 +1,5 @@
-import {Class} from './Class';
-import * as Util from './Util';
+import {Class} from './Class.js';
+import * as Util from './Util.js';
 
 /*
  * @class Evented

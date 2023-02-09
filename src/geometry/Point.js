@@ -1,4 +1,4 @@
-import {formatNum} from '../core/Util';
+import {formatNum} from '../core/Util.js';
 
 /*
  * @class Point

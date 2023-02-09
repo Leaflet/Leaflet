@@ -1,6 +1,6 @@
-import * as LineUtil from './LineUtil';
-import {toLatLng} from '../geo/LatLng';
-import {toPoint} from './Point';
+import * as LineUtil from './LineUtil.js';
+import {toLatLng} from '../geo/LatLng.js';
+import {toPoint} from './Point.js';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.

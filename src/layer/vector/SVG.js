@@ -1,8 +1,8 @@
-import {Renderer} from './Renderer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import {splitWords, stamp} from '../../core/Util';
-import {svgCreate, pointsToPath} from './SVG.Util';
+import {Renderer} from './Renderer.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import {splitWords, stamp} from '../../core/Util.js';
+import {svgCreate, pointsToPath} from './SVG.Util.js';
 export {pointsToPath};
 
 export const create = svgCreate;

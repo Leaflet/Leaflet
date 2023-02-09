@@ -1,7 +1,7 @@
-export {LatLng, toLatLng as latLng} from './LatLng';
-export {LatLngBounds, toLatLngBounds as latLngBounds} from './LatLngBounds';
+export {LatLng, toLatLng as latLng} from './LatLng.js';
+export {LatLngBounds, toLatLngBounds as latLngBounds} from './LatLngBounds.js';
 
-import * as Projection from './projection/index';
+import * as Projection from './projection/index.js';
 export {Projection};
 
-export * from './crs/index';
+export * from './crs/index.js';

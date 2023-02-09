@@ -1,10 +1,10 @@
-import {Map} from '../map/Map';
-import {Layer} from './Layer';
-import {FeatureGroup} from './FeatureGroup';
-import * as Util from '../core/Util';
-import {toLatLng, LatLng} from '../geo/LatLng';
-import {toPoint} from '../geometry/Point';
-import * as DomUtil from '../dom/DomUtil';
+import {Map} from '../map/Map.js';
+import {Layer} from './Layer.js';
+import {FeatureGroup} from './FeatureGroup.js';
+import * as Util from '../core/Util.js';
+import {toLatLng, LatLng} from '../geo/LatLng.js';
+import {toPoint} from '../geometry/Point.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class DivOverlay
