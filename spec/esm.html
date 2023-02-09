@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Leaflet Spec Runner</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
+	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css">
+</head>
+<body>
+	<div id="mocha"></div>
+	<script src="../node_modules/expect.js/index.js"></script>
+	<script src="../node_modules/mocha/mocha.js"></script>
+	<script src="../node_modules/ui-event-simulator/ui-event-simulator.js"></script>
+	<script src="../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+	<script src="../node_modules/sinon/pkg/sinon.js"></script>
+
+	<!-- source files -->
+	<script type="module">
+		// Trick Leaflet into believing we have a touchscreen (for desktop)
+		if (window.TouchEvent) { window.ontouchstart = function(){} };
+		var oldL = window.L;
+	</script>
+
+	<script type="module">
+		import * as L from '../../src/Leaflet.js';
+		window.L = L;
+	</script>
+
+	<script type="module">
+		// sets the default imagePath to the project path like "/Leaflet/dist/images/"
+		// same as in after.js but not static
+		L.Icon.Default.imagePath = window.location.pathname.split('/').slice(0, -2).join('/') + '/dist/images/';
+	</script>
+
+	<script class="mocha-init" type="module">
+		mocha.setup('bdd');
+		mocha.checkLeaks();
+	</script>
+
+	<!-- spec files -->
+	<script defer src="suites/SpecHelper.js"></script>
+
+	<!-- /control -->
+	<script defer src="suites/control/Control.AttributionSpec.js"></script>
+	<script defer src="suites/control/Control.LayersSpec.js"></script>
+	<script defer src="suites/control/Control.ScaleSpec.js"></script>
+	<script defer src="suites/control/ControlSpec.js"></script>
+
+	<!-- /core -->
+	<script defer src="suites/core/ClassSpec.js"></script>
+	<script defer src="suites/core/EventsSpec.js"></script>
+	<script defer src="suites/core/GeneralSpec.js"></script>
+	<script defer src="suites/core/UtilSpec.js"></script>
+
+	<!-- /dom -->
+	<script defer src="suites/dom/DomEvent.DoubleTapSpec.js"></script>
+	<script defer src="suites/dom/DomEvent.PointerSpec.js"></script>
+	<script defer src="suites/dom/DomEventSpec.js"></script>
+	<script defer src="suites/dom/DomUtilSpec.js"></script>
+
+	<!-- /geo -->
+	<script defer src="suites/geo/LatLngBoundsSpec.js"></script>
+	<script defer src="suites/geo/LatLngSpec.js"></script>
+
+	<!-- /geo/crs -->
+	<script defer src="suites/geo/crs/CRSSpec.js"></script>
+
+	<!-- /geo/projection -->
+	<script defer src="suites/geo/projection/ProjectionSpec.js"></script>
+
+	<!-- /geometry -->
+	<script defer src="suites/geometry/BoundsSpec.js"></script>
+	<script defer src="suites/geometry/LineUtilSpec.js"></script>
+	<script defer src="suites/geometry/PointSpec.js"></script>
+	<script defer src="suites/geometry/PolyUtilSpec.js"></script>
+	<script defer src="suites/geometry/TransformationSpec.js"></script>
+
+	<!-- /layer -->
+	<script defer src="suites/layer/FeatureGroupSpec.js"></script>
+	<script defer src="suites/layer/GeoJSONSpec.js"></script>
+	<script defer src="suites/layer/ImageOverlaySpec.js"></script>
+	<script defer src="suites/layer/LayerGroupSpec.js"></script>
+	<script defer src="suites/layer/PopupSpec.js"></script>
+	<script defer src="suites/layer/TooltipSpec.js"></script>
+	<script defer src="suites/layer/VideoOverlaySpec.js"></script>
+
+	<!-- /layer/marker/ -->
+	<script defer src="suites/layer/marker/Icon.DefaultSpec.js"></script>
+	<script defer src="suites/layer/marker/Marker.DragSpec.js"></script>
+	<script defer src="suites/layer/marker/MarkerSpec.js"></script>
+
+	<!-- /layer/tile -->
+	<script defer src="suites/layer/tile/GridLayerSpec.js"></script>
+	<script defer src="suites/layer/tile/TileLayerSpec.js"></script>
+
+	<!-- /layer/vector/ -->
+	<script defer src="suites/layer/vector/CanvasSpec.js"></script>
+	<script defer src="suites/layer/vector/CircleMarkerSpec.js"></script>
+	<script defer src="suites/layer/vector/CircleSpec.js"></script>
+	<script defer src="suites/layer/vector/PathSpec.js"></script>
+	<script defer src="suites/layer/vector/PolygonSpec.js"></script>
+	<script defer src="suites/layer/vector/PolylineSpec.js"></script>
+	<script defer src="suites/layer/vector/RectangleSpec.js"></script>
+
+	<!-- /map -->
+	<script defer src="suites/map/MapSpec.js"></script>
+
+	<!-- /map/handler -->
+	<script defer src="suites/map/handler/Map.BoxZoom.js"></script>
+	<script defer src="suites/map/handler/Map.DoubleClickZoomSpec.js"></script>
+	<script defer src="suites/map/handler/Map.DragSpec.js"></script>
+	<script defer src="suites/map/handler/Map.KeyboardSpec.js"></script>
+	<script defer src="suites/map/handler/Map.ScrollWheelZoomSpec.js"></script>
+	<script defer src="suites/map/handler/Map.TapHoldSpec.js"></script>
+	<script defer src="suites/map/handler/Map.TouchZoomSpec.js"></script>
+
+	<script class="mocha-exec" type="module">
+		window.mocha
+				.globals([ '_leaflet_events' ]) // acceptable globals - fixing gloabl leaks
+				.run();
+	</script>
+
+</body>
+</html>
