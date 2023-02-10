@@ -72,8 +72,8 @@ export function polygonCenter(latlngs, crs) {
 
 	const len = latlngs.length;
 	const points = [];
-	
-	for (i = 0; i < len; i++)
+
+	for (i = 0; i < len; i++) {
 		points.push(crs.project(toLatLng(latlngs[i])));
 	}
 
