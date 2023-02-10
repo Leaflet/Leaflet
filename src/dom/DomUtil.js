@@ -1,5 +1,5 @@
-import * as DomEvent from './DomEvent';
-import {Point} from '../geometry/Point';
+import * as DomEvent from './DomEvent.js';
+import {Point} from '../geometry/Point.js';
 
 /*
  * @namespace DomUtil

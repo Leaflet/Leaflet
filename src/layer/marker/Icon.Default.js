@@ -1,5 +1,5 @@
-import {Icon} from './Icon';
-import * as DomUtil from '../../dom/DomUtil';
+import {Icon} from './Icon.js';
+import * as DomUtil from '../../dom/DomUtil.js';
 
 /*
  * @miniclass Icon.Default (Icon)

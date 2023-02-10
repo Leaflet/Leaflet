@@ -1,5 +1,5 @@
-import {LayerGroup} from './LayerGroup';
-import {LatLngBounds} from '../geo/LatLngBounds';
+import {LayerGroup} from './LayerGroup.js';
+import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class FeatureGroup

@@ -1,9 +1,9 @@
-import {Renderer} from './Renderer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import {Bounds} from '../../geometry/Bounds';
+import {Renderer} from './Renderer.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import Browser from '../../core/Browser.js';
+import * as Util from '../../core/Util.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * @class Canvas

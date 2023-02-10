@@ -1,6 +1,6 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import * as DomEvent from '../../dom/DomEvent';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.

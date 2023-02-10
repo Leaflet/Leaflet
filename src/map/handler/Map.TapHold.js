@@ -1,8 +1,8 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import * as DomEvent from '../../dom/DomEvent';
-import {Point} from '../../geometry/Point';
-import Browser from '../../core/Browser';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import {Point} from '../../geometry/Point.js';
+import Browser from '../../core/Browser.js';
 
 /*
  * L.Map.TapHold is used to simulate `contextmenu` event on long hold,

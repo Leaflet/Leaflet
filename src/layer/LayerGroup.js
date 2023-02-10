@@ -1,6 +1,6 @@
 
-import {Layer} from './Layer';
-import * as Util from '../core/Util';
+import {Layer} from './Layer.js';
+import * as Util from '../core/Util.js';
 
 /*
  * @class LayerGroup

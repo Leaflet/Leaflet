@@ -1,9 +1,9 @@
-import {Polyline} from './Polyline';
-import {LatLng} from '../../geo/LatLng';
-import * as LineUtil from '../../geometry/LineUtil';
-import {Point} from '../../geometry/Point';
-import {Bounds} from '../../geometry/Bounds';
-import * as PolyUtil from '../../geometry/PolyUtil';
+import {Polyline} from './Polyline.js';
+import {LatLng} from '../../geo/LatLng.js';
+import * as LineUtil from '../../geometry/LineUtil.js';
+import {Point} from '../../geometry/Point.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import * as PolyUtil from '../../geometry/PolyUtil.js';
 
 /*
  * @class Polygon

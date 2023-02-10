@@ -1,4 +1,4 @@
-import * as DomEvent from './DomEvent';
+import * as DomEvent from './DomEvent.js';
 
 /*
  * Extends the event handling code with double tap support for mobile browsers.

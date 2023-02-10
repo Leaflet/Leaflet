@@ -1,14 +1,14 @@
-import * as Util from '../core/Util';
-import {Evented} from '../core/Events';
-import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
-import {Point, toPoint} from '../geometry/Point';
-import {Bounds, toBounds} from '../geometry/Bounds';
-import {LatLng, toLatLng} from '../geo/LatLng';
-import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import Browser from '../core/Browser';
-import * as DomEvent from '../dom/DomEvent';
-import * as DomUtil from '../dom/DomUtil';
-import {PosAnimation} from '../dom/PosAnimation';
+import * as Util from '../core/Util.js';
+import {Evented} from '../core/Events.js';
+import {EPSG3857} from '../geo/crs/CRS.EPSG3857.js';
+import {Point, toPoint} from '../geometry/Point.js';
+import {Bounds, toBounds} from '../geometry/Bounds.js';
+import {LatLng, toLatLng} from '../geo/LatLng.js';
+import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds.js';
+import Browser from '../core/Browser.js';
+import * as DomEvent from '../dom/DomEvent.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import {PosAnimation} from '../dom/PosAnimation.js';
 
 /*
  * @class Map

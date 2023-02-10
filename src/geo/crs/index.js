@@ -1,9 +1,9 @@
-import {CRS} from './CRS';
-import {Earth} from './CRS.Earth';
-import {EPSG3395} from './CRS.EPSG3395';
-import {EPSG3857, EPSG900913} from './CRS.EPSG3857';
-import {EPSG4326} from './CRS.EPSG4326';
-import {Simple} from './CRS.Simple';
+import {CRS} from './CRS.js';
+import {Earth} from './CRS.Earth.js';
+import {EPSG3395} from './CRS.EPSG3395.js';
+import {EPSG3857, EPSG900913} from './CRS.EPSG3857.js';
+import {EPSG4326} from './CRS.EPSG4326.js';
+import {Simple} from './CRS.Simple.js';
 
 CRS.Earth = Earth;
 CRS.EPSG3395 = EPSG3395;

@@ -1,4 +1,4 @@
-import {Point, toPoint} from './Point';
+import {Point, toPoint} from './Point.js';
 
 /*
  * @class Bounds

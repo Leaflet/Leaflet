@@ -1,9 +1,9 @@
-export {PosAnimation} from './PosAnimation';
+export {PosAnimation} from './PosAnimation.js';
 
-import * as DomEvent from './DomEvent';
+import * as DomEvent from './DomEvent.js';
 export {DomEvent};
 
-import * as DomUtil from './DomUtil';
+import * as DomUtil from './DomUtil.js';
 export {DomUtil};
 
-export {Draggable} from './Draggable';
+export {Draggable} from './Draggable.js';
