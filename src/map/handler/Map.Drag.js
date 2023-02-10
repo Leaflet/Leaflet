@@ -1,9 +1,9 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import {Draggable} from '../../dom/Draggable';
-import * as Util from '../../core/Util';
-import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
-import {toBounds} from '../../geometry/Bounds';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import {Draggable} from '../../dom/Draggable.js';
+import * as Util from '../../core/Util.js';
+import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
+import {toBounds} from '../../geometry/Bounds.js';
 
 /*
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.

@@ -1,11 +1,11 @@
-import {Layer} from '../Layer';
-import {IconDefault} from './Icon.Default';
-import * as Util from '../../core/Util';
-import {toLatLng as latLng} from '../../geo/LatLng';
-import {toPoint as point} from '../../geometry/Point';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import {MarkerDrag} from './Marker.Drag';
+import {Layer} from '../Layer.js';
+import {IconDefault} from './Icon.Default.js';
+import * as Util from '../../core/Util.js';
+import {toLatLng as latLng} from '../../geo/LatLng.js';
+import {toPoint as point} from '../../geometry/Point.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import {MarkerDrag} from './Marker.Drag.js';
 
 /*
  * @class Marker

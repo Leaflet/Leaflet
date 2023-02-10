@@ -1,6 +1,6 @@
-import * as Util from '../core/Util';
-import {Earth} from './crs/CRS.Earth';
-import {toLatLngBounds} from './LatLngBounds';
+import * as Util from '../core/Util.js';
+import {Earth} from './crs/CRS.Earth.js';
+import {toLatLngBounds} from './LatLngBounds.js';
 
 /* @class LatLng
  * @aka L.LatLng

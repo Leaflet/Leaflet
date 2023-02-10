@@ -1,11 +1,11 @@
-import {DivOverlay} from './DivOverlay';
-import * as DomEvent from '../dom/DomEvent';
-import * as DomUtil from '../dom/DomUtil';
-import {Point, toPoint} from '../geometry/Point';
-import {Map} from '../map/Map';
-import {Layer} from './Layer';
-import {Path} from './vector/Path';
-import {FeatureGroup} from './FeatureGroup';
+import {DivOverlay} from './DivOverlay.js';
+import * as DomEvent from '../dom/DomEvent.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import {Point, toPoint} from '../geometry/Point.js';
+import {Map} from '../map/Map.js';
+import {Layer} from './Layer.js';
+import {Path} from './vector/Path.js';
+import {FeatureGroup} from './FeatureGroup.js';
 
 /*
  * @class Popup

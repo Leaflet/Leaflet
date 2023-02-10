@@ -1,8 +1,8 @@
-import {TileLayer} from './TileLayer';
-import {extend, setOptions, getParamString} from '../../core/Util';
-import Browser from '../../core/Browser';
-import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
-import {toBounds} from '../../geometry/Bounds';
+import {TileLayer} from './TileLayer.js';
+import {extend, setOptions, getParamString} from '../../core/Util.js';
+import Browser from '../../core/Browser.js';
+import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
+import {toBounds} from '../../geometry/Bounds.js';
 
 /*
  * @class TileLayer.WMS

@@ -1,4 +1,4 @@
-import {falseFn} from '../core/Util';
+import {falseFn} from '../core/Util.js';
 
 const pEvent = {
 	touchstart  : 'pointerdown',

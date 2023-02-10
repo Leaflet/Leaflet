@@ -1,9 +1,9 @@
 
-import {Control} from './Control';
-import {Map} from '../map/Map';
-import * as Util from '../core/Util';
-import * as DomEvent from '../dom/DomEvent';
-import * as DomUtil from '../dom/DomUtil';
+import {Control} from './Control.js';
+import {Map} from '../map/Map.js';
+import * as Util from '../core/Util.js';
+import * as DomEvent from '../dom/DomEvent.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 

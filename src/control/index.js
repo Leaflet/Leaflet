@@ -1,8 +1,8 @@
-import {Control, control} from './Control';
-import {Layers, layers} from './Control.Layers';
-import {Zoom, zoom} from './Control.Zoom';
-import {Scale, scale} from './Control.Scale';
-import {Attribution, attribution} from './Control.Attribution';
+import {Control, control} from './Control.js';
+import {Layers, layers} from './Control.Layers.js';
+import {Zoom, zoom} from './Control.Zoom.js';
+import {Scale, scale} from './Control.Scale.js';
+import {Attribution, attribution} from './Control.Attribution.js';
 
 Control.Layers = Layers;
 Control.Zoom = Zoom;

@@ -1,7 +1,7 @@
-import {CRS} from './CRS';
-import {LonLat} from '../projection/Projection.LonLat';
-import {toTransformation} from '../../geometry/Transformation';
-import * as Util from '../../core/Util';
+import {CRS} from './CRS.js';
+import {LonLat} from '../projection/Projection.LonLat.js';
+import {toTransformation} from '../../geometry/Transformation.js';
+import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS

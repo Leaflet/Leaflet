@@ -21,7 +21,8 @@ module.exports = {
 	},
 	extends: 'mourner',
 	plugins: [
-		'@mapbox/eslint-plugin-script-tags'
+		'@mapbox/eslint-plugin-script-tags',
+		'eslint-plugin-import'
 	],
 	parserOptions: {
 		ecmaVersion: 'latest',
@@ -30,6 +31,7 @@ module.exports = {
 	rules: {
 		'consistent-return': 'off',
 		'curly': 'error',
+		'import/extensions': ['error', 'ignorePackages'],
 		'indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true}],
 		'key-spacing': 'off',
 		'linebreak-style': ['off', 'unix'],

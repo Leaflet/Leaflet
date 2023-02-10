@@ -1,5 +1,5 @@
-import * as L from './Leaflet';
-export * from './Leaflet';
+import * as L from './Leaflet.js';
+export * from './Leaflet.js';
 
 export default L;
 
