@@ -259,6 +259,7 @@ export function polylineCenter(latlngs, crs) {
 		}
 	}
 
+	const len = points.length;
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;
 	}
