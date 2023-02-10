@@ -254,7 +254,7 @@ export function polylineCenter(latlngs, crs) {
 
 	const points = [];
 	for (const k in latlngs) {
-		if(latlngs.hasOwnProperty(k)) {
+		if (Object.hasOwn(latlngs, k)) {
 			points.push(crs.project(toLatLng(latlngs[k])));
 		}
 	}
