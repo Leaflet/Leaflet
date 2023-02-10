@@ -70,13 +70,14 @@ export function polygonCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	const len = latlngs.length;
 	const points = [];
-
-	for (i = 0; i < len; i++) {
-		points.push(crs.project(toLatLng(latlngs[i])));
+	for (const k in latlngs) {
+		if(latlngs.hasOwnProperty(k)) {
+			points.push(crs.project(toLatLng(latlngs[k])));
+		}
 	}
 
+	const len = points.length;
 	area = x = y = 0;
 
 	// polygon centroid algorithm;
