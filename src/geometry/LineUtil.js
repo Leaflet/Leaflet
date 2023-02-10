@@ -252,10 +252,11 @@ export function polylineCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	const len = latlngs.length;
 	const points = [];
-	for (i = 0; i < len; i++) {
-		points.push(crs.project(toLatLng(latlngs[i])));
+	for (const k in latlngs) {
+		if(latlngs.hasOwnProperty(k)) {
+			points.push(crs.project(toLatLng(latlngs[k])));
+		}
 	}
 
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
