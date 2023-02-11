@@ -70,12 +70,12 @@ export function polygonCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
+	var len = latlngs.length;
 	var points = [];
-	for (var k in latlngs) {
-		points.push(crs.project(toLatLng(latlngs[k])));
+	for (i = 0; i < len; i++) {
+		points.push(crs.project(toLatLng(latlngs[i])));
 	}
 
-	var len = points.length;
 	area = x = y = 0;
 
 	// polygon centroid algorithm;
