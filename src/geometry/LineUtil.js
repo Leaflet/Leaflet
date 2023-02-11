@@ -269,13 +269,12 @@ export function polylineCenter(latlngs, crs) {
 		centroidLatLng = centroid(latlngs);
 	}
 
+	var len = latlngs.length;
 	var points = [];
-	for (var k in latlngs) {
-		var latlng = toLatLng(latlngs[k]);
+	for (i = 0; i < len; i++) {
+		var latlng = toLatLng(latlngs[i]);
 		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
 	}
-
-	var len = points.length;
 
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;

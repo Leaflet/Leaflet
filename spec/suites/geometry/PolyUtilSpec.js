@@ -100,5 +100,15 @@ describe('PolyUtil', function () {
 				L.PolyUtil.polygonCenter(latlngs, null);
 			}).to.throwException('map not passed');
 		});
+
+		it('iterates only over the array values', function () {
+			// eslint-disable-next-line
+			Array.prototype.foo = 'ABC';
+			var latlngs = [
+				[[0, 0], [10, 0], [10, 10], [0, 10]]
+			];
+			var center = L.PolyUtil.polygonCenter(latlngs, crs);
+			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
+		});
 	});
 });

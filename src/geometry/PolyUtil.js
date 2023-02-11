@@ -81,13 +81,13 @@ export function polygonCenter(latlngs, crs) {
 		centroidLatLng = centroid(latlngs);
 	}
 
+	var len = latlngs.length;
 	var points = [];
-	for (var k in latlngs) {
-		var latlng = toLatLng(latlngs[k]);
+	for (i = 0; i < len; i++) {
+		var latlng = toLatLng(latlngs[i]);
 		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
 	}
 
-	var len = points.length;
 	area = x = y = 0;
 
 	// polygon centroid algorithm;
