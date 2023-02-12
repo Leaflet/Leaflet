@@ -119,7 +119,8 @@ export function centroid(coords) {
 	var latSum = 0;
 	var lngSum = 0;
 	var len = 0;
-	for (const coord of coords) {
+	for (var coord of coords) {
+
 		var latlng = toLatLng(coord);
 		latSum += latlng.lat;
 		lngSum += latlng.lng;
