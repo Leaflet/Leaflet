@@ -49,3 +49,5 @@ function removeMapContainer(map, container) { /* eslint-disable-line no-unused-v
 
 console.log('L.Browser.pointer', L.Browser.pointer);
 console.log('L.Browser.touchNative', L.Browser.touchNative);
+
+const pointerType = L.Browser.touchNative ? 'touch' : 'mouse';  // eslint-disable-line no-unused-vars
