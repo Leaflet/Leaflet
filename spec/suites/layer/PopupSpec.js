@@ -20,7 +20,7 @@ describe('Popup', () => {
 			.setLatLng(center)
 			.openOn(map);
 
-		happen.click(container);
+		UIEventSimulator.fire('click', container);
 
 		expect(map.hasLayer(popup)).to.be(false);
 	});
@@ -32,7 +32,7 @@ describe('Popup', () => {
 			.setLatLng(center)
 			.openOn(map);
 
-		happen.click(container);
+		UIEventSimulator.fire('click', container);
 
 		expect(map.hasLayer(popup)).to.be(false);
 	});
@@ -44,7 +44,7 @@ describe('Popup', () => {
 			.setLatLng(center)
 			.openOn(map);
 
-		happen.click(container);
+		UIEventSimulator.fire('click', container);
 
 		expect(map.hasLayer(popup)).to.be(true);
 	});
@@ -74,11 +74,11 @@ describe('Popup', () => {
 		expect(map.hasLayer(marker._popup)).to.be(false);
 
 		// toggle open popup
-		happen.click(marker._icon);
+		UIEventSimulator.fire('click', marker._icon);
 		expect(map.hasLayer(marker._popup)).to.be(true);
 
 		// toggle close popup
-		happen.click(marker._icon);
+		UIEventSimulator.fire('click', marker._icon);
 		expect(map.hasLayer(marker._popup)).to.be(false);
 	});
 
@@ -286,7 +286,7 @@ describe('Popup', () => {
 		});
 
 		expect(map.hasLayer(layer._popup)).to.be(false);
-		happen.click(layer._path);
+		UIEventSimulator.fire('click', layer._path);
 		expect(mapClicked).to.be(false);
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
@@ -296,8 +296,8 @@ describe('Popup', () => {
 		const layer = L.marker(center).addTo(map);
 		layer.bindPopup('layer popup');
 
-		happen.keypress(layer._icon, {
-			keyCode: 13
+		UIEventSimulator.fire('keypress', layer._icon, {
+			code: 'Enter'
 		});
 
 		expect(map.hasLayer(layer._popup)).to.be(true);
@@ -582,7 +582,7 @@ describe('Popup', () => {
 			const el = document.elementFromPoint(point.x, point.y);
 			expect(el).to.be(popup._tip);
 
-			happen.click(el, {
+			UIEventSimulator.fire('click', el, {
 				clientX: point.x,
 				clientY: point.y
 			});

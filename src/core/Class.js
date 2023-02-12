@@ -1,4 +1,4 @@
-import * as Util from './Util';
+import * as Util from './Util.js';
 
 // @class Class
 // @aka L.Class
@@ -10,7 +10,7 @@ import * as Util from './Util';
 
 export function Class() {}
 
-Class.extend = function (props) {
+Class.extend = function ({statics, includes, ...props}) {
 
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
@@ -28,7 +28,7 @@ Class.extend = function (props) {
 		this.callInitHooks();
 	};
 
-	const parentProto = NewClass.__super__ = this.prototype;
+	const parentProto = this.prototype;
 
 	const proto = Object.create(parentProto);
 	proto.constructor = NewClass;
@@ -37,25 +37,23 @@ Class.extend = function (props) {
 
 	// inherit parent's statics
 	for (const i in this) {
-		if (Object.hasOwn(this, i) && i !== 'prototype' && i !== '__super__') {
+		if (Object.hasOwn(this, i) && i !== 'prototype') {
 			NewClass[i] = this[i];
 		}
 	}
 
 	// mix static properties into the class
-	if (props.statics) {
-		Util.extend(NewClass, props.statics);
+	if (statics) {
+		Util.extend(NewClass, statics);
 	}
 
 	// mix includes into the prototype
-	if (props.includes) {
-		Util.extend.apply(null, [proto].concat(props.includes));
+	if (includes) {
+		Util.extend.apply(null, [proto].concat(includes));
 	}
 
 	// mix given properties into the prototype
 	Util.extend(proto, props);
-	delete proto.statics;
-	delete proto.includes;
 
 	// merge options
 	if (proto.options) {

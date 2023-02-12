@@ -1,5 +1,5 @@
-import {ImageOverlay} from './ImageOverlay';
-import * as Util from '../core/Util';
+import {ImageOverlay} from './ImageOverlay.js';
+import * as Util from '../core/Util.js';
 
 /*
  * @class SVGOverlay

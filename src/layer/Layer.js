@@ -1,6 +1,6 @@
-import {Evented} from '../core/Events';
-import {Map} from '../map/Map';
-import * as Util from '../core/Util';
+import {Evented} from '../core/Events.js';
+import {Map} from '../map/Map.js';
+import * as Util from '../core/Util.js';
 
 /*
  * @class Layer

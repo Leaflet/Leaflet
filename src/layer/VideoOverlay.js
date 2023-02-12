@@ -1,6 +1,6 @@
-import {ImageOverlay} from './ImageOverlay';
-import * as DomUtil from '../dom/DomUtil';
-import * as Util from '../core/Util';
+import {ImageOverlay} from './ImageOverlay.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import * as Util from '../core/Util.js';
 
 /*
  * @class VideoOverlay

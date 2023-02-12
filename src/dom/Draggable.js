@@ -1,9 +1,9 @@
-import {Evented} from '../core/Events';
-import Browser from '../core/Browser';
-import * as DomEvent from './DomEvent';
-import * as DomUtil from './DomUtil';
-import * as Util from '../core/Util';
-import {Point} from '../geometry/Point';
+import {Evented} from '../core/Events.js';
+import Browser from '../core/Browser.js';
+import * as DomEvent from './DomEvent.js';
+import * as DomUtil from './DomUtil.js';
+import * as Util from '../core/Util.js';
+import {Point} from '../geometry/Point.js';
 
 /*
  * @class Draggable
@@ -88,7 +88,7 @@ export const Draggable = Evented.extend({
 			return;
 		}
 
-		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (Draggable._dragging || e.shiftKey || ((e.button !== 0) && !e.touches)) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {

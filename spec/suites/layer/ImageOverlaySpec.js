@@ -141,10 +141,8 @@ describe('ImageOverlay', () => {
 			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
 	});
-	// For tests that do not actually need to append the map container to the document.
-	// This saves PhantomJS memory.
-	const _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
-	_describe('crossOrigin option', () => {
+
+	describe('crossOrigin option', () => {
 		let overlay;
 		const blankUrl = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 

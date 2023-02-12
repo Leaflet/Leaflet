@@ -19,7 +19,7 @@ const config = {
 			file: pkg.main,
 			format: 'umd',
 			name: 'leaflet',
-			banner: banner,
+			banner,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
@@ -35,7 +35,7 @@ if (!watch) {
 		{
 			file: pkg.module,
 			format: 'es',
-			banner: banner,
+			banner,
 			sourcemap: true,
 			freeze: false
 		}

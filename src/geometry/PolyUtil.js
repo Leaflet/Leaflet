@@ -1,6 +1,6 @@
-import * as LineUtil from './LineUtil';
-import {toLatLng} from '../geo/LatLng';
-import {toPoint} from './Point';
+import * as LineUtil from './LineUtil.js';
+import {toLatLng} from '../geo/LatLng.js';
+import {toPoint} from './Point.js';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
@@ -71,8 +71,8 @@ export function polygonCenter(latlngs, crs) {
 	}
 
 	const points = [];
-	for (const k in latlngs) {
-		points.push(crs.project(toLatLng(latlngs[k])));
+	for (const latlng of latlngs) {
+		points.push(crs.project(toLatLng(latlng)));
 	}
 
 	const len = points.length;

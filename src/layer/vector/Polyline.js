@@ -1,10 +1,10 @@
-import {Path} from './Path';
-import * as Util from '../../core/Util';
-import * as LineUtil from '../../geometry/LineUtil';
-import {LatLng, toLatLng} from '../../geo/LatLng';
-import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Bounds} from '../../geometry/Bounds';
-import {Point} from '../../geometry/Point';
+import {Path} from './Path.js';
+import * as Util from '../../core/Util.js';
+import * as LineUtil from '../../geometry/LineUtil.js';
+import {LatLng, toLatLng} from '../../geo/LatLng.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
  * @class Polyline

@@ -1,7 +1,7 @@
-import {Layer} from '../Layer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as Util from '../../core/Util';
-import {Bounds} from '../../geometry/Bounds';
+import {Layer} from '../Layer.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as Util from '../../core/Util.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 
 
@@ -46,9 +46,8 @@ export const Renderer = Layer.extend({
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
-			if (this._zoomAnimated) {
-				this._container.classList.add('leaflet-zoom-animated');
-			}
+			// always keep transform-origin as 0 0
+			this._container.classList.add('leaflet-zoom-animated');
 		}
 
 		this.getPane().appendChild(this._container);

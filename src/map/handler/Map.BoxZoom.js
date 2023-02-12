@@ -1,9 +1,9 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Bounds} from '../../geometry/Bounds';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map
@@ -58,7 +58,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onMouseDown(e) {
-		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
+		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
 		// will interrupt the interaction and orphan a box element in the container.
@@ -117,7 +117,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onMouseUp(e) {
-		if ((e.which !== 1) && (e.button !== 1)) { return; }
+		if (e.button !== 0) { return; }
 
 		this._finish();
 
@@ -137,7 +137,7 @@ export const BoxZoom = Handler.extend({
 	},
 
 	_onKeyDown(e) {
-		if (e.keyCode === 27) {
+		if (e.code === 'Escape') {
 			this._finish();
 			this._clearDeferredResetState();
 			this._resetState();

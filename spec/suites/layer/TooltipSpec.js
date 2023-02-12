@@ -17,11 +17,11 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip');
 
-		happen.mouseover(layer._icon, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseover', layer._icon, {relatedTarget: map._container});
 
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 
-		happen.mouseout(layer._icon, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -32,11 +32,11 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		happen.once(element, {type:'focus'});
+		UIEventSimulator.fire('focus', element);
 
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 
-		happen.once(element, {type:'blur'});
+		UIEventSimulator.fire('blur', element);
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -47,11 +47,11 @@ describe('Tooltip', () => {
 
 		const element = layer.getElement();
 
-		happen.once(element, {type:'focus'});
+		UIEventSimulator.fire('focus', element);
 
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 
-		happen.once(element, {type:'blur'});
+		UIEventSimulator.fire('blur', element);
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -64,20 +64,20 @@ describe('Tooltip', () => {
 		const element1 = marker1.getElement();
 		const element2 = marker2.getElement();
 
-		happen.once(element1, {type:'focus'});
+		UIEventSimulator.fire('focus', element1);
 
 		expect(map.hasLayer(group._tooltip)).to.be(true);
 		expect(group._tooltip._container.innerHTML).to.be('Group tooltip: Marker 1');
 
-		happen.once(element1, {type:'blur'});
+		UIEventSimulator.fire('blur', element1);
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 
-		happen.once(element2, {type:'focus'});
+		UIEventSimulator.fire('focus', element2);
 
 		expect(map.hasLayer(group._tooltip)).to.be(true);
 		expect(group._tooltip._container.innerHTML).to.be('Group tooltip: Marker 2');
 
-		happen.once(element2, {type:'blur'});
+		UIEventSimulator.fire('blur', element2);
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 	});
 
@@ -87,7 +87,7 @@ describe('Tooltip', () => {
 		layer.bindTooltip('Tooltip');
 		const element = layer.getElement();
 
-		happen.once(element, {type:'focus'});
+		UIEventSimulator.fire('focus', element);
 
 		const tooltip = layer.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -101,7 +101,7 @@ describe('Tooltip', () => {
 
 		const element = marker2.getElement();
 
-		happen.once(element, {type:'focus'});
+		UIEventSimulator.fire('focus', element);
 
 		const tooltip = group.getTooltip();
 		expect(element.getAttribute('aria-describedby')).to.equal(tooltip._container.id);
@@ -139,7 +139,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip', {permanent: true});
 		layer._tooltip.on('click', spy);
-		happen.click(layer._tooltip._container);
+		UIEventSimulator.fire('click', layer._tooltip._container);
 		expect(spy.called).to.be(false);
 	});
 
@@ -149,7 +149,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
 		layer._tooltip.on('click', spy);
-		happen.click(layer._tooltip._container);
+		UIEventSimulator.fire('click', layer._tooltip._container);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -159,7 +159,7 @@ describe('Tooltip', () => {
 		layer.on('click', spy);
 
 		layer.bindTooltip('Tooltip', {permanent: true, interactive: true});
-		happen.click(layer._tooltip._container);
+		UIEventSimulator.fire('click', layer._tooltip._container);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -182,7 +182,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A long tooltip that should be displayed on the left', {permanent: true, direction: 'left', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 150, 180);  // Marker is on the map center, which is 400px large.
+		UIEventSimulator.fireAt('click', 150, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -193,9 +193,9 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A long tooltip that should be displayed on the left', {permanent: true, direction: 'left', interactive: true, offset: [-20, -20]});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 150, 180);
+		UIEventSimulator.fireAt('click', 150, 180);
 		expect(spy.calledOnce).to.be(false);
-		happen.at('click', 130, 160);
+		UIEventSimulator.fireAt('click', 130, 160);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -206,7 +206,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 200, 180);  // Marker is on the map center, which is 400px large.
+		UIEventSimulator.fireAt('click', 200, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -216,9 +216,9 @@ describe('Tooltip', () => {
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true, offset: [-20, -20]});
-		happen.at('click', 200, 180);
+		UIEventSimulator.fireAt('click', 200, 180);
 		expect(spy.calledOnce).to.be(false);
-		happen.at('click', 180, 150);
+		UIEventSimulator.fireAt('click', 180, 150);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -229,7 +229,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 200, 220);  // Marker is on the map center, which is 400px large.
+		UIEventSimulator.fireAt('click', 200, 220);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -240,9 +240,9 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true, offset: [20, 20]});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 200, 220);
+		UIEventSimulator.fireAt('click', 200, 220);
 		expect(spy.calledOnce).to.be(false);
-		happen.at('click', 220, 230);
+		UIEventSimulator.fireAt('click', 220, 230);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -253,7 +253,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('A tooltip that should be displayed on the center', {permanent: true, direction: 'center', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 150, 180);  // Marker is on the map center, which is 400px large.
+		UIEventSimulator.fireAt('click', 150, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -279,12 +279,12 @@ describe('Tooltip', () => {
 		group.bindTooltip(layer => layer.options.description);
 
 		// toggle popup on marker1
-		happen.mouseover(marker1._icon, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseover', marker1._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(group._tooltip)).to.be(true);
 		expect(group._tooltip._container.innerHTML).to.be('I\'m marker 1.');
 
 		// toggle popup on marker2
-		happen.mouseover(marker2._icon, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseover', marker2._icon, {relatedTarget: map._container});
 		expect(map.hasLayer(group._tooltip)).to.be(true);
 		expect(group._tooltip._container.innerHTML).to.be('I\'m marker 2.');
 	});
@@ -294,11 +294,11 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip');
 
-		happen.mouseover(layer._path, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseover', layer._path, {relatedTarget: map._container});
 
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 
-		happen.mouseout(layer._path, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseout', layer._path, {relatedTarget: map._container});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -327,11 +327,11 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip');
 
-		happen.mouseover(layer._path, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseover', layer._path, {relatedTarget: map._container});
 
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 
-		happen.mouseout(layer._path, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseout', layer._path, {relatedTarget: map._container});
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -360,7 +360,7 @@ describe('Tooltip', () => {
 
 		layer.bindTooltip('Tooltip');
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
-		happen.click(layer._icon);
+		UIEventSimulator.fire('click', layer._icon);
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
@@ -368,9 +368,9 @@ describe('Tooltip', () => {
 		const layer = L.marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
-		happen.click(layer._icon);
+		UIEventSimulator.fire('click', layer._icon);
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.click(map._container);
+		UIEventSimulator.fire('click', map._container);
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
@@ -390,7 +390,7 @@ describe('Tooltip', () => {
 		  .on('click', spy);
 		map.openTooltip(tooltip, center);
 
-		happen.click(tooltip._container);
+		UIEventSimulator.fire('click', tooltip._container);
 		expect(spy.calledOnce).to.be(true);
 	});
 
@@ -406,7 +406,7 @@ describe('Tooltip', () => {
 		const tooltip = layer.getTooltip();
 		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be(true);
 
-		happen.at('click', 120, 120);
+		UIEventSimulator.fireAt('click', 120, 120);
 		const latlng = map.containerPointToLatLng([120, 120]);
 		expect(tooltip.getLatLng().equals(latlng)).to.be(true);
 	});
@@ -450,14 +450,14 @@ describe('Tooltip', () => {
 		map.dragging.moving = function () {
 			return true;
 		};
-		happen.at('mouseover', 210, 195);
+		UIEventSimulator.fireAt('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 
 		// simulate map not dragging anymore
 		map.dragging.moving = function () {
 			return false;
 		};
-		happen.at('mouseover', 210, 195);
+		UIEventSimulator.fireAt('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be.ok();
 	});
 
@@ -468,18 +468,18 @@ describe('Tooltip', () => {
 		const tooltip = layer.getTooltip();
 
 		// open tooltip before "dragging map"
-		happen.at('mouseover', 210, 195);
+		UIEventSimulator.fireAt('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be.ok();
 
 		// simulate map dragging
 		map.dragging.moving = function () {
 			return true;
 		};
-		happen.mouseout(layer._icon, {relatedTarget: map._container});
+		UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: map._container});
 		expect(tooltip.isOpen()).to.be(false);
 
 		// tooltip should not open again while dragging
-		happen.at('mouseover', 210, 195);
+		UIEventSimulator.fireAt('mouseover', 210, 195);
 		expect(tooltip.isOpen()).to.be(false);
 	});
 

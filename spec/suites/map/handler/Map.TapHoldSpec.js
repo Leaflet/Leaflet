@@ -25,17 +25,17 @@ describe('Map.TapHoldSpec.js', () => {
 	});
 
 	afterEach(() => {
-		happen.once(container, {type: 'touchend'});
+		UIEventSimulator.fire('touchend', container);
 		for (let id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
-			happen.once(container, {type: 'pointercancel', pointerId:id});
+			UIEventSimulator.fire('pointercancel', container, {pointerId:id});
 		}
 		clock.restore();
 		removeMapContainer(map, container);
 	});
 
 	it('fires synthetic contextmenu after hold delay>600', () => {
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.ok();
@@ -51,43 +51,46 @@ describe('Map.TapHoldSpec.js', () => {
 	});
 
 	it('does not fire contextmenu when touches > 1', () => {
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(100);
-		happen.once(container, {type: 'touchstart', touches: [posStart, posNear]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:1}, posNear));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart, posNear]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:1, ...posNear});
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not fire contextmenu when touches > 1 (case:2)', () => {
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(100);
-		happen.once(container, {type: 'touchstart', touches: [posStart, posNear]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:1}, posNear));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart, posNear]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:1, ...posNear});
 		clock.tick(100);
-		happen.once(container, {type: 'touchend', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerup', pointerId:0}, posNear));
+		UIEventSimulator.fire('touchend', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerup', container, {pointerId:0, ...posNear});
 		clock.tick(450);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	(L.Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0, pointerType:'mouse'}, posStart));
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, pointerType:'mouse', ...posStart});
 		clock.tick(650);
 
 		expect(spy.notCalled).to.be.ok();
 	});
 
 	it('does not conflict with native contextmenu', () => {
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);
 
-		happen.once(container, {type: 'contextmenu'});
+		UIEventSimulator.fire('contextmenu', container);
 
 		clock.tick(100);
 
@@ -105,22 +108,23 @@ describe('Map.TapHoldSpec.js', () => {
 		const clickSpy = sinon.spy();
 		map.on('click', clickSpy);
 
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(650);
-		happen.once(container, {type: 'touchend', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerup', pointerId:0}, posNear));
+		UIEventSimulator.fire('touchend', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerup', container, {pointerId:0, ...posNear});
 
 		expect(clickSpy.notCalled).to.be.ok();
 	});
 
 	it('allows short movements', () => {
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);
 
-		happen.once(container, {type: 'touchmove', touches: [posNear]});
-		happen.once(container, L.extend({type: 'pointermove', pointerId:0}, posNear));
+		UIEventSimulator.fire('touchmove', container, {touches: [posNear]});
+		UIEventSimulator.fire('pointermove', container, {pointerId:0, ...posNear});
 
 		clock.tick(100);
 
@@ -131,12 +135,12 @@ describe('Map.TapHoldSpec.js', () => {
 		expect(L.point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
 		  .to.be.above(map.options.tapTolerance);
 
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);
 
-		happen.once(container, {type: 'touchmove', touches: [posFar]});
-		happen.once(container, L.extend({type: 'pointermove', pointerId:0}, posFar));
+		UIEventSimulator.fire('touchmove', container, {touches: [posFar]});
+		UIEventSimulator.fire('pointermove', container, {pointerId:0, ...posFar});
 
 		clock.tick(100);
 
@@ -149,8 +153,8 @@ describe('Map.TapHoldSpec.js', () => {
 			screenY: 2,
 		});
 
-		happen.once(container, {type: 'touchstart', touches: [posStart]});
-		happen.once(container, L.extend({type: 'pointerdown', pointerId:0}, posStart));
+		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
+		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(650);
 
 		const originalEvent = spy.lastCall.args[0].originalEvent;
@@ -165,43 +169,3 @@ describe('Map.TapHoldSpec.js', () => {
 		}
 	});
 });
-
-// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent#polyfill
-// required for PhantomJS
-
-(function (window) {
-	try {
-		new MouseEvent('test'); // eslint-disable-line no-new
-		return false; // No need to polyfill
-	} catch (e) {
-		// Need to polyfill - fall through
-	}
-
-	// Polyfills DOM4 MouseEvent
-	const MouseEventPolyfill = function (eventType, params) {
-		params = params || {bubbles: false, cancelable: false};
-		const mouseEvent = document.createEvent('MouseEvent');
-		mouseEvent.initMouseEvent(eventType,
-			params.bubbles,
-			params.cancelable,
-			window,
-			0,
-			params.screenX || 0,
-			params.screenY || 0,
-			params.clientX || 0,
-			params.clientY || 0,
-			params.ctrlKey || false,
-			params.altKey || false,
-			params.shiftKey || false,
-			params.metaKey || false,
-			params.button || 0,
-			params.relatedTarget || null
-		);
-
-		return mouseEvent;
-	};
-
-	MouseEventPolyfill.prototype = Event.prototype;
-
-	window.MouseEvent = MouseEventPolyfill;
-})(window);

@@ -276,11 +276,11 @@ describe('DomUtil', () => {
 
 			L.DomUtil.disableImageDrag();
 			window.addEventListener('dragstart', checkPrevented);
-			happen.once(child, {type: 'dragstart'});
+			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.be.ok();
 
 			L.DomUtil.enableImageDrag();
-			happen.once(child, {type: 'dragstart'});
+			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.not.be.ok();
 		});
 	});
@@ -302,7 +302,7 @@ describe('DomUtil', () => {
 			//	Implicit #restoreOutline test through simulation
 			L.DomUtil.preventOutline(child);
 			expect(child.style.outline).to.match(/(?:none)/);
-			happen.once(child, {type: 'keydown'});
+			UIEventSimulator.fire('keydown', child);
 			expect(child.style.outline).to.be.equal(child.style.outline);
 		});
 	});

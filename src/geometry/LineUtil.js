@@ -1,5 +1,5 @@
-import {Point, toPoint} from './Point';
-import {toLatLng} from '../geo/LatLng';
+import {Point, toPoint} from './Point.js';
+import {toLatLng} from '../geo/LatLng.js';
 
 
 /*
@@ -253,12 +253,11 @@ export function polylineCenter(latlngs, crs) {
 	}
 
 	const points = [];
-	for (const j in latlngs) {
-		points.push(crs.project(toLatLng(latlngs[j])));
+	for (const latlng of latlngs) {
+		points.push(crs.project(toLatLng(latlng)));
 	}
 
 	const len = points.length;
-
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;
 	}

@@ -3,22 +3,22 @@ import {version} from '../package.json';
 export {version};
 
 // control
-export * from './control/index';
+export * from './control/index.js';
 
 // core
-export * from './core/index';
+export * from './core/index.js';
 
 // dom
-export * from './dom/index';
+export * from './dom/index.js';
 
 // geometry
-export * from './geometry/index';
+export * from './geometry/index.js';
 
 // geo
-export * from './geo/index';
+export * from './geo/index.js';
 
 // layer
-export * from './layer/index';
+export * from './layer/index.js';
 
 // map
-export * from './map/index';
+export * from './map/index.js';

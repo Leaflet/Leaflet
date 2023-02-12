@@ -231,5 +231,15 @@ describe('LineUtil', () => {
 			expect(spy.calledOnce).to.be.ok();
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
+
+		it('iterates only over the array values', () => {
+			// eslint-disable-next-line
+			Array.prototype.foo = 'ABC';
+			const latlngs = [
+				[[80, 0], [80, 90]]
+			];
+			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			expect(center).to.be.nearLatLng([80, 45]);
+		});
 	});
 });

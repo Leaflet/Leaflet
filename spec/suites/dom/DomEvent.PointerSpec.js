@@ -15,8 +15,8 @@ describe('DomEvent.Pointer', () => {
 	});
 
 	afterEach(() => {
-		happen.once(el, {type: 'pointercancel'}); // to reset prosphetic-hand
-		happen.once(el, {type: 'touchcancel'});   //
+		UIEventSimulator.fire('pointercancel', el); // to reset prosphetic-hand
+		UIEventSimulator.fire('touchcancel', el);
 		document.body.removeChild(el);
 	});
 
@@ -26,7 +26,7 @@ describe('DomEvent.Pointer', () => {
 	(pointerToTouch ? describe : skip)('#Simulates touch based on pointer events', () => {
 		it('adds a listener and calls it on pointer event', () => {
 			pointerEvents.forEach((type) => {
-				happen.once(el, {type});
+				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].called).to.be.ok();
@@ -39,7 +39,7 @@ describe('DomEvent.Pointer', () => {
 				L.DomEvent.off(el, type, listeners[type]);
 			});
 			pointerEvents.forEach((type) => {
-				happen.once(el, {type});
+				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
@@ -48,7 +48,7 @@ describe('DomEvent.Pointer', () => {
 
 		it('ignores events from mouse', () => {
 			pointerEvents.forEach((type) => {
-				happen.once(el, {type, pointerType: 'mouse'});
+				UIEventSimulator.fire(type, el, {pointerType: 'mouse'});
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
@@ -57,7 +57,7 @@ describe('DomEvent.Pointer', () => {
 
 		it('ignores native touch events', () => {
 			touchEvents.forEach((type) => {
-				happen.once(el, {type});
+				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();
@@ -99,7 +99,7 @@ describe('DomEvent.Pointer', () => {
 
 			// pointerdown/touchstart
 			const pointer1 = {clientX:1, clientY:1, pointerId: 1};
-			happen.once(el, L.extend({type: 'pointerdown'}, pointer1));
+			UIEventSimulator.fire('pointerdown', el, pointer1);
 			let evt = listeners.touchstart.lastCall.args[0];
 			expect(evt.type).to.be('pointerdown');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -110,7 +110,7 @@ describe('DomEvent.Pointer', () => {
 
 			// another pointerdown/touchstart (multitouch)
 			const pointer2 = {clientX:2, clientY:2, pointerId: 2};
-			happen.once(el, L.extend({type: 'pointerdown'}, pointer2));
+			UIEventSimulator.fire('pointerdown', el, pointer2);
 			evt = listeners.touchstart.lastCall.args[0];
 			expect(evt.type).to.be('pointerdown');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -121,7 +121,7 @@ describe('DomEvent.Pointer', () => {
 
 			// pointermove/touchmove (multitouch)
 			L.extend(pointer1, {clientX:11, clientY:11});
-			happen.once(el, L.extend({type: 'pointermove'}, pointer1));
+			UIEventSimulator.fire('pointermove', el, pointer1);
 			evt = listeners.touchmove.lastCall.args[0];
 			expect(evt.type).to.be('pointermove');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -131,7 +131,7 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
 
 			// pointerup/touchend (multitouch)
-			happen.once(el, L.extend({type: 'pointerup'}, pointer2));
+			UIEventSimulator.fire('pointerup', el, pointer2);
 			evt = listeners.touchend.lastCall.args[0];
 			expect(evt.type).to.be('pointerup');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -141,7 +141,7 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
 
 			// pointercancel/touchcancel
-			happen.once(el, L.extend({type: 'pointercancel'}, pointer1));
+			UIEventSimulator.fire('pointercancel', el, pointer1);
 			evt = listeners.touchcancel.lastCall.args[0];
 			expect(evt.type).to.be('pointercancel');
 			expect(evt).to.have.keys('touches', 'changedTouches');
@@ -159,7 +159,7 @@ describe('DomEvent.Pointer', () => {
 	(L.Browser.pointer ? skip : describe)('#Does not intrude if pointer events are not available', () => {
 		it('adds a listener and calls it on touch event', () => {
 			touchEvents.forEach((type) => {
-				happen.once(el, {type});
+				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].calledOnce).to.be.ok();
@@ -168,7 +168,7 @@ describe('DomEvent.Pointer', () => {
 
 		it('ignores pointer events', () => {
 			pointerEvents.forEach((type) => {
-				happen.once(el, {type});
+				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
 				expect(listeners[type].notCalled).to.be.ok();

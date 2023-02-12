@@ -1,13 +1,13 @@
-import {LayerGroup} from './LayerGroup';
-import {FeatureGroup} from './FeatureGroup';
-import * as Util from '../core/Util';
-import {Marker} from './marker/Marker';
-import {Circle} from './vector/Circle';
-import {CircleMarker} from './vector/CircleMarker';
-import {Polyline} from './vector/Polyline';
-import {Polygon} from './vector/Polygon';
-import {LatLng, toLatLng} from '../geo/LatLng';
-import * as LineUtil from '../geometry/LineUtil';
+import {LayerGroup} from './LayerGroup.js';
+import {FeatureGroup} from './FeatureGroup.js';
+import * as Util from '../core/Util.js';
+import {Marker} from './marker/Marker.js';
+import {Circle} from './vector/Circle.js';
+import {CircleMarker} from './vector/CircleMarker.js';
+import {Polyline} from './vector/Polyline.js';
+import {Polygon} from './vector/Polygon.js';
+import {LatLng, toLatLng} from '../geo/LatLng.js';
+import * as LineUtil from '../geometry/LineUtil.js';
 
 
 /*

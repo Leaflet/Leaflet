@@ -56,7 +56,7 @@ describe('Map', () => {
 			// before actual test: make sure that events are ok
 			map.setView([0, 0], 0);
 			map.on('click', spy);
-			happen.click(container);
+			UIEventSimulator.fire('click', container);
 			expect(spy.called).to.be.ok();
 
 			// actual test
@@ -65,11 +65,11 @@ describe('Map', () => {
 			map.remove();
 			map = null;
 
-			happen.click(container);
-			happen.dblclick(container);
-			happen.mousedown(container);
-			happen.mouseup(container);
-			happen.mousemove(container);
+			UIEventSimulator.fire('click', container);
+			UIEventSimulator.fire('dblclick', container);
+			UIEventSimulator.fire('mousedown', container);
+			UIEventSimulator.fire('mouseup', container);
+			UIEventSimulator.fire('mousemove', container);
 
 			expect(spy.called).to.not.be.ok();
 		});
@@ -421,7 +421,7 @@ describe('Map', () => {
 
 		it('respects the \'inside\' parameter', () => {
 			container.style.height = height;
-			container.style.width = '1024px'; // Make sure the width is defined for browsers other than PhantomJS (in particular Firefox).
+			container.style.width = '1024px'; // Make sure the width is defined
 			expect(map.getBoundsZoom(wideBounds, false, padding)).to.be.equal(17);
 			expect(map.getBoundsZoom(wideBounds, true, padding)).to.be.equal(20);
 		});
@@ -693,17 +693,18 @@ describe('Map', () => {
 			L.ClickHandler = getHandler(spy);
 			map.addHandler('clickHandler', L.ClickHandler);
 
-			happen.once(window, {type: 'click'});
+			UIEventSimulator.fire('click', window);
+			UIEventSimulator.fire('click', window);
 			expect(spy.called).not.to.be.ok();
 
 			map.clickHandler.enable();
 
-			happen.once(window, {type: 'click'});
+			UIEventSimulator.fire('click', window);
 			expect(spy.called).to.be.ok();
 
 			map.clickHandler.disable();
 
-			happen.once(window, {type: 'click'});
+			UIEventSimulator.fire('click', window);
 			expect(spy.callCount).to.eql(1);
 		});
 	});
@@ -1739,7 +1740,7 @@ describe('Map', () => {
 			const spy = sinon.spy();
 			map.on('mousemove', spy);
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
-			happen.mousemove(layer._path);
+			UIEventSimulator.fire('mousemove', layer._path);
 			expect(spy.calledOnce).to.be.ok();
 		});
 
@@ -1747,7 +1748,7 @@ describe('Map', () => {
 			const spy = sinon.spy();
 			map.on('mousemove', spy);
 			const layer = L.marker([1, 2]).addTo(map);
-			happen.mousemove(layer._icon);
+			UIEventSimulator.fire('mousemove', layer._icon);
 			expect(spy.calledOnce).to.be.ok();
 		});
 
@@ -1757,7 +1758,7 @@ describe('Map', () => {
 			map.on('mousemove', mapSpy);
 			const layer = L.marker([1, 2]).addTo(map);
 			layer.on('mousemove', L.DomEvent.stopPropagation).on('mousemove', layerSpy);
-			happen.mousemove(layer._icon);
+			UIEventSimulator.fire('mousemove', layer._icon);
 			expect(layerSpy.calledOnce).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
 		});
@@ -1768,7 +1769,7 @@ describe('Map', () => {
 			map.on('mousemove', mapSpy);
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('mousemove', L.DomEvent.stopPropagation).on('mousemove', layerSpy);
-			happen.mousemove(layer._path);
+			UIEventSimulator.fire('mousemove', layer._path);
 			expect(layerSpy.calledOnce).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
 		});
@@ -1782,7 +1783,7 @@ describe('Map', () => {
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
 			other.on('mouseout', otherSpy);
-			happen.mouseout(layer._path, {relatedTarget: container});
+			UIEventSimulator.fire('mouseout', layer._path, {relatedTarget: container});
 			expect(mapSpy.called).not.to.be.ok();
 			expect(otherSpy.called).not.to.be.ok();
 			expect(layerSpy.calledOnce).to.be.ok();
@@ -1798,7 +1799,7 @@ describe('Map', () => {
 			    layer = L.marker([1, 2], {icon}).addTo(map);
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
-			happen.mouseout(layer._icon, {relatedTarget: container});
+			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: container});
 			expect(mapSpy.called).not.to.be.ok();
 			expect(layerSpy.calledOnce).to.be.ok();
 		});
@@ -1814,7 +1815,7 @@ describe('Map', () => {
 			    child = layer._icon.querySelector('p');
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
-			happen.mouseout(layer._icon, {relatedTarget: child});
+			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: child});
 			expect(mapSpy.called).not.to.be.ok();
 			expect(layerSpy.called).not.to.be.ok();
 		});
@@ -1830,7 +1831,7 @@ describe('Map', () => {
 			    child = layer._icon.querySelector('p');
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
-			happen.mouseout(child, {relatedTarget: layer._icon});
+			UIEventSimulator.fire('mouseout', child, {relatedTarget: layer._icon});
 			expect(mapSpy.called).not.to.be.ok();
 			expect(layerSpy.called).not.to.be.ok();
 		});
@@ -1844,7 +1845,7 @@ describe('Map', () => {
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
 			other.on('mouseout', otherSpy);
-			happen.mouseout(container);
+			UIEventSimulator.fire('mouseout', container);
 			expect(otherSpy.called).not.to.be.ok();
 			expect(layerSpy.called).not.to.be.ok();
 			expect(mapSpy.calledOnce).to.be.ok();
@@ -1869,7 +1870,7 @@ describe('Map', () => {
 				expect(called++).to.eql(3);
 				expect(e.latlng).to.ok();
 			});
-			happen.click(layer._icon);
+			UIEventSimulator.fire('click', layer._icon);
 			expect(called).to.eql(4);
 		});
 
@@ -1891,9 +1892,9 @@ describe('Map', () => {
 			});
 			const marker = L.circleMarker([0, 0]).addTo(map);
 
-			happen.at('contextmenu', 0, 0); // first
+			UIEventSimulator.fireAt('contextmenu', 0, 0); // first
 
-			happen.at('contextmenu', marker._point.x, marker._point.y); // second  (#5995)
+			UIEventSimulator.fireAt('contextmenu', marker._point.x, marker._point.y); // second  (#5995)
 
 			expect(spy.callCount).to.be(2);
 			expect(spy.firstCall.lastArg).to.be.ok();
@@ -1961,7 +1962,7 @@ describe('Map', () => {
 				parent.remove();
 			});
 			expect(() => {
-				happen.once(child, {type: 'click'});
+				UIEventSimulator.fire('click', child);
 			}).to.not.throwException();
 		});
 	});
@@ -2398,7 +2399,7 @@ describe('Map', () => {
 			map.on('click', (e) => {
 				latlng = map.mouseEventToLatLng(e.originalEvent);
 			});
-			happen.at('click', 100, 100);
+			UIEventSimulator.fireAt('click', 100, 100);
 
 			const expectedCenter = [80.178713496, -140.625];
 			expect(latlng).to.be.nearLatLng(expectedCenter);

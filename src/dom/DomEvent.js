@@ -1,9 +1,9 @@
-import {Point} from '../geometry/Point';
-import * as Util from '../core/Util';
-import Browser from '../core/Browser';
-import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
-import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
-import {getScale} from './DomUtil';
+import {Point} from '../geometry/Point.js';
+import * as Util from '../core/Util.js';
+import Browser from '../core/Browser.js';
+import {addPointerListener, removePointerListener} from './DomEvent.Pointer.js';
+import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
+import {getScale} from './DomUtil.js';
 
 /*
  * @namespace DomEvent
@@ -118,7 +118,7 @@ function addOne(obj, type, fn, context) {
 	} else if ('addEventListener' in obj) {
 
 		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
-			obj.addEventListener(mouseSubst[type] || type, handler, Browser.passiveEvents ? {passive: false} : false);
+			obj.addEventListener(mouseSubst[type] || type, handler, {passive: false});
 
 		} else if (type === 'mouseenter' || type === 'mouseleave') {
 			handler = function (e) {

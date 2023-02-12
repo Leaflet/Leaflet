@@ -127,7 +127,6 @@ describe('GridLayer', () => {
 			grid = L.gridLayer();
 		});
 
-		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', (done) => {
 			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
 			let count = 0,
@@ -867,8 +866,6 @@ describe('GridLayer', () => {
 			counts = undefined;
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
 		it('Loads map, moves forth by 512 px, keepBuffer = 0', (done) => {
 			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
@@ -924,8 +921,6 @@ describe('GridLayer', () => {
 			// clock.tick(250);
 		});
 
-		// NOTE: This test has different behaviour in PhantomJS and graphical
-		// browsers due to CSS animations!
 		it('Loads map, moves forth and back by 512 px, keepBuffer = 0', (done) => {
 			grid.once('load', () => {
 				expect(counts.tileloadstart).to.be(16);

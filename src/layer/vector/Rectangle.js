@@ -1,5 +1,5 @@
-import {Polygon} from './Polygon';
-import {toLatLngBounds} from '../../geo/LatLngBounds';
+import {Polygon} from './Polygon.js';
+import {toLatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.

@@ -1,8 +1,8 @@
 
-import {Bounds} from '../../geometry/Bounds';
-import {LatLng} from '../LatLng';
-import {LatLngBounds} from '../LatLngBounds';
-import * as Util from '../../core/Util';
+import {Bounds} from '../../geometry/Bounds.js';
+import {LatLng} from '../LatLng.js';
+import {LatLngBounds} from '../LatLngBounds.js';
+import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
