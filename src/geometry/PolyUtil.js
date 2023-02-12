@@ -119,11 +119,11 @@ export function centroid(coords) {
 	var latSum = 0;
 	var lngSum = 0;
 	var len = 0;
-	coords.forEach(function (coord) {
+	for (const coord of coords) {
 		var latlng = toLatLng(coord);
 		latSum += latlng.lat;
 		lngSum += latlng.lng;
 		len++;
-	});
+	}
 	return toLatLng([latSum / len, lngSum / len]);
 }
