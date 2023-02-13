@@ -27,7 +27,7 @@
 	<script>
 		// sets the default imagePath to the project path like "/Leaflet/dist/images/"
 		// same as in after.js but not static
-		L.Icon.Default.imagePath = '/' + window.location.pathname.split('/')[1] + '/dist/images/';
+		L.Icon.Default.imagePath = window.location.pathname.split('/').slice(0, -2).join('/') + '/dist/images/';
 	</script>
 
 	<script class="mocha-init">
