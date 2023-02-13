@@ -28,19 +28,14 @@ Class.extend = function ({statics, includes, ...props}) {
 		this.callInitHooks();
 	};
 
+	// inherit parent's prototype
+	Object.setPrototypeOf(NewClass.prototype, this.prototype);
+
+	// inherit parent's static properties
+	Object.setPrototypeOf(NewClass, this);
+
 	const parentProto = this.prototype;
-
-	const proto = Object.create(parentProto);
-	proto.constructor = NewClass;
-
-	NewClass.prototype = proto;
-
-	// inherit parent's statics
-	for (const i in this) {
-		if (Object.hasOwn(this, i) && i !== 'prototype') {
-			NewClass[i] = this[i];
-		}
-	}
+	const proto = NewClass.prototype;
 
 	// mix static properties into the class
 	if (statics) {
