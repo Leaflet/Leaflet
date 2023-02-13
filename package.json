@@ -44,6 +44,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "debug": "http-server -c-1",
     "docs": "node ./build/docs.mjs && node ./build/integrity.mjs",
     "test": "karma start ./spec/karma.conf.js",
     "build": "npm run rollup && npm run uglify",
