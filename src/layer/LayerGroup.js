@@ -39,6 +39,7 @@ export const LayerGroup = Layer.extend({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
 	addLayer(layer) {
+		this._preventRecursion(layer);
 		const id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
@@ -50,6 +51,14 @@ export const LayerGroup = Layer.extend({
 		return this;
 	},
 
+	_preventRecursion(layer) {
+		if (layer instanceof LayerGroup) {
+			const isDescendant = layer.hasLayer(this);
+			if (layer === this || isDescendant) {
+				throw new Error('Cannot add a LayerGroup that contains itself as one of its children');
+			}
+		}
+	},
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the group.
 	// @alternative
