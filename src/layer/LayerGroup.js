@@ -39,9 +39,9 @@ export const LayerGroup = Layer.extend({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
 	addLayer(layer) {
-		this._preventRecursion(layer);
 		const id = this.getLayerId(layer);
 
+		this._preventLayerGroupRecursion(layer);
 		this._layers[id] = layer;
 
 		if (this._map) {
@@ -51,14 +51,26 @@ export const LayerGroup = Layer.extend({
 		return this;
 	},
 
-	_preventRecursion(layer) {
-		if (layer instanceof LayerGroup) {
-			const isDescendant = layer.hasLayer(this);
-			if (layer === this || isDescendant) {
-				throw new Error('Cannot add a LayerGroup that contains itself as one of its children');
-			}
+	_preventLayerGroupRecursion(layer) {
+		if (layer instanceof LayerGroup && layer.hasDescendant(this)) {
+			throw new Error('Cannot add a LayerGroup as a child if it is already included, directly or nested.');
 		}
 	},
+
+	// @method hasDescendant(layer: Layer): Boolean
+	// Returns `true` if the given layer is already a child of this instance, directly or nested.
+	hasDescendant(layer) {
+		let hasDescendant = false;
+
+		this.eachLayer((childLayer) => {
+			if (childLayer === layer || (childLayer instanceof LayerGroup && childLayer.hasDescendant(layer))) {
+				hasDescendant = true;
+			}
+		});
+
+		return hasDescendant;
+	},
+
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the group.
 	// @alternative
