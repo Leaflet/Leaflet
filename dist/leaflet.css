@@ -591,30 +591,30 @@ svg.leaflet-image-layer.leaflet-interactive path {
 }
 
 
-.marker-color-pink {
+.default-icon-color-pink {
 	filter: hue-rotate(120deg);
 }
-.marker-color-dark-blue {
+.default-icon-color-darkblue {
 	filter: hue-rotate(30deg);
 }
-.marker-color-lila {
+.default-icon-color-lila {
 	filter: hue-rotate(50deg);
 }
-.marker-color-magenta {
+.default-icon-color-magenta {
 	filter: hue-rotate(90deg);
 }
-.marker-color-red {
+.default-icon-color-red {
 	filter: hue-rotate(140deg);
 }
-.marker-color-orange {
+.default-icon-color-orange {
 	filter: hue-rotate(160deg);
 }
-.marker-color-brown {
+.default-icon-color-brown {
 	filter: hue-rotate(190deg);
 }
-.marker-color-green {
+.default-icon-color-green {
 	filter: hue-rotate(260deg);
 }
-.marker-color-mint {
+.default-icon-color-mint {
 	filter: hue-rotate(320deg);
 }

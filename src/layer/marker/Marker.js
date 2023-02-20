@@ -99,9 +99,7 @@ export const Marker = Layer.extend({
 
 		// @option autoPanSpeed: Number = 10
 		// Number of pixels the map should pan by.
-		autoPanSpeed: 10,
-
-		color: null
+		autoPanSpeed: 10
 	},
 
 	/* @section
@@ -234,10 +232,6 @@ export const Marker = Layer.extend({
 		}
 
 		icon.classList.add(classToAdd);
-
-		if (this.options.color) {
-			icon.classList.add(`marker-color-${this.options.color}`);
-		}
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';

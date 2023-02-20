@@ -1,39 +1,35 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>Leaflet debug page</title>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+	<meta charset="utf-8" />
+	<title>Leaflet debug page - Mobile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-
 	<link rel="stylesheet" href="../css/mobile.css" />
-
-	<script src="../../dist/leaflet-src.js"></script>
 </head>
 <body>
+<div id="map"></div>
+<script type="module">
+	import {TileLayer, LatLng, Map, Marker, Icon} from '../../dist/leaflet-src.esm.js';
 
-	<div id="map"></div>
+	const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+	const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+	const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+	const latlng = new LatLng(50.5, 30.51);
 
-	<script>
+	const map = new Map('map', {center: [latlng.lat, latlng.lng+(0.0002*5)], zoom: 18, layers: [osm]});
 
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			latlng = new L.LatLng(50.5, 30.51);
+	new Marker([latlng.lat, latlng.lng+(0.0002*1)], {icon: new Icon.Default.Pink()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*2)]).addTo(map); // {icon: new Icon.Default()}
+	new Marker([latlng.lat, latlng.lng+(0.0002*3)], {icon: new Icon.Default.DarkBlue()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*4)], {icon: new Icon.Default.Lila()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*5)], {icon: new Icon.Default.Magenta()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*6)], {icon: new Icon.Default.Red()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*7)], {icon: new Icon.Default.Orange()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*8)], {icon: new Icon.Default.Brown()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*9)], {icon: new Icon.Default.Green()}).addTo(map);
+	new Marker([latlng.lat, latlng.lng+(0.0002*10)], {icon: new Icon.Default.Mint()}).addTo(map);
 
-		var map = new L.Map('map', {center: latlng, zoom: 18, layers: [osm]});
-
-		L.marker([latlng.lat, latlng.lng+(0.0002*1)], {color: 'pink'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*2)]).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*3)], {color: 'dark-blue'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*4)], {color: 'lila'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*5)], {color: 'magenta'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*6)], {color: 'red'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*7)], {color: 'orange'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*8)], {color: 'brown'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*9)], {color: 'green'}).addTo(map);
-		L.marker([latlng.lat, latlng.lng+(0.0002*10)], {color: 'mint'}).addTo(map);
-	</script>
+</script>
 </body>
 </html>
