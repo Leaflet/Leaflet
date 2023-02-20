@@ -115,8 +115,8 @@
 
 	describe('#getBounds', () => {
 		it('returns the bounds (LatLngBounds) of the group', () => {
-			const southWest = new L.LatLng(0, 0),
-			northEast = new L.LatLng(4, 4);
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
 
 			const fg = L.featureGroup([
 				L.marker(southWest),
@@ -124,15 +124,15 @@
 				L.marker([3, 3]),
 			]);
 
-			const bounds = new L.LatLngBounds(southWest, northEast);
+			const bounds = L.latLngBounds(southWest, northEast);
 			expect(fg.getBounds()).to.eql(bounds);
 		});
 	});
 
 	describe('when getBounds contains nested LayerGroups/FeatureGroups as children', () => {
-		it('returns the bounds of the group, including bounds of nested groups\' child layers', () => {
-			const southWest = new L.LatLng(0, 0),
-			northEast = new L.LatLng(4, 4);
+		it('returns the bounds of the group, including nested layers', () => {
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
 
 			const parentFeatureGroup = L.featureGroup();
 			const nestedLayerGroup = L.layerGroup([
@@ -145,7 +145,7 @@
 			nestedFeatureGroup.addLayer(nestedLayerGroup);
 			parentFeatureGroup.addLayer(nestedFeatureGroup);
 
-			const bounds = new L.LatLngBounds(southWest, northEast);
+			const bounds = L.latLngBounds(southWest, northEast);
 			expect(parentFeatureGroup.getBounds()).to.eql(bounds);
 		});
 	});
