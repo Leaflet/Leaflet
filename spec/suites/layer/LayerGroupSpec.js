@@ -149,6 +149,17 @@
 			expect(parentFeatureGroup.getBounds()).to.eql(bounds);
 		});
 
+		it('#hasDescendant', () => {
+			const layerGroup = L.layerGroup();
+			const childLayerGroup = L.layerGroup();
+			const nestedChildLayerGroup = L.layerGroup();
+
+			childLayerGroup.addLayer(nestedChildLayerGroup);
+			layerGroup.addLayer(childLayerGroup);
+
+			expect(layerGroup.hasDescendant(nestedChildLayerGroup)).to.be(true);
+		});
+
 		it('throws an error if there\'s recursion in the children', () => {
 			const layerGroup = L.layerGroup();
 			const childLayerGroup = L.layerGroup();
