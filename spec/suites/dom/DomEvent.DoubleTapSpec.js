@@ -22,7 +22,8 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
-		expect(spy.lastCall.args[0]._simulated).to.be.ok();
+		expect(spy.lastCall.args[0] instanceof MouseEvent).to.equal(true);
+		expect(spy.lastCall.args[0].isTrusted).to.equal(false);
 	});
 
 	it('does not fire dblclick when delay>200', () => {
@@ -60,7 +61,6 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		UIEventSimulator.fire('dblclick', container); // native dblclick expected
 		expect(spy.called).to.be.ok();
 		expect(spy.calledOnce).to.be.ok();
-		expect(spy.lastCall.args[0]._simulated).not.to.be.ok();
 	});
 
 	it('synthetic dblclick event has expected properties', () => {

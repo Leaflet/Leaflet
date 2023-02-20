@@ -2465,4 +2465,24 @@ describe('Map', () => {
 			expect(map.getCenter()).to.be.nearLatLng([-10.9196177602, 10.9863281250]);
 		});
 	});
+
+	describe('#unproject', () => {
+
+		it('returns the latitude and langitude with given point', () => {
+			map.setView([0, 0], 6);
+			const expectedOutput = L.latLng(82.7432022836318, -175.60546875000003);
+			const offset = L.point(200, 1000);
+			const output = map.unproject(offset);
+			expect(output).to.be.nearLatLng(expectedOutput);
+		});
+
+		it('return the latitude and langitude with different zoom and points', () => {
+			map.setView([0, 0], 10);
+			const expectedOutput = L.latLng(85.03926769025156, -179.98626708984378);
+			const offset = L.point(10, 100);
+			const output = map.unproject(offset);
+			expect(output).to.be.nearLatLng(expectedOutput);
+
+		});
+	});
 });

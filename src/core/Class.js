@@ -28,19 +28,14 @@ Class.extend = function ({statics, includes, ...props}) {
 		this.callInitHooks();
 	};
 
+	// inherit parent's prototype
+	Object.setPrototypeOf(NewClass.prototype, this.prototype);
+
+	// inherit parent's static properties
+	Object.setPrototypeOf(NewClass, this);
+
 	const parentProto = this.prototype;
-
-	const proto = Object.create(parentProto);
-	proto.constructor = NewClass;
-
-	NewClass.prototype = proto;
-
-	// inherit parent's statics
-	for (const i in this) {
-		if (Object.hasOwn(this, i) && i !== 'prototype') {
-			NewClass[i] = this[i];
-		}
-	}
+	const proto = NewClass.prototype;
 
 	// mix static properties into the class
 	if (statics) {
@@ -62,22 +57,6 @@ Class.extend = function ({statics, includes, ...props}) {
 	}
 
 	proto._initHooks = [];
-
-	// add method for calling all hooks
-	proto.callInitHooks = function () {
-
-		if (this._initHooksCalled) { return; }
-
-		if (parentProto.callInitHooks) {
-			parentProto.callInitHooks.call(this);
-		}
-
-		this._initHooksCalled = true;
-
-		for (let i = 0, len = proto._initHooks.length; i < len; i++) {
-			proto._initHooks[i].call(this);
-		}
-	};
 
 	return NewClass;
 };
@@ -112,4 +91,30 @@ Class.addInitHook = function (fn, ...args) { // (Function) || (String, args...)
 	this.prototype._initHooks = this.prototype._initHooks || [];
 	this.prototype._initHooks.push(init);
 	return this;
+};
+
+Class.prototype.callInitHooks = function () {
+	if (this._initHooksCalled) {
+		return;
+	}
+
+	// collect all prototypes in chain
+	const prototypes = [];
+	let current = this;
+
+	while ((current = Object.getPrototypeOf(current)) !== null) {
+		prototypes.push(current);
+	}
+
+	// reverse so the parent prototype is first
+	prototypes.reverse();
+
+	// call init hooks on each prototype
+	for (const proto of prototypes) {
+		for (const hook of proto._initHooks ?? []) {
+			hook.call(this);
+		}
+	}
+
+	this._initHooksCalled = true;
 };
