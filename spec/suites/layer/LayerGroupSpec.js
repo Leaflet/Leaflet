@@ -112,4 +112,41 @@
 			expect(layers[1].options.opacity).to.eql(opacity);
 		});
 	});
+
+	describe('#getBounds', () => {
+		it('returns the bounds (LatLngBounds) of the group', () => {
+			const southWest = new L.LatLng(0, 0),
+			northEast = new L.LatLng(4, 4);
+
+			const fg = L.featureGroup([
+				L.marker(southWest),
+				L.marker(northEast),
+				L.marker([3, 3]),
+			]);
+
+			const bounds = new L.LatLngBounds(southWest, northEast);
+			expect(fg.getBounds()).to.eql(bounds);
+		});
+	});
+
+	describe('when getBounds contains nested LayerGroups/FeatureGroups as children', () => {
+		it('returns the bounds of the group, including bounds of nested groups\' child layers', () => {
+			const southWest = new L.LatLng(0, 0),
+			northEast = new L.LatLng(4, 4);
+
+			const parentFeatureGroup = L.featureGroup();
+			const nestedLayerGroup = L.layerGroup([
+				L.marker(southWest)
+			]);
+			const nestedFeatureGroup = L.featureGroup([
+				L.marker(northEast)
+			]);
+
+			nestedFeatureGroup.addLayer(nestedLayerGroup);
+			parentFeatureGroup.addLayer(nestedFeatureGroup);
+
+			const bounds = new L.LatLngBounds(southWest, northEast);
+			expect(parentFeatureGroup.getBounds()).to.eql(bounds);
+		});
+	});
 });
