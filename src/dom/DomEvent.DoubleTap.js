@@ -54,7 +54,6 @@ function makeDblclick(ev) {
 	} else {
 		newEvent = new MouseEvent('dblclick', init);
 	}
-	newEvent._simulated = true; // for debug purposes
 	return newEvent;
 }
 
