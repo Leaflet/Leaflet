@@ -165,11 +165,13 @@ export const Layers = Control.extend({
 
 	// @method collapse(): this
 	// Collapse the control container if expanded.
-	collapse(e) {
-		if (e.type === 'pointerleave' && e.pointerType !== 'mouse') {
-			return;
+	collapse(ev) {
+		// On touch devices `pointerleave` is fired while clicking on a checkbox.
+		// The control was collapsed instead of adding the layer to the map. So we collapse only if it is a mouse.
+		// Or it is called directly by the user
+		if (!ev || (ev.type === 'pointerleave' && ev.pointerType === 'mouse')) {
+			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
-		this._container.classList.remove('leaflet-control-layers-expanded');
 		return this;
 	},
 

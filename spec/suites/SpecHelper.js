@@ -18,6 +18,7 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
+it.skipIfTouch = L.Browser.touchNative ? it.skip : it;
 
 const touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disable-line no-unused-vars
 // Note: this override is needed to workaround prosthetic-hand fail,

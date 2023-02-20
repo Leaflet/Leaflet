@@ -214,7 +214,7 @@ describe('Control.Layers', () => {
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
 
-		it('collapses when mouse is out', () => {
+		it.skipIfTouch('collapses when mouse is out', () => {
 			const layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
