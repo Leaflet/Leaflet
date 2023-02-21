@@ -50,7 +50,7 @@ export const Keyboard = Handler.extend({
 		on(container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			mousedown: this._onMouseDown
+			pointerdown: this._onPointerDown
 		}, this);
 
 		this._map.on({
@@ -65,7 +65,7 @@ export const Keyboard = Handler.extend({
 		off(this._map._container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			mousedown: this._onMouseDown
+			pointerdown: this._onPointerDown
 		}, this);
 
 		this._map.off({
@@ -74,7 +74,8 @@ export const Keyboard = Handler.extend({
 		}, this);
 	},
 
-	_onMouseDown() {
+	//  acquire/lose focus #594, #1228, #1540
+	_onPointerDown() {
 		if (this._focused) { return; }
 
 		const body = document.body,
