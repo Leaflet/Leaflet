@@ -1,7 +1,7 @@
 
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
-import {LatLngBounds} from '../geo/LatLngBounds.js';
+import {toLatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class LayerGroup
@@ -42,7 +42,6 @@ export const LayerGroup = Layer.extend({
 	addLayer(layer) {
 		const id = this.getLayerId(layer);
 
-		this._preventLayerGroupRecursion(layer);
 		this._layers[id] = layer;
 
 		if (this._map) {
@@ -50,26 +49,6 @@ export const LayerGroup = Layer.extend({
 		}
 
 		return this;
-	},
-
-	_preventLayerGroupRecursion(layer) {
-		if (layer instanceof LayerGroup && layer.hasDescendant(this)) {
-			throw new Error('Cannot add a LayerGroup as a child if it is already included, directly or nested.');
-		}
-	},
-
-	// @method hasDescendant(layer: Layer): Boolean
-	// Returns `true` if the given layer is already a child of this instance, directly or nested.
-	hasDescendant(layer) {
-		let hasDescendant = false;
-
-		this.eachLayer((childLayer) => {
-			if (childLayer === layer || (childLayer instanceof LayerGroup && childLayer.hasDescendant(layer))) {
-				hasDescendant = true;
-			}
-		});
-
-		return hasDescendant;
 	},
 
 	// @method removeLayer(layer: Layer): this
@@ -173,12 +152,17 @@ export const LayerGroup = Layer.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Layer Group (created from bounds and coordinates of its children).
-	getBounds() {
-		const bounds = new LatLngBounds();
+	getBounds(visitedIds = new Set()) {
+		const bounds = toLatLngBounds();
 
-		for (const id in this._layers) {
-			const layer = this._layers[id];
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+		for (const layerId in this._layers) {
+			const layer = this._layers[layerId];
+			if (visitedIds.has(layerId)) {
+				continue;
+			}
+
+			visitedIds.add(layerId);
+			bounds.extend(layer instanceof LayerGroup ? layer.getBounds(visitedIds) : layer.getLatLng());
 		}
 		return bounds;
 	}
