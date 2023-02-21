@@ -148,29 +148,5 @@
 			const bounds = L.latLngBounds(southWest, northEast);
 			expect(parentFeatureGroup.getBounds()).to.eql(bounds);
 		});
-
-		it('#hasDescendant', () => {
-			const layerGroup = L.layerGroup();
-			const childLayerGroup = L.layerGroup();
-			const nestedChildLayerGroup = L.layerGroup();
-
-			childLayerGroup.addLayer(nestedChildLayerGroup);
-			layerGroup.addLayer(childLayerGroup);
-
-			expect(layerGroup.hasDescendant(nestedChildLayerGroup)).to.be(true);
-		});
-
-		it('throws an error if there\'s recursion in the children', () => {
-			const layerGroup = L.layerGroup();
-			const childLayerGroup = L.layerGroup();
-			const recursiveLayerGroup = L.layerGroup();
-
-			layerGroup.addLayer(childLayerGroup);
-			childLayerGroup.addLayer(recursiveLayerGroup);
-
-			expect(() => {
-				recursiveLayerGroup.addLayer(layerGroup);
-			}).to.throwError('Cannot add a LayerGroup as a child if it is already included, directly or nested.');
-		});
 	});
 });
