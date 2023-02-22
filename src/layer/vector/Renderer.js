@@ -61,7 +61,8 @@ export const Renderer = BlanketOverlay.extend({
 	},
 
 	_onSettled() {
-		// Subclasses are responsible of firing the 'update' event.
+		// Subclasses are responsible of implementing `_update()` and firing
+		// the 'update' event.
 		this._update();
 	},
 
