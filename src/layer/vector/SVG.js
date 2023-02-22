@@ -1,6 +1,5 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
-import * as DomEvent from '../../dom/DomEvent.js';
 import {splitWords, stamp} from '../../core/Util.js';
 import {svgCreate, pointsToPath} from './SVG.Util.js';
 export {pointsToPath};
@@ -48,9 +47,7 @@ export const SVG = Renderer.extend({
 	},
 
 	_destroyContainer() {
-		this._container.remove();
-		DomEvent.off(this._container);
-		delete this._container;
+		Renderer.prototype._destroyContainer.call(this);
 		delete this._rootGroup;
 		delete this._svgSize;
 	},

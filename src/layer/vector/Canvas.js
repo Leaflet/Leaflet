@@ -80,9 +80,7 @@ export const Canvas = Renderer.extend({
 	_destroyContainer() {
 		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
-		this._container.remove();
-		DomEvent.off(this._container);
-		delete this._container;
+		Renderer.prototype._destroyContainer.call(this);
 	},
 
 	_updatePaths() {

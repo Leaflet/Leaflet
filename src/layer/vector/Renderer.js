@@ -1,13 +1,11 @@
-import {Layer} from '../Layer.js';
-import * as DomUtil from '../../dom/DomUtil.js';
+import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 
-
 /*
  * @class Renderer
- * @inherits Layer
+ * @inherits BlanketOverlay
  * @aka L.Renderer
  *
  * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles the
@@ -25,16 +23,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * its map has moved
  */
 
-export const Renderer = Layer.extend({
-
-	// @section
-	// @aka Renderer options
-	options: {
-		// @option padding: Number = 0.1
-		// How much to extend the clip area around the map view (relative to its size)
-		// e.g. 0.1 would be 10% of map view in each direction
-		padding: 0.1
-	},
+export const Renderer = BlanketOverlay.extend({
 
 	initialize(options) {
 		Util.setOptions(this, options);
@@ -60,47 +49,6 @@ export const Renderer = Layer.extend({
 		this._destroyContainer();
 	},
 
-	getEvents() {
-		const events = {
-			viewreset: this._reset,
-			zoom: this._onZoom,
-			moveend: this._update,
-			zoomend: this._onZoomEnd
-		};
-		if (this._zoomAnimated) {
-			events.zoomanim = this._onAnimZoom;
-		}
-		return events;
-	},
-
-	_onAnimZoom(ev) {
-		this._updateTransform(ev.center, ev.zoom);
-	},
-
-	_onZoom() {
-		this._updateTransform(this._map.getCenter(), this._map.getZoom());
-	},
-
-	_updateTransform(center, zoom) {
-		const scale = this._map.getZoomScale(zoom, this._zoom),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
-				  .subtract(this._map._getNewPixelOrigin(center, zoom));
-
-		DomUtil.setTransform(this._container, topLeftOffset, scale);
-	},
-
-	_reset() {
-		this._update();
-		this._updateTransform(this._center, this._zoom);
-
-		for (const id in this._layers) {
-			this._layers[id]._reset();
-		}
-	},
-
 	_onZoomEnd() {
 		for (const id in this._layers) {
 			this._layers[id]._project();
@@ -110,6 +58,12 @@ export const Renderer = Layer.extend({
 	_updatePaths() {
 		for (const id in this._layers) {
 			this._layers[id]._update();
+		}
+	},
+
+	_onViewReset() {
+		for (const id in this._layers) {
+			this._layers[id]._reset();
 		}
 	},
 
