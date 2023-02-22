@@ -83,6 +83,15 @@ export const Canvas = Renderer.extend({
 		Renderer.prototype._destroyContainer.call(this);
 	},
 
+	_resizeContainer() {
+		const size = Renderer.prototype._resizeContainer.call(this);
+		const m = this._ctxScale = Browser.retina ? 2 : 1;
+
+		// set canvas size (also clearing it); use double size on retina
+		this._container.width = m * size.x;
+		this._container.height = m * size.y;
+	},
+
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
 
@@ -101,24 +110,15 @@ export const Canvas = Renderer.extend({
 		Renderer.prototype._update.call(this);
 
 		const b = this._bounds,
-		    container = this._container,
-		    size = b.getSize(),
-		    m = Browser.retina ? 2 : 1;
+		    container = this._container;
 
 		DomUtil.setPosition(container, b.min);
 
-		// set canvas size (also clearing it); use double size on retina
-		container.width = m * size.x;
-		container.height = m * size.y;
-		container.style.width = `${size.x}px`;
-		container.style.height = `${size.y}px`;
-
-		if (Browser.retina) {
-			this._ctx.scale(2, 2);
-		}
-
 		// translate so we use the same path coordinates after canvas element moves
-		this._ctx.translate(-b.min.x, -b.min.y);
+		this._ctx.setTransform(
+			this._ctxScale, 0, 0, this._ctxScale,
+			-b.min.x,
+			-b.min.y);
 
 		// Tell paths to redraw themselves
 		this.fire('update');

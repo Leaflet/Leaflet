@@ -26,12 +26,31 @@ export const BlanketOverlay = Layer.extend({
 		padding: 0.1
 	},
 
+	onAdd() {
+		if (!this._container) {
+			this._initContainer(); // defined by renderer implementations
+
+			if (this._zoomAnimated) {
+				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
+			}
+		}
+
+		this.getPane().appendChild(this._container);
+		this._resizeContainer();
+		this._update();
+	},
+
+	onRemove() {
+		this._destroyContainer();
+	},
+
 	getEvents() {
 		const events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
 			moveend: this._update,
-			zoomend: this._onZoomEnd
+			zoomend: this._onZoomEnd,
+			resize: this._resizeContainer,
 		};
 		if (this._zoomAnimated) {
 			events.zoomanim = this._onAnimZoom;
@@ -82,6 +101,13 @@ export const BlanketOverlay = Layer.extend({
 	 * resources. The base implementation destroys the element and removes
 	 * any event handlers attached to it.
 	 *
+	 * @method _resizeContainer(): Point
+	 * The base implementation resizes the container (based on the map's size
+	 * and taking into account the padding), returning the new size in CSS pixels.
+	 *
+	 * Subclass implementations shall reset container parameters and data
+	 * structures as needed.
+	 *
 	 * @method _onZoomEnd(): undefined
 	 * (Optional) Runs on the map's `zoomend` event.
 	 *
@@ -89,9 +115,8 @@ export const BlanketOverlay = Layer.extend({
 	 * (Optional) Runs on the map's `viewreset` event.
 	 *
 	 * @method _update(): undefined
-	 * Runs whenever the map changes state (center/zoom). This should (re)set
-	 * the size of the HTML element (likely from the map's `getSize()`) and
-	 * trigger the bulk of any rendering implementation.
+	 * Runs whenever the map state settles after changing (at the end of pan/zoom
+	 * animations, etc). This should trigger the bulk of any rendering logic.
 	 */
 	_initContainer() {
 		this._container = DomUtil.create('div');
@@ -100,6 +125,13 @@ export const BlanketOverlay = Layer.extend({
 		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
 		delete this._container;
+	},
+	_resizeContainer() {
+		const p = this.options.padding,
+		    size = this._map.getSize().multiplyBy(1 + p * 2).round();
+		this._container.style.width = `${size.x}px`;
+		this._container.style.height = `${size.y}px`;
+		return size;
 	},
 	_onZoomEnd: Util.falseFn,
 	_onViewReset: Util.falseFn,

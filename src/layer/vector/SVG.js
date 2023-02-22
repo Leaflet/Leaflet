@@ -52,6 +52,17 @@ export const SVG = Renderer.extend({
 		delete this._svgSize;
 	},
 
+	_resizeContainer() {
+		const size = Renderer.prototype._resizeContainer.call(this);
+
+		// set size of svg-container if changed
+		if (!this._svgSize || !this._svgSize.equals(size)) {
+			this._svgSize = size;
+			this._container.setAttribute('width', size.x);
+			this._container.setAttribute('height', size.y);
+		}
+	},
+
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
@@ -60,13 +71,6 @@ export const SVG = Renderer.extend({
 		const b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
-
-		// set size of svg-container if changed
-		if (!this._svgSize || !this._svgSize.equals(size)) {
-			this._svgSize = size;
-			container.setAttribute('width', size.x);
-			container.setAttribute('height', size.y);
-		}
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		DomUtil.setPosition(container, b.min);
