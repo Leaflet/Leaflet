@@ -30,16 +30,13 @@ export const BlanketOverlay = Layer.extend({
 		Util.setOptions(this, options);
 	},
 
-	onAdd(map) {
+	onAdd() {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
 			// always keep transform-origin as 0 0, #8794
 			this._container.classList.add('leaflet-zoom-animated');
 		}
-
-		this._center = map.getCenter();
-		this._zoom = map.getZoom();
 
 		this.getPane().appendChild(this._container);
 		this._resizeContainer();

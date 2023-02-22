@@ -106,18 +106,17 @@ export const Canvas = Renderer.extend({
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		// Renderer.prototype._update.call(this);
-
 		const b = this._bounds,
+		    s = this._ctxScale,
 		    container = this._container;
 
 		DomUtil.setPosition(container, b.min);
 
 		// translate so we use the same path coordinates after canvas element moves
 		this._ctx.setTransform(
-			this._ctxScale, 0, 0, this._ctxScale,
-			-b.min.x,
-			-b.min.y);
+			s, 0, 0, s,
+			-b.min.x * s,
+			-b.min.y * s);
 
 		// Tell paths to redraw themselves
 		this.fire('update');
