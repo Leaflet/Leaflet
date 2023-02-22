@@ -1,8 +1,8 @@
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
-import Browser from '../core/Browser.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {Bounds} from '../geometry/Bounds.js';
 
 /*
  * @class BlanketOverlay
@@ -26,18 +26,24 @@ export const BlanketOverlay = Layer.extend({
 		padding: 0.1
 	},
 
-	onAdd() {
+	initialize(options) {
+		Util.setOptions(this, options);
+	},
+
+	onAdd(map) {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
-			if (this._zoomAnimated) {
-				DomUtil.addClass(this._container, 'leaflet-zoom-animated');
-			}
+			// always keep transform-origin as 0 0, #8794
+			this._container.classList.add('leaflet-zoom-animated');
 		}
+
+		this._center = map.getCenter();
+		this._zoom = map.getZoom();
 
 		this.getPane().appendChild(this._container);
 		this._resizeContainer();
-		this._update();
+		this._onMoveEnd();
 	},
 
 	onRemove() {
@@ -48,7 +54,7 @@ export const BlanketOverlay = Layer.extend({
 		const events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
-			moveend: this._update,
+			moveend: this._onMoveEnd,
 			zoomend: this._onZoomEnd,
 			resize: this._resizeContainer,
 		};
@@ -74,15 +80,27 @@ export const BlanketOverlay = Layer.extend({
 		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
 				  .subtract(this._map._getNewPixelOrigin(center, zoom));
 
-		if (Browser.any3d) {
-			DomUtil.setTransform(this._container, topLeftOffset, scale);
-		} else {
-			DomUtil.setPosition(this._container, topLeftOffset);
-		}
+		DomUtil.setTransform(this._container, topLeftOffset, scale);
+	},
+
+	_onMoveEnd(ev) {
+		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		const p = this.options.padding,
+		    size = this._map.getSize(),
+		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+
+		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+
+		this._center = this._map.getCenter();
+		this._zoom = this._map.getZoom();
+		this._updateTransform(this._center, this._zoom);
+
+		this._onSettled(ev);
 	},
 
 	_reset() {
-		this._update();
+		// this._update();
+		this._onSettled();
 		this._updateTransform(this._center, this._zoom);
 		this._onViewReset();
 	},
@@ -108,13 +126,13 @@ export const BlanketOverlay = Layer.extend({
 	 * Subclass implementations shall reset container parameters and data
 	 * structures as needed.
 	 *
-	 * @method _onZoomEnd(): undefined
+	 * @method _onZoomEnd(ev?: MouseEvent): undefined
 	 * (Optional) Runs on the map's `zoomend` event.
 	 *
-	 * @method _onViewReset(): undefined
+	 * @method _onViewReset(ev?: MouseEvent): undefined
 	 * (Optional) Runs on the map's `viewreset` event.
 	 *
-	 * @method _update(): undefined
+	 * @method _onSettled(): undefined
 	 * Runs whenever the map state settles after changing (at the end of pan/zoom
 	 * animations, etc). This should trigger the bulk of any rendering logic.
 	 */
@@ -135,6 +153,5 @@ export const BlanketOverlay = Layer.extend({
 	},
 	_onZoomEnd: Util.falseFn,
 	_onViewReset: Util.falseFn,
-	_update: Util.falseFn,
-
+	_onSettled: Util.falseFn,
 });

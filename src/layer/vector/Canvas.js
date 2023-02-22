@@ -1,7 +1,6 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -58,8 +57,8 @@ export const Canvas = Renderer.extend({
 		this._postponeUpdatePaths = true;
 	},
 
-	onAdd() {
-		Renderer.prototype.onAdd.call(this);
+	onAdd(map) {
+		Renderer.prototype.onAdd.call(this, map);
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
@@ -85,7 +84,7 @@ export const Canvas = Renderer.extend({
 
 	_resizeContainer() {
 		const size = Renderer.prototype._resizeContainer.call(this);
-		const m = this._ctxScale = Browser.retina ? 2 : 1;
+		const m = this._ctxScale = window.devicePixelRatio;
 
 		// set canvas size (also clearing it); use double size on retina
 		this._container.width = m * size.x;
@@ -107,7 +106,7 @@ export const Canvas = Renderer.extend({
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		Renderer.prototype._update.call(this);
+		// Renderer.prototype._update.call(this);
 
 		const b = this._bounds,
 		    container = this._container;

@@ -1,6 +1,5 @@
 import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
-import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * @class Renderer
@@ -30,8 +29,8 @@ export const Renderer = BlanketOverlay.extend({
 		this._layers = this._layers || {};
 	},
 
-	onAdd() {
-		BlanketOverlay.prototype.onAdd.call(this);
+	onAdd(map) {
+		BlanketOverlay.prototype.onAdd.call(this, map);
 		this.on('update', this._updatePaths, this);
 	},
 
@@ -41,6 +40,9 @@ export const Renderer = BlanketOverlay.extend({
 	},
 
 	_onZoomEnd() {
+		// When a zoom ends, the "origin pixel" changes. Internal coordinates
+		// of paths are relative to the origin pixel and therefore need to
+		// be recalculated.
 		for (const id in this._layers) {
 			this._layers[id]._project();
 		}
@@ -58,16 +60,9 @@ export const Renderer = BlanketOverlay.extend({
 		}
 	},
 
-	_update() {
-		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+	_onSettled() {
 		// Subclasses are responsible of firing the 'update' event.
-		const p = this.options.padding,
-		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+		this._update();
+	},
 
-		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
-
-		this._center = this._map.getCenter();
-		this._zoom = this._map.getZoom();
-	}
 });

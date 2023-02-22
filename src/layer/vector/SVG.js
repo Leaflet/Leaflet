@@ -66,7 +66,7 @@ export const SVG = Renderer.extend({
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		Renderer.prototype._update.call(this);
+		// Renderer.prototype._update.call(this);
 
 		const b = this._bounds,
 		    size = b.getSize(),
