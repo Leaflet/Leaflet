@@ -1,5 +1,6 @@
 import LeafDoc from 'leafdoc';
 import {writeFileSync} from 'node:fs';
+import graphviz from 'graphviz';
 
 console.log('Building Leaflet documentation with Leafdoc ...');
 
@@ -34,4 +35,9 @@ Object.entries(runs).forEach((run) => {
 	writeFileSync(path, out);
 	console.log(`Successfully built ${  path}`);
 
+});
+
+console.log('Generating class diagram image');
+graphviz.parse('docs/class-diagram-bare.dot', (graph) => {
+	graph.output('png', 'docs/examples/extending/class-diagram.png');
 });
