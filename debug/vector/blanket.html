@@ -13,14 +13,13 @@
 	<div id="map"></div>
 
 	<script type="module">
-		// import {tileLayer, Map, LatLng, BlanketOverlay, Browser, Canvas, SVG, CircleMarker} from '../../src/Leaflet.js';
 		import {tileLayer, Map, LatLng, BlanketOverlay, Browser, Canvas, SVG, CircleMarker} from '../../dist/leaflet-src.esm.js';
 
 		const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-		const map = window.map = new Map('map', {
+		const map = new Map('map', {
 			center: new LatLng(0,0),
 			zoom: 1,
 			layers: [osm]
