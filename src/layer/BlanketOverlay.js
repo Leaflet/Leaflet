@@ -137,8 +137,8 @@ export const BlanketOverlay = Layer.extend({
 		this._container = DomUtil.create('div');
 	},
 	_destroyContainer() {
-		DomUtil.remove(this._container);
 		DomEvent.off(this._container);
+		this._container.remove();
 		delete this._container;
 	},
 	_resizeContainer() {
