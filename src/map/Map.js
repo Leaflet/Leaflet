@@ -13,6 +13,10 @@ import {PosAnimation} from '../dom/PosAnimation.js';
 /*
  * @class Map
  * @aka L.Map
+ * @relationship aggregationOf CRS, 0..n, 1..1
+ * @relationship aggregationOf Layer, 0..1, 0..n
+ * @relationship aggregationOf Control, 0..1, 0..n
+ * @relationship aggregationOf Handler, 0..1, 0..n
  * @inherits Evented
  *
  * The central class of the API — it is used to create a map on a page and manipulate it.

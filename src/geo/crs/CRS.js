@@ -6,6 +6,8 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
+ * @relationship aggregationOf Projection, 0..n, 1..1
+ * @relationship aggregationOf Transformation, 0..n, 1..1
  * @crs L.CRS.Base
  * Object that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to

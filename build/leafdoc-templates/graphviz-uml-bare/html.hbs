@@ -1,0 +1,38 @@
+digraph ClassDiagram {
+	layout=dot
+	rankdir="BT"
+	ranksep = 1.2
+	nodesep = .4
+	mclimit=5
+	node [shape=box fontcolor=black pad=5]
+	edge [arrowhead=empty arrowsize=2]
+
+	subgraph cluster_utilities {
+		label="Utility classes"
+
+		DomUtil
+		DomEvent
+		Browser
+		Util
+		LineUtil
+		PolyUtil
+	}
+
+{{{ body }}}
+
+	{{!-- Hidden stuff - not useful for the simplified diagram --}}
+	subgraph cluster_hidden {
+		style=invis
+		node [style=invis]
+		shape="none"
+
+		"Event objects" [label="" shape="none"]
+		"Global Switches" [label="" shape="none"]
+		"noConflict" [label="" shape="none"]
+		version [label="" shape="none"]
+	}
+
+	{{!-- Special definition of the "LayerGroup contains Layers" arrow: "constraint=false" allows this arrow to not mess up the rank of the graph --}}
+	"Layer" -> "LayerGroup" [dir=both; arrowhead=odiamond; arrowtail=none; constraint=false]
+
+}

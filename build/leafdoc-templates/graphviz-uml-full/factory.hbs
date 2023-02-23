@@ -1,0 +1,7 @@
+{{#each documentables}}
+<b>{{name}}</b>(
+		{{~#each params~}}<BR align="left"/>&nbsp;&nbsp;
+			{{#if type}}&lt;{{this.type}}&gt; {{/if}}<i>{{name}}</i>
+			{{~#unless @last}}, {{/unless}}{{/each~}}
+		)<BR align="left"/>
+{{/each}}

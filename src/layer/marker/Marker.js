@@ -10,6 +10,7 @@ import {MarkerDrag} from './Marker.Drag.js';
 /*
  * @class Marker
  * @inherits Interactive layer
+ * @relationship aggregationOf Icon, 0..n, 1..1
  * @aka L.Marker
  * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *

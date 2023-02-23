@@ -1,0 +1,26 @@
+digraph ClassDiagram {
+	layout=dot
+	rankdir="BT"
+	ranksep = 1.2
+	nodesep = .4
+	mclimit=5
+	node [shape=none fontcolor=black pad=5]
+	edge [arrowhead=empty arrowsize=2]
+
+	subgraph cluster_utilities {
+		label="Utility classes"
+
+		DomUtil
+		DomEvent
+		Browser
+		Util
+		LineUtil
+		PolyUtil
+	}
+
+{{{ body }}}
+
+	{{!-- Special definition of the "LayerGroup contains Layers" arrow: "constraint=false" allows this arrow to not mess up the rank of the graph --}}
+	"Layer" -> "LayerGroup" [dir=both; arrowhead=odiamond; arrowtail=none; constraint=false]
+
+}
