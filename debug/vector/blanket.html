@@ -29,7 +29,7 @@
 		const DebugBlanket = BlanketOverlay.extend({
 			_initContainer(){
 				const container = this._container = document.createElement('div');
-				container.style.border = '2px solid red';
+				container.style.border = '2px solid black';
 
 				container.style.display= "flex";
 				container.style.justifyContent = "center";
@@ -40,20 +40,29 @@
 				this._container.innerHTML = `
 				lat: ${this._center.lat.toFixed(6)}<br>
 				lng: ${this._center.lng.toFixed(6)}<br>
-				lat: ${this._map.getCenter().lat.toFixed(6)}<br>
-				lng: ${this._map.getCenter().lng.toFixed(6)}<br>
-				zoom: ${this._map.getZoom()}<br>
+				zoom: ${this._zoom}<br>
 				map bounds: <br>${this._map.getBounds().toBBoxString().split(',').map(n=>Number(n).toFixed(6)).join('<br>')}<br>
 				px bounds: ${this._bounds.min}, ${this._bounds.max}`;
 			}
 		})
 
-		new DebugBlanket({padding: -0.1}).addTo(map);
+		new DebugBlanket({
+			padding: -0.1,
+			continuous: true
+		}).addTo(map);
 
-		const canvas = new Canvas({padding:-0.1}).addTo(map);
+		const canvas = new Canvas({
+			padding:-0.1,
+			//continuous: true
+		}).addTo(map);
+		canvas._container.style.border='2px solid red';
 		const redCircle = new CircleMarker([40.5, -3.6], {radius: 20, color: 'red', renderer: canvas}).addTo(map);
 
-		const svg = new SVG({padding:-0.1}).addTo(map);
+		const svg = new SVG({
+			padding:-0.1,
+			//continuous: true,
+		}).addTo(map);
+		svg._container.style.border='2px solid blue';
 		const blueCircle = new CircleMarker([63.4, 10.4], {radius: 20, color: 'blue', renderer: svg}).addTo(map);
 
 

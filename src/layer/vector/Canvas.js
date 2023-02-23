@@ -1,5 +1,4 @@
 import {Renderer} from './Renderer.js';
-import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
@@ -107,10 +106,7 @@ export const Canvas = Renderer.extend({
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		const b = this._bounds,
-		    s = this._ctxScale,
-		    container = this._container;
-
-		DomUtil.setPosition(container, b.min);
+		    s = this._ctxScale;
 
 		// translate so we use the same path coordinates after canvas element moves
 		this._ctx.setTransform(

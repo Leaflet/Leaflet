@@ -23,7 +23,14 @@ export const BlanketOverlay = Layer.extend({
 		// @option padding: Number = 0.1
 		// How much to extend the clip area around the map view (relative to its size)
 		// e.g. 0.1 would be 10% of map view in each direction
-		padding: 0.1
+		padding: 0.1,
+
+		// @option continuous: Boolean = false
+		// When `false`, the blanket will update its position only when the
+		// map state settles (*after* a pan/zoom animation). When `true`,
+		// it will update when the map state changes (*during* pan/zoom
+		// animations)
+		continuous: false,
 	},
 
 	initialize(options) {
@@ -58,6 +65,9 @@ export const BlanketOverlay = Layer.extend({
 		if (this._zoomAnimated) {
 			events.zoomanim = this._onAnimZoom;
 		}
+		if (this.options.continuous) {
+			events.move = this._onMoveEnd;
+		}
 		return events;
 	},
 
@@ -73,9 +83,8 @@ export const BlanketOverlay = Layer.extend({
 		const scale = this._map.getZoomScale(zoom, this._zoom),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
-
 		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
-				  .subtract(this._map._getNewPixelOrigin(center, zoom));
+		        .subtract(this._map._getNewPixelOrigin(center, zoom));
 
 		DomUtil.setTransform(this._container, topLeftOffset, scale);
 	},
@@ -96,7 +105,6 @@ export const BlanketOverlay = Layer.extend({
 	},
 
 	_reset() {
-		// this._update();
 		this._onSettled();
 		this._updateTransform(this._center, this._zoom);
 		this._onViewReset();
@@ -132,6 +140,9 @@ export const BlanketOverlay = Layer.extend({
 	 * @method _onSettled(): undefined
 	 * Runs whenever the map state settles after changing (at the end of pan/zoom
 	 * animations, etc). This should trigger the bulk of any rendering logic.
+	 *
+	 * If the `continuous` option is set to `true`, then this also runs on
+	 * any map state change (including *during* pan/zoom animations).
 	 */
 	_initContainer() {
 		this._container = DomUtil.create('div');
