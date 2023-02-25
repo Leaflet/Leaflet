@@ -127,6 +127,29 @@
 			const bounds = L.latLngBounds(southWest, northEast);
 			expect(fg.getBounds()).to.eql(bounds);
 		});
+
+		it('doesn\'t break if there are nested layer groups and returns the bounds of the nested groups', () => {
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
+
+			const childGroup = L.featureGroup([
+				L.marker(southWest),
+				L.marker(northEast),
+			]);
+
+			const parentGroup = L.layerGroup([
+				childGroup
+			]);
+
+			const bounds = L.latLngBounds(southWest, northEast);
+
+			let result = [];
+			const callback = () => {
+				result = parentGroup.getBounds();
+			};
+			expect(callback).to.not.throwError();
+			expect(result).to.eql(bounds);
+		});
 	});
 
 	describe('when getBounds contains nested LayerGroups/FeatureGroups as children', () => {
