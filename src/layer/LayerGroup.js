@@ -162,7 +162,13 @@ export const LayerGroup = Layer.extend({
 			}
 
 			visitedIds.add(layerId);
-			bounds.extend(layer instanceof LayerGroup ? layer.getBounds(visitedIds) : layer.getLatLng());
+			if (layer instanceof LayerGroup || layer.getBounds) {
+				bounds.extend(layer.getBounds(visitedIds));
+			} else if (layer.getLatLngs) {
+				bounds.extend(layer.getLatLngs());
+			} else if (layer.getLatLng) {
+				bounds.extend(layer.getLatLng());
+			}
 		}
 		return bounds;
 	}
