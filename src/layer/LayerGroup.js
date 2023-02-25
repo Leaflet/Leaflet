@@ -152,18 +152,18 @@ export const LayerGroup = Layer.extend({
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Layer Group (created from bounds and coordinates of its children).
-	getBounds(visitedIds = new Set()) {
+	getBounds(_visitedIds = new Set()) {
 		const bounds = toLatLngBounds();
 
 		for (const layerId in this._layers) {
 			const layer = this._layers[layerId];
-			if (visitedIds.has(layerId)) {
+			if (_visitedIds.has(layerId)) {
 				continue;
 			}
 
-			visitedIds.add(layerId);
+			_visitedIds.add(layerId);
 			if (layer instanceof LayerGroup || layer.getBounds) {
-				bounds.extend(layer.getBounds(visitedIds));
+				bounds.extend(layer.getBounds(_visitedIds));
 			} else if (layer.getLatLngs) {
 				bounds.extend(layer.getLatLngs());
 			} else if (layer.getLatLng) {
