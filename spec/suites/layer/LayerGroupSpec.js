@@ -140,6 +140,7 @@
 			const parentGroup = L.layerGroup([
 				childGroup
 			]);
+			parentGroup.addLayer(childGroup);
 
 			const bounds = L.latLngBounds(southWest, northEast);
 
