@@ -128,7 +128,7 @@
 			expect(fg.getBounds()).to.eql(bounds);
 		});
 
-		it('doesn\'t break if there are nested layer groups and returns the bounds of the nested groups', () => {
+		it('doesn\'t break if there are nested or recursive layer groups and returns the bounds of all items', () => {
 			const southWest = L.latLng(0, 0),
 			northEast = L.latLng(4, 4);
 
@@ -140,7 +140,7 @@
 			const parentGroup = L.layerGroup([
 				childGroup
 			]);
-			parentGroup.addLayer(childGroup);
+			childGroup.addLayer(parentGroup);
 
 			const bounds = L.latLngBounds(southWest, northEast);
 
