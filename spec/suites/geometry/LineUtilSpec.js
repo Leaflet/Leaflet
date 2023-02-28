@@ -111,7 +111,6 @@ describe('LineUtil', () => {
 		beforeEach(() => {
 			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
-			zoom = map.getZoom();
 		});
 
 		afterEach(() => {
@@ -122,85 +121,28 @@ describe('LineUtil', () => {
 
 		it('computes center of line', () => {
 			const latlngs = [[80, 0], [80, 90]];
-			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			const center = L.LineUtil.polylineCenter(latlngs, crs);
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 
-		it('computes center of line with maxZoom', () => {
-			L.gridLayer({maxZoom: 18}).addTo(map);
-			const latlngs = [[80, 0], [80, 90]];
-			const center = L.LineUtil.polylineCenter(latlngs, crs, map.getMaxZoom());
-			expect(center).to.be.nearLatLng([80, 45]);
-		});
-
-		it('computes center of a small line and test it on every zoom', () => {
+		it('computes center of a small line', () => {
 			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
 			const layer = L.polyline(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
+			expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 		});
 
-		it('computes center of a small line and test it on every zoom - CRS.EPSG3395', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polyline(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
+		it('throws error if latlngs not passed', () => {
+			expect(() => {
+				L.LineUtil.polylineCenter(null, crs);
+			}).to.throwException('latlngs not passed');
 		});
 
-		it('computes center of a small line and test it on every zoom - CRS.EPSG4326', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polyline(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
+		it('throws error if latlng array is empty', () => {
+			expect(() => {
+				L.LineUtil.polylineCenter([], crs);
+			}).to.throwException('latlngs not passed');
 		});
 
-		it('computes center of a small line and test it on every zoom - CRS.Simple', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polyline(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
 
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
@@ -226,7 +168,7 @@ describe('LineUtil', () => {
 				[[80, 0], [80, 90]]
 			];
 			const spy = sinon.spy(console, 'warn');
-			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			const center = L.LineUtil.polylineCenter(latlngs, crs);
 			console.warn.restore();
 			expect(spy.calledOnce).to.be.ok();
 			expect(center).to.be.nearLatLng([80, 45]);
@@ -238,7 +180,7 @@ describe('LineUtil', () => {
 			const latlngs = [
 				[[80, 0], [80, 90]]
 			];
-			const center = L.LineUtil.polylineCenter(latlngs, crs, zoom);
+			const center = L.LineUtil.polylineCenter(latlngs, crs);
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 	});
