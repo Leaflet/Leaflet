@@ -8,17 +8,23 @@ css: "#map {
 ---
 <script type='text/javascript'>
 
-	const bounds = [[0, 0], [1570, 1910]];
+	// Fetch the size of the image, since it's automatically (re)-generated at
+	// every Leaflet release
+	const image = new Image();
+	image.addEventListener('load', () => {
 
-	const map = L.map('map', {
-		crs: L.CRS.Simple,
-		maxZoom: 0,
-		minZoom: -4,
-		maxBounds: bounds
+		const bounds = [[0, 0], [image.naturalWidth, image.naturalHeight]];
+
+		const map = L.map('map', {
+			crs: L.CRS.Simple,
+			maxZoom: 0,
+			minZoom: -4,
+			maxBounds: bounds
+		});
+
+		L.imageOverlay('class-diagram.png', bounds).addTo(map);
+
+		map.fitBounds(bounds);
 	});
-
-	const image = L.imageOverlay('class-diagram.png', bounds).addTo(map);
-
-	map.fitBounds(bounds);
 
 </script>

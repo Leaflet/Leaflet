@@ -2,6 +2,7 @@ import {Point, toPoint} from './Point.js';
 
 /*
  * @class Bounds
+ * @relationship aggregationOf Point, 0..n, 0..n
  * @aka L.Bounds
  *
  * Represents a rectangular area in pixel coordinates.

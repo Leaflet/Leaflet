@@ -1,0 +1,40 @@
+{{#if name}}
+"{{name}}" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>{{name}}</B></TD></TR>
+	{{{supersections}}}
+</TABLE>>]
+
+{{#each inherits}}
+	"{{../name}}" -> "{{this}}"
+{{/each}}
+
+{{#each relationships}}
+	{{#if (equals type "compositionOf")}}
+		"{{namespace}}" -> "{{../name}}" [dir=both; arrowhead=diamond; arrowtail=none
+		{{#if cardinalityTo}}, headlabel="{{cardinalityTo}}"{{/if}}
+		{{#if cardinalityFrom}}, taillabel="{{cardinalityFrom}}"{{/if}}
+		{{#if label}}, label="{{label}}"{{/if}}
+		]
+	{{else if (equals type "aggregationOf")}}
+		"{{namespace}}" -> "{{../name}}" [dir=both; arrowhead=odiamond; arrowtail=none
+		{{#if label}}, label="{{label}}"{{/if}}]
+	{{else}}
+		"{{../name}}" -> "{{namespace}}" [
+		{{#if (equals type "associated")}}
+		arrowhead = open
+		{{else if (equals type "implements")}}
+		arrowhead=empty, style=dashed
+		{{else if (equals type "dependsOn")}}
+		arrowhead=open, style=dashed
+		{{else}}
+		arrowhead=normal
+		{{/if}}
+		{{#if cardinalityFrom}}, headlabel="{{cardinalityFrom}}"{{/if}}
+		{{#if cardinalityTo}}, taillabel="{{cardinalityTo}}"{{/if}}
+		{{#if label}}, label="{{label}}"{{/if}}
+		]
+	{{/if}}
+{{/each}}
+{{else}}
+{{! Miniclasses don't have a name per se, skip them }}
+{{/if}}

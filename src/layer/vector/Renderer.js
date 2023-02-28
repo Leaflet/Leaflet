@@ -8,6 +8,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 /*
  * @class Renderer
  * @inherits Layer
+ * @relationship aggregationOf Path, 0..1, 0..n
  * @aka L.Renderer
  *
  * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles the
