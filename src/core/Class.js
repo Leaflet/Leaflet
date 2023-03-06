@@ -13,21 +13,7 @@ export class Class {
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	static extend({statics, includes, ...props}) {
-		const NewClass = function (...args) {
-
-			Util.setOptions(this);
-
-			// call the constructor
-			if (this.initialize) {
-				this.initialize.apply(this, args);
-			}
-
-			// call all constructor hooks
-			this.callInitHooks();
-		};
-
-		// inherit parent's prototype
-		Object.setPrototypeOf(NewClass.prototype, this.prototype);
+		const NewClass = class extends this {};
 
 		// inherit parent's static properties
 		Object.setPrototypeOf(NewClass, this);
@@ -88,6 +74,20 @@ export class Class {
 		this.prototype._initHooks = this.prototype._initHooks || [];
 		this.prototype._initHooks.push(init);
 		return this;
+	}
+
+	_initHooksCalled = false;
+
+	constructor(...args) {
+		Util.setOptions(this);
+
+		// call the constructor
+		if (this.initialize) {
+			this.initialize(...args);
+		}
+
+		// call all constructor hooks
+		this.callInitHooks();
 	}
 
 	callInitHooks() {
