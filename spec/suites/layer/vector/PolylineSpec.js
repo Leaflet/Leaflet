@@ -248,7 +248,9 @@ describe('Polyline', () => {
 			polyline.setStyle(style);
 
 			for (const prop in style) {
-				expect(polyline.options[prop]).to.be(style[prop]);
+				if (Object.hasOwn(style, prop)) {
+					expect(polyline.options[prop]).to.be(style[prop]);
+				}
 			}
 		});
 	});
@@ -264,7 +266,9 @@ describe('Polyline', () => {
 			polyline.setStyle(style);
 
 			for (const prop in style) {
-				expect(polyline.options[prop]).to.be(style[prop]);
+				if (Object.hasOwn(style, prop)) {
+					expect(polyline.options[prop]).to.be(style[prop]);
+				}
 			}
 		});
 	});

@@ -356,7 +356,9 @@ describe('Polygon', () => {
 			polygon.setStyle(style);
 
 			for (const prop in style) {
-				expect(polygon.options[prop]).to.be(style[prop]);
+				if (Object.hasOwn(style, prop)) {
+					expect(polygon.options[prop]).to.be(style[prop]);
+				}
 			}
 		});
 	});

@@ -165,7 +165,9 @@ describe('Map.TapHoldSpec.js', () => {
 			target: container
 		}, posStart);
 		for (const prop in expectedProps) {
-			expect(originalEvent[prop]).to.be(expectedProps[prop]);
+			if (Object.hasOwn(expectedProps, prop)) {
+				expect(originalEvent[prop]).to.be(expectedProps[prop]);
+			}
 		}
 	});
 });

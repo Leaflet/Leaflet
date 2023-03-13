@@ -25,7 +25,9 @@ export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
 		for (const type in types) {
-			addOne(obj, type, types[type], fn);
+			if (Object.hasOwn(types, type)) {
+				addOne(obj, type, types[type], fn);
+			}
 		}
 	} else {
 		types = Util.splitWords(types);
@@ -64,7 +66,9 @@ export function off(obj, types, fn, context) {
 
 	} else if (types && typeof types === 'object') {
 		for (const type in types) {
-			removeOne(obj, type, types[type], fn);
+			if (Object.hasOwn(types, type)) {
+				removeOne(obj, type, types[type], fn);
+			}
 		}
 
 	} else {
@@ -84,9 +88,11 @@ export function off(obj, types, fn, context) {
 
 function batchRemove(obj, filterFn) {
 	for (const id in obj[eventsKey]) {
-		const type = id.split(/\d/)[0];
-		if (!filterFn || filterFn(type)) {
-			removeOne(obj, type, null, null, id);
+		if (Object.hasOwn(obj[eventsKey], id)) {
+			const type = id.split(/\d/)[0];
+			if (!filterFn || filterFn(type)) {
+				removeOne(obj, type, null, null, id);
+			}
 		}
 	}
 }

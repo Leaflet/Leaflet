@@ -96,8 +96,10 @@ export const Canvas = Renderer.extend({
 		let layer;
 		this._redrawBounds = null;
 		for (const id in this._layers) {
-			layer = this._layers[id];
-			layer._update();
+			if (Object.hasOwn(this._layers, id)) {
+				layer = this._layers[id];
+				layer._update();
+			}
 		}
 		this._redraw();
 	},

@@ -165,7 +165,9 @@ Map.include({
 
 	_clearControlPos() {
 		for (const i in this._controlCorners) {
-			this._controlCorners[i].remove();
+			if (Object.hasOwn(this._controlCorners, i)) {
+				this._controlCorners[i].remove();
+			}
 		}
 		this._controlContainer.remove();
 		delete this._controlCorners;
