@@ -24,10 +24,8 @@ import {getScale} from './DomUtil.js';
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
-		for (const type in types) {
-			if (Object.hasOwn(types, type)) {
-				addOne(obj, type, types[type], fn);
-			}
+		for (const [type, listener] of Object.entries(types)) {
+			addOne(obj, type, listener, fn);
 		}
 	} else {
 		types = Util.splitWords(types);
@@ -65,10 +63,8 @@ export function off(obj, types, fn, context) {
 		delete obj[eventsKey];
 
 	} else if (types && typeof types === 'object') {
-		for (const type in types) {
-			if (Object.hasOwn(types, type)) {
-				removeOne(obj, type, types[type], fn);
-			}
+		for (const [type, listener] of Object.entries(types)) {
+			removeOne(obj, type, listener, fn);
 		}
 
 	} else {
