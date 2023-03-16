@@ -399,11 +399,17 @@ export const Canvas = Renderer.extend({
 
 			if (candidateHoveredLayer) {
 				this._container.classList.add('leaflet-interactive'); // change cursor
+				if (!candidateHoveredLayer.getLatLng() && point) {
+					candidateHoveredLayer.setLatLng(this._map.unproject(point));
+				}
 				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
 				this._hoveredLayer = candidateHoveredLayer;
 			}
 		}
 
+		if (this._hoveredLayer && !this._hoveredLayer.getLatLng() && point) {
+			this._hoveredLayer.setLatLng(this._map.unproject(point));
+		}
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
