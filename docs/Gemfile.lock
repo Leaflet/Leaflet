@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.4.2)
+    activesupport (7.0.4.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -14,7 +14,7 @@ GEM
     coffee-script-source (1.11.1)
     colorator (1.1.0)
     commonmarker (0.23.8)
-    concurrent-ruby (1.2.0)
+    concurrent-ruby (1.2.2)
     dnsruby (1.61.9)
       simpleidn (~> 0.1)
     em-websocket (0.5.3)
@@ -209,7 +209,7 @@ GEM
       jekyll (>= 3.5, < 5.0)
       jekyll-feed (~> 0.9)
       jekyll-seo-tag (~> 2.1)
-    minitest (5.17.0)
+    minitest (5.18.0)
     nokogiri (1.14.1-x86_64-linux)
       racc (~> 1.4)
     octokit (4.25.1)
