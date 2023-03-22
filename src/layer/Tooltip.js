@@ -394,7 +394,7 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer(layer) {
-		const el = layer.getElement();
+		const el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
 			DomEvent.on(el, 'focus', function () {
 				this._tooltip._source = layer;
@@ -405,7 +405,7 @@ Layer.include({
 	},
 
 	_setAriaDescribedByOnLayer(layer) {
-		const el = layer.getElement();
+		const el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
 			el.setAttribute('aria-describedby', this._tooltip._container.id);
 		}

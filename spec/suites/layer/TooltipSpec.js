@@ -81,6 +81,16 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 	});
 
+	it('opens on marker focus and closes on blur in layer group', () => {
+		const marker1 = L.marker([41.18, 9.45]);
+		const someLayerWithoutGetElement = L.layerGroup();
+		const group = new L.FeatureGroup([marker1, someLayerWithoutGetElement]).addTo(map);
+		group.bindTooltip('Tooltip');
+
+		UIEventSimulator.fire('focus', marker1.getElement());
+	});
+
+
 	it('is mentioned in aria-describedby of a bound layer', () => {
 		const layer = L.marker(center).addTo(map);
 
