@@ -155,8 +155,7 @@ export const LayerGroup = Layer.extend({
 	getBounds(_visitedIds = new Set()) {
 		const bounds = toLatLngBounds();
 
-		for (const layerId in this._layers) {
-			const layer = this._layers[layerId];
+		for (const [layerId, layer] of Object.entries(this._layers)) {
 			if (_visitedIds.has(layerId)) {
 				continue;
 			}
