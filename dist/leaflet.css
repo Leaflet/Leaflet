@@ -52,6 +52,7 @@
 	max-height: none !important;
 	width: auto;
 	padding: 0;
+	mix-blend-mode: plus-lighter;
 	}
 
 .leaflet-container.leaflet-touch-zoom {
