@@ -514,23 +514,24 @@ export const Map = Evented.extend({
 	// padding options to fit the display to more restricted bounds.
 	// If `latlng` is already within the (optionally padded) display bounds,
 	// the map will not be panned.
-	panInside(latlng, options) {
-		options = options || {};
-
-		const paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
-		    pixelCenter = this.project(this.getCenter()),
-		    pixelPoint = this.project(latlng),
-		    pixelBounds = this.getPixelBounds(),
-		    paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
-		    paddedSize = paddedBounds.getSize();
-
+	panInside(latlng, options = {}) {
+		let { paddingTopLeft, paddingBottomRight, padding } = options;
+		const paddingTL = toPoint(paddingTopLeft || padding || [0, 0]);
+		const paddingBR = toPoint(paddingBottomRight || padding || [0, 0]);
+	
+		let pixelCenter = this.project(this.getCenter());
+		let pixelPoint = this.project(latlng);
+		const pixelBounds = this.getPixelBounds();
+	
+		let paddedBounds = toBounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]);
+		let paddedSize = paddedBounds.getSize();
+	
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
-			const centerOffset = pixelPoint.subtract(paddedBounds.getCenter());
-			const offset = paddedBounds.extend(pixelPoint).getSize().subtract(paddedSize);
-			pixelCenter.x += centerOffset.x < 0 ? -offset.x : offset.x;
-			pixelCenter.y += centerOffset.y < 0 ? -offset.y : offset.y;
+			let offset = paddedBounds.extend(pixelPoint).getSize().subtract(paddedSize);
+			let centerOffset = pixelPoint.subtract(paddedBounds.getCenter());
+			pixelCenter.x += Math.sign(centerOffset.x) * offset.x;
+			pixelCenter.y += Math.sign(centerOffset.y) * offset.y;
 			this.panTo(this.unproject(pixelCenter), options);
 			this._enforcingBounds = false;
 		}
