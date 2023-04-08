@@ -56,7 +56,7 @@
 .leaflet-container img.leaflet-tile {
 	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
 	mix-blend-mode: plus-lighter;
-}
+	}
 
 .leaflet-container.leaflet-touch-zoom {
 	touch-action: pan-x pan-y;
