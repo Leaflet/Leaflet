@@ -417,6 +417,7 @@ export const Layers = Control.extend({
 	_expandIfNotCollapsed() {
 		if (this._map && !this.options.collapsed) {
 			this.expand();
+			document.querySelector('.leaflet-control-layers-list').setAttribute('aria-label', 'Layers');
 		}
 		return this;
 	},
