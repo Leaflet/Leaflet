@@ -1,6 +1,7 @@
 import * as LineUtil from './LineUtil';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from './Point';
+import {toLatLngBounds} from '../geo/LatLngBounds';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
@@ -55,7 +56,7 @@ export function clipPolygon(points, bounds, round) {
 	return points;
 }
 
-/* @function polygonCenter(latlngs: LatLng[] crs: CRS): LatLng
+/* @function polygonCenter(latlngs: LatLng[], crs: CRS): LatLng
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
  */
 export function polygonCenter(latlngs, crs) {
@@ -70,10 +71,21 @@ export function polygonCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
+	var centroidLatLng = toLatLng([0, 0]);
+
+	var bounds = toLatLngBounds(latlngs);
+	var areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
+	// tests showed that below 1700 rounding errors are happening
+	if (areaBounds < 1700) {
+		// getting a inexact center, to move the latlngs near to [0, 0] to prevent rounding errors
+		centroidLatLng = centroid(latlngs);
+	}
+
 	var len = latlngs.length;
 	var points = [];
 	for (i = 0; i < len; i++) {
-		points.push(crs.project(toLatLng(latlngs[i])));
+		var latlng = toLatLng(latlngs[i]);
+		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
 	}
 
 	area = x = y = 0;
@@ -95,5 +107,23 @@ export function polygonCenter(latlngs, crs) {
 	} else {
 		center = [x / area, y / area];
 	}
-	return crs.unproject(toPoint(center));
+
+	var latlngCenter = crs.unproject(toPoint(center));
+	return toLatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
+}
+
+/* @function centroid(latlngs: LatLng[]): LatLng
+ * Returns the 'center of mass' of the passed LatLngs.
+ */
+export function centroid(coords) {
+	var latSum = 0;
+	var lngSum = 0;
+	var len = 0;
+	for (var i = 0; i < coords.length; i++) {
+		var latlng = toLatLng(coords[i]);
+		latSum += latlng.lat;
+		lngSum += latlng.lng;
+		len++;
+	}
+	return toLatLng([latSum / len, lngSum / len]);
 }
