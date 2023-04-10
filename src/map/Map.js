@@ -188,7 +188,7 @@ export const Map = Evented.extend({
 
 			// try animating pan or zoom
 			const moved = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
+				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options) :
 				this._tryAnimatedPan(center, options.pan);
 
 			if (moved) {
@@ -1679,7 +1679,7 @@ export const Map = Evented.extend({
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true, false)
+			    ._moveStart(true, options.noMoveStart || false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
