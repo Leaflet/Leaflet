@@ -83,6 +83,7 @@ export const Layers = Control.extend({
 		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
+		this._preventClick = false;
 
 		for (const i in baseLayers) {
 			if (Object.hasOwn(baseLayers, i)) {
@@ -359,6 +360,11 @@ export const Layers = Control.extend({
 	},
 
 	_onInputClick() {
+		// expanding the control on mobile with a click can cause adding a layer - we don't want this
+		if (this._preventClick) {
+			return;
+		}
+
 		const inputs = this._layerControlInputs,
 		      addedLayers = [],
 		      removedLayers = [];
@@ -417,10 +423,12 @@ export const Layers = Control.extend({
 
 	_expandSafely() {
 		const section = this._section;
+		this._preventClick = true;
 		DomEvent.on(section, 'click', DomEvent.preventDefault);
 		this.expand();
 		setTimeout(() => {
 			DomEvent.off(section, 'click', DomEvent.preventDefault);
+			this._preventClick = false;
 		});
 	}
 
