@@ -288,22 +288,23 @@ describe('DomUtil', () => {
 	describe('#preventOutline, #restoreOutline', () => {
 		it('prevent / restore outline for the element', () => {
 			const child = document.createElement('div');
-			el.appendChild(child);
+			const originalStyle = child.style.outlineStyle = 'dotted';
+
 			child.tabIndex = 0;
-			expect(child.style.outline).to.be.equal(child.style.outline);
-			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			el.appendChild(child);
 
-			//	Explicit #restoreOutline through direct call
-			expect(child.style.outline).to.match(/(?:none)/);
+			L.DomUtil.preventOutline(child);
+			expect(child.style.outlineStyle).to.equal('none');
+
+			// Explicit #restoreOutline through direct call
 			L.DomUtil.restoreOutline(child);
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			expect(child.style.outlineStyle).to.be.equal(originalStyle);
 
-			//	Implicit #restoreOutline test through simulation
+			// Implicit #restoreOutline test through simulation
 			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			expect(child.style.outlineStyle).to.equal('none');
 			UIEventSimulator.fire('keydown', child);
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			expect(child.style.outlineStyle).to.be.equal(originalStyle);
 		});
 	});
 });
