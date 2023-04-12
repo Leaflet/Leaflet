@@ -415,22 +415,23 @@ describe('DomUtil', function () {
 	describe('#preventOutline, #restoreOutline', function () {
 		(L.Browser.ie ? it.skip : it)('prevent / restore outline for the element', function () {
 			var child = document.createElement('div');
-			el.appendChild(child);
+			var originalStyle = child.style.outlineStyle = 'dotted';
+
 			child.tabIndex = 0;
-			expect(child.style.outline).to.be.equal(child.style.outline);
-			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			el.appendChild(child);
 
-			//	Explicit #restoreOutline through direct call
-			expect(child.style.outline).to.match(/(?:none)/);
+			L.DomUtil.preventOutline(child);
+			expect(child.style.outlineStyle).to.eql('none');
+
+			// Explicit #restoreOutline through direct call
 			L.DomUtil.restoreOutline(child);
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			expect(child.style.outlineStyle).to.be.eql(originalStyle);
 
-			//	Implicit #restoreOutline test through simulation
+			// Implicit #restoreOutline test through simulation
 			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			expect(child.style.outlineStyle).to.eql('none');
 			happen.once(child, {type: 'keydown'});
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			expect(child.style.outlineStyle).to.be.eql(originalStyle);
 		});
 	});
 });
