@@ -1,5 +1,4 @@
 import {LayerGroup} from './LayerGroup.js';
-import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class FeatureGroup
@@ -72,18 +71,6 @@ export const FeatureGroup = LayerGroup.extend({
 	// Brings the layer group to the back of all other layers
 	bringToBack() {
 		return this.invoke('bringToBack');
-	},
-
-	// @method getBounds(): LatLngBounds
-	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
-	getBounds() {
-		const bounds = new LatLngBounds();
-
-		for (const id in this._layers) {
-			const layer = this._layers[id];
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
-		}
-		return bounds;
 	}
 });
 

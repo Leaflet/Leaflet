@@ -112,4 +112,65 @@
 			expect(layers[1].options.opacity).to.eql(opacity);
 		});
 	});
+
+	describe('#getBounds', () => {
+		it('returns the bounds (LatLngBounds) of the group', () => {
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
+
+			const fg = L.featureGroup([
+				L.marker(southWest),
+				L.marker(northEast),
+				L.marker([3, 3]),
+			]);
+
+			const bounds = L.latLngBounds(southWest, northEast);
+			expect(fg.getBounds()).to.eql(bounds);
+		});
+
+		it('doesn\'t break if there are nested or recursive layer groups and returns the bounds of all items', () => {
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
+
+			const childGroup = L.featureGroup([
+				L.marker(southWest),
+				L.marker(northEast),
+			]);
+
+			const parentGroup = L.layerGroup([
+				childGroup
+			]);
+			childGroup.addLayer(parentGroup);
+
+			const bounds = L.latLngBounds(southWest, northEast);
+
+			let result = [];
+			const callback = () => {
+				result = parentGroup.getBounds();
+			};
+			expect(callback).to.not.throwError();
+			expect(result).to.eql(bounds);
+		});
+	});
+
+	describe('when getBounds contains nested LayerGroups/FeatureGroups as children', () => {
+		it('returns the bounds of the group, including nested layers', () => {
+			const southWest = L.latLng(0, 0),
+			northEast = L.latLng(4, 4);
+
+			const parentFeatureGroup = L.featureGroup();
+			const nestedLayerGroup = L.layerGroup([
+				L.marker(southWest)
+			]);
+			const nestedFeatureGroup = L.featureGroup([
+				L.marker(northEast)
+			]);
+
+			nestedFeatureGroup.addLayer(nestedLayerGroup);
+			parentFeatureGroup.addLayer(nestedFeatureGroup);
+
+			const bounds = L.latLngBounds(southWest, northEast);
+			expect(parentFeatureGroup.getBounds()).to.eql(bounds);
+		});
+	});
 });

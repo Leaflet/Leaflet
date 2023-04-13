@@ -1,6 +1,7 @@
 
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
+import {toLatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class LayerGroup
@@ -147,6 +148,28 @@ export const LayerGroup = Layer.extend({
 	// Returns the internal ID for a layer
 	getLayerId(layer) {
 		return Util.stamp(layer);
+	},
+
+	// @method getBounds(): LatLngBounds
+	// Returns the LatLngBounds of the Layer Group (created from bounds and coordinates of its children).
+	getBounds(_visitedIds = new Set()) {
+		const bounds = toLatLngBounds();
+
+		for (const [layerId, layer] of Object.entries(this._layers)) {
+			if (_visitedIds.has(layerId)) {
+				continue;
+			}
+
+			_visitedIds.add(layerId);
+			if (layer instanceof LayerGroup || layer.getBounds) {
+				bounds.extend(layer.getBounds(_visitedIds));
+			} else if (layer.getLatLngs) {
+				bounds.extend(layer.getLatLngs());
+			} else if (layer.getLatLng) {
+				bounds.extend(layer.getLatLng());
+			}
+		}
+		return bounds;
 	}
 });
 
