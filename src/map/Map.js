@@ -781,10 +781,14 @@ export const Map = Evented.extend({
 
 		let i;
 		for (i in this._layers) {
-			this._layers[i].remove();
+			if (Object.hasOwn(this._layers, i)) {
+				this._layers[i].remove();
+			}
 		}
 		for (i in this._panes) {
-			this._panes[i].remove();
+			if (Object.hasOwn(this._panes, i)) {
+				this._panes[i].remove();
+			}
 		}
 
 		this._layers = [];

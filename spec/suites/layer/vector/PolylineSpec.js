@@ -247,8 +247,8 @@ describe('Polyline', () => {
 			polyline.addTo(map);
 			polyline.setStyle(style);
 
-			for (const prop in style) {
-				expect(polyline.options[prop]).to.be(style[prop]);
+			for (const [prop, expectedValue] of Object.entries(style)) {
+				expect(polyline.options[prop]).to.be(expectedValue);
 			}
 		});
 	});
@@ -263,8 +263,8 @@ describe('Polyline', () => {
 			polyline.addTo(map);
 			polyline.setStyle(style);
 
-			for (const prop in style) {
-				expect(polyline.options[prop]).to.be(style[prop]);
+			for (const [prop, expectedValue] of Object.entries(style)) {
+				expect(polyline.options[prop]).to.be(expectedValue);
 			}
 		});
 	});
