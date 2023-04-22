@@ -2,7 +2,6 @@
 module.exports = {
 	ignorePatterns: [
 		'dist',
-		'debug',
 		'docs/docs/highlight',
 		'docs/examples/choropleth/us-states.js',
 		'docs/examples/geojson/sample-geojson.js',
@@ -65,6 +64,15 @@ module.exports = {
 			rules: {
 				'eol-last': 'off',
 				'no-unused-vars': 'off'
+			}
+		},
+		{
+			files: [
+				'*.html'
+			],
+			rules: {
+				'eol-last': 'off',
+				'no-new': 'off'
 			}
 		}
 	]
