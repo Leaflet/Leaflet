@@ -11,12 +11,19 @@
 				direction: rtl;
 			}
 		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<p>Click the map to place a popup at the mouse location</p>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Popup} from '../../dist/leaflet-src.esm.js';
+			import {Map, TileLayer, Popup} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
 			const map = new Map('map')

@@ -28,6 +28,13 @@
 				margin: 0;
 			}
 		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<p>
@@ -79,7 +86,7 @@
 		<div><button id="nul">NUL</button>(image overlay)</div>
 		<div><button id="stop">stop</button></div>
 		<script type="module">
-			import {Map, TileLayer, GridLayer, Point, DomUtil} from '../../dist/leaflet-src.esm.js';
+			import {Map, TileLayer, GridLayer, Point, DomUtil} from 'leaflet';
 
 			const kyiv = [50.5, 30.5];
 			const lnd = [51.51, -0.12];

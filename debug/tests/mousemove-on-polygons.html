@@ -37,6 +37,13 @@
 				}
 			}
 		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<table>
@@ -71,7 +78,7 @@
 		</table>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, Polygon, Marker} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, LatLng, Map, Polygon, Marker} from 'leaflet';
 
 			const osm = new TileLayer(
 				'https://tile.openstreetmap.org/{z}/{x}/{y}.png',

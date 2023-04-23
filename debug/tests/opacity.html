@@ -11,11 +11,18 @@
 				background-color: red;
 			}
 		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, DivIcon, Point, Marker} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, LatLng, Map, DivIcon, Point, Marker} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			const latlng = new LatLng(50.5, 30.51);

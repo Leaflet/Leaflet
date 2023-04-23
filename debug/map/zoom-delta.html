@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/mobile.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<style>
@@ -46,7 +53,7 @@
 			<span id="zoom2"></span>
 		</div>		
 		<script type="module">
-			import {TileLayer, LatLng, Map} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, LatLng, Map} from 'leaflet';
 
 			const sf = [37.77, -122.42];
 			const trd = [63.41, 10.41];
