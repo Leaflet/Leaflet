@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
@@ -14,7 +21,7 @@
 			<button type="button" id="b2">Remove Layer</button>
 		</div>
 		<script type="module">
-			import {LayerGroup, Map, TileLayer, LatLngBounds, Circle, LatLng, Popup, DomUtil, DomEvent} from '../../dist/leaflet-src.esm.js';
+			import {LayerGroup, Map, TileLayer, LatLngBounds, Circle, LatLng, Popup, DomUtil, DomEvent} from 'leaflet';
 
 			const map = new Map('map');
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

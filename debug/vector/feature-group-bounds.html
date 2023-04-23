@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
@@ -13,7 +20,7 @@
 		<button id="featureGroupBounds" type="button">Show feature group bounds</button>
 		<script src="geojson-sample.js"></script>
 		<script type="module">
-			import {TileLayer, Map, GeoJSON, LatLng, Marker, Polyline, FeatureGroup, Rectangle} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, Map, GeoJSON, LatLng, Marker, Polyline, FeatureGroup, Rectangle} from 'leaflet';
 			import geojsonSample from './geojson-sample.js';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});

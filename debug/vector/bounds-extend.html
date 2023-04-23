@@ -6,13 +6,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
 		<button type="button" id="extendBounds">Extend the bounds of the center rectangle with the upper right rectangle</button>
 		<button type="button" id="extendLatLng">Extend the bounds of the center rectangle with the lower left marker</button>
 		<script type="module">
-			import {TileLayer, LatLngBounds, LatLng, Map, Rectangle, Marker} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, LatLngBounds, LatLng, Map, Rectangle, Marker} from 'leaflet';
 
 			const bounds1 = new LatLngBounds(
 				new LatLng(54.559322, -5.767822),

@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<p>
@@ -18,7 +25,7 @@
 		<div id="map1" style="height: 300px; width: 400px; float:left;"></div>
 		<div id="map2" style="height: 300px; width: 400px; float:left; margin-left: 10px;"></div>
 		<script type="module">
-			import {TileLayer, Marker, Map, LatLng} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, Marker, Map, LatLng} from 'leaflet';
 
 			function addLayerAndMarker(map) {
 				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

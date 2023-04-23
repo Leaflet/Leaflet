@@ -6,13 +6,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<button id="once">Once</button>
 		<button id="start">Start</button>
 		<button id="stop">Stop</button>
 		<script type="module">
-			import {TileLayer, Map} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, Map} from 'leaflet';
 
 			let map;
 			let mapDiv;
