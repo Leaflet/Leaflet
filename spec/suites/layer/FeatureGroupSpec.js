@@ -1,15 +1,17 @@
-﻿describe('FeatureGroup', () => {
+﻿import {Marker, featureGroup, layerGroup, stamp} from 'leaflet';
+
+describe('FeatureGroup', () => {
 	describe('#_propagateEvent', () => {
 		let marker;
 
 		beforeEach(() => {
-			marker = L.marker([0, 0]);
+			marker = new Marker([0, 0]);
 		});
 
 		describe('when a Marker is added to multiple FeatureGroups ', () => {
 			it('e.propagatedFrom should be the Marker', () => {
-				const fg1 = L.featureGroup(),
-				    fg2 = L.featureGroup();
+				const fg1 = featureGroup(),
+				    fg2 = featureGroup();
 
 				fg1.addLayer(marker);
 				fg2.addLayer(marker);
@@ -39,8 +41,8 @@
 
 	describe('addLayer', () => {
 		it('adds the layer', () => {
-			const fg = L.featureGroup(),
-			    marker = L.marker([0, 0]);
+			const fg = featureGroup(),
+			    marker = new Marker([0, 0]);
 
 			expect(fg.hasLayer(marker)).to.be.false;
 
@@ -50,8 +52,8 @@
 		});
 
 		it('supports non-evented layers', () => {
-			const fg = L.featureGroup(),
-			    g = L.layerGroup();
+			const fg = featureGroup(),
+			    g = layerGroup();
 
 			expect(fg.hasLayer(g)).to.be.false;
 
@@ -63,8 +65,8 @@
 
 	describe('removeLayer', () => {
 		it('removes the layer passed to it', () => {
-			const fg = L.featureGroup(),
-			    marker = L.marker([0, 0]);
+			const fg = featureGroup(),
+			    marker = new Marker([0, 0]);
 
 			fg.addLayer(marker);
 			expect(fg.hasLayer(marker)).to.be.true;
@@ -74,13 +76,13 @@
 		});
 
 		it('removes the layer passed to it by id', () => {
-			const fg = L.featureGroup(),
-			    marker = L.marker([0, 0]);
+			const fg = featureGroup(),
+			    marker = new Marker([0, 0]);
 
 			fg.addLayer(marker);
 			expect(fg.hasLayer(marker)).to.be.true;
 
-			fg.removeLayer(L.stamp(marker));
+			fg.removeLayer(stamp(marker));
 			expect(fg.hasLayer(marker)).to.be.false;
 		});
 	});
