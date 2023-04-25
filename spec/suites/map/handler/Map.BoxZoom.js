@@ -1,9 +1,12 @@
+import {Map} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.BoxZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [0, 0],
 			zoom: 3
 		});

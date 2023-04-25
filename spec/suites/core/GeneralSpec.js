@@ -1,3 +1,5 @@
+import 'leaflet';
+
 describe('General', () => {
 	it('namespace extension', () => {
 		L.Util.foo = 'bar';

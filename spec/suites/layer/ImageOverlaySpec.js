@@ -1,10 +1,13 @@
+import {Map, imageOverlay, LatLngBounds} from 'leaflet';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
 describe('ImageOverlay', () => {
 	let container, map;
 	const imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 
@@ -14,18 +17,18 @@ describe('ImageOverlay', () => {
 
 	describe('#setStyle', () => {
 		it('sets opacity', () => {
-			const overlay = L.imageOverlay().setStyle({opacity: 0.5});
+			const overlay = imageOverlay().setStyle({opacity: 0.5});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
 
 	describe('#setBounds', () => {
 		it('sets bounds', () => {
-			const bounds = L.latLngBounds(
+			const bounds = new LatLngBounds(
 				[14, 12],
 				[30, 40]
 			);
-			const overlay = L.imageOverlay().setBounds(bounds);
+			const overlay = imageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
 	});
@@ -39,13 +42,13 @@ describe('ImageOverlay', () => {
 
 		// Create overlay for each test
 		beforeEach(() => {
-			overlay = L.imageOverlay(blankUrl, imageBounds, {
+			overlay = imageOverlay(blankUrl, imageBounds, {
 				errorOverlayUrl: errorUrl,
 				className: 'my-custom-image-class'
 			});
 			map.addLayer(overlay);
 
-			const bounds = L.latLngBounds(
+			const bounds = new LatLngBounds(
 				[14, 12],
 				[30, 40]
 			);
@@ -97,13 +100,13 @@ describe('ImageOverlay', () => {
 
 	describe('#setZIndex', () => {
 		it('sets the z-index of the image', () => {
-			const overlay = L.imageOverlay();
+			const overlay = imageOverlay();
 			overlay.setZIndex(10);
 			expect(overlay.options.zIndex).to.equal(10);
 		});
 
 		it('should update the z-index of the image if it has allready been added to the map', () => {
-			const overlay = L.imageOverlay('', imageBounds);
+			const overlay = imageOverlay('', imageBounds);
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
 
@@ -112,31 +115,31 @@ describe('ImageOverlay', () => {
 		});
 
 		it('should set the z-index of the image when it is added to the map', () => {
-			const overlay = L.imageOverlay('', imageBounds);
+			const overlay = imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
 		});
 
 		it('should use the z-index specified in options', () => {
-			const overlay = L.imageOverlay('', imageBounds, {zIndex: 20});
+			const overlay = imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
 		});
 
 		it('should be fluent', () => {
-			const overlay = L.imageOverlay();
+			const overlay = imageOverlay();
 			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
 
 	describe('#getCenter', () => {
 		it('should return the correct center', () => {
-			const overlay = L.imageOverlay('', imageBounds).addTo(map);
+			const overlay = imageOverlay('', imageBounds).addTo(map);
 			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
 		it('should open popup at the center', () => {
-			const overlay = L.imageOverlay('', imageBounds).addTo(map);
+			const overlay = imageOverlay('', imageBounds).addTo(map);
 			overlay.bindPopup('Center').openPopup();
 			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
@@ -155,7 +158,7 @@ describe('ImageOverlay', () => {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin option value ${crossOrigin}`, () => {
-				overlay = L.imageOverlay(blankUrl, imageBounds, {
+				overlay = imageOverlay(blankUrl, imageBounds, {
 					crossOrigin
 				});
 				map.addLayer(overlay);

@@ -1,5 +1,7 @@
+import {point, latLng, Browser} from 'leaflet';
+
 expect.Assertion.prototype.near = function (expected, delta) {
-	expected = L.point(expected);
+	expected = point(expected);
 	delta = delta || 1;
 	expect(this.obj.x).to
 		.be.within(expected.x - delta, expected.x + delta);
@@ -8,7 +10,7 @@ expect.Assertion.prototype.near = function (expected, delta) {
 };
 
 expect.Assertion.prototype.nearLatLng = function (expected, delta) {
-	expected = L.latLng(expected);
+	expected = latLng(expected);
 	delta = delta || 1e-4;
 	expect(this.obj.lat).to
 		.be.within(expected.lat - delta, expected.lat + delta);
@@ -17,13 +19,14 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 };
 
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = L.Browser.touch ? it : it.skip;
+it.skipIfNotTouch = Browser.touch ? it : it.skip;
 
-const touchEventType = L.Browser.touchNative ? 'touch' : 'pointer'; // eslint-disable-line no-unused-vars
+export const touchEventType = Browser.touchNative ? 'touch' : 'pointer';
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
-function createContainer(width, height) { /* eslint-disable-line no-unused-vars */
+
+export function createContainer(width, height) {
 	width = width ? width : '400px';
 	height = height ? height : '400px';
 	const container = document.createElement('div');
@@ -38,7 +41,7 @@ function createContainer(width, height) { /* eslint-disable-line no-unused-vars 
 	return container;
 }
 
-function removeMapContainer(map, container) { /* eslint-disable-line no-unused-vars */
+export function removeMapContainer(map, container) {
 	if (map) {
 		map.remove();
 	}
@@ -47,5 +50,5 @@ function removeMapContainer(map, container) { /* eslint-disable-line no-unused-v
 	}
 }
 
-console.log('L.Browser.pointer', L.Browser.pointer);
-console.log('L.Browser.touchNative', L.Browser.touchNative);
+console.log('Browser.pointer', Browser.pointer);
+console.log('Browser.touchNative', Browser.touchNative);
