@@ -315,13 +315,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-radius: 5px;
 	}
 .leaflet-control-layers-toggle {
-	background-image: url(images/layers.png);
+	background-image: url(images/layers.svg);
 	width: 36px;
 	height: 36px;
-	}
-.leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(images/layers-2x.png);
-	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-layers-toggle {
 	width: 44px;
@@ -368,7 +364,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* Default icon URLs */
 .leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
-	background-image: url(images/marker-icon.png);
+	background-image: url(images/marker.svg);
 	}
 
 
@@ -596,4 +592,33 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
 	}
+}
+
+
+.default-icon-color-pink {
+	filter: hue-rotate(120deg);
+}
+.default-icon-color-darkblue {
+	filter: hue-rotate(30deg);
+}
+.default-icon-color-lila {
+	filter: hue-rotate(50deg);
+}
+.default-icon-color-magenta {
+	filter: hue-rotate(90deg);
+}
+.default-icon-color-red {
+	filter: hue-rotate(140deg);
+}
+.default-icon-color-orange {
+	filter: hue-rotate(160deg);
+}
+.default-icon-color-brown {
+	filter: hue-rotate(190deg);
+}
+.default-icon-color-green {
+	filter: hue-rotate(260deg);
+}
+.default-icon-color-mint {
+	filter: hue-rotate(320deg);
 }
