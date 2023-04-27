@@ -125,7 +125,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Run tests on ${{ matrix.browser }}
-        run: npm test -- --browsers ${{ matrix.browser }}
+        run: npm test -- --browsers ${{ matrix.browser }} --single-run
 
   publish-artifacts:
     needs: setup
