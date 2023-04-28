@@ -78,7 +78,7 @@ export const Map = Evented.extend({
 		// @section Animation Options
 		// @option zoomAnimation: Boolean = true
 		// Whether the map zoom animation is enabled. By default it's enabled
-		// in all browsers that support CSS3 Transitions except Android.
+		// in all browsers that support CSS Transitions except Android.
 		zoomAnimation: true,
 
 		// @option zoomAnimationThreshold: Number = 4
@@ -87,13 +87,13 @@ export const Map = Evented.extend({
 
 		// @option fadeAnimation: Boolean = true
 		// Whether the tile fade animation is enabled. By default it's enabled
-		// in all browsers that support CSS3 Transitions except Android.
+		// in all browsers that support CSS Transitions except Android.
 		fadeAnimation: true,
 
 		// @option markerZoomAnimation: Boolean = true
 		// Whether markers animate their zoom with the zoom animation, if disabled
 		// they will disappear for the length of the animation. By default it's
-		// enabled in all browsers that support CSS3 Transitions except Android.
+		// enabled in all browsers that support CSS Transitions except Android.
 		markerZoomAnimation: true,
 
 		// @option transform3DLimit: Number = 2^23

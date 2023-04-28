@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Renders pulsing icon using CSS3. It can be used for location marker.
+Renders pulsing icon using CSS. It can be used for location marker.

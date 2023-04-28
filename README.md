@@ -28,7 +28,7 @@ Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has al
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,
-taking advantage of HTML5 and CSS3 on modern browsers while being accessible on older ones too.
+taking advantage of modern browser features while being accessible on older ones too.
 It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.

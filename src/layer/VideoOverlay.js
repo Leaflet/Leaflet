@@ -10,7 +10,7 @@ import * as Util from '../core/Util.js';
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
  * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video)
- * HTML5 element.
+ * HTML element.
  *
  * @example
  *
