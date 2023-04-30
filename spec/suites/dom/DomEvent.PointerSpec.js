@@ -79,9 +79,11 @@ describe('DomEvent.Pointer', () => {
 				}
 				let res;
 				for (const prop in props) {
-					res = true;
-					if (props[prop] !== evt[prop]) {
-						return false;
+					if (Object.hasOwn(props, prop)) {
+						res = true;
+						if (props[prop] !== evt[prop]) {
+							return false;
+						}
 					}
 				}
 				return res;

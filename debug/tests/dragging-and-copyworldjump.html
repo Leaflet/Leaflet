@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Dragging and 'copyWorldJump'</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<p>
+			On the left Map dragging and worldCopyJump are enabled during initialization.<br>
+			On the right Map worldCopyJump is enabled. Dragging is enabled by clicking the button.
+		</p>
+		<button id="foo">
+			Click to enable dragging on the right map, then dragging around and watch copying
+		</button><br>
+		<div id="map1" style="height: 300px; width: 400px; float:left;"></div>
+		<div id="map2" style="height: 300px; width: 400px; float:left; margin-left: 10px;"></div>
+		<script type="module">
+			import {TileLayer, Marker, Map, LatLng} from 'leaflet';
+
+			function addLayerAndMarker(map) {
+				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					maxZoom: 18
+				}).addTo(map);
+
+				new Marker([50.5, 30.5]).addTo(map);
+			}
+
+			const map1 = new Map('map1', {
+				center : new LatLng(45.50144, -122.67599),
+				zoom : 0,
+				dragging : true,
+				worldCopyJump : true
+			});
+
+			const map2 = new Map('map2', {
+				center: new LatLng(45.50144, -122.67599),
+				zoom: 0,
+				dragging: false,
+				worldCopyJump: true
+			});
+
+			document.getElementById('foo').addEventListener('click', () => {
+				map2.dragging.enable();
+			});
+
+			addLayerAndMarker(map1);
+			addLayerAndMarker(map2);
+		</script>
+	</body>
+</html>

@@ -6,12 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map" style='width:750px; height: 450px;'></div>
 		<svg id="image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/></svg>
 		<script type="module">
-			import {Map, TileLayer, LatLngBounds, SVGOverlay} from '../../dist/leaflet-src.esm.js';
+			import {Map, TileLayer, LatLngBounds, SVGOverlay} from 'leaflet';
 
 			const map = new Map('map');
 			

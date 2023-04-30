@@ -355,8 +355,8 @@ describe('Polygon', () => {
 			polygon.addTo(map);
 			polygon.setStyle(style);
 
-			for (const prop in style) {
-				expect(polygon.options[prop]).to.be(style[prop]);
+			for (const [prop, expectedValue] of Object.entries(style)) {
+				expect(polygon.options[prop]).to.be(expectedValue);
 			}
 		});
 	});

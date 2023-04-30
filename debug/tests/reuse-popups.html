@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Reuse Popups</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, Marker, TileLayer, Popup} from 'leaflet';
+
+			const map = new Map('map');
+
+			new Marker([51.5, -0.09])
+				.bindPopup('<b>Hello world!</b><br />I am a popup.')
+				.addTo(map);
+
+			const marker2 = new Marker([51.525, -0.09])
+				.addTo(map);
+
+			map.setView([51.505, -0.09], 13);
+
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			}).addTo(map);
+
+			const popup = new Popup().setContent('Previously created');
+
+			marker2.bindPopup(popup);
+		</script>
+	</body>
+</html>

@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Loads files (GeoJSON, GPX, KML) into the map using the HTML5 FileReader API (i.e. locally without server).
+Loads files (GeoJSON, GPX, KML) into the map using the HTML FileReader API (i.e. locally without server).

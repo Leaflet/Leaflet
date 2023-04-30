@@ -47,19 +47,25 @@ export const Renderer = BlanketOverlay.extend({
 		// of paths are relative to the origin pixel and therefore need to
 		// be recalculated.
 		for (const id in this._layers) {
-			this._layers[id]._project();
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._project();
+			}
 		}
 	},
 
 	_updatePaths() {
 		for (const id in this._layers) {
-			this._layers[id]._update();
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._update();
+			}
 		}
 	},
 
 	_onViewReset() {
 		for (const id in this._layers) {
-			this._layers[id]._reset();
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._reset();
+			}
 		}
 	},
 

@@ -83,8 +83,8 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 			detail: 2,
 			target: container
 		});
-		for (const prop in expectedProps) {
-			expect(event[prop]).to.be(expectedProps[prop]);
+		for (const [prop, expectedValue] of Object.entries(expectedProps)) {
+			expect(event[prop]).to.be(expectedValue);
 		}
 		expect(event.isTrusted).not.to.be.ok();
 	});
