@@ -1,7 +1,7 @@
 ---
 name: Leaflet.MeasurePolygon
 category: measurement
-repo: [https://github.com/ppete2/Leaflet.PolylineMeasure](https://github.com/olanaso/Leaflet.MeasurePolygon/settings/pages)
+repo: https://github.com/olanaso/Leaflet.MeasurePolygon
 author: Erick S. Escalante Olano
 author-url: https://github.com/olanaso
 demo: https://olanaso.github.io/Leaflet.MeasurePolygon
