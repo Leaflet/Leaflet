@@ -17,7 +17,7 @@
 				it('takes that radius', () => {
 					const marker = L.circleMarker([0, 0], {radius: 20}).addTo(map);
 
-					expect(marker._radius).to.be(20);
+					expect(marker._radius).to.equal(20);
 				});
 			});
 
@@ -26,7 +26,7 @@
 					const marker = L.circleMarker([0, 0], {radius: 20});
 					marker.setRadius(15);
 					marker.addTo(map);
-					expect(marker._radius).to.be(15);
+					expect(marker._radius).to.equal(15);
 				});
 			});
 
@@ -35,7 +35,7 @@
 					const marker = L.circleMarker([0, 0], {radius: 20});
 					marker.addTo(map);
 					marker.setRadius(15);
-					expect(marker._radius).to.be(15);
+					expect(marker._radius).to.equal(15);
 				});
 			});
 
@@ -44,7 +44,7 @@
 					const marker = L.circleMarker([0, 0], {radius: 20});
 					marker.addTo(map);
 					marker.setStyle({radius: 15});
-					expect(marker._radius).to.be(15);
+					expect(marker._radius).to.equal(15);
 				});
 			});
 
@@ -53,7 +53,7 @@
 					const marker = L.circleMarker([0, 0], {radius: 20});
 					marker.setStyle({radius: 15});
 					marker.addTo(map);
-					expect(marker._radius).to.be(15);
+					expect(marker._radius).to.equal(15);
 				});
 			});
 		});
@@ -74,10 +74,10 @@
 
 			marker.setLatLng(afterLatLng);
 
-			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
-			expect(eventArgs.latlng).to.be(afterLatLng);
-			expect(marker.getLatLng()).to.be(afterLatLng);
+			expect(eventArgs).to.not.equal(null);
+			expect(eventArgs.oldLatLng).to.equal(beforeLatLng);
+			expect(eventArgs.latlng).to.equal(afterLatLng);
+			expect(marker.getLatLng()).to.equal(afterLatLng);
 		});
 	});
 
@@ -89,8 +89,8 @@
 
 			circlemarker.addTo(map);
 
-			expect(circlemarker._containsPoint(point1)).to.be(true);
-			expect(circlemarker._containsPoint(point2)).to.be(false);
+			expect(circlemarker._containsPoint(point1)).to.be.true;
+			expect(circlemarker._containsPoint(point2)).to.be.false;
 		});
 	});
 });

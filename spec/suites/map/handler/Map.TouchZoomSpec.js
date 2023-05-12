@@ -18,9 +18,9 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Increases zoom when pinching out', (done) => {
 		map.setView([0, 0], 1);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 1, initial distance 50px, final distance 450px
-			expect(map.getZoom()).to.be(4);
+			expect(map.getZoom()).to.equal(4);
 
 			done();
 		});
@@ -39,9 +39,9 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Decreases zoom when pinching in', (done) => {
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -68,12 +68,12 @@ describe('Map.TouchZoom', () => {
 			pinchZoomEvent = e.pinch || pinchZoomEvent;
 		});
 		map.once('zoomend', () => {
-			expect(spy.callCount > 1).to.be.ok();
-			expect(pinchZoomEvent).to.be.ok();
+			expect(spy.callCount > 1).to.be.true;
+			expect(pinchZoomEvent).to.be.true;
 
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -104,8 +104,8 @@ describe('Map.TouchZoom', () => {
 		const hand = new Hand({
 			timing: 'fastframe',
 			onStop() {
-				expect(map.getCenter().lat).to.be(0);
-				expect(map.getCenter().lng > 5).to.be(true);
+				expect(map.getCenter().lat).to.equal(0);
+				expect(map.getCenter().lng > 5).to.be.true;
 				done();
 			}
 		});
@@ -139,9 +139,9 @@ describe('Map.TouchZoom', () => {
 
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -190,9 +190,9 @@ describe('Map.TouchZoom', () => {
 					const width = renderedRect.width;
 					const height = renderedRect.height;
 
-					expect(height < 50).to.be(true);
-					expect(width < 50).to.be(true);
-					expect(height + width > 0).to.be(true);
+					expect(height < 50).to.be.true;
+					expect(width < 50).to.be.true;
+					expect(height + width > 0).to.be.true;
 
 					const x = renderedRect.x;
 					const y = renderedRect.y;
@@ -252,9 +252,9 @@ describe('Map.TouchZoom', () => {
 					const width = renderedRect.width;
 					const height = renderedRect.height;
 
-					expect(height < 50).to.be(true);
-					expect(width < 50).to.be(true);
-					expect(height + width > 0).to.be(true);
+					expect(height < 50).to.be.true;
+					expect(width < 50).to.be.true;
+					expect(height + width > 0).to.be.true;
 
 					const x = renderedRect.x;
 					const y = renderedRect.y;

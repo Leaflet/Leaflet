@@ -1,20 +1,16 @@
-expect.Assertion.prototype.near = function (expected, delta) {
+chai.util.addMethod(chai.Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = L.point(expected);
-	delta = delta || 1;
-	expect(this.obj.x).to
-		.be.within(expected.x - delta, expected.x + delta);
-	expect(this.obj.y).to
-		.be.within(expected.y - delta, expected.y + delta);
-};
 
-expect.Assertion.prototype.nearLatLng = function (expected, delta) {
+	new chai.Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
+	new chai.Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
+});
+
+chai.util.addMethod(chai.Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
 	expected = L.latLng(expected);
-	delta = delta || 1e-4;
-	expect(this.obj.lat).to
-		.be.within(expected.lat - delta, expected.lat + delta);
-	expect(this.obj.lng).to
-		.be.within(expected.lng - delta, expected.lng + delta);
-};
+
+	new chai.Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
+	new chai.Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
+});
 
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = L.Browser.touch ? it : it.skip;

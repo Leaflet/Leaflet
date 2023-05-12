@@ -22,7 +22,7 @@ describe('Map.BoxZoom', () => {
 
 		// check if click event on the map is fired
 		UIEventSimulator.fire('click', map._container);
-		expect(mapClick).to.be(true);
+		expect(mapClick).to.be.true;
 
 		let clientX = 100;
 		let clientY = 100;
@@ -52,7 +52,7 @@ describe('Map.BoxZoom', () => {
 		// check if click event on the map is fired
 		mapClick = false;
 		UIEventSimulator.fire('click', map._container);
-		expect(mapClick).to.be(true);
+		expect(mapClick).to.be.true;
 	});
 
 });

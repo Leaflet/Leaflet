@@ -23,6 +23,6 @@ describe('VideoOverlay', () => {
 
 		const videoOverlay = L.videoOverlay(videoUrls, videoBounds).addTo(map);
 
-		expect(map.hasLayer(videoOverlay)).to.be.ok();
+		expect(map.hasLayer(videoOverlay)).to.be.true;
 	});
 });

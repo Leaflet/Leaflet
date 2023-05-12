@@ -47,7 +47,7 @@ describe('Polyline', () => {
 
 		it('can be added to the map when empty', () => {
 			const polyline = L.polyline([]).addTo(map);
-			expect(map.hasLayer(polyline)).to.be(true);
+			expect(map.hasLayer(polyline)).to.be.true;
 		});
 
 	});
@@ -55,13 +55,13 @@ describe('Polyline', () => {
 	describe('#isEmpty', () => {
 		it('should return true for a polyline with no latlngs', () => {
 			const polyline = L.polyline([]);
-			expect(polyline.isEmpty()).to.be(true);
+			expect(polyline.isEmpty()).to.be.true;
 		});
 
 		it('should return false for simple polyline', () => {
 			const latLngs = [[1, 2], [3, 4]];
 			const polyline = L.polyline(latLngs);
-			expect(polyline.isEmpty()).to.be(false);
+			expect(polyline.isEmpty()).to.be.false;
 		});
 
 		it('should return false for multi-polyline', () => {
@@ -70,7 +70,7 @@ describe('Polyline', () => {
 				[[11, 12], [13, 14]]
 			];
 			const polyline = L.polyline(latLngs);
-			expect(polyline.isEmpty()).to.be(false);
+			expect(polyline.isEmpty()).to.be.false;
 		});
 
 	});
@@ -146,7 +146,7 @@ describe('Polyline', () => {
 			expect(() => {
 				const polyline = L.polyline([[0, 0], [0, 0.090]]);
 				polyline.getCenter();
-			}).to.throwException('Must add layer to map before using getCenter()');
+			}).to.throw('Must add layer to map before using getCenter()');
 		});
 
 		it('should compute same center for low and high zoom', () => {
@@ -248,7 +248,7 @@ describe('Polyline', () => {
 			polyline.setStyle(style);
 
 			for (const [prop, expectedValue] of Object.entries(style)) {
-				expect(polyline.options[prop]).to.be(expectedValue);
+				expect(polyline.options[prop]).to.equal(expectedValue);
 			}
 		});
 	});
@@ -264,7 +264,7 @@ describe('Polyline', () => {
 			polyline.setStyle(style);
 
 			for (const [prop, expectedValue] of Object.entries(style)) {
-				expect(polyline.options[prop]).to.be(expectedValue);
+				expect(polyline.options[prop]).to.equal(expectedValue);
 			}
 		});
 	});
@@ -280,13 +280,13 @@ describe('Polyline', () => {
 			});
 			map.addLayer(polyline);
 
-			expect(polyline.closestLayerPoint(p1)).to.be(null);
+			expect(polyline.closestLayerPoint(p1)).to.equal(null);
 
 			polyline.setLatLngs(latlngs);
 			const point = polyline.closestLayerPoint(p1);
-			expect(point).not.to.be(null);
-			expect(point.distance).to.not.be(Infinity);
-			expect(point.distance).to.not.be(NaN);
+			expect(point).not.to.equal(null);
+			expect(point.distance).to.not.equal(Infinity);
+			expect(point.distance).to.not.equal(NaN);
 
 			const point2 = polyline.closestLayerPoint(p2);
 

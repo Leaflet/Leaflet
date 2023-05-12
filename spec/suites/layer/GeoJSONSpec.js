@@ -59,11 +59,11 @@ describe('L.GeoJSON', () => {
 			const geojson = L.geoJSON(feature, {weight: 7, color: 'chocolate'});
 			geojson.setStyle({weight: 22, color: 'coral'});
 			const layer = geojson.getLayers()[0];
-			expect(layer.options.weight).to.be(22);
-			expect(layer.options.color).to.be('coral');
+			expect(layer.options.weight).to.equal(22);
+			expect(layer.options.color).to.equal('coral');
 			geojson.resetStyle(layer);
-			expect(layer.options.weight).to.be(7);
-			expect(layer.options.color).to.be('chocolate');
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.color).to.equal('chocolate');
 		});
 
 		it('should reset init options of all child layers', () => {
@@ -84,16 +84,16 @@ describe('L.GeoJSON', () => {
 			const geojson = L.geoJSON([feature, feature2], {weight: 7, color: 'chocolate'});
 			geojson.setStyle({weight: 22, color: 'coral'});
 			const layer = geojson.getLayers()[0];
-			expect(layer.options.weight).to.be(22);
-			expect(layer.options.color).to.be('coral');
+			expect(layer.options.weight).to.equal(22);
+			expect(layer.options.color).to.equal('coral');
 			const layer2 = geojson.getLayers()[1];
-			expect(layer2.options.weight).to.be(22);
-			expect(layer2.options.color).to.be('coral');
+			expect(layer2.options.weight).to.equal(22);
+			expect(layer2.options.color).to.equal('coral');
 			geojson.resetStyle(); // Should apply to all layers
-			expect(layer.options.weight).to.be(7);
-			expect(layer.options.color).to.be('chocolate');
-			expect(layer2.options.weight).to.be(7);
-			expect(layer2.options.color).to.be('chocolate');
+			expect(layer.options.weight).to.equal(7);
+			expect(layer.options.color).to.equal('chocolate');
+			expect(layer2.options.weight).to.equal(7);
+			expect(layer2.options.color).to.equal('chocolate');
 		});
 	});
 });
@@ -611,28 +611,28 @@ describe('L.GeoJSON functions', () => {
 					type: 'Feature',
 					geometry
 				});
-				expect(layer).to.be.a(expectedType);
+				expect(layer).to.be.instanceOf(expectedType);
 			});
 
 			it(`creates a Layer from a GeoJSON geometry (type='${geometry.type}')`, () => {
 				const layer = L.GeoJSON.geometryToLayer(geometry);
-				expect(layer).to.be.a(expectedType);
+				expect(layer).to.be.instanceOf(expectedType);
 			});
 		});
 
 		it('throws an error if feature is an invalid GeoJSON object', () => {
-			expect(L.GeoJSON.geometryToLayer).withArgs({
+			expect(() => L.GeoJSON.geometryToLayer({
 				type: 'Feature',
 				geometry: {
 					type: 'invalid',
 					coordinates: [0, 0]
 				}
-			}).to.throwError('Invalid GeoJSON object.');
+			})).to.throw('Invalid GeoJSON object.');
 		});
 
 		it('returns nothing if feature does not have a geometry property', () => {
 			const ret = L.GeoJSON.geometryToLayer({type: 'Feature'});
-			expect(ret).not.to.be.ok();
+			expect(ret).not.to.be.true;
 		});
 
 		it('creates a Layer using pointToLayer option (Point)', () => {
@@ -643,8 +643,8 @@ describe('L.GeoJSON functions', () => {
 			}, {
 				pointToLayer: customPointToLayer
 			});
-			expect(layer).to.be.a(L.Circle);
-			expect(layer.options.radius).to.be(100);
+			expect(layer).to.be.instanceOf(L.Circle);
+			expect(layer.options.radius).to.equal(100);
 		});
 
 		it('creates a Layer using pointToLayer option (MultiPoint)', () => {
@@ -656,8 +656,8 @@ describe('L.GeoJSON functions', () => {
 				pointToLayer: customPointToLayer
 			});
 			layer.eachLayer((lyr) => {
-				expect(lyr).to.be.a(L.Circle);
-				expect(lyr.options.radius).to.be(100);
+				expect(lyr).to.be.instanceOf(L.Circle);
+				expect(lyr.options.radius).to.equal(100);
 			});
 		});
 
@@ -671,7 +671,7 @@ describe('L.GeoJSON functions', () => {
 			}, {
 				coordsToLatLng: customCoordstoLatLng
 			});
-			expect(layer.getLatLng()).to.eql({lat: 3, lng: 2, alt: 4});
+			expect(layer.getLatLng().equals(L.latLng({lat: 3, lng: 2, alt: 4}))).to.be.true;
 		});
 
 		it('creates a Layer using coordsToLatLng option (MultiPoint)', () => {
@@ -686,10 +686,9 @@ describe('L.GeoJSON functions', () => {
 			}, {
 				coordsToLatLng: customCoordstoLatLng
 			});
-			expect(layer.getLayers().map(lyr => lyr.getLatLng())).to.eql([
-				{lat: 3, lng: 2, alt: 4},
-				{lat: 6, lng: 5, alt: 7}
-			]);
+
+			expect(layer.getLayers()[0].getLatLng().equals(L.latLng({lat: 3, lng: 2, alt: 4}))).to.be.true;
+			expect(layer.getLayers()[1].getLatLng().equals(L.latLng({lat: 6, lng: 5, alt: 7}))).to.be.true;
 		});
 	});
 
@@ -697,10 +696,10 @@ describe('L.GeoJSON functions', () => {
 		it('creates a LatLng object with given coordinates', () => {
 			const latLng = L.GeoJSON.coordsToLatLng([1, 2]);
 			const latLngWithAlt = L.GeoJSON.coordsToLatLng([3, 4, 5]);
-			expect(latLng).to.be.a(L.LatLng);
-			expect(latLngWithAlt).to.be.a(L.LatLng);
-			expect(latLng).to.eql({lng: 1, lat: 2});
-			expect(latLngWithAlt).to.eql({lng: 3, lat: 4, alt: 5});
+			expect(latLng).to.be.instanceOf(L.LatLng);
+			expect(latLngWithAlt).to.be.instanceOf(L.LatLng);
+			expect(latLng.equals(L.latLng({lng: 1, lat: 2}))).to.be.true;
+			expect(latLngWithAlt.equals(L.latLng({lng: 3, lat: 4, alt: 5})));
 		});
 	});
 
@@ -712,9 +711,13 @@ describe('L.GeoJSON functions', () => {
 
 		it('creates a multidimensional array of LatLngs', () => {
 			const latLngs = L.GeoJSON.coordsToLatLngs([[1, 2], [3, 4], [5, 6]]);
-			expect(latLngs).to.eql([{lng: 1, lat: 2}, {lng: 3, lat: 4}, {lng: 5, lat: 6}]);
+
+			expect(latLngs[0].equals(L.latLng({lng: 1, lat: 2})));
+			expect(latLngs[1].equals(L.latLng({lng: 3, lat: 4})));
+			expect(latLngs[2].equals(L.latLng({lng: 5, lat: 6})));
+
 			latLngs.forEach((latLng) => {
-				expect(latLng).to.be.a(L.LatLng);
+				expect(latLng).to.be.instanceOf(L.LatLng);
 			});
 		});
 
@@ -723,13 +726,18 @@ describe('L.GeoJSON functions', () => {
 				[[1, 2], [3, 4], [5, 6]],
 				[[5, 6], [7, 8], [9, 10]]
 			], 1);
-			expect(latLngs).to.eql([
-				[{lng: 1, lat: 2}, {lng: 3, lat: 4}, {lng: 5, lat: 6}],
-				[{lng: 5, lat: 6}, {lng: 7, lat: 8}, {lng: 9, lat: 10}]
-			]);
+
+			expect(latLngs[0][0].equals(L.latLng({lng: 1, lat: 2})));
+			expect(latLngs[0][1].equals(L.latLng({lng: 3, lat: 4})));
+			expect(latLngs[0][2].equals(L.latLng({lng: 5, lat: 6})));
+
+			expect(latLngs[1][0].equals(L.latLng({lng: 5, lat: 6})));
+			expect(latLngs[1][1].equals(L.latLng({lng: 7, lat: 8})));
+			expect(latLngs[1][2].equals(L.latLng({lng: 9, lat: 10})));
+
 			latLngs.forEach((arr) => {
 				arr.forEach((latlng) => {
-					expect(latlng).to.be.a(L.LatLng);
+					expect(latlng).to.be.instanceOf(L.LatLng);
 				});
 			});
 		});
@@ -737,11 +745,10 @@ describe('L.GeoJSON functions', () => {
 		it('creates a multidimensional array of LatLngs with custom coordsToLatLng', () => {
 			const coords = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 0, customCoordsToLatLng);
-			expect(latLngs).to.eql([
-				{lat: 3, lng: 2, alt: 4},
-				{lat: 6, lng: 5, alt: 7},
-				{lat: 9, lng: 8, alt: 10}
-			]);
+
+			expect(latLngs[0].equals(L.latLng({lat: 3, lng: 2, alt: 4})));
+			expect(latLngs[1].equals(L.latLng({lat: 6, lng: 5, alt: 7})));
+			expect(latLngs[2].equals(L.latLng({lat: 9, lng: 8, alt: 10})));
 		});
 
 		it('creates a multidimensional array of LatLngs with custom coordsToLatLng (levelDeep=1)', () => {
@@ -750,16 +757,12 @@ describe('L.GeoJSON functions', () => {
 				[[12, 13, 14], [15, 16, 17]]
 			];
 			const latLngs = L.GeoJSON.coordsToLatLngs(coords, 1, customCoordsToLatLng);
-			expect(latLngs).to.eql([
-				[
-					{lat: 3, lng: 2, alt: 4},
-					{lat: 6, lng: 5, alt: 7}
-				],
-				[
-					{lat: 14, lng: 13, alt: 15},
-					{lat: 17, lng: 16, alt: 18}
-				]
-			]);
+
+			expect(latLngs[0][0].equals(L.latLng({lat: 3, lng: 2, alt: 4})));
+			expect(latLngs[0][1].equals(L.latLng({lat: 6, lng: 5, alt: 7})));
+
+			expect(latLngs[1][0].equals(L.latLng({lat: 14, lng: 13, alt: 15})));
+			expect(latLngs[1][1].equals(L.latLng({lat: 17, lng: 16, alt: 18})));
 		});
 	});
 
@@ -885,12 +888,12 @@ describe('L.GeoJSON functions', () => {
 		it('has no reference between first and last coordinates', () => {
 			const coords = L.GeoJSON.latLngsToCoords([[2, 1, 3], [5, 4, 6]], null, true);
 			expect(coords).to.eql([[1, 2, 3], [4, 5, 6], [1, 2, 3]]);
-			expect(coords[0] === coords[2]).to.not.ok();
+			expect(coords[0] === coords[2]).to.be.false;
 		});
 		it('still works if no values in coords array', () => {
 			expect(() => {
 				L.GeoJSON.latLngsToCoords([[]], 1, true);
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 	});
 

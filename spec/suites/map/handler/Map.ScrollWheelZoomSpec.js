@@ -74,11 +74,11 @@ describe('Map.ScrollWheelZoom', () => {
 		setTimeout(() => {
 			UIEventSimulator.fire(wheel, container, scrollIn);
 
-			expect(spy.notCalled).to.be.ok();
+			expect(spy.notCalled).to.be.true;
 		}, 50);
 
 		map.on('zoomend', () => {
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
 			// expect(map.getCenter()).to.be.nearLatLng([25.48295117535531, -26.367187500000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -99,7 +99,7 @@ describe('Map.ScrollWheelZoom', () => {
 			const zoomDiff = map.getZoom() - zoom;
 
 			map.setZoom(zoom, {animate: false});
-			expect(map.getZoom()).to.be(zoom);
+			expect(map.getZoom()).to.equal(zoom);
 
 			map.options.wheelPxPerZoomLevel = 30 / L.DomEvent.getWheelPxFactor();
 			UIEventSimulator.fire(wheel, container, scrollIn);

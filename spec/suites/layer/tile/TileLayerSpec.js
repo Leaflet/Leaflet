@@ -235,10 +235,10 @@ describe('TileLayer', () => {
 
 		it('Loads 8 kittens zoom 1', (done) => {
 			kittenLayer.on('load', () => {
-				expect(counts.tileloadstart).to.be(8);
-				expect(counts.tileload).to.be(8);
-				expect(counts.tileunload).to.be(0);
-				expect(kittenLayer._container.querySelectorAll('img').length).to.be(8);
+				expect(counts.tileloadstart).to.equal(8);
+				expect(counts.tileload).to.equal(8);
+				expect(counts.tileunload).to.equal(0);
+				expect(kittenLayer._container.querySelectorAll('img').length).to.equal(8);
 				done();
 			});
 
@@ -252,19 +252,19 @@ describe('TileLayer', () => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.on('load', () => {
-				expect(counts.tileloadstart).to.be(12);
-				expect(counts.tileload).to.be(12);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(12);
+				expect(counts.tileload).to.equal(12);
+				expect(counts.tileunload).to.equal(0);
 				kittenLayer.off('load');
 
 				map.on('zoomend', () => {
-					expect(counts.tileloadstart).to.be(290);
-					expect(counts.tileunload).to.be(275);
+					expect(counts.tileloadstart).to.equal(290);
+					expect(counts.tileunload).to.equal(275);
 
 					// image tiles take time, so then might not be fully loaded yet.
 					expect(counts.tileload).to.be.lessThan(counts.tileloadstart + 1);
 					expect(counts.tileload).to.be.greaterThan(counts.tileunload);
-					expect(kittenLayer._container.querySelectorAll('img').length).to.be(15);
+					expect(kittenLayer._container.querySelectorAll('img').length).to.equal(15);
 					done();
 				});
 
@@ -336,7 +336,7 @@ describe('TileLayer', () => {
 
 			expect(() => {
 				layer.addTo(simpleMap);
-			}).to.throwError('No value provided for variable {-y}');
+			}).to.throw('No value provided for variable {-y}');
 
 			simpleMap.remove();
 			document.body.removeChild(simplediv);
@@ -422,7 +422,7 @@ describe('TileLayer', () => {
 				}).addTo(map);
 
 				eachImg(layer, (img) => {
-					expect(img.getAttribute('crossorigin')).to.be(expectedValue);
+					expect(img.getAttribute('crossorigin')).to.equal(expectedValue);
 				});
 			});
 		}
@@ -442,8 +442,8 @@ describe('TileLayer', () => {
 			});
 
 			kittenLayer.on('load', () => {
-				expect(kittenLayer.options.maxZoom).to.be(maxZoom);
-				expect(kittenLayer.options.minZoom).to.be(minZoom);
+				expect(kittenLayer.options.maxZoom).to.equal(maxZoom);
+				expect(kittenLayer.options.minZoom).to.equal(minZoom);
 
 				// reset retina value
 				L.Browser.retina = originalRetina;
@@ -468,7 +468,7 @@ describe('TileLayer', () => {
 
 			kittenLayer.on('load', () => {
 				// zooms should be identical so that we can load tiles for the given zoom level
-				expect(kittenLayer.options.maxZoom).to.be(kittenLayer.options.minZoom);
+				expect(kittenLayer.options.maxZoom).to.equal(kittenLayer.options.minZoom);
 
 				// reset retina value
 				L.Browser.retina = originalRetina;

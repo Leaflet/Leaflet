@@ -15,22 +15,22 @@ describe('Events', () => {
 			obj.addEventListener({test: spy4, other: spy5});
 			// obj.addEventListener({'test other': spy6 });
 
-			expect(spy1.called).to.be(false);
-			expect(spy2.called).to.be(false);
-			expect(spy3.called).to.be(false);
-			expect(spy4.called).to.be(false);
-			expect(spy5.called).to.be(false);
-			// expect(spy6.called).to.be(false);
+			expect(spy1.called).to.be.false;
+			expect(spy2.called).to.be.false;
+			expect(spy3.called).to.be.false;
+			expect(spy4.called).to.be.false;
+			expect(spy5.called).to.be.false;
+			// expect(spy6.called).to.be.false;
 
 			obj.fireEvent('test');
 
-			expect(spy1.called).to.be(true);
-			expect(spy2.called).to.be(true);
-			expect(spy3.called).to.be(false);
-			expect(spy4.called).to.be(true);
-			expect(spy5.called).to.be(false);
-			// expect(spy6.called).to.be(true);
-			// expect(spy6.callCount).to.be(1);
+			expect(spy1.called).to.be.true;
+			expect(spy2.called).to.be.true;
+			expect(spy3.called).to.be.false;
+			expect(spy4.called).to.be.true;
+			expect(spy5.called).to.be.false;
+			// expect(spy6.called).to.be.true;
+			// expect(spy6.callCount).to.equal(1);
 		});
 
 		it('fires all listeners in the order they are added', () => {
@@ -83,10 +83,10 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(count.one).to.be(1);
-			expect(count.two).to.be(3);
-			expect(count.three).to.be(2);
-			expect(count.four).to.be(1);
+			expect(count.one).to.equal(1);
+			expect(count.two).to.equal(3);
+			expect(count.three).to.equal(2);
+			expect(count.four).to.equal(1);
 		});
 
 		it('provides event object to listeners and executes them in the right context', () => {
@@ -148,7 +148,7 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 
 			obj.addEventListener('test2', spy2);
 			obj.addEventListener('test2', spy3);
@@ -156,8 +156,8 @@ describe('Events', () => {
 
 			obj.fireEvent('test2');
 
-			expect(spy2.called).to.be(false);
-			expect(spy3.called).to.be(false);
+			expect(spy2.called).to.be.false;
+			expect(spy3.called).to.be.false;
 
 			obj.addEventListener('test3', spy4);
 			obj.addEventListener('test4', spy5);
@@ -169,8 +169,8 @@ describe('Events', () => {
 			obj.fireEvent('test3');
 			obj.fireEvent('test4');
 
-			expect(spy4.called).to.be(false);
-			expect(spy5.called).to.be(false);
+			expect(spy4.called).to.be.false;
+			expect(spy5.called).to.be.false;
 		});
 
 		it('can handle calls to #removeEventListener on objects with no registered event listeners', () => {
@@ -178,7 +178,7 @@ describe('Events', () => {
 			const removeNonExistentListener = function () {
 				obj.removeEventListener('test');
 			};
-			expect(removeNonExistentListener).to.not.throwException();
+			expect(removeNonExistentListener).to.not.throw();
 		});
 
 		// added due to context-sensitive removeListener optimization
@@ -195,8 +195,8 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy1.called).to.be(true);
-			expect(spy2.called).to.be(true);
+			expect(spy1.called).to.be.true;
+			expect(spy2.called).to.be.true;
 		});
 
 		it('removes listeners with stamped contexts', () => {
@@ -214,8 +214,8 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy1.called).to.be(false);
-			expect(spy2.called).to.be(true);
+			expect(spy1.called).to.be.false;
+			expect(spy2.called).to.be.true;
 		});
 
 		it('removes listeners with a stamp originally added without one', () => {
@@ -233,8 +233,8 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy1.called).to.be(false);
-			expect(spy2.called).to.be(false);
+			expect(spy1.called).to.be.false;
+			expect(spy2.called).to.be.false;
 		});
 
 		it('removes listeners with context == this and a stamp originally added without one', () => {
@@ -255,9 +255,9 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy1.called).to.be(false);
-			expect(spy2.called).to.be(false);
-			expect(spy3.called).to.be(false);
+			expect(spy1.called).to.be.false;
+			expect(spy2.called).to.be.false;
+			expect(spy3.called).to.be.false;
 		});
 
 		it('doesnt lose track of listeners when removing non existent ones', () => {
@@ -279,7 +279,7 @@ describe('Events', () => {
 
 			obj.fireEvent('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 		});
 
 		it('correctly removes all listeners if given no fn', () => {
@@ -293,19 +293,19 @@ describe('Events', () => {
 
 			obj.removeEventListener('test'); // Removes both of the above listeners
 
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 
 			// Add and remove a listener
 			obj.addEventListener('test', spy, foo2);
 			obj.removeEventListener('test', spy, foo2);
 
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 
 			// Add and remove a listener without context
 			obj.addEventListener('test', spy);
 			obj.removeEventListener('test', spy);
 
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 		});
 
 		it('makes sure an event is not triggered if a listener is removed during dispatch', () => {
@@ -319,7 +319,7 @@ describe('Events', () => {
 			obj.addEventListener('test', spy);
 			obj.fireEvent('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 
 			/* with context */
 			obj.addEventListener('test2', () => { obj.removeEventListener('test2', spy2, foo); }, foo);
@@ -335,7 +335,7 @@ describe('Events', () => {
 			obj.addEventListener('test', spy);
 			obj.fire('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 		});
 
 		it('handles reentrant event firing', () => {
@@ -354,8 +354,8 @@ describe('Events', () => {
 				.addEventListener('test1', spy2);
 
 			obj.fireEvent('test1');
-			expect(spy1.called).to.be(true);
-			expect(spy2.called).to.be(false);
+			expect(spy1.called).to.be.true;
+			expect(spy2.called).to.be.false;
 		});
 
 		it('can remove an event listener while firing', () => {
@@ -373,7 +373,7 @@ describe('Events', () => {
 
 			obj.removeEventListener('test', removeSpy);
 
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 		});
 	});
 
@@ -384,7 +384,7 @@ describe('Events', () => {
 			obj.off('test', undefined);
 			obj.off({test: undefined});
 
-			expect(obj.listens('test')).to.be(true);
+			expect(obj.listens('test')).to.be.true;
 		});
 
 		it('ignores non-function listeners passed', () => {
@@ -392,8 +392,8 @@ describe('Events', () => {
 			const off = obj.off.bind(obj);
 			['string', {}, [], true, false, undefined].forEach((fn) => {
 				obj.on('test', fn);
-				expect(obj.listens('test')).to.be(false);
-				expect(off).withArgs('test', fn).to.not.throwException();
+				expect(obj.listens('test')).to.be.false;
+				expect(() => off('test', fn)).to.not.throw();
 			});
 		});
 
@@ -403,8 +403,8 @@ describe('Events', () => {
 			const off = obj.off.bind(obj);
 			// todo? make it throw  with []
 			[true, false, undefined, 1].forEach((type) => {
-				expect(on).withArgs(type, L.Util.falseFn).to.throwException();
-				expect(off).withArgs(type, L.Util.falseFn).to.throwException();
+				expect(() => on(type, L.Util.falseFn)).to.throw();
+				expect(() => off(type, L.Util.falseFn)).to.throw();
 			});
 
 			// todo? make `fire` and `listen` to throw with wrong type
@@ -417,7 +417,7 @@ describe('Events', () => {
 			obj.on('test', spy);
 			obj.fire('test');
 
-			expect(spy.called).to.be(true);
+			expect(spy.called).to.be.true;
 
 			obj.off('test', spy);
 			obj.fireEvent('test');
@@ -439,13 +439,13 @@ describe('Events', () => {
 			const obj = new Klass();
 
 			obj.on();
-			expect(spy1.called).to.be(true);
+			expect(spy1.called).to.be.true;
 
 			obj.off();
-			expect(spy2.called).to.be(true);
+			expect(spy2.called).to.be.true;
 
 			obj.fire();
-			expect(spy3.called).to.be(true);
+			expect(spy3.called).to.be.true;
 		});
 
 		it('does not add twice the same function', () => {
@@ -476,7 +476,7 @@ describe('Events', () => {
 
 			obj.fire('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 		});
 	});
 
@@ -488,7 +488,7 @@ describe('Events', () => {
 			obj.once('test', spy, obj);
 			obj.fire('test');
 
-			expect(spy.called).to.be(true);
+			expect(spy.called).to.be.true;
 
 			obj.fire('test');
 
@@ -508,8 +508,8 @@ describe('Events', () => {
 			obj.fire('test');
 			obj.fire('otherTest');
 
-			expect(spy.called).to.be(true);
-			expect(otherSpy.called).to.be(true);
+			expect(spy.called).to.be.true;
+			expect(otherSpy.called).to.be.true;
 
 			obj.fire('test');
 			obj.fire('otherTest');
@@ -527,7 +527,7 @@ describe('Events', () => {
 
 			obj.fire('test');
 
-			expect(spy.called).to.be(false);
+			expect(spy.called).to.be.false;
 		});
 
 		it('doesn\'t call once twice', () => {
@@ -540,7 +540,7 @@ describe('Events', () => {
 
 			obj.fire('test');
 
-			expect(spy.calledOnce).to.be(true);
+			expect(spy.calledOnce).to.be.true;
 		});
 
 
@@ -553,7 +553,7 @@ describe('Events', () => {
 
 			obj.fire('test');
 
-			expect(spy.called).to.be(true);
+			expect(spy.called).to.be.true;
 		});
 	});
 
@@ -572,20 +572,20 @@ describe('Events', () => {
 
 			obj.fire('test');
 
-			expect(spy1.called).to.be(false);
-			expect(spy2.called).to.be(false);
+			expect(spy1.called).to.be.false;
+			expect(spy2.called).to.be.false;
 
 			obj.fire('test', null, true);
 
-			expect(spy1.called).to.be(true);
-			expect(spy2.called).to.be(true);
+			expect(spy1.called).to.be.true;
+			expect(spy2.called).to.be.true;
 
 			obj.removeEventParent(parent1);
 
 			obj.fire('test', null, true);
 
-			expect(spy1.callCount).to.be(1);
-			expect(spy2.callCount).to.be(2);
+			expect(spy1.callCount).to.equal(1);
+			expect(spy2.callCount).to.equal(2);
 		});
 
 		it('can fire event where child has no listeners', () => {
@@ -626,7 +626,7 @@ describe('Events', () => {
 				type: 'test2',
 				target: obj,
 				sourceTarget: obj
-			})).to.be.ok();
+			})).to.be.true;
 			expect(spy2.calledWith({
 				type: 'test2',
 				target: parent,
@@ -635,7 +635,7 @@ describe('Events', () => {
 				layer: obj,
 				sourceTarget: obj,
 				propagatedFrom: obj
-			})).to.be.ok();
+			})).to.be.true;
 		});
 	});
 
@@ -643,7 +643,7 @@ describe('Events', () => {
 		it('is false if there is no event handler', () => {
 			const obj = new L.Evented();
 
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 		});
 
 		it('is true if there is an event handler', () => {
@@ -651,7 +651,7 @@ describe('Events', () => {
 			    spy = sinon.spy();
 
 			obj.on('test', spy);
-			expect(obj.listens('test')).to.be(true);
+			expect(obj.listens('test')).to.be.true;
 		});
 
 		it('is false if event handler has been removed', () => {
@@ -660,7 +660,7 @@ describe('Events', () => {
 
 			obj.on('test', spy);
 			obj.off('test', spy);
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 		});
 
 		it('changes for a "once" handler', () => {
@@ -668,10 +668,10 @@ describe('Events', () => {
 			    spy = sinon.spy();
 
 			obj.once('test', spy);
-			expect(obj.listens('test')).to.be(true);
+			expect(obj.listens('test')).to.be.true;
 
 			obj.fire('test');
-			expect(obj.listens('test')).to.be(false);
+			expect(obj.listens('test')).to.be.false;
 		});
 
 		it('returns true if event handler with specific function and context is existing', () => {
@@ -683,17 +683,17 @@ describe('Events', () => {
 			obj.on('test', spy);
 
 			// event handler 'test' is existing
-			expect(obj.listens('test')).to.be(true);
+			expect(obj.listens('test')).to.be.true;
 
 			// event handler with specific function is existing
-			expect(obj.listens('test', spy)).to.be(true); // context arg: undefined === this
-			expect(obj.listens('test', spy, obj)).to.be(true);
+			expect(obj.listens('test', spy)).to.be.true; // context arg: undefined === this
+			expect(obj.listens('test', spy, obj)).to.be.true;
 
 			// event handler with specific function and other context is not existing
-			expect(obj.listens('test', spy, differentContext)).to.be(false);
+			expect(obj.listens('test', spy, differentContext)).to.be.false;
 
 			// event handler with specific function is not existing
-			expect(obj.listens('test', diffentFnc)).to.be(false);
+			expect(obj.listens('test', diffentFnc)).to.be.false;
 		});
 
 		it('is true if there is an event handler on parent', () => {
@@ -702,8 +702,8 @@ describe('Events', () => {
 			spy = sinon.spy();
 
 			fg.on('test', spy);
-			expect(marker.listens('test', false)).to.be(false);
-			expect(marker.listens('test', true)).to.be(true);
+			expect(marker.listens('test', false)).to.be.false;
+			expect(marker.listens('test', true)).to.be.true;
 		});
 
 		it('is true if there is an event handler on parent parent', () => {
@@ -713,8 +713,8 @@ describe('Events', () => {
 			spy = sinon.spy();
 
 			fgP.on('test', spy);
-			expect(marker.listens('test', false)).to.be(false);
-			expect(marker.listens('test', true)).to.be(true);
+			expect(marker.listens('test', false)).to.be.false;
+			expect(marker.listens('test', true)).to.be.true;
 		});
 
 		it('is true if there is an event handler with specific function on parent', () => {
@@ -723,10 +723,10 @@ describe('Events', () => {
 			spy = sinon.spy();
 
 			fg.on('test', spy);
-			expect(marker.listens('test', spy, marker, false)).to.be(false);
-			expect(marker.listens('test', spy, marker, true)).to.be(false);
-			expect(marker.listens('test', spy, fg, false)).to.be(false);
-			expect(marker.listens('test', spy, fg, true)).to.be(true);
+			expect(marker.listens('test', spy, marker, false)).to.be.false;
+			expect(marker.listens('test', spy, marker, true)).to.be.false;
+			expect(marker.listens('test', spy, fg, false)).to.be.false;
+			expect(marker.listens('test', spy, fg, true)).to.be.true;
 		});
 	});
 });

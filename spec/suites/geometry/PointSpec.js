@@ -67,8 +67,8 @@ describe('Point', () => {
 			const p2 = L.point(20.4, 50.12);
 			const p3 = L.point(20.5, 50.13);
 
-			expect(p1.equals(p2)).to.be(true);
-			expect(p1.equals(p3)).to.be(false);
+			expect(p1.equals(p2)).to.be.true;
+			expect(p1.equals(p3)).to.be.false;
 		});
 	});
 
@@ -79,9 +79,9 @@ describe('Point', () => {
 			    p3 = L.point(60, -20),
 			    p4 = L.point(-40, -40);
 
-			expect(p1.contains(p2)).to.be(true);
-			expect(p1.contains(p3)).to.be(false);
-			expect(p1.contains(p4)).to.be(false);
+			expect(p1.contains(p2)).to.be.true;
+			expect(p1.contains(p3)).to.be.false;
+			expect(p1.contains(p4)).to.be.false;
 		});
 	});
 
@@ -95,7 +95,7 @@ describe('Point', () => {
 	describe('L.point factory', () => {
 		it('leaves L.Point instances as is', () => {
 			const p = L.point(50, 30);
-			expect(L.point(p)).to.be(p);
+			expect(L.point(p)).to.equal(p);
 		});
 
 		it('creates a point out of three arguments', () => {
@@ -111,8 +111,8 @@ describe('Point', () => {
 		});
 
 		it('does not fail on invalid arguments', () => {
-			expect(L.point(undefined)).to.be(undefined);
-			expect(L.point(null)).to.be(null);
+			expect(L.point(undefined)).to.equal(undefined);
+			expect(L.point(null)).to.equal(null);
 		});
 	});
 });
