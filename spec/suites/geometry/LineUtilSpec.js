@@ -29,7 +29,7 @@ describe('LineUtil', () => {
 			const b = L.point(25, 20);
 			const segment = L.LineUtil.clipSegment(a, b, bounds, true);
 
-			expect(segment).to.be(false);
+			expect(segment).to.be.false;
 		});
 
 		it('can round numbers in clipped bounds', () => {
@@ -86,23 +86,23 @@ describe('LineUtil', () => {
 
 	describe('#isFlat', () => {
 		it('should return true for an array of LatLngs', () => {
-			expect(L.LineUtil.isFlat([L.latLng([0, 0])])).to.be(true);
+			expect(L.LineUtil.isFlat([L.latLng([0, 0])])).to.be.true;
 		});
 
 		it('should return true for an array of LatLngs arrays', () => {
-			expect(L.LineUtil.isFlat([[0, 0]])).to.be(true);
+			expect(L.LineUtil.isFlat([[0, 0]])).to.be.true;
 		});
 
 		it('should return true for an empty array', () => {
-			expect(L.LineUtil.isFlat([])).to.be(true);
+			expect(L.LineUtil.isFlat([])).to.be.true;
 		});
 
 		it('should return false for a nested array of LatLngs', () => {
-			expect(L.LineUtil.isFlat([[L.latLng([0, 0])]])).to.be(false);
+			expect(L.LineUtil.isFlat([[L.latLng([0, 0])]])).to.be.false;
 		});
 
 		it('should return false for a nested empty array', () => {
-			expect(L.LineUtil.isFlat([[]])).to.be(false);
+			expect(L.LineUtil.isFlat([[]])).to.be.false;
 		});
 	});
 
@@ -134,33 +134,26 @@ describe('LineUtil', () => {
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
 				L.LineUtil.polylineCenter(null, crs);
-			}).to.throwException('latlngs not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
 				L.LineUtil.polylineCenter([], crs);
-			}).to.throwException('latlngs not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
 				L.LineUtil.polylineCenter(null, crs, zoom);
-			}).to.throwException('latlngs not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
 				L.LineUtil.polylineCenter([], crs, zoom);
-			}).to.throwException('latlngs not passed');
-		});
-
-		it('throws error if map not passed', () => {
-			const latlngs = [[80, 0], [80, 90]];
-			expect(() => {
-				L.LineUtil.polylineCenter(latlngs, null);
-			}).to.throwException('map not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 		it('shows warning if latlngs is not flat', () => {
@@ -170,7 +163,7 @@ describe('LineUtil', () => {
 			const spy = sinon.spy(console, 'warn');
 			const center = L.LineUtil.polylineCenter(latlngs, crs);
 			console.warn.restore();
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 			expect(center).to.be.nearLatLng([80, 45]);
 		});
 

@@ -16,7 +16,7 @@ describe('Rectangle', () => {
 
 			const rectangle = L.rectangle(latLngs);
 
-			expect(L.LineUtil.isFlat(rectangle._latlngs)).to.be(false);
+			expect(L.LineUtil.isFlat(rectangle._latlngs)).to.be.false;
 			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
 		});
 
@@ -37,7 +37,7 @@ describe('Rectangle', () => {
 			// Throws error due to undefined lat
 			expect(() => {
 				L.rectangle([]);
-			}).to.throwException();
+			}).to.throw();
 		});
 
 		it('can be initialized with extending bounds', () => {
@@ -119,7 +119,7 @@ describe('Rectangle', () => {
 			map.setView([0, 0], 6);
 			expect(() => {
 				L.polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 	});
 });

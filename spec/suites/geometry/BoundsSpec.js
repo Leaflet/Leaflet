@@ -76,25 +76,25 @@ describe('Bounds', () => {
 	describe('#contains', () => {
 		it('contains other bounds or point', () => {
 			a.extend([50, 10]);
-			expect(a.contains(b)).to.be.ok();
-			expect(b.contains(a)).to.not.be.ok();
-			expect(a.contains([24, 25])).to.be.ok();
-			expect(a.contains([54, 65])).to.not.be.ok();
+			expect(a.contains(b)).to.be.true;
+			expect(b.contains(a)).to.be.false;
+			expect(a.contains([24, 25])).to.be.true;
+			expect(a.contains([54, 65])).to.be.false;
 		});
 	});
 
 	describe('#isValid', () => {
 		it('returns true if properly set up', () => {
-			expect(a.isValid()).to.be.ok();
+			expect(a.isValid()).to.be.true;
 		});
 
 		it('returns false if is invalid', () => {
-			expect(c.isValid()).to.not.be.ok();
+			expect(c.isValid()).to.be.false;
 		});
 
 		it('returns true if extended', () => {
 			c.extend([0, 0]);
-			expect(c.isValid()).to.be.ok();
+			expect(c.isValid()).to.be.true;
 		});
 	});
 
@@ -106,11 +106,11 @@ describe('Bounds', () => {
 
 	describe('#intersects', () => {
 		it('returns true if bounds intersect', () => {
-			expect(a.intersects(b)).to.be(true);
+			expect(a.intersects(b)).to.be.true;
 		});
 
 		it('two bounds intersect if they have at least one point in common', () => {
-			expect(a.intersects([[14, 12], [6, 5]])).to.be(true);
+			expect(a.intersects([[14, 12], [6, 5]])).to.be.true;
 		});
 
 		it('returns false if bounds not intersect', () => {
@@ -120,14 +120,14 @@ describe('Bounds', () => {
 
 	describe('#overlaps', () => {
 		it('returns true if bounds overlaps', () => {
-			expect(a.overlaps(b)).to.be(true);
+			expect(a.overlaps(b)).to.be.true;
 		});
 
 		it('two bounds overlaps if their intersection is an area', () => {
 			// point in common
-			expect(a.overlaps([[14, 12], [6, 5]])).to.be(false);
+			expect(a.overlaps([[14, 12], [6, 5]])).to.be.false;
 			// matching boundary
-			expect(a.overlaps([[30, 12], [35, 25]])).to.be(false);
+			expect(a.overlaps([[30, 12], [35, 25]])).to.be.false;
 		});
 
 		it('returns false if bounds not overlaps', () => {

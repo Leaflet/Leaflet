@@ -792,7 +792,7 @@ export const Map = Evented.extend({
 		}
 
 		this._layers = [];
-		this._panes = [];
+		this._panes = {};
 		delete this._mapPane;
 		delete this._renderer;
 

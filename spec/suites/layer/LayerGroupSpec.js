@@ -3,12 +3,12 @@
 		it('throws when called without proper argument', () => {
 			const lg = L.layerGroup();
 			const hasLayer = lg.hasLayer.bind(lg);
-			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
+			expect(() => hasLayer(new L.Layer())).to.not.throw(); // control case
 
-			expect(hasLayer).withArgs(undefined).to.throwException();
-			expect(hasLayer).withArgs(null).to.throwException();
-			expect(hasLayer).withArgs(false).to.throwException();
-			expect(hasLayer).to.throwException();
+			expect(() => hasLayer(undefined)).to.throw();
+			expect(() => hasLayer(null)).to.throw();
+			expect(() => hasLayer(false)).to.throw();
+			expect(() => hasLayer()).to.throw();
 		});
 	});
 
@@ -19,7 +19,7 @@
 
 			expect(lg.addLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(true);
+			expect(lg.hasLayer(marker)).to.be.true;
 		});
 	});
 
@@ -31,7 +31,7 @@
 			lg.addLayer(marker);
 			expect(lg.removeLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(false);
+			expect(lg.hasLayer(marker)).to.be.false;
 		});
 	});
 
@@ -43,7 +43,7 @@
 			lg.addLayer(marker);
 			expect(lg.clearLayers()).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(false);
+			expect(lg.hasLayer(marker)).to.be.false;
 		});
 	});
 

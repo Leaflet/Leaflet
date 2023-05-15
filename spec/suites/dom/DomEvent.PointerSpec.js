@@ -29,8 +29,8 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].called).to.be.ok();
-				expect(listeners[type].calledOnce).to.be.ok();
+				expect(listeners[type].called).to.be.true;
+				expect(listeners[type].calledOnce).to.be.true;
 			});
 		});
 
@@ -42,7 +42,7 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].notCalled).to.be.ok();
+				expect(listeners[type].notCalled).to.be.true;
 			});
 		});
 
@@ -51,7 +51,7 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el, {pointerType: 'mouse'});
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].notCalled).to.be.ok();
+				expect(listeners[type].notCalled).to.be.true;
 			});
 		});
 
@@ -60,7 +60,7 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].notCalled).to.be.ok();
+				expect(listeners[type].notCalled).to.be.true;
 			});
 		});
 
@@ -89,72 +89,77 @@ describe('DomEvent.Pointer', () => {
 				return res;
 			}
 			// test helper function
-			expect(containIn(undefined, {a:1})).not.to.be.ok();
-			expect(containIn({}, {a:1})).not.to.be.ok();
-			expect(containIn({a:1}, {a:2})).not.to.be.ok();
-			expect(containIn({a:1}, {a:1, b:2})).to.be.ok();
-			expect(containIn({a:1, b:2}, {a:1})).not.to.be.ok();
-			expect(containIn({a:1}, [{a:1}, {b:2}])).to.be.ok();
-			expect(containIn({a:1}, [{a:0}, {b:2}])).not.to.be.ok();
-			expect(containIn([{a:1}, {b:2}], [{a:1}, {b:2}, {c:3}])).to.be.ok();
-			expect(containIn([{a:1}, {b:2}], [{a:0}, {b:2}])).not.to.be.ok();
+			expect(containIn(undefined, {a:1})).not.to.be.true;
+			expect(containIn({}, {a:1})).not.to.be.true;
+			expect(containIn({a:1}, {a:2})).not.to.be.true;
+			expect(containIn({a:1}, {a:1, b:2})).to.be.true;
+			expect(containIn({a:1, b:2}, {a:1})).not.to.be.true;
+			expect(containIn({a:1}, [{a:1}, {b:2}])).to.be.true;
+			expect(containIn({a:1}, [{a:0}, {b:2}])).not.to.be.true;
+			expect(containIn([{a:1}, {b:2}], [{a:1}, {b:2}, {c:3}])).to.be.true;
+			expect(containIn([{a:1}, {b:2}], [{a:0}, {b:2}])).not.to.be.true;
 
 			// pointerdown/touchstart
 			const pointer1 = {clientX:1, clientY:1, pointerId: 1};
 			UIEventSimulator.fire('pointerdown', el, pointer1);
 			let evt = listeners.touchstart.lastCall.args[0];
-			expect(evt.type).to.be('pointerdown');
-			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.type).to.equal('pointerdown');
+			expect(evt).to.have.property('touches');
+			expect(evt).to.have.property('changedTouches');
 			expect(evt.changedTouches).to.have.length(1);
-			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.true;
 			expect(evt.touches).to.have.length(1);
-			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
+			expect(containIn(pointer1, evt.touches[0])).to.be.true;
 
 			// another pointerdown/touchstart (multitouch)
 			const pointer2 = {clientX:2, clientY:2, pointerId: 2};
 			UIEventSimulator.fire('pointerdown', el, pointer2);
 			evt = listeners.touchstart.lastCall.args[0];
-			expect(evt.type).to.be('pointerdown');
-			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.type).to.equal('pointerdown');
+			expect(evt).to.have.property('touches');
+			expect(evt).to.have.property('changedTouches');
 			expect(evt.changedTouches).to.have.length(1);
-			expect(containIn(pointer2, evt.changedTouches[0])).to.be.ok();
+			expect(containIn(pointer2, evt.changedTouches[0])).to.be.true;
 			expect(evt.touches).to.have.length(2);
-			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
+			expect(containIn([pointer1, pointer2], evt.touches)).to.be.true;
 
 			// pointermove/touchmove (multitouch)
 			L.extend(pointer1, {clientX:11, clientY:11});
 			UIEventSimulator.fire('pointermove', el, pointer1);
 			evt = listeners.touchmove.lastCall.args[0];
-			expect(evt.type).to.be('pointermove');
-			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.type).to.equal('pointermove');
+			expect(evt).to.have.property('touches');
+			expect(evt).to.have.property('changedTouches');
 			expect(evt.changedTouches).to.have.length(1);
-			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.true;
 			expect(evt.touches).to.have.length(2);
-			expect(containIn([pointer1, pointer2], evt.touches)).to.be.ok();
+			expect(containIn([pointer1, pointer2], evt.touches)).to.be.true;
 
 			// pointerup/touchend (multitouch)
 			UIEventSimulator.fire('pointerup', el, pointer2);
 			evt = listeners.touchend.lastCall.args[0];
-			expect(evt.type).to.be('pointerup');
-			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.type).to.equal('pointerup');
+			expect(evt).to.have.property('touches');
+			expect(evt).to.have.property('changedTouches');
 			expect(evt.changedTouches).to.have.length(1);
-			expect(containIn(pointer2, evt.changedTouches[0])).to.be.ok();
+			expect(containIn(pointer2, evt.changedTouches[0])).to.be.true;
 			expect(evt.touches).to.have.length(1);
-			expect(containIn(pointer1, evt.touches[0])).to.be.ok();
+			expect(containIn(pointer1, evt.touches[0])).to.be.true;
 
 			// pointercancel/touchcancel
 			UIEventSimulator.fire('pointercancel', el, pointer1);
 			evt = listeners.touchcancel.lastCall.args[0];
-			expect(evt.type).to.be('pointercancel');
-			expect(evt).to.have.keys('touches', 'changedTouches');
+			expect(evt.type).to.equal('pointercancel');
+			expect(evt).to.have.property('touches');
+			expect(evt).to.have.property('changedTouches');
 			expect(evt.changedTouches).to.have.length(1);
-			expect(containIn(pointer1, evt.changedTouches[0])).to.be.ok();
-			expect(evt.touches).to.be.empty();
+			expect(containIn(pointer1, evt.changedTouches[0])).to.be.true;
+			expect(evt.touches).to.be.empty;
 
-			expect(listeners.touchstart.calledTwice).to.be.ok();
-			expect(listeners.touchmove.calledOnce).to.be.ok();
-			expect(listeners.touchend.calledOnce).to.be.ok();
-			expect(listeners.touchcancel.calledOnce).to.be.ok();
+			expect(listeners.touchstart.calledTwice).to.be.true;
+			expect(listeners.touchmove.calledOnce).to.be.true;
+			expect(listeners.touchend.calledOnce).to.be.true;
+			expect(listeners.touchcancel.calledOnce).to.be.true;
 		});
 	});
 
@@ -164,7 +169,7 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].calledOnce).to.be.ok();
+				expect(listeners[type].calledOnce).to.be.true;
 			});
 		});
 
@@ -173,7 +178,7 @@ describe('DomEvent.Pointer', () => {
 				UIEventSimulator.fire(type, el);
 			});
 			touchEvents.forEach((type) => {
-				expect(listeners[type].notCalled).to.be.ok();
+				expect(listeners[type].notCalled).to.be.true;
 			});
 		});
 	});

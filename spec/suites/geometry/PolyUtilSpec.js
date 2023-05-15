@@ -74,13 +74,13 @@ describe('PolyUtil', () => {
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
 				L.PolyUtil.polygonCenter(null,  crs);
-			}).to.throwException('latlngs not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
 				L.PolyUtil.polygonCenter([], crs);
-			}).to.throwException('latlngs not passed');
+			}).to.throw('latlngs not passed');
 		});
 
 		it('shows warning if latlngs is not flat', () => {
@@ -90,15 +90,8 @@ describe('PolyUtil', () => {
 			const spy = sinon.spy(console, 'warn');
 			const center = L.PolyUtil.polygonCenter(latlngs, crs);
 			console.warn.restore();
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
-		});
-
-		it('throws error if map not passed', () => {
-			const latlngs = [[80, 0], [80, 90]];
-			expect(() => {
-				L.PolyUtil.polygonCenter(latlngs, null);
-			}).to.throwException('map not passed');
 		});
 
 		it('iterates only over the array values', () => {

@@ -20,8 +20,8 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock.tick(100);
 		UIEventSimulator.fire('click', container, {detail: 1});
 
-		expect(spy.called).to.be.ok();
-		expect(spy.calledOnce).to.be.ok();
+		expect(spy.called).to.be.true;
+		expect(spy.calledOnce).to.be.true;
 		expect(spy.lastCall.args[0] instanceof MouseEvent).to.equal(true);
 		expect(spy.lastCall.args[0].isTrusted).to.equal(false);
 	});
@@ -31,7 +31,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock.tick(300);
 		UIEventSimulator.fire('click', container, {detail: 1});
 
-		expect(spy.notCalled).to.be.ok();
+		expect(spy.notCalled).to.be.true;
 	});
 
 	it('does not fire dblclick when detail !== 1', () => {
@@ -40,7 +40,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		UIEventSimulator.fire('click', container, {detail: 0});
 		clock.tick(100);
 
-		expect(spy.notCalled).to.be.ok();
+		expect(spy.notCalled).to.be.true;
 	});
 
 	it('does not fire dblclick after removeListener', () => {
@@ -51,7 +51,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
 
-		expect(spy.notCalled).to.be.ok();
+		expect(spy.notCalled).to.be.true;
 	});
 
 	it('does not conflict with native dblclick', () => {
@@ -59,8 +59,8 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock.tick(100);
 		UIEventSimulator.fire('click', container, {detail: 2}); // native dblclick expected
 		UIEventSimulator.fire('dblclick', container); // native dblclick expected
-		expect(spy.called).to.be.ok();
-		expect(spy.calledOnce).to.be.ok();
+		expect(spy.called).to.be.true;
+		expect(spy.calledOnce).to.be.true;
 	});
 
 	it('synthetic dblclick event has expected properties', () => {
@@ -84,9 +84,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 			target: container
 		});
 		for (const [prop, expectedValue] of Object.entries(expectedProps)) {
-			expect(event[prop]).to.be(expectedValue);
+			expect(event[prop]).to.equal(expectedValue);
 		}
-		expect(event.isTrusted).not.to.be.ok();
+		expect(event.isTrusted).not.to.be.true;
 	});
 
 	it('respects disableClickPropagation', () => {
@@ -109,8 +109,8 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock.tick(100);
 		UIEventSimulator.fire('click', ctrl, {detail: 1});
 
-		expect(spyCtrl.called).to.be.ok();
-		expect(spyMap.notCalled).to.be.ok();
+		expect(spyCtrl.called).to.be.true;
+		expect(spyMap.notCalled).to.be.true;
 	});
 
 	it('doesn\'t fire double-click while clicking on a label with `for` attribute', () => {
@@ -131,7 +131,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		// click on the label
 		UIEventSimulator.fire('click', div.children[1], {detail: 1});
 		clock.tick(100);
-		expect(spyMap.notCalled).to.be.ok();
+		expect(spyMap.notCalled).to.be.true;
 		map.remove();
 	});
 });

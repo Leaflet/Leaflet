@@ -5,13 +5,13 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		plugins: [
 			'karma-mocha',
 			'karma-sinon',
-			'karma-expect',
+			'karma-chai',
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
 			'karma-time-stats-reporter'
 		],
-		frameworks: ['mocha', 'sinon', 'expect'],
+		frameworks: ['mocha', 'sinon', 'chai'],
 		files: [
 			'spec/before.js',
 			{pattern: 'dist/leaflet-src.js'},

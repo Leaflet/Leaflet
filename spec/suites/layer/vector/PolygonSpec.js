@@ -16,7 +16,7 @@ describe('Polygon', () => {
 
 			const polygon = L.polygon(latLngs);
 
-			expect(L.LineUtil.isFlat(polygon._latlngs)).to.be(false);
+			expect(L.LineUtil.isFlat(polygon._latlngs)).to.be.false;
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
@@ -72,7 +72,7 @@ describe('Polygon', () => {
 		it('can be added to the map when empty', () => {
 			const polygon = L.polygon([]).addTo(map);
 			const isAdded = map.hasLayer(polygon);
-			expect(isAdded).to.be(true);
+			expect(isAdded).to.be.true;
 		});
 
 	});
@@ -81,13 +81,13 @@ describe('Polygon', () => {
 
 		it('should return true for a polygon with no latlngs', () => {
 			const layer = L.polygon([]);
-			expect(layer.isEmpty()).to.be(true);
+			expect(layer.isEmpty()).to.be.true;
 		});
 
 		it('should return false for simple polygon', () => {
 			const latLngs = [[1, 2], [3, 4], [5, 6]];
 			const layer = L.polygon(latLngs);
-			expect(layer.isEmpty()).to.be(false);
+			expect(layer.isEmpty()).to.be.false;
 		});
 
 		it('should return false for a multi-polygon', () => {
@@ -96,7 +96,7 @@ describe('Polygon', () => {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 			const layer = L.polygon(latLngs);
-			expect(layer.isEmpty()).to.be(false);
+			expect(layer.isEmpty()).to.be.false;
 		});
 
 	});
@@ -173,7 +173,7 @@ describe('Polygon', () => {
 				];
 				const layer = L.polygon(latlngs);
 				layer.getCenter();
-			}).to.throwException('Must add layer to map before using getCenter()');
+			}).to.throw('Must add layer to map before using getCenter()');
 		});
 
 		it('should compute same center for low and high zoom', () => {
@@ -356,7 +356,7 @@ describe('Polygon', () => {
 			polygon.setStyle(style);
 
 			for (const [prop, expectedValue] of Object.entries(style)) {
-				expect(polygon.options[prop]).to.be(expectedValue);
+				expect(polygon.options[prop]).to.equal(expectedValue);
 			}
 		});
 	});

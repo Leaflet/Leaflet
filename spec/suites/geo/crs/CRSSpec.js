@@ -204,13 +204,13 @@ describe('CRS.Simple', () => {
 
 	describe('getProjectedBounds', () => {
 		it('returns nothing', () => {
-			expect(crs.getProjectedBounds(5)).to.be(null);
+			expect(crs.getProjectedBounds(5)).to.equal(null);
 		});
 	});
 
 	describe('wrapLatLng', () => {
 		it('returns coords as is', () => {
-			expect(crs.wrapLatLng(L.latLng(270, 400)).equals(L.latLng(270, 400))).to.be(true);
+			expect(crs.wrapLatLng(L.latLng(270, 400)).equals(L.latLng(270, 400))).to.be.true;
 		});
 
 		it('wraps coords if configured', () => {

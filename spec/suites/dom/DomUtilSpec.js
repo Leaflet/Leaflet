@@ -40,7 +40,7 @@ describe('DomUtil', () => {
 			const parent = L.DomUtil.create('div');
 			expect(parent.children.length).to.equal(0);
 			const child = L.DomUtil.create('p', 'test', parent);
-			expect(child.parentNode === parent).to.be(true);
+			expect(child.parentNode === parent).to.be.true;
 			expect(parent.children.length).to.equal(1);
 		});
 	});
@@ -51,9 +51,9 @@ describe('DomUtil', () => {
 			L.DomUtil.create('div', 'test', el);
 			L.DomUtil.create('div', 'test1', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.be(0);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
 			L.DomUtil.toFront(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.be(2);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
 		});
 
 		it('doesn\'t move an element if he\'s already in the front', () => {
@@ -77,18 +77,18 @@ describe('DomUtil', () => {
 			L.DomUtil.create('div', 'test1', el);
 			const elm = L.DomUtil.create('div', 'childContainer', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.be(2);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
 			L.DomUtil.toBack(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.be(0);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
 		});
 
 		it('doesn\'t move an element if it is already in the back', () => {
 			const e1 = L.DomUtil.create('div', 'test', el);
 			L.DomUtil.create('div', 'test1', el);
 			L.DomUtil.create('div', 'test2', el);
-			expect(el.firstChild).to.be(e1);
+			expect(el.firstChild).to.equal(e1);
 			L.DomUtil.toBack(el);
-			expect(el.firstChild).to.be(e1);
+			expect(el.firstChild).to.equal(e1);
 		});
 
 		it('doesn\'t crash if an element doesn\'t have a parent', () => {
@@ -115,22 +115,22 @@ describe('DomUtil', () => {
 
 		it('reset the 3d CSS transform when offset and scale aren\'t specified', () => {
 			L.DomUtil.setTransform(el);
-			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px)');
+			expect(el.style.transform).to.equal('translate3d(0px, 0px, 0px)');
 		});
 
 		it('set the 3d CSS transform with just the specified point if scale isn\'t specified', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1));
-			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px)');
+			expect(el.style.transform).to.equal('translate3d(1px, 1px, 0px)');
 		});
 
 		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified', () => {
 			L.DomUtil.setTransform(el, undefined, 5);
-			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px) scale(5)');
+			expect(el.style.transform).to.equal('translate3d(0px, 0px, 0px) scale(5)');
 		});
 
 		it('set the 3d CSS transform with the specified point ant the corresponding scale', () => {
 			L.DomUtil.setTransform(el, new L.Point(1, 1), 5);
-			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px) scale(5)');
+			expect(el.style.transform).to.equal('translate3d(1px, 1px, 0px) scale(5)');
 		});
 	});
 
@@ -143,22 +143,22 @@ describe('DomUtil', () => {
 			const y = 55;
 			const position = L.point(x, y);
 			L.DomUtil.setPosition(el, position);
-			expect(L.DomUtil.getPosition(el)).to.be.eql({x, y});
+			expect(L.DomUtil.getPosition(el).equals(position)).to.be.true;
 
 			const newX = 333;
 			const newY = 666;
 			const newPosition = L.point(newX, newY);
 			L.DomUtil.setPosition(el, newPosition);
-			expect(L.DomUtil.getPosition(el)).to.be.eql({x: newX, y: newY});
+			expect(L.DomUtil.getPosition(el).equals(newPosition)).to.be.true;
 		});
 
 		it('returns position of an element positioned with setPosition.', () => {
 			const coordinates = {x: 333, y: 666};
 			const position = L.point(coordinates);
-			expect(L.DomUtil.getPosition(el)).to.not.eql(coordinates);
+			expect(L.DomUtil.getPosition(el).equals(position)).to.be.false;
 			L.DomUtil.setPosition(el, position);
 			expect(L.DomUtil.getPosition(el)).to.be.an('object');
-			expect(L.DomUtil.getPosition(el)).to.eql(coordinates);
+			expect(L.DomUtil.getPosition(el).equals(position)).to.be.true;
 		});
 
 		it('returns [0, 0] point if the HTML element wasn\'t positioned before', () => {
@@ -179,7 +179,7 @@ describe('DomUtil', () => {
 		it('throws an error if the element hasn\'t a parent', () => {
 			expect(() => {
 				L.DomUtil.getSizedParentNode(document.createElement('div'));
-			}).to.throwException();
+			}).to.throw();
 		});
 	});
 
@@ -236,28 +236,28 @@ describe('DomUtil', () => {
 		// Safari still needs a vendor prefix, we need to detect with property name is supported.
 		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 
-		beforeEach(() => expect(documentStyle[userSelectProp]).to.be(''));
+		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
 		afterEach(() => { documentStyle[userSelectProp] = ''; });
 
 		it('disables and enables text selection', () => {
 			L.DomUtil.disableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('none');
+			expect(documentStyle[userSelectProp]).to.equal('none');
 			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('');
+			expect(documentStyle[userSelectProp]).to.equal('');
 		});
 
 		it('restores the text selection previously set', () => {
 			documentStyle[userSelectProp] = 'text';
 			L.DomUtil.disableTextSelection();
 			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('text');
+			expect(documentStyle[userSelectProp]).to.equal('text');
 		});
 
 		it('restores the text selection previously set when disabling multiple times', () => {
 			L.DomUtil.disableTextSelection();
 			L.DomUtil.disableTextSelection();
 			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('');
+			expect(documentStyle[userSelectProp]).to.equal('');
 		});
 	});
 
@@ -277,11 +277,11 @@ describe('DomUtil', () => {
 			L.DomUtil.disableImageDrag();
 			window.addEventListener('dragstart', checkPrevented);
 			UIEventSimulator.fire('dragstart', child);
-			expect(selectionPrevented).to.be.ok();
+			expect(selectionPrevented).to.be.true;
 
 			L.DomUtil.enableImageDrag();
 			UIEventSimulator.fire('dragstart', child);
-			expect(selectionPrevented).to.not.be.ok();
+			expect(selectionPrevented).to.be.false;
 		});
 	});
 

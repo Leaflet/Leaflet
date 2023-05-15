@@ -23,33 +23,33 @@ describe('Map', () => {
 			map.on('unload', spy);
 			map.remove();
 			map = null;
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('fires no unload event if not loaded', () => {
 			map.on('unload', spy);
 			map.remove();
 			map = null;
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 		});
 
 		describe('corner case checking', () => {
 			it('throws an exception upon reinitialization', () => {
-				expect(L.map).withArgs(container)
-				  .to.throwException('Map container is already initialized.');
+				expect(() => L.map(container))
+				  .to.throw('Map container is already initialized.');
 			});
 
 			it('throws an exception if a container is not found', () => {
-				expect(L.map).withArgs('nonexistentdivelement')
-				  .to.throwException('Map container not found.');
+				expect(() => L.map('nonexistentdivelement'))
+				  .to.throw('Map container not found.');
 			});
 		});
 
 		it('undefines container._leaflet_id', () => {
-			expect(container._leaflet_id).to.be.ok();
+			expect(container._leaflet_id).to.be.ok;
 			map.remove();
 			map = null;
-			expect(container._leaflet_id).to.be(undefined);
+			expect(container._leaflet_id).to.equal(undefined);
 		});
 
 		it('unbinds events', () => {
@@ -57,7 +57,7 @@ describe('Map', () => {
 			map.setView([0, 0], 0);
 			map.on('click', spy);
 			UIEventSimulator.fire('click', container);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 
 			// actual test
 			spy = sinon.spy();
@@ -71,7 +71,7 @@ describe('Map', () => {
 			UIEventSimulator.fire('mouseup', container);
 			UIEventSimulator.fire('mousemove', container);
 
-			expect(spy.called).to.not.be.ok();
+			expect(spy.called).to.be.false;
 		});
 
 		it('does not throw if removed during animation', () => {
@@ -92,7 +92,7 @@ describe('Map', () => {
 
 			expect(() => {
 				map.remove();
-			}).to.throwException();
+			}).to.throw();
 
 			map2.remove(); // clean up
 			map = null;
@@ -103,7 +103,7 @@ describe('Map', () => {
 		it('throws if not set before', () => {
 			expect(() => {
 				map.getCenter();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns a precise center when zoomed in after being set (#426)', () => {
@@ -133,10 +133,10 @@ describe('Map', () => {
 			it('calls the callback when the map is loaded', () => {
 				const spy = sinon.spy();
 				map.whenReady(spy);
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 
 				map.setView([0, 0], 1);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 
@@ -146,30 +146,30 @@ describe('Map', () => {
 				map.setView([0, 0], 1);
 				map.whenReady(spy);
 
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 	});
 
 	describe('#setView', () => {
 		it('sets the view of the map', () => {
-			expect(map.setView([51.505, -0.09], 13)).to.be(map);
-			expect(map.getZoom()).to.be(13);
+			expect(map.setView([51.505, -0.09], 13)).to.equal(map);
+			expect(map.getZoom()).to.equal(13);
 			expect(map.getCenter().distanceTo([51.505, -0.09])).to.be.lessThan(5);
 		});
 
 		it('can be passed without a zoom specified', () => {
 			map.setZoom(13);
-			expect(map.setView([51.605, -0.11])).to.be(map);
-			expect(map.getZoom()).to.be(13);
+			expect(map.setView([51.605, -0.11])).to.equal(map);
+			expect(map.getZoom()).to.equal(13);
 			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
 		});
 
 		it('limits initial zoom when no zoom specified', () => {
 			map.options.maxZoom = 20;
 			map.setZoom(100);
-			expect(map.setView([51.605, -0.11])).to.be(map);
-			expect(map.getZoom()).to.be(20);
+			expect(map.setView([51.605, -0.11])).to.equal(map);
+			expect(map.getZoom()).to.equal(20);
 			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
 		});
 
@@ -177,7 +177,7 @@ describe('Map', () => {
 			const map = L.map(document.createElement('div'), {zoom: 13});
 			const zoom = map.setView([51.605, -0.11]).getZoom();
 			map.remove(); // clean up
-			expect(zoom).to.be(13);
+			expect(zoom).to.equal(13);
 		});
 
 		it('passes duration option to panBy', () => {
@@ -211,7 +211,7 @@ describe('Map', () => {
 				map.options.maxZoom = 10;
 				map.setZoom(15);
 
-				expect(map.getZoom()).to.be(15);
+				expect(map.getZoom()).to.equal(15);
 			});
 
 			it('overwrites zoom passed as map option', () => {
@@ -220,7 +220,7 @@ describe('Map', () => {
 				const zoom = map2.getZoom();
 
 				map2.remove(); // clean up
-				expect(zoom).to.be(15);
+				expect(zoom).to.equal(15);
 			});
 		});
 
@@ -233,7 +233,7 @@ describe('Map', () => {
 				map.options.maxZoom = 10;
 				map.setZoom(15);
 
-				expect(map.getZoom()).to.be(10);
+				expect(map.getZoom()).to.equal(10);
 			});
 
 			it('does not overwrite zoom passed as map option', () => {
@@ -243,7 +243,7 @@ describe('Map', () => {
 				const zoom = map2.getZoom();
 
 				map2.remove(); // clean up
-				expect(zoom).to.be(13);
+				expect(zoom).to.equal(13);
 			});
 		});
 
@@ -251,27 +251,27 @@ describe('Map', () => {
 			map.zoom = 10;
 			map.setZoom(15);
 
-			expect(map.getZoom()).to.be(15);
+			expect(map.getZoom()).to.equal(15);
 		});
 
 		it('can be passed without a zoom specified and keep previous zoom', () => {
 			const prevZoom = map.getZoom();
 			map.setZoom();
 
-			expect(map.getZoom()).to.be(prevZoom);
+			expect(map.getZoom()).to.equal(prevZoom);
 		});
 
 		it('can be passed with a zoom level of undefined and keep previous zoom', () => {
 			const prevZoom = map.getZoom();
 			map.setZoom(undefined);
 
-			expect(map.getZoom()).to.be(prevZoom);
+			expect(map.getZoom()).to.equal(prevZoom);
 		});
 
 		it('can be passed with a zoom level of infinity', () => {
 			map.setZoom(Infinity);
 
-			expect(map.getZoom()).to.be(Infinity);
+			expect(map.getZoom()).to.equal(Infinity);
 		});
 	});
 
@@ -280,7 +280,7 @@ describe('Map', () => {
 			map.setView([50, 50], 10);
 			map.stop = sinon.spy();
 			map.panTo([10, 10], 10);
-			expect(map.stop.called).to.not.be.ok();
+			expect(map.stop.called).to.be.false;
 		});
 
 		it('stops the execution of the flyTo animation', () => {
@@ -288,7 +288,7 @@ describe('Map', () => {
 			map.stop = sinon.spy();
 			map.flyTo([51.505, -0.09]);
 			map.stop();
-			expect(map.stop.calledOnce).to.be.ok();
+			expect(map.stop.calledOnce).to.be.true;
 		});
 
 		it('stops the execution of the panTo animation', () => {
@@ -296,7 +296,7 @@ describe('Map', () => {
 			map.stop = sinon.spy();
 			map.panTo([51.505, -0.09]);
 			map.stop();
-			expect(map.stop.calledOnce).to.be.ok();
+			expect(map.stop.calledOnce).to.be.true;
 		});
 	});
 
@@ -309,51 +309,51 @@ describe('Map', () => {
 			const point = L.point(5, 5);
 			map.setZoomAround(point, 5);
 
-			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 5))).to.be(false);
+			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 5))).to.be.false;
 		});
 
 		it('pass Point and change pixel in view at high zoom', () => {
 			const point = L.point(5, 5);
 			map.setZoomAround(point, 18);
 
-			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 18))).to.be(false);
+			expect(map.getBounds().contains(map.options.crs.pointToLatLng(point, 18))).to.be.false;
 		});
 
 		it('pass latLng and keep specified latLng in view', () => {
 			map.setZoomAround([5, 5], 5);
 
-			expect(map.getBounds().contains([5, 5])).to.be(true);
+			expect(map.getBounds().contains([5, 5])).to.be.true;
 		});
 
 		it('pass latLng and keep specified latLng in view at high zoom fails', () => {
 			map.setZoomAround([5, 5], 12); // usually fails around 9 zoom level
 
-			expect(map.getBounds().contains([5, 5])).to.be(false);
+			expect(map.getBounds().contains([5, 5])).to.be.false;
 		});
 
 		it('throws if map is not loaded', () => {
 			const unloadedMap = L.map(document.createElement('div'));
 
-			expect(unloadedMap.setZoomAround).withArgs([5, 5], 4).to.throwException();
+			expect(() => unloadedMap.setZoomAround([5, 5], 4)).to.throw();
 		});
 
 		it('throws if zoom is empty', () => {
-			expect(map.setZoomAround).withArgs([5, 5]).to.throwException();
+			expect(() => map.setZoomAround([5, 5])).to.throw();
 		});
 
 		it('throws if zoom is undefined', () => {
-			expect(map.setZoomAround).withArgs([5, 5], undefined).to.throwException();
+			expect(() => map.setZoomAround([5, 5], undefined)).to.throw();
 		});
 
 		it('throws if latLng is undefined', () => {
-			expect(map.setZoomAround).withArgs([undefined, undefined], 4).to.throwException();
+			expect(() => map.setZoomAround([undefined, undefined], 4)).to.throw();
 		});
 
 		it('does not throw if latLng is infinity', () => {
 			map.setView([5, 5]);
 			map.setZoomAround([Infinity, Infinity], 4);
 
-			expect(map.getCenter()).to.be.ok();
+			expect(map.getCenter()).to.be.ok;
 		});
 	});
 
@@ -457,7 +457,7 @@ describe('Map', () => {
 			expect(pixelCenter.x).to.eql(pixelInit.x);
 			expect(pixelCenter.y).not.to.eql(pixelInit.y);
 			// the view is inside the bounds
-			expect(bounds.contains(map.getBounds())).to.be(true);
+			expect(bounds.contains(map.getBounds())).to.be.true;
 		});
 
 		it('remove listeners when called without arguments', (done) => {
@@ -469,7 +469,7 @@ describe('Map', () => {
 			// set view outside
 			const center = L.latLng([0, 0]);
 			map.once('moveend', () => {
-				expect(center.equals(map.getCenter())).to.be(true);
+				expect(center.equals(map.getCenter())).to.be.true;
 				done();
 			});
 			map.setView(center, 18, {animate: false});
@@ -481,7 +481,7 @@ describe('Map', () => {
 			const bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
 			map.off = sinon.spy();
 			map.setMaxBounds(bounds, {animate: false});
-			expect(map.off.called).not.to.be.ok();
+			expect(map.off.called).not.to.be.true;
 		});
 
 		it('avoid subpixel / floating point related wobble (#8532)', (done) => {
@@ -493,7 +493,7 @@ describe('Map', () => {
 
 			// Unfortunately this is one of those tests where we need to allow at least one animation tick
 			setTimeout(() => {
-				expect(spy.called).to.be(false);
+				expect(spy.called).to.be.false;
 				done();
 			}, 300);
 		});
@@ -526,7 +526,7 @@ describe('Map', () => {
 				expect(map.getMinZoom()).to.eql(3);
 				expect(map.getMaxZoom()).to.eql(7);
 
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 			});
 		});
 
@@ -547,7 +547,7 @@ describe('Map', () => {
 				expect(map.getZoom()).to.eql(4);
 				expect(map.getMinZoom()).to.eql(2);
 				expect(map.getMaxZoom()).to.eql(7);
-				expect(spy.calledTwice).to.be.ok();
+				expect(spy.calledTwice).to.be.true;
 
 				const postSpy = sinon.spy();
 				map.on('zoomlevelschange', postSpy);
@@ -555,7 +555,7 @@ describe('Map', () => {
 				map.setMinZoom(2);
 				map.setMaxZoom(7);
 
-				expect(postSpy.called).to.not.be.ok();
+				expect(postSpy.called).to.be.false;
 			});
 
 			it('fire \'zoomlevelschange\' but do not change zoom if max/min zoom is less/more current zoom', () => {
@@ -565,7 +565,7 @@ describe('Map', () => {
 				expect(map.getZoom()).to.eql(4);
 				expect(map.getMinZoom()).to.eql(2);
 				expect(map.getMaxZoom()).to.eql(7);
-				expect(spy.calledTwice).to.be.ok();
+				expect(spy.calledTwice).to.be.true;
 			});
 		});
 
@@ -573,26 +573,26 @@ describe('Map', () => {
 			map.setMinZoom(undefined);
 			map.setMaxZoom();
 
-			expect(map.options.minZoom).to.be(undefined);
-			expect(map.options.maxZoom).to.be(undefined);
+			expect(map.options.minZoom).to.equal(undefined);
+			expect(map.options.maxZoom).to.equal(undefined);
 
-			expect(map.getMinZoom()).to.be(0); // min layer zoom used instead
-			expect(map.getMaxZoom()).to.be(Infinity); // max layer zoom used instead
+			expect(map.getMinZoom()).to.equal(0); // min layer zoom used instead
+			expect(map.getMaxZoom()).to.equal(Infinity); // max layer zoom used instead
 		});
 
 		it('allow infinity to be passed', () => {
 			map.setMinZoom(Infinity);
 			map.setMaxZoom(Infinity);
 
-			expect(map.getMinZoom()).to.be(Infinity);
-			expect(map.getMaxZoom()).to.be(Infinity);
+			expect(map.getMinZoom()).to.equal(Infinity);
+			expect(map.getMaxZoom()).to.equal(Infinity);
 		});
 	});
 
 	describe('#getMinZoom and #getMaxZoom', () => {
 		describe('#getMinZoom', () => {
 			it('returns 0 if not set by Map options or TileLayer options', () => {
-				expect(map.getMinZoom()).to.be(0);
+				expect(map.getMinZoom()).to.equal(0);
 			});
 		});
 
@@ -605,8 +605,8 @@ describe('Map', () => {
 			L.tileLayer('', {minZoom: 6, maxZoom: 17}).addTo(map);
 			L.tileLayer('', {minZoom: 0, maxZoom: 22}).addTo(map);
 
-			expect(map.getMinZoom()).to.be(2);
-			expect(map.getMaxZoom()).to.be(20);
+			expect(map.getMinZoom()).to.equal(2);
+			expect(map.getMaxZoom()).to.equal(20);
 		});
 
 		it('layer minZoom overrides map zoom if map has no minZoom set and layer minZoom is bigger than map zoom', () => {
@@ -616,7 +616,7 @@ describe('Map', () => {
 
 			L.tileLayer('', {minZoom: 15}).addTo(map);
 
-			expect(map.getMinZoom()).to.be(15);
+			expect(map.getMinZoom()).to.equal(15);
 		});
 
 		it('layer maxZoom overrides map zoom if map has no maxZoom set and layer maxZoom is smaller than map zoom', () => {
@@ -626,7 +626,7 @@ describe('Map', () => {
 
 			L.tileLayer('', {maxZoom: 15}).addTo(map);
 
-			expect(map.getMaxZoom()).to.be(15);
+			expect(map.getMaxZoom()).to.equal(15);
 		});
 
 		it('map\'s zoom is adjusted to layer\'s minZoom even if initialized with smaller value', () => {
@@ -636,7 +636,7 @@ describe('Map', () => {
 
 			L.tileLayer('', {minZoom: 15}).addTo(map);
 
-			expect(map.getZoom()).to.be(15);
+			expect(map.getZoom()).to.equal(15);
 		});
 
 		it('map\'s zoom is adjusted to layer\'s maxZoom even if initialized with larger value', () => {
@@ -646,7 +646,7 @@ describe('Map', () => {
 
 			L.tileLayer('', {maxZoom: 15}).addTo(map);
 
-			expect(map.getZoom()).to.be(15);
+			expect(map.getZoom()).to.equal(15);
 		});
 	});
 
@@ -695,12 +695,12 @@ describe('Map', () => {
 
 			UIEventSimulator.fire('click', window);
 			UIEventSimulator.fire('click', window);
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 
 			map.clickHandler.enable();
 
 			UIEventSimulator.fire('click', window);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 
 			map.clickHandler.disable();
 
@@ -735,7 +735,7 @@ describe('Map', () => {
 
 			map.createPane('overlayPane');
 
-			expect(map.getPane('overlayPane')).to.not.be(overlayPane);
+			expect(map.getPane('overlayPane')).to.not.equal(overlayPane);
 		});
 	});
 
@@ -773,7 +773,7 @@ describe('Map', () => {
 
 	describe('#getContainer', () => {
 		it('return container object', () => {
-			expect(map.getContainer()._leaflet_id).to.be.ok();
+			expect(map.getContainer()._leaflet_id).to.be.ok;
 		});
 
 		it('return undefined on empty container id', () => {
@@ -812,7 +812,7 @@ describe('Map', () => {
 		});
 
 		it('return clone of size object from map', () => {
-			expect(map.getSize()).to.not.be(map._size);
+			expect(map.getSize()).to.not.equal(map._size);
 		});
 
 		it('return previous size on empty map', () => {
@@ -850,7 +850,7 @@ describe('Map', () => {
 			const container2 = createContainer();
 			const map2 = L.map(container2);
 
-			expect(map2.getPixelBounds).to.throwException();
+			expect(map2.getPixelBounds).to.throw();
 
 			map2.remove(); // clean up
 		});
@@ -881,7 +881,7 @@ describe('Map', () => {
 			const container2 = createContainer();
 			const map2 = L.map(container2);
 
-			expect(map2.getPixelOrigin).to.throwException();
+			expect(map2.getPixelOrigin).to.throw();
 
 			map2.remove(); // clean up
 		});
@@ -924,12 +924,12 @@ describe('Map', () => {
 	describe('#hasLayer', () => {
 		it('throws when called without proper argument', () => {
 			const hasLayer = map.hasLayer.bind(map);
-			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
+			expect(() => hasLayer(new L.Layer())).to.not.throw(); // control case
 
-			expect(hasLayer).withArgs(undefined).to.throwException();
-			expect(hasLayer).withArgs(null).to.throwException();
-			expect(hasLayer).withArgs(false).to.throwException();
-			expect(hasLayer).to.throwException();
+			expect(() => hasLayer(undefined)).to.throw();
+			expect(() => hasLayer(null)).to.throw();
+			expect(() => hasLayer(false)).to.throw();
+			expect(() => hasLayer()).to.throw();
 		});
 	});
 
@@ -945,15 +945,15 @@ describe('Map', () => {
 			const layer = layerSpy();
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
-			expect(layer.onAdd.called).to.be.ok();
+			expect(layer.onAdd.called).to.be.true;
 		});
 
 		it('calls layer.onAdd when the map becomes ready', () => {
 			const layer = layerSpy();
 			map.addLayer(layer);
-			expect(layer.onAdd.called).not.to.be.ok();
+			expect(layer.onAdd.called).not.to.be.true;
 			map.setView([0, 0], 0);
-			expect(layer.onAdd.called).to.be.ok();
+			expect(layer.onAdd.called).to.be.true;
 		});
 
 		it('does not call layer.onAdd if the layer is removed before the map becomes ready', () => {
@@ -961,7 +961,7 @@ describe('Map', () => {
 			map.addLayer(layer);
 			map.removeLayer(layer);
 			map.setView([0, 0], 0);
-			expect(layer.onAdd.called).not.to.be.ok();
+			expect(layer.onAdd.called).not.to.be.true;
 		});
 
 		it('fires a layeradd event immediately if the map is ready', () => {
@@ -970,7 +970,7 @@ describe('Map', () => {
 			map.on('layeradd', spy);
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('fires a layeradd event when the map becomes ready', () => {
@@ -978,9 +978,9 @@ describe('Map', () => {
 			    spy = sinon.spy();
 			map.on('layeradd', spy);
 			map.addLayer(layer);
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 			map.setView([0, 0], 0);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('does not fire a layeradd event if the layer is removed before the map becomes ready', () => {
@@ -990,13 +990,13 @@ describe('Map', () => {
 			map.addLayer(layer);
 			map.removeLayer(layer);
 			map.setView([0, 0], 0);
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 		});
 
 		it('adds the layer before firing layeradd', (done) => {
 			const layer = layerSpy();
 			map.on('layeradd', () => {
-				expect(map.hasLayer(layer)).to.be.ok();
+				expect(map.hasLayer(layer)).to.be.true;
 				done();
 			});
 			map.setView([0, 0], 0);
@@ -1007,16 +1007,16 @@ describe('Map', () => {
 			const control = L.control.layers();
 			expect(() => {
 				map.addLayer(control);
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		describe('When the first layer is added to a map', () => {
 			it('fires a zoomlevelschange event', () => {
 				const spy = sinon.spy();
 				map.on('zoomlevelschange', spy);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 				L.tileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 
@@ -1025,9 +1025,9 @@ describe('Map', () => {
 				const spy = sinon.spy();
 				L.tileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on('zoomlevelschange', spy);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 				L.tileLayer('', {minZoom: 0, maxZoom: 15}).addTo(map);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 
@@ -1036,11 +1036,11 @@ describe('Map', () => {
 				const spy = sinon.spy();
 				L.tileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on('zoomlevelschange', spy);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 				L.tileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 				L.tileLayer('', {minZoom: 0, maxZoom: 5}).addTo(map);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 			});
 		});
 	});
@@ -1051,21 +1051,21 @@ describe('Map', () => {
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
 			map.removeLayer(layer);
-			expect(layer.onRemove.called).to.be.ok();
+			expect(layer.onRemove.called).to.be.true;
 		});
 
 		it('does not call layer.onRemove if the layer was not added', () => {
 			const layer = layerSpy();
 			map.setView([0, 0], 0);
 			map.removeLayer(layer);
-			expect(layer.onRemove.called).not.to.be.ok();
+			expect(layer.onRemove.called).not.to.be.true;
 		});
 
 		it('does not call layer.onRemove if the map is not ready', () => {
 			const layer = layerSpy();
 			map.addLayer(layer);
 			map.removeLayer(layer);
-			expect(layer.onRemove.called).not.to.be.ok();
+			expect(layer.onRemove.called).not.to.be.true;
 		});
 
 		it('fires a layerremove event if the map is ready', () => {
@@ -1075,7 +1075,7 @@ describe('Map', () => {
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
 			map.removeLayer(layer);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('does not fire a layerremove if the layer was not added', () => {
@@ -1084,7 +1084,7 @@ describe('Map', () => {
 			map.on('layerremove', spy);
 			map.setView([0, 0], 0);
 			map.removeLayer(layer);
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 		});
 
 		it('does not fire a layerremove if the map is not ready', () => {
@@ -1093,13 +1093,13 @@ describe('Map', () => {
 			map.on('layerremove', spy);
 			map.addLayer(layer);
 			map.removeLayer(layer);
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 		});
 
 		it('removes the layer before firing layerremove', (done) => {
 			const layer = layerSpy();
 			map.on('layerremove', () => {
-				expect(map.hasLayer(layer)).not.to.be.ok();
+				expect(map.hasLayer(layer)).not.to.be.true;
 				done();
 			});
 			map.setView([0, 0], 0);
@@ -1127,9 +1127,9 @@ describe('Map', () => {
 				const tl = L.tileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
 
 				map.on('zoomlevelschange', spy);
-				expect(spy.called).not.to.be.ok();
+				expect(spy.called).not.to.be.true;
 				map.removeLayer(tl);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 
@@ -1141,9 +1141,9 @@ describe('Map', () => {
 				    t2 = L.tileLayer('', {minZoom: 0, maxZoom: 15}).addTo(map);
 
 				map.on('zoomlevelschange', spy);
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 				map.removeLayer(t2);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 
@@ -1157,18 +1157,18 @@ describe('Map', () => {
 
 				map.on('zoomlevelschange', spy);
 				map.removeLayer(t2);
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 				map.removeLayer(t3);
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 				map.removeLayer(t1);
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 			});
 		});
 	});
 
 	describe('#eachLayer', () => {
 		it('returns self', () => {
-			expect(map.eachLayer(L.Util.falseFn)).to.be(map);
+			expect(map.eachLayer(L.Util.falseFn)).to.equal(map);
 		});
 
 		it('calls the provided function for each layer', () => {
@@ -1189,7 +1189,7 @@ describe('Map', () => {
 
 			map.eachLayer(spy, map);
 
-			expect(spy.alwaysCalledOn(map)).to.be.ok();
+			expect(spy.alwaysCalledOn(map)).to.be.true;
 		});
 	});
 
@@ -1212,29 +1212,29 @@ describe('Map', () => {
 		it('pans by the right amount when growing in 1px increments', () => {
 			container.style.width = `${origWidth + 1}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(1);
+			expect(map._getMapPanePos().x).to.equal(1);
 
 			container.style.width = `${origWidth + 2}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(1);
+			expect(map._getMapPanePos().x).to.equal(1);
 
 			container.style.width = `${origWidth + 3}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(2);
+			expect(map._getMapPanePos().x).to.equal(2);
 		});
 
 		it('pans by the right amount when shrinking in 1px increments', () => {
 			container.style.width = `${origWidth - 1}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(0);
+			expect(map._getMapPanePos().x).to.equal(0);
 
 			container.style.width = `${origWidth - 2}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(-1);
+			expect(map._getMapPanePos().x).to.equal(-1);
 
 			container.style.width = `${origWidth - 3}px`;
 			map.invalidateSize();
-			expect(map._getMapPanePos().x).to.be(-1);
+			expect(map._getMapPanePos().x).to.equal(-1);
 		});
 
 		it('pans back to the original position after growing by an odd size and back', () => {
@@ -1244,7 +1244,7 @@ describe('Map', () => {
 			container.style.width = `${origWidth}px`;
 			map.invalidateSize();
 
-			expect(map._getMapPanePos().x).to.be(0);
+			expect(map._getMapPanePos().x).to.equal(0);
 		});
 
 		it('emits no move event if the size has not changed', () => {
@@ -1253,7 +1253,7 @@ describe('Map', () => {
 
 			map.invalidateSize();
 
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 		});
 
 		it('emits a move event if the size has changed', () => {
@@ -1263,7 +1263,7 @@ describe('Map', () => {
 			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize();
 
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('emits a moveend event if the size has changed', () => {
@@ -1273,7 +1273,7 @@ describe('Map', () => {
 			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize();
 
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('debounces the moveend event if the debounceMoveend option is given', () => {
@@ -1283,11 +1283,11 @@ describe('Map', () => {
 			container.style.width = `${origWidth + 5}px`;
 			map.invalidateSize({debounceMoveend: true});
 
-			expect(spy.called).not.to.be.ok();
+			expect(spy.called).not.to.be.true;
 
 			clock.tick(200);
 
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('correctly adjusts for new container size when view is set during map initialization (#6165)', () => {
@@ -1324,12 +1324,12 @@ describe('Map', () => {
 			const spy = sinon.spy();
 			map.on('resize', spy);
 
-			expect(spy.called).to.not.be.ok();
+			expect(spy.called).to.be.false;
 
 			map.getContainer().style.width = '200px';
 
 			map.on('resize', () => {
-				expect(spy.called).to.be.ok();
+				expect(spy.called).to.be.true;
 				done();
 			});
 		});
@@ -1350,12 +1350,12 @@ describe('Map', () => {
 			const spy = sinon.spy();
 			map.invalidateSize = spy;
 
-			expect(spy.called).to.not.be.ok();
+			expect(spy.called).to.be.false;
 
 			map.getContainer().style.width = '200px';
 
 			setTimeout(() => {
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 				done();
 				// we need the 10 ms to be sure that the ResizeObserver is not triggered
 			}, 10);
@@ -1367,12 +1367,12 @@ describe('Map', () => {
 
 			const spy = sinon.spy();
 			map.invalidateSize = spy;
-			expect(spy.called).to.not.be.ok();
+			expect(spy.called).to.be.false;
 
 			map.getContainer().style.width = '200px';
 
 			setTimeout(() => {
-				expect(spy.called).to.not.be.ok();
+				expect(spy.called).to.be.false;
 
 				// make sure afterEach works correctly
 				map = L.map(container);
@@ -1544,7 +1544,7 @@ describe('Map', () => {
 		it('throws an error with invalid bounds', () => {
 			expect(() => {
 				map.fitBounds(NaN);
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('Fits to same scale and zoom', (done) => {
@@ -1602,16 +1602,16 @@ describe('Map', () => {
 
 		it('Snaps to a number after adding tile layer', () => {
 			map.addLayer(L.tileLayer(''));
-			expect(map.getZoom()).to.be(undefined);
+			expect(map.getZoom()).to.equal(undefined);
 			map.fitBounds(bounds);
-			expect(map.getZoom()).to.be(2);
+			expect(map.getZoom()).to.equal(2);
 		});
 
 		it('Snaps to a number after adding marker', () => {
 			map.addLayer(L.marker(center));
-			expect(map.getZoom()).to.be(undefined);
+			expect(map.getZoom()).to.equal(undefined);
 			map.fitBounds(bounds);
-			expect(map.getZoom()).to.be(2);
+			expect(map.getZoom()).to.equal(2);
 		});
 
 	});
@@ -1694,7 +1694,7 @@ describe('Map', () => {
 		it('pans on both X and Y axes when the target is outside of the view area and both the point\'s coords are outside the bounds', () => {
 			const p = map.unproject(tlPix.subtract([200, 200]));
 			map.panInside(p, {animate: false});
-			expect(map.getBounds().contains(p)).to.be(true);
+			expect(map.getBounds().contains(p)).to.be.true;
 			expect(map.getCenter().lng).to.not.eql(center.lng);
 			expect(map.getCenter().lat).to.not.eql(center.lat);
 		});
@@ -1702,7 +1702,7 @@ describe('Map', () => {
 		it('pans only on the Y axis when the target\'s X coord is within bounds but the Y is not', () => {
 			const p = L.latLng(tl.lat + 5, tl.lng);
 			map.panInside(p, {animate: false});
-			expect(map.getBounds().contains(p)).to.be(true);
+			expect(map.getBounds().contains(p)).to.be.true;
 			const dx = Math.abs(map.getCenter().lng - center.lng);
 			expect(dx).to.be.lessThan(1.0E-9);
 			expect(map.getCenter().lat).to.not.eql(center.lat);
@@ -1711,7 +1711,7 @@ describe('Map', () => {
 		it('pans only on the X axis when the target\'s Y coord is within bounds but the X is not', () => {
 			const p = L.latLng(tl.lat, tl.lng - 5);
 			map.panInside(p, 0, {animate: false});
-			expect(map.getBounds().contains(p)).to.be(true);
+			expect(map.getBounds().contains(p)).to.be.true;
 			expect(map.getCenter().lng).to.not.eql(center.lng);
 			const dy = map.getCenter().lat - center.lat;
 			expect(dy).to.be.lessThan(1.0E-9);
@@ -1727,7 +1727,7 @@ describe('Map', () => {
 			map.panInside(map.unproject(target), {paddingBottomRight: [0, padding.y], animate: false});
 			const offset = map.project(map.getCenter()).subtract(oldCenter); // distance moved during the pan
 			const result = paddingOffset.add(targetOffset).subtract(offset);
-			expect(result.trunc()).to.eql(L.point(0, 0));
+			expect(result.trunc().equals(L.point(0, 0))).to.be.true;
 		});
 	});
 
@@ -1741,7 +1741,7 @@ describe('Map', () => {
 			map.on('mousemove', spy);
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			UIEventSimulator.fire('mousemove', layer._path);
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 		});
 
 		it('DOM events propagate from marker to map', () => {
@@ -1749,7 +1749,7 @@ describe('Map', () => {
 			map.on('mousemove', spy);
 			const layer = L.marker([1, 2]).addTo(map);
 			UIEventSimulator.fire('mousemove', layer._icon);
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 		});
 
 		it('DOM events fired on marker can be cancelled before being caught by the map', () => {
@@ -1759,8 +1759,8 @@ describe('Map', () => {
 			const layer = L.marker([1, 2]).addTo(map);
 			layer.on('mousemove', L.DomEvent.stopPropagation).on('mousemove', layerSpy);
 			UIEventSimulator.fire('mousemove', layer._icon);
-			expect(layerSpy.calledOnce).to.be.ok();
-			expect(mapSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).to.be.true;
+			expect(mapSpy.called).not.to.be.true;
 		});
 
 		it('DOM events fired on polygon can be cancelled before being caught by the map', () => {
@@ -1770,8 +1770,8 @@ describe('Map', () => {
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('mousemove', L.DomEvent.stopPropagation).on('mousemove', layerSpy);
 			UIEventSimulator.fire('mousemove', layer._path);
-			expect(layerSpy.calledOnce).to.be.ok();
-			expect(mapSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).to.be.true;
+			expect(mapSpy.called).not.to.be.true;
 		});
 
 		it('mouseout is forwarded if fired on the original target', () => {
@@ -1784,9 +1784,9 @@ describe('Map', () => {
 			layer.on('mouseout', layerSpy);
 			other.on('mouseout', otherSpy);
 			UIEventSimulator.fire('mouseout', layer._path, {relatedTarget: container});
-			expect(mapSpy.called).not.to.be.ok();
-			expect(otherSpy.called).not.to.be.ok();
-			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.true;
+			expect(otherSpy.called).not.to.be.true;
+			expect(layerSpy.calledOnce).to.be.true;
 		});
 
 		it('mouseout is forwarded when using a DivIcon', () => {
@@ -1800,8 +1800,8 @@ describe('Map', () => {
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
 			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: container});
-			expect(mapSpy.called).not.to.be.ok();
-			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.true;
+			expect(layerSpy.calledOnce).to.be.true;
 		});
 
 		it('mouseout is not forwarded if relatedTarget is a target\'s child', () => {
@@ -1816,8 +1816,8 @@ describe('Map', () => {
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
 			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: child});
-			expect(mapSpy.called).not.to.be.ok();
-			expect(layerSpy.called).not.to.be.ok();
+			expect(mapSpy.called).not.to.be.true;
+			expect(layerSpy.called).not.to.be.true;
 		});
 
 		it('mouseout is not forwarded if fired on target\'s child', () => {
@@ -1832,8 +1832,8 @@ describe('Map', () => {
 			map.on('mouseout', mapSpy);
 			layer.on('mouseout', layerSpy);
 			UIEventSimulator.fire('mouseout', child, {relatedTarget: layer._icon});
-			expect(mapSpy.called).not.to.be.ok();
-			expect(layerSpy.called).not.to.be.ok();
+			expect(mapSpy.called).not.to.be.true;
+			expect(layerSpy.called).not.to.be.true;
 		});
 
 		it('mouseout is not forwarded to layers if fired on the map', () => {
@@ -1846,9 +1846,9 @@ describe('Map', () => {
 			layer.on('mouseout', layerSpy);
 			other.on('mouseout', otherSpy);
 			UIEventSimulator.fire('mouseout', container);
-			expect(otherSpy.called).not.to.be.ok();
-			expect(layerSpy.called).not.to.be.ok();
-			expect(mapSpy.calledOnce).to.be.ok();
+			expect(otherSpy.called).not.to.be.true;
+			expect(layerSpy.called).not.to.be.true;
+			expect(mapSpy.calledOnce).to.be.true;
 		});
 
 		it('preclick is fired before click on marker and map', () => {
@@ -1856,19 +1856,19 @@ describe('Map', () => {
 			const layer = L.marker([1, 2], {bubblingMouseEvents: true}).addTo(map);
 			layer.on('preclick', (e) => {
 				expect(called++).to.eql(0);
-				expect(e.latlng).to.ok();
+				expect(e.latlng).to.be.ok;
 			});
 			layer.on('click', (e) => {
 				expect(called++).to.eql(2);
-				expect(e.latlng).to.ok();
+				expect(e.latlng).to.be.ok;
 			});
 			map.on('preclick', (e) => {
 				expect(called++).to.eql(1);
-				expect(e.latlng).to.ok();
+				expect(e.latlng).to.be.ok;
 			});
 			map.on('click', (e) => {
 				expect(called++).to.eql(3);
-				expect(e.latlng).to.ok();
+				expect(e.latlng).to.be.ok;
 			});
 			UIEventSimulator.fire('click', layer._icon);
 			expect(called).to.eql(4);
@@ -1896,9 +1896,9 @@ describe('Map', () => {
 
 			UIEventSimulator.fireAt('contextmenu', marker._point.x, marker._point.y); // second  (#5995)
 
-			expect(spy.callCount).to.be(2);
-			expect(spy.firstCall.lastArg).to.be.ok();
-			expect(spy.secondCall.lastArg).to.be.ok();
+			expect(spy.callCount).to.equal(2);
+			expect(spy.firstCall.lastArg).to.be.true;
+			expect(spy.secondCall.lastArg).to.be.true;
 		});
 	});
 
@@ -1922,12 +1922,12 @@ describe('Map', () => {
 
 	describe('#getZoom', () => {
 		it('returns undefined if map not initialized', () => {
-			expect(map.getZoom()).to.be(undefined);
+			expect(map.getZoom()).to.equal(undefined);
 		});
 
 		it('returns undefined if map not initialized but layers added', () => {
 			map.addLayer(L.tileLayer(''));
-			expect(map.getZoom()).to.be(undefined);
+			expect(map.getZoom()).to.equal(undefined);
 		});
 	});
 
@@ -1938,7 +1938,7 @@ describe('Map', () => {
 			map = null;
 			expect(() => {
 				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 		it('doesn\'t throw error if location is not found and map is not existing', () => {
 			map._locateOptions = {setView: true};
@@ -1947,7 +1947,7 @@ describe('Map', () => {
 			map = null;
 			expect(() => {
 				fn({coords: {latitude: 40.415296, longitude: 10.7419264, accuracy: 1129.5646101470752}});
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 	});
 
@@ -1963,7 +1963,7 @@ describe('Map', () => {
 			});
 			expect(() => {
 				UIEventSimulator.fire('click', child);
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 	});
 
@@ -1990,15 +1990,15 @@ describe('Map', () => {
 		});
 
 		it('throw with undefined values', () => {
-			expect(map.distance).withArgs(undefined, undefined).to.throwException();
+			expect(() => map.distance(undefined, undefined)).to.throw();
 		});
 
 		it('throw with infinity values', () => {
-			expect(map.distance).withArgs(Infinity, Infinity).to.throwException();
+			expect(() => map.distance(Infinity, Infinity)).to.throw();
 		});
 
 		it('throw with only 1 lat', () => {
-			expect(map.distance).withArgs(20, 50).to.throwException();
+			expect(() => map.distance(20, 50)).to.throw();
 		});
 
 		it('return 0 with 2 same latLng', () => {
@@ -2045,36 +2045,36 @@ describe('Map', () => {
 	describe('_addZoomLimit', () => {
 		it('update zoom levels when min zoom is a number in a layer that is added to map', () => {
 			map._addZoomLimit(L.tileLayer('', {minZoom: 4}));
-			expect(map._layersMinZoom).to.be(4);
+			expect(map._layersMinZoom).to.equal(4);
 		});
 
 		it('update zoom levels when max zoom is a number in a layer that is added to map', () => {
 			map._addZoomLimit(L.tileLayer('', {maxZoom: 10}));
-			expect(map._layersMaxZoom).to.be(10);
+			expect(map._layersMaxZoom).to.equal(10);
 		});
 
 		it('update zoom levels when min zoom is a number in two layers that are added to map', () => {
 			map._addZoomLimit(L.tileLayer('', {minZoom: 6}));
 			map._addZoomLimit(L.tileLayer('', {minZoom: 4}));
-			expect(map._layersMinZoom).to.be(4);
+			expect(map._layersMinZoom).to.equal(4);
 		});
 
 		it('update zoom levels when max zoom is a number in two layers that are added to map', () => {
 			map._addZoomLimit(L.tileLayer('', {maxZoom: 10}));
 			map._addZoomLimit(L.tileLayer('', {maxZoom: 8}));
-			expect(map._layersMaxZoom).to.be(10);
+			expect(map._layersMaxZoom).to.equal(10);
 		});
 
 		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
 		it('update zoom levels when min zoom is NaN in a layer that is added to map, so that min zoom becomes NaN,', () => {
 			map._addZoomLimit(L.tileLayer('', {minZoom: NaN}));
-			expect(isNaN(map._layersMinZoom)).to.be(true);
+			expect(isNaN(map._layersMinZoom)).to.be.true;
 		});
 
 		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
 		it('update zoom levels when max zoom is NaN in a layer that is added to map, so that max zoom becomes NaN', () => {
 			map._addZoomLimit(L.tileLayer('', {maxZoom: NaN}));
-			expect(isNaN(map._layersMaxZoom)).to.be(true);
+			expect(isNaN(map._layersMaxZoom)).to.be.true;
 		});
 
 		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
@@ -2084,7 +2084,7 @@ describe('Map', () => {
 		// 	map._addZoomLimit(L.tileLayer("", {minZoom: NaN})); --> Results in maxZoom = NaN --> _updateZoomLevels is not called.
 		// 	Not same logic as for maxZoom.
 		// 	map._addZoomLimit(L.tileLayer("", {minZoom: 4}));
-		// 	expect(isNaN(map._layersMinZoom)).to.be(true);
+		// 	expect(isNaN(map._layersMinZoom)).to.be.true;
 		// });
 
 		// This test shows the NaN usage - it's not clear if NaN is a wanted "feature"
@@ -2092,12 +2092,12 @@ describe('Map', () => {
 			map._addZoomLimit(L.tileLayer('', {maxZoom: 10}));
 			map._addZoomLimit(L.tileLayer('', {maxZoom: 8}));
 			map._addZoomLimit(L.tileLayer('', {maxZoom: NaN}));
-			expect(isNaN(map._layersMaxZoom)).to.be(true);
+			expect(isNaN(map._layersMaxZoom)).to.be.true;
 		});
 
 		it('doesn\'t update zoom levels when min and max zoom are both NaN in a layer that is added to map', () => {
 			map._addZoomLimit(L.tileLayer('', {minZoom: NaN, maxZoom: NaN}));
-			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be(true);
+			expect(map._layersMinZoom === undefined && map._layersMaxZoom === undefined).to.be.true;
 		});
 	});
 
@@ -2106,7 +2106,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.containerPointToLatLng();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns geographical coordinate for point relative to map container', () => {
@@ -2124,7 +2124,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.latLngToContainerPoint();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns point relative to map container for geographical coordinate', () => {
@@ -2141,12 +2141,12 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.panTo();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('pans the map to accurate location', () => {
 			const center = L.latLng([50, 30]);
-			expect(map.panTo(center)).to.be(map);
+			expect(map.panTo(center)).to.equal(map);
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
 	});
@@ -2156,20 +2156,20 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.panInsideBounds();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('throws if passed invalid bounds', () => {
 			expect(() => {
 				map.panInsideBounds(0, 0);
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('doesn\'t pan if already in bounds', () => {
 			map.setView([0, 0]);
 			const bounds = L.latLngBounds([[-1, -1], [1, 1]]);
 			const expectedCenter = L.latLng([0, 0]);
-			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
 
@@ -2177,7 +2177,7 @@ describe('Map', () => {
 			const bounds = L.latLngBounds([[41.8, -87.6], [40.7, -74]]);
 			const expectedCenter = L.latLng([41.59452223189, -74.2738647460]);
 			map.setView([50.5, 30.5], 10);
-			expect(map.panInsideBounds(bounds)).to.be(map);
+			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
 	});
@@ -2187,7 +2187,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.latLngToLayerPoint();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns the corresponding pixel coordinate relative to the origin pixel', () => {
@@ -2204,7 +2204,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.layerPointToLatLng();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns the corresponding geographical coordinate for a pixel coordinate relative to the origin pixel', () => {
@@ -2275,7 +2275,7 @@ describe('Map', () => {
 			});
 
 			map.on('locationerror', (error) => {
-				expect(error.code).to.be(0);
+				expect(error.code).to.equal(0);
 				expect(error.message).to.eql('Geolocation error: Geolocation not supported..');
 
 				errorSpy();
@@ -2285,8 +2285,8 @@ describe('Map', () => {
 
 			map.locate({setView: true});
 
-			expect(errorSpy.called).to.be.ok();
-			expect(foundSpy.called).to.not.be.ok();
+			expect(errorSpy.called).to.be.true;
+			expect(foundSpy.called).to.be.false;
 		});
 
 		it('sets map view to geolocation coords', () => {
@@ -2299,7 +2299,7 @@ describe('Map', () => {
 
 			map.on('locationfound', (data) => {
 				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
-				expect(data.timestamp).to.be(1670000000000);
+				expect(data.timestamp).to.equal(1670000000000);
 
 				expectedBounds = data.bounds;
 
@@ -2310,11 +2310,11 @@ describe('Map', () => {
 
 			map.locate({setView: true});
 
-			expect(errorSpy.called).to.not.be.ok();
-			expect(foundSpy.called).to.be.ok();
+			expect(errorSpy.called).to.be.false;
+			expect(foundSpy.called).to.be.true;
 
-			expect(getCurrentPosSpy.called).to.be.ok();
-			expect(watchPosSpy.called).to.not.be.ok();
+			expect(getCurrentPosSpy.called).to.be.true;
+			expect(watchPosSpy.called).to.be.false;
 
 			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
 
@@ -2333,7 +2333,7 @@ describe('Map', () => {
 
 			map.on('locationfound', (data) => {
 				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
-				expect(data.timestamp).to.be(1660000000000);
+				expect(data.timestamp).to.equal(1660000000000);
 
 				expectedBounds = data.bounds;
 
@@ -2344,11 +2344,11 @@ describe('Map', () => {
 
 			map.locate({setView: true, watch: true});
 
-			expect(errorSpy.called).to.not.be.ok();
-			expect(foundSpy.called).to.be.ok();
+			expect(errorSpy.called).to.be.false;
+			expect(foundSpy.called).to.be.true;
 
-			expect(getCurrentPosSpy.called).to.not.be.ok();
-			expect(watchPosSpy.called).to.be.ok();
+			expect(getCurrentPosSpy.called).to.be.false;
+			expect(watchPosSpy.called).to.be.true;
 
 			expect(map.getCenter()).to.be.nearLatLng(expectedLatLngs);
 
@@ -2366,7 +2366,7 @@ describe('Map', () => {
 
 			map.on('locationfound', (data) => {
 				expect(data.latlng).to.be.nearLatLng([50, 50]);
-				expect(data.timestamp).to.be(1670000000000);
+				expect(data.timestamp).to.equal(1670000000000);
 
 				foundSpy();
 			});
@@ -2375,13 +2375,13 @@ describe('Map', () => {
 
 			map.locate();
 
-			expect(errorSpy.called).to.not.be.ok();
-			expect(foundSpy.called).to.be.ok();
+			expect(errorSpy.called).to.be.false;
+			expect(foundSpy.called).to.be.true;
 
-			expect(getCurrentPosSpy.called).to.be.ok();
-			expect(watchPosSpy.called).to.not.be.ok();
+			expect(getCurrentPosSpy.called).to.be.true;
+			expect(watchPosSpy.called).to.be.false;
 
-			expect(map._loaded).to.not.be.ok();
+			expect(map._loaded).to.be.undefined;
 		});
 	});
 
@@ -2390,7 +2390,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.mouseEventToLatLng({clientX: 10, clientY: 10});
-			}).to.throwException();
+			}).to.throw();
 		});
 
 		it('returns geographical coordinate where the event took place.', () => {
@@ -2431,7 +2431,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.mouseEventToContainerPoint();
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('returns the pixel coordinate relative to the map container where the event took place', () => {
@@ -2451,7 +2451,7 @@ describe('Map', () => {
 		it('throws if map is not set before', () => {
 			expect(() => {
 				map.panBy(offset);
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('pans the map by given offset', () => {
@@ -2460,7 +2460,7 @@ describe('Map', () => {
 			const offsetCenterPoint = map.options.crs.latLngToPoint(center, 7).add(offset);
 			const target = map.options.crs.pointToLatLng(offsetCenterPoint, 7);
 
-			expect(map.panBy(offset, {animate: false})).to.be(map);
+			expect(map.panBy(offset, {animate: false})).to.equal(map);
 			expect(map.getCenter().distanceTo(target)).to.be.lessThan(5);
 			expect(map.getCenter()).to.be.nearLatLng([-10.9196177602, 10.9863281250]);
 		});
