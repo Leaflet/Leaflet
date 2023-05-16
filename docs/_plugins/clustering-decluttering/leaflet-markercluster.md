@@ -1,9 +1,9 @@
 ---
 name: Leaflet.markercluster
 category: clustering-decluttering
-repo: https://github.com/Leaflet/Leaflet.markercluster
-author: Dave Leaver
-author-url: https://github.com/danzel
+repo: https://github.com/liqd/Leaflet.markercluster
+author: Julian Dehm
+author-url: https://github.com/goapunk
 demo: https://leaflet.github.io/Leaflet.markercluster/example/marker-clustering-realworld.388.html
 compatible-v0:
 compatible-v1: true
