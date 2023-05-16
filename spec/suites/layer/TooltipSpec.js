@@ -83,6 +83,16 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 	});
 
+	it('opens on marker focus and ignore layers without getElement function', () => {
+		var marker1 = L.marker([41.18, 9.45]);
+		var someLayerWithoutGetElement = L.layerGroup();
+		var group = new L.FeatureGroup([marker1, someLayerWithoutGetElement]).addTo(map);
+		group.bindTooltip('Tooltip');
+		expect(function () {
+			happen.once(marker1.getElement(), {type:'focus'});
+		}).to.not.throwException();
+	});
+
 	it("is mentioned in aria-describedby of a bound layer", function () {
 		var layer = L.marker(center).addTo(map);
 
