@@ -83,6 +83,7 @@ export var Layers = Control.extend({
 		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
+		this._preventClick = false;
 
 		for (var i in baseLayers) {
 			this._addLayer(baseLayers[i], i);
@@ -358,6 +359,11 @@ export var Layers = Control.extend({
 	},
 
 	_onInputClick: function () {
+		// expanding the control on mobile with a click can cause adding a layer - we don't want this
+		if (this._preventClick) {
+			return;
+		}
+
 		var inputs = this._layerControlInputs,
 		    input, layer;
 		var addedLayers = [],
@@ -417,10 +423,13 @@ export var Layers = Control.extend({
 
 	_expandSafely: function () {
 		var section = this._section;
+		this._preventClick = true;
 		DomEvent.on(section, 'click', DomEvent.preventDefault);
 		this.expand();
+		var that = this;
 		setTimeout(function () {
 			DomEvent.off(section, 'click', DomEvent.preventDefault);
+			that._preventClick = false;
 		});
 	}
 
