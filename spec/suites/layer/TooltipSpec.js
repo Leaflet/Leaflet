@@ -86,8 +86,9 @@ describe('Tooltip', () => {
 		const someLayerWithoutGetElement = L.layerGroup();
 		const group = new L.FeatureGroup([marker1, someLayerWithoutGetElement]).addTo(map);
 		group.bindTooltip('Tooltip');
-
-		UIEventSimulator.fire('focus', marker1.getElement());
+		expect(() => {
+			UIEventSimulator.fire('focus', marker1.getElement());
+		}).to.not.throw();
 	});
 
 
