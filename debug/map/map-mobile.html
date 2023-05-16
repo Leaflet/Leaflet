@@ -1,33 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Mobile</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/mobile.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, LatLng, Map, Marker} from 'leaflet';
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			const latlng = new LatLng(50.5, 30.51);
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const map = new Map('map', {center: latlng, zoom: 15, layers: [osm]});
+			
+			const marker = new Marker(latlng);
 
-	<link rel="stylesheet" href="../css/mobile.css" />
-
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-
-	<div id="map"></div>
-
-	<script>
-
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			latlng = new L.LatLng(50.5, 30.51);
-
-		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
-
-		var marker = new L.Marker(latlng);
-		map.addLayer(marker);
-
-		marker.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>");
-	</script>
-</body>
+			map.addLayer(marker);
+			marker.bindPopup('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>');
+		</script>
+	</body>
 </html>

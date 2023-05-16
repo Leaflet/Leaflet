@@ -1,5 +1,5 @@
-import {CRS} from './CRS';
-import * as Util from '../../core/Util';
+import {CRS} from './CRS.js';
+import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS

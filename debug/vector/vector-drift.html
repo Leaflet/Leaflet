@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Vector Drift</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<button id="btn-1" type="button">A</button>
+		<button id="btn-2" type="button">B</button>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, Marker, Polygon} from 'leaflet';
+
+			const map = new Map('map', {
+				zoomAnimation: false,
+				// preferCanvas: true
+			}).setView([0, 0], 7);
+
+			const markerA = new Marker([1, 0]).addTo(map);
+			const markerB = new Marker([1, 2]).addTo(map);
+
+			new Polygon([[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]])
+				.bindPopup('Hello world')
+				.addTo(map);
+
+			// or pinch zoom in mobile
+			document.getElementById('btn-1').addEventListener('click', () => {
+				map.flyTo(markerA.getLatLng(), 6);
+			});
+
+			document.getElementById('btn-2').addEventListener('click', () => {
+				map.flyTo(markerB.getLatLng(), 7);
+			});
+		</script>
+	</body>
+</html>

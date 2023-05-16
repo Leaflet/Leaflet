@@ -1,40 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
-
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
-
-	<link rel="stylesheet" href="../css/screen.css" />
-
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-
-	<div style="position: absolute; top: 100px; left: 100px; border: 1px solid green">
-		<div style="position: relative; margin-top: 500px; width: 800px; border: 1px solid red; margin-left: 200px">
-			<div style="height: 600px; overflow: auto">
-				<div id="map" style="width: 600px; height: 1000px; border: 1px solid #ccc"></div>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Scroll</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div style="position: absolute; top: 100px; left: 100px; border: 1px solid green">
+			<div style="position: relative; margin-top: 500px; width: 800px; border: 1px solid red; margin-left: 200px">
+				<div style="height: 600px; overflow: auto">
+					<div id="map" style="width: 600px; height: 1000px; border: 1px solid #ccc"></div>
+				</div>
 			</div>
 		</div>
-	</div>
+		<script type="module">
+			import {TileLayer, LatLng, Map, Popup} from 'leaflet';
 
-	<script>
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18});
+			const latlng = new LatLng(50.5, 30.51);
 
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			latlng = new L.LatLng(50.5, 30.51);
+			const map = new Map('map', {center: latlng, zoom: 15, layers: [osm]});
 
-		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
+			let s = '';
+			for (let i = 0; i < 100; i++) {
+				s += 'Test<br>';
+			}
 
-		var s = '';
-		for (var i = 0; i < 100; i++) s += 'Test<br>';
-
-		var popup = L.popup({maxHeight: 100})
-			.setContent(s)
-			.setLatLng(latlng)
-			.openOn(map);
-	</script>
-</body>
+			new Popup({maxHeight: 100})
+				.setContent(s)
+				.setLatLng(latlng)
+				.openOn(map);
+		</script>
+	</body>
 </html>

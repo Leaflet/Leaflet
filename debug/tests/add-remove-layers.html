@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Add Remove Layers</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div id="buttons">
+			<button type="button" id="b1">Add Layer</button>
+			<button type="button" id="b2">Remove Layer</button>
+		</div>
+		<script type="module">
+			import {LayerGroup, Map, TileLayer, LatLngBounds, Circle, LatLng, Popup, DomUtil, DomEvent} from 'leaflet';
+
+			const map = new Map('map');
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				minZoom: 1,
+				maxZoom: 17,
+				detectRetina: true,
+			});
+
+			map.addLayer(osm);
+			map.fitBounds(new LatLngBounds([51, 7], [51, 7]));
+
+			const layerGroup = new LayerGroup();
+			let lat = 51;
+			let long = 7;
+
+			function onClick() {
+				const popup = new Popup();
+				popup.setLatLng(this.getLatLng());
+				popup.setContent('Hello!');
+
+				map.openPopup(popup);
+			}
+
+			for (let i = 0; i < 50; i++) {
+				const myCircle = new Circle(new LatLng(lat, long), 3);
+				myCircle.on('click', onClick);
+
+				layerGroup.addLayer(myCircle);
+
+				lat = lat + 0.0001;
+				long = long + 0.0001;
+			}
+
+			map.addLayer(layerGroup);
+
+			DomEvent.on(DomUtil.get('b1'), 'click', () => map.addLayer(layerGroup));
+			DomEvent.on(DomUtil.get('b2'), 'click', () => map.removeLayer(layerGroup));
+		</script>
+	</body>
+</html>

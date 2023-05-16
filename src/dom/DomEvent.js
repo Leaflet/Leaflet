@@ -1,9 +1,9 @@
-import {Point} from '../geometry/Point';
-import * as Util from '../core/Util';
-import Browser from '../core/Browser';
-import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
-import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
-import {getScale} from './DomUtil';
+import {Point} from '../geometry/Point.js';
+import * as Util from '../core/Util.js';
+import Browser from '../core/Browser.js';
+import {addPointerListener, removePointerListener} from './DomEvent.Pointer.js';
+import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
+import {getScale} from './DomUtil.js';
 
 /*
  * @namespace DomEvent
@@ -24,8 +24,8 @@ import {getScale} from './DomUtil';
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
-		for (const type in types) {
-			addOne(obj, type, types[type], fn);
+		for (const [type, listener] of Object.entries(types)) {
+			addOne(obj, type, listener, fn);
 		}
 	} else {
 		types = Util.splitWords(types);
@@ -63,8 +63,8 @@ export function off(obj, types, fn, context) {
 		delete obj[eventsKey];
 
 	} else if (types && typeof types === 'object') {
-		for (const type in types) {
-			removeOne(obj, type, types[type], fn);
+		for (const [type, listener] of Object.entries(types)) {
+			removeOne(obj, type, listener, fn);
 		}
 
 	} else {
@@ -84,9 +84,11 @@ export function off(obj, types, fn, context) {
 
 function batchRemove(obj, filterFn) {
 	for (const id in obj[eventsKey]) {
-		const type = id.split(/\d/)[0];
-		if (!filterFn || filterFn(type)) {
-			removeOne(obj, type, null, null, id);
+		if (Object.hasOwn(obj[eventsKey], id)) {
+			const type = id.split(/\d/)[0];
+			if (!filterFn || filterFn(type)) {
+				removeOne(obj, type, null, null, id);
+			}
 		}
 	}
 }

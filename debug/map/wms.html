@@ -1,39 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - WMS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer, LatLngBounds, LatLng, Control} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const map = new Map('map');
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm = new TileLayer(osmUrl);
+			const osm2 = new TileLayer(osmUrl);
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			const nexrad = new TileLayer.WMS('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
+				layers: 'nexrad-n0r-900913',
+				format: 'image/png',
+				transparent: true,
+				attribution: 'Weather data &copy; 2011 IEM Nexrad',
+				opacity: 0.4
+			});
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+			const bounds = new LatLngBounds(new LatLng(32, -126), new LatLng(50, -64));
 
-	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+			map.addLayer(osm).addLayer(nexrad).fitBounds(bounds);
 
-	<script>
-		var map = new L.Map('map');
-
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-			osm2 = L.tileLayer(osmUrl, {attribution: osmAttrib});
-
-		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
-			layers: 'nexrad-n0r-900913',
-			format: 'image/png',
-			transparent: true,
-			attribution: "Weather data &copy; 2011 IEM Nexrad",
-			opacity: 0.4
-		});
-
-		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
-
-		map.addLayer(osm).addLayer(nexrad).fitBounds(bounds);
-
-		L.control.layers({"CM": osm, "CM2": osm2}, {"NexRad": nexrad}).addTo(map);
-	</script>
-</body>
+			new Control.Layers({CM: osm, CM2: osm2}, {NexRad: nexrad}).addTo(map);
+		</script>
+	</body>
 </html>

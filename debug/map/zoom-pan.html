@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Zoom Pan</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<style>
+			#map {
+				width: 600px;
+				height: 400px;
+			}
+			button {
+				min-width: 3em;
+				text-align: center;
+			}
+		</style>
+		<div id="map"></div>
+		<div style="position: absolute; left: 620px; top: 10px; z-index: 500">
+			<div><button id="dc">DC</button>(flyTo)</div>
+			<div><button id="sf">SF</button>(setView, 5 sec)</div>
+			<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+			<div><button id="lnd">LND</button>(fract. zoom)</div>
+			<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+			<div><button id="mad">MAD</button>(fitBounds)</div>
+			<div><button id="nul">NUL</button>(image overlay)</div>
+			<div><button id="stop">stop</button></div>
+			<table>
+			<tr><td>on movestart</td><td id='movestart'></td></tr>
+			<tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
+			<tr><td>on move</td><td id='move'></td></tr>
+			<tr><td>on moveend</td><td id='moveend'></td></tr>
+			<tr><td>on zoomend</td><td id='zoomend'></td></tr>
+			<tr><td>on grid load</td><td id='load'></td></tr>
+		</div>
+		<script type="module">
+			import {Map, TileLayer, Polyline, Marker, ImageOverlay} from 'leaflet';
+
+			const kyiv = [50.5, 30.5];
+			const lnd = [51.51, -0.12];
+			const sf = [37.77, -122.42];
+			const dc = [38.91, -77.04];
+			const trd = [63.41, 10.41];
+			const madBounds = [[40.70, -4.19], [40.12, -3.31]];
+			const mad = [40.40, -3.7];
+
+			const map = new Map('map', {zoomSnap: 0.25}).setView(dc, 14);
+			const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(map);
+			
+			new Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);
+
+			new Marker(kyiv).addTo(map);
+			new Marker(lnd).addTo(map);
+			new Marker(dc).addTo(map);
+			new Marker(sf).addTo(map);
+			new Marker(trd).addTo(map);
+			new Marker(mad).addTo(map);
+
+			new ImageOverlay('https://placekitten.com/300/400?image=6', [[-0.2, -0.15], [0.2, 0.15]]).addTo(map);
+
+			document.getElementById('dc').onclick   = () => map.flyTo(dc,  4);
+			document.getElementById('sf').onclick   = () => map.setView(sf, 10, {duration: 5, animate: true});
+			document.getElementById('trd').onclick  = () => map.flyTo(trd, 10, {duration: 20});
+			document.getElementById('lnd').onclick  = () => map.flyTo(lnd, 9.25);
+			document.getElementById('kyiv').onclick = () => map.setView(kyiv, 9.25);
+			document.getElementById('nul').onclick  = () => map.flyTo([0, 0], 10);
+			document.getElementById('mad').onclick  = () => map.fitBounds(madBounds);
+			document.getElementById('stop').onclick = () => map.stop();
+
+			function attachMoveEvent(name) {
+				map.on(name, () => {
+					document.getElementById(name).textContent = `${map.getCenter()} z${map.getZoom()}`;
+				});
+			}
+
+			attachMoveEvent('movestart');
+			attachMoveEvent('zoomstart');
+			attachMoveEvent('move');
+			attachMoveEvent('moveend');
+			attachMoveEvent('zoomend');
+
+			positron.on('load', () => {
+				document.getElementById('load').textContent = `${map.getCenter()} z${map.getZoom()}`;
+			});
+		</script>
+	</body>
+</html>

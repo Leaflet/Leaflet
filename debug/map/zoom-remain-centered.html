@@ -1,43 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Zoom Remain Centered</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, LatLng, Map, Marker, Control} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm = new TileLayer(osmUrl, {minZoom: 14});
+			const latlng = new LatLng(51.1788409, -1.82618);
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			const map = new Map('map', {
+				center: latlng,
+				zoom: 15,
+				layers: [osm],
+				scrollWheelZoom: 'center', // zoom to center regardless where mouse is
+				doubleClickZoom: 'center',
+				touchZoom:       'center'
+			});
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+			new Marker(latlng).addTo(map);
 
-
-	<div id="map"></div>
-
-	<script>
-		// Check the 'center' setting of the scroll-wheel, double-click and touch-zoom
-		// handlers
-
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {minZoom: 14, attribution: osmAttrib}),
-			latlng = new L.LatLng(51.1788409,-1.82618);
-
-		var map = new L.Map('map', {
-			center: latlng,
-			zoom: 15,
-			layers: [osm],
-			scrollWheelZoom: 'center', // zoom to center regardless where mouse is
-			doubleClickZoom: 'center',
-			touchZoom:       'center'
-		});
-
-		L.marker(latlng).addTo(map);
-
-		L.control.scale().addTo(map);
-
-
-
-	</script>
-</body>
+			new Control.Scale().addTo(map);
+		</script>
+	</body>
 </html>

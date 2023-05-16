@@ -1,8 +1,8 @@
 
-import {Class} from '../core/Class';
-import {Map} from '../map/Map';
-import * as Util from '../core/Util';
-import * as DomUtil from '../dom/DomUtil';
+import {Class} from '../core/Class.js';
+import {Map} from '../map/Map.js';
+import * as Util from '../core/Util.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control
@@ -165,7 +165,9 @@ Map.include({
 
 	_clearControlPos() {
 		for (const i in this._controlCorners) {
-			this._controlCorners[i].remove();
+			if (Object.hasOwn(this._controlCorners, i)) {
+				this._controlCorners[i].remove();
+			}
 		}
 		this._controlContainer.remove();
 		delete this._controlCorners;

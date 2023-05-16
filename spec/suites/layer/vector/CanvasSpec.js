@@ -88,7 +88,7 @@ describe('Canvas', () => {
 			const spyMap = sinon.spy();
 			map.on('mousemove', spyMap);
 			UIEventSimulator.fireAt('mousemove', 151, 151); // empty space
-			expect(spyMap.calledOnce).to.be.ok();
+			expect(spyMap.calledOnce).to.be.true;
 		});
 
 		it('should fire preclick before click', () => {
@@ -97,7 +97,7 @@ describe('Canvas', () => {
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
 			layer.once('preclick', () => {
-				expect(clickSpy.called).to.be(false);
+				expect(clickSpy.called).to.be.false;
 			});
 			UIEventSimulator.fireAt('click', 50, 50);  // Click on the layer.
 			expect(clickSpy.callCount).to.eql(1);
@@ -120,9 +120,9 @@ describe('Canvas', () => {
 					// Prosthetic does not fire a click when we down+up, but it real world
 					// browsers would, so let's simulate it.
 					UIEventSimulator.fireAt('click', 70, 60);
-					expect(downSpy.called).to.be(true);
-					expect(clickSpy.called).to.be(false);
-					expect(preclickSpy.called).to.be(false);
+					expect(downSpy.called).to.be.true;
+					expect(clickSpy.called).to.be.false;
+					expect(preclickSpy.called).to.be.false;
 					done();
 				}
 			});

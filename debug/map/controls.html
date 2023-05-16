@@ -1,45 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Control</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, Marker, LatLng, Control} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			const osm2 = new TileLayer(osmUrl, {attribution: 'Hello world'});
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			const map = new Map('map').addLayer(osm).setView(new LatLng(50.5, 30.512), 15);
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+			const marker = new Marker(new LatLng(50.5, 30.505));
+			map.addLayer(marker);
+			marker.bindPopup('Leaflet is designed with simplicity, performance and usability in mind. It works efficiently across all major desktop and mobile platforms out of the box, taking advantage of modern browser features while still being accessible on older ones.').openPopup();
 
-	<div id="map"></div>
+			const marker2 = new Marker(new LatLng(50.502, 30.515));
+			map.addLayer(marker2);
 
-	<script>
+			const layersControl = new Control.Layers({
+				'OSM': osm,
+				'OSM2': osm2
+			}, {
+				'Some marker': marker,
+				'Another marker': marker2
+			});
 
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			osm2 = new L.TileLayer(osmUrl, {attribution: 'Hello world'});
-
-		var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(50.5, 30.512), 15);
-
-		var marker = new L.Marker(new L.LatLng(50.5, 30.505));
-		map.addLayer(marker);
-		marker.bindPopup("Leaflet is designed with simplicity, performance and usability in mind. It works efficiently across all major desktop and mobile platforms out of the box, taking advantage of HTML5 and CSS3 on modern browsers while still being accessible on older ones.").openPopup();
-
-		var marker2 = new L.Marker(new L.LatLng(50.502, 30.515));
-		map.addLayer(marker2);
-
-		var layersControl = new L.Control.Layers({
-			'OSM': osm,
-			'OSM2': osm2
-		}, {
-			'Some marker': marker,
-			'Another marker': marker2
-		});
-
-		map.addControl(layersControl);
-		map.addControl(new L.Control.Scale());
-
-	</script>
-</body>
+			map.addControl(layersControl);
+			map.addControl(new Control.Scale());
+		</script>
+	</body>
 </html>

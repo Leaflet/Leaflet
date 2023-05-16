@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Blanket</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/mobile.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, LatLng, BlanketOverlay, Canvas, SVG, CircleMarker} from 'leaflet';
+
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const map = new Map('map', {
+				center: new LatLng(0, 0),
+				zoom: 1,
+				layers: [osm]
+			});
+
+			const DebugBlanket = BlanketOverlay.extend({
+				_initContainer() {
+					const container = this._container = document.createElement('div');
+					container.style.border = '2px solid black';
+
+					container.style.display = 'flex';
+					container.style.justifyContent = 'center';
+					container.style.alignItems = 'center';
+				},
+
+				_onSettled() {
+					this._container.innerHTML = `
+					lat: ${this._center.lat.toFixed(6)}<br>
+					lng: ${this._center.lng.toFixed(6)}<br>
+					zoom: ${this._zoom}<br>
+					map bounds: <br>${this._map.getBounds().toBBoxString().split(',').map(n => Number(n).toFixed(6)).join('<br>')}<br>
+					px bounds: ${this._bounds.min}, ${this._bounds.max}`;
+				}
+			});
+
+			new DebugBlanket({
+				padding: -0.1,
+				continuous: true
+			}).addTo(map);
+
+			const canvas = new Canvas({
+				padding: -0.1,
+			}).addTo(map);
+			canvas._container.style.border = '2px solid red';
+			new CircleMarker([40.5, -3.6], {radius: 20, color: 'red', renderer: canvas}).addTo(map);
+
+			const svg = new SVG({
+				padding: -0.1,
+			}).addTo(map);
+			svg._container.style.border = '2px solid blue';
+			new CircleMarker([63.4, 10.4], {radius: 20, color: 'blue', renderer: svg}).addTo(map);
+			</script>
+	</body>
+</html>

@@ -1,8 +1,8 @@
 
-import {Control} from './Control';
-import * as Util from '../core/Util';
-import * as DomEvent from '../dom/DomEvent';
-import * as DomUtil from '../dom/DomUtil';
+import {Control} from './Control.js';
+import * as Util from '../core/Util.js';
+import * as DomEvent from '../dom/DomEvent.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control.Layers
@@ -83,13 +83,18 @@ export const Layers = Control.extend({
 		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
+		this._preventClick = false;
 
 		for (const i in baseLayers) {
-			this._addLayer(baseLayers[i], i);
+			if (Object.hasOwn(baseLayers, i)) {
+				this._addLayer(baseLayers[i], i);
+			}
 		}
 
 		for (const i in overlays) {
-			this._addLayer(overlays[i], i, true);
+			if (Object.hasOwn(overlays, i)) {
+				this._addLayer(overlays[i], i, true);
+			}
 		}
 	},
 
@@ -355,6 +360,11 @@ export const Layers = Control.extend({
 	},
 
 	_onInputClick() {
+		// expanding the control on mobile with a click can cause adding a layer - we don't want this
+		if (this._preventClick) {
+			return;
+		}
+
 		const inputs = this._layerControlInputs,
 		      addedLayers = [],
 		      removedLayers = [];
@@ -413,10 +423,12 @@ export const Layers = Control.extend({
 
 	_expandSafely() {
 		const section = this._section;
+		this._preventClick = true;
 		DomEvent.on(section, 'click', DomEvent.preventDefault);
 		this.expand();
 		setTimeout(() => {
 			DomEvent.off(section, 'click', DomEvent.preventDefault);
+			this._preventClick = false;
 		});
 	}
 

@@ -1,85 +1,84 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Popup</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, LatLng, FeatureGroup, Marker, Polyline, Polygon, DomUtil, CircleMarker} from 'leaflet';
 
-  <link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18});
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+			const map = new Map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
 
-  <link rel="stylesheet" href="../css/screen.css" />
+			function getRandomLatLng(llbounds) {
+				const s = llbounds.getSouth();
+				const n = llbounds.getNorth();
+				const w = llbounds.getWest();
+				const e = llbounds.getEast();
 
-  <script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+				return new LatLng(
+					s + (Math.random() * (n - s)),
+					w + (Math.random() * (e - w))
+				);
+			}
 
-  <div id="map"></div>
+			const features = new FeatureGroup([
+				new Marker(getRandomLatLng(map.getBounds())),
+				new Polyline([
+					getRandomLatLng(map.getBounds()),
+					getRandomLatLng(map.getBounds()),
+					getRandomLatLng(map.getBounds())
+				]),
+				new Polygon([
+					getRandomLatLng(map.getBounds()),
+					getRandomLatLng(map.getBounds()),
+					getRandomLatLng(map.getBounds()),
+					getRandomLatLng(map.getBounds())
+				])
+			]);
 
-  <script>
+			features.bindPopup(layer => `Leaflet ID is ${features.getLayerId(layer)}`).addTo(map);
 
-    var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			const content = DomUtil.create('p', 'custom-popup');
+			content.innerText = 'I\'m a red polygon';
 
-    var map = L.map('map')
-        .setView([50.5, 30.51], 15)
-        .addLayer(osm);
+			new Polygon([
+				getRandomLatLng(map.getBounds()),
+				getRandomLatLng(map.getBounds()),
+				getRandomLatLng(map.getBounds()),
+				getRandomLatLng(map.getBounds())
+			], {
+				color: 'red'
+			}).bindPopup(content).addTo(map);
 
-    function getRandomLatLng(llbounds) {
-      var s = llbounds.getSouth(),
-          n = llbounds.getNorth(),
-          w = llbounds.getWest(),
-          e = llbounds.getEast();
+			new Polyline([
+				getRandomLatLng(map.getBounds()),
+				getRandomLatLng(map.getBounds()),
+				getRandomLatLng(map.getBounds())
+			], {
+				color: 'red'
+			}).bindPopup('I\'m a red polyline').addTo(map);
 
-      return L.latLng(
-        s + (Math.random() * (n - s)),
-        w + (Math.random() * (e - w))
-      )
-    }
-
-    var features = new L.FeatureGroup([
-      L.marker(getRandomLatLng(map.getBounds())),
-      L.polyline([
-        getRandomLatLng(map.getBounds()),
-        getRandomLatLng(map.getBounds()),
-        getRandomLatLng(map.getBounds())
-      ]),
-      L.polygon([
-        getRandomLatLng(map.getBounds()),
-        getRandomLatLng(map.getBounds()),
-        getRandomLatLng(map.getBounds()),
-        getRandomLatLng(map.getBounds())
-      ])
-    ]);
-
-    features.bindPopup(function(layer){
-      return 'Leaflet ID is ' + features.getLayerId(layer);
-    }).addTo(map);
-
-    var content = L.DomUtil.create('p', 'custom-popup');
-    content.innerText = 'I\'m a red polygon';
-
-    var polygon = L.polygon([
-      getRandomLatLng(map.getBounds()),
-      getRandomLatLng(map.getBounds()),
-      getRandomLatLng(map.getBounds()),
-      getRandomLatLng(map.getBounds())
-    ], {
-      color: 'red'
-    }).bindPopup(content).addTo(map);
-
-    var polyline = L.polyline([
-      getRandomLatLng(map.getBounds()),
-      getRandomLatLng(map.getBounds()),
-      getRandomLatLng(map.getBounds())
-    ], {
-      color: 'red'
-    }).bindPopup('I\'m a red polyline').addTo(map);
-
-    var marker = L.circleMarker(getRandomLatLng(map.getBounds()), {
-      color: 'red',
-      radius: 25
-    }).bindPopup('I\'m a red circle').addTo(map);
-  </script>
-</body>
+			new CircleMarker(getRandomLatLng(map.getBounds()), {
+				color: 'red',
+				radius: 25
+			}).bindPopup('I\'m a red circle').addTo(map);
+		</script>
+	</body>
 </html>

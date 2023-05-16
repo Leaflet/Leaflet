@@ -1,10 +1,10 @@
-import {Layer} from '../Layer';
-import Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import * as DomUtil from '../../dom/DomUtil';
-import {Point} from '../../geometry/Point';
-import {Bounds} from '../../geometry/Bounds';
-import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+import {Layer} from '../Layer.js';
+import Browser from '../../core/Browser.js';
+import * as Util from '../../core/Util.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import {Point} from '../../geometry/Point.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * @class GridLayer
@@ -317,6 +317,8 @@ export const GridLayer = Layer.extend({
 		    willPrune = false;
 
 		for (const key in this._tiles) {
+			if (!Object.hasOwn(this._tiles, key)) { continue; }
+
 			const tile = this._tiles[key];
 			if (!tile.current || !tile.loaded) { continue; }
 
@@ -366,6 +368,8 @@ export const GridLayer = Layer.extend({
 		if (zoom === undefined) { return undefined; }
 
 		for (let z in this._levels) {
+			if (!Object.hasOwn(this._levels, z)) { continue; }
+
 			z = Number(z);
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
@@ -424,11 +428,15 @@ export const GridLayer = Layer.extend({
 		}
 
 		for (key in this._tiles) {
-			tile = this._tiles[key];
-			tile.retain = tile.current;
+			if (Object.hasOwn(this._tiles, key)) {
+				tile = this._tiles[key];
+				tile.retain = tile.current;
+			}
 		}
 
 		for (key in this._tiles) {
+			if (!Object.hasOwn(this._tiles, key)) { continue; }
+
 			tile = this._tiles[key];
 			if (tile.current && !tile.active) {
 				const coords = tile.coords;
@@ -456,15 +464,19 @@ export const GridLayer = Layer.extend({
 
 	_removeAllTiles() {
 		for (const key in this._tiles) {
-			this._removeTile(key);
+			if (Object.hasOwn(this._tiles, key)) {
+				this._removeTile(key);
+			}
 		}
 	},
 
 	_invalidateAll() {
 		for (const z in this._levels) {
-			this._levels[z].el.remove();
-			this._onRemoveLevel(Number(z));
-			delete this._levels[z];
+			if (Object.hasOwn(this._levels, z)) {
+				this._levels[z].el.remove();
+				this._onRemoveLevel(Number(z));
+				delete this._levels[z];
+			}
 		}
 		this._removeAllTiles();
 
@@ -585,7 +597,9 @@ export const GridLayer = Layer.extend({
 
 	_setZoomTransforms(center, zoom) {
 		for (const i in this._levels) {
-			this._setZoomTransform(this._levels[i], center, zoom);
+			if (Object.hasOwn(this._levels, i)) {
+				this._setZoomTransform(this._levels[i], center, zoom);
+			}
 		}
 	},
 
@@ -658,9 +672,11 @@ export const GridLayer = Layer.extend({
 		      isFinite(tileRange.max.y))) { throw new Error('Attempted to load an infinite number of tiles'); }
 
 		for (const key in this._tiles) {
-			const c = this._tiles[key].coords;
-			if (c.z !== this._tileZoom || !noPruneRange.contains(new Point(c.x, c.y))) {
-				this._tiles[key].current = false;
+			if (Object.hasOwn(this._tiles, key)) {
+				const c = this._tiles[key].coords;
+				if (c.z !== this._tileZoom || !noPruneRange.contains(new Point(c.x, c.y))) {
+					this._tiles[key].current = false;
+				}
 			}
 		}
 

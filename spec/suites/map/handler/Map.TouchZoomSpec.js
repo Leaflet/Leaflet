@@ -18,9 +18,9 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Increases zoom when pinching out', (done) => {
 		map.setView([0, 0], 1);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 1, initial distance 50px, final distance 450px
-			expect(map.getZoom()).to.be(4);
+			expect(map.getZoom()).to.equal(4);
 
 			done();
 		});
@@ -39,9 +39,9 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Decreases zoom when pinching in', (done) => {
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -68,12 +68,12 @@ describe('Map.TouchZoom', () => {
 			pinchZoomEvent = e.pinch || pinchZoomEvent;
 		});
 		map.once('zoomend', () => {
-			expect(spy.callCount > 1).to.be.ok();
-			expect(pinchZoomEvent).to.be.ok();
+			expect(spy.callCount > 1).to.be.true;
+			expect(pinchZoomEvent).to.be.true;
 
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -104,8 +104,8 @@ describe('Map.TouchZoom', () => {
 		const hand = new Hand({
 			timing: 'fastframe',
 			onStop() {
-				expect(map.getCenter().lat).to.be(0);
-				expect(map.getCenter().lng > 5).to.be(true);
+				expect(map.getCenter().lat).to.equal(0);
+				expect(map.getCenter().lng > 5).to.be.true;
 				done();
 			}
 		});
@@ -139,9 +139,9 @@ describe('Map.TouchZoom', () => {
 
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter()).to.eql({lat:0, lng:0});
+			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(map.getZoom()).to.be(1);
+			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
@@ -190,9 +190,71 @@ describe('Map.TouchZoom', () => {
 					const width = renderedRect.width;
 					const height = renderedRect.height;
 
-					expect(height < 50).to.be(true);
-					expect(width < 50).to.be(true);
-					expect(height + width > 0).to.be(true);
+					expect(height < 50).to.be.true;
+					expect(width < 50).to.be.true;
+					expect(height + width > 0).to.be.true;
+
+					const x = renderedRect.x;
+					const y = renderedRect.y;
+
+					expect(x).to.be.within(299, 301);
+					expect(y).to.be.within(270, 280);
+
+					// Fingers lifted after expects as bug goes away when lifted
+					this._fingers[0].up();
+					this._fingers[1].up();
+
+					done();
+				}, 100);
+			}
+		});
+
+		const f1 = hand.growFinger(touchEventType);
+		const f2 = hand.growFinger(touchEventType);
+
+		hand.sync(5);
+		f1.wait(100).moveTo(75, 300, 0)
+			.down().moveBy(200, 0, 500);
+		f2.wait(100).moveTo(525, 300, 0)
+			.down().moveBy(-200, 0, 500);
+	});
+
+	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
+		map.remove();
+
+		map = new L.Map(container, {
+			touchZoom: true,
+			inertia: false,
+			zoomAnimation: false
+		});
+
+		map.setView([0, 0], 8);
+
+		const polygon = L.polygon([
+			[0, 0],
+			[0, 1],
+			[1, 1],
+			[1, 0]
+		]).addTo(map);
+
+		let alreadyCalled = false;
+		const hand = new Hand({
+			timing: 'fastframe',
+			onStop() {
+				setTimeout(() => {
+					if (alreadyCalled) {
+						return; // Will recursivly call itself otherwise
+					}
+					alreadyCalled = true;
+
+					const renderedRect = polygon._path.getBoundingClientRect();
+
+					const width = renderedRect.width;
+					const height = renderedRect.height;
+
+					expect(height < 50).to.be.true;
+					expect(width < 50).to.be.true;
+					expect(height + width > 0).to.be.true;
 
 					const x = renderedRect.x;
 					const y = renderedRect.y;

@@ -1,13 +1,13 @@
-import * as Util from '../core/Util';
-import {Evented} from '../core/Events';
-import * as DomUtil from '../dom/DomUtil';
+import * as Util from '../core/Util.js';
+import {Evented} from '../core/Events.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 
 /*
  * @class PosAnimation
  * @aka L.PosAnimation
  * @inherits Evented
- * Used internally for panning animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.
+ * Used internally for panning animations, utilizing CSS Transitions for modern browsers and a timer fallback for IE6-9.
  *
  * @example
  * ```js

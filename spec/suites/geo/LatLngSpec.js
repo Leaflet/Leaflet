@@ -13,7 +13,7 @@ describe('LatLng', () => {
 		it('throws an error if invalid lat or lng', () => {
 			expect(() => {
 				L.latLng(NaN, NaN);
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('does not set altitude if undefined', () => {
@@ -104,7 +104,7 @@ describe('LatLng', () => {
 		});
 
 		it('returns null if lng not specified', () => {
-			expect(L.latLng(50)).to.be(null);
+			expect(L.latLng(50)).to.equal(null);
 		});
 
 		it('accepts altitude as third parameter', () => {
@@ -131,7 +131,7 @@ describe('LatLng', () => {
 			const a = L.latLng(50.5, 30.5, 100);
 			const b = a.clone();
 
-			expect(a === b).to.be(false);
+			expect(a === b).to.be.false;
 		});
 	});
 });

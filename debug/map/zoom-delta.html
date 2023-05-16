@@ -1,108 +1,108 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Zoom Delta</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/mobile.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<style>
+			.container {
+				float:left; width: 600px; height: 600px;
+				position: relative;
+				border: 1px solid gray;
+			}
+			#map1, #map2 {
+				position:absolute;
+				top:2em;
+				bottom:2em;
+				left:0;
+				right:0;
+			}
+			#zoom1, #zoom2 {
+				position:absolute;
+				bottom:0;
+				left:0;
+				right:0;
+			}
+		</style>
+		<h1>Zoom delta test.</h1>
+		<p>Zooming with touch zoom, box zoom or flyTo then <code>map.stop()</code> must make the zoom level snap to the value of the <code>zoomSnap</code> option. Zoom interactions (keyboard, mouse wheel, zoom control buttons must change the zoom by the amount in the <code>zoomDelta</code> option.</p>
+		<div>
+			<button id="sf">SF</button>
+			<button id="trd">TRD</button>
+			<button id="stop">stop</button>
+		</div>
+		<div class="container">
+			Snap: 0.25. Delta: 0.5.
+			<div id="map1"></div>
+			<span id="zoom1"></span>
+		</div>
+		<div class="container">
+			Snap: 0 (off). Delta: 0.25.
+			<div id="map2"></div>
+			<span id="zoom2"></span>
+		</div>		
+		<script type="module">
+			import {TileLayer, LatLng, Map} from 'leaflet';
 
-	<meta name="viewport" content="initial-scale=1.0" />
+			const sf = [37.77, -122.42];
+			const trd = [63.41, 10.41];
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm1 = new TileLayer(osmUrl, {maxZoom: 18});
+			const osm2 = new TileLayer(osmUrl, {maxZoom: 18});
+			const center = new LatLng(63.41, 10.41);
 
-	<link rel="stylesheet" href="../css/mobile.css" />
+			const map1 = new Map('map1', {
+				center,
+				layers: [osm1],
+				zoom: 5,
+				zoomSnap: 0.25,
+				zoomDelta: 0.5,
+				wheelPxPerZoomLevel: 50
+			});
 
-	<script src="../../dist/leaflet-src.js"></script>
-	<style>
-	.container {
-		float:left; width: 600px; height: 600px;
-		position: relative;
-		border: 1px solid gray;
-	}
-	#map1, #map2 {
-		position:absolute;
-		top:2em;
-		bottom:2em;
-		left:0;
-		right:0;
-	}
-	#zoom1, #zoom2 {
-		position:absolute;
-		bottom:0;
-		left:0;
-		right:0;
-	}
-	</style>
-</head>
-<body>
+			const map2 = new Map('map2', {
+				center,
+				layers: [osm2],
+				zoom: 5,
+				zoomSnap: 0,
+				zoomDelta: 0.25,
+				wheelPxPerZoomLevel: 50
+			});
 
-	<h1>Zoom delta test.</h1>
+			map1.on('zoomend', () => {
+				document.getElementById('zoom1').textContent = `Zoom level: ${map1.getZoom()}`;
+			});
 
-	<p>Zooming with touch zoom, box zoom or flyTo then <code>map.stop()</code> must make the zoom level snap to the value of the <code>zoomSnap</code> option. Zoom interactions (keyboard, mouse wheel, zoom control buttons must change the zoom by the amount in the <code>zoomDelta</code> option.</p>
+			map2.on('zoomend', () => {
+				document.getElementById('zoom2').textContent = `Zoom level: ${map2.getZoom()}`;
+			});
 
-	<div>
-		<button id="sf">SF</button>
-		<button id="trd">TRD</button>
-		<button id="stop">stop</button>
-	</div>
+			document.getElementById('sf').onclick = () => {
+				map1.flyTo(sf, 10, {duration: 20});
+				map2.flyTo(sf, 10, {duration: 20});
+			};
 
-	<div class='container'>
-		Snap: 0.25. Delta: 0.5.
-		<div id="map1"></div>
-		<span id="zoom1"></span>
-	</div>
-	<div class='container'>
-		Snap: 0 (off). Delta: 0.25.
-		<div id="map2"></div>
-		<span id="zoom2"></span>
-	</div>
+			document.getElementById('trd').onclick = () => {
+				map1.flyTo(trd, 10, {duration: 20});
+				map2.flyTo(trd, 10, {duration: 20});
+			};
 
-	<script>
-
-		var sf = [37.77, -122.42],
-			trd = [63.41, 10.41];
-
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm1 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			osm2 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			center = L.latLng(63.41, 10.41);
-
-		var map1 = new L.Map('map1', {
-			center: center,
-			layers: [osm1],
-			zoom: 5,
-			zoomSnap: 0.25,
-			zoomDelta: 0.5,
-			wheelPxPerZoomLevel: 50
-		});
-
-		var map2 = new L.Map('map2', {
-			center: center,
-			layers: [osm2],
-			zoom: 5,
-			zoomSnap: 0,
-			zoomDelta: 0.25,
-			wheelPxPerZoomLevel: 50
-		});
-
-		map1.on('zoomend',function(){
-			document.getElementById('zoom1').innerHTML = "Zoom level: " + map1.getZoom();
-		});
-		map2.on('zoomend',function(){
-			document.getElementById('zoom2').innerHTML = "Zoom level: " + map2.getZoom();
-		});
-
-		document.getElementById('sf').onclick   = function () {
-			map1.flyTo(sf, 10, {duration: 20});
-			map2.flyTo(sf, 10, {duration: 20});
-		};
-		document.getElementById('trd').onclick  = function () {
-			map1.flyTo(trd, 10, {duration: 20});
-			map2.flyTo(trd, 10, {duration: 20});
-		};
-		document.getElementById('stop').onclick = function () {
-			map1.stop();
-			map2.stop();
-		};
-
-	</script>
-</body>
+			document.getElementById('stop').onclick = () => {
+				map1.stop();
+				map2.stop();
+			};
+		</script>
+	</body>
 </html>

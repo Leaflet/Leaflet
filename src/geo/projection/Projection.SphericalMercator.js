@@ -1,6 +1,6 @@
-import {LatLng} from '../LatLng';
-import {Bounds} from '../../geometry/Bounds';
-import {Point} from '../../geometry/Point';
+import {LatLng} from '../LatLng.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
  * @namespace Projection

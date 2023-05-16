@@ -1,51 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Moving Canvas</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, CircleMarker} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			});
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<link rel="stylesheet" href="../css/screen.css" />
-
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-
-	<div id="map"></div>
-
-	<script>
-
-		var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 19,
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		});
-
-		var map = L.map('map', {preferCanvas: true})
+			const map = new Map('map', {preferCanvas: true})
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 
-		var markers = [];
-		var colors = ['red', 'green', 'blue', 'purple', 'cyan', 'yellow'];
-		for (var i = 0; i < 20; i++) {
-			markers.push(L.circleMarker([50.5, 30.51], {color: colors[i % colors.length]}).addTo(map));
-		}
+			const markers = [];
+			const colors = ['red', 'green', 'blue', 'purple', 'cyan', 'yellow'];
 
-		function update() {
-			var t = new Date().getTime() / 1000;
-			markers.forEach(function(marker, i) {
-				var v = t * (1 + i / 10) + (12.5 * i) / 180 * Math.PI;
-				marker.setLatLng([
-					50.5 + (i % 2 ? 1 : -1) * Math.sin(v) * 0.005,
-					30.51 + (i % 3 ? 1 : -1) * Math.cos(v) * 0.005,
+			for (let i = 0; i < 20; i++) {
+				markers.push(new CircleMarker([50.5, 30.51], {color: colors[i % colors.length]}).addTo(map));
+			}
+
+			function update() {
+				const t = new Date().getTime() / 1000;
+				markers.forEach((marker, i) => {
+					const v = t * (1 + i / 10) + (12.5 * i) / 180 * Math.PI;
+					marker.setLatLng([
+						50.5 + (i % 2 ? 1 : -1) * Math.sin(v) * 0.005,
+						30.51 + (i % 3 ? 1 : -1) * Math.cos(v) * 0.005,
 					]);
-			});
+				});
 
-			L.Util.requestAnimFrame(update);
-		}
+				requestAnimationFrame(update);
+			}
 
-		update();
-	</script>
-</body>
+			update();
+		</script>
+	</body>
 </html>

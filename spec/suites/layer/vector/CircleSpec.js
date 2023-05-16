@@ -21,7 +21,7 @@ describe('Circle', () => {
 		it('throws error if radius is NaN', () => {
 			expect(() => {
 				L.circle([0, 0], NaN);
-			}).to.throwException('Circle radius cannot be NaN');
+			}).to.throw('Circle radius cannot be NaN');
 		});
 
 	});

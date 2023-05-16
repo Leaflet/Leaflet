@@ -1,7 +1,7 @@
-import {GridLayer} from './GridLayer';
-import Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import * as DomEvent from '../../dom/DomEvent';
+import {GridLayer} from './GridLayer.js';
+import Browser from '../../core/Browser.js';
+import * as Util from '../../core/Util.js';
+import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
  * @class TileLayer

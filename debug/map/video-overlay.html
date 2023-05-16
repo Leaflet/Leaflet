@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Video Overlay</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer, LatLngBounds, VideoOverlay, Control, DomEvent, DomUtil} from 'leaflet';
+
+			const map = new Map('map');
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+
+			const bounds = new LatLngBounds([[32, -130], [13, -100]]);
+			map.fitBounds(bounds);
+
+			const overlay = new VideoOverlay([
+				'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
+				'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
+			], bounds, {
+				opacity: 0.8,
+				interactive: true,
+				autoplay: true,
+				loop: true,
+				muted: true,
+				playsInline: true
+			});
+
+			map.addLayer(overlay);
+
+			overlay.on('dblclick', () => console.log('Double click on image.'));
+
+			overlay.on('load', () => {
+				const MyPauseControl = Control.extend({
+					onAdd() {
+						const button = DomUtil.create('button');
+						button.textContent = '⏸';
+						DomEvent.on(button, 'click', () => {
+							overlay.getElement().pause();
+						});
+						return button;
+					}
+				});
+
+				const MyPlayControl = Control.extend({
+					onAdd() {
+						const button = DomUtil.create('button');
+						button.textContent = '⏵';
+						DomEvent.on(button, 'click', () => {
+							overlay.getElement().play();
+						});
+						return button;
+					}
+				});
+
+				new MyPauseControl().addTo(map);
+				new MyPlayControl().addTo(map);
+			});
+		</script>
+	</body>
+</html>

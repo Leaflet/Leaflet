@@ -7,7 +7,6 @@ import {simpleGit} from 'simple-git';
 // See: https://rollupjs.org/guide/en/#importing-packagejson
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 const release = process.env.NODE_ENV === 'release';
-const watch = process.argv.includes('-w') || process.argv.includes('--watch');
 const version = await getVersion();
 const banner = createBanner(version);
 
@@ -19,28 +18,23 @@ const config = {
 			file: pkg.main,
 			format: 'umd',
 			name: 'leaflet',
-			banner: banner,
+			banner,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
+		},
+		{
+			file: pkg.module,
+			format: 'es',
+			banner,
+			sourcemap: true,
+			freeze: false
 		}
 	],
 	plugins: [
 		release ? json() : rollupGitVersion()
 	]
 };
-
-if (!watch) {
-	config.output.push(
-		{
-			file: pkg.module,
-			format: 'es',
-			banner: banner,
-			sourcemap: true,
-			freeze: false
-		}
-	);
-}
 
 export default config;
 

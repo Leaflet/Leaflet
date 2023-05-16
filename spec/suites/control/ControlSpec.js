@@ -42,7 +42,7 @@ describe('Control', () => {
 		it('calls onRemove if defined', () => {
 			control.onRemove = sinon.spy();
 			control.remove();
-			expect(control.onRemove.called).to.be(true);
+			expect(control.onRemove.called).to.be.true;
 		});
 
 		it('is a no-op if the control has not been added', () => {

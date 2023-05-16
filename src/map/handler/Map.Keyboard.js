@@ -1,7 +1,7 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import {on, off, stop} from '../../dom/DomEvent';
-import {toPoint} from '../../geometry/Point';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import {on, off, stop} from '../../dom/DomEvent.js';
+import {toPoint} from '../../geometry/Point.js';
 
 
 /*
@@ -50,7 +50,7 @@ export const Keyboard = Handler.extend({
 		on(container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			mousedown: this._onMouseDown
+			pointerdown: this._onPointerDown
 		}, this);
 
 		this._map.on({
@@ -65,7 +65,7 @@ export const Keyboard = Handler.extend({
 		off(this._map._container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			mousedown: this._onMouseDown
+			pointerdown: this._onPointerDown
 		}, this);
 
 		this._map.off({
@@ -74,7 +74,8 @@ export const Keyboard = Handler.extend({
 		}, this);
 	},
 
-	_onMouseDown() {
+	//  acquire/lose focus #594, #1228, #1540
+	_onPointerDown() {
 		if (this._focused) { return; }
 
 		const body = document.body,

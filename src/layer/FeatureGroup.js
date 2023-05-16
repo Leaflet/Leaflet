@@ -1,5 +1,5 @@
-import {LayerGroup} from './LayerGroup';
-import {LatLngBounds} from '../geo/LatLngBounds';
+import {LayerGroup} from './LayerGroup.js';
+import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class FeatureGroup
@@ -80,8 +80,10 @@ export const FeatureGroup = LayerGroup.extend({
 		const bounds = new LatLngBounds();
 
 		for (const id in this._layers) {
-			const layer = this._layers[id];
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+			if (Object.hasOwn(this._layers, id)) {
+				const layer = this._layers[id];
+				bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+			}
 		}
 		return bounds;
 	}

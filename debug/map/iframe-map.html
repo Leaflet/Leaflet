@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<!-- This file is embedded from 'iframe.html' -->
+		<title>Leaflet debug page - Iframe Map</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<button id="populate">Populate with 10 markers</button>
+		<script type="module">
+			import {TileLayer, Map, FeatureGroup, LatLng, Marker, DomUtil} from 'leaflet';
+
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+			const map = new Map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+			const markers = new FeatureGroup();
+
+			function getRandomLatLng(llbounds) {
+				const s = llbounds.getSouth();
+				const n = llbounds.getNorth();
+				const w = llbounds.getWest();
+				const e = llbounds.getEast();
+
+				return new LatLng(
+					s + (Math.random() * (n - s)),
+					w + (Math.random() * (e - w))
+				);
+			}
+
+			function populate() {
+				for (let i = 0; i < 10; i++) {
+					new Marker(getRandomLatLng(map.getBounds())).addTo(markers);
+				}
+				return false;
+			}
+
+			markers.bindPopup('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>').addTo(map);
+
+			populate();
+			DomUtil.get('populate').onclick = populate;
+		</script>
+	</body>
+</html>

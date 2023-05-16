@@ -1,7 +1,7 @@
-import {Class} from '../../core/Class';
-import {setOptions} from '../../core/Util';
-import {toPoint as point} from '../../geometry/Point';
-import Browser from '../../core/Browser';
+import {Class} from '../../core/Class.js';
+import {setOptions} from '../../core/Util.js';
+import {toPoint as point} from '../../geometry/Point.js';
+import Browser from '../../core/Browser.js';
 
 /*
  * @class Icon

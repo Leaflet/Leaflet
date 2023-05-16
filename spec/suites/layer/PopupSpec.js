@@ -22,7 +22,7 @@ describe('Popup', () => {
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(false);
+		expect(map.hasLayer(popup)).to.be.false;
 	});
 
 	it('closes on map click when popup has closeOnClick option', () => {
@@ -34,7 +34,7 @@ describe('Popup', () => {
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(false);
+		expect(map.hasLayer(popup)).to.be.false;
 	});
 
 	it('does not close on map click when popup has closeOnClick: false option', () => {
@@ -46,7 +46,7 @@ describe('Popup', () => {
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	it('sets the default \'closeButtonLabel\' on the close button', () => {
@@ -54,7 +54,7 @@ describe('Popup', () => {
 			.setLatLng(center)
 			.openOn(map);
 
-		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.be(null);
+		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.equal(null);
 	});
 
 	it('sets a custom \'closeButtonLabel\' on the close button', () => {
@@ -63,7 +63,7 @@ describe('Popup', () => {
 			.setLatLng(center)
 			.openOn(map);
 
-		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.be(null);
+		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.equal(null);
 	});
 
 	it('toggles its visibility when marker is clicked', () => {
@@ -71,15 +71,15 @@ describe('Popup', () => {
 		map.addLayer(marker);
 
 		marker.bindPopup('Popup1');
-		expect(map.hasLayer(marker._popup)).to.be(false);
+		expect(map.hasLayer(marker._popup)).to.be.false;
 
 		// toggle open popup
 		UIEventSimulator.fire('click', marker._icon);
-		expect(map.hasLayer(marker._popup)).to.be(true);
+		expect(map.hasLayer(marker._popup)).to.be.true;
 
 		// toggle close popup
 		UIEventSimulator.fire('click', marker._icon);
-		expect(map.hasLayer(marker._popup)).to.be(false);
+		expect(map.hasLayer(marker._popup)).to.be.false;
 	});
 
 	it('it should use a popup with a function as content with a FeatureGroup', () => {
@@ -98,16 +98,16 @@ describe('Popup', () => {
 			latlng: center,
 			layer: marker1
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 1.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
 
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
 			layer: marker2
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 2.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
 	});
 
 	it('it should function for popup content after bindPopup is called', () => {
@@ -128,16 +128,16 @@ describe('Popup', () => {
 			latlng: center,
 			layer: marker1
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 1.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
 
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
 			layer: marker2
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 2.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
 	});
 
 	it('should use a function for popup content when a source is passed to Popup', () => {
@@ -152,8 +152,8 @@ describe('Popup', () => {
 			latlng: center
 		});
 
-		expect(map.hasLayer(marker._popup)).to.be(true);
-		expect(marker._popup._contentNode.innerHTML).to.be('I am a marker.');
+		expect(map.hasLayer(marker._popup)).to.be.true;
+		expect(marker._popup._contentNode.innerHTML).to.equal('I am a marker.');
 	});
 
 	it('triggers popupopen on marker when popup opens', () => {
@@ -170,11 +170,11 @@ describe('Popup', () => {
 
 		marker1.on('popupopen', spy);
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker1.openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 	});
 
 	// Related to #8558
@@ -202,12 +202,12 @@ describe('Popup', () => {
 			expect(e.target.options.testId).to.eql('markerB');
 		});
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
-		expect(spy2.called).to.be(true);
+		expect(spy.called).to.be.false;
+		expect(spy2.called).to.be.true;
 		marker1.closePopup().openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 	});
 
 	it('triggers popupclose on marker when popup closes', () => {
@@ -224,16 +224,16 @@ describe('Popup', () => {
 
 		marker1.on('popupclose', spy);
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker1.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 		marker1.openPopup();
 		marker1.closePopup();
-		expect(spy.callCount).to.be(2);
+		expect(spy.callCount).to.equal(2);
 	});
 
 	it('should take into account icon popupAnchor option', () => {
@@ -285,10 +285,10 @@ describe('Popup', () => {
 				.openOn(map);
 		});
 
-		expect(map.hasLayer(layer._popup)).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be.false;
 		UIEventSimulator.fire('click', layer._path);
-		expect(mapClicked).to.be(false);
-		expect(map.hasLayer(layer._popup)).to.be(true);
+		expect(mapClicked).to.be.false;
+		expect(map.hasLayer(layer._popup)).to.be.true;
 	});
 
 
@@ -300,7 +300,7 @@ describe('Popup', () => {
 			code: 'Enter'
 		});
 
-		expect(map.hasLayer(layer._popup)).to.be(true);
+		expect(map.hasLayer(layer._popup)).to.be.true;
 	});
 
 	describe('autoPan option should pan popup into visibility', () => {
@@ -325,7 +325,7 @@ describe('Popup', () => {
 		it('should pan map to show popup content if autoPan is enabled', (done) => {
 			map.on('popupopen', (e) => {
 				const popupTopOffset = getPopupOffset(map, e.popup);
-				expect(popupTopOffset).to.be(10, 'The upper edge of the popup have a padding of 10');
+				expect(popupTopOffset).to.equal(10, 'The upper edge of the popup have a padding of 10');
 				done();
 			});
 			map.openPopup('<div style="height: 400px;"></div>', [58.4, 37.6], {
@@ -337,7 +337,7 @@ describe('Popup', () => {
 		it('should pan map to show popup content if autoPan is enabled even when animating', (done) => {
 			map.on('popupopen', (e) => {
 				const popupTopOffset = getPopupOffset(map, e.popup);
-				expect(popupTopOffset).to.be(10);
+				expect(popupTopOffset).to.equal(10);
 				done();
 			});
 
@@ -356,21 +356,21 @@ describe('Popup', () => {
 	it('opens popup with passed latlng position while initializing', () => {
 		const popup = new L.Popup(center)
 			.openOn(map);
-		expect(map.hasLayer(popup)).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	it('opens popup with passed latlng and options position while initializing', () => {
 		const popup = new L.Popup(center, {className: 'testClass'})
 			.addTo(map);
-		expect(map.hasLayer(popup)).to.be(true);
-		expect(popup.getElement().classList.contains('testClass')).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
+		expect(popup.getElement().classList.contains('testClass')).to.be.true;
 	});
 
 	it('adds popup with passed content in options while initializing', () => {
 		const popup = new L.Popup(center, {content: 'Test'})
 			.addTo(map);
-		expect(map.hasLayer(popup)).to.be(true);
-		expect(popup.getContent()).to.be('Test');
+		expect(map.hasLayer(popup)).to.be.true;
+		expect(popup.getContent()).to.equal('Test');
 	});
 
 	describe('L.Map#openPopup', () => {
@@ -378,7 +378,7 @@ describe('Popup', () => {
 			const popup = L.popup()
 				.setLatLng(center);
 			map.openPopup(popup);
-			expect(map.hasLayer(popup)).to.be(true);
+			expect(map.hasLayer(popup)).to.be.true;
 		});
 
 		it('sets popup location', () => {
@@ -389,7 +389,7 @@ describe('Popup', () => {
 
 		it('creates a popup from content', () => {
 			map.openPopup('<h2>Hello World</h2>', center);
-			expect(map._popup).to.be.an(L.Popup);
+			expect(map._popup).to.be.instanceOf(L.Popup);
 			expect(map._popup.getContent()).to.eql('<h2>Hello World</h2>');
 		});
 
@@ -398,7 +398,7 @@ describe('Popup', () => {
 			const p2 = L.popup().setLatLng(center);
 			map.openPopup(p1);
 			map.openPopup(p2);
-			expect(map.hasLayer(p1)).to.be(false);
+			expect(map.hasLayer(p1)).to.be.false;
 		});
 
 		it('does not close existing popup with autoClose: false option', () => {
@@ -406,8 +406,8 @@ describe('Popup', () => {
 			const p2 = L.popup().setLatLng(center);
 			map.openPopup(p1);
 			map.openPopup(p2);
-			expect(map.hasLayer(p1)).to.be(true);
-			expect(map.hasLayer(p2)).to.be(true);
+			expect(map.hasLayer(p1)).to.be.true;
+			expect(map.hasLayer(p2)).to.be.true;
 		});
 
 		it('should not be closen when dragging map', (done) => {
@@ -420,13 +420,13 @@ describe('Popup', () => {
 			const spy = sinon.spy();
 			const p = L.popup().setLatLng(center);
 			map.openPopup(p);
-			expect(map.hasLayer(p)).to.be(true);
+			expect(map.hasLayer(p)).to.be.true;
 			map.on('drag', spy);
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(spy.called).to.be(true);
-					expect(map.hasLayer(p)).to.be(true);
+					expect(spy.called).to.be.true;
+					expect(map.hasLayer(p)).to.be.true;
 					done();
 				}});
 			const mouse = hand.growFinger('mouse');
@@ -449,8 +449,8 @@ describe('Popup', () => {
 			// Short hop to the edge of the map (at time of writing, will trigger an animated pan)
 			const p = L.popup({keepInView: true}).setContent('Popup').setLatLng(map.getBounds()._northEast);
 			map.once('moveend', () => {
-				expect(spy.callCount).to.be(1);
-				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				expect(spy.callCount).to.equal(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 				done();
 			});
 			map.openPopup(p);
@@ -471,8 +471,8 @@ describe('Popup', () => {
 			// Long hop (at time of writing, will trigger a view reset)
 			const p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
 			map.once('moveend', () => {
-				expect(spy.callCount).to.be(1);
-				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				expect(spy.callCount).to.equal(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 				done();
 			});
 			map.openPopup(p);
@@ -483,7 +483,7 @@ describe('Popup', () => {
 
 			map.once('moveend', () => {
 				map.once('moveend', () => {
-					expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+					expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 					done();
 				});
 
@@ -498,7 +498,7 @@ describe('Popup', () => {
 			const marker1 = L.marker([86, 32]).bindPopup(popup).addTo(map);
 			const marker2 = L.marker([26.3, 83.9]).bindPopup(popup).addTo(map);
 
-			expect(popup.getLatLng()).to.be(undefined);
+			expect(popup.getLatLng()).to.equal(undefined);
 
 			marker1.openPopup();
 			expect(popup.getLatLng()).to.be.nearLatLng([86, 32]);
@@ -517,46 +517,46 @@ describe('Popup', () => {
 
 		it('only adds a popup to the map when opened', () => {
 			marker.bindPopup('new layer');
-			expect(map.hasLayer(marker.getPopup())).to.be(false);
+			expect(map.hasLayer(marker.getPopup())).to.be.false;
 			marker.openPopup();
-			expect(map.hasLayer(marker.getPopup())).to.be(true);
+			expect(map.hasLayer(marker.getPopup())).to.be.true;
 		});
 
 		it('keeps an open popup on the map when it\'s unbound from the layer', () => {
 			marker.bindPopup('new layer').openPopup();
 			const popup = marker.getPopup();
 			marker.unbindPopup();
-			expect(map.hasLayer(popup)).to.be(true);
+			expect(map.hasLayer(popup)).to.be.true;
 		});
 
 		it('should not give an error when the marker has no popup', () => {
 			expect(() => {
 				marker.isPopupOpen();
-			}).to.not.throwException();
-			expect(marker.isPopupOpen()).to.be(false);
+			}).to.not.throw();
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show a popup as closed if it\'s never opened', () => {
 			marker.bindPopup('new layer');
-			expect(marker.isPopupOpen()).to.be(false);
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show a popup as opend if it\'s opened', () => {
 			marker.bindPopup('new layer').openPopup();
-			expect(marker.isPopupOpen()).to.be(true);
+			expect(marker.isPopupOpen()).to.be.true;
 		});
 
 		it('should show a popup as closed if it\'s opened and closed', () => {
 			marker.bindPopup('new layer').openPopup().closePopup();
-			expect(marker.isPopupOpen()).to.be(false);
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show the popup as closed if it\'s unbound', () => {
 			marker.bindPopup('new layer').openPopup().unbindPopup();
 			expect(() => {
 				marker.isPopupOpen();
-			}).to.not.throwException();
-			expect(marker.isPopupOpen()).to.be(false);
+			}).to.not.throw();
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('does not throw is popup is inmediately closed', (done) => {
@@ -567,7 +567,7 @@ describe('Popup', () => {
 			expect(() => {
 				marker.bindPopup('new layer').openPopup();
 				done();
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 
 		it('does not close popup when clicking on it\'s tip', () => {
@@ -580,13 +580,13 @@ describe('Popup', () => {
 			const point = map.latLngToContainerPoint(map.getCenter());
 			point.y -= 2; // move mouse into the popup-tip
 			const el = document.elementFromPoint(point.x, point.y);
-			expect(el).to.be(popup._tip);
+			expect(el).to.equal(popup._tip);
 
 			UIEventSimulator.fire('click', el, {
 				clientX: point.x,
 				clientY: point.y
 			});
-			expect(popup.isOpen()).to.be.ok();
+			expect(popup.isOpen()).to.be.true;
 		});
 
 		it('does not open for empty FeatureGroup', () => {
@@ -596,7 +596,7 @@ describe('Popup', () => {
 			  .bindPopup(popup)
 			  .openPopup();
 
-			expect(map.hasLayer(popup)).to.not.be.ok();
+			expect(map.hasLayer(popup)).to.be.false;
 		});
 
 		it('uses only visible layers of FeatureGroup for popup content source', () => {
@@ -612,8 +612,8 @@ describe('Popup', () => {
 			marker3.remove();
 			group.openPopup();
 
-			expect(map.hasLayer(popup)).to.be.ok();
-			expect(popup._source).to.be(marker2);
+			expect(map.hasLayer(popup)).to.be.true;
+			expect(popup._source).to.equal(marker2);
 		});
 	});
 });

@@ -1,5 +1,5 @@
-import * as DomEvent from './DomEvent';
-import {Point} from '../geometry/Point';
+import * as DomEvent from './DomEvent.js';
+import {Point} from '../geometry/Point.js';
 
 /*
  * @namespace DomUtil
@@ -134,8 +134,8 @@ export function preventOutline(element) {
 	if (!element.style) { return; }
 	restoreOutline();
 	_outlineElement = element;
-	_outlineStyle = element.style.outline;
-	element.style.outline = 'none';
+	_outlineStyle = element.style.outlineStyle;
+	element.style.outlineStyle = 'none';
 	DomEvent.on(window, 'keydown', restoreOutline);
 }
 
@@ -143,7 +143,7 @@ export function preventOutline(element) {
 // Cancels the effects of a previous [`L.DomUtil.preventOutline`](#domutil-preventoutline).
 export function restoreOutline() {
 	if (!_outlineElement) { return; }
-	_outlineElement.style.outline = _outlineStyle;
+	_outlineElement.style.outlineStyle = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
 	DomEvent.off(window, 'keydown', restoreOutline);

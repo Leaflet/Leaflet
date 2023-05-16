@@ -51,7 +51,7 @@ describe('Path', () => {
 			const layer = L.polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			layer.on('click', spy);
 			UIEventSimulator.fire('click', layer._path);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('propagates click event by default', () => {
@@ -63,9 +63,9 @@ describe('Path', () => {
 			layer.on('click', spy2);
 			map.on('click', mapSpy);
 			UIEventSimulator.fire('click', layer._path);
-			expect(spy.called).to.be.ok();
-			expect(spy2.called).to.be.ok();
-			expect(mapSpy.called).to.be.ok();
+			expect(spy.called).to.be.true;
+			expect(spy2.called).to.be.true;
+			expect(mapSpy.called).to.be.true;
 		});
 
 		it('can add a layer while being inside a moveend handler', () => {
@@ -83,10 +83,10 @@ describe('Path', () => {
 			map.setView([1, 2], 12, {animate: false});
 
 			map.panBy([-260, 0], {animate: false});
-			expect(polygon._parts.length).to.be(0);
+			expect(polygon._parts.length).to.equal(0);
 
 			map.panBy([260, 0], {animate: false});
-			expect(polygon._parts.length).to.be(1);
+			expect(polygon._parts.length).to.equal(1);
 		});
 
 		it('it should return tolerance with stroke', () => {

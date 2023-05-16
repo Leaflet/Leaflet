@@ -1,6 +1,6 @@
 
-import {Control} from './Control';
-import * as DomUtil from '../dom/DomUtil';
+import {Control} from './Control.js';
+import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control.Scale

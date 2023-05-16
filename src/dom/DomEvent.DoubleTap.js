@@ -1,4 +1,4 @@
-import * as DomEvent from './DomEvent';
+import * as DomEvent from './DomEvent.js';
 
 /*
  * Extends the event handling code with double tap support for mobile browsers.
@@ -7,20 +7,53 @@ import * as DomEvent from './DomEvent';
  * (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386)
  */
 
-function makeDblclick(event) {
-	// in modern browsers `type` cannot be just overridden:
-	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Getter_only
-	const newEvent = {};
-	let prop, i;
-	for (i in event) {
-		prop = event[i];
-		newEvent[i] = prop && prop.bind ? prop.bind(event) : prop;
+function makeDblclick(ev) {
+	let init = {
+		// EventInit
+		bubbles: ev.bubbles,
+		cancelable: ev.cancelable,
+		composed: ev.composed,
+
+		// UIEventInit
+		detail: 2,
+		view: ev.view,
+
+		// mouseEventInit
+		screenX: ev.screenX,
+		screenY: ev.screenY,
+		clientX: ev.clientX,
+		clientY: ev.clientY,
+		ctrlKey: ev.ctrlKey,
+		shiftKey: ev.shiftKey,
+		altKey: ev.altKey,
+		metaKey: ev.metaKey,
+		button: ev.button,
+		buttons: ev.buttons,
+		relatedTarget: ev.relatedTarget,
+		region: ev.region,
+	};
+
+	let newEvent;
+	// The `click` event received should be a PointerEvent - but some
+	// Firefox versions still use MouseEvent.
+	if (ev instanceof PointerEvent) {
+		init = {
+			...init,
+			pointerId: ev.pointerId,
+			width: ev.width,
+			height: ev.height,
+			pressure: ev.pressure,
+			tangentialPressure: ev.tangentialPressure,
+			tiltX: ev.tiltX,
+			tiltY: ev.tiltY,
+			twist: ev.twist,
+			pointerType: ev.pointerType,
+			isPrimary: ev.isPrimary,
+		};
+		newEvent = new PointerEvent('dblclick', init);
+	} else {
+		newEvent = new MouseEvent('dblclick', init);
 	}
-	event = newEvent;
-	newEvent.type = 'dblclick';
-	newEvent.detail = 2;
-	newEvent.isTrusted = false;
-	newEvent._simulated = true; // for debug purposes
 	return newEvent;
 }
 
@@ -34,14 +67,14 @@ export function addDoubleTapListener(obj, handler) {
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
 	    detail;
-	function simDblclick(e) {
-		if (e.detail !== 1) {
-			detail = e.detail; // keep in sync to avoid false dblclick in some cases
+	function simDblclick(ev) {
+		if (ev.detail !== 1) {
+			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
 			return;
 		}
 
-		if (e.pointerType === 'mouse' ||
-			(e.sourceCapabilities && !e.sourceCapabilities.firesTouchEvents)) {
+		if (ev.pointerType === 'mouse' ||
+			(ev.sourceCapabilities && !ev.sourceCapabilities.firesTouchEvents)) {
 
 			return;
 		}
@@ -51,7 +84,7 @@ export function addDoubleTapListener(obj, handler) {
 		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
-		const path = DomEvent.getPropagationPath(e);
+		const path = DomEvent.getPropagationPath(ev);
 		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
 			!path.some(el => (
 				el instanceof HTMLInputElement ||
@@ -65,7 +98,7 @@ export function addDoubleTapListener(obj, handler) {
 		if (now - last <= delay) {
 			detail++;
 			if (detail === 2) {
-				handler(makeDblclick(e));
+				ev.target.dispatchEvent(makeDblclick(ev));
 			}
 		} else {
 			detail = 1;

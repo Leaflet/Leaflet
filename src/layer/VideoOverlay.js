@@ -1,6 +1,6 @@
-import {ImageOverlay} from './ImageOverlay';
-import * as DomUtil from '../dom/DomUtil';
-import * as Util from '../core/Util';
+import {ImageOverlay} from './ImageOverlay.js';
+import * as DomUtil from '../dom/DomUtil.js';
+import * as Util from '../core/Util.js';
 
 /*
  * @class VideoOverlay
@@ -10,7 +10,7 @@ import * as Util from '../core/Util';
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
  * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video)
- * HTML5 element.
+ * HTML element.
  *
  * @example
  *

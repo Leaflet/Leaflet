@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Popup Keep in View</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div>
+			<label><input type="checkbox" id="keepInView" checked>Set keepInView</label>
+			<button id="popupWithinBounds">Add popup within bounds</button>
+			<button id="popupSlightlyBeyondBounds">Add popup slightly beyond bounds</button>
+			<button id="popupBeyondBounds">Add popup far away</button>
+			<button id="movePopup">Move last popup</button>
+		</div>
+		<script type="module">
+			import {TileLayer, Map, LatLng, Popup} from 'leaflet';
+
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osm = new TileLayer(osmUrl, {maxZoom: 18});
+
+			const center = [50.5, 30.51];
+			const map = new Map('map')
+				.setView(center, 15)
+				.addLayer(osm);
+
+			let lastPopup;
+			const keepInViewCheckbox = document.querySelector('#keepInView');
+
+			function getRandomLatLng(llbounds, expandRange) {
+				// How many degrees to expand the search range by
+				expandRange = expandRange ?? 0;
+
+				const s = llbounds.getSouth() - expandRange;
+				const n = llbounds.getNorth() + expandRange;
+				const w = llbounds.getWest() - expandRange;
+				const e = llbounds.getEast() + expandRange;
+
+				return new LatLng(
+					s + (Math.random() * (n - s)),
+					w + (Math.random() * (e - w))
+				);
+			}
+
+			map.on('autopanstart move moveend', console.log);
+			
+			document.querySelector('#popupWithinBounds').addEventListener('click', () => {
+				lastPopup = new Popup({keepInView: keepInViewCheckbox.checked})
+					.setContent('Popup')
+					.setLatLng(getRandomLatLng(map.getBounds()));
+
+				map.openPopup(lastPopup);
+			});
+			
+			document.querySelector('#popupSlightlyBeyondBounds').addEventListener('click', () => {
+				lastPopup = new Popup({keepInView: keepInViewCheckbox.checked})
+					.setContent('Popup')
+					.setLatLng(getRandomLatLng(map.getBounds(), .01));
+
+				map.openPopup(lastPopup);
+			});
+			
+			document.querySelector('#popupBeyondBounds').addEventListener('click', () => {
+				lastPopup = new Popup({keepInView: keepInViewCheckbox.checked})
+					.setContent('Popup')
+					.setLatLng(getRandomLatLng(map.getBounds(), 1));
+
+				map.openPopup(lastPopup);
+			});
+
+			document.querySelector('#movePopup').addEventListener('click', () => {
+				if (!lastPopup) {
+					alert('No popup to move!');
+					return;
+				}
+				lastPopup.setLatLng(map.getBounds().getNorthEast());
+			});
+		</script>
+	</body>
+</html>

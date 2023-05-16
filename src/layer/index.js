@@ -1,7 +1,7 @@
-export {Layer} from './Layer';
-export {LayerGroup, layerGroup} from './LayerGroup';
-export {FeatureGroup, featureGroup} from './FeatureGroup';
-import {GeoJSON, geoJSON, geoJson, geometryToLayer, coordsToLatLng, coordsToLatLngs, latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSON';
+export {Layer} from './Layer.js';
+export {LayerGroup, layerGroup} from './LayerGroup.js';
+export {FeatureGroup, featureGroup} from './FeatureGroup.js';
+import {GeoJSON, geoJSON, geoJson, geometryToLayer, coordsToLatLng, coordsToLatLngs, latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSON.js';
 GeoJSON.geometryToLayer = geometryToLayer;
 GeoJSON.coordsToLatLng = coordsToLatLng;
 GeoJSON.coordsToLatLngs = coordsToLatLngs;
@@ -11,14 +11,16 @@ GeoJSON.getFeature = getFeature;
 GeoJSON.asFeature = asFeature;
 export {GeoJSON, geoJSON, geoJson};
 
-export {ImageOverlay, imageOverlay} from './ImageOverlay';
-export {VideoOverlay, videoOverlay} from './VideoOverlay';
-export {SVGOverlay, svgOverlay} from './SVGOverlay';
+export {BlanketOverlay} from './BlanketOverlay.js';
 
-export {DivOverlay} from './DivOverlay';
-export {Popup, popup} from './Popup';
-export {Tooltip, tooltip} from './Tooltip';
+export {ImageOverlay, imageOverlay} from './ImageOverlay.js';
+export {VideoOverlay, videoOverlay} from './VideoOverlay.js';
+export {SVGOverlay, svgOverlay} from './SVGOverlay.js';
 
-export * from './marker/index';
-export * from './tile/index';
-export * from './vector/index';
+export {DivOverlay} from './DivOverlay.js';
+export {Popup, popup} from './Popup.js';
+export {Tooltip, tooltip} from './Tooltip.js';
+
+export * from './marker/index.js';
+export * from './tile/index.js';
+export * from './vector/index.js';

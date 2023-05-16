@@ -1,9 +1,9 @@
-import {Map} from '../Map';
-import {Handler} from '../../core/Handler';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Bounds} from '../../geometry/Bounds';
+import {Map} from '../Map.js';
+import {Handler} from '../../core/Handler.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import * as DomEvent from '../../dom/DomEvent.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map

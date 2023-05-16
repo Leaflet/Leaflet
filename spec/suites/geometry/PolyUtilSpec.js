@@ -59,92 +59,28 @@ describe('PolyUtil', () => {
 			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
-		it('computes center of polygon with maxZoom', () => {
-			L.gridLayer({maxZoom: 18}).addTo(map);
-			const latlngs = [[0, 0], [10, 0], [10, 10], [0, 10]];
-			const center = L.PolyUtil.polygonCenter(latlngs, crs, map.getMaxZoom());
-			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
+		it('computes center of a small polygon', () => {
+			const latlngs = [[42.87097909758862, -81.12594320566181], [42.87108302016597, -81.12594320566181], [42.87108302016597, -81.12576504805303], [42.87097909758862, -81.12576504805303]];
+			const layer = L.polygon(latlngs).addTo(map);
+			expect(layer.getCenter()).to.be.nearLatLng([42.87103105887729, -81.12585412685742]);
 		});
 
-		it('computes center of a small polygon and test it on every zoom', () => {
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
+		it('computes center of a big polygon', () => {
+			const latlngs = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
 			const layer = L.polygon(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.EPSG3395', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG3395, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polygon(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.EPSG4326', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.EPSG4326, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polygon(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
-		});
-
-		it('computes center of a small polygon and test it on every zoom - CRS.Simple', () => {
-			map.remove();
-			map = L.map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, crs: L.CRS.Simple, zoomAnimation: false});
-
-			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-
-			const layer = L.polygon(latlngs).addTo(map);
-			let i = 0;
-			function check() {
-				expect(layer.getCenter()).to.be.nearLatLng([50.49949394037396, 30.50989603626345]);
-				i++;
-				if (i < 30) { map.setZoom(i); }
-			}
-
-			map.on('zoomend', check);
-			map.setView(layer.getCenter(), i);
+			expect(layer.getCenter()).to.be.nearLatLng([0, 0]);
 		});
 
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
-				L.PolyUtil.polygonCenter(null,  crs, zoom);
-			}).to.throwException('latlngs not passed');
+				L.PolyUtil.polygonCenter(null,  crs);
+			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
-				L.PolyUtil.polygonCenter([], crs, zoom);
-			}).to.throwException('latlngs not passed');
+				L.PolyUtil.polygonCenter([], crs);
+			}).to.throw('latlngs not passed');
 		});
 
 		it('shows warning if latlngs is not flat', () => {
@@ -152,17 +88,20 @@ describe('PolyUtil', () => {
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
 			const spy = sinon.spy(console, 'warn');
-			const center = L.PolyUtil.polygonCenter(latlngs, crs, zoom);
+			const center = L.PolyUtil.polygonCenter(latlngs, crs);
 			console.warn.restore();
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
-		it('throws error if map not passed', () => {
-			const latlngs = [[80, 0], [80, 90]];
-			expect(() => {
-				L.PolyUtil.polygonCenter(latlngs, null);
-			}).to.throwException('map not passed');
+		it('iterates only over the array values', () => {
+			// eslint-disable-next-line
+			Array.prototype.foo = 'ABC';
+			const latlngs = [
+				[[0, 0], [10, 0], [10, 10], [0, 10]]
+			];
+			const center = L.PolyUtil.polygonCenter(latlngs, crs);
+			expect(center).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 	});
 });

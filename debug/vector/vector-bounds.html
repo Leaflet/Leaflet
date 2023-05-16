@@ -1,69 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Vector Bounds</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<button id="zoomToPath" type="button">Zoom to path</button>
+		<button id="zoomToPolygon" type="button">Zoom to polygon</button>
+		<script type="module">
+			import {TileLayer, Polyline, LatLng, Polygon, Map} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			/* eslint-disable no-loss-of-precision */
+			const polyPoints = [
+				[39.70348880963439, -104.98603820800781],
+				[39.69926245589766, -104.95582580566406],
+				[39.67918374111695, -104.94483947753906],
+				[39.663856582926165, -104.95307922363281],
+				[39.66279941218785, -104.98672485351562],
+				[39.70348880963439, -104.98603820800781]
+			];
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
-    <button onclick="map.fitBounds(path.getBounds())">Zoom to path</button>
-    <button onclick="map.fitBounds(poly.getBounds())">Zoom to polygon</button>
-	<script src="route.js"></script>
-	<script>
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			const pathPoints = [
+				[39.72567292003209, -104.98672485351562],
+				[39.717222671644635, -104.96612548828124],
+				[39.71405356154611, -104.95513916015625],
+				[39.70982785491674, -104.94758605957031],
+				[39.70454535762547, -104.93247985839844],
+				[39.696092520737224, -104.91874694824217],
+				[39.687638648548635, -104.90432739257812],
+				[39.67759833072648, -104.89471435546875]
+			];
 
-		var poly_points = [
-			[39.70348880963439, -104.98603820800781],
-			[39.69926245589766, -104.95582580566406],
-			[39.67918374111695, -104.94483947753906],
-			[39.663856582926165, -104.95307922363281],
-			[39.66279941218785, -104.98672485351562],
-			[39.70348880963439, -104.98603820800781]
-		];
+			const latlngs = [];
 
-		var path_points = [
-			[39.72567292003209, -104.98672485351562],
-			[39.717222671644635, -104.96612548828124],
-			[39.71405356154611, -104.95513916015625],
-			[39.70982785491674, -104.94758605957031],
-			[39.70454535762547, -104.93247985839844],
-			[39.696092520737224, -104.91874694824217],
-			[39.687638648548635, -104.90432739257812],
-			[39.67759833072648, -104.89471435546875]
-		];
+			for (let i = 0, len = pathPoints.length; i < len; i++) {
+				latlngs.push(new LatLng(pathPoints[i][0], pathPoints[i][1]));
+			}
 
-		for (var i = 0, latlngs = [], len = path_points.length; i < len; i++) {
-			latlngs.push(new L.LatLng(path_points[i][0], path_points[i][1]));
-		}
-		var path = new L.Polyline(latlngs);
+			const path = new Polyline(latlngs);
+			const latlngs2 = [];
 
-		for (var i = 0, latlngs2 = [], len = poly_points.length; i < len; i++) {
-		    latlngs2.push(new L.LatLng(poly_points[i][0], poly_points[i][1]));
-		}
-		var poly = new L.Polygon(latlngs2);
+			for (let i = 0, len = polyPoints.length; i < len; i++) {
+				latlngs2.push(new LatLng(polyPoints[i][0], polyPoints[i][1]));
+			}
 
-		var map = new L.Map('map', {
-			layers: [osm],
-			center: new L.LatLng(39.69596043694606, -104.95084762573242),
-			zoom: 12
-		});
+			const poly = new Polygon(latlngs2);
+			const map = new Map('map', {
+				layers: [osm],
+				center: new LatLng(39.69596043694606, -104.95084762573242),
+				zoom: 12
+			});
 
-		//map.fitBounds(new L.LatLngBounds(latlngs));
+			map.addLayer(path);
+			map.addLayer(poly);
 
-		//map.addLayer(new L.Marker(latlngs[0]));
-		//map.addLayer(new L.Marker(latlngs[len - 1]));
+			path.bindPopup('Hello world');
 
-		map.addLayer(path);
-		map.addLayer(poly);
+			const zoomToPathBtn = document.getElementById('zoomToPath');
+			const zoomToPolygonBtn = document.getElementById('zoomToPolygon');
 
-		path.bindPopup("Hello world");
-	</script>
-</body>
+			zoomToPathBtn.addEventListener('click', () => map.fitBounds(path.getBounds()));
+			zoomToPolygonBtn.addEventListener('click', () => map.fitBounds(poly.getBounds()));
+		</script>
+	</body>
 </html>

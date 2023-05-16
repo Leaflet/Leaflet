@@ -50,7 +50,7 @@ describe('Util', () => {
 
 	describe('#falseFn', () => {
 		it('returns false', () => {
-			expect(L.Util.falseFn()).to.be(false);
+			expect(L.Util.falseFn()).to.be.false;
 		});
 	});
 
@@ -201,7 +201,7 @@ describe('Util', () => {
 		it('throws when a template token is not given', () => {
 			expect(() => {
 				L.Util.template(undefined, {foo: 'bar'});
-			}).to.throwError();
+			}).to.throw();
 		});
 
 		it('allows underscores, dashes and spaces in placeholders', () => {

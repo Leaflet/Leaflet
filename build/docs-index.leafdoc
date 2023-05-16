@@ -61,5 +61,6 @@ This file just defines the order of the classes in the docs.
 @class Handler
 @class Projection
 @class CRS
+@class BlanketOverlay
 @class Renderer
 @class Event objects

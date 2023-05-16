@@ -1,48 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Leaflet debug page</title>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Grid</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {GridLayer, Map} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const grid = new GridLayer({
+				attribution: 'Grid Layer'
+			});
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			grid.createTile = function (coords, done) {
+				const tile = document.createElement('div');
 
-	<link rel="stylesheet" href="../css/screen.css" />
+				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+				tile.style.outline = '1px solid red';
+				tile.style.background = 'white';
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+				// test async
+				setTimeout(() => done(null, tile), 500 + Math.random() * 500);
 
-	<div id="map"></div>
+				return tile;
+			};
 
-	<script>
+			grid.on('loading', () => console.log('loading'));
+			grid.on('load', () => console.log('load'));
+			grid.on('tileunload', (tile) => {
+				console.log('tileunload', `${tile.coords.x}, ${tile.coords.y}, ${tile.coords.z}`);
+			});
 
-		var grid = L.gridLayer({
-			attribution: 'Grid Layer'
-		});
-
-		grid.createTile = function (coords, done) {
-			var tile = document.createElement('div');
-			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-			tile.style.outline = '1px solid red';
-			tile.style.background = 'white';
-
-			// test async
-			setTimeout(function () {
-				done(null, tile);
-			}, 500 + Math.random() * 500);
-
-			return tile;
-		};
-
-		grid.on('loading', function() { console.log('loading'); });
-		grid.on('load', function() { console.log('load'); });
-		grid.on('tileunload', function(tile) { console.log('tileunload ' + tile.coords.x + ',' + tile.coords.y + ',' + tile.coords.z); });
-
-		var map = L.map('map')
+			new Map('map')
 				.setView([50.5, 30.51], 10)
 				.addLayer(grid);
-
-	</script>
-</body>
+		</script>
+	</body>
 </html>
