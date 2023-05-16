@@ -35,8 +35,8 @@ describe('Marker', () => {
 
 			const icon = marker._icon;
 
-			expect(icon.style.width).to.be(`${expectedX}px`);
-			expect(icon.style.height).to.be(`${expectedY}px`);
+			expect(icon.style.width).to.equal(`${expectedX}px`);
+			expect(icon.style.height).to.equal(`${expectedY}px`);
 		});
 
 		it('set the correct x and y size attributes passing only one value', () => {
@@ -51,8 +51,8 @@ describe('Marker', () => {
 
 			const icon = marker._icon;
 
-			expect(icon.style.width).to.be(`${expectedXY}px`);
-			expect(icon.style.height).to.be(`${expectedXY}px`);
+			expect(icon.style.width).to.equal(`${expectedXY}px`);
+			expect(icon.style.height).to.equal(`${expectedXY}px`);
 		});
 
 		it('set the correct x and y size attributes passing a L.Point instance', () => {
@@ -67,8 +67,8 @@ describe('Marker', () => {
 
 			const icon = marker._icon;
 
-			expect(icon.style.width).to.be(`${expectedXY}px`);
-			expect(icon.style.height).to.be(`${expectedXY}px`);
+			expect(icon.style.width).to.equal(`${expectedXY}px`);
+			expect(icon.style.height).to.equal(`${expectedXY}px`);
 		});
 
 		it('changes the icon to another image while re-using the IMG element', () => {
@@ -79,7 +79,7 @@ describe('Marker', () => {
 			marker.setIcon(icon2);
 			const afterIcon = marker._icon;
 
-			expect(beforeIcon).to.be(afterIcon); // Check that the <IMG> element is re-used
+			expect(beforeIcon).to.equal(afterIcon); // Check that the <IMG> element is re-used
 			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
 		});
 
@@ -90,34 +90,34 @@ describe('Marker', () => {
 			marker.dragging.disable();
 			marker.setIcon(icon2);
 
-			expect(marker.dragging.enabled()).to.be(false);
+			expect(marker.dragging.enabled()).to.be.false;
 
 			marker.dragging.enable();
 
 			marker.setIcon(icon1);
 
-			expect(marker.dragging.enabled()).to.be(true);
+			expect(marker.dragging.enabled()).to.be.true;
 
 			map.removeLayer(marker);
 			map.addLayer(marker);
 
-			expect(marker.dragging.enabled()).to.be(true);
+			expect(marker.dragging.enabled()).to.be.true;
 
 			map.removeLayer(marker);
 			// Dragging is still enabled, we should be able to disable it,
 			// even if marker is off the map.
-			expect(marker.dragging).to.be(undefined);
+			expect(marker.dragging).to.equal(undefined);
 			marker.options.draggable = false;
 			map.addLayer(marker);
 
 			map.removeLayer(marker);
 
 			// We should also be able to enable dragging while off the map
-			expect(marker.dragging).to.be(undefined);
+			expect(marker.dragging).to.equal(undefined);
 			marker.options.draggable = true;
 
 			map.addLayer(marker);
-			expect(marker.dragging.enabled()).to.be(true);
+			expect(marker.dragging.enabled()).to.be.true;
 		});
 
 		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
@@ -128,7 +128,7 @@ describe('Marker', () => {
 			marker.setIcon(L.divIcon({html: 'Inner2Text'}));
 			const afterIcon = marker._icon;
 
-			expect(beforeIcon).to.be(afterIcon); // Check that the <DIV> element is re-used
+			expect(beforeIcon).to.equal(afterIcon); // Check that the <DIV> element is re-used
 			expect(afterIcon.innerHTML).to.contain('Inner2Text');
 		});
 
@@ -148,15 +148,15 @@ describe('Marker', () => {
 
 			marker.setIcon(icon1);
 
-			expect(oldIcon).to.not.be(marker._icon); // Check that the _icon is NOT re-used
-			expect(oldIcon.parentNode).to.be(null);
+			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
+			expect(oldIcon.parentNode).to.equal(null);
 
 			if (L.Browser.retina) {
 				expect(marker._icon.src).to.contain('marker-icon-2x.png');
 			} else {
 				expect(marker._icon.src).to.contain('marker-icon.png');
 			}
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
 		});
 
 		it('changes an image to a DivIcon', () => {
@@ -166,11 +166,11 @@ describe('Marker', () => {
 
 			marker.setIcon(L.divIcon({html: 'Inner1Text'}));
 
-			expect(oldIcon).to.not.be(marker._icon); // Check that the _icon is NOT re-used
-			expect(oldIcon.parentNode).to.be(null);
+			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
+			expect(oldIcon.parentNode).to.equal(null);
 
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
 		});
 
 		it('reuses the icon/shadow when changing icon', () => {
@@ -181,26 +181,26 @@ describe('Marker', () => {
 
 			marker.setIcon(icon2);
 
-			expect(oldIcon).to.be(marker._icon);
-			expect(oldShadow).to.be(marker._shadow);
+			expect(oldIcon).to.equal(marker._icon);
+			expect(oldShadow).to.equal(marker._shadow);
 
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
-			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
+			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
+			expect(marker._shadow.parentNode).to.equal(map._panes.shadowPane);
 		});
 
 		it('sets the alt attribute to a default value when no alt text is passed', () => {
 			const marker = L.marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			const icon = marker._icon;
-			expect(icon.hasAttribute('alt')).to.be(true);
-			expect(icon.alt).to.be('Marker');
+			expect(icon.hasAttribute('alt')).to.be.true;
+			expect(icon.alt).to.equal('Marker');
 		});
 
 		it('doesn\'t set the alt attribute for DivIcons', () => {
 			const marker = L.marker([0, 0], {icon: L.divIcon(), alt: 'test'});
 			map.addLayer(marker);
 			const icon = marker._icon;
-			expect(icon.hasAttribute('alt')).to.be(false);
+			expect(icon.hasAttribute('alt')).to.be.false;
 		});
 
 		it('pan map to focus marker', () => {
@@ -209,7 +209,7 @@ describe('Marker', () => {
 
 			expect(() => {
 				marker._icon.focus();
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 
 		it('pan map to focus marker with no iconSize', () => {
@@ -218,7 +218,7 @@ describe('Marker', () => {
 
 			expect(() => {
 				marker._panOnFocus();
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 	});
 
@@ -238,10 +238,10 @@ describe('Marker', () => {
 
 			marker.setLatLng(afterLatLng);
 
-			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
-			expect(eventArgs.latlng).to.be(afterLatLng);
-			expect(marker.getLatLng()).to.be(afterLatLng);
+			expect(eventArgs).to.not.equal(null);
+			expect(eventArgs.oldLatLng).to.equal(beforeLatLng);
+			expect(eventArgs.latlng).to.equal(afterLatLng);
+			expect(marker.getLatLng()).to.equal(afterLatLng);
 		});
 	});
 
@@ -254,7 +254,7 @@ describe('Marker', () => {
 			marker.on('click', spy);
 			UIEventSimulator.fire('click', marker._icon);
 
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('fires click event when clicked with DivIcon', () => {
@@ -265,7 +265,7 @@ describe('Marker', () => {
 			marker.on('click', spy);
 			UIEventSimulator.fire('click', marker._icon);
 
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 		});
 
 		it('fires click event when clicked on DivIcon child element', () => {
@@ -276,10 +276,10 @@ describe('Marker', () => {
 			marker.on('click', spy);
 
 			UIEventSimulator.fire('click', marker._icon);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 
 			UIEventSimulator.fire('click', marker._icon.querySelector('img'));
-			expect(spy.calledTwice).to.be.ok();
+			expect(spy.calledTwice).to.be.true;
 		});
 
 		it('fires click event when clicked on DivIcon child element set using setIcon', () => {
@@ -291,10 +291,10 @@ describe('Marker', () => {
 			marker.on('click', spy);
 
 			UIEventSimulator.fire('click', marker._icon);
-			expect(spy.called).to.be.ok();
+			expect(spy.called).to.be.true;
 
 			UIEventSimulator.fire('click', marker._icon.querySelector('img'));
-			expect(spy.calledTwice).to.be.ok();
+			expect(spy.calledTwice).to.be.true;
 		});
 
 		it('do not propagate click event', () => {
@@ -307,9 +307,9 @@ describe('Marker', () => {
 			marker.on('click', spy2);
 			map.on('click', mapSpy);
 			UIEventSimulator.fire('click', marker._icon);
-			expect(spy.called).to.be.ok();
-			expect(spy2.called).to.be.ok();
-			expect(mapSpy.called).not.to.be.ok();
+			expect(spy.called).to.be.true;
+			expect(spy2.called).to.be.true;
+			expect(mapSpy.called).not.to.be.true;
 		});
 
 		it('do not propagate dblclick event', () => {
@@ -322,9 +322,9 @@ describe('Marker', () => {
 			marker.on('dblclick', spy2);
 			map.on('dblclick', mapSpy);
 			UIEventSimulator.fire('dblclick', marker._icon);
-			expect(spy.called).to.be.ok();
-			expect(spy2.called).to.be.ok();
-			expect(mapSpy.called).not.to.be.ok();
+			expect(spy.called).to.be.true;
+			expect(spy2.called).to.be.true;
+			expect(mapSpy.called).not.to.be.true;
 		});
 
 		it('do not catch event if it does not listen to it', (done) => {

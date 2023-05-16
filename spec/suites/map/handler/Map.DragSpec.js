@@ -16,9 +16,9 @@ describe('Map.Drag', () => {
 				dragging: true
 			});
 
-			expect(map.dragging.enabled()).to.be(true);
+			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
-			expect(map.dragging.enabled()).to.be(true);
+			expect(map.dragging.enabled()).to.be.true;
 		});
 
 		it('calls the map with dragging and worldCopyJump enabled', () => {
@@ -27,9 +27,9 @@ describe('Map.Drag', () => {
 				worldCopyJump: true
 			});
 
-			expect(map.dragging.enabled()).to.be(true);
+			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
-			expect(map.dragging.enabled()).to.be(true);
+			expect(map.dragging.enabled()).to.be.true;
 		});
 
 		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
@@ -39,10 +39,10 @@ describe('Map.Drag', () => {
 				worldCopyJump: true
 			});
 
-			expect(map.dragging.enabled()).to.be(false);
+			expect(map.dragging.enabled()).to.be.false;
 			map.setView([0, 0], 0);
 			map.dragging.enable();
-			expect(map.dragging.enabled()).to.be(true);
+			expect(map.dragging.enabled()).to.be.true;
 		});
 	});
 
@@ -74,7 +74,7 @@ describe('Map.Drag', () => {
 				onStop() {
 					expect(map.getOffset()).to.eql(offset);
 
-					expect(map.getZoom()).to.be(1);
+					expect(map.getZoom()).to.equal(1);
 					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 					done();
@@ -110,7 +110,7 @@ describe('Map.Drag', () => {
 					onStop() {
 						expect(map.getOffset()).to.eql(offset);
 
-						expect(map.getZoom()).to.be(1);
+						expect(map.getZoom()).to.equal(1);
 						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 						done();
@@ -140,7 +140,7 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(map.getZoom()).to.be(1);
+					expect(map.getZoom()).to.equal(1);
 					// Expect center point to be the same as before the click
 					expect(map.getCenter()).to.eql(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
@@ -175,9 +175,9 @@ describe('Map.Drag', () => {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', container);
-					expect(dragSpy.called).to.be(true);
-					expect(clickSpy.called).to.be(false);
-					expect(preclickSpy.called).to.be(false);
+					expect(dragSpy.called).to.be.true;
+					expect(clickSpy.called).to.be.false;
+					expect(preclickSpy.called).to.be.false;
 					done();
 				}
 			});
@@ -212,10 +212,10 @@ describe('Map.Drag', () => {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', container);
-					expect(mapDragSpy.called).to.be(true);
-					expect(markerDragSpy.called).to.be(false);
-					expect(clickSpy.called).to.be(false);
-					expect(preclickSpy.called).to.be(false);
+					expect(mapDragSpy.called).to.be.true;
+					expect(markerDragSpy.called).to.be.false;
+					expect(clickSpy.called).to.be.false;
+					expect(preclickSpy.called).to.be.false;
 					done();
 				}
 			});
@@ -252,10 +252,10 @@ describe('Map.Drag', () => {
 					// A real user scenario would trigger a click on mouseup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', marker._icon);
-					expect(markerDragSpy.called).to.be(true);
-					expect(mapDragSpy.called).to.be(false);
-					expect(clickSpy.called).to.be(false);
-					expect(preclickSpy.called).to.be(false);
+					expect(markerDragSpy.called).to.be.true;
+					expect(mapDragSpy.called).to.be.false;
+					expect(clickSpy.called).to.be.false;
+					expect(preclickSpy.called).to.be.false;
 					done();
 				}
 			});
@@ -284,7 +284,7 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(map.getZoom()).to.be(1);
+					expect(map.getZoom()).to.equal(1);
 					// Expect center point to be the same as before the click
 					expect(map.getCenter()).to.eql(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
@@ -318,7 +318,7 @@ describe('Map.Drag', () => {
 				onStop() {
 					expect(map.getOffset()).to.eql(offset);
 
-					expect(map.getZoom()).to.be(1);
+					expect(map.getZoom()).to.equal(1);
 					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
 					done();
@@ -345,9 +345,9 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(map.getZoom()).to.be(1);
+					expect(map.getZoom()).to.equal(1);
 					// Expect center point to be the same as before the click
-					expect(map.getCenter().equals(originalCenter)).to.be.ok(); // small margin of error allowed
+					expect(map.getCenter().equals(originalCenter)).to.be.true; // small margin of error allowed
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 
 					done();

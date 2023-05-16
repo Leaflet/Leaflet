@@ -1,7 +1,8 @@
 /** @type {import('eslint').Linter.Config } */
 module.exports = {
 	rules: {
-		'no-console': 'off'
+		'no-console': 'off',
+		'no-unused-expressions': 'off'
 	},
 	env: {
 		mocha: true,
@@ -9,6 +10,7 @@ module.exports = {
 	globals: {
 		L: true,
 		expect: false,
+		chai: false,
 		sinon: false,
 		UIEventSimulator: false,
 		Hand: false,

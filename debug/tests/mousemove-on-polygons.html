@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Mousemove on Polygons</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=0"
+		/>
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<style>
+			.mybox {
+				background-color: red;
+			}
+
+			td {
+				border: transparent solid 2px;
+			}
+
+			td.red {
+				border: red solid 2px;
+			}
+
+			td.updated {
+				border: transparent solid 2px;
+				animation-name: borderfade;
+				animation-duration: 0.5s;
+			}
+
+			@keyframes borderfade {
+				from {
+					border: red solid 2px;
+				}
+				to {
+					border: transparent solid 2px;
+				}
+			}
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td></td>
+				<td>Enter</td>
+				<td>Move</td>
+				<td>Exit</td>
+				<td>Click</td>
+			</tr>
+			<tr>
+				<td>Triangle 1:</td>
+				<td id="enter1"></td>
+				<td id="move1"></td>
+				<td id="exit1"></td>
+				<td id="click1"></td>
+			</tr>
+			<tr>
+				<td>Triangle 2:</td>
+				<td id="enter2"></td>
+				<td id="move2"></td>
+				<td id="exit2"></td>
+				<td id="click2"></td>
+			</tr>
+			<tr>
+				<td>Map:</td>
+				<td id="enter3"></td>
+				<td id="move3"></td>
+				<td id="exit3"></td>
+				<td id="click3"></td>
+			</tr>
+		</table>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, LatLng, Map, Polygon, Marker} from 'leaflet';
+
+			const osm = new TileLayer(
+				'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+				{maxZoom: 18}
+			);
+
+			const latlng = new LatLng(39.05, 8.4);
+			const map = new Map('map', {center: latlng, zoom: 12, layers: [osm]});
+
+			function update(id) {
+				return function () {
+					const element = document.getElementById(id);
+					element.innerHTML = Date.now();
+					element.className = 'red';
+
+					window.setTimeout(() => {
+						element.className = 'updated';
+					}, 1);
+				};
+			}
+
+			new Polygon([
+				[39, 8.4],
+				[39.1, 8.5],
+				[39.05, 8.3],
+			])
+				.addTo(map)
+				.on('mouseover', update('enter1'))
+				.on('mousemove', update('move1'))
+				.on('mouseout', update('exit1'))
+				.on('click', update('click1'))
+				.bindPopup('Triangle 1');
+
+			new Polygon([
+				[39.03, 8.3],
+				[39.1, 8.4],
+				[39.0, 8.3],
+			])
+				.addTo(map)
+				.on('mouseover', update('enter2'))
+				.on('mousemove', update('move2'))
+				.on('mouseout', update('exit2'))
+				.on('click', update('click2'))
+				.bindPopup('Triangle 2');
+
+			const marker = new Marker(latlng, {draggable: true}).bindPopup(
+				'Marker'
+			);
+			map.addLayer(marker);
+
+			map
+				.on('mouseover', update('enter3'))
+				.on('mousemove', update('move3'))
+				.on('mouseout', update('exit3'))
+				.on('click', update('click3'));
+
+			// We should be able to move marker around in a fluid way,
+			// plus going over the polygon with no issue.
+		</script>
+	</body>
+</html>

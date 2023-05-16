@@ -20,12 +20,12 @@ describe('LatLngBounds', () => {
 
 		it('returns an empty bounds when not argument is given', () => {
 			const bounds = L.latLngBounds();
-			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+			expect(bounds instanceof L.LatLngBounds).to.be.true;
 		});
 
 		it('returns an empty bounds when not argument is given to factory', () => {
 			const bounds = L.latLngBounds();
-			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+			expect(bounds instanceof L.LatLngBounds).to.be.true;
 		});
 
 	});
@@ -87,16 +87,16 @@ describe('LatLngBounds', () => {
 
 	describe('#isValid', () => {
 		it('returns true if properly set up', () => {
-			expect(a.isValid()).to.be.ok();
+			expect(a.isValid()).to.be.true;
 		});
 
 		it('returns false if is invalid', () => {
-			expect(c.isValid()).to.not.be.ok();
+			expect(c.isValid()).to.be.false;
 		});
 
 		it('returns true if extended', () => {
 			c.extend([0, 0]);
-			expect(c.isValid()).to.be.ok();
+			expect(c.isValid()).to.be.true;
 		});
 	});
 

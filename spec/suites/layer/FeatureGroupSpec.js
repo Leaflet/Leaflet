@@ -18,21 +18,21 @@
 				    wasClicked2;
 
 				fg2.on('click', (e) => {
-					expect(e.propagatedFrom).to.be(marker);
-					expect(e.target).to.be(fg2);
+					expect(e.propagatedFrom).to.equal(marker);
+					expect(e.target).to.equal(fg2);
 					wasClicked2 = true;
 				});
 
 				fg1.on('click', (e) => {
-					expect(e.propagatedFrom).to.be(marker);
-					expect(e.target).to.be(fg1);
+					expect(e.propagatedFrom).to.equal(marker);
+					expect(e.target).to.equal(fg1);
 					wasClicked1 = true;
 				});
 
 				marker.fire('click', {type: 'click'}, true);
 
-				expect(wasClicked1).to.be(true);
-				expect(wasClicked2).to.be(true);
+				expect(wasClicked1).to.be.true;
+				expect(wasClicked2).to.be.true;
 			});
 		});
 	});
@@ -42,22 +42,22 @@
 			const fg = L.featureGroup(),
 			    marker = L.marker([0, 0]);
 
-			expect(fg.hasLayer(marker)).to.be(false);
+			expect(fg.hasLayer(marker)).to.be.false;
 
 			fg.addLayer(marker);
 
-			expect(fg.hasLayer(marker)).to.be(true);
+			expect(fg.hasLayer(marker)).to.be.true;
 		});
 
 		it('supports non-evented layers', () => {
 			const fg = L.featureGroup(),
 			    g = L.layerGroup();
 
-			expect(fg.hasLayer(g)).to.be(false);
+			expect(fg.hasLayer(g)).to.be.false;
 
 			fg.addLayer(g);
 
-			expect(fg.hasLayer(g)).to.be(true);
+			expect(fg.hasLayer(g)).to.be.true;
 		});
 	});
 
@@ -67,10 +67,10 @@
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);
-			expect(fg.hasLayer(marker)).to.be(true);
+			expect(fg.hasLayer(marker)).to.be.true;
 
 			fg.removeLayer(marker);
-			expect(fg.hasLayer(marker)).to.be(false);
+			expect(fg.hasLayer(marker)).to.be.false;
 		});
 
 		it('removes the layer passed to it by id', () => {
@@ -78,10 +78,10 @@
 			    marker = L.marker([0, 0]);
 
 			fg.addLayer(marker);
-			expect(fg.hasLayer(marker)).to.be(true);
+			expect(fg.hasLayer(marker)).to.be.true;
 
 			fg.removeLayer(L.stamp(marker));
-			expect(fg.hasLayer(marker)).to.be(false);
+			expect(fg.hasLayer(marker)).to.be.false;
 		});
 	});
 });

@@ -85,11 +85,15 @@ export const Layers = Control.extend({
 		this._handlingClick = false;
 
 		for (const i in baseLayers) {
-			this._addLayer(baseLayers[i], i);
+			if (Object.hasOwn(baseLayers, i)) {
+				this._addLayer(baseLayers[i], i);
+			}
 		}
 
 		for (const i in overlays) {
-			this._addLayer(overlays[i], i, true);
+			if (Object.hasOwn(overlays, i)) {
+				this._addLayer(overlays[i], i, true);
+			}
 		}
 	},
 

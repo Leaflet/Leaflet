@@ -2,7 +2,6 @@
 module.exports = {
 	ignorePatterns: [
 		'dist',
-		'debug',
 		'docs/docs/highlight',
 		'docs/examples/choropleth/us-states.js',
 		'docs/examples/geojson/sample-geojson.js',
@@ -40,6 +39,7 @@ module.exports = {
 		'spaced-comment': 'error',
 		'strict': 'off',
 		'wrap-iife': 'off',
+		'guard-for-in': 'error',
 		// TODO: Re-enable the rules below and fix the linting issues.
 		'no-invalid-this': 'off',
 		'prefer-object-has-own': 'error',
@@ -64,6 +64,15 @@ module.exports = {
 			rules: {
 				'eol-last': 'off',
 				'no-unused-vars': 'off'
+			}
+		},
+		{
+			files: [
+				'*.html'
+			],
+			rules: {
+				'eol-last': 'off',
+				'no-new': 'off'
 			}
 		}
 	]

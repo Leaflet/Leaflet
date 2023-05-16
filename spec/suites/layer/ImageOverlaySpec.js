@@ -69,7 +69,7 @@ describe('ImageOverlay', () => {
 				const loadRaised = sinon.spy();
 				overlay.once('load', loadRaised);
 				raiseImageEvent('load');
-				expect(loadRaised.called).to.be(true);
+				expect(loadRaised.called).to.be.true;
 			});
 		});
 
@@ -78,19 +78,19 @@ describe('ImageOverlay', () => {
 				const errorRaised  = sinon.spy();
 				overlay.once('error', errorRaised);
 				raiseImageEvent('error');
-				expect(errorRaised.called).to.be(true);
+				expect(errorRaised.called).to.be.true;
 			});
 
 			it('should change the image to errorOverlayUrl', () => {
 				raiseImageEvent('error');
-				expect(overlay._url).to.be(errorUrl);
-				expect(overlay._image.src).to.be(errorUrl);
+				expect(overlay._url).to.equal(errorUrl);
+				expect(overlay._image.src).to.equal(errorUrl);
 			});
 		});
 
 		describe('className', () => {
 			it('should set image\'s class', () => {
-				expect(overlay._image.classList.contains('my-custom-image-class')).to.be(true);
+				expect(overlay._image.classList.contains('my-custom-image-class')).to.be.true;
 			});
 		});
 	});
@@ -160,7 +160,7 @@ describe('ImageOverlay', () => {
 				});
 				map.addLayer(overlay);
 
-				expect(overlay._image.getAttribute('crossorigin')).to.be(expectedValue);
+				expect(overlay._image.getAttribute('crossorigin')).to.equal(expectedValue);
 			});
 		}
 	});

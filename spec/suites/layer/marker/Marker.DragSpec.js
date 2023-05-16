@@ -36,7 +36,7 @@ describe('Marker.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(marker.getOffset()).to.eql(offset);
+					expect(marker.getOffset().equals(offset)).to.be.true;
 
 					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
 					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);

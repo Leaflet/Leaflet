@@ -1,60 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Vector 2</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, SVG, Map, Marker, Canvas, Polyline, Circle, CircleMarker, Control} from 'leaflet';
+			import route from './route.js';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const svg = new SVG();
+			const map = new Map('map', {layers: [osm], renderer: svg});
 
-	<link rel="stylesheet" href="../css/screen.css" />
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+			map.addLayer(new Marker(route[0]));
+			map.addLayer(new Marker(route[route.length - 1]));
 
-	<script src="route.js"></script>
-	<script>
-		var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			const canvas = new Canvas();
+			const poly = new Polyline([
+				[[60, 30], [60, 50], [40, 50]],
+				[[20, 50], [20, 70], [0, 70]]
+			], {color: 'red'}).addTo(map).bindPopup('Hello SVG');
 
-		var svg = L.svg();
+			const path = new Polyline([
+				[route, [[50.5, 30.5], [50.5, 40], [40, 40]]],
+				[[[20, 0], [20, 40], [0, 40]]]
+			], {renderer: canvas}).addTo(map).bindPopup('Hello Canvas');
 
-		var map = new L.Map('map', {layers: [osm], renderer: svg});
+			const circle = new Circle([35, 0], 700000, {color: 'green', renderer: canvas}).addTo(map).bindPopup('Hello Circle');
+			const circleMarker = new CircleMarker([35, 30], {color: 'magenta', radius: 30}).addTo(map).bindPopup('Happy New Year!');
 
-		map.addLayer(L.marker(route[0]));
-		map.addLayer(L.marker(route[route.length - 1]));
+			map.setView([36, 52], 3);
 
-		var canvas = L.canvas();
-
-		var poly = L.polyline([
-			[[60, 30], [60, 50], [40, 50]],
-			[[20, 50], [20, 70], [0, 70]]
-		], {color: 'red'}).addTo(map).bindPopup('Hello SVG');
-
-		var path = L.polygon([
-			[route, [[50.5, 30.5], [50.5, 40], [40, 40]]],
-			[[[20, 0], [20, 40], [0, 40]]]
-		], {renderer: canvas}).addTo(map).bindPopup('Hello Canvas');
-
-		var circle = L.circle([35, 0], 700000, {color: 'green', renderer: canvas}).addTo(map).bindPopup('Hello Circle');
-		var circleMarker = L.circleMarker([35, 30], {color: 'magenta', radius: 30}).addTo(map).bindPopup('Happy New Year!');
-
-		// map.on('mousemove', function (e) {
-		// 	circle.setLatLng(e.latlng);
-		// });
-
-		map.setView([36, 52], 3);
-
-		var layersControl = new L.Control.Layers({
-		}, {
-			'poly': poly,
-			'path': path,
-			'circle': circle,
-			'circleMarker': circleMarker,
-			'canvas': canvas,
-			'svg': svg,
-		}, {collapsed: false});
-		map.addControl(layersControl);
-	</script>
-</body>
+			const layersControl = new Control.Layers({}, {
+				poly,
+				path,
+				circle,
+				circleMarker,
+				canvas,
+				svg,
+			}, {collapsed: false});
+			map.addControl(layersControl);
+		</script>
+	</body>
 </html>
