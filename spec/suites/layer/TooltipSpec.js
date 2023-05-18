@@ -83,7 +83,7 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(group._tooltip)).to.be(false);
 	});
 
-	it('opens on marker focus and ignore layers without getElement function', () => {
+	it('opens on marker focus and ignore layers without getElement function', function () {
 		var marker1 = L.marker([41.18, 9.45]);
 		var someLayerWithoutGetElement = L.layerGroup();
 		var group = new L.FeatureGroup([marker1, someLayerWithoutGetElement]).addTo(map);
@@ -499,7 +499,7 @@ describe('Tooltip', function () {
 		expect(tooltip.isOpen()).to.be(false);
 	});
 
-	it('opens the tooltip if the tooltip is loaded while the map is dragging.', () => {
+	it('opens the tooltip if the tooltip is loaded while the map is dragging.', function () {
 		// simulate map dragging
 		map.dragging.moving = function () {
 			return true;
