@@ -1675,7 +1675,7 @@ export var Map = Evented.extend({
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true, false)
+			    ._moveStart(true, options.noMoveStart || false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
