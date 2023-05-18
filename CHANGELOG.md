@@ -2,6 +2,22 @@ Leaflet Changelog
 =================
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
+
+## 1.9.4 (2023-05-18)
+
+### 🐞 Bug fixes
+
+- Fix tile gaps in Chromium-based browsers ([#8891](https://github.com/Leaflet/Leaflet/pull/8891) by [@IvanSanchez](https://github.com/IvanSanchez))
+- Fix vector drifts when `zoomAnimation` is `false` and zooming via `flyTo` or pinch ([#8794](https://github.com/Leaflet/Leaflet/pull/8794) by [@plainheart](https://github.com/plainheart))
+- Ensure `toGeoJSON()` still works with an empty array ([#8737](https://github.com/Leaflet/Leaflet/pull/8737) by [@Falke-Design](https://github.com/Falke-Design))
+- Ensure `LineUtil` and `PolyUtil` only iterate over array values and not properties ([#8840](https://github.com/Leaflet/Leaflet/pull/8840) by [@Falke-Design](https://github.com/Falke-Design))
+- Fix rounding errors in center calculation of `LineUtil` and `PolyUtil` for small layers ([#8784](https://github.com/Leaflet/Leaflet/pull/8784) by [@Falke-Design](https://github.com/Falke-Design))
+- Prevent unwanted layer toggle while expanding the Layers control on mobile ([#8910](https://github.com/Leaflet/Leaflet/pull/8910) by [@Falke-Design](https://github.com/Falke-Design))
+- Fix an error when a focusing on a `Tooltip`-bound `FeatureGroup` that contains a layer without a `getElement` method ([#8890](https://github.com/Leaflet/Leaflet/pull/8890) by [@Falke-Design](https://github.com/Falke-Design))
+- Fix `Tooltip` is not showing when loaded dynamically while moving the map ([#8672](https://github.com/Leaflet/Leaflet/pull/8672) by [@theGOTOguy](https://github.com/theGOTOguy))
+- Fix `noMoveStart` option not applying to `fitBounds` ([#8911](https://github.com/Leaflet/Leaflet/pull/8911) by [@AbdullahSohail-SE](https://github.com/AbdullahSohail-SE))
+- Fix outlines showing up when interacting with the map on Safari 16.4+ ([#8917](https://github.com/Leaflet/Leaflet/pull/8917) by [@jonkoops](https://github.com/jonkoops))
+
 ## 1.9.3 (2022-11-18)
 
 ### 🙌 Accessibility
