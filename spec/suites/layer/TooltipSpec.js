@@ -496,9 +496,9 @@ describe('Tooltip', () => {
 		map.setView([51.505, -0.09], 13);
 
 		// The tooltip is loaded now!
-		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		expect(map.hasLayer(layer._tooltip)).to.be.true;
 		const tooltip = layer.getTooltip();
-		expect(tooltip.isOpen()).to.be.ok();
+		expect(tooltip.isOpen()).to.be.true;
 	});
 
 	it('opens tooltip with passed latlng position while initializing', () => {
