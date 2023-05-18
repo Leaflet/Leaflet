@@ -202,8 +202,12 @@ export var Draggable = Evented.extend({
 		DomUtil.enableImageDrag();
 		DomUtil.enableTextSelection();
 
-		if (this._moved && this._moving) {
+		var fireDragend = this._moved && this._moving;
 
+		this._moving = false;
+		Draggable._dragging = false;
+
+		if (fireDragend) {
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
@@ -211,9 +215,6 @@ export var Draggable = Evented.extend({
 				distance: this._newPos.distanceTo(this._startPos)
 			});
 		}
-
-		this._moving = false;
-		Draggable._dragging = false;
 	}
 
 });
