@@ -69,7 +69,7 @@ Also note that when using multiple base layers, only one of them should be added
 You can also style the keys when you define the objects for the layers. For example, this code will make the label for the grayscale map gray:
 
 <pre><code>var baseMaps = {
-	"&lt;span style='color: gray'&gt;OpenStreetMap&lt;/span&gt;": grayscale,
+	"&lt;span style='color: gray'&gt;OpenStreetMap&lt;/span&gt;": OpenStreetMap,
 	"Streets": streets
 };
 </code></pre>
