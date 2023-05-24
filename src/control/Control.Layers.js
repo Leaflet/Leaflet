@@ -156,6 +156,7 @@ export const Layers = Control.extend({
 	// Expand the control container if collapsed.
 	expand() {
 		this._container.classList.add('leaflet-control-layers-expanded');
+		this._section.setAttribute('aria-label', 'Layers');
 		this._section.style.height = null;
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
@@ -172,6 +173,7 @@ export const Layers = Control.extend({
 	// Collapse the control container if expanded.
 	collapse() {
 		this._container.classList.remove('leaflet-control-layers-expanded');
+		this._section.removeAttribute('aria-label');
 		return this;
 	},
 
@@ -417,7 +419,6 @@ export const Layers = Control.extend({
 	_expandIfNotCollapsed() {
 		if (this._map && !this.options.collapsed) {
 			this.expand();
-			this._section.setAttribute('aria-label', 'Layers');
 		}
 		return this;
 	},
