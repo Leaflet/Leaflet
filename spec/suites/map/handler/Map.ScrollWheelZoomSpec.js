@@ -1,3 +1,6 @@
+import {Map, DomEvent} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.ScrollWheelZoom', () => {
 	let container, map;
 	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
@@ -12,7 +15,7 @@ describe('Map.ScrollWheelZoom', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false
@@ -101,7 +104,7 @@ describe('Map.ScrollWheelZoom', () => {
 			map.setZoom(zoom, {animate: false});
 			expect(map.getZoom()).to.equal(zoom);
 
-			map.options.wheelPxPerZoomLevel = 30 / L.DomEvent.getWheelPxFactor();
+			map.options.wheelPxPerZoomLevel = 30 / DomEvent.getWheelPxFactor();
 			UIEventSimulator.fire(wheel, container, scrollIn);
 
 			map.once('zoomend', () => {

@@ -1,4 +1,5 @@
-/* eslint no-new: 0 */
+import {Class} from 'leaflet';
+
 describe('Class', () => {
 	describe('#extend', () => {
 		let Klass,
@@ -18,7 +19,7 @@ describe('Class', () => {
 				foo: 5,
 				bar: method
 			};
-			Klass = L.Class.extend(props);
+			Klass = Class.extend(props);
 		});
 
 		it('creates a class with the given constructor & properties', () => {
@@ -89,7 +90,7 @@ describe('Class', () => {
 		});
 
 		it('includes multiple mixins', () => {
-			const Klass2 = L.Class.extend({
+			const Klass2 = Class.extend({
 				includes: [{mixin: true}, {mixin2: true}]
 			});
 			const a = new Klass2();
@@ -106,7 +107,7 @@ describe('Class', () => {
 		});
 
 		it('merges options instead of replacing them', () => {
-			const KlassWithOptions1 = L.Class.extend({
+			const KlassWithOptions1 = Class.extend({
 				options: {
 					foo1: 1,
 					foo2: 2
@@ -126,13 +127,13 @@ describe('Class', () => {
 		});
 
 		it('gives new classes a distinct options object', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const K2 = K1.extend({});
 			expect(K2.prototype.options).not.to.equal(K1.prototype.options);
 		});
 
 		it('inherits options prototypally', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const K2 = K1.extend({options: {}});
 			K1.prototype.options.foo = 'bar';
 			expect(K2.prototype.options.foo).to.eql('bar');
@@ -140,13 +141,13 @@ describe('Class', () => {
 
 		it('does not reuse original props.options', () => {
 			const props = {options: {}};
-			const K = L.Class.extend(props);
+			const K = Class.extend(props);
 
 			expect(K.prototype.options).not.to.equal(props.options);
 		});
 
 		it('does not replace source props.options object', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const opts = {};
 			const props = {options: opts};
 			K1.extend(props);
@@ -155,7 +156,7 @@ describe('Class', () => {
 		});
 
 		it('prevents change of prototype options', () => {
-			const Klass = L.Class.extend({options: {}});
+			const Klass = Class.extend({options: {}});
 			const instance = new Klass();
 			expect(Klass.prototype.options).to.not.equal(instance.options);
 		});
@@ -218,7 +219,7 @@ describe('Class', () => {
 		let Klass;
 
 		beforeEach(() => {
-			Klass = L.Class.extend({});
+			Klass = Class.extend({});
 		});
 
 		it('returns the class with the extra methods', () => {
@@ -239,7 +240,7 @@ describe('Class', () => {
 
 		it('keeps parent options', () => { // #6070
 
-			const Quux = L.Class.extend({
+			const Quux = Class.extend({
 				options: {foo: 'Foo!'}
 			});
 
