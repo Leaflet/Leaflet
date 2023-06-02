@@ -1,4 +1,5 @@
 import {Map, DomUtil, Point, LatLng, Marker} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
 describe('Map.Drag', () => {

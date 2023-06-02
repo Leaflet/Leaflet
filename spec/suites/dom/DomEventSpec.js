@@ -1,4 +1,5 @@
 import {DomEvent, Util, Map} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 
 describe('DomEvent', () => {
 	let el, listener;

@@ -1,4 +1,5 @@
 import {Map, Polygon, DomEvent, Marker, Circle, SVG, stamp, Util, Polyline, LayerGroup, Canvas} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Canvas', () => {

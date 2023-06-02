@@ -1,4 +1,5 @@
-import {Map, TileLayer, Control, Marker, Util} from 'leaflet';
+import {Control, Map, Marker, TileLayer, Util} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('Control.Layers', () => {

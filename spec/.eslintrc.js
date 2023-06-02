@@ -11,7 +11,6 @@ module.exports = {
 		expect: false,
 		chai: false,
 		sinon: false,
-		UIEventSimulator: false,
 		Hand: false,
 	}
 };
