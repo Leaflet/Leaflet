@@ -1,4 +1,5 @@
-import {DomEvent, Map, DomUtil, extend, Control} from 'leaflet';
+import {Control, DomEvent, DomUtil, Map, extend} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('DomEvent.DoubleTapSpec.js', () => {

@@ -1,4 +1,5 @@
 import {Map, latLng, Point, LatLngBounds, TileLayer, Handler, DomEvent, Bounds, Layer, control as lControl, GridLayer, Util, Marker, Polygon, DivIcon, CircleMarker, Canvas} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('Map', () => {

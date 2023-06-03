@@ -1,4 +1,5 @@
 import {Map, Icon, Marker, Point, DivIcon, Browser, LatLng} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker', () => {

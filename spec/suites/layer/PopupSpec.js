@@ -1,4 +1,5 @@
 import {Map, Popup, Marker, FeatureGroup, Point, Icon, DivIcon, DomUtil, Polygon} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('Popup', () => {
