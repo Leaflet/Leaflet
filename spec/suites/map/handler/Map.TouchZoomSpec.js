@@ -1,9 +1,12 @@
+import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
+import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
+
 describe('Map.TouchZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
@@ -18,7 +21,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Increases zoom when pinching out', (done) => {
 		map.setView([0, 0], 1);
 		map.once('zoomend', () => {
-			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
+			expect(map.getCenter().equals(new LatLng(0, 0))).to.be.true;
 			// Initial zoom 1, initial distance 50px, final distance 450px
 			expect(map.getZoom()).to.equal(4);
 
@@ -39,7 +42,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Decreases zoom when pinching in', (done) => {
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
+			expect(map.getCenter().equals(new LatLng(0, 0))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
 			expect(map.getZoom()).to.equal(1);
 
@@ -71,14 +74,14 @@ describe('Map.TouchZoom', () => {
 			expect(spy.callCount > 1).to.be.true;
 			expect(pinchZoomEvent).to.be.true;
 
-			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
+			expect(map.getCenter().equals(new LatLng(0, 0))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
 			expect(map.getZoom()).to.equal(1);
 
 			done();
 		});
 
-		L.rectangle(map.getBounds().pad(-0.2)).addTo(map);
+		new Rectangle(map.getBounds().pad(-0.2)).addTo(map);
 
 		const hand = new Hand({timing: 'fastframe'});
 		const f1 = hand.growFinger(touchEventType);
@@ -94,7 +97,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Dragging is possible after pinch zoom', (done) => {
 		map.setView([0, 0], 8);
 
-		L.polygon([
+		new Polygon([
 			[0, 0],
 			[0, 1],
 			[1, 1],
@@ -121,7 +124,7 @@ describe('Map.TouchZoom', () => {
 			.down().moveBy(-200, 0, 500).up(100);
 
 		f1.wait(100).moveTo(200, 300, 0).down()
-			.moveBy(5, 0, 20) // We move 5 pixels first to overcome the 3-pixel threshold of L.Draggable (fastframe)
+			.moveBy(5, 0, 20) // We move 5 pixels first to overcome the 3-pixel threshold of Draggable (fastframe)
 			.moveBy(-150, 0, 200) // Dragging
 			.up();
 
@@ -130,7 +133,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('TouchZoom works with disabled map dragging', (done) => {
 		map.remove();
 
-		map = new L.Map(container, {
+		map = new Map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: false,	// If true, the test has to wait extra 250msec,
@@ -139,7 +142,7 @@ describe('Map.TouchZoom', () => {
 
 		map.setView([0, 0], 4);
 		map.once('zoomend', () => {
-			expect(map.getCenter().equals(L.latLng({lat:0, lng:0}))).to.be.true;
+			expect(map.getCenter().equals(new LatLng(0, 0))).to.be.true;
 			// Initial zoom 4, initial distance 450px, final distance 50px
 			expect(map.getZoom()).to.equal(1);
 
@@ -160,7 +163,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is true', (done) => {
 		map.remove();
 
-		map = new L.Map(container, {
+		map = new Map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: true
@@ -168,7 +171,7 @@ describe('Map.TouchZoom', () => {
 
 		map.setView([0, 0], 8);
 
-		const polygon = L.polygon([
+		const polygon = new Polygon([
 			[0, 0],
 			[0, 1],
 			[1, 1],
@@ -222,7 +225,7 @@ describe('Map.TouchZoom', () => {
 	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
 		map.remove();
 
-		map = new L.Map(container, {
+		map = new Map(container, {
 			touchZoom: true,
 			inertia: false,
 			zoomAnimation: false
@@ -230,7 +233,7 @@ describe('Map.TouchZoom', () => {
 
 		map.setView([0, 0], 8);
 
-		const polygon = L.polygon([
+		const polygon = new Polygon([
 			[0, 0],
 			[0, 1],
 			[1, 1],

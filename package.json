@@ -30,7 +30,7 @@
     "sinon": "^15.0.0",
     "ssri": "^10.0.0",
     "uglify-js": "^3.17.1",
-    "ui-event-simulator": "^1.0.0"
+    "ui-event-simulator": "^2.0.0"
   },
   "main": "dist/leaflet-src.js",
   "module": "dist/leaflet-src.esm.js",

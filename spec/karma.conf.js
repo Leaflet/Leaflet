@@ -12,20 +12,17 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			'karma-time-stats-reporter'
 		],
 		frameworks: ['mocha', 'sinon', 'chai'],
+		customContextFile: 'spec/context.html',
+		customDebugFile: 'spec/debug.html',
 		files: [
-			'spec/before.js',
-			{pattern: 'dist/leaflet-src.js'},
-			'spec/after.js',
-			'node_modules/ui-event-simulator/ui-event-simulator.js',
+			{pattern: 'node_modules/ui-event-simulator/*', included: false, served: true},
 			'node_modules/prosthetic-hand/dist/prosthetic-hand.js',
-			'spec/suites/SpecHelper.js',
-			'spec/suites/**/*.js',
-			'dist/*.css',
-			{pattern: 'dist/images/*.png', included: false, served: true}
+			{pattern: 'dist/**/*.js', included: false, served: true},
+			{pattern: 'dist/**/*.png', included: false, served: true},
+			{pattern: 'spec/setup.js', type: 'module'},
+			{pattern: 'spec/suites/**/*.js', type: 'module'},
+			{pattern: 'dist/*.css', type: 'css'},
 		],
-		proxies: {
-			'/base/dist/images/': 'dist/images/'
-		},
 		reporters: ['progress', 'time-stats'],
 		timeStatsReporter: {
 			reportTimeStats: false,

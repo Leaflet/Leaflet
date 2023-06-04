@@ -1,3 +1,7 @@
+import {Map, Browser, extend, Point} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.TapHoldSpec.js', () => {
 	let container, clock, spy, map;
 
@@ -7,7 +11,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [51.505, -0.09],
 			zoom: 13,
 			tapHold: true
@@ -77,7 +81,7 @@ describe('Map.TapHoldSpec.js', () => {
 		expect(spy.notCalled).to.be.true;
 	});
 
-	(L.Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
+	(Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
 		UIEventSimulator.fire('pointerdown', container, {pointerId:0, pointerType:'mouse', ...posStart});
 		clock.tick(650);
 
@@ -132,7 +136,7 @@ describe('Map.TapHoldSpec.js', () => {
 	});
 
 	it('ignores long movements', () => {
-		expect(L.point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
+		expect(new Point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
 		  .to.be.above(map.options.tapTolerance);
 
 		UIEventSimulator.fire('touchstart', container, {touches: [posStart]});
@@ -148,7 +152,7 @@ describe('Map.TapHoldSpec.js', () => {
 	});
 
 	it('.originalEvent has expected properties', () => {
-		L.extend(posStart, {
+		extend(posStart, {
 			screenX: 2,
 			screenY: 2,
 		});
@@ -158,7 +162,7 @@ describe('Map.TapHoldSpec.js', () => {
 		clock.tick(650);
 
 		const originalEvent = spy.lastCall.args[0].originalEvent;
-		const expectedProps = L.extend({
+		const expectedProps = extend({
 			type: 'contextmenu',
 			bubbles: true,
 			cancelable: true,

@@ -1,3 +1,7 @@
+import {Control, DomEvent, DomUtil, Map, extend} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
 describe('DomEvent.DoubleTapSpec.js', () => {
 	let container, clock, spy;
 
@@ -7,7 +11,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		clock = sinon.useFakeTimers();
 		clock.tick(1000);
 		spy = sinon.spy();
-		L.DomEvent.on(container, 'dblclick', spy);
+		DomEvent.on(container, 'dblclick', spy);
 	});
 
 	afterEach(() => {
@@ -44,7 +48,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	});
 
 	it('does not fire dblclick after removeListener', () => {
-		L.DomEvent.off(container, 'dblclick', spy);
+		DomEvent.off(container, 'dblclick', spy);
 
 		UIEventSimulator.fire('click', container, {detail: 1});
 		clock.tick(100);
@@ -76,7 +80,7 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		UIEventSimulator.fire('click', container, click);
 
 		const event = spy.lastCall.args[0];
-		const expectedProps = L.extend(click, {
+		const expectedProps = extend(click, {
 			type: 'dblclick',
 			// bubbles: true,    // not important, as we do not actually dispatch the event
 			// cancelable: true, //
@@ -91,19 +95,19 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 
 	it('respects disableClickPropagation', () => {
 		const spyMap = sinon.spy();
-		const map = L.map(container).setView([51.505, -0.09], 13);
+		const map = new Map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		const spyCtrl = sinon.spy();
-		const ctrl = L.DomUtil.create('div');
-		L.DomEvent.disableClickPropagation(ctrl);
-		const MyControl = L.Control.extend({
+		const ctrl = DomUtil.create('div');
+		DomEvent.disableClickPropagation(ctrl);
+		const MyControl = Control.extend({
 			onAdd() {
 				return ctrl;
 			}
 		});
 		map.addControl(new MyControl());
-		L.DomEvent.on(ctrl, 'dblclick', spyCtrl);
+		DomEvent.on(ctrl, 'dblclick', spyCtrl);
 
 		UIEventSimulator.fire('click', ctrl, {detail: 1});
 		clock.tick(100);
@@ -115,13 +119,13 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 
 	it('doesn\'t fire double-click while clicking on a label with `for` attribute', () => {
 		const spyMap = sinon.spy();
-		const map = L.map(container).setView([51.505, -0.09], 13);
+		const map = new Map(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		let div;
-		const MyControl = L.Control.extend({
+		const MyControl = Control.extend({
 			onAdd() {
-				div = L.DomUtil.create('div');
+				div = DomUtil.create('div');
 				div.innerHTML = '<input type="checkbox" id="input">' +
 					'<label for="input" style="background: #ffffff; width: 100px; height: 100px;display: block;">Click Me</label>';
 				return div;

@@ -1,12 +1,15 @@
+import {Map, Marker, Icon} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Icon.Default', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 
 		map.setView([0, 0], 0);
-		L.marker([0, 0]).addTo(map);
+		new Marker([0, 0]).addTo(map);
 	});
 
 	afterEach(() => {
@@ -14,17 +17,17 @@ describe('Icon.Default', () => {
 	});
 
 	it('detect icon images path', () => {
-		const origPath = L.Icon.Default.imagePath; // set in after.js
+		const origPath = Icon.Default.imagePath; // set in after.js
 		expect(origPath).to.be.ok;
-		delete L.Icon.Default.imagePath;
-		const marker = L.marker([0, 0]);
+		delete Icon.Default.imagePath;
+		const marker = new Marker([0, 0]);
 
-		expect(L.Icon.Default.imagePath).to.be.undefined;
+		expect(Icon.Default.imagePath).to.be.undefined;
 		marker.addTo(map);
 
-		expect(L.Icon.Default.imagePath).to.equal(location.origin + origPath);
+		expect(Icon.Default.imagePath).to.equal(location.origin + origPath);
 
-		const stripUrl = L.Icon.Default.prototype._stripUrl;
+		const stripUrl = Icon.Default.prototype._stripUrl;
 		const properPath = 'http://localhost:8000/base/dist/images/';
 		[ // valid
 			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox

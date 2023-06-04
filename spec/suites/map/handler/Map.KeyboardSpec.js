@@ -1,3 +1,7 @@
+import {Map, Popup} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.Keyboard', () => {
 	const KEYCODE_LOWERCASE_A = 'KeyA';
 	const KEYCODE_ARROW_LEFT = 'ArrowLeft';
@@ -12,12 +16,12 @@ describe('Map.Keyboard', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 
 		// make keyboard-caused panning instant to cut down on test running time
-		map.panBy = function (offset) { return L.Map.prototype.panBy.call(this, offset, {animate: false}); };
+		map.panBy = function (offset) { return Map.prototype.panBy.call(this, offset, {animate: false}); };
 
 		map.setView([0, 0], 5);
 
@@ -122,7 +126,7 @@ describe('Map.Keyboard', () => {
 	describe('popup closing', () => {
 		it('closes a popup when pressing escape', () => {
 
-			const popup = L.popup().setLatLng([0, 0]).setContent('Null Island');
+			const popup = new Popup().setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
 
 			expect(popup.isOpen()).to.be.true;
@@ -137,7 +141,7 @@ describe('Map.Keyboard', () => {
 	describe('popup closing disabled', () => {
 		it('close of popup when pressing escape disabled via options', () => {
 
-			const popup = L.popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
+			const popup = new Popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
 			map.openPopup(popup);
 
 			expect(popup.isOpen()).to.be.true;
