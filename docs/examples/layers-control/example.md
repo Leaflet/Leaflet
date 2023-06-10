@@ -13,7 +13,7 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
-const streets = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 });
@@ -26,7 +26,7 @@ const map = L.map('map', {
 
 const baseLayers = {
 	'OpenStreetMap': osm,
-	'Streets': streets
+	'OpenStreetMap.HOT': osmHOT
 };
 
 const overlays = {
@@ -40,10 +40,10 @@ const rubyHill = L.marker([39.68, -105.00]).bindPopup('This is Ruby Hill Park.')
 
 const parks = L.layerGroup([crownHill, rubyHill]);
 
-const satellite = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+const openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
-layerControl.addBaseLayer(satellite, 'Satellite');
+layerControl.addBaseLayer(openTopoMap, 'OpenTopoMap');
 layerControl.addOverlay(parks, 'Parks');
 </script>
