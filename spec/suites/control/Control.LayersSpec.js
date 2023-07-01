@@ -377,4 +377,37 @@ describe('Control.Layers', () => {
 			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
 		});
 	});
+
+	it('refocus map after interaction', () => {
+		const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
+		control = new Control.Layers(baseLayers).addTo(map);
+
+		const spy = sinon.spy(map.getContainer(), 'focus');
+		map.getContainer().focus();
+		expect(spy.calledOnce).to.be.true;
+
+		// simulate keyboard-click event
+		spy.resetHistory();
+		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
+			screenX: 0,
+			screenY: 0,
+		});
+		expect(spy.calledOnce).to.be.false;
+
+		// simulate MouseEvent at 0, 1
+		spy.resetHistory();
+		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
+			screenX: 0,
+			screenY: 1,
+		});
+		expect(spy.calledOnce).to.be.true;
+
+		// simulate MouseEvent
+		spy.resetHistory();
+		UIEventSimulator.fire('click', control._baseLayersList.getElementsByTagName('input')[0], {
+			screenX: 100, // random number - not 0
+			screenY: 100, // random number - not 0
+		});
+		expect(spy.calledOnce).to.be.true;
+	});
 });
