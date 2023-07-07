@@ -109,6 +109,11 @@ export const Layers = Control.extend({
 			this._layers[i].layer.on('add remove', this._onLayerChange, this);
 		}
 
+		if (!this.options.collapsed) {
+			// update the height of the container after resizing the window
+			map.on('resize', this._expandIfNotCollapsed, this);
+		}
+
 		return this._container;
 	},
 
@@ -124,6 +129,8 @@ export const Layers = Control.extend({
 		for (let i = 0; i < this._layers.length; i++) {
 			this._layers[i].layer.off('add remove', this._onLayerChange, this);
 		}
+
+		this._map.off('resize', this._expandIfNotCollapsed, this);
 	},
 
 	// @method addBaseLayer(layer: Layer, name: String): this
