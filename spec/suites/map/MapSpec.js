@@ -1419,9 +1419,7 @@ describe('Map', () => {
 			map.flyTo(dc, 4, {duration: 0.1});
 		});
 
-		it('flyTo should honour maxZoom', function (done) {
-			this.timeout(10000); // This test takes longer than usual due to frames
-
+		it('flyTo should honour maxZoom', () => {
 			const newCenter = latLng(10, 11),
 			    maxZoom = 20;
 			map.options.maxZoom = maxZoom;
@@ -1431,10 +1429,9 @@ describe('Map', () => {
 			map.on('zoomend', () => {
 				expect(map.getCenter()).to.eql(newCenter);
 				expect(map.getZoom()).to.eql(maxZoom);
-				done();
 			});
 
-			map.flyTo(newCenter, 22);
+			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
 		});
 	});
 
