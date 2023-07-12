@@ -366,7 +366,7 @@ export const Map = Evented.extend({
 		    startZoom = this._zoom;
 
 		targetCenter = toLatLng(targetCenter);
-		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
+		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
 		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
