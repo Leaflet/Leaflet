@@ -227,9 +227,19 @@ p.tagline {
 	-webkit-animation: fadein 1s;
 	animation: fadein 1s;
 }
+
 .ext-link:hover {
 	opacity: 1;
 }
+
+.ext-link img {
+	border-radius: 50%;
+}
+
+.ext-link.forum img {
+	background-color: #242729;
+}
+
 @-webkit-keyframes fadein {
 	from { opacity: 0; }
 	to   { opacity: 0.7; }
