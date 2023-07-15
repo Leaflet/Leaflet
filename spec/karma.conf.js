@@ -1,6 +1,9 @@
+/* eslint-env node */
 // See: https://karma-runner.github.io/latest/config/configuration-file.html
 module.exports = function (/** @type {import('karma').Config} */ config) {
-	config.set({
+	const isCoverageEnabled = process.argv.includes('--coverage');
+
+	const karmaConfig = {
 		basePath: '../',
 		plugins: [
 			'karma-mocha',
@@ -24,6 +27,13 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			{pattern: 'dist/*.css', type: 'css'},
 		],
 		reporters: ['progress', 'time-stats'],
+		coverageReporter: {
+			dir: 'coverage/',
+			reporters: [
+				{type: 'html', subdir: 'html'},
+				{type: 'text-summary'}
+			]
+		},
 		timeStatsReporter: {
 			reportTimeStats: false,
 			longestTestsCount: 10
@@ -64,5 +74,15 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 				forbidOnly: process.env.CI || false
 			}
 		}
-	});
+	};
+
+	if (isCoverageEnabled) {
+		karmaConfig.plugins.push('karma-coverage');
+		karmaConfig.reporters.push('coverage');
+		karmaConfig.preprocessors = {
+			'dist/leaflet-src.esm.js': 'coverage'
+		};
+	}
+
+	config.set(karmaConfig);
 };
