@@ -12,9 +12,5 @@ module.exports = {
 		chai: false,
 		sinon: false,
 		Hand: false,
-		touchEventType: false, /* defined in SpecHelper.js */
-		createContainer: false, /* defined in SpecHelper.js */
-		removeMapContainer: false, /* defined in SpecHelper.js */
-		pointerType: false /* defined in SpecHelper.js */
 	}
 };
