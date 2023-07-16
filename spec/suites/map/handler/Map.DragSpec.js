@@ -1,4 +1,5 @@
-import {Map, DomUtil, Point, LatLng, Marker} from 'leaflet';
+import {DomUtil, LatLng, Map, Marker, Point} from 'leaflet';
+import Hand from 'prosthetic-hand';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
