@@ -180,5 +180,12 @@ describe('Map.BoxZoom', () => {
 		});
 
 		expect(resetTimeout).to.be.true;
+
+		// cleanup pointerdown - because it breaks other tests
+		UIEventSimulator.fire('pointerup', map._container, {
+			shiftKey: true,
+			clientX,
+			clientY,
+		});
 	});
 });
