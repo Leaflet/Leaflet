@@ -26,22 +26,25 @@ Map.mergeOptions({
 });
 
 export const TouchZoom = Handler.extend({
+	_pointerList: {},
+
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
-		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.on(this._map._container, 'pointerdown', this._onTouchStart, this);
 	},
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
-		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.off(this._map._container, 'pointerdown', this._onTouchStart, this);
 	},
 
 	_onTouchStart(e) {
+		this._pointerList[e.type] = this._pointerList[e.type] ? [...this._pointerList[e.type], e] : [e];
 		const map = this._map;
-		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
+		if (this._pointerList[e.type].length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		const p1 = map.mouseEventToContainerPoint(e.touches[0]),
-		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
+		const p1 = map.mouseEventToContainerPoint(this._pointerList[e.type][0]),
+		    p2 = map.mouseEventToContainerPoint(this._pointerList[e.type][1]);
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
@@ -57,19 +60,23 @@ export const TouchZoom = Handler.extend({
 
 		map._stop();
 
-		DomEvent.on(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.on(document, 'touchend touchcancel', this._onTouchEnd, this);
+		DomEvent.on(document, 'pointermove', this._onTouchMove, this);
+		DomEvent.on(document, 'pointerup pointercancel', this._onTouchEnd, this);
 
 		DomEvent.preventDefault(e);
+		this._pointerList[e.type] = [];
 	},
 
 	_onTouchMove(e) {
-		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
+		this._pointerList[e.type] = this._pointerList[e.type] ? [...this._pointerList[e.type], e] : [e];
+
+		if (this._pointerList[e.type].length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,
-		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
-		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
+		    p1 = map.mouseEventToContainerPoint(this._pointerList[e.type][0]),
+		    p2 = map.mouseEventToContainerPoint(this._pointerList[e.type][1]),
 		    scale = p1.distanceTo(p2) / this._startDist;
+		this._pointerList[e.type] = [];
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
@@ -103,6 +110,8 @@ export const TouchZoom = Handler.extend({
 	},
 
 	_onTouchEnd() {
+		this._pointerList = {};
+
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
@@ -111,8 +120,8 @@ export const TouchZoom = Handler.extend({
 		this._zooming = false;
 		Util.cancelAnimFrame(this._animRequest);
 
-		DomEvent.off(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.off(document, 'touchend touchcancel', this._onTouchEnd, this);
+		DomEvent.off(document, 'pointermove', this._onTouchMove, this);
+		DomEvent.off(document, 'pointerup pointercancel', this._onTouchEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {
