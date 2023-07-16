@@ -78,7 +78,7 @@ export const Map = Evented.extend({
 		// @section Animation Options
 		// @option zoomAnimation: Boolean = true
 		// Whether the map zoom animation is enabled. By default it's enabled
-		// in all browsers that support CSS3 Transitions except Android.
+		// in all browsers that support CSS Transitions except Android.
 		zoomAnimation: true,
 
 		// @option zoomAnimationThreshold: Number = 4
@@ -87,13 +87,13 @@ export const Map = Evented.extend({
 
 		// @option fadeAnimation: Boolean = true
 		// Whether the tile fade animation is enabled. By default it's enabled
-		// in all browsers that support CSS3 Transitions except Android.
+		// in all browsers that support CSS Transitions except Android.
 		fadeAnimation: true,
 
 		// @option markerZoomAnimation: Boolean = true
 		// Whether markers animate their zoom with the zoom animation, if disabled
 		// they will disappear for the length of the animation. By default it's
-		// enabled in all browsers that support CSS3 Transitions except Android.
+		// enabled in all browsers that support CSS Transitions except Android.
 		markerZoomAnimation: true,
 
 		// @option transform3DLimit: Number = 2^23
@@ -366,7 +366,7 @@ export const Map = Evented.extend({
 		    startZoom = this._zoom;
 
 		targetCenter = toLatLng(targetCenter);
-		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
+		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
 		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
@@ -781,14 +781,18 @@ export const Map = Evented.extend({
 
 		let i;
 		for (i in this._layers) {
-			this._layers[i].remove();
+			if (Object.hasOwn(this._layers, i)) {
+				this._layers[i].remove();
+			}
 		}
 		for (i in this._panes) {
-			this._panes[i].remove();
+			if (Object.hasOwn(this._panes, i)) {
+				this._panes[i].remove();
+			}
 		}
 
 		this._layers = [];
-		this._panes = [];
+		this._panes = {};
 		delete this._mapPane;
 		delete this._renderer;
 
@@ -1679,7 +1683,7 @@ export const Map = Evented.extend({
 
 		Util.requestAnimFrame(function () {
 			this
-			    ._moveStart(true, false)
+			    ._moveStart(true, options.noMoveStart ?? false)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 

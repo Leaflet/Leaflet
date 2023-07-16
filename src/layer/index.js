@@ -11,6 +11,8 @@ GeoJSON.getFeature = getFeature;
 GeoJSON.asFeature = asFeature;
 export {GeoJSON, geoJSON, geoJson};
 
+export {BlanketOverlay} from './BlanketOverlay.js';
+
 export {ImageOverlay, imageOverlay} from './ImageOverlay.js';
 export {VideoOverlay, videoOverlay} from './VideoOverlay.js';
 export {SVGOverlay, svgOverlay} from './SVGOverlay.js';

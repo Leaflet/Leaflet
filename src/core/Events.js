@@ -39,9 +39,11 @@ export const Events = {
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (const type in types) {
-				// we don't process space-separated events here for performance;
-				// it's a hot path since Layer uses the on(obj) syntax
-				this._on(type, types[type], fn);
+				if (Object.hasOwn(types, type)) {
+					// we don't process space-separated events here for performance;
+					// it's a hot path since Layer uses the on(obj) syntax
+					this._on(type, types[type], fn);
+				}
 			}
 
 		} else {
@@ -75,7 +77,9 @@ export const Events = {
 
 		} else if (typeof types === 'object') {
 			for (const type in types) {
-				this._off(type, types[type], fn);
+				if (Object.hasOwn(types, type)) {
+					this._off(type, types[type], fn);
+				}
 			}
 
 		} else {
@@ -272,9 +276,11 @@ export const Events = {
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (const type in types) {
-				// we don't process space-separated events here for performance;
-				// it's a hot path since Layer uses the on(obj) syntax
-				this._on(type, types[type], fn, true);
+				if (Object.hasOwn(types, type)) {
+					// we don't process space-separated events here for performance;
+					// it's a hot path since Layer uses the on(obj) syntax
+					this._on(type, types[type], fn, true);
+				}
 			}
 
 		} else {
@@ -308,10 +314,12 @@ export const Events = {
 
 	_propagateEvent(e) {
 		for (const id in this._eventParents) {
-			this._eventParents[id].fire(e.type, Util.extend({
-				layer: e.target,
-				propagatedFrom: e.target
-			}, e), true);
+			if (Object.hasOwn(this._eventParents, id)) {
+				this._eventParents[id].fire(e.type, Util.extend({
+					layer: e.target,
+					propagatedFrom: e.target
+				}, e), true);
+			}
 		}
 	}
 };

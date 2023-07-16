@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - SVG Clicks</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer, LatLngBounds, Polyline} from 'leaflet';
+
+			const map = new Map('map');
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {minZoom: 1, maxZoom: 17});
+
+			map.addLayer(osm);
+			map.fitBounds(new LatLngBounds([51, 7], [51, 7]));
+
+			new Polyline([
+				[51, 7.000],
+				[51.002, 7.004],
+				[51.004, 7.006]
+			]).addTo(map).on('click', () => {
+				console.log('bottom');
+			});
+
+			new Polyline([
+				[51, 7.000],
+				[51.002, 7.004]
+			], {
+				interactive:false,
+				color:'#f00'
+			}).addTo(map);
+
+			// when the mouse hovers over the red route2, you cannot click through the blue route1 beneath
+		</script>
+	</body>
+</html>

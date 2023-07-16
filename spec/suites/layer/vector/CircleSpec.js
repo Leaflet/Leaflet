@@ -1,11 +1,14 @@
+import {Map, Circle} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Circle', () => {
 	let map, container, circle;
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		map.setView([0, 0], 4);
-		circle = L.circle([50, 30], {radius: 200}).addTo(map);
+		circle = new Circle([50, 30], {radius: 200}).addTo(map);
 	});
 
 	afterEach(() => {
@@ -14,14 +17,14 @@ describe('Circle', () => {
 
 	describe('#init', () => {
 		it('uses default radius if not given', () => {
-			const circle = L.circle([0, 0]);
+			const circle = new Circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
 
 		it('throws error if radius is NaN', () => {
 			expect(() => {
-				L.circle([0, 0], NaN);
-			}).to.throwException('Circle radius cannot be NaN');
+				new Circle([0, 0], NaN);
+			}).to.throw('Circle radius cannot be NaN');
 		});
 
 	});

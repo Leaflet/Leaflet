@@ -5,13 +5,16 @@
  */
 
 // @function extend(dest: Object, src?: Object): Object
-// Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
+// Merges the properties (including properties inherited through the prototype chain)
+// of the `src` object (or multiple objects) into `dest` object and returns the latter.
+// Has an `L.extend` shortcut.
 export function extend(dest, ...args) {
-	let i, j, len, src;
+	let j, len, src;
 
 	for (j = 0, len = args.length; j < len; j++) {
 		src = args[j];
-		for (i in src) {
+		// eslint-disable-next-line guard-for-in
+		for (const i in src) {
 			dest[i] = src[i];
 		}
 	}
@@ -104,7 +107,9 @@ export function setOptions(obj, options) {
 		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (const i in options) {
-		obj.options[i] = options[i];
+		if (Object.hasOwn(options, i)) {
+			obj.options[i] = options[i];
+		}
 	}
 	return obj.options;
 }
@@ -117,7 +122,9 @@ export function setOptions(obj, options) {
 export function getParamString(obj, existingUrl, uppercase) {
 	const params = [];
 	for (const i in obj) {
-		params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
+		if (Object.hasOwn(obj, i)) {
+			params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
+		}
 	}
 	return ((!existingUrl || !existingUrl.includes('?')) ? '?' : '&') + params.join('&');
 }

@@ -1,9 +1,13 @@
+import {Map} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.BoxZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [0, 0],
 			zoom: 3
 		});
@@ -22,7 +26,7 @@ describe('Map.BoxZoom', () => {
 
 		// check if click event on the map is fired
 		UIEventSimulator.fire('click', map._container);
-		expect(mapClick).to.be(true);
+		expect(mapClick).to.be.true;
 
 		let clientX = 100;
 		let clientY = 100;
@@ -52,7 +56,7 @@ describe('Map.BoxZoom', () => {
 		// check if click event on the map is fired
 		mapClick = false;
 		UIEventSimulator.fire('click', map._container);
-		expect(mapClick).to.be(true);
+		expect(mapClick).to.be.true;
 	});
 
 });

@@ -12,8 +12,8 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.9.3/leaflet.zip">Leaflet 1.9.3</a></td>
-		<td>Stable version, released on November 18, 2022.</td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.9.4/leaflet.zip">Leaflet 1.9.4</a></td>
+		<td>Stable version, released on May 18, 2023.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.8.0/leaflet.zip">Leaflet 1.8.0</a></td>

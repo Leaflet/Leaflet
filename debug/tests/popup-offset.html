@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Popup Offset</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, Marker} from 'leaflet';
+
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const map = new Map('map').setView([50.5, 30.51], 15).addLayer(osm);
+
+			new Marker(map.getCenter())
+				.addTo(map)
+				.bindPopup('A pretty CSS popup. <br> Easily customizable.', {
+					offset: [100, 200],
+				})
+				.openPopup();
+		</script>
+	</body>
+</html>

@@ -1,13 +1,9 @@
-import {Layer} from '../Layer.js';
-import * as DomUtil from '../../dom/DomUtil.js';
+import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
-import {Bounds} from '../../geometry/Bounds.js';
-
-
 
 /*
  * @class Renderer
- * @inherits Layer
+ * @inherits BlanketOverlay
  * @aka L.Renderer
  *
  * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles the
@@ -20,109 +16,65 @@ import {Bounds} from '../../geometry/Bounds.js';
  *
  * Do not use this class directly, use `SVG` and `Canvas` instead.
  *
+ * The `continuous` option inherited from `BlanketOverlay` cannot be set to `true`
+ * (otherwise, renderers get out of place during a pinch-zoom operation).
+ *
  * @event update: Event
  * Fired when the renderer updates its bounds, center and zoom, for example when
  * its map has moved
  */
 
-export const Renderer = Layer.extend({
-
-	// @section
-	// @aka Renderer options
-	options: {
-		// @option padding: Number = 0.1
-		// How much to extend the clip area around the map view (relative to its size)
-		// e.g. 0.1 would be 10% of map view in each direction
-		padding: 0.1
-	},
+export const Renderer = BlanketOverlay.extend({
 
 	initialize(options) {
-		Util.setOptions(this, options);
+		Util.setOptions(this, {...options, continuous: false});
 		Util.stamp(this);
 		this._layers = this._layers || {};
 	},
 
-	onAdd() {
-		if (!this._container) {
-			this._initContainer(); // defined by renderer implementations
-
-			// always keep transform-origin as 0 0
-			this._container.classList.add('leaflet-zoom-animated');
-		}
-
-		this.getPane().appendChild(this._container);
-		this._update();
+	onAdd(map) {
+		BlanketOverlay.prototype.onAdd.call(this, map);
 		this.on('update', this._updatePaths, this);
 	},
 
 	onRemove() {
+		BlanketOverlay.prototype.onRemove.call(this);
 		this.off('update', this._updatePaths, this);
-		this._destroyContainer();
-	},
-
-	getEvents() {
-		const events = {
-			viewreset: this._reset,
-			zoom: this._onZoom,
-			moveend: this._update,
-			zoomend: this._onZoomEnd
-		};
-		if (this._zoomAnimated) {
-			events.zoomanim = this._onAnimZoom;
-		}
-		return events;
-	},
-
-	_onAnimZoom(ev) {
-		this._updateTransform(ev.center, ev.zoom);
-	},
-
-	_onZoom() {
-		this._updateTransform(this._map.getCenter(), this._map.getZoom());
-	},
-
-	_updateTransform(center, zoom) {
-		const scale = this._map.getZoomScale(zoom, this._zoom),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
-				  .subtract(this._map._getNewPixelOrigin(center, zoom));
-
-		DomUtil.setTransform(this._container, topLeftOffset, scale);
-	},
-
-	_reset() {
-		this._update();
-		this._updateTransform(this._center, this._zoom);
-
-		for (const id in this._layers) {
-			this._layers[id]._reset();
-		}
 	},
 
 	_onZoomEnd() {
+		// When a zoom ends, the "origin pixel" changes. Internal coordinates
+		// of paths are relative to the origin pixel and therefore need to
+		// be recalculated.
 		for (const id in this._layers) {
-			this._layers[id]._project();
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._project();
+			}
 		}
 	},
 
 	_updatePaths() {
 		for (const id in this._layers) {
-			this._layers[id]._update();
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._update();
+			}
 		}
 	},
 
-	_update() {
-		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
-		// Subclasses are responsible of firing the 'update' event.
-		const p = this.options.padding,
-		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+	_onViewReset() {
+		for (const id in this._layers) {
+			if (Object.hasOwn(this._layers, id)) {
+				this._layers[id]._reset();
+			}
+		}
+	},
 
-		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+	_onSettled() {
+		this._update();
+	},
 
-		this._center = this._map.getCenter();
-		this._zoom = this._map.getZoom();
-	}
+	// Subclasses are responsible of implementing `_update()`. It should fire
+	// the 'update' event whenever appropriate (before/after rendering).
+	_update: Util.falseFn,
+
 });
