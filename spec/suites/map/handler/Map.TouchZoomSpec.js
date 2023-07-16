@@ -1,4 +1,5 @@
 import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
+import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
 describe('Map.TouchZoom', () => {

@@ -1,4 +1,5 @@
-import {Map, Popup, Marker, FeatureGroup, Point, Icon, DivIcon, DomUtil, Polygon} from 'leaflet';
+import {DivIcon, DomUtil, FeatureGroup, Icon, Map, Marker, Point, Polygon, Popup} from 'leaflet';
+import Hand from 'prosthetic-hand';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 

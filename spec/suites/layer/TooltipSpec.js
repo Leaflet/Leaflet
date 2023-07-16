@@ -1,4 +1,5 @@
 import {CircleMarker, FeatureGroup, LayerGroup, Map, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
+import Hand from 'prosthetic-hand';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
