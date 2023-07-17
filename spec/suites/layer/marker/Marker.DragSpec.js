@@ -1,4 +1,5 @@
-import {Map, Marker, DomUtil, Point} from 'leaflet';
+import {DomUtil, Map, Marker, Point} from 'leaflet';
+import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker.Drag', () => {

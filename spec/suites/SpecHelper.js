@@ -16,6 +16,7 @@ chai.util.addMethod(chai.Assertion.prototype, 'nearLatLng', function (expected, 
 
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = Browser.touch ? it : it.skip;
+it.skipIfTouch = Browser.touchNative ? it.skip : it;
 
 export const touchEventType = Browser.touchNative ? 'touch' : 'pointer';
 // Note: this override is needed to workaround prosthetic-hand fail,
@@ -48,3 +49,5 @@ export function removeMapContainer(map, container) {
 
 console.log('Browser.pointer', Browser.pointer);
 console.log('Browser.touchNative', Browser.touchNative);
+
+export const pointerType = Browser.touchNative ? 'touch' : 'mouse';
