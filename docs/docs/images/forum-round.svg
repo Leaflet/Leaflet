@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" height="46" width="46">
 <g transform="matrix(6.15 0 0 6.15 23 23)">
 <path style="stroke: rgb(208,111,125); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,123,19); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 0 -3.73377 C 2.06104 -3.73377 3.73377 -2.0610399999999998 3.73377 0 C 3.73377 2.06104 2.0610399999999998 3.73377 0 3.73377 C -2.06104 3.73377 -3.73377 2.0610399999999998 -3.73377 0 C -3.73377 -2.06104 -2.0610399999999998 -3.73377 0 -3.73377 z" stroke-linecap="round" />
@@ -13,3 +14,9 @@
 </g>
 </g>
 </svg>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46">
+	<path d="M38.813 29.621h4.851v16.277H0V29.621h4.852v12.207h33.96Zm0 0" style="stroke:none;fill-rule:evenodd;fill:#bbb;fill-opacity:1"/>
+	<path d="m10.145 28.402 23.816 4.215 1.012-3.996-23.817-4.215Zm3.128-9.547 22.055 8.622 2.07-3.7-22.05-8.62Zm6.133-9.097 18.7 13.058 3.132-3.144L22.535 6.613ZM31.488.102l-3.922 2.441L42.074 18.93 46 16.488ZM9.703 37.758h24.258V33.69H9.703Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#f58025;fill-opacity:1"/>
+</svg>
+>>>>>>> 87295301c8c1a22c5849cf648c59d828fbad6f9c
