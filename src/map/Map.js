@@ -1651,9 +1651,9 @@ export const Map = Evented.extend({
 	},
 
 	_animMoveEnd() {
-		const
-			c = this.getCenter(),
-		    z = this.getZoom();
+		const c = this.getCenter(),
+				z = this.getZoom();
+
 
 		DomUtil.setTransform(
 			this._proxy,
