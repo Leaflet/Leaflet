@@ -118,10 +118,7 @@ export const DivOverlay = Layer.extend({
 
 		this.bringToFront();
 
-		if (this.options.interactive) {
-			this._container.classList.add('leaflet-interactive');
-			this.addInteractiveTarget(this._container);
-		}
+		this.setInteractive(this.options.interactive);
 	},
 
 	onRemove(map) {
@@ -225,6 +222,19 @@ export const DivOverlay = Layer.extend({
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
+		}
+		return this;
+	},
+
+	// @method setInteractive(): this
+	// Allows toggling the [interactive](#divoverlay-interactive) option
+	setInteractive(interactive) {
+		this.options.interactive = interactive;
+		this._container.classList.toggle('leaflet-interactive', interactive);
+		if (interactive) {
+			this.addInteractiveTarget(this._container);
+		} else {
+			this.removeInteractiveTarget(this._container);
 		}
 		return this;
 	},

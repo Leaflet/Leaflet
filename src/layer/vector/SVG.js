@@ -35,6 +35,18 @@ export const create = svgCreate;
  */
 
 export const SVG = Renderer.extend({
+	// @method setInteractive(): this
+	// Allows toggling the [interactive](#svgoverlay-interactive) option
+	setInteractive(interactive) {
+		this.options.interactive = interactive;
+		this._path.classList.toggle('leaflet-interactive', interactive);
+		if (interactive) {
+			this.addInteractiveTarget(this._path);
+		} else {
+			this.removeInteractiveTarget(this._path);
+		}
+		return this;
+	},
 
 	_initContainer() {
 		this._container = create('svg');
@@ -88,24 +100,22 @@ export const SVG = Renderer.extend({
 			path.classList.add(...splitWords(layer.options.className));
 		}
 
-		if (layer.options.interactive) {
-			path.classList.add('leaflet-interactive');
-		}
+		layer.setInteractive(layer.options.interactive);
 
 		this._updateStyle(layer);
+
 		this._layers[stamp(layer)] = layer;
 	},
 
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
-		layer.addInteractiveTarget(layer._path);
+		layer.setInteractive(layer.options.interactive);
 	},
 
 	_removePath(layer) {
 		layer._path.remove();
-		layer.removeInteractiveTarget(layer._path);
-		delete this._layers[stamp(layer)];
+		layer.setInteractive(false);
 	},
 
 	_updatePath(layer) {
