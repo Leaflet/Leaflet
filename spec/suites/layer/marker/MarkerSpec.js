@@ -226,6 +226,114 @@ describe('Marker', () => {
 		});
 	});
 
+	describe('#setInteractive', () => {
+		it('cannot be called before adding to map', () => {
+			const marker = new Marker([0, 0]);
+
+			expect(() => marker.setInteractive(true)).to.throw();
+		});
+
+		it('can set interactive if unset initially', () => {
+			const marker = new Marker([0, 0], {interactive: false, icon: icon1});
+			map.addLayer(marker);
+
+			{
+				const spy = sinon.spy();
+				expect(marker._icon.classList.contains('leaflet-interactive')).to.be.false;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.false;
+			}
+
+			marker.setInteractive(true);
+
+			expect(marker.options.interactive).to.be.true;
+
+			{
+				const spy = sinon.spy();
+			    expect(marker._icon.classList.contains('leaflet-interactive')).to.be.true;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.true;
+			}
+		});
+
+		it('can unset interactive if set initially', () => {
+			const marker = new Marker([0, 0], {interactive: true, icon: icon1});
+			map.addLayer(marker);
+
+			{
+				const spy = sinon.spy();
+				expect(marker._icon.classList.contains('leaflet-interactive')).to.be.true;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.true;
+			}
+
+			marker.setInteractive(false);
+
+			expect(marker.options.interactive).to.be.false;
+
+			{
+				const spy = sinon.spy();
+			    expect(marker._icon.classList.contains('leaflet-interactive')).to.be.false;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.false;
+			}
+		});
+
+		it('can unset interactive if unset initially', () => {
+			const marker = new Marker([0, 0], {interactive: false, icon: icon1});
+			map.addLayer(marker);
+
+			{
+				const spy = sinon.spy();
+				expect(marker._icon.classList.contains('leaflet-interactive')).to.be.false;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.false;
+			}
+
+			marker.setInteractive(false);
+
+			expect(marker.options.interactive).to.be.false;
+
+			{
+				const spy = sinon.spy();
+			    expect(marker._icon.classList.contains('leaflet-interactive')).to.be.false;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.false;
+			}
+		});
+
+		it('can set interactive if set initially', () => {
+			const marker = new Marker([0, 0], {interactive: true, icon: icon1});
+			map.addLayer(marker);
+
+			{
+				const spy = sinon.spy();
+				expect(marker._icon.classList.contains('leaflet-interactive')).to.be.true;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.true;
+			}
+
+			marker.setInteractive(true);
+
+			expect(marker.options.interactive).to.be.true;
+
+			{
+				const spy = sinon.spy();
+			    expect(marker._icon.classList.contains('leaflet-interactive')).to.be.true;
+				marker.on('click', spy);
+				UIEventSimulator.fire('click', marker._icon);
+				expect(spy.called).to.be.true;
+			}
+		});
+	});
+
 	describe('#setLatLng', () => {
 		it('fires a move event', () => {
 

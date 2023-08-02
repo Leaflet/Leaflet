@@ -578,4 +578,64 @@ describe('Tooltip', () => {
 		layer2.openTooltip();
 		expect(spy2.called).to.be.true;
 	});
+
+	describe('#setInteractive', () => {
+		it('cannot be called before adding to map', () => {
+			const tooltip = new Tooltip().setLatLng(center);
+
+			expect(() => tooltip.setInteractive(true)).to.throw();
+		});
+
+		it('can set interactive if unset initially', () => {
+			const tooltip = new Tooltip({interactive: false})
+				  .setLatLng(center)
+				  .openOn(map);
+
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(false);
+
+			tooltip.setInteractive(true);
+
+			expect(tooltip.options.interactive).to.equal(true);
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+
+		it('can unset interactive if set initially', () => {
+			const tooltip = new Tooltip({interactive: true})
+				  .setLatLng(center)
+				  .openOn(map);
+
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(true);
+
+			tooltip.setInteractive(false);
+
+			expect(tooltip.options.interactive).to.equal(false);
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can unset interactive if unset initially', () => {
+			const tooltip = new Tooltip({interactive: false})
+				  .setLatLng(center)
+				  .openOn(map);
+
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(false);
+
+			tooltip.setInteractive(false);
+
+			expect(tooltip.options.interactive).to.equal(false);
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can set interactive if set initially', () => {
+			const tooltip = new Tooltip({interactive: true})
+				  .setLatLng(center)
+				  .openOn(map);
+
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(true);
+
+			tooltip.setInteractive(true);
+
+			expect(tooltip.options.interactive).to.equal(true);
+			expect(tooltip._container.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+	});
 });

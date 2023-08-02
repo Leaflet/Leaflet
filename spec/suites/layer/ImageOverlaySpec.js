@@ -1,5 +1,6 @@
 import {Map, imageOverlay, LatLngBounds} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import UIEventSimulator from 'ui-event-simulator';
 
 describe('ImageOverlay', () => {
 	let container, map;
@@ -166,5 +167,113 @@ describe('ImageOverlay', () => {
 				expect(overlay._image.getAttribute('crossorigin')).to.equal(expectedValue);
 			});
 		}
+	});
+
+	describe('#setInteractive', () => {
+		it('cannot be called before adding to map', () => {
+			const overlay = imageOverlay();
+
+			expect(() => overlay.setInteractive(true)).to.throw();
+		});
+
+		it('can set interactive if unset initially', () => {
+			const overlay = imageOverlay('', imageBounds, {interactive: false});
+			map.addLayer(overlay);
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.false;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.false;
+			}
+
+			overlay.setInteractive(true);
+
+			expect(overlay.options.interactive).to.be.true;
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.true;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.true;
+			}
+		});
+
+		it('can unset interactive if set initially', () => {
+			const overlay = imageOverlay('', imageBounds, {interactive: true});
+			map.addLayer(overlay);
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.true;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.true;
+			}
+
+			overlay.setInteractive(false);
+
+			expect(overlay.options.interactive).to.be.false;
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.false;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.false;
+			}
+		});
+
+		it('can set interactive if set initially', () => {
+			const overlay = imageOverlay('', imageBounds, {interactive: true});
+			map.addLayer(overlay);
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.true;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.true;
+			}
+
+			overlay.setInteractive(true);
+
+			expect(overlay.options.interactive).to.be.true;
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.true;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.true;
+			}
+		});
+
+		it('can unset interactive if unset initially', () => {
+			const overlay = imageOverlay('', imageBounds, {interactive: false});
+			map.addLayer(overlay);
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.false;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.false;
+			}
+
+			overlay.setInteractive(false);
+
+			expect(overlay.options.interactive).to.be.false;
+
+			{
+				const spy = sinon.spy();
+				expect(overlay._image.classList.contains('leaflet-interactive')).to.be.false;
+				overlay.on('click', spy);
+				UIEventSimulator.fire('click', overlay._image);
+				expect(spy.called).to.be.false;
+			}
+		});
 	});
 });

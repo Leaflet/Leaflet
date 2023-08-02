@@ -636,4 +636,64 @@ describe('Popup', () => {
 			expect(popup._source).to.equal(marker2);
 		});
 	});
+
+	describe('#setInteractive', () => {
+		it('cannot be called before adding to map', () => {
+			const popup = new Popup().setLatLng(center);
+
+			expect(() => popup.setInteractive(true)).to.throw();
+		});
+
+		it('can set interactive if unset initially', () => {
+			const popup = new Popup({interactive: false})
+				.setLatLng(center)
+				.openOn(map);
+
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(false);
+
+			popup.setInteractive(true);
+
+			expect(popup.options.interactive).to.equal(true);
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+
+		it('can unset interactive if set initially', () => {
+			const popup = new Popup({interactive: true})
+				.setLatLng(center)
+				.openOn(map);
+
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(true);
+
+			popup.setInteractive(false);
+
+			expect(popup.options.interactive).to.equal(false);
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can unset interactive if unset initially', () => {
+			const popup = new Popup({interactive: false})
+				.setLatLng(center)
+				.openOn(map);
+
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(false);
+
+			popup.setInteractive(false);
+
+			expect(popup.options.interactive).to.equal(false);
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can set interactive if set initially', () => {
+			const popup = new Popup({interactive: true})
+				.setLatLng(center)
+				.openOn(map);
+
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(true);
+
+			popup.setInteractive(true);
+
+			expect(popup.options.interactive).to.equal(true);
+			expect(popup._container.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+	});
 });
