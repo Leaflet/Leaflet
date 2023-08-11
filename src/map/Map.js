@@ -1389,7 +1389,7 @@ export const Map = Evented.extend({
 
 	_isClickDisabled(el) {
 		while (el && el !== this._container) {
-			if (el['_leaflet_disable_click']) { return true; }
+			if (el['_leaflet_disable_click'] || !el.parentNode) { return true; }
 			el = el.parentNode;
 		}
 	},
