@@ -417,15 +417,6 @@ Layer.include({
 			return;
 		}
 
-		// If the map is moving, we will show the tooltip after it's done.
-		if (this._map.dragging && this._map.dragging.moving() && !this._openOnceFlag) {
-			this._openOnceFlag = true;
-			this._map.once('moveend', () => {
-				this._openOnceFlag = false;
-				this._openTooltip(e);
-			});
-			return;
-		}
 
 		this._tooltip._source = e.layer || e.target;
 
