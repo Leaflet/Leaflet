@@ -366,7 +366,7 @@ export const Map = Evented.extend({
 		    startZoom = this._zoom;
 
 		targetCenter = toLatLng(targetCenter);
-		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
+		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
 		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
@@ -1389,7 +1389,7 @@ export const Map = Evented.extend({
 
 	_isClickDisabled(el) {
 		while (el && el !== this._container) {
-			if (el['_leaflet_disable_click']) { return true; }
+			if (el['_leaflet_disable_click'] || !el.parentNode) { return true; }
 			el = el.parentNode;
 		}
 	},

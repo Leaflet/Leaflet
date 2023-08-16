@@ -1418,6 +1418,22 @@ describe('Map', () => {
 
 			map.flyTo(dc, 4, {duration: 0.1});
 		});
+
+		it('flyTo should honour maxZoom', (done) => {
+			const newCenter = latLng(10, 11),
+			    maxZoom = 20;
+			map.options.maxZoom = maxZoom;
+
+			map.setView([0, 0], 0);
+
+			map.on('zoomend', () => {
+				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getZoom()).to.eql(maxZoom);
+				done();
+			});
+
+			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
+		});
 	});
 
 	describe('#zoomIn and #zoomOut', () => {

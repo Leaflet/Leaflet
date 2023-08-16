@@ -15,7 +15,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 Map.mergeOptions({
 	// @option boxZoom: Boolean = true
 	// Whether the map can be zoomed to a rectangular area specified by
-	// dragging the mouse while pressing the shift key.
+	// dragging the pointer while pressing the shift key.
 	boxZoom: true
 });
 
@@ -29,11 +29,11 @@ export const BoxZoom = Handler.extend({
 	},
 
 	addHooks() {
-		DomEvent.on(this._container, 'mousedown', this._onMouseDown, this);
+		DomEvent.on(this._container, 'pointerdown', this._onPointerDown, this);
 	},
 
 	removeHooks() {
-		DomEvent.off(this._container, 'mousedown', this._onMouseDown, this);
+		DomEvent.off(this._container, 'pointerdown', this._onPointerDown, this);
 	},
 
 	moved() {
@@ -57,7 +57,7 @@ export const BoxZoom = Handler.extend({
 		}
 	},
 
-	_onMouseDown(e) {
+	_onPointerDown(e) {
 		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
@@ -72,13 +72,13 @@ export const BoxZoom = Handler.extend({
 
 		DomEvent.on(document, {
 			contextmenu: DomEvent.stop,
-			mousemove: this._onMouseMove,
-			mouseup: this._onMouseUp,
+			pointermove: this._onPointerMove,
+			pointerup: this._onPointerUp,
 			keydown: this._onKeyDown
 		}, this);
 	},
 
-	_onMouseMove(e) {
+	_onPointerMove(e) {
 		if (!this._moved) {
 			this._moved = true;
 
@@ -110,13 +110,13 @@ export const BoxZoom = Handler.extend({
 
 		DomEvent.off(document, {
 			contextmenu: DomEvent.stop,
-			mousemove: this._onMouseMove,
-			mouseup: this._onMouseUp,
+			pointermove: this._onPointerMove,
+			pointerup: this._onPointerUp,
 			keydown: this._onKeyDown
 		}, this);
 	},
 
-	_onMouseUp(e) {
+	_onPointerUp(e) {
 		if (e.button !== 0) { return; }
 
 		this._finish();
@@ -147,5 +147,5 @@ export const BoxZoom = Handler.extend({
 
 // @section Handlers
 // @property boxZoom: Handler
-// Box (shift-drag with mouse) zoom handler.
+// Box (shift-drag with pointer) zoom handler.
 Map.addInitHook('addHandler', 'boxZoom', BoxZoom);
