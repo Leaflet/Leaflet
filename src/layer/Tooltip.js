@@ -351,6 +351,7 @@ Layer.include({
 	// Closes the tooltip bound to this layer if it is open.
 	closeTooltip() {
 		if (this._tooltip) {
+			this._map._openOnce  = true;
 			return this._tooltip.close();
 		}
 	},
@@ -416,7 +417,15 @@ Layer.include({
 		if (!this._tooltip || !this._map) {
 			return;
 		}
-
+		// If the map is moving, we will show the tooltip after it's done.
+		if (this._map.dragging && this._map.dragging.moving() && !this.map._openOnce) {
+			this._map._openOnce = true;
+			this._map.once('moveend', () => {
+				this._map._openOnce = false;
+				this._openTooltip(e);
+			});
+			return;
+		}
 
 		this._tooltip._source = e.layer || e.target;
 
