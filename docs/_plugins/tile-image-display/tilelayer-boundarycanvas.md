@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Allows you to draw tile layers with arbitrary polygonal boundary. HTML5 Canvas is used for rendering.
+Allows you to draw tile layers with arbitrary polygonal boundary. HTML Canvas is used for rendering.

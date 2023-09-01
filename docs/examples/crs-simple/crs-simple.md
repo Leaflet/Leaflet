@@ -92,7 +92,7 @@ If working with `[y, x]` coordinates with something named `L.LatLng` doesn't mak
 	var yx = L.latLng;
 
 	var xy = function(x, y) {
-		if (L.Util.isArray(x)) {    // When doing xy([x, y]);
+		if (Array.isArray(x)) {    // When doing xy([x, y]);
 			return yx(x[1], x[0]);
 		}
 		return yx(y, x);  // When doing xy(x, y);
