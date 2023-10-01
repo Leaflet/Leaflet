@@ -56,7 +56,7 @@ if (toc) {
 	const scrollPos = function scrollPos() {
 		const scroll = window.scrollY;
 
-		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
+		if (scroll >= toc.offsetHeight + toc.offsetTop) {
 			document.body.classList.add('scrolled');
 		} else {
 			document.body.classList.remove('scrolled');
@@ -69,17 +69,23 @@ if (toc) {
 		scrollPos();
 	});
 
-	window.addEventListener('load', () => {
-		const currentHash = window.location.hash;
-		if (!currentHash) { return; }
-		const elem = document.querySelector(currentHash);
+	window.addEventListener(
+		'load',
+		() => {
+			const currentHash = window.location.hash;
+			if (!currentHash) {
+				return;
+			}
+			const elem = document.querySelector(currentHash);
 
-		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
-			setTimeout(() => {
-				scrollToHeader(elem, true);
-			}, 10);
-		}
-	}, false);
+			if (elem.tagName === 'H2' || elem.tagName === 'H4') {
+				setTimeout(() => {
+					scrollToHeader(elem, true);
+				}, 10);
+			}
+		},
+		false
+	);
 }
 
 let currentAnchor = '';
@@ -115,3 +121,9 @@ function scrollToHeader(elemHeader, sameAnchor) {
 	// apply the new anchor to the location url
 	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
+
+// back to top
+const backToTop = document.getElementById('backtotop');
+backToTop.addEventListener('click', () => {
+	document.documentElement.scrollIntoView({behavior: 'smooth'});
+});
