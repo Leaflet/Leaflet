@@ -147,6 +147,34 @@ h4 {
 	color: #777;
 }
 
+/* back to top */
+#backtotop{
+	display: none;
+	position: relative;
+  cursor: pointer;
+	height: 46px;
+	width: 46px;
+	background-color: #199900;
+	border-radius: 50%;
+	transition: all .2s;
+	z-index: 400;
+	
+	&:hover{
+		opacity: .5;
+	}
+}
+.backtotop{
+	overflow: hidden;
+	position: absolute;
+	height: 1.20em;
+	width: 1.20em;
+	top: 50%;
+	left: 51%;
+	transform:  translate(-50%, -50%) rotate(45deg);
+	border-top: 5px solid #fff;
+	border-left: 5px solid #fff;
+}
+
 /* header */
 
 h1 {
@@ -1005,6 +1033,12 @@ tr:target {
 		-moz-column-count: 2;
 		column-count: 2;
 	}
+	/* back to top media */
+	#backtotop{
+		position: fixed;
+		top: .5em;
+		right: 0;
+	}
 }
 
 @media screen and (max-width: 500px) {
@@ -1012,6 +1046,15 @@ tr:target {
 		font-size: 1.25em;
 		padding-bottom: 1em;
 		line-height: 1;
+	}
+
+	#backtotop{
+		width: 36px;
+		height: 36px;
+	}
+	.backtotop{
+		width: .75em;
+		height: .75em;
 	}
 
 	h1 {

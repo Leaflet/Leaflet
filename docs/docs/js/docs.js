@@ -122,8 +122,19 @@ function scrollToHeader(elemHeader, sameAnchor) {
 	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
 
-// back to top
-const backToTop = document.getElementById('backtotop');
-backToTop.addEventListener('click', () => {
+// back to top scroll button
+let scrollTop = 0;
+const toTop = document.getElementById('backtotop');
+toTop.addEventListener('click', () => {
 	document.documentElement.scrollIntoView({behavior: 'smooth'});
+	scrollTop = 0;
+});
+window.addEventListener('scroll', () => {
+	if (window.scrollY > scrollTop) {
+		scrollTop = window.scrollY;
+		toTop.style.display = 'block';
+	} else if (window.scrollY < scrollTop) {
+		scrollTop = window.scrollY;
+		toTop.style.display = 'none';
+	}
 });
