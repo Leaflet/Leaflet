@@ -150,10 +150,12 @@ h4 {
 /* back to top */
 #backtotop{
 	display: none;
-	position: relative;
+	position: fixed;
+	bottom: .5em;
+	right: .5em;
   cursor: pointer;
-	height: 46px;
-	width: 46px;
+	height: 36px;
+	width: 36px;
 	background-color: #199900;
 	border-radius: 50%;
 	transition: all .2s;
@@ -166,13 +168,13 @@ h4 {
 .backtotop{
 	overflow: hidden;
 	position: absolute;
-	height: 1.20em;
-	width: 1.20em;
+	height: .75em;
+	width: .75em;
 	top: 50%;
-	left: 51%;
+	left: 50%;
 	transform:  translate(-50%, -50%) rotate(45deg);
-	border-top: 5px solid #fff;
-	border-left: 5px solid #fff;
+	border-top: 4px solid #fff;
+	border-left: 4px solid #fff;
 }
 
 /* header */
@@ -1035,9 +1037,15 @@ tr:target {
 	}
 	/* back to top media */
 	#backtotop{
-		position: fixed;
-		top: .5em;
-		right: 0;
+		height: 31px;
+		width: 31px;
+		right: .3em;
+	}
+	.backtotop{
+		height: .50em;
+		width: .50em;
+		border-top: 3.75px solid #fff;
+		border-left: 3.75px solid #fff;
 	}
 }
 
@@ -1049,12 +1057,15 @@ tr:target {
 	}
 
 	#backtotop{
-		width: 36px;
-		height: 36px;
+		width: 26px;
+		height: 26px;
+		right: .2em;
 	}
 	.backtotop{
-		width: .75em;
-		height: .75em;
+		width: .35em;
+		height: .35em;
+		border-top: 2.5px solid #fff;
+		border-left: 2.5px solid #fff;
 	}
 
 	h1 {
