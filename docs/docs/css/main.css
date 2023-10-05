@@ -157,15 +157,17 @@ h4 {
 	height: 36px;
 	width: 36px;
 	background-color: #199900;
+	box-shadow: 0 0 10px 1px rgba(0,0,0,0.45);
+	opacity: .7;
 	border-radius: 50%;
 	transition: all .2s;
 	z-index: 400;
-	
-	&:hover{
-		opacity: .5;
-	}
 }
-.backtotop{
+
+#backtotop:hover{
+	opacity: 1;
+}
+.backtotop_btn{
 	overflow: hidden;
 	position: absolute;
 	height: .75em;
@@ -1041,7 +1043,7 @@ tr:target {
 		width: 31px;
 		right: .3em;
 	}
-	.backtotop{
+	.backtotop_btn{
 		height: .50em;
 		width: .50em;
 		border-top: 3.75px solid #fff;
@@ -1061,7 +1063,7 @@ tr:target {
 		height: 26px;
 		right: .2em;
 	}
-	.backtotop{
+	.backtotop_btn{
 		width: .35em;
 		height: .35em;
 		border-top: 2.5px solid #fff;
