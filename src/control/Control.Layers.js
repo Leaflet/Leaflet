@@ -207,6 +207,8 @@ export const Layers = Control.extend({
 				pointerenter: this._expandSafely,
 				pointerleave: this.collapse
 			}, this);
+		}else{
+			section.setAttribute('aria-label', link.title)
 		}
 
 		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
