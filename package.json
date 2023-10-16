@@ -26,7 +26,7 @@
     "lint-staged": "^14.0.1",
     "mocha": "^10.0.0",
     "prosthetic-hand": "github:Leaflet/prosthetic-hand",
-    "rollup": "^3.2.1",
+    "rollup": "^4.1.4",
     "rollup-plugin-git-version": "^0.3.1",
     "simple-git": "^3.14.1",
     "sinon": "^16.0.0",
