@@ -422,7 +422,7 @@ Layer.include({
 			this._openOnceFlag = true;
 			this._map.once('moveend', () => {
 				this._openOnceFlag = false;
-				this._openTooltip(e);
+				this._initTooltipInteractions();
 			});
 			return;
 		}
