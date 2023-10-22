@@ -80,7 +80,6 @@ export const Control = Class.extend({
 		}
 
 		this._map.on('unload', this.remove, this);
-
 		return this;
 	},
 

@@ -27,13 +27,82 @@ export const Attribution = Control.extend({
 
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: `<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag} Leaflet</a>`
+		prefix: `<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag} Leaflet</a>`,
+		keyboardPrefix: `<a class="leaflet-keyboard" style="cursor: pointer;">Keyboard shortcuts</a>`,
+		keyboardModal: `<div class="keyboard-shortcut--container hidden">
+							<div class="keyboard-shortcut--content">
+							<div class="keyboard-shortcut--header">
+								<h2>Keyboard shortcuts</h2>
+								<button
+								type="button"
+								class="close-modal"
+								>
+								&times;
+								</button>
+							</div>
+							<div class="keyboard-shortcut--inner-content">
+								<div class="keyboard-shortcuts-view">
+								<table>
+									<tbody>
+									<tr>
+										<td><kbd aria-label="Left arrow">←</kbd></td>
+										<td aria-label="Move left.">Move left</td>
+									</tr>
+									<tr>
+										<td><kbd aria-label="Right arrow">→</kbd></td>
+										<td aria-label="Move right.">Move right</td>
+									</tr>
+									<tr>
+										<td><kbd aria-label="Up arrow">↑</kbd></td>
+										<td aria-label="Move up.">Move up</td>
+									</tr>
+									<tr>
+										<td><kbd aria-label="Down arrow">↓</kbd></td>
+										<td aria-label="Move down.">Move down</td>
+									</tr>
+									<tr>
+										<td><kbd>+</kbd></td>
+										<td aria-label="Zoom in.">Zoom in</td>
+									</tr>
+									<tr>
+										<td><kbd>-</kbd></td>
+										<td aria-label="Zoom out.">Zoom out</td>
+									</tr>
+									</tbody>
+								</table>
+								</div>
+							</div>
+							</div>
+						</div>`
 	},
 
 	initialize(options) {
 		Util.setOptions(this, options);
 
 		this._attributions = {};
+	},
+
+	keyboardPrefixModal(mapContainer) {
+		console.log("Entering")
+		console.log(mapContainer.querySelector('.leaflet-control-attribution'))
+		if(!mapContainer.querySelector('.leaflet-control-attribution')) return;
+		const keyboardShortcutContainer = mapContainer.querySelector('.keyboard-shortcut--container');
+		const btnCloseKeyboardModal = mapContainer.querySelector('.close-modal');
+		const leafletKeyboard = mapContainer.querySelector('.leaflet-keyboard');
+		const closeModal = function () {
+			keyboardShortcutContainer.classList.add('hidden');
+		};
+		  
+		leafletKeyboard.addEventListener('click', function () {
+			keyboardShortcutContainer.classList.remove('hidden');
+		});
+
+		btnCloseKeyboardModal.addEventListener('click', closeModal);
+		mapContainer.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !keyboardShortcutContainer.classList.contains('hidden')) {
+				closeModal();
+			}
+		});
 	},
 
 	onAdd(map) {
@@ -51,6 +120,7 @@ export const Attribution = Control.extend({
 		this._update();
 
 		map.on('layeradd', this._addAttribution, this);
+		map._container.lastChild.insertAdjacentHTML("afterend", this.options.keyboardModal);
 
 		return this._container;
 	},
@@ -72,6 +142,7 @@ export const Attribution = Control.extend({
 	// The HTML text shown before the attributions. Pass `false` to disable.
 	setPrefix(prefix) {
 		this.options.prefix = prefix;
+		this.options.keyboardPrefix = keyboardPrefix;
 		this._update();
 		return this;
 	},
@@ -120,11 +191,15 @@ export const Attribution = Control.extend({
 		if (this.options.prefix) {
 			prefixAndAttribs.push(this.options.prefix);
 		}
+		if(this.options.keyboardPrefix) {
+			prefixAndAttribs.push(this.options.keyboardPrefix);
+		}
 		if (attribs.length) {
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
+		this.keyboardPrefixModal(this._map._container);
 	}
 });
 

@@ -1,4 +1,127 @@
 /* required styles */
+.hidden {
+	display: none !important;;
+}
+  
+.keyboard-shortcut--container {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	background-color: rgba(32, 33, 36, 0.7);
+
+	-webkit-box-align: center;
+
+	    -ms-flex-align: center;
+
+	        align-items: center;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	padding: 8px;
+	z-index: 1500;
+}
+
+.keyboard-shortcut--content {
+	background: #fff;
+	border-radius: 8px;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-flex: 0;
+	    -ms-flex: 0 0 auto;
+	        flex: 0 0 auto;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	max-height: 100%;
+	max-width: 100%;
+	position: relative;
+	padding: 20px;
+}
+
+.close-modal {
+	font-size: 2rem;
+	color: #333;
+	cursor: pointer;
+	border: none;
+	background: none;
+}
+
+.keyboard-shortcut--header {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	margin-bottom: 20px;
+	padding: 0 16px;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	width: 90%;
+}
+
+.keyboard-shortcut--header h2 {
+	font-family: sans-serif;
+	line-height: 24px;
+	font-size: 16px;
+	letter-spacing: 0.00625em;
+	font-weight: 500;
+	color: #3c4043;
+	margin: 0 16px 0 0;
+}
+
+.keyboard-shortcut--inner-content {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	font-family: sans-serif;
+	font-size: 13px;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	padding: 0 16px 16px;
+	overflow: auto;
+}
+
+.keyboard-shortcuts-view td kbd {
+	background-color: #e8eaed;
+	border-radius: 2px;
+	border: none;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	color: inherit;
+	display: inline-block;
+	font-family: sans-serif;
+	line-height: 16px;
+	margin: 0 2px;
+	min-height: 20px;
+	min-width: 20px;
+	padding: 2px 4px;
+	position: relative;
+	text-align: center;
+}
+
+.keyboard-shortcuts-view td {
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	display: table-cell;
+	color: #000;
+	padding: 6px;
+	vertical-align: middle;
+	white-space: nowrap;
+}
 
 .leaflet-pane,
 .leaflet-tile,
