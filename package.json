@@ -23,7 +23,7 @@
     "karma-sinon": "^1.0.5",
     "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",
-    "lint-staged": "^14.0.1",
+    "lint-staged": "^15.0.2",
     "mocha": "^10.0.0",
     "prosthetic-hand": "github:Leaflet/prosthetic-hand",
     "rollup": "^3.2.1",
