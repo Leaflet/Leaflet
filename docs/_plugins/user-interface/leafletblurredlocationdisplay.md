@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Cleverly dispays "blurred" locations using color-coded heatmap and color-coded markers while fetching data from remote API.
+Cleverly displays "blurred" locations using color-coded heatmap and color-coded markers while fetching data from remote API.
