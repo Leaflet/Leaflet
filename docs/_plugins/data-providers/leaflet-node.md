@@ -1,7 +1,7 @@
 ---
 name: Leaflet node
 category: Data Providers
-repo: [Gitlab](https://gitlab.com/Goldmaster/leaflet-node)
+repo: https://gitlab.com/Goldmaster/leaflet-node
 author: Goldmaster
 author-url: https://GoldmastersITDM.co.uk
 demo: https://goldmaster.gitlab.io/leaflet-node
