@@ -448,7 +448,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	border-radius: 12px;
 	}
 .leaflet-popup-content {
-	margin: 13px 24px 13px 20px;
+	margin: 0px;
 	line-height: 1.3;
 	font-size: 13px;
 	font-size: 1.08333em;
