@@ -456,7 +456,7 @@ describe('Tooltip', () => {
 		expect(eventSpy.calledOnce).to.be.true;
 	});
 
-	it('don\'t opens the tooltip on marker mouseover while dragging map', () => {
+	it('don\'t opens the tooltip on marker mouseover while dragging map', (done) => {
 		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
 		// the tooltip opened / closed.
 		const layer = new Marker(center).addTo(map).bindTooltip('Tooltip');
@@ -469,11 +469,20 @@ describe('Tooltip', () => {
 		expect(tooltip.isOpen()).to.be.false;
 
 		// simulate map not dragging anymore
-		map.dragging.moving = function () {
-			return false;
-		};
-		UIEventSimulator.fireAt('mouseover', 210, 195);
-		expect(tooltip.isOpen()).to.be.true;
+		map.dragging.moving = () => false;
+
+		map.on('moveend', () => {
+			expect(tooltip.isOpen()).to.be.false;
+
+			UIEventSimulator.fireAt('mouseover', 210, 195);
+			expect(tooltip.isOpen()).to.be.true;
+
+			done();
+		});
+
+		// calls moveend and triggers openTooltip if the layer was added to the map
+		map.setView(map.getCenter());
+
 	});
 
 	it('closes the tooltip on marker mouseout while dragging map and don\'t open it again', () => {
