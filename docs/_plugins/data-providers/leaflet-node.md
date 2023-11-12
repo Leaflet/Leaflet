@@ -3,7 +3,7 @@ name: Leaflet node
 category: Data Providers
 repo: https://gitlab.com/Goldmaster/leaflet-node
 author: Goldmaster
-author-url: https://GoldmastersITDM.co.uk
+author-url: https://goldmastersitdm.co.uk/
 demo: https://goldmaster.gitlab.io/leaflet-node
 compatible-v0: 
 compatible-v1: true
