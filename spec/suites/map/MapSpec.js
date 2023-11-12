@@ -2502,4 +2502,113 @@ describe('Map', () => {
 
 		});
 	});
+
+	describe('#flyToBounds', () => {
+		it('throws if map is not set before', () => {
+			expect(() => {
+				map.flyToBounds();
+			}).to.throw();
+		});
+
+		it('throws if passed invalid bounds', () => {
+			expect(() => {
+				map.flyToBounds(0, 0);
+			}).to.throw();
+		});
+
+		it('doesn\'t fly if already in bounds', () => {
+			map.setView([0, 0]);
+			const bounds = new LatLngBounds([
+				[-1, -1],
+				[1, 1],
+			]);
+			const expectedCenter = latLng([0, 0]);
+			expect(map.flyToBounds(bounds)).to.equal(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+
+		it('flies to requested bounds and corresponding center (low zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[40, 10],
+				[10, 40],
+			]);
+			const expectedCenter = latLng([25.9461, 25]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(2.7);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
+		});
+
+		it('flies to requested bounds and corresponding center (middle zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[30, 20],
+				[20, 30],
+			]);
+			const expectedCenter = latLng([25.102, 25]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(4);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
+		});
+
+		it('flies to requested bounds and corresponding center (high zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[13, 12],
+				[12, 13],
+			]);
+			const expectedCenter = latLng([12.5004, 12.5]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(0.05);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
+		});
+	});
 });
