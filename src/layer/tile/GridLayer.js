@@ -274,15 +274,42 @@ export const GridLayer = Layer.extend({
 		return document.createElement('div');
 	},
 
-	// @method refreshTiles: void
-	// Triggers creating of new tile HTML element for each existing tile
+	// @method refreshTiles: this
+	// Triggers creating of new tile HTML element for each existing tile.
+	// In contrast to `redraw` it doesn't clear all the tiles before refresh, but creates
+	// new tile behind the curtain and replaces each tile separately when it is ready.
 	refreshTiles() {
+		const tileUpdateCallback = function (tile, err, el) {
+			if (err) {
+				this.fire('tileerror', {
+					error: err,
+					tile: el,
+					coords: tile.coords
+				});
+				return;
+			}
+
+			el.classList.add('leaflet-tile-loaded');
+			tile.el.replaceWith(el);
+			tile.el = el;
+			tile.loaded = +new Date();
+
+			// @event tileupdate: TileEvent
+			// Fired when a tile updated (tile DOM element replaced with newly created DOM element).
+			this.fire('tileupdate', {
+				tile: el,
+				coords: tile.coords
+			});
+		};
+
 		for (const key in this._tiles) {
 			if (Object.hasOwn(this._tiles, key)) {
 				const tile = this._tiles[key];
-				this._initTileElement(tile.coords, this._tileUpdate.bind(this, tile));
+				this._initTileElement(tile.coords, tileUpdateCallback.bind(this, tile));
 			}
 		}
+
+		return this;
 	},
 
 	// @section
@@ -885,27 +912,6 @@ export const GridLayer = Layer.extend({
 				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
-	},
-
-	_tileUpdate(tile, err, el) {
-		if (err) {
-			this.fire('tileerror', {
-				error: err,
-				tile: el,
-				coords: tile.coords
-			});
-			return;
-		}
-
-		el.classList.add('leaflet-tile-loaded');
-		tile.el.replaceWith(el);
-		tile.el = el;
-		tile.loaded = +new Date();
-
-		this.fire('tileupdate', {
-			tile: el,
-			coords: tile.coords
-		});
 	},
 
 	_getTilePos(coords) {
