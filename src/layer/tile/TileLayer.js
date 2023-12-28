@@ -210,7 +210,7 @@ export const TileLayer = GridLayer.extend({
 		e.tile.onload = null;
 	},
 
-	_getZoomForUrl: function (zoom) {
+	_getZoomForUrl(zoom) {
 		const maxZoom = this.options.maxZoom,
 		      zoomReverse = this.options.zoomReverse,
 		      zoomOffset = this.options.zoomOffset;

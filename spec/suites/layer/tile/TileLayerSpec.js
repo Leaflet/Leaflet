@@ -512,14 +512,14 @@ describe('TileLayer', () => {
 		});
 	});
 
-	describe('#getTileUrl', function () {
-		it('can call with static coords', function () {
+	describe('#getTileUrl', () => {
+		it('can call with static coords', () => {
 			// Layer is not added to the map
-			var layer = L.tileLayer('http://example.com/{z}/{x}/{y}.png');
-			var url = layer.getTileUrl({z: 1, x: 2, y: 3});
+			const layer = new TileLayer('http://example.com/{z}/{x}/{y}.png');
+			let url = layer.getTileUrl({z: 1, x: 2, y: 3});
 			expect(url).to.equal('http://example.com/1/2/3.png');
-			layer.addTo(map)
-			var url = layer.getTileUrl({z: 1, x: 2, y: 3});
+			layer.addTo(map);
+			url = layer.getTileUrl({z: 1, x: 2, y: 3});
 			expect(url).to.equal('http://example.com/1/2/3.png');
 		});
 	});
