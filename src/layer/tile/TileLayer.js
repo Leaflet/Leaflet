@@ -181,7 +181,7 @@ export const TileLayer = GridLayer.extend({
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
-			z: this._getZoomForUrl()
+			z: this._getZoomForUrl(coords.z)
 		};
 		if (this._map && !this._map.options.crs.infinite) {
 			const invertedY = this._globalTileRange.max.y - coords.y;
@@ -210,8 +210,7 @@ export const TileLayer = GridLayer.extend({
 		e.tile.onload = null;
 	},
 
-	_getZoomForUrl() {
-		let zoom = this._tileZoom;
+	_getZoomForUrl: function (zoom) {
 		const maxZoom = this.options.maxZoom,
 		      zoomReverse = this.options.zoomReverse,
 		      zoomOffset = this.options.zoomOffset;
