@@ -7,6 +7,18 @@ title: Quick Start Guide
 
 This step-by-step guide will quickly get you started on Leaflet basics, including setting up a Leaflet map, working with markers, polylines and popups, and dealing with events.
 
+### Overview
+This is an overview of the topics that will be covered by this guide.
+	*Preparing your page
+	*Setting up the map
+	*Markers, circles, and polygons
+	*Working with popups
+	*Dealing with events
+	
+### Quick Links
+	#### <a href="/reference.html">Documentation</a>
+	#### <a href="../../examples.html">Tutorials</a>
+
 {% include frame.html url="example.html" %}
 
 ### Preparing your page
@@ -71,8 +83,20 @@ Make sure all the code is called after the `div` and `leaflet.js` inclusion. Tha
 
 It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to.
 
-Whenever using anything based on OpenStreetMap, an *attribution* is obligatory as per the [copyright notice](https://www.openstreetmap.org/copyright). Most other tile providers (such as [Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/), [Stamen](http://maps.stamen.com/) or [Thunderforest](https://www.thunderforest.com/terms/)) require an attribution as well. Make sure to give credit where credit is due.
+Whenever using anything based on OpenStreetMap, an attribution is obligatory as per the copyright notice. 
 
+####Map Tiles
+Leaflet does not provide a tile layer, it uses OpenStreetMap. Please adhere to OpenStreetMap's [copyright notice](https://www.openstreetmap.org/copyright) and usage guidelines. Other tile providers include:
+	*[Mapbox](https://docs.mapbox.com/help/how-mapbox-works/attribution/)
+	*[Stamen](http://maps.stamen.com/)
+	*[Thunderforest](https://www.thunderforest.com/terms/)
+	*[Maptiler](https://www.maptiler.com/)
+Please give credit where it is due.
+
+If you wish to use your own map tiles, please refer to the following tile layer format.
+	'https://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+	{s} means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in 	     options; a, b or c by default, can be omitted), {z} — zoom level, {x} and {y} — tile coordinates. {r} can be used to add "@2x" to the URL to load retina             tiles.
+For more information, check out [URL template](/reference.html#tilelayer-url-template).
 
 ### Markers, circles, and polygons
 
