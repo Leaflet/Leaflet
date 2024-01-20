@@ -2611,4 +2611,30 @@ describe('Map', () => {
 			map.flyToBounds(bounds, {animate: false});
 		});
 	});
+	describe('#mouseEventToLayerPoint', function () {
+		var map, container;
+		beforeEach(function () {
+			container = document.createElement('div');
+			container.style.width = '400px';
+			container.style.height = '400px';
+			document.body.appendChild(container);
+			map = L.map(container).setView([0, 0], 1);
+		});
+	
+		afterEach(function () {
+			document.body.removeChild(container);
+		});
+	
+		it('converts a mouse event to the correct layer point', function () {
+			// Create a fake mouse event at a specific position
+			var fakeMouseEvent = new MouseEvent('click', {
+				clientX: 100,
+				clientY: 100
+			});
+			container.dispatchEvent(fakeMouseEvent);
+			var layerPoint = map.mouseEventToLayerPoint(fakeMouseEvent);
+			var expectedPoint = map.containerPointToLayerPoint(map.mouseEventToContainerPoint(fakeMouseEvent));
+			expect(layerPoint).to.eql(expectedPoint);
+		});
+	});	
 });
