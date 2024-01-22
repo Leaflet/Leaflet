@@ -76,9 +76,9 @@ You can find other options of `L.ImageOverlay` in the [documentation](/reference
 
 ### `VideoOverlay`
 
-Video used to be a hard task when building a webpage, until the [`<video>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) was made available.
+Video used to be a hard task when building a webpage, until the [`<video>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) became widely supported.
 
-Nowadays, we can use the following HTML code:
+Nowadays, we can easily embed videos using the following HTML code:
 
 ```
 <video width="500" controls>
