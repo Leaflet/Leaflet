@@ -303,18 +303,18 @@ Layer.include({
 	_initTooltipInteractions(remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
 		const onOff = remove ? 'off' : 'on',
-		    events = {
+		events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		  };
+		};
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
-				this._addFocusListeners();
+				this._addFocusListeners(remove);
 			} else {
-				events.add = this._addFocusListeners;
+				events.add = () => this._addFocusListeners(remove);
 			}
 		} else {
 			events.add = this._openTooltip;
@@ -385,12 +385,22 @@ Layer.include({
 		return this._tooltip;
 	},
 
-	_addFocusListeners() {
+	_addFocusListeners(remove) {
 		if (this.getElement) {
-			this._addFocusListenersOnLayer(this);
-		} else if (this.eachLayer) {
-			this.eachLayer(this._addFocusListenersOnLayer, this);
+			const el = this.getElement();
+			const method = remove ? 'off' : 'on';
+			DomEvent[method](el, 'focus', this._handleFocus, this);
+			DomEvent[method](el, 'blur', this._handleBlur, this);
 		}
+	},
+
+	_handleFocus() {
+		this._tooltip._source = this;
+		this.openTooltip();
+	},
+
+	_handleBlur() {
+		this.closeTooltip();
 	},
 
 	_addFocusListenersOnLayer(layer) {
