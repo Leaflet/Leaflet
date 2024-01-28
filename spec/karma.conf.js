@@ -18,7 +18,8 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		customContextFile: 'spec/context.html',
 		customDebugFile: 'spec/debug.html',
 		files: [
-			{pattern: 'node_modules/**', included: false, served: true},
+			{pattern: 'node_modules/ui-event-simulator/**/*.js', included: false, served: true},
+			{pattern: 'node_modules/prosthetic-hand/**/*.js', included: false, served: true},
 			{pattern: 'dist/**/*.js', included: false, served: true},
 			{pattern: 'dist/**/*.png', included: false, served: true},
 			{pattern: 'spec/setup.js', type: 'module'},

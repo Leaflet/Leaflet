@@ -105,9 +105,8 @@ jobs:
           - browser: Chrome1280x1024
           - browser: FirefoxTouch
           - browser: FirefoxNoTouch
-          - browser: FirefoxRetina
-          - browser: Chrome1280x1024
             os: windows-latest
+          - browser: FirefoxRetina
           - browser: Chrome1280x1024
             os: macos-latest
           - browser: SafariNative
