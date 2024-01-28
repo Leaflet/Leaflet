@@ -17,7 +17,7 @@ Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/
 
 This is why, in Leaflet maps, popups always show "on top" of other layers, markers always show on top of tile layers, etc.
 
-A new feature of **Leaflet 1.0.0** (not present in 0.7.x) is custom map panes, which allows for customization of this order.
+Custom map panes offer the capability to customize this order.
 
 ## The default is not always right
 
