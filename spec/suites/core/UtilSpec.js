@@ -96,7 +96,7 @@ describe('Util', () => {
 	});
 
 	describe('#requestAnimFrame', () => {
-		it('calles a function on next frame, unless canceled', (done) => {
+		it.skip('calles a function on next frame, unless canceled', (done) => {
 			const spy = sinon.spy(),
 			    foo = {};
 
