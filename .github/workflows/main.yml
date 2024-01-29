@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-2019, macos-latest]
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
           - browser: FirefoxNoTouch
           - browser: FirefoxRetina
           - browser: Chrome1280x1024
-            os: windows-latest
+            os: windows-2019
           - browser: Chrome1280x1024
             os: macos-latest
           - browser: SafariNative
