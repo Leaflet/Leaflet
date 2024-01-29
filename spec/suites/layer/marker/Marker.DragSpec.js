@@ -34,7 +34,7 @@ describe('Marker.Drag', () => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 			const start = new Point(300, 280);
-			const offset = new Point(256, 32);
+			const offset = new Point(56, 32);
 			const finish = start.add(offset);
 
 			const hand = new Hand({
@@ -43,7 +43,7 @@ describe('Marker.Drag', () => {
 					expect(marker.getOffset().equals(offset)).to.be.true;
 
 					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
+					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 
 					done();
 				}
@@ -66,7 +66,7 @@ describe('Marker.Drag', () => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				const start = new Point(300, 280);
-				const offset = new Point(256, 32);
+				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
 				const hand = new Hand({
@@ -75,7 +75,7 @@ describe('Marker.Drag', () => {
 						expect(marker.getOffset()).to.eql(offset);
 
 						expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
+						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 
 						done();
 					}

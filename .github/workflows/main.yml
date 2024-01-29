@@ -102,13 +102,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - browser: Chrome1280x1024
-          - browser: FirefoxTouch
+          - browser: Chrome
+          - browser: Firefox
           - browser: FirefoxNoTouch
           - browser: FirefoxRetina
-          - browser: Chrome1280x1024
+          - browser: Chrome
             os: windows-latest
-          - browser: Chrome1280x1024
+          - browser: Chrome
             os: macos-latest
           - browser: SafariNative
             os: macos-latest
