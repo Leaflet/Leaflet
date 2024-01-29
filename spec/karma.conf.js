@@ -39,15 +39,12 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			longestTestsCount: 10
 		},
 		logLevel: config.LOG_WARN,
-		browsers: ['Chrome1280x1024'],
+		browsers: ['Chrome'],
 		customLaunchers: {
-			'Chrome1280x1024': {
-				base: 'ChromeHeadless',
-				// increased viewport is required for some tests (TODO fix tests)
-				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
-				flags: ['--window-size=1280,1024']
+			'Chrome': {
+				base: 'ChromeHeadless'
 			},
-			'FirefoxTouch': {
+			'Firefox': {
 				base: 'FirefoxHeadless',
 				prefs: {
 					'dom.w3c_touch_events.enabled': 1
