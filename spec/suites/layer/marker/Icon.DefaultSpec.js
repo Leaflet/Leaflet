@@ -29,15 +29,15 @@ describe('Icon.Default', () => {
 		expect(Icon.Default.imagePath).to.equal(location.origin + origPath);
 
 		const stripUrl = Icon.Default.prototype._stripUrl;
-		const properPath = 'http://localhost:8000/base/dist/images/';
+		const properPath = 'http://localhost:8000/dist/images/';
 		[ // valid
-			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox
-			'url(\'http://localhost:8000/base/dist/images/marker-icon.png\')',
-			'url(http://localhost:8000/base/dist/images/marker-icon.png)',    // IE, Edge
+			'url("http://localhost:8000/dist/images/marker-icon.png")',  // Firefox
+			'url(\'http://localhost:8000/dist/images/marker-icon.png\')',
+			'url(http://localhost:8000/dist/images/marker-icon.png)',    // IE, Edge
 		].map(stripUrl).forEach((str) => { expect(str).to.equal(properPath); });
 
 		[ // invalid
-			'url("http://localhost:8000/base/dist/images/marker-icon.png?2x)"',
+			'url("http://localhost:8000/dist/images/marker-icon.png?2x)"',
 			'url("data:image/png;base64,iVBORw...")',                         // inline image (bundlers)
 		].map(stripUrl).forEach((str) => { expect(str).not.to.be.true; });
 	});
