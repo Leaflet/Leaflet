@@ -388,9 +388,13 @@ Layer.include({
 	_addFocusListeners(remove) {
 		if (this.getElement) {
 			const el = this.getElement();
-			const method = remove ? 'off' : 'on';
-			DomEvent[method](el, 'focus', this._handleFocus, this);
-			DomEvent[method](el, 'blur', this._handleBlur, this);
+			if (el) {
+				const method = remove ? 'off' : 'on';
+				DomEvent[method](el, 'focus', this._handleFocus, this);
+				DomEvent[method](el, 'blur', this._handleBlur, this);
+			}
+		} else if (this.eachLayer && this._map.getRenderer(this)) {
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer), this);
 		}
 	},
 
@@ -404,13 +408,15 @@ Layer.include({
 	},
 
 	_addFocusListenersOnLayer(layer) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
-		if (el) {
-			DomEvent.on(el, 'focus', function () {
-				this._tooltip._source = layer;
-				this.openTooltip();
-			}, this);
-			DomEvent.on(el, 'blur', this.closeTooltip, this);
+		if (layer.getElement) {
+			const el = layer.getElement();
+			if (el) {
+				DomEvent.on(el, 'focus', function () {
+					this._tooltip._source = layer;
+					this.openTooltip();
+				}, this);
+				DomEvent.on(el, 'blur', this.closeTooltip, this);
+			}
 		}
 	},
 
