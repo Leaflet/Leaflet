@@ -170,7 +170,5 @@ export function requestAnimFrame(fn, context) {
 // @function cancelAnimFrame(id: Number): undefined
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 export function cancelAnimFrame(id) {
-	if (id) {
-		cancelFn.call(window, id);
-	}
+	cancelFn.call(window, id);
 }
