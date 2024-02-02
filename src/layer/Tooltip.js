@@ -389,33 +389,33 @@ Layer.include({
 		if (this.getElement) {
 			const el = this.getElement();
 			if (el) {
-				const method = remove ? 'off' : 'on';
-				DomEvent[method](el, 'focus', this._handleFocus, this);
-				DomEvent[method](el, 'blur', this._handleBlur, this);
+				const onOff = remove ? 'off' : 'on';
+				DomEvent[onOff](el, 'focus', () => this._handleFocus(this), this);
+				DomEvent[onOff](el, 'blur', this._handleBlur, this);
 			}
 		} else if (this.eachLayer && this._map.getRenderer(this)) {
 			this.eachLayer(layer => this._addFocusListenersOnLayer(layer), this);
 		}
 	},
 
-	_handleFocus() {
-		this._tooltip._source = this;
-		this.openTooltip();
+	_handleFocus(source) {
+		if (this._tooltip) {
+			this._tooltip._source = source;
+			this.openTooltip();
+		}
 	},
 
 	_handleBlur() {
 		this.closeTooltip();
 	},
 
-	_addFocusListenersOnLayer(layer) {
+	_addFocusListenersOnLayer(layer, remove) {
 		if (layer.getElement) {
 			const el = layer.getElement();
 			if (el) {
-				DomEvent.on(el, 'focus', function () {
-					this._tooltip._source = layer;
-					this.openTooltip();
-				}, this);
-				DomEvent.on(el, 'blur', this.closeTooltip, this);
+				const onOff = remove ? 'off' : 'on';
+				DomEvent[onOff](el, 'focus', () => this._handleFocus(layer), this);
+				DomEvent[onOff](el, 'blur', this._handleBlur, this);
 			}
 		}
 	},
