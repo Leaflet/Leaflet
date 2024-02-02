@@ -156,14 +156,8 @@ export function template(str, data) {
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-// inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
-
-function getPrefixed(name) {
-	return window[`webkit${name}`] || window[`moz${name}`] || window[`ms${name}`];
-}
-
-export const requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame');
-export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') || getPrefixed('CancelRequestAnimationFrame');
+const requestFn = window.requestAnimationFrame;
+const cancelFn = window.cancelAnimationFrame;
 
 // @function requestAnimFrame(fn: Function, context?: Object): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
