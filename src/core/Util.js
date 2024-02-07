@@ -156,45 +156,19 @@ export function template(str, data) {
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-// inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
+const requestFn = window.requestAnimationFrame;
+const cancelFn = window.cancelAnimationFrame;
 
-function getPrefixed(name) {
-	return window[`webkit${name}`] || window[`moz${name}`] || window[`ms${name}`];
-}
-
-let lastTime = 0;
-
-// fallback for IE 7-8
-function timeoutDefer(fn) {
-	const time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
-
-	lastTime = time + timeToCall;
-	return window.setTimeout(fn, timeToCall);
-}
-
-export const requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
-
-// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
-// Schedules `fn` to be executed when the browser repaints. `fn` is bound to
-// `context` if given. When `immediate` is set, `fn` is called immediately if
-// the browser doesn't have native support for
-// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
-// otherwise it's delayed. Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn, context, immediate) {
-	if (immediate && requestFn === timeoutDefer) {
-		fn.call(context);
-	} else {
-		return requestFn.call(window, fn.bind(context));
-	}
+// @function requestAnimFrame(fn: Function, context?: Object): Number
+// Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
+// See [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame).
+// Returns a request ID that can be used to cancel the request.
+export function requestAnimFrame(fn, context) {
+	return requestFn.call(window, fn.bind(context));
 }
 
 // @function cancelAnimFrame(id: Number): undefined
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 export function cancelAnimFrame(id) {
-	if (id) {
-		cancelFn.call(window, id);
-	}
+	cancelFn.call(window, id);
 }
