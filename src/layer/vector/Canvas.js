@@ -334,6 +334,7 @@ export const Canvas = Renderer.extend({
 
 		if (options.stroke && options.weight !== 0) {
 			if (ctx.setLineDash) {
+				ctx.lineDashOffset = Number(layer.options.dashOffset) || 0;
 				ctx.setLineDash(layer.options && layer.options._dashArray || []);
 			}
 			ctx.globalAlpha = options.opacity;
