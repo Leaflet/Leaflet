@@ -242,25 +242,27 @@ describe('DomUtil', () => {
 		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
 		afterEach(() => { documentStyle[userSelectProp] = ''; });
 
-		it('disables and enables text selection', () => {
-			DomUtil.disableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('none');
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
-		});
+		describe('when an argument is not provided', () => {
+			it('disables and enables text selection', () => {
+				DomUtil.disableTextSelection();
+				expect(documentStyle[userSelectProp]).to.equal('none');
+				DomUtil.enableTextSelection();
+				expect(documentStyle[userSelectProp]).to.equal('');
+			});
 
-		it('restores the text selection previously set', () => {
-			documentStyle[userSelectProp] = 'text';
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('text');
-		});
+			it('restores the text selection previously set', () => {
+				documentStyle[userSelectProp] = 'text';
+				DomUtil.disableTextSelection();
+				DomUtil.enableTextSelection();
+				expect(documentStyle[userSelectProp]).to.equal('text');
+			});
 
-		it('restores the text selection previously set when disabling multiple times', () => {
-			DomUtil.disableTextSelection();
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
+			it('restores the text selection previously set when disabling multiple times', () => {
+				DomUtil.disableTextSelection();
+				DomUtil.disableTextSelection();
+				DomUtil.enableTextSelection();
+				expect(documentStyle[userSelectProp]).to.equal('');
+			});
 		});
 	});
 
