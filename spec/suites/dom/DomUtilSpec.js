@@ -236,33 +236,56 @@ describe('DomUtil', () => {
 
 	describe('#disableTextSelection, #enableTextSelection', () => {
 		const documentStyle = document.documentElement.style;
+		const mockElement = document.createElement('div');
 		// Safari still needs a vendor prefix, we need to detect with property name is supported.
 		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 
-		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
-		afterEach(() => { documentStyle[userSelectProp] = ''; });
+		beforeEach(() => {
+			expect(documentStyle[userSelectProp]).to.equal('');
+		});
+		afterEach(() => {
+			documentStyle[userSelectProp] = '';
+			mockElement.style[userSelectProp] = '';
+		});
 
-		describe('when an argument is not provided', () => {
+		const testSuite = (targetElement) => {
+			let targetStyle;
+
+			beforeEach(() => {
+				targetStyle = documentStyle;
+				if (targetElement) {
+					targetStyle = targetElement.style;
+				}
+			});
+
 			it('disables and enables text selection', () => {
-				DomUtil.disableTextSelection();
-				expect(documentStyle[userSelectProp]).to.equal('none');
-				DomUtil.enableTextSelection();
-				expect(documentStyle[userSelectProp]).to.equal('');
+				DomUtil.disableTextSelection(targetElement);
+				expect(targetStyle[userSelectProp]).to.equal('none');
+				DomUtil.enableTextSelection(targetElement);
+				expect(targetStyle[userSelectProp]).to.equal('');
 			});
 
 			it('restores the text selection previously set', () => {
-				documentStyle[userSelectProp] = 'text';
-				DomUtil.disableTextSelection();
-				DomUtil.enableTextSelection();
-				expect(documentStyle[userSelectProp]).to.equal('text');
+				targetStyle[userSelectProp] = 'text';
+				DomUtil.disableTextSelection(targetElement);
+				DomUtil.enableTextSelection(targetElement);
+				expect(targetStyle[userSelectProp]).to.equal('text');
 			});
 
 			it('restores the text selection previously set when disabling multiple times', () => {
-				DomUtil.disableTextSelection();
-				DomUtil.disableTextSelection();
-				DomUtil.enableTextSelection();
-				expect(documentStyle[userSelectProp]).to.equal('');
+				DomUtil.disableTextSelection(targetElement);
+				DomUtil.disableTextSelection(targetElement);
+				DomUtil.enableTextSelection(targetElement);
+				expect(targetStyle[userSelectProp]).to.equal('');
 			});
+		};
+
+		describe('when an element is not provided operations are on the entire document', () => {
+			testSuite();
+		});
+
+		describe('when an element is provided operations are performed on the element passed', () => {
+			testSuite(mockElement);
 		});
 	});
 
