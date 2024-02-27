@@ -1,4 +1,5 @@
-import {locale, setLocale, registerLocale, translate} from 'leaflet';
+import {locale, setLocale, registerLocale, translate, Map} from 'leaflet';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('I18n', () => {
 	beforeEach(() => {
@@ -58,6 +59,28 @@ describe('I18n', () => {
 		expect(translate('Simple phrase to translate')).to.eql('Frase semplice da tradurre');
 		setLocale('fr');
 		expect(translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
+	});
+
+});
+
+
+describe('Map.I18n', () => {
+
+	it('should be possible to translate Leaflet strings', () => {
+		const container = createContainer();
+		const fr = {
+			'Zoom in': 'Zoomer',
+			'Zoom out': 'Dézoomer',
+			'A JavaScript library for interactive maps': 'Bibliothèque JavaScript pour cartes interactives',
+		};
+		registerLocale('fr', fr);
+		setLocale('fr');
+	    const map = new Map(container);
+		map.setView([0, 0], 0);
+		expect(document.querySelector('.leaflet-control-zoom-in').title).to.eql('Zoomer');
+		expect(document.querySelector('.leaflet-control-zoom-out').title).to.eql('Dézoomer');
+		expect(document.querySelector('.leaflet-control-attribution a').title).to.include('Bibliothèque JavaScript pour cartes interactives');
+		removeMapContainer(map, container);
 	});
 
 });
