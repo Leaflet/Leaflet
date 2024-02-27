@@ -3,6 +3,7 @@ import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {translate} from '../core/I18n.js';
 
 /*
  * @class Control.Zoom
@@ -27,7 +28,7 @@ export const Zoom = Control.extend({
 
 		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
-		zoomInTitle: 'Zoom in',
+		zoomInTitle: '',
 
 		// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
 		// The text set on the 'zoom out' button.
@@ -35,7 +36,7 @@ export const Zoom = Control.extend({
 
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
-		zoomOutTitle: 'Zoom out'
+		zoomOutTitle: ''
 	},
 
 	onAdd(map) {
@@ -43,9 +44,9 @@ export const Zoom = Control.extend({
 		    container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		    options = this.options;
 
-		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
+		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle || translate('Zoom in'),
 		        `${zoomName}-in`,  container, this._zoomIn);
-		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
+		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle || translate('Zoom out'),
 		        `${zoomName}-out`, container, this._zoomOut);
 
 		this._updateDisabled();
