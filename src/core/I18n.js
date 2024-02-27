@@ -26,7 +26,7 @@ export function setLocale(code) {
 
 // @function translate(string: String, data?: Object): String
 // Actually try to translate the `string`, with optionnal variable passed in `data`.
-export function translate(string, data) {
+export function translate(string, data = {}) {
 	if (locale && locales[locale] && locales[locale][string] !== undefined) {
 		string = locales[locale][string];
 	}
