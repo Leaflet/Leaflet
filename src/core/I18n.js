@@ -6,7 +6,7 @@ import * as Util from './Util.js';
  * Utility functions to deal with translations.
  */
 
-const locales = {};
+export const locales = {};
 
 // @property locale: String
 // The current locale code, that will be used when translating strings.
