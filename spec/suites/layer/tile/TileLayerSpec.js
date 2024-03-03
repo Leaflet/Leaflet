@@ -1,4 +1,6 @@
-import {Map, TileLayer, Util, CRS, DomUtil, Browser} from 'leaflet';
+import {expect} from 'chai';
+import {Browser, CRS, DomUtil, Map, TileLayer, Util} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('TileLayer', () => {

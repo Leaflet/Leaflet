@@ -1,4 +1,6 @@
-import {DomEvent, Util, Map} from 'leaflet';
+import {expect} from 'chai';
+import {DomEvent, Map, Util} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 
 describe('DomEvent', () => {

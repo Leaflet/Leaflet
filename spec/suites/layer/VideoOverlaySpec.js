@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {LatLngBounds, Map, VideoOverlay} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 

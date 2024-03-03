@@ -1,4 +1,6 @@
-import {CRS, latLng, point, latLngBounds, Util, extend} from 'leaflet';
+import {expect} from 'chai';
+import {CRS, Util, extend, latLng, latLngBounds, point} from 'leaflet';
+import '../../SpecHelper.js';
 
 describe('CRS.EPSG3857', () => {
 	const crs = CRS.EPSG3857;

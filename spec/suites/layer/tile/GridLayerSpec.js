@@ -1,4 +1,6 @@
-import {Map, GridLayer, DomUtil, Point, Util} from 'leaflet';
+import {expect} from 'chai';
+import {DomUtil, GridLayer, Map, Point, Util} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('GridLayer', () => {

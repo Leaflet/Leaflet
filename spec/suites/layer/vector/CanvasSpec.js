@@ -1,5 +1,7 @@
+import {expect} from 'chai';
 import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util, stamp} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

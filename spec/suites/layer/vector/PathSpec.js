@@ -1,4 +1,6 @@
-import {Map, Polyline, LayerGroup, Polygon} from 'leaflet';
+import {expect} from 'chai';
+import {LayerGroup, Map, Polygon, Polyline} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

@@ -1,4 +1,5 @@
-﻿import {layerGroup, Layer, Marker, GeoJSON} from 'leaflet';
+﻿import {expect} from 'chai';
+import {GeoJSON, Layer, Marker, layerGroup} from 'leaflet';
 
 describe('LayerGroup', () => {
 	describe('#hasLayer', () => {

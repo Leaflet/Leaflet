@@ -1,4 +1,5 @@
-﻿import {Marker, featureGroup, layerGroup, stamp} from 'leaflet';
+﻿import {expect} from 'chai';
+import {Marker, featureGroup, layerGroup, stamp} from 'leaflet';
 
 describe('FeatureGroup', () => {
 	describe('#_propagateEvent', () => {

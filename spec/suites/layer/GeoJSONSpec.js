@@ -1,4 +1,5 @@
-import {GeoJSON, Marker, Circle, CircleMarker, Polyline, Polygon, LayerGroup, TileLayer, LatLng, FeatureGroup} from 'leaflet';
+import {expect} from 'chai';
+import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, LayerGroup, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
 
 describe('GeoJSON', () => {
 	describe('addData', () => {

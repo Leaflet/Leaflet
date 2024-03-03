@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {DomUtil, Point, point} from 'leaflet';
 import UIEventSimulator from 'ui-event-simulator';
 

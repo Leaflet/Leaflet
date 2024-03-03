@@ -1,4 +1,6 @@
-import {Map, latLng, Point, LatLngBounds, TileLayer, Handler, DomEvent, Bounds, Layer, control as lControl, GridLayer, Util, Marker, Polygon, DivIcon, CircleMarker, Canvas} from 'leaflet';
+import {expect} from 'chai';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, Map, Marker, Point, Polygon, TileLayer, Util, control as lControl, latLng} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
