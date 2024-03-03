@@ -1,4 +1,5 @@
-import {Map, Circle} from 'leaflet';
+import {expect} from 'chai';
+import {Circle, Map} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {

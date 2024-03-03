@@ -1,4 +1,6 @@
+import {expect} from 'chai';
 import {Projection, latLng, point} from 'leaflet';
+import '../../SpecHelper.js';
 
 describe('Projection.Mercator', () => {
 	const p = Projection.Mercator;

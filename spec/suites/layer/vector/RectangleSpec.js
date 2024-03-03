@@ -1,4 +1,5 @@
-import {Map, rectangle, LineUtil, latLng, Canvas, Polygon} from 'leaflet';
+import {expect} from 'chai';
+import {Canvas, LineUtil, Map, Polygon, latLng, rectangle} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Rectangle', () => {

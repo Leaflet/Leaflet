@@ -1,4 +1,5 @@
-import {Map, Marker, Icon} from 'leaflet';
+import {expect} from 'chai';
+import {Icon, Map, Marker} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Icon.Default', () => {

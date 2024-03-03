@@ -1,4 +1,6 @@
-import {Map, DomEvent} from 'leaflet';
+import {expect} from 'chai';
+import {DomEvent, Map} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

@@ -1,4 +1,5 @@
-import {Map, polygon, LineUtil, latLng} from 'leaflet';
+import {expect} from 'chai';
+import {LineUtil, Map, latLng, polygon} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Polygon', () => {
