@@ -48,7 +48,4 @@ export function removeMapContainer(map, container) {
 	}
 }
 
-console.log('Browser.pointer', Browser.pointer);
-console.log('Browser.touchNative', Browser.touchNative);
-
 export const pointerType = Browser.touchNative ? 'touch' : 'mouse';

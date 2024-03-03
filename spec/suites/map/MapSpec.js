@@ -2243,40 +2243,38 @@ describe('Map', () => {
 		let watchPosSpy;
 
 		const geolocationStub = {
-			geolocation: {
-				getCurrentPosition(onSuccess) {
-					onSuccess(
+			getCurrentPosition(onSuccess) {
+				onSuccess(
+					{
+						coords:
 						{
-							coords:
-							{
-								latitude: 50,
-								longitude: 50,
-								accuracy: 14
-							},
+							latitude: 50,
+							longitude: 50,
+							accuracy: 14
+						},
 
-							timestamp: 1670000000000
-						});
+						timestamp: 1670000000000
+					});
 
-					getCurrentPosSpy();
-				},
+				getCurrentPosSpy();
+			},
 
-				watchPosition(onSuccess) {
-					onSuccess(
+			watchPosition(onSuccess) {
+				onSuccess(
+					{
+						coords:
 						{
-							coords:
-							{
-								latitude: 25,
-								longitude: 25,
-								accuracy: 14
-							},
+							latitude: 25,
+							longitude: 25,
+							accuracy: 14
+						},
 
-							timestamp: 1660000000000
-						});
+						timestamp: 1660000000000
+					});
 
-					watchPosSpy();
+				watchPosSpy();
 
-					return 25;
-				}
+				return 25;
 			}
 		};
 
@@ -2290,7 +2288,10 @@ describe('Map', () => {
 
 		it('returns \'Geolocation not found!\' error if geolocation can\'t be found', () => {
 			Object.defineProperty(window, 'navigator', {
-				value: {}
+				value: {
+					userAgent: window.navigator.userAgent,
+					serviceWorker: window.navigator.serviceWorker,
+				}
 			});
 
 			map.on('locationerror', (error) => {
@@ -2310,7 +2311,11 @@ describe('Map', () => {
 
 		it('sets map view to geolocation coords', () => {
 			Object.defineProperty(window, 'navigator', {
-				value: geolocationStub
+				value: {
+					userAgent: window.navigator.userAgent,
+					serviceWorker: window.navigator.serviceWorker,
+					geolocation: geolocationStub
+				}
 			});
 
 			let expectedBounds;
@@ -2344,7 +2349,11 @@ describe('Map', () => {
 
 		it('sets map view to geolocation coords and returns location watch ID when watch is true', () => {
 			Object.defineProperty(window, 'navigator', {
-				value: geolocationStub
+				value: {
+					userAgent: window.navigator.userAgent,
+					serviceWorker: window.navigator.serviceWorker,
+					geolocation: geolocationStub
+				}
 			});
 
 			let expectedBounds;
@@ -2380,7 +2389,11 @@ describe('Map', () => {
 
 		it('does not set map view by default', () => {
 			Object.defineProperty(window, 'navigator', {
-				value: geolocationStub
+				value: {
+					userAgent: window.navigator.userAgent,
+					serviceWorker: window.navigator.serviceWorker,
+					geolocation: geolocationStub
+				}
 			});
 
 			map.on('locationfound', (data) => {

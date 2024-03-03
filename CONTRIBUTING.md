@@ -116,26 +116,7 @@ in a graphical browser. This requires regenerating the bundled files quickly.
 In order to do so, run `npm run watch` or `yarn run watch`. This will keep
 on rebuilding the bundles whenever any source file changes.
 
-## Running the Tests
-
-Before running the tests make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
-
-To run the tests from the command line, ensure you have [Google Chrome](https://www.google.com/chrome/) installed and then run:
-
-```
-npm test
-```
-
-By default the tests will run in Google Chrome headlessly (without a UI), to run the tests in other browsers you can pass in the [`--browsers`](https://karma-runner.github.io/latest/config/configuration-file.html#browsers) flag.
-
-```
-npm test -- --browsers Firefox
-```
-
-For a list of available browsers see the documentation of the included launcher plugins:
-- [`karma-chrome-launcher`](https://github.com/karma-runner/karma-chrome-launcher#available-browsers)
-- [`karma-firefox-launcher`](https://github.com/karma-runner/karma-firefox-launcher#configuration)
-- [`karma-safarinative-launcher`](https://github.com/muthu90ec/karma-safarinative-launcher#readme)
+## TODO: Write new docs on how to run the tests.
 
 ## Improving Documentation
 

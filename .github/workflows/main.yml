@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-14]
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -101,17 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - browser: Chrome
-          - browser: Firefox
-          - browser: FirefoxNoTouch
-          - browser: FirefoxRetina
-          - browser: Chrome
-            os: windows-latest
-          - browser: Chrome
-            os: macos-latest
-          - browser: SafariNative
-            os: macos-latest
+        os: [ubuntu-latest, windows-latest, macos-14]
     steps:
       - name: Restore setup
         uses: actions/cache@v4
@@ -124,16 +114,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v1
-        if: contains(matrix.browser, 'Chrome')
-
-      - name: Set up Firefox
-        uses: browser-actions/setup-firefox@v1
-        if: contains(matrix.browser, 'Firefox')
-
-      - name: Run tests on ${{ matrix.browser }}
-        run: npm test -- --browsers ${{ matrix.browser }} --single-run
+      - name: Run tests
+        run: npm test
 
   publish-artifacts:
     needs: setup
