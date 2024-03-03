@@ -1,8 +1,10 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';
-import {svgCreate, pointsToPath} from './SVG.Util.js';
+import {svgCreate, pointsToPath, pointsToCurvedPath} from './SVG.Util.js';
+
 export {pointsToPath};
+export {pointsToCurvedPath};
 
 export const create = svgCreate;
 
@@ -151,7 +153,9 @@ export const SVG = Renderer.extend({
 	},
 
 	_updatePoly(layer, closed) {
-		this._setPath(layer, pointsToPath(layer._parts, closed));
+		const rings = layer._parts;
+		const path = layer.options.curved ? pointsToCurvedPath(rings, closed) : pointsToPath(rings, closed);
+		this._setPath(layer, path);
 	},
 
 	_updateCircle(layer) {

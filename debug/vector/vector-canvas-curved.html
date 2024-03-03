@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Vector Canvas</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<button id="removePath" type="button">Remove path</button>
+		<button id="removeCircle" type="button">Remove circle</button>
+		<button id="removeAll" type="button">Remove all layers</button>
+		<script type="module">
+			import {TileLayer, LatLng, Canvas, Polyline, Map, LayerGroup, LatLngBounds, Circle, CircleMarker, Polygon} from 'leaflet';
+			import route from './route.js';
+
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const latlngs = [];
+
+			for (let i = 0; i < route.length; i++) {
+				latlngs.push(new LatLng(route[i][0], route[i][1]));
+			}
+
+			const canvas = new Canvas();
+			const path = new Polyline(latlngs, {
+				renderer: canvas,
+				curved: true
+			});
+			const map = new Map('map', {layers: [osm], preferCanvas: true});
+			const group = new LayerGroup();
+
+			map.fitBounds(new LatLngBounds(latlngs));
+
+			const circleLocation = new LatLng(51.508, -0.11);
+			const circleOptions = {
+				color: 'red',
+				fillColor: 'yellow',
+				fillOpacity: 0.7,
+				renderer: canvas
+			};
+
+			const circle = new Circle(circleLocation, 500000, circleOptions);
+			const circleMarker = new CircleMarker(circleLocation, {fillColor: 'blue', fillOpacity: 1, stroke: false});
+
+			group.addLayer(circle).addLayer(circleMarker);
+
+			circle.bindPopup('I am a circle');
+			circleMarker.bindPopup('I am a circle marker');
+
+			group.addLayer(path);
+			path.bindPopup('I am a polyline');
+
+			const p1 = latlngs[0];
+			const p2 = latlngs[Math.round(route.length / 4)];
+			const p3 = latlngs[Math.round(route.length / 3)];
+			const p4 = latlngs[Math.round(route.length / 2)];
+			const p5 = latlngs[route.length - 1];
+			const polygonPoints = [p1, p2, p3, p4, p5];
+
+			const h1 = new LatLng(p1.lat, p1.lng);
+			const h2 = new LatLng(p2.lat, p2.lng);
+			const h3 = new LatLng(p3.lat, p3.lng);
+			const h4 = new LatLng(p4.lat, p4.lng);
+			const h5 = new LatLng(p5.lat, p5.lng);
+
+			h1.lng += 20;
+			h2.lat -= 5;
+			h3.lat -= 5;
+			h4.lng -= 10;
+			h5.lng -= 8;
+			h5.lat += 10;
+
+			const holePoints = [h5, h4, h3, h2, h1];
+			const polygon = new Polygon([polygonPoints, holePoints], {
+				fillColor: '#333',
+				color: 'green',
+				renderer: canvas,
+				curved: true
+			});
+			group.addLayer(polygon);
+
+			const line = new Polyline([h1, h4, h5], {
+				dashArray: '5, 5'
+			});
+			group.addLayer(line);
+
+			polygon.bindPopup('I am a polygon');
+
+			const circleMarker2 = new CircleMarker([25.5, 0], {
+				dashArray: '5, 5',
+				fillColor: 'red',
+				color: 'green',
+				renderer: canvas,
+				curved: true
+			});
+			group.addLayer(circleMarker2);
+
+			map.addLayer(group);
+
+			document.getElementById('removePath').addEventListener('click', () => group.removeLayer(path));
+			document.getElementById('removeCircle').addEventListener('click', () => group.removeLayer(circle));
+			document.getElementById('removeAll').addEventListener('click', () => group.clearLayers());
+		</script>
+	</body>
+</html>

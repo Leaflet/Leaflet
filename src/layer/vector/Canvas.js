@@ -1,6 +1,7 @@
 import {Renderer} from './Renderer.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
+import {curvedPathCommands} from './SVG.Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*
@@ -284,13 +285,34 @@ export const Canvas = Renderer.extend({
 
 		ctx.beginPath();
 
-		for (i = 0; i < len; i++) {
-			for (j = 0, len2 = parts[i].length; j < len2; j++) {
-				p = parts[i][j];
-				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
+		if (layer.options.curved) {
+			for (let i = 0; i < parts.length; i++) {
+				const points = parts[i];
+
+				const cmds = curvedPathCommands(points, closed);
+				for (j = 0; j < cmds.length; j++) {
+					const cmd = cmds[j];
+					switch (cmd.type) {
+					case 'C':
+						ctx.bezierCurveTo(...cmd.values);
+						break;
+					case 'M':
+						ctx.moveTo(...cmd.values);
+						break;
+					default:
+						console.error(`Unsupported SVG command: ${cmd}`);
+					}
+				}
 			}
-			if (closed) {
-				ctx.closePath();
+		} else {
+			for (i = 0; i < len; i++) {
+				for (j = 0, len2 = parts[i].length; j < len2; j++) {
+					p = parts[i][j];
+					ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
+				}
+				if (closed) {
+					ctx.closePath();
+				}
 			}
 		}
 

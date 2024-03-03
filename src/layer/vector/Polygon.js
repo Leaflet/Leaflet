@@ -108,7 +108,7 @@ export const Polygon = Polyline.extend({
 			return;
 		}
 
-		if (this.options.noClip) {
+		if (this.options.noClip || this.options.curved) {
 			this._parts = this._rings;
 			return;
 		}
