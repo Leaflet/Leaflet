@@ -6,11 +6,5 @@ module.exports = {
 	},
 	env: {
 		mocha: true,
-	},
-	globals: {
-		expect: false,
-		chai: false,
-		sinon: false,
-		Hand: false,
 	}
 };
