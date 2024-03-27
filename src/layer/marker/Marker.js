@@ -194,6 +194,9 @@ export const Marker = Layer.extend({
 		return this;
 	},
 
+	// @method getElement(): HTMLElement
+	// Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
+	// used by L.Marker layer.
 	getElement() {
 		return this._icon;
 	},
