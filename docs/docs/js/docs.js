@@ -115,3 +115,25 @@ function scrollToHeader(elemHeader, sameAnchor) {
 	// apply the new anchor to the location url
 	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
+
+const backToTop = document.querySelector('#back-to-top');
+backToTop.addEventListener('click', () => {
+	document.documentElement.scrollIntoView({behavior: 'smooth'});
+});
+
+let lastScrollY = window.scrollY;
+const scrollEventHandler = function scrollEventHandler() {
+	const {scrollY} = window;
+
+	if (scrollY !== 0 && scrollY < lastScrollY) {
+		backToTop.classList.add('is-visible');
+	} else {
+		backToTop.classList.remove('is-visible');
+	}
+
+	lastScrollY = scrollY;
+};
+
+window.addEventListener('scroll', () => {
+	scrollEventHandler();
+});
