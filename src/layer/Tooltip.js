@@ -303,18 +303,18 @@ Layer.include({
 	_initTooltipInteractions(remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
 		const onOff = remove ? 'off' : 'on',
-		    events = {
+		events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		  };
+		};
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
-				this._addFocusListeners();
+				this._addFocusListeners(remove);
 			} else {
-				events.add = this._addFocusListeners;
+				events.add = () => this._addFocusListeners(remove);
 			}
 		} else {
 			events.add = this._openTooltip;
@@ -385,22 +385,38 @@ Layer.include({
 		return this._tooltip;
 	},
 
-	_addFocusListeners() {
+	_addFocusListeners(remove) {
 		if (this.getElement) {
-			this._addFocusListenersOnLayer(this);
-		} else if (this.eachLayer) {
-			this.eachLayer(this._addFocusListenersOnLayer, this);
+			const el = this.getElement();
+			if (el) {
+				const onOff = remove ? 'off' : 'on';
+				DomEvent[onOff](el, 'focus', () => this._handleFocus(this), this);
+				DomEvent[onOff](el, 'blur', this._handleBlur, this);
+			}
+		} else if (this.eachLayer && this._map.getRenderer(this)) {
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer), this);
 		}
 	},
 
-	_addFocusListenersOnLayer(layer) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
-		if (el) {
-			DomEvent.on(el, 'focus', function () {
-				this._tooltip._source = layer;
-				this.openTooltip();
-			}, this);
-			DomEvent.on(el, 'blur', this.closeTooltip, this);
+	_handleFocus(source) {
+		if (this._tooltip) {
+			this._tooltip._source = source;
+			this.openTooltip();
+		}
+	},
+
+	_handleBlur() {
+		this.closeTooltip();
+	},
+
+	_addFocusListenersOnLayer(layer, remove) {
+		if (layer.getElement) {
+			const el = layer.getElement();
+			if (el) {
+				const onOff = remove ? 'off' : 'on';
+				DomEvent[onOff](el, 'focus', () => this._handleFocus(layer), this);
+				DomEvent[onOff](el, 'blur', this._handleBlur, this);
+			}
 		}
 	},
 
