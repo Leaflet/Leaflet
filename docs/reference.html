@@ -22285,8 +22285,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 </div>
 
 </section><h2 id='draggable'>Draggable</h2><p>A class for making DOM elements draggable (including touch support).
-Used internally for map and marker dragging. Only works for elements
-that were positioned with <a href="#domutil-setposition"><code>L.DomUtil.setPosition</code></a>.</p>
+Used internally for map and marker dragging. Works for any element in the DOM.</p>
 
 <section>
 <h3 id='draggable-example'>Usage example</h3>
@@ -22297,7 +22296,8 @@ that were positioned with <a href="#domutil-setposition"><code>L.DomUtil.setPosi
 
 
 
-<pre><code class="language-js">var draggable = new L.Draggable(elementToDrag);
+<pre><code class="language-js">var elementToDrag = document.getElementById('MyElement');
+var draggable = new L.Draggable(elementToDrag);
 draggable.enable();
 </code></pre>
 
