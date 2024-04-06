@@ -19,11 +19,10 @@ module.exports = {
 		commonjs: true,
 		node: false
 	},
-	extends: ['mourner', 'plugin:ssr-friendly/recommended'],
+	extends: 'mourner',
 	plugins: [
 		'@mapbox/eslint-plugin-script-tags',
 		'eslint-plugin-import',
-		'ssr-friendly'
 	],
 	parserOptions: {
 		ecmaVersion: 'latest',
@@ -76,6 +75,11 @@ module.exports = {
 			rules: {
 				'eol-last': 'off'
 			}
+		},
+		{
+			files: ['src/**/*'],
+			'plugins': ['ssr-friendly'],
+			'extends': ['plugin:ssr-friendly/recommended']
 		}
 	]
 };
