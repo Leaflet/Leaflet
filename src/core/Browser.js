@@ -13,54 +13,71 @@
  * ```
  */
 
-// @property chrome: Boolean; `true` for the Chrome browser.
-const chrome = userAgentContains('chrome');
+function setupBrowser() {
+	if (typeof window === 'undefined') {
+		return {
+			chrome: true,
+			safari: true,
+			mobile: true,
+			pointer: true,
+			touch: true,
+			touchNative: true,
+			retina: true,
+			mac: true,
+			linux: true
+		};
+	}
+	// @property chrome: Boolean; `true` for the Chrome browser.
+	const chrome = userAgentContains('chrome');
 
-// @property safari: Boolean; `true` for the Safari browser.
-const safari = !chrome && userAgentContains('safari');
+	// @property safari: Boolean; `true` for the Safari browser.
+	const safari = !chrome && userAgentContains('safari');
 
-// @property mobile: Boolean; `true` for all browsers running in a mobile device.
-const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
+	// @property mobile: Boolean; `true` for all browsers running in a mobile device.
+	const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
 
-// @property pointer: Boolean
-// `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-const pointer = !!window.PointerEvent;
+	// @property pointer: Boolean
+	// `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
+	const pointer = !!window.PointerEvent;
 
-// @property touchNative: Boolean
-// `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
-// **This does not necessarily mean** that the browser is running in a computer with
-// a touchscreen, it only means that the browser is capable of understanding
-// touch events.
-const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
+	// @property touchNative: Boolean
+	// `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
+	// **This does not necessarily mean** that the browser is running in a computer with
+	// a touchscreen, it only means that the browser is capable of understanding
+	// touch events.
+	const touchNative = 'ontouchstart' in window || !!window.TouchEvent;
 
-// @property touch: Boolean
-// `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
-// Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
-const touch = touchNative || pointer;
+	// @property touch: Boolean
+	// `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
+	// Note: pointer events will be preferred (if available), and processed for all `touch*` listeners.
+	const touch = touchNative || pointer;
 
-// @property retina: Boolean
-// `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
-const retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+	// @property retina: Boolean
+	// `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
+	const retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
-// @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = navigator.platform.startsWith('Mac');
+	// @property mac: Boolean; `true` when the browser is running in a Mac platform
+	const mac = navigator.platform.startsWith('Mac');
 
-// @property mac: Boolean; `true` when the browser is running in a Linux platform
-const linux = navigator.platform.startsWith('Linux');
+	// @property mac: Boolean; `true` when the browser is running in a Linux platform
+	const linux = navigator.platform.startsWith('Linux');
+
+	return 	{
+		chrome,
+		safari,
+		mobile,
+		pointer,
+		touch,
+		touchNative,
+		retina,
+		mac,
+		linux
+	};
+}
 
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().includes(str);
 }
 
 
-export default {
-	chrome,
-	safari,
-	mobile,
-	pointer,
-	touch,
-	touchNative,
-	retina,
-	mac,
-	linux
-};
+export default setupBrowser();

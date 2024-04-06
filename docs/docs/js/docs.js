@@ -2,85 +2,92 @@
 hljs.configure({tabReplace: '    '});
 hljs.initHighlighting();
 
-const tocCopy = document.createElement('div');
-tocCopy.id = 'toc-copy';
+function setup() {
+	if (typeof document === 'undefined') {
+		return;
+	}
 
-const toc = document.querySelector('#toc');
+	const tocCopy = document.createElement('div');
+	tocCopy.id = 'toc-copy';
 
-if (toc) {
+	const toc = document.querySelector('#toc');
+
+	if (toc) {
 	// top menu
-	let menus = document.querySelectorAll('#toc a');
-	let i;
+		let menus = document.querySelectorAll('#toc a');
+		let i;
 
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('click', (e) => {
-			clickOnAnchor(e);
-		});
-	}
-
-	// sidebar menu
-	tocCopy.innerHTML = toc.innerHTML;
-	document.getElementsByClassName('container')[0].appendChild(tocCopy);
-
-	menus = document.querySelectorAll('#toc-copy ul');
-	i = 0;
-
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('mouseover', function () {
-			this.previousElementSibling.classList.add('hover');
-		});
-
-		menus[i].addEventListener('mouseout', function () {
-			this.previousElementSibling.classList.remove('hover');
-		});
-
-		menus[i].addEventListener('click', (e) => {
-			clickOnAnchor(e);
-		});
-	}
-
-	const labels = document.querySelectorAll('#toc-copy h4');
-
-	for (i = 0; i < labels.length; i++) {
-		labels[i].addEventListener('click', function () {
-			this.classList.toggle('active');
-		});
-	}
-
-	tocCopy.addEventListener('click', function (e) {
-		if (e.target.nodeName !== 'H4') {
-			this.classList.toggle('active');
+		for (i = 0; i < menus.length; i++) {
+			menus[i].addEventListener('click', (e) => {
+				clickOnAnchor(e);
+			});
 		}
-	});
 
-	const scrollPos = function scrollPos() {
-		const scroll = window.scrollY;
+		// sidebar menu
+		tocCopy.innerHTML = toc.innerHTML;
+		document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-		if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
-			document.body.classList.add('scrolled');
-		} else {
-			document.body.classList.remove('scrolled');
+		menus = document.querySelectorAll('#toc-copy ul');
+		i = 0;
+
+		for (i = 0; i < menus.length; i++) {
+			menus[i].addEventListener('mouseover', function () {
+				this.previousElementSibling.classList.add('hover');
+			});
+
+			menus[i].addEventListener('mouseout', function () {
+				this.previousElementSibling.classList.remove('hover');
+			});
+
+			menus[i].addEventListener('click', (e) => {
+				clickOnAnchor(e);
+			});
 		}
-	};
 
-	scrollPos();
+		const labels = document.querySelectorAll('#toc-copy h4');
 
-	window.addEventListener('scroll', () => {
+		for (i = 0; i < labels.length; i++) {
+			labels[i].addEventListener('click', function () {
+				this.classList.toggle('active');
+			});
+		}
+
+		tocCopy.addEventListener('click', function (e) {
+			if (e.target.nodeName !== 'H4') {
+				this.classList.toggle('active');
+			}
+		});
+
+		const scrollPos = function scrollPos() {
+			const scroll = window.scrollY;
+
+			if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
+				document.body.classList.add('scrolled');
+			} else {
+				document.body.classList.remove('scrolled');
+			}
+		};
+
 		scrollPos();
-	});
 
-	window.addEventListener('load', () => {
-		const currentHash = window.location.hash;
-		if (!currentHash) { return; }
-		const elem = document.querySelector(currentHash);
+		window.addEventListener('scroll', () => {
+			scrollPos();
+		});
 
-		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
-			setTimeout(() => {
-				scrollToHeader(elem, true);
-			}, 10);
-		}
-	}, false);
+		window.addEventListener('load', () => {
+			const currentHash = window.location.hash;
+			if (!currentHash) { return; }
+			const elem = document.querySelector(currentHash);
+
+			if (elem.tagName === 'H2' || elem.tagName === 'H4') {
+				setTimeout(() => {
+					scrollToHeader(elem, true);
+				}, 10);
+			}
+		}, false);
+	}
 }
+setup();
 
 let currentAnchor = '';
 

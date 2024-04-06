@@ -156,19 +156,19 @@ export function template(str, data) {
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-const requestFn = window.requestAnimationFrame;
-const cancelFn = window.cancelAnimationFrame;
 
 // @function requestAnimFrame(fn: Function, context?: Object): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
 // See [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame).
 // Returns a request ID that can be used to cancel the request.
 export function requestAnimFrame(fn, context) {
+	const requestFn = window.requestAnimationFrame;
 	return requestFn.call(window, fn.bind(context));
 }
 
 // @function cancelAnimFrame(id: Number): undefined
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 export function cancelAnimFrame(id) {
+	const cancelFn = window.cancelAnimationFrame;
 	cancelFn.call(window, id);
 }

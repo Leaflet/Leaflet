@@ -93,10 +93,16 @@ function batchRemove(obj, filterFn) {
 	}
 }
 
+function getWheel() {
+	if (typeof window === 'undefined') {
+		return undefined;
+	}
+	return ('onwheel' in window) && 'mousewheel';
+}
 const mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
-	wheel: !('onwheel' in window) && 'mousewheel'
+	wheel: getWheel()
 };
 
 function addOne(obj, type, fn, context) {

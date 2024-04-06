@@ -78,9 +78,14 @@ export function getPosition(el) {
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-const documentStyle = document.documentElement.style;
+function getDocumentStyle() {
+	if (typeof document === 'undefined') {
+		return {};
+	}
+	return document.documentElement.style;
+}
 // Safari still needs a vendor prefix, we need to detect with property name is supported.
-const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
+const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in getDocumentStyle());
 let prevUserSelect;
 
 // @function disableTextSelection()
@@ -88,14 +93,14 @@ let prevUserSelect;
 // by Leaflet to override the behaviour of any click-and-drag interaction on
 // the map. Affects drag interactions on the whole document.
 export function disableTextSelection() {
-	const value = documentStyle[userSelectProp];
+	const value = getDocumentStyle()[userSelectProp];
 
 	if (value === 'none') {
 		return;
 	}
 
 	prevUserSelect = value;
-	documentStyle[userSelectProp] = 'none';
+	getDocumentStyle()[userSelectProp] = 'none';
 }
 
 // @function enableTextSelection()
@@ -105,7 +110,7 @@ export function enableTextSelection() {
 		return;
 	}
 
-	documentStyle[userSelectProp] = prevUserSelect;
+	getDocumentStyle()[userSelectProp] = prevUserSelect;
 	prevUserSelect = undefined;
 }
 
