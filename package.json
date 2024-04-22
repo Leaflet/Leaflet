@@ -8,7 +8,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "bundlemon": "^2.1.0",
     "chai": "^5.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.1.0",
     "eslint-config-mourner": "^3.0.0",
     "eslint-plugin-import": "^2.29.1",
     "http-server": "^14.1.1",
