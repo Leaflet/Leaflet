@@ -24,11 +24,11 @@
     "lint-staged": "^15.2.2",
     "mocha": "^10.4.0",
     "prosthetic-hand": "^2.0.0",
-    "rollup": "^4.14.3",
+    "rollup": "^4.17.2",
     "rollup-plugin-git-version": "^0.3.1",
     "simple-git": "^3.24.0",
     "sinon": "^17.0.1",
-    "ssri": "^10.0.5",
+    "ssri": "^10.0.6",
     "uglify-js": "^3.17.4",
     "ui-event-simulator": "^2.0.0"
   },
