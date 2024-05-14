@@ -31,8 +31,9 @@ Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
 [Esri ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers) ([official plugin](https://github.com/Esri/esri-leaflet)),
-[MapQuest](https://developer.mapquest.com/products) ([official plugins](https://developer.mapquest.com/documentation/leaflet-plugins))
-and [Here Maps](https://developer.here.com/).
+[MapQuest](https://developer.mapquest.com/products) ([official plugins](https://developer.mapquest.com/documentation/leaflet-plugins)),
+[Here Maps](https://developer.here.com/),
+and [Stadia Maps](https://docs.stadiamaps.com/tutorials/raster-maps-with-leaflet/).
 
 Always be sure to **read the terms of use** of a chosen tile provider, **know its limitations**, and **attribute it properly** in your app.
 
@@ -40,8 +41,9 @@ Always be sure to **read the terms of use** of a chosen tile provider, **know it
 
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx),
-[ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers)
-and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide satellite imagery among others.
+[ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers),
+[MapQuest Open](http://developer.mapquest.com/web/products/open/map),
+and [Stadia Maps](https://docs.stadiamaps.com/map-styles/alidade-satellite/) provide satellite imagery among others.
 
 #### I want to use Google Maps API tiles with Leaflet, can I do that?
 
