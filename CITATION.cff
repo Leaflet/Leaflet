@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+title: Leaflet, a JavaScript library for interactive maps
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Volodymyr
+    family-names: Agafonkin
+    email: agafonkin@gmail.com
+repository-code: 'https://github.com/Leaflet/Leaflet'
+url: 'https://leafletjs.com'
+license: BSD-2-Clause
