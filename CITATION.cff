@@ -14,6 +14,3 @@ authors:
 repository-code: 'https://github.com/Leaflet/Leaflet'
 url: 'https://leafletjs.com'
 license: BSD-2-Clause
-commit: d15112c
-version: 1.9.4
-date-released: '2023-05-18'
