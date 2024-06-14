@@ -225,10 +225,12 @@ export const GridLayer = Layer.extend({
 
 	// @method redraw: this
 	// Causes the layer to clear all the tiles and request them again.
+	// if the rounded zoom value is out of the min/max tile bounds,
+	// the map will not appear on first load, it will need to be zoomed or panned.
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(this._map.getZoom());
+			const tileZoom = Math.round(this._clampZoom(this._map.getZoom()));
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
