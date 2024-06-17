@@ -57,7 +57,11 @@ export const Polyline = Path.extend({
 
 		// @option noClip: Boolean = false
 		// Disable polyline clipping.
-		noClip: false
+		noClip: false,
+
+		// @option curved: Boolean = false
+		// Enable polyline Bézier curves. Curved polylines don't support clipping - each line is rendered fully.
+		curved: false
 	},
 
 	initialize(latlngs, options) {
@@ -221,7 +225,7 @@ export const Polyline = Path.extend({
 			return;
 		}
 
-		if (this.options.noClip) {
+		if (this.options.noClip || this.options.curved) {
 			this._parts = this._rings;
 			return;
 		}
