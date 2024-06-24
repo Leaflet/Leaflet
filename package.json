@@ -29,7 +29,7 @@
     "simple-git": "^3.24.0",
     "sinon": "^18.0.0",
     "ssri": "^10.0.6",
-    "uglify-js": "^3.17.4",
+    "uglify-js": "^3.18.0",
     "ui-event-simulator": "^2.0.0"
   },
   "main": "dist/leaflet-src.js",
