@@ -9,7 +9,7 @@
     "bundlemon": "^2.1.0",
     "chai": "^5.1.0",
     "eslint": "^8.57.0",
-    "eslint-config-mourner": "^3.0.0",
+    "eslint-config-mourner": "^4.0.1",
     "eslint-plugin-import": "^2.29.1",
     "http-server": "^14.1.1",
     "husky": "^9.0.11",
