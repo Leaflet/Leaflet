@@ -40,16 +40,16 @@ const touch = touchNative || pointer;
 
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen or on any screen when browser's display zoom is more than 100%.
-const retina = typeof window === 'undefined' ? false : (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+const retina = typeof window === 'undefined' || typeof window.devicePixelRatio === 'undefined' ? false : window.devicePixelRatio > 1;
 
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = typeof navigator === 'undefined' ? false : (navigator?.platform ?? '').startsWith('Mac');
+const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
 
 // @property mac: Boolean; `true` when the browser is running in a Linux platform
-const linux = typeof navigator === 'undefined' ? false : (navigator?.platform ?? '').startsWith('Linux');
+const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platfom.startsWith('Linux');
 
 function userAgentContains(str) {
-	if (typeof navigator === 'undefined') {
+	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
 		return false;
 	}
 	return navigator.userAgent.toLowerCase().includes(str);
