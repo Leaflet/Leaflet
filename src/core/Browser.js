@@ -55,7 +55,6 @@ function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().includes(str);
 }
 
-
 export default {
 	chrome,
 	safari,
