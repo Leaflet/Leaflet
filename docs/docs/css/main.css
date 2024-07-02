@@ -1066,6 +1066,10 @@ tr:target {
 
 	.api-page h2[id] { text-indent: 24px; }
 	.api-page h2[id]:before { margin-left: -28px; }
+
+	.api-page h2, section:has(table) {
+		overflow-x: auto;
+	}
 }
 
 .width250 {
