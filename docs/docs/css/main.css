@@ -156,7 +156,7 @@ h4 {
 	height: 46px;
 	border: none;
 	border-radius: 50%;
-  background-color: #eee;
+	background-color: #eee;
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: translateY(15px);
