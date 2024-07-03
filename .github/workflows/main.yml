@@ -95,6 +95,22 @@ jobs:
         env:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
+  test-ssr:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Node.js ssr script
+        run: node spec/ssr/ssr_node.mjs
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run Deno ssr script
+        run: deno run spec/ssr/ssr_deno.js
+
   test:
     needs: setup
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
