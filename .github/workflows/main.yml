@@ -110,10 +110,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          check-latest: true
           cache: npm
 
-      - name: Run Node.js ssr script
+      - name: Run Node.js SSR script
         run: node ./spec/ssr/ssr_node.mjs
 
       - name: Set up Deno
@@ -121,7 +120,7 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Run Deno ssr script
+      - name: Run Deno SSR script
         run: deno run ./spec/ssr/ssr_deno.js
 
   test:
