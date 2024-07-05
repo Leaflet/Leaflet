@@ -100,8 +100,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Restore setup
+        uses: actions/cache@v4
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+          cache: npm
+
       - name: Run Node.js ssr script
-        run: node spec/ssr/ssr_node.mjs
+        run: node ./spec/ssr/ssr_node.mjs
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
@@ -109,7 +122,7 @@ jobs:
           deno-version: v1.x
 
       - name: Run Deno ssr script
-        run: deno run spec/ssr/ssr_deno.js
+        run: deno run ./spec/ssr/ssr_deno.js
 
   test:
     needs: setup
