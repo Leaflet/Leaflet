@@ -96,7 +96,7 @@ function batchRemove(obj, filterFn) {
 var mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
-	wheel: !('onwheel' in window) && 'mousewheel'
+	wheel: typeof window === 'undefined' ? false : !('onwheel' in window) && 'mousewheel'
 };
 
 function addOne(obj, type, fn, context) {

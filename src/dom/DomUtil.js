@@ -244,8 +244,13 @@ export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 
-	return el._leaflet_pos || new Point(0, 0);
+    return el._leaflet_pos || new Point(0, 0);
 }
+
+const documentStyle = typeof document === 'undefined' ? {} : document.documentElement.style;
+// Safari still needs a vendor prefix, we need to detect with property name is supported.
+const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
+let prevUserSelect;
 
 // @function disableTextSelection()
 // Prevents the user from generating `selectstart` DOM events, usually generated
@@ -260,10 +265,16 @@ export var enableTextSelection;
 var _userSelect;
 if ('onselectstart' in document) {
 	disableTextSelection = function () {
-		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
+        if (typeof window === 'undefined') {
+            return;
+        }
+        DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
 	enableTextSelection = function () {
-		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
+        if (typeof window === 'undefined') {
+            return;
+        }
+        DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
 	};
 } else {
 	var userSelectProperty = testProp(
@@ -288,12 +299,18 @@ if ('onselectstart' in document) {
 // As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
 // for `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
+    if (typeof window === 'undefined') {
+        return;
+    }
 	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 // @function enableImageDrag()
 // Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
 export function enableImageDrag() {
+    if (typeof window === 'undefined') {
+        return;
+    }
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
 
@@ -312,6 +329,9 @@ export function preventOutline(element) {
 	_outlineElement = element;
 	_outlineStyle = element.style.outlineStyle;
 	element.style.outlineStyle = 'none';
+    if (typeof window === 'undefined') {
+        return;
+    }
 	DomEvent.on(window, 'keydown', restoreOutline);
 }
 
@@ -322,6 +342,9 @@ export function restoreOutline() {
 	_outlineElement.style.outlineStyle = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
+    if (typeof window === 'undefined') {
+        return;
+    }
 	DomEvent.off(window, 'keydown', restoreOutline);
 }
 
