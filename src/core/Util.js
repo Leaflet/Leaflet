@@ -156,8 +156,8 @@ export function template(str, data) {
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-const requestFn = window.requestAnimationFrame;
-const cancelFn = window.cancelAnimationFrame;
+const requestFn = typeof window === 'undefined' ? falseFn : window.requestAnimationFrame;
+const cancelFn = typeof window === 'undefined' ? falseFn : window.cancelAnimationFrame;
 
 // @function requestAnimFrame(fn: Function, context?: Object): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
