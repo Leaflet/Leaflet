@@ -225,9 +225,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 /* prevent showing outline-box on Chromium when clicking on a vector with a tooltip */
 path.leaflet-interactive:focus:not(:focus-visible) {
-
 	outline: 0;
 	}
+
 .leaflet-zoom-box {
 	border: 2px dotted #38f;
 	background: rgba(255,255,255,0.5);
