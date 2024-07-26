@@ -77,6 +77,8 @@ export class Class {
 	}
 
 	constructor(...args) {
+		this._initHooksCalled = false;
+
 		Util.setOptions(this);
 
 		// call the constructor
@@ -85,7 +87,6 @@ export class Class {
 		}
 
 		// call all constructor hooks
-		this._initHooksCalled = false;
 		this.callInitHooks();
 	}
 
