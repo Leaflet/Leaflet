@@ -67,7 +67,6 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		browserConsoleLogOptions: {level: 'error'},
 		client: {
 			mocha: {
-				// eslint-disable-next-line no-undef
 				forbidOnly: process.env.CI || false
 			}
 		}

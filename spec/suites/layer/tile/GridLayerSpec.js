@@ -578,9 +578,8 @@ describe('GridLayer', () => {
 					map.fire('_frame');
 					Util.requestAnimFrame(_runFrames(n - 1));
 				};
-			} else {
-				return Util.falseFn;
 			}
+			return Util.falseFn;
 		}
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {

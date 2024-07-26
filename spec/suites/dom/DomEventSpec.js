@@ -602,9 +602,8 @@ describe('DomEvent', () => {
 		function isPrevented(e) {
 			if ('defaultPrevented' in e) {
 				return e.defaultPrevented;
-			} else { // IE<11
-				return !e.returnValue;
 			}
+			return !e.returnValue; // IE<11
 		}
 
 		it('prevents the default action of event', (done) => {

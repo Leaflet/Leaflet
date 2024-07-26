@@ -76,8 +76,6 @@ export class Class {
 		return this;
 	}
 
-	_initHooksCalled = false;
-
 	constructor(...args) {
 		Util.setOptions(this);
 
@@ -87,6 +85,7 @@ export class Class {
 		}
 
 		// call all constructor hooks
+		this._initHooksCalled = false;
 		this.callInitHooks();
 	}
 

@@ -8,7 +8,7 @@ import ssri from 'ssri';
 // See: https://rollupjs.org/guide/en/#importing-packagejson
 const {version} = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 
-const getIntegrity = async path => new Promise((resolve) => {
+const getIntegrity = path => new Promise((resolve) => {
 	https.get(`https://unpkg.com/leaflet@${version}/dist/${path}`, (res) => {
 		ssri.fromStream(res, {algorithms: ['sha256']}).then(integrity => resolve(integrity.toString()));
 	});

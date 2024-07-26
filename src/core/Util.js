@@ -13,7 +13,6 @@ export function extend(dest, ...args) {
 
 	for (j = 0, len = args.length; j < len; j++) {
 		src = args[j];
-		// eslint-disable-next-line guard-for-in
 		for (const i in src) {
 			dest[i] = src[i];
 		}

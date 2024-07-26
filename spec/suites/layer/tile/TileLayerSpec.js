@@ -202,9 +202,8 @@ describe('TileLayer', () => {
 					map.fire('_frame');
 					Util.requestAnimFrame(_runFrames(n - 1));
 				};
-			} else {
-				return Util.falseFn;
 			}
+			return Util.falseFn;
 		}
 
 		beforeEach(() => {
