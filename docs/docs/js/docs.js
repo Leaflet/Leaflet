@@ -1,4 +1,4 @@
-/* global hljs */
+/* global hljs, L */
 hljs.configure({tabReplace: '    '});
 hljs.initHighlighting();
 

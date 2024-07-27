@@ -76,9 +76,9 @@ export class Class {
 		return this;
 	}
 
-	_initHooksCalled = false;
-
 	constructor(...args) {
+		this._initHooksCalled = false;
+
 		Util.setOptions(this);
 
 		// call the constructor
