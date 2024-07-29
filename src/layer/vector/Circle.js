@@ -94,7 +94,7 @@ export const Circle = CircleMarker.extend({
 			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
-			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+			this._radius = Math.abs(this._point.x - map.latLngToLayerPoint(latlng2).x);
 		}
 
 		this._updateBounds();
