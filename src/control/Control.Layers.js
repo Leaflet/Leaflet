@@ -228,6 +228,7 @@ export const Layers = Control.extend({
 		}, this);
 
 		if (!collapsed) {
+			section.setAttribute('aria-label', link.title);
 			this.expand();
 		}
 
