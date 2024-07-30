@@ -580,4 +580,22 @@ describe('Tooltip', () => {
 		layer2.openTooltip();
 		expect(spy2.called).to.be.true;
 	});
+
+	// Related to #9071
+	it('removes focus listeners after unbinding tooltip', () => {
+		const marker = new CircleMarker([51.515, -0.09], {
+		  radius: 20,
+		  color: 'red',
+		}).addTo(map);
+
+		marker
+		  .bindTooltip('Tooltip that will be unbinded in two seconds')
+		  .openTooltip();
+
+		marker.unbindTooltip();
+
+		setTimeout(() => {
+			expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
+		}, 2000);
+	});
 });
