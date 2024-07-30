@@ -79,20 +79,15 @@ export const ImageOverlay = Layer.extend({
 			}
 		}
 
-		if (this.options.interactive) {
-			this._image.classList.add('leaflet-interactive');
-			this.addInteractiveTarget(this._image);
-		}
+		this.setInteractive(this.options.interactive);
 
 		this.getPane().appendChild(this._image);
 		this._reset();
 	},
 
 	onRemove() {
+		this.setInteractive(false);
 		this._image.remove();
-		if (this.options.interactive) {
-			this.removeInteractiveTarget(this._image);
-		}
 	},
 
 	// @method setOpacity(opacity: Number): this
@@ -185,6 +180,19 @@ export const ImageOverlay = Layer.extend({
 	// used by this overlay.
 	getElement() {
 		return this._image;
+	},
+
+	// @method setInteractive(): this
+	// Allows toggling the [interactive](#imageoverlay-interactive) option
+	setInteractive(interactive) {
+		this.options.interactive = interactive;
+		this._image.classList.toggle('leaflet-interactive', interactive);
+		if (interactive) {
+			this.addInteractiveTarget(this._image);
+		} else {
+			this.removeInteractiveTarget(this._image);
+		}
+		return this;
 	},
 
 	_initImage() {

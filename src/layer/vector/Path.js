@@ -134,6 +134,19 @@ export const Path = Layer.extend({
 		return this._path;
 	},
 
+	// @method setInteractive(): this
+	// Allows toggling the [interactive](#marker-interactive) option
+	setInteractive(interactive) {
+		this.options.interactive = interactive;
+		this._path.classList.toggle('leaflet-interactive', interactive);
+		if (interactive) {
+			this.addInteractiveTarget(this._path);
+		} else {
+			this.removeInteractiveTarget(this._path);
+		}
+		return this;
+	},
+
 	_reset() {
 		// defined in child classes
 		this._project();
