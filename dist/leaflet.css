@@ -1,4 +1,7 @@
 /* required styles */
+.leaflet-container{
+	--zoomDurationSec: 0.25s;
+}
 
 .leaflet-pane,
 .leaflet-tile,
@@ -164,7 +167,7 @@ svg.leaflet-zoom-animated {
 }
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
-	transition: transform 0.25s cubic-bezier(0,0,0.25,1);
+	transition: transform var(--zoomDurationSec) cubic-bezier(0,0,0.25,1);
 	}
 .leaflet-zoom-anim .leaflet-tile,
 .leaflet-pan-anim .leaflet-tile {
