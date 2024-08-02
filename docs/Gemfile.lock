@@ -235,7 +235,7 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rexml (3.3.2)
+    rexml (3.3.3)
       strscan
     rouge (3.30.0)
     ruby2_keywords (0.0.5)
