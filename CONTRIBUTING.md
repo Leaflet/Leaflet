@@ -118,7 +118,7 @@ on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
-Before running the tests make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
+Before running the tests, make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet, it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
 
 To run the tests from the command line, ensure you have [Google Chrome](https://www.google.com/chrome/) installed and then run:
 
