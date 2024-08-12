@@ -24,21 +24,21 @@ Leaflet maintainers.
 <img width="600" src="https://rawgit.com/Leaflet/Leaflet/main/src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
-Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers will ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,
 taking advantage of modern browser features while being accessible on older ones too.
 It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
-and a simple, readable [source code][] that is a joy to [contribute][] to.
+and a simple, readable [source code][] that makes it a joy to [contribute][].
 
 For more info, docs and tutorials, check out the [official website][].<br>
 For **Leaflet downloads** (including the built main version), check out the [download page][].
 
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
-Let's make the best mapping library that will ever exist,
+Let's make the best mapping library that will ever exist
 and push the limits of what's possible with online maps!
 
 [![CI](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml/badge.svg)](https://github.com/Leaflet/Leaflet/actions/workflows/main.yml)
