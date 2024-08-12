@@ -47,7 +47,7 @@ and [Stadia Maps](https://docs.stadiamaps.com/map-styles/alidade-satellite/) pro
 
 The problem with Google is that its [Terms of Use](https://developers.google.com/maps/terms) forbid any means of tile access other than through the Google Maps API.
 
-You can add the Google Maps API as a Leaflet layer with the [GoogleMutant plugin](https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant). But note that the map experience will not be perfect, because Leaflet must wait for the Google Maps JS engine to load the map tiles, so you might experience glitches and lagging when using it.
+You can add the Google Maps API as a Leaflet layer with the [GoogleMutant plugin](https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant). But, note that the map experience will not be perfect, because Leaflet must wait for the Google Maps JS engine to load the map tiles, so you might experience glitches and lagging when using it.
 
 #### I want to roll my own OSM tile server for Leaflet, where do I start?
 
@@ -71,16 +71,16 @@ you have to choose a tile service to combine with it.
 
 There are [plenty of options](#what-map-tiles-can-i-use-with-leaflet-is-it-limited-to-openstreetmap) for a tile service,
 each with their own terms of use, prices (some of them free), features, limitations, etc.
-Choice is yours.
+The choice is yours.
 
 #### I'm building a commercial app that I plan to sell. Can I use Leaflet in it?
 
-You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/main/LICENSE).
+You're welcome to do so, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/main/LICENSE).
 Just make sure to attribute the use of the library somewhere in the app UI or the distribution
 (e.g. keep the Leaflet link on the map, or mention the use on the About page or a Readme file, etc.) and you'll be fine.
 
-That only applies to the code though.
-Make sure you conform to the terms of use of the tile images provider(s) that you choose as well.
+That only applies to the code, though.
+Make sure you conform to the terms of use of the tile images provider(s) that you choose, as well.
 
 
 ## Features
@@ -112,7 +112,7 @@ Check out the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markerc
 
 Leaflet generally does a pretty good job of handling heavy vector data
 with its real-time clipping and simplification algorithms,
-but browser technology still has its limits.
+but the browser technology still has its limits.
 Try [switching from SVG to Canvas as the default rendering back-end](http://leafletjs.com/reference.html#global),
 it may help considerably (depends on the app and the data).
 
