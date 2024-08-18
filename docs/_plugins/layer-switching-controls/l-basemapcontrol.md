@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Basemap Control with Synchronized Minimap
+Leaflet plugin that adds a control for switching between multiple basemap layers. It features a synchronized minimap preview to show the next layer in the sequence.
