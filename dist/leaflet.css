@@ -249,7 +249,8 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 	border-radius: 4px;
 	}
-.leaflet-bar a {
+.leaflet-bar a,
+.leaflet-bar [role=button] {
 	background-color: #fff;
 	border-bottom: 1px solid #ccc;
 	width: 26px;
@@ -260,41 +261,50 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	text-decoration: none;
 	color: black;
 	}
-.leaflet-bar a,
+.leaflet-bar a
+.leaflet-bar [role=button],
 .leaflet-control-layers-toggle {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
 	}
 .leaflet-bar a:hover,
-.leaflet-bar a:focus {
+.leaflet-bar a:focus,
+.leaflet-bar [role=button]:hover,
+.leaflet-bar [role=button]:focus{
 	background-color: #f4f4f4;
 	}
-.leaflet-bar a:first-child {
+.leaflet-bar a:first-child,
+.leaflet-bar [role=button]:first-child {
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	}
-.leaflet-bar a:last-child {
+.leaflet-bar a:last-child,
+.leaflet-bar [role=button]:last-child{
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom: none;
 	}
-.leaflet-bar a.leaflet-disabled {
+.leaflet-bar a.leaflet-disabled,
+.leaflet-bar [role=button].leaflet-disabled{
 	cursor: default;
 	background-color: #f4f4f4;
 	color: #bbb;
 	}
 
-.leaflet-touch .leaflet-bar a {
+.leaflet-touch .leaflet-bar a,
+.leaflet-touch .leaflet-bar [role=button] {
 	width: 30px;
 	height: 30px;
 	line-height: 30px;
 	}
-.leaflet-touch .leaflet-bar a:first-child {
+.leaflet-touch .leaflet-bar a:first-child,
+.leaflet-touch .leaflet-bar [role=button]:first-child {
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 	}
-.leaflet-touch .leaflet-bar a:last-child {
+.leaflet-touch .leaflet-bar a:last-child,
+.leaflet-touch .leaflet-bar [role=button]:last-child {
 	border-bottom-left-radius: 2px;
 	border-bottom-right-radius: 2px;
 	}
@@ -390,11 +400,14 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	color: #333;
 	line-height: 1.4;
 	}
-.leaflet-control-attribution a {
+.leaflet-control-attribution a,
+.leaflet-control-attribution [role=button] {
 	text-decoration: none;
 	}
 .leaflet-control-attribution a:hover,
-.leaflet-control-attribution a:focus {
+.leaflet-control-attribution a:focus ,
+.leaflet-control-attribution [role=button]:hover,
+.leaflet-control-attribution [role=button]:focus {
 	text-decoration: underline;
 	}
 .leaflet-attribution-flag {
@@ -490,7 +503,8 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	color: #333;
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 	}
-.leaflet-container a.leaflet-popup-close-button {
+.leaflet-container a.leaflet-popup-close-button,
+.leaflet-container [role=button].leaflet-popup-close-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -504,7 +518,9 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	background: transparent;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover,
-.leaflet-container a.leaflet-popup-close-button:focus {
+.leaflet-container a.leaflet-popup-close-button:focus,
+.leaflet-container [role=button].leaflet-popup-close-button:hover,
+.leaflet-container [role=button].leaflet-popup-close-button:focus {
 	color: #585858;
 	}
 .leaflet-popup-scrolled {
