@@ -88,10 +88,6 @@ export const SVG = Renderer.extend({
 			path.classList.add(...splitWords(layer.options.className));
 		}
 
-		if (layer.options.interactive) {
-			path.classList.add('leaflet-interactive');
-		}
-
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
 	},
@@ -147,6 +143,12 @@ export const SVG = Renderer.extend({
 			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
 			path.setAttribute('fill', 'none');
+		}
+
+		if (options.interactive) {
+			path.classList.add('leaflet-interactive');
+		} else {
+			path.classList.remove('leaflet-interactive');
 		}
 	},
 

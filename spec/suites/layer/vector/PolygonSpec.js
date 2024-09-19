@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import {LineUtil, Map, latLng, polygon} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import sinon from 'sinon';
+import UIEventSimulator from 'ui-event-simulator';
 
 describe('Polygon', () => {
 	let map, container;
@@ -364,4 +366,37 @@ describe('Polygon', () => {
 			}
 		});
 	});
+
+
+	describe('#events(interactive=false)', () => {
+		function p2ll(x, y) {
+			return map.layerPointToLatLng([x, y]);
+		}
+
+		it('should not fire click when not interactive at init', () => {
+			const latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
+			const layer = polygon(latLngs, {interactive: false}).addTo(map);
+			const spy = sinon.spy();
+			layer.on('click', spy);
+			UIEventSimulator.fireAt('click', 50, 50);  // Click on the layer.
+			expect(spy.callCount).to.eql(0);
+			UIEventSimulator.fireAt('click', 150, 150);  // Click outside layer.
+			expect(spy.callCount).to.eql(0);
+		});
+
+		it('should not fire click when setting interactive=false with setStyle', () => {
+			const latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
+			const layer = polygon(latLngs).addTo(map);
+			const spy = sinon.spy();
+			layer.on('click', spy);
+			UIEventSimulator.fireAt('click', 50, 50);  // Click on the layer.
+			expect(spy.callCount).to.eql(1);
+			UIEventSimulator.fireAt('click', 150, 150);  // Click outside layer.
+			expect(spy.callCount).to.eql(1);
+			layer.setStyle({interactive: false});
+			UIEventSimulator.fireAt('click', 50, 50);  // Click on the layer.
+			expect(spy.callCount).to.eql(1);
+		});
+	});
+
 });
