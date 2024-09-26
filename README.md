@@ -34,7 +34,50 @@ has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
 For more info, docs and tutorials, check out the [official website][].<br>
-For **Leaflet downloads** (including the built main version), check out the [download page][].
+
+## Download
+To use Leaflet in your project, you can download it in several ways depending on your setup. Here are the available options:
+
+1. Download from the Official Website
+You can download the latest version of Leaflet directly from the [official download page].
+After downloading unzip the downloaded archive to your website’s directory and add this to the head of your HTML code:
+```html
+<link rel="stylesheet" href="/path/to/leaflet.css" />
+<script src="/path/to/leaflet.js"></script>
+```
+2. Using a Hosted Version of Leaflet
+If you prefer to include Leaflet in your project via a CDN, you can link to the latest version directly in your HTML file:
+```html
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+```
+This is a simple and quick way to include Leaflet without downloading the files locally.
+
+3. Using npm (Node Package Manager)
+If you are working on a project using Node.js or bundlers like Webpack or Parcel, you can install Leaflet via npm:
+```bash
+npm install leaflet
+```
+After installing, you can import Leaflet into your project:
+```javascript
+import L from 'leaflet';
+```
+4. Using Yarn
+Alternatively, you can install Leaflet using Yarn:
+```bash
+yarn add leaflet
+```
+5. Building Leaflet Locally
+If you want to work with the source code or make modifications, you can clone the repository and build it yourself:
+```bash
+git clone https://github.com/Leaflet/Leaflet.git
+cd Leaflet
+npm install
+npm run build
+```
+This will create a dist folder containing the built version of Leaflet that you can include in your projects.
+
+For more detailed information on usage and compatibility, please refer to the [official download page].
 
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
@@ -51,5 +94,5 @@ and push the limits of what's possible with online maps!
  [hosted on GitHub]: http://github.com/Leaflet/Leaflet
  [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
- [download page]: http://leafletjs.com/download.html
+ [official download page]: http://leafletjs.com/download.html
 
