@@ -11,10 +11,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
  *
- * Due to [technical limitations](https://caniuse.com/canvas), Canvas is not
- * available in all web browsers, notably IE8, and overlapping geometries might
- * not display properly in some edge cases.
- *
  * @example
  *
  * Use Canvas by default for all paths in the map:
@@ -34,6 +30,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * var circle = L.circle( center, { renderer: myRenderer } );
  * ```
  */
+
 
 export const Canvas = Renderer.extend({
 
