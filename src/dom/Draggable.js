@@ -114,8 +114,8 @@ export const Draggable = Evented.extend({
 		this._parentScale = DomUtil.getScale(sizedParent);
 
 		const mouseevent = e.type === 'mousedown';
-		DomEvent.on(document, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
-		DomEvent.on(document, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
+		DomEvent.on(this._element.ownerDocument, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
+		DomEvent.on(this._element.ownerDocument, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
 	},
 
 	_onMove(e) {
@@ -149,7 +149,7 @@ export const Draggable = Evented.extend({
 
 			this._moved = true;
 
-			document.body.classList.add('leaflet-dragging');
+			this._element.ownerDocument.body.classList.add('leaflet-dragging');
 
 			this._lastTarget = e.target || e.srcElement;
 			// IE and Edge do not give the <use> element, so fetch it
@@ -189,15 +189,15 @@ export const Draggable = Evented.extend({
 	},
 
 	finishDrag(noInertia) {
-		document.body.classList.remove('leaflet-dragging');
+		this._element.ownerDocument.body.classList.remove('leaflet-dragging');
 
 		if (this._lastTarget) {
 			this._lastTarget.classList.remove('leaflet-drag-target');
 			this._lastTarget = null;
 		}
 
-		DomEvent.off(document, 'mousemove touchmove', this._onMove, this);
-		DomEvent.off(document, 'mouseup touchend touchcancel', this._onUp, this);
+		DomEvent.off(this._element.ownerDocument, 'mousemove touchmove', this._onMove, this);
+		DomEvent.off(this._element.ownerDocument, 'mouseup touchend touchcancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
 		DomUtil.enableTextSelection();
