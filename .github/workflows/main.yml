@@ -116,7 +116,7 @@ jobs:
         run: node ./spec/ssr/ssr_node.mjs
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: v1.x
 
