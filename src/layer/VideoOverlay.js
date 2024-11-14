@@ -37,7 +37,6 @@ export const VideoOverlay = ImageOverlay.extend({
 
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
-		// Relevant for supported browsers. See [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 		keepAspectRatio: true,
 
 		// @option muted: Boolean = false
