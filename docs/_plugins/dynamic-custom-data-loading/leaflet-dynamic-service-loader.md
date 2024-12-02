@@ -1,5 +1,5 @@
 ---
-name: Leaflet.DynamicMapServiceLoader
+name: Leaflet.DynamicServiceLoader
 category: dynamic-custom-data-loading
 repo: https://github.com/o-z-e-r-e-r/Leaflet.DynamicServiceLoader
 author: Erdem Ozer
