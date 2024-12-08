@@ -140,7 +140,7 @@ export const Draggable = Evented.extend({
 		offset.x /= this._parentScale.x;
 		offset.y /= this._parentScale.y;
 
-		if (DomEvent.cancelable) { DomEvent.preventDefault(); }
+		if (DomEvent.cancelable) { DomEvent.preventDefault(e); }
 
 		if (!this._moved) {
 			// @event dragstart: Event
