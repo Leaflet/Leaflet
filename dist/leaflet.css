@@ -53,10 +53,15 @@
 	width: auto;
 	padding: 0;
 	}
+
+/* Workaround to remove visible grid around tile borders on Chrome */
+/* with exceptions for 110%, 90%, 80% and 67% browser zoom */
+@media not ((1.09 < -webkit-device-pixel-ratio < 1.11) or (0.89 < -webkit-device-pixel-ratio < 0.91) or (0.79 < -webkit-device-pixel-ratio < 0.81) or (0.66 < -webkit-device-pixel-ratio < 0.68)) {
 .leaflet-container img.leaflet-tile {
 	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
 	mix-blend-mode: plus-lighter;
 	}
+}
 
 .leaflet-container.leaflet-touch-zoom {
 	touch-action: pan-x pan-y;
