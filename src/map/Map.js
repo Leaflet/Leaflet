@@ -776,6 +776,8 @@ export var Map = Evented.extend({
 
 		this._clearHandlers();
 
+		clearTimeout(this._transitionEndTimer);
+
 		if (this._loaded) {
 			// @section Map state change events
 			// @event unload: Event
@@ -1711,7 +1713,7 @@ export var Map = Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
+		this._transitionEndTimer = setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {

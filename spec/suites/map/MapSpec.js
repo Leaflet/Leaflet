@@ -86,6 +86,22 @@ describe("Map", function () {
 			map.setZoom(2);
 		});
 
+		// For #9575
+		it('does not throw if removed before transition end complete', (done) => {
+			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
+
+			setTimeout(() => {
+				map.remove();
+				map = null;
+			}, 10);
+
+			setTimeout(() => {
+				done();
+			}, 300);
+
+			map.setZoom(2);
+		});
+
 		it("throws error if container is reused by other instance", function () {
 			map.remove();
 			var map2 = L.map(container);
