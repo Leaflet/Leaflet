@@ -64,6 +64,12 @@ export const Canvas = Renderer.extend({
 		this._draw();
 	},
 
+	onRemove() {
+		Renderer.prototype.onRemove.call(this);
+
+		clearTimeout(this._mouseHoverThrottleTimeout);
+	},
+
 	_initContainer() {
 		const container = this._container = document.createElement('canvas');
 
@@ -409,7 +415,7 @@ export const Canvas = Renderer.extend({
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
-		setTimeout((() => {
+		this._mouseHoverThrottleTimeout = setTimeout((() => {
 			this._mouseHoverThrottled = false;
 		}), 32);
 	},
