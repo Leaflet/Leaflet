@@ -59,7 +59,7 @@ var phantom = userAgentContains('phantom');
 
 // @property opera12: Boolean
 // `true` for the Opera browser supporting CSS transforms (version 12 or later).
-var opera12 = 'OTransition' in style;
+var opera12 = typeof document === 'undefined' ? false : 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
 var win = typeof navigator === 'undefined' ? false : navigator.platform.indexOf('Win') === 0;
@@ -146,7 +146,7 @@ var canvas = (function () {
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 var svg = typeof document === 'undefined' ? false : !!(document.createElementNS && svgCreate('svg').createSVGRect);
 
-var inlineSvg = !!svg && typeof document === 'undefined' ? false : (function () {
+var inlineSvg = typeof document === 'undefined' ? false : !!svg && (function () {
 	var div = document.createElement('div');
 	div.innerHTML = '<svg/>';
 	return (div.firstChild && div.firstChild.namespaceURI) === 'http://www.w3.org/2000/svg';

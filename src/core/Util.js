@@ -200,7 +200,7 @@ export var emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA
 // inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 function getPrefixed(name) {
-    return typeof window === 'undefined' ? undefined : window['webkit' + name] || window['moz' + name] || window['ms' + name];
+	return typeof window === 'undefined' ? undefined : window['webkit' + name] || window['moz' + name] || window['ms' + name];
 }
 
 var lastTime = 0;
@@ -208,7 +208,7 @@ var lastTime = 0;
 // fallback for IE 7-8
 function timeoutDefer(fn) {
 	var time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
+	timeToCall = Math.max(0, 16 - (time - lastTime));
 
 	lastTime = time + timeToCall;
 	return typeof window === 'undefined' ? falseFn : window.setTimeout(fn, timeToCall);

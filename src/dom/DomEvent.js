@@ -268,7 +268,7 @@ export function getMousePosition(e, container) {
 // We need double the scroll pixels (see #7403 and #4538) for all Browsers
 // except OSX (Mac) -> 3x, Chrome running on Linux 1x
 
-var wheelPxFactor =
+var wheelPxFactor = typeof window === 'undefined' ? 1 :
 	(Browser.linux && Browser.chrome) ? window.devicePixelRatio :
 	Browser.mac ? window.devicePixelRatio * 3 :
 	window.devicePixelRatio > 0 ? 2 * window.devicePixelRatio : 1;
