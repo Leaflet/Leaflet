@@ -174,7 +174,7 @@ export const Draggable = Evented.extend({
 		// Fired continuously during dragging *before* each corresponding
 		// update of the element's position.
 		this.fire('predrag', e);
-		DomUtil.setPosition(this._element, this._newPos);
+		DomUtil.setPosition(this._element, !Browser.retina ? this._newPos.round() : this._newPos);
 
 		// @event drag: Event
 		// Fired continuously during dragging.
