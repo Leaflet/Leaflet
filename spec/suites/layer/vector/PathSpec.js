@@ -51,6 +51,62 @@ describe('Path', () => {
 		});
 	});
 
+	describe('#setInteractive', () => {
+		it('cannot be called before adding to map', () => {
+			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
+
+			expect(() => path.setInteractive(true)).to.throw();
+		});
+
+		it('can set interactive if unset initially', () => {
+			const group = new LayerGroup().addTo(map);
+			const path = new Polyline([[1, 2], [3, 4], [5, 6]], {interactive: false}).addTo(group);
+
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(false);
+
+			path.setInteractive(true);
+
+			expect(path.options.interactive).to.equal(true);
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+
+		it('can unset interactive if set initially', () => {
+			const group = new LayerGroup().addTo(map);
+			const path = new Polyline([[1, 2], [3, 4], [5, 6]], {interactive: true}).addTo(group);
+
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(true);
+
+			path.setInteractive(false);
+
+			expect(path.options.interactive).to.equal(false);
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can unset interactive if unset initially', () => {
+			const group = new LayerGroup().addTo(map);
+			const path = new Polyline([[1, 2], [3, 4], [5, 6]], {interactive: false}).addTo(group);
+
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(false);
+
+			path.setInteractive(false);
+
+			expect(path.options.interactive).to.equal(false);
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(false);
+		});
+
+		it('can set interactive if set initially', () => {
+			const group = new LayerGroup().addTo(map);
+			const path = new Polyline([[1, 2], [3, 4], [5, 6]], {interactive: true}).addTo(group);
+
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(true);
+
+			path.setInteractive(true);
+
+			expect(path.options.interactive).to.equal(true);
+			expect(path._path.classList.contains('leaflet-interactive')).to.equal(true);
+		});
+	});
+
 	describe('#events', () => {
 		it('fires click event', () => {
 			const spy = sinon.spy();
