@@ -199,6 +199,7 @@ describe('Control.Layers', () => {
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			UIEventSimulator.fire('keydown', toggle, {code: 'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.ok;
 		});
 
 		it('expands on click', () => {
@@ -206,34 +207,41 @@ describe('Control.Layers', () => {
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			UIEventSimulator.fire('click', toggle);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.ok;
 		});
 
 		it('does not expand on "Enter" keydown when toggle is not focused', () => {
 			new Control.Layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('keydown', document, {code:'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.null;
 		});
 
 		it('expands when mouse is over', () => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.ok;
 		});
 
 		it.skipIfTouch('collapses when mouse is out', () => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).not.to.be.null;
 			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.null;
 		});
 
 		it('collapses when map is clicked', () => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.null;
 		});
 	});
 
@@ -241,17 +249,22 @@ describe('Control.Layers', () => {
 		it('does not collapse when mouse enters or leaves', () => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).not.to.be.null;
 			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).not.to.be.null;
 			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			expect(map._container.querySelector('[aria-label="Layers"]')).not.to.be.null;
 		});
 
 		it('does not collapse when map is clicked', () => {
 			new Control.Layers(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.ok;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			expect(map._container.querySelector('[aria-label="Layers"]')).to.be.ok;
 		});
 
 		it('is scrollable if necessary when added on map', () => {
