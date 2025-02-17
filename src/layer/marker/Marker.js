@@ -211,6 +211,19 @@ export const Marker = Layer.extend({
 		return this;
 	},
 
+	// @method setInteractive(): this
+	// Allows toggling the [interactive](#marker-interactive) option
+	setInteractive(interactive) {
+		this.options.interactive = interactive;
+		this._icon.classList.toggle('leaflet-interactive', interactive);
+		if (interactive) {
+			this.addInteractiveTarget(this._icon);
+		} else {
+			this.removeInteractiveTarget(this._icon);
+		}
+		return this;
+	},
+
 	_initIcon() {
 		const options = this.options,
 		    classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
@@ -339,9 +352,7 @@ export const Marker = Layer.extend({
 
 		if (!this.options.interactive) { return; }
 
-		this._icon.classList.add('leaflet-interactive');
-
-		this.addInteractiveTarget(this._icon);
+		this.setInteractive(true);
 
 		if (MarkerDrag) {
 			let draggable = this.options.draggable;
