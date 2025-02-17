@@ -180,11 +180,8 @@ export const Map = Evented.extend({
 		this._stop();
 
 		if (this._loaded && !options.reset && options !== true) {
-
-			if (options.animate !== undefined) {
-				options.zoom = Util.extend({animate: options.animate}, options.zoom);
-				options.pan = Util.extend({animate: options.animate, duration: options.duration}, options.pan);
-			}
+			options.zoom = Util.extend({animate: options.animate, duration: options.duration}, options.zoom);
+			options.pan = Util.extend({animate: options.animate, duration: options.duration}, options.pan);
 
 			// try animating pan or zoom
 			const moved = (this._zoom !== zoom) ?
@@ -1684,13 +1681,13 @@ export const Map = Evented.extend({
 		Util.requestAnimFrame(function () {
 			this
 			    ._moveStart(true, options.noMoveStart ?? false)
-			    ._animateZoom(center, zoom, true);
+			    ._animateZoom(center, zoom, true, undefined, options.duration);
 		}, this);
 
 		return true;
 	},
 
-	_animateZoom(center, zoom, startAnim, noUpdate) {
+	_animateZoom(center, zoom, startAnim, noUpdate, duration = 0.25) {
 		if (!this._mapPane) { return; }
 
 		if (startAnim) {
@@ -1701,6 +1698,7 @@ export const Map = Evented.extend({
 			this._animateToZoom = zoom;
 
 			this._mapPane.classList.add('leaflet-zoom-anim');
+			this._mapPane.style.setProperty('--zoomDurationSec', `${duration}s`);
 		}
 
 		// @section Other Events
@@ -1719,7 +1717,7 @@ export const Map = Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(this._onZoomTransitionEnd.bind(this), 250);
+		setTimeout(this._onZoomTransitionEnd.bind(this), duration * 1000);
 	},
 
 	_onZoomTransitionEnd() {
