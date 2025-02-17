@@ -171,3 +171,19 @@ export function requestAnimFrame(fn, context) {
 export function cancelAnimFrame(id) {
 	cancelFn.call(window, id);
 }
+
+function isNumeric(str) { // https://stackoverflow.com/a/175787/2520247
+	return !isNaN(str) && !isNaN(parseFloat(str));
+}
+
+// keep it private intentionally, because such function implementation
+// heavily depends on it's particular application and unable to suit all the cases
+export function _checkNumber(a) {
+	if (typeof a === 'string' && isNumeric(a)) {
+		a = +a;
+	}
+	if ((typeof a === 'number' || a instanceof Number) && isFinite(a)) {
+		return a;
+	}
+	throw new Error('Number expected');
+}

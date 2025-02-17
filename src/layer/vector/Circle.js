@@ -31,8 +31,7 @@ export const Circle = CircleMarker.extend({
 		}
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
-
-		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
+		this.options.radius = Util._checkNumber(this.options.radius);
 
 		// @section
 		// @aka Circle options
