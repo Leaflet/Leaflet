@@ -1,6 +1,6 @@
 ---
 name: leaflet-custom-headers
-category: leaflet-custom-headers
+category: tile-image-display
 repo: https://github.com/fifogipo/leaflet-custom-headers
 author: fifogipo
 author-url: https://github.com/fifogipo
