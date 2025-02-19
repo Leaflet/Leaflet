@@ -12,13 +12,16 @@ const watch = process.argv.indexOf('-w') > -1 || process.argv.indexOf('--watch')
 const version = release ? pkg.version : `${pkg.version}+${gitRev.branch()}.${gitRev.short()}`;
 const banner = createBanner(version);
 
-const outro = `var oldL = window.L;
-exports.noConflict = function() {
-	window.L = oldL;
-	return this;
-}
-// Always export us to window global (see #2364)
-window.L = exports;`;
+const outro = `if (typeof window !== 'undefined') {
+	var oldL = window.L;
+	exports.noConflict = function() {
+		window.L = oldL;
+		return this;
+	}
+	
+	// Always export us to window global (see #2364)
+	window.L = exports;
+}`;
 
 /** @type {import('rollup').RollupOptions} */
 const config = {
