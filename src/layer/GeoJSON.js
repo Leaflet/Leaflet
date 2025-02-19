@@ -194,14 +194,24 @@ export function geometryToLayer(geojson, options) {
 		return new FeatureGroup(layers);
 
 	case 'LineString':
-	case 'MultiLineString':
-		latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
+		latlngs = coordsToLatLngs(coords, 0, _coordsToLatLng);
 		return new Polyline(latlngs, options);
+	case 'MultiLineString':
+		for (i = 0, len = coords.length; i < len; i++) {
+			latlngs = coordsToLatLngs(coords[i], 1, _coordsToLatLng);
+			layers.push(new Polyline(latlngs, options));
+		}
+		return new FeatureGroup(layers);
 
 	case 'Polygon':
-	case 'MultiPolygon':
-		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
+		latlngs = coordsToLatLngs(coords, 1, _coordsToLatLng);
 		return new Polygon(latlngs, options);
+	case 'MultiPolygon':
+		for (i = 0, len = coords.length; i < len; i++) {
+			latlngs = coordsToLatLngs(coords[i], 2, _coordsToLatLng);
+			layers.push(new Polygon(latlngs, options));
+		}
+		return new FeatureGroup(layers);
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
