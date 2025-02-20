@@ -1,4 +1,4 @@
-Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
+Leaflet was created 14 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
 Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
@@ -8,7 +8,7 @@ As Volodymyr [expressed a few days before the invasion](https://twitter.com/Leaf
 
 > If you want to help, educate yourself and others on the Russian threat, follow reputable journalists, demand severe Russian sanctions and Ukrainian support from your leaders, protest the war, reach out to Ukrainian friends, donate to Ukrainian charities. Just don't be silent.
 
-Ukrainians are recommending the [Come Back Alive](https://savelife.in.ua/en/) charity. For other options, see [StandWithUkraine](https://stand-with-ukraine.pp.ua).
+Ukrainians recommend the [Come Back Alive](https://savelife.in.ua/en/) charity. For other options, see [StandWithUkraine](https://stand-with-ukraine.pp.ua).
 
 If an appeal to humanity doesn't work for you, I'll appeal to your egoism: the future of Ukrainian citizens is the future of Leaflet.
 
