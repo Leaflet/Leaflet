@@ -32,6 +32,7 @@ export const TapHold = Handler.extend({
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
+		clearTimeout(this._holdTimeout);
 	},
 
 	_onDown(e) {

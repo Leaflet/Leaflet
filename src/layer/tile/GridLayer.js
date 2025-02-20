@@ -172,6 +172,7 @@ export const GridLayer = Layer.extend({
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = undefined;
+		clearTimeout(this._pruneTimeout);
 	},
 
 	// @method bringToFront: this
@@ -886,7 +887,7 @@ export const GridLayer = Layer.extend({
 			} else {
 				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
 				// to trigger a pruning.
-				setTimeout(this._pruneTiles.bind(this), 250);
+				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
 	},
