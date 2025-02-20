@@ -1,10 +1,9 @@
 const SESSION_KEY = 'dialog-session';
-const ONE_DAY_MILLI_SEC = 24 * 60 * 60 * 1000;
+const ONE_DAY_MILLI_SEC = 7 * 24 * 60 * 60 * 1000;
 
 function openDialog() {
 
-	// keep the last session timestamp in local storage to
-	//  re-show after 24 hours since last ack
+	// keep the last session timestamp in local storage to re-show after 7 days since last time
 	if (localStorage) {
 		const sessionTimestamp = localStorage.getItem(SESSION_KEY);
 		if (sessionTimestamp && Date.now() - sessionTimestamp < ONE_DAY_MILLI_SEC) {
