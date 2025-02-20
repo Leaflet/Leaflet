@@ -78,9 +78,8 @@ A simple way to achieve this is to use the HTML
 polyfill:
 
 ```html
-<!-- This map is for aesthetic purposes only, and can not be interacted with! -->
+<!-- This map is for aesthetic purposes only, and can not be interacted with due to the 'inert' property! -->
 <div id='decorative-map' inert></div>
-<script src='https://unpkg.com/wicg-inert@latest/dist/inert.min.js'></script>
 ```
 
 ### Utilizing plugins
