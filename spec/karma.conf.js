@@ -42,7 +42,10 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		browsers: ['Chrome'],
 		customLaunchers: {
 			'Chrome': {
-				base: 'ChromeHeadless'
+				base: 'ChromeHeadless',
+				flags: [
+					'--window-size=1920,1080', // Set a fixed window size
+				]
 			},
 			'Firefox': {
 				base: 'FirefoxHeadless',
