@@ -277,6 +277,10 @@ export var TileLayer = GridLayer.extend({
 		}
 
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+	},
+
+	_clampZoom(zoom) {
+		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
 
