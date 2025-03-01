@@ -224,8 +224,8 @@ export const TileLayer = GridLayer.extend({
 	_getZoomForUrl() {
 		let zoom = this._tileZoom;
 		const maxZoom = this.options.maxZoom,
-		      zoomReverse = this.options.zoomReverse,
-		      zoomOffset = this.options.zoomOffset;
+		zoomReverse = this.options.zoomReverse,
+		zoomOffset = this.options.zoomOffset;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
@@ -281,6 +281,10 @@ export const TileLayer = GridLayer.extend({
 		}
 
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+	},
+
+	_clampZoom(zoom) {
+		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
 
