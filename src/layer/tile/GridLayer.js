@@ -228,7 +228,7 @@ export const GridLayer = Layer.extend({
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = Math.round(this._clampZoom(this._map.getZoom()));
+			const tileZoom = this._clampZoom(this._map.getZoom());
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
