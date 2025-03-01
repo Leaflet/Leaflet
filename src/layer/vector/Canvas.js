@@ -11,10 +11,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
  *
- * Due to [technical limitations](https://caniuse.com/canvas), Canvas is not
- * available in all web browsers, notably IE8, and overlapping geometries might
- * not display properly in some edge cases.
- *
  * @example
  *
  * Use Canvas by default for all paths in the map:
@@ -62,6 +58,12 @@ export const Canvas = Renderer.extend({
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
+	},
+
+	onRemove() {
+		Renderer.prototype.onRemove.call(this);
+
+		clearTimeout(this._mouseHoverThrottleTimeout);
 	},
 
 	_initContainer() {
@@ -409,7 +411,7 @@ export const Canvas = Renderer.extend({
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
-		setTimeout((() => {
+		this._mouseHoverThrottleTimeout = setTimeout((() => {
 			this._mouseHoverThrottled = false;
 		}), 32);
 	},

@@ -36,6 +36,7 @@ export const ScrollWheelZoom = Handler.extend({
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
+		clearTimeout(this._timer);
 	},
 
 	_onWheelScroll(e) {

@@ -92,6 +92,24 @@ describe('Map', () => {
 			map.setZoom(2);
 		});
 
+		// For #9575
+		it('does not throw if removed before transition end complete', (done) => {
+			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
+
+			map._createAnimProxy();
+
+			setTimeout(() => {
+				map.remove();
+				map = null;
+			}, 10);
+
+			setTimeout(() => {
+				done();
+			}, 300);
+
+			map.setZoom(2);
+		});
+
 		it('throws error if container is reused by other instance', () => {
 			map.remove();
 			const map2 = new Map(container);
@@ -2198,6 +2216,34 @@ describe('Map', () => {
 			map.setView([50.5, 30.5], 10);
 			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
+	describe('#project', () => {
+		const tolerance = 1 / 1000000;
+
+		it('returns pixel coordinates relative to the top-left of the CRS extents', () => {
+			map.setView([40, -83], 5);
+			const x = latLng([40, -83]);
+			const a = map.project(x, 5);
+			expect(a.x).to.be.approximately(2207.288888, tolerance);
+			expect(a.y).to.be.approximately(3101.320460, tolerance);
+		});
+
+		it('test the other coordinates', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 5);
+			expect(b.x).to.be.approximately(5984.7111111, tolerance);
+			expect(b.y).to.be.approximately(3101.3204602, tolerance);
+		});
+
+		it('test the prev coordinates with different zoom', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 6);
+			expect(b.x).to.be.approximately(11969.422222, tolerance);
+			expect(b.y).to.be.approximately(6202.640920, tolerance);
 		});
 	});
 

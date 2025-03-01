@@ -371,7 +371,7 @@ export const Layers = Control.extend({
 		return label;
 	},
 
-	_onInputClick() {
+	_onInputClick(e) {
 		// expanding the control on mobile with a click can cause adding a layer - we don't want this
 		if (this._preventClick) {
 			return;
@@ -409,7 +409,7 @@ export const Layers = Control.extend({
 
 		this._handlingClick = false;
 
-		this._refocusOnMap();
+		this._refocusOnMap(e);
 	},
 
 	_checkDisabledLayers() {
