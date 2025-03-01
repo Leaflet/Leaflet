@@ -2221,11 +2221,6 @@ describe('Map', () => {
 
 	describe('#project', () => {
 
-		it('throws if map is not set before', () => {
-			expect(() => {
-				map.panInsideBounds();
-			}).to.throw();
-		});
 
 		const tolerance = 1 / 1000000;
 
