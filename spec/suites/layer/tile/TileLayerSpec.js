@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, DomUtil, Map, TileLayer, Util} from 'leaflet';
+import {Browser, CRS, DomUtil, Map, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -419,9 +419,9 @@ describe('TileLayer', () => {
 		});
 
 		it('requests tiles with an integer {z} when the map\'s zoom level is fractional', () => {
-			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 			map.options.zoomSnap = 0;
-			map._resetView(L.latLng(0, 0), 2.3);
+			map._resetView(new LatLng(0, 0), 2.3);
 
 			layer.redraw();
 
@@ -431,6 +431,7 @@ describe('TileLayer', () => {
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png',
 			];
+
 			let i = 0;
 			eachImg(layer, (img) => {
 				expect(img.src).to.eql(urls[i]);
