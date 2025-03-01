@@ -581,21 +581,35 @@ describe('Tooltip', () => {
 		expect(spy2.called).to.be.true;
 	});
 
-	// Related to #9071
-	it('removes focus listeners after unbinding tooltip', () => {
-		const marker = new CircleMarker([51.515, -0.09], {
-		  radius: 20,
-		  color: 'red',
-		}).addTo(map);
+	it('removes focus listeners after unbinding tooltip from Layer', () => {
+		const marker = new Marker([51.515, -0.09]).addTo(map);
 
 		marker
-		  .bindTooltip('Tooltip that will be unbinded in two seconds')
-		  .openTooltip();
+			.bindTooltip('Tooltip that will be unbinded')
+			.openTooltip();
+
+		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
 
 		marker.unbindTooltip();
 
-		setTimeout(() => {
-			expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
-		}, 2000);
+		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
+		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
+	});
+
+	it('removes focus listeners after unbinding tooltip from FeatureGroup', () => {
+
+		const marker = new Marker([51.515, -0.09]);
+		const layergroup = new FeatureGroup([marker]).addTo(map);
+
+		layergroup
+			.bindTooltip('Tooltip that will be unbinded in two seconds')
+			.openTooltip();
+
+		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
+
+		layergroup.unbindTooltip();
+
+		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
+		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
 	});
 });

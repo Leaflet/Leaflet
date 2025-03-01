@@ -387,35 +387,34 @@ Layer.include({
 
 	_addFocusListeners(remove) {
 		if (this.getElement) {
-			const el = this.getElement();
-			if (el) {
-				const onOff = remove ? 'off' : 'on';
-				DomEvent[onOff](el, 'focus', () => this._handleFocus(this), this);
-				DomEvent[onOff](el, 'blur', this._handleBlur, this);
-			}
+			this._addFocusListenersOnLayer(this, remove);
 		} else if (this.eachLayer && this._map.getRenderer(this)) {
-			this.eachLayer(layer => this._addFocusListenersOnLayer(layer), this);
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
 		}
-	},
-
-	_handleFocus(source) {
-		if (this._tooltip) {
-			this._tooltip._source = source;
-			this.openTooltip();
-		}
-	},
-
-	_handleBlur() {
-		this.closeTooltip();
 	},
 
 	_addFocusListenersOnLayer(layer, remove) {
-		if (layer.getElement) {
-			const el = layer.getElement();
-			if (el) {
-				const onOff = remove ? 'off' : 'on';
-				DomEvent[onOff](el, 'focus', () => this._handleFocus(layer), this);
-				DomEvent[onOff](el, 'blur', this._handleBlur, this);
+		const el = typeof layer.getElement === 'function' && layer.getElement();
+		if (el) {
+			const onOff = remove ? 'off' : 'on';
+			if (!remove) {
+				// Remove focus listener, if already existing
+				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
+
+				// eslint-disable-next-line camelcase
+				el._leaflet_focus_handler = () => {
+					if (this._tooltip) {
+						this._tooltip._source = layer;
+						this.openTooltip();
+					}
+				};
+			}
+
+			el._leaflet_focus_handler && DomEvent[onOff](el, 'focus', el._leaflet_focus_handler, this);
+			DomEvent[onOff](el, 'blur', this.closeTooltip, this);
+
+			if (remove) {
+				delete el._leaflet_focus_handler;
 			}
 		}
 	},
