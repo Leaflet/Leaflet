@@ -2220,8 +2220,6 @@ describe('Map', () => {
 	});
 
 	describe('#project', () => {
-
-
 		const tolerance = 1 / 1000000;
 
 		it('returns pixel coordinates relative to the top-left of the CRS extents', () => {
