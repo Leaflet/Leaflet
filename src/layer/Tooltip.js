@@ -388,7 +388,6 @@ Layer.include({
 	_addFocusListeners(remove) {
 		if (this.getElement) {
 			this._addFocusListenersOnLayer(this, remove);
-		} else if (this.eachLayer && this._map.getRenderer(this)) {
 			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
 		}
 	},
