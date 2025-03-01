@@ -24,8 +24,8 @@ import {getScale} from './DomUtil.js';
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
-		for (const type in types) {
-			addOne(obj, type, types[type], fn);
+		for (const [type, listener] of Object.entries(types)) {
+			addOne(obj, type, listener, fn);
 		}
 	} else {
 		types = Util.splitWords(types);
@@ -63,8 +63,8 @@ export function off(obj, types, fn, context) {
 		delete obj[eventsKey];
 
 	} else if (types && typeof types === 'object') {
-		for (const type in types) {
-			removeOne(obj, type, types[type], fn);
+		for (const [type, listener] of Object.entries(types)) {
+			removeOne(obj, type, listener, fn);
 		}
 
 	} else {
@@ -84,9 +84,11 @@ export function off(obj, types, fn, context) {
 
 function batchRemove(obj, filterFn) {
 	for (const id in obj[eventsKey]) {
-		const type = id.split(/\d/)[0];
-		if (!filterFn || filterFn(type)) {
-			removeOne(obj, type, null, null, id);
+		if (Object.hasOwn(obj[eventsKey], id)) {
+			const type = id.split(/\d/)[0];
+			if (!filterFn || filterFn(type)) {
+				removeOne(obj, type, null, null, id);
+			}
 		}
 	}
 }
@@ -94,7 +96,7 @@ function batchRemove(obj, filterFn) {
 const mouseSubst = {
 	mouseenter: 'mouseover',
 	mouseleave: 'mouseout',
-	wheel: !('onwheel' in window) && 'mousewheel'
+	wheel: typeof window === 'undefined' ? false : !('onwheel' in window) && 'mousewheel'
 };
 
 function addOne(obj, type, fn, context) {

@@ -1,5 +1,7 @@
 import {Point, toPoint} from './Point.js';
 import {toLatLng} from '../geo/LatLng.js';
+import {centroid} from './PolyUtil.js';
+import {toLatLngBounds} from '../geo/LatLngBounds.js';
 
 
 /*
@@ -252,12 +254,23 @@ export function polylineCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	const points = [];
-	for (const latlng of latlngs) {
-		points.push(crs.project(toLatLng(latlng)));
+	let centroidLatLng = toLatLng([0, 0]);
+
+	const bounds = toLatLngBounds(latlngs);
+	const areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
+	// tests showed that below 1700 rounding errors are happening
+	if (areaBounds < 1700) {
+		// getting a inexact center, to move the latlngs near to [0, 0] to prevent rounding errors
+		centroidLatLng = centroid(latlngs);
 	}
 
-	const len = points.length;
+	const len = latlngs.length;
+	const points = [];
+	for (i = 0; i < len; i++) {
+		const latlng = toLatLng(latlngs[i]);
+		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
+	}
+
 	for (i = 0, halfDist = 0; i < len - 1; i++) {
 		halfDist += points[i].distanceTo(points[i + 1]) / 2;
 	}
@@ -282,5 +295,7 @@ export function polylineCenter(latlngs, crs) {
 			}
 		}
 	}
-	return crs.unproject(toPoint(center));
+
+	const latlngCenter = crs.unproject(toPoint(center));
+	return toLatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
 }

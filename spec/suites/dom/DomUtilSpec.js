@@ -1,3 +1,7 @@
+import {expect} from 'chai';
+import {DomUtil, Point, point} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+
 describe('DomUtil', () => {
 	let el;
 
@@ -15,85 +19,85 @@ describe('DomUtil', () => {
 	describe('#get', () => {
 		it('gets element by id if the given argument is string', () => {
 			el.id = 'testId';
-			expect(L.DomUtil.get(el.id)).to.eql(el);
+			expect(DomUtil.get(el.id)).to.eql(el);
 		});
 
 		it('returns the element if it is given as an argument', () => {
-			expect(L.DomUtil.get(el)).to.eql(el);
+			expect(DomUtil.get(el)).to.eql(el);
 		});
 	});
 
 	describe('#create', () => {
 		it('creates an HTML element div without any class name', () => {
-			const e = L.DomUtil.create('div');
+			const e = DomUtil.create('div');
 			expect(e.className).to.eql('');
 			expect(e.tagName).to.eql('DIV');
 		});
 
 		it('creates an HTML element div with specified class name', () => {
-			const e = L.DomUtil.create('div', 'test');
+			const e = DomUtil.create('div', 'test');
 			expect(e.className).to.eql('test');
 			expect(e.tagName).to.eql('DIV');
 		});
 
 		it('creates an p element with a div as parent', () => {
-			const parent = L.DomUtil.create('div');
+			const parent = DomUtil.create('div');
 			expect(parent.children.length).to.equal(0);
-			const child = L.DomUtil.create('p', 'test', parent);
-			expect(child.parentNode === parent).to.be(true);
+			const child = DomUtil.create('p', 'test', parent);
+			expect(child.parentNode === parent).to.be.true;
 			expect(parent.children.length).to.equal(1);
 		});
 	});
 
 	describe('#toFront', () => {
 		it('moves el to last child position parent element', () => {
-			const elm = L.DomUtil.create('div', 'childContainer', el);
-			L.DomUtil.create('div', 'test', el);
-			L.DomUtil.create('div', 'test1', el);
+			const elm = DomUtil.create('div', 'childContainer', el);
+			DomUtil.create('div', 'test', el);
+			DomUtil.create('div', 'test1', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.be(0);
-			L.DomUtil.toFront(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.be(2);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
+			DomUtil.toFront(elm);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
 		});
 
 		it('doesn\'t move an element if he\'s already in the front', () => {
-			L.DomUtil.create('div', 'test', el);
-			L.DomUtil.create('div', 'test1', el);
-			const e1 = L.DomUtil.create('div', 'test2', el);
+			DomUtil.create('div', 'test', el);
+			DomUtil.create('div', 'test1', el);
+			const e1 = DomUtil.create('div', 'test2', el);
 			expect(el.lastChild).to.eql(e1);
-			L.DomUtil.toFront(e1);
+			DomUtil.toFront(e1);
 			expect(el.lastChild).to.eql(e1);
 		});
 
 		it('doesn\'t crash if element doesn\'t have a parent', () => {
-			const e = L.DomUtil.create('div');
-			L.DomUtil.toFront(e);
+			const e = DomUtil.create('div');
+			DomUtil.toFront(e);
 		});
 	});
 
 	describe('#toBack', () => {
 		it('moves el to first child position parent element', () => {
-			L.DomUtil.create('div', 'test', el);
-			L.DomUtil.create('div', 'test1', el);
-			const elm = L.DomUtil.create('div', 'childContainer', el);
+			DomUtil.create('div', 'test', el);
+			DomUtil.create('div', 'test1', el);
+			const elm = DomUtil.create('div', 'childContainer', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.be(2);
-			L.DomUtil.toBack(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.be(0);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
+			DomUtil.toBack(elm);
+			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
 		});
 
 		it('doesn\'t move an element if it is already in the back', () => {
-			const e1 = L.DomUtil.create('div', 'test', el);
-			L.DomUtil.create('div', 'test1', el);
-			L.DomUtil.create('div', 'test2', el);
-			expect(el.firstChild).to.be(e1);
-			L.DomUtil.toBack(el);
-			expect(el.firstChild).to.be(e1);
+			const e1 = DomUtil.create('div', 'test', el);
+			DomUtil.create('div', 'test1', el);
+			DomUtil.create('div', 'test2', el);
+			expect(el.firstChild).to.equal(e1);
+			DomUtil.toBack(el);
+			expect(el.firstChild).to.equal(e1);
 		});
 
 		it('doesn\'t crash if an element doesn\'t have a parent', () => {
-			const e = L.DomUtil.create('div');
-			L.DomUtil.toBack(e);
+			const e = DomUtil.create('div');
+			DomUtil.toBack(e);
 		});
 	});
 
@@ -101,36 +105,36 @@ describe('DomUtil', () => {
 		it('resets the transform style of an el.', () => {
 			expect(el.style.transform).to.be.equal('');
 
-			const offset = L.point(200, 200);
+			const offset = new Point(200, 200);
 			const scale = 10;
-			L.DomUtil.setTransform(el, offset, scale);
+			DomUtil.setTransform(el, offset, scale);
 			const transform = el.style.transform;
 			expect(el.style.transform).to.be.equal(transform);
 
 			const newScale = 20;
-			const newOffset = L.point(400, 400);
-			L.DomUtil.setTransform(el, newOffset, newScale);
+			const newOffset = new Point(400, 400);
+			DomUtil.setTransform(el, newOffset, newScale);
 			expect(el.style.transform).to.not.be.equal(transform);
 		});
 
 		it('reset the 3d CSS transform when offset and scale aren\'t specified', () => {
-			L.DomUtil.setTransform(el);
-			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px)');
+			DomUtil.setTransform(el);
+			expect(el.style.transform).to.equal('translate3d(0px, 0px, 0px)');
 		});
 
 		it('set the 3d CSS transform with just the specified point if scale isn\'t specified', () => {
-			L.DomUtil.setTransform(el, new L.Point(1, 1));
-			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px)');
+			DomUtil.setTransform(el, new Point(1, 1));
+			expect(el.style.transform).to.equal('translate3d(1px, 1px, 0px)');
 		});
 
-		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified', () => {
-			L.DomUtil.setTransform(el, undefined, 5);
-			expect(el.style.transform).to.be('translate3d(0px, 0px, 0px) scale(5)');
+		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(<scalevalue>) if only scale is specified', () => {
+			DomUtil.setTransform(el, undefined, 5);
+			expect(el.style.transform).to.equal('translate3d(0px, 0px, 0px) scale(5)');
 		});
 
 		it('set the 3d CSS transform with the specified point ant the corresponding scale', () => {
-			L.DomUtil.setTransform(el, new L.Point(1, 1), 5);
-			expect(el.style.transform).to.be('translate3d(1px, 1px, 0px) scale(5)');
+			DomUtil.setTransform(el, new Point(1, 1), 5);
+			expect(el.style.transform).to.equal('translate3d(1px, 1px, 0px) scale(5)');
 		});
 	});
 
@@ -141,28 +145,28 @@ describe('DomUtil', () => {
 
 			const x = 50;
 			const y = 55;
-			const position = L.point(x, y);
-			L.DomUtil.setPosition(el, position);
-			expect(L.DomUtil.getPosition(el)).to.be.eql({x, y});
+			const position = point(x, y);
+			DomUtil.setPosition(el, position);
+			expect(DomUtil.getPosition(el).equals(position)).to.be.true;
 
 			const newX = 333;
 			const newY = 666;
-			const newPosition = L.point(newX, newY);
-			L.DomUtil.setPosition(el, newPosition);
-			expect(L.DomUtil.getPosition(el)).to.be.eql({x: newX, y: newY});
+			const newPosition = point(newX, newY);
+			DomUtil.setPosition(el, newPosition);
+			expect(DomUtil.getPosition(el).equals(newPosition)).to.be.true;
 		});
 
 		it('returns position of an element positioned with setPosition.', () => {
 			const coordinates = {x: 333, y: 666};
-			const position = L.point(coordinates);
-			expect(L.DomUtil.getPosition(el)).to.not.eql(coordinates);
-			L.DomUtil.setPosition(el, position);
-			expect(L.DomUtil.getPosition(el)).to.be.an('object');
-			expect(L.DomUtil.getPosition(el)).to.eql(coordinates);
+			const position = point(coordinates);
+			expect(DomUtil.getPosition(el).equals(position)).to.be.false;
+			DomUtil.setPosition(el, position);
+			expect(DomUtil.getPosition(el)).to.be.an('object');
+			expect(DomUtil.getPosition(el).equals(position)).to.be.true;
 		});
 
 		it('returns [0, 0] point if the HTML element wasn\'t positioned before', () => {
-			expect(L.DomUtil.getPosition(el)).to.eql(new L.Point(0, 0));
+			expect(DomUtil.getPosition(el)).to.eql(new Point(0, 0));
 		});
 	});
 
@@ -173,13 +177,13 @@ describe('DomUtil', () => {
 			el.appendChild(child);
 			child.appendChild(grandChild);
 			child.style.width = child.style.height = '500px';
-			expect(L.DomUtil.getSizedParentNode(grandChild)).to.eql(child);
+			expect(DomUtil.getSizedParentNode(grandChild)).to.eql(child);
 		});
 
 		it('throws an error if the element hasn\'t a parent', () => {
 			expect(() => {
-				L.DomUtil.getSizedParentNode(document.createElement('div'));
-			}).to.throwException();
+				DomUtil.getSizedParentNode(document.createElement('div'));
+			}).to.throw();
 		});
 	});
 
@@ -206,18 +210,18 @@ describe('DomUtil', () => {
 				}
 			};
 			// Not all browsers contain x y inside boundclientRect, always contains top, right, bottom and left properties
-			expect(L.DomUtil.getScale(childEl).boundingClientRect.top).to.be.equal(scale.boundingClientRect.top);
-			expect(L.DomUtil.getScale(childEl).boundingClientRect.right).to.be.equal(scale.boundingClientRect.right);
-			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.be.equal(scale.boundingClientRect.bottom);
-			expect(L.DomUtil.getScale(childEl).boundingClientRect.left).to.be.equal(scale.boundingClientRect.left);
+			expect(DomUtil.getScale(childEl).boundingClientRect.top).to.be.equal(scale.boundingClientRect.top);
+			expect(DomUtil.getScale(childEl).boundingClientRect.right).to.be.equal(scale.boundingClientRect.right);
+			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.be.equal(scale.boundingClientRect.bottom);
+			expect(DomUtil.getScale(childEl).boundingClientRect.left).to.be.equal(scale.boundingClientRect.left);
 
 			childEl.style.padding = '400px';
-			expect(L.DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
+			expect(DomUtil.getScale(childEl).boundingClientRect.bottom).to.not.be.equal(scale.boundingClientRect.bottom);
 		});
 
 		it('returns x and y to 1 with all boundingClientRect\'s values to 0 for empty element not added yet to the body', () => {
 			const newElement = document.createElement('div');
-			const scale = L.DomUtil.getScale(newElement);
+			const scale = DomUtil.getScale(newElement);
 			expect(scale.x).to.eql(1);
 			expect(scale.y).to.eql(1);
 			expect(scale.boundingClientRect.x).to.eql(0);
@@ -236,28 +240,28 @@ describe('DomUtil', () => {
 		// Safari still needs a vendor prefix, we need to detect with property name is supported.
 		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 
-		beforeEach(() => expect(documentStyle[userSelectProp]).to.be(''));
+		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
 		afterEach(() => { documentStyle[userSelectProp] = ''; });
 
 		it('disables and enables text selection', () => {
-			L.DomUtil.disableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('none');
-			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('');
+			DomUtil.disableTextSelection();
+			expect(documentStyle[userSelectProp]).to.equal('none');
+			DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.equal('');
 		});
 
 		it('restores the text selection previously set', () => {
 			documentStyle[userSelectProp] = 'text';
-			L.DomUtil.disableTextSelection();
-			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('text');
+			DomUtil.disableTextSelection();
+			DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.equal('text');
 		});
 
 		it('restores the text selection previously set when disabling multiple times', () => {
-			L.DomUtil.disableTextSelection();
-			L.DomUtil.disableTextSelection();
-			L.DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.be('');
+			DomUtil.disableTextSelection();
+			DomUtil.disableTextSelection();
+			DomUtil.enableTextSelection();
+			expect(documentStyle[userSelectProp]).to.equal('');
 		});
 	});
 
@@ -274,36 +278,37 @@ describe('DomUtil', () => {
 			const child = document.createElement('div');
 			el.appendChild(child);
 
-			L.DomUtil.disableImageDrag();
+			DomUtil.disableImageDrag();
 			window.addEventListener('dragstart', checkPrevented);
 			UIEventSimulator.fire('dragstart', child);
-			expect(selectionPrevented).to.be.ok();
+			expect(selectionPrevented).to.be.true;
 
-			L.DomUtil.enableImageDrag();
+			DomUtil.enableImageDrag();
 			UIEventSimulator.fire('dragstart', child);
-			expect(selectionPrevented).to.not.be.ok();
+			expect(selectionPrevented).to.be.false;
 		});
 	});
 
 	describe('#preventOutline, #restoreOutline', () => {
 		it('prevent / restore outline for the element', () => {
 			const child = document.createElement('div');
-			el.appendChild(child);
+			const originalStyle = child.style.outlineStyle = 'dotted';
+
 			child.tabIndex = 0;
-			expect(child.style.outline).to.be.equal(child.style.outline);
-			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			el.appendChild(child);
 
-			//	Explicit #restoreOutline through direct call
-			expect(child.style.outline).to.match(/(?:none)/);
-			L.DomUtil.restoreOutline(child);
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			DomUtil.preventOutline(child);
+			expect(child.style.outlineStyle).to.equal('none');
 
-			//	Implicit #restoreOutline test through simulation
-			L.DomUtil.preventOutline(child);
-			expect(child.style.outline).to.match(/(?:none)/);
+			// Explicit #restoreOutline through direct call
+			DomUtil.restoreOutline(child);
+			expect(child.style.outlineStyle).to.be.equal(originalStyle);
+
+			// Implicit #restoreOutline test through simulation
+			DomUtil.preventOutline(child);
+			expect(child.style.outlineStyle).to.equal('none');
 			UIEventSimulator.fire('keydown', child);
-			expect(child.style.outline).to.be.equal(child.style.outline);
+			expect(child.style.outlineStyle).to.be.equal(originalStyle);
 		});
 	});
 });

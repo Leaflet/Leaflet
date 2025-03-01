@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Simple heatmap api based on HTML5 canvas.
+Simple heatmap api based on HTML canvas.

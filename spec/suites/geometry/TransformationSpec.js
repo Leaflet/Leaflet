@@ -1,20 +1,23 @@
+import {expect} from 'chai';
+import {point, transformation} from 'leaflet';
+
 describe('Transformation', () => {
 	let t, p;
 
 	beforeEach(() => {
-		t = L.transformation(1, 2, 3, 4);
-		p = L.point(10, 20);
+		t = transformation(1, 2, 3, 4);
+		p = point(10, 20);
 	});
 
 	describe('#transform', () => {
 		it('performs a transformation', () => {
 			const p2 = t.transform(p, 2);
-			expect(p2).to.eql(L.point(24, 128));
+			expect(p2).to.eql(point(24, 128));
 		});
 
 		it('assumes a scale of 1 if not specified', () => {
 			const p2 = t.transform(p);
-			expect(p2).to.eql(L.point(12, 64));
+			expect(p2).to.eql(point(12, 64));
 		});
 	});
 
@@ -26,13 +29,13 @@ describe('Transformation', () => {
 		});
 
 		it('assumes a scale of 1 if not specified', () => {
-			expect(t.untransform(L.point(12, 64))).to.eql(L.point(10, 20));
+			expect(t.untransform(point(12, 64))).to.eql(point(10, 20));
 		});
 	});
 
 	describe('#constructor', () => {
 		it('allows an array property for a', () => {
-			const t2 = L.transformation([1, 2, 3, 4]);
+			const t2 = transformation([1, 2, 3, 4]);
 			expect(t._a).to.eql(t2._a);
 			expect(t._b).to.eql(t2._b);
 			expect(t._c).to.eql(t2._c);

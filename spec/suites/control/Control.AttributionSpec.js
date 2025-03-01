@@ -1,11 +1,15 @@
+import {Map, Control, Layer, control as lControl} from 'leaflet';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {expect} from 'chai';
+
 describe('Control.Attribution', () => {
 	let map, control, container, controlContainer;
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 
-		control = new L.Control.Attribution({
+		control = new Control.Attribution({
 			prefix: 'prefix'
 		}).addTo(map);
 		map.setView([0, 0], 1);
@@ -17,7 +21,7 @@ describe('Control.Attribution', () => {
 	});
 
 	function dummyLayer() {
-		const layer = new L.Layer();
+		const layer = new Layer();
 		layer.onAdd = function () { };
 		layer.onRemove = function () { };
 		return layer;
@@ -74,7 +78,7 @@ describe('Control.Attribution', () => {
 	describe('control.attribution factory', () => {
 		it('creates Control.Attribution instance', () => {
 			const options = {prefix: 'prefix'};
-			expect(L.control.attribution(options)).to.eql(new L.Control.Attribution(options));
+			expect(lControl.attribution(options)).to.eql(new Control.Attribution(options));
 		});
 	});
 

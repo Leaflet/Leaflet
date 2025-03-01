@@ -1,10 +1,15 @@
+import {expect} from 'chai';
+import {DomUtil, Map, Marker, Point} from 'leaflet';
+import Hand from 'prosthetic-hand';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Marker.Drag', () => {
 	let map,
 	    container;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		container.style.width = '600px';
 		container.style.height = '600px';
 		map.setView([0, 0], 0);
@@ -14,9 +19,9 @@ describe('Marker.Drag', () => {
 		removeMapContainer(map, container);
 	});
 
-	const MyMarker = L.Marker.extend({
+	const MyMarker = Marker.extend({
 		_getPosition() {
-			return L.DomUtil.getPosition(this.dragging._draggable._element);
+			return DomUtil.getPosition(this.dragging._draggable._element);
 		},
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
@@ -29,17 +34,17 @@ describe('Marker.Drag', () => {
 		it('drags a marker with mouse', (done) => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
-			const start = L.point(300, 280);
-			const offset = L.point(256, 32);
+			const start = new Point(300, 280);
+			const offset = new Point(56, 32);
 			const finish = start.add(offset);
 
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(marker.getOffset()).to.eql(offset);
+					expect(marker.getOffset().equals(offset)).to.be.true;
 
 					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
+					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 
 					done();
 				}
@@ -51,7 +56,7 @@ describe('Marker.Drag', () => {
 		});
 
 		describe('in CSS scaled container', () => {
-			const scale = L.point(2, 1.5);
+			const scale = new Point(2, 1.5);
 
 			beforeEach(() => {
 				container.style.webkitTransformOrigin = 'top left';
@@ -61,8 +66,8 @@ describe('Marker.Drag', () => {
 			it('drags a marker with mouse, compensating for CSS scale', (done) => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
-				const start = L.point(300, 280);
-				const offset = L.point(256, 32);
+				const start = new Point(300, 280);
+				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
 				const hand = new Hand({
@@ -71,7 +76,7 @@ describe('Marker.Drag', () => {
 						expect(marker.getOffset()).to.eql(offset);
 
 						expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 360]);
+						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 
 						done();
 					}
@@ -91,8 +96,8 @@ describe('Marker.Drag', () => {
 				autoPan: true
 			}).addTo(map);
 
-			const start = L.point(300, 280);
-			const offset = L.point(290, 32);
+			const start = new Point(300, 280);
+			const offset = new Point(290, 32);
 			const finish = start.add(offset);
 
 			const hand = new Hand({

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Canvas Loop</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer, LayerGroup, CircleMarker} from 'leaflet';
+
+			const map = new Map('map', {
+				center: [39.84, -96.591],
+				zoom: 4,
+				preferCanvas: true
+			}).locate();
+
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+			const vanillaLayer = new LayerGroup();
+
+			map.addLayer(vanillaLayer);
+			map.on('moveend', () => console.log('moveend fired.'));
+
+			new CircleMarker(map.getCenter(), {radius: 30}).addTo(vanillaLayer);
+		</script>
+	</body>
+</html>

@@ -1,3 +1,7 @@
+/* global L */
+import 'leaflet';
+import {expect} from 'chai';
+
 describe('General', () => {
 	it('namespace extension', () => {
 		L.Util.foo = 'bar';

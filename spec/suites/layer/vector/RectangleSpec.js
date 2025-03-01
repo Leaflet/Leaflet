@@ -1,9 +1,13 @@
+import {expect} from 'chai';
+import {Canvas, LineUtil, Map, Polygon, latLng, rectangle} from 'leaflet';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Rectangle', () => {
 	let map, container;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {center: [55.8, 37.6], zoom: 6});
+		map = new Map(container, {center: [55.8, 37.6], zoom: 6});
 	});
 
 	afterEach(() => {
@@ -14,10 +18,10 @@ describe('Rectangle', () => {
 		it('should never be flat', () => {
 			const latLngs = [[1, 2], [3, 4]];
 
-			const rectangle = L.rectangle(latLngs);
+			const rect = rectangle(latLngs);
 
-			expect(L.LineUtil.isFlat(rectangle._latlngs)).to.be(false);
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
+			expect(LineUtil.isFlat(rect._latlngs)).to.be.false;
+			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});
 
 		it('doesn\'t overwrite the given latlng array', () => {
@@ -27,17 +31,17 @@ describe('Rectangle', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const rectangle = L.rectangle(sourceLatLngs);
+			const rect = rectangle(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
-			expect(rectangle._latlngs).to.not.eql(sourceLatLngs);
+			expect(rect._latlngs).to.not.eql(sourceLatLngs);
 		});
 
 		it('cannot be called with an empty array', () => {
 			// Throws error due to undefined lat
 			expect(() => {
-				L.rectangle([]);
-			}).to.throwException();
+				rectangle([]);
+			}).to.throw();
 		});
 
 		it('can be initialized with extending bounds', () => {
@@ -46,12 +50,12 @@ describe('Rectangle', () => {
 				[40, 50], [60, 70] // extended bounds
 			];
 
-			const rectangle = L.rectangle(originalLatLngs);
+			const rect = rectangle(originalLatLngs);
 
-			expect(rectangle._latlngs).to.eql([
-				[L.latLng([0, 10]), L.latLng([60, 10]), L.latLng([60, 70]), L.latLng([0, 70])]
+			expect(rect._latlngs).to.eql([
+				[latLng([0, 10]), latLng([60, 10]), latLng([60, 70]), latLng([0, 70])]
 			]);
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
+			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});
 	});
 
@@ -63,9 +67,9 @@ describe('Rectangle', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const rectangle = L.rectangle(sourceLatLngs);
+			const rect = rectangle(sourceLatLngs);
 
-			rectangle.setBounds(sourceLatLngs);
+			rect.setBounds(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
@@ -81,14 +85,14 @@ describe('Rectangle', () => {
 				[7, 8]
 			];
 
-			const rectangle = L.rectangle(originalLatLngs);
-			rectangle.setBounds(newLatLngs);
+			const rect = rectangle(originalLatLngs);
+			rect.setBounds(newLatLngs);
 
-			expect(rectangle._latlngs).to.eql([
-				[L.latLng([5, 6]), L.latLng([7, 6]), L.latLng([7, 8]), L.latLng([5, 8])]
+			expect(rect._latlngs).to.eql([
+				[latLng([5, 6]), latLng([7, 6]), latLng([7, 8]), latLng([5, 8])]
 			]);
 
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
+			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});
 
 		it('can be set with extending bounds', () => {
@@ -101,13 +105,13 @@ describe('Rectangle', () => {
 				[40, 50], [60, 70] // extending bounds
 			];
 
-			const rectangle = L.rectangle(originalLatLngs);
-			rectangle.setBounds(newLatLngs);
+			const rect = rectangle(originalLatLngs);
+			rect.setBounds(newLatLngs);
 
-			expect(rectangle._latlngs).to.eql([
-				[L.latLng([0, 10]), L.latLng([60, 10]), L.latLng([60, 70]), L.latLng([0, 70])]
+			expect(rect._latlngs).to.eql([
+				[latLng([0, 10]), latLng([60, 10]), latLng([60, 70]), latLng([0, 70])]
 			]);
-			expect(rectangle.getLatLngs()).to.eql(rectangle._latlngs);
+			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});
 	});
 
@@ -115,11 +119,11 @@ describe('Rectangle', () => {
 		it('doesn\'t apply `focus` listener if element is undefined', () => {
 			map.remove();
 
-			map = L.map(container, {renderer: L.canvas()});
+			map = new Map(container, {renderer: new Canvas()});
 			map.setView([0, 0], 6);
 			expect(() => {
-				L.polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');
-			}).to.not.throwException();
+				new Polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');
+			}).to.not.throw();
 		});
 	});
 });

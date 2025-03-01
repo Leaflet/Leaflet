@@ -1,9 +1,14 @@
+import {expect} from 'chai';
+import {Map} from 'leaflet';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.DoubleClickZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false

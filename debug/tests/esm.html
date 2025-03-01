@@ -1,19 +1,30 @@
+<!doctype html>
 <html>
-  <head>
-    <link rel="stylesheet" href="../../dist/leaflet.css" />
-    <link rel="stylesheet" href="../css/screen.css" />
-  </head>
-  <body>
-    <div id="map"></div>
-    <script type="module">
-      import L from '../../dist/leaflet-src.esm.js';
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - ESM</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer} from 'leaflet';
 
-      var map = L.map('map', {
-        center: [39.84, -96.591],
-        zoom: 4,
-      });
+			const map = new Map('map', {
+				center: [39.84, -96.591],
+				zoom: 4,
+			});
 
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    </script>
-  </body>
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+		</script>
+	</body>
 </html>

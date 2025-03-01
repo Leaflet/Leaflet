@@ -1,6 +1,11 @@
+import {expect} from 'chai';
+import {Control, DomUtil, Map} from 'leaflet';
+import sinon from 'sinon';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
 describe('Control', () => {
 	function onAdd() {
-		return L.DomUtil.create('div', 'leaflet-test-control');
+		return DomUtil.create('div', 'leaflet-test-control');
 	}
 
 	let map,
@@ -9,10 +14,10 @@ describe('Control', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 
 		map.setView([0, 0], 1);
-		control = new L.Control();
+		control = new Control();
 		control.onAdd = onAdd;
 		control.addTo(map);
 	});
@@ -42,11 +47,11 @@ describe('Control', () => {
 		it('calls onRemove if defined', () => {
 			control.onRemove = sinon.spy();
 			control.remove();
-			expect(control.onRemove.called).to.be(true);
+			expect(control.onRemove.called).to.be.true;
 		});
 
 		it('is a no-op if the control has not been added', () => {
-			const control = new L.Control();
+			const control = new Control();
 			expect(control.remove()).to.equal(control);
 		});
 	});

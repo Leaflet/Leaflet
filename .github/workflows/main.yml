@@ -12,10 +12,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           check-latest: true
@@ -30,7 +30,7 @@ jobs:
           NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -56,13 +56,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -75,13 +75,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -95,6 +95,34 @@ jobs:
         env:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
+  test-ssr:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v4
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Run Node.js SSR script
+        run: node ./spec/ssr/ssr_node.mjs
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run Deno SSR script
+        run: deno run ./spec/ssr/ssr_deno.js
+
   test:
     needs: setup
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
@@ -102,30 +130,38 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - browser: Chrome1280x1024
-          - browser: FirefoxTouch
+          - browser: Chrome
+          - browser: Firefox
           - browser: FirefoxNoTouch
           - browser: FirefoxRetina
-          - browser: Chrome1280x1024
+          - browser: Chrome
             os: windows-latest
-          - browser: Chrome1280x1024
+          - browser: Chrome
             os: macos-latest
           - browser: SafariNative
             os: macos-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        if: contains(matrix.browser, 'Chrome')
+
+      - name: Set up Firefox
+        uses: browser-actions/setup-firefox@v1
+        if: contains(matrix.browser, 'Firefox')
+
       - name: Run tests on ${{ matrix.browser }}
-        run: npm test -- --browsers ${{ matrix.browser }}
+        run: npm test -- --browsers ${{ matrix.browser }} --single-run
 
   publish-artifacts:
     needs: setup
@@ -133,7 +169,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -159,13 +195,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org

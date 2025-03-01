@@ -4,6 +4,7 @@ updates:
     directory: /
     open-pull-requests-limit: 999
     rebase-strategy: disabled
+    versioning-strategy: increase
     schedule:
       interval: weekly
     labels:

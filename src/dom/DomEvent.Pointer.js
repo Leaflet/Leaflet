@@ -71,7 +71,9 @@ function _handlePointer(handler, e) {
 
 	e.touches = [];
 	for (const i in _pointers) {
-		e.touches.push(_pointers[i]);
+		if (Object.hasOwn(_pointers, i)) {
+			e.touches.push(_pointers[i]);
+		}
 	}
 	e.changedTouches = [e];
 

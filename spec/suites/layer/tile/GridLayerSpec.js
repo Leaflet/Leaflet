@@ -1,9 +1,14 @@
+import {expect} from 'chai';
+import {DomUtil, GridLayer, Map, Point, Util} from 'leaflet';
+import sinon from 'sinon';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('GridLayer', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
 	});
@@ -14,22 +19,22 @@ describe('GridLayer', () => {
 
 	describe('#redraw', () => {
 		it('can be called before map.setView', () => {
-			const grid = L.gridLayer().addTo(map);
+			const grid = new GridLayer().addTo(map);
 			expect(grid.redraw()).to.equal(grid);
 		});
 	});
 
 	describe('#setOpacity', () => {
 		it('can be called before map.setView', () => {
-			const grid = L.gridLayer().addTo(map);
+			const grid = new GridLayer().addTo(map);
 			expect(grid.setOpacity(0.5)).to.equal(grid);
 		});
 
 		it('works when map has fadeAnimated=false (IE8 is exempt)', (done) => {
 			map.remove();
-			map = L.map(container, {fadeAnimation: false}).setView([0, 0], 0);
+			map = new Map(container, {fadeAnimation: false}).setView([0, 0], 0);
 
-			const grid = L.gridLayer().setOpacity(0.5).addTo(map);
+			const grid = new GridLayer().setOpacity(0.5).addTo(map);
 			grid.on('load', () => {
 				expect(grid._container.style.opacity).to.equal('0.5');
 				done();
@@ -42,7 +47,7 @@ describe('GridLayer', () => {
 
 		const tiles = [];
 
-		const grid = L.gridLayer();
+		const grid = new GridLayer();
 		grid.createTile = function (coords) {
 			const tile = document.createElement('div');
 			tiles.push({coords, tile});
@@ -55,7 +60,7 @@ describe('GridLayer', () => {
 
 		for (let i = 0; i < tiles.length; i++) {
 			const coords = tiles[i].coords,
-			    pos = L.DomUtil.getPosition(tiles[i].tile);
+			    pos = DomUtil.getPosition(tiles[i].tile);
 
 			loaded[`${pos.x}:${pos.y}`] = [coords.x, coords.y];
 		}
@@ -85,10 +90,10 @@ describe('GridLayer', () => {
 
 		it('removes tiles for unused zoom levels', (done) => {
 			map.remove();
-			map = L.map(container, {fadeAnimation: false});
+			map = new Map(container, {fadeAnimation: false});
 			map.setView([0, 0], 1);
 
-			const grid = L.gridLayer();
+			const grid = new GridLayer();
 			const tiles = {};
 
 			grid.createTile = function (coords) {
@@ -124,7 +129,7 @@ describe('GridLayer', () => {
 
 			map.setView([0, 0], 10);
 
-			grid = L.gridLayer();
+			grid = new GridLayer();
 		});
 
 		it('only creates tiles for visible area on zoom in', (done) => {
@@ -167,7 +172,7 @@ describe('GridLayer', () => {
 				grid.on('tileload', tileLoadRaised);
 				grid.on('tileerror', () => {
 					if (keys.length === 4) {
-						expect(tileLoadRaised.notCalled).to.be(true);
+						expect(tileLoadRaised.notCalled).to.be.true;
 						done();
 					}
 				});
@@ -179,7 +184,7 @@ describe('GridLayer', () => {
 				grid.on('tileerror', () => {
 					tileErrorRaised();
 					if (keys.length === 4) {
-						expect(tileErrorRaised.callCount).to.be(4);
+						expect(tileErrorRaised.callCount).to.equal(4);
 						done();
 					}
 				});
@@ -193,7 +198,7 @@ describe('GridLayer', () => {
 						count++;
 					}
 					if (keys.length === 4) {
-						expect(count).to.be(4);
+						expect(count).to.equal(4);
 						done();
 					}
 				});
@@ -205,7 +210,7 @@ describe('GridLayer', () => {
 
 	describe('#onAdd', () => {
 		it('is called after zoomend on first map load', () => {
-			const layer = L.gridLayer().addTo(map);
+			const layer = new GridLayer().addTo(map);
 
 			const onAdd = layer.onAdd,
 			    onAddSpy = sinon.spy();
@@ -218,7 +223,7 @@ describe('GridLayer', () => {
 			map.on('zoomend', onReset);
 			map.setView([0, 0], 0);
 
-			expect(onReset.calledBefore(onAddSpy)).to.be.ok();
+			expect(onReset.calledBefore(onAddSpy)).to.be.true;
 		});
 	});
 
@@ -232,70 +237,70 @@ describe('GridLayer', () => {
 				const maxZoom = 10,
 				    minZoom = 5;
 
-				L.gridLayer({
+				new GridLayer({
 					maxZoom,
 					minZoom
 				}).addTo(map);
 
-				expect(map.getMaxZoom()).to.be(maxZoom);
-				expect(map.getMinZoom()).to.be(minZoom);
+				expect(map.getMaxZoom()).to.equal(maxZoom);
+				expect(map.getMinZoom()).to.equal(minZoom);
 			});
 		});
 
 		describe('accessing a gridlayer\'s properties', () => {
 			it('provides a container', () => {
-				const layer = L.gridLayer().addTo(map);
-				expect(layer.getContainer()).to.be.ok();
+				const layer = new GridLayer().addTo(map);
+				expect(layer.getContainer()).to.be.ok;
 			});
 		});
 
 		describe('when a gridlayer is added to a map that already has a gridlayer', () => {
 			it('has its zoomlevels updated to fit the new layer', () => {
-				L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map);
-				expect(map.getMinZoom()).to.be(10);
-				expect(map.getMaxZoom()).to.be(15);
+				new GridLayer({minZoom: 10, maxZoom: 15}).addTo(map);
+				expect(map.getMinZoom()).to.equal(10);
+				expect(map.getMaxZoom()).to.equal(15);
 
-				L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map);
-				expect(map.getMinZoom()).to.be(5);  // changed
-				expect(map.getMaxZoom()).to.be(15); // unchanged
+				new GridLayer({minZoom: 5, maxZoom: 10}).addTo(map);
+				expect(map.getMinZoom()).to.equal(5);  // changed
+				expect(map.getMaxZoom()).to.equal(15); // unchanged
 
-				L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map);
-				expect(map.getMinZoom()).to.be(5);  // unchanged
-				expect(map.getMaxZoom()).to.be(20); // changed
+				new GridLayer({minZoom: 10, maxZoom: 20}).addTo(map);
+				expect(map.getMinZoom()).to.equal(5);  // unchanged
+				expect(map.getMaxZoom()).to.equal(20); // changed
 
 
-				L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map);
-				expect(map.getMinZoom()).to.be(0); // changed
-				expect(map.getMaxZoom()).to.be(25); // changed
+				new GridLayer({minZoom: 0, maxZoom: 25}).addTo(map);
+				expect(map.getMinZoom()).to.equal(0); // changed
+				expect(map.getMaxZoom()).to.equal(25); // changed
 			});
 		});
 
 		describe('when a gridlayer is removed from a map', () => {
 			it('has its zoomlevels updated to only fit the layers it currently has', () => {
 				const tiles = [
-					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
-					L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
-					L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
-					L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
+					new GridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
+					new GridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
+					new GridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
+					new GridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
 				];
-				expect(map.getMinZoom()).to.be(0);
-				expect(map.getMaxZoom()).to.be(25);
+				expect(map.getMinZoom()).to.equal(0);
+				expect(map.getMaxZoom()).to.equal(25);
 
 				map.removeLayer(tiles[0]);
-				expect(map.getMinZoom()).to.be(0);
-				expect(map.getMaxZoom()).to.be(25);
+				expect(map.getMinZoom()).to.equal(0);
+				expect(map.getMaxZoom()).to.equal(25);
 
 				map.removeLayer(tiles[3]);
-				expect(map.getMinZoom()).to.be(5);
-				expect(map.getMaxZoom()).to.be(20);
+				expect(map.getMinZoom()).to.equal(5);
+				expect(map.getMaxZoom()).to.equal(20);
 
 				map.removeLayer(tiles[2]);
-				expect(map.getMinZoom()).to.be(5);
-				expect(map.getMaxZoom()).to.be(10);
+				expect(map.getMinZoom()).to.equal(5);
+				expect(map.getMaxZoom()).to.equal(10);
 
 				map.removeLayer(tiles[1]);
-				expect(map.getMinZoom()).to.be(0);
-				expect(map.getMaxZoom()).to.be(Infinity);
+				expect(map.getMinZoom()).to.equal(0);
+				expect(map.getMaxZoom()).to.equal(Infinity);
 			});
 		});
 	});
@@ -304,13 +309,13 @@ describe('GridLayer', () => {
 		it('calls createTile() with maxNativeZoom when map zoom is larger', (done) => {
 			map.setView([0, 0], 10);
 
-			const grid = L.gridLayer({
+			const grid = new GridLayer({
 				maxNativeZoom: 5
 			});
 			let tileCount = 0;
 
 			grid.createTile = function (coords) {
-				expect(coords.z).to.be(5);
+				expect(coords.z).to.equal(5);
 				tileCount++;
 				return document.createElement('div');
 			};
@@ -328,13 +333,13 @@ describe('GridLayer', () => {
 		it('calls createTile() with minNativeZoom when map zoom is smaller', (done) => {
 			map.setView([0, 0], 3);
 
-			const grid = L.gridLayer({
+			const grid = new GridLayer({
 				minNativeZoom: 5
 			});
 			let tileCount = 0;
 
 			grid.createTile = function (coords) {
-				expect(coords.z).to.be(5);
+				expect(coords.z).to.equal(5);
 				tileCount++;
 				return document.createElement('div');
 			};
@@ -353,12 +358,12 @@ describe('GridLayer', () => {
 			const initialZoom = 12;
 			map.setView([0, 0], initialZoom);
 
-			const grid = L.gridLayer().addTo(map);
-			expect(grid._tileZoom).to.be(initialZoom);
+			const grid = new GridLayer().addTo(map);
+			expect(grid._tileZoom).to.equal(initialZoom);
 
 			grid.options.maxNativeZoom = 11;
 			grid.redraw();
-			expect(grid._tileZoom).to.be(11);
+			expect(grid._tileZoom).to.equal(11);
 		});
 	});
 
@@ -368,9 +373,9 @@ describe('GridLayer', () => {
 		beforeEach(() => {
 			clock = sinon.useFakeTimers();
 
-			grid = L.gridLayer({
+			grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256)
+				tileSize: new Point(256, 256)
 			});
 
 			grid.createTile = function (coords) {
@@ -408,9 +413,9 @@ describe('GridLayer', () => {
 
 		it('Loads 8 tiles zoom 1', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(8);
-				expect(counts.tileload).to.be(8);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(8);
+				expect(counts.tileload).to.equal(8);
+				expect(counts.tileunload).to.equal(0);
 				done();
 			});
 
@@ -420,9 +425,9 @@ describe('GridLayer', () => {
 
 		it('Loads 5 tiles zoom 0', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(5);
-				expect(counts.tileload).to.be(5);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(5);
+				expect(counts.tileload).to.equal(5);
+				expect(counts.tileunload).to.equal(0);
 				done();
 			});
 
@@ -432,9 +437,9 @@ describe('GridLayer', () => {
 
 		it('Loads 16 tiles zoom 10', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off();
 
 				done();
@@ -446,15 +451,15 @@ describe('GridLayer', () => {
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
-					expect(counts.tileloadstart).to.be(32);
-					expect(counts.tileload).to.be(32);
-					expect(counts.tileunload).to.be(16);
+					expect(counts.tileloadstart).to.equal(32);
+					expect(counts.tileload).to.equal(32);
+					expect(counts.tileunload).to.equal(16);
 					done();
 				});
 
@@ -469,15 +474,15 @@ describe('GridLayer', () => {
 
 		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
-					expect(counts.tileloadstart).to.be(32);
-					expect(counts.tileload).to.be(32);
-					expect(counts.tileunload).to.be(16);
+					expect(counts.tileloadstart).to.equal(32);
+					expect(counts.tileload).to.equal(32);
+					expect(counts.tileunload).to.equal(16);
 					done();
 				});
 
@@ -492,15 +497,15 @@ describe('GridLayer', () => {
 
 		it('Loads 32, unloads 16 tiles zooming out 18-10', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
-					expect(counts.tileloadstart).to.be(32);
-					expect(counts.tileload).to.be(32);
-					expect(counts.tileunload).to.be(16);
+					expect(counts.tileloadstart).to.equal(32);
+					expect(counts.tileload).to.equal(32);
+					expect(counts.tileunload).to.equal(16);
 					done();
 				});
 
@@ -519,9 +524,9 @@ describe('GridLayer', () => {
 		beforeEach(() => {
 			clock = sinon.useFakeTimers();
 
-			grid = L.gridLayer({
+			grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256)
+				tileSize: new Point(256, 256)
 			});
 
 			grid.createTile = function (coords) {
@@ -571,11 +576,10 @@ describe('GridLayer', () => {
 				return function () {
 					clock.tick(40); // 40msec/frame ~= 25fps
 					map.fire('_frame');
-					L.Util.requestAnimFrame(_runFrames(n - 1));
+					Util.requestAnimFrame(_runFrames(n - 1));
 				};
-			} else {
-				return L.Util.falseFn;
 			}
+			return Util.falseFn;
 		}
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
@@ -589,11 +593,11 @@ describe('GridLayer', () => {
 			// and avoid removing the above logTiles
 			// (which would happen when calling "grid.off('load')").
 			grid.once('load', () => {
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 
 				// Wait for a frame to let _updateOpacity starting.
-				L.Util.requestAnimFrame(() => {
+				Util.requestAnimFrame(() => {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
 					clock.tick(300);
@@ -601,12 +605,12 @@ describe('GridLayer', () => {
 					// Date.now() is 301.
 
 					grid.once('load', () => {
-						expect(counts.tileload).to.be(32);
+						expect(counts.tileload).to.equal(32);
 
 						// We're one frame into the zoom animation,
 						// so GridLayer._setView with noPrune === undefined is not called yet
 						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.be(0);
+						expect(counts.tileunload).to.equal(0);
 
 						// Wait > 250msec for the zoom animation to complete,
 						// which triggers the tile pruning
@@ -619,7 +623,7 @@ describe('GridLayer', () => {
 						// At 301 + 250 = 551ms, the pruneTile from the end of the zoom animation executes.
 						// It unloads the 'outside' 12 tiles from z10, but not the 4 tiles in the center,
 						// since _updateOpacity did not have a chance yet to flag the 16 new z11 tiles as "active".
-						expect(counts.tileunload).to.be(12);
+						expect(counts.tileunload).to.equal(12);
 						// Date.now() is 601.
 
 						// Wait for a frame to let _updateOpacity starting
@@ -630,13 +634,13 @@ describe('GridLayer', () => {
 						// so the remaining 4 tiles from z10 can then be pruned.
 						// However we have skipped any pruning from _updateOpacity,
 						// so we will have to rely on the setTimeout from _tileReady.
-						L.Util.requestAnimFrame(() => {
+						Util.requestAnimFrame(() => {
 							// Wait > 250msec for the tile fade-in animation to complete,
 							// which triggers the tile pruning
 							clock.tick(300);
 							// At 851ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
 							// It unloads the remaining 4 tiles from z10.
-							expect(counts.tileunload).to.be(16);
+							expect(counts.tileunload).to.equal(16);
 							// Date.now() is 901.
 							done();
 						});
@@ -644,9 +648,9 @@ describe('GridLayer', () => {
 
 					map.setZoom(11, {animate: true});
 					// Animation (and new tiles loading) starts after 1 frame.
-					L.Util.requestAnimFrame(() => {
+					Util.requestAnimFrame(() => {
 						// 16 extra tiles from z11 being loaded. Total 16 + 16 = 32.
-						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileloadstart).to.equal(32);
 					});
 
 				});
@@ -655,25 +659,25 @@ describe('GridLayer', () => {
 			map.addLayer(grid).setView([0, 0], 10);
 			// The first setView does not animated, therefore it starts loading tiles immediately.
 			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.be(16);
+			expect(counts.tileloadstart).to.equal(16);
 			// At 1ms, first pruneTile (map fires "viewreset" event => GridLayer._resetView => GridLayer._setView => _pruneTiles).
 		});
 
 		it('Loads 32, unloads 16 tiles zooming in 10-18', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
 
 					// In this particular scenario, the tile unloads happen in the
 					// next render frame after the grid's 'load' event.
-					L.Util.requestAnimFrame(() => {
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(32);
-						expect(counts.tileunload).to.be(16);
+					Util.requestAnimFrame(() => {
+						expect(counts.tileloadstart).to.equal(32);
+						expect(counts.tileload).to.equal(32);
+						expect(counts.tileunload).to.equal(16);
 						done();
 					});
 				});
@@ -694,11 +698,11 @@ describe('GridLayer', () => {
 			// grid.on('tileload tileunload load', logTiles);
 
 			grid.once('load', () => {
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 
 				// Wait for a frame to let _updateOpacity starting.
-				L.Util.requestAnimFrame(() => {
+				Util.requestAnimFrame(() => {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
 					clock.tick(300);
@@ -706,9 +710,9 @@ describe('GridLayer', () => {
 					// Date.now() is 301.
 
 					grid.once('load', () => {
-						expect(counts.tileload).to.be(20);
+						expect(counts.tileload).to.equal(20);
 						// No tile should be unloaded yet.
-						expect(counts.tileunload).to.be(0);
+						expect(counts.tileunload).to.equal(0);
 
 						// Wait > 250msec for the zoom animation to complete,
 						// which triggers the tile pruning, but there are no
@@ -718,8 +722,8 @@ describe('GridLayer', () => {
 
 						// At the end of the animation, all 16 tiles from z10
 						// are loading.
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(20);
+						expect(counts.tileloadstart).to.equal(32);
+						expect(counts.tileload).to.equal(20);
 
 						// Now that the zoom animation is complete,
 						// the grid is ready to fire a new "load" event
@@ -728,15 +732,15 @@ describe('GridLayer', () => {
 						// central tiles from z10 as "active", since we are now
 						// > 200ms after the first "load" event fired.
 						grid.once('load', () => {
-							expect(counts.tileload).to.be(32);
+							expect(counts.tileload).to.equal(32);
 							// No tile should be unloaded yet.
-							expect(counts.tileunload).to.be(0);
+							expect(counts.tileunload).to.equal(0);
 
 							// Wait for a frame for next _updateOpacity to prune
 							// all 16 tiles from z11 which are now covered by the
 							// 4 central active tiles of z10.
-							L.Util.requestAnimFrame(() => {
-								expect(counts.tileunload).to.be(16);
+							Util.requestAnimFrame(() => {
+								expect(counts.tileunload).to.equal(16);
 								done();
 							});
 						});
@@ -745,35 +749,35 @@ describe('GridLayer', () => {
 
 				map.setZoom(10, {animate: true});
 				// Animation (and new tiles loading) starts after 1 frame.
-				L.Util.requestAnimFrame(() => {
+				Util.requestAnimFrame(() => {
 					// We're one frame into the zoom animation, there are
 					// 16 tiles for z11 plus 4 tiles for z10 covering the
 					// bounds at the *beginning* of the zoom-*out* anim
-					expect(counts.tileloadstart).to.be(20);
+					expect(counts.tileloadstart).to.equal(20);
 				});
 			});
 
 			map.addLayer(grid).setView([0, 0], 11);
 			// The first setView does not animated, therefore it starts loading tiles immediately.
 			// 16 tiles from z10 being loaded.
-			expect(counts.tileloadstart).to.be(16);
+			expect(counts.tileloadstart).to.equal(16);
 		});
 
 		it('Loads 32, unloads 16 tiles zooming out 18-10', (done) => {
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
 
 					// In this particular scenario, the tile unloads happen in the
 					// next render frame after the grid's 'load' event.
-					L.Util.requestAnimFrame(() => {
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(32);
-						expect(counts.tileunload).to.be(16);
+					Util.requestAnimFrame(() => {
+						expect(counts.tileloadstart).to.equal(32);
+						expect(counts.tileload).to.equal(32);
+						expect(counts.tileunload).to.equal(16);
 						done();
 					});
 				});
@@ -792,16 +796,16 @@ describe('GridLayer', () => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(12);
-				expect(counts.tileload).to.be(12);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(12);
+				expect(counts.tileload).to.equal(12);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				map.on('zoomend', () => {
-					expect(counts.tileloadstart).to.be(290);
-					expect(counts.tileunload).to.be(275);
-					expect(counts.tileload).to.be(290);
-					expect(grid._container.querySelectorAll('div').length).to.be(16);	// 15 + container
+					expect(counts.tileloadstart).to.equal(290);
+					expect(counts.tileunload).to.equal(275);
+					expect(counts.tileload).to.equal(290);
+					expect(grid._container.querySelectorAll('div').length).to.equal(16);	// 15 + container
 					done();
 				});
 
@@ -828,9 +832,9 @@ describe('GridLayer', () => {
 		beforeEach(() => {
 			clock = sinon.useFakeTimers();
 
-			grid = L.gridLayer({
+			grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256)
+				tileSize: new Point(256, 256)
 			});
 
 			grid.createTile = function (coords) {
@@ -872,12 +876,12 @@ describe('GridLayer', () => {
 			// Date.now() is 1.
 
 			grid.once('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 
 				// Wait for a frame to let _updateOpacity starting.
-				L.Util.requestAnimFrame(() => {
+				Util.requestAnimFrame(() => {
 
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
@@ -889,13 +893,13 @@ describe('GridLayer', () => {
 						// Since there is no animation requested,
 						// We directly jump to the target position.
 						// => 12 new tiles, total = 16 + 12 = 28 tiles.
-						expect(counts.tileloadstart).to.be(28);
-						expect(counts.tileload).to.be(28);
+						expect(counts.tileloadstart).to.equal(28);
+						expect(counts.tileload).to.equal(28);
 
 						// Wait for a frame to let _updateOpacity starting
 						// It will prune the 12 tiles outside the new bounds.
-						L.Util.requestAnimFrame(() => {
-							expect(counts.tileunload).to.be(12);
+						Util.requestAnimFrame(() => {
+							expect(counts.tileunload).to.equal(12);
 							done();
 						});
 					});
@@ -923,26 +927,26 @@ describe('GridLayer', () => {
 
 		it('Loads map, moves forth and back by 512 px, keepBuffer = 0', (done) => {
 			grid.once('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 
 				grid.once('load', () => {
-					expect(counts.tileloadstart).to.be(28);
-					expect(counts.tileload).to.be(28);
+					expect(counts.tileloadstart).to.equal(28);
+					expect(counts.tileload).to.equal(28);
 
 					// Wait for a frame to let _updateOpacity starting
 					// It will prune the 12 tiles outside the new bounds.
-					L.Util.requestAnimFrame(() => {
-						expect(counts.tileunload).to.be(12);
+					Util.requestAnimFrame(() => {
+						expect(counts.tileunload).to.equal(12);
 
 						grid.once('load', () => {
-							expect(counts.tileloadstart).to.be(40);
-							expect(counts.tileload).to.be(40);
+							expect(counts.tileloadstart).to.equal(40);
+							expect(counts.tileload).to.equal(40);
 
 							// Wait an extra frame for the tile pruning to happen.
-							L.Util.requestAnimFrame(() => {
-								expect(counts.tileunload).to.be(24);
+							Util.requestAnimFrame(() => {
+								expect(counts.tileunload).to.equal(24);
 								done();
 							});
 						});
@@ -966,15 +970,15 @@ describe('GridLayer', () => {
 			const spy = sinon.spy();
 
 			grid.on('load', () => {
-				expect(counts.tileloadstart).to.be(16);
-				expect(counts.tileload).to.be(16);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(16);
+				expect(counts.tileload).to.equal(16);
+				expect(counts.tileunload).to.equal(0);
 				grid.off('load');
 
 				grid.on('load', () => {
-					expect(counts.tileloadstart).to.be(28);
-					expect(counts.tileload).to.be(28);
-					expect(counts.tileunload).to.be(0);
+					expect(counts.tileloadstart).to.equal(28);
+					expect(counts.tileload).to.equal(28);
+					expect(counts.tileunload).to.equal(0);
 					grid.off('load');
 
 					grid.addEventListener('load', spy);
@@ -982,7 +986,7 @@ describe('GridLayer', () => {
 					map.panBy([-512, -512], {animate: false});
 					clock.tick(250);
 
-					expect(spy.called).to.be(false);
+					expect(spy.called).to.be.false;
 					done();
 				});
 
@@ -997,9 +1001,9 @@ describe('GridLayer', () => {
 
 	describe('nowrap option', () => {
 		it('When false, uses same coords at zoom 0 for all tiles', (done) => {
-			const grid = L.gridLayer({
+			const grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256),
+				tileSize: new Point(256, 256),
 				noWrap: false
 			});
 			const loadedTileKeys = [];
@@ -1018,9 +1022,9 @@ describe('GridLayer', () => {
 		});
 
 		it('When true, uses different coords at zoom level 0 for all tiles', (done) => {
-			const grid = L.gridLayer({
+			const grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256),
+				tileSize: new Point(256, 256),
 				noWrap: true
 			});
 			const loadedTileKeys = [];
@@ -1039,9 +1043,9 @@ describe('GridLayer', () => {
 		});
 
 		it('When true and with bounds, loads just one tile at zoom level 0', (done) => {
-			const grid = L.gridLayer({
+			const grid = new GridLayer({
 				attribution: 'Grid Layer',
-				tileSize: L.point(256, 256),
+				tileSize: new Point(256, 256),
 				bounds: [[-90, -180], [90, 180]],
 				noWrap: true
 			});
@@ -1064,25 +1068,25 @@ describe('GridLayer', () => {
 	describe('Sanity checks for infinity', () => {
 		it('Throws error on map center at plus Infinity longitude', () => {
 			expect(() => {
-				map.setCenter([Infinity, Infinity]);
-				L.gridLayer().addTo(map);
-			}).to.throwError('Attempted to load an infinite number of tiles');
+				map.panTo([Infinity, Infinity]);
+				new GridLayer().addTo(map);
+			}).to.throw('Attempted to load an infinite number of tiles');
 		});
 
 		it('Throws error on map center at minus Infinity longitude', () => {
 			expect(() => {
-				map.setCenter([-Infinity, -Infinity]);
-				L.gridLayer().addTo(map);
-			}).to.throwError('Attempted to load an infinite number of tiles');
+				map.panTo([-Infinity, -Infinity]);
+				new GridLayer().addTo(map);
+			}).to.throw('Attempted to load an infinite number of tiles');
 		});
 	});
 
 	it('doesn\'t call map\'s getZoomScale method with null after _invalidateAll method was called', () => {
 		map.setView([0, 0], 0);
-		const grid = L.gridLayer().addTo(map);
+		const grid = new GridLayer().addTo(map);
 		const wrapped = sinon.spy(map, 'getZoomScale');
 		grid._invalidateAll();
 		grid.redraw();
-		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be(true);
+		expect(wrapped.neverCalledWith(sinon.match.any, null)).to.be.true;
 	});
 });

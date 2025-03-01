@@ -1,6 +1,5 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
-import * as DomEvent from '../../dom/DomEvent.js';
 import {splitWords, stamp} from '../../core/Util.js';
 import {svgCreate, pointsToPath} from './SVG.Util.js';
 export {pointsToPath};
@@ -48,31 +47,30 @@ export const SVG = Renderer.extend({
 	},
 
 	_destroyContainer() {
-		this._container.remove();
-		DomEvent.off(this._container);
-		delete this._container;
+		Renderer.prototype._destroyContainer.call(this);
 		delete this._rootGroup;
 		delete this._svgSize;
+	},
+
+	_resizeContainer() {
+		const size = Renderer.prototype._resizeContainer.call(this);
+
+		// set size of svg-container if changed
+		if (!this._svgSize || !this._svgSize.equals(size)) {
+			this._svgSize = size;
+			this._container.setAttribute('width', size.x);
+			this._container.setAttribute('height', size.y);
+		}
 	},
 
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		Renderer.prototype._update.call(this);
-
 		const b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
 
-		// set size of svg-container if changed
-		if (!this._svgSize || !this._svgSize.equals(size)) {
-			this._svgSize = size;
-			container.setAttribute('width', size.x);
-			container.setAttribute('height', size.y);
-		}
-
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
-		DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		this.fire('update');

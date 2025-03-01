@@ -1,169 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - GeoJSON</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<style>
+			.info {
+				padding: 6px 8px;
+				font: 14px/16px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.2);
+				border-radius: 5px;
+			}
+			.info h4 {
+				margin: 0 0 5px;
+				color: #777;
+			}
+	
+			.legend {
+				text-align: left;
+				line-height: 18px;
+				color: #555;
+			}
+			.legend i {
+				width: 18px;
+				height: 18px;
+				float: left;
+				margin-right: 8px;
+				opacity: 0.7;
+			}
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
+			import statesData from './us-states.js';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const map = new Map('map').setView([37.8, -96], 4);
+			const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			map.addLayer(tiles);
 
-	<style>
-		#map {
-			width: 800px;
-			height: 500px;
-		}
+			// control that shows state info on hover
+			const info = new Control();
 
-		.info {
-			padding: 6px 8px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
-			background: white;
-			background: rgba(255,255,255,0.8);
-			box-shadow: 0 0 15px rgba(0,0,0,0.2);
-			border-radius: 5px;
-		}
-		.info h4 {
-			margin: 0 0 5px;
-			color: #777;
-		}
+			info.onAdd = function () {
+				this._div = DomUtil.create('div', 'info');
+				this.update();
+				return this._div;
+			};
 
-		.legend {
-			text-align: left;
-			line-height: 18px;
-			color: #555;
-		}
-		.legend i {
-			width: 18px;
-			height: 18px;
-			float: left;
-			margin-right: 8px;
-			opacity: 0.7;
-		}
-	</style>
+			info.update = function (props) {
+				this._div.innerHTML = `
+					<h4>US Population Density</h4>
+					${(props ? `<b>${props.name}</b><br />${props.density} people / mi<sup>2</sup>` : 'Hover over a state')}
+				`;
+			};
 
-	<script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
+			map.addControl(info);
 
-	<div id="map"></div>
-
-	<script src="us-states.js"></script>
-	<script>
-
-		var map = L.map('map').setView([37.8, -96], 4);
-
-		var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		}).addTo(map);
-
-
-		// control that shows state info on hover
-		var info = L.control();
-
-		info.onAdd = function (map) {
-			this._div = L.DomUtil.create('div', 'info');
-			this.update();
-			return this._div;
-		};
-
-		info.update = function (props) {
-			this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-				'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-				: 'Hover over a state');
-		};
-
-		info.addTo(map);
-
-
-		// get color depending on population density value
-		function getColor(d) {
-			return d > 1000 ? '#800026' :
+			// get color depending on population density value
+			function getColor(d) {
+				return (
+					d > 1000 ? '#800026' :
 					d > 500  ? '#BD0026' :
 					d > 200  ? '#E31A1C' :
 					d > 100  ? '#FC4E2A' :
 					d > 50   ? '#FD8D3C' :
 					d > 20   ? '#FEB24C' :
 					d > 10   ? '#FED976' :
-								'#FFEDA0';
-		}
-
-		function style(feature) {
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				dashArray: '3',
-				fillOpacity: 0.7,
-				fillColor: getColor(feature.properties.density)
-			};
-		}
-
-		function highlightFeature(e) {
-			var layer = e.target;
-
-			layer.setStyle({
-				weight: 5,
-				color: '#666',
-				dashArray: '',
-				fillOpacity: 0.7
-			});
-
-			layer.bringToFront();
-
-			info.update(layer.feature.properties);
-		}
-
-		var geojson;
-
-		function resetHighlight(e) {
-			geojson.resetStyle(e.target);
-			info.update();
-		}
-
-		function zoomToFeature(e) {
-			map.fitBounds(e.target.getBounds());
-		}
-
-		function onEachFeature(feature, layer) {
-			layer.on({
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: zoomToFeature
-			});
-		}
-
-		geojson = L.geoJson(statesData, {
-			style: style,
-			onEachFeature: onEachFeature,
-			attribution: 'Population data &copy; <a href="http://census.gov/">US Census Bureau</a>'
-		});
-
-		geojson.addTo(map);
-
-
-		var legend = L.control({position: 'bottomright'});
-
-		legend.onAdd = function (map) {
-
-			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-				labels = [],
-				from, to;
-
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
+					'#FFEDA0'
+				);
 			}
 
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
+			function style(feature) {
+				return {
+					weight: 2,
+					opacity: 1,
+					color: 'white',
+					dashArray: '3',
+					fillOpacity: 0.7,
+					fillColor: getColor(feature.properties.density)
+				};
+			}
 
-		legend.addTo(map);
+			function highlightFeature(e) {
+				const layer = e.target;
 
-	</script>
-</body>
+				layer.setStyle({
+					weight: 5,
+					color: '#666',
+					dashArray: '',
+					fillOpacity: 0.7
+				});
+
+				layer.bringToFront();
+
+				info.update(layer.feature.properties);
+			}
+
+			const geojson = new GeoJSON(statesData, {
+				style,
+				onEachFeature,
+				attribution: 'Population data &copy; <a href="http://census.gov/">US Census Bureau</a>'
+			});
+
+			map.addLayer(geojson);
+
+			function resetHighlight(e) {
+				geojson.resetStyle(e.target);
+				info.update();
+			}
+
+			function zoomToFeature(e) {
+				map.fitBounds(e.target.getBounds());
+			}
+
+			function onEachFeature(feature, layer) {
+				layer.on({
+					mouseover: highlightFeature,
+					mouseout: resetHighlight,
+					click: zoomToFeature
+				});
+			}
+
+			const legend = new Control({position: 'bottomright'});
+
+			legend.onAdd = function () {
+				const div = DomUtil.create('div', 'info legend');
+				const grades = [0, 10, 20, 50, 100, 200, 500, 1000];
+				const labels = [];
+
+				for (let i = 0; i < grades.length; i++) {
+					const from = grades[i];
+					const to = grades[i + 1];
+
+					labels.push(
+						`<i style="background: ${getColor(from + 1)};"></i> ${from + (to ? ` &ndash; ${to}` : '+')}`
+					);
+				}
+
+				div.innerHTML = labels.join('<br>');
+				return div;
+			};
+
+			legend.addTo(map);
+		</script>
+	</body>
 </html>

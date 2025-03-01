@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
@@ -15,7 +22,7 @@
 			}
 		</style>
 		<script type="module">
-			import {Map, TileLayer, Control, Circle, Polygon, GeoJSON} from '../../dist/leaflet-src.esm.js';
+			import {Map, TileLayer, Control, Circle, Polygon, GeoJSON} from 'leaflet';
 
 			const GrayscaleTileLayer = TileLayer.extend({
 				createTile(...args) {

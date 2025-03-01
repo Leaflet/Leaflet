@@ -1,3 +1,8 @@
+import {expect} from 'chai';
+import {Browser, CRS, DomUtil, Map, TileLayer, Util} from 'leaflet';
+import sinon from 'sinon';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('TileLayer', () => {
 	let container, map;
 
@@ -160,7 +165,7 @@ describe('TileLayer', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
 	});
@@ -170,7 +175,7 @@ describe('TileLayer', () => {
 	});
 
 	function kittenLayerFactory(options) {
-		return L.tileLayer(placeKitten, options || {});
+		return new TileLayer(placeKitten, options || {});
 	}
 
 	function eachImg(layer, callback) {
@@ -195,11 +200,10 @@ describe('TileLayer', () => {
 				return function () {
 					clock.tick(40); // 40msec/frame ~= 25fps
 					map.fire('_frame');
-					L.Util.requestAnimFrame(_runFrames(n - 1));
+					Util.requestAnimFrame(_runFrames(n - 1));
 				};
-			} else {
-				return L.Util.falseFn;
 			}
+			return Util.falseFn;
 		}
 
 		beforeEach(() => {
@@ -235,10 +239,10 @@ describe('TileLayer', () => {
 
 		it('Loads 8 kittens zoom 1', (done) => {
 			kittenLayer.on('load', () => {
-				expect(counts.tileloadstart).to.be(8);
-				expect(counts.tileload).to.be(8);
-				expect(counts.tileunload).to.be(0);
-				expect(kittenLayer._container.querySelectorAll('img').length).to.be(8);
+				expect(counts.tileloadstart).to.equal(8);
+				expect(counts.tileload).to.equal(8);
+				expect(counts.tileunload).to.equal(0);
+				expect(kittenLayer._container.querySelectorAll('img').length).to.equal(8);
 				done();
 			});
 
@@ -252,19 +256,19 @@ describe('TileLayer', () => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.on('load', () => {
-				expect(counts.tileloadstart).to.be(12);
-				expect(counts.tileload).to.be(12);
-				expect(counts.tileunload).to.be(0);
+				expect(counts.tileloadstart).to.equal(12);
+				expect(counts.tileload).to.equal(12);
+				expect(counts.tileunload).to.equal(0);
 				kittenLayer.off('load');
 
 				map.on('zoomend', () => {
-					expect(counts.tileloadstart).to.be(290);
-					expect(counts.tileunload).to.be(275);
+					expect(counts.tileloadstart).to.equal(290);
+					expect(counts.tileunload).to.equal(275);
 
 					// image tiles take time, so then might not be fully loaded yet.
 					expect(counts.tileload).to.be.lessThan(counts.tileloadstart + 1);
 					expect(counts.tileload).to.be.greaterThan(counts.tileunload);
-					expect(kittenLayer._container.querySelectorAll('img').length).to.be(15);
+					expect(kittenLayer._container.querySelectorAll('img').length).to.equal(15);
 					done();
 				});
 
@@ -291,7 +295,7 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {y} with y coordinate', () => {
-			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 
 			const urls = [
 				'http://example.com/2/1/1.png',
@@ -308,7 +312,7 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {-y} with inverse y coordinate', () => {
-			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
+			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
 			const urls = [
 				'http://example.com/2/2/1.png',
 				'http://example.com/2/2/2.png',
@@ -329,21 +333,21 @@ describe('TileLayer', () => {
 			simplediv.style.visibility = 'hidden';
 
 			document.body.appendChild(simplediv);
-			const simpleMap = L.map(simplediv, {
-				crs: L.CRS.Simple
+			const simpleMap = new Map(simplediv, {
+				crs: CRS.Simple
 			}).setView([0, 0], 5);
-			const layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
+			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png');
 
 			expect(() => {
 				layer.addTo(simpleMap);
-			}).to.throwError('No value provided for variable {-y}');
+			}).to.throw('No value provided for variable {-y}');
 
 			simpleMap.remove();
 			document.body.removeChild(simplediv);
 		});
 
 		it('replaces {s} with [abc] by default', () => {
-			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
+			const layer = new TileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
 
 			eachImg(layer, (img) => {
 				expect(['a', 'b', 'c'].includes(img.src[7])).to.eql(true);
@@ -351,7 +355,7 @@ describe('TileLayer', () => {
 		});
 
 		it('replaces {s} with specified prefixes', () => {
-			const layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+			const layer = new TileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
 				subdomains: 'qrs'
 			}).addTo(map);
 
@@ -362,7 +366,7 @@ describe('TileLayer', () => {
 
 		it('uses zoomOffset option', () => {
 			// Map view is set at zoom 2 in beforeEach.
-			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: 1 // => zoom 2 + zoomOffset 1 => z 3 in URL.
 			}).addTo(map);
 
@@ -382,7 +386,7 @@ describe('TileLayer', () => {
 
 		it('uses negative zoomOffset option', () => {
 			// Map view is set at zoom 2 in beforeEach.
-			const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png', {
 				zoomOffset: -3 // => zoom 2 + zoomOffset -3 => z -1 in URL.
 			}).addTo(map);
 
@@ -398,6 +402,20 @@ describe('TileLayer', () => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
 			});
+		});
+
+		it('adds OSM attribution if none are provided and is using OSM tiles', () => {
+			// Uses OSM tiles without providing attribution
+			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+		});
+
+		it('doesn\'t add OSM attribution if it\'s specifically set as empty', () => {
+			// Uses OSM tiles without providing attribution
+			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: ''
+			}).addTo(map);
+			expect(layer.options.attribution).to.eql('');
 		});
 
 		it('requests tiles with an integer {z} when the map\'s zoom level is fractional', () => {
@@ -421,7 +439,7 @@ describe('TileLayer', () => {
 		});
 	});
 
-	const _describe = 'crossOrigin' in L.DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
+	const _describe = 'crossOrigin' in DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
 	_describe('crossOrigin option', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 2);
@@ -436,12 +454,12 @@ describe('TileLayer', () => {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin value ${crossOrigin}`, () => {
-				const layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png', {
+				const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png', {
 					crossOrigin
 				}).addTo(map);
 
 				eachImg(layer, (img) => {
-					expect(img.getAttribute('crossorigin')).to.be(expectedValue);
+					expect(img.getAttribute('crossorigin')).to.equal(expectedValue);
 				});
 			});
 		}
@@ -451,8 +469,8 @@ describe('TileLayer', () => {
 			const minZoom = 1;
 
 			// override retina to load extra tiles
-			const originalRetina = L.Browser.retina;
-			L.Browser.retina = true;
+			const originalRetina = Browser.retina;
+			Browser.retina = true;
 
 			const kittenLayer = kittenLayerFactory({
 				maxZoom,
@@ -461,11 +479,11 @@ describe('TileLayer', () => {
 			});
 
 			kittenLayer.on('load', () => {
-				expect(kittenLayer.options.maxZoom).to.be(maxZoom);
-				expect(kittenLayer.options.minZoom).to.be(minZoom);
+				expect(kittenLayer.options.maxZoom).to.equal(maxZoom);
+				expect(kittenLayer.options.minZoom).to.equal(minZoom);
 
 				// reset retina value
-				L.Browser.retina = originalRetina;
+				Browser.retina = originalRetina;
 
 				done();
 			});
@@ -475,8 +493,8 @@ describe('TileLayer', () => {
 
 		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', (done) => {
 			// override retina to load extra tiles
-			const originalRetina = L.Browser.retina;
-			L.Browser.retina = false;
+			const originalRetina = Browser.retina;
+			Browser.retina = false;
 
 			const kittenLayer = kittenLayerFactory({
 				// invalid min/maxZoom
@@ -487,10 +505,10 @@ describe('TileLayer', () => {
 
 			kittenLayer.on('load', () => {
 				// zooms should be identical so that we can load tiles for the given zoom level
-				expect(kittenLayer.options.maxZoom).to.be(kittenLayer.options.minZoom);
+				expect(kittenLayer.options.maxZoom).to.equal(kittenLayer.options.minZoom);
 
 				// reset retina value
-				L.Browser.retina = originalRetina;
+				Browser.retina = originalRetina;
 
 				done();
 			});
@@ -501,7 +519,7 @@ describe('TileLayer', () => {
 
 	describe('#setUrl', () => {
 		it('fires only one load event', (done) => {
-			const layer = L.tileLayer(placeKitten).addTo(map);
+			const layer = new TileLayer(placeKitten).addTo(map);
 			const counts = {
 				load: 0,
 				tileload: 0

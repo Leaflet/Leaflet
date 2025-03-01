@@ -9,4 +9,4 @@ compatible-v0:
 compatible-v1: true
 ---
 
-Another fullscreen button control but for modern browsers, using HTML5 Fullscreen API.
+Another fullscreen button control but for modern browsers, using HTML Fullscreen API.

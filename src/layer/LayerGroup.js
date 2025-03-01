@@ -91,10 +91,12 @@ export const LayerGroup = Layer.extend({
 		let i, layer;
 
 		for (i in this._layers) {
-			layer = this._layers[i];
+			if (Object.hasOwn(this._layers, i)) {
+				layer = this._layers[i];
 
-			if (layer[methodName]) {
-				layer[methodName].apply(layer, args);
+				if (layer[methodName]) {
+					layer[methodName].apply(layer, args);
+				}
 			}
 		}
 
@@ -118,7 +120,9 @@ export const LayerGroup = Layer.extend({
 	// ```
 	eachLayer(method, context) {
 		for (const i in this._layers) {
-			method.call(context, this._layers[i]);
+			if (Object.hasOwn(this._layers, i)) {
+				method.call(context, this._layers[i]);
+			}
 		}
 		return this;
 	},

@@ -1,62 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Tile Bounds</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<style>
+			#map {
+				margin: 256px;
+				width: auto;
+				overflow: visible
+			}
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		The CSS in this page makes the boundaries of the GridLayer tiles visible. Tiles which do not overlap the map bounds shall not be shown, even at fractional zoom levels.
+		<button id="zoomIn" type="button"> Zoom + 0.1 </button>
+		<button id="zoomOut" type="button"> Zoom - 0.1 </button>
+		<div id="map"></div>
+		<script type="module">
+			import {Map, GridLayer, Point} from 'leaflet';
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+			const map = new Map('map', {
+				center: [35, -122],
+				zoom: 5.7,
+				zoomSnap: 0.1
+			});
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			const zoomInBtn = document.getElementById('zoomIn');
+			const zoomOutBtn = document.getElementById('zoomOut');
 
-	<link rel="stylesheet" href="../css/screen.css" />
+			zoomInBtn.addEventListener('click', () => map.zoomIn(0.1));
+			zoomOutBtn.addEventListener('click', () => map.zoomOut(0.1));
 
-	<script src="../../dist/leaflet-src.js"></script>
-	<style>
-	#map {
-		margin: 256px;
-		width: auto;
-		overflow: visible
-	}
-	</style>
-</head>
-<body>
+			const grid = new GridLayer({
+				attribution: 'Grid Layer',
+				tileSize: new Point(150, 80)
+			});
 
-	The CSS in this page makes the boundaries of the GridLayer tiles visible. Tiles which do not overlap the map bounds shall not be shown, even at fractional zoom levels.
+			grid.createTile = (coords, done) => {
+				const tile = document.createElement('div');
+				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+				tile.style.border = '2px solid red';
+				// tile.style.background = 'white';
 
-	<button onclick='map.zoomIn(0.1)'> Zoom + 0.1 </button>
-	<button onclick='map.zoomOut(0.1)'> Zoom - 0.1 </button>
+				// test async
+				setTimeout(() => {
+					done(null, tile);
+				}, 0);
 
-	<div id="map" class="map"></div>
+				return tile;
+			};
 
-	<script>
-		var mapopts =  {
-			center: [35, -122],
-			zoom: 5.7,
-			zoomSnap: 0.1
-		};
-
-		var map = L.map('map', mapopts);
-
-		var grid = L.gridLayer({
-			attribution: 'Grid Layer',
-			tileSize: L.point(150, 80)
-		});
-
-		grid.createTile = function (coords, done) {
-			var tile = document.createElement('div');
-			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-			tile.style.border = '2px solid red';
-// 			tile.style.background = 'white';
-
-			// test async
-			setTimeout(function () {
-				done(null, tile);
-			}, 0);
-
-			return tile;
-		};
-
-		map.addLayer(grid);
-
-	</script>
-</body>
+			map.addLayer(grid);
+		</script>
+	</body>
 </html>

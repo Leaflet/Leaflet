@@ -1,87 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <title>Leaflet debug page</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Bounds Extend</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<button type="button" id="extendBounds">Extend the bounds of the center rectangle with the upper right rectangle</button>
+		<button type="button" id="extendLatLng">Extend the bounds of the center rectangle with the lower left marker</button>
+		<script type="module">
+			import {TileLayer, LatLngBounds, LatLng, Map, Rectangle, Marker} from 'leaflet';
 
-    <link rel="stylesheet" href="../../dist/leaflet.css" />
+			const bounds1 = new LatLngBounds(
+				new LatLng(54.559322, -5.767822),
+				new LatLng(56.1210604, -3.021240)
+			);
 
-    <link rel="stylesheet" href="../css/screen.css" />
+			const bounds2 = new LatLngBounds(
+				new LatLng(56.56023925701561, -2.076416015625),
+				new LatLng(57.01158038001565, -0.9777832031250001)
+			);
 
-    <script src="../../dist/leaflet-src.js"></script>
-</head>
-<body>
-    <div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
-    <button onclick="boundsExtendBounds();">Extend the bounds of the center rectangle with the upper right rectangle</button>
-    <button onclick="boundsExtendLatLng()">Extend the bounds of the center rectangle with the lower left marker</button>
-    <script src="route.js"></script>
-    <script>
-        var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osm = new L.TileLayer(osmUrl, {maxZoom: 18});
+			let bounds3 = null;
 
-        var latLng = new L.LatLng(54.18815548107151, -7.657470703124999);
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const map = new Map('map', {
+				layers: [osm],
+				center: bounds1.getCenter(),
+				zoom: 7
+			});
 
-        var bounds1 = new L.LatLngBounds(new L.LatLng(54.559322, -5.767822), new L.LatLng(56.1210604, -3.021240));
-        var bounds2 = new L.LatLngBounds(new L.LatLng(56.56023925701561, -2.076416015625), new L.LatLng(57.01158038001565, -0.9777832031250001));
-        var bounds3;
+			const rectangle1 = new Rectangle(bounds1);
+			const rectangle2 = new Rectangle(bounds2);
+			let rectangle3 = null;
 
-        var map = new L.Map('map', {
-            layers: [osm],
-            center: bounds1.getCenter(),
-            zoom: 7
-        });
+			const marker = new Marker(new LatLng(54.18815548107151, -7.657470703124999));
 
-        var rectangle1 = new L.Rectangle(bounds1);
-        var rectangle2 = new L.Rectangle(bounds2);
-        var rectangle3;
+			map.addLayer(rectangle1).addLayer(rectangle2).addLayer(marker);
 
-        var marker = new L.Marker(latLng);
+			const extendBoundsBtn = document.getElementById('extendBounds');
+			const extendLatLngBtn = document.getElementById('extendLatLng');
 
-        map.addLayer(rectangle1).addLayer(rectangle2).addLayer(marker);
+			extendBoundsBtn.addEventListener('click', boundsExtendBounds);
+			extendLatLngBtn.addEventListener('click', boundsExtendLatLng);
 
+			function boundsExtendBounds() {
+				if  (rectangle3) {
+					map.removeLayer(rectangle3);
+					rectangle3 = null;
+				}
+				if (bounds3) {
+					bounds3 = null;
+				}
+				bounds3 = new LatLngBounds(bounds1.getSouthWest(), bounds1.getNorthEast());
+				bounds3.extend(bounds2);
+				rectangle3 = new Rectangle(bounds3, {
+					color: '#ff0000',
+					weight: 1,
+					opacity: 1,
+					fillOpacity: 0
+				});
 
+				map.addLayer(rectangle3);
+			}
 
+			function boundsExtendLatLng() {
+				if  (rectangle3) {
+					map.removeLayer(rectangle3);
+					rectangle3 = null;
+				}
+				if (bounds3) {
+					bounds3 = null;
+				}
+				bounds3 = new LatLngBounds(bounds1.getSouthWest(), bounds1.getNorthEast());
+				bounds3.extend(marker.getLatLng());
+				rectangle3 = new Rectangle(bounds3, {
+					color: '#ff0000',
+					weight: 1,
+					opacity: 1,
+					fillOpacity: 0
+				});
 
-
-        function boundsExtendBounds() {
-            if  (rectangle3) {
-                map.removeLayer(rectangle3);
-                rectangle3 = null;
-            }
-            if (bounds3) {
-                bounds3 = null;
-            }
-            bounds3 = new L.LatLngBounds(bounds1.getSouthWest(), bounds1.getNorthEast());
-            bounds3.extend(bounds2);
-            rectangle3 = new L.Rectangle(bounds3, {
-                color: "#ff0000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0
-            });
-
-            map.addLayer(rectangle3);
-        }
-
-        function boundsExtendLatLng() {
-            if  (rectangle3) {
-                map.removeLayer(rectangle3);
-                rectangle3 = null;
-            }
-            if (bounds3) {
-                bounds3 = null;
-            }
-            bounds3 = new L.LatLngBounds(bounds1.getSouthWest(), bounds1.getNorthEast());
-            bounds3.extend(marker.getLatLng());
-            rectangle3 = new L.Rectangle(bounds3, {
-                color: "#ff0000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0
-            });
-
-            map.addLayer(rectangle3);
-        }
-
-    </script>
-</body>
+				map.addLayer(rectangle3);
+			}
+		</script>
+	</body>
 </html>

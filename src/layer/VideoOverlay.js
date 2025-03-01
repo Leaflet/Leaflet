@@ -10,7 +10,7 @@ import * as Util from '../core/Util.js';
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
  * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video)
- * HTML5 element.
+ * HTML element.
  *
  * @example
  *
@@ -37,7 +37,6 @@ export const VideoOverlay = ImageOverlay.extend({
 
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
-		// Relevant for supported browsers. See [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 		keepAspectRatio: true,
 
 		// @option muted: Boolean = false

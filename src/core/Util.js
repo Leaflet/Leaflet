@@ -5,13 +5,15 @@
  */
 
 // @function extend(dest: Object, src?: Object): Object
-// Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
+// Merges the properties (including properties inherited through the prototype chain)
+// of the `src` object (or multiple objects) into `dest` object and returns the latter.
+// Has an `L.extend` shortcut.
 export function extend(dest, ...args) {
-	let i, j, len, src;
+	let j, len, src;
 
 	for (j = 0, len = args.length; j < len; j++) {
 		src = args[j];
-		for (i in src) {
+		for (const i in src) {
 			dest[i] = src[i];
 		}
 	}
@@ -104,7 +106,9 @@ export function setOptions(obj, options) {
 		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (const i in options) {
-		obj.options[i] = options[i];
+		if (Object.hasOwn(options, i)) {
+			obj.options[i] = options[i];
+		}
 	}
 	return obj.options;
 }
@@ -117,7 +121,9 @@ export function setOptions(obj, options) {
 export function getParamString(obj, existingUrl, uppercase) {
 	const params = [];
 	for (const i in obj) {
-		params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
+		if (Object.hasOwn(obj, i)) {
+			params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
+		}
 	}
 	return ((!existingUrl || !existingUrl.includes('?')) ? '?' : '&') + params.join('&');
 }
@@ -149,45 +155,19 @@ export function template(str, data) {
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
-// inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
+const requestFn = typeof window === 'undefined' ? falseFn : window.requestAnimationFrame;
+const cancelFn = typeof window === 'undefined' ? falseFn : window.cancelAnimationFrame;
 
-function getPrefixed(name) {
-	return window[`webkit${name}`] || window[`moz${name}`] || window[`ms${name}`];
-}
-
-let lastTime = 0;
-
-// fallback for IE 7-8
-function timeoutDefer(fn) {
-	const time = +new Date(),
-	    timeToCall = Math.max(0, 16 - (time - lastTime));
-
-	lastTime = time + timeToCall;
-	return window.setTimeout(fn, timeToCall);
-}
-
-export const requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
-export const cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-		getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
-
-// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
-// Schedules `fn` to be executed when the browser repaints. `fn` is bound to
-// `context` if given. When `immediate` is set, `fn` is called immediately if
-// the browser doesn't have native support for
-// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
-// otherwise it's delayed. Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn, context, immediate) {
-	if (immediate && requestFn === timeoutDefer) {
-		fn.call(context);
-	} else {
-		return requestFn.call(window, fn.bind(context));
-	}
+// @function requestAnimFrame(fn: Function, context?: Object): Number
+// Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
+// See [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame).
+// Returns a request ID that can be used to cancel the request.
+export function requestAnimFrame(fn, context) {
+	return requestFn.call(window, fn.bind(context));
 }
 
 // @function cancelAnimFrame(id: Number): undefined
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 export function cancelAnimFrame(id) {
-	if (id) {
-		cancelFn.call(window, id);
-	}
+	cancelFn.call(window, id);
 }

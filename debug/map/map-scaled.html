@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<style>
@@ -32,7 +39,7 @@
 			<div id="map"></div>
 		</div>
 		<script type="module">
-			import {TileLayer, Map, Marker, DomEvent} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, Map, Marker, DomEvent} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';

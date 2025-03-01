@@ -1,7 +1,5 @@
 import {Renderer} from './Renderer.js';
-import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -12,10 +10,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  *
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
- *
- * Due to [technical limitations](https://caniuse.com/canvas), Canvas is not
- * available in all web browsers, notably IE8, and overlapping geometries might
- * not display properly in some edge cases.
  *
  * @example
  *
@@ -58,12 +52,18 @@ export const Canvas = Renderer.extend({
 		this._postponeUpdatePaths = true;
 	},
 
-	onAdd() {
-		Renderer.prototype.onAdd.call(this);
+	onAdd(map) {
+		Renderer.prototype.onAdd.call(this, map);
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
+	},
+
+	onRemove() {
+		Renderer.prototype.onRemove.call(this);
+
+		clearTimeout(this._mouseHoverThrottleTimeout);
 	},
 
 	_initContainer() {
@@ -80,9 +80,16 @@ export const Canvas = Renderer.extend({
 	_destroyContainer() {
 		Util.cancelAnimFrame(this._redrawRequest);
 		delete this._ctx;
-		this._container.remove();
-		DomEvent.off(this._container);
-		delete this._container;
+		Renderer.prototype._destroyContainer.call(this);
+	},
+
+	_resizeContainer() {
+		const size = Renderer.prototype._resizeContainer.call(this);
+		const m = this._ctxScale = window.devicePixelRatio;
+
+		// set canvas size (also clearing it); use double size on retina
+		this._container.width = m * size.x;
+		this._container.height = m * size.y;
 	},
 
 	_updatePaths() {
@@ -91,8 +98,10 @@ export const Canvas = Renderer.extend({
 		let layer;
 		this._redrawBounds = null;
 		for (const id in this._layers) {
-			layer = this._layers[id];
-			layer._update();
+			if (Object.hasOwn(this._layers, id)) {
+				layer = this._layers[id];
+				layer._update();
+			}
 		}
 		this._redraw();
 	},
@@ -100,27 +109,14 @@ export const Canvas = Renderer.extend({
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		Renderer.prototype._update.call(this);
-
 		const b = this._bounds,
-		    container = this._container,
-		    size = b.getSize(),
-		    m = Browser.retina ? 2 : 1;
-
-		DomUtil.setPosition(container, b.min);
-
-		// set canvas size (also clearing it); use double size on retina
-		container.width = m * size.x;
-		container.height = m * size.y;
-		container.style.width = `${size.x}px`;
-		container.style.height = `${size.y}px`;
-
-		if (Browser.retina) {
-			this._ctx.scale(2, 2);
-		}
+		    s = this._ctxScale;
 
 		// translate so we use the same path coordinates after canvas element moves
-		this._ctx.translate(-b.min.x, -b.min.y);
+		this._ctx.setTransform(
+			s, 0, 0, s,
+			-b.min.x * s,
+			-b.min.y * s);
 
 		// Tell paths to redraw themselves
 		this.fire('update');
@@ -415,7 +411,7 @@ export const Canvas = Renderer.extend({
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
 		this._mouseHoverThrottled = true;
-		setTimeout((() => {
+		this._mouseHoverThrottleTimeout = setTimeout((() => {
 			this._mouseHoverThrottled = false;
 		}), 32);
 	},

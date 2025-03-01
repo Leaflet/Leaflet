@@ -213,7 +213,9 @@ Map.include({
 	 */
 	eachLayer(method, context) {
 		for (const i in this._layers) {
-			method.call(context, this._layers[i]);
+			if (Object.hasOwn(this._layers, i)) {
+				method.call(context, this._layers[i]);
+			}
 		}
 		return this;
 	},
@@ -248,10 +250,12 @@ Map.include({
 		const oldZoomSpan = this._getZoomSpan();
 
 		for (const i in this._zoomBoundLayers) {
-			const options = this._zoomBoundLayers[i].options;
+			if (Object.hasOwn(this._zoomBoundLayers, i)) {
+				const options = this._zoomBoundLayers[i].options;
 
-			minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
-			maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
+				minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
+				maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
+			}
 		}
 
 		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;

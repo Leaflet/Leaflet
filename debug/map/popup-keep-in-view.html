@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<link rel="stylesheet" href="../../dist/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="map"></div>
@@ -17,7 +24,7 @@
 			<button id="movePopup">Move last popup</button>
 		</div>
 		<script type="module">
-			import {TileLayer, Map, LatLng, Popup} from '../../dist/leaflet-src.esm.js';
+			import {TileLayer, Map, LatLng, Popup} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18});

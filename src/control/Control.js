@@ -104,8 +104,9 @@ export const Control = Class.extend({
 	},
 
 	_refocusOnMap(e) {
-		// if map exists and event is not a keyboard event
-		if (this._map && e && e.screenX > 0 && e.screenY > 0) {
+		// We exclude keyboard-click event to keep the focus on the control for accessibility.
+		// The position of keyboard-click events are x=0 and y=0.
+		if (this._map && e && !(e.screenX === 0 && e.screenY === 0)) {
 			this._map.getContainer().focus();
 		}
 	}
@@ -165,7 +166,9 @@ Map.include({
 
 	_clearControlPos() {
 		for (const i in this._controlCorners) {
-			this._controlCorners[i].remove();
+			if (Object.hasOwn(this._controlCorners, i)) {
+				this._controlCorners[i].remove();
+			}
 		}
 		this._controlContainer.remove();
 		delete this._controlCorners;

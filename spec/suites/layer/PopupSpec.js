@@ -1,10 +1,17 @@
+import {expect} from 'chai';
+import {DivIcon, DomUtil, FeatureGroup, Icon, Map, Marker, Point, Polygon, Popup} from 'leaflet';
+import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
 describe('Popup', () => {
 	let container, map;
 	const center = [55.8, 37.6];
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = L.map(container);
+		map = new Map(container);
 		map.setView(center, 6);
 	});
 
@@ -16,76 +23,76 @@ describe('Popup', () => {
 	it('closes on map click when map has closePopupOnClick option', () => {
 		map.options.closePopupOnClick = true;
 
-		const popup = L.popup()
+		const popup = new Popup()
 			.setLatLng(center)
 			.openOn(map);
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(false);
+		expect(map.hasLayer(popup)).to.be.false;
 	});
 
 	it('closes on map click when popup has closeOnClick option', () => {
 		map.options.closePopupOnClick = false;
 
-		const popup = L.popup({closeOnClick: true})
+		const popup = new Popup({closeOnClick: true})
 			.setLatLng(center)
 			.openOn(map);
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(false);
+		expect(map.hasLayer(popup)).to.be.false;
 	});
 
 	it('does not close on map click when popup has closeOnClick: false option', () => {
 		map.options.closePopupOnClick = true;
 
-		const popup = L.popup({closeOnClick: false})
+		const popup = new Popup({closeOnClick: false})
 			.setLatLng(center)
 			.openOn(map);
 
 		UIEventSimulator.fire('click', container);
 
-		expect(map.hasLayer(popup)).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	it('sets the default \'closeButtonLabel\' on the close button', () => {
-		const popup = L.popup()
+		const popup = new Popup()
 			.setLatLng(center)
 			.openOn(map);
 
-		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.be(null);
+		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.equal(null);
 	});
 
 	it('sets a custom \'closeButtonLabel\' on the close button', () => {
 		const closeButtonLabel = 'TestLabel';
-		const popup = L.popup({closeButtonLabel})
+		const popup = new Popup({closeButtonLabel})
 			.setLatLng(center)
 			.openOn(map);
 
-		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.be(null);
+		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.equal(null);
 	});
 
 	it('toggles its visibility when marker is clicked', () => {
-		const marker = L.marker(center);
+		const marker = new Marker(center);
 		map.addLayer(marker);
 
 		marker.bindPopup('Popup1');
-		expect(map.hasLayer(marker._popup)).to.be(false);
+		expect(map.hasLayer(marker._popup)).to.be.false;
 
 		// toggle open popup
 		UIEventSimulator.fire('click', marker._icon);
-		expect(map.hasLayer(marker._popup)).to.be(true);
+		expect(map.hasLayer(marker._popup)).to.be.true;
 
 		// toggle close popup
 		UIEventSimulator.fire('click', marker._icon);
-		expect(map.hasLayer(marker._popup)).to.be(false);
+		expect(map.hasLayer(marker._popup)).to.be.false;
 	});
 
 	it('it should use a popup with a function as content with a FeatureGroup', () => {
-		const marker1 = L.marker(center);
-		const marker2 = L.marker([54.6, 38.2]);
-		const group = L.featureGroup([marker1, marker2]).addTo(map);
+		const marker1 = new Marker(center);
+		const marker2 = new Marker([54.6, 38.2]);
+		const group = new FeatureGroup([marker1, marker2]).addTo(map);
 
 		marker1.description = 'I\'m marker 1.';
 		marker2.description = 'I\'m marker 2.';
@@ -98,22 +105,22 @@ describe('Popup', () => {
 			latlng: center,
 			layer: marker1
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 1.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
 
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
 			layer: marker2
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 2.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
 	});
 
 	it('it should function for popup content after bindPopup is called', () => {
-		const marker1 = L.marker(center);
-		const marker2 = L.marker([54.6, 38.2]);
-		const group = L.featureGroup([marker1]).addTo(map);
+		const marker1 = new Marker(center);
+		const marker2 = new Marker([54.6, 38.2]);
+		const group = new FeatureGroup([marker1]).addTo(map);
 
 		marker1.description = 'I\'m marker 1.';
 		marker2.description = 'I\'m marker 2.';
@@ -128,21 +135,21 @@ describe('Popup', () => {
 			latlng: center,
 			layer: marker1
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 1.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
 
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
 			layer: marker2
 		});
-		expect(map.hasLayer(group._popup)).to.be(true);
-		expect(group._popup._contentNode.innerHTML).to.be('I\'m marker 2.');
+		expect(map.hasLayer(group._popup)).to.be.true;
+		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
 	});
 
 	it('should use a function for popup content when a source is passed to Popup', () => {
-		const marker = L.marker(center).addTo(map);
-		L.popup({}, marker);
+		const marker = new Marker(center).addTo(map);
+		new Popup({}, marker);
 
 		marker.description = 'I am a marker.';
 
@@ -152,13 +159,13 @@ describe('Popup', () => {
 			latlng: center
 		});
 
-		expect(map.hasLayer(marker._popup)).to.be(true);
-		expect(marker._popup._contentNode.innerHTML).to.be('I am a marker.');
+		expect(map.hasLayer(marker._popup)).to.be.true;
+		expect(marker._popup._contentNode.innerHTML).to.equal('I am a marker.');
 	});
 
 	it('triggers popupopen on marker when popup opens', () => {
-		const marker1 = L.marker(center);
-		const marker2 = L.marker([57.123076977278, 44.861962891635]);
+		const marker1 = new Marker(center);
+		const marker2 = new Marker([57.123076977278, 44.861962891635]);
 
 		map.addLayer(marker1);
 		map.addLayer(marker2);
@@ -170,21 +177,21 @@ describe('Popup', () => {
 
 		marker1.on('popupopen', spy);
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker1.openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 	});
 
 	// Related to #8558
 	it('references the correct targets in popupopen event with multiple markers bound to same popup', () => {
-		const marker1 = L.marker(center, {testId: 'markerA'});
-		const marker2 = L.marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
+		const marker1 = new Marker(center, {testId: 'markerA'});
+		const marker2 = new Marker([57.123076977278, 44.861962891635], {testId: 'markerB'});
 		map.addLayer(marker1);
 		map.addLayer(marker2);
 
-		const popup = L.popup().setContent('test');
+		const popup = new Popup().setContent('test');
 
 		marker2.bindPopup(popup);
 		marker1.bindPopup(popup);
@@ -202,17 +209,17 @@ describe('Popup', () => {
 			expect(e.target.options.testId).to.eql('markerB');
 		});
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
-		expect(spy2.called).to.be(true);
+		expect(spy.called).to.be.false;
+		expect(spy2.called).to.be.true;
 		marker1.closePopup().openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 	});
 
 	it('triggers popupclose on marker when popup closes', () => {
-		const marker1 = L.marker(center);
-		const marker2 = L.marker([57.123076977278, 44.861962891635]);
+		const marker1 = new Marker(center);
+		const marker2 = new Marker([57.123076977278, 44.861962891635]);
 
 		map.addLayer(marker1);
 		map.addLayer(marker2);
@@ -224,83 +231,98 @@ describe('Popup', () => {
 
 		marker1.on('popupclose', spy);
 
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker1.openPopup();
-		expect(spy.called).to.be(false);
+		expect(spy.called).to.be.false;
 		marker2.openPopup();
-		expect(spy.called).to.be(true);
+		expect(spy.called).to.be.true;
 		marker1.openPopup();
 		marker1.closePopup();
-		expect(spy.callCount).to.be(2);
+		expect(spy.callCount).to.equal(2);
 	});
 
 	it('should take into account icon popupAnchor option', () => {
 		const latlng = center;
-		const offset = L.point(20, 30);
+		const offset = new Point(20, 30);
 
-		const autoPanBefore = L.Popup.prototype.options.autoPan;
-		L.Popup.prototype.options.autoPan = false;
-		const popupAnchorBefore = L.Icon.Default.prototype.options.popupAnchor;
-		L.Icon.Default.prototype.options.popupAnchor = [0, 0];
+		const autoPanBefore = Popup.prototype.options.autoPan;
+		Popup.prototype.options.autoPan = false;
+		const popupAnchorBefore = Icon.Default.prototype.options.popupAnchor;
+		Icon.Default.prototype.options.popupAnchor = [0, 0];
 
-		const icon = L.divIcon({popupAnchor: offset});
-		const marker1 = L.marker(latlng);
-		const marker2 = L.marker(latlng, {icon});
+		const icon = new DivIcon({popupAnchor: offset});
+		const marker1 = new Marker(latlng);
+		const marker2 = new Marker(latlng, {icon});
 
 		marker1.bindPopup('Popup').addTo(map);
 		marker1.openPopup();
-		const defaultLeft = L.DomUtil.getPosition(marker1._popup._container).x;
-		const defaultTop = L.DomUtil.getPosition(marker1._popup._container).y;
+		const defaultLeft = DomUtil.getPosition(marker1._popup._container).x;
+		const defaultTop = DomUtil.getPosition(marker1._popup._container).y;
 		marker2.bindPopup('Popup').addTo(map);
 		marker2.openPopup();
-		let offsetLeft = L.DomUtil.getPosition(marker2._popup._container).x;
-		let offsetTop = L.DomUtil.getPosition(marker2._popup._container).y;
+		let offsetLeft = DomUtil.getPosition(marker2._popup._container).x;
+		let offsetTop = DomUtil.getPosition(marker2._popup._container).y;
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
 		// Now retry passing a popup instance to bindPopup
-		marker2.bindPopup(L.popup());
+		marker2.bindPopup(new Popup());
 		marker2.openPopup();
-		offsetLeft = L.DomUtil.getPosition(marker2._popup._container).x;
-		offsetTop = L.DomUtil.getPosition(marker2._popup._container).y;
+		offsetLeft = DomUtil.getPosition(marker2._popup._container).x;
+		offsetTop = DomUtil.getPosition(marker2._popup._container).y;
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
-		L.Popup.prototype.options.autoPan = autoPanBefore;
-		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
+		Popup.prototype.options.autoPan = autoPanBefore;
+		Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {
-		const layer = L.polygon([center, [55.9, 37.7], [56.0, 37.8]]).addTo(map);
+		const layer = new Polygon([center, [55.9, 37.7], [56.0, 37.8]]).addTo(map);
 		layer.bindPopup('layer popup');
 
 		let mapClicked = false;
 		map.on('click', (e) => {
 			mapClicked = true;
-			L.popup()
+			new Popup()
 				.setLatLng(e.latlng)
 				.setContent('map popup')
 				.openOn(map);
 		});
 
-		expect(map.hasLayer(layer._popup)).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be.false;
 		UIEventSimulator.fire('click', layer._path);
-		expect(mapClicked).to.be(false);
-		expect(map.hasLayer(layer._popup)).to.be(true);
+		expect(mapClicked).to.be.false;
+		expect(map.hasLayer(layer._popup)).to.be.true;
 	});
 
 
 	it('can open a popup with enter keypress when marker has focus', () => {
-		const layer = L.marker(center).addTo(map);
+		const layer = new Marker(center).addTo(map);
 		layer.bindPopup('layer popup');
 
 		UIEventSimulator.fire('keypress', layer._icon, {
 			code: 'Enter'
 		});
 
-		expect(map.hasLayer(layer._popup)).to.be(true);
+		expect(map.hasLayer(layer._popup)).to.be.true;
+	});
+
+
+	it('can change popup content with a click on removed DOM', () => {
+		const popup = new Popup()
+			.setLatLng(center)
+			.setContent('<p onclick="this.parentNode.innerHTML = \'changed\'">initial</p>')
+			.openOn(map);
+
+
+		UIEventSimulator.fire('click', popup._container.querySelector('p'));
+
+		expect(popup._container.innerHTML).to.not.contain('initial');
+		expect(popup._container.innerHTML).to.contain('changed');
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	describe('autoPan option should pan popup into visibility', () => {
@@ -325,19 +347,19 @@ describe('Popup', () => {
 		it('should pan map to show popup content if autoPan is enabled', (done) => {
 			map.on('popupopen', (e) => {
 				const popupTopOffset = getPopupOffset(map, e.popup);
-				expect(popupTopOffset).to.be(10, 'The upper edge of the popup have a padding of 10');
+				expect(popupTopOffset).to.equal(10, 'The upper edge of the popup have a padding of 10');
 				done();
 			});
 			map.openPopup('<div style="height: 400px;"></div>', [58.4, 37.6], {
 				autoPan: true,
-				autoPanPadding: L.point(10, 10)
+				autoPanPadding: new Point(10, 10)
 			});
 		});
 
 		it('should pan map to show popup content if autoPan is enabled even when animating', (done) => {
 			map.on('popupopen', (e) => {
 				const popupTopOffset = getPopupOffset(map, e.popup);
-				expect(popupTopOffset).to.be(10);
+				expect(popupTopOffset).to.equal(10);
 				done();
 			});
 
@@ -348,66 +370,66 @@ describe('Popup', () => {
 
 			map.openPopup('<div style="height: 400px;"></div>', [58.4, 37.6], {
 				autoPan: true,
-				autoPanPadding: L.point(10, 10)
+				autoPanPadding: new Point(10, 10)
 			});
 		});
 	});
 
 	it('opens popup with passed latlng position while initializing', () => {
-		const popup = new L.Popup(center)
+		const popup = new Popup(center)
 			.openOn(map);
-		expect(map.hasLayer(popup)).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	it('opens popup with passed latlng and options position while initializing', () => {
-		const popup = new L.Popup(center, {className: 'testClass'})
+		const popup = new Popup(center, {className: 'testClass'})
 			.addTo(map);
-		expect(map.hasLayer(popup)).to.be(true);
-		expect(popup.getElement().classList.contains('testClass')).to.be(true);
+		expect(map.hasLayer(popup)).to.be.true;
+		expect(popup.getElement().classList.contains('testClass')).to.be.true;
 	});
 
 	it('adds popup with passed content in options while initializing', () => {
-		const popup = new L.Popup(center, {content: 'Test'})
+		const popup = new Popup(center, {content: 'Test'})
 			.addTo(map);
-		expect(map.hasLayer(popup)).to.be(true);
-		expect(popup.getContent()).to.be('Test');
+		expect(map.hasLayer(popup)).to.be.true;
+		expect(popup.getContent()).to.equal('Test');
 	});
 
-	describe('L.Map#openPopup', () => {
+	describe('Map#openPopup', () => {
 		it('adds the popup layer to the map', () => {
-			const popup = L.popup()
+			const popup = new Popup()
 				.setLatLng(center);
 			map.openPopup(popup);
-			expect(map.hasLayer(popup)).to.be(true);
+			expect(map.hasLayer(popup)).to.be.true;
 		});
 
 		it('sets popup location', () => {
-			const popup = L.popup();
+			const popup = new Popup();
 			map.openPopup(popup, center);
 			expect(popup.getLatLng()).to.be.nearLatLng([55.8, 37.6]);
 		});
 
 		it('creates a popup from content', () => {
 			map.openPopup('<h2>Hello World</h2>', center);
-			expect(map._popup).to.be.an(L.Popup);
+			expect(map._popup).to.be.instanceOf(Popup);
 			expect(map._popup.getContent()).to.eql('<h2>Hello World</h2>');
 		});
 
 		it('closes existing popup', () => {
-			const p1 = L.popup().setLatLng(center);
-			const p2 = L.popup().setLatLng(center);
+			const p1 = new Popup().setLatLng(center);
+			const p2 = new Popup().setLatLng(center);
 			map.openPopup(p1);
 			map.openPopup(p2);
-			expect(map.hasLayer(p1)).to.be(false);
+			expect(map.hasLayer(p1)).to.be.false;
 		});
 
 		it('does not close existing popup with autoClose: false option', () => {
-			const p1 = L.popup({autoClose: false}).setLatLng(center);
-			const p2 = L.popup().setLatLng(center);
+			const p1 = new Popup({autoClose: false}).setLatLng(center);
+			const p2 = new Popup().setLatLng(center);
 			map.openPopup(p1);
 			map.openPopup(p2);
-			expect(map.hasLayer(p1)).to.be(true);
-			expect(map.hasLayer(p2)).to.be(true);
+			expect(map.hasLayer(p1)).to.be.true;
+			expect(map.hasLayer(p2)).to.be.true;
 		});
 
 		it('should not be closen when dragging map', (done) => {
@@ -418,15 +440,15 @@ describe('Popup', () => {
 
 			const coords = map._container.getBoundingClientRect();
 			const spy = sinon.spy();
-			const p = L.popup().setLatLng(center);
+			const p = new Popup().setLatLng(center);
 			map.openPopup(p);
-			expect(map.hasLayer(p)).to.be(true);
+			expect(map.hasLayer(p)).to.be.true;
 			map.on('drag', spy);
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(spy.called).to.be(true);
-					expect(map.hasLayer(p)).to.be(true);
+					expect(spy.called).to.be.true;
+					expect(map.hasLayer(p)).to.be.true;
 					done();
 				}});
 			const mouse = hand.growFinger('mouse');
@@ -447,10 +469,10 @@ describe('Popup', () => {
 			map.on('autopanstart', spy);
 
 			// Short hop to the edge of the map (at time of writing, will trigger an animated pan)
-			const p = L.popup({keepInView: true}).setContent('Popup').setLatLng(map.getBounds()._northEast);
+			const p = new Popup({keepInView: true}).setContent('Popup').setLatLng(map.getBounds()._northEast);
 			map.once('moveend', () => {
-				expect(spy.callCount).to.be(1);
-				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				expect(spy.callCount).to.equal(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 				done();
 			});
 			map.openPopup(p);
@@ -469,21 +491,21 @@ describe('Popup', () => {
 			map.on('autopanstart', spy);
 
 			// Long hop (at time of writing, will trigger a view reset)
-			const p = L.popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
+			const p = new Popup({keepInView: true}).setContent('Popup').setLatLng([center[0], center[1] + 50]);
 			map.once('moveend', () => {
-				expect(spy.callCount).to.be(1);
-				expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+				expect(spy.callCount).to.equal(1);
+				expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 				done();
 			});
 			map.openPopup(p);
 		});
 
 		it('moves on setLatLng after initial autopan', (done) => {
-			const p = L.popup().setContent('Popup').setLatLng(map.getBounds().getNorthEast());
+			const p = new Popup().setContent('Popup').setLatLng(map.getBounds().getNorthEast());
 
 			map.once('moveend', () => {
 				map.once('moveend', () => {
-					expect(map.getBounds().contains(p.getLatLng())).to.be(true);
+					expect(map.getBounds().contains(p.getLatLng())).to.be.true;
 					done();
 				});
 
@@ -494,11 +516,11 @@ describe('Popup', () => {
 		});
 
 		it('shows the popup at the correct location when multiple markers are registered', () => {
-			const popup = L.popup();
-			const marker1 = L.marker([86, 32]).bindPopup(popup).addTo(map);
-			const marker2 = L.marker([26.3, 83.9]).bindPopup(popup).addTo(map);
+			const popup = new Popup();
+			const marker1 = new Marker([86, 32]).bindPopup(popup).addTo(map);
+			const marker2 = new Marker([26.3, 83.9]).bindPopup(popup).addTo(map);
 
-			expect(popup.getLatLng()).to.be(undefined);
+			expect(popup.getLatLng()).to.equal(undefined);
 
 			marker1.openPopup();
 			expect(popup.getLatLng()).to.be.nearLatLng([86, 32]);
@@ -508,55 +530,55 @@ describe('Popup', () => {
 		});
 	});
 
-	describe('L.Layer#_popup', () => {
+	describe('Layer#_popup', () => {
 		let marker;
 
 		beforeEach(() => {
-			marker = L.marker([55.8, 37.6]).addTo(map);
+			marker = new Marker([55.8, 37.6]).addTo(map);
 		});
 
 		it('only adds a popup to the map when opened', () => {
 			marker.bindPopup('new layer');
-			expect(map.hasLayer(marker.getPopup())).to.be(false);
+			expect(map.hasLayer(marker.getPopup())).to.be.false;
 			marker.openPopup();
-			expect(map.hasLayer(marker.getPopup())).to.be(true);
+			expect(map.hasLayer(marker.getPopup())).to.be.true;
 		});
 
 		it('keeps an open popup on the map when it\'s unbound from the layer', () => {
 			marker.bindPopup('new layer').openPopup();
 			const popup = marker.getPopup();
 			marker.unbindPopup();
-			expect(map.hasLayer(popup)).to.be(true);
+			expect(map.hasLayer(popup)).to.be.true;
 		});
 
 		it('should not give an error when the marker has no popup', () => {
 			expect(() => {
 				marker.isPopupOpen();
-			}).to.not.throwException();
-			expect(marker.isPopupOpen()).to.be(false);
+			}).to.not.throw();
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show a popup as closed if it\'s never opened', () => {
 			marker.bindPopup('new layer');
-			expect(marker.isPopupOpen()).to.be(false);
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show a popup as opend if it\'s opened', () => {
 			marker.bindPopup('new layer').openPopup();
-			expect(marker.isPopupOpen()).to.be(true);
+			expect(marker.isPopupOpen()).to.be.true;
 		});
 
 		it('should show a popup as closed if it\'s opened and closed', () => {
 			marker.bindPopup('new layer').openPopup().closePopup();
-			expect(marker.isPopupOpen()).to.be(false);
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('should show the popup as closed if it\'s unbound', () => {
 			marker.bindPopup('new layer').openPopup().unbindPopup();
 			expect(() => {
 				marker.isPopupOpen();
-			}).to.not.throwException();
-			expect(marker.isPopupOpen()).to.be(false);
+			}).to.not.throw();
+			expect(marker.isPopupOpen()).to.be.false;
 		});
 
 		it('does not throw is popup is inmediately closed', (done) => {
@@ -567,44 +589,44 @@ describe('Popup', () => {
 			expect(() => {
 				marker.bindPopup('new layer').openPopup();
 				done();
-			}).to.not.throwException();
+			}).to.not.throw();
 		});
 
 		it('does not close popup when clicking on it\'s tip', () => {
 			container.style.position = 'absolute';
 			container.style.top = '0';
 			container.style.left = '0';
-			const popup = L.popup().setLatLng(map.getCenter())
+			const popup = new Popup().setLatLng(map.getCenter())
 				.openOn(map);
 
 			const point = map.latLngToContainerPoint(map.getCenter());
 			point.y -= 2; // move mouse into the popup-tip
 			const el = document.elementFromPoint(point.x, point.y);
-			expect(el).to.be(popup._tip);
+			expect(el).to.equal(popup._tip);
 
 			UIEventSimulator.fire('click', el, {
 				clientX: point.x,
 				clientY: point.y
 			});
-			expect(popup.isOpen()).to.be.ok();
+			expect(popup.isOpen()).to.be.true;
 		});
 
 		it('does not open for empty FeatureGroup', () => {
-			const popup = L.popup();
-			L.featureGroup([])
+			const popup = new Popup();
+			new FeatureGroup([])
 			  .addTo(map)
 			  .bindPopup(popup)
 			  .openPopup();
 
-			expect(map.hasLayer(popup)).to.not.be.ok();
+			expect(map.hasLayer(popup)).to.be.false;
 		});
 
 		it('uses only visible layers of FeatureGroup for popup content source', () => {
-			const marker1 = L.marker([1, 1]);
-			const marker2 = L.marker([2, 2]);
-			const marker3 = L.marker([3, 3]);
-			const popup = L.popup();
-			const group = L.featureGroup([marker1, marker2, marker3])
+			const marker1 = new Marker([1, 1]);
+			const marker2 = new Marker([2, 2]);
+			const marker3 = new Marker([3, 3]);
+			const popup = new Popup();
+			const group = new FeatureGroup([marker1, marker2, marker3])
 			  .bindPopup(popup)
 			  .addTo(map);
 
@@ -612,8 +634,8 @@ describe('Popup', () => {
 			marker3.remove();
 			group.openPopup();
 
-			expect(map.hasLayer(popup)).to.be.ok();
-			expect(popup._source).to.be(marker2);
+			expect(map.hasLayer(popup)).to.be.true;
+			expect(popup._source).to.equal(marker2);
 		});
 	});
 });

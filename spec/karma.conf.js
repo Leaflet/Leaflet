@@ -1,103 +1,53 @@
-const json = require('@rollup/plugin-json');
+/* eslint-env node */
+// See: https://karma-runner.github.io/latest/config/configuration-file.html
+module.exports = function (/** @type {import('karma').Config} */ config) {
+	const isCoverageEnabled = process.argv.includes('--coverage');
 
-// Karma configuration
-module.exports = function (config) {
-
-	// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
-
-	const files = [
-		'spec/before.js',
-		'src/LeafletWithGlobals.js',
-		'spec/after.js',
-		'node_modules/ui-event-simulator/ui-event-simulator.js',
-		'node_modules/prosthetic-hand/dist/prosthetic-hand.js',
-		'spec/suites/SpecHelper.js',
-		'spec/suites/**/*.js',
-		'dist/*.css',
-		{pattern: 'dist/images/*.png', included: false, serve: true}
-	];
-
-	const preprocessors = {};
-
-	preprocessors['src/LeafletWithGlobals.js'] = ['rollup'];
-
-	config.set({
-		// base path, that will be used to resolve files and exclude
+	const karmaConfig = {
 		basePath: '../',
-
 		plugins: [
-			'karma-rollup-preprocessor',
 			'karma-mocha',
-			'karma-sinon',
-			'karma-expect',
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
 			'karma-time-stats-reporter'
 		],
-
-		// frameworks to use
-		frameworks: ['mocha', 'sinon', 'expect'],
-
-		// list of files / patterns to load in the browser
-		files,
-		proxies: {
-			'/base/dist/images/': 'dist/images/'
-		},
-		exclude: [],
-
-		// Rollup the ES6 Leaflet sources into just one file, before tests
-		preprocessors,
-		rollupPreprocessor: {
-			onwarn: () => {}, // silence Rollup warnings
-			plugins: [
-				json()
-			],
-			output: {
-				format: 'umd',
-				name: 'leaflet',
-				freeze: false,
-			},
-		},
-
-		// test results reporter to use
-		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
+		frameworks: ['mocha'],
+		customContextFile: 'spec/context.html',
+		customDebugFile: 'spec/debug.html',
+		files: [
+			{pattern: 'node_modules/chai/**/*', included: false, served: true},
+			{pattern: 'node_modules/prosthetic-hand/**/*', included: false, served: true},
+			{pattern: 'node_modules/sinon/**/*', included: false, served: true},
+			{pattern: 'node_modules/ui-event-simulator/**/*', included: false, served: true},
+			{pattern: 'dist/**/*.js', included: false, served: true},
+			{pattern: 'dist/**/*.png', included: false, served: true},
+			{pattern: 'spec/setup.js', type: 'module'},
+			{pattern: 'spec/suites/**/*.js', type: 'module'},
+			{pattern: 'dist/*.css', type: 'css'},
+		],
 		reporters: ['progress', 'time-stats'],
-
+		coverageReporter: {
+			dir: 'coverage/',
+			reporters: [
+				{type: 'html', subdir: 'html'},
+				{type: 'text-summary'}
+			]
+		},
 		timeStatsReporter: {
 			reportTimeStats: false,
 			longestTestsCount: 10
 		},
-
-		// web server port
-		port: 9876,
-
-		// level of logging
-		// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
 		logLevel: config.LOG_WARN,
-
-		// enable / disable colors in the output (reporters and logs)
-		colors: true,
-
-		// enable / disable watching file and executing tests whenever any file changes
-		autoWatch: false,
-
-		// Start these browsers, currently available:
-		// - Chrome
-		// - ChromeCanary
-		// - Firefox
-		// - Opera
-		// - SafariNative (only Mac)
-		browsers: ['Chrome1280x1024'],
-
+		browsers: ['Chrome'],
 		customLaunchers: {
-			'Chrome1280x1024': {
+			'Chrome': {
 				base: 'ChromeHeadless',
-				// increased viewport is required for some tests (TODO fix tests)
-				// https://github.com/Leaflet/Leaflet/issues/7113#issuecomment-619528577
-				flags: ['--window-size=1280,1024']
+				flags: [
+					'--window-size=1920,1080', // Set a fixed window size
+				]
 			},
-			'FirefoxTouch': {
+			'Firefox': {
 				base: 'FirefoxHeadless',
 				prefs: {
 					'dom.w3c_touch_events.enabled': 1
@@ -116,27 +66,22 @@ module.exports = function (config) {
 				}
 			}
 		},
-
 		concurrency: 1,
-
-		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 60000,
-
-		// Timeout for the client socket connection [ms].
-		browserSocketTimeout: 30000,
-
-		// Silence console.warn output in the terminal
 		browserConsoleLogOptions: {level: 'error'},
-
-		// Continuous Integration mode
-		// if true, it capture browsers, run tests and exit
-		singleRun: true,
-
 		client: {
 			mocha: {
-				// eslint-disable-next-line no-undef
 				forbidOnly: process.env.CI || false
 			}
 		}
-	});
+	};
+
+	if (isCoverageEnabled) {
+		karmaConfig.plugins.push('karma-coverage');
+		karmaConfig.reporters.push('coverage');
+		karmaConfig.preprocessors = {
+			'dist/leaflet-src.esm.js': 'coverage'
+		};
+	}
+
+	config.set(karmaConfig);
 };

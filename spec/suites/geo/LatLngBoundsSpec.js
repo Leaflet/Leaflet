@@ -1,44 +1,48 @@
+import {expect} from 'chai';
+import {LatLngBounds, latLng, latLngBounds} from 'leaflet';
+
 describe('LatLngBounds', () => {
 	let a, c;
 
 	beforeEach(() => {
-		a = L.latLngBounds(
-			L.latLng(14, 12),
-			L.latLng(30, 40));
-		c = L.latLngBounds();
+		a = latLngBounds(
+			latLng(14, 12),
+			latLng(30, 40)
+		);
+		c = latLngBounds();
 	});
 
 	describe('constructor', () => {
 		it('instantiates either passing two latlngs or an array of latlngs', () => {
-			const b = L.latLngBounds([
-				L.latLng(14, 12),
-				L.latLng(30, 40)
+			const b = latLngBounds([
+				latLng(14, 12),
+				latLng(30, 40)
 			]);
 			expect(b).to.eql(a);
-			expect(b.getNorthWest()).to.eql(L.latLng(30, 12));
+			expect(b.getNorthWest()).to.eql(latLng(30, 12));
 		});
 
 		it('returns an empty bounds when not argument is given', () => {
-			const bounds = L.latLngBounds();
-			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+			const bounds = latLngBounds();
+			expect(bounds instanceof LatLngBounds).to.be.true;
 		});
 
 		it('returns an empty bounds when not argument is given to factory', () => {
-			const bounds = L.latLngBounds();
-			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+			const bounds = latLngBounds();
+			expect(bounds instanceof LatLngBounds).to.be.true;
 		});
 
 	});
 
 	describe('#extend', () => {
 		it('extends the bounds by a given point', () => {
-			a.extend(L.latLng(20, 50));
-			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
+			a.extend(latLng(20, 50));
+			expect(a.getNorthEast()).to.eql(latLng(30, 50));
 		});
 
 		it('extends the bounds by given bounds', () => {
 			a.extend([[20, 50], [8, 40]]);
-			expect(a.getSouthEast()).to.eql(L.latLng(8, 50));
+			expect(a.getSouthEast()).to.eql(latLng(8, 50));
 		});
 
 		it('extends the bounds by undefined', () => {
@@ -47,17 +51,17 @@ describe('LatLngBounds', () => {
 
 		it('extends the bounds by raw object', () => {
 			a.extend({lat: 20, lng: 50});
-			expect(a.getNorthEast()).to.eql(L.latLng(30, 50));
+			expect(a.getNorthEast()).to.eql(latLng(30, 50));
 		});
 
 		it('extend the bounds by an empty bounds object', () => {
-			expect(a.extend(L.latLngBounds())).to.eql(a);
+			expect(a.extend(latLngBounds())).to.eql(a);
 		});
 	});
 
 	describe('#getCenter', () => {
 		it('returns the bounds center', () => {
-			expect(a.getCenter()).to.eql(L.latLng(22, 26));
+			expect(a.getCenter()).to.eql(latLng(22, 26));
 		});
 	});
 
@@ -65,7 +69,7 @@ describe('LatLngBounds', () => {
 		it('pads the bounds by a given ratio', () => {
 			const b = a.pad(0.5);
 
-			expect(b).to.eql(L.latLngBounds([[6, -2], [38, 54]]));
+			expect(b).to.eql(latLngBounds([[6, -2], [38, 54]]));
 		});
 	});
 
@@ -87,16 +91,16 @@ describe('LatLngBounds', () => {
 
 	describe('#isValid', () => {
 		it('returns true if properly set up', () => {
-			expect(a.isValid()).to.be.ok();
+			expect(a.isValid()).to.be.true;
 		});
 
 		it('returns false if is invalid', () => {
-			expect(c.isValid()).to.not.be.ok();
+			expect(c.isValid()).to.be.false;
 		});
 
 		it('returns true if extended', () => {
 			c.extend([0, 0]);
-			expect(c.isValid()).to.be.ok();
+			expect(c.isValid()).to.be.true;
 		});
 	});
 
@@ -132,30 +136,30 @@ describe('LatLngBounds', () => {
 
 	describe('#getNorthWest', () => {
 		it('returns a proper north-west LatLng', () => {
-			expect(a.getNorthWest()).to.eql(L.latLng(a.getNorth(), a.getWest()));
+			expect(a.getNorthWest()).to.eql(latLng(a.getNorth(), a.getWest()));
 		});
 	});
 
 	describe('#getSouthEast', () => {
 		it('returns a proper south-east LatLng', () => {
-			expect(a.getSouthEast()).to.eql(L.latLng(a.getSouth(), a.getEast()));
+			expect(a.getSouthEast()).to.eql(latLng(a.getSouth(), a.getEast()));
 		});
 	});
 
 	describe('#contains', () => {
 		it('returns true if contains latlng point as array', () => {
 			expect(a.contains([16, 20])).to.eql(true);
-			expect(L.latLngBounds(a).contains([5, 20])).to.eql(false);
+			expect(latLngBounds(a).contains([5, 20])).to.eql(false);
 		});
 
 		it('returns true if contains latlng point as {lat:, lng:} object', () => {
 			expect(a.contains({lat: 16, lng: 20})).to.eql(true);
-			expect(L.latLngBounds(a).contains({lat: 5, lng: 20})).to.eql(false);
+			expect(latLngBounds(a).contains({lat: 5, lng: 20})).to.eql(false);
 		});
 
-		it('returns true if contains latlng point as L.LatLng instance', () => {
-			expect(a.contains(L.latLng([16, 20]))).to.eql(true);
-			expect(L.latLngBounds(a).contains(L.latLng([5, 20]))).to.eql(false);
+		it('returns true if contains latlng point as LatLng instance', () => {
+			expect(a.contains(latLng([16, 20]))).to.eql(true);
+			expect(latLngBounds(a).contains(latLng([5, 20]))).to.eql(false);
 		});
 
 		it('returns true if contains bounds', () => {

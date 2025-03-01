@@ -1,4 +1,7 @@
-/* eslint no-new: 0 */
+import {expect} from 'chai';
+import {Class} from 'leaflet';
+import sinon from 'sinon';
+
 describe('Class', () => {
 	describe('#extend', () => {
 		let Klass,
@@ -18,18 +21,18 @@ describe('Class', () => {
 				foo: 5,
 				bar: method
 			};
-			Klass = L.Class.extend(props);
+			Klass = Class.extend(props);
 		});
 
 		it('creates a class with the given constructor & properties', () => {
 			const a = new Klass();
 
-			expect(constructor.called).to.be.ok();
+			expect(constructor.called).to.be.true;
 			expect(a.foo).to.eql(5);
 
 			a.bar();
 
-			expect(method.called).to.be.ok();
+			expect(method.called).to.be.true;
 		});
 
 		it('inherits parent classes\' constructor & properties', () => {
@@ -37,15 +40,15 @@ describe('Class', () => {
 
 			const b = new Klass2();
 
-			expect(b instanceof Klass).to.be.ok();
-			expect(b instanceof Klass2).to.be.ok();
+			expect(b instanceof Klass).to.be.true;
+			expect(b instanceof Klass2).to.be.true;
 
-			expect(constructor.called).to.be.ok();
+			expect(constructor.called).to.be.true;
 			expect(b.baz).to.eql(2);
 
 			b.bar();
 
-			expect(method.called).to.be.ok();
+			expect(method.called).to.be.true;
 		});
 
 		it('does not modify source props object', () => {
@@ -64,7 +67,7 @@ describe('Class', () => {
 		});
 
 		it('does not merge \'statics\' property itself', () => {
-			expect('statics' in Klass.prototype).to.not.be.ok();
+			expect('statics' in Klass.prototype).to.be.false;
 		});
 
 		it('inherits parent static properties', () => {
@@ -81,32 +84,32 @@ describe('Class', () => {
 
 		it('includes the given mixin', () => {
 			const a = new Klass();
-			expect(a.mixin).to.be.ok();
+			expect(a.mixin).to.be.true;
 		});
 
 		it('does not merge \'includes\' property itself', () => {
-			expect('includes' in Klass.prototype).to.not.be.ok();
+			expect('includes' in Klass.prototype).to.be.false;
 		});
 
 		it('includes multiple mixins', () => {
-			const Klass2 = L.Class.extend({
+			const Klass2 = Class.extend({
 				includes: [{mixin: true}, {mixin2: true}]
 			});
 			const a = new Klass2();
 
-			expect(a.mixin).to.be.ok();
-			expect(a.mixin2).to.be.ok();
+			expect(a.mixin).to.be.true;
+			expect(a.mixin2).to.be.true;
 		});
 
 		it('grants the ability to include the given mixin', () => {
 			Klass.include({mixin2: true});
 
 			const a = new Klass();
-			expect(a.mixin2).to.be.ok();
+			expect(a.mixin2).to.be.true;
 		});
 
 		it('merges options instead of replacing them', () => {
-			const KlassWithOptions1 = L.Class.extend({
+			const KlassWithOptions1 = Class.extend({
 				options: {
 					foo1: 1,
 					foo2: 2
@@ -126,13 +129,13 @@ describe('Class', () => {
 		});
 
 		it('gives new classes a distinct options object', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const K2 = K1.extend({});
 			expect(K2.prototype.options).not.to.equal(K1.prototype.options);
 		});
 
 		it('inherits options prototypally', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const K2 = K1.extend({options: {}});
 			K1.prototype.options.foo = 'bar';
 			expect(K2.prototype.options.foo).to.eql('bar');
@@ -140,24 +143,24 @@ describe('Class', () => {
 
 		it('does not reuse original props.options', () => {
 			const props = {options: {}};
-			const K = L.Class.extend(props);
+			const K = Class.extend(props);
 
-			expect(K.prototype.options).not.to.be(props.options);
+			expect(K.prototype.options).not.to.equal(props.options);
 		});
 
 		it('does not replace source props.options object', () => {
-			const K1 = L.Class.extend({options: {}});
+			const K1 = Class.extend({options: {}});
 			const opts = {};
 			const props = {options: opts};
 			K1.extend(props);
 
-			expect(props.options).to.be(opts);
+			expect(props.options).to.equal(opts);
 		});
 
 		it('prevents change of prototype options', () => {
-			const Klass = L.Class.extend({options: {}});
+			const Klass = Class.extend({options: {}});
 			const instance = new Klass();
-			expect(Klass.prototype.options).to.not.be(instance.options);
+			expect(Klass.prototype.options).to.not.equal(instance.options);
 		});
 
 		it('adds constructor hooks correctly', () => {
@@ -168,7 +171,7 @@ describe('Class', () => {
 
 			new Klass();
 
-			expect(spy1.called).to.be.ok();
+			expect(spy1.called).to.be.true;
 			expect(method.calledWith(1, 2, 3));
 		});
 
@@ -183,8 +186,8 @@ describe('Class', () => {
 
 			new Klass2();
 
-			expect(spy1.called).to.be.ok();
-			expect(spy2.called).to.be.ok();
+			expect(spy1.called).to.be.true;
+			expect(spy2.called).to.be.true;
 		});
 
 		it('does not call child constructor hooks', () => {
@@ -198,7 +201,7 @@ describe('Class', () => {
 
 			new Klass();
 
-			expect(spy1.called).to.be.ok();
+			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.eql(false);
 		});
 
@@ -210,7 +213,7 @@ describe('Class', () => {
 			const Klass2 = Klass.extend({});
 			new Klass2();
 
-			expect(spy1.called).to.be.ok();
+			expect(spy1.called).to.be.true;
 		});
 	});
 
@@ -218,7 +221,7 @@ describe('Class', () => {
 		let Klass;
 
 		beforeEach(() => {
-			Klass = L.Class.extend({});
+			Klass = Class.extend({});
 		});
 
 		it('returns the class with the extra methods', () => {
@@ -231,15 +234,15 @@ describe('Class', () => {
 			const b = new Qlass();
 
 			a.quux();
-			expect(q.called).to.be.ok();
+			expect(q.called).to.be.true;
 
 			b.quux();
-			expect(q.called).to.be.ok();
+			expect(q.called).to.be.true;
 		});
 
 		it('keeps parent options', () => { // #6070
 
-			const Quux = L.Class.extend({
+			const Quux = Class.extend({
 				options: {foo: 'Foo!'}
 			});
 
@@ -256,7 +259,7 @@ describe('Class', () => {
 			const props = {options: {}};
 			const K = Klass.include(props);
 
-			expect(K.prototype.options).not.to.be(props.options);
+			expect(K.prototype.options).not.to.equal(props.options);
 		});
 
 		it('does not replace source props.options object', () => {
@@ -265,7 +268,7 @@ describe('Class', () => {
 			const props = {options: opts};
 			K1.extend(props);
 
-			expect(props.options).to.be(opts);
+			expect(props.options).to.equal(opts);
 		});
 	});
 

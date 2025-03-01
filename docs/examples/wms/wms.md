@@ -143,10 +143,10 @@ And use the `tms:true` option when instantiating the layers, like so:
 	}).addTo(map);
 
 
-A new feature in **Leaflet 1.0** is the ability to use `{-y}` in the URL instead of a `tms: true` option, e.g.:
+In Leaflet you also have the option to use `{-y}` in the URL instead of a `tms: true` option, e.g.:
 
 	var layer = L.tileLayer('http://base_url/tms/1.0.0/tileset/{z}/{x}/{-y}.png');
 
-The `tms: true` option (in Leaflet 0.7) or `{-y}` (in Leaflet 1.0) are needed because the origin of coordinates of vanilla `L.TileLayer`s is the top left corner, so the Y coordinate goes *down*. In TMS, the origin of coordinates is the *bottom* left corner so the Y coordinate goes *up*.
+The `tms: true` option or `{-y}` are needed because the origin of coordinates of vanilla `L.TileLayer`s is the top left corner, so the Y coordinate goes *down*. In TMS, the origin of coordinates is the *bottom* left corner so the Y coordinate goes *up*.
 
 Besides the difference in the `y` coordinate and the discovery of tilesets, TMS services serve tiles exactly in the way that `L.TileLayer` expects.

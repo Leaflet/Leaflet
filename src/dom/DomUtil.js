@@ -78,7 +78,7 @@ export function getPosition(el) {
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-const documentStyle = document.documentElement.style;
+const documentStyle = typeof document === 'undefined' ? {} : document.documentElement.style;
 // Safari still needs a vendor prefix, we need to detect with property name is supported.
 const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 let prevUserSelect;
@@ -134,8 +134,8 @@ export function preventOutline(element) {
 	if (!element.style) { return; }
 	restoreOutline();
 	_outlineElement = element;
-	_outlineStyle = element.style.outline;
-	element.style.outline = 'none';
+	_outlineStyle = element.style.outlineStyle;
+	element.style.outlineStyle = 'none';
 	DomEvent.on(window, 'keydown', restoreOutline);
 }
 
@@ -143,7 +143,7 @@ export function preventOutline(element) {
 // Cancels the effects of a previous [`L.DomUtil.preventOutline`](#domutil-preventoutline).
 export function restoreOutline() {
 	if (!_outlineElement) { return; }
-	_outlineElement.style.outline = _outlineStyle;
+	_outlineElement.style.outlineStyle = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
 	DomEvent.off(window, 'keydown', restoreOutline);

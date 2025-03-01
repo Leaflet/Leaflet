@@ -1,56 +1,59 @@
-﻿describe('LayerGroup', () => {
+﻿import {expect} from 'chai';
+import {GeoJSON, Layer, Marker, layerGroup} from 'leaflet';
+
+describe('LayerGroup', () => {
 	describe('#hasLayer', () => {
 		it('throws when called without proper argument', () => {
-			const lg = L.layerGroup();
+			const lg = layerGroup();
 			const hasLayer = lg.hasLayer.bind(lg);
-			expect(hasLayer).withArgs(new L.Layer()).to.not.throwException(); // control case
+			expect(() => hasLayer(new Layer())).to.not.throw(); // control case
 
-			expect(hasLayer).withArgs(undefined).to.throwException();
-			expect(hasLayer).withArgs(null).to.throwException();
-			expect(hasLayer).withArgs(false).to.throwException();
-			expect(hasLayer).to.throwException();
+			expect(() => hasLayer(undefined)).to.throw();
+			expect(() => hasLayer(null)).to.throw();
+			expect(() => hasLayer(false)).to.throw();
+			expect(() => hasLayer()).to.throw();
 		});
 	});
 
 	describe('#addLayer', () => {
 		it('adds a layer', () => {
-			const lg = L.layerGroup(),
-			    marker = L.marker([0, 0]);
+			const lg = layerGroup(),
+			    marker = new Marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(true);
+			expect(lg.hasLayer(marker)).to.be.true;
 		});
 	});
 
 	describe('#removeLayer', () => {
 		it('removes a layer', () => {
-			const lg = L.layerGroup(),
-			    marker = L.marker([0, 0]);
+			const lg = layerGroup(),
+			    marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.removeLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(false);
+			expect(lg.hasLayer(marker)).to.be.false;
 		});
 	});
 
 	describe('#clearLayers', () => {
 		it('removes all layers', () => {
-			const lg = L.layerGroup(),
-			    marker = L.marker([0, 0]);
+			const lg = layerGroup(),
+			    marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.clearLayers()).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).to.be(false);
+			expect(lg.hasLayer(marker)).to.be.false;
 		});
 	});
 
 	describe('#getLayers', () => {
 		it('gets all layers', () => {
-			const lg = L.layerGroup(),
-			    marker = L.marker([0, 0]);
+			const lg = layerGroup(),
+			    marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 
@@ -60,8 +63,8 @@
 
 	describe('#eachLayer', () => {
 		it('iterates over all layers', () => {
-			const lg = L.layerGroup(),
-			    marker = L.marker([0, 0]),
+			const lg = layerGroup(),
+			    marker = new Marker([0, 0]),
 			    ctx = {foo: 'bar'};
 
 			lg.addLayer(marker);
@@ -89,21 +92,21 @@
 				]
 			};
 
-			const layerGroup = L.layerGroup();
-			const layer = L.geoJSON(geoJSON);
-			layerGroup.addLayer(layer);
+			const lg = layerGroup();
+			const layer = new GeoJSON(geoJSON);
+			lg.addLayer(layer);
 
-			L.geoJson(layerGroup.toGeoJSON());
+			new GeoJSON(lg.toGeoJSON());
 		});
 	});
 
 	describe('#invoke', () => {
 		it('should invoke `setOpacity` method on every layer', () => {
 			const layers = [
-				L.marker([0, 0]),
-				L.marker([1, 1])
+				new Marker([0, 0]),
+				new Marker([1, 1])
 			];
-			const lg = L.layerGroup(layers);
+			const lg = layerGroup(layers);
 			const opacity = 0.5;
 
 			expect(layers[0].options.opacity).to.not.eql(opacity);

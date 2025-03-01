@@ -21698,9 +21698,14 @@ performance. Note that polygon points needs different algorithm for clipping
 than polyline, so there's a separate method for it.</td>
 	</tr>
 	<tr id='polyutil-polygoncenter'>
-		<td><code><b>polygonCenter</b>(<nobr>&lt;LatLng[] crs: CRS&gt;</nobr> <i>latlngs</i>)</code></td>
+		<td><code><b>polygonCenter</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>, <nobr>&lt;<a href='#crs'>CRS</a>&gt;</nobr> <i>crs</i>)</code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td>Returns the center (<a href="http://en.wikipedia.org/wiki/Centroid">centroid</a>) of the passed LatLngs (first ring) from a polygon.</td>
+	</tr>
+	<tr id='polyutil-centroid'>
+		<td><code><b>centroid</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>)</code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td>Returns the 'center of mass' of the passed LatLngs.</td>
 	</tr>
 </tbody></table>
 

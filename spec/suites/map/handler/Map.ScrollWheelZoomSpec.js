@@ -1,3 +1,9 @@
+import {expect} from 'chai';
+import {DomEvent, Map} from 'leaflet';
+import sinon from 'sinon';
+import UIEventSimulator from 'ui-event-simulator';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+
 describe('Map.ScrollWheelZoom', () => {
 	let container, map;
 	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
@@ -12,7 +18,7 @@ describe('Map.ScrollWheelZoom', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = L.map(container, {
+		map = new Map(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false
@@ -74,11 +80,11 @@ describe('Map.ScrollWheelZoom', () => {
 		setTimeout(() => {
 			UIEventSimulator.fire(wheel, container, scrollIn);
 
-			expect(spy.notCalled).to.be.ok();
+			expect(spy.notCalled).to.be.true;
 		}, 50);
 
 		map.on('zoomend', () => {
-			expect(spy.calledOnce).to.be.ok();
+			expect(spy.calledOnce).to.be.true;
 			// Bug 1.8.0: Firefox wheel zoom makes 2 steps #7403
 			// expect(map.getCenter()).to.be.nearLatLng([25.48295117535531, -26.367187500000004]);
 			expect(map.getZoom()).to.be.greaterThan(zoom);
@@ -99,9 +105,9 @@ describe('Map.ScrollWheelZoom', () => {
 			const zoomDiff = map.getZoom() - zoom;
 
 			map.setZoom(zoom, {animate: false});
-			expect(map.getZoom()).to.be(zoom);
+			expect(map.getZoom()).to.equal(zoom);
 
-			map.options.wheelPxPerZoomLevel = 30 / L.DomEvent.getWheelPxFactor();
+			map.options.wheelPxPerZoomLevel = 30 / DomEvent.getWheelPxFactor();
 			UIEventSimulator.fire(wheel, container, scrollIn);
 
 			map.once('zoomend', () => {

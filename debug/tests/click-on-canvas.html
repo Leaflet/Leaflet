@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Click on Canvas</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.esm.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			import {TileLayer, Map, FeatureGroup, Polyline} from 'leaflet';
+
+			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
+			const map = new Map('map', {
+				minZoom: 1,
+				maxZoom: 19,
+				center: [51.505, -0.09],
+				zoom: 9,
+				layers: [osm],
+				preferCanvas: true
+			});
+
+			const polygons = new FeatureGroup();
+			const points = [[51.505, -0.01], [51.505, -0.09], [51.55, -0.09]];
+
+			polygons.addLayer(
+				new Polyline(points, {
+					weight: 10,
+					opacity: 1,
+					smoothFactor: 1,
+					color: 'red',
+					interactive: true
+				})
+			);
+
+			polygons.on('click', m => console.log(m.layer));
+			polygons.addTo(map);
+		</script>
+	</body>
+</html>

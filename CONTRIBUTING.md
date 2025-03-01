@@ -97,7 +97,7 @@ Also, please make sure that you have [line endings configured properly](https://
 
 Happy coding!
 
-### Using RollupJS
+### Building Leaflet
 
 The source JavaScript code for Leaflet is a few dozen files, in the `src/` directory.
 But normally, Leaflet is loaded in a web browser as just one JavaScript file.
@@ -110,7 +110,7 @@ development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
 for deployment.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
-the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
+the webpages in the `debug/` directory, and run the tests
 in a graphical browser. This requires regenerating the bundled files quickly.
 
 In order to do so, run `npm run watch` or `yarn run watch`. This will keep
@@ -118,21 +118,24 @@ on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
-To run the tests from the command line, install [Google Chrome](https://www.google.com/chrome/) then run:
+Before running the tests, make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet, it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
+
+To run the tests from the command line, ensure you have [Google Chrome](https://www.google.com/chrome/) installed and then run:
 
 ```
 npm test
 ```
 
-To run the tests in other browsers at the same time, you can do:
+By default the tests will run in Google Chrome headlessly (without a UI), to run the tests in other browsers you can pass in the [`--browsers`](https://karma-runner.github.io/latest/config/configuration-file.html#browsers) flag.
 
 ```
-npm test -- -- --browsers Firefox,Chrome,Safari,IE
+npm test -- --browsers Firefox
 ```
 
-(Note: the doubling of "`--`" [special option](https://docs.npmjs.com/cli/run-script#description) is [important](https://github.com/Leaflet/Leaflet/pull/6166#issuecomment-390959903))
-
-To run the tests in a browser manually, open `spec/index.html`.
+For a list of available browsers see the documentation of the included launcher plugins:
+- [`karma-chrome-launcher`](https://github.com/karma-runner/karma-chrome-launcher#available-browsers)
+- [`karma-firefox-launcher`](https://github.com/karma-runner/karma-firefox-launcher#configuration)
+- [`karma-safarinative-launcher`](https://github.com/muthu90ec/karma-safarinative-launcher#readme)
 
 ## Improving Documentation
 
