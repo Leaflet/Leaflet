@@ -303,18 +303,18 @@ Layer.include({
 	_initTooltipInteractions(remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
 		const onOff = remove ? 'off' : 'on',
-		    events = {
+		events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		  };
+		};
 		if (!this._tooltip.options.permanent) {
 			events.mouseover = this._openTooltip;
 			events.mouseout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
-				this._addFocusListeners();
+				this._addFocusListeners(remove);
 			} else {
-				events.add = this._addFocusListeners;
+				events.add = () => this._addFocusListeners(remove);
 			}
 		} else {
 			events.add = this._openTooltip;
@@ -385,22 +385,37 @@ Layer.include({
 		return this._tooltip;
 	},
 
-	_addFocusListeners() {
+	_addFocusListeners(remove) {
 		if (this.getElement) {
-			this._addFocusListenersOnLayer(this);
+			this._addFocusListenersOnLayer(this, remove);
 		} else if (this.eachLayer) {
-			this.eachLayer(this._addFocusListenersOnLayer, this);
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
 		}
 	},
 
-	_addFocusListenersOnLayer(layer) {
+	_addFocusListenersOnLayer(layer, remove) {
 		const el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
-			DomEvent.on(el, 'focus', function () {
-				this._tooltip._source = layer;
-				this.openTooltip();
-			}, this);
-			DomEvent.on(el, 'blur', this.closeTooltip, this);
+			const onOff = remove ? 'off' : 'on';
+			if (!remove) {
+				// Remove focus listener, if already existing
+				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
+
+				// eslint-disable-next-line camelcase
+				el._leaflet_focus_handler = () => {
+					if (this._tooltip) {
+						this._tooltip._source = layer;
+						this.openTooltip();
+					}
+				};
+			}
+
+			el._leaflet_focus_handler && DomEvent[onOff](el, 'focus', el._leaflet_focus_handler, this);
+			DomEvent[onOff](el, 'blur', this.closeTooltip, this);
+
+			if (remove) {
+				delete el._leaflet_focus_handler;
+			}
 		}
 	},
 
