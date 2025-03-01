@@ -31,7 +31,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
-
 export const Canvas = Renderer.extend({
 
 	// @section
