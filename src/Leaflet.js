@@ -1,6 +1,4 @@
-
-import {version} from '../package.json';
-export {version};
+export const version = '0.0.0';
 
 // control
 export * from './control/index.js';
