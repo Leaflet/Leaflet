@@ -238,7 +238,7 @@ describe('Canvas', () => {
 			// we need the timeout, because else the requestAnimFrame is not called
 			expect(spy.callCount).to.eql(1);
 			done();
-		}, 5);
+		}, 50);
 	});
 
 	describe('#bringToBack', () => {
