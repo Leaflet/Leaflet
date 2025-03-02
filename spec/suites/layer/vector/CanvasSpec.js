@@ -222,7 +222,7 @@ describe('Canvas', () => {
 		}, this);
 	});
 
-	it.only('adds vectors even if the canvas container was removed', (done) => {
+	it('adds vectors even if the canvas container was removed', (done) => {
 		const layer = new Circle([0, 0]).addTo(map);
 		map.eachLayer((layer) => {
 			map.removeLayer(layer);
