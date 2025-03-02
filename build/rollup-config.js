@@ -23,7 +23,16 @@ const config = {
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
+		{
+			name: 'custom-replace',
+			transform(code) {
+				return {
+					code: code.replace(/export const version = '0.0.0';/g, `export const version = '${pkg.version}';`),
+					map: null, // No source map adjustments needed
+				};
+			},
+		},
 	]
 };
 
