@@ -16,22 +16,22 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		customContextFile: 'spec/context.html',
 		customDebugFile: 'spec/debug.html',
 		files: [
-			{pattern: 'node_modules/chai/**/*', included: false, served: true},
-			{pattern: 'node_modules/prosthetic-hand/**/*', included: false, served: true},
-			{pattern: 'node_modules/sinon/**/*', included: false, served: true},
-			{pattern: 'node_modules/ui-event-simulator/**/*', included: false, served: true},
-			{pattern: 'src/**/*.js', included: false, served: true},
-			{pattern: 'dist/**/*.png', included: false, served: true},
-			{pattern: 'spec/setup.js', type: 'module'},
-			{pattern: 'spec/suites/**/*.js', type: 'module'},
-			{pattern: 'dist/*.css', type: 'css'},
+			{ pattern: 'node_modules/chai/**/*', included: false, served: true },
+			{ pattern: 'node_modules/prosthetic-hand/**/*', included: false, served: true },
+			{ pattern: 'node_modules/sinon/**/*', included: false, served: true },
+			{ pattern: 'node_modules/ui-event-simulator/**/*', included: false, served: true },
+			{ pattern: 'src/**/*.js', type: 'module' },
+			{ pattern: 'dist/**/*.png', included: false, served: true },
+			{ pattern: 'spec/setup.js', type: 'module' },
+			{ pattern: 'spec/suites/**/*.js', type: 'module' },
+			{ pattern: 'dist/*.css', type: 'css' },
 		],
 		reporters: ['progress', 'time-stats'],
 		coverageReporter: {
 			dir: 'coverage/',
 			reporters: [
-				{type: 'html', subdir: 'html'},
-				{type: 'text-summary'}
+				{ type: 'html', subdir: 'html' },
+				{ type: 'text-summary' }
 			]
 		},
 		timeStatsReporter: {
@@ -67,7 +67,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			}
 		},
 		concurrency: 1,
-		browserConsoleLogOptions: {level: 'error'},
+		browserConsoleLogOptions: { level: 'error' },
 		client: {
 			mocha: {
 				forbidOnly: process.env.CI || false
