@@ -88,10 +88,6 @@ export const SVG = Renderer.extend({
 			path.classList.add(...splitWords(layer.options.className));
 		}
 
-		if (layer.options.interactive) {
-			path.classList.add('leaflet-interactive');
-		}
-
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
 	},
@@ -99,12 +95,16 @@ export const SVG = Renderer.extend({
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
-		layer.addInteractiveTarget(layer._path);
+		if (layer.options.interactive) {
+			layer.addInteractiveTarget(layer._path);
+		}
 	},
 
 	_removePath(layer) {
 		layer._path.remove();
-		layer.removeInteractiveTarget(layer._path);
+		if (layer.options.interactive) {
+			layer.removeInteractiveTarget(layer._path);
+		}
 		delete this._layers[stamp(layer)];
 	},
 
@@ -147,6 +147,14 @@ export const SVG = Renderer.extend({
 			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
 			path.setAttribute('fill', 'none');
+		}
+
+		if (options.interactive) {
+			path.classList.add('leaflet-interactive');
+			layer.addInteractiveTarget(path);
+		} else {
+			path.classList.remove('leaflet-interactive');
+			layer.removeInteractiveTarget(path);
 		}
 	},
 
