@@ -222,6 +222,25 @@ describe('Canvas', () => {
 		}, this);
 	});
 
+	it('adds vectors even if the canvas container was removed', (done) => {
+		const layer = new Circle([0, 0]).addTo(map);
+		map.eachLayer((layer) => {
+			map.removeLayer(layer);
+		});
+
+		const spy = sinon.spy();
+		const canvas = map.getRenderer(layer);
+		canvas._redraw = spy;
+
+		map.addLayer(layer);
+
+		setTimeout(() => {
+			// we need the timeout, because else the requestAnimFrame is not called
+			expect(spy.callCount).to.eql(1);
+			done();
+		}, 50);
+	});
+
 	describe('#bringToBack', () => {
 		it('is a no-op for layers not on a map', () => {
 			const path = new Polyline([[1, 2], [3, 4], [5, 6]]);
