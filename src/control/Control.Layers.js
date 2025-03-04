@@ -50,7 +50,9 @@ export const Layers = Control.extend({
 		// @option collapsed: Boolean = true
 		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
 		collapsed: true,
-		// If > 0, the control will stay open for longer. This makes it easier to scroll long layer lists.
+
+		// @option collapseDelay: Number = 0
+		// Collapse delay in milliseconds. If > 0, the control will stay open for longer. This makes it easier to scroll long layer lists.
 		collapseDelay: 0,
 		position: 'topright',
 
