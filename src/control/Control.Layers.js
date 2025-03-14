@@ -167,7 +167,7 @@ export const Layers = Control.extend({
 	// Expand the control container if collapsed.
 	expand() {
 		if (this._collapseDelayTimeout) {
-			clearTimeout(this.collapseDelayTimeout);
+			clearTimeout(this._collapseDelayTimeout);
 		}
 		this._container.classList.add('leaflet-control-layers-expanded');
 		this._section.style.height = null;
@@ -191,7 +191,7 @@ export const Layers = Control.extend({
 		if (!ev || !(ev.type === 'pointerleave' && ev.pointerType === 'touch')) {
 			if (this.options.collapseDelay > 0) {
 				// Collapse delayed
-				this.collapseDelayTimeout = setTimeout(() => {
+				this._collapseDelayTimeout = setTimeout(() => {
 					this._container.classList.remove('leaflet-control-layers-expanded');
 				}, this.options.collapseDelay);
 				return this;
