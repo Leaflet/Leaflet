@@ -189,8 +189,8 @@ export const Layers = Control.extend({
 		// The control was collapsed instead of adding the layer to the map.
 		// So we allow collapse if it is not touch and pointerleave.
 		if (!ev || !(ev.type === 'pointerleave' && ev.pointerType === 'touch')) {
-			// Collapse delay?
 			if (this.options.collapseDelay > 0) {
+				// Collapse delayed
 				this.collapseDelayTimeout = setTimeout(() => {
 					this._container.classList.remove('leaflet-control-layers-expanded');
 				}, this.options.collapseDelay);
