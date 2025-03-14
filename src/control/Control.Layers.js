@@ -166,7 +166,7 @@ export const Layers = Control.extend({
 	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand() {
-		if (this.collapseDelayTimeout) {
+		if (this._collapseDelayTimeout) {
 			clearTimeout(this.collapseDelayTimeout);
 		}
 		this._container.classList.add('leaflet-control-layers-expanded');
