@@ -159,7 +159,6 @@ export const Map = Evented.extend({
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
 			this._createAnimProxy();
-			DomEvent.on(this._proxy, 'transitionend', this._catchTransitionEnd, this);
 		}
 
 		this._addLayers(this.options.layers);
@@ -781,6 +780,8 @@ export const Map = Evented.extend({
 			// Fired when the map is destroyed with [remove](#map-remove) method.
 			this.fire('unload');
 		}
+
+		this._destroyAnimProxy();
 
 		let i;
 		for (i in this._layers) {
@@ -1624,36 +1625,55 @@ export const Map = Evented.extend({
 	},
 
 	_createAnimProxy() {
+		this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+		this._panes.mapPane.appendChild(this._proxy);
 
-		const proxy = this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
-		this._panes.mapPane.appendChild(proxy);
-
-		this.on('zoomanim', function (e) {
-			const transform = this._proxy.style.transform;
-
-			DomUtil.setTransform(this._proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
-
-			// workaround for case when transform is the same and so transitionend event is not fired
-			if (transform === this._proxy.style.transform && this._animatingZoom) {
-				this._onZoomTransitionEnd();
-			}
-		}, this);
-
+		this.on('zoomanim', this._animateProxyZoom, this);
 		this.on('load moveend', this._animMoveEnd, this);
 
-		this._on('unload', this._destroyAnimProxy, this);
+		DomEvent.on(this._proxy, 'transitionend', this._catchTransitionEnd, this);
 	},
 
-	_destroyAnimProxy() {
-		this._proxy.remove();
-		this.off('load moveend', this._animMoveEnd, this);
-		delete this._proxy;
+	_animateProxyZoom(e) {
+		const transform = this._proxy.style.transform;
+
+		DomUtil.setTransform(
+			this._proxy,
+			this.project(e.center, e.zoom),
+			this.getZoomScale(e.zoom, 1),
+		);
+
+		// workaround for case when transform is the same and so transitionend event is not fired
+		if (transform === this._proxy.style.transform && this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
 	},
 
 	_animMoveEnd() {
-		const c = this.getCenter(),
-		    z = this.getZoom();
-		DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
+		const c = this.getCenter();
+		const z = this.getZoom();
+
+
+
+		DomUtil.setTransform(
+			this._proxy,
+			this.project(c, z),
+			this.getZoomScale(z, 1),
+		);
+	},
+
+	_destroyAnimProxy() {
+		// Just make sure this method is safe to call from anywhere, without knowledge
+		// of whether the animation proxy was created in the first place.
+		if (this._proxy) {
+			DomEvent.off(this._proxy, 'transitionend', this._catchTransitionEnd, this);
+
+			this._proxy.remove();
+			this.off('zoomanim', this._animateProxyZoom, this);
+			this.off('load moveend', this._animMoveEnd, this);
+
+			delete this._proxy;
+		}
 	},
 
 	_catchTransitionEnd(e) {
