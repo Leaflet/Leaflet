@@ -97,22 +97,6 @@ describe('Util', () => {
 		});
 	});
 
-	describe('#requestAnimFrame', () => {
-		it('calles a function on next frame, unless canceled', (done) => {
-			const spy = sinon.spy(),
-			    foo = {};
-
-			Util.requestAnimFrame(spy);
-
-			Util.requestAnimFrame(function () {
-				expect(this).to.eql(foo);
-				done();
-			}, foo);
-
-			Util.cancelAnimFrame(spy);
-		});
-	});
-
 	describe('#throttle', () => {
 		it('limits execution to not more often than specified time interval', (done) => {
 			const spy = sinon.spy();

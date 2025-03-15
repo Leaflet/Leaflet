@@ -154,20 +154,3 @@ export function template(str, data) {
 // Used as a hack to free memory from unused images on WebKit-powered
 // mobile devices (by setting image `src` to this string).
 export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
-const requestFn = typeof window === 'undefined' ? falseFn : window.requestAnimationFrame;
-const cancelFn = typeof window === 'undefined' ? falseFn : window.cancelAnimationFrame;
-
-// @function requestAnimFrame(fn: Function, context?: Object): Number
-// Schedules `fn` to be executed when the browser repaints. `fn` is bound to `context` if given.
-// See [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame).
-// Returns a request ID that can be used to cancel the request.
-export function requestAnimFrame(fn, context) {
-	return requestFn.call(window, fn.bind(context));
-}
-
-// @function cancelAnimFrame(id: Number): undefined
-// Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
-export function cancelAnimFrame(id) {
-	cancelFn.call(window, id);
-}

@@ -190,7 +190,7 @@ describe('TileLayer', () => {
 	describe('number of kittens loaded', () => {
 		let clock, kittenLayer, counts;
 
-		// animationFrame helper, just runs requestAnimFrame() a given number of times
+		// animationFrame helper, just runs requestAnimationFrame() a given number of times
 		function runFrames(n) {
 			return _runFrames(n)();
 		}
@@ -200,14 +200,16 @@ describe('TileLayer', () => {
 				return function () {
 					clock.tick(40); // 40msec/frame ~= 25fps
 					map.fire('_frame');
-					Util.requestAnimFrame(_runFrames(n - 1));
+					requestAnimationFrame(_runFrames(n - 1));
 				};
 			}
 			return Util.falseFn;
 		}
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 
 			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
