@@ -679,9 +679,9 @@ describe('GridLayer', () => {
 					// In this particular scenario, the tile unloads happen in the
 					// next render frame after the grid's 'load' event.
 					requestAnimationFrame(() => {
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(32);
-						expect(counts.tileunload).to.be(16);
+						expect(counts.tileloadstart).to.equal(32);
+						expect(counts.tileload).to.equal(32);
+						expect(counts.tileunload).to.equal(16);
 						done();
 					});
 				});
@@ -744,7 +744,7 @@ describe('GridLayer', () => {
 							// all 16 tiles from z11 which are now covered by the
 							// 4 central active tiles of z10.
 							requestAnimationFrame(() => {
-								expect(counts.tileunload).to.be(16);
+								expect(counts.tileunload).to.equal(16);
 								done();
 							});
 						});
