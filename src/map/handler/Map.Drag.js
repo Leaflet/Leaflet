@@ -1,7 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
-import * as Util from '../../core/Util.js';
 import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
 import {toBounds} from '../../geometry/Bounds.js';
 

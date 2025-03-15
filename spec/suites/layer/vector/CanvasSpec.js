@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util, stamp} from 'leaflet';
+import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, stamp} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -190,7 +190,7 @@ describe('Canvas', () => {
 		});
 	});
 
-	it('removes vector on next animation frame', function (done) {
+	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -205,7 +205,7 @@ describe('Canvas', () => {
 		});
 	});
 
-	it('adds vectors even if they have been removed just before', function (done) {
+	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
