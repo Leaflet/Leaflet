@@ -1,5 +1,5 @@
 /* global L */
-import 'leaflet';
+import * as L from 'leaflet';
 import {expect} from 'chai';
 
 describe('General', () => {
