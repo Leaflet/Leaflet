@@ -1223,7 +1223,9 @@ describe('Map', () => {
 			container.style.width = `${origWidth}px`;
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 		});
 
 		afterEach(() => {

@@ -1,7 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import * as Util from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 
 /*
@@ -94,10 +93,10 @@ export const TouchZoom = Handler.extend({
 			this._moved = true;
 		}
 
-		Util.cancelAnimFrame(this._animRequest);
+		cancelAnimationFrame(this._animRequest);
 
 		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
-		this._animRequest = Util.requestAnimFrame(moveFn, this);
+		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
 		DomEvent.preventDefault(e);
 	},
@@ -109,7 +108,7 @@ export const TouchZoom = Handler.extend({
 		}
 
 		this._zooming = false;
-		Util.cancelAnimFrame(this._animRequest);
+		cancelAnimationFrame(this._animRequest);
 
 		DomEvent.off(document, 'touchmove', this._onTouchMove, this);
 		DomEvent.off(document, 'touchend touchcancel', this._onTouchEnd, this);

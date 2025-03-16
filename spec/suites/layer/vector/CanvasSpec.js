@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util, stamp} from 'leaflet';
+import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, stamp} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -190,7 +190,7 @@ describe('Canvas', () => {
 		});
 	});
 
-	it('removes vector on next animation frame', function (done) {
+	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -199,13 +199,13 @@ describe('Canvas', () => {
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.not.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
-	it('adds vectors even if they have been removed just before', function (done) {
+	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -216,10 +216,10 @@ describe('Canvas', () => {
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
 	it('adds vectors even if the canvas container was removed', (done) => {
@@ -278,7 +278,7 @@ describe('Canvas', () => {
 			new Polygon(latLngs).addTo(map);
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 
 		it('can remove renderer without errors', (done) => {
@@ -292,7 +292,7 @@ describe('Canvas', () => {
 			canvas.remove();
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 	});
 });
