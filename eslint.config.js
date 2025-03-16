@@ -6,7 +6,7 @@ import globals from 'globals';
 export default [
 	...config,
 	{
-		files: ['*.js', '*.mjs', '*.cjs'],
+		files: ['*.js', '*.cjs'],
 	},
 	{
 		ignores: [
