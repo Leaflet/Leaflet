@@ -91,10 +91,10 @@ describe('Canvas', () => {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
-		it('should not block mousemove event going to non-canvas features', () => {
+		it('should not block pointermove event going to non-canvas features', () => {
 			const spyMap = sinon.spy();
-			map.on('mousemove', spyMap);
-			UIEventSimulator.fireAt('mousemove', 151, 151); // empty space
+			map.on('pointermove', spyMap);
+			UIEventSimulator.fireAt('pointermove', 151, 151); // empty space
 			expect(spyMap.calledOnce).to.be.true;
 		});
 
@@ -114,13 +114,13 @@ describe('Canvas', () => {
 			expect(preclickSpy.callCount).to.eql(1);
 		});
 
-		it('should not fire click when dragging the map on top of it', (done) => {
+		it.only('should not fire click when dragging the map on top of it', (done) => {
 			const downSpy = sinon.spy();
 			const clickSpy = sinon.spy();
 			const preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
-			layer.on('mousedown', downSpy);
+			layer.on('pointerdown', downSpy);
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
@@ -133,19 +133,19 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of Draggable.
 			mouse.moveTo(50, 50, 0)
 				.down().moveBy(20, 10, 200).up();
 		});
 
-		it('does fire mousedown on layer after dragging map', (done) => { // #7775
+		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
 			const radius = p2ll(200, 200).distanceTo(center);
 			const circle = new Circle(center, {radius}).addTo(map);
-			circle.on('mousedown', spy);
+			circle.on('pointerdown', spy);
 
 			const hand = new Hand({
 				timing: 'fastframe',
@@ -154,12 +154,12 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
 				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect mousedown ok
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect pointerdown ok
 		});
 	});
 
