@@ -46,7 +46,7 @@
     "debug": "http-server -c-1",
     "docs": "node ./build/docs.js && node ./build/integrity.js",
     "test": "karma start ./spec/karma.conf.cjs",
-    "coverage": "karma start ./spec/karma.conf.js --coverage --single-run",
+    "coverage": "karma start ./spec/karma.conf.cjs --coverage --single-run",
     "build": "npm run rollup && npm run uglify",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
