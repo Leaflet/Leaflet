@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
-describe.only('Tooltip', () => {
+describe('Tooltip', () => {
 	let container, map;
 	const center = [55.8, 37.6];
 
