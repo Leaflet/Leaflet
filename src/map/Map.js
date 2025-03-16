@@ -1345,7 +1345,7 @@ export const Map = Evented.extend({
 
 	_onResize() {
 		cancelAnimationFrame(this._resizeRequest);
-		this._resizeRequest = (() => { this.invalidateSize({debounceMoveend: true}); });
+		this._resizeRequest = requestAnimationFrame(() => { this.invalidateSize({debounceMoveend: true}); });
 	},
 
 	_onScroll() {
