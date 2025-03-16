@@ -57,7 +57,7 @@ export const VideoOverlay = ImageOverlay.extend({
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
 		vid.onselectstart = Util.falseFn;
-		vid.onmousemove = Util.falseFn;
+		vid.onpointermove = Util.falseFn;
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
