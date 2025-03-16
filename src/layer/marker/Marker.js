@@ -245,8 +245,8 @@ export const Marker = Layer.extend({
 
 		if (options.riseOnHover) {
 			this.on({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 
@@ -286,8 +286,8 @@ export const Marker = Layer.extend({
 	_removeIcon() {
 		if (this.options.riseOnHover) {
 			this.off({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 
