@@ -803,7 +803,7 @@ export const GridLayer = Layer.extend({
 		tile.style.height = `${tileSize.y}px`;
 
 		tile.onselectstart = Util.falseFn;
-		tile.onmousemove = Util.falseFn;
+		tile.onpointermove = Util.falseFn;
 	},
 
 	_addTile(coords, container) {
