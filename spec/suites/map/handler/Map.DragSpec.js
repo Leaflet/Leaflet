@@ -1,5 +1,7 @@
+import {expect} from 'chai';
 import {DomUtil, LatLng, Map, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
@@ -107,7 +109,7 @@ describe('Map.Drag', () => {
 				map.setView([0, 0], 1);
 
 				const start = new Point(200, 200);
-				const offset = new Point(256, 32);
+				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
 				const hand = new Hand({
@@ -116,7 +118,7 @@ describe('Map.Drag', () => {
 						expect(map.getOffset()).to.eql(offset);
 
 						expect(map.getZoom()).to.equal(1);
-						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
+						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
 
 						done();
 					}

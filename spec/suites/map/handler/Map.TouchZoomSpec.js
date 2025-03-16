@@ -1,6 +1,8 @@
+import {expect} from 'chai';
 import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
 import Hand from 'prosthetic-hand';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import sinon from 'sinon';
+import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
 describe('Map.TouchZoom', () => {
 	const touchEventType = ['pointer', {pointerType: 'touch'}];

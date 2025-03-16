@@ -1,4 +1,6 @@
+import {expect} from 'chai';
 import {Control, DomEvent, DomUtil, Map, extend} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -8,7 +10,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	beforeEach(() => {
 		container = createContainer();
 
-		clock = sinon.useFakeTimers();
+		clock = sinon.useFakeTimers({
+			toFake: ['setTimeout', 'clearTimeout', 'Date']
+		});
 		clock.tick(1000);
 		spy = sinon.spy();
 		DomEvent.on(container, 'dblclick', spy);

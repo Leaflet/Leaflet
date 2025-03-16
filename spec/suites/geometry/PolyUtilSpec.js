@@ -1,4 +1,7 @@
-import {Bounds, Point, PolyUtil, Map, Polygon} from 'leaflet';
+import {expect} from 'chai';
+import {Bounds, Map, Point, PolyUtil, Polygon} from 'leaflet';
+import sinon from 'sinon';
+import '../SpecHelper.js';
 
 describe('PolyUtil', () => {
 	describe('#clipPolygon', () => {

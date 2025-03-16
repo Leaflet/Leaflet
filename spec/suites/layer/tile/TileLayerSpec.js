@@ -1,4 +1,6 @@
-import {Map, TileLayer, Util, CRS, DomUtil, Browser} from 'leaflet';
+import {expect} from 'chai';
+import {Browser, CRS, DomUtil, Map, TileLayer, Util, LatLng} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('TileLayer', () => {
@@ -188,7 +190,7 @@ describe('TileLayer', () => {
 	describe('number of kittens loaded', () => {
 		let clock, kittenLayer, counts;
 
-		// animationFrame helper, just runs requestAnimFrame() a given number of times
+		// animationFrame helper, just runs requestAnimationFrame() a given number of times
 		function runFrames(n) {
 			return _runFrames(n)();
 		}
@@ -198,15 +200,16 @@ describe('TileLayer', () => {
 				return function () {
 					clock.tick(40); // 40msec/frame ~= 25fps
 					map.fire('_frame');
-					Util.requestAnimFrame(_runFrames(n - 1));
+					requestAnimationFrame(_runFrames(n - 1));
 				};
-			} else {
-				return Util.falseFn;
 			}
+			return Util.falseFn;
 		}
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 
 			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
@@ -403,6 +406,40 @@ describe('TileLayer', () => {
 			});
 		});
 
+		it('adds OSM attribution if none are provided and is using OSM tiles', () => {
+			// Uses OSM tiles without providing attribution
+			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+		});
+
+		it('doesn\'t add OSM attribution if it\'s specifically set as empty', () => {
+			// Uses OSM tiles without providing attribution
+			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: ''
+			}).addTo(map);
+			expect(layer.options.attribution).to.eql('');
+		});
+
+		it('requests tiles with an integer {z} when the map\'s zoom level is fractional', () => {
+			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+			map.options.zoomSnap = 0;
+			map._resetView(new LatLng(0, 0), 2.3);
+
+			layer.redraw();
+
+			const urls = [
+				'http://example.com/2/1/1.png',
+				'http://example.com/2/1/2.png',
+				'http://example.com/2/2/1.png',
+				'http://example.com/2/2/2.png',
+			];
+
+			let i = 0;
+			eachImg(layer, (img) => {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
 	});
 
 	const _describe = 'crossOrigin' in DomUtil.create('img') ? describe : describe.skip; // skip in IE<11

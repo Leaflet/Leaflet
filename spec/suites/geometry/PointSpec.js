@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {point} from 'leaflet';
 
 describe('Point', () => {

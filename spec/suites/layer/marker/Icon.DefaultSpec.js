@@ -1,4 +1,5 @@
-import {Map, Marker, Icon} from 'leaflet';
+import {expect} from 'chai';
+import {Icon, Map, Marker, Browser} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Icon.Default', () => {
@@ -51,5 +52,33 @@ describe('Icon.Default', () => {
 		const img = map.getPane('shadowPane').querySelector('img');
 		expect(img.clientHeight).to.equal(41);
 		expect(img.clientWidth).to.equal(41);
+	});
+
+	it('don\'t set shadow icon if null', () => {
+		const oldShadowUrl = Icon.Default.prototype.options.shadowUrl;
+		Icon.Default.prototype.options.shadowUrl = null;
+		const marker = new Marker([0, 0]).addTo(map);
+
+		expect(marker._shadow).to.be.null;
+
+		// This is needed because else other tests will fail
+		Icon.Default.prototype.options.shadowUrl = oldShadowUrl;
+	});
+
+	it('don\'t set retina shadow icon if null', () => {
+		const oldShadowRetinaUrl = Icon.Default.prototype.options.shadowRetinaUrl;
+		const oldShadowUrl = Icon.Default.prototype.options.shadowUrl;
+		const oldRetinaValue = Browser.retina;
+		Browser.retina = true;
+		Icon.Default.prototype.options.shadowRetinaUrl = null;
+		Icon.Default.prototype.options.shadowUrl = null;
+		const marker = new Marker([0, 0]).addTo(map);
+
+		expect(marker._shadow).to.be.null;
+
+		// This is needed because else other tests will fail
+		Icon.Default.prototype.options.shadowRetinaUrl = oldShadowRetinaUrl;
+		Icon.Default.prototype.options.shadowUrl = oldShadowUrl;
+		Browser.retina = oldRetinaValue;
 	});
 });

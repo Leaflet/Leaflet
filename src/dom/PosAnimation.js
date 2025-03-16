@@ -1,4 +1,3 @@
-import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -7,7 +6,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @class PosAnimation
  * @aka L.PosAnimation
  * @inherits Evented
- * Used internally for panning animations, utilizing CSS Transitions for modern browsers and a timer fallback for IE6-9.
+ * Used internally for panning animations and utilizing CSS Transitions for modern browsers.
  *
  * @example
  * ```js
@@ -70,7 +69,7 @@ export const PosAnimation = Evented.extend({
 
 	_animate() {
 		// animation loop
-		this._animId = Util.requestAnimFrame(this._animate, this);
+		this._animId = requestAnimationFrame(this._animate.bind(this));
 		this._step();
 	},
 
@@ -99,7 +98,7 @@ export const PosAnimation = Evented.extend({
 	},
 
 	_complete() {
-		Util.cancelAnimFrame(this._animId);
+		cancelAnimationFrame(this._animId);
 
 		this._inProgress = false;
 		// @event end: Event

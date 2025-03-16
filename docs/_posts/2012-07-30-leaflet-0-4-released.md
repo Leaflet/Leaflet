@@ -51,7 +51,7 @@ Leaflet maps got a nice accessibility boost in 0.4 with the new keyboard handler
 
 #### Panning Inertia
 
-Another nice improvement comes to the panning experience --- now it has an inertial movement effect, where the map smoothly continues to move after a quick pan. Feels especially natural on touch devices --- and it's enabled by default too, try it now! It's also highly configurable, allowing you to set the maximum speed of the effect, decceleration, and time threshold under which it triggers.
+Another nice improvement comes to the panning experience --- now it has an inertial movement effect, where the map smoothly continues to move after a quick pan. Feels especially natural on touch devices --- and it's enabled by default too, try it now! It's also highly configurable, allowing you to set the maximum speed of the effect, deceleration, and time threshold under which it triggers.
 
 #### Pinch-Zoom on Android 4
 

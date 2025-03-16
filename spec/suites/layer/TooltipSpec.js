@@ -1,5 +1,7 @@
+import {expect} from 'chai';
 import {CircleMarker, FeatureGroup, LayerGroup, Map, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -456,7 +458,7 @@ describe('Tooltip', () => {
 		expect(eventSpy.calledOnce).to.be.true;
 	});
 
-	it('don\'t opens the tooltip on marker mouseover while dragging map', () => {
+	it('don\'t opens the tooltip on marker mouseover while dragging map', (done) => {
 		// Sometimes the mouse is moving faster then the map while dragging and then the marker can be hover and
 		// the tooltip opened / closed.
 		const layer = new Marker(center).addTo(map).bindTooltip('Tooltip');
@@ -469,11 +471,20 @@ describe('Tooltip', () => {
 		expect(tooltip.isOpen()).to.be.false;
 
 		// simulate map not dragging anymore
-		map.dragging.moving = function () {
-			return false;
-		};
-		UIEventSimulator.fireAt('mouseover', 210, 195);
-		expect(tooltip.isOpen()).to.be.true;
+		map.dragging.moving = () => false;
+
+		map.on('moveend', () => {
+			expect(tooltip.isOpen()).to.be.false;
+
+			UIEventSimulator.fireAt('mouseover', 210, 195);
+			expect(tooltip.isOpen()).to.be.true;
+
+			done();
+		});
+
+		// calls moveend and triggers openTooltip if the layer was added to the map
+		map.setView(map.getCenter());
+
 	});
 
 	it('closes the tooltip on marker mouseout while dragging map and don\'t open it again', () => {
@@ -568,5 +579,37 @@ describe('Tooltip', () => {
 		expect(spy2.called).to.be.false;
 		layer2.openTooltip();
 		expect(spy2.called).to.be.true;
+	});
+
+	it('removes focus listeners after unbinding tooltip from Layer', () => {
+		const marker = new Marker([51.515, -0.09]).addTo(map);
+
+		marker
+			.bindTooltip('Tooltip that will be unbinded')
+			.openTooltip();
+
+		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
+
+		marker.unbindTooltip();
+
+		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
+		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
+	});
+
+	it('removes focus listeners after unbinding tooltip from FeatureGroup', () => {
+
+		const marker = new Marker([51.515, -0.09]);
+		const layergroup = new FeatureGroup([marker]).addTo(map);
+
+		layergroup
+			.bindTooltip('Tooltip that will be unbinded in two seconds')
+			.openTooltip();
+
+		expect(marker.getElement()._leaflet_focus_handler).to.be.not.undefined;
+
+		layergroup.unbindTooltip();
+
+		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
+		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
 	});
 });

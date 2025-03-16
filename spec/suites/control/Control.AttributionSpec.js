@@ -1,5 +1,6 @@
 import {Map, Control, Layer, control as lControl} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {expect} from 'chai';
 
 describe('Control.Attribution', () => {
 	let map, control, container, controlContainer;

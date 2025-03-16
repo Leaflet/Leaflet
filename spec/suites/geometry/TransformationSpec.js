@@ -1,4 +1,5 @@
-import {transformation, point} from 'leaflet';
+import {expect} from 'chai';
+import {point, transformation} from 'leaflet';
 
 describe('Transformation', () => {
 	let t, p;

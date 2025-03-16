@@ -1,4 +1,6 @@
-import {DomEvent, Util, Map} from 'leaflet';
+import {expect} from 'chai';
+import {DomEvent, Map, Util} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 
 describe('DomEvent', () => {
@@ -600,9 +602,8 @@ describe('DomEvent', () => {
 		function isPrevented(e) {
 			if ('defaultPrevented' in e) {
 				return e.defaultPrevented;
-			} else { // IE<11
-				return !e.returnValue;
 			}
+			return !e.returnValue; // IE<11
 		}
 
 		it('prevents the default action of event', (done) => {

@@ -92,6 +92,17 @@ export const TileLayer = GridLayer.extend({
 
 		options = Util.setOptions(this, options);
 
+		// in case the attribution hasn't been specified, check for known hosts that require attribution
+		if (options.attribution === null && URL.canParse(url)) {
+			const urlHostname = new URL(url).hostname;
+
+			// check for Open Street Map hosts
+			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
+			if (osmHosts.some(host => urlHostname.endsWith(host))) {
+				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			}
+		}
+
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
@@ -213,8 +224,8 @@ export const TileLayer = GridLayer.extend({
 	_getZoomForUrl() {
 		let zoom = this._tileZoom;
 		const maxZoom = this.options.maxZoom,
-		      zoomReverse = this.options.zoomReverse,
-		      zoomOffset = this.options.zoomOffset;
+		zoomReverse = this.options.zoomReverse,
+		zoomOffset = this.options.zoomOffset;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
@@ -270,6 +281,10 @@ export const TileLayer = GridLayer.extend({
 		}
 
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+	},
+
+	_clampZoom(zoom) {
+		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
 

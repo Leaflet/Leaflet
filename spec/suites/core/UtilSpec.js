@@ -1,4 +1,6 @@
+import {expect} from 'chai';
 import {Util} from 'leaflet';
+import sinon from 'sinon';
 
 describe('Util', () => {
 	describe('#extend', () => {
@@ -92,22 +94,6 @@ describe('Util', () => {
 			};
 
 			expect(Util.getParamString(c.obj, c.url)).to.eql(c.result);
-		});
-	});
-
-	describe('#requestAnimFrame', () => {
-		it('calles a function on next frame, unless canceled', (done) => {
-			const spy = sinon.spy(),
-			    foo = {};
-
-			Util.requestAnimFrame(spy);
-
-			Util.requestAnimFrame(function () {
-				expect(this).to.eql(foo);
-				done();
-			}, foo);
-
-			Util.cancelAnimFrame(spy);
 		});
 	});
 

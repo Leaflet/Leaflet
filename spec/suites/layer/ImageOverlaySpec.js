@@ -1,4 +1,6 @@
-import {Map, imageOverlay, LatLngBounds} from 'leaflet';
+import {expect} from 'chai';
+import {LatLngBounds, Map, imageOverlay} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('ImageOverlay', () => {

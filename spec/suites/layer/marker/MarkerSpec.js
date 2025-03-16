@@ -1,4 +1,6 @@
-import {Map, Icon, Marker, Point, DivIcon, Browser, LatLng} from 'leaflet';
+import {expect} from 'chai';
+import {Browser, DivIcon, Icon, LatLng, Map, Marker, Point} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

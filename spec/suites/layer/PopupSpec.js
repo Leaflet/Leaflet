@@ -1,5 +1,7 @@
+import {expect} from 'chai';
 import {DivIcon, DomUtil, FeatureGroup, Icon, Map, Marker, Point, Polygon, Popup} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -306,6 +308,21 @@ describe('Popup', () => {
 		});
 
 		expect(map.hasLayer(layer._popup)).to.be.true;
+	});
+
+
+	it('can change popup content with a click on removed DOM', () => {
+		const popup = new Popup()
+			.setLatLng(center)
+			.setContent('<p onclick="this.parentNode.innerHTML = \'changed\'">initial</p>')
+			.openOn(map);
+
+
+		UIEventSimulator.fire('click', popup._container.querySelector('p'));
+
+		expect(popup._container.innerHTML).to.not.contain('initial');
+		expect(popup._container.innerHTML).to.contain('changed');
+		expect(map.hasLayer(popup)).to.be.true;
 	});
 
 	describe('autoPan option should pan popup into visibility', () => {

@@ -117,7 +117,12 @@ export const Popup = DivOverlay.extend({
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
-		className: ''
+		className: '',
+
+		// @option trackResize: Boolean = true
+		// Whether the popup shall react to changes in the size of its contents
+		// (e.g. when an image inside the popup loads) and reposition itself.
+		trackResize: true,
 	},
 
 	// @namespace Popup
@@ -220,6 +225,21 @@ export const Popup = DivOverlay.extend({
 				this.close();
 			}, this);
 		}
+
+
+		if (this.options.trackResize) {
+			this._resizeObserver = new ResizeObserver(((entries) => {
+				if (!this._map) { return; }
+				this._containerWidth = entries[0]?.contentRect?.width;
+				this._containerHeight = entries[0]?.contentRect?.height;
+
+				this._updateLayout();
+				this._updatePosition();
+				this._adjustPan();
+			}));
+
+			this._resizeObserver.observe(this._contentNode);
+		}
 	},
 
 	_updateLayout() {
@@ -229,16 +249,13 @@ export const Popup = DivOverlay.extend({
 		style.width = '';
 		style.whiteSpace = 'nowrap';
 
-		let width = container.offsetWidth;
-		width = Math.min(width, this.options.maxWidth);
-		width = Math.max(width, this.options.minWidth);
-
-		style.width = `${width + 1}px`;
+		style.maxWidth = `${this.options.maxWidth}px`;
+		style.minWidth = `${this.options.minWidth}px`;
 		style.whiteSpace = '';
 
 		style.height = '';
 
-		const height = container.offsetHeight,
+		const height = this._containerHeight ?? container.offsetHeight,
 		    maxHeight = this.options.maxHeight,
 		    scrolledClass = 'leaflet-popup-scrolled';
 
@@ -250,6 +267,7 @@ export const Popup = DivOverlay.extend({
 		}
 
 		this._containerWidth = this._container.offsetWidth;
+		this._containerHeight = this._container.offsetHeight;
 	},
 
 	_animateZoom(e) {
@@ -271,7 +289,7 @@ export const Popup = DivOverlay.extend({
 
 		const map = this._map,
 		    marginBottom = parseInt(getComputedStyle(this._container).marginBottom, 10) || 0,
-		    containerHeight = this._container.offsetHeight + marginBottom,
+		    containerHeight = this._containerHeight + marginBottom,
 		    containerWidth = this._containerWidth,
 		    layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 

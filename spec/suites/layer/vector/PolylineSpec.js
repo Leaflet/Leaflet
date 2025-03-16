@@ -1,4 +1,5 @@
-import {Map, polyline, latLng} from 'leaflet';
+import {expect} from 'chai';
+import {Map, latLng, polyline} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Polyline', () => {

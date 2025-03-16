@@ -1,4 +1,6 @@
-import {Map, latLng, Point, LatLngBounds, TileLayer, Handler, DomEvent, Bounds, Layer, control as lControl, GridLayer, Util, Marker, Polygon, DivIcon, CircleMarker, Canvas} from 'leaflet';
+import {expect} from 'chai';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, Map, Marker, Point, Polygon, TileLayer, Util, control as lControl, latLng} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -87,6 +89,24 @@ describe('Map', () => {
 
 			// #6775 Remove the map in the middle of the animation
 			map.on('zoom', map.remove.bind(map));
+			map.setZoom(2);
+		});
+
+		// For #9575
+		it('does not throw if removed before transition end complete', (done) => {
+			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
+
+			map._createAnimProxy();
+
+			setTimeout(() => {
+				map.remove();
+				map = null;
+			}, 10);
+
+			setTimeout(() => {
+				done();
+			}, 300);
+
 			map.setZoom(2);
 		});
 
@@ -1203,7 +1223,9 @@ describe('Map', () => {
 			container.style.width = `${origWidth}px`;
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 		});
 
 		afterEach(() => {
@@ -2199,6 +2221,34 @@ describe('Map', () => {
 		});
 	});
 
+	describe('#project', () => {
+		const tolerance = 1 / 1000000;
+
+		it('returns pixel coordinates relative to the top-left of the CRS extents', () => {
+			map.setView([40, -83], 5);
+			const x = latLng([40, -83]);
+			const a = map.project(x, 5);
+			expect(a.x).to.be.approximately(2207.288888, tolerance);
+			expect(a.y).to.be.approximately(3101.320460, tolerance);
+		});
+
+		it('test the other coordinates', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 5);
+			expect(b.x).to.be.approximately(5984.7111111, tolerance);
+			expect(b.y).to.be.approximately(3101.3204602, tolerance);
+		});
+
+		it('test the prev coordinates with different zoom', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 6);
+			expect(b.x).to.be.approximately(11969.422222, tolerance);
+			expect(b.y).to.be.approximately(6202.640920, tolerance);
+		});
+	});
+
 	describe('#latLngToLayerPoint', () => {
 
 		it('throws if map is not set before', () => {
@@ -2500,6 +2550,115 @@ describe('Map', () => {
 			const output = map.unproject(offset);
 			expect(output).to.be.nearLatLng(expectedOutput);
 
+		});
+	});
+
+	describe('#flyToBounds', () => {
+		it('throws if map is not set before', () => {
+			expect(() => {
+				map.flyToBounds();
+			}).to.throw();
+		});
+
+		it('throws if passed invalid bounds', () => {
+			expect(() => {
+				map.flyToBounds(0, 0);
+			}).to.throw();
+		});
+
+		it('doesn\'t fly if already in bounds', () => {
+			map.setView([0, 0]);
+			const bounds = new LatLngBounds([
+				[-1, -1],
+				[1, 1],
+			]);
+			const expectedCenter = latLng([0, 0]);
+			expect(map.flyToBounds(bounds)).to.equal(map);
+			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+
+		it('flies to requested bounds and corresponding center (low zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[40, 10],
+				[10, 40],
+			]);
+			const expectedCenter = latLng([25.9461, 25]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(2.7);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(2.7);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
+		});
+
+		it('flies to requested bounds and corresponding center (middle zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[30, 20],
+				[20, 30],
+			]);
+			const expectedCenter = latLng([25.102, 25]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(4);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(4);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
+		});
+
+		it('flies to requested bounds and corresponding center (high zoom case)', (done) => {
+
+			const bounds = new LatLngBounds([
+				[13, 12],
+				[12, 13],
+			]);
+			const expectedCenter = latLng([12.5004, 12.5]);
+			map.setView([0, 0], 0, {animate: false});
+
+			map.on('zoomend', () => {
+				expect(
+					Math.abs(map.getBounds().getEast() - bounds.getEast())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getWest() - bounds.getWest())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getNorth() - bounds.getNorth())
+				).to.be.lessThan(0.05);
+				expect(
+					Math.abs(map.getBounds().getSouth() - bounds.getSouth())
+				).to.be.lessThan(0.05);
+				expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+				done();
+			});
+			map.flyToBounds(bounds, {animate: false});
 		});
 	});
 });

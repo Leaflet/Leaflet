@@ -1,4 +1,5 @@
-import {Map, Circle} from 'leaflet';
+import {expect} from 'chai';
+import {Circle, Map, Util, CRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -44,6 +45,24 @@ describe('Circle', () => {
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
 			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
+		});
+	});
+
+	describe('CRS Simple', () => {
+		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
+			map.remove();
+
+			const crs = Util.extend(CRS.Simple, {
+				transformation: new Transformation(-1, 0, -1, 0),
+			});
+			map = new Map(container, {
+				crs
+			});
+			map.setView([0, 0], 4);
+
+			const circle = new Circle([0, 0], {radius: 200}).addTo(map);
+
+			expect(circle._radius).to.eql(3200);
 		});
 	});
 });
