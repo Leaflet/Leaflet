@@ -15,7 +15,7 @@ const config = {
 	input: 'src/LeafletWithGlobals.js',
 	output: [
 		{
-			file: pkg.main,
+			file: pkg.exports['.'],
 			format: 'es',
 			banner,
 			sourcemap: true,

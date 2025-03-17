@@ -33,7 +33,9 @@
     "ui-event-simulator": "^2.0.0"
   },
   "type": "module",
-  "main": "dist/leaflet-src.js",
+  "exports": {
+    ".": "./dist/leaflet-src.js"
+  },
   "style": "dist/leaflet.css",
   "files": [
     "dist",
