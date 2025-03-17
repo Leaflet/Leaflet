@@ -79,7 +79,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		karmaConfig.plugins.push('karma-coverage');
 		karmaConfig.reporters.push('coverage');
 		karmaConfig.preprocessors = {
-			'dist/leaflet-src.esm.js': 'coverage'
+			'dist/leaflet-src.js': 'coverage'
 		};
 	}
 

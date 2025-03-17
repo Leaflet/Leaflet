@@ -113,7 +113,7 @@ jobs:
           cache: npm
 
       - name: Run Node.js SSR script
-        run: node ./spec/ssr/ssr_node.mjs
+        run: node ./spec/ssr/ssr_node.js
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
