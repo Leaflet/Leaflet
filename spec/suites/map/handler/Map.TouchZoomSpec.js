@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
 describe('Map.TouchZoom', () => {
+	const touchEventType = ['pointer', {pointerType: 'touch'}];
 	let container, map;
 
 	beforeEach(() => {
@@ -32,8 +33,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -53,8 +54,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -87,8 +88,8 @@ describe('Map.TouchZoom', () => {
 		new Rectangle(map.getBounds().pad(-0.2)).addTo(map);
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -116,8 +117,8 @@ describe('Map.TouchZoom', () => {
 			}
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0).down()
@@ -153,8 +154,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -215,8 +216,8 @@ describe('Map.TouchZoom', () => {
 			}
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -277,8 +278,8 @@ describe('Map.TouchZoom', () => {
 			}
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...touchEventType);
+		const f2 = hand.growFinger(...touchEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
