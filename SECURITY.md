@@ -8,4 +8,4 @@ To report a security issue, please send your report to agafonkin@gmail.com. We r
 ## Other Communication
 For other inquiries (e.g., developer questions, user questions), try asking on: 
 * [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet) 
-* GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
+* [GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
