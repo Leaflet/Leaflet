@@ -48,7 +48,7 @@ export const Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
+		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
@@ -192,7 +192,7 @@ export const Layers = Control.extend({
 		    container = this._container = DomUtil.create('div', className),
 		    collapsed = this.options.collapsed;
 
-		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
+		// makes this work on IE touch devices by stopping it from firing a pointerout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
 
 		DomEvent.disableClickPropagation(container);
