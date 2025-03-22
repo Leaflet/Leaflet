@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {DomUtil, Map, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
 describe('Marker.Drag', () => {
 	let map,
@@ -49,7 +49,7 @@ describe('Marker.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger(...touchEventType);
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
@@ -81,7 +81,7 @@ describe('Marker.Drag', () => {
 						done();
 					}
 				});
-				const toucher = hand.growFinger('mouse');
+				const toucher = hand.growFinger(...touchEventType);
 
 				const startScaled = start.scaleBy(scale);
 				const finishScaled = finish.scaleBy(scale);
@@ -112,7 +112,7 @@ describe('Marker.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger('mouse');
+			const toucher = hand.growFinger(...touchEventType);
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();

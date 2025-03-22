@@ -67,15 +67,15 @@ describe('Map', () => {
 
 			// actual test
 			spy = sinon.spy();
-			map.on('click dblclick mousedown mouseup mousemove', spy);
+			map.on('click dblclick pointerdown pointerup pointermove', spy);
 			map.remove();
 			map = null;
 
 			UIEventSimulator.fire('click', container);
 			UIEventSimulator.fire('dblclick', container);
-			UIEventSimulator.fire('mousedown', container);
-			UIEventSimulator.fire('mouseup', container);
-			UIEventSimulator.fire('mousemove', container);
+			UIEventSimulator.fire('pointerdown', container);
+			UIEventSimulator.fire('pointerup', container);
+			UIEventSimulator.fire('pointermove', container);
 
 			expect(spy.called).to.be.false;
 		});
@@ -1777,27 +1777,27 @@ describe('Map', () => {
 
 		it('DOM events propagate from polygon to map', () => {
 			const spy = sinon.spy();
-			map.on('mousemove', spy);
+			map.on('pointermove', spy);
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
-			UIEventSimulator.fire('mousemove', layer._path);
+			UIEventSimulator.fire('pointermove', layer._path);
 			expect(spy.calledOnce).to.be.true;
 		});
 
 		it('DOM events propagate from marker to map', () => {
 			const spy = sinon.spy();
-			map.on('mousemove', spy);
+			map.on('pointermove', spy);
 			const layer = new Marker([1, 2]).addTo(map);
-			UIEventSimulator.fire('mousemove', layer._icon);
+			UIEventSimulator.fire('pointermove', layer._icon);
 			expect(spy.calledOnce).to.be.true;
 		});
 
 		it('DOM events fired on marker can be cancelled before being caught by the map', () => {
 			const mapSpy = sinon.spy();
 			const layerSpy = sinon.spy();
-			map.on('mousemove', mapSpy);
+			map.on('pointermove', mapSpy);
 			const layer = new Marker([1, 2]).addTo(map);
-			layer.on('mousemove', DomEvent.stopPropagation).on('mousemove', layerSpy);
-			UIEventSimulator.fire('mousemove', layer._icon);
+			layer.on('pointermove', DomEvent.stopPropagation).on('pointermove', layerSpy);
+			UIEventSimulator.fire('pointermove', layer._icon);
 			expect(layerSpy.calledOnce).to.be.true;
 			expect(mapSpy.called).not.to.be.true;
 		});
@@ -1805,30 +1805,30 @@ describe('Map', () => {
 		it('DOM events fired on polygon can be cancelled before being caught by the map', () => {
 			const mapSpy = sinon.spy();
 			const layerSpy = sinon.spy();
-			map.on('mousemove', mapSpy);
+			map.on('pointermove', mapSpy);
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
-			layer.on('mousemove', DomEvent.stopPropagation).on('mousemove', layerSpy);
-			UIEventSimulator.fire('mousemove', layer._path);
+			layer.on('pointermove', DomEvent.stopPropagation).on('pointermove', layerSpy);
+			UIEventSimulator.fire('pointermove', layer._path);
 			expect(layerSpy.calledOnce).to.be.true;
 			expect(mapSpy.called).not.to.be.true;
 		});
 
-		it('mouseout is forwarded if fired on the original target', () => {
+		it('pointerout is forwarded if fired on the original target', () => {
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
 			    otherSpy = sinon.spy();
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			const other = new Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
-			map.on('mouseout', mapSpy);
-			layer.on('mouseout', layerSpy);
-			other.on('mouseout', otherSpy);
-			UIEventSimulator.fire('mouseout', layer._path, {relatedTarget: container});
+			map.on('pointerout', mapSpy);
+			layer.on('pointerout', layerSpy);
+			other.on('pointerout', otherSpy);
+			UIEventSimulator.fire('pointerout', layer._path, {relatedTarget: container});
 			expect(mapSpy.called).not.to.be.true;
 			expect(otherSpy.called).not.to.be.true;
 			expect(layerSpy.calledOnce).to.be.true;
 		});
 
-		it('mouseout is forwarded when using a DivIcon', () => {
+		it('pointerout is forwarded when using a DivIcon', () => {
 			const icon = new DivIcon({
 				html: '<p>this is text in a child element</p>',
 				iconSize: [100, 100]
@@ -1836,14 +1836,14 @@ describe('Map', () => {
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
 			    layer = new Marker([1, 2], {icon}).addTo(map);
-			map.on('mouseout', mapSpy);
-			layer.on('mouseout', layerSpy);
-			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: container});
+			map.on('pointerout', mapSpy);
+			layer.on('pointerout', layerSpy);
+			UIEventSimulator.fire('pointerout', layer._icon, {relatedTarget: container});
 			expect(mapSpy.called).not.to.be.true;
 			expect(layerSpy.calledOnce).to.be.true;
 		});
 
-		it('mouseout is not forwarded if relatedTarget is a target\'s child', () => {
+		it('pointerout is not forwarded if relatedTarget is a target\'s child', () => {
 			const icon = new DivIcon({
 				html: '<p>this is text in a child element</p>',
 				iconSize: [100, 100]
@@ -1852,14 +1852,14 @@ describe('Map', () => {
 			    layerSpy = sinon.spy(),
 			    layer = new Marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector('p');
-			map.on('mouseout', mapSpy);
-			layer.on('mouseout', layerSpy);
-			UIEventSimulator.fire('mouseout', layer._icon, {relatedTarget: child});
+			map.on('pointerout', mapSpy);
+			layer.on('pointerout', layerSpy);
+			UIEventSimulator.fire('pointerout', layer._icon, {relatedTarget: child});
 			expect(mapSpy.called).not.to.be.true;
 			expect(layerSpy.called).not.to.be.true;
 		});
 
-		it('mouseout is not forwarded if fired on target\'s child', () => {
+		it('pointerout is not forwarded if fired on target\'s child', () => {
 			const icon = new DivIcon({
 				html: '<p>this is text in a child element</p>',
 				iconSize: [100, 100]
@@ -1868,23 +1868,23 @@ describe('Map', () => {
 			    layerSpy = sinon.spy(),
 			    layer = new Marker([1, 2], {icon}).addTo(map),
 			    child = layer._icon.querySelector('p');
-			map.on('mouseout', mapSpy);
-			layer.on('mouseout', layerSpy);
-			UIEventSimulator.fire('mouseout', child, {relatedTarget: layer._icon});
+			map.on('pointerout', mapSpy);
+			layer.on('pointerout', layerSpy);
+			UIEventSimulator.fire('pointerout', child, {relatedTarget: layer._icon});
 			expect(mapSpy.called).not.to.be.true;
 			expect(layerSpy.called).not.to.be.true;
 		});
 
-		it('mouseout is not forwarded to layers if fired on the map', () => {
+		it('pointerout is not forwarded to layers if fired on the map', () => {
 			const mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
 			    otherSpy = sinon.spy();
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			const other = new Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
-			map.on('mouseout', mapSpy);
-			layer.on('mouseout', layerSpy);
-			other.on('mouseout', otherSpy);
-			UIEventSimulator.fire('mouseout', container);
+			map.on('pointerout', mapSpy);
+			layer.on('pointerout', layerSpy);
+			other.on('pointerout', otherSpy);
+			UIEventSimulator.fire('pointerout', container);
 			expect(otherSpy.called).not.to.be.true;
 			expect(layerSpy.called).not.to.be.true;
 			expect(mapSpy.calledOnce).to.be.true;
@@ -2502,7 +2502,7 @@ describe('Map', () => {
 		});
 
 		it('returns the pixel coordinate relative to the map container where the event took place', () => {
-			const mouseEvent = new MouseEvent('mouseenter', {
+			const mouseEvent = new MouseEvent('pointerenter', {
 				clientX: 1,
 				clientY: 2
 			});

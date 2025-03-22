@@ -68,11 +68,11 @@ export const Tooltip = DivOverlay.extend({
 		direction: 'auto',
 
 		// @option permanent: Boolean = false
-		// Whether to open the tooltip permanently or only on mouseover.
+		// Whether to open the tooltip permanently or only on pointerover.
 		permanent: false,
 
 		// @option sticky: Boolean = false
-		// If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
 		sticky: false,
 
 		// @option opacity: Number = 0.9
@@ -308,8 +308,8 @@ Layer.include({
 			move: this._moveTooltip
 		};
 		if (!this._tooltip.options.permanent) {
-			events.mouseover = this._openTooltip;
-			events.mouseout = this.closeTooltip;
+			events.pointerover = this._openTooltip;
+			events.pointerout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
 				this._addFocusListeners(remove);
@@ -320,7 +320,7 @@ Layer.include({
 			events.add = this._openTooltip;
 		}
 		if (this._tooltip.options.sticky) {
-			events.mousemove = this._moveTooltip;
+			events.pointermove = this._moveTooltip;
 		}
 		this[onOff](events);
 		this._tooltipHandlersAdded = !remove;

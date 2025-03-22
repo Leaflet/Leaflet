@@ -1,5 +1,5 @@
 import {Assertion, util} from 'chai';
-import {Browser, latLng, point} from 'leaflet';
+import {Browser, latLng, point, PointerEvents} from 'leaflet';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = point(expected);
@@ -19,7 +19,7 @@ util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e
 it.skipIfNotTouch = Browser.touch ? it : it.skip;
 it.skipIfTouch = Browser.touchNative ? it.skip : it;
 
-export const touchEventType = Browser.touchNative ? 'touch' : 'pointer';
+export const touchEventType = Browser.touchNative ? ['pointer', {pointerType: 'touch'}] : ['pointer', {pointerType: 'mouse'}];
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 
@@ -46,6 +46,8 @@ export function removeMapContainer(map, container) {
 	if (container) {
 		document.body.removeChild(container);
 	}
+
+	PointerEvents.cleanupPointers();
 }
 
 console.log('Browser.pointer', Browser.pointer);

@@ -9,7 +9,7 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * Extended `LayerGroup` that makes it easier to do the same thing to all its member layers:
  *  * [`bindPopup`](#layer-bindpopup) binds a popup to all of the layers at once (likewise with [`bindTooltip`](#layer-bindtooltip))
  *  * Events are propagated to the `FeatureGroup`, so if the group has an event
- * handler, it will handle events from any of the layers. This includes mouse events
+ * handler, it will handle events from any of the layers. This includes pointer events
  * and custom events.
  *  * Has `layeradd` and `layerremove` events
  *

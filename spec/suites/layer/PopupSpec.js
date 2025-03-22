@@ -3,7 +3,7 @@ import {DivIcon, DomUtil, FeatureGroup, Icon, Map, Marker, Point, Polygon, Popup
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, touchEventType} from '../SpecHelper.js';
 
 describe('Popup', () => {
 	let container, map;
@@ -451,7 +451,7 @@ describe('Popup', () => {
 					expect(map.hasLayer(p)).to.be.true;
 					done();
 				}});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger(...touchEventType);
 			mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 				.down().moveBy(10, 10, 20).up();
 		});
