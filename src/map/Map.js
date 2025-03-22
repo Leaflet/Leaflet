@@ -9,7 +9,7 @@ import Browser from '../core/Browser.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
-import * as PointerEvents from '../dom/PointerEvents.js';
+import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 
 /*
  * @class Map
@@ -1102,7 +1102,7 @@ export const Map = Evented.extend({
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
-		PointerEvents.addListeners();
+		PointerEvents.enablePointerDetection();
 	},
 
 	_initLayout() {

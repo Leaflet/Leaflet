@@ -7,6 +7,3 @@ import * as DomUtil from './DomUtil.js';
 export {DomUtil};
 
 export {Draggable} from './Draggable.js';
-
-import * as PointerEvents from './PointerEvents.js';
-export {PointerEvents};

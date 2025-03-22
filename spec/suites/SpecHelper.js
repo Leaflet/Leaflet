@@ -1,5 +1,5 @@
 import {Assertion, util} from 'chai';
-import {Browser, latLng, point, PointerEvents} from 'leaflet';
+import {Browser, latLng, point, DomEvent} from 'leaflet';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = point(expected);
@@ -47,7 +47,7 @@ export function removeMapContainer(map, container) {
 		document.body.removeChild(container);
 	}
 
-	PointerEvents.cleanupPointers();
+	DomEvent.PointerEvents.cleanupPointers();
 }
 
 console.log('Browser.pointer', Browser.pointer);

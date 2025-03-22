@@ -3,7 +3,7 @@ import * as DomEvent from './DomEvent.js';
 import * as DomUtil from './DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
-import * as PointerEvents from './PointerEvents.js';
+import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 /*
  * @class Draggable

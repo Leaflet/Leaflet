@@ -4,6 +4,9 @@ import Browser from '../core/Browser.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
+import * as PointerEvents from './DomEvent.PointerEvents.js';
+export {PointerEvents};
+
 /*
  * @namespace DomEvent
  * Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
