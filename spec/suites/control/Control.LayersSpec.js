@@ -224,7 +224,7 @@ describe('Control.Layers', () => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
-			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerout', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 
@@ -243,7 +243,7 @@ describe('Control.Layers', () => {
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
-			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerout', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 		});
 
