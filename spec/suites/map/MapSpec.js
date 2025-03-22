@@ -2452,11 +2452,11 @@ describe('Map', () => {
 		});
 	});
 
-	describe('#mouseEventToLatLng', () => {
+	describe('#pointerEventToLatLng', () => {
 
 		it('throws if map is not set before', () => {
 			expect(() => {
-				map.mouseEventToLatLng({clientX: 10, clientY: 10});
+				map.pointerEventToLatLng({clientX: 10, clientY: 10});
 			}).to.throw();
 		});
 
@@ -2464,7 +2464,7 @@ describe('Map', () => {
 			let latlng;
 			map.setView([0, 0], 0);
 			map.on('click', (e) => {
-				latlng = map.mouseEventToLatLng(e.originalEvent);
+				latlng = map.pointerEventToLatLng(e.originalEvent);
 			});
 			UIEventSimulator.fireAt('click', 100, 100);
 
