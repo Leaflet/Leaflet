@@ -63,7 +63,7 @@ export const Canvas = Renderer.extend({
 	onRemove() {
 		Renderer.prototype.onRemove.call(this);
 
-		clearTimeout(this._mouseHoverThrottleTimeout);
+		clearTimeout(this._pointerHoverThrottleTimeout);
 	},
 
 	_initContainer() {
@@ -370,7 +370,7 @@ export const Canvas = Renderer.extend({
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.pointerEventToLayerPoint(e);
-		this._handleMouseHover(e, point);
+		this._handlePointerHover(e, point);
 	},
 
 
@@ -381,12 +381,12 @@ export const Canvas = Renderer.extend({
 			this._container.classList.remove('leaflet-interactive');
 			this._fireEvent([layer], e, 'pointerout');
 			this._hoveredLayer = null;
-			this._mouseHoverThrottled = false;
+			this._pointerHoverThrottled = false;
 		}
 	},
 
-	_handleMouseHover(e, point) {
-		if (this._mouseHoverThrottled) {
+	_handlePointerHover(e, point) {
+		if (this._pointerHoverThrottled) {
 			return;
 		}
 
@@ -411,9 +411,9 @@ export const Canvas = Renderer.extend({
 
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
-		this._mouseHoverThrottled = true;
-		this._mouseHoverThrottleTimeout = setTimeout((() => {
-			this._mouseHoverThrottled = false;
+		this._pointerHoverThrottled = true;
+		this._pointerHoverThrottleTimeout = setTimeout((() => {
+			this._pointerHoverThrottled = false;
 		}), 32);
 	},
 
