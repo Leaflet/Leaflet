@@ -32,7 +32,7 @@ export const Events = {
 	 *
 	 * @alternative
 	 * @method on(eventMap: Object): this
-	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 	 */
 	on(types, fn, context) {
 

@@ -57,7 +57,7 @@ export const Marker = Layer.extend({
 		opacity: 1,
 
 		// @option riseOnHover: Boolean = false
-		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		// If `true`, the marker will get on top of others when you hover the pointer over it.
 		riseOnHover: false,
 
 		// @option riseOffset: Number = 250
@@ -73,7 +73,7 @@ export const Marker = Layer.extend({
 		shadowPane: 'shadowPane',
 
 		// @option bubblingMouseEvents: Boolean = false
-		// When `true`, a mouse event on this marker will trigger the same event on the map
+		// When `true`, a pointer event on this marker will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingMouseEvents: false,
 
@@ -85,7 +85,7 @@ export const Marker = Layer.extend({
 
 		// @section Draggable marker options
 		// @option draggable: Boolean = false
-		// Whether the marker is draggable with mouse/touch or not.
+		// Whether the marker is draggable with pointer or not.
 		draggable: false,
 
 		// @option autoPan: Boolean = false
