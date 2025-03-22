@@ -1,11 +1,13 @@
 /*
+/* @namespace DomEvent
+ * @section Pointer detection
  * Detects the pointers that are currently active on the document.
  */
 
 let activePointers = new Map();
 let initialized = false;
 
-// @method enablePointerDetection()
+// @function enablePointerDetection()
 // Enables pointer detection for the document.
 function enablePointerDetection() {
 	if (initialized) {
@@ -21,7 +23,7 @@ function enablePointerDetection() {
 	activePointers = new Map();
 }
 
-// @method disablePointerDetection()
+// @function disablePointerDetection()
 // Disables pointer detection for the document.
 function disablePointerDetection() {
 	document.removeEventListener('pointerdown', _onSet, {capture: true});
@@ -41,15 +43,15 @@ function _onDelete(e) {
 	activePointers.delete(e.pointerId);
 }
 
-// @method getPointers(): PointerEvents[]
+// @function getPointers(): PointerEvents[]
 // Returns the active pointers on the document.
 function getPointers() {
 	return [...activePointers.values()];
 }
 
-// @method cleanupPointers()
+// @function cleanupPointers()
 // Clears the detected pointers on the document.
-// Note: This method should be not necessary to call, as the pointers are automatically cleared with `pointerup`, `pointercancel`, `pointerout` events.
+// Note: This function should be not necessary to call, as the pointers are automatically cleared with `pointerup`, `pointercancel` and `pointerout` events.
 function cleanupPointers() {
 	activePointers.clear();
 }
