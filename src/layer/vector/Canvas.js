@@ -352,7 +352,7 @@ export const Canvas = Renderer.extend({
 	// so we emulate that by calculating what's under the pointer on pointermove/click manually
 
 	_onClick(e) {
-		const point = this._map.mouseEventToLayerPoint(e);
+		const point = this._map.pointerEventToLayerPoint(e);
 		let layer, clickedLayer;
 
 		for (let order = this._drawFirst; order; order = order.next) {
@@ -369,7 +369,7 @@ export const Canvas = Renderer.extend({
 	_onPointerMove(e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
-		const point = this._map.mouseEventToLayerPoint(e);
+		const point = this._map.pointerEventToLayerPoint(e);
 		this._handleMouseHover(e, point);
 	},
 

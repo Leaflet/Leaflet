@@ -41,8 +41,8 @@ export const TouchZoom = Handler.extend({
 		const pointers = PointerEvents.getPointers();
 		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		const p1 = map.mouseEventToContainerPoint(pointers[0]),
-		    p2 = map.mouseEventToContainerPoint(pointers[1]);
+		const p1 = map.pointerEventToContainerPoint(pointers[0]),
+		p2 = map.pointerEventToContainerPoint(pointers[1]);
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
@@ -69,9 +69,9 @@ export const TouchZoom = Handler.extend({
 		if (pointers.length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,
-		    p1 = map.mouseEventToContainerPoint(pointers[0]),
-		    p2 = map.mouseEventToContainerPoint(pointers[1]),
-		    scale = p1.distanceTo(p2) / this._startDist;
+		p1 = map.pointerEventToContainerPoint(pointers[0]),
+		p2 = map.pointerEventToContainerPoint(pointers[1]),
+		scale = p1.distanceTo(p2) / this._startDist;
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 

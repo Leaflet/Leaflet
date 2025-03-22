@@ -45,7 +45,7 @@ export const ScrollWheelZoom = Handler.extend({
 		const debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+		this._lastMousePos = this._map.pointerEventToContainerPoint(e);
 
 		if (!this._startTime) {
 			this._startTime = +new Date();

@@ -21,7 +21,7 @@ describe('DomEvent', () => {
 			expect(() => DomEvent.on({}, 'click', Util.falseFn)).to.throw();
 			expect(() => DomEvent.disableScrollPropagation({})).to.throw();
 			expect(() => DomEvent.disableClickPropagation({})).to.throw();
-			expect(() => DomEvent.getMousePosition({clientX: 0, clientY: 0}, {})).to.throw();
+			expect(() => DomEvent.getPointerPosition({clientX: 0, clientY: 0}, {})).to.throw();
 			// .off and .isExternalTarget do not throw atm
 		});
 	});

@@ -1066,25 +1066,25 @@ export const Map = Evented.extend({
 		return this.layerPointToContainerPoint(this.latLngToLayerPoint(toLatLng(latlng)));
 	},
 
-	// @method mouseEventToContainerPoint(ev: PointerEvent): Point
+	// @method pointerEventToContainerPoint(ev: PointerEvent): Point
 	// Given a PointerEvent object, returns the pixel coordinate relative to the
 	// map container where the event took place.
-	mouseEventToContainerPoint(e) {
-		return DomEvent.getMousePosition(e, this._container);
+	pointerEventToContainerPoint(e) {
+		return DomEvent.getPointerPosition(e, this._container);
 	},
 
-	// @method mouseEventToLayerPoint(ev: PointerEvent): Point
+	// @method pointerEventToLayerPoint(ev: PointerEvent): Point
 	// Given a PointerEvent object, returns the pixel coordinate relative to
 	// the [origin pixel](#map-getpixelorigin) where the event took place.
-	mouseEventToLayerPoint(e) {
-		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
+	pointerEventToLayerPoint(e) {
+		return this.containerPointToLayerPoint(this.pointerEventToContainerPoint(e));
 	},
 
-	// @method mouseEventToLatLng(ev: PointerEvent): LatLng
+	// @method pointerEventToLayerPoint(ev: PointerEvent): LatLng
 	// Given a PointerEvent object, returns geographical coordinate where the
 	// event took place.
-	mouseEventToLatLng(e) { // (PointerEvent)
-		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	pointerEventToLatLng(e) { // (PointerEvent)
+		return this.layerPointToLatLng(this.pointerEventToLayerPoint(e));
 	},
 
 
@@ -1458,7 +1458,7 @@ export const Map = Evented.extend({
 		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
 			const isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
-				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
+				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
@@ -1466,7 +1466,7 @@ export const Map = Evented.extend({
 		for (let i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.bubblingMouseEvents === false && this._pointerEvents.includes(type))) { return; }
+				(targets[i].options.bubblingPointerEvents === false && this._pointerEvents.includes(type))) { return; }
 		}
 	},
 

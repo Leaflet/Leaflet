@@ -235,10 +235,10 @@ export function getPropagationPath(ev) {
 }
 
 
-// @function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
-// Gets normalized mouse position from a DOM event relative to the
+// @function getPointerPosition(ev: DOMEvent, container?: HTMLElement): Point
+// Gets normalized pointer position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
-export function getMousePosition(e, container) {
+export function getPointerPosition(e, container) {
 	if (!container) {
 		return new Point(e.clientX, e.clientY);
 	}

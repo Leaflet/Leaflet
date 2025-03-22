@@ -1892,7 +1892,7 @@ describe('Map', () => {
 
 		it('preclick is fired before click on marker and map', () => {
 			let called = 0;
-			const layer = new Marker([1, 2], {bubblingMouseEvents: true}).addTo(map);
+			const layer = new Marker([1, 2], {bubblingPointerEvents: true}).addTo(map);
 			layer.on('preclick', (e) => {
 				expect(called++).to.eql(0);
 				expect(e.latlng).to.be.ok;
@@ -2493,20 +2493,20 @@ describe('Map', () => {
 		});
 	});
 
-	describe('#mouseEventToContainerPoint', () => {
+	describe('#pointerEventToContainerPoint', () => {
 
 		it('throws if map is not set before', () => {
 			expect(() => {
-				map.mouseEventToContainerPoint();
+				map.pointerEventToContainerPoint();
 			}).to.throw();
 		});
 
 		it('returns the pixel coordinate relative to the map container where the event took place', () => {
-			const mouseEvent = new MouseEvent('pointerenter', {
+			const pointerEvent = new PointerEvent('pointerenter', {
 				clientX: 1,
 				clientY: 2
 			});
-			const p = map.mouseEventToContainerPoint(mouseEvent);
+			const p = map.pointerEventToContainerPoint(pointerEvent);
 			expect(p.x).to.be.equal(1);
 			expect(p.y).to.be.equal(2);
 		});

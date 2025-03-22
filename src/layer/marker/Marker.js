@@ -72,10 +72,10 @@ export const Marker = Layer.extend({
 		// `Map pane` where the markers shadow will be added.
 		shadowPane: 'shadowPane',
 
-		// @option bubblingMouseEvents: Boolean = false
+		// @option bubblingPointerEvents: Boolean = false
 		// When `true`, a pointer event on this marker will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: false,
+		bubblingPointerEvents: false,
 
 		// @option autoPanOnFocus: Boolean = true
 		// When `true`, the map will pan whenever the marker is focused (via

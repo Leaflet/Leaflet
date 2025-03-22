@@ -452,7 +452,7 @@ Layer.include({
 	_moveTooltip(e) {
 		let latlng = e.latlng, containerPoint, layerPoint;
 		if (this._tooltip.options.sticky && e.originalEvent) {
-			containerPoint = this._map.mouseEventToContainerPoint(e.originalEvent);
+			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
 			latlng = this._map.layerPointToLatLng(layerPoint);
 		}

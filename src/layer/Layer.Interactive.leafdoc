@@ -8,7 +8,7 @@ Use the [event handling methods](#evented-method) to handle these events.
 @option interactive: Boolean = true
 If `false`, the layer will not emit pointer events and will act as a part of the underlying map.
 
-@option bubblingMouseEvents: Boolean = true
+@option bubblingPointerEvents: Boolean = true
 When `true`, a pointer event on this layer will trigger the same event on the map
 (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 
