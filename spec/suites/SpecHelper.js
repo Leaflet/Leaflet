@@ -19,7 +19,7 @@ util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e
 it.skipIfNotTouch = Browser.touch ? it : it.skip;
 it.skipIfTouch = Browser.touchNative ? it.skip : it;
 
-export const touchEventType = Browser.touchNative ? ['pointer', {pointerType: 'touch'}] : ['pointer', {pointerType: 'mouse'}];
+export const pointerEventType = Browser.touchNative ? ['pointer', {pointerType: 'touch'}] : ['pointer', {pointerType: 'mouse'}];
 // Note: this override is needed to workaround prosthetic-hand fail,
 //       see https://github.com/Leaflet/prosthetic-hand/issues/14
 

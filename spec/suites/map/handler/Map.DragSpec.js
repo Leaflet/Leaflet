@@ -3,7 +3,7 @@ import {DomUtil, LatLng, Map, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
 describe('Map.Drag', () => {
 	let container, map;
@@ -103,8 +103,8 @@ describe('Map.Drag', () => {
 
 			it('change the center of the map, compensating for CSS scale', (done) => {
 				map = new MyMap(container, {
-				    dragging: true,
-				    inertia: false
+					dragging: true,
+					inertia: false
 				});
 				map.setView([0, 0], 1);
 
@@ -331,7 +331,7 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger(...touchEventType);
+			const toucher = hand.growFinger(...pointerEventType);
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
@@ -361,7 +361,7 @@ describe('Map.Drag', () => {
 				}
 			});
 
-			const toucher = hand.growFinger(...touchEventType);
+			const toucher = hand.growFinger(...pointerEventType);
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
