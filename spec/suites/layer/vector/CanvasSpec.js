@@ -114,7 +114,7 @@ describe('Canvas', () => {
 			expect(preclickSpy.callCount).to.eql(1);
 		});
 
-		it.only('should not fire click when dragging the map on top of it', (done) => {
+		it('should not fire click when dragging the map on top of it', (done) => {
 			const downSpy = sinon.spy();
 			const clickSpy = sinon.spy();
 			const preclickSpy = sinon.spy();
