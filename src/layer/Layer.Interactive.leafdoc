@@ -14,10 +14,10 @@ When `true`, a pointer event on this layer will trigger the same event on the ma
 
 @section Pointer events
 
-@event click: MouseEvent
+@event click: PointerEvent
 Fired when the user clicks (or taps) the layer.
 
-@event dblclick: MouseEvent
+@event dblclick: PointerEvent
 Fired when the user double-clicks (or double-taps) the layer.
 
 @event pointerdown: PointerEvent
@@ -32,7 +32,7 @@ Fired when the pointer enters the layer.
 @event pointerout: PointerEvent
 Fired when the pointer leaves the layer.
 
-@event contextmenu: MouseEvent
+@event contextmenu: PointerEvent
 Fired when the user right-clicks on the layer, prevents
 default browser context menu from showing if there are listeners on
 this event. Also fired on mobile when the user holds a single touch

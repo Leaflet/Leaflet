@@ -1066,24 +1066,24 @@ export const Map = Evented.extend({
 		return this.layerPointToContainerPoint(this.latLngToLayerPoint(toLatLng(latlng)));
 	},
 
-	// @method mouseEventToContainerPoint(ev: MouseEvent): Point
-	// Given a MouseEvent object, returns the pixel coordinate relative to the
+	// @method mouseEventToContainerPoint(ev: PointerEvent): Point
+	// Given a PointerEvent object, returns the pixel coordinate relative to the
 	// map container where the event took place.
 	mouseEventToContainerPoint(e) {
 		return DomEvent.getMousePosition(e, this._container);
 	},
 
-	// @method mouseEventToLayerPoint(ev: MouseEvent): Point
-	// Given a MouseEvent object, returns the pixel coordinate relative to
+	// @method mouseEventToLayerPoint(ev: PointerEvent): Point
+	// Given a PointerEvent object, returns the pixel coordinate relative to
 	// the [origin pixel](#map-getpixelorigin) where the event took place.
 	mouseEventToLayerPoint(e) {
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 
-	// @method mouseEventToLatLng(ev: MouseEvent): LatLng
-	// Given a MouseEvent object, returns geographical coordinate where the
+	// @method mouseEventToLatLng(ev: PointerEvent): LatLng
+	// Given a PointerEvent object, returns geographical coordinate where the
 	// event took place.
-	mouseEventToLatLng(e) { // (MouseEvent)
+	mouseEventToLatLng(e) { // (PointerEvent)
 		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
 	},
 
@@ -1300,9 +1300,9 @@ export const Map = Evented.extend({
 
 		const onOff = remove ? DomEvent.off : DomEvent.on;
 
-		// @event click: MouseEvent
+		// @event click: PointerEvent
 		// Fired when the user clicks (or taps) the map.
-		// @event dblclick: MouseEvent
+		// @event dblclick: PointerEvent
 		// Fired when the user double-clicks (or double-taps) the map.
 		// @event pointerdown: PointerEvent
 		// Fired when the user pushes the pointer on the map.
@@ -1314,7 +1314,7 @@ export const Map = Evented.extend({
 		// Fired when the pointer leaves the map.
 		// @event pointermove: PointerEvent
 		// Fired while the pointer moves over the map.
-		// @event contextmenu: MouseEvent
+		// @event contextmenu: PointerEvent
 		// Fired when the user pushes the right mouse button on the map, prevents
 		// default browser context menu from showing if there are listeners on
 		// this event. Also fired on mobile when the user holds a single touch
@@ -1416,13 +1416,13 @@ export const Map = Evented.extend({
 		this._fireDOMEvent(e, type);
 	},
 
-	_mouseEvents: ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'],
+	_pointerEvents: ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'],
 
 	_fireDOMEvent(e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
-			// @event preclick: MouseEvent
+			// @event preclick: PointerEvent
 			// Fired before pointer click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
@@ -1466,7 +1466,7 @@ export const Map = Evented.extend({
 		for (let i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.bubblingMouseEvents === false && this._mouseEvents.includes(type))) { return; }
+				(targets[i].options.bubblingMouseEvents === false && this._pointerEvents.includes(type))) { return; }
 		}
 	},
 
