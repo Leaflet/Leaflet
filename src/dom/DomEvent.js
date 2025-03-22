@@ -1,7 +1,6 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
 import Browser from '../core/Browser.js';
-import {addPointerListener, removePointerListener} from './DomEvent.Pointer.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
@@ -110,11 +109,7 @@ function addOne(obj, type, fn, context) {
 
 	const originalHandler = handler;
 
-	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
-		// Needs DomEvent.Pointer.js
-		handler = addPointerListener(obj, type, handler);
-
-	} else if (Browser.touch && (type === 'dblclick')) {
+	if (Browser.touch && (type === 'dblclick')) {
 		handler = addDoubleTapListener(obj, handler);
 
 	} else if ('addEventListener' in obj) {
@@ -149,10 +144,7 @@ function removeOne(obj, type, fn, context, id) {
 
 	if (!handler) { return this; }
 
-	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
-		removePointerListener(obj, type, handler);
-
-	} else if (Browser.touch && (type === 'dblclick')) {
+	if (Browser.touch && (type === 'dblclick')) {
 		removeDoubleTapListener(obj, handler);
 
 	} else if ('removeEventListener' in obj) {
