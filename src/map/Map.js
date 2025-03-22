@@ -9,6 +9,7 @@ import Browser from '../core/Browser.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
+import * as PointerEvents from '../dom/PointerEvents.js';
 
 /*
  * @class Map
@@ -1100,6 +1101,8 @@ export const Map = Evented.extend({
 
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
+
+		PointerEvents.addListeners();
 	},
 
 	_initLayout() {
@@ -1301,16 +1304,16 @@ export const Map = Evented.extend({
 		// Fired when the user clicks (or taps) the map.
 		// @event dblclick: MouseEvent
 		// Fired when the user double-clicks (or double-taps) the map.
-		// @event mousedown: MouseEvent
-		// Fired when the user pushes the mouse button on the map.
-		// @event mouseup: MouseEvent
-		// Fired when the user releases the mouse button on the map.
-		// @event mouseover: MouseEvent
-		// Fired when the mouse enters the map.
-		// @event mouseout: MouseEvent
-		// Fired when the mouse leaves the map.
-		// @event mousemove: MouseEvent
-		// Fired while the mouse moves over the map.
+		// @event pointerdown: PointerEvent
+		// Fired when the user pushes the pointer on the map.
+		// @event pointerup: PointerEvent
+		// Fired when the user releases the pointer on the map.
+		// @event pointerover: PointerEvent
+		// Fired when the pointer enters the map.
+		// @event pointerout: PointerEvent
+		// Fired when the pointer leaves the map.
+		// @event pointermove: PointerEvent
+		// Fired while the pointer moves over the map.
 		// @event contextmenu: MouseEvent
 		// Fired when the user pushes the right mouse button on the map, prevents
 		// default browser context menu from showing if there are listeners on
@@ -1367,7 +1370,7 @@ export const Map = Evented.extend({
 		    target,
 		    src = e.target || e.srcElement,
 		    dragging = false;
-		const isHover = type === 'mouseout' || type === 'mouseover';
+		const isHover = type === 'pointerout' || type === 'pointerover';
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
@@ -1405,7 +1408,7 @@ export const Map = Evented.extend({
 
 		const type = e.type;
 
-		if (type === 'mousedown') {
+		if (type === 'pointerdown') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(el);
 		}
@@ -1413,14 +1416,14 @@ export const Map = Evented.extend({
 		this._fireDOMEvent(e, type);
 	},
 
-	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
+	_mouseEvents: ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'],
 
 	_fireDOMEvent(e, type, canvasTargets) {
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
 			// @event preclick: MouseEvent
-			// Fired before mouse click on the map (sometimes useful when you
+			// Fired before pointer click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
 			const synth = Util.extend({}, e);
