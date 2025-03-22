@@ -12,7 +12,7 @@ Map.mergeOptions({
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
-	// it will zoom to the center of the view regardless of where the mouse was.
+	// it will zoom to the center of the view regardless of where the pointer was.
 	scrollWheelZoom: true,
 
 	// @option wheelDebounceTime: Number = 40

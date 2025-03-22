@@ -69,9 +69,9 @@ export const Canvas = Renderer.extend({
 	_initContainer() {
 		const container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'pointermove', this._onMouseMove, this);
+		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
-		DomEvent.on(container, 'pointerout', this._handleMouseOut, this);
+		DomEvent.on(container, 'pointerout', this._handlePointerOut, this);
 		container['_leaflet_disable_events'] = true;
 
 		this._ctx = container.getContext('2d');
@@ -366,7 +366,7 @@ export const Canvas = Renderer.extend({
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	},
 
-	_onMouseMove(e) {
+	_onPointerMove(e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.mouseEventToLayerPoint(e);
@@ -374,7 +374,7 @@ export const Canvas = Renderer.extend({
 	},
 
 
-	_handleMouseOut(e) {
+	_handlePointerOut(e) {
 		const layer = this._hoveredLayer;
 		if (layer) {
 			// if we're leaving the layer, fire pointerout
@@ -400,7 +400,7 @@ export const Canvas = Renderer.extend({
 		}
 
 		if (candidateHoveredLayer !== this._hoveredLayer) {
-			this._handleMouseOut(e);
+			this._handlePointerOut(e);
 
 			if (candidateHoveredLayer) {
 				this._container.classList.add('leaflet-interactive'); // change cursor
