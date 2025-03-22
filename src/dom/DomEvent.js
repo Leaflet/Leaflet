@@ -114,9 +114,8 @@ function addOne(obj, type, fn, context) {
 
 	} else if ('addEventListener' in obj) {
 
-		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
+		if (type === 'wheel' ||  type === 'mousewheel') {
 			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
-
 		} else if (type === 'pointerenter' || type === 'pointerleave') {
 			handler = function (e) {
 				e = e || window.event;
@@ -186,10 +185,10 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`,
-// `'pointerdown'` and `'touchstart'` events (plus browser variants).
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`
+// and `'pointerdown'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	on(el, 'pointerdown touchstart dblclick contextmenu', stopPropagation);
+	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	el['_leaflet_disable_click'] = true;
 	return this;
 }

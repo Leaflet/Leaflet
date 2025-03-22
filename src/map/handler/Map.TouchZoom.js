@@ -15,8 +15,7 @@ Map.mergeOptions({
 	// @option touchZoom: Boolean|String = *
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
-	// where the touch events (fingers) were. Enabled for touch-capable web
-	// browsers.
+	// where the pointer events (fingers) were.
 	touchZoom: Browser.touch,
 
 	// @option bounceAtZoomLimits: Boolean = true
@@ -28,15 +27,15 @@ Map.mergeOptions({
 export const TouchZoom = Handler.extend({
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
-		DomEvent.on(this._map._container, 'pointerdown', this._onTouchStart, this);
+		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
 	},
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
-		DomEvent.off(this._map._container, 'pointerdown', this._onTouchStart, this);
+		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
 	},
 
-	_onTouchStart(e) {
+	_onPointerStart(e) {
 		const map = this._map;
 
 		const pointers = PointerEvents.getPointers();
@@ -59,13 +58,13 @@ export const TouchZoom = Handler.extend({
 
 		map._stop();
 
-		DomEvent.on(document, 'pointermove', this._onTouchMove, this);
-		DomEvent.on(document, 'pointerup pointercancel', this._onTouchEnd, this);
+		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchMove(e) {
+	_onPointerMove(e) {
 		const pointers = PointerEvents.getPointers();
 		if (pointers.length !== 2 || !this._zooming) { return; }
 
@@ -105,7 +104,7 @@ export const TouchZoom = Handler.extend({
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchEnd() {
+	_onPointerEnd() {
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
@@ -114,8 +113,8 @@ export const TouchZoom = Handler.extend({
 		this._zooming = false;
 		cancelAnimationFrame(this._animRequest);
 
-		DomEvent.off(document, 'pointermove', this._onTouchMove, this);
-		DomEvent.off(document, 'pointerup pointercancel', this._onTouchEnd, this);
+		DomEvent.off(document, 'pointermove', this._onPointerMove, this);
+		DomEvent.off(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {

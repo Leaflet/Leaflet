@@ -369,7 +369,7 @@ describe('Map.Drag', () => {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it.skipIfNotTouch('reset itself after touchend', (done) => {
+		it.skipIfNotTouch('reset itself after pointerup', (done) => {
 			map = new Map(container, {
 				dragging: true,
 				inertia: false,

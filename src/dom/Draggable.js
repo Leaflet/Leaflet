@@ -10,7 +10,7 @@ import * as PointerEvents from './PointerEvents.js';
  * @aka L.Draggable
  * @inherits Evented
  *
- * A class for making DOM elements draggable (including touch support).
+ * A class for making DOM elements draggable.
  * Used internally for map and marker dragging. Only works for elements
  * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
  *
