@@ -15,11 +15,9 @@ function enablePointerDetection() {
 	}
 	initialized = true;
 	document.addEventListener('pointerdown', _onSet, {capture: true});
-	document.addEventListener('pointermove', _onSet, {capture: true});
-	document.addEventListener('pointerover', _onSet, {capture: true});
+	document.addEventListener('pointermove', _onUpdate, {capture: true});
 	document.addEventListener('pointerup', _onDelete, {capture: true});
 	document.addEventListener('pointercancel', _onDelete, {capture: true});
-	document.addEventListener('pointerout', _onDelete, {capture: true});
 	activePointers = new Map();
 }
 
@@ -27,16 +25,20 @@ function enablePointerDetection() {
 // Disables pointer detection for the document.
 function disablePointerDetection() {
 	document.removeEventListener('pointerdown', _onSet, {capture: true});
-	document.removeEventListener('pointermove', _onSet, {capture: true});
-	document.removeEventListener('pointerover', _onSet, {capture: true});
+	document.removeEventListener('pointermove', _onUpdate, {capture: true});
 	document.removeEventListener('pointerup', _onDelete, {capture: true});
 	document.removeEventListener('pointercancel', _onDelete, {capture: true});
-	document.removeEventListener('pointerout', _onDelete, {capture: true});
 	initialized = false;
 }
 
 function _onSet(e) {
 	activePointers.set(e.pointerId, e);
+}
+
+function _onUpdate(e) {
+	if (activePointers.has(e.pointerId)) {
+		activePointers.set(e.pointerId, e);
+	}
 }
 
 function _onDelete(e) {

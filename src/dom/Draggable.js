@@ -78,7 +78,7 @@ export const Draggable = Evented.extend({
 
 		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
 
-		if (PointerEvents.getPointers().length > 1) {
+		if (PointerEvents.getPointers().length !== 1) {
 			// Finish dragging to avoid conflict with touchZoom
 			if (Draggable._dragging === this) {
 				this.finishDrag();
