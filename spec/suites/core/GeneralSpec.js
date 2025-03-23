@@ -1,5 +1,4 @@
-/* global L */
-import * as L from 'leaflet';
+import L from 'leaflet-bundle';
 import {expect} from 'chai';
 
 describe('General', () => {
