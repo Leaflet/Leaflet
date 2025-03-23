@@ -316,7 +316,6 @@ export const Events = {
 		for (const id in this._eventParents) {
 			if (Object.hasOwn(this._eventParents, id)) {
 				this._eventParents[id].fire(e.type, Util.extend({
-					layer: e.target,
 					propagatedFrom: e.target
 				}, e), true);
 			}
