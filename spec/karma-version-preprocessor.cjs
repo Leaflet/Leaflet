@@ -1,8 +1,9 @@
 // Replace version import from package.json with static version for Firefox which currently not supports Import Attributes.
 // TODO: After Firefox supports Import Attributes, remove this preprocessor and update the karma.conf.cjs file.
 function replaceVersionPreprocessor(config) {
+	const replaceVersionImport = config.browsers.some(browser => browser.includes('Firefox'));
 	return function (content, file, done) {
-		if (config.browsers.includes('Firefox')) {
+		if (replaceVersionImport) {
 			content = content.replace(
 				/import pkg from '\.\.\/package\.json' with \{ type: 'json' \};/,
 				'const pkg = {version: "0.0.0"};'
