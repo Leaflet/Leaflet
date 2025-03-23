@@ -103,7 +103,7 @@ describe('Popup', () => {
 		// toggle popup on marker1
 		group.fire('click', {
 			latlng: center,
-			layer: marker1
+			propagatedFrom: marker1
 		});
 		expect(map.hasLayer(group._popup)).to.be.true;
 		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
@@ -111,7 +111,7 @@ describe('Popup', () => {
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
-			layer: marker2
+			propagatedFrom: marker2
 		});
 		expect(map.hasLayer(group._popup)).to.be.true;
 		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
@@ -133,7 +133,7 @@ describe('Popup', () => {
 		// toggle popup on marker1
 		group.fire('click', {
 			latlng: center,
-			layer: marker1
+			propagatedFrom: marker1
 		});
 		expect(map.hasLayer(group._popup)).to.be.true;
 		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 1.');
@@ -141,7 +141,7 @@ describe('Popup', () => {
 		// toggle popup on marker2
 		group.fire('click', {
 			latlng: [54.6, 38.2],
-			layer: marker2
+			propagatedFrom: marker2
 		});
 		expect(map.hasLayer(group._popup)).to.be.true;
 		expect(group._popup._contentNode.innerHTML).to.equal('I\'m marker 2.');
