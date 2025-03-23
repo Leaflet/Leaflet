@@ -31,8 +31,8 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		coverageReporter: {
 			dir: 'coverage/',
 			reporters: [
-				{ type: 'html', subdir: 'html' },
-				{ type: 'text-summary' }
+				{type: 'html', subdir: 'html'},
+				{type: 'text-summary'}
 			]
 		},
 		timeStatsReporter: {
@@ -68,7 +68,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			}
 		},
 		concurrency: 1,
-		browserConsoleLogOptions: { level: 'error' },
+		browserConsoleLogOptions: {level: 'error'},
 		client: {
 			mocha: {
 				forbidOnly: process.env.CI || false
