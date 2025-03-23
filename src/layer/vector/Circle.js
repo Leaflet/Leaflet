@@ -24,11 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 export const Circle = CircleMarker.extend({
 
-	initialize(latlng, options, legacyOptions) {
-		if (typeof options === 'number') {
-			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = Util.extend({}, legacyOptions, {radius: options});
-		}
+	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
 
@@ -104,10 +100,6 @@ export const Circle = CircleMarker.extend({
 // @factory L.circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-// @alternative
-// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
-// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
-// Do not use in new applications or plugins.
 export function circle(latlng, options, legacyOptions) {
 	return new Circle(latlng, options, legacyOptions);
 }
