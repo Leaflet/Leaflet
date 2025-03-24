@@ -10,7 +10,7 @@ export default [
 	},
 	{
 		languageOptions: {
-			ecmaVersion: 2025,
+			ecmaVersion: 'latest',
 		},
 	},
 	{
