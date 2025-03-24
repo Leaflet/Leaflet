@@ -29,8 +29,6 @@ be the same as the `target`.
 @property propagatedFrom: Object
 For propagated events, the last object that propagated the event to its
 event parent.
-@property layer: Object
-**Deprecated.** The same as `propagatedFrom`.
 
 
 @miniclass KeyboardEvent (Event objects)
