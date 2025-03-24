@@ -9,6 +9,11 @@ export default [
 		files: ['*.js', '*.cjs'],
 	},
 	{
+		languageOptions: {
+			ecmaVersion: 'latest',
+		},
+	},
+	{
 		ignores: [
 			'dist',
 			'docs/docs/highlight',
