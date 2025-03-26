@@ -1,6 +1,5 @@
-
-import {version} from '../package.json';
-export {version};
+import pkg from '../package.json' with { type: 'json' };
+export const version = pkg.version;
 
 // control
 export * from './control/index.js';

@@ -10,8 +10,12 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
-			'karma-time-stats-reporter'
+			'karma-time-stats-reporter',
+			{'preprocessor:replaceVersion': ['factory', require('./karma-version-preprocessor.cjs')]}
 		],
+		preprocessors: {
+			'src/Leaflet.js': ['replaceVersion'] // Replace version import from package.json with static version for Firefox which currently not supports Import Attributes.
+		},
 		frameworks: ['mocha'],
 		customContextFile: 'spec/context.html',
 		customDebugFile: 'spec/debug.html',
@@ -20,7 +24,9 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			{pattern: 'node_modules/prosthetic-hand/**/*', included: false, served: true},
 			{pattern: 'node_modules/sinon/**/*', included: false, served: true},
 			{pattern: 'node_modules/ui-event-simulator/**/*', included: false, served: true},
-			{pattern: 'dist/**/*.js', included: false, served: true},
+			{pattern: 'dist/leaflet-src.js', included: false, served: true},
+			{pattern: 'src/**/*.js', included: false, served: true},
+			{pattern: 'package.json', included: false, served: true},
 			{pattern: 'dist/**/*.png', included: false, served: true},
 			{pattern: 'spec/setup.js', type: 'module'},
 			{pattern: 'spec/suites/**/*.js', type: 'module'},
@@ -79,7 +85,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 		karmaConfig.plugins.push('karma-coverage');
 		karmaConfig.reporters.push('coverage');
 		karmaConfig.preprocessors = {
-			'dist/leaflet-src.esm.js': 'coverage'
+			'dist/leaflet-src.js': 'coverage'
 		};
 	}
 

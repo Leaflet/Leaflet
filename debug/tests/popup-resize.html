@@ -22,12 +22,25 @@
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			const map = new Map('map').setView([50.5, 30.51], 15).addLayer(osm);
 
-			new Marker(map.getCenter())
-				.addTo(map)
-				.bindPopup('A pretty CSS popup. <br> Easily customizable.', {
-					offset: [100, 200],
-				})
-				.openPopup();
+			let marker = new Marker(map.getCenter())
+				.addTo(map);
+
+
+marker.bindPopup("foobar", {maxWidth: 600, trackResize: true});  // NOTE: change to true!!
+
+setTimeout(()=>{
+	marker.getPopup().setContent(`Lorem ipsum sit amet.
+	<img id="image" src="https://cataas.com/cat?height=${480 + Math.random() * 80}&v=${Math.random()}" />`);
+}, 2500);
+
+marker.on('click',()=>{
+	marker.getPopup().setContent(`Lorem ipsum sit amet.
+	<img id="image" src="https://cataas.com/cat?height=${480 + Math.random() * 80}&v=${Math.random()}" />`);
+})
+
+marker.openPopup();
+
+
 		</script>
 	</body>
 </html>

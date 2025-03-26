@@ -1223,7 +1223,9 @@ describe('Map', () => {
 			container.style.width = `${origWidth}px`;
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
-			clock = sinon.useFakeTimers();
+			clock = sinon.useFakeTimers({
+				toFake: ['setTimeout', 'clearTimeout', 'Date']
+			});
 		});
 
 		afterEach(() => {
@@ -2216,6 +2218,34 @@ describe('Map', () => {
 			map.setView([50.5, 30.5], 10);
 			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
+		});
+	});
+
+	describe('#project', () => {
+		const tolerance = 1 / 1000000;
+
+		it('returns pixel coordinates relative to the top-left of the CRS extents', () => {
+			map.setView([40, -83], 5);
+			const x = latLng([40, -83]);
+			const a = map.project(x, 5);
+			expect(a.x).to.be.approximately(2207.288888, tolerance);
+			expect(a.y).to.be.approximately(3101.320460, tolerance);
+		});
+
+		it('test the other coordinates', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 5);
+			expect(b.x).to.be.approximately(5984.7111111, tolerance);
+			expect(b.y).to.be.approximately(3101.3204602, tolerance);
+		});
+
+		it('test the prev coordinates with different zoom', () => {
+			map.setView([40, 83], 5);
+			const x = latLng([40, 83]);
+			const b = map.project(x, 6);
+			expect(b.x).to.be.approximately(11969.422222, tolerance);
+			expect(b.y).to.be.approximately(6202.640920, tolerance);
 		});
 	});
 

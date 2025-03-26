@@ -1,2 +1,2 @@
-import L from '../../dist/leaflet-src.esm.js';
+import L from '../../dist/leaflet-src.js';
 console.log(L.version);

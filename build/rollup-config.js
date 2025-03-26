@@ -15,16 +15,7 @@ const config = {
 	input: 'src/LeafletWithGlobals.js',
 	output: [
 		{
-			file: pkg.main,
-			format: 'umd',
-			name: 'leaflet',
-			banner,
-			sourcemap: true,
-			freeze: false,
-			esModule: false
-		},
-		{
-			file: pkg.module,
+			file: pkg.exports['.'],
 			format: 'es',
 			banner,
 			sourcemap: true,
@@ -32,7 +23,7 @@ const config = {
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
 	]
 };
 

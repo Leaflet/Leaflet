@@ -3,7 +3,6 @@ import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {toBounds} from '../../geometry/Bounds.js';
 import {toPoint} from '../../geometry/Point.js';
-import {requestAnimFrame, cancelAnimFrame} from '../../core/Util.js';
 
 /*
  * L.Handler.MarkerDrag is used internally by L.Marker to make the markers draggable.
@@ -94,7 +93,7 @@ export const MarkerDrag = Handler.extend({
 			DomUtil.setPosition(marker._icon, this._draggable._newPos);
 			this._onDrag(e);
 
-			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
+			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
 	},
 
@@ -118,8 +117,8 @@ export const MarkerDrag = Handler.extend({
 
 	_onPreDrag(e) {
 		if (this._marker.options.autoPan) {
-			cancelAnimFrame(this._panRequest);
-			this._panRequest = requestAnimFrame(this._adjustPan.bind(this, e));
+			cancelAnimationFrame(this._panRequest);
+			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
 	},
 
@@ -149,7 +148,7 @@ export const MarkerDrag = Handler.extend({
 		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
 
-		 cancelAnimFrame(this._panRequest);
+		 cancelAnimationFrame(this._panRequest);
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
