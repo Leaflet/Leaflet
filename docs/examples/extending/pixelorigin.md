@@ -23,21 +23,21 @@ title: Grid coordinates
 
 <div id='info' style=''></div>
 
-
-<script type='text/javascript'>
+<script type="module">
+	import {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		center: [40, 0],
 		zoom: 1
 	});
 
-	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
 	}).addTo(map);
 
-	const marker = L.marker(trd).addTo(map);
+	const marker = new Marker(trd).addTo(map);
 
 	const pane = map.getPane('markerPane');
 
@@ -51,22 +51,22 @@ title: Grid coordinates
 
 	marker._icon.style.border = '1px solid blue';
 
-	const crsMarker = L.marker(map.unproject([0, 0]), {
-		icon: L.divIcon({
+	const crsMarker = new Marker(map.unproject([0, 0]), {
+		icon: new DivIcon({
 			className: 'crsMarker',
 			iconAnchor: [0, 0]
 		})
 	}).addTo(map);
 
 
-	const markerOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'skyblue'}).addTo(map);
-	const iconOffsetLine = L.polyline([[0, 0], [0, 0]], {color: 'blue'}).addTo(map);
+	const markerOffsetLine = new Polyline([[0, 0], [0, 0]], {color: 'skyblue'}).addTo(map);
+	const iconOffsetLine = new Polyline([[0, 0], [0, 0]], {color: 'blue'}).addTo(map);
 	
 	function info() {
 		const pixelOrigin = map.getPixelOrigin();
 		const markerPixelCoords = map.project(trd, map.getZoom());
 		const markerAnchor = marker.options.icon.options.iconAnchor;
-		const markerOffset = L.DomUtil.getPosition(marker._icon);
+		const markerOffset = DomUtil.getPosition(marker._icon);
 
 		document.getElementById('info').innerHTML =
 			'<div style="color: green">CRS origin: 0,0</div>' +

@@ -56,7 +56,9 @@ Inside the archives downloaded from the above links, you will see four things:
 Unzip the downloaded archive to your website's directory and add this to the `head` of your HTML code:
 
     <link rel="stylesheet" href="/path/to/leaflet.css" />
-    <script src="/path/to/leaflet.js"></script>
+    <script type="module">
+		import '/path/to/leaflet.js';
+	</script>
 
 ### Using a JavaScript package manager
 

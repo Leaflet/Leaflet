@@ -16,7 +16,7 @@ import {Point} from '../geometry/Point.js';
  *
  * @example
  * ```js
- * var draggable = new L.Draggable(elementToDrag);
+ * const draggable = new Draggable(elementToDrag);
  * draggable.enable();
  * ```
  */

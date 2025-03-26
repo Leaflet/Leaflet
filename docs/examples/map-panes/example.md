@@ -4,8 +4,9 @@ title: Custom Icons Tutorial
 ---
 <script type="text/javascript" src="eu-countries.js"></script>
 
-<script>
-	const map = L.map('map');
+<script type="module">
+	import {Map, CRS, TileLayer, GeoJSON} from 'leaflet';
+	const map = new Map('map');
 
 	map.createPane('labels');
 
@@ -17,17 +18,17 @@ title: Custom Icons Tutorial
 
 	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+	const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const positronLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+	const positronLabels = new TileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution,
 		pane: 'labels'
 	}).addTo(map);
 
 	/* global euCountries */
-	const geojson = L.geoJson(euCountries).addTo(map);
+	const geojson = new GeoJSON(euCountries).addTo(map);
 
 	geojson.eachLayer((layer) => {
 		layer.bindPopup(layer.feature.properties.name);

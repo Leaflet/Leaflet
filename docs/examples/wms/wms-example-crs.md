@@ -2,15 +2,16 @@
 layout: tutorial_frame
 title: WMS example
 ---
-<script type='text/javascript'>
+<script type="module">
+	import {Map, CRS, TileLayer} from 'leaflet';
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		center: [0, 0],
 		zoom: 1,
-		crs: L.CRS.EPSG4326
+		crs: CRS.EPSG4326
 	});
 
-	const wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = new TileLayer.WMS('http://ows.mundialis.de/services/service?', {
 		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 

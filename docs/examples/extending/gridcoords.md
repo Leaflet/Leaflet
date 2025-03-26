@@ -2,14 +2,15 @@
 layout: tutorial_frame
 title: Grid coordinates
 ---
-<script type='text/javascript'>
+<script type="module">
+	import {Map, GridLayer} from 'leaflet';
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		center: [0, 0],
 		zoom: 0
 	});
 
-	L.GridLayer.DebugCoords = L.GridLayer.extend({
+	GridLayer.DebugCoords = GridLayer.extend({
 		createTile(coords, done) {
 			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
@@ -23,11 +24,7 @@ title: Grid coordinates
 		}
 	});
 	
-	L.gridLayer.debugCoords = function (opts) {
-		return new L.GridLayer.DebugCoords(opts);
-	};
-
-	const debugCoordsGrid = L.gridLayer.debugCoords();
+	const debugCoordsGrid = new GridLayer.DebugCoords();
 	map.addLayer(debugCoordsGrid);
 	
 </script>

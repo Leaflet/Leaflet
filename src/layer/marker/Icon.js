@@ -12,7 +12,7 @@ import Browser from '../../core/Browser.js';
  * @example
  *
  * ```js
- * var myIcon = L.icon({
+ * const myIcon = new Icon({
  *     iconUrl: 'my-icon.png',
  *     iconRetinaUrl: 'my-icon@2x.png',
  *     iconSize: [38, 95],
@@ -24,7 +24,7 @@ import Browser from '../../core/Browser.js';
  *     shadowAnchor: [22, 94]
  * });
  *
- * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+ * new Marker([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
  * `L.Icon.Default` extends `L.Icon` and is the blue icon Leaflet uses for markers by default.

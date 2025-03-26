@@ -1,3 +1,4 @@
+// eslint-disable
 ---
 layout: tutorial_v2
 title: Quick Start Guide
@@ -25,9 +26,16 @@ Before writing any code for the map, you need to do the following preparation st
 
 	```html
 	<!-- Make sure you put this AFTER Leaflet's CSS -->
-	<script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
-		integrity="{{site.integrity_hash_uglified}}"
-		crossorigin=""></script>
+	<script type="importmap">
+	{
+		"imports": {
+			"leaflet": "https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+		},
+		"integrity": {
+			"https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+		}
+	}
+	</script>
 	```
 
  * Put a `div` element with a certain `id` where you want your map to be:
@@ -51,7 +59,12 @@ Now you're ready to initialize the map and do some stuff with it.
 Let's create a map of the center of London with pretty OpenStreetMap tiles. From here on, we'll be working in JS. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
 ```javascript
-var map = L.map('map').setView([51.505, -0.09], 13);
+<script type="module">
+	import {Map, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
+	const map = new Map('map').setView([51.505, -0.09], 13);
+
+	// ...
+</script>
 ```
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
@@ -61,7 +74,7 @@ Note that the `setView` call also returns the map object --- most Leaflet method
 Next, we'll add a tile layer to add to our map, in this case it's a OpenStreetMap tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. OpenStreetMap tiles are fine for programming your Leaflet map, but read the [Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/) of OpenStreetMap if you're going to use the tiles in production.
 
 ```javascript
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -82,13 +95,13 @@ Whenever using anything based on OpenStreetMap, an *attribution* is obligatory a
 Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:
 
 ```javascript
-var marker = L.marker([51.5, -0.09]).addTo(map);
+const marker = new Marker([51.5, -0.09]).addTo(map);
 ```
 
 Adding a circle is the same (except for specifying the radius in meters as a second argument), but lets you control how it looks by passing options as the last argument when creating the object:
 
 ```javascript
-var circle = L.circle([51.508, -0.11], {
+const circle = new Circle([51.508, -0.11], {
 	color: 'red',
 	fillColor: '#f03',
 	fillOpacity: 0.5,
@@ -99,7 +112,7 @@ var circle = L.circle([51.508, -0.11], {
 Adding a polygon is as easy:
 
 ```javascript
-var polygon = L.polygon([
+const polygon = new Polygon([
 	[51.509, -0.08],
 	[51.503, -0.06],
 	[51.51, -0.047]
@@ -123,7 +136,7 @@ Try clicking on our objects. The `bindPopup` method attaches a popup with the sp
 You can also use popups as layers (when you need something more than attaching a popup to an object):
 
 ```javascript
-var popup = L.popup()
+const popup = new Popup()
 	.setLatLng([51.513, -0.09])
 	.setContent("I am a standalone popup.")
 	.openOn(map);
@@ -149,7 +162,7 @@ Each object has its own set of events --- see [documentation](/reference.html) f
 Let's improve our example by using a popup instead of an alert:
 
 ```javascript
-var popup = L.popup();
+const popup = new Popup();
 
 function onMapClick(e) {
 	popup

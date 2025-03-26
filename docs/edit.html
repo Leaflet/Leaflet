@@ -15,7 +15,7 @@
                 cssFile: 'https://unpkg.com/leaflet/dist/leaflet.css',
                 css: 'body {\n\tmargin: 0;\n}\nhtml, body, #map {\n\theight: 100%\n}',
                 jsFile: 'https://unpkg.com/leaflet/dist/leaflet-src.js',
-                js: "var map = L.map('map', {\n\tlayers: [\n\t\tL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
+                js: "const map = L.map('map', {\n\tlayers: [\n\t\tL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
             };
 
             var hash = location.hash.substring(1);

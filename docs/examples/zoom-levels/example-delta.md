@@ -2,9 +2,10 @@
 layout: tutorial_frame
 title: Zoom Levels Tutorial
 ---
-<script>
+<script type="module">
+	import {Map, TileLayer, Control, DomUtil} from 'leaflet';
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		minZoom: 0,
 		maxZoom: 18,
 		zoomSnap: 0,
@@ -13,14 +14,14 @@ title: Zoom Levels Tutorial
 
 	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const ZoomViewer = L.Control.extend({
+	const ZoomViewer = Control.extend({
 		onAdd() {
-			const container = L.DomUtil.create('div');
-			const gauge = L.DomUtil.create('div');
+			const container = DomUtil.create('div');
+			const gauge = DomUtil.create('div');
 			container.style.width = '200px';
 			container.style.background = 'rgba(255,255,255,0.5)';
 			container.style.textAlign = 'left';

@@ -13,15 +13,17 @@
 
 	<script src="sample-geojson.js"></script>
 
-	<script>
-		var map = L.map('map').setView([39.74739, -105], 13);
+	<script type="module">
+		import {Map, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
 
-		var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		const map = new Map('map').setView([39.74739, -105], 13);
+
+		const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
-		var baseballIcon = L.icon({
+		const baseballIcon = new Icon({
 			iconUrl: 'baseball-marker.png',
 			iconSize: [32, 37],
 			iconAnchor: [16, 37],
@@ -29,7 +31,7 @@
 		});
 
 		function onEachFeature(feature, layer) {
-			var popupContent = "<p>I started out as a GeoJSON " +
+			const popupContent = "<p>I started out as a GeoJSON " +
 					feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
 
 			if (feature.properties && feature.properties.popupContent) {
@@ -39,7 +41,7 @@
 			layer.bindPopup(popupContent);
 		}
 
-		var bicycleRentalLayer = L.geoJson([bicycleRental, campus], {
+		const bicycleRentalLayer = new GeoJson([bicycleRental, campus], {
 
 			style: function (feature) {
 				return feature.properties && feature.properties.style;
@@ -48,7 +50,7 @@
 			onEachFeature: onEachFeature,
 
 			pointToLayer: function (feature, latlng) {
-				return L.circleMarker(latlng, {
+				return new CircleMarker(latlng, {
 					radius: 8,
 					fillColor: "#ff7800",
 					color: "#000",
@@ -59,7 +61,7 @@
 			}
 		}).addTo(map);
 
-		var freeBusLayer = L.geoJson(freeBus, {
+		const freeBusLayer = new GeoJson(freeBus, {
 
 			filter: function (feature, layer) {
 				if (feature.properties) {
@@ -72,10 +74,10 @@
 			onEachFeature: onEachFeature
 		}).addTo(map);
 
-		var coorsLayer = L.geoJson(coorsField, {
+		const coorsLayer = new GeoJson(coorsField, {
 
 			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {icon: baseballIcon});
+				return new Marker(latlng, {icon: baseballIcon});
 			},
 
 			onEachFeature: onEachFeature

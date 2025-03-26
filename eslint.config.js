@@ -16,6 +16,7 @@ export default [
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
 			'docs/examples/extending/extending-2-layers.md',
+			'docs/examples/quick-start/index.md',
 			'docs/_posts/201*',
 			'docs/_site',
 			'coverage'

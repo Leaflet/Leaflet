@@ -10,16 +10,17 @@ title: Using GeoJSON with Leaflet
 <div id="map" class="map" style="height: 250px"></div>
 
 <script src="sample-geojson.js"></script>
-<script>
+<script type="module">
+	import {Map, TileLayer, Marker, Icon, CircleMarker, GeoJSON} from 'leaflet';
 
-	var map = L.map('map').setView([39.74739, -105], 13);
+	const map = new Map('map').setView([39.74739, -105], 13);
 
-	var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	var baseballIcon = L.icon({
+	const baseballIcon = new Icon({
 		iconUrl: 'baseball-marker.png',
 		iconSize: [32, 37],
 		iconAnchor: [16, 37],
@@ -27,7 +28,7 @@ title: Using GeoJSON with Leaflet
 	});
 
 	function onEachFeature(feature, layer) {
-		var popupContent = "<p>I started out as a GeoJSON " +
+		const popupContent = "<p>I started out as a GeoJSON " +
 				feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
 
 		if (feature.properties && feature.properties.popupContent) {
@@ -37,7 +38,7 @@ title: Using GeoJSON with Leaflet
 		layer.bindPopup(popupContent);
 	}
 
-	L.geoJson({features: [bicycleRental, campus]}, {
+	new GeoJson({features: [bicycleRental, campus]}, {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -46,7 +47,7 @@ title: Using GeoJSON with Leaflet
 		onEachFeature: onEachFeature,
 
 		pointToLayer: function (feature, latlng) {
-			return L.circleMarker(latlng, {
+			return new CircleMarker(latlng, {
 				radius: 8,
 				fillColor: "#ff7800",
 				color: "#000",
@@ -57,7 +58,7 @@ title: Using GeoJSON with Leaflet
 		}
 	}).addTo(map);
 
-	L.geoJson(freeBus, {
+	new GeoJson(freeBus, {
 
 		filter: function (feature, layer) {
 			if (feature.properties) {
@@ -70,10 +71,10 @@ title: Using GeoJSON with Leaflet
 		onEachFeature: onEachFeature
 	}).addTo(map);
 
-	var coorsLayer = L.geoJson(null, {
+	const coorsLayer = new GeoJson(null, {
 
 		pointToLayer: function (feature, latlng) {
-			return L.marker(latlng, {icon: baseballIcon});
+			return new Marker(latlng, {icon: baseballIcon});
 		},
 
 		onEachFeature: onEachFeature

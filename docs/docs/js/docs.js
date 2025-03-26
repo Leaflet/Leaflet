@@ -1,4 +1,4 @@
-/* global hljs, L */
+/* global hljs */
 hljs.configure({tabReplace: '    '});
 hljs.initHighlighting();
 
@@ -99,10 +99,18 @@ function clickOnAnchor(e) {
 	e.preventDefault();
 }
 
+function userAgentContains(str) {
+	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
+		return false;
+	}
+	return navigator.userAgent.toLowerCase().includes(str);
+}
+const chromeBrowser = userAgentContains('chrome');
+
 function scrollToHeader(elemHeader, sameAnchor) {
 	let scrollBy = elemHeader.nextSibling.offsetTop;
 
-	if (L.Browser.chrome && sameAnchor) {
+	if (chromeBrowser && sameAnchor) {
 		// chromium remove the anchor element from the scroll-position
 		// we check with sameAnchor if the User has clicked on the same anchor link again
 		scrollBy = scrollBy - elemHeader.offsetHeight;

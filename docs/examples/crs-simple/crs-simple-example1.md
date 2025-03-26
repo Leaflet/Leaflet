@@ -2,14 +2,15 @@
 layout: tutorial_frame
 title: CRS.Simple example
 ---
-<script>
+<script type="module">
+	import {Map, CRS, ImageOverlay} from 'leaflet';
 
-	const map = L.map('map', {
-		crs: L.CRS.Simple
+	const map = new Map('map', {
+		crs: CRS.Simple
 	});
 
 	const bounds = [[0, 0], [1000, 1000]];
-	const image = L.imageOverlay('uqm_map_full.png', bounds).addTo(map);
+	const image = new ImageOverlay('uqm_map_full.png', bounds).addTo(map);
 
 	map.fitBounds(bounds);
 
