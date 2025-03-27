@@ -7,7 +7,7 @@
     <body>
         <script>
 
-            var config = {
+            const config = {
                 provider: 'plunker',
                 title: 'Leaflet',
                 description: "Leaflet example",
@@ -15,22 +15,22 @@
                 cssFile: 'https://unpkg.com/leaflet/dist/leaflet.css',
                 css: 'body {\n\tmargin: 0;\n}\nhtml, body, #map {\n\theight: 100%\n}',
                 jsFile: 'https://unpkg.com/leaflet/dist/leaflet-src.js',
-                js: "const map = L.map('map', {\n\tlayers: [\n\t\tL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
+                js: "import {Map, TileLayer, Marker} from 'leaflet';\n\nconst map = new Map('map', {\n\tcenter: [0, 0],\n\tzoom: 0\n});\n\nnew TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n}).addTo(map);\n\nnew Marker(map.getCenter()).addTo(map);"
             };
 
-            var hash = location.hash.substring(1);
+            const hash = location.hash.substring(1);
 
             if (hash) {
                 hash.split(';').forEach(function (str) {
-                    var arg = str.split(':');
+                    const arg = str.split(':');
                     config[arg[0]] = arg[1];
                 });
             }
 
             if (config.version) {
                 if (config.version === 'main') {
-                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/main/leaflet.css',
-                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/build/main/leaflet-src.js'
+                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.css',
+                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet-src.js'
                 } else {
                     config.cssFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet.css`
                     config.jsFile = `https://unpkg.com/leaflet@${config.version}/dist/leaflet-src.js`
@@ -39,11 +39,11 @@
             }
 
             function createForm (action) {
-                var form = document.createElement('form');
+                const form = document.createElement('form');
                 form.setAttribute('method', 'post');
                 form.setAttribute('action', action);
                 form.createInput = function (name, value) {
-                    var input = document.createElement('input');
+                    const input = document.createElement('input');
                     input.setAttribute('type', 'hidden');
                     input.setAttribute('name', name);
                     input.setAttribute('value', value);
@@ -53,12 +53,12 @@
                 return form;
             }
 
-            var form;
+            let form;
 
             if (config.provider === 'plunker') {
                 form = createForm('https://plnkr.co/edit/?p=preview');
                 form.createInput('description', config.description);
-                form.createInput('files[index.html]', `<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>Leaflet</title>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<link type="text/css" rel="stylesheet" href="${config.cssFile}" />\n\t\t<link type="text/css" rel="stylesheet" href="style.css" />\n\t</head>\n\t<body>\n\t\t${config.html}\n\t\t<script src="${config.jsFile}"><\/script>\n\t\t<script src="script.js"><\/script>\n\t</body>\n</html>`);
+                form.createInput('files[index.html]', `<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>Leaflet</title>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<link type="text/css" rel="stylesheet" href="${config.cssFile}" />\n\t\t<link type="text/css" rel="stylesheet" href="style.css" />\n\t</head>\n\t<body>\n\t\t${config.html}\n\t\t<script type="importmap">\n\t\t\t{\n\t\t\t\t"imports": {\n\t\t\t\t\t"leaflet": "${config.jsFile}"\n\t\t\t\t}\n\t\t\t}\n\t\t<\/script>\n\t\t<script type="module" src="script.js"><\/script>\n\t</body>\n</html>`);
                 form.createInput('files[style.css]', config.css);
                 form.createInput('files[script.js]', config.js);
                 form.createInput('tags[0]', 'leaflet');
