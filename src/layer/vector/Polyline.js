@@ -17,13 +17,13 @@ import {Point} from '../../geometry/Point.js';
  *
  * ```js
  * // create a red polyline from an array of LatLng points
- * var latlngs = [
+ * const latlngs = [
  * 	[45.51, -122.68],
  * 	[37.77, -122.43],
  * 	[34.04, -118.2]
  * ];
  *
- * var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+ * const polyline = new Polyline(latlngs, {color: 'red'}).addTo(map);
  *
  * // zoom the map to the polyline
  * map.fitBounds(polyline.getBounds());
@@ -33,7 +33,7 @@ import {Point} from '../../geometry/Point.js';
  *
  * ```js
  * // create a red polyline from an array of arrays of LatLng points
- * var latlngs = [
+ * const latlngs = [
  * 	[[45.51, -122.68],
  * 	 [37.77, -122.43],
  * 	 [34.04, -118.2]],

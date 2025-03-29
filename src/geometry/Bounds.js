@@ -9,9 +9,9 @@ import {Point, toPoint} from './Point.js';
  * @example
  *
  * ```js
- * var p1 = L.point(10, 10),
- * p2 = L.point(40, 60),
- * bounds = L.bounds(p1, p2);
+ * const p1 = new Point(10, 10),
+ * p2 = new Point(40, 60),
+ * bounds = new Bounds(p1, p2);
  * ```
  *
  * All Leaflet methods that accept `Bounds` objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:
