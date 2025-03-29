@@ -5,7 +5,7 @@ title: Custom Icons Tutorial
 <script type="text/javascript" src="eu-countries.js"></script>
 
 <script type="module">
-	import {Map, CRS, TileLayer, GeoJSON} from 'leaflet';
+	import {Map, TileLayer, GeoJSON} from 'leaflet';
 	const map = new Map('map');
 
 	map.createPane('labels');

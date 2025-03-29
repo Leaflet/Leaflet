@@ -13,12 +13,12 @@ In addition to implementing a simple classical inheritance model, it introduces 
 const MyClass = Class.extend({
     initialize: function (greeter) {
         this.greeter = greeter;
-	    // class constructor
+        // class constructor
     },
 
     greet: function (name) {
-	    alert(this.greeter + ', ' + name)
-	}
+        alert(this.greeter + ', ' + name)
+    }
 });
 
 // create instance of MyClass, passing "Hello" to the constructor
@@ -145,7 +145,7 @@ keys that are already used by the class in question.
 `includes` is a special class property that merges all specified objects into the class (such objects are called mixins).
 
 ```js
- const MyMixin = {
+const MyMixin = {
     foo: function () { ... },
     bar: 5
 };

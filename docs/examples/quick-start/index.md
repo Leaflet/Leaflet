@@ -1,4 +1,3 @@
-// eslint-disable
 ---
 layout: tutorial_v2
 title: Quick Start Guide

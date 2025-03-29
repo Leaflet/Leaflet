@@ -189,7 +189,7 @@ Most Leaflet classes have a corresponding [factory function](https://en.wikipedi
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
-* Never expose global constiables in your plugin.
+* Never expose global variables in your plugin.
 * If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
 * If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
 
