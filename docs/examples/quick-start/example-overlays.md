@@ -5,7 +5,7 @@ customMapContainer: "true"
 ---
 <div id='map' style='width: 600px; height: 400px;'></div>
 <script type="module">
-	import {Map, TileLayer, Marker, Circle, Polygon} from 'leaflet';
+	import L, {Map, TileLayer, Marker, Circle, Polygon} from 'leaflet';
 
 	const map = new Map('map').setView([51.505, -0.09], 13);
 
@@ -29,5 +29,6 @@ customMapContainer: "true"
 		[51.51, -0.047]
 	]).addTo(map);
 
-
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

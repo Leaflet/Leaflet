@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Video Overlay Tutorial
 ---
 <script type="module">
-	import {Map, TileLayer, LatLngBounds, VideoOverlay} from 'leaflet';
+	import L, {Map, TileLayer, LatLngBounds, VideoOverlay} from 'leaflet';
 
 	const map = new Map('map');
 
@@ -30,4 +30,7 @@ title: Video Overlay Tutorial
 		playsInline: true
 	}).addTo(map);
 
+
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: CRS.Simple example
 ---
 <script type="module">
-	import {Map, CRS, ImageOverlay} from 'leaflet';
+	import L, {Map, CRS, ImageOverlay} from 'leaflet';
 
 	const map = new Map('map', {
 		crs: CRS.Simple
@@ -14,4 +14,6 @@ title: CRS.Simple example
 
 	map.fitBounds(bounds);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

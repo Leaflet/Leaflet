@@ -24,7 +24,7 @@ title: Grid coordinates
 <div id='info' style=''></div>
 
 <script type="module">
-	import {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
+	import L, {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 
@@ -83,4 +83,6 @@ title: Grid coordinates
 
 	info();
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

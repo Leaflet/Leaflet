@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Watermark control
 ---
 <script type="module">
-	import {Map, TileLayer, Control, DomUtil} from 'leaflet';
+	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
 
 	const map = new Map('map', {
 		center: [40, 0],
@@ -31,4 +31,7 @@ title: Watermark control
 	});
 	
 	const watermarkControl = new Control.Watermark({position: 'bottomleft'}).addTo(map);
+
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

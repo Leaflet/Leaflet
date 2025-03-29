@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Custom Icons Tutorial
 ---
 <script type="module">
-	import {Map, TileLayer, Marker, Icon} from 'leaflet';
+	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';
 	const map = new Map('map').setView([51.5, -0.09], 13);
 
 	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -29,4 +29,6 @@ title: Custom Icons Tutorial
 	const mRed = new Marker([51.495, -0.083], {icon: redIcon}).bindPopup('I am a red leaf.').addTo(map);
 	const mOrange = new Marker([51.49, -0.1], {icon: orangeIcon}).bindPopup('I am an orange leaf.').addTo(map);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

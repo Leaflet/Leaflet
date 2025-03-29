@@ -5,7 +5,7 @@ title: Custom Icons Tutorial
 <script type="text/javascript" src="eu-countries.js"></script>
 
 <script type="module">
-	import {Map, TileLayer, GeoJSON} from 'leaflet';
+	import L, {Map, TileLayer, GeoJSON} from 'leaflet';
 	const map = new Map('map');
 
 	map.createPane('labels');
@@ -35,4 +35,7 @@ title: Custom Icons Tutorial
 	});
 
 	map.setView({lat: 47.040182144806664, lng: 9.667968750000002}, 4);
+
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

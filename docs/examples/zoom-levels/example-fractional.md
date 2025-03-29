@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Zoom Levels Tutorial
 ---
 <script type="module">
-	import {Map, TileLayer, Control, DomUtil} from 'leaflet';
+	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
 
 	const map = new Map('map', {
 		minZoom: 0,
@@ -51,4 +51,7 @@ title: Zoom Levels Tutorial
 	const zoomViewerControl = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
+
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

@@ -5,7 +5,7 @@ title: Choropleth Tutorial
 
 <script type="text/javascript" src="us-states.js"></script>
 <script type="module">
-	import {Map, TileLayer, GeoJSON} from 'leaflet';
+	import L, {Map, TileLayer, GeoJSON} from 'leaflet';
 
 	const map = new Map('map').setView([37.8, -96], 4);
 
@@ -41,4 +41,6 @@ title: Choropleth Tutorial
 		style,
 	}).addTo(map);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

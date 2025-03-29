@@ -25,7 +25,7 @@ title: Tilt handler
 
 
 <script type="module">
-	import {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
+	import L, {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 	
@@ -65,4 +65,6 @@ title: Tilt handler
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 	
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

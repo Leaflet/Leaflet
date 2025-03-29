@@ -35,7 +35,7 @@ css: "#map {
 
 <script type="text/javascript" src="us-states.js"></script>
 <script type="module">
-	import {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
+	import L, {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
 
 	const map = new Map('map').setView([37.8, -96], 4);
 
@@ -146,4 +146,6 @@ css: "#map {
 
 	legend.addTo(map);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

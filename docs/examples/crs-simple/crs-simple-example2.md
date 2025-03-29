@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: CRS.Simple example
 ---
 <script type="module">
-	import {Map, CRS, ImageOverlay, LatLng, Marker} from 'leaflet';
+	import L, {Map, CRS, ImageOverlay, LatLng, Marker} from 'leaflet';
 
 	const map = new Map('map', {
 		crs: CRS.Simple,
@@ -18,4 +18,6 @@ title: CRS.Simple example
 
 	map.setView([70, 120], 1);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

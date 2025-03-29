@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Layers Control Tutorial
 ---
 <script type="module">
-	import {Map, TileLayer, Marker, LayerGroup, Control} from 'leaflet';
+	import L, {Map, TileLayer, Marker, LayerGroup, Control} from 'leaflet';
 	const cities = new LayerGroup();
 	const mLittleton = new Marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities);
 	const mDenver = new Marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities);
@@ -47,4 +47,7 @@ title: Layers Control Tutorial
 	});
 	layerControl.addBaseLayer(openTopoMap, 'OpenTopoMap');
 	layerControl.addOverlay(parks, 'Parks');
+
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

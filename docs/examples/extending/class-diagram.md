@@ -7,7 +7,7 @@ css: "#map {
         }"
 ---
 <script type="module">
-	import {Map, CRS, ImageOverlay} from 'leaflet';
+	import L, {Map, CRS, ImageOverlay} from 'leaflet';
 
 	const bounds = [[0, 0], [1570, 1910]];
 
@@ -22,4 +22,6 @@ css: "#map {
 
 	map.fitBounds(bounds);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>

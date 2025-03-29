@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: WMS example
 ---
 <script type="module">
-	import {Map, CRS, TileLayer, Control} from 'leaflet';
+	import L, {Map, CRS, TileLayer, Control} from 'leaflet';
 
 	const map = new Map('map', {
 		center: [-17, -67],
@@ -32,4 +32,6 @@ title: WMS example
 
 	basemaps.Topography.addTo(map);
 
+	window.L = L; // only for debugging in the developer console
+	window.map = map; // only for debugging in the developer console
 </script>
