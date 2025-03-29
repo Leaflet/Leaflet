@@ -34,6 +34,9 @@ export const create = svgCreate;
  * ```
  */
 
+// @namespace SVG
+// @constructor SVG(options?: Renderer options)
+// Creates a SVG renderer with the given options.
 export const SVG = Renderer.extend({
 
 	_initContainer() {
@@ -183,9 +186,3 @@ export const SVG = Renderer.extend({
 	}
 });
 
-// @namespace SVG
-// @factory L.svg(options?: Renderer options)
-// Creates a SVG renderer with the given options.
-export function svg(options) {
-	return new SVG(options);
-}

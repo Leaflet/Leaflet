@@ -33,7 +33,8 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * ```
  */
 
-
+// @constructor Tilelayer(urlTemplate: String, options?: TileLayer options)
+// Instantiates a tile layer object given a `URL template` and optionally an options object.
 export const TileLayer = GridLayer.extend({
 
 	// @section
@@ -287,11 +288,3 @@ export const TileLayer = GridLayer.extend({
 		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
-
-
-// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
-// Instantiates a tile layer object given a `URL template` and optionally an options object.
-
-export function tileLayer(url, options) {
-	return new TileLayer(url, options);
-}

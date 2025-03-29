@@ -12,6 +12,9 @@ import * as DomEvent from '../dom/DomEvent.js';
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
+// @namespace Control.Zoom
+// @constructor Control.Zoom(options: Control.Zoom options)
+// Creates a zoom control
 export const Zoom = Control.extend({
 	// @section
 	// @aka Control.Zoom options
@@ -141,9 +144,3 @@ Map.addInitHook(function () {
 	}
 });
 
-// @namespace Control.Zoom
-// @factory L.control.zoom(options: Control.Zoom options)
-// Creates a zoom control
-export const zoom = function (options) {
-	return new Zoom(options);
-};

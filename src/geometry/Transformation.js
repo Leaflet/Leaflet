@@ -18,9 +18,13 @@ import {Point} from './Point.js';
  * ```
  */
 
+// @constructor Transformation(a: Number, b: Number, c: Number, d: Number)
+// Instantiates a Transformation object with the given coefficients.
 
-// factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
-// Creates a `Transformation` object with the given coefficients.
+// @alternative
+// @constructor Transformation(coefficients: Array): Transformation
+// Expects an coefficients array of the form
+// `[a: Number, b: Number, c: Number, d: Number]`.
 export function Transformation(a, b, c, d) {
 	if (Array.isArray(a)) {
 		// use array properties
@@ -62,17 +66,3 @@ Transformation.prototype = {
 		        (point.y / scale - this._d) / this._c);
 	}
 };
-
-// factory L.transformation(a: Number, b: Number, c: Number, d: Number)
-
-// @factory L.transformation(a: Number, b: Number, c: Number, d: Number)
-// Instantiates a Transformation object with the given coefficients.
-
-// @alternative
-// @factory L.transformation(coefficients: Array): Transformation
-// Expects an coefficients array of the form
-// `[a: Number, b: Number, c: Number, d: Number]`.
-
-export function toTransformation(a, b, c, d) {
-	return new Transformation(a, b, c, d);
-}

@@ -16,6 +16,8 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
+// @constructor Control.Scale(options?: Control.Scale options)
+// Creates an scale control with the given options.
 export const Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
@@ -126,10 +128,3 @@ export const Scale = Control.extend({
 		return pow10 * d;
 	}
 });
-
-
-// @factory L.control.scale(options?: Control.Scale options)
-// Creates an scale control with the given options.
-export const scale = function (options) {
-	return new Scale(options);
-};

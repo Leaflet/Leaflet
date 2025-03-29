@@ -27,7 +27,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds.js';
  *
  */
 
-
+// @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export const Rectangle = Polygon.extend({
 	initialize(latLngBounds, options) {
 		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
@@ -49,9 +49,3 @@ export const Rectangle = Polygon.extend({
 		];
 	}
 });
-
-
-// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-export function rectangle(latLngBounds, options) {
-	return new Rectangle(latLngBounds, options);
-}

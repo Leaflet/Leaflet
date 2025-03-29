@@ -12,6 +12,8 @@ import {Bounds} from '../../geometry/Bounds.js';
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.
  */
 
+// @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
+// Instantiates a circle marker object given a geographical point, and an optional options object.
 export const CircleMarker = Path.extend({
 
 	// @section
@@ -100,10 +102,3 @@ export const CircleMarker = Path.extend({
 		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 	}
 });
-
-
-// @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
-// Instantiates a circle marker object given a geographical point, and an optional options object.
-export function circleMarker(latlng, options) {
-	return new CircleMarker(latlng, options);
-}

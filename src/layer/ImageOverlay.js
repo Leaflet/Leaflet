@@ -20,6 +20,9 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
+// @constructor ImageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
+// Instantiates an image overlay object given the URL of the image and the
+// geographical bounds it is tied to.
 export const ImageOverlay = Layer.extend({
 
 	// @section
@@ -270,10 +273,3 @@ export const ImageOverlay = Layer.extend({
 		return this._bounds.getCenter();
 	}
 });
-
-// @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
-// Instantiates an image overlay object given the URL of the image and the
-// geographical bounds it is tied to.
-export const imageOverlay = function (url, bounds, options) {
-	return new ImageOverlay(url, bounds, options);
-};

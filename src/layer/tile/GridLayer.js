@@ -72,6 +72,8 @@ import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBoun
  */
 
 
+// @constructor GridLayer(options?: GridLayer options)
+// Creates a new instance of GridLayer with the supplied options.
 export const GridLayer = Layer.extend({
 
 	// @section
@@ -918,9 +920,3 @@ export const GridLayer = Layer.extend({
 		return true;
 	}
 });
-
-// @factory L.gridLayer(options?: GridLayer options)
-// Creates a new instance of GridLayer with the supplied options.
-export function gridLayer(options) {
-	return new GridLayer(options);
-}

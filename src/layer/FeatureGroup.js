@@ -23,6 +23,8 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * ```
  */
 
+// @constructor FeatureGroup(layers?: Layer[], options?: Object)
+// Create a feature group, optionally given an initial set of layers and an `options` object.
 export const FeatureGroup = LayerGroup.extend({
 
 	addLayer(layer) {
@@ -88,9 +90,3 @@ export const FeatureGroup = LayerGroup.extend({
 		return bounds;
 	}
 });
-
-// @factory L.featureGroup(layers?: Layer[], options?: Object)
-// Create a feature group, optionally given an initial set of layers and an `options` object.
-export const featureGroup = function (layers, options) {
-	return new FeatureGroup(layers, options);
-};

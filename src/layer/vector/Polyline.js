@@ -44,7 +44,11 @@ import {Point} from '../../geometry/Point.js';
  * ```
  */
 
-
+// @constructor Polyline(latlngs: LatLng[], options?: Polyline options)
+// Instantiates a polyline object given an array of geographical points and
+// optionally an options object. You can create a `Polyline` object with
+// multiple separate lines (`MultiPolyline`) by passing an array of arrays
+// of geographic points.
 export const Polyline = Path.extend({
 
 	// @section
@@ -293,12 +297,3 @@ export const Polyline = Path.extend({
 		return false;
 	}
 });
-
-// @factory L.polyline(latlngs: LatLng[], options?: Polyline options)
-// Instantiates a polyline object given an array of geographical points and
-// optionally an options object. You can create a `Polyline` object with
-// multiple separate lines (`MultiPolyline`) by passing an array of arrays
-// of geographic points.
-export function polyline(latlngs, options) {
-	return new Polyline(latlngs, options);
-}

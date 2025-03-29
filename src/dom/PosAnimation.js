@@ -27,7 +27,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  *
  * ```
  *
- * @constructor L.PosAnimation()
+ * @constructor PosAnimation()
  * Creates a `PosAnimation` object.
  *
  */

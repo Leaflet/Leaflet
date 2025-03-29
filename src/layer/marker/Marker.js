@@ -20,6 +20,8 @@ import {MarkerDrag} from './Marker.Drag.js';
  * ```
  */
 
+// @constructor Marker(latlng: LatLng, options? : Marker options)
+// Instantiates a Marker object given a geographical point and optionally an options object.
 export const Marker = Layer.extend({
 
 	// @section
@@ -411,12 +413,3 @@ export const Marker = Layer.extend({
 		return this.options.icon.options.tooltipAnchor;
 	}
 });
-
-
-// factory L.marker(latlng: LatLng, options? : Marker options)
-
-// @factory L.marker(latlng: LatLng, options? : Marker options)
-// Instantiates a Marker object given a geographical point and optionally an options object.
-export function marker(latlng, options) {
-	return new Marker(latlng, options);
-}

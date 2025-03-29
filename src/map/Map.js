@@ -29,6 +29,15 @@ import {PosAnimation} from '../dom/PosAnimation.js';
  *
  */
 
+// @section
+// @constructor Map(id: String, options?: Map options)
+// Instantiates a map object given the DOM ID of a `<div>` element
+// and optionally an object literal with `Map options`.
+//
+// @alternative
+// @constructor Map(el: HTMLElement, options?: Map options)
+// Instantiates a map object given an instance of a `<div>` HTML element
+// and optionally an object literal with `Map options`.
 export const Map = Evented.extend({
 
 	options: {
@@ -1765,17 +1774,3 @@ export const Map = Evented.extend({
 		this._moveEnd(true);
 	}
 });
-
-// @section
-
-// @factory L.map(id: String, options?: Map options)
-// Instantiates a map object given the DOM ID of a `<div>` element
-// and optionally an object literal with `Map options`.
-//
-// @alternative
-// @factory L.map(el: HTMLElement, options?: Map options)
-// Instantiates a map object given an instance of a `<div>` HTML element
-// and optionally an object literal with `Map options`.
-export function createMap(id, options) {
-	return new Map(id, options);
-}

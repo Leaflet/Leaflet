@@ -41,6 +41,11 @@ import {FeatureGroup} from './FeatureGroup.js';
 
 
 // @namespace Popup
+// @constructor Popup(options?: Popup options, source?: Layer)
+// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
+// @alternative
+// @constructor Popup(latlng: LatLng, options?: Popup options)
+// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
 export const Popup = DivOverlay.extend({
 
 	// @section
@@ -338,16 +343,6 @@ export const Popup = DivOverlay.extend({
 	}
 
 });
-
-// @namespace Popup
-// @factory L.popup(options?: Popup options, source?: Layer)
-// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.popup(latlng: LatLng, options?: Popup options)
-// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export const popup = function (options, source) {
-	return new Popup(options, source);
-};
 
 
 /* @namespace Map

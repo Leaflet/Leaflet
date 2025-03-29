@@ -31,6 +31,8 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
+// @constructor Canvas(options?: Renderer options)
+// Creates a Canvas renderer with the given options.
 export const Canvas = Renderer.extend({
 
 	// @section
@@ -483,9 +485,3 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	}
 });
-
-// @factory L.canvas(options?: Renderer options)
-// Creates a Canvas renderer with the given options.
-export function canvas(options) {
-	return new Canvas(options);
-}
