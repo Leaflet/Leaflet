@@ -1,6 +1,6 @@
 import {Earth} from './CRS.Earth.js';
 import {Mercator} from '../projection/Projection.Mercator.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -15,6 +15,6 @@ export const EPSG3395 = Util.extend({}, Earth, {
 
 	transformation: (function () {
 		const scale = 0.5 / (Math.PI * Mercator.R);
-		return toTransformation(scale, 0.5, -scale, 0.5);
+		return new Transformation(scale, 0.5, -scale, 0.5);
 	}())
 });

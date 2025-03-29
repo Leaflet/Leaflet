@@ -1,6 +1,6 @@
 import {Earth} from './CRS.Earth.js';
 import {SphericalMercator} from '../projection/Projection.SphericalMercator.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -18,7 +18,7 @@ export const EPSG3857 = Util.extend({}, Earth, {
 
 	transformation: (function () {
 		const scale = 0.5 / (Math.PI * SphericalMercator.R);
-		return toTransformation(scale, 0.5, -scale, 0.5);
+		return new Transformation(scale, 0.5, -scale, 0.5);
 	}())
 });
 

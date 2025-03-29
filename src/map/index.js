@@ -14,4 +14,4 @@ Map.TapHold = TapHold;
 import {TouchZoom} from './handler/Map.TouchZoom.js';
 Map.TouchZoom = TouchZoom;
 
-export {Map, createMap as map} from './Map.js';
+export {Map} from './Map.js';

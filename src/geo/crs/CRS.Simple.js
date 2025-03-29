@@ -1,6 +1,6 @@
 import {CRS} from './CRS.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -15,7 +15,7 @@ import * as Util from '../../core/Util.js';
 
 export const Simple = Util.extend({}, CRS, {
 	projection: LonLat,
-	transformation: toTransformation(1, 0, -1, 0),
+	transformation: new Transformation(1, 0, -1, 0),
 
 	scale(zoom) {
 		return Math.pow(2, zoom);

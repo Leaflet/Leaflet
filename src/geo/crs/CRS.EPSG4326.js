@@ -1,6 +1,6 @@
 import {Earth} from './CRS.Earth.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -19,5 +19,5 @@ import * as Util from '../../core/Util.js';
 export const EPSG4326 = Util.extend({}, Earth, {
 	code: 'EPSG:4326',
 	projection: LonLat,
-	transformation: toTransformation(1 / 180, 1, -1 / 180, 0.5)
+	transformation: new Transformation(1 / 180, 1, -1 / 180, 0.5)
 });
