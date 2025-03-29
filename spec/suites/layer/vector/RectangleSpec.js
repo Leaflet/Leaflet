@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, LineUtil, Map, Polygon, latLng, rectangle} from 'leaflet';
+import {Canvas, LineUtil, Map, Polygon, LatLng, Rectangle} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Rectangle', () => {
@@ -18,7 +18,7 @@ describe('Rectangle', () => {
 		it('should never be flat', () => {
 			const latLngs = [[1, 2], [3, 4]];
 
-			const rect = rectangle(latLngs);
+			const rect = new Rectangle(latLngs);
 
 			expect(LineUtil.isFlat(rect._latlngs)).to.be.false;
 			expect(rect.getLatLngs()).to.eql(rect._latlngs);
@@ -31,7 +31,7 @@ describe('Rectangle', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const rect = rectangle(sourceLatLngs);
+			const rect = new Rectangle(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 			expect(rect._latlngs).to.not.eql(sourceLatLngs);
@@ -40,7 +40,7 @@ describe('Rectangle', () => {
 		it('cannot be called with an empty array', () => {
 			// Throws error due to undefined lat
 			expect(() => {
-				rectangle([]);
+				new Rectangle([]);
 			}).to.throw();
 		});
 
@@ -50,10 +50,10 @@ describe('Rectangle', () => {
 				[40, 50], [60, 70] // extended bounds
 			];
 
-			const rect = rectangle(originalLatLngs);
+			const rect = new Rectangle(originalLatLngs);
 
 			expect(rect._latlngs).to.eql([
-				[latLng([0, 10]), latLng([60, 10]), latLng([60, 70]), latLng([0, 70])]
+				[new LatLng([0, 10]), new LatLng([60, 10]), new LatLng([60, 70]), new LatLng([0, 70])]
 			]);
 			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});
@@ -67,7 +67,7 @@ describe('Rectangle', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const rect = rectangle(sourceLatLngs);
+			const rect = new Rectangle(sourceLatLngs);
 
 			rect.setBounds(sourceLatLngs);
 
@@ -85,11 +85,11 @@ describe('Rectangle', () => {
 				[7, 8]
 			];
 
-			const rect = rectangle(originalLatLngs);
+			const rect = new Rectangle(originalLatLngs);
 			rect.setBounds(newLatLngs);
 
 			expect(rect._latlngs).to.eql([
-				[latLng([5, 6]), latLng([7, 6]), latLng([7, 8]), latLng([5, 8])]
+				[new LatLng([5, 6]), new LatLng([7, 6]), new LatLng([7, 8]), new LatLng([5, 8])]
 			]);
 
 			expect(rect.getLatLngs()).to.eql(rect._latlngs);
@@ -105,11 +105,11 @@ describe('Rectangle', () => {
 				[40, 50], [60, 70] // extending bounds
 			];
 
-			const rect = rectangle(originalLatLngs);
+			const rect = new Rectangle(originalLatLngs);
 			rect.setBounds(newLatLngs);
 
 			expect(rect._latlngs).to.eql([
-				[latLng([0, 10]), latLng([60, 10]), latLng([60, 70]), latLng([0, 70])]
+				[new LatLng([0, 10]), new LatLng([60, 10]), new LatLng([60, 70]), new LatLng([0, 70])]
 			]);
 			expect(rect.getLatLngs()).to.eql(rect._latlngs);
 		});

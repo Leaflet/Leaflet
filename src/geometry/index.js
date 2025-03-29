@@ -1,5 +1,5 @@
-export {Point, toPoint as point} from './Point.js';
-export {Bounds, toBounds as bounds} from './Bounds.js';
+export {Point} from './Point.js';
+export {Bounds} from './Bounds.js';
 export {Transformation} from './Transformation.js';
 
 import * as LineUtil from './LineUtil.js';

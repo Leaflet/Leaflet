@@ -1,14 +1,14 @@
 import {expect} from 'chai';
-import {bounds, Bounds, point} from 'leaflet';
+import {Bounds, Point} from 'leaflet';
 
 describe('Bounds', () => {
 	let a, b, c;
 
 	beforeEach(() => {
-		a = bounds(
+		a = new Bounds(
 			[14, 12], // left, top
 			[30, 40]); // right, bottom
-		b = bounds([
+		b = new Bounds([
 			[20, 12], // center, top
 			[14, 20], // left, middle
 			[30, 40] // right, bottom
@@ -18,35 +18,35 @@ describe('Bounds', () => {
 
 	describe('constructor', () => {
 		it('creates bounds with proper min & max on (Point, Point)', () => {
-			expect(a.min).to.eql(point(14, 12));
-			expect(a.max).to.eql(point(30, 40));
+			expect(a.min).to.eql(new Point(14, 12));
+			expect(a.max).to.eql(new Point(30, 40));
 		});
 
 		it('creates bounds with proper min & max on (Point[])', () => {
-			expect(b.min).to.eql(point(14, 12));
-			expect(b.max).to.eql(point(30, 40));
+			expect(b.min).to.eql(new Point(14, 12));
+			expect(b.max).to.eql(new Point(30, 40));
 		});
 	});
 
 	describe('#extend', () => {
 		it('extends the bounds to contain the given point', () => {
 			a.extend([50, 20]);
-			expect(a.min).to.eql(point(14, 12));
-			expect(a.max).to.eql(point(50, 40));
+			expect(a.min).to.eql(new Point(14, 12));
+			expect(a.max).to.eql(new Point(50, 40));
 
 			b.extend([25, 50]);
-			expect(b.min).to.eql(point(14, 12));
-			expect(b.max).to.eql(point(30, 50));
+			expect(b.min).to.eql(new Point(14, 12));
+			expect(b.max).to.eql(new Point(30, 50));
 		});
 
 		it('extends the bounds by given bounds', () => {
 			a.extend([20, 50]);
-			expect(a.max).to.eql(point(30, 50));
+			expect(a.max).to.eql(new Point(30, 50));
 		});
 
 		it('extends the bounds by given bounds', () => {
 			a.extend([[20, 50], [8, 40]]);
-			expect(a.getBottomLeft()).to.eql(point(8, 50));
+			expect(a.getBottomLeft()).to.eql(new Point(8, 50));
 		});
 
 		it('extends the bounds by undefined', () => {
@@ -55,23 +55,23 @@ describe('Bounds', () => {
 
 		it('extends the bounds by raw object', () => {
 			a.extend({x: 20, y: 50});
-			expect(a.max).to.eql(point(30, 50));
+			expect(a.max).to.eql(new Point(30, 50));
 		});
 
 		it('extend the bounds by an empty bounds object', () => {
-			expect(a.extend(bounds())).to.eql(a);
+			expect(a.extend(new Bounds())).to.eql(a);
 		});
 	});
 
 	describe('#getCenter', () => {
 		it('returns the center point', () => {
-			expect(a.getCenter()).to.eql(point(22, 26));
+			expect(a.getCenter()).to.eql(new Point(22, 26));
 		});
 	});
 
 	describe('#pad', () => {
 		it('pads the bounds by a given ratio', () => {
-			expect(a.pad(0.5)).to.eql(bounds([[6, -2], [38, 54]]));
+			expect(a.pad(0.5)).to.eql(new Bounds([[6, -2], [38, 54]]));
 		});
 	});
 
@@ -102,7 +102,7 @@ describe('Bounds', () => {
 
 	describe('#getSize', () => {
 		it('returns the size of the bounds as point', () => {
-			expect(a.getSize()).to.eql(point(16, 28));
+			expect(a.getSize()).to.eql(new Point(16, 28));
 		});
 	});
 
@@ -139,31 +139,31 @@ describe('Bounds', () => {
 
 	describe('#getBottomLeft', () => {
 		it('returns the proper bounds bottom-left value', () => {
-			expect(a.getBottomLeft()).to.eql(point(14, 40)); // left, bottom
+			expect(a.getBottomLeft()).to.eql(new Point(14, 40)); // left, bottom
 		});
 	});
 
 	describe('#getTopRight', () => {
 		it('returns the proper bounds top-right value', () => {
-			expect(a.getTopRight()).to.eql(point(30, 12)); // right, top
+			expect(a.getTopRight()).to.eql(new Point(30, 12)); // right, top
 		});
 	});
 
 	describe('#getTopLeft', () => {
 		it('returns the proper bounds top-left value', () => {
-			expect(a.getTopLeft()).to.eql(point(14, 12)); // left, top
+			expect(a.getTopLeft()).to.eql(new Point(14, 12)); // left, top
 		});
 	});
 
 	describe('#getBottomRight', () => {
 		it('returns the proper bounds bottom-right value', () => {
-			expect(a.getBottomRight()).to.eql(point(30, 40)); // left, bottom
+			expect(a.getBottomRight()).to.eql(new Point(30, 40)); // left, bottom
 		});
 	});
 
 	describe('bounds factory', () => {
 		it('creates bounds from array of number arrays', () => {
-			expect(bounds([[14, 12], [30, 40]])).to.eql(a);
+			expect(new Bounds([[14, 12], [30, 40]])).to.eql(a);
 		});
 	});
 

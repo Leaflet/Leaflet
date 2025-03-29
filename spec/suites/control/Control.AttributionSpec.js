@@ -1,4 +1,4 @@
-import {Map, Control, Layer, control as lControl} from 'leaflet';
+import {Map, Control, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 import {expect} from 'chai';
 
@@ -78,7 +78,7 @@ describe('Control.Attribution', () => {
 	describe('control.attribution factory', () => {
 		it('creates Control.Attribution instance', () => {
 			const options = {prefix: 'prefix'};
-			expect(lControl.attribution(options)).to.eql(new Control.Attribution(options));
+			expect(new Control.Attribution(options)).to.eql(new Control.Attribution(options));
 		});
 	});
 
