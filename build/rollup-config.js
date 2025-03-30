@@ -23,7 +23,7 @@ const config = {
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion()
+		release ? json() : rollupGitVersion(),
 	]
 };
 
