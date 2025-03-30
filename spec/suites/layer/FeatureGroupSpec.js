@@ -1,5 +1,5 @@
 ﻿import {expect} from 'chai';
-import {Marker, FeatureGroup, LayerGroup, stamp} from 'leaflet';
+import {Marker, FeatureGroup, LayerGroup, Util} from 'leaflet';
 
 describe('FeatureGroup', () => {
 	describe('#_propagateEvent', () => {
@@ -83,7 +83,7 @@ describe('FeatureGroup', () => {
 			fg.addLayer(marker);
 			expect(fg.hasLayer(marker)).to.be.true;
 
-			fg.removeLayer(stamp(marker));
+			fg.removeLayer(Util.stamp(marker));
 			expect(fg.hasLayer(marker)).to.be.false;
 		});
 	});
