@@ -25,6 +25,6 @@ title: Custom Icons Tutorial
 
 	const mGreen = new Marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

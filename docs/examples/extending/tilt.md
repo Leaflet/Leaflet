@@ -65,6 +65,6 @@ title: Tilt handler
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 	
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

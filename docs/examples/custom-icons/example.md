@@ -29,6 +29,6 @@ title: Custom Icons Tutorial
 	const mRed = new Marker([51.495, -0.083], {icon: redIcon}).bindPopup('I am a red leaf.').addTo(map);
 	const mOrange = new Marker([51.49, -0.1], {icon: orangeIcon}).bindPopup('I am an orange leaf.').addTo(map);
 
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

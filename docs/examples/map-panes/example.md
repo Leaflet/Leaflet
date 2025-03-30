@@ -36,6 +36,6 @@ title: Custom Icons Tutorial
 
 	map.setView({lat: 47.040182144806664, lng: 9.667968750000002}, 4);
 
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

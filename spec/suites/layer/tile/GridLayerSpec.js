@@ -563,7 +563,7 @@ describe('GridLayer', () => {
 		/*
 		function logTiles(ev) {
 			let pending = 0;
-			for (let key in grid._tiles) {
+			for (const key in grid._tiles) {
 				if (!grid._tiles[key].loaded) { pending++; }
 			}
 			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);

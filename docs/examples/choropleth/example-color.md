@@ -41,6 +41,6 @@ title: Choropleth Tutorial
 		style,
 	}).addTo(map);
 
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

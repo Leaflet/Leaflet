@@ -25,6 +25,6 @@ title: KittenLayer
 	const kittenTiles = new TileLayer.Kitten();
 	map.addLayer(kittenTiles);
 
-	window.L = L; // only for debugging in the developer console
-	window.map = map; // only for debugging in the developer console
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>
