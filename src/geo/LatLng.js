@@ -3,7 +3,6 @@ import {Earth} from './crs/CRS.Earth.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
 /* @class LatLng
- * @aka L.LatLng
  *
  * Represents a geographical point with a certain latitude and longitude.
  *

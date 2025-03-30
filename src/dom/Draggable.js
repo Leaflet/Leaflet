@@ -7,12 +7,11 @@ import {Point} from '../geometry/Point.js';
 
 /*
  * @class Draggable
- * @aka L.Draggable
  * @inherits Evented
  *
  * A class for making DOM elements draggable (including touch support).
  * Used internally for map and marker dragging. Only works for elements
- * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
+ * that were positioned with [`DomUtil.setPosition`](#domutil-setposition).
  *
  * @example
  * ```js

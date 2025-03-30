@@ -10,8 +10,7 @@ import {MarkerDrag} from './Marker.Drag.js';
 /*
  * @class Marker
  * @inherits Interactive layer
- * @aka L.Marker
- * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
+ * Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *
  * @example
  *
@@ -29,8 +28,8 @@ export const Marker = Layer.extend({
 	options: {
 		// @option icon: Icon = *
 		// Icon instance to use for rendering the marker.
-		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
-		// If not specified, a common instance of `L.Icon.Default` is used.
+		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
+		// If not specified, a common instance of `Icon.Default` is used.
 		icon: new IconDefault(),
 
 		// Option inherited from "Interactive layer" abstract class
@@ -76,7 +75,7 @@ export const Marker = Layer.extend({
 
 		// @option bubblingMouseEvents: Boolean = false
 		// When `true`, a mouse event on this marker will trigger the same event on the map
-		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingMouseEvents: false,
 
 		// @option autoPanOnFocus: Boolean = true
@@ -198,7 +197,7 @@ export const Marker = Layer.extend({
 
 	// @method getElement(): HTMLElement
 	// Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
-	// used by L.Marker layer.
+	// used by Marker layer.
 	getElement() {
 		return this._icon;
 	},

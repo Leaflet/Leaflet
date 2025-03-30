@@ -5,7 +5,7 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.EPSG3395
+ * @crs CRS.EPSG3395
  *
  * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */

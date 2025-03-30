@@ -9,7 +9,6 @@ export const create = svgCreate;
 /*
  * @class SVG
  * @inherits Renderer
- * @aka L.SVG
  *
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
  * Inherits `Renderer`.

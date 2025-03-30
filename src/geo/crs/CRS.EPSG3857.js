@@ -5,7 +5,7 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.EPSG3857
+ * @crs CRS.EPSG3857
  *
  * The most common CRS for online maps, used by almost all free and commercial
  * tile providers. Uses Spherical Mercator projection. Set in by default in

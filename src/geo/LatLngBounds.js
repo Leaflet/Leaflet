@@ -2,7 +2,6 @@ import {LatLng} from './LatLng.js';
 
 /*
  * @class LatLngBounds
- * @aka L.LatLngBounds
  *
  * Represents a rectangular geographical area on a map.
  *

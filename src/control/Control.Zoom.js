@@ -6,7 +6,6 @@ import * as DomEvent from '../dom/DomEvent.js';
 
 /*
  * @class Control.Zoom
- * @aka L.Control.Zoom
  * @inherits Control
  *
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.

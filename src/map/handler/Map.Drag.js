@@ -5,7 +5,7 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*
- * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
+ * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
 // @namespace Map

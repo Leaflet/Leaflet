@@ -4,7 +4,6 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class PosAnimation
- * @aka L.PosAnimation
  * @inherits Evented
  * Used internally for panning animations and utilizing CSS Transitions for modern browsers.
  *

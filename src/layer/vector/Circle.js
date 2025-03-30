@@ -8,7 +8,6 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 /*
  * @class Circle
- * @aka L.Circle
  * @inherits CircleMarker
  *
  * A class for drawing circle overlays on a map. Extends `CircleMarker`.

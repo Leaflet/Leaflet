@@ -8,7 +8,6 @@ import {Point} from '../../geometry/Point.js';
 
 /*
  * @class Polyline
- * @aka L.Polyline
  * @inherits Path
  *
  * A class for drawing polyline overlays on a map. Extends `Path`.

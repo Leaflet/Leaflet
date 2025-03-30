@@ -9,7 +9,6 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 /*
  * @class GridLayer
  * @inherits Layer
- * @aka L.GridLayer
  *
  * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces `TileLayer.Canvas`.
  * GridLayer can be extended to create a tiled grid of HTML elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
@@ -80,7 +79,7 @@ export const GridLayer = Layer.extend({
 	// @aka GridLayer options
 	options: {
 		// @option tileSize: Number|Point = 256
-		// Width and height of tiles in the grid. Use a number if width and height are equal, or `L.point(width, height)` otherwise.
+		// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
 		tileSize: 256,
 
 		// @option opacity: Number = 1.0

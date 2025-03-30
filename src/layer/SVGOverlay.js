@@ -3,7 +3,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class SVGOverlay
- * @aka L.SVGOverlay
  * @inherits ImageOverlay
  *
  * Used to load, display and provide DOM access to an SVG file over specific bounds of the map. Extends `ImageOverlay`.

@@ -7,7 +7,6 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
 
 /*
  * @class Polygon
- * @aka L.Polygon
  * @inherits Polyline
  *
  * A class for drawing polygon overlays on a map. Extends `Polyline`.

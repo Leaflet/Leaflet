@@ -5,7 +5,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
 /*
- * L.Handler.MarkerDrag is used internally by L.Marker to make the markers draggable.
+ * Handler.MarkerDrag is used internally by Marker to make the markers draggable.
  */
 
 

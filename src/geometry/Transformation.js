@@ -2,7 +2,6 @@ import {Point} from './Point.js';
 
 /*
  * @class Transformation
- * @aka L.Transformation
  *
  * Represents an affine transformation: a set of coefficients `a`, `b`, `c`, `d`
  * for transforming a point of a form `(x, y)` into `(a*x + b, c*y + d)` and doing
@@ -43,7 +42,7 @@ export function Transformation(a, b, c, d) {
 Transformation.prototype = {
 	// @method transform(point: Point, scale?: Number): Point
 	// Returns a transformed point, optionally multiplied by the given scale.
-	// Only accepts actual `L.Point` instances, not arrays.
+	// Only accepts actual `Point` instances, not arrays.
 	transform(point, scale) { // (Point, Number) -> Point
 		return this._transform(point.clone(), scale);
 	},
@@ -58,7 +57,7 @@ Transformation.prototype = {
 
 	// @method untransform(point: Point, scale?: Number): Point
 	// Returns the reverse transformation of the given point, optionally divided
-	// by the given scale. Only accepts actual `L.Point` instances, not arrays.
+	// by the given scale. Only accepts actual `Point` instances, not arrays.
 	untransform(point, scale) {
 		scale = scale || 1;
 		return new Point(

@@ -9,8 +9,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 /*
  * @class DivOverlay
  * @inherits Interactive layer
- * @aka L.DivOverlay
- * Base model for L.Popup and L.Tooltip. Inherit from it for custom overlays like plugins.
+ * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
  */
 
 // @namespace DivOverlay

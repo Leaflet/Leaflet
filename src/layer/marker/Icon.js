@@ -5,7 +5,6 @@ import Browser from '../../core/Browser.js';
 
 /*
  * @class Icon
- * @aka L.Icon
  *
  * Represents an icon to provide when creating a marker.
  *
@@ -27,7 +26,7 @@ import Browser from '../../core/Browser.js';
  * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
- * `L.Icon.Default` extends `L.Icon` and is the blue icon Leaflet uses for markers by default.
+ * `Icon.Default` extends `Icon` and is the blue icon Leaflet uses for markers by default.
  *
  */
 

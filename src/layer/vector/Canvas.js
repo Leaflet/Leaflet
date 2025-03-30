@@ -6,7 +6,6 @@ import {Bounds} from '../../geometry/Bounds.js';
 /*
  * @class Canvas
  * @inherits Renderer
- * @aka L.Canvas
  *
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.

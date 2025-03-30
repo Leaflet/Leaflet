@@ -3,7 +3,6 @@ import {Point} from '../../geometry/Point.js';
 
 /*
  * @class DivIcon
- * @aka L.DivIcon
  * @inherits Icon
  *
  * Represents a lightweight icon for markers that uses a simple `<div>`

@@ -6,7 +6,7 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*
- * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map
+ * Handler.BoxZoom is used to add shift-drag zoom interaction to the map
  * (zoom to a selected bounding box), enabled by default.
  */
 

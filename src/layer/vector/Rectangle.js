@@ -2,12 +2,11 @@ import {Polygon} from './Polygon.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
- * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
+ * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
 
 /*
  * @class Rectangle
- * @aka L.Rectangle
  * @inherits Polygon
  *
  * A class for drawing rectangle overlays on a map. Extends `Polygon`.

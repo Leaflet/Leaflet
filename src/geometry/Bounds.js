@@ -2,7 +2,6 @@ import {Point} from './Point.js';
 
 /*
  * @class Bounds
- * @aka L.Bounds
  *
  * Represents a rectangular area in pixel coordinates.
  *

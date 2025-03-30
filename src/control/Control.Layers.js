@@ -6,7 +6,6 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control.Layers
- * @aka L.Control.Layers
  * @inherits Control
  *
  * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
@@ -70,7 +69,7 @@ export const Layers = Control.extend({
 		// @option sortFunction: Function = *
 		// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 		// that will be used for sorting the layers, when `sortLayers` is `true`.
-		// The function receives both the `L.Layer` instances and their names, as in
+		// The function receives both the `Layer` instances and their names, as in
 		// `sortFunction(layerA, layerB, nameA, nameB)`.
 		// By default, it sorts layers alphabetically by their name.
 		sortFunction(layerA, layerB, nameA, nameB) {

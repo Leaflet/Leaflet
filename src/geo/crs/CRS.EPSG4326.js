@@ -5,7 +5,7 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.EPSG4326
+ * @crs CRS.EPSG4326
  *
  * A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
  *

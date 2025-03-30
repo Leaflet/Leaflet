@@ -3,7 +3,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class FeatureGroup
- * @aka L.FeatureGroup
  * @inherits LayerGroup
  *
  * Extended `LayerGroup` that makes it easier to do the same thing to all its member layers:

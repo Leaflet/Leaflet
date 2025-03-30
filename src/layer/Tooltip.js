@@ -10,7 +10,6 @@ import {FeatureGroup} from './FeatureGroup.js';
 /*
  * @class Tooltip
  * @inherits DivOverlay
- * @aka L.Tooltip
  * Used to display small texts on top of map layers.
  *
  * @example

@@ -6,7 +6,6 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * @class CircleMarker
- * @aka L.CircleMarker
  * @inherits Path
  *
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.

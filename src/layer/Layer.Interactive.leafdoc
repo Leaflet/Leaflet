@@ -10,7 +10,7 @@ If `false`, the layer will not emit mouse events and will act as a part of the u
 
 @option bubblingMouseEvents: Boolean = true
 When `true`, a mouse event on this layer will trigger the same event on the map
-(unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+(unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 
 @section Mouse events
 

@@ -7,7 +7,6 @@
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties (including properties inherited through the prototype chain)
 // of the `src` object (or multiple objects) into `dest` object and returns the latter.
-// Has an `L.extend` shortcut.
 export function extend(dest, ...args) {
 	let j, len, src;
 
@@ -39,7 +38,6 @@ export function stamp(obj) {
 // `fn` will be called no more than one time per given amount of `time`. The arguments
 // received by the bound function will be any arguments passed when binding the
 // function, followed by any arguments passed when invoking the bound function.
-// Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
 	let lock, queuedArgs;
 
@@ -100,7 +98,7 @@ export function splitWords(str) {
 }
 
 // @function setOptions(obj: Object, options: Object): Object
-// Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
+// Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`.
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
 		obj.options = obj.options ? Object.create(obj.options) : {};

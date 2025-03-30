@@ -4,7 +4,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class LayerGroup
- * @aka L.LayerGroup
  * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,

@@ -4,7 +4,6 @@ import * as Util from '../../core/Util.js';
 /*
  * @class Renderer
  * @inherits BlanketOverlay
- * @aka L.Renderer
  *
  * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles the
  * DOM container of the renderer, its bounds, and its zoom animation.

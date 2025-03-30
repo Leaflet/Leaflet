@@ -4,7 +4,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class VideoOverlay
- * @aka L.VideoOverlay
  * @inherits ImageOverlay
  *
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.

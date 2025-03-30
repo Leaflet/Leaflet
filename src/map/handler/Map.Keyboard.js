@@ -5,7 +5,7 @@ import {Point} from '../../geometry/Point.js';
 
 
 /*
- * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
+ * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
 // @namespace Map

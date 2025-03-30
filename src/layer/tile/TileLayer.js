@@ -6,7 +6,6 @@ import * as DomEvent from '../../dom/DomEvent.js';
 /*
  * @class TileLayer
  * @inherits GridLayer
- * @aka L.TileLayer
  * Used to load and display tile layers on the map. Note that most tile servers require attribution, which you can set under `Layer`. Extends `GridLayer`.
  *
  * @example

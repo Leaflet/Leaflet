@@ -12,7 +12,6 @@ import {PosAnimation} from '../dom/PosAnimation.js';
 
 /*
  * @class Map
- * @aka L.Map
  * @inherits Evented
  *
  * The central class of the API — it is used to create a map on a page and manipulate it.
@@ -42,7 +41,7 @@ export const Map = Evented.extend({
 
 	options: {
 		// @section Map State Options
-		// @option crs: CRS = L.CRS.EPSG3857
+		// @option crs: CRS = CRS.EPSG3857
 		// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
 		// sure what it means.
 		crs: EPSG3857,
@@ -79,8 +78,8 @@ export const Map = Evented.extend({
 		maxBounds: undefined,
 
 		// @option renderer: Renderer = *
-		// The default method for drawing vector layers on the map. `L.SVG`
-		// or `L.Canvas` by default depending on browser support.
+		// The default method for drawing vector layers on the map. `SVG`
+		// or `Canvas` by default depending on browser support.
 		renderer: undefined,
 
 

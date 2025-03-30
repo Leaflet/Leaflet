@@ -12,7 +12,6 @@ import * as LineUtil from '../geometry/LineUtil.js';
 
 /*
  * @class GeoJSON
- * @aka L.GeoJSON
  * @inherits FeatureGroup
  *
  * Represents a GeoJSON object or an array of GeoJSON objects. Allows you to parse
@@ -167,7 +166,7 @@ export const GeoJSON = FeatureGroup.extend({
 });
 
 // @section
-// There are several static functions which can be called without instantiating L.GeoJSON:
+// There are several static functions which can be called without instantiating GeoJSON:
 
 // @function geometryToLayer(featureData: Object, options?: GeoJSON options): Layer
 // Creates a `Layer` from a given GeoJSON feature. Can use a custom
