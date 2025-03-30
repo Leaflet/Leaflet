@@ -75,13 +75,6 @@ describe('Control.Attribution', () => {
 		});
 	});
 
-	describe('control.attribution factory', () => {
-		it('creates Control.Attribution instance', () => {
-			const options = {prefix: 'prefix'};
-			expect(new Control.Attribution(options)).to.eql(new Control.Attribution(options));
-		});
-	});
-
 	describe('on layer add/remove', () => {
 		it('changes text', () => {
 			const fooLayer = dummyLayer();

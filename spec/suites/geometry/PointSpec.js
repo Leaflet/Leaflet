@@ -95,7 +95,7 @@ describe('Point', () => {
 		});
 	});
 
-	describe('point factory', () => {
+	describe('Point creation', () => {
 		it('leaves Point instances as is', () => {
 			const p = new Point(50, 30);
 			expect(new Point(p)).to.equal(p);

@@ -161,7 +161,7 @@ describe('Bounds', () => {
 		});
 	});
 
-	describe('bounds factory', () => {
+	describe('Bounds creation', () => {
 		it('creates bounds from array of number arrays', () => {
 			expect(new Bounds([[14, 12], [30, 40]])).to.eql(a);
 		});

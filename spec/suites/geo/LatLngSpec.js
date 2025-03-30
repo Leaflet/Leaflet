@@ -75,7 +75,7 @@ describe('LatLng', () => {
 		});
 	});
 
-	describe('latLng factory', () => {
+	describe('LatLng creation', () => {
 		it('returns LatLng instance as is', () => {
 			const a = new LatLng(50, 30);
 

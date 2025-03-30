@@ -27,25 +27,6 @@ var a = new MyClass("Hello");
 a.greet("World");
 ```
 
-@section Class Factories
-@example
-
-You may have noticed that Leaflet objects are created without using
-the `new` keyword. This is achieved by complementing each class with a
-lowercase factory method:
-
-```js
-new L.Map('map'); // becomes:
-L.map('map');
-```
-
-The factories are implemented very easily, and you can do this for your own classes:
-
-```js
-L.map = function (id, options) {
-    return new L.Map(id, options);
-};
-```
 @section Inheritance
 @example
 
