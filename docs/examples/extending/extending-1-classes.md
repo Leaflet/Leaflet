@@ -66,7 +66,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
 
 When naming classes, methods and properties, adhere to the following conventions:
     
-* Function, method, property and factory names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
+* Function, method and property names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
@@ -174,17 +174,8 @@ Calling a method of a parent class is achieved by reaching into the prototype of
     });
 
 Calling the parent's constructor is done in a similar way, but using `ParentClass.prototype.initialize.call(this, …)` instead.
-    
-    
-### Factories    
 
-Most Leaflet classes have a corresponding [factory function](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29). A factory function has the same name as the class, but in `lowerCamelCase` instead of `UpperCamelCase`:
-    
-    function myBoxClass(name, options) {
-        return new MyBoxClass(name, options);
-    }
-    
-    
+
 ### Naming conventions
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:

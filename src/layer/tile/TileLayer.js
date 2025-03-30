@@ -6,7 +6,6 @@ import * as DomEvent from '../../dom/DomEvent.js';
 /*
  * @class TileLayer
  * @inherits GridLayer
- * @aka L.TileLayer
  * Used to load and display tile layers on the map. Note that most tile servers require attribution, which you can set under `Layer`. Extends `GridLayer`.
  *
  * @example
@@ -33,7 +32,8 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * ```
  */
 
-
+// @constructor Tilelayer(urlTemplate: String, options?: TileLayer options)
+// Instantiates a tile layer object given a `URL template` and optionally an options object.
 export const TileLayer = GridLayer.extend({
 
 	// @section
@@ -287,11 +287,3 @@ export const TileLayer = GridLayer.extend({
 		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
-
-
-// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
-// Instantiates a tile layer object given a `URL template` and optionally an options object.
-
-export function tileLayer(url, options) {
-	return new TileLayer(url, options);
-}

@@ -9,7 +9,6 @@ export const create = svgCreate;
 /*
  * @class SVG
  * @inherits Renderer
- * @aka L.SVG
  *
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
  * Inherits `Renderer`.
@@ -34,6 +33,9 @@ export const create = svgCreate;
  * ```
  */
 
+// @namespace SVG
+// @constructor SVG(options?: Renderer options)
+// Creates a SVG renderer with the given options.
 export const SVG = Renderer.extend({
 
 	_initContainer() {
@@ -183,9 +185,3 @@ export const SVG = Renderer.extend({
 	}
 });
 
-// @namespace SVG
-// @factory L.svg(options?: Renderer options)
-// Creates a SVG renderer with the given options.
-export function svg(options) {
-	return new SVG(options);
-}

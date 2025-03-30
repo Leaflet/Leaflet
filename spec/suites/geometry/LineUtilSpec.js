@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Bounds, LineUtil, Map, latLng, point, polyline} from 'leaflet';
+import {Bounds, LineUtil, Map, LatLng, Point, Polyline} from 'leaflet';
 import sinon from 'sinon';
 import '../SpecHelper.js';
 
@@ -12,86 +12,86 @@ describe('LineUtil', () => {
 		});
 
 		it('clips a segment by bounds', () => {
-			const a = point(0, 0);
-			const b = point(15, 15);
+			const a = new Point(0, 0);
+			const b = new Point(15, 15);
 
 			const segment = LineUtil.clipSegment(a, b, bounds);
 
-			expect(segment[0]).to.eql(point(5, 5));
-			expect(segment[1]).to.eql(point(10, 10));
+			expect(segment[0]).to.eql(new Point(5, 5));
+			expect(segment[1]).to.eql(new Point(10, 10));
 
-			const c = point(5, -5);
-			const d = point(20, 10);
+			const c = new Point(5, -5);
+			const d = new Point(20, 10);
 
 			const segment2 = LineUtil.clipSegment(c, d, bounds);
 
-			expect(segment2[0]).to.eql(point(10, 0));
-			expect(segment2[1]).to.eql(point(15, 5));
+			expect(segment2[0]).to.eql(new Point(10, 0));
+			expect(segment2[1]).to.eql(new Point(15, 5));
 		});
 
 		it('uses last bit code and reject segments out of bounds', () => {
-			const a = point(15, 15);
-			const b = point(25, 20);
+			const a = new Point(15, 15);
+			const b = new Point(25, 20);
 			const segment = LineUtil.clipSegment(a, b, bounds, true);
 
 			expect(segment).to.be.false;
 		});
 
 		it('can round numbers in clipped bounds', () => {
-			const a = point(4, 5);
-			const b = point(8, 6);
+			const a = new Point(4, 5);
+			const b = new Point(8, 6);
 
 			const segment1 = LineUtil.clipSegment(a, b, bounds);
 
-			expect(segment1[0]).to.eql(point(5, 5.25));
+			expect(segment1[0]).to.eql(new Point(5, 5.25));
 			expect(segment1[1]).to.eql(b);
 
 			const segment2 = LineUtil.clipSegment(a, b, bounds, false, true);
 
-			expect(segment2[0]).to.eql(point(5, 5));
+			expect(segment2[0]).to.eql(new Point(5, 5));
 			expect(segment2[1]).to.eql(b);
 		});
 	});
 
 	describe('#pointToSegmentDistance & #closestPointOnSegment', () => {
-		const p1 = point(0, 10);
-		const p2 = point(10, 0);
-		const p = point(0, 0);
+		const p1 = new Point(0, 10);
+		const p2 = new Point(10, 0);
+		const p = new Point(0, 0);
 
-		it('calculates distance from point to segment', () => {
+		it('calculates distance from new Point to segment', () => {
 			expect(LineUtil.pointToSegmentDistance(p, p1, p2)).to.eql(Math.sqrt(200) / 2);
 		});
 
-		it('calculates point closest to segment', () => {
-			expect(LineUtil.closestPointOnSegment(p, p1, p2)).to.eql(point(5, 5));
+		it('calculates new Point closest to segment', () => {
+			expect(LineUtil.closestPointOnSegment(p, p1, p2)).to.eql(new Point(5, 5));
 		});
 	});
 
 	describe('#simplify', () => {
 		it('simplifies polylines according to tolerance', () => {
 			const points = [
-				point(0, 0),
-				point(0.01, 0),
-				point(0.5, 0.01),
-				point(0.7, 0),
-				point(1, 0),
-				point(1.999, 0.999),
-				point(2, 1)
+				new Point(0, 0),
+				new Point(0.01, 0),
+				new Point(0.5, 0.01),
+				new Point(0.7, 0),
+				new Point(1, 0),
+				new Point(1.999, 0.999),
+				new Point(2, 1)
 			];
 
 			const simplified = LineUtil.simplify(points, 0.1);
 
 			expect(simplified).to.eql([
-				point(0, 0),
-				point(1, 0),
-				point(2, 1)
+				new Point(0, 0),
+				new Point(1, 0),
+				new Point(2, 1)
 			]);
 		});
 	});
 
 	describe('#isFlat', () => {
 		it('should return true for an array of LatLngs', () => {
-			expect(LineUtil.isFlat([latLng([0, 0])])).to.be.true;
+			expect(LineUtil.isFlat([new LatLng([0, 0])])).to.be.true;
 		});
 
 		it('should return true for an array of LatLngs arrays', () => {
@@ -103,7 +103,7 @@ describe('LineUtil', () => {
 		});
 
 		it('should return false for a nested array of LatLngs', () => {
-			expect(LineUtil.isFlat([[latLng([0, 0])]])).to.be.false;
+			expect(LineUtil.isFlat([[new LatLng([0, 0])]])).to.be.false;
 		});
 
 		it('should return false for a nested empty array', () => {
@@ -132,7 +132,7 @@ describe('LineUtil', () => {
 
 		it('computes center of a small line', () => {
 			const latlngs = [[50.49898323576035, 30.509834789772036], [50.49998323576035, 30.509834789772036], [50.49998323576035, 30.509939789772037], [50.49898323576035, 30.509939789772037]];
-			const layer = polyline(latlngs).addTo(map);
+			const layer = new Polyline(latlngs).addTo(map);
 			expect(layer.getCenter()).to.be.nearLatLng([50.49998323576035, 30.50989603626345]);
 		});
 

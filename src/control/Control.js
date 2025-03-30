@@ -6,10 +6,9 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control
- * @aka L.Control
  * @inherits Class
  *
- * L.Control is a base class for implementing map controls. Handles positioning.
+ * Control is a base class for implementing map controls. Handles positioning.
  * All other controls extend from this class.
  */
 
@@ -28,7 +27,7 @@ export const Control = Class.extend({
 	},
 
 	/* @section
-	 * Classes extending L.Control will inherit the following methods:
+	 * Classes extending Control will inherit the following methods:
 	 *
 	 * @method getPosition: string
 	 * Returns the position of the control.
@@ -119,7 +118,7 @@ export const control = function (options) {
 /* @section Extension methods
  * @uninheritable
  *
- * Every control should extend from `L.Control` and (re-)implement the following methods.
+ * Every control should extend from `Control` and (re-)implement the following methods.
  *
  * @method onAdd(map: Map): HTMLElement
  * Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).

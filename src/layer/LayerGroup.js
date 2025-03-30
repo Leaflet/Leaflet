@@ -4,7 +4,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class LayerGroup
- * @aka L.LayerGroup
  * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,
@@ -20,6 +19,8 @@ import * as Util from '../core/Util.js';
  * ```
  */
 
+// @constructor LayerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
 export const LayerGroup = Layer.extend({
 
 	initialize(layers, options) {
@@ -153,10 +154,3 @@ export const LayerGroup = Layer.extend({
 		return Util.stamp(layer);
 	}
 });
-
-
-// @factory L.layerGroup(layers?: Layer[], options?: Object)
-// Create a layer group, optionally given an initial set of layers and an `options` object.
-export const layerGroup = function (layers, options) {
-	return new LayerGroup(layers, options);
-};

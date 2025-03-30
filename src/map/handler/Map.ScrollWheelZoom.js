@@ -3,7 +3,7 @@ import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
- * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
+ * Handler.ScrollWheelZoom is used by Map to enable mouse scroll wheel zoom on the map.
  */
 
 // @namespace Map
@@ -21,7 +21,7 @@ Map.mergeOptions({
 	wheelDebounceTime: 40,
 
 	// @option wheelPxPerZoomLevel: Number = 60
-	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
+	// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
 	wheelPxPerZoomLevel: 60

@@ -1074,14 +1074,14 @@ describe('GridLayer', () => {
 			expect(() => {
 				map.panTo([Infinity, Infinity]);
 				new GridLayer().addTo(map);
-			}).to.throw('Attempted to load an infinite number of tiles');
+			}).to.throw('Invalid Point object: (NaN, NaN)');
 		});
 
 		it('Throws error on map center at minus Infinity longitude', () => {
 			expect(() => {
 				map.panTo([-Infinity, -Infinity]);
 				new GridLayer().addTo(map);
-			}).to.throw('Attempted to load an infinite number of tiles');
+			}).to.throw('Invalid Point object: (NaN, NaN)');
 		});
 	});
 
