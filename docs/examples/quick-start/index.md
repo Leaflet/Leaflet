@@ -25,6 +25,8 @@ Before writing any code for the map, you need to do the following preparation st
 
 	```html
 	<!-- Make sure you put this AFTER Leaflet's CSS -->
+	<link rel="modulepreload" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin="anonymous" />
+
 	<script type="importmap">
 	{
 		"imports": {
@@ -36,6 +38,9 @@ Before writing any code for the map, you need to do the following preparation st
 	}
 	</script>
 	```
+	
+	- [**`modulepreload`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload): Preloads the module before it is needed, reducing load time and ensuring scripts are ready when the page starts executing JavaScript.
+	- [**`importmap`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap): Allows defining module specifiers (`import` paths) in the browser without relying on a bundler. It enables the use of named imports directly from a CDN or local files, making module resolution more flexible and readable.
 
  * Put a `div` element with a certain `id` where you want your map to be:
 
