@@ -2,18 +2,22 @@
 layout: tutorial_frame
 title: Zoom Levels Tutorial
 ---
-<script>
+<script type="module">
+	import L, {Map, TileLayer} from 'leaflet';
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});
 
 	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
 	map.setView([0, 0], 0);
+
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

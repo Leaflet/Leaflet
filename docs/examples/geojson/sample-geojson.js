@@ -1,4 +1,4 @@
-var freeBus = {
+const freeBus = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -49,7 +49,7 @@ var freeBus = {
     ]
 };
 
-var lightRailStop = {
+const lightRailStop = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -74,7 +74,7 @@ var lightRailStop = {
     ]
 };
 
-var bicycleRental = {
+const bicycleRental = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -178,7 +178,7 @@ var bicycleRental = {
     ]
 };
 
-var campus = {
+const campus = {
     "type": "Feature",
     "properties": {
         "popupContent": "This is the Auraria West Campus",
@@ -236,7 +236,7 @@ var campus = {
     }
 };
 
-var coorsField = {
+const coorsField = {
     "type": "Feature",
     "properties": {
         "popupContent": "Coors Field"

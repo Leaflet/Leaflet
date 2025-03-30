@@ -60,7 +60,7 @@ We can use the defaults for the basemap tiles and some overlays like GeoJSON lay
 Custom map panes are created on a per-map basis, so first create an instance of `L.Map` and the pane:
 
 
-    var map = L.map('map');
+    const map = new Map('map');
     map.createPane('labels');
 
 
@@ -79,16 +79,16 @@ One of the problems of having image tiles on top of other map layers is that the
 With the pane now ready, we can add the layers, paying attention to use the `pane` option on the labels tiles:
 
 
-    var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+    const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB'
     }).addTo(map);
 
-    var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+    const positronLabels = new TileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
             attribution: '©OpenStreetMap, ©CartoDB',
             pane: 'labels'
     }).addTo(map);
 
-    var geojson = L.geoJson(GeoJsonData, geoJsonOptions).addTo(map);
+    const geojson = new GeoJSON(GeoJsonData, geoJsonOptions).addTo(map);
 
 Finally, add some interaction to each feature on the GeoJSON layer:
 

@@ -16,18 +16,18 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Use Canvas by default for all paths in the map:
  *
  * ```js
- * var map = L.map('map', {
- * 	renderer: L.canvas()
+ * const map = new Map('map', {
+ * 	renderer: new Canvas()
  * });
  * ```
  *
  * Use a Canvas renderer with extra padding for specific vector geometries:
  *
  * ```js
- * var map = L.map('map');
- * var myRenderer = L.canvas({ padding: 0.5 });
- * var line = L.polyline( coordinates, { renderer: myRenderer } );
- * var circle = L.circle( center, { renderer: myRenderer } );
+ * const map = new Map('map');
+ * const myRenderer = new Canvas({ padding: 0.5 });
+ * const line = new Polyline( coordinates, { renderer: myRenderer } );
+ * const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );
  * ```
  */
 

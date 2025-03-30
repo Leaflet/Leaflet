@@ -15,13 +15,13 @@ Map handlers are a new concept in Leaflet 1.0, and their function is to process 
 
 Handlers are relatively simple: they just need an `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
 
-	L.CustomHandler = L.Handler.extend({
+	const CustomHandler = Handler.extend({
 		addHooks: function() {
-			L.DomEvent.on(document, 'eventname', this._doSomething, this);
+			DomEvent.on(document, 'eventname', this._doSomething, this);
 		},
 
 		removeHooks: function() {
-			L.DomEvent.off(document, 'eventname', this._doSomething, this);
+			DomEvent.off(document, 'eventname', this._doSomething, this);
 		},
 
 		_doSomething: function(event) { … }
@@ -29,30 +29,30 @@ Handlers are relatively simple: they just need an `addHooks()` method (which run
 
 This can be illustrated with a simple handler to pan the map when a mobile device is tilted, through [`deviceorientation` events](https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation):
 
-	L.TiltHandler = L.Handler.extend({
+	const TiltHandler = Handler.extend({
 		addHooks: function() {
-			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
+			DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 
 		removeHooks: function() {
-			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
+			DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
 
 		_tilt: function(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-			this._map.panBy( L.point( ev.gamma, ev.beta ) );
+			this._map.panBy( new Point( ev.gamma, ev.beta ) );
 		}
 	});
 
 The handler can be attached to the map using `map.addHandler('tilt', L.TiltHandler)` - this will store an instance of `L.TiltHandler` as `map.tilt`. However, it's more usual to attach handlers to all maps with the `addInitHook` syntax:
 
-	L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
+	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
 Our handler can now be enabled by running `map.tilt.enable()` and disabled by `map.tilt.disable()`
 
 Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that options is `true`, so this will enable our handler by default:
 
-	var map = L.map('mapDiv', { tilt: true });
+	const map = new Map('mapDiv', { tilt: true });
 
 To see this example, you'll need a mobile browser which [supports the `deviceorientation` event](http://caniuse.com/#search=deviceorientation) - and even so, this event is particularly flaky and ill-specified, so beware.
 
@@ -68,9 +68,9 @@ To make a control, simply inherit from `L.Control` and implement `onAdd()` and `
 
 The simplest example of a custom control would be a watermark, which is just an image:
 
-	L.Control.Watermark = L.Control.extend({
+	Control.Watermark = Control.extend({
 		onAdd: function(map) {
-			var img = L.DomUtil.create('img');
+			const img = DomUtil.create('img');
 
 			img.src = '../../docs/images/logo.png';
 			img.style.width = '200px';
@@ -83,11 +83,7 @@ The simplest example of a custom control would be a watermark, which is just an 
 		}
 	});
 
-	L.control.watermark = function(opts) {
-		return new L.Control.Watermark(opts);
-	}
-
-	L.control.watermark({ position: 'bottomleft' }).addTo(map);
+	new Control.Watermark({ position: 'bottomleft' }).addTo(map);
 
 {% include frame.html url="watermark.html" %}
 

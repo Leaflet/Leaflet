@@ -2,29 +2,29 @@
 layout: tutorial_frame
 title: KittenLayer
 ---
-<script type='text/javascript'>
+<script type="module">
+	import L, {Map, CRS, TileLayer} from 'leaflet';
 
-	const map = L.map('map', {
-		crs: L.CRS.Simple,
+	const map = new Map('map', {
+		crs: CRS.Simple,
 		center: [0, 0],
 		zoom: 5
 	});
 
-	L.TileLayer.Kitten = L.TileLayer.extend({
+	TileLayer.Kitten = TileLayer.extend({
 		getTileUrl(coords) {
-			const i = Math.ceil(Math.random() * 4);
-			return `https://placekitten.com/256/256?image=${i}`;
+			const i = Math.ceil(Math.random() * 4) - 1;
+			const tag = ['orange', 'hat', 'cute', 'small'];
+			return `https://cataas.com/cat/${tag[i]}?width=256&height=256`;
 		},
 		getAttribution() {
-			return '<a href="https://placekitten.com/attribution.html">PlaceKitten</a>';
+			return '<a href="https://cataas.com/">CATAAS - Cat as a service</a>';
 		}
 	});
 
-	L.tileLayer.kitten = function () {
-		return new L.TileLayer.Kitten();
-	};
-
-	const kittenTiles = L.tileLayer.kitten();
+	const kittenTiles = new TileLayer.Kitten();
 	map.addLayer(kittenTiles);
-	
+
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

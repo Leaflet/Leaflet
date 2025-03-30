@@ -2,20 +2,22 @@
 layout: tutorial_frame
 title: Watermark control
 ---
-<script type='text/javascript'>
-	const map = L.map('map', {
+<script type="module">
+	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
+
+	const map = new Map('map', {
 		center: [40, 0],
 		zoom: 1
 	});
 
-	const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	L.Control.Watermark = L.Control.extend({
+	Control.Watermark = Control.extend({
 		onAdd(map) {
-			const img = L.DomUtil.create('img');
+			const img = DomUtil.create('img');
 
 			img.src = '../../docs/images/logo.png';
 			img.style.width = '200px';
@@ -27,11 +29,9 @@ title: Watermark control
 			// Nothing to do here
 		}
 	});
-
-	L.control.watermark = function (opts) {
-		return new L.Control.Watermark(opts);
-	};
 	
-	const watermarkControl = L.control.watermark({position: 'bottomleft'}).addTo(map);
+	const watermarkControl = new Control.Watermark({position: 'bottomleft'}).addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>
