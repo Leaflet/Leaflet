@@ -99,7 +99,7 @@ Now let's make the states highlighted visually in some way when they are hovered
 
 Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states.
 
-Next we'll define what happens on `mouseout`:
+Next we'll define what happens on `pointerout`:
 
 	function resetHighlight(e) {
 		geojson.resetStyle(e.target);
@@ -121,8 +121,8 @@ Now we'll use the `onEachFeature` option to add the listeners on our state layer
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			pointerover: highlightFeature,
+			pointerout: resetHighlight,
 			click: zoomToFeature
 		});
 	}
