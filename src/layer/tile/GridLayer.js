@@ -4,7 +4,7 @@ import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
-import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * @class GridLayer
@@ -741,7 +741,7 @@ export const GridLayer = Layer.extend({
 
 		// don't load tile if it doesn't intersect the bounds in options
 		const tileBounds = this._tileCoordsToBounds(coords);
-		return latLngBounds(this.options.bounds).overlaps(tileBounds);
+		return new LatLngBounds(this.options.bounds).overlaps(tileBounds);
 	},
 
 	_keyToBounds(key) {

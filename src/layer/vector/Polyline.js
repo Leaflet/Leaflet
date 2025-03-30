@@ -1,7 +1,7 @@
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
-import {LatLng, toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
@@ -139,7 +139,7 @@ export const Polyline = Path.extend({
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng(latlng, latlngs) {
 		latlngs = latlngs || this._defaultShape();
-		latlng = toLatLng(latlng);
+		latlng = new LatLng(latlng);
 		latlngs.push(latlng);
 		this._bounds.extend(latlng);
 		return this.redraw();
@@ -161,7 +161,7 @@ export const Polyline = Path.extend({
 
 		for (let i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
-				result[i] = toLatLng(latlngs[i]);
+				result[i] = new LatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
 			} else {
 				result[i] = this._convertLatLngs(latlngs[i]);

@@ -114,8 +114,8 @@ describe('Point', () => {
 		});
 
 		it('does not fail on invalid arguments', () => {
-			expect(new Point(undefined)).to.equal(undefined);
-			expect(new Point(null)).to.equal(null);
+			expect(() => new Point(undefined)).to.throw();
+			expect(() => new Point(null)).to.throw();
 		});
 	});
 });

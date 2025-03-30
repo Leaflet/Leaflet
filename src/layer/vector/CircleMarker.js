@@ -1,6 +1,6 @@
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 
@@ -28,7 +28,7 @@ export const CircleMarker = Path.extend({
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this._radius = this.options.radius;
 	},
 
@@ -36,7 +36,7 @@ export const CircleMarker = Path.extend({
 	// Sets the position of a circle marker to a new location.
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this.redraw();
 
 		// @event move: Event

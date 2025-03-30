@@ -1,7 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import {Point, toPoint} from '../geometry/Point.js';
+import {Point} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
@@ -301,9 +301,9 @@ export const Popup = DivOverlay.extend({
 		layerPos._add(DomUtil.getPosition(this._container));
 
 		const containerPos = map.layerPointToContainerPoint(layerPos),
-		      padding = toPoint(this.options.autoPanPadding),
-		      paddingTL = toPoint(this.options.autoPanPaddingTopLeft || padding),
-		      paddingBR = toPoint(this.options.autoPanPaddingBottomRight || padding),
+		      padding = new Point(this.options.autoPanPadding),
+		      paddingTL = new Point(this.options.autoPanPaddingTopLeft || padding),
+		      paddingBR = new Point(this.options.autoPanPaddingBottomRight || padding),
 		      size = map.getSize();
 		let dx = 0,
 		    dy = 0;
@@ -339,7 +339,7 @@ export const Popup = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the popup on the source layer?
-		return toPoint(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
+		return new Point(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
 });

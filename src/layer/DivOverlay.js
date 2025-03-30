@@ -2,8 +2,8 @@ import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
 import * as Util from '../core/Util.js';
-import {toLatLng, LatLng} from '../geo/LatLng.js';
-import {toPoint} from '../geometry/Point.js';
+import {LatLng} from '../geo/LatLng.js';
+import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
@@ -43,7 +43,7 @@ export const DivOverlay = Layer.extend({
 
 	initialize(options, source) {
 		if (options && (options instanceof LatLng || Array.isArray(options))) {
-			this._latlng = toLatLng(options);
+			this._latlng = new LatLng(options);
 			Util.setOptions(this, source);
 		} else {
 			Util.setOptions(this, options);
@@ -148,7 +148,7 @@ export const DivOverlay = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the overlay will open.
 	setLatLng(latlng) {
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
 			this._adjustPan();
@@ -297,7 +297,7 @@ export const DivOverlay = Layer.extend({
 
 		const pos = this._map.latLngToLayerPoint(this._latlng),
 		      anchor = this._getAnchor();
-		let offset = toPoint(this.options.offset);
+		let offset = new Point(this.options.offset);
 
 		if (this._zoomAnimated) {
 			DomUtil.setPosition(this._container, pos.add(anchor));

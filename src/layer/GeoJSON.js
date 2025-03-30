@@ -6,7 +6,7 @@ import {Circle} from './vector/Circle.js';
 import {CircleMarker} from './vector/CircleMarker.js';
 import {Polyline} from './vector/Polyline.js';
 import {Polygon} from './vector/Polygon.js';
-import {LatLng, toLatLng} from '../geo/LatLng.js';
+import {LatLng} from '../geo/LatLng.js';
 import * as LineUtil from '../geometry/LineUtil.js';
 
 
@@ -272,7 +272,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngToCoords(latlng, precision) {
-	latlng = toLatLng(latlng);
+	latlng = new LatLng(latlng);
 	return latlng.alt !== undefined ?
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];

@@ -1,5 +1,5 @@
 import {Polygon} from './Polygon.js';
-import {toLatLngBounds} from '../../geo/LatLngBounds.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
@@ -40,7 +40,7 @@ export const Rectangle = Polygon.extend({
 	},
 
 	_boundsToLatLngs(latLngBounds) {
-		latLngBounds = toLatLngBounds(latLngBounds);
+		latLngBounds = new LatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),

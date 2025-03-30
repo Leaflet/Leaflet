@@ -1,5 +1,5 @@
 import {DivOverlay} from './DivOverlay.js';
-import {toPoint} from '../geometry/Point.js';
+import {Point} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -158,7 +158,7 @@ export const Tooltip = DivOverlay.extend({
 		      tooltipPoint = map.layerPointToContainerPoint(pos),
 		      tooltipWidth = container.offsetWidth,
 		      tooltipHeight = container.offsetHeight,
-		      offset = toPoint(this.options.offset),
+		      offset = new Point(this.options.offset),
 		      anchor = this._getAnchor();
 
 		if (direction === 'top') {
@@ -186,7 +186,7 @@ export const Tooltip = DivOverlay.extend({
 			subY = tooltipHeight / 2;
 		}
 
-		pos = pos.subtract(toPoint(subX, subY, true)).add(offset).add(anchor);
+		pos = pos.subtract(new Point(subX, subY, true)).add(offset).add(anchor);
 
 		container.classList.remove(
 			'leaflet-tooltip-right',
@@ -218,7 +218,7 @@ export const Tooltip = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the tooltip on the source layer?
-		return toPoint(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return new Point(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });

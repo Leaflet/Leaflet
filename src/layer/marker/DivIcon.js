@@ -1,5 +1,5 @@
 import {Icon} from './Icon.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
  * @class DivIcon
@@ -55,7 +55,7 @@ export const DivIcon = Icon.extend({
 		}
 
 		if (options.bgPos) {
-			const bgPos = point(options.bgPos);
+			const bgPos = new Point(options.bgPos);
 			div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
 		}
 		this._setIconStyles(div, 'icon');

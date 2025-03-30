@@ -1,8 +1,8 @@
 import {Layer} from '../Layer.js';
 import {IconDefault} from './Icon.Default.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng as latLng} from '../../geo/LatLng.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {LatLng} from '../../geo/LatLng.js';
+import {Point} from '../../geometry/Point.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
@@ -111,7 +111,7 @@ export const Marker = Layer.extend({
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
-		this._latlng = latLng(latlng);
+		this._latlng = new LatLng(latlng);
 	},
 
 	onAdd(map) {
@@ -157,7 +157,7 @@ export const Marker = Layer.extend({
 	// Changes the marker position to the given point.
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
-		this._latlng = latLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this.update();
 
 		// @event move: Event
@@ -396,8 +396,8 @@ export const Marker = Layer.extend({
 		if (!map) { return; }
 
 		const iconOpts = this.options.icon.options;
-		const size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
-		const anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
+		const size = iconOpts.iconSize ? new Point(iconOpts.iconSize) : new Point(0, 0);
+		const anchor = iconOpts.iconAnchor ? new Point(iconOpts.iconAnchor) : new Point(0, 0);
 
 		map.panInside(this._latlng, {
 			paddingTopLeft: anchor,

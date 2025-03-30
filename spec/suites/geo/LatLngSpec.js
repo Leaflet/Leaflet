@@ -83,15 +83,15 @@ describe('LatLng', () => {
 		});
 
 		it('accepts an array of coordinates', () => {
-			expect(new LatLng([])).to.eql(null);
-			expect(new LatLng([50])).to.eql(null);
+			expect(() => new LatLng([])).to.throw();
+			expect(() => new LatLng([50])).to.throw();
 			expect(new LatLng([50, 30])).to.eql(new LatLng(50, 30));
 			expect(new LatLng([50, 30, 100])).to.eql(new LatLng(50, 30, 100));
 		});
 
 		it('passes null or undefined as is', () => {
-			expect(new LatLng(undefined)).to.eql(undefined);
-			expect(new LatLng(null)).to.eql(null);
+			expect(() => new LatLng(undefined)).to.throw();
+			expect(() => new LatLng(null)).to.throw();
 		});
 
 		it('creates a LatLng object from two coordinates', () => {
@@ -107,7 +107,7 @@ describe('LatLng', () => {
 		});
 
 		it('returns null if lng not specified', () => {
-			expect(new LatLng(50)).to.equal(null);
+			expect(() => new LatLng(50)).to.throw();
 		});
 
 		it('accepts altitude as third parameter', () => {

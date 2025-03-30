@@ -1,7 +1,7 @@
 import {CircleMarker} from './CircleMarker.js';
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Earth} from '../../geo/crs/CRS.Earth.js';
 
@@ -33,7 +33,7 @@ export const Circle = CircleMarker.extend({
 			options = Util.extend({}, legacyOptions, {radius: options});
 		}
 		Util.setOptions(this, options);
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 

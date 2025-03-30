@@ -1,6 +1,6 @@
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
 
 /*
@@ -131,9 +131,10 @@ export const Icon = Class.extend({
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		const size = point(sizeOption),
-		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
-		            size && size.divideBy(2, true));
+		const size = Point.validate(sizeOption) && new Point(sizeOption);
+
+		const anchorPosition = name === 'shadow' && options.shadowAnchor || options.iconAnchor || size && size.divideBy(2, true);
+		const anchor = Point.validate(anchorPosition) && new Point(anchorPosition);
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
 

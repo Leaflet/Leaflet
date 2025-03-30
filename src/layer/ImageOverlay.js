@@ -1,6 +1,6 @@
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
-import {toLatLngBounds} from '../geo/LatLngBounds.js';
+import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -68,7 +68,7 @@ export const ImageOverlay = Layer.extend({
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
-		this._bounds = toLatLngBounds(bounds);
+		this._bounds = new LatLngBounds(bounds);
 
 		Util.setOptions(this, options);
 	},
@@ -148,7 +148,7 @@ export const ImageOverlay = Layer.extend({
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
 	setBounds(bounds) {
-		this._bounds = toLatLngBounds(bounds);
+		this._bounds = new LatLngBounds(bounds);
 
 		if (this._map) {
 			this._reset();
