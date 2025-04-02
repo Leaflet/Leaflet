@@ -11,7 +11,7 @@ import {ScrollWheelZoom} from './handler/Map.ScrollWheelZoom.js';
 Map.ScrollWheelZoom = ScrollWheelZoom;
 import {TapHold} from './handler/Map.TapHold.js';
 Map.TapHold = TapHold;
-import {pinchZoom} from './handler/Map.pinchZoom.js';
+import {pinchZoom} from './handler/Map.PinchZoom.js';
 Map.pinchZoom = pinchZoom;
 
 export {Map, createMap as map} from './Map.js';
