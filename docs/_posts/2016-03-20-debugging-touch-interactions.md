@@ -89,7 +89,7 @@ Web development is no different - having the right tools will make your task so 
 
 It's not just a matter of time. Maybe writing a tool from scratch was time-consuming, but the best gain is that debugging **stops being frustrating**. Before, it was "use a hand on the touchscreen, look closely at the debugger, don't use breakpoints because you don't have enough hands". Now it's "change the timing on the prosthetic-hand events, set a breakpoint, *boom*".
 
-And what's even better, having an automated tool means that Leaflet now has [**unit tests for touch interactions**](https://github.com/Leaflet/Leaflet/blob/main/spec/suites/map/handler/Map.TouchZoomSpec.js). The PhantomJS headless web browser can understand the `TouchEvent`s that prosthetic-hand generates, and can check if a map behaves as expected when that gesture is performed.
+And what's even better, having an automated tool means that Leaflet now has [**unit tests for touch interactions**](https://github.com/Leaflet/Leaflet/blob/main/spec/suites/map/handler/Map.pinchZoomSpec.js). The PhantomJS headless web browser can understand the `TouchEvent`s that prosthetic-hand generates, and can check if a map behaves as expected when that gesture is performed.
 
 The amount of time and headaches we'll save in Leaflet by having automated touch tests is going to be huge. We can only hope more projects will benefit from similar automated testing.
 

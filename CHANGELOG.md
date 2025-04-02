@@ -288,7 +288,7 @@ Leaflet Changelog
 ### Improvements
 
 * Use passive event listeners for `touchstart`/`touchend` events ([#7008](https://github.com/Leaflet/Leaflet/pull/7008) by [@yneet](https://github.com/yneet))
-* Better detection of `PointerEvents`-capable browsers in `L.Browser`, and related changes to `Tap`, `Drag`, and `TouchZoom` handlers ([#7010](https://github.com/Leaflet/Leaflet/pull/7010), ([#7033](https://github.com/Leaflet/Leaflet/pull/7041), ([#7036](https://github.com/Leaflet/Leaflet/pull/7036), ([#7068](https://github.com/Leaflet/Leaflet/pull/7068), ([#7195](https://github.com/Leaflet/Leaflet/pull/7195) by [@johnd0e](https://github.com/johnd0e))
+* Better detection of `PointerEvents`-capable browsers in `L.Browser`, and related changes to `Tap`, `Drag`, and `pinchZoom` handlers ([#7010](https://github.com/Leaflet/Leaflet/pull/7010), ([#7033](https://github.com/Leaflet/Leaflet/pull/7041), ([#7036](https://github.com/Leaflet/Leaflet/pull/7036), ([#7068](https://github.com/Leaflet/Leaflet/pull/7068), ([#7195](https://github.com/Leaflet/Leaflet/pull/7195) by [@johnd0e](https://github.com/johnd0e))
 * Add more browser profiles for the automated tests ([#7115](https://github.com/Leaflet/Leaflet/pull/7115) by [@johnd0e](https://github.com/johnd0e))
 
 ### Bug fixes
@@ -555,7 +555,7 @@ Leaflet Changelog
 * Stop locate before removing map ([#5893](https://github.com/Leaflet/Leaflet/issues/5893) by [ghybs](https://github.com/ghybs))
 * Reset `GridLayer`'s `_tileZoom` to `undefined` instead of `null` ([#5888](https://github.com/Leaflet/Leaflet/issues/5888) by [iH8](https://github.com/iH8))
 * Fix `L.Map`'s `map.flyTo` method to respect `noMoveStart` option ([#5923](https://github.com/Leaflet/Leaflet/issues/5923) by [iPrytz](https://github.com/iPrytz))
-* Fix map pan when `touchZoom` is disabled ([#5952](https://github.com/Leaflet/Leaflet/issues/5952) by [cherniavskii](https://github.com/cherniavskii))
+* Fix map pan when `pinchZoom` is disabled ([#5952](https://github.com/Leaflet/Leaflet/issues/5952) by [cherniavskii](https://github.com/cherniavskii))
 * Fix `L.SVG` to reset size on remove from map ([#5966](https://github.com/Leaflet/Leaflet/issues/5966) by [ghybs](https://github.com/ghybs))
 * Fix `L.Marker` to set `alt` attribute for img-based Icons only ([#5979](https://github.com/Leaflet/Leaflet/issues/5979) by [msiadak](https://github.com/msiadak))
 
@@ -864,7 +864,7 @@ Leaflet Changelog
 * Fixed zoom event fired twice (by [@perliedman](https://github.com/perliedman)) [#4367](https://github.com/Leaflet/Leaflet/pull/4367)
 * Initialize canvas dash on init. Check that canvas supports `setLineDash`. (by [@perliedman](https://github.com/perliedman)) [#4364](https://github.com/Leaflet/Leaflet/pull/4364)
 * Do not calculate inverted y coords for CRSes with infinite: true (by [@jieter](https://github.com/jieter)) [#4344](https://github.com/Leaflet/Leaflet/pull/4344)
-* Fixed zoom handling on `Map.TouchZoom` (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4340](https://github.com/Leaflet/Leaflet/pull/4340)
+* Fixed zoom handling on `Map.pinchZoom` (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4340](https://github.com/Leaflet/Leaflet/pull/4340)
 * Fixed `this._times.length` undefined in `Map.Drag.js` (by [@LucasMouraDeOliveira](https://github.com/LucasMouraDeOliveira)) [#4324](https://github.com/Leaflet/Leaflet/pull/4324)
 * Fixed simulated click handling in `L.Path` (by [@elkami12](https://github.com/elkami12)) [#4314](https://github.com/Leaflet/Leaflet/pull/4314)
 * Fixed attribution text not removed when Layer is removed from map (by [@dr-itz](https://github.com/dr-itz)) [#4293](https://github.com/Leaflet/Leaflet/pull/4293)
@@ -1131,7 +1131,7 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Improved `DomEvent` `on`/`off` to accept space-separated events and object literals (`{type: fn}`).
 * Added `DomUtil` `toFront` and `toBack` methods.
 * Added `Evented` `listens` as a shortcut to `hasEventListeners`.
-* Added optional support for center-oriented scroll for `L.map` option `touchZoom` (by [@mtmail](https://github.com/mtmail)). [#2527](https://github.com/Leaflet/Leaflet/pull/2527)
+* Added optional support for center-oriented scroll for `L.map` option `pinchZoom` (by [@mtmail](https://github.com/mtmail)). [#2527](https://github.com/Leaflet/Leaflet/pull/2527)
 * Added `getElement` method to all layers that returns an associated DOM element.
 * Added `LatLng` `clone` method (by [@yohanboniface](https://github.com/yohanboniface)). [#3390](https://github.com/Leaflet/Leaflet/pull/3390)
 * Added `Map` `setMinZoom` and `setMaxZoom` methods (by [@nathancahill](https://github.com/nathancahill)). [#3383](https://github.com/Leaflet/Leaflet/pull/3383) [#3380](https://github.com/Leaflet/Leaflet/issues/3380)

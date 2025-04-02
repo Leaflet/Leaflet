@@ -52,7 +52,7 @@
 [L.Map] has one -.-> [L.CRS]
 
 [L.Class] ^- [L.Handler|addHooks();removeHooks()]
-[L.Handler] ^- [L.Map.BoxZoom;L.Map.DoubleClickZoom;L.Map.Drag;L.Map.Keyboard;L.Map.ScrollWheelZoom;L.Map.Tap;L.Map.TouchZoom]
+[L.Handler] ^- [L.Map.BoxZoom;L.Map.DoubleClickZoom;L.Map.Drag;L.Map.Keyboard;L.Map.ScrollWheelZoom;L.Map.Tap;L.Map.pinchZoom]
 
 // L.Handler] ^- L.Map.BoxZoom]
 // L.Handler] ^- L.Map.DoubleClickZoom]
@@ -60,7 +60,7 @@
 // L.Handler] ^- L.Map.Keyboard]
 // L.Handler] ^- L.Map.ScrollWheelZoom]
 // L.Handler] ^- L.Map.Tap]
-// L.Handler] ^- L.Map.TouchZoom]
+// L.Handler] ^- L.Map.pinchZoom]
 
 [L.Layer] ^- [L.Marker]
 [L.Icon] ^- [L.Icon.Default]

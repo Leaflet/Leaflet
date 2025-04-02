@@ -103,8 +103,8 @@ describe('Map.Drag', () => {
 
 			it('change the center of the map, compensating for CSS scale', (done) => {
 				map = new MyMap(container, {
-				    dragging: true,
-				    inertia: false
+					dragging: true,
+					inertia: false
 				});
 				map.setView([0, 0], 1);
 
@@ -377,7 +377,7 @@ describe('Map.Drag', () => {
 			});
 			map.setView([0, 0], 1);
 
-			// Change default events order to make the tap comming before the touchzoom.
+			// Change default events order to make the tap comming before the pinchZoom.
 			// See #4315
 			map.dragging.disable();
 			map.dragging.enable();
