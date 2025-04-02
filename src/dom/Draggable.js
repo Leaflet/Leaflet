@@ -81,7 +81,7 @@ export const Draggable = Evented.extend({
 		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
 
 		if (e.touches && e.touches.length !== 1) {
-			// Finish dragging to avoid conflict with touchZoom
+			// Finish dragging to avoid conflict with pinchZoom
 			if (Draggable._dragging === this) {
 				this.finishDrag();
 			}
@@ -105,7 +105,7 @@ export const Draggable = Evented.extend({
 		this.fire('down');
 
 		const first = e.touches ? e.touches[0] : e,
-		    sizedParent = DomUtil.getSizedParentNode(this._element);
+		sizedParent = DomUtil.getSizedParentNode(this._element);
 
 		this._startPoint = new Point(first.clientX, first.clientY);
 		this._startPos = DomUtil.getPosition(this._element);
@@ -129,7 +129,7 @@ export const Draggable = Evented.extend({
 		}
 
 		const first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
+		offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
