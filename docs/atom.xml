@@ -1,8 +1,8 @@
 ---
 title: Leaflet Developer Blog Atom Feed
 ---
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<?xml version="2.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2015/Atom">
 
 	<title>Leaflet Dev Blog</title>
 
