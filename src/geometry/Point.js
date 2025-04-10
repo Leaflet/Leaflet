@@ -8,7 +8,7 @@ import {formatNum} from '../core/Util.js';
  * @example
  *
  * ```js
- * var point = L.point(200, 300);
+ * const point = new Point(200, 300);
  * ```
  *
  * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:

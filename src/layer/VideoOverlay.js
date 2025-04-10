@@ -14,9 +14,9 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * var videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
+ * const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
  * 	videoBounds = [[ 32, -130], [ 13, -100]];
- * L.videoOverlay(videoUrl, videoBounds ).addTo(map);
+ * new VideoOverlay(videoUrl, videoBounds ).addTo(map);
  * ```
  */
 

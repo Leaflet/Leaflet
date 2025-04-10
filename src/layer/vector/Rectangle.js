@@ -15,10 +15,10 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
  *
  * ```js
  * // define rectangle geographical bounds
- * var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
+ * const bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
  *
  * // create an orange rectangle
- * L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
+ * new Rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
  *
  * // zoom the map to the rectangle bounds
  * map.fitBounds(bounds);

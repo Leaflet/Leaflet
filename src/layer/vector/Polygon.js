@@ -18,9 +18,9 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  *
  * ```js
  * // create a red polygon from an array of LatLng points
- * var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
+ * const latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
  *
- * var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+ * const polygon = new Polygon(latlngs, {color: 'red'}).addTo(map);
  *
  * // zoom the map to the polygon
  * map.fitBounds(polygon.getBounds());
@@ -29,7 +29,7 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  * You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:
  *
  * ```js
- * var latlngs = [
+ * const latlngs = [
  *   [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
  *   [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
  * ];
@@ -38,7 +38,7 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  * Additionally, you can pass a multi-dimensional array to represent a MultiPolygon shape.
  *
  * ```js
- * var latlngs = [
+ * const latlngs = [
  *   [ // first polygon
  *     [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
  *     [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole

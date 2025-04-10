@@ -42,9 +42,17 @@
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
-
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+	<script type="importmap">
+		{
+			"imports": {
+				"leaflet": "https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+			},
+			"integrity": {
+				"https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+			}
+		}
+	</script>
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
 	<script>

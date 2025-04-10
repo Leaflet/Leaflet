@@ -8,7 +8,7 @@ import {LatLng} from './LatLng.js';
  * @example
  *
  * ```js
- * var corner1 = L.latLng(40.712, -74.227),
+ * const corner1 = L.latLng(40.712, -74.227),
  * corner2 = L.latLng(40.774, -74.125),
  * bounds = L.latLngBounds(corner1, corner2);
  * ```

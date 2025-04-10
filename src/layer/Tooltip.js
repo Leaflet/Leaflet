@@ -23,14 +23,14 @@ import {FeatureGroup} from './FeatureGroup.js';
  * A tooltip can be also standalone:
  *
  * ```js
- * var tooltip = L.tooltip()
+ * const tooltip = new Tooltip()
  * 	.setLatLng(latlng)
  * 	.setContent('Hello world!<br />This is a nice tooltip.')
  * 	.addTo(map);
  * ```
  * or
  * ```js
- * var tooltip = L.tooltip(latlng, {content: 'Hello world!<br />This is a nice tooltip.'})
+ * const tooltip = new Tooltip(latlng, {content: 'Hello world!<br />This is a nice tooltip.'})
  * 	.addTo(map);
  * ```
  *
@@ -254,7 +254,7 @@ Map.include({
  * All layers share a set of methods convenient for binding tooltips to it.
  *
  * ```js
- * var layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+ * const layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
  * layer.openTooltip();
  * layer.closeTooltip();
  * ```

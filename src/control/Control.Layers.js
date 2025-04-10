@@ -13,17 +13,17 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @example
  *
  * ```js
- * var baseLayers = {
+ * const baseLayers = {
  * 	"Mapbox": mapbox,
  * 	"OpenStreetMap": osm
  * };
  *
- * var overlays = {
+ * const overlays = {
  * 	"Marker": marker,
  * 	"Roads": roadsLayer
  * };
  *
- * L.control.layers(baseLayers, overlays).addTo(map);
+ * new Control.Layers(baseLayers, overlays).addTo(map);
  * ```
  *
  * The `baseLayers` and `overlays` parameters are object literals with layer names as keys and `Layer` objects as values:

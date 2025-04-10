@@ -13,9 +13,9 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @example
  *
  * ```js
- * var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+ * const imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
  * 	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
- * imageOverlay(imageUrl, imageBounds).addTo(map);
+ * new ImageOverlay(imageUrl, imageBounds).addTo(map);
  * ```
  */
 
