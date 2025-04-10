@@ -6,7 +6,7 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.Base
+ * @crs CRS.Base
  * Object that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to
  * coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services). See
@@ -118,7 +118,7 @@ export const CRS = {
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
 	// Returns a `LatLngBounds` with the same size as the given one, ensuring
 	// that its center is within the CRS's bounds.
-	// Only accepts actual `L.LatLngBounds` instances, not arrays.
+	// Only accepts actual `LatLngBounds` instances, not arrays.
 	wrapLatLngBounds(bounds) {
 		const center = bounds.getCenter(),
 		    newCenter = this.wrapLatLng(center),

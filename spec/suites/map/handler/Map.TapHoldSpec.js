@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, Map, Point, extend} from 'leaflet';
+import {Browser, Map, Point, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -156,7 +156,7 @@ describe('Map.TapHoldSpec.js', () => {
 	});
 
 	it('.originalEvent has expected properties', () => {
-		extend(posStart, {
+		Util.extend(posStart, {
 			screenX: 2,
 			screenY: 2,
 		});
@@ -166,7 +166,7 @@ describe('Map.TapHoldSpec.js', () => {
 		clock.tick(650);
 
 		const originalEvent = spy.lastCall.args[0].originalEvent;
-		const expectedProps = extend({
+		const expectedProps = Util.extend({
 			type: 'contextmenu',
 			bubbles: true,
 			cancelable: true,

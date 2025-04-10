@@ -4,7 +4,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import Browser from '../../core/Browser.js';
 
 /*
- * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * Handler.TouchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
 // @namespace Map

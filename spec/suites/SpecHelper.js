@@ -1,15 +1,15 @@
 import {Assertion, util} from 'chai';
-import {Browser, latLng, point} from 'leaflet';
+import {Browser, LatLng, Point} from 'leaflet';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
-	expected = point(expected);
+	expected = new Point(expected);
 
 	new Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
 	new Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
 });
 
 util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
-	expected = latLng(expected);
+	expected = new LatLng(expected);
 
 	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
 	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
