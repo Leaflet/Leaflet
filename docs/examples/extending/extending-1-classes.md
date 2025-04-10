@@ -181,7 +181,7 @@ Calling the parent's constructor is done in a similar way, but using `ParentClas
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
 * Never expose global variables in your plugin.
-* If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-* If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
+* If you inherit one of the existing classes or have a new class, export it and make it available via import.
+* Make your plugin importable like this: `import MyPlugin from 'leaflet-my-plugin'`.
 
 
