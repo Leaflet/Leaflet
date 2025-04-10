@@ -37,8 +37,6 @@ The latest stable Leaflet release is available on several CDNs. To start using i
 ```html
 <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin="anonymous" />
 
-<link rel="modulepreload" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin="anonymous" />
-
 <script type="importmap">
 {
 	"imports": {
@@ -51,8 +49,7 @@ The latest stable Leaflet release is available on several CDNs. To start using i
 </script>
 ```
 
-- [**`modulepreload`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload): Preloads the module before it is needed, reducing load time and ensuring scripts are ready when the page starts executing JavaScript.
-- [**`importmap`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap): Allows defining module specifiers (`import` paths) in the browser without relying on a bundler. It enables the use of named imports directly from a CDN or local files, making module resolution more flexible and readable.
+A [**`importmap`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) allows defining module specifiers (`import` paths) in the browser without relying on a bundler. It enables the use of named imports directly from a CDN or local files, making module resolution more flexible and readable.
 
 
 Then, in your script, import the needed Leaflet Classes as follows:
