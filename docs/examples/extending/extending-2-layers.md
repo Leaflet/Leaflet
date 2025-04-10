@@ -17,21 +17,18 @@ One of them is `L.TileLayer.getTileUrl()`. This method is called internally by `
 
 Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [PlaceKitten](https://placekitten.com):
 
-    L.TileLayer.Kitten = L.TileLayer.extend({
-        getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
-            return "https://placekitten.com/256/256?image=" + i;
-        },
-        getAttribution: function() {
-            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
-        }
-    });
+	TileLayer.Kitten = TileLayer.extend({
+		getTileUrl(coords) {
+			const i = Math.ceil(Math.random() * 4) - 1;
+			const tag = ['orange', 'hat', 'cute', 'small'];
+			return `https://cataas.com/cat/${tag[i]}?width=256&height=256`;
+		},
+		getAttribution() {
+			return '<a href="https://cataas.com/">CATAAS - Cat as a service</a>';
+		}
+	});
 
-    L.tileLayer.kitten = function() {
-        return new L.TileLayer.Kitten();
-    }
-
-    L.tileLayer.kitten().addTo(map);
+    new TileLayer.Kitten().addTo(map);
 
 {% include frame.html url="kittenlayer.html" %}
 
@@ -43,15 +40,16 @@ In the previous example, `L.TileLayer.Kitten` is defined in the same place as it
 
 For the KittenLayer, you should create a file like `L.KittenLayer.js` with:
 
-    L.TileLayer.Kitten = L.TileLayer.extend({
-        getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
-            return "https://placekitten.com/256/256?image=" + i;
-        },
-        getAttribution: function() {
-            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
-        }
-    });
+	TileLayer.Kitten = TileLayer.extend({
+		getTileUrl(coords) {
+			const i = Math.ceil(Math.random() * 4) - 1;
+			const tag = ['orange', 'hat', 'cute', 'small'];
+			return `https://cataas.com/cat/${tag[i]}?width=256&height=256`;
+		},
+		getAttribution() {
+			return '<a href="https://cataas.com/">CATAAS - Cat as a service</a>';
+		}
+	});
 
 And then, include that file when showing a map:
 
@@ -60,8 +58,8 @@ And then, include that file when showing a map:
 	<script src='leaflet.js'>
 	<script src='L.KittenLayer.js'>
 	<script>
-		var map = L.map('map-div-id');
-		L.tileLayer.kitten().addTo(map);
+		const map = new Map('map-div-id');
+		new TileLayer.Kitten().addTo(map);
 	</script>
 	…
 
@@ -74,26 +72,22 @@ Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assu
 
 An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
 
-	L.GridLayer.DebugCoords = L.GridLayer.extend({
+	GridLayer.DebugCoords = GridLayer.extend({
 		createTile: function (coords) {
-			var tile = document.createElement('div');
+			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 			return tile;
 		}
 	});
 
-	L.gridLayer.debugCoords = function(opts) {
-		return new L.GridLayer.DebugCoords(opts);
-	};
-
-	map.addLayer( L.gridLayer.debugCoords() );
+	map.addLayer(new GridLayer.DebugCoords() );
 
 
 If the element has to do some asynchronous initialization, then use the second function parameter `done` and call it back when the tile is ready (for example, when an image has been fully loaded) or when there is an error. In here, we'll just delay the tiles artificially:
 
 	createTile: function (coords, done) {
-		var tile = document.createElement('div');
+		const tile = document.createElement('div');
 		tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 		tile.style.outline = '1px solid red';
 
@@ -110,15 +104,15 @@ With these custom `GridLayer`s, a plugin can have full control of the HTML eleme
 
 A very basic `<canvas>` `GridLayer` looks like:
 
-	L.GridLayer.CanvasCircles = L.GridLayer.extend({
+	GridLayer.CanvasCircles = GridLayer.extend({
 		createTile: function (coords) {
-			var tile = document.createElement('canvas');
+			const tile = document.createElement('canvas');
 
-			var tileSize = this.getTileSize();
+			const tileSize = this.getTileSize();
 			tile.setAttribute('width', tileSize.x);
 			tile.setAttribute('height', tileSize.y);
 
-			var ctx = tile.getContext('2d');
+			const ctx = tile.getContext('2d');
 
 			// Draw whatever is needed in the canvas context
 			// For example, circles which get bigger as we zoom in
@@ -164,16 +158,16 @@ At their core, all `L.Layer`s are HTML elements inside a map pane, their positio
 
 In other words: the map calls the `onAdd()` method of the layer, then the layer creates its HTML element(s) (commonly named 'container' element) and adds them to the map pane. Conversely, when the layer is removed from the map, its `onRemove()` method is called. The layer must update its contents when added to the map, and reposition them when the map view is updated. A layer skeleton looks like:
 
-	L.CustomLayer = L.Layer.extend({
+	const CustomLayer = Layer.extend({
 		onAdd: function(map) {
-			var pane = map.getPane(this.options.pane);
-			this._container = L.DomUtil.create(…);
+			const pane = map.getPane(this.options.pane);
+			this._container = DomUtil.create(…);
 
 			pane.appendChild(this._container);
 
 			// Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
 
-			L.DomUtil.setPosition(this._container, point);
+			DomUtil.setPosition(this._container, point);
 
 			// Add and position children elements if needed
 
@@ -188,7 +182,7 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 		_update: function() {
 			// Recalculate position of container
 
-			L.DomUtil.setPosition(this._container, point);        
+			DomUtil.setPosition(this._container, point);        
 
 			// Add/remove/reposition children elements if needed
 		}
@@ -202,9 +196,9 @@ Some use cases don't need the whole `onAdd` code to be recreated, but instead th
 
 To give an example, we can have a subclass of `L.Polyline` that will always be red (ignoring the options), like:
 
-	L.Polyline.Red = L.Polyline.extend({
+	Polyline.Red = Polyline.extend({
 		onAdd: function(map) {
 			this.options.color = 'red';
-			L.Polyline.prototype.onAdd.call(this, map);
+			Polyline.prototype.onAdd.call(this, map);
 		}
 	});

@@ -19,7 +19,7 @@ In this tutorial, you’ll learn how to use these overlays.
 To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
 
 ```
-var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, options);
+const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
 ```
 
 #### Creating a map
@@ -27,9 +27,9 @@ var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, options);
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-var map = L.map('map').setView([37.8, -96], 4);
+const map = new Map('map').setView([37.8, -96], 4);
 
-var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -38,12 +38,12 @@ var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 Let's create an image overlay with multiple options:
 
 ```
-var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg';
-var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-var altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection.';
-var latLngBounds = L.latLngBounds([[40.799311, -74.118464], [40.68202047785919, -74.33]]);
+const imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg';
+const errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
+const altText = 'Image of Newark, N.J. in 1922. Source: The University of Texas at Austin, UT Libraries Map Collection.';
+const latLngBounds = new LatLngBounds([[40.799311, -74.118464], [40.68202047785919, -74.33]]);
 
-var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, {
+const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, {
 	opacity: 0.8,
 	errorOverlayUrl: errorOverlayUrl,
 	alt: altText,
@@ -54,7 +54,7 @@ var imageOverlay = L.imageOverlay(imageUrl, latLngBounds, {
 If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
 
 ```
-L.rectangle(latLngBounds).addTo(map);
+const rectangle = new Rectangle(latLngBounds).addTo(map);
 map.fitBounds(latLngBounds);
 ```
 
@@ -97,9 +97,9 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-var map = L.map('map').setView([37.8, -96], 4);
+const map = new Map('map').setView([37.8, -96], 4);
 
-var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
@@ -117,14 +117,14 @@ A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML
 - Instead of the image URL, specify one video URL *or* an array of video URLs
 
 ```
-var videoUrls = [
+const videoUrls = [
 	'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 	'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 ];
-var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
-var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
+const errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';
+const latLngBounds = new LatLngBounds([[32, -130], [13, -100]]);
 
-var videoOverlay = L.videoOverlay(videoUrls, latLngBounds, {
+const videoOverlay = new VideoOverlay(videoUrls, latLngBounds, {
 	opacity: 0.8,
 	errorOverlayUrl: errorOverlayUrl,
 	interactive: true,
@@ -163,31 +163,31 @@ This allows us to build custom interfaces. For example, we can build a small sub
 
 ```
 videoOverlay.on('load', function () {
-	var MyPauseControl = L.Control.extend({
+	const MyPauseControl = Control.extend({
 		onAdd: function() {
-			var button = L.DomUtil.create('button');
+			const button = DomUtil.create('button');
 			button.title = 'Pause';
 			button.innerHTML = '<span aria-hidden="true">⏸</span>';
-			L.DomEvent.on(button, 'click', function () {
+			DomEvent.on(button, 'click', function () {
 				videoOverlay.getElement().pause();
 			});
 			return button;
 		}
 	});
-	var MyPlayControl = L.Control.extend({
+	const MyPlayControl = Control.extend({
 		onAdd: function() {
-			var button = L.DomUtil.create('button');
+			const button = DomUtil.create('button');
 			button.title = 'Play';
 			button.innerHTML = '<span aria-hidden="true">▶️</span>';
-			L.DomEvent.on(button, 'click', function () {
+			DomEvent.on(button, 'click', function () {
 				videoOverlay.getElement().play();
 			});
 			return button;
 		}
 	});
 
-	var pauseControl = (new MyPauseControl()).addTo(map);
-	var playControl = (new MyPlayControl()).addTo(map);
+	const pauseControl = (new MyPauseControl()).addTo(map);
+	const playControl = (new MyPlayControl()).addTo(map);
 });
 ```
 
@@ -200,7 +200,7 @@ videoOverlay.on('load', function () {
 To add an SVG overlay [`L.SVGOverlay`](/reference.html#svgoverlay) use this:
 
 ```
-var svgOverlay = L.svgOverlay(SVGElement, svgElementBounds, options);
+const svgOverlay = new SVGOverlay(SVGElement, svgElementBounds, options);
 ```
 
 It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
@@ -210,7 +210,7 @@ It instantiates an image overlay object given an SVG element and the geographica
 Let's create an SVG element:
 
 ```
-var svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 svgElement.setAttribute('viewBox', '0 0 200 200');
 svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
@@ -225,7 +225,7 @@ Alternatively, you can create the SVG element in HTML code:
 And choose this SVG element by using a querySelector:
 
 ```
-var svgElement = document.querySelector('#svg');
+const svgElement = document.querySelector('#svg');
 ```
 
 #### Adding the SVG overlay
@@ -233,10 +233,10 @@ var svgElement = document.querySelector('#svg');
 Create the SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 
 ```
-var latLngBounds = L.latLngBounds([[32, -130], [13, -100]]);
+const latLngBounds = new LatLngBounds([[32, -130], [13, -100]]);
 map.fitBounds(latLngBounds);
 
-var svgOverlay = L.svgOverlay(svgElement, latLngBounds, {
+const svgOverlay = new SVGOverlay(svgElement, latLngBounds, {
 	opacity: 0.7,
 	interactive: true
 }).addTo(map);

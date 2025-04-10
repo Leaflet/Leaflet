@@ -191,7 +191,7 @@ export const Events = {
 				this._firingCount = (this._firingCount + 1) || 1;
 				for (let i = 0, len = listeners.length; i < len; i++) {
 					const l = listeners[i];
-					// off overwrites l.fn, so we need to copy fn to a var
+					// off overwrites l.fn, so we need to copy fn to a variable
 					const fn = l.fn;
 					if (l.once) {
 						this.off(type, fn, l.ctx);

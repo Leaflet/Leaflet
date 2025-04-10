@@ -24,22 +24,23 @@ title: Tilt handler
 <div id='info' style=''></div>
 
 
-<script type='text/javascript'>
+<script type="module">
+	import L, {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 	
-	L.TiltHandler = L.Handler.extend({
+	const TiltHandler = Handler.extend({
 		addHooks() {
-			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
+			DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 	
 		removeHooks() {
-			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
+			DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
 
 		_tilt(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-			const offset = L.point(ev.gamma, ev.beta);
+			const offset = new Point(ev.gamma, ev.beta);
 			let info;
 			if (offset) {
 				this._map.panBy(offset);
@@ -51,17 +52,19 @@ title: Tilt handler
 		}
 	});
 	
-	L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
+	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		center: [0, 0],
 		zoom: 1,
 		tilt: true
 	});
 
-	const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 	
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>
