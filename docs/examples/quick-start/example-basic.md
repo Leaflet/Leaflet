@@ -4,13 +4,16 @@ title: Quick Start
 customMapContainer: "true"
 ---
 <div id='map' style='width: 600px; height: 400px;'></div>
-<script>
+<script type="module">
+	import L, {Map, TileLayer} from 'leaflet';
 
-	const map = L.map('map').setView([51.505, -0.09], 13);
+	const map = new Map('map').setView([51.505, -0.09], 13);
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

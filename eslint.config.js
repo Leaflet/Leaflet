@@ -9,6 +9,11 @@ export default [
 		files: ['*.js', '*.cjs'],
 	},
 	{
+		languageOptions: {
+			ecmaVersion: 'latest',
+		},
+	},
+	{
 		ignores: [
 			'dist',
 			'docs/docs/highlight',
@@ -16,6 +21,8 @@ export default [
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
 			'docs/examples/extending/extending-2-layers.md',
+			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
+			'docs/download.md', // importmap is not recognized by eslint
 			'docs/_posts/201*',
 			'docs/_site',
 			'coverage'
