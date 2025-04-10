@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, DomUtil, Map, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, CRS, Map, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -442,8 +442,7 @@ describe('TileLayer', () => {
 		});
 	});
 
-	const _describe = 'crossOrigin' in DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
-	_describe('crossOrigin option', () => {
+	describe('crossOrigin option', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 2);
 		});

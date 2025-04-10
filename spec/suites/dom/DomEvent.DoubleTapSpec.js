@@ -42,15 +42,6 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		expect(spy.notCalled).to.be.true;
 	});
 
-	it('does not fire dblclick when detail !== 1', () => {
-		UIEventSimulator.fire('click', container, {detail: 0}); // like in IE
-		clock.tick(100);
-		UIEventSimulator.fire('click', container, {detail: 0});
-		clock.tick(100);
-
-		expect(spy.notCalled).to.be.true;
-	});
-
 	it('does not fire dblclick after removeListener', () => {
 		DomEvent.off(container, 'dblclick', spy);
 

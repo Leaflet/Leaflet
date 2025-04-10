@@ -31,10 +31,6 @@ export function Point(x, y, round) {
 	this.y = (round ? Math.round(y) : y);
 }
 
-const trunc = Math.trunc || function (v) {
-	return v > 0 ? Math.floor(v) : Math.ceil(v);
-};
-
 Point.prototype = {
 
 	// @method clone(): Point
@@ -152,8 +148,8 @@ Point.prototype = {
 	},
 
 	_trunc() {
-		this.x = trunc(this.x);
-		this.y = trunc(this.y);
+		this.x = Math.trunc(this.x);
+		this.y = Math.trunc(this.y);
 		return this;
 	},
 
