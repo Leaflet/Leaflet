@@ -12,7 +12,7 @@ import {toBounds} from '../../geometry/Bounds.js';
 // @section Interaction Options
 Map.mergeOptions({
 	// @option dragging: Boolean = true
-	// Whether the map is draggable with mouse/touch or not.
+	// Whether the map is draggable with pointer or not.
 	dragging: true,
 
 	// @section Panning Inertia Options
@@ -228,5 +228,5 @@ export const Drag = Handler.extend({
 
 // @section Handlers
 // @property dragging: Handler
-// Map dragging handler (by both mouse and touch).
+// Map dragging handler.
 Map.addInitHook('addHandler', 'dragging', Drag);
