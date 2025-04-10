@@ -16,7 +16,7 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
  *
  * @example
  * ```js
- * var draggable = new L.Draggable(elementToDrag);
+ * const draggable = new Draggable(elementToDrag);
  * draggable.enable();
  * ```
  */

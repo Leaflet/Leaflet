@@ -22,7 +22,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
  *
  * ```js
  * // initialize the map on the "map" div with a given center and zoom
- * var map = L.map('map', {
+ * const map = new Map('map', {
  * 	center: [51.505, -0.09],
  * 	zoom: 13
  * });

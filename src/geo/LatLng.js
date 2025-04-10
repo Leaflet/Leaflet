@@ -10,7 +10,7 @@ import {toLatLngBounds} from './LatLngBounds.js';
  * @example
  *
  * ```
- * var latlng = L.latLng(50.5, 30.5);
+ * const latlng = L.latLng(50.5, 30.5);
  * ```
  *
  * All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:
