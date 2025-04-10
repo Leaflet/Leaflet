@@ -216,5 +216,8 @@ export function toPoint(x, y, round) {
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
 		return new Point(x.x, x.y);
 	}
+	if (y === undefined || y === null) {
+		throw new Error('toPoint: Y coordinate must be defined.');
+	}
 	return new Point(x, y, round);
 }
