@@ -1,5 +1,5 @@
 import {Assertion, util} from 'chai';
-import {Browser, latLng, point, DomEvent} from 'leaflet';
+import {latLng, point, DomEvent} from 'leaflet';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = point(expected);
@@ -15,14 +15,16 @@ util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e
 	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
 });
 
+const runAsTouchBrowser = window.__karma__.config.runAsTouchBrowser || false;
+
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = Browser.touch ? it : it.skip;
-it.skipIfTouch = Browser.touchNative ? it.skip : it;
+it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
+it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
 
-export const pointerEventType = Browser.touchNative ? ['pointer', {pointerType: 'touch'}] : ['pointer', {pointerType: 'mouse'}];
-// Note: this override is needed to workaround prosthetic-hand fail,
-//       see https://github.com/Leaflet/prosthetic-hand/issues/14
+export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
+export const pointerEventType = ['pointer', {pointerType}];
 
+console.log('Touch', runAsTouchBrowser);
 
 export function createContainer(width, height) {
 	width = width ? width : '400px';
@@ -50,7 +52,3 @@ export function removeMapContainer(map, container) {
 	DomEvent.PointerEvents.cleanupPointers();
 }
 
-console.log('Browser.pointer', Browser.pointer);
-console.log('Browser.touchNative', Browser.touchNative);
-
-export const pointerType = Browser.touchNative ? 'touch' : 'mouse';

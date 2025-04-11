@@ -163,6 +163,9 @@ jobs:
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }} --single-run
 
+      - name: Run tests on ${{ matrix.browser }}
+        run: npm test -- --browsers ${{ matrix.browser }} -- --touch-browser --single-run
+
   publish-artifacts:
     needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
