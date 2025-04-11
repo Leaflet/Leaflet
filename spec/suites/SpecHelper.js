@@ -24,7 +24,7 @@ it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
 export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
 export const pointerEventType = ['pointer', {pointerType}];
 
-console.log('Touch', runAsTouchBrowser);
+console.error('Touch', runAsTouchBrowser);
 
 export function createContainer(width, height) {
 	width = width ? width : '400px';
