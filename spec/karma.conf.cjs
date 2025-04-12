@@ -2,6 +2,7 @@
 // See: https://karma-runner.github.io/latest/config/configuration-file.html
 module.exports = function (/** @type {import('karma').Config} */ config) {
 	const isCoverageEnabled = process.argv.includes('--coverage');
+	const runAsTouchBrowser = process.argv.includes('--touch-browser');
 
 	const karmaConfig = {
 		basePath: '../',
@@ -59,25 +60,21 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 					'dom.w3c_touch_events.enabled': 1
 				}
 			},
-			'FirefoxNoTouch': {
-				base: 'FirefoxHeadless',
-				prefs: {
-					'dom.w3c_touch_events.enabled': 0
-				}
-			},
 			'FirefoxRetina': {
 				base: 'FirefoxHeadless',
 				prefs: {
 					'layout.css.devPixelsPerPx': 2
 				}
 			}
+			// 'SafariNative'
 		},
 		concurrency: 1,
 		browserConsoleLogOptions: {level: 'error'},
 		client: {
 			mocha: {
 				forbidOnly: process.env.CI || false
-			}
+			},
+			runAsTouchBrowser
 		}
 	};
 

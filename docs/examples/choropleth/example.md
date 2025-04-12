@@ -115,8 +115,8 @@ css: "#map {
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			pointerover: highlightFeature,
+			pointerout: resetHighlight,
 			click: zoomToFeature
 		});
 	}

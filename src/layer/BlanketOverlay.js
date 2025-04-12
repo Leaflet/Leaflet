@@ -131,10 +131,10 @@ export const BlanketOverlay = Layer.extend({
 	 * Subclass implementations shall reset container parameters and data
 	 * structures as needed.
 	 *
-	 * @method _onZoomEnd(ev?: MouseEvent): undefined
+	 * @method _onZoomEnd(ev?: PointerEvent): undefined
 	 * (Optional) Runs on the map's `zoomend` event.
 	 *
-	 * @method _onViewReset(ev?: MouseEvent): undefined
+	 * @method _onViewReset(ev?: PointerEvent): undefined
 	 * (Optional) Runs on the map's `viewreset` event.
 	 *
 	 * @method _onSettled(): undefined

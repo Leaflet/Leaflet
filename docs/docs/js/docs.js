@@ -26,11 +26,11 @@ if (toc) {
 	i = 0;
 
 	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('mouseover', function () {
+		menus[i].addEventListener('pointerover', function () {
 			this.previousElementSibling.classList.add('hover');
 		});
 
-		menus[i].addEventListener('mouseout', function () {
+		menus[i].addEventListener('pointerout', function () {
 			this.previousElementSibling.classList.remove('hover');
 		});
 

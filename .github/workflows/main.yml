@@ -132,7 +132,6 @@ jobs:
         include:
           - browser: Chrome
           - browser: Firefox
-          - browser: FirefoxNoTouch
           - browser: FirefoxRetina
           - browser: Chrome
             os: windows-latest
@@ -162,6 +161,9 @@ jobs:
 
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }} --single-run
+
+      - name: Run tests on ${{ matrix.browser }} with touch
+        run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
   publish-artifacts:
     needs: setup
