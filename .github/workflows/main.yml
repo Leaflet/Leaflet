@@ -163,7 +163,7 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }} --single-run
 
       - name: Run tests on ${{ matrix.browser }} with touch
-        run: npm test -- --browsers ${{ matrix.browser }} -- --touch-browser --single-run
+        run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
   publish-artifacts:
     needs: setup
