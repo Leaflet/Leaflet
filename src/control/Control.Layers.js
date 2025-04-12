@@ -52,8 +52,9 @@ export const Layers = Control.extend({
 		collapsed: true,
 
 		// @option collapseDelay: Number = 0
-		// Collapse delay in milliseconds. If > 0, the control will stay open for longer. This makes it easier to scroll long layer lists.
+		// Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.
 		collapseDelay: 0,
+
 		position: 'topright',
 
 		// @option autoZIndex: Boolean = true
