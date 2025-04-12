@@ -76,7 +76,7 @@ if (toc) {
 
 		if (elem.tagName === 'H2' || elem.tagName === 'H4') {
 			setTimeout(() => {
-				scrollToHeader(elem, true);
+				scrollToHeader(elem);
 			}, 10);
 		}
 	}, false);
@@ -93,7 +93,7 @@ function clickOnAnchor(e) {
 	const anchor = `#${e.target.href.split('#')[1]}`;
 	const elemHeader = document.querySelector(anchor);
 
-	scrollToHeader(elemHeader, `#${elemHeader.id}` === currentAnchor);
+	scrollToHeader(elemHeader);
 
 	// prevent default browser anchor scroll
 	e.preventDefault();
@@ -107,19 +107,12 @@ function userAgentContains(str) {
 }
 const chromeBrowser = userAgentContains('chrome');
 
-function scrollToHeader(elemHeader, sameAnchor) {
-	let scrollBy = elemHeader.nextSibling.offsetTop;
-
-	if (chromeBrowser && sameAnchor) {
-		// chromium remove the anchor element from the scroll-position
-		// we check with sameAnchor if the User has clicked on the same anchor link again
-		scrollBy = scrollBy - elemHeader.offsetHeight;
-	} else {
-		// we scroll a little bit more down to get the element already sticky
-		scrollBy += 5;
-	}
-	// scroll to the anchor
-	window.scrollTo(0, scrollBy);
+function scrollToHeader(elemHeader) {
+	elemHeader.scrollIntoView({
+		behavior: 'smooth',
+		block: 'start'
+	});
+	
 	// apply the new anchor to the location url
 	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
