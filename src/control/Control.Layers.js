@@ -136,6 +136,8 @@ export const Layers = Control.extend({
 		}
 
 		this._map.off('resize', this._expandIfNotCollapsed, this);
+
+		clearTimeout(this._collapseDelayTimeout);
 	},
 
 	// @method addBaseLayer(layer: Layer, name: String): this
@@ -167,9 +169,8 @@ export const Layers = Control.extend({
 	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand() {
-		if (this._collapseDelayTimeout) {
-			clearTimeout(this._collapseDelayTimeout);
-		}
+		clearTimeout(this._collapseDelayTimeout);
+
 		this._container.classList.add('leaflet-control-layers-expanded');
 		this._section.style.height = null;
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
