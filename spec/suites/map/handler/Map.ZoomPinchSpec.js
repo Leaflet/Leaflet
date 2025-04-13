@@ -10,7 +10,7 @@ describe('Map.PinchZoom', () => {
 	beforeEach(() => {
 		container = createContainer();
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
@@ -137,7 +137,7 @@ describe('Map.PinchZoom', () => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false,	// If true, the test has to wait extra 250msec,
 			dragging: false
@@ -167,7 +167,7 @@ describe('Map.PinchZoom', () => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: true
 		});
@@ -229,7 +229,7 @@ describe('Map.PinchZoom', () => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false
 		});

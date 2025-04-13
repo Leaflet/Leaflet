@@ -377,7 +377,7 @@ describe('Map.Drag', () => {
 			});
 			map.setView([0, 0], 1);
 
-			// Change default events order to make the tap comming before the pinchZoom (formerly touchZoom).
+			// Change default events order to make the tap comming before the pinchZoom.
 			// See #4315
 			map.dragging.disable();
 			map.dragging.enable();

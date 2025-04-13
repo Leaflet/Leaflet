@@ -60,7 +60,7 @@
 // L.Handler] ^- L.Map.Keyboard]
 // L.Handler] ^- L.Map.ScrollWheelZoom]
 // L.Handler] ^- L.Map.Tap]
-// L.Handler] ^- L.Map.PinchZoom] (Formerly L.Map.TouchZoom)
+// L.Handler] ^- L.Map.PinchZoom] 
 
 [L.Layer] ^- [L.Marker]
 [L.Icon] ^- [L.Icon.Default]

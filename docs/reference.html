@@ -449,8 +449,8 @@ faster (and vice versa).</td>
 		<td>The max number of pixels a user can shift his finger during touch
 for it to be considered a valid tap.</td>
 	</tr>
-	<tr id='map-pinchzoom'>
-		<td><code><b>pinchZoom</b></code></td>
+	<tr id='map-touchzoom'>
+		<td><code><b>touchZoom</b></code></td>
 		<td><code>Boolean|String</code></td>
 		<td><code>*</code></td>
 		<td>Whether the map can be zoomed by touch-dragging with two fingers. If
@@ -1654,8 +1654,8 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><a href='#handler'>Handler</a></code></td>
 		<td>Long tap handler to simulate <code>contextmenu</code> event (useful in mobile Safari).</td>
 	</tr>
-	<tr id='map-pinchzoom'>
-		<td><code><b>pinchZoom</b></code></td>
+	<tr id='map-touchzoom'>
+		<td><code><b>touchZoom</b></code></td>
 		<td><code><a href='#handler'>Handler</a></code></td>
 		<td>Touch zoom handler.</td>
 	</tr>
@@ -5659,7 +5659,7 @@ Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElem
 		<td><code><b>updateWhenZooming</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>By default, a smooth zoom animation (during a <a href="#map-pinchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
+		<td>By default, a smooth zoom animation (during a <a href="#map-touchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
 	</tr>
 	<tr id='tilelayer-updateinterval'>
 		<td><code><b>updateInterval</b></code></td>
@@ -6615,7 +6615,7 @@ Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElem
 		<td><code><b>updateWhenZooming</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>By default, a smooth zoom animation (during a <a href="#map-pinchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
+		<td>By default, a smooth zoom animation (during a <a href="#map-touchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
 	</tr>
 	<tr id='tilelayer-wms-updateinterval'>
 		<td><code><b>updateInterval</b></code></td>
@@ -18570,7 +18570,7 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 		<td><code><b>updateWhenZooming</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>By default, a smooth zoom animation (during a <a href="#map-pinchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
+		<td>By default, a smooth zoom animation (during a <a href="#map-touchzoom">touch zoom</a> or a <a href="#map-flyto"><code>flyTo()</code></a>) will update grid layers every integer zoom level. Setting this option to <code>false</code> will update the grid layer only when the smooth animation ends.</td>
 	</tr>
 	<tr id='gridlayer-updateinterval'>
 		<td><code><b>updateInterval</b></code></td>
