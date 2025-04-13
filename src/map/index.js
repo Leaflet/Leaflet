@@ -11,8 +11,8 @@ import {ScrollWheelZoom} from './handler/Map.ScrollWheelZoom.js';
 Map.ScrollWheelZoom = ScrollWheelZoom;
 import {TapHold} from './handler/Map.TapHold.js';
 Map.TapHold = TapHold;
-import {PinchZoom, TouchZoom} from './handler/Map.TouchZoom.js';
+import {PinchZoom} from './handler/Map.TouchZoom.js';
 Map.PinchZoom = PinchZoom;
-Map.TouchZoom = TouchZoom; // backward compatibility
+Map.TouchZoom = PinchZoom; // backward compatibility
 
 export {Map, createMap as map} from './Map.js';

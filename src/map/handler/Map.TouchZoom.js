@@ -17,18 +17,12 @@ Map.mergeOptions({
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers.
 	pinchZoom: Browser.touch, // new preferred name
-	touchZoom: undefined,     // will be aliased to pinchZoom later
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
 	// and then bounce back when pinch-zooming.
 	bounceAtZoomLimits: true
 });
-
-// Backward compatibility: alias touchZoom to pinchZoom
-if (Map.prototype.options.touchZoom !== undefined) {
-	Map.prototype.options.pinchZoom = Map.prototype.options.touchZoom;
-}
 
 export const PinchZoom = Handler.extend({
 	addHooks() {
@@ -128,10 +122,23 @@ export const PinchZoom = Handler.extend({
 	}
 });
 
-// Backward compatibility alias
-export const TouchZoom = PinchZoom;
-
 // @section Handlers
 // @property pinchZoom: Handler
 // Pinch zoom handler.
-Map.addInitHook('addHandler', 'touchZoom', TouchZoom);
+Map.addInitHook('addHandler', 'pinchZoom', PinchZoom);
+
+// Deprecated - Backward compatibility touchZoom
+Map.addInitHook(function () {
+	this.touchZoom = this.pinchZoom;
+
+	if (this.options.touchZoom !== undefined) {
+		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+		this.options.pinchZoom = this.options.touchZoom;
+		delete this.options.touchZoom;
+	}
+	if (this.options.pinchZoom) {
+		this.pinchZoom.enable();
+	} else {
+		this.pinchZoom.disable();
+	}
+});
