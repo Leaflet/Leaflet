@@ -28,7 +28,7 @@
     "rollup-plugin-git-version": "^0.3.1",
     "simple-git": "^3.25.0",
     "sinon": "^18.0.0",
-    "ssri": "^10.0.6",
+    "ssri": "^12.0.0",
     "uglify-js": "^3.19.1",
     "ui-event-simulator": "^2.0.0"
   },
