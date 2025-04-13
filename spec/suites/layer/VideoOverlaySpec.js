@@ -76,6 +76,6 @@ describe('VideoOverlay', () => {
 			const mouse = hand.growFinger('mouse');
 			mouse.moveTo(200, 200, 10)
 				.down().moveBy(50, 50, 10).up();
-		}, 20);
+		}, 100);
 	});
 });
