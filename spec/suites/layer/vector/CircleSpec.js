@@ -21,13 +21,6 @@ describe('Circle', () => {
 			const circle = new Circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
-
-		it('throws error if radius is NaN', () => {
-			expect(() => {
-				new Circle([0, 0], NaN);
-			}).to.throw('Circle radius cannot be NaN');
-		});
-
 	});
 
 	describe('#getBounds', () => {

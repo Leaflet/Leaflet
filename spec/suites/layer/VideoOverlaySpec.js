@@ -16,10 +16,7 @@ describe('VideoOverlay', () => {
 		removeMapContainer(map, container);
 	});
 
-
-	it('create VideoOverlay', function () {
-		this.timeout(10000); // This test takes longer than usual in IE
-
+	it('create VideoOverlay', () => {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
