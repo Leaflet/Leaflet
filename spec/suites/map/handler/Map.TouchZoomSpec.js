@@ -4,7 +4,7 @@ import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
-describe('Map.TouchZoom', () => {
+describe('Map.PinchZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -133,7 +133,7 @@ describe('Map.TouchZoom', () => {
 
 	});
 
-	it.skipIfNotTouch('TouchZoom works with disabled map dragging', (done) => {
+	it.skipIfNotTouch('PinchZoom works with disabled map dragging', (done) => {
 		map.remove();
 
 		map = new Map(container, {

@@ -11,18 +11,24 @@ import Browser from '../../core/Browser.js';
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option touchZoom: Boolean|String = *
+	// @option pinchZoom: Boolean|String = *
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers.
-	touchZoom: Browser.touch,
+	pinchZoom: Browser.touch, // new preferred name
+	touchZoom: undefined,     // will be aliased to pinchZoom later
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
 	// and then bounce back when pinch-zooming.
 	bounceAtZoomLimits: true
 });
+
+// Backward compatibility: alias touchZoom to pinchZoom
+if (Map.prototype.options.touchZoom !== undefined) {
+	Map.prototype.options.pinchZoom = Map.prototype.options.touchZoom;
+}
 
 export const PinchZoom = Handler.extend({
 	addHooks() {
@@ -44,7 +50,7 @@ export const PinchZoom = Handler.extend({
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
-		if (map.options.touchZoom !== 'center') {
+		if (map.options.pinchZoom !== 'center') {
 			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
 		}
 
@@ -78,7 +84,7 @@ export const PinchZoom = Handler.extend({
 			this._zoom = map._limitZoom(this._zoom);
 		}
 
-		if (map.options.touchZoom === 'center') {
+		if (map.options.pinchZoom === 'center') {
 			this._center = this._startLatLng;
 			if (scale === 1) { return; }
 		} else {
@@ -126,6 +132,6 @@ export const PinchZoom = Handler.extend({
 export const TouchZoom = PinchZoom;
 
 // @section Handlers
-// @property touchZoom: Handler
-// Touch zoom handler.
+// @property pinchZoom: Handler
+// Pinch zoom handler.
 Map.addInitHook('addHandler', 'touchZoom', TouchZoom);

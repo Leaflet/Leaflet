@@ -93,7 +93,8 @@ export const GridLayer = Layer.extend({
 		updateWhenIdle: Browser.mobile,
 
 		// @option updateWhenZooming: Boolean = true
-		// By default, a smooth zoom animation (during a [touch zoom](#map-touchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+		// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+		// (Previously referred to as [touch zoom](#map-touchzoom) for backward compatibility)
 		updateWhenZooming: true,
 
 		// @option updateInterval: Number = 200
