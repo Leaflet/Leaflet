@@ -4,7 +4,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import Browser from '../../core/Browser.js';
 
 /*
- * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * L.Handler.PinchZoom (formerly TouchZoom) is used by L.Map to add pinch zoom on supported mobile browsers.
  */
 
 // @namespace Map
@@ -24,7 +24,7 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const TouchZoom = Handler.extend({
+export const PinchZoom = Handler.extend({
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
@@ -121,6 +121,9 @@ export const TouchZoom = Handler.extend({
 		}
 	}
 });
+
+// Backward compatibility alias
+export const TouchZoom = PinchZoom;
 
 // @section Handlers
 // @property touchZoom: Handler
