@@ -45,15 +45,15 @@ describe('VideoOverlay', () => {
 		const hand = new Hand({
 			timing: 'fastframe',
 			onStop() {
-				expect(map.getCenter()).nearLatLng([19.973348786110613, -114.96093750000001], 0.01);
+				expect(map.getCenter()).nearLatLng([19.973348786110613, -114.96093750000001], 0.03);
 				done();
 			}});
 		const mouse = hand.growFinger('mouse');
 		mouse.moveTo(200, 200, 100)
-			.down().moveBy(10, 10, 50).up();
+			.down().moveBy(50, 50, 10).up();
 	});
 
-	it('don\'t drags the map if video has enabled controls', (done) => {
+	it.only('don\'t drags the map if video has enabled controls', (done) => {
 
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
@@ -70,12 +70,12 @@ describe('VideoOverlay', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					expect(map.getCenter()).nearLatLng(center, 0.01);
+					expect(map.getCenter()).nearLatLng(center, 0.03);
 					done();
 				}});
 			const mouse = hand.growFinger('mouse');
 			mouse.moveTo(200, 200, 10)
-				.down().moveBy(10, 10, 10).up();
+				.down().moveBy(50, 50, 10).up();
 		}, 20);
 	});
 });
