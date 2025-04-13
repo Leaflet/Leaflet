@@ -286,4 +286,39 @@ describe('Map.PinchZoom', () => {
 		f2.wait(100).moveTo(525, 300, 0)
 			.down().moveBy(-200, 0, 500);
 	});
+
+	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: false
+		});
+
+		expect(localMap.pinchZoom.enabled()).to.be.false;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.match(/touchZoom option is deprecated/i);
+
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
+	});
+
+
+	it.skipIfNotTouch('enables pinchZoom when touchZoom is true and pinchZoom is false (touchZoom takes precedence)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: true,
+			pinchZoom: false
+		});
+
+		expect(localMap.pinchZoom.enabled()).to.be.true;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.match(/touchZoom option is deprecated/i);
+
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
+	});
+
 });
