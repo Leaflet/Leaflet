@@ -53,7 +53,7 @@ describe('VideoOverlay', () => {
 			.down().moveBy(50, 50, 10).up();
 	});
 
-	it.only('don\'t drags the map if video has enabled controls', (done) => {
+	it('don\'t drags the map if video has enabled controls', (done) => {
 
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
