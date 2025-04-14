@@ -162,6 +162,8 @@ Map.include({
 		createCorner('top', 'right');
 		createCorner('bottom', 'left');
 		createCorner('bottom', 'right');
+		createCorner('top', 'center');
+		createCorner('bottom', 'center');
 	},
 
 	_clearControlPos() {
