@@ -53,6 +53,8 @@ export const Renderer = BlanketOverlay.extend({
 		}
 	},
 
+	_updateClassName() {},
+
 	_updatePaths() {
 		for (const id in this._layers) {
 			if (Object.hasOwn(this._layers, id)) {
