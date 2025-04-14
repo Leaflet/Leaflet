@@ -112,6 +112,16 @@ export const Path = Layer.extend({
 		return this;
 	},
 
+	// @method setClassName(className: String): this
+	// Sets a custom class name on the Path element. Only for SVG renderer.
+	setClassName(className) {
+		Util.setOptions(this, {className});
+		if (this._renderer) {
+			this._renderer._updateClassName(this);
+		}
+		return this;
+	},
+
 	// @method bringToFront(): this
 	// Brings the layer to the top of all path layers.
 	bringToFront() {

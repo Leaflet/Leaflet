@@ -1,6 +1,6 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
-import {splitWords, stamp} from '../../core/Util.js';
+import {stamp} from '../../core/Util.js';
 import {svgCreate, pointsToPath} from './SVG.Util.js';
 export {pointsToPath};
 
@@ -81,18 +81,12 @@ export const SVG = Renderer.extend({
 	_initPath(layer) {
 		const path = layer._path = create('path');
 
-		// @namespace Path
-		// @option className: String = null
-		// Custom class name set on an element. Only for SVG renderer.
-		if (layer.options.className) {
-			path.classList.add(...splitWords(layer.options.className));
-		}
-
 		if (layer.options.interactive) {
 			path.classList.add('leaflet-interactive');
 		}
 
 		this._updateStyle(layer);
+		this._updateClassName(layer);
 		this._layers[stamp(layer)] = layer;
 	},
 
@@ -148,6 +142,26 @@ export const SVG = Renderer.extend({
 		} else {
 			path.setAttribute('fill', 'none');
 		}
+	},
+
+	_updateClassName(layer) {
+		const path = layer._path,
+		    options = layer.options;
+
+		if (!path) { return; }
+
+		const extraClasses = [];
+		for (const c of path.classList) {
+			if (c === 'leaflet-interactive') {
+				extraClasses.push(c);
+			}
+		}
+
+		// @namespace Path
+		// @option className: String = null
+		// Custom class name set on an element. Only for SVG renderer.
+		path.classList.value = options.className;
+		path.classList.add(...extraClasses);
 	},
 
 	_updatePoly(layer, closed) {
