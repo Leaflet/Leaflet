@@ -1,11 +1,11 @@
 import {CRS} from './CRS.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.Simple
+ * @crs CRS.Simple
  *
  * A simple CRS that maps longitude and latitude into `x` and `y` directly.
  * May be used for maps of flat surfaces (e.g. game maps). Note that the `y`
@@ -15,7 +15,7 @@ import * as Util from '../../core/Util.js';
 
 export const Simple = Util.extend({}, CRS, {
 	projection: LonLat,
-	transformation: toTransformation(1, 0, -1, 0),
+	transformation: new Transformation(1, 0, -1, 0),
 
 	scale(zoom) {
 		return Math.pow(2, zoom);

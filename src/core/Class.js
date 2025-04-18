@@ -1,7 +1,6 @@
 import * as Util from './Util.js';
 
 // @class Class
-// @aka L.Class
 
 // @section
 // @uninheritable

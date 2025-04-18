@@ -1,6 +1,5 @@
 /*
  * @namespace Browser
- * @aka L.Browser
  *
  * A namespace with static properties for browser/feature detection used by Leaflet internally.
  *

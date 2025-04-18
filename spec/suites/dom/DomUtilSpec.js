@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, Point, point} from 'leaflet';
+import {DomUtil, Point} from 'leaflet';
 import UIEventSimulator from 'ui-event-simulator';
 
 describe('DomUtil', () => {
@@ -145,20 +145,20 @@ describe('DomUtil', () => {
 
 			const x = 50;
 			const y = 55;
-			const position = point(x, y);
+			const position = new Point(x, y);
 			DomUtil.setPosition(el, position);
 			expect(DomUtil.getPosition(el).equals(position)).to.be.true;
 
 			const newX = 333;
 			const newY = 666;
-			const newPosition = point(newX, newY);
+			const newPosition = new Point(newX, newY);
 			DomUtil.setPosition(el, newPosition);
 			expect(DomUtil.getPosition(el).equals(newPosition)).to.be.true;
 		});
 
 		it('returns position of an element positioned with setPosition.', () => {
 			const coordinates = {x: 333, y: 666};
-			const position = point(coordinates);
+			const position = new Point(coordinates);
 			expect(DomUtil.getPosition(el).equals(position)).to.be.false;
 			DomUtil.setPosition(el, position);
 			expect(DomUtil.getPosition(el)).to.be.an('object');

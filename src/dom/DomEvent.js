@@ -308,9 +308,9 @@ export function isExternalTarget(el, e) {
 }
 
 // @function addListener(…): this
-// Alias to [`L.DomEvent.on`](#domevent-on)
+// Alias to [`DomEvent.on`](#domevent-on)
 export {on as addListener};
 
 // @function removeListener(…): this
-// Alias to [`L.DomEvent.off`](#domevent-off)
+// Alias to [`DomEvent.off`](#domevent-off)
 export {off as removeListener};

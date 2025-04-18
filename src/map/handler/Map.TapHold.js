@@ -5,7 +5,7 @@ import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
 
 /*
- * L.Map.TapHold is used to simulate `contextmenu` event on long hold,
+ * Map.TapHold is used to simulate `contextmenu` event on long hold,
  * which otherwise is not fired by mobile Safari.
  */
 
