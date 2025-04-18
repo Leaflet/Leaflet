@@ -4,13 +4,13 @@ import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
 
-describe('Map.TouchZoom', () => {
+describe('Map.PinchZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
@@ -133,11 +133,11 @@ describe('Map.TouchZoom', () => {
 
 	});
 
-	it.skipIfNotTouch('TouchZoom works with disabled map dragging', (done) => {
+	it.skipIfNotTouch('PinchZoom works with disabled map dragging', (done) => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false,	// If true, the test has to wait extra 250msec,
 			dragging: false
@@ -167,7 +167,7 @@ describe('Map.TouchZoom', () => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: true
 		});
@@ -220,16 +220,16 @@ describe('Map.TouchZoom', () => {
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			.down().moveBy(200, 0, 500).up();
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			.down().moveBy(-200, 0, 500).up();
 	});
 
 	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false
 		});
@@ -282,8 +282,43 @@ describe('Map.TouchZoom', () => {
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			.down().moveBy(200, 0, 500).up();
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			.down().moveBy(-200, 0, 500).up();
 	});
+
+	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: false
+		});
+
+		expect(localMap.pinchZoom.enabled()).to.be.false;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
+	});
+
+
+	it.skipIfNotTouch('enables pinchZoom when touchZoom is true and pinchZoom is false (touchZoom takes precedence)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: true,
+			pinchZoom: false
+		});
+
+		expect(localMap.pinchZoom.enabled()).to.be.true;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
+	});
+
 });
