@@ -220,9 +220,9 @@ describe('Map.PinchZoom', () => {
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			.down().moveBy(200, 0, 500).up();
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			.down().moveBy(-200, 0, 500).up();
 	});
 
 	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
@@ -282,9 +282,9 @@ describe('Map.PinchZoom', () => {
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			.down().moveBy(200, 0, 500).up();
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			.down().moveBy(-200, 0, 500).up();
 	});
 
 	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
@@ -297,7 +297,7 @@ describe('Map.PinchZoom', () => {
 
 		expect(localMap.pinchZoom.enabled()).to.be.false;
 		expect(warnSpy.calledOnce).to.be.true;
-		expect(warnSpy.firstCall.args[0]).to.match(/touchZoom option is deprecated/i);
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 
 		warnSpy.restore();
 		removeMapContainer(localMap, localContainer);
@@ -315,7 +315,7 @@ describe('Map.PinchZoom', () => {
 
 		expect(localMap.pinchZoom.enabled()).to.be.true;
 		expect(warnSpy.calledOnce).to.be.true;
-		expect(warnSpy.firstCall.args[0]).to.match(/touchZoom option is deprecated/i);
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 
 		warnSpy.restore();
 		removeMapContainer(localMap, localContainer);
