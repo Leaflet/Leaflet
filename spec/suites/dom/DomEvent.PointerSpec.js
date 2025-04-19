@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, DomEvent, Util, extend} from 'leaflet';
+import {Browser, DomEvent, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 
@@ -127,7 +127,7 @@ describe('DomEvent.Pointer', () => {
 			expect(containIn([pointer1, pointer2], evt.touches)).to.be.true;
 
 			// pointermove/touchmove (multitouch)
-			extend(pointer1, {clientX:11, clientY:11});
+			Object.assign(pointer1, {clientX:11, clientY:11});
 			UIEventSimulator.fire('pointermove', el, pointer1);
 			evt = listeners.touchmove.lastCall.args[0];
 			expect(evt.type).to.equal('pointermove');
