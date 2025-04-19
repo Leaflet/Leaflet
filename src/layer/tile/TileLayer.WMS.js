@@ -1,5 +1,5 @@
 import {TileLayer} from './TileLayer.js';
-import {extend, setOptions, getParamString} from '../../core/Util.js';
+import {extend, setOptions} from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
 import {toBounds} from '../../geometry/Bounds.js';
@@ -108,11 +108,12 @@ export const TileLayerWMS = TileLayer.extend({
 		    max = bounds.max,
 		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 		    [min.y, min.x, max.y, max.x] :
-		    [min.x, min.y, max.x, max.y]).join(','),
-		    url = TileLayer.prototype.getTileUrl.call(this, coords);
-		return url +
-			getParamString(this.wmsParams, url, this.options.uppercase) +
-			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
+		    [min.x, min.y, max.x, max.y]).join(',');
+		const url = new URL(TileLayer.prototype.getTileUrl.call(this, coords));
+		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
+			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);
+		}
+		return url.toString();
 	},
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
