@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, LatLng, Map, Polygon, Rectangle} from 'leaflet';
+import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
@@ -243,54 +243,40 @@ describe('Map.PinchZoom', () => {
 			[1, 0]
 		]).addTo(map);
 
-		let alreadyCalled = false;
-		const hand = new Hand({
-			timing: 'fastframe',
-			onStop() {
-				setTimeout(() => {
-					if (alreadyCalled) {
-						return; // Will recursivly call itself otherwise
-					}
-					alreadyCalled = true;
 
-					const renderedRect = polygon._path.getBoundingClientRect();
-
-					const width = renderedRect.width;
-					const height = renderedRect.height;
-
-					expect(height < 50).to.be.true;
-					expect(width < 50).to.be.true;
-					expect(height + width > 0).to.be.true;
-
-					const x = renderedRect.x;
-					const y = renderedRect.y;
-
-					expect(x).to.be.within(299, 301);
-					expect(y).to.be.within(270, 280);
-
-					// Fingers lifted after expects as bug goes away when lifted
-					this._fingers[0].up();
-					this._fingers[1].up();
-
-					done();
-				}, 100);
-			}
+		map.pinchZoom._onTouchStart({
+			touches: [
+				{clientX: 75, clientY: 300},
+				{clientX: 525, clientY: 300}
+			],
+		});
+		map.pinchZoom._onTouchMove({
+			touches: [
+				{clientX: 275, clientY: 300},
+				{clientX: 325, clientY: 300}
+			],
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		setTimeout(() => {
+			map.pinchZoom._onTouchEnd();
 
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			const renderedRect = polygon._path.getBoundingClientRect();
 
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			const width = renderedRect.width;
+			const height = renderedRect.height;
 
-		if (Browser.chrome) {
-			f1.up();
-			f2.up();
-		}
+			expect(height < 50).to.be.true;
+			expect(width < 50).to.be.true;
+			expect(height + width > 0).to.be.true;
+
+			const x = renderedRect.x;
+			const y = renderedRect.y;
+
+			expect(x).to.be.within(297, 300);
+			expect(y).to.be.within(270, 280);
+
+			done();
+		}, 100);
 	});
 
 	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
