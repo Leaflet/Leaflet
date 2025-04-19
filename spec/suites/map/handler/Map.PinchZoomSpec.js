@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
+import {Browser, LatLng, Map, Polygon, Rectangle} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
@@ -282,9 +282,15 @@ describe('Map.PinchZoom', () => {
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500).up();
+			.down().moveBy(200, 0, 500);
+
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up();
+			.down().moveBy(-200, 0, 500);
+
+		if (Browser.chrome) {
+			f1.up();
+			f2.up();
+		}
 	});
 
 	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
