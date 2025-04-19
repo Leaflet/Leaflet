@@ -27,12 +27,8 @@ export const LayerGroup = Layer.extend({
 
 		this._layers = {};
 
-		let i, len;
-
-		if (layers) {
-			for (i = 0, len = layers.length; i < len; i++) {
-				this.addLayer(layers[i]);
-			}
+		for (const layer of layers ?? []) {
+			this.addLayer(layer);
 		}
 	},
 
@@ -88,18 +84,11 @@ export const LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke(methodName, ...args) {
-		let i, layer;
-
-		for (i in this._layers) {
-			if (Object.hasOwn(this._layers, i)) {
-				layer = this._layers[i];
-
-				if (layer[methodName]) {
-					layer[methodName].apply(layer, args);
-				}
+		for (const layer of Object.values(this._layers)) {
+			if (layer[methodName]) {
+				layer[methodName].apply(layer, args);
 			}
 		}
-
 		return this;
 	},
 
@@ -117,10 +106,8 @@ export const LayerGroup = Layer.extend({
 	// group.eachLayer(layer => layer.bindPopup('Hello'));
 	// ```
 	eachLayer(method, context) {
-		for (const i in this._layers) {
-			if (Object.hasOwn(this._layers, i)) {
-				method.call(context, this._layers[i]);
-			}
+		for (const layer of Object.values(this._layers)) {
+			method.call(context, layer);
 		}
 		return this;
 	},

@@ -83,12 +83,10 @@ describe('DomEvent.Pointer', () => {
 					return Array.prototype.some.call(evt, containIn.bind(this, props));
 				}
 				let res;
-				for (const prop in props) {
-					if (Object.hasOwn(props, prop)) {
-						res = true;
-						if (props[prop] !== evt[prop]) {
-							return false;
-						}
+				for (const prop of Object.keys(props ?? {})) {
+					res = true;
+					if (props[prop] !== evt[prop]) {
+						return false;
 					}
 				}
 				return res;

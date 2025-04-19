@@ -69,12 +69,7 @@ function _addPointerDocListener() {
 function _handlePointer(handler, e) {
 	if (e.pointerType === 'mouse') { return; }
 
-	e.touches = [];
-	for (const i in _pointers) {
-		if (Object.hasOwn(_pointers, i)) {
-			e.touches.push(_pointers[i]);
-		}
-	}
+	e.touches = Object.values(_pointers);
 	e.changedTouches = [e];
 
 	handler(e);

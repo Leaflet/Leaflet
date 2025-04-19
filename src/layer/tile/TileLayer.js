@@ -242,7 +242,7 @@ export const TileLayer = GridLayer.extend({
 	// stops loading all tiles in the background layer
 	_abortLoading() {
 		let i, tile;
-		for (i in this._tiles) {
+		for (i of Object.keys(this._tiles)) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
