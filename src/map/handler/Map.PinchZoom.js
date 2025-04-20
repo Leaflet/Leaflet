@@ -4,19 +4,19 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import Browser from '../../core/Browser.js';
 
 /*
- * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * L.Handler.PinchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
  */
 
 // @namespace Map
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option touchZoom: Boolean|String = *
+	// @option pinchZoom: Boolean|String = *
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers.
-	touchZoom: Browser.touch,
+	pinchZoom: Browser.touch,
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
@@ -24,7 +24,7 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const TouchZoom = Handler.extend({
+export const PinchZoom = Handler.extend({
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
@@ -44,7 +44,7 @@ export const TouchZoom = Handler.extend({
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
-		if (map.options.touchZoom !== 'center') {
+		if (map.options.pinchZoom !== 'center') {
 			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
 		}
 
@@ -78,7 +78,7 @@ export const TouchZoom = Handler.extend({
 			this._zoom = map._limitZoom(this._zoom);
 		}
 
-		if (map.options.touchZoom === 'center') {
+		if (map.options.pinchZoom === 'center') {
 			this._center = this._startLatLng;
 			if (scale === 1) { return; }
 		} else {
@@ -123,6 +123,22 @@ export const TouchZoom = Handler.extend({
 });
 
 // @section Handlers
-// @property touchZoom: Handler
-// Touch zoom handler.
-Map.addInitHook('addHandler', 'touchZoom', TouchZoom);
+// @property pinchZoom: Handler
+// Pinch zoom handler.
+Map.addInitHook('addHandler', 'pinchZoom', PinchZoom);
+
+// Deprecated - Backward compatibility touchZoom
+Map.addInitHook(function () {
+	this.touchZoom = this.pinchZoom;
+
+	if (this.options.touchZoom !== undefined) {
+		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+		this.options.pinchZoom = this.options.touchZoom;
+		delete this.options.touchZoom;
+	}
+	if (this.options.pinchZoom) {
+		this.pinchZoom.enable();
+	} else {
+		this.pinchZoom.disable();
+	}
+});
