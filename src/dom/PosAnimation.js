@@ -107,6 +107,6 @@ export const PosAnimation = Evented.extend({
 	},
 
 	_easeOut(t) {
-		return 1 - Math.pow(1 - t, this._easeOutPower);
+		return 1 - (1 - t) ** this._easeOutPower;
 	}
 });

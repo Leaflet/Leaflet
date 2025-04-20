@@ -49,6 +49,7 @@ export default [
 
 			// TODO: Re-enable the rules below and fix the linting issues.
 			'no-invalid-this': 'off',
+			'prefer-exponentiation-operator': 'error',
 			'prefer-object-has-own': 'error',
 			'prefer-spread': 'off',
 			'no-new': 'off'

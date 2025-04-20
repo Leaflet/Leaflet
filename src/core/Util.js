@@ -89,7 +89,7 @@ export function falseFn() { return false; }
 // `false` can be passed to skip any processing (can be useful to avoid round-off errors).
 export function formatNum(num, precision) {
 	if (precision === false) { return num; }
-	const pow = Math.pow(10, precision === undefined ? 6 : precision);
+	const pow = 10 ** (precision === undefined ? 6 : precision);
 	return Math.round(num * pow) / pow;
 }
 

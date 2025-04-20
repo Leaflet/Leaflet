@@ -18,7 +18,7 @@ export const Simple = Util.extend({}, CRS, {
 	transformation: toTransformation(1, 0, -1, 0),
 
 	scale(zoom) {
-		return Math.pow(2, zoom);
+		return 2 ** zoom;
 	},
 
 	zoom(scale) {
