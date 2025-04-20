@@ -1,6 +1,4 @@
-import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
-import rollupGitVersion from 'rollup-plugin-git-version';
 import {simpleGit} from 'simple-git';
 
 // TODO: Replace this with a regular import when ESLint adds support for import assertions.
@@ -21,9 +19,6 @@ const config = {
 			sourcemap: true,
 			freeze: false
 		}
-	],
-	plugins: [
-		release ? json() : rollupGitVersion(),
 	]
 };
 
@@ -47,5 +42,6 @@ export function createBanner(version) {
  * Leaflet ${version}, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
  */
+export const version = ${JSON.stringify(version)};
 `;
 }

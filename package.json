@@ -5,7 +5,6 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
-    "@rollup/plugin-json": "^6.1.0",
     "bundlemon": "^3.0.3",
     "chai": "^5.1.1",
     "eslint": "^9.23.0",
@@ -25,7 +24,6 @@
     "mocha": "^10.7.0",
     "prosthetic-hand": "^2.0.0",
     "rollup": "^4.19.1",
-    "rollup-plugin-git-version": "^0.3.1",
     "simple-git": "^3.25.0",
     "sinon": "^18.0.0",
     "ssri": "^10.0.6",
