@@ -69,7 +69,7 @@ Then, in your script, import the needed Leaflet Classes as follows:
 
 Note that the [`integrity` hashes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) are included for security when using Leaflet from a CDN.
 
-Leaflet is available on the following free CDNs: [cdnjs](https://cdnjs.com/libraries/leaflet), [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist).
+Leaflet is available on the following free CDNs: [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist), [cdnjs](https://cdnjs.com/libraries/leaflet), [unpkg](https://unpkg.com/leaflet/dist/).
 
 _Disclaimer: These services are external to Leaflet; for questions or support, please contact them directly._
 
