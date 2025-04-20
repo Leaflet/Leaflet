@@ -114,9 +114,7 @@ export const LayerGroup = Layer.extend({
 	// @method eachLayer(fn: Function, context?: Object): this
 	// Iterates over the layers of the group, optionally specifying context of the iterator function.
 	// ```js
-	// group.eachLayer(function (layer) {
-	// 	layer.bindPopup('Hello');
-	// });
+	// group.eachLayer(layer => layer.bindPopup('Hello'));
 	// ```
 	eachLayer(method, context) {
 		for (const i in this._layers) {
