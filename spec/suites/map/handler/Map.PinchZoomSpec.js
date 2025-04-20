@@ -3,6 +3,7 @@ import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import UIEventSimulator from 'ui-event-simulator';
 
 describe('Map.PinchZoom', () => {
 	let container, map;
@@ -225,7 +226,7 @@ describe('Map.PinchZoom', () => {
 			.down().moveBy(-200, 0, 500).up();
 	});
 
-	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
+	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
 		map.remove();
 
 		map = new Map(container, {
@@ -243,22 +244,14 @@ describe('Map.PinchZoom', () => {
 			[1, 0]
 		]).addTo(map);
 
+		UIEventSimulator.fireAt('pointerdown', 75, 300, {pointerId: 1});
+		UIEventSimulator.fireAt('pointerdown', 525, 300, {pointerId: 2});
 
-		map.pinchZoom._onTouchStart({
-			touches: [
-				{clientX: 75, clientY: 300},
-				{clientX: 525, clientY: 300}
-			],
-		});
-		map.pinchZoom._onTouchMove({
-			touches: [
-				{clientX: 275, clientY: 300},
-				{clientX: 325, clientY: 300}
-			],
-		});
+		UIEventSimulator.fireAt('pointermove', 275, 300, {pointerId: 1});
+		UIEventSimulator.fireAt('pointermove', 325, 300, {pointerId: 2});
 
 		setTimeout(() => {
-			map.pinchZoom._onTouchEnd();
+			map.pinchZoom._onPointerEnd();
 
 			const renderedRect = polygon._path.getBoundingClientRect();
 
