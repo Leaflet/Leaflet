@@ -280,7 +280,8 @@ export function getWheelPxFactor() {
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
-	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
+	return (e.deltaY && e.deltaMode === 0 && e.ctrlKey) ? 6 * -e.deltaY / getWheelPxFactor() : // Trackpad pinch
+	       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
 	       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
 	       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
 	       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
