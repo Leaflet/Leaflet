@@ -71,7 +71,7 @@ export class Class {
 			this[fn].apply(this, args);
 		};
 
-		this.prototype._initHooks = this.prototype._initHooks || [];
+		this.prototype._initHooks ??= [];
 		this.prototype._initHooks.push(init);
 		return this;
 	}

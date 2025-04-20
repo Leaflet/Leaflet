@@ -59,7 +59,7 @@ export class LatLng {
 			Math.abs(this.lat - obj.lat),
 			Math.abs(this.lng - obj.lng));
 
-		return margin <= (maxMargin === undefined ? 1.0E-9 : maxMargin);
+		return margin <= (maxMargin ?? 1.0E-9);
 	}
 
 	// @method toString(): String

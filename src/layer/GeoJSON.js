@@ -146,9 +146,7 @@ export const GeoJSON = FeatureGroup.extend({
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle(style) {
-		return this.eachLayer(function (layer) {
-			this._setLayerStyle(layer, style);
-		}, this);
+		return this.eachLayer(layer => this._setLayerStyle(layer, style));
 	},
 
 	_setLayerStyle(layer, style) {
@@ -171,10 +169,10 @@ export const GeoJSON = FeatureGroup.extend({
 export function geometryToLayer(geojson, options) {
 
 	const geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-	      coords = geometry ? geometry.coordinates : null,
+	      coords = geometry?.coordinates,
 	      layers = [],
-	      pointToLayer = options && options.pointToLayer,
-	      _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng;
+	      pointToLayer = options?.pointToLayer,
+	      _coordsToLatLng = options?.coordsToLatLng ?? coordsToLatLng;
 	let latlng, latlngs, i, len;
 
 	if (!coords && !geometry) {
@@ -235,7 +233,7 @@ export function geometryToLayer(geojson, options) {
 function _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 	return pointToLayerFn ?
 		pointToLayerFn(geojson, latlng) :
-		new Marker(latlng, options && options.markersInheritOptions && options);
+		new Marker(latlng, options?.markersInheritOptions && options);
 }
 
 // @function coordsToLatLng(coords: Array): LatLng
@@ -398,7 +396,7 @@ LayerGroup.include({
 	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	toGeoJSON(precision) {
 
-		const type = this.feature && this.feature.geometry && this.feature.geometry.type;
+		const type = this.feature?.geometry?.type;
 
 		if (type === 'MultiPoint') {
 			return this.toMultiPoint(precision);
