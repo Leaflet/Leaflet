@@ -33,6 +33,7 @@ export const Layer = Evented.extend({
 	options: {
 		// @option pane: String = 'overlayPane'
 		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
+		// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
 		pane: 'overlayPane',
 
 		// @option attribution: String = null
