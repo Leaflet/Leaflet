@@ -136,7 +136,7 @@ export const GeoJSON = FeatureGroup.extend({
 			return this.eachLayer(this.resetStyle, this);
 		}
 		// reset any custom styles
-		layer.options = Util.extend({}, layer.defaultOptions);
+		layer.options = {...layer.defaultOptions};
 		this._setLayerStyle(layer, this.options.style);
 		return this;
 	},
@@ -280,7 +280,7 @@ export function latLngsToCoords(latlngs, levelsDeep, close, precision) {
 
 export function getFeature(layer, newGeometry) {
 	return layer.feature ?
-		Util.extend({}, layer.feature, {geometry: newGeometry}) :
+		{...layer.feature, geometry: newGeometry} :
 		asFeature(newGeometry);
 }
 

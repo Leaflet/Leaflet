@@ -188,6 +188,7 @@ export const TileLayer = GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl(coords) {
 		const data = {
+			...this.options,
 			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
@@ -202,7 +203,7 @@ export const TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return Util.template(this._url, Util.extend(data, this.options));
+		return Util.template(this._url, data);
 	},
 
 	_tileOnLoad(done, tile) {
