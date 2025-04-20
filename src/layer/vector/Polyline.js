@@ -88,16 +88,16 @@ export const Polyline = Path.extend({
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint(p) {
 		let minDistance = Infinity,
-		    minPoint = null,
-		    p1, p2;
+		minPoint = null,
+		p1, p2;
 		const closest = LineUtil._sqClosestPointOnSegment;
 
 		for (let j = 0, jLen = this._parts.length; j < jLen; j++) {
 			const points = this._parts[j];
 
-			for (let i = 1, len = points.length; i < len; i++) {
+			for (let i = 1, len = points.length; i <= len; i++) {
 				p1 = points[i - 1];
-				p2 = points[i];
+				p2 = points[i % len];
 
 				const sqDist = closest(p, p1, p2, true);
 
