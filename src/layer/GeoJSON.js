@@ -146,9 +146,7 @@ export const GeoJSON = FeatureGroup.extend({
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle(style) {
-		return this.eachLayer(function (layer) {
-			this._setLayerStyle(layer, style);
-		}, this);
+		return this.eachLayer(layer => this._setLayerStyle(layer, style));
 	},
 
 	_setLayerStyle(layer, style) {

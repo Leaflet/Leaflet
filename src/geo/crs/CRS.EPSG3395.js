@@ -13,8 +13,8 @@ export const EPSG3395 = Util.extend({}, Earth, {
 	code: 'EPSG:3395',
 	projection: Mercator,
 
-	transformation: (function () {
+	transformation: (() => {
 		const scale = 0.5 / (Math.PI * Mercator.R);
 		return toTransformation(scale, 0.5, -scale, 0.5);
-	}())
+	})()
 });
