@@ -20,9 +20,9 @@ import * as DomUtil from '../../dom/DomUtil.js';
 export const IconDefault = Icon.extend({
 
 	options: {
-		iconUrl:       'marker-icon.png',
-		iconRetinaUrl: 'marker-icon-2x.png',
-		shadowUrl:     'marker-shadow.png',
+		iconUrl:       'marker-icon.svg',
+		iconRetinaUrl: 'marker-icon.svg',
+		shadowUrl:     'marker-shadow.svg',
 		iconSize:    [25, 41],
 		iconAnchor:  [12, 41],
 		popupAnchor: [1, -34],
@@ -53,7 +53,7 @@ export const IconDefault = Icon.extend({
 			return match && match[idx];
 		};
 		path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
-		return path && strip(path, /^(.*)marker-icon\.png$/, 1);
+		return path && strip(path, /^(.*)marker-icon\.svg$/, 1);
 	},
 
 	_detectIconPath() {
