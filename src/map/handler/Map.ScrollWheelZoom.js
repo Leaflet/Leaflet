@@ -62,7 +62,7 @@ export const ScrollWheelZoom = Handler.extend({
 	_performZoom() {
 		const map = this._map,
 		    zoom = map.getZoom(),
-		    snap = this._map.options.zoomSnap || 0;
+		    snap = this._map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
 

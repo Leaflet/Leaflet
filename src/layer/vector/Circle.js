@@ -56,7 +56,7 @@ export const Circle = CircleMarker.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
 	getBounds() {
-		const half = [this._radius, this._radiusY || this._radius];
+		const half = [this._radius, this._radiusY ?? this._radius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),

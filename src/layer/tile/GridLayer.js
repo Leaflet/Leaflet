@@ -351,7 +351,7 @@ export const GridLayer = Layer.extend({
 	_initContainer() {
 		if (this._container) { return; }
 
-		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className || ''}`);
+		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className ?? ''}`);
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -494,11 +494,11 @@ export const GridLayer = Layer.extend({
 		const key = this._tileCoordsToKey(coords2),
 		    tile = this._tiles[key];
 
-		if (tile && tile.active) {
+		if (tile?.active) {
 			tile.retain = true;
 			return true;
 
-		} else if (tile && tile.loaded) {
+		} else if (tile?.loaded) {
 			tile.retain = true;
 		}
 
@@ -520,11 +520,11 @@ export const GridLayer = Layer.extend({
 				const key = this._tileCoordsToKey(coords),
 				    tile = this._tiles[key];
 
-				if (tile && tile.active) {
+				if (tile?.active) {
 					tile.retain = true;
 					continue;
 
-				} else if (tile && tile.loaded) {
+				} else if (tile?.loaded) {
 					tile.retain = true;
 				}
 

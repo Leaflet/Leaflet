@@ -120,8 +120,8 @@ export const Events = {
 			newListener.once = true;
 		}
 
-		this._events = this._events || {};
-		this._events[type] = this._events[type] || [];
+		this._events ??= {};
+		this._events[type] ??= [];
 		this._events[type].push(newListener);
 	},
 
@@ -182,7 +182,7 @@ export const Events = {
 		const event = Util.extend({}, data, {
 			type,
 			target: this,
-			sourceTarget: data && data.sourceTarget || this
+			sourceTarget: data?.sourceTarget || this
 		});
 
 		if (this._events) {
@@ -228,8 +228,7 @@ export const Events = {
 			context = undefined;
 		}
 
-		const listeners = this._events && this._events[type];
-		if (listeners && listeners.length) {
+		if (this._events?.[type]?.length) {
 			if (this._listens(type, _fn, context) !== false) {
 				return true;
 			}
@@ -250,7 +249,7 @@ export const Events = {
 			return false;
 		}
 
-		const listeners = this._events[type] || [];
+		const listeners = this._events[type] ?? [];
 		if (!fn) {
 			return !!listeners.length;
 		}
@@ -298,7 +297,7 @@ export const Events = {
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
 	addEventParent(obj) {
-		this._eventParents = this._eventParents || {};
+		this._eventParents ??= {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
 	},

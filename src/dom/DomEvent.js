@@ -124,7 +124,7 @@ function addOne(obj, type, fn, context) {
 
 		} else if (type === 'mouseenter' || type === 'mouseleave') {
 			handler = function (e) {
-				e = e || window.event;
+				e ??= window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
@@ -139,12 +139,12 @@ function addOne(obj, type, fn, context) {
 		obj.attachEvent(`on${type}`, handler);
 	}
 
-	obj[eventsKey] = obj[eventsKey] || {};
+	obj[eventsKey] ??= {};
 	obj[eventsKey][id] = handler;
 }
 
 function removeOne(obj, type, fn, context, id) {
-	id = id || type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
+	id ??= type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 	const handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
