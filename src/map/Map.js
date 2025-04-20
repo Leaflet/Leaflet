@@ -397,7 +397,7 @@ export const Map = Evented.extend({
 		function w(s) { return w0 * (cosh(r0) / cosh(r0 + rho * s)); }
 		function u(s) { return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2; }
 
-		function easeOut(t) { return 1 - Math.pow(1 - t, 1.5); }
+		function easeOut(t) { return 1 - (1 - t) ** 1.5; }
 
 		const start = Date.now(),
 		    S = (r(1) - r0) / rho,

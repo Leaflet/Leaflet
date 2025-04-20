@@ -244,7 +244,7 @@ describe('CRS', () => {
 describe('CRS.ZoomNotPowerOfTwo', () => {
 	const crs = extend({}, CRS, {
 		scale(zoom) {
-			return 256 * Math.pow(1.5, zoom);
+			return 256 * 1.5 ** zoom;
 		},
 		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);
