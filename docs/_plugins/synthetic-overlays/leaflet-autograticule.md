@@ -4,7 +4,7 @@ category: synthetic-overlays
 repo: https://github.com/facilmap/Leaflet.AutoGraticule
 author: Candid Dauth
 author-url: https://github.com/cdauth
-demo: https://unpkg.com/leaflet-auto-graticule/example.html
+demo: https://cdn.jsdelivr.net/npm/leaflet-auto-graticule/example.html
 compatible-v0:
 compatible-v1: true
 ---

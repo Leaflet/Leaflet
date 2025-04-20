@@ -35,22 +35,26 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is available on several CDNs. To start using it with an [importmap](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap), place the following in the `head` of your HTML code:
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin="anonymous" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
+  integrity="{{site.integrity_hash_css}}"
+  crossorigin="anonymous"
+/>
 
 <script type="importmap">
-{
-	"imports": {
-		"leaflet": "https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js"
-	},
-	"integrity": {
-		"https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
-	}
-}
+  {
+    "imports": {
+      "leaflet": "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js"
+    },
+    "integrity": {
+      "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+    }
+  }
 </script>
 ```
 
 A [**`importmap`**](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) allows defining module specifiers (`import` paths) in the browser without relying on a bundler. It enables the use of named imports directly from a CDN or local files, making module resolution more flexible and readable.
-
 
 Then, in your script, import the needed Leaflet Classes as follows:
 
@@ -59,7 +63,7 @@ Then, in your script, import the needed Leaflet Classes as follows:
 	import {Map, TileLayer} from 'leaflet';
 
 	const map = new Map('map').setView([51.505, -0.09], 13);
-	
+
 	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -69,7 +73,7 @@ Then, in your script, import the needed Leaflet Classes as follows:
 
 Note that the [`integrity` hashes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) are included for security when using Leaflet from a CDN.
 
-Leaflet is available on the following free CDNs: [unpkg](https://unpkg.com/leaflet/dist/), [cdnjs](https://cdnjs.com/libraries/leaflet), [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist).
+Leaflet is available on the following free CDNs: [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist), [cdnjs](https://cdnjs.com/libraries/leaflet).
 
 _Disclaimer: These services are external to Leaflet; for questions or support, please contact them directly._
 
@@ -89,24 +93,25 @@ Unzip the downloaded archive to your website's directory and add this to the `he
 ```html
 <link rel="stylesheet" href="/path/to/leaflet.css" />
 <script type="importmap">
-{
-  "imports": {
-    "leaflet": "/path/to/leaflet.js"
+  {
+    "imports": {
+      "leaflet": "/path/to/leaflet.js"
+    }
   }
-}
 </script>
 ```
 
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import { Map, TileLayer } from "leaflet";
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new Map("map").setView([51.505, -0.09], 13);
 
-new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 ```
 
@@ -121,13 +126,14 @@ npm install leaflet
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import { Map, TileLayer } from "leaflet";
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new Map("map").setView([51.505, -0.09], 13);
 
-new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 ```
 

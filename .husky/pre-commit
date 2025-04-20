@@ -1,1 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Custom check for unpkg.com in docs (excluding _site)
+if grep -r "unpkg.com" docs/ | grep -v "docs/_site/"; then
+  echo "ERROR: Found unpkg.com references. Please use jsDelivr."
+  exit 1
+fi
+
 npx lint-staged

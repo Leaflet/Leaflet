@@ -4,7 +4,7 @@ category: data-providers
 repo: https://github.com/facilmap/Leaflet.FreieTonne
 author: Candid Dauth
 author-url: https://github.com/cdauth
-demo: https://unpkg.com/leaflet-freie-tonne/example.html
+demo: https://cdn.jsdelivr.net/npm/leaflet-freie-tonne/example.html
 compatible-v0:
 compatible-v1: true
 ---

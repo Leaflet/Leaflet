@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>Leaflet API reference</h2>
 
-<p>This reference reflects <strong>Leaflet </strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
+<p>This reference reflects <strong>Leaflet {{site.latest_leaflet_version}}</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 <div id="toc" class="clearfix">
 	<div class="toc-col map-col">
@@ -113,14 +113,14 @@ bodyclass: api-page
 			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
 			<li><a href="#projection">Projection</a></li>
 			<li><a href="#crs">CRS</a></li>
+			<li><a href="#blanketoverlay">BlanketOverlay</a></li>
 			<li><a href="#renderer">Renderer</a></li>
 		</ul>
 
 		<h4>Misc</h4>
 		<ul>
 			<li><a href="#event-objects">Event objects</a></li>
-				<li><a href="#global-switches">global switches</a></li>
-			<li><a href="#noconflict">noConflict</a></li>
+			<li><a href="#global-switches">Global switches</a></li>
 			<li><a href="#version">version</a></li>
 		</ul>
 	</div>
@@ -249,28 +249,6 @@ By default, all <a href="#path"><code>Path</code></a>s are rendered in a <a href
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
 	</tr>
-	<tr id='map-boxzoom'>
-		<td><code><b>boxZoom</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed to a rectangular area specified by
-dragging the mouse while pressing the shift key.</td>
-	</tr>
-	<tr id='map-doubleclickzoom'>
-		<td><code><b>doubleClickZoom</b></code></td>
-		<td><code>Boolean|String</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed in by double clicking on it and
-zoomed out by double clicking while holding shift. If passed
-<code>'center'</code>, double-click zoom will zoom to the center of the
-view regardless of where the mouse was.</td>
-	</tr>
-	<tr id='map-dragging'>
-		<td><code><b>dragging</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map is draggable with mouse/touch or not.</td>
-	</tr>
 	<tr id='map-zoomsnap'>
 		<td><code><b>zoomSnap</b></code></td>
 		<td><code>Number</code></td>
@@ -295,6 +273,151 @@ Values smaller than <code>1</code> (e.g. <code>0.5</code>) allow for greater gra
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
 		<td>Whether the map automatically handles browser window resize to update itself.</td>
+	</tr>
+	<tr id='map-boxzoom'>
+		<td><code><b>boxZoom</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed to a rectangular area specified by
+dragging the pointer while pressing the shift key.</td>
+	</tr>
+	<tr id='map-doubleclickzoom'>
+		<td><code><b>doubleClickZoom</b></code></td>
+		<td><code>Boolean|String</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed in by double clicking on it and
+zoomed out by double clicking while holding shift. If passed
+<code>'center'</code>, double-click zoom will zoom to the center of the
+view regardless of where the mouse was.</td>
+	</tr>
+	<tr id='map-dragging'>
+		<td><code><b>dragging</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map is draggable with mouse/touch or not.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-map-state-options'>Map State Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-crs'>
+		<td><code><b>crs</b></code></td>
+		<td><code><a href='#crs'>CRS</a></code></td>
+		<td><code>L.CRS.EPSG3857</code></td>
+		<td>The <a href="#crs">Coordinate Reference System</a> to use. Don't change this if you're not
+sure what it means.</td>
+	</tr>
+	<tr id='map-center'>
+		<td><code><b>center</b></code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td><code>undefined</code></td>
+		<td>Initial geographic center of the map</td>
+	</tr>
+	<tr id='map-zoom'>
+		<td><code><b>zoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>undefined</code></td>
+		<td>Initial map zoom level</td>
+	</tr>
+	<tr id='map-minzoom'>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>*</code></td>
+		<td>Minimum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the lowest of their <code>minZoom</code> options will be used instead.</td>
+	</tr>
+	<tr id='map-maxzoom'>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>*</code></td>
+		<td>Maximum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the highest of their <code>maxZoom</code> options will be used instead.</td>
+	</tr>
+	<tr id='map-layers'>
+		<td><code><b>layers</b></code></td>
+		<td><code>Layer[]</code></td>
+		<td><code>[]</code></td>
+		<td>Array of layers that will be added to the map initially</td>
+	</tr>
+	<tr id='map-maxbounds'>
+		<td><code><b>maxBounds</b></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><code>null</code></td>
+		<td>When this option is set, the map restricts the view to the given
+geographical bounds, bouncing the user back if the user tries to pan
+outside the view. To set the restriction dynamically, use
+<a href="#map-setmaxbounds"><code>setMaxBounds</code></a> method.</td>
+	</tr>
+	<tr id='map-renderer'>
+		<td><code><b>renderer</b></code></td>
+		<td><code><a href='#renderer'>Renderer</a></code></td>
+		<td><code>*</code></td>
+		<td>The default method for drawing vector layers on the map. <a href="#svg"><code>L.SVG</code></a>
+or <a href="#canvas"><code>L.Canvas</code></a> by default depending on browser support.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-animation-options'>Animation Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-zoomanimation'>
+		<td><code><b>zoomAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the map zoom animation is enabled. By default it's enabled
+in all browsers that support CSS Transitions except Android.</td>
+	</tr>
+	<tr id='map-zoomanimationthreshold'>
+		<td><code><b>zoomAnimationThreshold</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>4</code></td>
+		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
+	</tr>
+	<tr id='map-fadeanimation'>
+		<td><code><b>fadeAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the tile fade animation is enabled. By default it's enabled
+in all browsers that support CSS Transitions except Android.</td>
+	</tr>
+	<tr id='map-markerzoomanimation'>
+		<td><code><b>markerZoomAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether markers animate their zoom with the zoom animation, if disabled
+they will disappear for the length of the animation. By default it's
+enabled in all browsers that support CSS Transitions except Android.</td>
+	</tr>
+	<tr id='map-transform3dlimit'>
+		<td><code><b>transform3DLimit</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>2^23</code></td>
+		<td>Defines the maximum size of a CSS translation transform. The default
+value should not be changed unless a web browser positions layers in
+the wrong place after doing a large <code>panBy</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -464,129 +587,6 @@ browsers.</td>
 		<td><code>true</code></td>
 		<td>Set it to false if you don't want the map to zoom beyond min/max zoom
 and then bounce back when pinch-zooming.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-map-state-options'>Map State Options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-crs'>
-		<td><code><b>crs</b></code></td>
-		<td><code><a href='#crs'>CRS</a></code></td>
-		<td><code>L.CRS.EPSG3857</code></td>
-		<td>The <a href="#crs">Coordinate Reference System</a> to use. Don't change this if you're not
-sure what it means.</td>
-	</tr>
-	<tr id='map-center'>
-		<td><code><b>center</b></code></td>
-		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><code>undefined</code></td>
-		<td>Initial geographic center of the map</td>
-	</tr>
-	<tr id='map-zoom'>
-		<td><code><b>zoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>undefined</code></td>
-		<td>Initial map zoom level</td>
-	</tr>
-	<tr id='map-minzoom'>
-		<td><code><b>minZoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>*</code></td>
-		<td>Minimum zoom level of the map.
-If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
-the lowest of their <code>minZoom</code> options will be used instead.</td>
-	</tr>
-	<tr id='map-maxzoom'>
-		<td><code><b>maxZoom</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>*</code></td>
-		<td>Maximum zoom level of the map.
-If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
-the highest of their <code>maxZoom</code> options will be used instead.</td>
-	</tr>
-	<tr id='map-layers'>
-		<td><code><b>layers</b></code></td>
-		<td><code>Layer[]</code></td>
-		<td><code>[]</code></td>
-		<td>Array of layers that will be added to the map initially</td>
-	</tr>
-	<tr id='map-maxbounds'>
-		<td><code><b>maxBounds</b></code></td>
-		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
-		<td><code>null</code></td>
-		<td>When this option is set, the map restricts the view to the given
-geographical bounds, bouncing the user back if the user tries to pan
-outside the view. To set the restriction dynamically, use
-<a href="#map-setmaxbounds"><code>setMaxBounds</code></a> method.</td>
-	</tr>
-	<tr id='map-renderer'>
-		<td><code><b>renderer</b></code></td>
-		<td><code><a href='#renderer'>Renderer</a></code></td>
-		<td><code>*</code></td>
-		<td>The default method for drawing vector layers on the map. <a href="#svg"><code>L.SVG</code></a>
-or <a href="#canvas"><code>L.Canvas</code></a> by default depending on browser support.</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-animation-options'>Animation Options</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the map zoom animation is enabled. By default it's enabled
-in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-zoomanimationthreshold'>
-		<td><code><b>zoomAnimationThreshold</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>4</code></td>
-		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
-	</tr>
-	<tr id='map-fadeanimation'>
-		<td><code><b>fadeAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether the tile fade animation is enabled. By default it's enabled
-in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-markerzoomanimation'>
-		<td><code><b>markerZoomAnimation</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code></td>
-		<td>Whether markers animate their zoom with the zoom animation, if disabled
-they will disappear for the length of the animation. By default it's
-enabled in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-transform3dlimit'>
-		<td><code><b>transform3DLimit</b></code></td>
-		<td><code>Number</code></td>
-		<td><code>2^23</code></td>
-		<td>Defines the maximum size of a CSS translation transform. The default
-value should not be changed unless a web browser positions layers in
-the wrong place after doing a large <code>panBy</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -1627,7 +1627,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 	<tr id='map-boxzoom'>
 		<td><code><b>boxZoom</b></code></td>
 		<td><code><a href='#handler'>Handler</a></code></td>
-		<td>Box (shift-drag with mouse) zoom handler.</td>
+		<td>Box (shift-drag with pointer) zoom handler.</td>
 	</tr>
 	<tr id='map-doubleclickzoom'>
 		<td><code><b>doubleClickZoom</b></code></td>
@@ -2659,6 +2659,13 @@ for a second (also called long press).</td>
 		<td><code><b>setIcon</b>(<nobr>&lt;<a href='#icon'>Icon</a>&gt;</nobr> <i>icon</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Changes the marker icon.</p>
+</td>
+	</tr>
+	<tr id='marker-getelement'>
+		<td><code><b>getElement</b>()</code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the instance of <a href="https://developer.mozilla.org/docs/Web/API/HTMLElement"><code>HTMLElement</code></a>
+used by L.Marker layer.</p>
 </td>
 	</tr>
 	<tr id='marker-setopacity'>
@@ -3894,6 +3901,12 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
+	<tr id='popup-closebuttonlabel'>
+		<td><code><b>closeButtonLabel</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;Close popup&#x27;</code></td>
+		<td>Specifies the 'aria-label' attribute of the close button.</td>
+	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code></td>
@@ -3920,6 +3933,13 @@ on the map. Defaults to the map's <a href="#map-closepopuponclick"><code>closePo
 		<td><code>String</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom CSS class name to assign to the popup.</td>
+	</tr>
+	<tr id='popup-trackresize'>
+		<td><code><b>trackResize</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>Whether the popup shall react to changes in the size of its contents
+(e.g. when an image inside the popup loads) and reposition itself.</td>
 	</tr>
 </tbody></table>
 
@@ -7445,6 +7465,15 @@ Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_setting
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom class name to assign to the image. Empty by default.</td>
 	</tr>
+	<tr id='imageoverlay-decoding'>
+		<td><code><b>decoding</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;auto&#x27;</code></td>
+		<td>Tells the browser whether to decode the image in a synchronous fashion,
+as per the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding"><code>decoding</code> HTML attribute</a>.
+If the image overlay is flickering when being added/removed, set
+this option to <code>'sync'</code>.</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -8091,7 +8120,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 
 </section><h2 id='videooverlay'>VideoOverlay</h2><p>Used to load and display a video player over specific bounds of the map. Extends <a href="#imageoverlay"><code>ImageOverlay</code></a>.</p>
 <p>A video overlay uses the <a href="https://developer.mozilla.org/docs/Web/HTML/Element/video"><code>&lt;video&gt;</code></a>
-HTML5 element.</p>
+HTML element.</p>
 
 <section>
 <h3 id='videooverlay-example'>Usage example</h3>
@@ -8169,8 +8198,7 @@ On some browsers autoplay will only work with <code>muted: true</code></td>
 		<td><code><b>keepAspectRatio</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code></td>
-		<td>Whether the video will save aspect ratio after the projection.
-Relevant for supported browsers. See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">browser compatibility</a></td>
+		<td>Whether the video will save aspect ratio after the projection.</td>
 	</tr>
 	<tr id='videooverlay-muted'>
 		<td><code><b>muted</b></code></td>
@@ -8248,6 +8276,15 @@ Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_setting
 		<td><code>String</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom class name to assign to the image. Empty by default.</td>
+	</tr>
+	<tr id='videooverlay-decoding'>
+		<td><code><b>decoding</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;auto&#x27;</code></td>
+		<td>Tells the browser whether to decode the image in a synchronous fashion,
+as per the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding"><code>decoding</code> HTML attribute</a>.
+If the image overlay is flickering when being added/removed, set
+this option to <code>'sync'</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -9051,6 +9088,15 @@ Refer to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_setting
 		<td><code>&#x27;&#x27;</code></td>
 		<td>A custom class name to assign to the image. Empty by default.</td>
 	</tr>
+	<tr id='svgoverlay-decoding'>
+		<td><code><b>decoding</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;auto&#x27;</code></td>
+		<td>Tells the browser whether to decode the image in a synchronous fashion,
+as per the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding"><code>decoding</code> HTML attribute</a>.
+If the image overlay is flickering when being added/removed, set
+this option to <code>'sync'</code>.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -9783,7 +9829,7 @@ overlays (Polygon, Polyline, Circle). Do not use it directly. Extends <a href="#
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='path-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -10579,7 +10625,7 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='polyline-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -11455,7 +11501,7 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='polygon-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -12335,7 +12381,7 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='rectangle-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -13228,7 +13274,7 @@ Do not use in new applications or plugins.</td>
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='circle-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -14082,7 +14128,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
 		<td><code>null</code></td>
-		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on <a href="#canvas"><code>Canvas</code></a>-powered layers in <a href="https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">some old browsers</a>.</td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray">dash pattern</a>.</td>
 	</tr>
 	<tr id='circlemarker-dashoffset'>
 		<td><code><b>dashOffset</b></code></td>
@@ -14796,14 +14842,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 
 </section><h2 id='svg'>SVG</h2><p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
-<p>Due to <a href="https://caniuse.com/svg">technical limitations</a>, SVG is not
-available in all web browsers, notably Android 2.x and 3.x.</p>
-<p>Although SVG is not available on IE7 and IE8, these browsers support
-<a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>
-(a now deprecated technology), and the SVG renderer will fall back to VML in
-this case.</p>
-<p>VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
-with old versions of Internet Explorer.</p>
 
 <section>
 <h3 id='svg-example'>Usage example</h3>
@@ -14846,7 +14884,7 @@ var circle = L.circle( center, { renderer: myRenderer } );
 	</tr>
 	</thead><tbody>
 	<tr id='svg-l-svg'>
-		<td><code><b>L.svg</b>(<nobr>&lt;<a href='#renderer-option'>Renderer options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code><b>L.svg</b>(<nobr>&lt;Renderer options&gt;</nobr> <i>options?</i>)</code></td>
 		<td>Creates a SVG renderer with the given options.</td>
 	</tr>
 </tbody></table>
@@ -14861,7 +14899,7 @@ var circle = L.circle( center, { renderer: myRenderer } );
 
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#renderer'>Renderer</a></label>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#blanketoverlay'>BlanketOverlay</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
 
@@ -14882,6 +14920,15 @@ var circle = L.circle( center, { renderer: myRenderer } );
 		<td><code>0.1</code></td>
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
+	</tr>
+	<tr id='svg-continuous'>
+		<td><code><b>continuous</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>When <code>false</code>, the blanket will update its position only when the
+map state settles (<em>after</em> a pan/zoom animation). When <code>true</code>,
+it will update when the map state changes (<em>during</em> pan/zoom
+animations)</td>
 	</tr>
 </tbody></table>
 
@@ -15410,9 +15457,6 @@ into &quot;M..L..L..&quot; instructions</td>
 
 </section><h2 id='canvas'>Canvas</h2><p>Allows vector layers to be displayed with <a href="https://developer.mozilla.org/docs/Web/API/Canvas_API"><code>&lt;canvas&gt;</code></a>.
 Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
-<p>Due to <a href="https://caniuse.com/canvas">technical limitations</a>, Canvas is not
-available in all web browsers, notably IE8, and overlapping geometries might
-not display properly in some edge cases.</p>
 
 <section>
 <h3 id='canvas-example'>Usage example</h3>
@@ -15455,7 +15499,7 @@ var circle = L.circle( center, { renderer: myRenderer } );
 	</tr>
 	</thead><tbody>
 	<tr id='canvas-l-canvas'>
-		<td><code><b>L.canvas</b>(<nobr>&lt;<a href='#renderer-option'>Renderer options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code><b>L.canvas</b>(<nobr>&lt;Renderer options&gt;</nobr> <i>options?</i>)</code></td>
 		<td>Creates a Canvas renderer with the given options.</td>
 	</tr>
 </tbody></table>
@@ -15491,7 +15535,7 @@ var circle = L.circle( center, { renderer: myRenderer } );
 
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#renderer'>Renderer</a></label>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#blanketoverlay'>BlanketOverlay</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
 
@@ -15512,6 +15556,15 @@ var circle = L.circle( center, { renderer: myRenderer } );
 		<td><code>0.1</code></td>
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
+	</tr>
+	<tr id='canvas-continuous'>
+		<td><code><b>continuous</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>When <code>false</code>, the blanket will update its position only when the
+map state settles (<em>after</em> a pan/zoom animation). When <code>true</code>,
+it will update when the map state changes (<em>during</em> pan/zoom
+animations)</td>
 	</tr>
 </tbody></table>
 
@@ -18422,10 +18475,10 @@ Can use a custom <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></
 Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function.</td>
 	</tr>
 	<tr id='geojson-latlngstocoords'>
-		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>closed?</i>, <nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
+		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>close?</i>, <nobr>&lt;Number|false&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>Array</code></td>
 		<td>Reverse of <a href="#geojson-coordstolatlngs"><code>coordsToLatLngs</code></a>
-<code>closed</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.
+<code>close</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.
 Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function.</td>
 	</tr>
 	<tr id='geojson-asfeature'>
@@ -19247,8 +19300,8 @@ The verification can optionally be propagated, it will return <code>true</code> 
 </code></pre>
 <p>All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:</p>
 <pre><code>map.panTo([50, 30]);
-map.panTo({lng: 30, lat: 50});
 map.panTo({lat: 50, lng: 30});
+map.panTo({lat: 50, lon: 30});
 map.panTo(L.latLng(50, 30));
 </code></pre>
 <p>Note that <a href="#latlng"><code>LatLng</code></a> does not inherit from Leaflet's <a href="#class"><code>Class</code></a> object,
@@ -19284,7 +19337,8 @@ can't be added to it with the <code>include</code> function.</p>
 	</tr>
 	<tr id='latlng-l-latlng'>
 		<td><code><b>L.latLng</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>)</code></td>
-		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.</td>
+		<td>Expects an plain object of the form <code>{lat: Number, lng: Number}</code> or <code>{lat: Number, lng: Number, alt: Number}</code> instead.
+You can also use <code>lon</code> in place of <code>lng</code> in the object form.</td>
 	</tr>
 </tbody></table>
 
@@ -20455,6 +20509,13 @@ styled according to the options.</p>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='control-zoom-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
+<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
+	</tr>
 	<tr id='control-zoom-zoomintext'>
 		<td><code><b>zoomInText</b></code></td>
 		<td><code>String</code></td>
@@ -20483,35 +20544,6 @@ styled according to the options.</p>
 
 </section>
 
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='control-zoom-position'>
-		<td><code><b>position</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;topright&#x27;</code></td>
-		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
-<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
 
 </section><section>
 <h3 id=''>Methods</h3>
@@ -20611,6 +20643,13 @@ styled according to the options.</p>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='control-attribution-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;bottomright&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
+<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
+	</tr>
 	<tr id='control-attribution-prefix'>
 		<td><code><b>prefix</b></code></td>
 		<td><code>String|false</code></td>
@@ -20621,35 +20660,6 @@ styled according to the options.</p>
 
 </section>
 
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='control-attribution-position'>
-		<td><code><b>position</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;topright&#x27;</code></td>
-		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
-<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
 
 </section><section>
 <h3 id='control-attribution-method'>Methods</h3>
@@ -21045,6 +21055,13 @@ By default, it sorts layers alphabetically by their name.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='control-scale-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;bottomleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
+<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
+	</tr>
 	<tr id='control-scale-maxwidth'>
 		<td><code><b>maxWidth</b></code></td>
 		<td><code>Number</code></td>
@@ -21073,35 +21090,6 @@ By default, it sorts layers alphabetically by their name.</td>
 
 </section>
 
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='control-scale-position'>
-		<td><code><b>position</b></code></td>
-		<td><code>String</code></td>
-		<td><code>&#x27;topright&#x27;</code></td>
-		<td>The position of the control (one of the map corners). Possible values are <code>'topleft'</code>,
-<code>'topright'</code>, <code>'bottomleft'</code> or <code>'bottomright'</code></td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
 
 </section><section>
 <h3 id=''>Methods</h3>
@@ -21171,8 +21159,8 @@ By default, it sorts layers alphabetically by their name.</td>
 
 
 
-<pre><code class="language-js">if (L.Browser.ielt9) {
-  alert('Upgrade your browser, dude!');
+<pre><code class="language-js">if (L.Browser.chrome) {
+  alert('You are running Chrome!');
 }
 </code></pre>
 
@@ -21196,110 +21184,20 @@ By default, it sorts layers alphabetically by their name.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='browser-ie'>
-		<td><code><b>ie</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all Internet Explorer versions (not Edge).</td>
-	</tr>
-	<tr id='browser-ielt9'>
-		<td><code><b>ielt9</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for Internet Explorer versions less than 9.</td>
-	</tr>
-	<tr id='browser-edge'>
-		<td><code><b>edge</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Edge web browser.</td>
-	</tr>
-	<tr id='browser-webkit'>
-		<td><code><b>webkit</b></code></td>
-		<td><code>Boolean;</code></td>
-		<td><code>true</code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
-	</tr>
-	<tr id='browser-android'>
-		<td><code><b>android</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><strong>Deprecated.</strong> <code>true</code> for any browser running on an Android platform.</td>
-	</tr>
-	<tr id='browser-android23'>
-		<td><code><b>android23</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><strong>Deprecated.</strong> <code>true</code> for browsers running on Android 2 or Android 3.</td>
-	</tr>
-	<tr id='browser-androidstock'>
-		<td><code><b>androidStock</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><strong>Deprecated.</strong> <code>true</code> for the Android stock browser (i.e. not Chrome)</td>
-	</tr>
-	<tr id='browser-opera'>
-		<td><code><b>opera</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Opera browser</td>
-	</tr>
 	<tr id='browser-chrome'>
 		<td><code><b>chrome</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for the Chrome browser.</td>
-	</tr>
-	<tr id='browser-gecko'>
-		<td><code><b>gecko</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for gecko-based browsers like Firefox.</td>
 	</tr>
 	<tr id='browser-safari'>
 		<td><code><b>safari</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for the Safari browser.</td>
 	</tr>
-	<tr id='browser-opera12'>
-		<td><code><b>opera12</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Opera browser supporting CSS transforms (version 12 or later).</td>
-	</tr>
-	<tr id='browser-win'>
-		<td><code><b>win</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> when the browser is running in a Windows platform</td>
-	</tr>
-	<tr id='browser-ie3d'>
-		<td><code><b>ie3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all Internet Explorer versions supporting CSS transforms.</td>
-	</tr>
-	<tr id='browser-webkit3d'>
-		<td><code><b>webkit3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for webkit-based browsers supporting CSS transforms.</td>
-	</tr>
-	<tr id='browser-gecko3d'>
-		<td><code><b>gecko3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for gecko-based browsers supporting CSS transforms.</td>
-	</tr>
-	<tr id='browser-any3d'>
-		<td><code><b>any3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all browsers supporting CSS transforms.</td>
-	</tr>
 	<tr id='browser-mobile'>
 		<td><code><b>mobile</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for all browsers running in a mobile device.</td>
-	</tr>
-	<tr id='browser-mobilewebkit'>
-		<td><code><b>mobileWebkit</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all webkit-based browsers in a mobile device.</td>
-	</tr>
-	<tr id='browser-mobilewebkit3d'>
-		<td><code><b>mobileWebkit3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all webkit-based browsers in a mobile device supporting CSS transforms.</td>
-	</tr>
-	<tr id='browser-mspointer'>
-		<td><code><b>msPointer</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for browsers implementing the Microsoft touch events model (notably IE10).</td>
 	</tr>
 	<tr id='browser-pointer'>
 		<td><code><b>pointer</b></code></td>
@@ -21320,40 +21218,10 @@ touch events.</td>
 		<td><code>true</code> for all browsers supporting either <a href="#browser-touch">touch</a> or <a href="#browser-pointer">pointer</a> events.
 Note: pointer events will be preferred (if available), and processed for all <code>touch*</code> listeners.</td>
 	</tr>
-	<tr id='browser-mobileopera'>
-		<td><code><b>mobileOpera</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Opera browser in a mobile device.</td>
-	</tr>
-	<tr id='browser-mobilegecko'>
-		<td><code><b>mobileGecko</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for gecko-based browsers running in a mobile device.</td>
-	</tr>
 	<tr id='browser-retina'>
 		<td><code><b>retina</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for browsers on a high-resolution &quot;retina&quot; screen or on any screen when browser's display zoom is more than 100%.</td>
-	</tr>
-	<tr id='browser-passiveevents'>
-		<td><code><b>passiveEvents</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for browsers that support passive events.</td>
-	</tr>
-	<tr id='browser-canvas'>
-		<td><code><b>canvas</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> when the browser supports <a href="https://developer.mozilla.org/docs/Web/API/Canvas_API"><code>&lt;canvas&gt;</code></a>.</td>
-	</tr>
-	<tr id='browser-svg'>
-		<td><code><b>svg</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> when the browser supports <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.</td>
-	</tr>
-	<tr id='browser-vml'>
-		<td><code><b>vml</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> if the browser supports <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>.</td>
 	</tr>
 	<tr id='browser-mac'>
 		<td><code><b>mac</b></code></td>
@@ -21386,18 +21254,9 @@ Note: pointer events will be preferred (if available), and processed for all <co
 	<tr id='util-extend'>
 		<td><code><b>extend</b>(<nobr>&lt;Object&gt;</nobr> <i>dest</i>, <nobr>&lt;Object&gt;</nobr> <i>src?</i>)</code></td>
 		<td><code>Object</code></td>
-		<td>Merges the properties of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter. Has an <code>L.extend</code> shortcut.</td>
-	</tr>
-	<tr id='util-create'>
-		<td><code><b>create</b>(<nobr>&lt;Object&gt;</nobr> <i>proto</i>, <nobr>&lt;Object&gt;</nobr> <i>properties?</i>)</code></td>
-		<td><code>Object</code></td>
-		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a></td>
-	</tr>
-	<tr id='util-bind'>
-		<td><code><b>bind</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <i>…</i>)</code></td>
-		<td><code>Function</code></td>
-		<td>Returns a new function bound to the arguments passed, like <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">Function.prototype.bind</a>.
-Has a <code>L.bind()</code> shortcut.</td>
+		<td>Merges the properties (including properties inherited through the prototype chain)
+of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter.
+Has an <code>L.extend</code> shortcut.</td>
 	</tr>
 	<tr id='util-stamp'>
 		<td><code><b>stamp</b>(<nobr>&lt;Object&gt;</nobr> <i>obj</i>)</code></td>
@@ -21433,11 +21292,6 @@ Has an <code>L.throttle</code> shortcut.</td>
 The default <code>precision</code> value is 6 decimal places.
 <code>false</code> can be passed to skip any processing (can be useful to avoid round-off errors).</td>
 	</tr>
-	<tr id='util-trim'>
-		<td><code><b>trim</b>(<nobr>&lt;String&gt;</nobr> <i>str</i>)</code></td>
-		<td><code>String</code></td>
-		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim">String.prototype.trim</a></td>
-	</tr>
 	<tr id='util-splitwords'>
 		<td><code><b>splitWords</b>(<nobr>&lt;String&gt;</nobr> <i>str</i>)</code></td>
 		<td><code>String[]</code></td>
@@ -21463,30 +21317,6 @@ be uppercased (e.g. <code>'?A=foo&amp;B=bar'</code>)</td>
 and a data object like <code>{a: 'foo', b: 'bar'}</code>, returns evaluated string
 <code>('Hello foo, bar')</code>. You can also specify functions instead of strings for
 data values — they will be evaluated passing <code>data</code> as an argument.</td>
-	</tr>
-	<tr id='util-isarray'>
-		<td><code><b>isArray</b>(<i>obj</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray">Array.isArray</a></td>
-	</tr>
-	<tr id='util-indexof'>
-		<td><code><b>indexOf</b>(<nobr>&lt;Array&gt;</nobr> <i>array</i>, <nobr>&lt;Object&gt;</nobr> <i>el</i>)</code></td>
-		<td><code>Number</code></td>
-		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">Array.prototype.indexOf</a></td>
-	</tr>
-	<tr id='util-requestanimframe'>
-		<td><code><b>requestAnimFrame</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>immediate?</i>)</code></td>
-		<td><code>Number</code></td>
-		<td>Schedules <code>fn</code> to be executed when the browser repaints. <code>fn</code> is bound to
-<code>context</code> if given. When <code>immediate</code> is set, <code>fn</code> is called immediately if
-the browser doesn't have native support for
-<a href="https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame"><code>window.requestAnimationFrame</code></a>,
-otherwise it's delayed. Returns a request ID that can be used to cancel the request.</td>
-	</tr>
-	<tr id='util-cancelanimframe'>
-		<td><code><b>cancelAnimFrame</b>(<nobr>&lt;Number&gt;</nobr> <i>id</i>)</code></td>
-		<td><code>undefined</code></td>
-		<td>Cancels a previous <code>requestAnimFrame</code>. See also <a href="https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame">window.cancelAnimationFrame</a>.</td>
 	</tr>
 </tbody></table>
 
@@ -21810,6 +21640,11 @@ should propagate to (if not stopped).</td>
 		<td>Gets normalized mouse position from a DOM event relative to the
 <code>container</code> (border excluded) or to the whole page if not specified.</td>
 	</tr>
+	<tr id='domevent-getwheelpxfactor'>
+		<td><code><b>getWheelPxFactor</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Gets the wheel pixel factor based on the devicePixelRatio</td>
+	</tr>
 	<tr id='domevent-getwheeldelta'>
 		<td><code><b>getWheelDelta</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</code></td>
 		<td><code>Number</code></td>
@@ -21860,26 +21695,10 @@ in HTML and SVG classes in SVG.</p>
 		<td>Returns an element given its DOM id, or returns the element itself
 if it was passed directly.</td>
 	</tr>
-	<tr id='domutil-getstyle'>
-		<td><code><b>getStyle</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>styleAttrib</i>)</code></td>
-		<td><code>String</code></td>
-		<td>Returns the value for a certain style attribute on an element,
-including computed values or values set through CSS.</td>
-	</tr>
 	<tr id='domutil-create'>
 		<td><code><b>create</b>(<nobr>&lt;String&gt;</nobr> <i>tagName</i>, <nobr>&lt;String&gt;</nobr> <i>className?</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>container?</i>)</code></td>
 		<td><code>HTMLElement</code></td>
 		<td>Creates an HTML element with <code>tagName</code>, sets its class to <code>className</code>, and optionally appends it to <code>container</code> element.</td>
-	</tr>
-	<tr id='domutil-remove'>
-		<td><code><b>remove</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
-		<td><code></code></td>
-		<td>Removes <code>el</code> from its parent element</td>
-	</tr>
-	<tr id='domutil-empty'>
-		<td><code><b>empty</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
-		<td><code></code></td>
-		<td>Removes all of <code>el</code>'s children elements from <code>el</code></td>
 	</tr>
 	<tr id='domutil-tofront'>
 		<td><code><b>toFront</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
@@ -21890,44 +21709,6 @@ including computed values or values set through CSS.</td>
 		<td><code><b>toBack</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
 		<td><code></code></td>
 		<td>Makes <code>el</code> the first child of its parent, so it renders behind the other children.</td>
-	</tr>
-	<tr id='domutil-hasclass'>
-		<td><code><b>hasClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td>Returns <code>true</code> if the element's class attribute contains <code>name</code>.</td>
-	</tr>
-	<tr id='domutil-addclass'>
-		<td><code><b>addClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</code></td>
-		<td><code></code></td>
-		<td>Adds <code>name</code> to the element's class attribute.</td>
-	</tr>
-	<tr id='domutil-removeclass'>
-		<td><code><b>removeClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</code></td>
-		<td><code></code></td>
-		<td>Removes <code>name</code> from the element's class attribute.</td>
-	</tr>
-	<tr id='domutil-setclass'>
-		<td><code><b>setClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</code></td>
-		<td><code></code></td>
-		<td>Sets the element's class.</td>
-	</tr>
-	<tr id='domutil-getclass'>
-		<td><code><b>getClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
-		<td><code>String</code></td>
-		<td>Returns the element's class.</td>
-	</tr>
-	<tr id='domutil-setopacity'>
-		<td><code><b>setOpacity</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</code></td>
-		<td><code></code></td>
-		<td>Set the opacity of an element (including old IE support).
-<code>opacity</code> must be a number from <code>0</code> to <code>1</code>.</td>
-	</tr>
-	<tr id='domutil-testprop'>
-		<td><code><b>testProp</b>(<nobr>&lt;String[]&gt;</nobr> <i>props</i>)</code></td>
-		<td><code>String|false</code></td>
-		<td>Goes through the array of style names and returns the first name
-that is a valid style name for an element. If no such name is found,
-it returns false. Useful for vendor-prefixed styles like <code>transform</code>.</td>
 	</tr>
 	<tr id='domutil-settransform'>
 		<td><code><b>setTransform</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>offset</i>, <nobr>&lt;Number&gt;</nobr> <i>scale?</i>)</code></td>
@@ -21951,8 +21732,7 @@ using CSS translate or top/left positioning depending on the browser
 	<tr id='domutil-disabletextselection'>
 		<td><code><b>disableTextSelection</b>()</code></td>
 		<td><code></code></td>
-		<td>Prevents the user from generating <code>selectstart</code> DOM events, usually generated
-when the user drags the mouse through a page with text. Used internally
+		<td>Prevents the user from selecting text in the document. Used internally
 by Leaflet to override the behaviour of any click-and-drag interaction on
 the map. Affects drag interactions on the whole document.</td>
 	</tr>
@@ -21964,13 +21744,12 @@ the map. Affects drag interactions on the whole document.</td>
 	<tr id='domutil-disableimagedrag'>
 		<td><code><b>disableImageDrag</b>()</code></td>
 		<td><code></code></td>
-		<td>As <a href="#domutil-disabletextselection"><code>L.DomUtil.disableTextSelection</code></a>, but
-for <code>dragstart</code> DOM events, usually generated when the user drags an image.</td>
+		<td>Prevents the user from generating <code>dragstart</code> DOM events, usually generated when the user drags an image.</td>
 	</tr>
 	<tr id='domutil-enableimagedrag'>
 		<td><code><b>enableImageDrag</b>()</code></td>
 		<td><code></code></td>
-		<td>Cancels the effects of a previous <a href="#domutil-disabletextselection"><code>L.DomUtil.disableImageDrag</code></a>.</td>
+		<td>Cancels the effects of a previous <a href="#domutil-disableimagedrag"><code>L.DomUtil.disableImageDrag</code></a>.</td>
 	</tr>
 	<tr id='domutil-preventoutline'>
 		<td><code><b>preventOutline</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
@@ -21983,7 +21762,7 @@ drag interaction on them.</td>
 	<tr id='domutil-restoreoutline'>
 		<td><code><b>restoreOutline</b>()</code></td>
 		<td><code></code></td>
-		<td>Cancels the effects of a previous <a href=""><code>L.DomUtil.preventOutline</code></a>.</td>
+		<td>Cancels the effects of a previous <a href="#domutil-preventoutline"><code>L.DomUtil.preventOutline</code></a>.</td>
 	</tr>
 	<tr id='domutil-getsizedparentnode'>
 		<td><code><b>getSizedParentNode</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</code></td>
@@ -22002,42 +21781,7 @@ and <code>boundingClientRect</code> as the result of <a href="https://developer.
 </section>
 
 
-</section><section>
-<h3 id='domutil-property'>Properties</h3>
-
-<section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Property</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='domutil-transform'>
-		<td><code><b>TRANSFORM</b></code></td>
-		<td><code>String</code></td>
-		<td>Vendor-prefixed transform style name (e.g. <code>'webkitTransform'</code> for WebKit).</td>
-	</tr>
-	<tr id='domutil-transition'>
-		<td><code><b>TRANSITION</b></code></td>
-		<td><code>String</code></td>
-		<td>Vendor-prefixed transition style name.</td>
-	</tr>
-	<tr id='domutil-transition_end'>
-		<td><code><b>TRANSITION_END</b></code></td>
-		<td><code>String</code></td>
-		<td>Vendor-prefixed transitionend event name.</td>
-	</tr>
-</tbody></table>
-
-</section>
-
-
-</section><h2 id='posanimation'>PosAnimation</h2><p>Used internally for panning animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.</p>
+</section><h2 id='posanimation'>PosAnimation</h2><p>Used internally for panning animations and utilizing CSS Transitions for modern browsers.</p>
 
 <section>
 <h3 id='posanimation-example'>Usage example</h3>
@@ -24431,13 +24175,6 @@ geographical CRSs. If <code>undefined</code>, the longitude axis does not wrap a
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='crs-l-crs-earth'>
-		<td><code><b>L.CRS.Earth</b></code></td>
-		<td>Serves as the base for CRS that are global such that they cover the earth.
-Can only be used as the base for other CRS and cannot be used directly,
-since it does not have a <code>code</code>, <code>projection</code> or <code>transformation</code>. <code>distance()</code> returns
-meters.</td>
-	</tr>
 	<tr id='crs-l-crs-epsg3395'>
 		<td><code><b>L.CRS.EPSG3395</b></code></td>
 		<td>Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.</td>
@@ -24457,6 +24194,20 @@ with this CRS, ensure that there are two 256x256 pixel tiles covering the
 whole earth at zoom level zero, and that the tile coordinate origin is (-180,+90),
 or (-180,-90) for <a href="#tilelayer"><code>TileLayer</code></a>s with <a href="#tilelayer-tms">the <code>tms</code> option</a> set.</p></td>
 	</tr>
+	<tr id='crs-l-crs-earth'>
+		<td><code><b>L.CRS.Earth</b></code></td>
+		<td>Serves as the base for CRS that are global such that they cover the earth.
+Can only be used as the base for other CRS and cannot be used directly,
+since it does not have a <code>code</code>, <code>projection</code> or <code>transformation</code>. <code>distance()</code> returns
+meters.</td>
+	</tr>
+	<tr id='crs-l-crs-simple'>
+		<td><code><b>L.CRS.Simple</b></code></td>
+		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly.
+May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code>
+axis should still be inverted (going from bottom to top). <code>distance()</code> returns
+simple euclidean distance.</td>
+	</tr>
 	<tr id='crs-l-crs-base'>
 		<td><code><b>L.CRS.Base</b></code></td>
 		<td>Object that defines coordinate reference systems for projecting
@@ -24470,17 +24221,570 @@ CRS not defined by default, take a look at the
 and can't be instantiated. Also, new classes can't inherit from them,
 and methods can't be added to them with the <code>include</code> function.</p></td>
 	</tr>
-	<tr id='crs-l-crs-simple'>
-		<td><code><b>L.CRS.Simple</b></code></td>
-		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly.
-May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code>
-axis should still be inverted (going from bottom to top). <code>distance()</code> returns
-simple euclidean distance.</td>
+</tbody></table>
+
+</section>
+
+
+</section><h2 id='blanketoverlay'>BlanketOverlay</h2><p>Represents an HTML element that covers (&quot;blankets&quot;) the entire surface
+of the map.</p>
+<p>Do not use this class directly. It's meant for <a href="#renderer"><code>Renderer</code></a>, and for plugins
+that rely on one single HTML element</p>
+
+<section>
+<h3 id='blanketoverlay-option'>Options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-padding'>
+		<td><code><b>padding</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>0.1</code></td>
+		<td>How much to extend the clip area around the map view (relative to its size)
+e.g. 0.1 would be 10% of map view in each direction</td>
+	</tr>
+	<tr id='blanketoverlay-continuous'>
+		<td><code><b>continuous</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>When <code>false</code>, the blanket will update its position only when the
+map state settles (<em>after</em> a pan/zoom animation). When <code>true</code>,
+it will update when the map state changes (<em>during</em> pan/zoom
+animations)</td>
 	</tr>
 </tbody></table>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code>&#x27;overlayPane&#x27;</code></td>
+		<td>By default the layer will be added to the map's <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='blanketoverlay-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code></td>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, e.g. &quot;© OpenStreetMap contributors&quot;. It describes the layer data and is often a legal obligation towards copyright holders and tile providers.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id=''>Events</h3>
+
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-add'>
+		<td><code><b>add</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='blanketoverlay-remove'>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-popupopen'>
+		<td><code><b>popupopen</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='blanketoverlay-popupclose'>
+		<td><code><b>popupclose</b></code></td>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-tooltipopen'>
+		<td><code><b>tooltipopen</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is opened.</td>
+	</tr>
+	<tr id='blanketoverlay-tooltipclose'>
+		<td><code><b>tooltipclose</b></code></td>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is closed.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id='blanketoverlay-method'>Methods</h3>
+
+<section class='collapsable'>
+
+<h4 id='blanketoverlay-subclass-interface'>Subclass interface</h4>
+
+<div class='section-comments'>Subclasses must define the following methods:</div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-_initcontainer'>
+		<td><code><b>_initContainer</b>()</code></td>
+		<td><code>undefined</code></td>
+		<td><p>Must initialize the HTML element to use as blanket, and store it as
+<code>this._container</code>. The base implementation creates a blank <code>&lt;div&gt;</code></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-_destroycontainer'>
+		<td><code><b>_destroyContainer</b>()</code></td>
+		<td><code>undefined</code></td>
+		<td><p>Must destroy the HTML element in <code>this._container</code> and free any other
+resources. The base implementation destroys the element and removes
+any event handlers attached to it.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-_resizecontainer'>
+		<td><code><b>_resizeContainer</b>()</code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><p>The base implementation resizes the container (based on the map's size
+and taking into account the padding), returning the new size in CSS pixels.</p>
+<p>Subclass implementations shall reset container parameters and data
+structures as needed.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-_onzoomend'>
+		<td><code><b>_onZoomEnd</b>(<nobr>&lt;<a href='#mouseevent'>MouseEvent</a>&gt;</nobr> <i>ev?</i>)</code></td>
+		<td><code>undefined</code></td>
+		<td><p>(Optional) Runs on the map's <code>zoomend</code> event.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-_onviewreset'>
+		<td><code><b>_onViewReset</b>(<nobr>&lt;<a href='#mouseevent'>MouseEvent</a>&gt;</nobr> <i>ev?</i>)</code></td>
+		<td><code>undefined</code></td>
+		<td><p>(Optional) Runs on the map's <code>viewreset</code> event.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-_onsettled'>
+		<td><code><b>_onSettled</b>()</code></td>
+		<td><code>undefined</code></td>
+		<td><p>Runs whenever the map state settles after changing (at the end of pan/zoom
+animations, etc). This should trigger the bulk of any rendering logic.</p>
+<p>If the <code>continuous</code> option is set to <code>true</code>, then this also runs on
+any map state change (including <em>during</em> pan/zoom animations).</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;Map|LayerGroup&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map or layer group.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-remove'>
+		<td><code><b>remove</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#layergroup'>LayerGroup</a>&gt;</nobr> <i>group</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given <a href="#layergroup"><code>LayerGroup</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-getattribution'>
+		<td><code><b>getAttribution</b>()</code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
+necessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound popup at the specified <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-closepopup'>
+		<td><code><b>closePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the popup bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-togglepopup'>
+		<td><code><b>togglePopup</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-ispopupopen'>
+		<td><code><b>isPopupOpen</b>()</code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the popup bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-getpopup'>
+		<td><code><b>getPopup</b>()</code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td><p>Returns the popup bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-bindtooltip'>
+		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
+necessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-unbindtooltip'>
+		<td><code><b>unbindTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-opentooltip'>
+		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound tooltip at the specified <code>latlng</code> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-closetooltip'>
+		<td><code><b>closeTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the tooltip bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-toggletooltip'>
+		<td><code><b>toggleTooltip</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-istooltipopen'>
+		<td><code><b>isTooltipOpen</b>()</code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-settooltipcontent'>
+		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the tooltip bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-gettooltip'>
+		<td><code><b>getTooltip</b>()</code></td>
+		<td><code><a href='#tooltip'>Tooltip</a></code></td>
+		<td><p>Returns the tooltip bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='blanketoverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>'click dblclick'</code>).</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a set of type/listener pairs.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-off'>
+		<td><code><b>off</b>()</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes all listeners to all events on the object. This includes implicitly attached events.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Fires an event of the specified type. You can optionally provide a data
+object — the first argument of the listener function will contain its
+properties. The event can optionally be propagated to event parents.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.
+The verification can optionally be propagated, it will return <code>true</code> if parents have the listener attached to it.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-once'>
+		<td><code><b>once</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-addeventparent'>
+		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-removeeventparent'>
+		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='blanketoverlay-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 </section><h2 id='renderer'>Renderer</h2><p>Base class for vector renderer implementations (<a href="#svg"><code>SVG</code></a>, <a href="#canvas"><code>Canvas</code></a>). Handles the
 DOM container of the renderer, its bounds, and its zoom animation.</p>
@@ -24489,11 +24793,19 @@ itself can be added or removed to the map. All paths use a renderer, which can
 be implicit (the map will decide the type of renderer and use it automatically)
 or explicit (using the <a href="#path-renderer"><code>renderer</code></a> option of the path).</p>
 <p>Do not use this class directly, use <a href="#svg"><code>SVG</code></a> and <a href="#canvas"><code>Canvas</code></a> instead.</p>
+<p>The <code>continuous</code> option inherited from <a href="#blanketoverlay"><code>BlanketOverlay</code></a> cannot be set to <code>true</code>
+(otherwise, renderers get out of place during a pinch-zoom operation).</p>
 
 <section>
-<h3 id='renderer-option'>Options</h3>
+<h3 id=''>Options</h3>
 
-<section >
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#blanketoverlay'>BlanketOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
 
 
 
@@ -24513,10 +24825,20 @@ or explicit (using the <a href="#path-renderer"><code>renderer</code></a> option
 		<td>How much to extend the clip area around the map view (relative to its size)
 e.g. 0.1 would be 10% of map view in each direction</td>
 	</tr>
+	<tr id='renderer-continuous'>
+		<td><code><b>continuous</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>When <code>false</code>, the blanket will update its position only when the
+map state settles (<em>after</em> a pan/zoom animation). When <code>true</code>,
+it will update when the map state changes (<em>during</em> pan/zoom
+animations)</td>
+	</tr>
 </tbody></table>
 
-</section>
-
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
@@ -26210,48 +26532,7 @@ event parent.</td>
 	</div>
 </div>
 
-</section><h2 id='global-switches'>Global Switches</h2><p>Global switches are created for rare cases and generally make
-Leaflet to not detect a particular browser feature even if it's
-there. You need to set the switch as a global variable to true
-before including Leaflet on the page, like this:</p>
-<pre><code class="language-html">&lt;script&gt;L_NO_TOUCH = true;&lt;/script&gt;
-&lt;script src=&quot;leaflet.js&quot;&gt;&lt;/script&gt;
-</code></pre>
-<table>
-<thead>
-<tr>
-<th>Switch</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>L_NO_TOUCH</code></td>
-<td>Forces Leaflet to not use touch events even if it detects them.</td>
-</tr>
-<tr>
-<td><code>L_DISABLE_3D</code></td>
-<td>Forces Leaflet to not use hardware-accelerated CSS 3D transforms for positioning (which may cause glitches in some rare environments) even if they're supported.</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id='noconflict'>noConflict</h2><p>This method restores the <code>L</code> global variable to the original value
-it had before Leaflet inclusion, and returns the real Leaflet
-namespace so you can put it elsewhere, like this:</p>
-<pre><code class="language-html">&lt;script src='libs/l.js'&gt;
-&lt;!-- L points to some other library --&gt;
-
-&lt;script src='leaflet.js'&gt;
-&lt;!-- you include Leaflet, it replaces the L variable to Leaflet namespace --&gt;
-
-&lt;script&gt;
-var Leaflet = L.noConflict();
-// now L points to that other library again, and you can use Leaflet.Map etc.
-&lt;/script&gt;
-</code></pre>
-
-<h2 id='version'>version</h2><p>A constant that represents the Leaflet version in use.</p>
+</section><h2 id='version'>version</h2><p>A constant that represents the Leaflet version in use.</p>
 <pre><code class="language-js">L.version; // contains &quot;1.0.0&quot; (or whatever version is currently in use)
 </code></pre>
 
