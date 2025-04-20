@@ -16,10 +16,10 @@ export const EPSG3857 = Util.extend({}, Earth, {
 	code: 'EPSG:3857',
 	projection: SphericalMercator,
 
-	transformation: (function () {
+	transformation: (() => {
 		const scale = 0.5 / (Math.PI * SphericalMercator.R);
 		return toTransformation(scale, 0.5, -scale, 0.5);
-	}())
+	})()
 });
 
 export const EPSG900913 = Util.extend({}, EPSG3857, {

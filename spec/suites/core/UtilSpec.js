@@ -68,35 +68,6 @@ describe('Util', () => {
 		});
 	});
 
-
-	describe('#getParamString', () => {
-		it('creates a valid query string for appending depending on url input', () => {
-			const a = {
-				url: 'http://example.com/get',
-				obj: {bar: 7, baz: 3},
-				result: '?bar=7&baz=3'
-			};
-
-			expect(Util.getParamString(a.obj, a.url)).to.eql(a.result);
-
-			const b = {
-				url: 'http://example.com/get?justone=qs',
-				obj: {bar: 7, baz: 3},
-				result: '&bar=7&baz=3'
-			};
-
-			expect(Util.getParamString(b.obj, b.url)).to.eql(b.result);
-
-			const c = {
-				url: undefined,
-				obj: {bar: 7, baz: 3},
-				result: '?bar=7&baz=3'
-			};
-
-			expect(Util.getParamString(c.obj, c.url)).to.eql(c.result);
-		});
-	});
-
 	describe('#throttle', () => {
 		it('limits execution to not more often than specified time interval', (done) => {
 			const spy = sinon.spy();

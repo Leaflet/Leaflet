@@ -175,7 +175,7 @@ describe('TileLayer', () => {
 	});
 
 	function kittenLayerFactory(options) {
-		return new TileLayer(placeKitten, options || {});
+		return new TileLayer(placeKitten, options ?? {});
 	}
 
 	function eachImg(layer, callback) {

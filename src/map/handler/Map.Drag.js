@@ -83,11 +83,11 @@ export const Drag = Handler.extend({
 	},
 
 	moved() {
-		return this._draggable && this._draggable._moved;
+		return this._draggable?._moved;
 	},
 
 	moving() {
-		return this._draggable && this._draggable._moving;
+		return this._draggable?._moving;
 	},
 
 	_onDragStart() {

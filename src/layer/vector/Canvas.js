@@ -143,7 +143,7 @@ export const Canvas = Renderer.extend({
 		};
 		if (this._drawLast) { this._drawLast.next = order; }
 		this._drawLast = order;
-		this._drawFirst = this._drawFirst || this._drawLast;
+		this._drawFirst ??= this._drawLast;
 	},
 
 	_addPath(layer) {
@@ -211,13 +211,13 @@ export const Canvas = Renderer.extend({
 		if (!this._map) { return; }
 
 		this._extendRedrawBounds(layer);
-		this._redrawRequest = this._redrawRequest || requestAnimationFrame(this._redraw.bind(this));
+		this._redrawRequest ??= requestAnimationFrame(this._redraw.bind(this));
 	},
 
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
-			const padding = (layer.options.weight || 0) + 1;
-			this._redrawBounds = this._redrawBounds || new Bounds();
+			const padding = (layer.options.weight ?? 0) + 1;
+			this._redrawBounds ??= new Bounds();
 			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 		}
@@ -331,13 +331,14 @@ export const Canvas = Renderer.extend({
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
-			ctx.fillStyle = options.fillColor || options.color;
+			ctx.fillStyle = options.fillColor ?? options.color;
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke && options.weight !== 0) {
 			if (ctx.setLineDash) {
-				ctx.setLineDash(layer.options && layer.options._dashArray || []);
+				ctx.lineDashOffset = Number(options.dashOffset ?? 0);
+				ctx.setLineDash(options._dashArray ?? []);
 			}
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;

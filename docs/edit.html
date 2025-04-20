@@ -21,7 +21,7 @@
             const hash = location.hash.substring(1);
 
             if (hash) {
-                hash.split(';').forEach(function (str) {
+                hash.split(';').forEach((str) => {
                     const arg = str.split(':');
                     config[arg[0]] = arg[1];
                 });
@@ -72,7 +72,7 @@
                 form.createInput('data', JSON.stringify({
                     title: config.title,
                     description: config.description,
-                    private: false, 
+                    private: false,
                     tags: ["leaflet", "map", "gis"],
                     editors: "001",
                     layout: "top",

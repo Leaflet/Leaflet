@@ -93,7 +93,7 @@ export const GridLayer = Layer.extend({
 		updateWhenIdle: Browser.mobile,
 
 		// @option updateWhenZooming: Boolean = true
-		// By default, a smooth zoom animation (during a [touch zoom](#map-touchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+		// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
 		updateWhenZooming: true,
 
 		// @option updateInterval: Number = 200
@@ -351,7 +351,7 @@ export const GridLayer = Layer.extend({
 	_initContainer() {
 		if (this._container) { return; }
 
-		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className || ''}`);
+		this._container = DomUtil.create('div', `leaflet-layer ${this.options.className ?? ''}`);
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -494,11 +494,11 @@ export const GridLayer = Layer.extend({
 		const key = this._tileCoordsToKey(coords2),
 		    tile = this._tiles[key];
 
-		if (tile && tile.active) {
+		if (tile?.active) {
 			tile.retain = true;
 			return true;
 
-		} else if (tile && tile.loaded) {
+		} else if (tile?.loaded) {
 			tile.retain = true;
 		}
 
@@ -520,11 +520,11 @@ export const GridLayer = Layer.extend({
 				const key = this._tileCoordsToKey(coords),
 				    tile = this._tiles[key];
 
-				if (tile && tile.active) {
+				if (tile?.active) {
 					tile.retain = true;
 					continue;
 
-				} else if (tile && tile.loaded) {
+				} else if (tile?.loaded) {
 					tile.retain = true;
 				}
 
