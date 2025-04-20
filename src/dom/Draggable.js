@@ -40,7 +40,7 @@ export const Draggable = Evented.extend({
 		Util.setOptions(this, options);
 
 		this._element = element;
-		this._dragStartTarget = dragStartTarget || element;
+		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
 	},
 
@@ -153,7 +153,7 @@ export const Draggable = Evented.extend({
 
 			document.body.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target || e.srcElement;
+			this._lastTarget = e.target ?? e.srcElement;
 			// IE and Edge do not give the <use> element, so fetch it
 			// if necessary
 			if (window.SVGElementInstance && this._lastTarget instanceof window.SVGElementInstance) {

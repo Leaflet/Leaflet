@@ -46,7 +46,7 @@ Transformation.prototype = {
 
 	// destructive transform (faster)
 	_transform(point, scale) {
-		scale = scale || 1;
+		scale ||= 1;
 		point.x = scale * (this._a * point.x + this._b);
 		point.y = scale * (this._c * point.y + this._d);
 		return point;
@@ -56,7 +56,7 @@ Transformation.prototype = {
 	// Returns the reverse transformation of the given point, optionally divided
 	// by the given scale. Only accepts actual `L.Point` instances, not arrays.
 	untransform(point, scale) {
-		scale = scale || 1;
+		scale ||= 1;
 		return new Point(
 		        (point.x / scale - this._b) / this._a,
 		        (point.y / scale - this._d) / this._c);

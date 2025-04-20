@@ -90,7 +90,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 	onAdd(map) {
 
-		this._crs = this.options.crs || map.options.crs;
+		this._crs = this.options.crs ?? map.options.crs;
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
 		const projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';

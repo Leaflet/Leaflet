@@ -71,7 +71,7 @@ describe('Map.PinchZoom', () => {
 
 		let pinchZoomEvent = false;
 		map.on('zoom', (e) => {
-			pinchZoomEvent = e.pinch || pinchZoomEvent;
+			pinchZoomEvent = e.pinch ?? pinchZoomEvent;
 		});
 		map.once('zoomend', () => {
 			expect(spy.callCount > 1).to.be.true;
