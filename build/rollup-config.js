@@ -1,6 +1,4 @@
-import json from '@rollup/plugin-json';
-import {readFileSync} from 'node:fs';
-import rollupGitVersion from 'rollup-plugin-git-version';
+import {readFileSync, writeFileSync} from 'node:fs';
 import {simpleGit} from 'simple-git';
 
 // TODO: Replace this with a regular import when ESLint adds support for import assertions.
@@ -9,6 +7,14 @@ const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url))
 const release = process.env.NODE_ENV === 'release';
 const version = await getVersion();
 const banner = createBanner(version);
+
+if (release) {
+	let file = import.meta.resolve('../src/Leaflet.js');
+	file = file.replace(/^file:\/\//, '');
+	let js = readFileSync(file, {encoding: 'utf-8'});
+	js = js.replace(/const version = 'latest'/, `const version = '${version}'`);
+	writeFileSync(file, js, {encoding: 'utf-8'});
+}
 
 /** @type {import('rollup').RollupOptions} */
 const config = {
@@ -22,9 +28,7 @@ const config = {
 			freeze: false
 		}
 	],
-	plugins: [
-		release ? json() : rollupGitVersion(),
-	]
+	plugins: []
 };
 
 export default config;
