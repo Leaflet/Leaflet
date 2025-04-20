@@ -72,8 +72,8 @@ export const TileLayerWMS = TileLayer.extend({
 		const wmsParams = extend({}, this.defaultWmsParams);
 
 		// all keys that are not TileLayer options go to WMS params
-		for (const i in options) {
-			if (!(i in this.options)) {
+		for (const i of Object.keys(options)) {
+			if (!Object.keys(this.options).includes(i)) {
 				wmsParams[i] = options[i];
 			}
 		}

@@ -30,9 +30,8 @@ export class Bounds {
 		if (!a) { return; }
 
 		const points = b ? [a, b] : a;
-
-		for (let i = 0, len = points.length; i < len; i++) {
-			this.extend(points[i]);
+		for (const point of points) {
+			this.extend(point);
 		}
 	}
 

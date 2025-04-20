@@ -28,10 +28,8 @@ export function on(obj, types, fn, context) {
 			addOne(obj, type, listener, fn);
 		}
 	} else {
-		types = Util.splitWords(types);
-
-		for (let i = 0, len = types.length; i < len; i++) {
-			addOne(obj, types[i], fn, context);
+		for (const type of Util.splitWords(types)) {
+			addOne(obj, type, fn, context);
 		}
 	}
 
@@ -73,8 +71,8 @@ export function off(obj, types, fn, context) {
 		if (arguments.length === 2) {
 			batchRemove(obj, type => types.includes(type));
 		} else {
-			for (let i = 0, len = types.length; i < len; i++) {
-				removeOne(obj, types[i], fn, context);
+			for (const type of types) {
+				removeOne(obj, type, fn, context);
 			}
 		}
 	}
@@ -83,12 +81,10 @@ export function off(obj, types, fn, context) {
 }
 
 function batchRemove(obj, filterFn) {
-	for (const id in obj[eventsKey]) {
-		if (Object.hasOwn(obj[eventsKey], id)) {
-			const type = id.split(/\d/)[0];
-			if (!filterFn || filterFn(type)) {
-				removeOne(obj, type, null, null, id);
-			}
+	for (const id of Object.keys(obj[eventsKey] ?? {})) {
+		const type = id.split(/\d/)[0];
+		if (!filterFn || filterFn(type)) {
+			removeOne(obj, type, null, null, id);
 		}
 	}
 }
@@ -253,7 +249,7 @@ export function getMousePosition(e, container) {
 	}
 
 	const scale = getScale(container),
-	    offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
+	offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
 
 	return new Point(
 		// offset.left/top values are in page scale (like clientX/Y),
@@ -281,13 +277,13 @@ export function getWheelPxFactor() {
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
 	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
-	       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
-	       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
-	       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
-	       e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 2 : // Legacy IE pixels
-	       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 20 : // Legacy Moz lines
-	       e.detail ? e.detail / -32765 * 60 : // Legacy Moz pages
-	       0;
+		(e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
+		(e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
+		(e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
+		e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 2 : // Legacy IE pixels
+		(e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 20 : // Legacy Moz lines
+		e.detail ? e.detail / -32765 * 60 : // Legacy Moz pages
+		0;
 }
 
 // check if element really left/entered the event target (for mouseenter/mouseleave)

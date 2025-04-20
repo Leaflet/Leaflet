@@ -65,11 +65,7 @@ export const VideoOverlay = ImageOverlay.extend({
 
 		if (wasElementSupplied) {
 			const sourceElements = vid.getElementsByTagName('source');
-			const sources = [];
-			for (let j = 0; j < sourceElements.length; j++) {
-				sources.push(sourceElements[j].src);
-			}
-
+			const sources = sourceElements.map(e => e.src);
 			this._url = (sourceElements.length > 0) ? sources : [vid.src];
 			return;
 		}
@@ -83,9 +79,9 @@ export const VideoOverlay = ImageOverlay.extend({
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
 		vid.playsInline = !!this.options.playsInline;
-		for (let i = 0; i < this._url.length; i++) {
+		for (const url of this._url) {
 			const source = DomUtil.create('source');
-			source.src = this._url[i];
+			source.src = url;
 			vid.appendChild(source);
 		}
 	}

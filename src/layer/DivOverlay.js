@@ -236,10 +236,9 @@ export const DivOverlay = Layer.extend({
 
 		if (source instanceof FeatureGroup) {
 			source = null;
-			const layers = this._source._layers;
-			for (const id in layers) {
-				if (layers[id]._map) {
-					source = layers[id];
+			for (const layer of Object.values(this._source._layers)) {
+				if (layer._map) {
+					source = layer;
 					break;
 				}
 			}
