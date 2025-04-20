@@ -282,8 +282,8 @@ export const Layers = Control.extend({
 		for (i = 0; i < this._layers.length; i++) {
 			obj = this._layers[i];
 			this._addItem(obj);
-			overlaysPresent = overlaysPresent || obj.overlay;
-			baseLayersPresent = baseLayersPresent || !obj.overlay;
+			overlaysPresent ||= obj.overlay;
+			baseLayersPresent ||= !obj.overlay;
 			baseLayersCount += !obj.overlay ? 1 : 0;
 		}
 

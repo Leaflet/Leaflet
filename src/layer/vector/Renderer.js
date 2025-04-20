@@ -29,7 +29,7 @@ export const Renderer = BlanketOverlay.extend({
 	initialize(options) {
 		Util.setOptions(this, {...options, continuous: false});
 		Util.stamp(this);
-		this._layers = this._layers || {};
+		this._layers ??= {};
 	},
 
 	onAdd(map) {

@@ -254,8 +254,8 @@ Map.include({
 			if (Object.hasOwn(this._zoomBoundLayers, i)) {
 				const options = this._zoomBoundLayers[i].options;
 
-				minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
-				maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
+				minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
+				maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
 			}
 		}
 

@@ -42,7 +42,7 @@ export const DivOverlay = Layer.extend({
 	},
 
 	initialize(options, source) {
-		if (options && (options instanceof LatLng || Array.isArray(options))) {
+		if (options instanceof LatLng || Array.isArray(options)) {
 			this._latlng = toLatLng(options);
 			Util.setOptions(this, source);
 		} else {
@@ -274,7 +274,7 @@ export const DivOverlay = Layer.extend({
 		if (!this._content) { return; }
 
 		const node = this._contentNode;
-		const content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+		const content = (typeof this._content === 'function') ? this._content(this._source ?? this) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;

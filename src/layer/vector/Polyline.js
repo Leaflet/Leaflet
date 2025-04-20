@@ -134,7 +134,7 @@ export const Polyline = Path.extend({
 	// the polyline in case of a multi-polyline, but can be overridden by passing
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng(latlng, latlngs) {
-		latlngs = latlngs || this._defaultShape();
+		latlngs ??= this._defaultShape();
 		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
 		this._bounds.extend(latlng);
@@ -237,7 +237,7 @@ export const Polyline = Path.extend({
 
 				if (!segment) { continue; }
 
-				parts[k] = parts[k] || [];
+				parts[k] ??= [];
 				parts[k].push(segment[0]);
 
 				// if segment goes out of screen, or it's the last one, it's the end of the line part
