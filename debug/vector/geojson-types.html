@@ -174,7 +174,8 @@
 				document.body.appendChild(div);
 				const map = new Map(div).setView([0.0, 0.0], 4);
 				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-				new GeoJSON(feature).addTo(map)
+				const geojson = new GeoJSON(feature).addTo(map)
+				map.fitBounds(geojson.getBounds());
 			}
 
 
