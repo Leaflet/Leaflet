@@ -13,19 +13,20 @@ import * as DomUtil from '../dom/DomUtil.js';
  * All other controls extend from this class.
  */
 
-export const Control = Class.extend({
+export class Control extends Class {
 	// @section
 	// @aka Control Options
-	options: {
+	static options = {
 		// @option position: String = 'topright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'topright'
-	},
+	};
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
-	},
+	}
 
 	/* @section
 	 * Classes extending L.Control will inherit the following methods:
@@ -35,7 +36,7 @@ export const Control = Class.extend({
 	 */
 	getPosition() {
 		return this.options.position;
-	},
+	}
 
 	// @method setPosition(position: string): this
 	// Sets the position of the control.
@@ -53,13 +54,13 @@ export const Control = Class.extend({
 		}
 
 		return this;
-	},
+	}
 
 	// @method getContainer: HTMLElement
 	// Returns the HTMLElement that contains the control.
 	getContainer() {
 		return this._container;
-	},
+	}
 
 	// @method addTo(map: Map): this
 	// Adds the control to the given map.
@@ -82,7 +83,7 @@ export const Control = Class.extend({
 		this._map.on('unload', this.remove, this);
 
 		return this;
-	},
+	}
 
 	// @method remove: this
 	// Removes the control from the map it is currently active on.
@@ -101,7 +102,7 @@ export const Control = Class.extend({
 		this._map = null;
 
 		return this;
-	},
+	}
 
 	_refocusOnMap(e) {
 		// We exclude keyboard-click event to keep the focus on the control for accessibility.
@@ -110,7 +111,7 @@ export const Control = Class.extend({
 			this._map.getContainer().focus();
 		}
 	}
-});
+}
 
 export const control = function (options) {
 	return new Control(options);

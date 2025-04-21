@@ -16,10 +16,11 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
-export const Scale = Control.extend({
+export class Scale extends Control {
 	// @section
 	// @aka Control.Scale options
-	options: {
+	static options = {
+		...Control.options,
 		// @option position: String = 'bottomleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -39,7 +40,12 @@ export const Scale = Control.extend({
 
 		// @option updateWhenIdle: Boolean = false
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-	},
+	};
+
+	constructor(options) {
+		super();
+		this.options = {...Scale.options, ...options};
+	}
 
 	onAdd(map) {
 		const className = 'leaflet-control-scale',
@@ -52,11 +58,11 @@ export const Scale = Control.extend({
 		map.whenReady(this._update, this);
 
 		return container;
-	},
+	}
 
 	onRemove(map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-	},
+	}
 
 	_addScales(options, className, container) {
 		if (options.metric) {
@@ -65,7 +71,7 @@ export const Scale = Control.extend({
 		if (options.imperial) {
 			this._iScale = DomUtil.create('div', className, container);
 		}
-	},
+	}
 
 	_update() {
 		const map = this._map,
@@ -76,7 +82,7 @@ export const Scale = Control.extend({
 			map.containerPointToLatLng([this.options.maxWidth, y]));
 
 		this._updateScales(maxMeters);
-	},
+	}
 
 	_updateScales(maxMeters) {
 		if (this.options.metric && maxMeters) {
@@ -85,14 +91,14 @@ export const Scale = Control.extend({
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
-	},
+	}
 
 	_updateMetric(maxMeters) {
 		const meters = this._getRoundNum(maxMeters),
 		    label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
-	},
+	}
 
 	_updateImperial(maxMeters) {
 		const maxFeet = maxMeters * 3.2808399;
@@ -107,12 +113,12 @@ export const Scale = Control.extend({
 			feet = this._getRoundNum(maxFeet);
 			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
 		}
-	},
+	}
 
 	_updateScale(scale, text, ratio) {
 		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
 		scale.innerHTML = text;
-	},
+	}
 
 	_getRoundNum(num) {
 		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
@@ -125,7 +131,7 @@ export const Scale = Control.extend({
 
 		return pow10 * d;
 	}
-});
+}
 
 
 // @factory L.control.scale(options?: Control.Scale options)

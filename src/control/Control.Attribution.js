@@ -1,7 +1,6 @@
 
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
-import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -16,10 +15,11 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-export const Attribution = Control.extend({
+export class Attribution extends Control {
 	// @section
 	// @aka Control.Attribution options
-	options: {
+	static options = {
+		...Control.options,
 		// @option position: String = 'bottomright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -28,13 +28,13 @@ export const Attribution = Control.extend({
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
 		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-	},
+	};
 
-	initialize(options) {
-		Util.setOptions(this, options);
-
+	constructor(options) {
+		super();
+		this.options = {...Attribution.options, ...options};
 		this._attributions = {};
-	},
+	}
 
 	onAdd(map) {
 		map.attributionControl = this;
@@ -53,11 +53,11 @@ export const Attribution = Control.extend({
 		map.on('layeradd', this._addAttribution, this);
 
 		return this._container;
-	},
+	}
 
 	onRemove(map) {
 		map.off('layeradd', this._addAttribution, this);
-	},
+	}
 
 	_addAttribution(ev) {
 		if (ev.layer.getAttribution) {
@@ -66,7 +66,7 @@ export const Attribution = Control.extend({
 				this.removeAttribution(ev.layer.getAttribution());
 			}, this);
 		}
-	},
+	}
 
 	// @method setPrefix(prefix: String|false): this
 	// The HTML text shown before the attributions. Pass `false` to disable.
@@ -74,7 +74,7 @@ export const Attribution = Control.extend({
 		this.options.prefix = prefix;
 		this._update();
 		return this;
-	},
+	}
 
 	// @method addAttribution(text: String): this
 	// Adds an attribution text (e.g. `'&copy; OpenStreetMap contributors'`).
@@ -89,7 +89,7 @@ export const Attribution = Control.extend({
 		this._update();
 
 		return this;
-	},
+	}
 
 	// @method removeAttribution(text: String): this
 	// Removes an attribution text.
@@ -102,7 +102,7 @@ export const Attribution = Control.extend({
 		}
 
 		return this;
-	},
+	}
 
 	_update() {
 		if (!this._map) { return; }
@@ -120,7 +120,7 @@ export const Attribution = Control.extend({
 
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
-});
+}
 
 // @namespace Map
 // @section Control options
