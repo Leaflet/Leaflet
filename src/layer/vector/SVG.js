@@ -49,13 +49,13 @@ export class SVG extends Renderer {
 	}
 
 	_destroyContainer() {
-		Renderer.prototype._destroyContainer.call(this);
+		super._destroyContainer();
 		delete this._rootGroup;
 		delete this._svgSize;
 	}
 
 	_resizeContainer() {
-		const size = Renderer.prototype._resizeContainer.call(this);
+		const size = super._resizeContainer();
 
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
