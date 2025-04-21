@@ -34,12 +34,12 @@ export class Renderer extends BlanketOverlay {
 	}
 
 	onAdd(map) {
-		BlanketOverlay.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 		this.on('update', this._updatePaths, this);
 	}
 
 	onRemove() {
-		BlanketOverlay.prototype.onRemove.call(this);
+		super.onRemove();
 		this.off('update', this._updatePaths, this);
 	}
 

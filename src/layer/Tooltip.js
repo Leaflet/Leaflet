@@ -83,7 +83,7 @@ export class Tooltip extends DivOverlay {
 	}
 
 	onAdd(map) {
-		DivOverlay.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
 
 		// @namespace Map
@@ -104,7 +104,7 @@ export class Tooltip extends DivOverlay {
 	}
 
 	onRemove(map) {
-		DivOverlay.prototype.onRemove.call(this, map);
+		super.onRemove(map);
 
 		// @namespace Map
 		// @section Tooltip events
@@ -124,7 +124,7 @@ export class Tooltip extends DivOverlay {
 	}
 
 	getEvents() {
-		const events = DivOverlay.prototype.getEvents.call(this);
+		const events = super.getEvents();
 
 		if (!this.options.permanent) {
 			events.preclick = this.close;
