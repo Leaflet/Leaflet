@@ -21,30 +21,28 @@ import {toPoint as point} from '../../geometry/Point.js';
  */
 
 export class DivIcon extends Icon {
-	static options = {
-		...Icon.options,
-		// @section
-		// @aka DivIcon options
-		iconSize: [12, 12], // also can be set through CSS
 
-		// iconAnchor: (Point),
-		// popupAnchor: (Point),
+	static {
+		this.setDefaultOptions({
+			...Icon.options,
+			// @section
+			// @aka DivIcon options
+			iconSize: [12, 12], // also can be set through CSS
 
-		// @option html: String|HTMLElement = ''
-		// Custom HTML code to put inside the div element, empty by default. Alternatively,
-		// an instance of `HTMLElement`.
-		html: false,
+			// iconAnchor: (Point),
+			// popupAnchor: (Point),
 
-		// @option bgPos: Point = [0, 0]
-		// Optional relative position of the background, in pixels
-		bgPos: null,
+			// @option html: String|HTMLElement = ''
+			// Custom HTML code to put inside the div element, empty by default. Alternatively,
+			// an instance of `HTMLElement`.
+			html: false,
 
-		className: 'leaflet-div-icon'
-	};
+			// @option bgPos: Point = [0, 0]
+			// Optional relative position of the background, in pixels
+			bgPos: null,
 
-	constructor(options) {
-		super();
-		this.options = {...DivIcon.options, ...options};
+			className: 'leaflet-div-icon'
+		});
 	}
 
 	createIcon(oldIcon) {

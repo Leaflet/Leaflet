@@ -25,14 +25,16 @@ const START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 
 export class Draggable extends Evented {
 
-	static options = {
-		// @section
-		// @aka Draggable options
-		// @option clickTolerance: Number = 3
-		// The max number of pixels a user can shift the mouse pointer during a click
-		// for it to be considered a valid click (as opposed to a mouse drag).
-		clickTolerance: 3
-	};
+	static {
+		this.setDefaultOptions({
+			// @section
+			// @aka Draggable options
+			// @option clickTolerance: Number = 3
+			// The max number of pixels a user can shift the mouse pointer during a click
+			// for it to be considered a valid click (as opposed to a mouse drag).
+			clickTolerance: 3
+		});
+	}
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).

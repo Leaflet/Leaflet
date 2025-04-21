@@ -3,6 +3,7 @@ import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import {Util} from '../core/index.js';
 
 const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 
@@ -16,23 +17,26 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
  */
 
 export class Attribution extends Control {
-	// @section
-	// @aka Control.Attribution options
-	static options = {
-		...Control.options,
-		// @option position: String = 'bottomright'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'bottomright',
 
-		// @option prefix: String|false = 'Leaflet'
-		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-	};
+	static {
+		// @section
+		// @aka Control.Attribution options
+		this.setDefaultOptions({
+			...Control.options,
+			// @option position: String = 'bottomright'
+			// The position of the control (one of the map corners). Possible values are `'topleft'`,
+			// `'topright'`, `'bottomleft'` or `'bottomright'`
+			position: 'bottomright',
+
+			// @option prefix: String|false = 'Leaflet'
+			// The HTML text shown before the attributions. Pass `false` to disable.
+			prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+		});
+	}
 
 	constructor(options) {
 		super();
-		this.options = {...Attribution.options, ...options};
+		Util.setOptions(this, options);
 		this._attributions = {};
 	}
 
