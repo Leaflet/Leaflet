@@ -29,7 +29,7 @@ export const Circle = CircleMarker.extend({
 	initialize(latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = Util.extend({}, legacyOptions, {radius: options});
+			options = {...legacyOptions, radius: options};
 		}
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
@@ -58,7 +58,7 @@ export const Circle = CircleMarker.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
 	getBounds() {
-		const half = [this._radius, this._radiusY || this._radius];
+		const half = [this._radius, this._radiusY ?? this._radius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),

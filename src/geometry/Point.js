@@ -33,119 +33,115 @@ import {formatNum} from '../core/Util.js';
 // @alternative
 // @constructor Point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-export function Point(x, y, round) {
+export class Point {
+	constructor(x, y, round) {
 
-	const valid = Point.validate(x, y);
-	if (!valid) {
-		throw new Error(`Invalid Point object: (${x}, ${y})`);
+		const valid = Point.validate(x, y);
+		if (!valid) {
+			throw new Error(`Invalid Point object: (${x}, ${y})`);
+		}
+
+		let _x, _y;
+		if (x instanceof Point) {
+			_x = x.x;
+			_y = x.y;
+			// return x; // TODO: return value in constructor
+		} else if (Array.isArray(x)) {
+			_x = x[0];
+			_y = x[1];
+		} else if (typeof x === 'object' && 'x' in x && 'y' in x) {
+			_x = x.x;
+			_y = x.y;
+		} else {
+			_x = x;
+			_y = y;
+		}
+
+		// @property x: Number; The `x` coordinate of the point
+		this.x = (round ? Math.round(_x) : _x);
+		// @property y: Number; The `y` coordinate of the point
+		this.y = (round ? Math.round(_y) : _y);
 	}
 
-	let _x, _y;
-	if (x instanceof Point) {
-		return x;
-	} else if (Array.isArray(x)) {
-		_x = x[0];
-		_y = x[1];
-	} else if (typeof x === 'object' && 'x' in x && 'y' in x) {
-		_x = x.x;
-		_y = x.y;
-	} else {
-		_x = x;
-		_y = y;
+	// @section
+	// There are several static functions which can be called without instantiating Point:
+
+	// @function validate(x: Number, y: Number): Boolean
+	// Returns `true` if the Point object can be properly initialized.
+
+	// @alternative
+	// @function validate(coords: Number[]): Boolean
+	// Expects an array of the form `[x, y]`. Returns `true` if the Point object can be properly initialized.
+
+	// @alternative
+	// @function validate(coords: Object): Boolean
+	// Returns `true` if the Point object can be properly initialized.
+	static validate(x, y) {
+		if (x instanceof Point || Array.isArray(x)) {
+			return true;
+		} else if (x && typeof x === 'object' && 'x' in x && 'y' in x) {
+			return true;
+		} else if ((x || x === 0) && (y || y === 0)) {
+			return true;
+		}
+		return false;
 	}
-
-	// @property x: Number; The `x` coordinate of the point
-	this.x = (round ? Math.round(_x) : _x);
-	// @property y: Number; The `y` coordinate of the point
-	this.y = (round ? Math.round(_y) : _y);
-}
-
-const trunc = Math.trunc || function (v) {
-	return v > 0 ? Math.floor(v) : Math.ceil(v);
-};
-
-
-// @section
-// There are several static functions which can be called without instantiating Point:
-
-// @function validate(x: Number, y: Number): Boolean
-// Returns `true` if the Point object can be properly initialized.
-
-// @alternative
-// @function validate(coords: Number[]): Boolean
-// Expects an array of the form `[x, y]`. Returns `true` if the Point object can be properly initialized.
-
-// @alternative
-// @function validate(coords: Object): Boolean
-// Returns `true` if the Point object can be properly initialized.
-Point.validate = function (x, y) {
-	if (x instanceof Point || Array.isArray(x)) {
-		return true;
-	} else if (x && typeof x === 'object' && 'x' in x && 'y' in x) {
-		return true;
-	} else if ((x || x === 0) && (y || y === 0)) {
-		return true;
-	}
-	return false;
-};
-
-Point.prototype = {
 
 	// @method clone(): Point
 	// Returns a copy of the current point.
 	clone() {
 		return new Point(this.x, this.y);
-	},
+	}
 
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
 	add(point) {
 		// non-destructive, returns a new point
 		return this.clone()._add(new Point(point));
-	},
+	}
 
 	_add(point) {
 		// destructive, used directly for performance in situations where it's safe to modify existing point
 		this.x += point.x;
 		this.y += point.y;
 		return this;
-	},
+	}
 
 	// @method subtract(otherPoint: Point): Point
 	// Returns the result of subtraction of the given point from the current.
 	subtract(point) {
 		return this.clone()._subtract(new Point(point));
-	},
+	}
 
 	_subtract(point) {
 		this.x -= point.x;
 		this.y -= point.y;
 		return this;
-	},
+	}
 
 	// @method divideBy(num: Number): Point
 	// Returns the result of division of the current point by the given number.
 	divideBy(num) {
 		return this.clone()._divideBy(num);
-	},
+	}
 
 	_divideBy(num) {
 		this.x /= num;
 		this.y /= num;
 		return this;
-	},
+	}
 
 	// @method multiplyBy(num: Number): Point
 	// Returns the result of multiplication of the current point by the given number.
 	multiplyBy(num) {
 		return this.clone()._multiplyBy(num);
-	},
+	}
 
 	_multiplyBy(num) {
 		this.x *= num;
 		this.y *= num;
 		return this;
-	},
+	}
 
 	// @method scaleBy(scale: Point): Point
 	// Multiply each coordinate of the current point by each coordinate of
@@ -154,62 +150,60 @@ Point.prototype = {
 	// defined by `scale`.
 	scaleBy(point) {
 		return new Point(this.x * point.x, this.y * point.y);
-	},
+	}
 
 	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
 	unscaleBy(point) {
 		return new Point(this.x / point.x, this.y / point.y);
-	},
+	}
 
-	// @method round(): Point
 	// Returns a copy of the current point with rounded coordinates.
 	round() {
 		return this.clone()._round();
-	},
+	}
 
 	_round() {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
 		return this;
-	},
+	}
 
 	// @method floor(): Point
 	// Returns a copy of the current point with floored coordinates (rounded down).
 	floor() {
 		return this.clone()._floor();
-	},
+	}
 
 	_floor() {
 		this.x = Math.floor(this.x);
 		this.y = Math.floor(this.y);
 		return this;
-	},
+	}
 
 	// @method ceil(): Point
 	// Returns a copy of the current point with ceiled coordinates (rounded up).
 	ceil() {
 		return this.clone()._ceil();
-	},
+	}
 
 	_ceil() {
 		this.x = Math.ceil(this.x);
 		this.y = Math.ceil(this.y);
 		return this;
-	},
+	}
 
-	// @method trunc(): Point
 	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
 	trunc() {
 		return this.clone()._trunc();
-	},
+	}
 
 	_trunc() {
-		this.x = trunc(this.x);
-		this.y = trunc(this.y);
+		this.x = Math.trunc(this.x);
+		this.y = Math.trunc(this.y);
 		return this;
-	},
+	}
 
 	// @method distanceTo(otherPoint: Point): Number
 	// Returns the cartesian distance between the current and the given points.
@@ -217,10 +211,10 @@ Point.prototype = {
 		point = new Point(point);
 
 		const x = point.x - this.x,
-		    y = point.y - this.y;
+		y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);
-	},
+	}
 
 	// @method equals(otherPoint: Point): Boolean
 	// Returns `true` if the given point has the same coordinates.
@@ -229,7 +223,7 @@ Point.prototype = {
 
 		return point.x === this.x &&
 		       point.y === this.y;
-	},
+	}
 
 	// @method contains(otherPoint: Point): Boolean
 	// Returns `true` if both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).
@@ -238,11 +232,11 @@ Point.prototype = {
 
 		return Math.abs(point.x) <= Math.abs(this.x) &&
 		       Math.abs(point.y) <= Math.abs(this.y);
-	},
+	}
 
 	// @method toString(): String
 	// Returns a string representation of the point for debugging purposes.
 	toString() {
 		return `Point(${formatNum(this.x)}, ${formatNum(this.y)})`;
 	}
-};
+}

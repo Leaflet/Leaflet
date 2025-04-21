@@ -60,7 +60,7 @@ export const CRS = {
 	// pixel coordinates for a particular zoom. For example, it returns
 	// `256 * 2^zoom` for Mercator-based CRS.
 	scale(zoom) {
-		return 256 * Math.pow(2, zoom);
+		return 256 * 2 ** zoom;
 	},
 
 	// @method zoom(scale: Number): Number

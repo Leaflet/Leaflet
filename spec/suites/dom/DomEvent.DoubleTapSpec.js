@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Control, DomEvent, DomUtil, Map, Util} from 'leaflet';
+import {Control, DomEvent, DomUtil, Map} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -84,13 +84,14 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		UIEventSimulator.fire('click', container, click);
 
 		const event = spy.lastCall.args[0];
-		const expectedProps = Util.extend(click, {
+		const expectedProps = {
+			...click,
 			type: 'dblclick',
 			// bubbles: true,    // not important, as we do not actually dispatch the event
 			// cancelable: true, //
 			detail: 2,
 			target: container
-		});
+		};
 		for (const [prop, expectedValue] of Object.entries(expectedProps)) {
 			expect(event[prop]).to.equal(expectedValue);
 		}

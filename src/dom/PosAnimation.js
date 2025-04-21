@@ -43,8 +43,8 @@ export const PosAnimation = Evented.extend({
 
 		this._el = el;
 		this._inProgress = true;
-		this._duration = duration || 0.25;
-		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
+		this._duration = duration ?? 0.25;
+		this._easeOutPower = 1 / Math.max(easeLinearity ?? 0.5, 0.2);
 
 		this._startPos = DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
@@ -106,6 +106,6 @@ export const PosAnimation = Evented.extend({
 	},
 
 	_easeOut(t) {
-		return 1 - Math.pow(1 - t, this._easeOutPower);
+		return 1 - (1 - t) ** this._easeOutPower;
 	}
 });

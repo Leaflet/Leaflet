@@ -80,11 +80,8 @@ export const FeatureGroup = LayerGroup.extend({
 	getBounds() {
 		const bounds = new LatLngBounds();
 
-		for (const id in this._layers) {
-			if (Object.hasOwn(this._layers, id)) {
-				const layer = this._layers[id];
-				bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
-			}
+		for (const layer of Object.values(this._layers)) {
+			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		}
 		return bounds;
 	}

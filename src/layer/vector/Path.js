@@ -43,7 +43,7 @@ export const Path = Layer.extend({
 		dashArray: null,
 
 		// @option dashOffset: String = null
-		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset). Doesn't work on `Canvas`-powered layers in [some old browsers](https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility).
+		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset).
 		dashOffset: null,
 
 		// @option fill: Boolean = depends

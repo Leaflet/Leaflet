@@ -218,7 +218,7 @@ describe('CRS.Simple', () => {
 		});
 
 		it('wraps coords if configured', () => {
-			const crs = Util.extend({}, CRS.Simple, {
+			const crs = Object.assign({}, CRS.Simple, {
 				wrapLng: [-200, 200],
 				wrapLat: [-200, 200]
 			});
@@ -242,9 +242,9 @@ describe('CRS', () => {
 });
 
 describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = Util.extend({}, CRS, {
+	const crs = Object.assign({}, CRS, {
 		scale(zoom) {
-			return 256 * Math.pow(1.5, zoom);
+			return 256 * 1.5 ** zoom;
 		},
 		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);

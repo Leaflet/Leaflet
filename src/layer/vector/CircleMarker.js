@@ -63,7 +63,7 @@ export const CircleMarker = Path.extend({
 	},
 
 	setStyle(options) {
-		const radius = options && options.radius || this._radius;
+		const radius = options?.radius ?? this._radius;
 		Path.prototype.setStyle.call(this, options);
 		this.setRadius(radius);
 		return this;
@@ -76,7 +76,7 @@ export const CircleMarker = Path.extend({
 
 	_updateBounds() {
 		const r = this._radius,
-		    r2 = this._radiusY || r,
+		    r2 = this._radiusY ?? r,
 		    w = this._clickTolerance(),
 		    p = [r + w, r2 + w];
 		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));

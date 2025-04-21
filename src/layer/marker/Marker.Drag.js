@@ -58,7 +58,7 @@ export const MarkerDrag = Handler.extend({
 	},
 
 	moved() {
-		return this._draggable && this._draggable._moved;
+		return this._draggable?._moved;
 	},
 
 	_adjustPan(e) {

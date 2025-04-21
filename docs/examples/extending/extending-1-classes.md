@@ -55,7 +55,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
         myDemoProperty: 42,   
     
         // A method 
-        myDemoMethod: function() { return this.myDemoProperty; }
+        myDemoMethod() { return this.myDemoProperty; }
         
     });
 
@@ -80,7 +80,7 @@ If a class is already defined, existing properties/methods can be redefined, or 
         _myPrivateProperty: 78,
         
         // Redefining a method
-        myDemoMethod: function() { return this._myPrivateProperty; }
+        myDemoMethod() { return this._myPrivateProperty; }
     
     });
 
@@ -107,7 +107,7 @@ If your class has some specific `options`, it's a good idea to initialize them w
             height: 1
         },
     
-        initialize: function(name, options) {
+        initialize(name, options) {
             this.name = name;
             Util.setOptions(this, options);
         }
@@ -146,7 +146,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
 `addInitHook` has an alternate syntax, which uses method names and can fill method arguments in:
 
     MyCubeClass.include({
-        _calculateVolume: function(arg1, arg2) {
+        _calculateVolume(arg1, arg2) {
             this._volume = this.options.width * this.options.length * this.options.depth;
         }
     });
@@ -160,12 +160,12 @@ Calling a method of a parent class is achieved by reaching into the prototype of
 
     const FeatureGroup = LayerGroup.extend({
     
-        addLayer: function (layer) {
+        addLayer(layer) {
             …
             LayerGroup.prototype.addLayer.call(this, layer);
         },
         
-        removeLayer: function (layer) {
+        removeLayer(layer) {
             …
             LayerGroup.prototype.removeLayer.call(this, layer);
         },

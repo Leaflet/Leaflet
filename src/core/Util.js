@@ -4,21 +4,6 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-// @function extend(dest: Object, src?: Object): Object
-// Merges the properties (including properties inherited through the prototype chain)
-// of the `src` object (or multiple objects) into `dest` object and returns the latter.
-export function extend(dest, ...args) {
-	let j, len, src;
-
-	for (j = 0, len = args.length; j < len; j++) {
-		src = args[j];
-		for (const i in src) {
-			dest[i] = src[i];
-		}
-	}
-	return dest;
-}
-
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
 export let lastId = 0;
@@ -87,7 +72,7 @@ export function falseFn() { return false; }
 // `false` can be passed to skip any processing (can be useful to avoid round-off errors).
 export function formatNum(num, precision) {
 	if (precision === false) { return num; }
-	const pow = Math.pow(10, precision === undefined ? 6 : precision);
+	const pow = 10 ** (precision === undefined ? 6 : precision);
 	return Math.round(num * pow) / pow;
 }
 
@@ -109,21 +94,6 @@ export function setOptions(obj, options) {
 		}
 	}
 	return obj.options;
-}
-
-// @function getParamString(obj: Object, existingUrl?: String, uppercase?: Boolean): String
-// Converts an object into a parameter URL string, e.g. `{a: "foo", b: "bar"}`
-// translates to `'?a=foo&b=bar'`. If `existingUrl` is set, the parameters will
-// be appended at the end. If `uppercase` is `true`, the parameter names will
-// be uppercased (e.g. `'?A=foo&B=bar'`)
-export function getParamString(obj, existingUrl, uppercase) {
-	const params = [];
-	for (const i in obj) {
-		if (Object.hasOwn(obj, i)) {
-			params.push(`${encodeURIComponent(uppercase ? i.toUpperCase() : i)}=${encodeURIComponent(obj[i])}`);
-		}
-	}
-	return ((!existingUrl || !existingUrl.includes('?')) ? '?' : '&') + params.join('&');
 }
 
 const templateRe = /\{ *([\w_ -]+) *\}/g;

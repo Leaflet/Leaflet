@@ -1,7 +1,6 @@
 import {Earth} from './CRS.Earth.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
 import {Transformation} from '../../geometry/Transformation.js';
-import * as Util from '../../core/Util.js';
 
 /*
  * @namespace CRS
@@ -16,8 +15,9 @@ import * as Util from '../../core/Util.js';
  * or (-180,-90) for `TileLayer`s with [the `tms` option](#tilelayer-tms) set.
  */
 
-export const EPSG4326 = Util.extend({}, Earth, {
+export const EPSG4326 = {
+	...Earth,
 	code: 'EPSG:4326',
 	projection: LonLat,
 	transformation: new Transformation(1 / 180, 1, -1 / 180, 0.5)
-});
+};

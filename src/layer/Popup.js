@@ -191,7 +191,7 @@ export const Popup = DivOverlay.extend({
 	getEvents() {
 		const events = DivOverlay.prototype.getEvents.call(this);
 
-		if (this.options.closeOnClick !== undefined ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
+		if (this.options.closeOnClick ?? this._map.options.closePopupOnClick) {
 			events.preclick = this.close;
 		}
 
@@ -301,8 +301,8 @@ export const Popup = DivOverlay.extend({
 
 		const containerPos = map.layerPointToContainerPoint(layerPos),
 		      padding = new Point(this.options.autoPanPadding),
-		      paddingTL = new Point(this.options.autoPanPaddingTopLeft || padding),
-		      paddingBR = new Point(this.options.autoPanPaddingBottomRight || padding),
+		      paddingTL = new Point(this.options.autoPanPaddingTopLeft ?? padding),
+		      paddingBR = new Point(this.options.autoPanPaddingBottomRight ?? padding),
 		      size = map.getSize();
 		let dx = 0,
 		    dy = 0;
@@ -338,7 +338,7 @@ export const Popup = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the popup on the source layer?
-		return new Point(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
+		return new Point(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
 });
@@ -494,7 +494,7 @@ Layer.include({
 		// prevent map click
 		DomEvent.stop(e);
 
-		const target = e.layer || e.target;
+		const target = e.layer ?? e.target;
 		if (this._popup._source === target && !(target instanceof Path)) {
 			// treat it like a marker and figure out
 			// if we should toggle it open/closed

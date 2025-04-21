@@ -217,7 +217,7 @@ export const Tooltip = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the tooltip on the source layer?
-		return new Point(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });
@@ -438,7 +438,7 @@ Layer.include({
 			return;
 		}
 
-		this._tooltip._source = e.layer || e.target;
+		this._tooltip._source = e.layer ?? e.target;
 
 		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
 	},

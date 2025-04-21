@@ -73,7 +73,7 @@ Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assu
 An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
 
 	GridLayer.DebugCoords = GridLayer.extend({
-		createTile: function (coords) {
+		createTile(coords) {
 			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
@@ -86,14 +86,13 @@ An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`.
 
 If the element has to do some asynchronous initialization, then use the second function parameter `done` and call it back when the tile is ready (for example, when an image has been fully loaded) or when there is an error. In here, we'll just delay the tiles artificially:
 
-	createTile: function (coords, done) {
+	createTile(coords, done) {
 		const tile = document.createElement('div');
 		tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 		tile.style.outline = '1px solid red';
 
-		setTimeout(function () {
-			done(null, tile);	// Syntax is 'done(error, tile)'
-		}, 500 + Math.random() * 1500);
+        // Syntax is 'done(error, tile)'
+		setTimeout(() => done(null, tile), 500 + Math.random() * 1500);
 
 		return tile;
 	}
@@ -105,7 +104,7 @@ With these custom `GridLayer`s, a plugin can have full control of the HTML eleme
 A very basic `<canvas>` `GridLayer` looks like:
 
 	GridLayer.CanvasCircles = GridLayer.extend({
-		createTile: function (coords) {
+		createTile(coords) {
 			const tile = document.createElement('canvas');
 
 			const tileSize = this.getTileSize();
@@ -159,7 +158,7 @@ At their core, all `L.Layer`s are HTML elements inside a map pane, their positio
 In other words: the map calls the `onAdd()` method of the layer, then the layer creates its HTML element(s) (commonly named 'container' element) and adds them to the map pane. Conversely, when the layer is removed from the map, its `onRemove()` method is called. The layer must update its contents when added to the map, and reposition them when the map view is updated. A layer skeleton looks like:
 
 	const CustomLayer = Layer.extend({
-		onAdd: function(map) {
+		onAdd(map) {
 			const pane = map.getPane(this.options.pane);
 			this._container = DomUtil.create(…);
 
@@ -174,12 +173,12 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 			map.on('zoomend viewreset', this._update, this);
 		},
 
-		onRemove: function(map) {
+		onRemove(map) {
 			this._container.remove();
 			map.off('zoomend viewreset', this._update, this);
 		},
 
-		_update: function() {
+		_update() {
 			// Recalculate position of container
 
 			DomUtil.setPosition(this._container, point);        
@@ -197,7 +196,7 @@ Some use cases don't need the whole `onAdd` code to be recreated, but instead th
 To give an example, we can have a subclass of `L.Polyline` that will always be red (ignoring the options), like:
 
 	Polyline.Red = Polyline.extend({
-		onAdd: function(map) {
+		onAdd(map) {
 			this.options.color = 'red';
 			Polyline.prototype.onAdd.call(this, map);
 		}

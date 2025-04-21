@@ -165,7 +165,7 @@ MyClass.FOO; // 'bar'
 If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
 
 ```js
-MyClass.addInitHook(function () {
+MyClass.addInitHook(() => {
     // ... do something in constructor additionally
     // e.g. add event listeners, set custom properties etc.
 });

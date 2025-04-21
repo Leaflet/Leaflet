@@ -231,7 +231,7 @@ export const Marker = Layer.extend({
 			}
 
 			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt || '';
+				icon.alt = options.alt ?? '';
 			}
 		}
 
