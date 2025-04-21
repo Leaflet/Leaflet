@@ -25,15 +25,15 @@ Map.mergeOptions({
 	tapTolerance: 15
 });
 
-export const TapHold = Handler.extend({
+export class TapHold extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
-	},
+	}
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 		clearTimeout(this._holdTimeout);
-	},
+	}
 
 	_onDown(e) {
 		clearTimeout(this._holdTimeout);
@@ -54,27 +54,27 @@ export const TapHold = Handler.extend({
 
 		DomEvent.on(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.on(document, 'touchmove', this._onMove, this);
-	},
+	}
 
-	_cancelClickPrevent: function _cancelClickPrevent() {
+	_cancelClickPrevent = function _cancelClickPrevent() {
 		DomEvent.off(document, 'touchend', DomEvent.preventDefault);
 		DomEvent.off(document, 'touchend touchcancel', _cancelClickPrevent);
-	},
+	};
 
 	_cancel() {
 		clearTimeout(this._holdTimeout);
 		DomEvent.off(document, 'touchend touchcancel contextmenu', this._cancel, this);
 		DomEvent.off(document, 'touchmove', this._onMove, this);
-	},
+	}
 
 	_onMove(e) {
 		const first = e.touches[0];
 		this._newPos = new Point(first.clientX, first.clientY);
-	},
+	}
 
 	_isTapValid() {
 		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
-	},
+	}
 
 	_simulateEvent(type, e) {
 		const simulatedEvent = new MouseEvent(type, {
@@ -94,7 +94,7 @@ export const TapHold = Handler.extend({
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
-});
+}
 
 // @section Handlers
 // @property tapHold: Handler
