@@ -23,26 +23,27 @@ import {Point} from '../geometry/Point.js';
 
 const START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 
-export const Draggable = Evented.extend({
+export class Draggable extends Evented {
 
-	options: {
+	static options = {
 		// @section
 		// @aka Draggable options
 		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
 		clickTolerance: 3
-	},
+	};
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, preventOutline, options) {
+		super();
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
-	},
+	}
 
 	// @method enable()
 	// Enables the dragging ability
@@ -52,7 +53,7 @@ export const Draggable = Evented.extend({
 		DomEvent.on(this._dragStartTarget, START, this._onDown, this);
 
 		this._enabled = true;
-	},
+	}
 
 	// @method disable()
 	// Disables the dragging ability
@@ -69,7 +70,7 @@ export const Draggable = Evented.extend({
 
 		this._enabled = false;
 		this._moved = false;
-	},
+	}
 
 	_onDown(e) {
 		// Ignore the event if disabled; this happens in IE11
@@ -116,7 +117,7 @@ export const Draggable = Evented.extend({
 		const mouseevent = e.type === 'mousedown';
 		DomEvent.on(document, mouseevent ? 'mousemove' : 'touchmove', this._onMove, this);
 		DomEvent.on(document, mouseevent ? 'mouseup' : 'touchend touchcancel', this._onUp, this);
-	},
+	}
 
 	_onMove(e) {
 		// Ignore the event if disabled; this happens in IE11
@@ -167,7 +168,7 @@ export const Draggable = Evented.extend({
 
 		this._lastEvent = e;
 		this._updatePosition();
-	},
+	}
 
 	_updatePosition() {
 		const e = {originalEvent: this._lastEvent};
@@ -181,14 +182,14 @@ export const Draggable = Evented.extend({
 		// @event drag: Event
 		// Fired continuously during dragging.
 		this.fire('drag', e);
-	},
+	}
 
 	_onUp() {
 		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (!this._enabled) { return; }
 		this.finishDrag();
-	},
+	}
 
 	finishDrag(noInertia) {
 		document.body.classList.remove('leaflet-dragging');
@@ -219,4 +220,4 @@ export const Draggable = Evented.extend({
 		}
 	}
 
-});
+}
