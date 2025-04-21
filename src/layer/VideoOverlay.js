@@ -31,6 +31,10 @@ export const VideoOverlay = ImageOverlay.extend({
 		// On some browsers autoplay will only work with `muted: true`
 		autoplay: true,
 
+		// @option loop: Boolean = false
+		// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+		controls: false,
+
 		// @option loop: Boolean = true
 		// Whether the video will loop back to the beginning when played.
 		loop: true,
@@ -76,6 +80,7 @@ export const VideoOverlay = ImageOverlay.extend({
 			vid.style['objectFit'] = 'fill';
 		}
 		vid.autoplay = !!this.options.autoplay;
+		vid.controls = !!this.options.controls;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
 		vid.playsInline = !!this.options.playsInline;
