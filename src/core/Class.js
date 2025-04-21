@@ -49,6 +49,10 @@ export class Class {
 		return NewClass;
 	}
 
+	static setDefaultOptions(options) {
+		this.prototype.options = {...this.prototype.options, ...options};
+	}
+
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
