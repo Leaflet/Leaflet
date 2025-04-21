@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - GeoJSON</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<script type="module">
+			import {GeoJSON, Map, TileLayer} from 'leaflet';
+
+			const features = [
+				{
+					"type": "Point",
+					"coordinates": [30.0, 10.0]
+				},
+				{
+					"type": "LineString",
+					"coordinates": [
+						[30.0, 10.0],
+						[10.0, 30.0],
+						[40.0, 40.0]
+					]
+				},
+				{
+					"type": "Polygon",
+					"coordinates": [
+						[
+							[30.0, 10.0],
+							[40.0, 40.0],
+							[20.0, 40.0],
+							[10.0, 20.0],
+							[30.0, 10.0]
+						]
+					]
+				},
+				{
+					"type": "Polygon",
+					"coordinates": [
+						[
+							[35.0, 10.0],
+							[45.0, 45.0],
+							[15.0, 40.0],
+							[10.0, 20.0],
+							[35.0, 10.0]
+						],
+						[
+							[20.0, 30.0],
+							[35.0, 35.0],
+							[30.0, 20.0],
+							[20.0, 30.0]
+						]
+					]
+				},
+				{
+					"type": "MultiPoint",
+					"coordinates": [
+						[10.0, 40.0],
+						[40.0, 30.0],
+						[20.0, 20.0],
+						[30.0, 10.0]
+					]
+				},
+				{
+					"type": "MultiLineString",
+					"coordinates": [
+						[
+							[10.0, 10.0],
+							[20.0, 20.0],
+							[10.0, 40.0]
+						],
+						[
+							[40.0, 40.0],
+							[30.0, 30.0],
+							[40.0, 20.0],
+							[30.0, 10.0]
+						]
+					]
+				},
+				{
+					"type": "MultiPolygon",
+					"coordinates": [
+						[
+							[
+								[30.0, 20.0],
+								[45.0, 40.0],
+								[10.0, 40.0],
+								[30.0, 20.0]
+							]
+						],
+						[
+							[
+								[15.0, 5.0],
+								[40.0, 10.0],
+								[10.0, 20.0],
+								[5.0, 10.0],
+								[15.0, 5.0]
+							]
+						]
+					]
+				},
+				{
+					"type": "MultiPolygon",
+					"coordinates": [
+						[
+							[
+								[40.0, 40.0],
+								[20.0, 45.0],
+								[45.0, 30.0],
+								[40.0, 40.0]
+							]
+						],
+						[
+							[
+								[20.0, 35.0],
+								[10.0, 30.0],
+								[10.0, 10.0],
+								[30.0, 5.0],
+								[45.0, 20.0],
+								[20.0, 35.0]
+							],
+							[
+								[30.0, 20.0],
+								[20.0, 15.0],
+								[20.0, 25.0],
+								[30.0, 20.0]
+							]
+						]
+					]
+				},
+				{
+					"type": "GeometryCollection",
+					"geometries": [
+						{
+							"type": "Point",
+							"coordinates": [40.0, 10.0]
+						},
+						{
+							"type": "LineString",
+							"coordinates": [
+								[10.0, 10.0],
+								[20.0, 20.0],
+								[10.0, 40.0]
+							]
+						},
+						{
+							"type": "Polygon",
+							"coordinates": [
+								[
+									[40.0, 40.0],
+									[20.0, 45.0],
+									[45.0, 30.0],
+									[40.0, 40.0]
+								]
+							]
+						}
+					]
+				}
+			]
+
+			for (const feature of features) {
+				document.body.appendChild(document.createTextNode(feature.type));
+				const div = document.createElement('div');
+				div.style.width = '800px';
+				div.style.height = '600px';
+				document.body.appendChild(div);
+				const map = new Map(div).setView([0.0, 0.0], 4);
+				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+				new GeoJSON(feature).addTo(map)
+			}
+
+
+		</script>
+	</body>
+</html>
