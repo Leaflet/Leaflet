@@ -1,5 +1,4 @@
 import {Class} from '../../core/Class.js';
-import {setOptions} from '../../core/Util.js';
 import {toPoint as point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
 
@@ -31,7 +30,7 @@ import Browser from '../../core/Browser.js';
  *
  */
 
-export const Icon = Class.extend({
+export class Icon extends Class {
 
 	/* @section
 	 * @aka Icon options
@@ -73,7 +72,7 @@ export const Icon = Class.extend({
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
-	options: {
+	static options = {
 		popupAnchor: [0, 0],
 		tooltipAnchor: [0, 0],
 
@@ -82,24 +81,25 @@ export const Icon = Class.extend({
 		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
 		crossOrigin: false
-	},
+	};
 
-	initialize(options) {
-		setOptions(this, options);
-	},
+	constructor(options) {
+		super();
+		this.options = {...Icon.options, ...options};
+	}
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
 	// Called internally when the icon has to be shown, returns a `<img>` HTML element
 	// styled according to the options.
 	createIcon(oldIcon) {
 		return this._createIcon('icon', oldIcon);
-	},
+	}
 
 	// @method createShadow(oldIcon?: HTMLElement): HTMLElement
 	// As `createIcon`, but for the shadow beneath it.
 	createShadow(oldIcon) {
 		return this._createIcon('shadow', oldIcon);
-	},
+	}
 
 	_createIcon(name, oldIcon) {
 		const src = this._getIconUrl(name);
@@ -119,7 +119,7 @@ export const Icon = Class.extend({
 		}
 
 		return img;
-	},
+	}
 
 	_setIconStyles(img, name) {
 		const options = this.options;
@@ -144,18 +144,18 @@ export const Icon = Class.extend({
 			img.style.width  = `${size.x}px`;
 			img.style.height = `${size.y}px`;
 		}
-	},
+	}
 
 	_createImg(src, el) {
 		el ??= document.createElement('img');
 		el.src = src;
 		return el;
-	},
+	}
 
 	_getIconUrl(name) {
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
-});
+}
 
 
 // @factory L.icon(options: Icon options)
