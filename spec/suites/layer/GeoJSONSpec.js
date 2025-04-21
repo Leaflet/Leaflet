@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, LayerGroup, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
+import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, Layer, LayerGroup, Map, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('GeoJSON', () => {
 	describe('addData', () => {
@@ -97,6 +98,30 @@ describe('GeoJSON', () => {
 			expect(layer.options.color).to.equal('chocolate');
 			expect(layer2.options.weight).to.equal(7);
 			expect(layer2.options.color).to.equal('chocolate');
+		});
+	});
+
+	describe('GeoJSON#addTo', () => {
+		let container, map;
+
+		beforeEach(() => {
+			container = createContainer();
+			map = new Map(container);
+			map.setView([0, 0], 1);
+		});
+
+		afterEach(() => {
+			removeMapContainer(map, container);
+		});
+
+		it('adds a GeoJSON Point to the map', () => {
+			new GeoJSON({
+				'type': 'Point',
+				'coordinates': [30.0, 10.0]
+			}).addTo(map);
+			expect(Object.values(map._layers).length).to.eql(2);
+			expect(Object.values(map._layers)[0]).to.be.instanceOf(Layer);
+			expect(Object.values(map._layers)[1]).to.be.instanceOf(Layer);
 		});
 	});
 });
