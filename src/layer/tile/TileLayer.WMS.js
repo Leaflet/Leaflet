@@ -22,14 +22,14 @@ import {toBounds} from '../../geometry/Bounds.js';
  * ```
  */
 
-export const TileLayerWMS = TileLayer.extend({
+export class TileLayerWMS extends TileLayer {
 
 	// @section
 	// @aka TileLayer.WMS options
 	// If any custom options not documented here are used, they will be sent to the
 	// WMS server as extra parameters in each request URL. This can be useful for
 	// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
-	defaultWmsParams: {
+	static defaultWmsParams = {
 		service: 'WMS',
 		request: 'GetMap',
 
@@ -52,22 +52,23 @@ export const TileLayerWMS = TileLayer.extend({
 		// @option version: String = '1.1.1'
 		// Version of the WMS service to use
 		version: '1.1.1'
-	},
+	};
 
-	options: {
-		// @option crs: CRS = null
-		// Coordinate Reference System to use for the WMS requests, defaults to
-		// map CRS. Don't change this if you're not sure what it means.
-		crs: null,
+	static {
+		this.setDefaultOptions({
+			// @option crs: CRS = null
+			// Coordinate Reference System to use for the WMS requests, defaults to
+			// map CRS. Don't change this if you're not sure what it means.
+			crs: null,
 
-		// @option uppercase: Boolean = false
-		// If `true`, WMS request parameter keys will be uppercase.
-		uppercase: false
-	},
+			// @option uppercase: Boolean = false
+			// If `true`, WMS request parameter keys will be uppercase.
+			uppercase: false
+		});
+	}
 
-	initialize(url, options) {
-
-		this._url = url;
+	constructor(url, options) {
+		super(url, options);
 
 		const wmsParams = {...this.defaultWmsParams};
 
@@ -86,7 +87,7 @@ export const TileLayerWMS = TileLayer.extend({
 		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
-	},
+	}
 
 	onAdd(map) {
 
@@ -97,7 +98,7 @@ export const TileLayerWMS = TileLayer.extend({
 		this.wmsParams[projectionKey] = this._crs.code;
 
 		TileLayer.prototype.onAdd.call(this, map);
-	},
+	}
 
 	getTileUrl(coords) {
 
@@ -114,7 +115,7 @@ export const TileLayerWMS = TileLayer.extend({
 			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);
 		}
 		return url.toString();
-	},
+	}
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
@@ -128,7 +129,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 		return this;
 	}
-});
+}
 
 
 // @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)

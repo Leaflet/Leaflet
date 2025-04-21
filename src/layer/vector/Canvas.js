@@ -31,26 +31,28 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
-export const Canvas = Renderer.extend({
+export class Canvas extends Renderer {
 
-	// @section
-	// @aka Canvas options
-	options: {
-		// @option tolerance: Number = 0
-		// How much to extend the click tolerance around a path/object on the map.
-		tolerance: 0
-	},
+	static {
+		// @section
+		// @aka Canvas options
+		this.setDefaultOptions({
+			// @option tolerance: Number = 0
+			// How much to extend the click tolerance around a path/object on the map.
+			tolerance: 0
+		});
+	}
 
 	getEvents() {
 		const events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
 		return events;
-	},
+	}
 
 	_onViewPreReset() {
 		// Set a flag so that a viewprereset+moveend+viewreset only updates&redraws once
 		this._postponeUpdatePaths = true;
-	},
+	}
 
 	onAdd(map) {
 		Renderer.prototype.onAdd.call(this, map);
@@ -58,13 +60,13 @@ export const Canvas = Renderer.extend({
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
-	},
+	}
 
 	onRemove() {
 		Renderer.prototype.onRemove.call(this);
 
 		clearTimeout(this._mouseHoverThrottleTimeout);
-	},
+	}
 
 	_initContainer() {
 		const container = this._container = document.createElement('canvas');
@@ -75,14 +77,14 @@ export const Canvas = Renderer.extend({
 		container['_leaflet_disable_events'] = true;
 
 		this._ctx = container.getContext('2d');
-	},
+	}
 
 	_destroyContainer() {
 		cancelAnimationFrame(this._redrawRequest);
 		this._redrawRequest = null;
 		delete this._ctx;
 		Renderer.prototype._destroyContainer.call(this);
-	},
+	}
 
 	_resizeContainer() {
 		const size = Renderer.prototype._resizeContainer.call(this);
@@ -91,7 +93,7 @@ export const Canvas = Renderer.extend({
 		// set canvas size (also clearing it); use double size on retina
 		this._container.width = m * size.x;
 		this._container.height = m * size.y;
-	},
+	}
 
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
@@ -101,7 +103,7 @@ export const Canvas = Renderer.extend({
 			layer._update();
 		}
 		this._redraw();
-	},
+	}
 
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
@@ -117,7 +119,7 @@ export const Canvas = Renderer.extend({
 
 		// Tell paths to redraw themselves
 		this.fire('update');
-	},
+	}
 
 	_reset() {
 		Renderer.prototype._reset.call(this);
@@ -126,7 +128,7 @@ export const Canvas = Renderer.extend({
 			this._postponeUpdatePaths = false;
 			this._updatePaths();
 		}
-	},
+	}
 
 	_initPath(layer) {
 		this._updateDashArray(layer);
@@ -140,11 +142,11 @@ export const Canvas = Renderer.extend({
 		if (this._drawLast) { this._drawLast.next = order; }
 		this._drawLast = order;
 		this._drawFirst ??= this._drawLast;
-	},
+	}
 
 	_addPath(layer) {
 		this._requestRedraw(layer);
-	},
+	}
 
 	_removePath(layer) {
 		const order = layer._order;
@@ -167,7 +169,7 @@ export const Canvas = Renderer.extend({
 		delete this._layers[Util.stamp(layer)];
 
 		this._requestRedraw(layer);
-	},
+	}
 
 	_updatePath(layer) {
 		// Redraw the union of the layer's old pixel
@@ -178,12 +180,12 @@ export const Canvas = Renderer.extend({
 		// The redraw will extend the redraw bounds
 		// with the new pixel bounds.
 		this._requestRedraw(layer);
-	},
+	}
 
 	_updateStyle(layer) {
 		this._updateDashArray(layer);
 		this._requestRedraw(layer);
-	},
+	}
 
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
@@ -193,14 +195,14 @@ export const Canvas = Renderer.extend({
 		} else {
 			layer.options._dashArray = layer.options.dashArray;
 		}
-	},
+	}
 
 	_requestRedraw(layer) {
 		if (!this._map) { return; }
 
 		this._extendRedrawBounds(layer);
 		this._redrawRequest ??= requestAnimationFrame(this._redraw.bind(this));
-	},
+	}
 
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
@@ -209,7 +211,7 @@ export const Canvas = Renderer.extend({
 			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 		}
-	},
+	}
 
 	_redraw() {
 		this._redrawRequest = null;
@@ -223,7 +225,7 @@ export const Canvas = Renderer.extend({
 		this._draw(); // draw layers
 
 		this._redrawBounds = null;
-	},
+	}
 
 	_clear() {
 		const bounds = this._redrawBounds;
@@ -236,7 +238,7 @@ export const Canvas = Renderer.extend({
 			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 			this._ctx.restore();
 		}
-	},
+	}
 
 	_draw() {
 		let layer;
@@ -261,7 +263,7 @@ export const Canvas = Renderer.extend({
 		this._drawing = false;
 
 		this._ctx.restore();  // Restore state before clipping.
-	},
+	}
 
 	_updatePoly(layer, closed) {
 		if (!this._drawing) { return; }
@@ -285,7 +287,7 @@ export const Canvas = Renderer.extend({
 		this._fillStroke(ctx, layer);
 
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
-	},
+	}
 
 	_updateCircle(layer) {
 
@@ -309,7 +311,7 @@ export const Canvas = Renderer.extend({
 		}
 
 		this._fillStroke(ctx, layer);
-	},
+	}
 
 	_fillStroke(ctx, layer) {
 		const options = layer.options;
@@ -332,7 +334,7 @@ export const Canvas = Renderer.extend({
 			ctx.lineJoin = options.lineJoin;
 			ctx.stroke();
 		}
-	},
+	}
 
 	// Canvas obviously doesn't have mouse events for individual drawn objects,
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
@@ -350,14 +352,14 @@ export const Canvas = Renderer.extend({
 			}
 		}
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
-	},
+	}
 
 	_onMouseMove(e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.mouseEventToLayerPoint(e);
 		this._handleMouseHover(e, point);
-	},
+	}
 
 
 	_handleMouseOut(e) {
@@ -369,7 +371,7 @@ export const Canvas = Renderer.extend({
 			this._hoveredLayer = null;
 			this._mouseHoverThrottled = false;
 		}
-	},
+	}
 
 	_handleMouseHover(e, point) {
 		if (this._mouseHoverThrottled) {
@@ -401,11 +403,11 @@ export const Canvas = Renderer.extend({
 		this._mouseHoverThrottleTimeout = setTimeout((() => {
 			this._mouseHoverThrottled = false;
 		}), 32);
-	},
+	}
 
 	_fireEvent(layers, e, type) {
 		this._map._fireDOMEvent(e, type || e.type, layers);
-	},
+	}
 
 	_bringToFront(layer) {
 		const order = layer._order;
@@ -436,7 +438,7 @@ export const Canvas = Renderer.extend({
 		this._drawLast = order;
 
 		this._requestRedraw(layer);
-	},
+	}
 
 	_bringToBack(layer) {
 		const order = layer._order;
@@ -468,7 +470,7 @@ export const Canvas = Renderer.extend({
 
 		this._requestRedraw(layer);
 	}
-});
+}
 
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.

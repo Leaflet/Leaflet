@@ -34,7 +34,7 @@ export const create = svgCreate;
  * ```
  */
 
-export const SVG = Renderer.extend({
+export class SVG extends Renderer {
 
 	_initContainer() {
 		this._container = create('svg');
@@ -44,13 +44,13 @@ export const SVG = Renderer.extend({
 
 		this._rootGroup = create('g');
 		this._container.appendChild(this._rootGroup);
-	},
+	}
 
 	_destroyContainer() {
 		Renderer.prototype._destroyContainer.call(this);
 		delete this._rootGroup;
 		delete this._svgSize;
-	},
+	}
 
 	_resizeContainer() {
 		const size = Renderer.prototype._resizeContainer.call(this);
@@ -61,7 +61,7 @@ export const SVG = Renderer.extend({
 			this._container.setAttribute('width', size.x);
 			this._container.setAttribute('height', size.y);
 		}
-	},
+	}
 
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
@@ -74,7 +74,7 @@ export const SVG = Renderer.extend({
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		this.fire('update');
-	},
+	}
 
 	// methods below are called by vector layers implementations
 
@@ -94,24 +94,24 @@ export const SVG = Renderer.extend({
 
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
-	},
+	}
 
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
-	},
+	}
 
 	_removePath(layer) {
 		layer._path.remove();
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[stamp(layer)];
-	},
+	}
 
 	_updatePath(layer) {
 		layer._project();
 		layer._update();
-	},
+	}
 
 	_updateStyle(layer) {
 		const path = layer._path,
@@ -148,11 +148,11 @@ export const SVG = Renderer.extend({
 		} else {
 			path.setAttribute('fill', 'none');
 		}
-	},
+	}
 
 	_updatePoly(layer, closed) {
 		this._setPath(layer, pointsToPath(layer._parts, closed));
-	},
+	}
 
 	_updateCircle(layer) {
 		const p = layer._point,
@@ -167,21 +167,21 @@ export const SVG = Renderer.extend({
 				arc}${-r * 2},0 `;
 
 		this._setPath(layer, d);
-	},
+	}
 
 	_setPath(layer, path) {
 		layer._path.setAttribute('d', path);
-	},
+	}
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
 	_bringToFront(layer) {
 		DomUtil.toFront(layer._path);
-	},
+	}
 
 	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
-});
+}
 
 // @namespace SVG
 // @factory L.svg(options?: Renderer options)
