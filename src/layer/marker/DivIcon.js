@@ -21,8 +21,9 @@ import {Point} from '../../geometry/Point.js';
 
 // @constructor DivIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
-export const DivIcon = Icon.extend({
-	options: {
+export class DivIcon extends Icon {
+	static options = {
+		...Icon.options,
 		// @section
 		// @aka DivIcon options
 		iconSize: [12, 12], // also can be set through CSS
@@ -40,7 +41,12 @@ export const DivIcon = Icon.extend({
 		bgPos: null,
 
 		className: 'leaflet-div-icon'
-	},
+	};
+
+	constructor(options) {
+		super();
+		this.options = {...DivIcon.options, ...options};
+	}
 
 	createIcon(oldIcon) {
 		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
@@ -60,9 +66,9 @@ export const DivIcon = Icon.extend({
 		this._setIconStyles(div, 'icon');
 
 		return div;
-	},
+	}
 
 	createShadow() {
 		return null;
 	}
-});
+}
