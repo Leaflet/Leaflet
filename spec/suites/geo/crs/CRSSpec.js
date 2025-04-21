@@ -218,10 +218,10 @@ describe('CRS.Simple', () => {
 		});
 
 		it('wraps coords if configured', () => {
-			const crs = Object.assign({}, CRS.Simple, {
-				wrapLng: [-200, 200],
-				wrapLat: [-200, 200]
-			});
+			class crs extends CRS.Simple {
+				static wrapLng = [-200, 200];
+				static wrapLat = [-200, 200];
+			}
 
 			expect(crs.wrapLatLng(latLng(300, -250))).nearLatLng([-100, 150]);
 		});

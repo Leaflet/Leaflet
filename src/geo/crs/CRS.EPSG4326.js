@@ -15,9 +15,8 @@ import {toTransformation} from '../../geometry/Transformation.js';
  * or (-180,-90) for `TileLayer`s with [the `tms` option](#tilelayer-tms) set.
  */
 
-export const EPSG4326 = {
-	...Earth,
-	code: 'EPSG:4326',
-	projection: LonLat,
-	transformation: toTransformation(1 / 180, 1, -1 / 180, 0.5)
-};
+export class EPSG4326 extends Earth {
+	static code = 'EPSG:4326';
+	static projection = LonLat;
+	static transformation = toTransformation(1 / 180, 1, -1 / 180, 0.5);
+}

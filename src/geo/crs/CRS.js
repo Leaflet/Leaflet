@@ -21,58 +21,61 @@ import * as Util from '../../core/Util.js';
  * and methods can't be added to them with the `include` function.
  */
 
-export const CRS = {
+export class CRS {
+	static projection = undefined;
+	static transformation = undefined;
+
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
-	latLngToPoint(latlng, zoom) {
+	static latLngToPoint(latlng, zoom) {
 		const projectedPoint = this.projection.project(latlng),
 		    scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
-	},
+	}
 
 	// @method pointToLatLng(point: Point, zoom: Number): LatLng
 	// The inverse of `latLngToPoint`. Projects pixel coordinates on a given
 	// zoom into geographical coordinates.
-	pointToLatLng(point, zoom) {
+	static pointToLatLng(point, zoom) {
 		const scale = this.scale(zoom),
 		    untransformedPoint = this.transformation.untransform(point, scale);
 
 		return this.projection.unproject(untransformedPoint);
-	},
+	}
 
 	// @method project(latlng: LatLng): Point
 	// Projects geographical coordinates into coordinates in units accepted for
 	// this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).
-	project(latlng) {
+	static project(latlng) {
 		return this.projection.project(latlng);
-	},
+	}
 
 	// @method unproject(point: Point): LatLng
 	// Given a projected coordinate returns the corresponding LatLng.
 	// The inverse of `project`.
-	unproject(point) {
+	static unproject(point) {
 		return this.projection.unproject(point);
-	},
+	}
 
 	// @method scale(zoom: Number): Number
 	// Returns the scale used when transforming projected coordinates into
 	// pixel coordinates for a particular zoom. For example, it returns
 	// `256 * 2^zoom` for Mercator-based CRS.
-	scale(zoom) {
+	static scale(zoom) {
 		return 256 * 2 ** zoom;
-	},
+	}
 
 	// @method zoom(scale: Number): Number
 	// Inverse of `scale()`, returns the zoom level corresponding to a scale
 	// factor of `scale`.
-	zoom(scale) {
+	static zoom(scale) {
 		return Math.log(scale / 256) / Math.LN2;
-	},
+	}
 
 	// @method getProjectedBounds(zoom: Number): Bounds
 	// Returns the projection's bounds scaled and transformed for the provided `zoom`.
-	getProjectedBounds(zoom) {
+	static getProjectedBounds(zoom) {
 		if (this.infinite) { return null; }
 
 		const b = this.projection.bounds,
@@ -81,7 +84,7 @@ export const CRS = {
 		    max = this.transformation.transform(b.max, s);
 
 		return new Bounds(min, max);
-	},
+	}
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
 	// Returns the distance between two geographical coordinates.
@@ -102,24 +105,24 @@ export const CRS = {
 
 	// @property infinite: Boolean
 	// If true, the coordinate space will be unbounded (infinite in both axes)
-	infinite: false,
+	static infinite = false;
 
 	// @method wrapLatLng(latlng: LatLng): LatLng
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
-	wrapLatLng(latlng) {
+	static wrapLatLng(latlng) {
 		const lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
 		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
 		return new LatLng(lat, lng, alt);
-	},
+	}
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
 	// Returns a `LatLngBounds` with the same size as the given one, ensuring
 	// that its center is within the CRS's bounds.
 	// Only accepts actual `L.LatLngBounds` instances, not arrays.
-	wrapLatLngBounds(bounds) {
+	static wrapLatLngBounds(bounds) {
 		const center = bounds.getCenter(),
 		    newCenter = this.wrapLatLng(center),
 		    latShift = center.lat - newCenter.lat,
@@ -136,4 +139,4 @@ export const CRS = {
 
 		return new LatLngBounds(newSw, newNe);
 	}
-};
+}

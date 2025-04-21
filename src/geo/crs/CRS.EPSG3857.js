@@ -11,18 +11,16 @@ import {toTransformation} from '../../geometry/Transformation.js';
  * Map's `crs` option.
  */
 
-export const EPSG3857 = {
-	...Earth,
-	code: 'EPSG:3857',
-	projection: SphericalMercator,
+export class EPSG3857 extends Earth {
+	static code = 'EPSG:3857';
+	static projection = SphericalMercator;
 
-	transformation: (() => {
+	static transformation = (() => {
 		const scale = 0.5 / (Math.PI * SphericalMercator.R);
 		return toTransformation(scale, 0.5, -scale, 0.5);
-	})()
-};
+	})();
+}
 
-export const EPSG900913 = {
-	...EPSG3857,
-	code: 'EPSG:900913'
-};
+export class EPSG900913 extends EPSG3857 {
+	static code = 'EPSG:900913';
+}
