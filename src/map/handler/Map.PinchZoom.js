@@ -25,16 +25,16 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const PinchZoom = Handler.extend({
+export class PinchZoom extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
-	},
+	}
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
-	},
+	}
 
 	_onPointerStart(e) {
 		const map = this._map;
@@ -63,7 +63,7 @@ export const PinchZoom = Handler.extend({
 		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		DomEvent.preventDefault(e);
-	},
+	}
 
 	_onPointerMove(e) {
 		const pointers = PointerEvents.getPointers();
@@ -103,7 +103,7 @@ export const PinchZoom = Handler.extend({
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
 		DomEvent.preventDefault(e);
-	},
+	}
 
 	_onPointerEnd() {
 		if (!this._moved || !this._zooming) {
@@ -124,7 +124,7 @@ export const PinchZoom = Handler.extend({
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property pinchZoom: Handler
