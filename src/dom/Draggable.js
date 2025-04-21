@@ -26,7 +26,7 @@ const START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 export class Draggable extends Evented {
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @section
 			// @aka Draggable options
 			// @option clickTolerance: Number = 3

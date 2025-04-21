@@ -25,7 +25,7 @@ export class ImageOverlay extends Layer {
 	static {
 		// @section
 		// @aka ImageOverlay options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option opacity: Number = 1.0
 			// The opacity of the image overlay.
 			opacity: 1,

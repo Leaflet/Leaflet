@@ -1,4 +1,3 @@
-
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -17,7 +16,7 @@ export class Zoom extends Control {
 	static {
 		// @section
 		// @aka Control.Zoom options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			...Control.options,
 			// @option position: String = 'topleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,

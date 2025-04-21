@@ -77,7 +77,7 @@ export class GridLayer extends Layer {
 	static {
 		// @section
 		// @aka GridLayer options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option tileSize: Number|Point = 256
 			// Width and height of tiles in the grid. Use a number if width and height are equal, or `L.point(width, height)` otherwise.
 			tileSize: 256,

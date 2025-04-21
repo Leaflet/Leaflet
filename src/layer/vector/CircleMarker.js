@@ -17,7 +17,7 @@ export class CircleMarker extends Path {
 	static {
 		// @section
 		// @aka CircleMarker options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			fill: true,
 
 			// @option radius: Number = 10

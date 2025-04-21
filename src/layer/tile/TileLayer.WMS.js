@@ -55,7 +55,7 @@ export class TileLayerWMS extends TileLayer {
 	};
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option crs: CRS = null
 			// Coordinate Reference System to use for the WMS requests, defaults to
 			// map CRS. Don't change this if you're not sure what it means.

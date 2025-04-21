@@ -2,7 +2,7 @@ import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
 import * as Util from '../core/Util.js';
-import {toLatLng, LatLng} from '../geo/LatLng.js';
+import {LatLng, toLatLng} from '../geo/LatLng.js';
 import {toPoint} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -19,7 +19,7 @@ export class DivOverlay extends Layer {
 	static {
 		// @section
 		// @aka DivOverlay options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option interactive: Boolean = false
 			// If true, the popup/tooltip will listen to the mouse events.
 			interactive: false,

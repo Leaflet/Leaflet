@@ -74,7 +74,7 @@ export class Icon extends Class {
 	 */
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			popupAnchor: [0, 0],
 			tooltipAnchor: [0, 0],
 

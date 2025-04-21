@@ -36,7 +36,7 @@ export class Canvas extends Renderer {
 	static {
 		// @section
 		// @aka Canvas options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option tolerance: Number = 0
 			// How much to extend the click tolerance around a path/object on the map.
 			tolerance: 0

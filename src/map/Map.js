@@ -32,7 +32,7 @@ import {PosAnimation} from '../dom/PosAnimation.js';
 export class Map extends Evented {
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @section Map State Options
 			// @option crs: CRS = L.CRS.EPSG3857
 			// The [Coordinate Reference System](#crs) to use. Don't change this if you're not

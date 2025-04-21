@@ -52,7 +52,7 @@ export class Tooltip extends DivOverlay {
 	static {
 		// @section
 		// @aka Tooltip options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option pane: String = 'tooltipPane'
 			// `Map pane` where the tooltip will be added.
 			pane: 'tooltipPane',
