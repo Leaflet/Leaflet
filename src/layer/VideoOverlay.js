@@ -1,5 +1,6 @@
 import {ImageOverlay} from './ImageOverlay.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -60,8 +61,12 @@ export const VideoOverlay = ImageOverlay.extend({
 		if (this._zoomAnimated) { vid.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
-		vid.onselectstart = Util.falseFn;
-		vid.onmousemove = Util.falseFn;
+		DomEvent.on(vid, 'mousedown', (e) => {
+			if (vid.controls) {
+				// Prevent the map from moving when the video or the seekbar is moved
+				DomEvent.stopPropagation(e);
+			}
+		});
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
