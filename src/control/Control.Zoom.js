@@ -15,35 +15,33 @@ import * as DomEvent from '../dom/DomEvent.js';
 // @constructor Control.Zoom(options: Control.Zoom options)
 // Creates a zoom control
 export class Zoom extends Control {
-	// @section
-	// @aka Control.Zoom options
-	static options = {
-		...Control.options,
-		// @option position: String = 'topleft'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'topleft',
 
-		// @option zoomInText: String = '<span aria-hidden="true">+</span>'
-		// The text set on the 'zoom in' button.
-		zoomInText: '<span aria-hidden="true">+</span>',
+	static {
+		// @section
+		// @aka Control.Zoom options
+		this.setDefaultOptions({
+			...Control.options,
+			// @option position: String = 'topleft'
+			// The position of the control (one of the map corners). Possible values are `'topleft'`,
+			// `'topright'`, `'bottomleft'` or `'bottomright'`
+			position: 'topleft',
 
-		// @option zoomInTitle: String = 'Zoom in'
-		// The title set on the 'zoom in' button.
-		zoomInTitle: 'Zoom in',
+			// @option zoomInText: String = '<span aria-hidden="true">+</span>'
+			// The text set on the 'zoom in' button.
+			zoomInText: '<span aria-hidden="true">+</span>',
 
-		// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
-		// The text set on the 'zoom out' button.
-		zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
+			// @option zoomInTitle: String = 'Zoom in'
+			// The title set on the 'zoom in' button.
+			zoomInTitle: 'Zoom in',
 
-		// @option zoomOutTitle: String = 'Zoom out'
-		// The title set on the 'zoom out' button.
-		zoomOutTitle: 'Zoom out'
-	};
+			// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
+			// The text set on the 'zoom out' button.
+			zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
 
-	constructor(options) {
-		super();
-		this.options = {...Zoom.options, ...options};
+			// @option zoomOutTitle: String = 'Zoom out'
+			// The title set on the 'zoom out' button.
+			zoomOutTitle: 'Zoom out'
+		});
 	}
 
 	onAdd(map) {

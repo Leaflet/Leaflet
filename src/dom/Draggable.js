@@ -22,14 +22,16 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 export class Draggable extends Evented {
 
-	static options = {
-		// @section
-		// @aka Draggable options
-		// @option clickTolerance: Number = 3
-		// The max number of pixels a user can shift the pointer during a click
-		// for it to be considered a valid click (as opposed to a pointer drag).
-		clickTolerance: 3
-	};
+	static {
+		this.setDefaultOptions({
+			// @section
+			// @aka Draggable options
+			// @option clickTolerance: Number = 3
+			// The max number of pixels a user can shift the pointer during a click
+			// for it to be considered a valid click (as opposed to a pointer drag).
+			clickTolerance: 3
+		});
+	}
 
 	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).

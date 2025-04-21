@@ -1,4 +1,5 @@
 import {Class} from '../../core/Class.js';
+import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
 
@@ -73,20 +74,22 @@ export class Icon extends Class {
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
-	static options = {
-		popupAnchor: [0, 0],
-		tooltipAnchor: [0, 0],
+	static {
+		this.setDefaultOptions({
+			popupAnchor: [0, 0],
+			tooltipAnchor: [0, 0],
 
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the tiles.
-		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false
-	};
+			// @option crossOrigin: Boolean|String = false
+			// Whether the crossOrigin attribute will be added to the tiles.
+			// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+			crossOrigin: false
+		});
+	}
 
 	constructor(options) {
 		super();
-		this.options = {...Icon.options, ...options};
+		setOptions(this, options);
 	}
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
