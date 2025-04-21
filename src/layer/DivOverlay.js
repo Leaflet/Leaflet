@@ -18,7 +18,7 @@ export class DivOverlay extends Layer {
 	static {
 		// @section
 		// @aka DivOverlay options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option interactive: Boolean = false
 			// If true, the popup/tooltip will listen to the pointer events.
 			interactive: false,

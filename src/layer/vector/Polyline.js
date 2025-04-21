@@ -53,7 +53,7 @@ export class Polyline extends Path {
 	static {
 		// @section
 		// @aka Polyline options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option smoothFactor: Number = 1.0
 			// How much to simplify the polyline on each zoom level. More means
 			// better performance and smoother look, and less means more accurate representation.

@@ -29,7 +29,7 @@ export class VideoOverlay extends ImageOverlay {
 	static {
 		// @section
 		// @aka VideoOverlay options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option autoplay: Boolean = true
 			// Whether the video starts playing automatically when loaded.
 			// On some browsers autoplay will only work with `muted: true`

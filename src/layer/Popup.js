@@ -50,7 +50,7 @@ export class Popup extends DivOverlay {
 	static {
 		// @section
 		// @aka Popup options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option pane: String = 'popupPane'
 			// `Map pane` where the popup will be added.
 			pane: 'popupPane',

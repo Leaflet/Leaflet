@@ -24,7 +24,7 @@ import {Point} from '../../geometry/Point.js';
 export class DivIcon extends Icon {
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			...Icon.options,
 			// @section
 			// @aka DivIcon options

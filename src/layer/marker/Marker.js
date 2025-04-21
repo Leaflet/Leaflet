@@ -26,7 +26,7 @@ export class Marker extends Layer {
 	static {
 		// @section
 		// @aka Marker options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option icon: Icon = *
 			// Icon instance to use for rendering the marker.
 			// See [Icon documentation](#Icon) for details on how to customize the marker icon.

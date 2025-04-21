@@ -39,7 +39,7 @@ export class TileLayer extends GridLayer {
 	static {
 		// @section
 		// @aka TileLayer options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option minZoom: Number = 0
 			// The minimum zoom level down to which this layer will be displayed (inclusive).
 			minZoom: 0,

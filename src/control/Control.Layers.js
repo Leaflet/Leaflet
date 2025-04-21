@@ -1,4 +1,3 @@
-
 import {Control} from './Control.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
@@ -49,7 +48,7 @@ export class Layers extends Control {
 	static {
 		// @section
 		// @aka Control.Layers options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			...Control.options,
 			// @option collapsed: Boolean = true
 			// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.

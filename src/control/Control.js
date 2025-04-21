@@ -1,4 +1,3 @@
-
 import {Class} from '../core/Class.js';
 import {Map} from '../map/Map.js';
 import * as Util from '../core/Util.js';
@@ -17,7 +16,7 @@ export class Control extends Class {
 	static {
 		// @section
 		// @aka Control Options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option position: String = 'topright'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
 			// `'topright'`, `'bottomleft'` or `'bottomright'`

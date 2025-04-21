@@ -1,4 +1,3 @@
-
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -22,7 +21,7 @@ export class Scale extends Control {
 	static {
 		// @section
 		// @aka Control.Scale options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			...Control.options,
 			// @option position: String = 'bottomleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,

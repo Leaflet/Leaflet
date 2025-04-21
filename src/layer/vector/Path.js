@@ -14,7 +14,7 @@ export class Path extends Layer {
 	static {
 		// @section
 		// @aka Path options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			// @option stroke: Boolean = true
 			// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
 			stroke: true,

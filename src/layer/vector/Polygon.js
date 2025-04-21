@@ -54,7 +54,7 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
 export class Polygon extends Polyline {
 
 	static {
-		this.setDefaultOptions({
+		this.mergeOptions({
 			fill: true
 		});
 	}

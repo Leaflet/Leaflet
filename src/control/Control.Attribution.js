@@ -1,4 +1,3 @@
-
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as DomEvent from '../dom/DomEvent.js';
@@ -23,7 +22,7 @@ export class Attribution extends Control {
 	static {
 		// @section
 		// @aka Control.Attribution options
-		this.setDefaultOptions({
+		this.mergeOptions({
 			...Control.options,
 			// @option position: String = 'bottomright'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
