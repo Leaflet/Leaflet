@@ -165,9 +165,7 @@ function removeOne(obj, type, fn, context, id) {
 // @function stopPropagation(ev: DOMEvent): this
 // Stop the given event from propagation to parent elements. Used inside the listener functions:
 // ```js
-// L.DomEvent.on(div, 'click', function (ev) {
-// 	L.DomEvent.stopPropagation(ev);
-// });
+// L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
 // ```
 export function stopPropagation(e) {
 
