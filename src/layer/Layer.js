@@ -107,9 +107,7 @@ export const Layer = Evented.extend({
 		if (this.getEvents) {
 			const events = this.getEvents();
 			map.on(events, this);
-			this.once('remove', function () {
-				map.off(events, this);
-			}, this);
+			this.once('remove', () => map.off(events, this));
 		}
 
 		this.onAdd(map);

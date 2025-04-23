@@ -62,9 +62,7 @@ export const Attribution = Control.extend({
 	_addAttribution(ev) {
 		if (ev.layer.getAttribution) {
 			this.addAttribution(ev.layer.getAttribution());
-			ev.layer.once('remove', function () {
-				this.removeAttribution(ev.layer.getAttribution());
-			}, this);
+			ev.layer.once('remove', () => this.removeAttribution(ev.layer.getAttribution()));
 		}
 	},
 
