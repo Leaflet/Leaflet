@@ -8,7 +8,7 @@
 - [ ] Wait for the CI to complete and follow the logs to make sure it runs successfully.
 - [ ] Verify that the release was correctly published to NPM by checking:
   - [ ] [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
-  - [ ] files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
+  - [ ] files on [Leaflet unpkg page](https://cdn.jsdelivr.net/npm/leaflet@latest/)
 - [ ] Make a new release on [Leaflet's GitHub release page](https://github.com/Leaflet/Leaflet/releases/) with the most important parts of the changelog
 - [ ] Download zip archive from https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/vX.X.X/leaflet.zip (where `X.X.X` is the new version number) and upload it as an "asset" of the GitHub release.
 
