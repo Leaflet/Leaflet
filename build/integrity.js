@@ -9,7 +9,7 @@ import ssri from 'ssri';
 const {version} = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 
 const getIntegrity = path => new Promise((resolve) => {
-	https.get(`https://unpkg.com/leaflet@${version}/dist/${path}`, (res) => {
+	https.get(`https://cdn.jsdelivr.net/npm/leaflet@${version}/dist/${path}`, (res) => {
 		ssri.fromStream(res, {algorithms: ['sha256']}).then(integrity => resolve(integrity.toString()));
 	});
 });
