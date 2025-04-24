@@ -66,6 +66,13 @@ Then, in your script, import the needed Leaflet Classes as follows:
 	}).addTo(map);
 </script>
 ```
+#### Including Leaflet with a Global Scope
+
+The old (and not recommended) way to include Leaflet in your project without using modules is by relying on the global variable `L`.
+
+```html
+<script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet-global.js" integrity="{{site.integrity_hash_global_uglified}}" crossorigin=""></script>
+```
 
 Note that the [`integrity` hashes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) are included for security when using Leaflet from a CDN.
 
