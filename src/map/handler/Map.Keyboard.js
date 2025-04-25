@@ -47,6 +47,9 @@ export const Keyboard = Handler.extend({
 			container.tabIndex = '0';
 		}
 
+		// add aria-attribute for keyboard shortcuts to the container
+		container.ariaKeyShortcuts = Object.values(this.keyCodes).flat().join(' ');
+
 		on(container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
