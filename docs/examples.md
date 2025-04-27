@@ -36,7 +36,7 @@ description="In this pretty tutorial, you'll learn how to easily define your own
 {% include tutorial_link.html
 page="accessibility/"
 thumbnail="accessibility/thumbnail.png"
-title="Accessible maps"
+title="Accessible Maps"
 description="A guide to basic Leaflet accessibility - make your maps usable to persons of a wide range of abilities."
 %}
 
@@ -68,14 +68,14 @@ description="A tutorial on how to manage groups of layers and use the layer swit
 {% include tutorial_link.html
 page="zoom-levels/"
 thumbnail="zoom-levels/thumbnail.png"
-title="Zoom levels"
+title="Zoom Levels"
 description="A deeper look into what zoom levels are."
 %}
 
 {% include tutorial_link.html
 page="crs-simple/crs-simple.html"
 thumbnail="crs-simple/thumbnail.png"
-title="Non-geographical maps"
+title="Non-Geographical maps"
 description="A primer on `L.CRS.Simple`, how to make maps with no concept of \"latitude\" or \"longitude\"."
 %}
 
@@ -91,7 +91,7 @@ description="How to integrate with WMS and TMS services from professional GIS so
 {% include tutorial_link.html
 page="map-panes/"
 thumbnail="map-panes/thumbnail.png"
-title="Working with map panes"
+title="Working with Map Panes"
 description="How the default map panes work to display overlays on top of tiles, and how to override that."
 %}
 

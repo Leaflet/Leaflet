@@ -16,7 +16,7 @@ Please note that this tutorial assumes you have a good grasp of:
 * [Object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented_programming) (understanding concepts like classes, instances, inheritance, methods and properties)
 
 
-## Leaflet architecture
+## Leaflet Architecture
 
 Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 JavaScript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
 
@@ -154,7 +154,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
     MyCubeClass.addInitHook('_calculateVolume', argValue1, argValue2);
     
 
-### Methods of the parent class
+### Methods of the Parent Class
 
 Calling a method of a parent class is achieved by reaching into the prototype of the parent class and using [`Function.call(…)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call). This can be seen, for example, in the code for `L.FeatureGroup`:
 
@@ -185,7 +185,7 @@ Most Leaflet classes have a corresponding [factory function](https://en.wikipedi
     }
     
     
-### Naming conventions
+### Naming Conventions
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
