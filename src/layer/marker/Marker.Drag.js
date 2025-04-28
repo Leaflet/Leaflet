@@ -128,6 +128,9 @@ export const MarkerDrag = Handler.extend({
 		    iconPos = DomUtil.getPosition(marker._icon),
 		    latlng = marker._map.layerPointToLatLng(iconPos);
 
+		// Carry the altitude over from the original position if it exists
+		latlng.alt = this._oldLatLng.alt;
+
 		// update shadow position
 		if (shadow) {
 			DomUtil.setPosition(shadow, iconPos);
