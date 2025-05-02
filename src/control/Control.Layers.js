@@ -159,6 +159,7 @@ export const Layers = Control.extend({
 	// Expand the control container if collapsed.
 	expand() {
 		this._container.classList.add('leaflet-control-layers-expanded');
+		this._section.setAttribute('aria-label', 'Layers');
 		this._section.style.height = null;
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
@@ -179,6 +180,7 @@ export const Layers = Control.extend({
 		// So we allow collapse if it is not touch and pointerleave.
 		if (!ev || !(ev.type === 'pointerleave' && ev.pointerType === 'touch')) {
 			this._container.classList.remove('leaflet-control-layers-expanded');
+			this._section.removeAttribute('aria-label');
 		}
 		return this;
 	},
