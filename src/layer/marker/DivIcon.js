@@ -20,26 +20,30 @@ import {toPoint as point} from '../../geometry/Point.js';
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
  */
 
-export const DivIcon = Icon.extend({
-	options: {
-		// @section
-		// @aka DivIcon options
-		iconSize: [12, 12], // also can be set through CSS
+export class DivIcon extends Icon {
 
-		// iconAnchor: (Point),
-		// popupAnchor: (Point),
+	static {
+		this.mergeOptions({
+			...Icon.options,
+			// @section
+			// @aka DivIcon options
+			iconSize: [12, 12], // also can be set through CSS
 
-		// @option html: String|HTMLElement = ''
-		// Custom HTML code to put inside the div element, empty by default. Alternatively,
-		// an instance of `HTMLElement`.
-		html: false,
+			// iconAnchor: (Point),
+			// popupAnchor: (Point),
 
-		// @option bgPos: Point = [0, 0]
-		// Optional relative position of the background, in pixels
-		bgPos: null,
+			// @option html: String|HTMLElement = ''
+			// Custom HTML code to put inside the div element, empty by default. Alternatively,
+			// an instance of `HTMLElement`.
+			html: false,
 
-		className: 'leaflet-div-icon'
-	},
+			// @option bgPos: Point = [0, 0]
+			// Optional relative position of the background, in pixels
+			bgPos: null,
+
+			className: 'leaflet-div-icon'
+		});
+	}
 
 	createIcon(oldIcon) {
 		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
@@ -59,12 +63,12 @@ export const DivIcon = Icon.extend({
 		this._setIconStyles(div, 'icon');
 
 		return div;
-	},
+	}
 
 	createShadow() {
 		return null;
 	}
-});
+}
 
 // @factory L.divIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.

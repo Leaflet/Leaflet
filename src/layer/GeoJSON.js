@@ -31,7 +31,7 @@ import * as LineUtil from '../geometry/LineUtil.js';
  * ```
  */
 
-export const GeoJSON = FeatureGroup.extend({
+export class GeoJSON extends FeatureGroup {
 
 	/* @section
 	 * @aka GeoJSON options
@@ -83,7 +83,8 @@ export const GeoJSON = FeatureGroup.extend({
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize(geojson, options) {
+	constructor(geojson, options) {
+		super();
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -91,7 +92,7 @@ export const GeoJSON = FeatureGroup.extend({
 		if (geojson) {
 			this.addData(geojson);
 		}
-	},
+	}
 
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
@@ -126,7 +127,7 @@ export const GeoJSON = FeatureGroup.extend({
 		}
 
 		return this.addLayer(layer);
-	},
+	}
 
 	// @method resetStyle( <Path> layer? ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
@@ -139,13 +140,13 @@ export const GeoJSON = FeatureGroup.extend({
 		layer.options = Object.create(layer.defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
 		return this;
-	},
+	}
 
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle(style) {
 		return this.eachLayer(layer => this._setLayerStyle(layer, style));
-	},
+	}
 
 	_setLayerStyle(layer, style) {
 		if (layer.setStyle) {
@@ -155,7 +156,7 @@ export const GeoJSON = FeatureGroup.extend({
 			layer.setStyle(style);
 		}
 	}
-});
+}
 
 // @section
 // There are several static functions which can be called without instantiating L.GeoJSON:

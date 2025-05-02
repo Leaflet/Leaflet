@@ -20,55 +20,58 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
-export const ImageOverlay = Layer.extend({
+export class ImageOverlay extends Layer {
 
-	// @section
-	// @aka ImageOverlay options
-	options: {
-		// @option opacity: Number = 1.0
-		// The opacity of the image overlay.
-		opacity: 1,
+	static {
+		// @section
+		// @aka ImageOverlay options
+		this.mergeOptions({
+			// @option opacity: Number = 1.0
+			// The opacity of the image overlay.
+			opacity: 1,
 
-		// @option alt: String = ''
-		// Text for the `alt` attribute of the image (useful for accessibility).
-		alt: '',
+			// @option alt: String = ''
+			// Text for the `alt` attribute of the image (useful for accessibility).
+			alt: '',
 
-		// @option interactive: Boolean = false
-		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
-		interactive: false,
+			// @option interactive: Boolean = false
+			// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
+			interactive: false,
 
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the image.
-		// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false,
+			// @option crossOrigin: Boolean|String = false
+			// Whether the crossOrigin attribute will be added to the image.
+			// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+			crossOrigin: false,
 
-		// @option errorOverlayUrl: String = ''
-		// URL to the overlay image to show in place of the overlay that failed to load.
-		errorOverlayUrl: '',
+			// @option errorOverlayUrl: String = ''
+			// URL to the overlay image to show in place of the overlay that failed to load.
+			errorOverlayUrl: '',
 
-		// @option zIndex: Number = 1
-		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
-		zIndex: 1,
+			// @option zIndex: Number = 1
+			// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
+			zIndex: 1,
 
-		// @option className: String = ''
-		// A custom class name to assign to the image. Empty by default.
-		className: '',
+			// @option className: String = ''
+			// A custom class name to assign to the image. Empty by default.
+			className: '',
 
-		// @option decoding: String = 'auto'
-		// Tells the browser whether to decode the image in a synchronous fashion,
-		// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
-		// If the image overlay is flickering when being added/removed, set
-		// this option to `'sync'`.
-		decoding: 'auto'
-	},
+			// @option decoding: String = 'auto'
+			// Tells the browser whether to decode the image in a synchronous fashion,
+			// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
+			// If the image overlay is flickering when being added/removed, set
+			// this option to `'sync'`.
+			decoding: 'auto'
+		});
+	}
 
-	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
+	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
+		super();
 		this._url = url;
 		this._bounds = toLatLngBounds(bounds);
 
 		Util.setOptions(this, options);
-	},
+	}
 
 	onAdd() {
 		if (!this._image) {
@@ -86,14 +89,14 @@ export const ImageOverlay = Layer.extend({
 
 		this.getPane().appendChild(this._image);
 		this._reset();
-	},
+	}
 
 	onRemove() {
 		this._image.remove();
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
 		}
-	},
+	}
 
 	// @method setOpacity(opacity: Number): this
 	// Sets the opacity of the overlay.
@@ -104,14 +107,14 @@ export const ImageOverlay = Layer.extend({
 			this._updateOpacity();
 		}
 		return this;
-	},
+	}
 
 	setStyle(styleOpts) {
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
 		}
 		return this;
-	},
+	}
 
 	// @method bringToFront(): this
 	// Brings the layer to the top of all overlays.
@@ -120,7 +123,7 @@ export const ImageOverlay = Layer.extend({
 			DomUtil.toFront(this._image);
 		}
 		return this;
-	},
+	}
 
 	// @method bringToBack(): this
 	// Brings the layer to the bottom of all overlays.
@@ -129,7 +132,7 @@ export const ImageOverlay = Layer.extend({
 			DomUtil.toBack(this._image);
 		}
 		return this;
-	},
+	}
 
 	// @method setUrl(url: String): this
 	// Changes the URL of the image.
@@ -140,7 +143,7 @@ export const ImageOverlay = Layer.extend({
 			this._image.src = url;
 		}
 		return this;
-	},
+	}
 
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
@@ -151,7 +154,7 @@ export const ImageOverlay = Layer.extend({
 			this._reset();
 		}
 		return this;
-	},
+	}
 
 	getEvents() {
 		const events = {
@@ -164,7 +167,7 @@ export const ImageOverlay = Layer.extend({
 		}
 
 		return events;
-	},
+	}
 
 	// @method setZIndex(value: Number): this
 	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
@@ -172,20 +175,20 @@ export const ImageOverlay = Layer.extend({
 		this.options.zIndex = value;
 		this._updateZIndex();
 		return this;
-	},
+	}
 
 	// @method getBounds(): LatLngBounds
 	// Get the bounds that this ImageOverlay covers
 	getBounds() {
 		return this._bounds;
-	},
+	}
 
 	// @method getElement(): HTMLElement
 	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
 	// used by this overlay.
 	getElement() {
 		return this._image;
-	},
+	}
 
 	_initImage() {
 		const wasElementSupplied = this._url.tagName === 'IMG';
@@ -220,14 +223,14 @@ export const ImageOverlay = Layer.extend({
 
 		img.src = this._url;
 		img.alt = this.options.alt;
-	},
+	}
 
 	_animateZoom(e) {
 		const scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
-	},
+	}
 
 	_reset() {
 		const image = this._image,
@@ -240,17 +243,17 @@ export const ImageOverlay = Layer.extend({
 
 		image.style.width  = `${size.x}px`;
 		image.style.height = `${size.y}px`;
-	},
+	}
 
 	_updateOpacity() {
 		this._image.style.opacity = this.options.opacity;
-	},
+	}
 
 	_updateZIndex() {
 		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
 			this._image.style.zIndex = this.options.zIndex;
 		}
-	},
+	}
 
 	_overlayOnError() {
 		// @event error: Event
@@ -262,14 +265,14 @@ export const ImageOverlay = Layer.extend({
 			this._url = errorUrl;
 			this._image.src = errorUrl;
 		}
-	},
+	}
 
 	// @method getCenter(): LatLng
 	// Returns the center of the ImageOverlay.
 	getCenter() {
 		return this._bounds.getCenter();
 	}
-});
+}
 
 // @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the

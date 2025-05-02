@@ -32,7 +32,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  *
  */
 
-export const PosAnimation = Evented.extend({
+export class PosAnimation extends Evented {
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
@@ -56,7 +56,7 @@ export const PosAnimation = Evented.extend({
 		this.fire('start');
 
 		this._animate();
-	},
+	}
 
 	// @method stop()
 	// Stops the animation (if currently running).
@@ -65,13 +65,13 @@ export const PosAnimation = Evented.extend({
 
 		this._step(true);
 		this._complete();
-	},
+	}
 
 	_animate() {
 		// animation loop
 		this._animId = requestAnimationFrame(this._animate.bind(this));
 		this._step();
-	},
+	}
 
 	_step(round) {
 		const elapsed = (+new Date()) - this._startTime,
@@ -83,7 +83,7 @@ export const PosAnimation = Evented.extend({
 			this._runFrame(1);
 			this._complete();
 		}
-	},
+	}
 
 	_runFrame(progress, round) {
 		const pos = this._startPos.add(this._offset.multiplyBy(progress));
@@ -95,7 +95,7 @@ export const PosAnimation = Evented.extend({
 		// @event step: Event
 		// Fired continuously during the animation.
 		this.fire('step');
-	},
+	}
 
 	_complete() {
 		cancelAnimationFrame(this._animId);
@@ -104,9 +104,9 @@ export const PosAnimation = Evented.extend({
 		// @event end: Event
 		// Fired when the animation ends.
 		this.fire('end');
-	},
+	}
 
 	_easeOut(t) {
 		return 1 - (1 - t) ** this._easeOutPower;
 	}
-});
+}

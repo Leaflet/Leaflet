@@ -21,23 +21,23 @@ Map.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export const Keyboard = Handler.extend({
+export class Keyboard extends Handler {
 
-	keyCodes: {
+	keyCodes = {
 		left:    ['ArrowLeft'],
 		right:   ['ArrowRight'],
 		down:    ['ArrowDown'],
 		up:      ['ArrowUp'],
 		zoomIn:  ['Equal', 'NumpadAdd', 'BracketRight'],
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
-	},
+	};
 
-	initialize(map) {
-		this._map = map;
+	constructor(map) {
+		super(map);
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
-	},
+	}
 
 	addHooks() {
 		const container = this._map._container;
@@ -60,7 +60,7 @@ export const Keyboard = Handler.extend({
 			focus: this._addHooks,
 			blur: this._removeHooks
 		}, this);
-	},
+	}
 
 	removeHooks() {
 		this._removeHooks();
@@ -75,7 +75,7 @@ export const Keyboard = Handler.extend({
 			focus: this._addHooks,
 			blur: this._removeHooks
 		}, this);
-	},
+	}
 
 	//  acquire/lose focus #594, #1228, #1540
 	_onPointerDown() {
@@ -89,17 +89,17 @@ export const Keyboard = Handler.extend({
 		this._map._container.focus();
 
 		window.scrollTo(left, top);
-	},
+	}
 
 	_onFocus() {
 		this._focused = true;
 		this._map.fire('focus');
-	},
+	}
 
 	_onBlur() {
 		this._focused = false;
 		this._map.fire('blur');
-	},
+	}
 
 	_setPanDelta(panDelta) {
 		const keys = this._panKeys = {},
@@ -117,7 +117,7 @@ export const Keyboard = Handler.extend({
 		for (const code of codes.up) {
 			keys[code] = [0, -1 * panDelta];
 		}
-	},
+	}
 
 	_setZoomDelta(zoomDelta) {
 		const keys = this._zoomKeys = {},
@@ -129,15 +129,15 @@ export const Keyboard = Handler.extend({
 		for (const code of codes.zoomOut) {
 			keys[code] = -zoomDelta;
 		}
-	},
+	}
 
 	_addHooks() {
 		on(document, 'keydown', this._onKeyDown, this);
-	},
+	}
 
 	_removeHooks() {
 		off(document, 'keydown', this._onKeyDown, this);
-	},
+	}
 
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
@@ -176,7 +176,7 @@ export const Keyboard = Handler.extend({
 
 		stop(e);
 	}
-});
+}
 
 // @section Handlers
 // @section Handlers
