@@ -7,9 +7,7 @@ tmp/**/*
 _site
 *.sublime-*
 _site
-dist/*.js
-dist/*.map
-dist/reference.html
+dist/
 coverage/
 *.js.html
 .mailmap
