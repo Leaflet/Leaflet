@@ -164,7 +164,7 @@ This allows us to build custom interfaces. For example, we can build a small sub
 ```
 videoOverlay.on('load', function () {
 	const MyPauseControl = Control.extend({
-		onAdd: function() {
+		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Pause';
 			button.innerHTML = '<span aria-hidden="true">⏸</span>';
@@ -175,7 +175,7 @@ videoOverlay.on('load', function () {
 		}
 	});
 	const MyPlayControl = Control.extend({
-		onAdd: function() {
+		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Play';
 			button.innerHTML = '<span aria-hidden="true">▶️</span>';

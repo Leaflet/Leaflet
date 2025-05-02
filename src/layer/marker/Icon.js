@@ -147,7 +147,7 @@ export const Icon = Class.extend({
 	},
 
 	_createImg(src, el) {
-		el = el || document.createElement('img');
+		el ??= document.createElement('img');
 		el.src = src;
 		return el;
 	},

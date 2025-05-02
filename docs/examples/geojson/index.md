@@ -109,7 +109,7 @@ new GeoJSON(myLines, {
 }];
 
 new GeoJSON(states, {
-	style: function(feature) {
+	style(feature) {
 		switch (feature.properties.party) {
 			case 'Republican': return {color: "#ff0000"};
 			case 'Democrat':   return {color: "#0000ff"};
@@ -133,7 +133,7 @@ new GeoJSON(states, {
 };
 
 new GeoJSON(someGeojsonFeature, {
-	pointToLayer: function (feature, latlng) {
+	pointToLayer(feature, latlng) {
 		return new CircleMarker(latlng, geojsonMarkerOptions);
 	}
 }).addTo(map);</code></pre>
@@ -197,7 +197,7 @@ new GeoJSON(geojsonFeature, {
 }];
 
 new GeoJSON(someFeatures, {
-	filter: function(feature, layer) {
+	filter(feature, layer) {
 		return feature.properties.show_on_map;
 	}
 }).addTo(map);</code></pre>
