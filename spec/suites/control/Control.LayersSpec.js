@@ -235,6 +235,21 @@ describe('Control.Layers', () => {
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
+
+		it('should collapse with a delay', (done) => {
+			const layersCtrl = new Control.Layers(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
+			UIEventSimulator.fire('click', map._container);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			setTimeout(() => {
+				expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
+			}, 5);
+			setTimeout(() => {
+				expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
+				done();
+			}, 10);
+		});
 	});
 
 	describe('does not collapse when collapsed: false', () => {
