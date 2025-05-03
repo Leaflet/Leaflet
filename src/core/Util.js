@@ -58,8 +58,8 @@ export function throttle(fn, time, context) {
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
 	const max = range[1],
-	    min = range[0],
-	    d = max - min;
+	min = range[0],
+	d = max - min;
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 }
 
@@ -90,7 +90,7 @@ export function setOptions(obj, options) {
 		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
 	for (const i in options) {
-		if (Object.hasOwn(options, i)) {
+		if (Object.hasOwn(options, i) && options[i] !== undefined) {
 			obj.options[i] = options[i];
 		}
 	}
