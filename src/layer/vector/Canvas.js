@@ -96,13 +96,9 @@ export const Canvas = Renderer.extend({
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
 
-		let layer;
 		this._redrawBounds = null;
-		for (const id in this._layers) {
-			if (Object.hasOwn(this._layers, id)) {
-				layer = this._layers[id];
-				layer._update();
-			}
+		for (const layer of Object.values(this._layers)) {
+			layer._update();
 		}
 		this._redraw();
 	},
@@ -111,7 +107,7 @@ export const Canvas = Renderer.extend({
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		const b = this._bounds,
-		    s = this._ctxScale;
+		s = this._ctxScale;
 
 		// translate so we use the same path coordinates after canvas element moves
 		this._ctx.setTransform(
@@ -143,7 +139,7 @@ export const Canvas = Renderer.extend({
 		};
 		if (this._drawLast) { this._drawLast.next = order; }
 		this._drawLast = order;
-		this._drawFirst = this._drawFirst || this._drawLast;
+		this._drawFirst ??= this._drawLast;
 	},
 
 	_addPath(layer) {
@@ -191,17 +187,9 @@ export const Canvas = Renderer.extend({
 
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
-			const parts = layer.options.dashArray.split(/[, ]+/),
-			      dashArray = [];
-			let dashValue,
-			    i;
-			for (i = 0; i < parts.length; i++) {
-				dashValue = Number(parts[i]);
-				// Ignore dash array containing invalid lengths
-				if (isNaN(dashValue)) { return; }
-				dashArray.push(dashValue);
-			}
-			layer.options._dashArray = dashArray;
+			const parts = layer.options.dashArray.split(/[, ]+/);
+			// Ignore dash array containing invalid lengths
+			layer.options._dashArray = parts.map(n => Number(n)).filter(n => !isNaN(n));
 		} else {
 			layer.options._dashArray = layer.options.dashArray;
 		}
@@ -211,13 +199,13 @@ export const Canvas = Renderer.extend({
 		if (!this._map) { return; }
 
 		this._extendRedrawBounds(layer);
-		this._redrawRequest = this._redrawRequest || requestAnimationFrame(this._redraw.bind(this));
+		this._redrawRequest ??= requestAnimationFrame(this._redraw.bind(this));
 	},
 
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
-			const padding = (layer.options.weight || 0) + 1;
-			this._redrawBounds = this._redrawBounds || new Bounds();
+			const padding = (layer.options.weight ?? 0) + 1;
+			this._redrawBounds ??= new Bounds();
 			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 		}
@@ -278,24 +266,21 @@ export const Canvas = Renderer.extend({
 	_updatePoly(layer, closed) {
 		if (!this._drawing) { return; }
 
-		let i, j, len2, p;
 		const parts = layer._parts,
-		      len = parts.length,
-		      ctx = this._ctx;
+		ctx = this._ctx;
 
-		if (!len) { return; }
+		if (!parts.length) { return; }
 
 		ctx.beginPath();
 
-		for (i = 0; i < len; i++) {
-			for (j = 0, len2 = parts[i].length; j < len2; j++) {
-				p = parts[i][j];
+		parts.forEach((p0) => {
+			 p0.forEach((p, j) => {
 				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
-			}
+			});
 			if (closed) {
 				ctx.closePath();
 			}
-		}
+		});
 
 		this._fillStroke(ctx, layer);
 
@@ -307,9 +292,9 @@ export const Canvas = Renderer.extend({
 		if (!this._drawing || layer._empty()) { return; }
 
 		const p = layer._point,
-		    ctx = this._ctx,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
+		ctx = this._ctx,
+		r = Math.max(Math.round(layer._radius), 1),
+		s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
 
 		if (s !== 1) {
 			ctx.save();
@@ -331,14 +316,14 @@ export const Canvas = Renderer.extend({
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
-			ctx.fillStyle = options.fillColor || options.color;
+			ctx.fillStyle = options.fillColor ?? options.color;
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke && options.weight !== 0) {
 			if (ctx.setLineDash) {
-				ctx.lineDashOffset = Number(options.dashOffset || 0);
-				ctx.setLineDash(options._dashArray || []);
+				ctx.lineDashOffset = Number(options.dashOffset ?? 0);
+				ctx.setLineDash(options._dashArray ?? []);
 			}
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;

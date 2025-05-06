@@ -175,14 +175,14 @@ describe('TileLayer', () => {
 	});
 
 	function kittenLayerFactory(options) {
-		return new TileLayer(placeKitten, options || {});
+		return new TileLayer(placeKitten, options ?? {});
 	}
 
 	function eachImg(layer, callback) {
 		const imgtags = layer._container.children[0].children;
-		for (const i in imgtags) {
-			if (imgtags[i].tagName === 'IMG') {
-				callback(imgtags[i]);
+		for (const tag of imgtags) {
+			if (tag.tagName === 'IMG') {
+				callback(tag);
 			}
 		}
 	}

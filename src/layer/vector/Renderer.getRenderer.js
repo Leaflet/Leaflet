@@ -11,7 +11,8 @@ Map.include({
 		// @namespace Path; @option renderer: Renderer
 		// Use this specific instance of `Renderer` for this path. Takes
 		// precedence over the map's [default renderer](#map-renderer).
-		let renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
+		// If set, it will override the `pane` option of the path.
+		let renderer = layer.options.renderer ?? this._getPaneRenderer(layer.options.pane) ?? this.options.renderer ?? this._renderer;
 
 		if (!renderer) {
 			renderer = this._renderer = this._createRenderer();
@@ -25,7 +26,7 @@ Map.include({
 
 	_getPaneRenderer(name) {
 		if (name === 'overlayPane' || name === undefined) {
-			return false;
+			return;
 		}
 
 		let renderer = this._paneRenderers[name];

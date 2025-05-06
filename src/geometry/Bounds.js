@@ -25,17 +25,16 @@ import {Point, toPoint} from './Point.js';
  * can't be added to it with the `include` function.
  */
 
-export function Bounds(a, b) {
-	if (!a) { return; }
+export class Bounds {
+	constructor(a, b) {
+		if (!a) { return; }
 
-	const points = b ? [a, b] : a;
-
-	for (let i = 0, len = points.length; i < len; i++) {
-		this.extend(points[i]);
+		const points = b ? [a, b] : a;
+		for (const point of points) {
+			this.extend(point);
+		}
 	}
-}
 
-Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
 
@@ -70,45 +69,45 @@ Bounds.prototype = {
 			this.max.y = Math.max(max2.y, this.max.y);
 		}
 		return this;
-	},
+	}
 
 	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
 	getCenter(round) {
 		return toPoint(
-		        (this.min.x + this.max.x) / 2,
-		        (this.min.y + this.max.y) / 2, round);
-	},
+			(this.min.x + this.max.x) / 2,
+			(this.min.y + this.max.y) / 2, round);
+	}
 
 	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
 	getBottomLeft() {
 		return toPoint(this.min.x, this.max.y);
-	},
+	}
 
 	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
 	getTopRight() { // -> Point
 		return toPoint(this.max.x, this.min.y);
-	},
+	}
 
 	// @method getTopLeft(): Point
 	// Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
 	getTopLeft() {
 		return this.min; // left, top
-	},
+	}
 
 	// @method getBottomRight(): Point
 	// Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
 	getBottomRight() {
 		return this.max; // right, bottom
-	},
+	}
 
 	// @method getSize(): Point
 	// Returns the size of the given bounds
 	getSize() {
 		return this.max.subtract(this.min);
-	},
+	}
 
 	// @method contains(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle contains the given one.
@@ -135,7 +134,7 @@ Bounds.prototype = {
 		       (max.x <= this.max.x) &&
 		       (min.y >= this.min.y) &&
 		       (max.y <= this.max.y);
-	},
+	}
 
 	// @method intersects(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds
@@ -144,14 +143,14 @@ Bounds.prototype = {
 		bounds = toBounds(bounds);
 
 		const min = this.min,
-		    max = this.max,
-		    min2 = bounds.min,
-		    max2 = bounds.max,
-		    xIntersects = (max2.x >= min.x) && (min2.x <= max.x),
-		    yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
+		max = this.max,
+		min2 = bounds.min,
+		max2 = bounds.max,
+		xIntersects = (max2.x >= min.x) && (min2.x <= max.x),
+		yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
 
 		return xIntersects && yIntersects;
-	},
+	}
 
 	// @method overlaps(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
@@ -160,20 +159,20 @@ Bounds.prototype = {
 		bounds = toBounds(bounds);
 
 		const min = this.min,
-		    max = this.max,
-		    min2 = bounds.min,
-		    max2 = bounds.max,
-		    xOverlaps = (max2.x > min.x) && (min2.x < max.x),
-		    yOverlaps = (max2.y > min.y) && (min2.y < max.y);
+		max = this.max,
+		min2 = bounds.min,
+		max2 = bounds.max,
+		xOverlaps = (max2.x > min.x) && (min2.x < max.x),
+		yOverlaps = (max2.y > min.y) && (min2.y < max.y);
 
 		return xOverlaps && yOverlaps;
-	},
+	}
 
 	// @method isValid(): Boolean
 	// Returns `true` if the bounds are properly initialized.
 	isValid() {
 		return !!(this.min && this.max);
-	},
+	}
 
 
 	// @method pad(bufferRatio: Number): Bounds
@@ -190,7 +189,7 @@ Bounds.prototype = {
 		return toBounds(
 			toPoint(min.x - heightBuffer, min.y - widthBuffer),
 			toPoint(max.x + heightBuffer, max.y + widthBuffer));
-	},
+	}
 
 
 	// @method equals(otherBounds: Bounds): Boolean
@@ -202,8 +201,8 @@ Bounds.prototype = {
 
 		return this.min.equals(bounds.getTopLeft()) &&
 			this.max.equals(bounds.getBottomRight());
-	},
-};
+	}
+}
 
 
 // @factory L.bounds(corner1: Point, corner2: Point)
