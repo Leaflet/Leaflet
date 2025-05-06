@@ -296,7 +296,6 @@ export const Events = {
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
 			p.fire(e.type, {
-				layer: e.target,
 				propagatedFrom: e.target,
 				...e
 			}, true);

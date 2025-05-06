@@ -598,20 +598,13 @@ describe('DomEvent', () => {
 	});
 
 	describe('#preventDefault', () => {
-		function isPrevented(e) {
-			if ('defaultPrevented' in e) {
-				return e.defaultPrevented;
-			}
-			return !e.returnValue; // IE<11
-		}
-
 		it('prevents the default action of event', (done) => {
 			DomEvent.on(el, 'click', (e) => {
-				expect(isPrevented(e)).not.to.be.true; // control case
+				expect(e.defaultPrevented).not.to.be.true; // control case
 
 				DomEvent.preventDefault(e);
 
-				expect(isPrevented(e)).to.be.true;
+				expect(e.defaultPrevented).to.be.true;
 				done();
 			});
 

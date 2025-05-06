@@ -444,7 +444,7 @@ Layer.include({
 			return;
 		}
 
-		this._tooltip._source = e.layer ?? e.target;
+		this._tooltip._source = e.propagatedFrom ?? e.target;
 
 		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
 	},

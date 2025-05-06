@@ -13,7 +13,8 @@ latest_leaflet_version: 1.9.4
 integrity_hash_css: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 integrity_hash_source: "sha256-tPonvXioSHRQt1+4ztWR5mz/1KG1X3yHNzVXprP2gLo="
 integrity_hash_uglified: "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-
+integrity_hash_global_source: ""
+integrity_hash_global_uglified: ""
 
 collections:
   plugins:

@@ -154,7 +154,7 @@ describe('Marker#toGeoJSON', () => {
 
 describe('Circle#toGeoJSON', () => {
 	it('returns a 2D Point object', () => {
-		const circle = new Circle([10, 20], 100);
+		const circle = new Circle([10, 20], {radius: 100});
 		expect(circle.toGeoJSON().geometry).to.eql({
 			type: 'Point',
 			coordinates: [20, 10]
@@ -162,7 +162,7 @@ describe('Circle#toGeoJSON', () => {
 	});
 
 	it('returns a 3D Point object', () => {
-		const circle = new Circle([10, 20, 30], 100);
+		const circle = new Circle([10, 20, 30], {radius: 100});
 		expect(circle.toGeoJSON().geometry).to.eql({
 			type: 'Point',
 			coordinates: [20, 10, 30]
@@ -170,7 +170,7 @@ describe('Circle#toGeoJSON', () => {
 	});
 
 	it('should allow specific precisions', () => {
-		const circle = new Circle([10.1234, 20.1234, 30.1234], 100);
+		const circle = new Circle([10.1234, 20.1234, 30.1234], {radius: 100});
 		expect(circle.toGeoJSON(3).geometry).to.eql({
 			type: 'Point',
 			coordinates: [20.123, 10.123, 30.123]
