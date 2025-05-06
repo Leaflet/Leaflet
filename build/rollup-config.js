@@ -20,6 +20,15 @@ const config = {
 			banner,
 			sourcemap: true,
 			freeze: false
+		},
+		{
+			file: './dist/leaflet-global-src.js',
+			name: 'leaflet',
+			format: 'umd',
+			banner,
+			sourcemap: true,
+			freeze: false,
+			esModule: false
 		}
 	],
 	plugins: [
