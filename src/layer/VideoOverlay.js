@@ -63,7 +63,7 @@ export const VideoOverlay = ImageOverlay.extend({
 		if (this._zoomAnimated) { vid.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
-		DomEvent.on(vid, 'mousedown', (e) => {
+		DomEvent.on(vid, 'pointerdown', (e) => {
 			if (vid.controls) {
 				// Prevent the map from moving when the video or the seekbar is moved
 				DomEvent.stopPropagation(e);

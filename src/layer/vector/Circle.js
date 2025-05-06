@@ -26,11 +26,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 // which contains the circle radius.
 export const Circle = CircleMarker.extend({
 
-	initialize(latlng, options, legacyOptions) {
-		if (typeof options === 'number') {
-			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = {...legacyOptions, radius: options};
-		}
+	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
 

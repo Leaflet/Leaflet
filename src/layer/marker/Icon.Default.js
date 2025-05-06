@@ -30,7 +30,8 @@ export const IconDefault = Icon.extend({
 	},
 
 	_getIconUrl(name) {
-		if (typeof IconDefault.imagePath !== 'string') {	// Deprecated, backwards-compatibility only
+		// only detect once
+		if (!IconDefault.imagePath) {
 			IconDefault.imagePath = this._detectIconPath();
 		}
 

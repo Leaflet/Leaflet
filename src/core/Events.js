@@ -31,7 +31,7 @@ export const Events = {
 	 *
 	 * @alternative
 	 * @method on(eventMap: Object): this
-	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 	 */
 	on(types, fn, context) {
 
@@ -295,7 +295,6 @@ export const Events = {
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
 			p.fire(e.type, {
-				layer: e.target,
 				propagatedFrom: e.target,
 				...e
 			}, true);

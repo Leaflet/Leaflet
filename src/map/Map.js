@@ -9,6 +9,7 @@ import Browser from '../core/Browser.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
+import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 
 /*
  * @class Map
@@ -1066,25 +1067,25 @@ export const Map = Evented.extend({
 		return this.layerPointToContainerPoint(this.latLngToLayerPoint(new LatLng(latlng)));
 	},
 
-	// @method mouseEventToContainerPoint(ev: MouseEvent): Point
-	// Given a MouseEvent object, returns the pixel coordinate relative to the
+	// @method pointerEventToContainerPoint(ev: PointerEvent): Point
+	// Given a PointerEvent object, returns the pixel coordinate relative to the
 	// map container where the event took place.
-	mouseEventToContainerPoint(e) {
-		return DomEvent.getMousePosition(e, this._container);
+	pointerEventToContainerPoint(e) {
+		return DomEvent.getPointerPosition(e, this._container);
 	},
 
-	// @method mouseEventToLayerPoint(ev: MouseEvent): Point
-	// Given a MouseEvent object, returns the pixel coordinate relative to
+	// @method pointerEventToLayerPoint(ev: PointerEvent): Point
+	// Given a PointerEvent object, returns the pixel coordinate relative to
 	// the [origin pixel](#map-getpixelorigin) where the event took place.
-	mouseEventToLayerPoint(e) {
-		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
+	pointerEventToLayerPoint(e) {
+		return this.containerPointToLayerPoint(this.pointerEventToContainerPoint(e));
 	},
 
-	// @method mouseEventToLatLng(ev: MouseEvent): LatLng
-	// Given a MouseEvent object, returns geographical coordinate where the
+	// @method pointerEventToLayerPoint(ev: PointerEvent): LatLng
+	// Given a PointerEvent object, returns geographical coordinate where the
 	// event took place.
-	mouseEventToLatLng(e) { // (MouseEvent)
-		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	pointerEventToLatLng(e) { // (PointerEvent)
+		return this.layerPointToLatLng(this.pointerEventToLayerPoint(e));
 	},
 
 
@@ -1101,6 +1102,8 @@ export const Map = Evented.extend({
 
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
+
+		PointerEvents.enablePointerDetection();
 	},
 
 	_initLayout() {
@@ -1298,21 +1301,21 @@ export const Map = Evented.extend({
 
 		const onOff = remove ? DomEvent.off : DomEvent.on;
 
-		// @event click: MouseEvent
+		// @event click: PointerEvent
 		// Fired when the user clicks (or taps) the map.
-		// @event dblclick: MouseEvent
+		// @event dblclick: PointerEvent
 		// Fired when the user double-clicks (or double-taps) the map.
-		// @event mousedown: MouseEvent
-		// Fired when the user pushes the mouse button on the map.
-		// @event mouseup: MouseEvent
-		// Fired when the user releases the mouse button on the map.
-		// @event mouseover: MouseEvent
-		// Fired when the mouse enters the map.
-		// @event mouseout: MouseEvent
-		// Fired when the mouse leaves the map.
-		// @event mousemove: MouseEvent
-		// Fired while the mouse moves over the map.
-		// @event contextmenu: MouseEvent
+		// @event pointerdown: PointerEvent
+		// Fired when the user pushes the pointer on the map.
+		// @event pointerup: PointerEvent
+		// Fired when the user releases the pointer on the map.
+		// @event pointerover: PointerEvent
+		// Fired when the pointer enters the map.
+		// @event pointerout: PointerEvent
+		// Fired when the pointer leaves the map.
+		// @event pointermove: PointerEvent
+		// Fired while the pointer moves over the map.
+		// @event contextmenu: PointerEvent
 		// Fired when the user pushes the right mouse button on the map, prevents
 		// default browser context menu from showing if there are listeners on
 		// this event. Also fired on mobile when the user holds a single touch
@@ -1325,8 +1328,8 @@ export const Map = Evented.extend({
 		// that do not produce a character value.
 		// @event keyup: KeyboardEvent
 		// Fired when the user releases a key from the keyboard while the map is focused.
-		onOff(this._container, 'click dblclick mousedown mouseup ' +
-			'mouseover mouseout mousemove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
+		onOff(this._container, 'click dblclick pointerdown pointerup ' +
+			'pointerover pointerout pointermove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			if (!remove) {
@@ -1368,7 +1371,7 @@ export const Map = Evented.extend({
 		    target,
 		    src = e.target || e.srcElement,
 		    dragging = false;
-		const isHover = type === 'mouseout' || type === 'mouseover';
+		const isHover = type === 'pointerout' || type === 'pointerover';
 
 		while (src) {
 			target = this._targets[Util.stamp(src)];
@@ -1406,7 +1409,7 @@ export const Map = Evented.extend({
 
 		const type = e.type;
 
-		if (type === 'mousedown') {
+		if (type === 'pointerdown') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(el);
 		}
@@ -1414,22 +1417,17 @@ export const Map = Evented.extend({
 		this._fireDOMEvent(e, type);
 	},
 
-	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
+	_pointerEvents: ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'],
 
 	_fireDOMEvent(e, type, canvasTargets) {
 
-		if (e.type === 'click') {
+		if (type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
-			// @event preclick: MouseEvent
-			// Fired before mouse click on the map (sometimes useful when you
+			// @event preclick: PointerEvent
+			// Fired before pointer click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
-			const synth =  {};
-			for (const i in e) {
-				synth[i] = e[i];
-			}
-			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, canvasTargets);
+			this._fireDOMEvent(e, 'preclick', canvasTargets);
 		}
 
 		// Find the layer the event is propagating from and its parents.
@@ -1455,7 +1453,7 @@ export const Map = Evented.extend({
 		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
 			const isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
 			data.containerPoint = isMarker ?
-				this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
+				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
@@ -1463,7 +1461,7 @@ export const Map = Evented.extend({
 		for (const t of targets) {
 			t.fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(t.options.bubblingMouseEvents === false && this._mouseEvents.includes(type))) { return; }
+				(t.options.bubblingPointerEvents === false && this._pointerEvents.includes(type))) { return; }
 		}
 	},
 
