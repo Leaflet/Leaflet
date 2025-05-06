@@ -43,9 +43,9 @@ export class Point {
 
 		let _x, _y;
 		if (x instanceof Point) {
-			_x = x.x;
-			_y = x.y;
-			// return x; // TODO: return value in constructor
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return x;
 		} else if (Array.isArray(x)) {
 			_x = x[0];
 			_y = x[1];

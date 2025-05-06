@@ -46,9 +46,9 @@ export class LatLng {
 
 		let _lat, _lng, _alt;
 		if (lat instanceof LatLng) {
-			_lat = lat.lat;
-			_lng = lat.lng;
-			_alt = lat.alt;
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return lat;
 		} else if (Array.isArray(lat) && typeof lat[0] !== 'object') {
 			if (lat.length === 3) {
 				_lat = lat[0];

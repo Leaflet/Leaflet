@@ -35,9 +35,9 @@ export class Bounds {
 		if (!a) { return; }
 
 		if (a instanceof Bounds) {
-			this.extend(a);
-			return;
-			// TODO: return value in constructor
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return a;
 		}
 
 		const points = b ? [a, b] : a;

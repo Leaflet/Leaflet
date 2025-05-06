@@ -42,9 +42,9 @@ export class LatLngBounds {
 		if (!corner1) { return; }
 
 		if (corner1 instanceof LatLngBounds) {
-			this.extend(corner1);
-			return;
-			// return corner1; // TODO: return value in constructor?
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return corner1;
 		}
 
 		const latlngs = corner2 ? [corner1, corner2] : corner1;
