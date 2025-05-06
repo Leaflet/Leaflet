@@ -31,7 +31,7 @@ export const SVGOverlay = ImageOverlay.extend({
 		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
 
 		el.onselectstart = Util.falseFn;
-		el.onmousemove = Util.falseFn;
+		el.onpointermove = Util.falseFn;
 	}
 
 	// @method getElement(): SVGElement

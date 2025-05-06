@@ -63,15 +63,15 @@ export const Canvas = Renderer.extend({
 	onRemove() {
 		Renderer.prototype.onRemove.call(this);
 
-		clearTimeout(this._mouseHoverThrottleTimeout);
+		clearTimeout(this._pointerHoverThrottleTimeout);
 	},
 
 	_initContainer() {
 		const container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', this._onMouseMove, this);
-		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
-		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
+		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
+		DomEvent.on(container, 'pointerout', this._handlePointerOut, this);
 		container['_leaflet_disable_events'] = true;
 
 		this._ctx = container.getContext('2d');
@@ -334,11 +334,11 @@ export const Canvas = Renderer.extend({
 		}
 	},
 
-	// Canvas obviously doesn't have mouse events for individual drawn objects,
-	// so we emulate that by calculating what's under the mouse on mousemove/click manually
+	// Canvas obviously doesn't have pointer events for individual drawn objects,
+	// so we emulate that by calculating what's under the pointer on pointermove/click manually
 
 	_onClick(e) {
-		const point = this._map.mouseEventToLayerPoint(e);
+		const point = this._map.pointerEventToLayerPoint(e);
 		let layer, clickedLayer;
 
 		for (let order = this._drawFirst; order; order = order.next) {
@@ -352,27 +352,27 @@ export const Canvas = Renderer.extend({
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	},
 
-	_onMouseMove(e) {
+	_onPointerMove(e) {
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
-		const point = this._map.mouseEventToLayerPoint(e);
-		this._handleMouseHover(e, point);
+		const point = this._map.pointerEventToLayerPoint(e);
+		this._handlePointerHover(e, point);
 	},
 
 
-	_handleMouseOut(e) {
+	_handlePointerOut(e) {
 		const layer = this._hoveredLayer;
 		if (layer) {
-			// if we're leaving the layer, fire mouseout
+			// if we're leaving the layer, fire pointerout
 			this._container.classList.remove('leaflet-interactive');
-			this._fireEvent([layer], e, 'mouseout');
+			this._fireEvent([layer], e, 'pointerout');
 			this._hoveredLayer = null;
-			this._mouseHoverThrottled = false;
+			this._pointerHoverThrottled = false;
 		}
 	},
 
-	_handleMouseHover(e, point) {
-		if (this._mouseHoverThrottled) {
+	_handlePointerHover(e, point) {
+		if (this._pointerHoverThrottled) {
 			return;
 		}
 
@@ -386,20 +386,20 @@ export const Canvas = Renderer.extend({
 		}
 
 		if (candidateHoveredLayer !== this._hoveredLayer) {
-			this._handleMouseOut(e);
+			this._handlePointerOut(e);
 
 			if (candidateHoveredLayer) {
 				this._container.classList.add('leaflet-interactive'); // change cursor
-				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
+				this._fireEvent([candidateHoveredLayer], e, 'pointerover');
 				this._hoveredLayer = candidateHoveredLayer;
 			}
 		}
 
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
-		this._mouseHoverThrottled = true;
-		this._mouseHoverThrottleTimeout = setTimeout((() => {
-			this._mouseHoverThrottled = false;
+		this._pointerHoverThrottled = true;
+		this._pointerHoverThrottleTimeout = setTimeout((() => {
+			this._pointerHoverThrottled = false;
 		}), 32);
 	},
 

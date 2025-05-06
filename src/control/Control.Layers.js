@@ -48,7 +48,7 @@ export const Layers = Control.extend({
 	// @aka Control.Layers options
 	options: {
 		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on mouse hover, touch, or keyboard activation.
+		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 		collapsed: true,
 		position: 'topright',
 
@@ -174,10 +174,10 @@ export const Layers = Control.extend({
 	// @method collapse(): this
 	// Collapse the control container if expanded.
 	collapse(ev) {
-		// On touch devices `pointerleave` is fired while clicking on a checkbox.
+		// On touch devices `pointerleave` & `pointerout` is fired while clicking on a checkbox.
 		// The control was collapsed instead of adding the layer to the map.
-		// So we allow collapse if it is not touch and pointerleave.
-		if (!ev || !(ev.type === 'pointerleave' && ev.pointerType === 'touch')) {
+		// So we allow collapse only if it is not touch.
+		if (!ev || !((ev.type === 'pointerleave' || ev.type === 'pointerout') && ev.pointerType === 'touch')) {
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;

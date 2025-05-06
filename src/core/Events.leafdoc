@@ -8,7 +8,7 @@ information about the event. For example:
 
 ```js
 map.on('click', function(ev) {
-    alert(ev.latlng); // ev is an event object (MouseEvent in this case)
+    alert(ev.latlng); // ev is an event object (PointerEvent in this case)
 });
 ```
 
@@ -36,16 +36,16 @@ event parent.
 @property originalEvent: DOMEvent
 The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this Leaflet event.
 
-@miniclass MouseEvent (Event objects)
+@miniclass PointerEvent (Event objects)
 @inherits Event
 @property latlng: LatLng
-The geographical point where the mouse event occurred.
+The geographical point where the pointer event occurred.
 @property layerPoint: Point
-Pixel coordinates of the point where the mouse event occurred relative to the map layer.
+Pixel coordinates of the point where the pointer event occurred relative to the map layer.
 @property containerPoint: Point
-Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.
+Pixel coordinates of the point where the pointer event occurred relative to the map сontainer.
 @property originalEvent: DOMEvent
-The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) that triggered this Leaflet event.
+The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent) that triggered this Leaflet event.
 
 @miniclass LocationEvent (Event objects)
 @inherits Event

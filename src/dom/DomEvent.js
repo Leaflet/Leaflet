@@ -1,9 +1,11 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
 import Browser from '../core/Browser.js';
-import {addPointerListener, removePointerListener} from './DomEvent.Pointer.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
+
+import * as PointerEvents from './DomEvent.PointerEvents.js';
+export {PointerEvents};
 
 /*
  * @namespace DomEvent
@@ -20,7 +22,7 @@ import {getScale} from './DomUtil.js';
 
 // @alternative
 // @function on(el: HTMLElement, eventMap: Object, context?: Object): this
-// Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+// Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
@@ -45,7 +47,7 @@ const eventsKey = '_leaflet_events';
 
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
-// Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+// Removes a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 
 // @alternative
 // @function off(el: HTMLElement, types: String): this
@@ -89,9 +91,9 @@ function batchRemove(obj, filterFn) {
 	}
 }
 
-const mouseSubst = {
-	mouseenter: 'mouseover',
-	mouseleave: 'mouseout',
+const pointerSubst = {
+	pointerenter: 'pointerover',
+	pointerleave: 'pointerout',
 	wheel: typeof window === 'undefined' ? false : !('onwheel' in window) && 'mousewheel'
 };
 
@@ -106,26 +108,21 @@ function addOne(obj, type, fn, context) {
 
 	const originalHandler = handler;
 
-	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
-		// Needs DomEvent.Pointer.js
-		handler = addPointerListener(obj, type, handler);
-
-	} else if (Browser.touch && (type === 'dblclick')) {
+	if (Browser.touch && (type === 'dblclick')) {
 		handler = addDoubleTapListener(obj, handler);
 
 	} else if ('addEventListener' in obj) {
 
-		if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' ||  type === 'mousewheel') {
-			obj.addEventListener(mouseSubst[type] || type, handler, {passive: false});
-
-		} else if (type === 'mouseenter' || type === 'mouseleave') {
+		if (type === 'wheel' ||  type === 'mousewheel') {
+			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
+		} else if (type === 'pointerenter' || type === 'pointerleave') {
 			handler = function (e) {
 				e ??= window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
 			};
-			obj.addEventListener(mouseSubst[type], handler, false);
+			obj.addEventListener(pointerSubst[type], handler, false);
 
 		} else {
 			obj.addEventListener(type, originalHandler, false);
@@ -145,15 +142,12 @@ function removeOne(obj, type, fn, context, id) {
 
 	if (!handler) { return this; }
 
-	if (!Browser.touchNative && Browser.pointer && type.startsWith('touch')) {
-		removePointerListener(obj, type, handler);
-
-	} else if (Browser.touch && (type === 'dblclick')) {
+	if (Browser.touch && (type === 'dblclick')) {
 		removeDoubleTapListener(obj, handler);
 
 	} else if ('removeEventListener' in obj) {
 
-		obj.removeEventListener(mouseSubst[type] || type, handler, false);
+		obj.removeEventListener(pointerSubst[type] || type, handler, false);
 
 	} else {
 		obj.detachEvent(`on${type}`, handler);
@@ -188,10 +182,10 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`,
-// `'mousedown'` and `'touchstart'` events (plus browser variants).
+// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`
+// and `'pointerdown'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	on(el, 'mousedown touchstart dblclick contextmenu', stopPropagation);
+	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	el['_leaflet_disable_click'] = true;
 	return this;
 }
@@ -226,10 +220,10 @@ export function getPropagationPath(ev) {
 }
 
 
-// @function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
-// Gets normalized mouse position from a DOM event relative to the
+// @function getPointerPosition(ev: DOMEvent, container?: HTMLElement): Point
+// Gets normalized pointer position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
-export function getMousePosition(e, container) {
+export function getPointerPosition(e, container) {
 	if (!container) {
 		return new Point(e.clientX, e.clientY);
 	}
@@ -269,7 +263,7 @@ export function getWheelDelta(e) {
 		0;
 }
 
-// check if element really left/entered the event target (for mouseenter/mouseleave)
+// check if element really left/entered the event target (for pointerenter/pointerleave)
 export function isExternalTarget(el, e) {
 
 	let related = e.relatedTarget;

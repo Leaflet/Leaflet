@@ -3,7 +3,7 @@ import {DivIcon, DomUtil, FeatureGroup, Icon, Map, Marker, Point, Polygon, Popup
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, pointerEventType} from '../SpecHelper.js';
 
 describe('Popup', () => {
 	let container, map;
@@ -450,8 +450,9 @@ describe('Popup', () => {
 					expect(spy.called).to.be.true;
 					expect(map.hasLayer(p)).to.be.true;
 					done();
-				}});
-			const mouse = hand.growFinger('mouse');
+				}
+			});
+			const mouse = hand.growFinger(...pointerEventType);
 			mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 				.down().moveBy(10, 10, 20).up();
 		});
@@ -614,9 +615,9 @@ describe('Popup', () => {
 		it('does not open for empty FeatureGroup', () => {
 			const popup = new Popup();
 			new FeatureGroup([])
-			  .addTo(map)
-			  .bindPopup(popup)
-			  .openPopup();
+				.addTo(map)
+				.bindPopup(popup)
+				.openPopup();
 
 			expect(map.hasLayer(popup)).to.be.false;
 		});
@@ -627,8 +628,8 @@ describe('Popup', () => {
 			const marker3 = new Marker([3, 3]);
 			const popup = new Popup();
 			const group = new FeatureGroup([marker1, marker2, marker3])
-			  .bindPopup(popup)
-			  .addTo(map);
+				.bindPopup(popup)
+				.addTo(map);
 
 			marker1.remove();
 			marker3.remove();

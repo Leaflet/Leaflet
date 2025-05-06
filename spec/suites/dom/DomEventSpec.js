@@ -21,7 +21,7 @@ describe('DomEvent', () => {
 			expect(() => DomEvent.on({}, 'click', Util.falseFn)).to.throw();
 			expect(() => DomEvent.disableScrollPropagation({})).to.throw();
 			expect(() => DomEvent.disableClickPropagation({})).to.throw();
-			expect(() => DomEvent.getMousePosition({clientX: 0, clientY: 0}, {})).to.throw();
+			expect(() => DomEvent.getPointerPosition({clientX: 0, clientY: 0}, {})).to.throw();
 			// .off and .isExternalTarget do not throw atm
 		});
 	});
@@ -67,64 +67,64 @@ describe('DomEvent', () => {
 			expect(() => DomEvent.on(el, 'dblclick', undefined)).to.throw();
 		});
 
-		it('throws when type is "mousedown" and context is null', () => {
-			expect(() => DomEvent.on(el, 'mousedown', null)).to.throw();
+		it('throws when type is "pointerdown" and context is null', () => {
+			expect(() => DomEvent.on(el, 'pointerdown', null)).to.throw();
 		});
 
-		it('throws when type is "mousedown" and context is false', () => {
-			expect(() => DomEvent.on(el, 'mousedown', false)).to.throw();
+		it('throws when type is "pointerdown" and context is false', () => {
+			expect(() => DomEvent.on(el, 'pointerdown', false)).to.throw();
 		});
 
-		it('throws when type is "mousedown" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'mousedown', undefined)).to.throw();
+		it('throws when type is "pointerdown" and context is undefined', () => {
+			expect(() => DomEvent.on(el, 'pointerdown', undefined)).to.throw();
 		});
 
-		it('throws when type is "mouseup" and context is null', () => {
-			expect(() => DomEvent.on(el, 'mouseup', null)).to.throw();
+		it('throws when type is "pointerup" and context is null', () => {
+			expect(() => DomEvent.on(el, 'pointerup', null)).to.throw();
 		});
 
-		it('throws when type is "mouseup" and context is false', () => {
-			expect(() => DomEvent.on(el, 'mouseup', false)).to.throw();
+		it('throws when type is "pointerup" and context is false', () => {
+			expect(() => DomEvent.on(el, 'pointerup', false)).to.throw();
 		});
 
-		it('throws when type is "mouseup" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'mouseup', undefined)).to.throw();
+		it('throws when type is "pointerup" and context is undefined', () => {
+			expect(() => DomEvent.on(el, 'pointerup', undefined)).to.throw();
 		});
 
-		it('throws when type is "mouseover" and context is null', () => {
-			expect(() => DomEvent.on(el, 'mouseover', null)).to.throw();
+		it('throws when type is "pointerover" and context is null', () => {
+			expect(() => DomEvent.on(el, 'pointerover', null)).to.throw();
 		});
 
-		it('throws when type is "mouseover" and context is false', () => {
-			expect(() => DomEvent.on(el, 'mouseover', false)).to.throw();
+		it('throws when type is "pointerover" and context is false', () => {
+			expect(() => DomEvent.on(el, 'pointerover', false)).to.throw();
 		});
 
-		it('throws when type is "mouseover" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'mouseover', undefined)).to.throw();
+		it('throws when type is "pointerover" and context is undefined', () => {
+			expect(() => DomEvent.on(el, 'pointerover', undefined)).to.throw();
 		});
 
-		it('throws when type is "mouseout" and context is null', () => {
-			expect(() => DomEvent.on(el, 'mouseout', null)).to.throw();
+		it('throws when type is "pointerout" and context is null', () => {
+			expect(() => DomEvent.on(el, 'pointerout', null)).to.throw();
 		});
 
-		it('throws when type is "mouseout" and context is false', () => {
-			expect(() => DomEvent.on(el, 'mouseout', false)).to.throw();
+		it('throws when type is "pointerout" and context is false', () => {
+			expect(() => DomEvent.on(el, 'pointerout', false)).to.throw();
 		});
 
-		it('throws when type is "mouseout" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'mouseout', undefined)).to.throw();
+		it('throws when type is "pointerout" and context is undefined', () => {
+			expect(() => DomEvent.on(el, 'pointerout', undefined)).to.throw();
 		});
 
-		it('throws when type is "mousemove" and context is null', () => {
-			expect(() => DomEvent.on(el, 'mousemove', null)).to.throw();
+		it('throws when type is "pointermove" and context is null', () => {
+			expect(() => DomEvent.on(el, 'pointermove', null)).to.throw();
 		});
 
-		it('throws when type is "mousemove" and context is false', () => {
-			expect(() => DomEvent.on(el, 'mousemove', false)).to.throw();
+		it('throws when type is "pointermove" and context is false', () => {
+			expect(() => DomEvent.on(el, 'pointermove', false)).to.throw();
 		});
 
-		it('throws when type is "mousemove" and context is undefined', () => {
-			expect(() => DomEvent.on(el, 'mousemove', undefined)).to.throw();
+		it('throws when type is "pointermove" and context is undefined', () => {
+			expect(() => DomEvent.on(el, 'pointermove', undefined)).to.throw();
 		});
 
 		it('throws when type is "contextmenu" and context is null', () => {
@@ -557,12 +557,11 @@ describe('DomEvent', () => {
 			const child = document.createElement('div');
 			el.appendChild(child);
 			DomEvent.disableClickPropagation(child);
-			DomEvent.on(el, 'dblclick contextmenu mousedown touchstart', listener);
+			DomEvent.on(el, 'dblclick contextmenu pointerdown', listener);
 
 			UIEventSimulator.fire('dblclick', child);
 			UIEventSimulator.fire('contextmenu', child);
-			UIEventSimulator.fire('mousedown', child);
-			UIEventSimulator.fire('touchstart', child, {touches: []});
+			UIEventSimulator.fire('pointerdown', child);
 
 			expect(listener.notCalled).to.be.true;
 		});

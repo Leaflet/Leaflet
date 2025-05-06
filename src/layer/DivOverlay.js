@@ -20,7 +20,7 @@ export const DivOverlay = Layer.extend({
 	// @aka DivOverlay options
 	options: {
 		// @option interactive: Boolean = false
-		// If true, the popup/tooltip will listen to the mouse events.
+		// If true, the popup/tooltip will listen to the pointer events.
 		interactive: false,
 
 		// @option offset: Point = Point(0, 0)
