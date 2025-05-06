@@ -4,22 +4,6 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-// @function extend(dest: Object, src?: Object): Object
-// Merges the properties (including properties inherited through the prototype chain)
-// of the `src` object (or multiple objects) into `dest` object and returns the latter.
-// Has an `L.extend` shortcut.
-export function extend(dest, ...args) {
-	let j, len, src;
-
-	for (j = 0, len = args.length; j < len; j++) {
-		src = args[j];
-		for (const i in src) {
-			dest[i] = src[i];
-		}
-	}
-	return dest;
-}
-
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
 export let lastId = 0;

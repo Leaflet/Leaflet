@@ -44,19 +44,10 @@
 				[39.67759833072648, -104.89471435546875]
 			];
 
-			const latlngs = [];
-
-			for (let i = 0, len = pathPoints.length; i < len; i++) {
-				latlngs.push(new LatLng(pathPoints[i][0], pathPoints[i][1]));
-			}
-
+			const latlngs = pathPoints.map(p => new LatLng(p[0], p[1]));
 			const path = new Polyline(latlngs);
-			const latlngs2 = [];
 
-			for (let i = 0, len = polyPoints.length; i < len; i++) {
-				latlngs2.push(new LatLng(polyPoints[i][0], polyPoints[i][1]));
-			}
-
+			const latlngs2 = polyPoints.map(p => new LatLng(p[0], p[1]));
 			const poly = new Polygon(latlngs2);
 			const map = new Map('map', {
 				layers: [osm],

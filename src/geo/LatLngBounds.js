@@ -36,8 +36,8 @@ export class LatLngBounds {
 
 		const latlngs = corner2 ? [corner1, corner2] : corner1;
 
-		for (let i = 0, len = latlngs.length; i < len; i++) {
-			this.extend(latlngs[i]);
+		for (const latlng of latlngs) {
+			this.extend(latlng);
 		}
 	}
 

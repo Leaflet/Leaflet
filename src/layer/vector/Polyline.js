@@ -88,13 +88,11 @@ export const Polyline = Path.extend({
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint(p) {
 		let minDistance = Infinity,
-		    minPoint = null,
-		    p1, p2;
+		minPoint = null,
+		p1, p2;
 		const closest = LineUtil._sqClosestPointOnSegment;
 
-		for (let j = 0, jLen = this._parts.length; j < jLen; j++) {
-			const points = this._parts[j];
-
+		for (const points of this._parts) {
 			for (let i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
@@ -153,7 +151,7 @@ export const Polyline = Path.extend({
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs(latlngs) {
 		const result = [],
-		    flat = LineUtil.isFlat(latlngs);
+		flat = LineUtil.isFlat(latlngs);
 
 		for (let i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
@@ -180,7 +178,7 @@ export const Polyline = Path.extend({
 
 	_updateBounds() {
 		const w = this._clickTolerance(),
-		    p = new Point(w, w);
+		p = new Point(w, w);
 
 		if (!this._rawPxBounds) {
 			return;
@@ -194,21 +192,14 @@ export const Polyline = Path.extend({
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs(latlngs, result, projectedBounds) {
-		const flat = latlngs[0] instanceof LatLng,
-		      len = latlngs.length;
-		let i, ring;
+		const flat = latlngs[0] instanceof LatLng;
 
 		if (flat) {
-			ring = [];
-			for (i = 0; i < len; i++) {
-				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
-				projectedBounds.extend(ring[i]);
-			}
+			const ring = latlngs.map(latlng => this._map.latLngToLayerPoint(latlng));
+			ring.forEach(r => projectedBounds.extend(r));
 			result.push(ring);
 		} else {
-			for (i = 0; i < len; i++) {
-				this._projectLatlngs(latlngs[i], result, projectedBounds);
-			}
+			latlngs.forEach(latlng => this._projectLatlngs(latlng, result, projectedBounds));
 		}
 	},
 
@@ -252,7 +243,7 @@ export const Polyline = Path.extend({
 	// simplify each clipped part of the polyline for performance
 	_simplifyPoints() {
 		const parts = this._parts,
-		    tolerance = this.options.smoothFactor;
+		tolerance = this.options.smoothFactor;
 
 		for (let i = 0, len = parts.length; i < len; i++) {
 			parts[i] = LineUtil.simplify(parts[i], tolerance);

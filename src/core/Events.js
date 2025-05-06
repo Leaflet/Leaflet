@@ -38,20 +38,16 @@ export const Events = {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					// we don't process space-separated events here for performance;
-					// it's a hot path since Layer uses the on(obj) syntax
-					this._on(type, types[type], fn);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
+				this._on(type, f, fn);
 			}
 
 		} else {
 			// types can be a string of space-separated words
-			types = Util.splitWords(types);
-
-			for (let i = 0, len = types.length; i < len; i++) {
-				this._on(types[i], fn, context);
+			for (const type of Util.splitWords(types)) {
+				this._on(type, fn, context);
 			}
 		}
 
@@ -76,21 +72,17 @@ export const Events = {
 			delete this._events;
 
 		} else if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					this._off(type, types[type], fn);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				this._off(type, f, fn);
 			}
 
 		} else {
-			types = Util.splitWords(types);
-
 			const removeAll = arguments.length === 1;
-			for (let i = 0, len = types.length; i < len; i++) {
+			for (const type of Util.splitWords(types)) {
 				if (removeAll) {
-					this._off(types[i]);
+					this._off(type);
 				} else {
-					this._off(types[i], fn, context);
+					this._off(type, fn, context);
 				}
 			}
 		}
@@ -126,15 +118,11 @@ export const Events = {
 	},
 
 	_off(type, fn, context) {
-		let listeners,
-		    i,
-		    len;
-
 		if (!this._events) {
 			return;
 		}
 
-		listeners = this._events[type];
+		let listeners = this._events[type];
 		if (!listeners) {
 			return;
 		}
@@ -143,8 +131,8 @@ export const Events = {
 			if (this._firingCount) {
 				// Set all removed listeners to noop
 				// so they are not called if remove happens in fire
-				for (i = 0, len = listeners.length; i < len; i++) {
-					listeners[i].fn = Util.falseFn;
+				for (const listener of listeners) {
+					listener.fn = Util.falseFn;
 				}
 			}
 			// clear all listeners for a type if function isn't specified
@@ -179,18 +167,18 @@ export const Events = {
 	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		const event = Util.extend({}, data, {
+		const event = {
+			...data,
 			type,
 			target: this,
 			sourceTarget: data?.sourceTarget || this
-		});
+		};
 
 		if (this._events) {
 			const listeners = this._events[type];
 			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
-				for (let i = 0, len = listeners.length; i < len; i++) {
-					const l = listeners[i];
+				for (const l of listeners) {
 					// off overwrites l.fn, so we need to copy fn to a variable
 					const fn = l.fn;
 					if (l.once) {
@@ -236,8 +224,10 @@ export const Events = {
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
-			for (const id in this._eventParents) {
-				if (this._eventParents[id].listens(type, fn, context, propagate)) { return true; }
+			for (const p of Object.values(this._eventParents ?? {})) {
+				if (p.listens(type, fn, context, propagate)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -259,12 +249,8 @@ export const Events = {
 			context = undefined;
 		}
 
-		for (let i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return i;
-			}
-		}
-		return false;
+		const index = listeners.findIndex(l => l.fn === fn && l.ctx === context);
+		return index === -1 ? false : index;
 
 	},
 
@@ -274,20 +260,16 @@ export const Events = {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					// we don't process space-separated events here for performance;
-					// it's a hot path since Layer uses the on(obj) syntax
-					this._on(type, types[type], fn, true);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
+				this._on(type, f, fn, true);
 			}
 
 		} else {
 			// types can be a string of space-separated words
-			types = Util.splitWords(types);
-
-			for (let i = 0, len = types.length; i < len; i++) {
-				this._on(types[i], fn, context, true);
+			for (const type of Util.splitWords(types)) {
+				this._on(type, fn, context, true);
 			}
 		}
 
@@ -312,13 +294,12 @@ export const Events = {
 	},
 
 	_propagateEvent(e) {
-		for (const id in this._eventParents) {
-			if (Object.hasOwn(this._eventParents, id)) {
-				this._eventParents[id].fire(e.type, Util.extend({
-					layer: e.target,
-					propagatedFrom: e.target
-				}, e), true);
-			}
+		for (const p of Object.values(this._eventParents ?? {})) {
+			p.fire(e.type, {
+				layer: e.target,
+				propagatedFrom: e.target,
+				...e
+			}, true);
 		}
 	}
 };

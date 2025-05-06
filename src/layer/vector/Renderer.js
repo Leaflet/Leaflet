@@ -46,26 +46,20 @@ export const Renderer = BlanketOverlay.extend({
 		// When a zoom ends, the "origin pixel" changes. Internal coordinates
 		// of paths are relative to the origin pixel and therefore need to
 		// be recalculated.
-		for (const id in this._layers) {
-			if (Object.hasOwn(this._layers, id)) {
-				this._layers[id]._project();
-			}
+		for (const layer of Object.values(this._layers)) {
+			layer._project();
 		}
 	},
 
 	_updatePaths() {
-		for (const id in this._layers) {
-			if (Object.hasOwn(this._layers, id)) {
-				this._layers[id]._update();
-			}
+		for (const layer of Object.values(this._layers)) {
+			layer._update();
 		}
 	},
 
 	_onViewReset() {
-		for (const id in this._layers) {
-			if (Object.hasOwn(this._layers, id)) {
-				this._layers[id]._reset();
-			}
+		for (const layer of Object.values(this._layers)) {
+			layer._reset();
 		}
 	},
 

@@ -62,9 +62,9 @@ describe('GridLayer', () => {
 
 		const loaded = {};
 
-		for (let i = 0; i < tiles.length; i++) {
-			const coords = tiles[i].coords,
-			    pos = DomUtil.getPosition(tiles[i].tile);
+		for (const tile of tiles) {
+			const coords = tile.coords,
+			    pos = DomUtil.getPosition(tile.tile);
 
 			loaded[`${pos.x}:${pos.y}`] = [coords.x, coords.y];
 		}
@@ -562,10 +562,7 @@ describe('GridLayer', () => {
 		// Debug helper
 		/*
 		function logTiles(ev) {
-			let pending = 0;
-			for (const key in grid._tiles) {
-				if (!grid._tiles[key].loaded) { pending++; }
-			}
+			const pending = Object.values(grid._tiles).filter(t => !t.loaded).length;
 			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
 		}
 		*/
