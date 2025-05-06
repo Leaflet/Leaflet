@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Circle, Map, Util, CRS, Transformation} from 'leaflet';
+import {Circle, Map, CRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -45,9 +45,10 @@ describe('Circle', () => {
 		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
 			map.remove();
 
-			const crs = Util.extend(CRS.Simple, {
+			const crs = {
+				...CRS.Simple,
 				transformation: new Transformation(-1, 0, -1, 0),
-			});
+			};
 			map = new Map(container, {
 				crs
 			});

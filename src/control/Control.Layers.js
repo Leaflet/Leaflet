@@ -85,16 +85,12 @@ export const Layers = Control.extend({
 		this._handlingClick = false;
 		this._preventClick = false;
 
-		for (const i in baseLayers) {
-			if (Object.hasOwn(baseLayers, i)) {
-				this._addLayer(baseLayers[i], i);
-			}
+		for (const [name, layer] of Object.entries(baseLayers ?? {})) {
+			this._addLayer(layer, name);
 		}
 
-		for (const i in overlays) {
-			if (Object.hasOwn(overlays, i)) {
-				this._addLayer(overlays[i], i, true);
-			}
+		for (const [name, layer] of Object.entries(overlays ?? {})) {
+			this._addLayer(layer, name, true);
 		}
 	},
 
@@ -105,8 +101,8 @@ export const Layers = Control.extend({
 		this._map = map;
 		map.on('zoomend', this._checkDisabledLayers, this);
 
-		for (let i = 0; i < this._layers.length; i++) {
-			this._layers[i].layer.on('add remove', this._onLayerChange, this);
+		for (const layer of this._layers) {
+			layer.layer.on('add remove', this._onLayerChange, this);
 		}
 
 		if (!this.options.collapsed) {
@@ -126,8 +122,8 @@ export const Layers = Control.extend({
 	onRemove() {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
 
-		for (let i = 0; i < this._layers.length; i++) {
-			this._layers[i].layer.off('add remove', this._onLayerChange, this);
+		for (const layer of this._layers) {
+			layer.layer.off('add remove', this._onLayerChange, this);
 		}
 
 		this._map.off('resize', this._expandIfNotCollapsed, this);
@@ -189,8 +185,8 @@ export const Layers = Control.extend({
 
 	_initLayout() {
 		const className = 'leaflet-control-layers',
-		    container = this._container = DomUtil.create('div', className),
-		    collapsed = this.options.collapsed;
+		container = this._container = DomUtil.create('div', className),
+		collapsed = this.options.collapsed;
 
 		DomEvent.disableClickPropagation(container);
 		DomEvent.disableScrollPropagation(container);
@@ -236,10 +232,9 @@ export const Layers = Control.extend({
 	},
 
 	_getLayer(id) {
-		for (let i = 0; i < this._layers.length; i++) {
-
-			if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
-				return this._layers[i];
+		for (const layer of this._layers) {
+			if (layer && Util.stamp(layer.layer) === id) {
+				return layer;
 			}
 		}
 	},
@@ -274,13 +269,12 @@ export const Layers = Control.extend({
 		this._overlaysList.replaceChildren();
 
 		this._layerControlInputs = [];
-		let baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
+		let baseLayersPresent, overlaysPresent, baseLayersCount = 0;
 
-		for (i = 0; i < this._layers.length; i++) {
-			obj = this._layers[i];
+		for (const obj of this._layers) {
 			this._addItem(obj);
-			overlaysPresent = overlaysPresent || obj.overlay;
-			baseLayersPresent = baseLayersPresent || !obj.overlay;
+			overlaysPresent ||= obj.overlay;
+			baseLayersPresent ||= !obj.overlay;
 			baseLayersCount += !obj.overlay ? 1 : 0;
 		}
 
@@ -333,7 +327,7 @@ export const Layers = Control.extend({
 
 	_addItem(obj) {
 		const label = document.createElement('label'),
-		      checked = this._map.hasLayer(obj.layer);
+		checked = this._map.hasLayer(obj.layer);
 		let input;
 
 		if (obj.overlay) {
@@ -375,15 +369,13 @@ export const Layers = Control.extend({
 		}
 
 		const inputs = this._layerControlInputs,
-		      addedLayers = [],
-		      removedLayers = [];
-		let input, layer;
+		addedLayers = [],
+		removedLayers = [];
 
 		this._handlingClick = true;
 
-		for (let i = inputs.length - 1; i >= 0; i--) {
-			input = inputs[i];
-			layer = this._getLayer(input.layerId).layer;
+		for (const input of inputs) {
+			const layer = this._getLayer(input.layerId).layer;
 
 			if (input.checked) {
 				addedLayers.push(layer);
@@ -393,14 +385,14 @@ export const Layers = Control.extend({
 		}
 
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
-		for (let i = 0; i < removedLayers.length; i++) {
-			if (this._map.hasLayer(removedLayers[i])) {
-				this._map.removeLayer(removedLayers[i]);
+		for (const layer of removedLayers) {
+			if (this._map.hasLayer(layer)) {
+				this._map.removeLayer(layer);
 			}
 		}
-		for (let i = 0; i < addedLayers.length; i++) {
-			if (!this._map.hasLayer(addedLayers[i])) {
-				this._map.addLayer(addedLayers[i]);
+		for (const layer of addedLayers) {
+			if (!this._map.hasLayer(layer)) {
+				this._map.addLayer(layer);
 			}
 		}
 
@@ -411,12 +403,10 @@ export const Layers = Control.extend({
 
 	_checkDisabledLayers() {
 		const inputs = this._layerControlInputs,
-		      zoom = this._map.getZoom();
-		let input, layer;
+		zoom = this._map.getZoom();
 
-		for (let i = inputs.length - 1; i >= 0; i--) {
-			input = inputs[i];
-			layer = this._getLayer(input.layerId).layer;
+		for (const input of inputs) {
+			const layer = this._getLayer(input.layerId).layer;
 			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 

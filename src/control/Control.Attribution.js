@@ -42,9 +42,9 @@ export const Attribution = Control.extend({
 		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
-		for (const i in map._layers) {
-			if (map._layers[i].getAttribution) {
-				this.addAttribution(map._layers[i].getAttribution());
+		for (const layer of Object.values(map._layers)) {
+			if (layer.getAttribution) {
+				this.addAttribution(layer.getAttribution());
 			}
 		}
 
@@ -62,9 +62,7 @@ export const Attribution = Control.extend({
 	_addAttribution(ev) {
 		if (ev.layer.getAttribution) {
 			this.addAttribution(ev.layer.getAttribution());
-			ev.layer.once('remove', function () {
-				this.removeAttribution(ev.layer.getAttribution());
-			}, this);
+			ev.layer.once('remove', () => this.removeAttribution(ev.layer.getAttribution()));
 		}
 	},
 
@@ -107,13 +105,7 @@ export const Attribution = Control.extend({
 	_update() {
 		if (!this._map) { return; }
 
-		const attribs = [];
-
-		for (const i in this._attributions) {
-			if (this._attributions[i]) {
-				attribs.push(i);
-			}
-		}
+		const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]);
 
 		const prefixAndAttribs = [];
 

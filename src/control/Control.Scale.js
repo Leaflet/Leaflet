@@ -115,7 +115,7 @@ export const Scale = Control.extend({
 	},
 
 	_getRoundNum(num) {
-		const pow10 = Math.pow(10, (`${Math.floor(num)}`).length - 1);
+		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
 		let d = num / pow10;
 
 		d = d >= 10 ? 10 :

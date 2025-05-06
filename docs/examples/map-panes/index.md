@@ -92,9 +92,7 @@ With the pane now ready, we can add the layers, paying attention to use the `pan
 
 Finally, add some interaction to each feature on the GeoJSON layer:
 
-    geojson.eachLayer(function (layer) {
-        layer.bindPopup(layer.feature.properties.name);
-    });
+    geojson.eachLayer(layer => layer.bindPopup(layer.feature.properties.name));
 
     map.fitBounds(geojson.getBounds());
 

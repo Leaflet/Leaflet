@@ -40,7 +40,7 @@ export const Draggable = Evented.extend({
 		Util.setOptions(this, options);
 
 		this._element = element;
-		this._dragStartTarget = dragStartTarget || element;
+		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
 	},
 
@@ -81,7 +81,7 @@ export const Draggable = Evented.extend({
 		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
 
 		if (e.touches && e.touches.length !== 1) {
-			// Finish dragging to avoid conflict with touchZoom
+			// Finish dragging to avoid conflict with pinchZoom.
 			if (Draggable._dragging === this) {
 				this.finishDrag();
 			}
@@ -140,7 +140,9 @@ export const Draggable = Evented.extend({
 		offset.x /= this._parentScale.x;
 		offset.y /= this._parentScale.y;
 
-		DomEvent.preventDefault(e);
+		if (e.cancelable) {
+			DomEvent.preventDefault(e);
+		}
 
 		if (!this._moved) {
 			// @event dragstart: Event
@@ -151,7 +153,7 @@ export const Draggable = Evented.extend({
 
 			document.body.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target || e.srcElement;
+			this._lastTarget = e.target ?? e.srcElement;
 			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
