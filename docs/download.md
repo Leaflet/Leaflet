@@ -68,7 +68,7 @@ Then, in your script, import the needed Leaflet Classes as follows:
 ```
 #### Including Leaflet with a Global Scope
 
-The old (and not recommended) way to include Leaflet in your project without using modules is by relying on the global variable `L`.
+The old (and no longer recommended) way to include Leaflet in your project without using modules is by relying on the global variable `L`.
 
 ```html
 <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet-global.js" integrity="{{site.integrity_hash_global_uglified}}" crossorigin=""></script>
