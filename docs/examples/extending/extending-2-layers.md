@@ -15,7 +15,7 @@ A few of the Leaflet classes have so-called "extension methods": entry points fo
 
 One of them is `L.TileLayer.getTileUrl()`. This method is called internally by `L.TileLayer` whenever a new tile needs to know which image to load. By making a subclass of `L.TileLayer` and rewriting its `getTileUrl()` function, we can create custom behaviour.
 
-Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [PlaceKitten](https://placekitten.com):
+Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [Cataas](https://cataas.com):
 
 	TileLayer.Kitten = TileLayer.extend({
 		getTileUrl(coords) {

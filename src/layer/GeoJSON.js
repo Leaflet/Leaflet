@@ -140,7 +140,7 @@ export const GeoJSON = FeatureGroup.extend({
 			return this.eachLayer(this.resetStyle, this);
 		}
 		// reset any custom styles
-		layer.options = {...layer.defaultOptions};
+		layer.options = Object.create(layer.defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
 		return this;
 	},

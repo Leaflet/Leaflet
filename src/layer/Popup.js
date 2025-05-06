@@ -224,10 +224,10 @@ export const Popup = DivOverlay.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
-			DomEvent.on(closeButton, 'click', function (ev) {
+			DomEvent.on(closeButton, 'click', (ev) => {
 				DomEvent.preventDefault(ev);
 				this.close();
-			}, this);
+			});
 		}
 
 
