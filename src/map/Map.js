@@ -1410,18 +1410,13 @@ export const Map = Evented.extend({
 
 	_fireDOMEvent(e, type, canvasTargets) {
 
-		if (e.type === 'click') {
+		if (type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
 			// @event preclick: MouseEvent
 			// Fired before mouse click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
-			const synth =  {};
-			for (const i in e) {
-				synth[i] = e[i];
-			}
-			synth.type = 'preclick';
-			this._fireDOMEvent(synth, synth.type, canvasTargets);
+			this._fireDOMEvent(e, 'preclick', canvasTargets);
 		}
 
 		// Find the layer the event is propagating from and its parents.
