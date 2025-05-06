@@ -1,5 +1,5 @@
-import pkg from '../package.json' with { type: 'json' };
-export const version = pkg.version;
+// version = 'latest' is replaced via build/rollup-config.js
+export const version = 'latest';
 
 // control
 export * from './control/index.js';
