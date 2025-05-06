@@ -254,7 +254,7 @@ Map.include({
  * All layers share a set of methods convenient for binding tooltips to it.
  *
  * ```js
- * const layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+ * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
  * layer.openTooltip();
  * layer.closeTooltip();
  * ```

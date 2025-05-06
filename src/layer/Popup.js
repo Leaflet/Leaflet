@@ -387,7 +387,7 @@ Map.include({
  * All layers share a set of methods convenient for binding popups to it.
  *
  * ```js
- * const layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
+ * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
  * layer.openPopup();
  * layer.closePopup();
  * ```

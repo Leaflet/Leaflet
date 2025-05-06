@@ -13,7 +13,7 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * L.layerGroup([marker1, marker2])
+ * new LayerGroup([marker1, marker2])
  * 	.addLayer(polyline)
  * 	.addTo(map);
  * ```

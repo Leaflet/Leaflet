@@ -15,7 +15,7 @@ import {MarkerDrag} from './Marker.Drag.js';
  * @example
  *
  * ```js
- * L.marker([50.5, 30.5]).addTo(map);
+ * new Marker([50.5, 30.5]).addTo(map);
  * ```
  */
 

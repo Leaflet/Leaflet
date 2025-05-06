@@ -20,7 +20,7 @@ import * as LineUtil from '../geometry/LineUtil.js';
  * @example
  *
  * ```js
- * L.geoJSON(data, {
+ * new GeoJSON(data, {
  * 	style: function (feature) {
  * 		return {color: feature.properties.color};
  * 	}
@@ -46,7 +46,7 @@ export const GeoJSON = FeatureGroup.extend({
 	 * The default is to spawn a default `Marker`:
 	 * ```js
 	 * function(geoJsonPoint, latlng) {
-	 * 	return L.marker(latlng);
+	 * 	return new Marker(latlng);
 	 * }
 	 * ```
 	 *

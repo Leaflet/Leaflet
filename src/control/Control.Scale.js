@@ -11,7 +11,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @example
  *
  * ```js
- * L.control.scale().addTo(map);
+ * new Control.Scale().addTo(map);
  * ```
  */
 

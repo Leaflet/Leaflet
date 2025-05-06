@@ -6,7 +6,7 @@
  * @example
  *
  * ```js
- * if (L.Browser.chrome) {
+ * if (Browser.chrome) {
  *   alert('You are running Chrome!');
  * }
  * ```

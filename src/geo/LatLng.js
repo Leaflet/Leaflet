@@ -9,7 +9,7 @@ import {LatLngBounds} from './LatLngBounds.js';
  * @example
  *
  * ```
- * const latlng = L.latLng(50.5, 30.5);
+ * const latlng = new LatLng(50.5, 30.5);
  * ```
  *
  * All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:
@@ -18,7 +18,7 @@ import {LatLngBounds} from './LatLngBounds.js';
  * map.panTo([50, 30]);
  * map.panTo({lat: 50, lng: 30});
  * map.panTo({lat: 50, lon: 30});
- * map.panTo(L.latLng(50, 30));
+ * map.panTo(new LatLng(50, 30));
  * ```
  *
  * Note that `LatLng` does not inherit from Leaflet's `Class` object,

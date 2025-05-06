@@ -8,9 +8,9 @@ import {LatLng} from './LatLng.js';
  * @example
  *
  * ```js
- * const corner1 = L.latLng(40.712, -74.227),
- * corner2 = L.latLng(40.774, -74.125),
- * bounds = L.latLngBounds(corner1, corner2);
+ * const corner1 = new LatLng(40.712, -74.227),
+ * corner2 = new LatLng(40.774, -74.125),
+ * bounds = new LatLngBounds(corner1, corner2);
  * ```
  *
  * All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:

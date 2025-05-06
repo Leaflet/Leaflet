@@ -15,7 +15,7 @@ import {formatNum} from '../core/Util.js';
  *
  * ```js
  * map.panBy([200, 300]);
- * map.panBy(L.point(200, 300));
+ * map.panBy(new Point(200, 300));
  * ```
  *
  * Note that `Point` does not inherit from Leaflet's `Class` object,
