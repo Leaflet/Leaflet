@@ -2,6 +2,7 @@ import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
+import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
@@ -17,7 +18,7 @@ Map.mergeOptions({
 	// @section Touch interaction options
 	// @option tapHold: Boolean
 	// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
-	tapHold: true,
+	tapHold: Browser.safari && Browser.mobile,
 
 	// @option tapTolerance: Number = 15
 	// The max number of pixels a user can shift his finger during touch
