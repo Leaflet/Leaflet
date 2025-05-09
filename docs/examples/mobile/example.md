@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Mobile tutorial
+title: Mobile Example
 css: "body {
 		padding: 0;
 		margin: 0;

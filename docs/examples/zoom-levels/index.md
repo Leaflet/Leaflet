@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Zoom levels
+title: Zoom Levels
 ---
 
 <style>
@@ -24,7 +24,7 @@ title: Zoom levels
 }
 </style>
 
-## Zoom levels
+## Zoom Levels
 
 Leaflet works with [latitude](https://en.wikipedia.org/wiki/Latitude), [longitude](https://en.wikipedia.org/wiki/Longitude) and "zoom level".
 
@@ -33,7 +33,7 @@ levels means that the map can show details of a city.
 
 To understand how zoom levels work, first we need a basic introduction to <i>geodesy</i>.
 
-## The shape of the earth
+## The Shape of the Earth
 
 Let's have a look at a simple map locked at zoom zero:
 
@@ -81,7 +81,7 @@ Things like geodesy, map projections and coordinate systems are hard, *very hard
 always the right thing to do, but most of the time works fine enough, makes things
 simpler, and allows Leaflet (and other map libraries) to be fast.
 
-## Powers of two
+## Powers of Two
 
 For now, let's just ***assume*** that the world is a square:
 
@@ -136,7 +136,7 @@ At each zoom level, each tile is divided in four, and its size (length of the ed
 This goes on and on. Most tile services offer tiles up to zoom level 18, depending on
 their coverage. This is enough to see a few city blocks per tile.
 
-## A note about scale
+## A Note About Scale
 
 One of the disadvantages of using a cylindrical projection is that the scale is not
 constant, and measuring distances or sizes is not reliable, specially at low zoom levels.
@@ -166,7 +166,7 @@ to  do this automatically:
 At high zoom levels, the scale changes very little, and is not noticeable.
 
 
-## Controlling the zoom
+## Controlling the Zoom
 
 A leaflet map has several ways to control the zoom level shown, but the most obvious
 one is [`setZoom()`](/reference.html#map-setzoom). For example, `map.setZoom(0);`
@@ -196,7 +196,7 @@ Other ways of setting the zoom are:
 * [`fitBounds(bounds)`](/reference.html#map-fitbounds), automatically calculates the zoom to fit a rectangular area on the map
 
 
-## Fractional zoom
+## Fractional Zoom
 
 A feature introduced in Leaflet 1.0.0 was the concept of <em>fractional zoom</em>.
 Before this, the zoom level of the map could be only an integer number (`0`, `1`, `2`, and so on);

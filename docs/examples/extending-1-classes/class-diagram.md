@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Leaflet class diagram
+title: Leaflet Class Diagram
 css: "#map {
             width: 100vw;
             height: 100%;

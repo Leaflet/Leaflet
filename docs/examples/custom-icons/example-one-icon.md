@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Custom Icons Tutorial
+title: Single Custom Icon Example
 ---
 <script type="module">
 	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';

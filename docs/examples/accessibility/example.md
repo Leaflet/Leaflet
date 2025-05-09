@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Accessible markers
+title: Accessible Markers Example
 ---
 
 <script type="module">
