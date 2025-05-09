@@ -22,7 +22,7 @@ To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use thi
 const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
 ```
 
-#### Creating a map
+#### Creating a Map
 
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
@@ -92,7 +92,7 @@ To display this video:
 
 If a video can be shown in a webpage in this way, then Leaflet can display it inside a map. It is important that the videos are prepared in such a way that they will fit the map: The video should have a "north-up" orientation, and its proportions should fit the map. If not, it will look out of place.
 
-#### Creating a map
+#### Creating a Map
 
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
@@ -105,7 +105,7 @@ const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 ```
 
-#### Adding the video overlay
+#### Adding the Video Overlay
 
 Adding a video overlay works very similar to adding an image overlay. 
 
@@ -149,7 +149,7 @@ You can find other options of `L.videoOverlay` in the [documentation](/reference
 Video overlays behave like any other Leaflet layer - you can add and remove them, let the user select from several videos using a [layers control](../layers-control/), etc.
 
 
-#### A bit of control over the video
+#### A Bit of Control over the Video
 
 If you read the API documentation, you'll notice that the `L.VideoOverlay` class does not have a `play()` or `pause()` method.
 
@@ -205,7 +205,7 @@ const svgOverlay = new SVGOverlay(SVGElement, svgElementBounds, options);
 
 It instantiates an image overlay object given an SVG element and the geographical bounds it is tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
 
-#### Creating an SVG element
+#### Creating an SVG Element
 
 Let's create an SVG element:
 
@@ -228,7 +228,7 @@ And choose this SVG element by using a querySelector:
 const svgElement = document.querySelector('#svg');
 ```
 
-#### Adding the SVG overlay
+#### Adding the SVG Overlay
 
 Create the SVGOverlay with desired options similarly to ImageOverlay and VideoOverlay:
 

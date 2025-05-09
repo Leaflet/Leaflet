@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Choropleth Tutorial
+title: Basic States Example
 ---
 <script type="text/javascript" src="us-states.js"></script>
 <script type="module">

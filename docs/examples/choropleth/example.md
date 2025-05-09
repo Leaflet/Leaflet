@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Choropleth Tutorial
+title: Full Choropleth Example
 css: "#map {
 			width: 800px;
 			height: 500px;

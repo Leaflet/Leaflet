@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Grid coordinates
+title: Pixel Origin Examples
 ---
 <style>
 
