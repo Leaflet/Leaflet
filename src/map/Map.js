@@ -365,6 +365,10 @@ export const Map = Evented.extend({
 		size = this.getSize(),
 		startZoom = this._zoom;
 
+		if (from.distanceTo(to) < 5) {
+			return this.setView(targetCenter, targetZoom, options);
+		}
+
 		targetCenter = toLatLng(targetCenter);
 		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
