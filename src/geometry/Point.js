@@ -90,7 +90,11 @@ export class Point {
 	// @method clone(): Point
 	// Returns a copy of the current point.
 	clone() {
-		return new Point(this.x, this.y);
+		// to skip the validation in the constructor we need to initialize with 0 and then set the values later
+		const p = new Point(0, 0);
+		p.x = this.x;
+		p.y = this.y;
+		return p;
 	}
 
 	// @method add(otherPoint: Point): Point
