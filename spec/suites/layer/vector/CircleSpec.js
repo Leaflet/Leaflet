@@ -45,10 +45,9 @@ describe('Circle', () => {
 		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
 			map.remove();
 
-			const crs = {
-				...CRS.Simple,
-				transformation: new Transformation(-1, 0, -1, 0),
-			};
+			class crs extends CRS.Simple {
+				static transformation = new Transformation(-1, 0, -1, 0);
+			}
 			map = new Map(container, {
 				crs
 			});

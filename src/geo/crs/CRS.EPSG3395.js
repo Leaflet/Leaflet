@@ -8,13 +8,12 @@ import {toTransformation} from '../../geometry/Transformation.js';
  *
  * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */
-export const EPSG3395 = {
-	...Earth,
-	code: 'EPSG:3395',
-	projection: Mercator,
+export class EPSG3395 extends Earth {
+	static code = 'EPSG:3395';
+	static projection = Mercator;
 
-	transformation: (() => {
+	static transformation = (() => {
 		const scale = 0.5 / (Math.PI * Mercator.R);
 		return toTransformation(scale, 0.5, -scale, 0.5);
-	})()
-};
+	})();
+}
