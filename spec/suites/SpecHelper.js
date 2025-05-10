@@ -13,6 +13,15 @@ util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e
 
 	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
 	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
+	new Assertion(this._obj.alt).to.eql(expected.alt);
+});
+
+util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
+	expected = new LatLng(expected);
+
+	new Assertion(this._obj.lat).to.eql(expected.lat);
+	new Assertion(this._obj.lng).to.eql(expected.lng);
+	new Assertion(this._obj.alt).to.eql(expected.alt);
 });
 
 const runAsTouchBrowser = window.__karma__.config.runAsTouchBrowser || false;

@@ -134,7 +134,7 @@ describe('Map', () => {
 			const center = new LatLng(10, 10);
 			map.setView(center, 1);
 			map.setZoom(19);
-			expect(map.getCenter()).to.eql(center);
+			expect(map.getCenter()).to.eqlLatLng(center);
 		});
 
 		it('returns correct center after invalidateSize (#1919)', () => {
@@ -148,7 +148,7 @@ describe('Map', () => {
 			map.setView([10, 10], 1);
 			const center = map.getCenter();
 			center.lat += 10;
-			expect(map.getCenter()).to.eql(new LatLng(10, 10));
+			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 10));
 		});
 	});
 
@@ -1418,7 +1418,7 @@ describe('Map', () => {
 			const newCenter = new LatLng(10, 11),
 			    newZoom = 12;
 			const callback = function () {
-				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getCenter()).to.eqlLatLng(newCenter);
 				expect(map.getZoom()).to.eql(newZoom);
 				done();
 			};
@@ -1433,7 +1433,7 @@ describe('Map', () => {
 			map.setView(dc, 14);
 
 			map.on('zoomend', () => {
-				expect(map.getCenter()).to.eql(dc);
+				expect(map.getCenter()).to.eqlLatLng(dc);
 				expect(map.getZoom()).to.eql(4);
 				done();
 			});
@@ -1449,7 +1449,7 @@ describe('Map', () => {
 			map.setView([0, 0], 0);
 
 			map.on('zoomend', () => {
-				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getCenter()).to.eqlLatLng(newCenter);
 				expect(map.getZoom()).to.eql(maxZoom);
 				done();
 			});
@@ -1467,7 +1467,7 @@ describe('Map', () => {
 		it('zoomIn zooms by 1 zoom level by default', (done) => {
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(11);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(null, {animate: false});
@@ -1476,7 +1476,7 @@ describe('Map', () => {
 		it('zoomOut zooms by 1 zoom level by default', (done) => {
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(null, {animate: false});
@@ -1488,7 +1488,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(10.25);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(null, {animate: false});
@@ -1500,7 +1500,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9.75);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(null, {animate: false});
@@ -1511,7 +1511,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(10.25);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(0.22, {animate: false});
@@ -1522,7 +1522,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9.75);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(0.22, {animate: false});
@@ -1535,7 +1535,7 @@ describe('Map', () => {
 		it('Returns valid center on empty bounds in unitialized map', () => {
 			// Edge case from #5153
 			const centerAndZoom = map._getBoundsCenterZoom([center, center]);
-			expect(centerAndZoom.center).to.eql(center);
+			expect(centerAndZoom.center).to.eqlLatLng(center);
 			expect(centerAndZoom.zoom).to.eql(Infinity);
 		});
 	});
