@@ -3,7 +3,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
  * @class FeatureGroup
- * @aka L.FeatureGroup
  * @inherits LayerGroup
  *
  * Extended `LayerGroup` that makes it easier to do the same thing to all its member layers:
@@ -16,13 +15,15 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * @example
  *
  * ```js
- * L.featureGroup([marker1, marker2, polyline])
+ * new FeatureGroup([marker1, marker2, polyline])
  * 	.bindPopup('Hello world!')
  * 	.on('click', function() { alert('Clicked on a member of the group!'); })
  * 	.addTo(map);
  * ```
  */
 
+// @constructor FeatureGroup(layers?: Layer[], options?: Object)
+// Create a feature group, optionally given an initial set of layers and an `options` object.
 export const FeatureGroup = LayerGroup.extend({
 
 	addLayer(layer) {
@@ -85,9 +86,3 @@ export const FeatureGroup = LayerGroup.extend({
 		return bounds;
 	}
 });
-
-// @factory L.featureGroup(layers?: Layer[], options?: Object)
-// Create a feature group, optionally given an initial set of layers and an `options` object.
-export const featureGroup = function (layers, options) {
-	return new FeatureGroup(layers, options);
-};

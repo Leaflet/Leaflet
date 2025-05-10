@@ -1,6 +1,6 @@
 
 // @namespace SVG; @section
-// There are several static functions which can be called without instantiating L.SVG:
+// There are several static functions which can be called without instantiating SVG:
 
 // @function create(name: String): SVGElement
 // Returns a instance of [SVGElement](https://developer.mozilla.org/docs/Web/API/SVGElement),

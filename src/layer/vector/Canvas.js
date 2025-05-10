@@ -6,7 +6,6 @@ import {Bounds} from '../../geometry/Bounds.js';
 /*
  * @class Canvas
  * @inherits Renderer
- * @aka L.Canvas
  *
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
@@ -31,6 +30,8 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
+// @constructor Canvas(options?: Renderer options)
+// Creates a Canvas renderer with the given options.
 export const Canvas = Renderer.extend({
 
 	// @section
@@ -469,9 +470,3 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	}
 });
-
-// @factory L.canvas(options?: Renderer options)
-// Creates a Canvas renderer with the given options.
-export function canvas(options) {
-	return new Canvas(options);
-}

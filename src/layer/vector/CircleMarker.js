@@ -1,17 +1,18 @@
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 
 /*
  * @class CircleMarker
- * @aka L.CircleMarker
  * @inherits Path
  *
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.
  */
 
+// @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
+// Instantiates a circle marker object given a geographical point, and an optional options object.
 export const CircleMarker = Path.extend({
 
 	// @section
@@ -26,7 +27,7 @@ export const CircleMarker = Path.extend({
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this._radius = this.options.radius;
 	},
 
@@ -34,7 +35,7 @@ export const CircleMarker = Path.extend({
 	// Sets the position of a circle marker to a new location.
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this.redraw();
 
 		// @event move: Event
@@ -100,10 +101,3 @@ export const CircleMarker = Path.extend({
 		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 	}
 });
-
-
-// @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
-// Instantiates a circle marker object given a geographical point, and an optional options object.
-export function circleMarker(latlng, options) {
-	return new CircleMarker(latlng, options);
-}

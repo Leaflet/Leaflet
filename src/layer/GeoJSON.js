@@ -6,13 +6,12 @@ import {Circle} from './vector/Circle.js';
 import {CircleMarker} from './vector/CircleMarker.js';
 import {Polyline} from './vector/Polyline.js';
 import {Polygon} from './vector/Polygon.js';
-import {LatLng, toLatLng} from '../geo/LatLng.js';
+import {LatLng} from '../geo/LatLng.js';
 import * as LineUtil from '../geometry/LineUtil.js';
 
 
 /*
  * @class GeoJSON
- * @aka L.GeoJSON
  * @inherits FeatureGroup
  *
  * Represents a GeoJSON object or an array of GeoJSON objects. Allows you to parse
@@ -21,7 +20,7 @@ import * as LineUtil from '../geometry/LineUtil.js';
  * @example
  *
  * ```js
- * L.geoJSON(data, {
+ * new GeoJSON(data, {
  * 	style: function (feature) {
  * 		return {color: feature.properties.color};
  * 	}
@@ -31,6 +30,11 @@ import * as LineUtil from '../geometry/LineUtil.js';
  * ```
  */
 
+// @namespace GeoJSON
+// @constructor GeoJSON(geojson?: Object, options?: GeoJSON options)
+// Creates a GeoJSON layer. Optionally accepts an object in
+// [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
+// (you can alternatively add it later with `addData` method) and an `options` object.
 export const GeoJSON = FeatureGroup.extend({
 
 	/* @section
@@ -42,7 +46,7 @@ export const GeoJSON = FeatureGroup.extend({
 	 * The default is to spawn a default `Marker`:
 	 * ```js
 	 * function(geoJsonPoint, latlng) {
-	 * 	return L.marker(latlng);
+	 * 	return new Marker(latlng);
 	 * }
 	 * ```
 	 *
@@ -158,7 +162,7 @@ export const GeoJSON = FeatureGroup.extend({
 });
 
 // @section
-// There are several static functions which can be called without instantiating L.GeoJSON:
+// There are several static functions which can be called without instantiating GeoJSON:
 
 // @function geometryToLayer(featureData: Object, options?: GeoJSON options): Layer
 // Creates a `Layer` from a given GeoJSON feature. Can use a custom
@@ -255,7 +259,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 // Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
 export function latLngToCoords(latlng, precision) {
-	latlng = toLatLng(latlng);
+	latlng = new LatLng(latlng);
 	return latlng.alt !== undefined ?
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 		[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
@@ -421,15 +425,3 @@ LayerGroup.include({
 		};
 	}
 });
-
-// @namespace GeoJSON
-// @factory L.geoJSON(geojson?: Object, options?: GeoJSON options)
-// Creates a GeoJSON layer. Optionally accepts an object in
-// [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
-// (you can alternatively add it later with `addData` method) and an `options` object.
-export function geoJSON(geojson, options) {
-	return new GeoJSON(geojson, options);
-}
-
-// Backward compatibility.
-export const geoJson = geoJSON;

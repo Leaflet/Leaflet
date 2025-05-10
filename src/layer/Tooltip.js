@@ -1,5 +1,5 @@
 import {DivOverlay} from './DivOverlay.js';
-import {toPoint} from '../geometry/Point.js';
+import {Point} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -10,7 +10,6 @@ import {FeatureGroup} from './FeatureGroup.js';
 /*
  * @class Tooltip
  * @inherits DivOverlay
- * @aka L.Tooltip
  * Used to display small texts on top of map layers.
  *
  * @example
@@ -47,6 +46,11 @@ import {FeatureGroup} from './FeatureGroup.js';
 
 
 // @namespace Tooltip
+// @constructor Tooltip(options?: Tooltip options, source?: Layer)
+// Instantiates a `Tooltip` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
+// @alternative
+// @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
+// Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
 export const Tooltip = DivOverlay.extend({
 
 	// @section
@@ -153,7 +157,7 @@ export const Tooltip = DivOverlay.extend({
 		      tooltipPoint = map.layerPointToContainerPoint(pos),
 		      tooltipWidth = container.offsetWidth,
 		      tooltipHeight = container.offsetHeight,
-		      offset = toPoint(this.options.offset),
+		      offset = new Point(this.options.offset),
 		      anchor = this._getAnchor();
 
 		if (direction === 'top') {
@@ -181,7 +185,7 @@ export const Tooltip = DivOverlay.extend({
 			subY = tooltipHeight / 2;
 		}
 
-		pos = pos.subtract(toPoint(subX, subY, true)).add(offset).add(anchor);
+		pos = pos.subtract(new Point(subX, subY, true)).add(offset).add(anchor);
 
 		container.classList.remove(
 			'leaflet-tooltip-right',
@@ -213,20 +217,10 @@ export const Tooltip = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the tooltip on the source layer?
-		return toPoint(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });
-
-// @namespace Tooltip
-// @factory L.tooltip(options?: Tooltip options, source?: Layer)
-// Instantiates a `Tooltip` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
-// Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export const tooltip = function (options, source) {
-	return new Tooltip(options, source);
-};
 
 // @namespace Map
 // @section Methods for Layers and Controls
@@ -260,7 +254,7 @@ Map.include({
  * All layers share a set of methods convenient for binding tooltips to it.
  *
  * ```js
- * const layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+ * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
  * layer.openTooltip();
  * layer.closeTooltip();
  * ```

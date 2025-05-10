@@ -5,7 +5,7 @@ import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
- * L.Handler.PinchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
 // @namespace Map

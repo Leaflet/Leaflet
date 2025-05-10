@@ -6,7 +6,7 @@ import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
- * L.Map.TapHold is used to simulate `contextmenu` event on long hold,
+ * Map.TapHold is used to simulate `contextmenu` event on long hold,
  * which otherwise is not fired by mobile Safari.
  */
 

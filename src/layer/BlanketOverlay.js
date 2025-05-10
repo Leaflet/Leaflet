@@ -7,7 +7,6 @@ import {Bounds} from '../geometry/Bounds.js';
 /*
  * @class BlanketOverlay
  * @inherits Layer
- * @aka L.BlanketOverlay
  *
  * Represents an HTML element that covers ("blankets") the entire surface
  * of the map.

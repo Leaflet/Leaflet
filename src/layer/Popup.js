@@ -1,7 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import {Point, toPoint} from '../geometry/Point.js';
+import {Point} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
@@ -10,7 +10,6 @@ import {FeatureGroup} from './FeatureGroup.js';
 /*
  * @class Popup
  * @inherits DivOverlay
- * @aka L.Popup
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup) to
  * open popups while making sure that only one popup is open at one time
  * (recommended for usability), or use [Map.addLayer](#map-addlayer) to open as many as you want.
@@ -41,6 +40,11 @@ import {FeatureGroup} from './FeatureGroup.js';
 
 
 // @namespace Popup
+// @constructor Popup(options?: Popup options, source?: Layer)
+// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
+// @alternative
+// @constructor Popup(latlng: LatLng, options?: Popup options)
+// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
 export const Popup = DivOverlay.extend({
 
 	// @section
@@ -296,9 +300,9 @@ export const Popup = DivOverlay.extend({
 		layerPos._add(DomUtil.getPosition(this._container));
 
 		const containerPos = map.layerPointToContainerPoint(layerPos),
-		      padding = toPoint(this.options.autoPanPadding),
-		      paddingTL = toPoint(this.options.autoPanPaddingTopLeft ?? padding),
-		      paddingBR = toPoint(this.options.autoPanPaddingBottomRight ?? padding),
+		      padding = new Point(this.options.autoPanPadding),
+		      paddingTL = new Point(this.options.autoPanPaddingTopLeft ?? padding),
+		      paddingBR = new Point(this.options.autoPanPaddingBottomRight ?? padding),
 		      size = map.getSize();
 		let dx = 0,
 		    dy = 0;
@@ -334,20 +338,10 @@ export const Popup = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the popup on the source layer?
-		return toPoint(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
+		return new Point(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
 });
-
-// @namespace Popup
-// @factory L.popup(options?: Popup options, source?: Layer)
-// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.popup(latlng: LatLng, options?: Popup options)
-// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export const popup = function (options, source) {
-	return new Popup(options, source);
-};
 
 
 /* @namespace Map
@@ -393,7 +387,7 @@ Map.include({
  * All layers share a set of methods convenient for binding popups to it.
  *
  * ```js
- * const layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
+ * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
  * layer.openPopup();
  * layer.closePopup();
  * ```

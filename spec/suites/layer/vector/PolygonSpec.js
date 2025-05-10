@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LineUtil, Map, latLng, polygon} from 'leaflet';
+import {LineUtil, Map, LatLng, Polygon} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Polygon', () => {
@@ -18,7 +18,7 @@ describe('Polygon', () => {
 		it('should never be flat', () => {
 			const latLngs = [[1, 2], [3, 4]];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			expect(LineUtil.isFlat(poly._latlngs)).to.be.false;
 			expect(poly.getLatLngs()).to.eql(poly._latlngs);
@@ -31,14 +31,14 @@ describe('Polygon', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const poly = polygon(sourceLatLngs);
+			const poly = new Polygon(sourceLatLngs);
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 			expect(poly._latlngs).to.not.eql(sourceLatLngs);
 		});
 
 		it('can be called with an empty array', () => {
-			const poly = polygon([]);
+			const poly = new Polygon([]);
 			expect(poly._latlngs).to.eql([[]]);
 			expect(poly.getLatLngs()).to.eql(poly._latlngs);
 		});
@@ -49,11 +49,11 @@ describe('Polygon', () => {
 				[[2, 3], [2, 4], [3, 4]] // hole
 			];
 
-			const poly = polygon(originalLatLngs);
+			const poly = new Polygon(originalLatLngs);
 
 			expect(poly._latlngs).to.eql([
-				[latLng([0, 10]), latLng([10, 10]), latLng([10, 0])],
-				[latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]
+				[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])],
+				[new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]
 			]);
 			expect(poly.getLatLngs()).to.eql(poly._latlngs);
 		});
@@ -64,17 +64,17 @@ describe('Polygon', () => {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			expect(poly._latlngs).to.eql([
-				[[latLng([10, 20]), latLng([30, 40]), latLng([50, 60])]],
-				[[latLng([0, 10]), latLng([10, 10]), latLng([10, 0])], [latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]]
+				[[new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]],
+				[[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])], [new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]]
 			]);
 			expect(poly.getLatLngs()).to.eql(poly._latlngs);
 		});
 
 		it('can be added to the map when empty', () => {
-			const poly = polygon([]).addTo(map);
+			const poly = new Polygon([]).addTo(map);
 			const isAdded = map.hasLayer(poly);
 			expect(isAdded).to.be.true;
 		});
@@ -84,13 +84,13 @@ describe('Polygon', () => {
 	describe('#isEmpty', () => {
 
 		it('should return true for a polygon with no latlngs', () => {
-			const layer = polygon([]);
+			const layer = new Polygon([]);
 			expect(layer.isEmpty()).to.be.true;
 		});
 
 		it('should return false for simple polygon', () => {
 			const latLngs = [[1, 2], [3, 4], [5, 6]];
-			const layer = polygon(latLngs);
+			const layer = new Polygon(latLngs);
 			expect(layer.isEmpty()).to.be.false;
 		});
 
@@ -99,7 +99,7 @@ describe('Polygon', () => {
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
-			const layer = polygon(latLngs);
+			const layer = new Polygon(latLngs);
 			expect(layer.isEmpty()).to.be.false;
 		});
 
@@ -113,7 +113,7 @@ describe('Polygon', () => {
 			];
 			const sourceLatLngs = originalLatLngs.slice();
 
-			const poly = polygon(sourceLatLngs);
+			const poly = new Polygon(sourceLatLngs);
 
 			poly.setLatLngs(sourceLatLngs);
 
@@ -126,12 +126,12 @@ describe('Polygon', () => {
 				[[2, 3], [2, 4], [3, 4]] // hole
 			];
 
-			const poly = polygon([]);
+			const poly = new Polygon([]);
 			poly.setLatLngs(latLngs);
 
 			expect(poly.getLatLngs()).to.eql([
-				[latLng([0, 10]), latLng([10, 10]), latLng([10, 0])],
-				[latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]
+				[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])],
+				[new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]
 			]);
 		});
 
@@ -141,12 +141,12 @@ describe('Polygon', () => {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 
-			const poly = polygon([]);
+			const poly = new Polygon([]);
 			poly.setLatLngs(latLngs);
 
 			expect(poly.getLatLngs()).to.eql([
-				[[latLng([10, 20]), latLng([30, 40]), latLng([50, 60])]],
-				[[latLng([0, 10]), latLng([10, 10]), latLng([10, 0])], [latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]]
+				[[new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]],
+				[[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])], [new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]]
 			]);
 		});
 
@@ -157,7 +157,7 @@ describe('Polygon', () => {
 			const latlngs = [
 				[[0, 0], [10, 0], [10, 10], [0, 10]]
 			];
-			const layer = polygon(latlngs).addTo(map);
+			const layer = new Polygon(latlngs).addTo(map);
 			expect(layer.getCenter()).to.be.nearLatLng([5.019148099025293, 5]);
 		});
 
@@ -165,7 +165,7 @@ describe('Polygon', () => {
 			const latlngs = [
 				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
 			];
-			const layer = polygon(latlngs).addTo(map);
+			const layer = new Polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
 			expect(layer.getCenter()).to.be.nearLatLng([0.005, 0.005]);
 		});
@@ -175,7 +175,7 @@ describe('Polygon', () => {
 				const latlngs = [
 					[[0, 0], [10, 0], [10, 10], [0, 10]]
 				];
-				const layer = polygon(latlngs);
+				const layer = new Polygon(latlngs);
 				layer.getCenter();
 			}).to.throw('Must add layer to map before using getCenter()');
 		});
@@ -184,7 +184,7 @@ describe('Polygon', () => {
 			const latlngs = [
 				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
 			];
-			const layer = polygon(latlngs).addTo(map);
+			const layer = new Polygon(latlngs).addTo(map);
 			map.setZoom(0);
 			const center = layer.getCenter();
 			map.setZoom(18);
@@ -196,7 +196,7 @@ describe('Polygon', () => {
 				[[[10, 20], [30, 40], [50, 60]]],
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
-			const layer = polygon(latlngs).addTo(map);
+			const layer = new Polygon(latlngs).addTo(map);
 			expect(layer.getCenter()).to.be.nearLatLng([31.436532296911807, 39.99999999999979]);
 		});
 	});
@@ -204,45 +204,45 @@ describe('Polygon', () => {
 	describe('#_defaultShape', () => {
 		it('should return latlngs on a simple polygon', () => {
 			const latlngs = [
-				latLng([1, 2]),
-				latLng([3, 4])
+				new LatLng([1, 2]),
+				new LatLng([3, 4])
 			];
 
-			const poly = polygon(latlngs);
+			const poly = new Polygon(latlngs);
 
 			expect(poly._defaultShape()).to.eql(latlngs);
 		});
 
 		it('should return first latlngs on a polygon with hole', () => {
 			const latlngs = [
-				[latLng([0, 12]), latLng([13, 14]), latLng([15, 16])],
-				[latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]
+				[new LatLng([0, 12]), new LatLng([13, 14]), new LatLng([15, 16])],
+				[new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]
 			];
 
-			const poly = polygon(latlngs);
+			const poly = new Polygon(latlngs);
 
 			expect(poly._defaultShape()).to.eql(latlngs[0]);
 		});
 
 		it('should return first latlngs on a multipolygon', () => {
 			const latlngs = [
-				[[latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]],
-				[[latLng([11, 12]), latLng([13, 14]), latLng([15, 16])]]
+				[[new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]],
+				[[new LatLng([11, 12]), new LatLng([13, 14]), new LatLng([15, 16])]]
 			];
 
-			const poly = polygon(latlngs);
+			const poly = new Polygon(latlngs);
 
 			expect(poly._defaultShape()).to.eql(latlngs[0][0]);
 		});
 
 		it('should return first latlngs on a multipolygon with hole', () => {
 			const latlngs = [
-				[[latLng([0, 10]), latLng([10, 10]), latLng([10, 0])],
-				 [latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]],
-				[[latLng([10, 20]), latLng([30, 40]), latLng([50, 60])]]
+				[[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])],
+				 [new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]],
+				[[new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]]
 			];
 
-			const poly = polygon(latlngs);
+			const poly = new Polygon(latlngs);
 
 			expect(poly._defaultShape()).to.eql(latlngs[0][0]);
 		});
@@ -255,11 +255,11 @@ describe('Polygon', () => {
 				[3, 4]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([5, 6]);
 
-			expect(poly._latlngs).to.eql([[latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]]);
+			expect(poly._latlngs).to.eql([[new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]]);
 		});
 
 		it('should add latlng to first latlngs on a polygon with hole', () => {
@@ -268,12 +268,12 @@ describe('Polygon', () => {
 				[[1, 2], [3, 4], [5, 6]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([17, 0]);
 
-			expect(poly._latlngs[0]).to.eql([latLng([0, 12]), latLng([13, 14]), latLng([15, 16]), latLng([17, 0])]);
-			expect(poly._latlngs[1]).to.eql([latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]);
+			expect(poly._latlngs[0]).to.eql([new LatLng([0, 12]), new LatLng([13, 14]), new LatLng([15, 16]), new LatLng([17, 0])]);
+			expect(poly._latlngs[1]).to.eql([new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]);
 		});
 
 		it('should add latlng by reference on a polygon with hole', () => {
@@ -282,12 +282,12 @@ describe('Polygon', () => {
 				[[1, 2], [3, 4], [5, 6]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([7, 8], poly._latlngs[1]);
 
-			expect(poly._latlngs[0]).to.eql([latLng([0, 12]), latLng([13, 14]), latLng([15, 16])]);
-			expect(poly._latlngs[1]).to.eql([latLng([1, 2]), latLng([3, 4]), latLng([5, 6]), latLng([7, 8])]);
+			expect(poly._latlngs[0]).to.eql([new LatLng([0, 12]), new LatLng([13, 14]), new LatLng([15, 16])]);
+			expect(poly._latlngs[1]).to.eql([new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6]), new LatLng([7, 8])]);
 		});
 
 		it('should add latlng to first latlngs on a multi', () => {
@@ -296,12 +296,12 @@ describe('Polygon', () => {
 				[[[11, 12], [13, 14], [15, 16]]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([5, 6]);
 
-			expect(poly._latlngs[0]).to.eql([[latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]]);
-			expect(poly._latlngs[1]).to.eql([[latLng([11, 12]), latLng([13, 14]), latLng([15, 16])]]);
+			expect(poly._latlngs[0]).to.eql([[new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]]);
+			expect(poly._latlngs[1]).to.eql([[new LatLng([11, 12]), new LatLng([13, 14]), new LatLng([15, 16])]]);
 		});
 
 		it('should add latlng to latlngs by reference on a multi', () => {
@@ -310,12 +310,12 @@ describe('Polygon', () => {
 				[[[1, 2], [3, 4]]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([5, 6], poly._latlngs[1][0]);
 
-			expect(poly._latlngs[1]).to.eql([[latLng([1, 2]), latLng([3, 4]), latLng([5, 6])]]);
-			expect(poly._latlngs[0]).to.eql([[latLng([11, 12]), latLng([13, 14]), latLng([15, 16])]]);
+			expect(poly._latlngs[1]).to.eql([[new LatLng([1, 2]), new LatLng([3, 4]), new LatLng([5, 6])]]);
+			expect(poly._latlngs[0]).to.eql([[new LatLng([11, 12]), new LatLng([13, 14]), new LatLng([15, 16])]]);
 		});
 
 		it('should add latlng on first latlngs by default on a multipolygon with hole', () => {
@@ -324,13 +324,13 @@ describe('Polygon', () => {
 				[[[10, 20], [30, 40], [50, 60]]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([-10, -10]);
 
-			expect(poly._latlngs[0][0]).to.eql([latLng([0, 10]), latLng([10, 10]), latLng([10, 0]), latLng([-10, -10])]);
-			expect(poly._latlngs[0][1]).to.eql([latLng([2, 3]), latLng([2, 4]), latLng([3, 4])]);
-			expect(poly._latlngs[1][0]).to.eql([latLng([10, 20]), latLng([30, 40]), latLng([50, 60])]);
+			expect(poly._latlngs[0][0]).to.eql([new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0]), new LatLng([-10, -10])]);
+			expect(poly._latlngs[0][1]).to.eql([new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]);
+			expect(poly._latlngs[1][0]).to.eql([new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]);
 		});
 
 		it('should add latlng by reference on a multipolygon with hole', () => {
@@ -339,13 +339,13 @@ describe('Polygon', () => {
 				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
 			];
 
-			const poly = polygon(latLngs);
+			const poly = new Polygon(latLngs);
 
 			poly.addLatLng([2, 2], poly._latlngs[1][1]);
 
-			expect(poly._latlngs[0][0]).to.eql([latLng([10, 20]), latLng([30, 40]), latLng([50, 60])]);
-			expect(poly._latlngs[1][0]).to.eql([latLng([0, 10]), latLng([10, 10]), latLng([10, 0])]);
-			expect(poly._latlngs[1][1]).to.eql([latLng([2, 3]), latLng([2, 4]), latLng([3, 4]), latLng([2, 2])]);
+			expect(poly._latlngs[0][0]).to.eql([new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]);
+			expect(poly._latlngs[1][0]).to.eql([new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])]);
+			expect(poly._latlngs[1][1]).to.eql([new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4]), new LatLng([2, 2])]);
 		});
 	});
 
@@ -354,7 +354,7 @@ describe('Polygon', () => {
 			const style = {
 				weight: 3
 			};
-			const poly = polygon([]);
+			const poly = new Polygon([]);
 
 			poly.addTo(map);
 			poly.setStyle(style);

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, Map, Marker, Point, Polygon, TileLayer, Util, control as lControl, latLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, Map, Marker, Point, Polygon, TileLayer, Util, Control, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -131,14 +131,14 @@ describe('Map', () => {
 		});
 
 		it('returns a precise center when zoomed in after being set (#426)', () => {
-			const center = latLng(10, 10);
+			const center = new LatLng(10, 10);
 			map.setView(center, 1);
 			map.setZoom(19);
-			expect(map.getCenter()).to.eql(center);
+			expect(map.getCenter()).to.eqlLatLng(center);
 		});
 
 		it('returns correct center after invalidateSize (#1919)', () => {
-			const center = latLng(10, 10);
+			const center = new LatLng(10, 10);
 			map.setView(center, 1);
 			map.invalidateSize();
 			expect(map.getCenter()).not.to.eql(center);
@@ -148,7 +148,7 @@ describe('Map', () => {
 			map.setView([10, 10], 1);
 			const center = map.getCenter();
 			center.lat += 10;
-			expect(map.getCenter()).to.eql(latLng(10, 10));
+			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 10));
 		});
 	});
 
@@ -459,7 +459,7 @@ describe('Map', () => {
 			const bounds = new LatLngBounds([51.5, -0.05], [51.55, 0.05]);
 			map.setMaxBounds(bounds, {animate: false});
 			// set view outside
-			map.setView(latLng([53.0, 0.15]), 12, {animate: false});
+			map.setView(new LatLng([53.0, 0.15]), 12, {animate: false});
 			// get center of bounds in pixels
 			const boundsCenter = map.project(bounds.getCenter()).round();
 			expect(map.project(map.getCenter()).round()).to.eql(boundsCenter);
@@ -474,7 +474,7 @@ describe('Map', () => {
 			// set view outside maxBounds on one direction only
 			// leaves untouched the other coordinate (that is not already centered)
 			const initCenter = [53.0, 0.1];
-			map.setView(latLng(initCenter), 16, {animate: false});
+			map.setView(new LatLng(initCenter), 16, {animate: false});
 			// one pixel coordinate hasn't changed, the other has
 			const pixelCenter = map.project(map.getCenter()).round();
 			const pixelInit = map.project(initCenter).round();
@@ -491,7 +491,7 @@ describe('Map', () => {
 			map.setMaxBounds(bounds, {animate: false});
 			map.setMaxBounds();
 			// set view outside
-			const center = latLng([0, 0]);
+			const center = new LatLng([0, 0]);
 			map.once('moveend', () => {
 				expect(center.equals(map.getCenter())).to.be.true;
 				done();
@@ -1025,7 +1025,7 @@ describe('Map', () => {
 		});
 
 		it('throws if adding something which is not a layer', () => {
-			const control = lControl.layers();
+			const control = new Control.Layers();
 			expect(() => {
 				map.addLayer(control);
 			}).to.throw();
@@ -1415,10 +1415,10 @@ describe('Map', () => {
 		it('move to requested center and zoom, and call zoomend once', function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			const newCenter = latLng(10, 11),
+			const newCenter = new LatLng(10, 11),
 			    newZoom = 12;
 			const callback = function () {
-				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getCenter()).to.eqlLatLng(newCenter);
 				expect(map.getZoom()).to.eql(newZoom);
 				done();
 			};
@@ -1429,11 +1429,11 @@ describe('Map', () => {
 		it('flyTo start latlng == end latlng', function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			const dc = latLng(38.91, -77.04);
+			const dc = new LatLng(38.91, -77.04);
 			map.setView(dc, 14);
 
 			map.on('zoomend', () => {
-				expect(map.getCenter()).to.eql(dc);
+				expect(map.getCenter()).to.eqlLatLng(dc);
 				expect(map.getZoom()).to.eql(4);
 				done();
 			});
@@ -1442,14 +1442,14 @@ describe('Map', () => {
 		});
 
 		it('flyTo should honour maxZoom', (done) => {
-			const newCenter = latLng(10, 11),
+			const newCenter = new LatLng(10, 11),
 			    maxZoom = 20;
 			map.options.maxZoom = maxZoom;
 
 			map.setView([0, 0], 0);
 
 			map.on('zoomend', () => {
-				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getCenter()).to.eqlLatLng(newCenter);
 				expect(map.getZoom()).to.eql(maxZoom);
 				done();
 			});
@@ -1459,7 +1459,7 @@ describe('Map', () => {
 	});
 
 	describe('#zoomIn and #zoomOut', () => {
-		const center = latLng(22, 33);
+		const center = new LatLng(22, 33);
 		beforeEach(() => {
 			map.setView(center, 10);
 		});
@@ -1467,7 +1467,7 @@ describe('Map', () => {
 		it('zoomIn zooms by 1 zoom level by default', (done) => {
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(11);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(null, {animate: false});
@@ -1476,7 +1476,7 @@ describe('Map', () => {
 		it('zoomOut zooms by 1 zoom level by default', (done) => {
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(null, {animate: false});
@@ -1488,7 +1488,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(10.25);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(null, {animate: false});
@@ -1500,7 +1500,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9.75);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(null, {animate: false});
@@ -1511,7 +1511,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(10.25);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomIn(0.22, {animate: false});
@@ -1522,7 +1522,7 @@ describe('Map', () => {
 			map.setView(center, 10);
 			map.once('zoomend', () => {
 				expect(map.getZoom()).to.eql(9.75);
-				expect(map.getCenter()).to.eql(center);
+				expect(map.getCenter()).to.eqlLatLng(center);
 				done();
 			});
 			map.zoomOut(0.22, {animate: false});
@@ -1530,19 +1530,19 @@ describe('Map', () => {
 	});
 
 	describe('#_getBoundsCenterZoom', () => {
-		const center = latLng(50.5, 30.51);
+		const center = new LatLng(50.5, 30.51);
 
 		it('Returns valid center on empty bounds in unitialized map', () => {
 			// Edge case from #5153
 			const centerAndZoom = map._getBoundsCenterZoom([center, center]);
-			expect(centerAndZoom.center).to.eql(center);
+			expect(centerAndZoom.center).to.eqlLatLng(center);
 			expect(centerAndZoom.zoom).to.eql(Infinity);
 		});
 	});
 
 	describe('#fitBounds', () => {
-		const center = latLng(50.5, 30.51);
-		let bounds = new LatLngBounds(latLng(1, 102), latLng(11, 122)),
+		const center = new LatLng(50.5, 30.51);
+		let bounds = new LatLngBounds(new LatLng(1, 102), new LatLng(11, 122)),
 		    boundsCenter = bounds.getCenter();
 
 		beforeEach(() => {
@@ -1631,8 +1631,8 @@ describe('Map', () => {
 	});
 
 	describe('#fitBounds after layers set', () => {
-		const center = latLng(22, 33),
-		    bounds = new LatLngBounds(latLng(1, 102), latLng(11, 122));
+		const center = new LatLng(22, 33),
+		    bounds = new LatLngBounds(new LatLng(1, 102), new LatLng(11, 122));
 
 		beforeEach(() => {
 			// fitBounds needs a map container with non-null area
@@ -1681,7 +1681,7 @@ describe('Map', () => {
 
 		beforeEach(() => {
 			container.style.height = container.style.width = '500px';
-			map.setView(latLng([53.0, 0.15]), 12, {animate: false});
+			map.setView(new LatLng([53.0, 0.15]), 12, {animate: false});
 			center = map.getCenter().clone();
 			tl = map.getBounds().getNorthWest();
 			tlPix = map.getPixelBounds().min;
@@ -1739,7 +1739,7 @@ describe('Map', () => {
 		});
 
 		it('pans only on the Y axis when the target\'s X coord is within bounds but the Y is not', () => {
-			const p = latLng(tl.lat + 5, tl.lng);
+			const p = new LatLng(tl.lat + 5, tl.lng);
 			map.panInside(p, {animate: false});
 			expect(map.getBounds().contains(p)).to.be.true;
 			const dx = Math.abs(map.getCenter().lng - center.lng);
@@ -1748,7 +1748,7 @@ describe('Map', () => {
 		});
 
 		it('pans only on the X axis when the target\'s Y coord is within bounds but the X is not', () => {
-			const p = latLng(tl.lat, tl.lng - 5);
+			const p = new LatLng(tl.lat, tl.lng - 5);
 			map.panInside(p, 0, {animate: false});
 			expect(map.getBounds().contains(p)).to.be.true;
 			expect(map.getCenter().lng).to.not.eql(center.lng);
@@ -1924,7 +1924,7 @@ describe('Map', () => {
 
 			container.style.width = container.style.height = '300px';
 
-			map.setView(latLng([0, 0]), 12);
+			map.setView(new LatLng([0, 0]), 12);
 			const spy = sinon.spy();
 			map.on('contextmenu', (e) => {
 				spy(e.originalEvent.defaultPrevented);
@@ -2008,22 +2008,22 @@ describe('Map', () => {
 
 	describe('#distance', () => {
 		it('measure distance in meters', () => {
-			const LA = latLng(34.0485672098387, -118.217781922035);
-			const columbus = latLng(39.95715687063701, -83.00205705857633);
+			const LA = new LatLng(34.0485672098387, -118.217781922035);
+			const columbus = new LatLng(39.95715687063701, -83.00205705857633);
 
 			expect(map.distance(LA, columbus)).to.be.within(3173910, 3173915);
 		});
 
 		it('accurately measure in small distances', () => {
-			const p1 = latLng(40.160857881285416, -83.00841851162649);
-			const p2 = latLng(40.16246493902907, -83.008622359483);
+			const p1 = new LatLng(40.160857881285416, -83.00841851162649);
+			const p2 = new LatLng(40.16246493902907, -83.008622359483);
 
 			expect(map.distance(p1, p2)).to.be.within(175, 185);
 		});
 
 		it('accurately measure in long distances', () => {
-			const canada = latLng(60.01810635103154, -112.19675246283015);
-			const newZeland = latLng(-42.36275164460971, 172.39309066597883);
+			const canada = new LatLng(60.01810635103154, -112.19675246283015);
+			const newZeland = new LatLng(-42.36275164460971, 172.39309066597883);
 
 			expect(map.distance(canada, newZeland)).to.be.within(13274700, 13274800);
 		});
@@ -2041,7 +2041,7 @@ describe('Map', () => {
 		});
 
 		it('return 0 with 2 same latLng', () => {
-			const p = latLng(20, 50);
+			const p = new LatLng(20, 50);
 
 			expect(map.distance(p, p)).to.eql(0);
 		});
@@ -2149,7 +2149,7 @@ describe('Map', () => {
 		});
 
 		it('returns geographical coordinate for point relative to map container', () => {
-			const center = latLng(10, 10);
+			const center = new LatLng(10, 10);
 			map.setView(center, 50);
 			const p = map.containerPointToLatLng(new Point(200, 200));
 			expect(p.lat).to.be.within(10.0000000, 10.0000001);
@@ -2167,7 +2167,7 @@ describe('Map', () => {
 		});
 
 		it('returns point relative to map container for geographical coordinate', () => {
-			const center = latLng(10, 10);
+			const center = new LatLng(10, 10);
 			map.setView(center);
 			const p = map.latLngToContainerPoint(center);
 			expect(p.x).to.be.equal(200);
@@ -2184,7 +2184,7 @@ describe('Map', () => {
 		});
 
 		it('pans the map to accurate location', () => {
-			const center = latLng([50, 30]);
+			const center = new LatLng([50, 30]);
 			expect(map.panTo(center)).to.equal(map);
 			expect(map.getCenter().distanceTo(center)).to.be.lessThan(5);
 		});
@@ -2207,14 +2207,14 @@ describe('Map', () => {
 		it('doesn\'t pan if already in bounds', () => {
 			map.setView([0, 0]);
 			const bounds = new LatLngBounds([[-1, -1], [1, 1]]);
-			const expectedCenter = latLng([0, 0]);
+			const expectedCenter = new LatLng([0, 0]);
 			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
 
 		it('pans to closest view in bounds', () => {
 			const bounds = new LatLngBounds([[41.8, -87.6], [40.7, -74]]);
-			const expectedCenter = latLng([41.59452223189, -74.2738647460]);
+			const expectedCenter = new LatLng([41.59452223189, -74.2738647460]);
 			map.setView([50.5, 30.5], 10);
 			expect(map.panInsideBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
@@ -2226,7 +2226,7 @@ describe('Map', () => {
 
 		it('returns pixel coordinates relative to the top-left of the CRS extents', () => {
 			map.setView([40, -83], 5);
-			const x = latLng([40, -83]);
+			const x = new LatLng([40, -83]);
 			const a = map.project(x, 5);
 			expect(a.x).to.be.approximately(2207.288888, tolerance);
 			expect(a.y).to.be.approximately(3101.320460, tolerance);
@@ -2234,7 +2234,7 @@ describe('Map', () => {
 
 		it('test the other coordinates', () => {
 			map.setView([40, 83], 5);
-			const x = latLng([40, 83]);
+			const x = new LatLng([40, 83]);
 			const b = map.project(x, 5);
 			expect(b.x).to.be.approximately(5984.7111111, tolerance);
 			expect(b.y).to.be.approximately(3101.3204602, tolerance);
@@ -2242,7 +2242,7 @@ describe('Map', () => {
 
 		it('test the prev coordinates with different zoom', () => {
 			map.setView([40, 83], 5);
-			const x = latLng([40, 83]);
+			const x = new LatLng([40, 83]);
 			const b = map.project(x, 6);
 			expect(b.x).to.be.approximately(11969.422222, tolerance);
 			expect(b.y).to.be.approximately(6202.640920, tolerance);
@@ -2258,7 +2258,7 @@ describe('Map', () => {
 		});
 
 		it('returns the corresponding pixel coordinate relative to the origin pixel', () => {
-			const center = latLng([10, 10]);
+			const center = new LatLng([10, 10]);
 			map.setView(center, 0);
 			const p = map.latLngToLayerPoint(center);
 			expect(p.x).to.be.equal(200);
@@ -2275,7 +2275,7 @@ describe('Map', () => {
 		});
 
 		it('returns the corresponding geographical coordinate for a pixel coordinate relative to the origin pixel', () => {
-			const center = latLng(10, 10);
+			const center = new LatLng(10, 10);
 			map.setView(center, 10);
 			const point = new Point(200, 200);
 			const latlng = map.layerPointToLatLng(point);
@@ -2522,7 +2522,7 @@ describe('Map', () => {
 		});
 
 		it('pans the map by given offset', () => {
-			const center = latLng([0, 0]);
+			const center = new LatLng([0, 0]);
 			map.setView(center, 7);
 			const offsetCenterPoint = map.options.crs.latLngToPoint(center, 7).add(offset);
 			const target = map.options.crs.pointToLatLng(offsetCenterPoint, 7);
@@ -2537,7 +2537,7 @@ describe('Map', () => {
 
 		it('returns the latitude and langitude with given point', () => {
 			map.setView([0, 0], 6);
-			const expectedOutput = latLng(82.7432022836318, -175.60546875000003);
+			const expectedOutput = new LatLng(82.7432022836318, -175.60546875000003);
 			const offset = new Point(200, 1000);
 			const output = map.unproject(offset);
 			expect(output).to.be.nearLatLng(expectedOutput);
@@ -2545,7 +2545,7 @@ describe('Map', () => {
 
 		it('return the latitude and langitude with different zoom and points', () => {
 			map.setView([0, 0], 10);
-			const expectedOutput = latLng(85.03926769025156, -179.98626708984378);
+			const expectedOutput = new LatLng(85.03926769025156, -179.98626708984378);
 			const offset = new Point(10, 100);
 			const output = map.unproject(offset);
 			expect(output).to.be.nearLatLng(expectedOutput);
@@ -2572,7 +2572,7 @@ describe('Map', () => {
 				[-1, -1],
 				[1, 1],
 			]);
-			const expectedCenter = latLng([0, 0]);
+			const expectedCenter = new LatLng([0, 0]);
 			expect(map.flyToBounds(bounds)).to.equal(map);
 			expect(map.getCenter()).to.be.nearLatLng(expectedCenter);
 		});
@@ -2583,7 +2583,7 @@ describe('Map', () => {
 				[40, 10],
 				[10, 40],
 			]);
-			const expectedCenter = latLng([25.9461, 25]);
+			const expectedCenter = new LatLng([25.9461, 25]);
 			map.setView([0, 0], 0, {animate: false});
 
 			map.on('zoomend', () => {
@@ -2611,7 +2611,7 @@ describe('Map', () => {
 				[30, 20],
 				[20, 30],
 			]);
-			const expectedCenter = latLng([25.102, 25]);
+			const expectedCenter = new LatLng([25.102, 25]);
 			map.setView([0, 0], 0, {animate: false});
 
 			map.on('zoomend', () => {
@@ -2639,7 +2639,7 @@ describe('Map', () => {
 				[13, 12],
 				[12, 13],
 			]);
-			const expectedCenter = latLng([12.5004, 12.5]);
+			const expectedCenter = new LatLng([12.5004, 12.5]);
 			map.setView([0, 0], 0, {animate: false});
 
 			map.on('zoomend', () => {

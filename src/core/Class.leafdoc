@@ -1,8 +1,7 @@
 
 @class Class
-@aka L.Class
 
-L.Class powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.
+Class powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.
 
 In addition to implementing a simple classical inheritance model, it introduces several special properties for convenient code organization — options, includes and statics.
 
@@ -28,29 +27,11 @@ const a = new MyClass("Hello");
 a.greet("World");
 ```
 
-@section Class Factories
-@example
 
-You may have noticed that Leaflet objects are created without using
-the `new` keyword. This is achieved by complementing each class with a
-lowercase factory method:
-
-```js
-new Map('map'); // becomes:
-L.map('map');
-```
-
-The factories are implemented very easily, and you can do this for your own classes:
-
-```js
-L.map = function (id, options) {
-    return new Map(id, options);
-};
-```
 @section Inheritance
 @example
 
-You use L.Class.extend to define new classes, but you can use the same method on any class to inherit from it:
+You use Class.extend to define new classes, but you can use the same method on any class to inherit from it:
 
 ```js
 const MyChildClass = MyClass.extend({
@@ -112,7 +93,7 @@ a.options.myOption2; // 'bar'
 a.options.myOption3; // 5
 ```
 
-There's also [`L.Util.setOptions`](#util-setoptions), a method for
+There's also [`Util.setOptions`](#util-setoptions), a method for
 conveniently merging options passed to constructor with the defaults
 defines in the class:
 
@@ -181,7 +162,7 @@ MyClass.FOO; // 'bar'
 @section Constructor hooks
 @example
 
-If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `L.Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
+If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
 
 ```js
 MyClass.addInitHook(() => {

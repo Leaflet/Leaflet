@@ -1,14 +1,13 @@
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
-import {LatLng, toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
 /*
  * @class Polyline
- * @aka L.Polyline
  * @inherits Path
  *
  * A class for drawing polyline overlays on a map. Extends `Path`.
@@ -44,7 +43,11 @@ import {Point} from '../../geometry/Point.js';
  * ```
  */
 
-
+// @constructor Polyline(latlngs: LatLng[], options?: Polyline options)
+// Instantiates a polyline object given an array of geographical points and
+// optionally an options object. You can create a `Polyline` object with
+// multiple separate lines (`MultiPolyline`) by passing an array of arrays
+// of geographic points.
 export const Polyline = Path.extend({
 
 	// @section
@@ -133,7 +136,7 @@ export const Polyline = Path.extend({
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng(latlng, latlngs) {
 		latlngs ??= this._defaultShape();
-		latlng = toLatLng(latlng);
+		latlng = new LatLng(latlng);
 		latlngs.push(latlng);
 		this._bounds.extend(latlng);
 		return this.redraw();
@@ -155,7 +158,7 @@ export const Polyline = Path.extend({
 
 		for (let i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
-				result[i] = toLatLng(latlngs[i]);
+				result[i] = new LatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
 			} else {
 				result[i] = this._convertLatLngs(latlngs[i]);
@@ -284,12 +287,3 @@ export const Polyline = Path.extend({
 		return false;
 	}
 });
-
-// @factory L.polyline(latlngs: LatLng[], options?: Polyline options)
-// Instantiates a polyline object given an array of geographical points and
-// optionally an options object. You can create a `Polyline` object with
-// multiple separate lines (`MultiPolyline`) by passing an array of arrays
-// of geographic points.
-export function polyline(latlngs, options) {
-	return new Polyline(latlngs, options);
-}

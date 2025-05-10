@@ -1,17 +1,16 @@
-import {LatLng, toLatLng} from './LatLng.js';
+import {LatLng} from './LatLng.js';
 
 /*
  * @class LatLngBounds
- * @aka L.LatLngBounds
  *
  * Represents a rectangular geographical area on a map.
  *
  * @example
  *
  * ```js
- * const corner1 = L.latLng(40.712, -74.227),
- * corner2 = L.latLng(40.774, -74.125),
- * bounds = L.latLngBounds(corner1, corner2);
+ * const corner1 = new LatLng(40.712, -74.227),
+ * corner2 = new LatLng(40.774, -74.125),
+ * bounds = new LatLngBounds(corner1, corner2);
  * ```
  *
  * All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:
@@ -30,9 +29,23 @@ import {LatLng, toLatLng} from './LatLng.js';
  * can't be added to it with the `include` function.
  */
 
+// TODO International date line?
+
+// @constructor LatLngBounds(corner1: LatLng, corner2: LatLng)
+// Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
+
+// @alternative
+// @constructor LatLngBounds(latlngs: LatLng[])
+// Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
 export class LatLngBounds {
 	constructor(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
 		if (!corner1) { return; }
+
+		if (corner1 instanceof LatLngBounds) {
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return corner1;
+		}
 
 		const latlngs = corner2 ? [corner1, corner2] : corner1;
 
@@ -63,7 +76,13 @@ export class LatLngBounds {
 			if (!sw2 || !ne2) { return this; }
 
 		} else {
-			return obj ? this.extend(toLatLng(obj) || toLatLngBounds(obj)) : this;
+			if (!obj) {
+				return this;
+			}
+			if (LatLng.validate(obj)) {
+				return this.extend(new LatLng(obj));
+			}
+			return this.extend(new LatLngBounds(obj));
 		}
 
 		if (!sw && !ne) {
@@ -157,10 +176,10 @@ export class LatLngBounds {
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains(obj) { // (LatLngBounds) or (LatLng) -> Boolean
-		if (typeof obj[0] === 'number' || obj instanceof LatLng || 'lat' in obj) {
-			obj = toLatLng(obj);
+		if (LatLng.validate(obj)) {
+			obj = new LatLng(obj);
 		} else {
-			obj = toLatLngBounds(obj);
+			obj = new LatLngBounds(obj);
 		}
 
 		const sw = this._southWest,
@@ -181,7 +200,7 @@ export class LatLngBounds {
 	// @method intersects(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds intersect if they have at least one point in common.
 	intersects(bounds) {
-		bounds = toLatLngBounds(bounds);
+		bounds = new LatLngBounds(bounds);
 
 		const sw = this._southWest,
 		ne = this._northEast,
@@ -197,7 +216,7 @@ export class LatLngBounds {
 	// @method overlaps(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.
 	overlaps(bounds) {
-		bounds = toLatLngBounds(bounds);
+		bounds = new LatLngBounds(bounds);
 
 		const sw = this._southWest,
 		ne = this._northEast,
@@ -221,7 +240,7 @@ export class LatLngBounds {
 	equals(bounds, maxMargin) {
 		if (!bounds) { return false; }
 
-		bounds = toLatLngBounds(bounds);
+		bounds = new LatLngBounds(bounds);
 
 		return this._southWest.equals(bounds.getSouthWest(), maxMargin) &&
 		       this._northEast.equals(bounds.getNorthEast(), maxMargin);
@@ -232,19 +251,4 @@ export class LatLngBounds {
 	isValid() {
 		return !!(this._southWest && this._northEast);
 	}
-}
-
-// TODO International date line?
-
-// @factory L.latLngBounds(corner1: LatLng, corner2: LatLng)
-// Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
-
-// @alternative
-// @factory L.latLngBounds(latlngs: LatLng[])
-// Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
-export function toLatLngBounds(a, b) {
-	if (a instanceof LatLngBounds) {
-		return a;
-	}
-	return new LatLngBounds(a, b);
 }

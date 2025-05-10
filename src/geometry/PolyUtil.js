@@ -1,7 +1,7 @@
 import * as LineUtil from './LineUtil.js';
-import {toLatLng} from '../geo/LatLng.js';
-import {toPoint} from './Point.js';
-import {toLatLngBounds} from '../geo/LatLngBounds.js';
+import {LatLng} from '../geo/LatLng.js';
+import {Point} from './Point.js';
+import {LatLngBounds} from '../geo/LatLngBounds.js';
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
@@ -71,9 +71,9 @@ export function polygonCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	let centroidLatLng = toLatLng([0, 0]);
+	let centroidLatLng = new LatLng([0, 0]);
 
-	const bounds = toLatLngBounds(latlngs);
+	const bounds = new LatLngBounds(latlngs);
 	const areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
 	// tests showed that below 1700 rounding errors are happening
 	if (areaBounds < 1700) {
@@ -84,8 +84,8 @@ export function polygonCenter(latlngs, crs) {
 	const len = latlngs.length;
 	const points = [];
 	for (i = 0; i < len; i++) {
-		const latlng = toLatLng(latlngs[i]);
-		points.push(crs.project(toLatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
+		const latlng = new LatLng(latlngs[i]);
+		points.push(crs.project(new LatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
 	}
 
 	area = x = y = 0;
@@ -108,8 +108,8 @@ export function polygonCenter(latlngs, crs) {
 		center = [x / area, y / area];
 	}
 
-	const latlngCenter = crs.unproject(toPoint(center));
-	return toLatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
+	const latlngCenter = crs.unproject(new Point(center));
+	return new LatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
 }
 
 /* @function centroid(latlngs: LatLng[]): LatLng
@@ -120,10 +120,10 @@ export function centroid(coords) {
 	let lngSum = 0;
 	let len = 0;
 	for (const coord of coords) {
-		const latlng = toLatLng(coord);
+		const latlng = new LatLng(coord);
 		latSum += latlng.lat;
 		lngSum += latlng.lng;
 		len++;
 	}
-	return toLatLng([latSum / len, lngSum / len]);
+	return new LatLng([latSum / len, lngSum / len]);
 }

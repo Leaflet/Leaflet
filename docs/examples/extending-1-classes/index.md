@@ -16,7 +16,7 @@ Please note that this tutorial assumes you have a good grasp of:
 * [Object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented_programming) (understanding concepts like classes, instances, inheritance, methods and properties)
 
 
-## Leaflet Architecture
+## Leaflet architecture
 
 Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 JavaScript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
 
@@ -66,7 +66,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
 
 When naming classes, methods and properties, adhere to the following conventions:
     
-* Function, method, property and factory names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
+* Function, method and property names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
@@ -154,7 +154,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
     MyCubeClass.addInitHook('_calculateVolume', argValue1, argValue2);
     
 
-### Methods of the Parent Class
+### Methods of the parent class
 
 Calling a method of a parent class is achieved by reaching into the prototype of the parent class and using [`Function.call(…)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call). This can be seen, for example, in the code for `L.FeatureGroup`:
 
@@ -174,23 +174,14 @@ Calling a method of a parent class is achieved by reaching into the prototype of
     });
 
 Calling the parent's constructor is done in a similar way, but using `ParentClass.prototype.initialize.call(this, …)` instead.
-    
-    
-### Factories    
 
-Most Leaflet classes have a corresponding [factory function](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29). A factory function has the same name as the class, but in `lowerCamelCase` instead of `UpperCamelCase`:
-    
-    function myBoxClass(name, options) {
-        return new MyBoxClass(name, options);
-    }
-    
-    
-### Naming Conventions
+
+### Naming conventions
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
 * Never expose global variables in your plugin.
-* If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-* If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
+* If you inherit one of the existing classes or have a new class, export it and make it available via import.
+* Make your plugin importable like this: `import MyPlugin from 'leaflet-my-plugin'`.
 
 

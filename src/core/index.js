@@ -5,4 +5,3 @@ export {Handler} from './Handler.js';
 
 import * as Util from './Util.js';
 export {Util};
-export {stamp, setOptions} from './Util.js';

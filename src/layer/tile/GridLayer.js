@@ -4,12 +4,11 @@ import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
-import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
  * @class GridLayer
  * @inherits Layer
- * @aka L.GridLayer
  *
  * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces `TileLayer.Canvas`.
  * GridLayer can be extended to create a tiled grid of HTML elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
@@ -72,13 +71,15 @@ import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBoun
  */
 
 
+// @constructor GridLayer(options?: GridLayer options)
+// Creates a new instance of GridLayer with the supplied options.
 export const GridLayer = Layer.extend({
 
 	// @section
 	// @aka GridLayer options
 	options: {
 		// @option tileSize: Number|Point = 256
-		// Width and height of tiles in the grid. Use a number if width and height are equal, or `L.point(width, height)` otherwise.
+		// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
 		tileSize: 256,
 
 		// @option opacity: Number = 1.0
@@ -716,7 +717,7 @@ export const GridLayer = Layer.extend({
 
 		// don't load tile if it doesn't intersect the bounds in options
 		const tileBounds = this._tileCoordsToBounds(coords);
-		return latLngBounds(this.options.bounds).overlaps(tileBounds);
+		return new LatLngBounds(this.options.bounds).overlaps(tileBounds);
 	},
 
 	_keyToBounds(key) {
@@ -892,9 +893,3 @@ export const GridLayer = Layer.extend({
 		return Object.values(this._tiles).every(t => t.loaded);
 	}
 });
-
-// @factory L.gridLayer(options?: GridLayer options)
-// Creates a new instance of GridLayer with the supplied options.
-export function gridLayer(options) {
-	return new GridLayer(options);
-}
