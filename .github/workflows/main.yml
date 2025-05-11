@@ -116,9 +116,9 @@ jobs:
         run: node ./spec/ssr/ssr_node.js
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
 
       - name: Run Deno SSR script
         run: deno run ./spec/ssr/ssr_deno.js
