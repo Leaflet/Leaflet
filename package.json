@@ -6,7 +6,7 @@
   "devDependencies": {
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
     "@rollup/plugin-json": "^6.1.0",
-    "bundlemon": "^3.0.3",
+    "bundlemon": "^3.1.0",
     "chai": "^5.2.0",
     "eslint": "^9.26.0",
     "eslint-config-mourner": "^4.0.2",
@@ -26,9 +26,9 @@
     "prosthetic-hand": "^2.0.0",
     "rollup": "^4.40.2",
     "rollup-plugin-git-version": "^0.3.1",
-    "simple-git": "^3.25.0",
+    "simple-git": "^3.27.0",
     "sinon": "^20.0.0",
-    "ssri": "^10.0.6",
+    "ssri": "^12.0.0",
     "uglify-js": "^3.19.3",
     "ui-event-simulator": "^2.0.0"
   },
