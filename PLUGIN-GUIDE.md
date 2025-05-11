@@ -221,40 +221,6 @@ file to make sure the minified files are not versioned, and an
 [empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package)
 to ensure that they are published to NPM.
 
-## Module Loaders
-
-Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
-
-You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js)
-
-```js
-(function (factory, window) {
-
-    // define an AMD module that relies on 'leaflet'
-    if (typeof define === 'function' && define.amd) {
-        define(['leaflet'], factory);
-
-    // define a Common JS module that relies on 'leaflet'
-    } else if (typeof exports === 'object') {
-        module.exports = factory(require('leaflet'));
-    }
-
-    // attach your plugin to the global 'L' variable
-    if (typeof window !== 'undefined' && window.L) {
-        window.L.YourPlugin = factory(L);
-    }
-}(function (L) {
-    var MyLeafletPlugin = {};
-    // implement your plugin
-
-    // return your plugin when you are done
-    return MyLeafletPlugin;
-}, window));
-```
-
-Now your plugin is available as an AMD and CommonJS module and can be used in module loaders like Browserify and RequireJS.
-
-
 ## Adding to the plugins list
 
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:

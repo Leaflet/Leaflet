@@ -1,27 +1,30 @@
-import {point, latLng, Browser} from 'leaflet';
+import {Assertion, util} from 'chai';
+import {latLng, point, DomEvent} from 'leaflet';
 
-chai.util.addMethod(chai.Assertion.prototype, 'near', function (expected, delta = 1) {
+util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = point(expected);
 
-	new chai.Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
-	new chai.Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
+	new Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
+	new Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
 });
 
-chai.util.addMethod(chai.Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
+util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
 	expected = latLng(expected);
 
-	new chai.Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
-	new chai.Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
+	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
+	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
 });
 
+const runAsTouchBrowser = window.__karma__.config.runAsTouchBrowser || false;
+
 // A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = Browser.touch ? it : it.skip;
-it.skipIfTouch = Browser.touchNative ? it.skip : it;
+it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
+it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
 
-export const touchEventType = Browser.touchNative ? 'touch' : 'pointer';
-// Note: this override is needed to workaround prosthetic-hand fail,
-//       see https://github.com/Leaflet/prosthetic-hand/issues/14
+export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
+export const pointerEventType = ['pointer', {pointerType}];
 
+console.error('Touch', runAsTouchBrowser);
 
 export function createContainer(width, height) {
 	width = width ? width : '400px';
@@ -45,9 +48,7 @@ export function removeMapContainer(map, container) {
 	if (container) {
 		document.body.removeChild(container);
 	}
+
+	DomEvent.PointerEvents.cleanupPointers();
 }
 
-console.log('Browser.pointer', Browser.pointer);
-console.log('Browser.touchNative', Browser.touchNative);
-
-export const pointerType = Browser.touchNative ? 'touch' : 'mouse';

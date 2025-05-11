@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import {DomUtil, Point, point} from 'leaflet';
 import UIEventSimulator from 'ui-event-simulator';
 
@@ -126,7 +127,7 @@ describe('DomUtil', () => {
 			expect(el.style.transform).to.equal('translate3d(1px, 1px, 0px)');
 		});
 
-		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(${scalevalue}) if only scale is specified', () => {
+		it('set 3d CSS transform to translate3d(0px, 0px, 0) and add to it scale(<scalevalue>) if only scale is specified', () => {
 			DomUtil.setTransform(el, undefined, 5);
 			expect(el.style.transform).to.equal('translate3d(0px, 0px, 0px) scale(5)');
 		});

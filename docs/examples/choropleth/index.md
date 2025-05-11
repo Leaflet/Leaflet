@@ -33,14 +33,14 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 Let's display our states data on the map:
 
-	var map = L.map('map').setView([37.8, -96], 4);
+	const map = new Map('map').setView([37.8, -96], 4);
 
-	var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	L.geoJson(statesData).addTo(map);
+	new GeoJSON(statesData).addTo(map);
 
 {% include frame.html url="example-basic.html" %}
 
@@ -73,7 +73,7 @@ Next we define a styling function for our GeoJSON layer so that its `fillColor` 
 		};
 	}
 
-	L.geoJson(statesData, {style: style}).addTo(map);
+	new GeoJSON(statesData, {style: style}).addTo(map);
 
 Looks much better now!
 
@@ -85,7 +85,7 @@ Looks much better now!
 Now let's make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `mouseover` event:
 
 	function highlightFeature(e) {
-		var layer = e.target;
+		const layer = e.target;
 
 		layer.setStyle({
 			weight: 5,
@@ -99,7 +99,7 @@ Now let's make the states highlighted visually in some way when they are hovered
 
 Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states.
 
-Next we'll define what happens on `mouseout`:
+Next we'll define what happens on `pointerout`:
 
 	function resetHighlight(e) {
 		geojson.resetStyle(e.target);
@@ -107,9 +107,9 @@ Next we'll define what happens on `mouseout`:
 
 The handy `geojson.resetStyle` method will reset the layer style to its default state (defined by our `style` function). For this to work, make sure our GeoJSON layer is accessible through the `geojson` variable by defining it before our listeners and assigning the layer to it later:
 
-	var geojson;
+	let geojson;
 	// ... our listeners
-	geojson = L.geoJson(...);
+	geojson = new GeoJSON(...);
 
 As an additional touch, let's define a `click` listener that zooms to the state:
 
@@ -121,13 +121,13 @@ Now we'll use the `onEachFeature` option to add the listeners on our state layer
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			pointerover: highlightFeature,
+			pointerout: resetHighlight,
 			click: zoomToFeature
 		});
 	}
 
-	geojson = L.geoJson(statesData, {
+	geojson = new GeoJSON(statesData, {
 		style: style,
 		onEachFeature: onEachFeature
 	}).addTo(map);
@@ -140,10 +140,10 @@ We could use the usual popups on click to show information about different state
 
 Here's the code for our control:
 
-	var info = L.control();
+	const info = new Control();
 
 	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+		this._div = DomUtil.create('div', 'info'); // create a div with a class "info"
 		this.update();
 		return this._div;
 	};
@@ -189,16 +189,15 @@ The control also needs some CSS styles to look nice:
 
 Creating a control with a legend is easier, since it is static and doesn't change on state hover. JavaScript code:
 
-	var legend = L.control({position: 'bottomright'});
+	const legend = new Control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
 
-		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-			labels = [];
+		const div = DomUtil.create('div', 'info legend'),
+			grades = [0, 10, 20, 50, 100, 200, 500, 1000];
 
 		// loop through our density intervals and generate a label with a colored square for each interval
-		for (var i = 0; i < grades.length; i++) {
+		for (let i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
 				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');

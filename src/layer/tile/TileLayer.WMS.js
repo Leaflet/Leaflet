@@ -1,5 +1,5 @@
 import {TileLayer} from './TileLayer.js';
-import {extend, setOptions, getParamString} from '../../core/Util.js';
+import {setOptions} from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
 import {toBounds} from '../../geometry/Bounds.js';
@@ -13,7 +13,7 @@ import {toBounds} from '../../geometry/Bounds.js';
  * @example
  *
  * ```js
- * var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+ * const nexrad = new TileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
  * 	layers: 'nexrad-n0r-900913',
  * 	format: 'image/png',
  * 	transparent: true,
@@ -69,11 +69,11 @@ export const TileLayerWMS = TileLayer.extend({
 
 		this._url = url;
 
-		const wmsParams = extend({}, this.defaultWmsParams);
+		const wmsParams = {...this.defaultWmsParams};
 
 		// all keys that are not TileLayer options go to WMS params
-		for (const i in options) {
-			if (!(i in this.options)) {
+		for (const i of Object.keys(options)) {
+			if (!(i in this.options)) { // do not use Object.keys here, as it excludes options inherited from TileLayer
 				wmsParams[i] = options[i];
 			}
 		}
@@ -90,7 +90,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 	onAdd(map) {
 
-		this._crs = this.options.crs || map.options.crs;
+		this._crs = this.options.crs ?? map.options.crs;
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
 		const projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
@@ -108,18 +108,19 @@ export const TileLayerWMS = TileLayer.extend({
 		    max = bounds.max,
 		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 		    [min.y, min.x, max.y, max.x] :
-		    [min.x, min.y, max.x, max.y]).join(','),
-		    url = TileLayer.prototype.getTileUrl.call(this, coords);
-		return url +
-			getParamString(this.wmsParams, url, this.options.uppercase) +
-			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
+		    [min.x, min.y, max.x, max.y]).join(',');
+		const url = new URL(TileLayer.prototype.getTileUrl.call(this, coords));
+		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
+			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);
+		}
+		return url.toString();
 	},
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
 	setParams(params, noRedraw) {
 
-		extend(this.wmsParams, params);
+		Object.assign(this.wmsParams, params);
 
 		if (!noRedraw) {
 			this.redraw();

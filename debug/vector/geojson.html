@@ -36,7 +36,7 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.esm.js"
+					"leaflet": "../../dist/leaflet-src.js"
 				}
 			}
 		</script>
@@ -129,8 +129,8 @@
 
 			function onEachFeature(feature, layer) {
 				layer.on({
-					mouseover: highlightFeature,
-					mouseout: resetHighlight,
+					pointerover: highlightFeature,
+					pointerout: resetHighlight,
 					click: zoomToFeature
 				});
 			}

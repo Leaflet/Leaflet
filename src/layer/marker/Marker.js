@@ -57,7 +57,7 @@ export const Marker = Layer.extend({
 		opacity: 1,
 
 		// @option riseOnHover: Boolean = false
-		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		// If `true`, the marker will get on top of others when you hover the pointer over it.
 		riseOnHover: false,
 
 		// @option riseOffset: Number = 250
@@ -72,10 +72,10 @@ export const Marker = Layer.extend({
 		// `Map pane` where the markers shadow will be added.
 		shadowPane: 'shadowPane',
 
-		// @option bubblingMouseEvents: Boolean = false
-		// When `true`, a mouse event on this marker will trigger the same event on the map
+		// @option bubblingPointerEvents: Boolean = false
+		// When `true`, a pointer event on this marker will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: false,
+		bubblingPointerEvents: false,
 
 		// @option autoPanOnFocus: Boolean = true
 		// When `true`, the map will pan whenever the marker is focused (via
@@ -85,7 +85,7 @@ export const Marker = Layer.extend({
 
 		// @section Draggable marker options
 		// @option draggable: Boolean = false
-		// Whether the marker is draggable with mouse/touch or not.
+		// Whether the marker is draggable with pointer or not.
 		draggable: false,
 
 		// @option autoPan: Boolean = false
@@ -194,6 +194,9 @@ export const Marker = Layer.extend({
 		return this;
 	},
 
+	// @method getElement(): HTMLElement
+	// Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
+	// used by L.Marker layer.
 	getElement() {
 		return this._icon;
 	},
@@ -227,7 +230,7 @@ export const Marker = Layer.extend({
 			}
 
 			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt || '';
+				icon.alt = options.alt ?? '';
 			}
 		}
 
@@ -242,8 +245,8 @@ export const Marker = Layer.extend({
 
 		if (options.riseOnHover) {
 			this.on({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 
@@ -283,8 +286,8 @@ export const Marker = Layer.extend({
 	_removeIcon() {
 		if (this.options.riseOnHover) {
 			this.off({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 

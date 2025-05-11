@@ -1,4 +1,6 @@
-import {Map, imageOverlay, LatLngBounds} from 'leaflet';
+import {expect} from 'chai';
+import {LatLngBounds, Map, imageOverlay} from 'leaflet';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('ImageOverlay', () => {
@@ -108,23 +110,23 @@ describe('ImageOverlay', () => {
 		it('should update the z-index of the image if it has allready been added to the map', () => {
 			const overlay = imageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('1');
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('10');
 		});
 
 		it('should set the z-index of the image when it is added to the map', () => {
 			const overlay = imageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('10');
 		});
 
 		it('should use the z-index specified in options', () => {
 			const overlay = imageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('20');
 		});
 
 		it('should be fluent', () => {

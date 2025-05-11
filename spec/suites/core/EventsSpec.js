@@ -1,4 +1,6 @@
-import {Evented, Class, Util, FeatureGroup, Marker} from 'leaflet';
+import {expect} from 'chai';
+import {Class, Evented, FeatureGroup, Marker, Util} from 'leaflet';
+import sinon from 'sinon';
 
 describe('Events', () => {
 	describe('#fireEvent', () => {
@@ -632,9 +634,6 @@ describe('Events', () => {
 			expect(spy2.calledWith({
 				type: 'test2',
 				target: parent,
-				// layer should be deprecated in the future
-				// in favor of sourceTarget
-				layer: obj,
 				sourceTarget: obj,
 				propagatedFrom: obj
 			})).to.be.true;

@@ -1,18 +1,20 @@
 ---
 layout: tutorial_frame
-title: GeoJSON tutorial
+title: GeoJSON Example
 ---
 <script src="sample-geojson.js" type="text/javascript"></script>
 
-<script>
-	const map = L.map('map').setView([39.74739, -105], 13);
+<script type="module">
+	import L, {Map, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const map = new Map('map').setView([39.74739, -105], 13);
+
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	const baseballIcon = L.icon({
+	const baseballIcon = new Icon({
 		iconUrl: 'baseball-marker.png',
 		iconSize: [32, 37],
 		iconAnchor: [16, 37],
@@ -30,7 +32,7 @@ title: GeoJSON tutorial
 	}
 
 	/* global campus, bicycleRental, freeBus, coorsField */
-	const bicycleRentalLayer = L.geoJSON([bicycleRental, campus], {
+	const bicycleRentalLayer = new GeoJSON([bicycleRental, campus], {
 
 		style(feature) {
 			return feature.properties && feature.properties.style;
@@ -39,7 +41,7 @@ title: GeoJSON tutorial
 		onEachFeature,
 
 		pointToLayer(feature, latlng) {
-			return L.circleMarker(latlng, {
+			return new CircleMarker(latlng, {
 				radius: 8,
 				fillColor: '#ff7800',
 				color: '#000',
@@ -50,7 +52,7 @@ title: GeoJSON tutorial
 		}
 	}).addTo(map);
 
-	const freeBusLayer = L.geoJSON(freeBus, {
+	const freeBusLayer = new GeoJSON(freeBus, {
 
 		filter(feature, layer) {
 			if (feature.properties) {
@@ -63,13 +65,15 @@ title: GeoJSON tutorial
 		onEachFeature
 	}).addTo(map);
 
-	const coorsLayer = L.geoJSON(coorsField, {
+	const coorsLayer = new GeoJSON(coorsField, {
 
 		pointToLayer(feature, latlng) {
-			return L.marker(latlng, {icon: baseballIcon});
+			return new Marker(latlng, {icon: baseballIcon});
 		},
 
 		onEachFeature
 	}).addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

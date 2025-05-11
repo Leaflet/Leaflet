@@ -31,15 +31,21 @@ export const IconDefault = Icon.extend({
 	},
 
 	_getIconUrl(name) {
-		if (typeof IconDefault.imagePath !== 'string') {	// Deprecated, backwards-compatibility only
+		// only detect once
+		if (!IconDefault.imagePath) {
 			IconDefault.imagePath = this._detectIconPath();
+		}
+
+		const url = Icon.prototype._getIconUrl.call(this, name);
+		if (!url) {
+			return null;
 		}
 
 		// @option imagePath: String
 		// `Icon.Default` will try to auto-detect the location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right path.
-		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
+		return (this.options.imagePath || IconDefault.imagePath) + url;
 	},
 
 	_stripUrl(path) {	// separate function to use in tests

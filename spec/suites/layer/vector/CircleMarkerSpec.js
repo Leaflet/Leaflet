@@ -1,4 +1,5 @@
-﻿import {Map, CircleMarker, LatLng, Point} from 'leaflet';
+﻿import {expect} from 'chai';
+import {CircleMarker, LatLng, Map, Point} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('CircleMarker', () => {

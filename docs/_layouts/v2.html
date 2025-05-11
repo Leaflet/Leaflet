@@ -3,17 +3,20 @@
 <head>
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 
-	<title>{{ title }}Leaflet - a JavaScript library for interactive maps</title>
-
+	{% if title != '' %}
+	<title>{{ title }}Leaflet</title>
+	{% else %}
+	<title>Leaflet - a JavaScript library for interactive maps</title>
+	{% endif %}
+	
 	<meta charset="utf-8" />
-
 	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
-	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
+	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for building powerful interactive maps." />
 	<meta property="og:image" content="{{ root }}docs/images/logo.png" />
 	<meta property="og:image:alt" content="Leaflet">
 	<meta itemprop="name" content="Leaflet">
-	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
+	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for building powerful interactive maps.">
 	<meta itemprop="image" content="{{ root }}docs/images/logo.png">
 	{% endif %}
 
@@ -42,9 +45,17 @@
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+	<script type="importmap">
+		{
+			"imports": {
+				"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+			},
+			"integrity": {
+				"https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+			}
+		}
+	</script>
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
 	<script>
@@ -60,7 +71,7 @@
 
 <header>
 	<h1><a href="https://leafletjs.com/"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
-	<p class="tagline">an open-source JavaScript library<br> for mobile-friendly interactive maps</p>
+	<p class="tagline">an open-source JavaScript library<br> for building powerful interactive maps</p>
 </header>
 
 <nav>
@@ -126,6 +137,12 @@
 	  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.svg" width="46" /></a>
 	  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.svg" width="46" /></a>
 	</nav>
+
+	<button id="back-to-top" title="Scroll back to top">
+		<svg viewBox="0 0 16 16">
+			<path d="M7.3,3.3c0.4-0.4,1-0.4,1.4,0l6,6c0.4,0.4,0.4,1,0,1.4s-1,0.4-1.4,0L8,5.4l-5.3,5.3c-0.4,0.4-1,0.4-1.4,0s-0.4-1,0-1.4L7.3,3.3L7.3,3.3z"/>
+		</svg>
+	</button>
 </footer>
 
 <script>

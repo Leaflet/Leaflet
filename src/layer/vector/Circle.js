@@ -24,11 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 export const Circle = CircleMarker.extend({
 
-	initialize(latlng, options, legacyOptions) {
-		if (typeof options === 'number') {
-			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = Util.extend({}, legacyOptions, {radius: options});
-		}
+	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
 
@@ -56,7 +52,7 @@ export const Circle = CircleMarker.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
 	getBounds() {
-		const half = [this._radius, this._radiusY || this._radius];
+		const half = [this._radius, this._radiusY ?? this._radius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
@@ -94,7 +90,7 @@ export const Circle = CircleMarker.extend({
 			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
-			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+			this._radius = Math.abs(this._point.x - map.latLngToLayerPoint(latlng2).x);
 		}
 
 		this._updateBounds();
@@ -104,10 +100,6 @@ export const Circle = CircleMarker.extend({
 // @factory L.circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-// @alternative
-// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
-// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
-// Do not use in new applications or plugins.
 export function circle(latlng, options, legacyOptions) {
 	return new Circle(latlng, options, legacyOptions);
 }

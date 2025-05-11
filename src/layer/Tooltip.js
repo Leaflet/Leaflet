@@ -24,14 +24,14 @@ import {FeatureGroup} from './FeatureGroup.js';
  * A tooltip can be also standalone:
  *
  * ```js
- * var tooltip = L.tooltip()
+ * const tooltip = new Tooltip()
  * 	.setLatLng(latlng)
  * 	.setContent('Hello world!<br />This is a nice tooltip.')
  * 	.addTo(map);
  * ```
  * or
  * ```js
- * var tooltip = L.tooltip(latlng, {content: 'Hello world!<br />This is a nice tooltip.'})
+ * const tooltip = new Tooltip(latlng, {content: 'Hello world!<br />This is a nice tooltip.'})
  * 	.addTo(map);
  * ```
  *
@@ -68,11 +68,11 @@ export const Tooltip = DivOverlay.extend({
 		direction: 'auto',
 
 		// @option permanent: Boolean = false
-		// Whether to open the tooltip permanently or only on mouseover.
+		// Whether to open the tooltip permanently or only on pointerover.
 		permanent: false,
 
 		// @option sticky: Boolean = false
-		// If true, the tooltip will follow the mouse instead of being fixed at the feature center.
+		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
 		sticky: false,
 
 		// @option opacity: Number = 0.9
@@ -213,7 +213,7 @@ export const Tooltip = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the tooltip on the source layer?
-		return toPoint(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return toPoint(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });
@@ -260,7 +260,7 @@ Map.include({
  * All layers share a set of methods convenient for binding tooltips to it.
  *
  * ```js
- * var layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+ * const layer = L.Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
  * layer.openTooltip();
  * layer.closeTooltip();
  * ```
@@ -303,24 +303,24 @@ Layer.include({
 	_initTooltipInteractions(remove) {
 		if (!remove && this._tooltipHandlersAdded) { return; }
 		const onOff = remove ? 'off' : 'on',
-		    events = {
+		events = {
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		  };
+		};
 		if (!this._tooltip.options.permanent) {
-			events.mouseover = this._openTooltip;
-			events.mouseout = this.closeTooltip;
+			events.pointerover = this._openTooltip;
+			events.pointerout = this.closeTooltip;
 			events.click = this._openTooltip;
 			if (this._map) {
-				this._addFocusListeners();
+				this._addFocusListeners(remove);
 			} else {
-				events.add = this._addFocusListeners;
+				events.add = () => this._addFocusListeners(remove);
 			}
 		} else {
 			events.add = this._openTooltip;
 		}
 		if (this._tooltip.options.sticky) {
-			events.mousemove = this._moveTooltip;
+			events.pointermove = this._moveTooltip;
 		}
 		this[onOff](events);
 		this._tooltipHandlersAdded = !remove;
@@ -385,22 +385,37 @@ Layer.include({
 		return this._tooltip;
 	},
 
-	_addFocusListeners() {
+	_addFocusListeners(remove) {
 		if (this.getElement) {
-			this._addFocusListenersOnLayer(this);
+			this._addFocusListenersOnLayer(this, remove);
 		} else if (this.eachLayer) {
-			this.eachLayer(this._addFocusListenersOnLayer, this);
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
 		}
 	},
 
-	_addFocusListenersOnLayer(layer) {
+	_addFocusListenersOnLayer(layer, remove) {
 		const el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
-			DomEvent.on(el, 'focus', function () {
-				this._tooltip._source = layer;
-				this.openTooltip();
-			}, this);
-			DomEvent.on(el, 'blur', this.closeTooltip, this);
+			const onOff = remove ? 'off' : 'on';
+			if (!remove) {
+				// Remove focus listener, if already existing
+				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
+
+				// eslint-disable-next-line camelcase
+				el._leaflet_focus_handler = () => {
+					if (this._tooltip) {
+						this._tooltip._source = layer;
+						this.openTooltip();
+					}
+				};
+			}
+
+			el._leaflet_focus_handler && DomEvent[onOff](el, 'focus', el._leaflet_focus_handler, this);
+			DomEvent[onOff](el, 'blur', this.closeTooltip, this);
+
+			if (remove) {
+				delete el._leaflet_focus_handler;
+			}
 		}
 	},
 
@@ -429,7 +444,7 @@ Layer.include({
 			return;
 		}
 
-		this._tooltip._source = e.layer || e.target;
+		this._tooltip._source = e.propagatedFrom ?? e.target;
 
 		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
 	},
@@ -437,7 +452,7 @@ Layer.include({
 	_moveTooltip(e) {
 		let latlng = e.latlng, containerPoint, layerPoint;
 		if (this._tooltip.options.sticky && e.originalEvent) {
-			containerPoint = this._map.mouseEventToContainerPoint(e.originalEvent);
+			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
 			latlng = this._map.layerPointToLatLng(layerPoint);
 		}

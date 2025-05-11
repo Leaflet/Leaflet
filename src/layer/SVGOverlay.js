@@ -13,12 +13,12 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+ * const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
  * svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
  * svgElement.setAttribute('viewBox', "0 0 200 200");
  * svgElement.innerHTML = '<rect width="200" height="200"/><rect x="75" y="23" width="50" height="50" style="fill:red"/><rect x="75" y="123" width="50" height="50" style="fill:#0013ff"/>';
- * var svgElementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
- * L.svgOverlay(svgElement, svgElementBounds).addTo(map);
+ * const svgElementBounds = [ [ 32, -130 ], [ 13, -100 ] ];
+ * new SVGOverlay(svgElement, svgElementBounds).addTo(map);
  * ```
  */
 
@@ -31,7 +31,7 @@ export const SVGOverlay = ImageOverlay.extend({
 		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
 
 		el.onselectstart = Util.falseFn;
-		el.onmousemove = Util.falseFn;
+		el.onpointermove = Util.falseFn;
 	}
 
 	// @method getElement(): SVGElement

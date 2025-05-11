@@ -20,7 +20,7 @@ export const DivOverlay = Layer.extend({
 	// @aka DivOverlay options
 	options: {
 		// @option interactive: Boolean = false
-		// If true, the popup/tooltip will listen to the mouse events.
+		// If true, the popup/tooltip will listen to the pointer events.
 		interactive: false,
 
 		// @option offset: Point = Point(0, 0)
@@ -42,7 +42,7 @@ export const DivOverlay = Layer.extend({
 	},
 
 	initialize(options, source) {
-		if (options && (options instanceof LatLng || Array.isArray(options))) {
+		if (options instanceof LatLng || Array.isArray(options)) {
 			this._latlng = toLatLng(options);
 			Util.setOptions(this, source);
 		} else {
@@ -236,10 +236,9 @@ export const DivOverlay = Layer.extend({
 
 		if (source instanceof FeatureGroup) {
 			source = null;
-			const layers = this._source._layers;
-			for (const id in layers) {
-				if (layers[id]._map) {
-					source = layers[id];
+			for (const layer of Object.values(this._source._layers)) {
+				if (layer._map) {
+					source = layer;
 					break;
 				}
 			}
@@ -274,7 +273,7 @@ export const DivOverlay = Layer.extend({
 		if (!this._content) { return; }
 
 		const node = this._contentNode;
-		const content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+		const content = (typeof this._content === 'function') ? this._content(this._source ?? this) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;

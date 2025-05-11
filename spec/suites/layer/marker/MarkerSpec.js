@@ -1,4 +1,6 @@
-import {Map, Icon, Marker, Point, DivIcon, Browser, LatLng} from 'leaflet';
+import {expect} from 'chai';
+import {Browser, DivIcon, Icon, LatLng, Map, Marker, Point} from 'leaflet';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -334,18 +336,18 @@ describe('Marker', () => {
 		it('do not catch event if it does not listen to it', (done) => {
 			const marker = new Marker([55, 37]);
 			map.addLayer(marker);
-			marker.once('mousemove', (e) => {
+			marker.once('pointermove', (e) => {
 				// It should be the marker coordinates
 				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(true);
 			});
-			UIEventSimulator.fire('mousemove', marker._icon);
+			UIEventSimulator.fire('pointermove', marker._icon);
 
-			map.once('mousemove', (e) => {
-				// It should be the mouse coordinates, not the marker ones
+			map.once('pointermove', (e) => {
+				// It should be the pointer coordinates, not the marker ones
 				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(false);
 				done();
 			});
-			UIEventSimulator.fire('mousemove', marker._icon);
+			UIEventSimulator.fire('pointermove', marker._icon);
 		});
 	});
 });

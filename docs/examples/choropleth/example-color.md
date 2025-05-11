@@ -1,14 +1,15 @@
 ---
 layout: tutorial_frame
-title: Choropleth Tutorial
+title: Choropleth Color Example
 ---
 
 <script type="text/javascript" src="us-states.js"></script>
-<script type="text/javascript">
+<script type="module">
+	import L, {Map, TileLayer, GeoJSON} from 'leaflet';
 
-	const map = L.map('map').setView([37.8, -96], 4);
+	const map = new Map('map').setView([37.8, -96], 4);
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
@@ -36,8 +37,10 @@ title: Choropleth Tutorial
 	}
 
 	/* global statesData */
-	const geojson = L.geoJson(statesData, {
+	const geojson = new GeoJSON(statesData, {
 		style,
 	}).addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

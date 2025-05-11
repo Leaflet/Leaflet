@@ -9,7 +9,7 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.esm.js"
+					"leaflet": "../../dist/leaflet-src.js"
 				}
 			}
 		</script>
@@ -24,11 +24,7 @@
 			import route from './route.js';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-			const latlngs = [];
-
-			for (let i = 0; i < route.length; i++) {
-				latlngs.push(new LatLng(route[i][0], route[i][1]));
-			}
+			const latlngs = route.map(p => new LatLng(p[0], p[1]));
 
 			const canvas = new Canvas();
 			const path = new Polyline(latlngs, {renderer: canvas});

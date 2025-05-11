@@ -1,4 +1,7 @@
-import {Bounds, Point, PolyUtil, Map, Polygon} from 'leaflet';
+import {expect} from 'chai';
+import {Bounds, Map, Point, PolyUtil, Polygon} from 'leaflet';
+import sinon from 'sinon';
+import '../SpecHelper.js';
 
 describe('PolyUtil', () => {
 	describe('#clipPolygon', () => {
@@ -14,8 +17,8 @@ describe('PolyUtil', () => {
 			// check clip without rounding
 			const clipped = PolyUtil.clipPolygon(points, bounds);
 
-			for (let i = 0, len = clipped.length; i < len; i++) {
-				delete clipped[i]._code;
+			for (const c of clipped) {
+				delete c._code;
 			}
 
 			expect(clipped).to.eql([
@@ -28,8 +31,8 @@ describe('PolyUtil', () => {
 			// check clip with rounding
 			const clippedRounded = PolyUtil.clipPolygon(points, bounds, true);
 
-			for (let i = 0, len = clippedRounded.length; i < len; i++) {
-				delete clippedRounded[i]._code;
+			for (const c of clippedRounded) {
+				delete c._code;
 			}
 
 			expect(clippedRounded).to.eql([

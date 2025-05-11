@@ -92,6 +92,17 @@ export const TileLayer = GridLayer.extend({
 
 		options = Util.setOptions(this, options);
 
+		// in case the attribution hasn't been specified, check for known hosts that require attribution
+		if (options.attribution === null && URL.canParse(url)) {
+			const urlHostname = new URL(url).hostname;
+
+			// check for Open Street Map hosts
+			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
+			if (osmHosts.some(host => urlHostname.endsWith(host))) {
+				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			}
+		}
+
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
@@ -177,6 +188,7 @@ export const TileLayer = GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl(coords) {
 		const data = {
+			...this.options,
 			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
@@ -191,7 +203,7 @@ export const TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return Util.template(this._url, Util.extend(data, this.options));
+		return Util.template(this._url, data);
 	},
 
 	_tileOnLoad(done, tile) {
@@ -213,8 +225,8 @@ export const TileLayer = GridLayer.extend({
 	_getZoomForUrl() {
 		let zoom = this._tileZoom;
 		const maxZoom = this.options.maxZoom,
-		      zoomReverse = this.options.zoomReverse,
-		      zoomOffset = this.options.zoomOffset;
+		zoomReverse = this.options.zoomReverse,
+		zoomOffset = this.options.zoomOffset;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
@@ -231,7 +243,7 @@ export const TileLayer = GridLayer.extend({
 	// stops loading all tiles in the background layer
 	_abortLoading() {
 		let i, tile;
-		for (i in this._tiles) {
+		for (i of Object.keys(this._tiles)) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
@@ -270,6 +282,10 @@ export const TileLayer = GridLayer.extend({
 		}
 
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+	},
+
+	_clampZoom(zoom) {
+		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
 

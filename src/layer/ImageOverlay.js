@@ -14,9 +14,9 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @example
  *
  * ```js
- * var imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+ * const imageUrl = 'https://maps.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
  * 	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
- * L.imageOverlay(imageUrl, imageBounds).addTo(map);
+ * new ImageOverlay(imageUrl, imageBounds).addTo(map);
  * ```
  */
 
@@ -34,7 +34,7 @@ export const ImageOverlay = Layer.extend({
 		alt: '',
 
 		// @option interactive: Boolean = false
-		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
+		// If `true`, the image overlay will emit [pointer events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
 		// @option crossOrigin: Boolean|String = false
@@ -196,7 +196,7 @@ export const ImageOverlay = Layer.extend({
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
 		img.onselectstart = Util.falseFn;
-		img.onmousemove = Util.falseFn;
+		img.onpointermove = Util.falseFn;
 
 		// @event load: Event
 		// Fired when the ImageOverlay layer has loaded its image

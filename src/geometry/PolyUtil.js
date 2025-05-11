@@ -15,9 +15,9 @@ import {toLatLngBounds} from '../geo/LatLngBounds.js';
  */
 export function clipPolygon(points, bounds, round) {
 	let clippedPoints,
-	    i, j, k,
-	    a, b,
-	    len, edge, p;
+	i, j, k,
+	a, b,
+	len, edge, p;
 	const edges = [1, 4, 2, 8];
 
 	for (i = 0, len = points.length; i < len; i++) {
@@ -119,8 +119,8 @@ export function centroid(coords) {
 	let latSum = 0;
 	let lngSum = 0;
 	let len = 0;
-	for (let i = 0; i < coords.length; i++) {
-		const latlng = toLatLng(coords[i]);
+	for (const coord of coords) {
+		const latlng = toLatLng(coord);
 		latSum += latlng.lat;
 		lngSum += latlng.lng;
 		len++;

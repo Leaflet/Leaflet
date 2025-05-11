@@ -23,7 +23,7 @@ export function get(id) {
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
 export function create(tagName, className, container) {
 	const el = document.createElement(tagName);
-	el.className = className || '';
+	el.className = className ?? '';
 
 	if (container) {
 		container.appendChild(el);
@@ -54,7 +54,7 @@ export function toBack(el) {
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
 export function setTransform(el, offset, scale) {
-	const pos = offset || new Point(0, 0);
+	const pos = offset ?? new Point(0, 0);
 
 	el.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
@@ -78,7 +78,7 @@ export function getPosition(el) {
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-const documentStyle = document.documentElement.style;
+const documentStyle = typeof document === 'undefined' ? {} : document.documentElement.style;
 // Safari still needs a vendor prefix, we need to detect with property name is supported.
 const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 let prevUserSelect;

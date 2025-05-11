@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: A guide to basic Leaflet accessibility
+title: Accessible Maps
 ---
 
 ## Accessible maps
@@ -28,7 +28,7 @@ it is vital to ensure each has a unique and descriptive
 or
 [`title`](/reference.html#marker-title):
 
-<pre><code class="javascript">var marker = L.marker([50.4501, 30.5234],
+<pre><code class="javascript">const marker = new Marker([50.4501, 30.5234],
   {alt: 'Kyiv'}).addTo(map) // "Kyiv" is the <a href="https://www.w3.org/TR/accname-1.1/#dfn-accessible-name"><em>accessible name</em></a> of this marker
   .bindPopup('Kyiv, Ukraine is the birthplace of Leaflet!');</code></pre>
 
@@ -78,9 +78,8 @@ A simple way to achieve this is to use the HTML
 polyfill:
 
 ```html
-<!-- This map is for aesthetic purposes only, and can not be interacted with! -->
+<!-- This map is for aesthetic purposes only, and can not be interacted with due to the 'inert' property! -->
 <div id='decorative-map' inert></div>
-<script src='https://unpkg.com/wicg-inert@latest/dist/inert.min.js'></script>
 ```
 
 ### Utilizing plugins

@@ -1,5 +1,6 @@
 import {ImageOverlay} from './ImageOverlay.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -15,9 +16,9 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * var videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
+ * const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
  * 	videoBounds = [[ 32, -130], [ 13, -100]];
- * L.videoOverlay(videoUrl, videoBounds ).addTo(map);
+ * new VideoOverlay(videoUrl, videoBounds ).addTo(map);
  * ```
  */
 
@@ -31,13 +32,16 @@ export const VideoOverlay = ImageOverlay.extend({
 		// On some browsers autoplay will only work with `muted: true`
 		autoplay: true,
 
+		// @option loop: Boolean = false
+		// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+		controls: false,
+
 		// @option loop: Boolean = true
 		// Whether the video will loop back to the beginning when played.
 		loop: true,
 
 		// @option keepAspectRatio: Boolean = true
 		// Whether the video will save aspect ratio after the projection.
-		// Relevant for supported browsers. See [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
 		keepAspectRatio: true,
 
 		// @option muted: Boolean = false
@@ -57,8 +61,12 @@ export const VideoOverlay = ImageOverlay.extend({
 		if (this._zoomAnimated) { vid.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
 
-		vid.onselectstart = Util.falseFn;
-		vid.onmousemove = Util.falseFn;
+		DomEvent.on(vid, 'pointerdown', (e) => {
+			if (vid.controls) {
+				// Prevent the map from moving when the video or the seekbar is moved
+				DomEvent.stopPropagation(e);
+			}
+		});
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
@@ -66,11 +74,7 @@ export const VideoOverlay = ImageOverlay.extend({
 
 		if (wasElementSupplied) {
 			const sourceElements = vid.getElementsByTagName('source');
-			const sources = [];
-			for (let j = 0; j < sourceElements.length; j++) {
-				sources.push(sourceElements[j].src);
-			}
-
+			const sources = sourceElements.map(e => e.src);
 			this._url = (sourceElements.length > 0) ? sources : [vid.src];
 			return;
 		}
@@ -81,12 +85,13 @@ export const VideoOverlay = ImageOverlay.extend({
 			vid.style['objectFit'] = 'fill';
 		}
 		vid.autoplay = !!this.options.autoplay;
+		vid.controls = !!this.options.controls;
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
 		vid.playsInline = !!this.options.playsInline;
-		for (let i = 0; i < this._url.length; i++) {
+		for (const url of this._url) {
 			const source = DomUtil.create('source');
-			source.src = this._url[i];
+			source.src = url;
 			vid.appendChild(source);
 		}
 	}

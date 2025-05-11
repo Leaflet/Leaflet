@@ -1,5 +1,5 @@
-/* global L */
-import 'leaflet';
+import L from 'leaflet-bundle';
+import {expect} from 'chai';
 
 describe('General', () => {
 	it('namespace extension', () => {

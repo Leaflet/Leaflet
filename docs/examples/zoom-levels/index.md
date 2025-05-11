@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Zoom levels
+title: Zoom Levels
 ---
 
 <style>
@@ -24,7 +24,7 @@ title: Zoom levels
 }
 </style>
 
-## Zoom levels
+## Zoom Levels
 
 Leaflet works with [latitude](https://en.wikipedia.org/wiki/Latitude), [longitude](https://en.wikipedia.org/wiki/Longitude) and "zoom level".
 
@@ -33,18 +33,18 @@ levels means that the map can show details of a city.
 
 To understand how zoom levels work, first we need a basic introduction to <i>geodesy</i>.
 
-## The shape of the earth
+## The Shape of the Earth
 
 Let's have a look at a simple map locked at zoom zero:
 
-	var map = L.map('map', {
+	const map = new Map('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});
 
-	var cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
+	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+	const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
@@ -81,7 +81,7 @@ Things like geodesy, map projections and coordinate systems are hard, *very hard
 always the right thing to do, but most of the time works fine enough, makes things
 simpler, and allows Leaflet (and other map libraries) to be fast.
 
-## Powers of two
+## Powers of Two
 
 For now, let's just ***assume*** that the world is a square:
 
@@ -136,7 +136,7 @@ At each zoom level, each tile is divided in four, and its size (length of the ed
 This goes on and on. Most tile services offer tiles up to zoom level 18, depending on
 their coverage. This is enough to see a few city blocks per tile.
 
-## A note about scale
+## A Note About Scale
 
 One of the disadvantages of using a cylindrical projection is that the scale is not
 constant, and measuring distances or sizes is not reliable, specially at low zoom levels.
@@ -151,7 +151,7 @@ we can see how the scale factor <b>doubles</b>. The following example uses
 [javascript timeouts](https://developer.mozilla.org/docs/Web/API/WindowTimers/setTimeout)
 to  do this automatically:
 
-	L.control.scale().addTo(map);
+	new Control.Scale().addTo(map);
 
 	setInterval(function(){
 		map.setView([0, 0]);
@@ -166,7 +166,7 @@ to  do this automatically:
 At high zoom levels, the scale changes very little, and is not noticeable.
 
 
-## Controlling the zoom
+## Controlling the Zoom
 
 A leaflet map has several ways to control the zoom level shown, but the most obvious
 one is [`setZoom()`](/reference.html#map-setzoom). For example, `map.setZoom(0);`
@@ -196,7 +196,7 @@ Other ways of setting the zoom are:
 * [`fitBounds(bounds)`](/reference.html#map-fitbounds), automatically calculates the zoom to fit a rectangular area on the map
 
 
-## Fractional zoom
+## Fractional Zoom
 
 A feature introduced in Leaflet 1.0.0 was the concept of <em>fractional zoom</em>.
 Before this, the zoom level of the map could be only an integer number (`0`, `1`, `2`, and so on);
@@ -215,7 +215,7 @@ If you set a value of `0.1`, the valid zoom levels of the map will be `0`, `0.1`
 
 The following example uses a `zoomSnap` value of `0.25`:
 
-	var map = L.map('map', {
+	const map = new Map('map', {
 		zoomSnap: 0.25
 	});
 
@@ -242,7 +242,7 @@ option controls how fast the mousewheel zooms in or out.
 
 Here is an example with `zoomSnap` set to zero:
 
-	var map = L.map('map', {
+	const map = new Map('map', {
 		zoomDelta: 0.25,
 		zoomSnap: 0
 	});

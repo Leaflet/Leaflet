@@ -1,15 +1,16 @@
 ---
 layout: tutorial_frame
-title: Custom Icons Tutorial
+title: Single Custom Icon Example
 ---
-<script>
-	const map = L.map('map').setView([51.5, -0.09], 13);
+<script type="module">
+	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';
+	const map = new Map('map').setView([51.5, -0.09], 13);
 
-	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
-	const LeafIcon = L.Icon.extend({
+	const LeafIcon = Icon.extend({
 		options: {
 			shadowUrl: 'leaf-shadow.png',
 			iconSize:     [38, 95],
@@ -22,6 +23,8 @@ title: Custom Icons Tutorial
 
 	const greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 
-	const mGreen = L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
+	const mGreen = new Marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

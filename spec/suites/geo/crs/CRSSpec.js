@@ -1,4 +1,6 @@
-import {CRS, latLng, point, latLngBounds, Util, extend} from 'leaflet';
+import {expect} from 'chai';
+import {CRS, Util, latLng, latLngBounds, point} from 'leaflet';
+import '../../SpecHelper.js';
 
 describe('CRS.EPSG3857', () => {
 	const crs = CRS.EPSG3857;
@@ -216,7 +218,7 @@ describe('CRS.Simple', () => {
 		});
 
 		it('wraps coords if configured', () => {
-			const crs = extend({}, CRS.Simple, {
+			const crs = Object.assign({}, CRS.Simple, {
 				wrapLng: [-200, 200],
 				wrapLat: [-200, 200]
 			});
@@ -240,9 +242,9 @@ describe('CRS', () => {
 });
 
 describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = extend({}, CRS, {
+	const crs = Object.assign({}, CRS, {
 		scale(zoom) {
-			return 256 * Math.pow(1.5, zoom);
+			return 256 * 1.5 ** zoom;
 		},
 		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);

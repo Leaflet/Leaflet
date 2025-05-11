@@ -4,7 +4,7 @@ layout: v2
 
 <div class="announcement">May 18, 2023 — <a href="/2022/09/21/leaflet-1.9.0.html">Leaflet 1.9.4</a> has been released!</div>
 
-<p>Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps.
+<p>Leaflet is the leading open-source JavaScript library for building powerful interactive maps.
 Weighing just about <abbr title="42 KB gzipped &mdash; that's 142 KB minified and 431 KB in the source form, with 14.5 KB of CSS (3.5 KB gzipped) and 6 KB of images.">42 KB of JS</abbr>,
 it&nbsp;has all the mapping <a href="#features">features</a> most developers ever need.</p>
 
@@ -19,13 +19,15 @@ and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" 
 
 <p>Here we create a map in the <code>'map'</code> div, add <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, and then add a marker with some text in a popup:</p>
 
-<pre class="basic-code javascript"><code>var map = L.map('map').setView([51.505, -0.09], 13);
+<pre class="basic-code javascript"><code>import {Map, TileLayer, Marker} from 'leaflet';
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const map = new Map('map').setView([51.505, -0.09], 13);
+
+new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 }).addTo(map);
 
-L.marker([51.5, -0.09]).addTo(map)
+new Marker([51.5, -0.09]).addTo(map)
     .bindPopup('A pretty CSS popup.&lt;br&gt; Easily customizable.')
     .openPopup();</code></pre>
 
@@ -89,7 +91,7 @@ If you have any questions, take a look at the <a href="https://github.com/Leafle
             <li>Double click zoom</li>
             <li>Zoom to area <span class="quiet">(shift-drag)</span></li>
             <li>Keyboard navigation</li>
-            <li>Events<span class="quiet">: click, mouseover, etc.</span></li>
+            <li>Events<span class="quiet">: click, pointerover, etc.</span></li>
             <li>Marker dragging</li>
         </ul>
     </div>
@@ -145,26 +147,11 @@ If you have any questions, take a look at the <a href="https://github.com/Leafle
     <div class="no-break">
         <h3>Browser Support</h3>
 
-        <h4>Desktop</h4>
-
         <ul>
             <li>Chrome</li>
             <li>Firefox</li>
-            <li>Safari 5+</li>
-            <li>Opera 12+</li>
-            <li>IE 9&ndash;11</li>
+            <li>Safari</li>
             <li>Edge</li>
-        </ul>
-    </div>
-
-    <div class="no-break">
-        <h4>Mobile</h4>
-
-        <ul>
-            <li>Safari for iOS 7+</li>
-            <li>Chrome for mobile</li>
-            <li>Firefox for mobile</li>
-            <li>IE10+ for Win8 devices</li>
         </ul>
     </div>
 
@@ -203,20 +190,21 @@ and spreading the word about Leaflet among your colleagues and friends.</p>
 
     <a href="https://twitter.com/LeafletJS" class="twitter-follow-button" data-show-count="true" data-show-screen-name="false">Follow @LeafletJS</a>
 
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script>!function(d,s,id){let js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
     <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleafletjs.com&amp;layout=button_count&amp;show_faces=false&amp;width=93&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:93px; height:20px;" allowTransparency="true"></iframe>
 </div>
 
-<script>
-	var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-		osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
-
-	var map = L.map('map').setView([51.505, -0.159], 15).addLayer(osm);
-
-	L.marker([51.504, -0.159])
-		.addTo(map)
-		.bindPopup('A pretty CSS popup.<br />Easily customizable.')
-		.openPopup();
+<script type="module">
+    import {Map, TileLayer, Marker} from 'leaflet';
+    
+    const map = new Map('map').setView([51.505, -0.159], 15);
+    
+    new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    new Marker([51.504, -0.159]).addTo(map)
+        .bindPopup('A pretty CSS popup.<br />Easily customizable.')
+        .openPopup();
 </script>

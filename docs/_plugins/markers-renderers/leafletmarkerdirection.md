@@ -1,10 +1,10 @@
 ---
 name: leaflet-marker-direction
 category: markers-renderers
-repo: https://github.com/JackZouShao/leaflet-marker-direction
-author: Jack Zou
-author-url: https://github.com/JackZouShao
-demo: https://jackzoushao.github.io/leaflet-marker-direction/examples/marker-direction.html
+repo: https://github.com/Thomas2077/leaflet-marker-direction
+author: Thomas Zou
+author-url: https://github.com/Thomas2077
+demo: https://thomas2077.github.io/leaflet-marker-direction/examples/marker-direction.html
 compatible-v0:
 compatible-v1: true
 ---

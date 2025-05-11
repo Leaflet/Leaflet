@@ -1,5 +1,7 @@
-import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util, stamp} from 'leaflet';
+import {expect} from 'chai';
+import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, stamp} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -89,10 +91,10 @@ describe('Canvas', () => {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
-		it('should not block mousemove event going to non-canvas features', () => {
+		it('should not block pointermove event going to non-canvas features', () => {
 			const spyMap = sinon.spy();
-			map.on('mousemove', spyMap);
-			UIEventSimulator.fireAt('mousemove', 151, 151); // empty space
+			map.on('pointermove', spyMap);
+			UIEventSimulator.fireAt('pointermove', 151, 151); // empty space
 			expect(spyMap.calledOnce).to.be.true;
 		});
 
@@ -118,7 +120,7 @@ describe('Canvas', () => {
 			const preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
-			layer.on('mousedown', downSpy);
+			layer.on('pointerdown', downSpy);
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
@@ -131,19 +133,19 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of Draggable.
 			mouse.moveTo(50, 50, 0)
 				.down().moveBy(20, 10, 200).up();
 		});
 
-		it('does fire mousedown on layer after dragging map', (done) => { // #7775
+		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
 			const radius = p2ll(200, 200).distanceTo(center);
 			const circle = new Circle(center, {radius}).addTo(map);
-			circle.on('mousedown', spy);
+			circle.on('pointerdown', spy);
 
 			const hand = new Hand({
 				timing: 'fastframe',
@@ -152,12 +154,12 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
 				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect mousedown ok
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect pointerdown ok
 		});
 	});
 
@@ -188,7 +190,7 @@ describe('Canvas', () => {
 		});
 	});
 
-	it('removes vector on next animation frame', function (done) {
+	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -197,13 +199,13 @@ describe('Canvas', () => {
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.not.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
-	it('adds vectors even if they have been removed just before', function (done) {
+	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
 		    layerId = stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -214,10 +216,29 @@ describe('Canvas', () => {
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
-		Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
-		}, this);
+		});
+	});
+
+	it('adds vectors even if the canvas container was removed', (done) => {
+		const layer = new Circle([0, 0]).addTo(map);
+		map.eachLayer((layer) => {
+			map.removeLayer(layer);
+		});
+
+		const spy = sinon.spy();
+		const canvas = map.getRenderer(layer);
+		canvas._redraw = spy;
+
+		map.addLayer(layer);
+
+		setTimeout(() => {
+			// we need the timeout, because else the requestAnimFrame is not called
+			expect(spy.callCount).to.eql(1);
+			done();
+		}, 50);
 	});
 
 	describe('#bringToBack', () => {
@@ -257,7 +278,7 @@ describe('Canvas', () => {
 			new Polygon(latLngs).addTo(map);
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 
 		it('can remove renderer without errors', (done) => {
@@ -271,7 +292,7 @@ describe('Canvas', () => {
 			canvas.remove();
 			map.remove();
 			map = null;
-			Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 	});
 });

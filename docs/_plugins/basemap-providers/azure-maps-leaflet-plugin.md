@@ -4,7 +4,7 @@ category: basemap-providers
 repo: https://github.com/Azure-Samples/azure-maps-leaflet
 author: Ricky Brundritt
 author-url: https://github.com/rbrundritt
-demo: https://azuremapscodesamples.azurewebsites.net/?search=leaflet
+demo: https://samples.azuremaps.com/?search=leaflet
 compatible-v0:
 compatible-v1: true
 ---

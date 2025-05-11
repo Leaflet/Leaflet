@@ -1,7 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
-import * as Util from '../../core/Util.js';
 import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds.js';
 import {toBounds} from '../../geometry/Bounds.js';
 
@@ -13,7 +12,7 @@ import {toBounds} from '../../geometry/Bounds.js';
 // @section Interaction Options
 Map.mergeOptions({
 	// @option dragging: Boolean = true
-	// Whether the map is draggable with mouse/touch or not.
+	// Whether the map is draggable with pointer or not.
 	dragging: true,
 
 	// @section Panning Inertia Options
@@ -84,11 +83,11 @@ export const Drag = Handler.extend({
 	},
 
 	moved() {
-		return this._draggable && this._draggable._moved;
+		return this._draggable?._moved;
 	},
 
 	moving() {
-		return this._draggable && this._draggable._moving;
+		return this._draggable?._moving;
 	},
 
 	_onDragStart() {
@@ -214,7 +213,7 @@ export const Drag = Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				Util.requestAnimFrame(() => {
+				requestAnimationFrame(() => {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
@@ -229,5 +228,5 @@ export const Drag = Handler.extend({
 
 // @section Handlers
 // @property dragging: Handler
-// Map dragging handler (by both mouse and touch).
+// Map dragging handler.
 Map.addInitHook('addHandler', 'dragging', Drag);

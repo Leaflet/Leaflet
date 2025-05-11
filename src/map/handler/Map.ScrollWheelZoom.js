@@ -12,7 +12,7 @@ Map.mergeOptions({
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
-	// it will zoom to the center of the view regardless of where the mouse was.
+	// it will zoom to the center of the view regardless of where the pointer was.
 	scrollWheelZoom: true,
 
 	// @option wheelDebounceTime: Number = 40
@@ -36,6 +36,7 @@ export const ScrollWheelZoom = Handler.extend({
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
+		clearTimeout(this._timer);
 	},
 
 	_onWheelScroll(e) {
@@ -44,7 +45,7 @@ export const ScrollWheelZoom = Handler.extend({
 		const debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+		this._lastMousePos = this._map.pointerEventToContainerPoint(e);
 
 		if (!this._startTime) {
 			this._startTime = +new Date();
@@ -61,7 +62,7 @@ export const ScrollWheelZoom = Handler.extend({
 	_performZoom() {
 		const map = this._map,
 		    zoom = map.getZoom(),
-		    snap = this._map.options.zoomSnap || 0;
+		    snap = this._map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
 

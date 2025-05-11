@@ -14,7 +14,7 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * var layer = L.marker(latlng).addTo(map);
+ * const layer = new Marker(latlng).addTo(map);
  * layer.addTo(map);
  * layer.remove();
  * ```
@@ -33,13 +33,14 @@ export const Layer = Evented.extend({
 	options: {
 		// @option pane: String = 'overlayPane'
 		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
+		// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
 		pane: 'overlayPane',
 
 		// @option attribution: String = null
 		// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
 		attribution: null,
 
-		bubblingMouseEvents: true
+		bubblingPointerEvents: true
 	},
 
 	/* @section
@@ -106,9 +107,7 @@ export const Layer = Evented.extend({
 		if (this.getEvents) {
 			const events = this.getEvents();
 			map.on(events, this);
-			this.once('remove', function () {
-				map.off(events, this);
-			}, this);
+			this.once('remove', () => map.off(events, this));
 		}
 
 		this.onAdd(map);
@@ -212,10 +211,8 @@ Map.include({
 	 * ```
 	 */
 	eachLayer(method, context) {
-		for (const i in this._layers) {
-			if (Object.hasOwn(this._layers, i)) {
-				method.call(context, this._layers[i]);
-			}
+		for (const layer of Object.values(this._layers)) {
+			method.call(context, layer);
 		}
 		return this;
 	},
@@ -223,8 +220,8 @@ Map.include({
 	_addLayers(layers) {
 		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
 
-		for (let i = 0, len = layers.length; i < len; i++) {
-			this.addLayer(layers[i]);
+		for (const layer of layers) {
+			this.addLayer(layer);
 		}
 	},
 
@@ -246,16 +243,13 @@ Map.include({
 
 	_updateZoomLevels() {
 		let minZoom = Infinity,
-		    maxZoom = -Infinity;
+		maxZoom = -Infinity;
 		const oldZoomSpan = this._getZoomSpan();
 
-		for (const i in this._zoomBoundLayers) {
-			if (Object.hasOwn(this._zoomBoundLayers, i)) {
-				const options = this._zoomBoundLayers[i].options;
-
-				minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
-				maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
-			}
+		for (const l of Object.values(this._zoomBoundLayers)) {
+			const options = l.options;
+			minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
+			maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
 		}
 
 		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;

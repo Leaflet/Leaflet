@@ -9,7 +9,7 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.esm.js"
+					"leaflet": "../../dist/leaflet-src.js"
 				}
 			}
 		</script>
@@ -53,10 +53,10 @@
 					markers.removeLayer(marker);
 				} else {
 					marker = new Marker(getRandomLatLng(map.getBounds()))
-						.on('mouseover', () => {
+						.on('pointerover', () => {
 							marker.setZIndexOffset(10000);
 						})
-						.on('mouseout', () => {
+						.on('pointerout', () => {
 							marker.setZIndexOffset(0);
 						})
 						.addTo(markers);
