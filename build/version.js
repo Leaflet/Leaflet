@@ -13,7 +13,7 @@ const newContent = fileContent.replace(
 
 if (newContent === fileContent) {
 	console.error('Version replacement failed: pattern in Leaflet.js not found.');
-	process.exit(1); // Exit with non-zero status code
+	process.exit(1);
 }
 
 writeFileSync(new URL('../src/Leaflet.js', import.meta.url), newContent);
