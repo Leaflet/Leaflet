@@ -11,12 +11,8 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
-			'karma-time-stats-reporter',
-			{'preprocessor:replaceVersion': ['factory', require('./karma-version-preprocessor.cjs')]}
+			'karma-time-stats-reporter'
 		],
-		preprocessors: {
-			'src/Leaflet.js': ['replaceVersion'] // Replace version import from package.json with static version for Firefox which currently not supports Import Attributes.
-		},
 		frameworks: ['mocha'],
 		customContextFile: 'spec/context.html',
 		customDebugFile: 'spec/debug.html',
