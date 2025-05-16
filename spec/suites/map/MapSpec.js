@@ -1456,6 +1456,23 @@ describe('Map', () => {
 
 			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
 		});
+
+		it('immediately calls setView when distance is less than 5px', () => {
+			const currentCenter = latLng(10, 10);
+			map.setView(currentCenter, 10);
+			const spy = sinon.spy(map, 'setView');
+
+			// Very close to currentCenter, such that distance in pixels < 5
+			const targetCenter = latLng(10.00001, 10.00001);
+			const targetZoom = 10;
+
+			map.flyTo(targetCenter, targetZoom, {animate: true});
+
+			expect(spy.calledOnce).to.be.true;
+			expect(spy.calledWith(targetCenter, targetZoom)).to.be.true;
+
+			spy.restore();
+		});
 	});
 
 	describe('#zoomIn and #zoomOut', () => {
