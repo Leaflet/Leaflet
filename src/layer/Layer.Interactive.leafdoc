@@ -10,7 +10,7 @@ If `false`, the layer will not emit pointer events and will act as a part of the
 
 @option bubblingPointerEvents: Boolean = true
 When `true`, a pointer event on this layer will trigger the same event on the map
-(unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+(unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 
 @section Pointer events
 

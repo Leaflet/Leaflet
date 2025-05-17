@@ -1,10 +1,10 @@
 import {Earth} from './CRS.Earth.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.EPSG4326
+ * @crs CRS.EPSG4326
  *
  * A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
  *
@@ -18,5 +18,5 @@ export const EPSG4326 = {
 	...Earth,
 	code: 'EPSG:4326',
 	projection: LonLat,
-	transformation: toTransformation(1 / 180, 1, -1 / 180, 0.5)
+	transformation: new Transformation(1 / 180, 1, -1 / 180, 0.5)
 };

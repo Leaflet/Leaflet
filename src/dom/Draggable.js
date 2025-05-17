@@ -7,12 +7,11 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 /*
  * @class Draggable
- * @aka L.Draggable
  * @inherits Evented
  *
  * A class for making DOM elements draggable.
  * Used internally for map and marker dragging. Only works for elements
- * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
+ * that were positioned with [`DomUtil.setPosition`](#domutil-setposition).
  *
  * @example
  * ```js
@@ -32,7 +31,7 @@ export const Draggable = Evented.extend({
 		clickTolerance: 3
 	},
 
-	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
+	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
 	initialize(element, dragStartTarget, preventOutline, options) {
 		Util.setOptions(this, options);

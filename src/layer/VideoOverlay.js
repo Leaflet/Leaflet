@@ -5,7 +5,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class VideoOverlay
- * @aka L.VideoOverlay
  * @inherits ImageOverlay
  *
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
@@ -22,6 +21,9 @@ import * as Util from '../core/Util.js';
  * ```
  */
 
+// @constructor VideoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
+// Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
+// geographical bounds it is tied to.
 export const VideoOverlay = ImageOverlay.extend({
 
 	// @section
@@ -100,12 +102,3 @@ export const VideoOverlay = ImageOverlay.extend({
 	// Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
 	// used by this overlay.
 });
-
-
-// @factory L.videoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
-// Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
-// geographical bounds it is tied to.
-
-export function videoOverlay(video, bounds, options) {
-	return new VideoOverlay(video, bounds, options);
-}

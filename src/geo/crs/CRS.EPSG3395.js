@@ -1,10 +1,10 @@
 import {Earth} from './CRS.Earth.js';
 import {Mercator} from '../projection/Projection.Mercator.js';
-import {toTransformation} from '../../geometry/Transformation.js';
+import {Transformation} from '../../geometry/Transformation.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.EPSG3395
+ * @crs CRS.EPSG3395
  *
  * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */
@@ -15,6 +15,6 @@ export const EPSG3395 = {
 
 	transformation: (() => {
 		const scale = 0.5 / (Math.PI * Mercator.R);
-		return toTransformation(scale, 0.5, -scale, 0.5);
+		return new Transformation(scale, 0.5, -scale, 0.5);
 	})()
 };

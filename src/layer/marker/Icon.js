@@ -1,11 +1,10 @@
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
 
 /*
  * @class Icon
- * @aka L.Icon
  *
  * Represents an icon to provide when creating a marker.
  *
@@ -27,10 +26,12 @@ import Browser from '../../core/Browser.js';
  * new Marker([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
- * `L.Icon.Default` extends `L.Icon` and is the blue icon Leaflet uses for markers by default.
+ * `Icon.Default` extends `Icon` and is the blue icon Leaflet uses for markers by default.
  *
  */
 
+// @constructor Icon(options: Icon options)
+// Creates an icon instance with the given options.
 export const Icon = Class.extend({
 
 	/* @section
@@ -129,9 +130,10 @@ export const Icon = Class.extend({
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		const size = point(sizeOption),
-		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
-		            size && size.divideBy(2, true));
+		const size = Point.validate(sizeOption) && new Point(sizeOption);
+
+		const anchorPosition = name === 'shadow' && options.shadowAnchor || options.iconAnchor || size && size.divideBy(2, true);
+		const anchor = Point.validate(anchorPosition) && new Point(anchorPosition);
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
 
@@ -156,10 +158,3 @@ export const Icon = Class.extend({
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
 });
-
-
-// @factory L.icon(options: Icon options)
-// Creates an icon instance with the given options.
-export function icon(options) {
-	return new Icon(options);
-}

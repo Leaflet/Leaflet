@@ -99,7 +99,7 @@ export function disableTextSelection() {
 }
 
 // @function enableTextSelection()
-// Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
+// Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
 export function enableTextSelection() {
 	if (typeof prevUserSelect === 'undefined') {
 		return;
@@ -116,7 +116,7 @@ export function disableImageDrag() {
 }
 
 // @function enableImageDrag()
-// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disableimagedrag).
+// Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
@@ -140,7 +140,7 @@ export function preventOutline(element) {
 }
 
 // @function restoreOutline()
-// Cancels the effects of a previous [`L.DomUtil.preventOutline`](#domutil-preventoutline).
+// Cancels the effects of a previous [`DomUtil.preventOutline`](#domutil-preventoutline).
 export function restoreOutline() {
 	if (!_outlineElement) { return; }
 	_outlineElement.style.outlineStyle = _outlineStyle;

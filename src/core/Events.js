@@ -3,7 +3,6 @@ import * as Util from './Util.js';
 
 /*
  * @class Evented
- * @aka L.Evented
  * @inherits Class
  *
  * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire `'click'` event).

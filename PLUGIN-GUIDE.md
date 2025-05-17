@@ -33,9 +33,8 @@ it's usually easier to work with small, self-contained plugins in individual rep
 
 ### Name
 
-Most existing plugins follow the convention of naming plugins (and repos) like this: `Leaflet.MyPluginName`.
-You can use other forms (e.g. "leaflet-my-plugin-name"),
-just make sure to include the word "Leaflet" in the name so that it's obvious that it's a Leaflet plugin.
+Most existing plugins follow the convention of naming plugins (and repos) like this: `leaflet-my-plugin-name`.
+Just make sure to include the word "Leaflet" in the name so that it's obvious that it's a Leaflet plugin.
 
 ### Demo
 
@@ -108,11 +107,11 @@ and putting a space after the `function` keyword.
 
 ### Plugin API
 
-Never expose global variables in your plugin.<br>
-If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).<br>
-If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).<br>
-Every class should have a factory function in camelCase, e.g. (`L.tileLayer.banana`).<br>
-If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
+* Never expose global variables in your plugin.
+* If you inherit one of the existing classes or have a new class, export it and make it available via import.
+* If you want to add new methods to Leaflet classes, you can do it like this: `Marker.include({myPlugin: …})`.
+* Make your plugin importable like this: `import MyPlugin from 'leaflet-my-plugin'`.
+
 
 Function, method, property and factory names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.

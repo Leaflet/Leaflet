@@ -1,12 +1,11 @@
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
-import {toLatLngBounds} from '../geo/LatLngBounds.js';
+import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class ImageOverlay
- * @aka L.ImageOverlay
  * @inherits Interactive layer
  *
  * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
@@ -20,6 +19,9 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
+// @constructor ImageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
+// Instantiates an image overlay object given the URL of the image and the
+// geographical bounds it is tied to.
 export const ImageOverlay = Layer.extend({
 
 	// @section
@@ -65,7 +67,7 @@ export const ImageOverlay = Layer.extend({
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
-		this._bounds = toLatLngBounds(bounds);
+		this._bounds = new LatLngBounds(bounds);
 
 		Util.setOptions(this, options);
 	},
@@ -145,7 +147,7 @@ export const ImageOverlay = Layer.extend({
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
 	setBounds(bounds) {
-		this._bounds = toLatLngBounds(bounds);
+		this._bounds = new LatLngBounds(bounds);
 
 		if (this._map) {
 			this._reset();
@@ -270,10 +272,3 @@ export const ImageOverlay = Layer.extend({
 		return this._bounds.getCenter();
 	}
 });
-
-// @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
-// Instantiates an image overlay object given the URL of the image and the
-// geographical bounds it is tied to.
-export const imageOverlay = function (url, bounds, options) {
-	return new ImageOverlay(url, bounds, options);
-};

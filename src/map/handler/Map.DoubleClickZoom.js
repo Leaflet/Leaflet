@@ -2,7 +2,7 @@ import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 
 /*
- * L.Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
+ * Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
  */
 
 // @namespace Map

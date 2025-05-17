@@ -6,7 +6,6 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control.Layers
- * @aka L.Control.Layers
  * @inherits Control
  *
  * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
@@ -43,6 +42,8 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
+// @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
+// Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 export const Layers = Control.extend({
 	// @section
 	// @aka Control.Layers options
@@ -68,7 +69,7 @@ export const Layers = Control.extend({
 		// @option sortFunction: Function = *
 		// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 		// that will be used for sorting the layers, when `sortLayers` is `true`.
-		// The function receives both the `L.Layer` instances and their names, as in
+		// The function receives both the `Layer` instances and their names, as in
 		// `sortFunction(layerA, layerB, nameA, nameB)`.
 		// By default, it sorts layers alphabetically by their name.
 		sortFunction(layerA, layerB, nameA, nameB) {
@@ -432,10 +433,3 @@ export const Layers = Control.extend({
 	}
 
 });
-
-
-// @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
-// Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-export const layers = function (baseLayers, overlays, options) {
-	return new Layers(baseLayers, overlays, options);
-};

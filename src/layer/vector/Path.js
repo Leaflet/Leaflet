@@ -3,7 +3,6 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @class Path
- * @aka L.Path
  * @inherits Interactive layer
  *
  * An abstract class that contains options and constants shared between vector
@@ -70,7 +69,7 @@ export const Path = Layer.extend({
 
 		// @option bubblingPointerEvents: Boolean = true
 		// When `true`, a pointer event on this path will trigger the same event on the map
-		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingPointerEvents: true
 	},
 
