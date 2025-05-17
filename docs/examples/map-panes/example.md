@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Custom Icons Tutorial
+title: Custom Pane Example
 ---
 <script type="text/javascript" src="eu-countries.js"></script>
 

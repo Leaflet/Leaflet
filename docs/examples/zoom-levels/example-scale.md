@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Zoom Levels Tutorial
+title: Zoom Scale Example
 ---
 <script type="module">
 	import L, {Map, TileLayer, Control} from 'leaflet';

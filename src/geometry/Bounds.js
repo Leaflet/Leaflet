@@ -1,8 +1,7 @@
-import {Point, toPoint} from './Point.js';
+import {Point} from './Point.js';
 
 /*
  * @class Bounds
- * @aka L.Bounds
  *
  * Represents a rectangular area in pixel coordinates.
  *
@@ -25,9 +24,21 @@ import {Point, toPoint} from './Point.js';
  * can't be added to it with the `include` function.
  */
 
+
+// @constructor Bounds(corner1: Point, corner2: Point)
+// Creates a Bounds object from two corners coordinate pairs.
+// @alternative
+// @constructor Bounds(points: Point[])
+// Creates a Bounds object from the given array of points.
 export class Bounds {
 	constructor(a, b) {
 		if (!a) { return; }
+
+		if (a instanceof Bounds) {
+			// We can use the same object, no need to clone it
+			// eslint-disable-next-line no-constructor-return
+			return a;
+		}
 
 		const points = b ? [a, b] : a;
 		for (const point of points) {
@@ -46,9 +57,9 @@ export class Bounds {
 		if (!obj) { return this; }
 
 		if (obj instanceof Point || typeof obj[0] === 'number' || 'x' in obj) {
-			min2 = max2 = toPoint(obj);
+			min2 = max2 = new Point(obj);
 		} else {
-			obj = toBounds(obj);
+			obj = new Bounds(obj);
 			min2 = obj.min;
 			max2 = obj.max;
 
@@ -74,21 +85,21 @@ export class Bounds {
 	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
 	getCenter(round) {
-		return toPoint(
-			(this.min.x + this.max.x) / 2,
-			(this.min.y + this.max.y) / 2, round);
+		return new Point(
+		        (this.min.x + this.max.x) / 2,
+		        (this.min.y + this.max.y) / 2, round);
 	}
 
 	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
 	getBottomLeft() {
-		return toPoint(this.min.x, this.max.y);
+		return new Point(this.min.x, this.max.y);
 	}
 
 	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
 	getTopRight() { // -> Point
-		return toPoint(this.max.x, this.min.y);
+		return new Point(this.max.x, this.min.y);
 	}
 
 	// @method getTopLeft(): Point
@@ -118,9 +129,9 @@ export class Bounds {
 		let min, max;
 
 		if (typeof obj[0] === 'number' || obj instanceof Point) {
-			obj = toPoint(obj);
+			obj = new Point(obj);
 		} else {
-			obj = toBounds(obj);
+			obj = new Bounds(obj);
 		}
 
 		if (obj instanceof Bounds) {
@@ -140,7 +151,7 @@ export class Bounds {
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds
 	// intersect if they have at least one point in common.
 	intersects(bounds) { // (Bounds) -> Boolean
-		bounds = toBounds(bounds);
+		bounds = new Bounds(bounds);
 
 		const min = this.min,
 		max = this.max,
@@ -156,7 +167,7 @@ export class Bounds {
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
 	// overlap if their intersection is an area.
 	overlaps(bounds) { // (Bounds) -> Boolean
-		bounds = toBounds(bounds);
+		bounds = new Bounds(bounds);
 
 		const min = this.min,
 		max = this.max,
@@ -186,9 +197,9 @@ export class Bounds {
 		widthBuffer = Math.abs(min.y - max.y) * bufferRatio;
 
 
-		return toBounds(
-			toPoint(min.x - heightBuffer, min.y - widthBuffer),
-			toPoint(max.x + heightBuffer, max.y + widthBuffer));
+		return new Bounds(
+			new Point(min.x - heightBuffer, min.y - widthBuffer),
+			new Point(max.x + heightBuffer, max.y + widthBuffer));
 	}
 
 
@@ -197,22 +208,9 @@ export class Bounds {
 	equals(bounds) {
 		if (!bounds) { return false; }
 
-		bounds = toBounds(bounds);
+		bounds = new Bounds(bounds);
 
 		return this.min.equals(bounds.getTopLeft()) &&
 			this.max.equals(bounds.getBottomRight());
 	}
-}
-
-
-// @factory L.bounds(corner1: Point, corner2: Point)
-// Creates a Bounds object from two corners coordinate pairs.
-// @alternative
-// @factory L.bounds(points: Point[])
-// Creates a Bounds object from the given array of points.
-export function toBounds(a, b) {
-	if (!a || a instanceof Bounds) {
-		return a;
-	}
-	return new Bounds(a, b);
 }

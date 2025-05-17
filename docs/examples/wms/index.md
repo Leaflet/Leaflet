@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Using WMS and TMS services
+title: WMS and TMS
 ---
 
 <style>
@@ -100,7 +100,7 @@ Change to the "Topography, then places" option, so you can see the places "on to
 {% include frame.html url="wms-example3.html" %}
 
 
-### Notes to GIS users of WMS services
+### Notes to GIS Users of WMS Services
 
 From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `GetCapabilities` support, no legend support, and no `GetFeatureInfo` support.
 

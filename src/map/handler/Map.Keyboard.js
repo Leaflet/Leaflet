@@ -1,11 +1,11 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
-import {toPoint} from '../../geometry/Point.js';
+import {Point} from '../../geometry/Point.js';
 
 
 /*
- * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
+ * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
 // @namespace Map
@@ -46,6 +46,9 @@ export const Keyboard = Handler.extend({
 		if (container.tabIndex <= 0) {
 			container.tabIndex = '0';
 		}
+
+		// add aria-attribute for keyboard shortcuts to the container
+		container.ariaKeyShortcuts = Object.values(this.keyCodes).flat().join(' ');
 
 		on(container, {
 			focus: this._onFocus,
@@ -147,11 +150,11 @@ export const Keyboard = Handler.extend({
 			if (!map._panAnim || !map._panAnim._inProgress) {
 				offset = this._panKeys[key];
 				if (e.shiftKey) {
-					offset = toPoint(offset).multiplyBy(3);
+					offset = new Point(offset).multiplyBy(3);
 				}
 
 				if (map.options.maxBounds) {
-					offset = map._limitOffset(toPoint(offset), map.options.maxBounds);
+					offset = map._limitOffset(new Point(offset), map.options.maxBounds);
 				}
 
 				if (map.options.worldCopyJump) {

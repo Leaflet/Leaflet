@@ -9,19 +9,23 @@ import ssri from 'ssri';
 const {version} = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 
 const getIntegrity = path => new Promise((resolve) => {
-	https.get(`https://unpkg.com/leaflet@${version}/dist/${path}`, (res) => {
+	https.get(`https://cdn.jsdelivr.net/npm/leaflet@${version}/dist/${path}`, (res) => {
 		ssri.fromStream(res, {algorithms: ['sha256']}).then(integrity => resolve(integrity.toString()));
 	});
 });
 
 const integrityUglified = await getIntegrity('leaflet.js');
 const integritySrc = await getIntegrity('leaflet-src.js');
+const integrityUglifiedGlobal = await getIntegrity('leaflet-global.js');
+const integritySrcGlobal = await getIntegrity('leaflet-global-src.js');
 const integrityCss = await getIntegrity('leaflet.css');
 
 console.log(`Integrity hashes for ${version}:`);
-console.log(`dist/leaflet.js:     ${integrityUglified}`);
-console.log(`dist/leaflet-src.js: ${integritySrc}`);
-console.log(`dist/leaflet.css:    ${integrityCss}`);
+console.log(`dist/leaflet.js:            ${integrityUglified}`);
+console.log(`dist/leaflet-src.js:        ${integritySrc}`);
+console.log(`dist/leaflet-global.js:     ${integrityUglifiedGlobal}`);
+console.log(`dist/leaflet-global-src.js: ${integritySrcGlobal}`);
+console.log(`dist/leaflet.css:           ${integrityCss}`);
 
 let docConfig = readFileSync('docs/_config.yml', 'utf8');
 
@@ -29,6 +33,8 @@ docConfig = docConfig
 	.replace(/latest_leaflet_version:.*/,  `latest_leaflet_version: ${version}`)
 	.replace(/integrity_hash_source:.*/,   `integrity_hash_source: "${integritySrc}"`)
 	.replace(/integrity_hash_uglified:.*/, `integrity_hash_uglified: "${integrityUglified}"`)
+	.replace(/integrity_hash_global_source:.*/,   `integrity_hash_global_source: "${integritySrcGlobal}"`)
+	.replace(/integrity_hash_global_uglified:.*/, `integrity_hash_global_uglified: "${integrityUglifiedGlobal}"`)
 	.replace(/integrity_hash_css:.*/,      `integrity_hash_css: "${integrityCss}"`);
 
 writeFileSync('docs/_config.yml', docConfig);

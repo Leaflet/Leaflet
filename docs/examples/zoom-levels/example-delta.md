@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Zoom Levels Tutorial
+title: No Zoom Snap Example
 ---
 <script type="module">
 	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';

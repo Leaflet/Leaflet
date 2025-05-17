@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Tilt handler
+title: Tilt Handler Example
 ---
 <style>
 

@@ -9,13 +9,13 @@ This tutorial assumes you've read the [theory of Leaflet class inheritance](./ex
 
 In Leaflet, a "layer" is anything that moves around when the map is moved around. Before seeing how to create them from scratch, it's easier to explain how to do simple extensions.
 
-## "Extension methods"
+## "Extension Methods"
 
 A few of the Leaflet classes have so-called "extension methods": entry points for writing code for sub-classes.
 
 One of them is `L.TileLayer.getTileUrl()`. This method is called internally by `L.TileLayer` whenever a new tile needs to know which image to load. By making a subclass of `L.TileLayer` and rewriting its `getTileUrl()` function, we can create custom behaviour.
 
-Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [PlaceKitten](https://placekitten.com):
+Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [Cataas](https://cataas.com):
 
 	TileLayer.Kitten = TileLayer.extend({
 		getTileUrl(coords) {
@@ -34,7 +34,7 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
 
 Normally, `getTileUrl()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and generates a tile URL from them. In our example, we ignore those and simply use a random number to get a different kitten every time.
 
-### Splitting away the plugin code
+### Splitting Away the Plugin Code
 
 In the previous example, `L.TileLayer.Kitten` is defined in the same place as it's used. For plugins, it's better to split the plugin code into its own file, and include that file when it's used.
 
@@ -64,7 +64,7 @@ And then, include that file when showing a map:
 	…
 
 
-### `L.GridLayer` and DOM elements
+### `L.GridLayer` and DOM Elements
 
 Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assumes that there is a grid of images (as `<img>` elements), `L.GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
@@ -126,7 +126,7 @@ A very basic `<canvas>` `GridLayer` looks like:
 {% include frame.html url="canvascircles.html" %}
 
 
-## The pixel origin
+## The Pixel Origin
 
 Creating custom `L.Layer`s is possible, but needs a deeper knowledge of how Leaflet positions HTML elements. The abridged version is:
 
@@ -189,7 +189,7 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 
 How to exactly position the HTML elements for a layer depends on the specifics of the layer, but this introduction should help you to read Leaflet's layer code, and create new layers.
 
-### Using the parent's `onAdd`
+### Using the Parent's `onAdd`
 
 Some use cases don't need the whole `onAdd` code to be recreated, but instead the code for the parent can be reused, then some specifics can be added before _or_ after that initialization (as needed).
 

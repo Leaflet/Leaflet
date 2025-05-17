@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: WMS example
+title: WMS Example 3
 ---
 <script type="module">
 	import L, {Map, CRS, TileLayer, Control} from 'leaflet';

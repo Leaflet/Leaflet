@@ -1,5 +1,27 @@
 Miscellaneous bits of documentation that don't really fit anywhere else
 
+@namespace noConflict
+
+**This is only available when Leaflet is not imported as a module!**
+
+This method restores the `L` global variable to the original value
+it had before Leaflet inclusion, and returns the real Leaflet
+namespace so you can put it elsewhere, like this:
+
+
+```html
+<script src='libs/l.js'>
+<!-- L points to some other library -->
+
+<script src='leaflet.js'>
+<!-- you include Leaflet, it replaces the L variable to Leaflet namespace -->
+
+<script>
+const Leaflet = L.noConflict();
+// now L points to that other library again, and you can use Leaflet.Map etc.
+</script>
+```
+
 @namespace version
 
 A constant that represents the Leaflet version in use.

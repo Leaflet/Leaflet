@@ -2,6 +2,7 @@
 // See: https://karma-runner.github.io/latest/config/configuration-file.html
 module.exports = function (/** @type {import('karma').Config} */ config) {
 	const isCoverageEnabled = process.argv.includes('--coverage');
+	const runAsTouchBrowser = process.argv.includes('--touch-browser');
 
 	const karmaConfig = {
 		basePath: '../',
@@ -10,12 +11,8 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			'karma-chrome-launcher',
 			'karma-safarinative-launcher',
 			'karma-firefox-launcher',
-			'karma-time-stats-reporter',
-			{'preprocessor:replaceVersion': ['factory', require('./karma-version-preprocessor.cjs')]}
+			'karma-time-stats-reporter'
 		],
-		preprocessors: {
-			'src/Leaflet.js': ['replaceVersion'] // Replace version import from package.json with static version for Firefox which currently not supports Import Attributes.
-		},
 		frameworks: ['mocha'],
 		customContextFile: 'spec/context.html',
 		customDebugFile: 'spec/debug.html',
@@ -59,25 +56,21 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 					'dom.w3c_touch_events.enabled': 1
 				}
 			},
-			'FirefoxNoTouch': {
-				base: 'FirefoxHeadless',
-				prefs: {
-					'dom.w3c_touch_events.enabled': 0
-				}
-			},
 			'FirefoxRetina': {
 				base: 'FirefoxHeadless',
 				prefs: {
 					'layout.css.devPixelsPerPx': 2
 				}
 			}
+			// 'SafariNative'
 		},
 		concurrency: 1,
 		browserConsoleLogOptions: {level: 'error'},
 		client: {
 			mocha: {
 				forbidOnly: process.env.CI || false
-			}
+			},
+			runAsTouchBrowser
 		}
 	};
 

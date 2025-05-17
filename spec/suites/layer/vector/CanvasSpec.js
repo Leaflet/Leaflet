@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, stamp} from 'leaflet';
+import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -91,10 +91,10 @@ describe('Canvas', () => {
 			expect(spyCircle.callCount).to.eql(1);
 		});
 
-		it('should not block mousemove event going to non-canvas features', () => {
+		it('should not block pointermove event going to non-canvas features', () => {
 			const spyMap = sinon.spy();
-			map.on('mousemove', spyMap);
-			UIEventSimulator.fireAt('mousemove', 151, 151); // empty space
+			map.on('pointermove', spyMap);
+			UIEventSimulator.fireAt('pointermove', 151, 151); // empty space
 			expect(spyMap.calledOnce).to.be.true;
 		});
 
@@ -120,7 +120,7 @@ describe('Canvas', () => {
 			const preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
-			layer.on('mousedown', downSpy);
+			layer.on('pointerdown', downSpy);
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
@@ -133,19 +133,19 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of Draggable.
 			mouse.moveTo(50, 50, 0)
 				.down().moveBy(20, 10, 200).up();
 		});
 
-		it('does fire mousedown on layer after dragging map', (done) => { // #7775
+		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
 			const radius = p2ll(200, 200).distanceTo(center);
 			const circle = new Circle(center, {radius}).addTo(map);
-			circle.on('mousedown', spy);
+			circle.on('pointerdown', spy);
 
 			const hand = new Hand({
 				timing: 'fastframe',
@@ -154,12 +154,12 @@ describe('Canvas', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const mouse = hand.growFinger('pointer');
 
 			mouse.wait(100)
 				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
 				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect mousedown ok
+				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect pointerdown ok
 		});
 	});
 
@@ -192,7 +192,7 @@ describe('Canvas', () => {
 
 	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = stamp(layer),
+		    layerId = Util.stamp(layer),
 		    canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);
@@ -207,7 +207,7 @@ describe('Canvas', () => {
 
 	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = stamp(layer),
+		    layerId = Util.stamp(layer),
 		    canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);

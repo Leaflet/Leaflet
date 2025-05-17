@@ -2,12 +2,11 @@ import {TileLayer} from './TileLayer.js';
 import {setOptions} from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
-import {toBounds} from '../../geometry/Bounds.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 /*
  * @class TileLayer.WMS
  * @inherits TileLayer
- * @aka L.TileLayer.WMS
  * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services as tile layers on the map. Extends `TileLayer`.
  *
  * @example
@@ -22,6 +21,8 @@ import {toBounds} from '../../geometry/Bounds.js';
  * ```
  */
 
+// @constructor TileLayer.WMS(baseUrl: String, options: TileLayer.WMS options)
+// Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 export const TileLayerWMS = TileLayer.extend({
 
 	// @section
@@ -73,7 +74,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 		// all keys that are not TileLayer options go to WMS params
 		for (const i of Object.keys(options)) {
-			if (!Object.keys(this.options).includes(i)) {
+			if (!(i in this.options)) { // do not use Object.keys here, as it excludes options inherited from TileLayer
 				wmsParams[i] = options[i];
 			}
 		}
@@ -103,7 +104,7 @@ export const TileLayerWMS = TileLayer.extend({
 
 		const tileBounds = this._tileCoordsToNwSe(coords),
 		    crs = this._crs,
-		    bounds = toBounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
+		    bounds = new Bounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
 		    min = bounds.min,
 		    max = bounds.max,
 		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
@@ -129,10 +130,3 @@ export const TileLayerWMS = TileLayer.extend({
 		return this;
 	}
 });
-
-
-// @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
-// Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-export function tileLayerWMS(url, options) {
-	return new TileLayerWMS(url, options);
-}

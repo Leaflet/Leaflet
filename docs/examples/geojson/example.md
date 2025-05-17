@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: GeoJSON tutorial
+title: GeoJSON Example
 ---
 <script src="sample-geojson.js" type="text/javascript"></script>
 

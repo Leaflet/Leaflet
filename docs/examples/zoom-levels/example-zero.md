@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Zoom Levels Tutorial
+title: Zoom Level Zero Example
 ---
 <script type="module">
 	import L, {Map, TileLayer} from 'leaflet';

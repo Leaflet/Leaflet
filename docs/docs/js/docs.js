@@ -24,11 +24,11 @@ if (toc) {
 	menus = document.querySelectorAll('#toc-copy ul');
 
 	for (const menu of menus) {
-		menu.addEventListener('mouseover', function () {
+		menu.addEventListener('pointerover', function () {
 			this.previousElementSibling.classList.add('hover');
 		});
 
-		menu.addEventListener('mouseout', function () {
+		menu.addEventListener('pointerout', function () {
 			this.previousElementSibling.classList.remove('hover');
 		});
 
