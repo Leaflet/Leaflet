@@ -23,6 +23,7 @@ export default [
 			'docs/examples/extending/extending-2-layers.md',
 			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
 			'docs/download.md', // importmap is not recognized by eslint
+			'docs/_posts/2024-05-17-leaflet-2.0.0-alpha.md', // importmap is not recognized by eslint
 			'docs/_posts/201*',
 			'docs/_site',
 			'coverage'
