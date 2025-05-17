@@ -33,6 +33,23 @@ const config = {
 	],
 	plugins: [
 		release ? json() : rollupGitVersion(),
+		{
+			name: 'copy-leaflet-assets',
+			generateBundle() {
+				const fileNames = [
+					'leaflet.css',
+					'images/logo.svg',
+					'images/layers.svg',
+					'images/marker-icon.png',
+					'images/marker-icon-2x.png',
+					'images/marker-shadow.png',
+				];
+				for (const fileName of fileNames) {
+					const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
+					this.emitFile({type: 'asset',	fileName, source});
+				}
+			},
+		},
 	]
 };
 
