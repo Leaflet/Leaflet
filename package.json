@@ -1,6 +1,6 @@
 {
   "name": "leaflet",
-  "version": "1.9.4",
+  "version": "2.0.0-alpha",
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
