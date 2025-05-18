@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Quick Start Guide
+title: Leaflet Quick Start Guide
 ---
 
 ## Leaflet Quick Start Guide
@@ -16,7 +16,7 @@ Before writing any code for the map, you need to do the following preparation st
  * Include Leaflet CSS file in the head section of your document:
 
 	```html
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
 		integrity="{{site.integrity_hash_css}}"
 		crossorigin=""/>
 	```
@@ -28,10 +28,10 @@ Before writing any code for the map, you need to do the following preparation st
 	<script type="importmap">
 	{
 		"imports": {
-			"leaflet": "https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+			"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
 		},
 		"integrity": {
-			"https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+			"https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
 		}
 	}
 	</script>

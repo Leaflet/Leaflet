@@ -2,21 +2,22 @@ import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import Browser from '../../core/Browser.js';
+import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
- * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
+ * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
 // @namespace Map
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
-	// @option touchZoom: Boolean|String = *
+	// @option pinchZoom: Boolean|String = *
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers.
-	touchZoom: Browser.touch,
+	pinchZoom: Browser.touch,
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
@@ -24,27 +25,29 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const TouchZoom = Handler.extend({
+export const PinchZoom = Handler.extend({
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
-		DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
 	},
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
-		DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
+		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
 	},
 
-	_onTouchStart(e) {
+	_onPointerStart(e) {
 		const map = this._map;
-		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		const p1 = map.mouseEventToContainerPoint(e.touches[0]),
-		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
+		const pointers = PointerEvents.getPointers();
+		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
+
+		const p1 = map.pointerEventToContainerPoint(pointers[0]),
+		p2 = map.pointerEventToContainerPoint(pointers[1]);
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
-		if (map.options.touchZoom !== 'center') {
+		if (map.options.pinchZoom !== 'center') {
 			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
 		}
 
@@ -56,19 +59,20 @@ export const TouchZoom = Handler.extend({
 
 		map._stop();
 
-		DomEvent.on(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.on(document, 'touchend touchcancel', this._onTouchEnd, this);
+		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchMove(e) {
-		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
+	_onPointerMove(e) {
+		const pointers = PointerEvents.getPointers();
+		if (pointers.length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,
-		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
-		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
-		    scale = p1.distanceTo(p2) / this._startDist;
+		p1 = map.pointerEventToContainerPoint(pointers[0]),
+		p2 = map.pointerEventToContainerPoint(pointers[1]),
+		scale = p1.distanceTo(p2) / this._startDist;
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
@@ -78,7 +82,7 @@ export const TouchZoom = Handler.extend({
 			this._zoom = map._limitZoom(this._zoom);
 		}
 
-		if (map.options.touchZoom === 'center') {
+		if (map.options.pinchZoom === 'center') {
 			this._center = this._startLatLng;
 			if (scale === 1) { return; }
 		} else {
@@ -101,7 +105,7 @@ export const TouchZoom = Handler.extend({
 		DomEvent.preventDefault(e);
 	},
 
-	_onTouchEnd() {
+	_onPointerEnd() {
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
@@ -110,8 +114,8 @@ export const TouchZoom = Handler.extend({
 		this._zooming = false;
 		cancelAnimationFrame(this._animRequest);
 
-		DomEvent.off(document, 'touchmove', this._onTouchMove, this);
-		DomEvent.off(document, 'touchend touchcancel', this._onTouchEnd, this);
+		DomEvent.off(document, 'pointermove', this._onPointerMove, this);
+		DomEvent.off(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {
@@ -123,6 +127,22 @@ export const TouchZoom = Handler.extend({
 });
 
 // @section Handlers
-// @property touchZoom: Handler
-// Touch zoom handler.
-Map.addInitHook('addHandler', 'touchZoom', TouchZoom);
+// @property pinchZoom: Handler
+// Pinch zoom handler.
+Map.addInitHook('addHandler', 'pinchZoom', PinchZoom);
+
+// Deprecated - Backward compatibility touchZoom
+Map.addInitHook(function () {
+	this.touchZoom = this.pinchZoom;
+
+	if (this.options.touchZoom !== undefined) {
+		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+		this.options.pinchZoom = this.options.touchZoom;
+		delete this.options.touchZoom;
+	}
+	if (this.options.pinchZoom) {
+		this.pinchZoom.enable();
+	} else {
+		this.pinchZoom.disable();
+	}
+});

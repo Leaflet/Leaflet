@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Watermark control
+title: Watermark Control Example
 ---
 <script type="module">
 	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';

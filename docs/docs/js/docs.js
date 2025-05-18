@@ -10,10 +10,9 @@ const toc = document.querySelector('#toc');
 if (toc) {
 	// top menu
 	let menus = document.querySelectorAll('#toc a');
-	let i;
 
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('click', (e) => {
+	for (const menu of menus) {
+		menu.addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
@@ -23,26 +22,25 @@ if (toc) {
 	document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
 	menus = document.querySelectorAll('#toc-copy ul');
-	i = 0;
 
-	for (i = 0; i < menus.length; i++) {
-		menus[i].addEventListener('mouseover', function () {
+	for (const menu of menus) {
+		menu.addEventListener('pointerover', function () {
 			this.previousElementSibling.classList.add('hover');
 		});
 
-		menus[i].addEventListener('mouseout', function () {
+		menu.addEventListener('pointerout', function () {
 			this.previousElementSibling.classList.remove('hover');
 		});
 
-		menus[i].addEventListener('click', (e) => {
+		menu.addEventListener('click', (e) => {
 			clickOnAnchor(e);
 		});
 	}
 
 	const labels = document.querySelectorAll('#toc-copy h4');
 
-	for (i = 0; i < labels.length; i++) {
-		labels[i].addEventListener('click', function () {
+	for (const label of labels) {
+		label.addEventListener('click', function () {
 			this.classList.toggle('active');
 		});
 	}

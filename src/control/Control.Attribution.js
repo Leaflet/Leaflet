@@ -10,12 +10,14 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 
 /*
  * @class Control.Attribution
- * @aka L.Control.Attribution
  * @inherits Control
  *
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
+// @namespace Control.Attribution
+// @constructor Control.Attribution(options: Control.Attribution options)
+// Creates an attribution control.
 export const Attribution = Control.extend({
 	// @section
 	// @aka Control.Attribution options
@@ -42,9 +44,9 @@ export const Attribution = Control.extend({
 		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
-		for (const i in map._layers) {
-			if (map._layers[i].getAttribution) {
-				this.addAttribution(map._layers[i].getAttribution());
+		for (const layer of Object.values(map._layers)) {
+			if (layer.getAttribution) {
+				this.addAttribution(layer.getAttribution());
 			}
 		}
 
@@ -62,9 +64,7 @@ export const Attribution = Control.extend({
 	_addAttribution(ev) {
 		if (ev.layer.getAttribution) {
 			this.addAttribution(ev.layer.getAttribution());
-			ev.layer.once('remove', function () {
-				this.removeAttribution(ev.layer.getAttribution());
-			}, this);
+			ev.layer.once('remove', () => this.removeAttribution(ev.layer.getAttribution()));
 		}
 	},
 
@@ -107,13 +107,7 @@ export const Attribution = Control.extend({
 	_update() {
 		if (!this._map) { return; }
 
-		const attribs = [];
-
-		for (const i in this._attributions) {
-			if (this._attributions[i]) {
-				attribs.push(i);
-			}
-		}
+		const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]);
 
 		const prefixAndAttribs = [];
 
@@ -141,10 +135,3 @@ Map.addInitHook(function () {
 		new Attribution().addTo(this);
 	}
 });
-
-// @namespace Control.Attribution
-// @factory L.control.attribution(options: Control.Attribution options)
-// Creates an attribution control.
-export const attribution = function (options) {
-	return new Attribution(options);
-};

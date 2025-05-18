@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: KittenLayer
+title: KittenLayer Example
 ---
 <script type="module">
 	import L, {Map, CRS, TileLayer} from 'leaflet';

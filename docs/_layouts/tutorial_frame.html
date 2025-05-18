@@ -9,14 +9,14 @@
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
 	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
 
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
 	<script type="importmap">
 		{
 			"imports": {
-				"leaflet": "https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+				"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
 			},
 			"integrity": {
-				"https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+				"https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
 			}
 		}
 	</script>

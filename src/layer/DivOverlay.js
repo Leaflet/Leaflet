@@ -2,15 +2,14 @@ import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
 import * as Util from '../core/Util.js';
-import {toLatLng, LatLng} from '../geo/LatLng.js';
-import {toPoint} from '../geometry/Point.js';
+import {LatLng} from '../geo/LatLng.js';
+import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class DivOverlay
  * @inherits Interactive layer
- * @aka L.DivOverlay
- * Base model for L.Popup and L.Tooltip. Inherit from it for custom overlays like plugins.
+ * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
  */
 
 // @namespace DivOverlay
@@ -20,7 +19,7 @@ export const DivOverlay = Layer.extend({
 	// @aka DivOverlay options
 	options: {
 		// @option interactive: Boolean = false
-		// If true, the popup/tooltip will listen to the mouse events.
+		// If true, the popup/tooltip will listen to the pointer events.
 		interactive: false,
 
 		// @option offset: Point = Point(0, 0)
@@ -42,8 +41,8 @@ export const DivOverlay = Layer.extend({
 	},
 
 	initialize(options, source) {
-		if (options && (options instanceof LatLng || Array.isArray(options))) {
-			this._latlng = toLatLng(options);
+		if (options instanceof LatLng || Array.isArray(options)) {
+			this._latlng = new LatLng(options);
 			Util.setOptions(this, source);
 		} else {
 			Util.setOptions(this, options);
@@ -148,7 +147,7 @@ export const DivOverlay = Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the overlay will open.
 	setLatLng(latlng) {
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
 			this._adjustPan();
@@ -236,10 +235,9 @@ export const DivOverlay = Layer.extend({
 
 		if (source instanceof FeatureGroup) {
 			source = null;
-			const layers = this._source._layers;
-			for (const id in layers) {
-				if (layers[id]._map) {
-					source = layers[id];
+			for (const layer of Object.values(this._source._layers)) {
+				if (layer._map) {
+					source = layer;
 					break;
 				}
 			}
@@ -274,7 +272,7 @@ export const DivOverlay = Layer.extend({
 		if (!this._content) { return; }
 
 		const node = this._contentNode;
-		const content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+		const content = (typeof this._content === 'function') ? this._content(this._source ?? this) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
@@ -297,7 +295,7 @@ export const DivOverlay = Layer.extend({
 
 		const pos = this._map.latLngToLayerPoint(this._latlng),
 		      anchor = this._getAnchor();
-		let offset = toPoint(this.options.offset);
+		let offset = new Point(this.options.offset);
 
 		if (this._zoomAnimated) {
 			DomUtil.setPosition(this._container, pos.add(anchor));

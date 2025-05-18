@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Layers Control Tutorial
+title: Layers Control Example
 ---
 <script type="module">
 	import L, {Map, TileLayer, Marker, LayerGroup, Control} from 'leaflet';

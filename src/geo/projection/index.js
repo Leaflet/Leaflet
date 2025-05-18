@@ -9,11 +9,11 @@
 
  * @method project(latlng: LatLng): Point
  * Projects geographical coordinates into a 2D point.
- * Only accepts actual `L.LatLng` instances, not arrays.
+ * Only accepts actual `LatLng` instances, not arrays.
 
  * @method unproject(point: Point): LatLng
  * The inverse of `project`. Projects a 2D point into a geographical location.
- * Only accepts actual `L.Point` instances, not arrays.
+ * Only accepts actual `Point` instances, not arrays.
 
  * Note that the projection instances do not inherit from Leaflet's `Class` object,
  * and can't be instantiated. Also, new classes can't inherit from them,

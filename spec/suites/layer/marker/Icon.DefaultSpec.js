@@ -33,7 +33,7 @@ describe('Icon.Default', () => {
 		[ // valid
 			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox
 			'url(\'http://localhost:8000/base/dist/images/marker-icon.png\')',
-			'url(http://localhost:8000/base/dist/images/marker-icon.png)',    // IE, Edge
+			'url(http://localhost:8000/base/dist/images/marker-icon.png)'
 		].map(stripUrl).forEach((str) => { expect(str).to.equal(properPath); });
 
 		[ // invalid

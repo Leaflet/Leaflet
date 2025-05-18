@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: A guide to basic Leaflet accessibility
+title: Accessible Maps
 ---
 
 ## Accessible maps

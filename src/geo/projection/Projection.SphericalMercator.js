@@ -4,7 +4,7 @@ import {Point} from '../../geometry/Point.js';
 
 /*
  * @namespace Projection
- * @projection L.Projection.SphericalMercator
+ * @projection Projection.SphericalMercator
  *
  * Spherical Mercator projection — the most common projection for online maps,
  * used by almost all free and commercial tile providers. Assumes that Earth is
@@ -37,7 +37,7 @@ export const SphericalMercator = {
 			point.x * d / this.R);
 	},
 
-	bounds: (function () {
+	bounds: (() => {
 		const d = earthRadius * Math.PI;
 		return new Bounds([-d, -d], [d, d]);
 	})()

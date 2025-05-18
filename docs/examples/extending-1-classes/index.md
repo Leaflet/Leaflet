@@ -55,7 +55,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
         myDemoProperty: 42,   
     
         // A method 
-        myDemoMethod: function() { return this.myDemoProperty; }
+        myDemoMethod() { return this.myDemoProperty; }
         
     });
 
@@ -66,7 +66,7 @@ In order to create a subclass of anything in Leaflet, use the `.extend()` method
 
 When naming classes, methods and properties, adhere to the following conventions:
     
-* Function, method, property and factory names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
+* Function, method and property names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
@@ -80,7 +80,7 @@ If a class is already defined, existing properties/methods can be redefined, or 
         _myPrivateProperty: 78,
         
         // Redefining a method
-        myDemoMethod: function() { return this._myPrivateProperty; }
+        myDemoMethod() { return this._myPrivateProperty; }
     
     });
 
@@ -107,7 +107,7 @@ If your class has some specific `options`, it's a good idea to initialize them w
             height: 1
         },
     
-        initialize: function(name, options) {
+        initialize(name, options) {
             this.name = name;
             Util.setOptions(this, options);
         }
@@ -146,7 +146,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
 `addInitHook` has an alternate syntax, which uses method names and can fill method arguments in:
 
     MyCubeClass.include({
-        _calculateVolume: function(arg1, arg2) {
+        _calculateVolume(arg1, arg2) {
             this._volume = this.options.width * this.options.length * this.options.depth;
         }
     });
@@ -160,12 +160,12 @@ Calling a method of a parent class is achieved by reaching into the prototype of
 
     const FeatureGroup = LayerGroup.extend({
     
-        addLayer: function (layer) {
+        addLayer(layer) {
             …
             LayerGroup.prototype.addLayer.call(this, layer);
         },
         
-        removeLayer: function (layer) {
+        removeLayer(layer) {
             …
             LayerGroup.prototype.removeLayer.call(this, layer);
         },
@@ -174,23 +174,14 @@ Calling a method of a parent class is achieved by reaching into the prototype of
     });
 
 Calling the parent's constructor is done in a similar way, but using `ParentClass.prototype.initialize.call(this, …)` instead.
-    
-    
-### Factories    
 
-Most Leaflet classes have a corresponding [factory function](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29). A factory function has the same name as the class, but in `lowerCamelCase` instead of `UpperCamelCase`:
-    
-    function myBoxClass(name, options) {
-        return new MyBoxClass(name, options);
-    }
-    
-    
+
 ### Naming conventions
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
 * Never expose global variables in your plugin.
-* If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-* If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
+* If you inherit one of the existing classes or have a new class, export it and make it available via import.
+* Make your plugin importable like this: `import MyPlugin from 'leaflet-my-plugin'`.
 
 

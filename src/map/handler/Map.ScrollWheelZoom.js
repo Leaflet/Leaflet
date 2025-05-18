@@ -3,7 +3,7 @@ import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
- * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
+ * Handler.ScrollWheelZoom is used by Map to enable mouse scroll wheel zoom on the map.
  */
 
 // @namespace Map
@@ -12,7 +12,7 @@ Map.mergeOptions({
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
-	// it will zoom to the center of the view regardless of where the mouse was.
+	// it will zoom to the center of the view regardless of where the pointer was.
 	scrollWheelZoom: true,
 
 	// @option wheelDebounceTime: Number = 40
@@ -21,7 +21,7 @@ Map.mergeOptions({
 	wheelDebounceTime: 40,
 
 	// @option wheelPxPerZoomLevel: Number = 60
-	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
+	// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
 	wheelPxPerZoomLevel: 60
@@ -45,7 +45,7 @@ export const ScrollWheelZoom = Handler.extend({
 		const debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+		this._lastMousePos = this._map.pointerEventToContainerPoint(e);
 
 		if (!this._startTime) {
 			this._startTime = +new Date();
@@ -62,7 +62,7 @@ export const ScrollWheelZoom = Handler.extend({
 	_performZoom() {
 		const map = this._map,
 		    zoom = map.getZoom(),
-		    snap = this._map.options.zoomSnap || 0;
+		    snap = this._map.options.zoomSnap ?? 0;
 
 		map._stop(); // stop panning and fly animations if any
 

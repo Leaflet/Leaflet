@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Markers With Custom Icons
+title: Markers with Custom Icons
 ---
 
 ## Markers With Custom Icons

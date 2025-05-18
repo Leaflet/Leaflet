@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, DomUtil, Map, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, CRS, Map, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -175,14 +175,14 @@ describe('TileLayer', () => {
 	});
 
 	function kittenLayerFactory(options) {
-		return new TileLayer(placeKitten, options || {});
+		return new TileLayer(placeKitten, options ?? {});
 	}
 
 	function eachImg(layer, callback) {
 		const imgtags = layer._container.children[0].children;
-		for (const i in imgtags) {
-			if (imgtags[i].tagName === 'IMG') {
-				callback(imgtags[i]);
+		for (const tag of imgtags) {
+			if (tag.tagName === 'IMG') {
+				callback(tag);
 			}
 		}
 	}
@@ -442,8 +442,7 @@ describe('TileLayer', () => {
 		});
 	});
 
-	const _describe = 'crossOrigin' in DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
-	_describe('crossOrigin option', () => {
+	describe('crossOrigin option', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 2);
 		});

@@ -1,8 +1,8 @@
 import {Layer} from '../Layer.js';
 import {IconDefault} from './Icon.Default.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng as latLng} from '../../geo/LatLng.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {LatLng} from '../../geo/LatLng.js';
+import {Point} from '../../geometry/Point.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
@@ -10,16 +10,17 @@ import {MarkerDrag} from './Marker.Drag.js';
 /*
  * @class Marker
  * @inherits Interactive layer
- * @aka L.Marker
- * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
+ * Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *
  * @example
  *
  * ```js
- * L.marker([50.5, 30.5]).addTo(map);
+ * new Marker([50.5, 30.5]).addTo(map);
  * ```
  */
 
+// @constructor Marker(latlng: LatLng, options? : Marker options)
+// Instantiates a Marker object given a geographical point and optionally an options object.
 export const Marker = Layer.extend({
 
 	// @section
@@ -27,8 +28,8 @@ export const Marker = Layer.extend({
 	options: {
 		// @option icon: Icon = *
 		// Icon instance to use for rendering the marker.
-		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
-		// If not specified, a common instance of `L.Icon.Default` is used.
+		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
+		// If not specified, a common instance of `Icon.Default` is used.
 		icon: new IconDefault(),
 
 		// Option inherited from "Interactive layer" abstract class
@@ -57,7 +58,7 @@ export const Marker = Layer.extend({
 		opacity: 1,
 
 		// @option riseOnHover: Boolean = false
-		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		// If `true`, the marker will get on top of others when you hover the pointer over it.
 		riseOnHover: false,
 
 		// @option riseOffset: Number = 250
@@ -72,10 +73,10 @@ export const Marker = Layer.extend({
 		// `Map pane` where the markers shadow will be added.
 		shadowPane: 'shadowPane',
 
-		// @option bubblingMouseEvents: Boolean = false
-		// When `true`, a mouse event on this marker will trigger the same event on the map
-		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: false,
+		// @option bubblingPointerEvents: Boolean = false
+		// When `true`, a pointer event on this marker will trigger the same event on the map
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingPointerEvents: false,
 
 		// @option autoPanOnFocus: Boolean = true
 		// When `true`, the map will pan whenever the marker is focused (via
@@ -85,7 +86,7 @@ export const Marker = Layer.extend({
 
 		// @section Draggable marker options
 		// @option draggable: Boolean = false
-		// Whether the marker is draggable with mouse/touch or not.
+		// Whether the marker is draggable with pointer or not.
 		draggable: false,
 
 		// @option autoPan: Boolean = false
@@ -109,7 +110,7 @@ export const Marker = Layer.extend({
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
-		this._latlng = latLng(latlng);
+		this._latlng = new LatLng(latlng);
 	},
 
 	onAdd(map) {
@@ -155,7 +156,7 @@ export const Marker = Layer.extend({
 	// Changes the marker position to the given point.
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
-		this._latlng = latLng(latlng);
+		this._latlng = new LatLng(latlng);
 		this.update();
 
 		// @event move: Event
@@ -196,7 +197,7 @@ export const Marker = Layer.extend({
 
 	// @method getElement(): HTMLElement
 	// Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
-	// used by L.Marker layer.
+	// used by Marker layer.
 	getElement() {
 		return this._icon;
 	},
@@ -230,7 +231,7 @@ export const Marker = Layer.extend({
 			}
 
 			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt || '';
+				icon.alt = options.alt ?? '';
 			}
 		}
 
@@ -245,8 +246,8 @@ export const Marker = Layer.extend({
 
 		if (options.riseOnHover) {
 			this.on({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 
@@ -286,8 +287,8 @@ export const Marker = Layer.extend({
 	_removeIcon() {
 		if (this.options.riseOnHover) {
 			this.off({
-				mouseover: this._bringToFront,
-				mouseout: this._resetZIndex
+				pointerover: this._bringToFront,
+				pointerout: this._resetZIndex
 			});
 		}
 
@@ -394,8 +395,8 @@ export const Marker = Layer.extend({
 		if (!map) { return; }
 
 		const iconOpts = this.options.icon.options;
-		const size = iconOpts.iconSize ? point(iconOpts.iconSize) : point(0, 0);
-		const anchor = iconOpts.iconAnchor ? point(iconOpts.iconAnchor) : point(0, 0);
+		const size = iconOpts.iconSize ? new Point(iconOpts.iconSize) : new Point(0, 0);
+		const anchor = iconOpts.iconAnchor ? new Point(iconOpts.iconAnchor) : new Point(0, 0);
 
 		map.panInside(this._latlng, {
 			paddingTopLeft: anchor,
@@ -411,12 +412,3 @@ export const Marker = Layer.extend({
 		return this.options.icon.options.tooltipAnchor;
 	}
 });
-
-
-// factory L.marker(latlng: LatLng, options? : Marker options)
-
-// @factory L.marker(latlng: LatLng, options? : Marker options)
-// Instantiates a Marker object given a geographical point and optionally an options object.
-export function marker(latlng, options) {
-	return new Marker(latlng, options);
-}

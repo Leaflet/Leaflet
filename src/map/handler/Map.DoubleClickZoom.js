@@ -2,7 +2,7 @@ import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 
 /*
- * L.Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
+ * Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
  */
 
 // @namespace Map
@@ -13,7 +13,7 @@ Map.mergeOptions({
 	// Whether the map can be zoomed in by double clicking on it and
 	// zoomed out by double clicking while holding shift. If passed
 	// `'center'`, double-click zoom will zoom to the center of the
-	//  view regardless of where the mouse was.
+	//  view regardless of where the pointer was.
 	doubleClickZoom: true
 });
 

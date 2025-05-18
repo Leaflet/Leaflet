@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Non-geographical maps
+title: Non-geographical Maps
 ---
 
 <style>
@@ -10,7 +10,7 @@ iframe {
 }
 </style>
 
-## Not of this earth
+## Not of This Earth
 
 Sometimes, maps do not represent things on the surface of the earth and, as such, do not have a concept of geographical latitude and geographical longitude. Most times this refers to big scanned images, such as game maps.
 
@@ -51,7 +51,7 @@ And show the whole map:
 This example doesn't quite work, as we cannot see the whole map after doing a `fitBounds()`.
 
 
-## Common gotchas in CRS.Simple maps
+## Common Gotchas in CRS.Simple Maps
 
 In the default Leaflet CRS, `CRS.Earth`, 360 degrees of longitude are mapped to 256 horizontal pixels (at zoom level 0) and approximately 170 degrees of latitude are mapped to 256 vertical pixels (at zoom level 0).
 
@@ -62,7 +62,7 @@ In a `CRS.Simple`, one horizontal map unit is mapped to one horizontal pixel, an
 		minZoom: -5
 	});
 
-### Pixels vs. map units
+### Pixels vs. Map Units
 
 One common mistake when using `CRS.Simple` is assuming that the map units equal image pixels. In this case, the map covers 1000x1000 units, but the image is 2315x2315 pixels big. Different cases will call for one pixel = one map unit, or 64 pixels = one map unit, or anything. **Think in map units** in a grid, and then add your layers (`L.ImageOverlay`s, `L.Marker`s and so on) accordingly.
 
@@ -79,7 +79,7 @@ While we're at it, let's add some markers:
 
 {% include frame.html url="crs-simple-example2.html" %}
 
-### This is not the `LatLng` you're looking for
+### This is not the `LatLng` You're Looking for
 
 You'll notice that Sol is at coordinates `[145,175]` instead of `[175,145]`, and the same happens with the map center. Coordinates in `CRS.Simple` take the form of `[y, x]` instead of `[x, y]`, in the same way Leaflet uses `[lat, lng]` instead of `[lng, lat]`.
 

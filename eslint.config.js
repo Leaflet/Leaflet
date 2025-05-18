@@ -20,7 +20,7 @@ export default [
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
-			'docs/examples/extending/extending-2-layers.md',
+			'docs/examples/extending-2-layers/index.md',
 			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
 			'docs/download.md', // importmap is not recognized by eslint
 			'docs/_posts/2024-05-18-leaflet-2.0.0-alpha.md', // importmap is not recognized by eslint
@@ -50,6 +50,7 @@ export default [
 
 			// TODO: Re-enable the rules below and fix the linting issues.
 			'no-invalid-this': 'off',
+			'prefer-exponentiation-operator': 'error',
 			'prefer-object-has-own': 'error',
 			'prefer-spread': 'off',
 			'no-new': 'off'

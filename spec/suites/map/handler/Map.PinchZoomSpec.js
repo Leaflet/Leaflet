@@ -2,15 +2,16 @@ import {expect} from 'chai';
 import {LatLng, Map, Polygon, Rectangle} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
-import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import UIEventSimulator from 'ui-event-simulator';
 
-describe('Map.TouchZoom', () => {
+describe('Map.PinchZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
 		container = createContainer();
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
@@ -32,8 +33,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -53,8 +54,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -71,7 +72,7 @@ describe('Map.TouchZoom', () => {
 
 		let pinchZoomEvent = false;
 		map.on('zoom', (e) => {
-			pinchZoomEvent = e.pinch || pinchZoomEvent;
+			pinchZoomEvent = e.pinch ?? pinchZoomEvent;
 		});
 		map.once('zoomend', () => {
 			expect(spy.callCount > 1).to.be.true;
@@ -87,8 +88,8 @@ describe('Map.TouchZoom', () => {
 		new Rectangle(map.getBounds().pad(-0.2)).addTo(map);
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -116,8 +117,8 @@ describe('Map.TouchZoom', () => {
 			}
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0).down()
@@ -133,11 +134,11 @@ describe('Map.TouchZoom', () => {
 
 	});
 
-	it.skipIfNotTouch('TouchZoom works with disabled map dragging', (done) => {
+	it.skipIfNotTouch('PinchZoom works with disabled map dragging', (done) => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false,	// If true, the test has to wait extra 250msec,
 			dragging: false
@@ -153,8 +154,8 @@ describe('Map.TouchZoom', () => {
 		});
 
 		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
@@ -167,7 +168,7 @@ describe('Map.TouchZoom', () => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: true
 		});
@@ -215,21 +216,21 @@ describe('Map.TouchZoom', () => {
 			}
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		const f1 = hand.growFinger(...pointerEventType);
+		const f2 = hand.growFinger(...pointerEventType);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
+			.down().moveBy(200, 0, 500).up();
 		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+			.down().moveBy(-200, 0, 500).up();
 	});
 
-	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
+	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
 		map.remove();
 
 		map = new Map(container, {
-			touchZoom: true,
+			pinchZoom: true,
 			inertia: false,
 			zoomAnimation: false
 		});
@@ -243,47 +244,66 @@ describe('Map.TouchZoom', () => {
 			[1, 0]
 		]).addTo(map);
 
-		let alreadyCalled = false;
-		const hand = new Hand({
-			timing: 'fastframe',
-			onStop() {
-				setTimeout(() => {
-					if (alreadyCalled) {
-						return; // Will recursivly call itself otherwise
-					}
-					alreadyCalled = true;
+		UIEventSimulator.fireAt('pointerdown', 75, 300, {pointerId: 1});
+		UIEventSimulator.fireAt('pointerdown', 525, 300, {pointerId: 2});
 
-					const renderedRect = polygon._path.getBoundingClientRect();
+		UIEventSimulator.fireAt('pointermove', 275, 300, {pointerId: 1});
+		UIEventSimulator.fireAt('pointermove', 325, 300, {pointerId: 2});
 
-					const width = renderedRect.width;
-					const height = renderedRect.height;
+		setTimeout(() => {
+			map.pinchZoom._onPointerEnd();
 
-					expect(height < 50).to.be.true;
-					expect(width < 50).to.be.true;
-					expect(height + width > 0).to.be.true;
+			const renderedRect = polygon._path.getBoundingClientRect();
 
-					const x = renderedRect.x;
-					const y = renderedRect.y;
+			const width = renderedRect.width;
+			const height = renderedRect.height;
 
-					expect(x).to.be.within(299, 301);
-					expect(y).to.be.within(270, 280);
+			expect(height < 50).to.be.true;
+			expect(width < 50).to.be.true;
+			expect(height + width > 0).to.be.true;
 
-					// Fingers lifted after expects as bug goes away when lifted
-					this._fingers[0].up();
-					this._fingers[1].up();
+			const x = renderedRect.x;
+			const y = renderedRect.y;
 
-					done();
-				}, 100);
-			}
+			expect(x).to.be.within(297, 300);
+			expect(y).to.be.within(270, 280);
+
+			done();
+		}, 100);
+	});
+
+	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: false
 		});
 
-		const f1 = hand.growFinger(touchEventType);
-		const f2 = hand.growFinger(touchEventType);
+		expect(localMap.pinchZoom.enabled()).to.be.false;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500);
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500);
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
 	});
+
+
+	it.skipIfNotTouch('enables pinchZoom when touchZoom is true and pinchZoom is false (touchZoom takes precedence)', () => {
+		const warnSpy = sinon.spy(console, 'warn');
+
+		const localContainer = createContainer();
+		const localMap = new Map(localContainer, {
+			touchZoom: true,
+			pinchZoom: false
+		});
+
+		expect(localMap.pinchZoom.enabled()).to.be.true;
+		expect(warnSpy.calledOnce).to.be.true;
+		expect(warnSpy.firstCall.args[0]).to.eq('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+
+		warnSpy.restore();
+		removeMapContainer(localMap, localContainer);
+	});
+
 });
