@@ -64,6 +64,7 @@
       "docs/examples/map-panes/eu-countries.js",
       "docs/examples/extending/extending-2-layers.md",
       "docs/_posts/2012*",
+			"docs/_posts/2025-05-18-leaflet-2.0.0-alpha.md",
       "docs/_site",
       "build/integrity.js"
     ],
