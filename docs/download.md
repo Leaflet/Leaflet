@@ -16,8 +16,8 @@ bodyclass: download-page
 		<td>Stable version, released on May 18, 2023.</td>
 	</tr>
 	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v1.8.0/leaflet.zip">Leaflet 1.8.0</a></td>
-		<td>Previous stable version, released on April 18, 2022.</td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/v2.0.0-alpha/leaflet.zip">Leaflet 2.0.0-alpha</a></td>
+		<td>Prerelease version, released on May 18, 2025.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.zip">Leaflet 2.0-dev</a></td>
