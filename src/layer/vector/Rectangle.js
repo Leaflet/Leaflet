@@ -36,7 +36,7 @@ export class Rectangle extends Polygon {
 	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
 	setBounds(latLngBounds) {
-		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+		return this.setLatLngs(Rectangle._boundsToLatLngs(latLngBounds));
 	}
 
 	static _boundsToLatLngs(latLngBounds) {

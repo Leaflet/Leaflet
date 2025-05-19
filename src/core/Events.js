@@ -306,25 +306,25 @@ export class Events extends Class {
 
 // @method addEventListener(…): this
 // Alias to [`on(…)`](#evented-on)
-Events.addEventListener = Events.on;
+Events.prototype.addEventListener = Events.prototype.on;
 
 // @method removeEventListener(…): this
 // Alias to [`off(…)`](#evented-off)
 
 // @method clearAllEventListeners(…): this
 // Alias to [`off()`](#evented-off)
-Events.removeEventListener = Events.clearAllEventListeners = Events.off;
+Events.prototype.removeEventListener = Events.prototype.clearAllEventListeners = Events.prototype.off;
 
 // @method addOneTimeEventListener(…): this
 // Alias to [`once(…)`](#evented-once)
-Events.addOneTimeEventListener = Events.once;
+Events.prototype.addOneTimeEventListener = Events.prototype.once;
 
 // @method fireEvent(…): this
 // Alias to [`fire(…)`](#evented-fire)
-Events.fireEvent = Events.fire;
+Events.prototype.fireEvent = Events.prototype.fire;
 
 // @method hasEventListeners(…): Boolean
 // Alias to [`listens(…)`](#evented-listens)
-Events.hasEventListeners = Events.listens;
+Events.prototype.hasEventListeners = Events.prototype.listens;
 
 export class Evented extends Events {}

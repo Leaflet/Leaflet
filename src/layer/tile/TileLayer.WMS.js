@@ -71,7 +71,7 @@ export class TileLayerWMS extends TileLayer {
 	constructor(url, options) {
 		super(url, options);
 
-		const wmsParams = {...this.defaultWmsParams};
+		const wmsParams = {...TileLayerWMS.defaultWmsParams};
 
 		// all keys that are not TileLayer options go to WMS params
 		for (const i of Object.keys(options)) {

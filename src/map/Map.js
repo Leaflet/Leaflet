@@ -1467,7 +1467,7 @@ export class Map extends Evented {
 		for (const t of targets) {
 			t.fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(t.options.bubblingPointerEvents === false && this._pointerEvents.includes(type))) { return; }
+				(t.options.bubblingPointerEvents === false && Map._pointerEvents.includes(type))) { return; }
 		}
 	}
 

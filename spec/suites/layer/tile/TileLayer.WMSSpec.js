@@ -6,7 +6,7 @@ describe('TileLayer.WMS', () => {
 		it('sets wmsParams', () => {
 			const layer = new TileLayer.WMS('https://example.com/map', {opacity: 0.5, attribution: 'foo'});
 			expect(layer.wmsParams).to.eql({
-				...layer.defaultWmsParams,
+				...TileLayer.WMS.defaultWmsParams,
 				width: 256,
 				height: 256
 			});
