@@ -178,7 +178,7 @@ jobs:
 
       - name: Compress artifacts
         working-directory: dist
-        run: zip -r leaflet.zip .
+        run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
 
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
