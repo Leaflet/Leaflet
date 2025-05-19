@@ -62,9 +62,9 @@ export const Popup = DivOverlay.extend({
 		// Max width of the popup, in pixels.
 		maxWidth: 300,
 
-		// @option minWidth: Number = 50
+		// @option minWidth: Number = 100
 		// Min width of the popup, in pixels.
-		minWidth: 50,
+		minWidth: 100,
 
 		// @option maxHeight: Number = null
 		// If set, creates a scrollable container of the given height
