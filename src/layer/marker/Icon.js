@@ -32,7 +32,7 @@ import Browser from '../../core/Browser.js';
 
 // @constructor Icon(options: Icon options)
 // Creates an icon instance with the given options.
-export const Icon = Class.extend({
+export class Icon extends Class {
 
 	/* @section
 	 * @aka Icon options
@@ -74,33 +74,36 @@ export const Icon = Class.extend({
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
-	options: {
-		popupAnchor: [0, 0],
-		tooltipAnchor: [0, 0],
+	static {
+		this.mergeOptions({
+			popupAnchor: [0, 0],
+			tooltipAnchor: [0, 0],
 
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the tiles.
-		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false
-	},
+			// @option crossOrigin: Boolean|String = false
+			// Whether the crossOrigin attribute will be added to the tiles.
+			// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+			crossOrigin: false
+		});
+	}
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		setOptions(this, options);
-	},
+	}
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
 	// Called internally when the icon has to be shown, returns a `<img>` HTML element
 	// styled according to the options.
 	createIcon(oldIcon) {
 		return this._createIcon('icon', oldIcon);
-	},
+	}
 
 	// @method createShadow(oldIcon?: HTMLElement): HTMLElement
 	// As `createIcon`, but for the shadow beneath it.
 	createShadow(oldIcon) {
 		return this._createIcon('shadow', oldIcon);
-	},
+	}
 
 	_createIcon(name, oldIcon) {
 		const src = this._getIconUrl(name);
@@ -120,7 +123,7 @@ export const Icon = Class.extend({
 		}
 
 		return img;
-	},
+	}
 
 	_setIconStyles(img, name) {
 		const options = this.options;
@@ -146,15 +149,15 @@ export const Icon = Class.extend({
 			img.style.width  = `${size.x}px`;
 			img.style.height = `${size.y}px`;
 		}
-	},
+	}
 
 	_createImg(src, el) {
 		el ??= document.createElement('img');
 		el.src = src;
 		return el;
-	},
+	}
 
 	_getIconUrl(name) {
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
-});
+}

@@ -63,8 +63,7 @@ export class Class {
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(options) {
-		this.prototype.options ??= {};
-		Object.assign(this.prototype.options, options);
+		this.prototype.options = {...this.prototype.options, ...options};
 		return this;
 	}
 
