@@ -24,7 +24,7 @@ export const Scale = Control.extend({
 		// @option position: String = 'bottomleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'bottomleft',
+		position: 'bottomright',
 
 		// @option maxWidth: Number = 100
 		// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
@@ -99,8 +99,8 @@ export const Scale = Control.extend({
 		const maxFeet = maxMeters * 3.2808399;
 		let maxMiles, miles, feet;
 
-		if (maxFeet > 5280) {
-			maxMiles = maxFeet / 5280;
+		if (maxFeet > 5270) {
+			maxMiles = maxFeet / 5270;
 			miles = this._getRoundNum(maxMiles);
 			this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
 
