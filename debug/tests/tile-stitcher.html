@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Tile Events</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<style>
+			#map {
+				margin: 0;
+				width: auto;
+			}
+
+			.redTile {
+				border: red 1px solid;
+				line-height: 256px;
+				text-align: center;
+			}
+
+			table {
+				border-collapse: collapse;
+			}
+
+			table th,
+			table td {
+				border: 1px #444 solid;
+				margin: 0;
+			}
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<p>
+			Keep track of how many tileload/tileunload events are being fired. The
+			counts should always match. See
+			<a href="https://github.com/Leaflet/Leaflet/issues/4093">#4093</a>,
+			<a href="https://github.com/Leaflet/Leaflet/issues/4193">#4193</a>
+		</p>
+		<div id="map"></div>
+		<table>
+			<tr>
+				<th></th>
+				<th>Start</th>
+				<th>Load</th>
+				<th>Error</th>
+				<th>Unload</th>
+				<th>Visible</th>
+				<th>
+					Grid load
+					<tr>
+						<th>Grid</th>
+						<td id="grid-tileloadstart"></td>
+						<td id="grid-tileload"></td>
+						<td id="grid-tileerror"></td>
+						<td id="grid-tileunload"></td>
+						<td id="grid-visible"></td>
+						<td id="grid-load">
+							<tr>
+								<th>Positron</th>
+								<td id="positron-tileloadstart"></td>
+								<td id="positron-tileload"></td>
+								<td id="positron-tileerror"></td>
+								<td id="positron-tileunload"></td>
+								<td id="positron-visible"></td>
+								<td id="positron-load"></td>
+							</tr>
+						</td>
+					</tr>
+				</th>
+			</tr>
+		</table>
+		<p>start = unload + visible on screen</p>
+		<div><button id="dc">DC</button>(flyTo)</div>
+		<div><button id="sf">SF</button>(setView, 5 sec)</div>
+		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+		<div><button id="lnd">LND</button>(fract. zoom)</div>
+		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+		<div><button id="mad">MAD</button>(fitBounds)</div>
+		<div><button id="nul">NUL</button>(image overlay)</div>
+		<div><button id="stop">stop</button></div>
+		<script type="module">
+			import {Map, TileStitcher, TileLayer, GridLayer, Point, DomUtil} from 'leaflet';
+
+			const kyiv = [50.5, 30.5];
+			const lnd = [51.51, -0.12];
+			const sf = [37.77, -122.42];
+			const dc = [38.91, -77.04];
+			const trd = [63.41, 10.41];
+			const madBounds = [
+				[40.7, -4.19],
+				[40.12, -3.31],
+			];
+
+			const map = new Map('map', {
+				center: [35, -122],
+				zoom: 5.75,
+				// zoom: 5,
+				zoomSnap: 0.25,
+				fadeAnimation: true,
+			});
+
+			const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png');
+
+			const grid = window.grid = new TileStitcher({
+				attribution: 'Grid Layer',
+				// tileSize: new Point(150, 80)
+				tileSize: new Point(256, 256),
+				zIndex: 5,
+			});
+
+			grid.createTile = function(coords, done) {
+				var canvas = document.createElement('canvas');
+
+				var tileSize = grid.getTileSize();
+				canvas.setAttribute('width', tileSize.x);
+				canvas.setAttribute('height', tileSize.y);
+
+				var ctx = canvas.getContext('2d');
+				ctx.fillStyle = 'rgba(245,245,220,0.3)';
+				ctx.fillRect(0, 0, tileSize.x, tileSize.y);
+
+				ctx.strokeStyle = 'green';
+				ctx.fillStyle = 'green';
+
+				ctx.strokeRect(2, 2, tileSize.x - 4, tileSize.y - 4);
+
+				ctx.font = (tileSize.x / 10) + "px Sans"
+				ctx.fillText( coords.x + "," + coords.y + "," + coords.z,
+					tileSize.x / 4 + Math.random() * 10,
+					tileSize.y * 3/4 + Math.random() * 10);
+
+				// return canvas.toDataURL();
+				setTimeout(()=>{done(null, canvas)}, Math.random() * 500);
+				return canvas;
+			};
+
+			const gridCounts = {
+				tileload: 0,
+				tileerror: 0,
+				tileloadstart: 0,
+				tileunload: 0,
+				load: 0,
+			};
+
+			const positronCounts = {
+				tileload: 0,
+				tileerror: 0,
+				tileloadstart: 0,
+				tileunload: 0,
+				load: 0,
+			};
+
+
+			grid.on('tileerror', (ev) => {
+				debugger;
+			});
+
+			grid.on('tileload tileunload tileerror tileloadstart load', (ev) => {
+				document.getElementById(`grid-${ev.type}`).innerHTML = ++gridCounts[ev.type];
+				document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;
+			});
+
+			positron.on('tileload tileunload tileerror tileloadstart load', (ev) => {
+				document.getElementById(`positron-${ev.type}`).innerHTML = ++positronCounts[ev.type];
+				document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+			});
+
+			map.addLayer(positron);
+			map.addLayer(grid);
+
+			document.getElementById('dc').onclick = function () {
+				map.flyTo(dc, 10);
+			};
+			document.getElementById('sf').onclick = function () {
+				map.setView(sf, 10, {duration: 5, animate: true});
+			};
+			document.getElementById('trd').onclick = function () {
+				map.flyTo(trd, 10, {duration: 20});
+			};
+			document.getElementById('lnd').onclick = function () {
+				map.flyTo(lnd, 9.25);
+			};
+			document.getElementById('kyiv').onclick = function () {
+				map.setView(kyiv, 9.25);
+			};
+			document.getElementById('nul').onclick = function () {
+				map.flyTo([0, 0], 10);
+			};
+			document.getElementById('mad').onclick = function () {
+				map.fitBounds(madBounds);
+			};
+			document.getElementById('stop').onclick = function () {
+				map.stop();
+			};
+		</script>
+	</body>
+</html>
