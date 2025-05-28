@@ -545,4 +545,16 @@ describe('TileLayer', () => {
 			layer.setUrl(placeKitten);
 		});
 	});
+
+	describe('#getTileUrl', () => {
+		it('can call with static coords', () => {
+			// Layer is not added to the map
+			const layer = new TileLayer('http://example.com/{z}/{x}/{y}.png');
+			let url = layer.getTileUrl({z: 1, x: 2, y: 3});
+			expect(url).to.equal('http://example.com/1/2/3.png');
+			layer.addTo(map);
+			url = layer.getTileUrl({z: 1, x: 2, y: 3});
+			expect(url).to.equal('http://example.com/1/2/3.png');
+		});
+	});
 });
