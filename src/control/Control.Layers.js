@@ -45,8 +45,8 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 export class Layers extends Control {
-	initialize(baseLayers, overlays, options) {
-		Util.setOptions(this, options);
+	constructor(baseLayers, overlays, options) {
+		super(options);
 
 		this._layerControlInputs = [];
 		this._layers = [];

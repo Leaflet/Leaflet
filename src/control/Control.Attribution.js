@@ -1,7 +1,6 @@
 
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
-import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -19,9 +18,8 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // @constructor Control.Attribution(options: Control.Attribution options)
 // Creates an attribution control.
 export class Attribution extends Control {
-	initialize(options) {
-		Util.setOptions(this, options);
-
+	constructor(options) {
+		super(options);
 		this._attributions = {};
 	}
 

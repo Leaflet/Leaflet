@@ -14,7 +14,8 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 export class Control extends Class {
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
 	}
 
