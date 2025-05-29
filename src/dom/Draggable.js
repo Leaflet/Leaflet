@@ -20,26 +20,17 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
  * ```
  */
 
-export const Draggable = Evented.extend({
-
-	options: {
-		// @section
-		// @aka Draggable options
-		// @option clickTolerance: Number = 3
-		// The max number of pixels a user can shift the pointer during a click
-		// for it to be considered a valid click (as opposed to a pointer drag).
-		clickTolerance: 3
-	},
-
+export class Draggable extends Evented {
 	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, preventOutline, options) {
+		super();
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
-	},
+	}
 
 	// @method enable()
 	// Enables the dragging ability
@@ -49,7 +40,7 @@ export const Draggable = Evented.extend({
 		DomEvent.on(this._dragStartTarget, 'pointerdown', this._onDown, this);
 
 		this._enabled = true;
-	},
+	}
 
 	// @method disable()
 	// Disables the dragging ability
@@ -66,7 +57,7 @@ export const Draggable = Evented.extend({
 
 		this._enabled = false;
 		this._moved = false;
-	},
+	}
 
 	_onDown(e) {
 		// Ignore the event if disabled; this happens in IE11
@@ -111,7 +102,7 @@ export const Draggable = Evented.extend({
 
 		DomEvent.on(document, 'pointermove', this._onMove, this);
 		DomEvent.on(document, 'pointerup pointercancel', this._onUp, this);
-	},
+	}
 
 	_onMove(e) {
 		// Ignore the event if disabled; this happens in IE11
@@ -156,7 +147,7 @@ export const Draggable = Evented.extend({
 
 		this._lastEvent = e;
 		this._updatePosition();
-	},
+	}
 
 	_updatePosition() {
 		const e = {originalEvent: this._lastEvent};
@@ -170,14 +161,14 @@ export const Draggable = Evented.extend({
 		// @event drag: Event
 		// Fired continuously during dragging.
 		this.fire('drag', e);
-	},
+	}
 
 	_onUp() {
 		// Ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (!this._enabled) { return; }
 		this.finishDrag();
-	},
+	}
 
 	finishDrag(noInertia) {
 		document.body.classList.remove('leaflet-dragging');
@@ -208,4 +199,14 @@ export const Draggable = Evented.extend({
 		}
 	}
 
-});
+}
+
+Draggable.prototype.options = {
+	// @section
+	// @aka Draggable options
+	// @option clickTolerance: Number = 3
+	// The max number of pixels a user can shift the pointer during a click
+	// for it to be considered a valid click (as opposed to a pointer drag).
+	clickTolerance: 3
+};
+
