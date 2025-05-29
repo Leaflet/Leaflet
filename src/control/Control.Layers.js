@@ -49,7 +49,7 @@ export class Layers extends Control {
 	static {
 		// @section
 		// @aka Control.Layers options
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @option collapsed: Boolean = true
 			// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 			collapsed: true,

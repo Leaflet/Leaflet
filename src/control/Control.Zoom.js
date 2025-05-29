@@ -19,7 +19,7 @@ export class Zoom extends Control {
 	static {
 		// @section
 		// @aka Control.Zoom options
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @option position: String = 'topleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
 			// `'topright'`, `'bottomleft'` or `'bottomright'`

@@ -22,7 +22,7 @@ export class Scale extends Control {
 	static {
 		// @section
 		// @aka Control.Scale options
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @option position: String = 'bottomleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
 			// `'topright'`, `'bottomleft'` or `'bottomright'`
