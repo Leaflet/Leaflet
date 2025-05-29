@@ -23,23 +23,24 @@ import * as Util from '../../core/Util.js';
  * its map has moved
  */
 
-export const Renderer = BlanketOverlay.extend({
+export class Renderer extends BlanketOverlay {
 
-	initialize(options) {
+	constructor(options) {
+		super(options);
 		Util.setOptions(this, {...options, continuous: false});
 		Util.stamp(this);
 		this._layers ??= {};
-	},
+	}
 
 	onAdd(map) {
-		BlanketOverlay.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 		this.on('update', this._updatePaths, this);
-	},
+	}
 
 	onRemove() {
-		BlanketOverlay.prototype.onRemove.call(this);
+		super.onRemove();
 		this.off('update', this._updatePaths, this);
-	},
+	}
 
 	_onZoomEnd() {
 		// When a zoom ends, the "origin pixel" changes. Internal coordinates
@@ -48,26 +49,26 @@ export const Renderer = BlanketOverlay.extend({
 		for (const layer of Object.values(this._layers)) {
 			layer._project();
 		}
-	},
+	}
 
 	_updatePaths() {
 		for (const layer of Object.values(this._layers)) {
 			layer._update();
 		}
-	},
+	}
 
 	_onViewReset() {
 		for (const layer of Object.values(this._layers)) {
 			layer._reset();
 		}
-	},
+	}
 
 	_onSettled() {
 		this._update();
-	},
+	}
 
 	// Subclasses are responsible of implementing `_update()`. It should fire
 	// the 'update' event whenever appropriate (before/after rendering).
-	_update: Util.falseFn,
+	_update() {}
 
-});
+}
