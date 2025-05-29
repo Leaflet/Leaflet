@@ -820,7 +820,7 @@ export const GridLayer = Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-      requestAnimationFrame(done.bind(this, null, el));
+			requestAnimationFrame(done.bind(this, null, el));
 		}
 
 		const tilePos = this._getTilePos(coords);
