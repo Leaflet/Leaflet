@@ -16,18 +16,20 @@ import * as DomUtil from '../../dom/DomUtil.js';
  * `Marker.prototype.options.icon` with your own icon instead.
  */
 
-export const IconDefault = Icon.extend({
+export class IconDefault extends Icon {
 
-	options: {
-		iconUrl:       'marker-icon.png',
-		iconRetinaUrl: 'marker-icon-2x.png',
-		shadowUrl:     'marker-shadow.png',
-		iconSize:    [25, 41],
-		iconAnchor:  [12, 41],
-		popupAnchor: [1, -34],
-		tooltipAnchor: [16, -28],
-		shadowSize:  [41, 41]
-	},
+	static {
+		this.setDefaultOptions({
+			iconUrl:       'marker-icon.png',
+			iconRetinaUrl: 'marker-icon-2x.png',
+			shadowUrl:     'marker-shadow.png',
+			iconSize:    [25, 41],
+			iconAnchor:  [12, 41],
+			popupAnchor: [1, -34],
+			tooltipAnchor: [16, -28],
+			shadowSize:  [41, 41]
+		});
+	}
 
 	_getIconUrl(name) {
 		// only detect once
@@ -45,7 +47,7 @@ export const IconDefault = Icon.extend({
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right path.
 		return (this.options.imagePath || IconDefault.imagePath) + url;
-	},
+	}
 
 	_stripUrl(path) {	// separate function to use in tests
 		const strip = function (str, re, idx) {
@@ -54,7 +56,7 @@ export const IconDefault = Icon.extend({
 		};
 		path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
 		return path && strip(path, /^(.*)marker-icon\.png$/, 1);
-	},
+	}
 
 	_detectIconPath() {
 		const el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
@@ -66,4 +68,4 @@ export const IconDefault = Icon.extend({
 		if (!link) { return ''; }
 		return link.href.substring(0, link.href.length - 'leaflet.css'.length - 1);
 	}
-});
+}
