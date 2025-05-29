@@ -24,7 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 // @constructor Circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-export const Circle = CircleMarker.extend({
+export class Circle extends CircleMarker {
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
@@ -36,20 +36,20 @@ export const Circle = CircleMarker.extend({
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
-	},
+	}
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
 	setRadius(radius) {
 		this._mRadius = radius;
 		return this.redraw();
-	},
+	}
 
 	// @method getRadius(): Number
 	// Returns the current radius of a circle. Units are in meters.
 	getRadius() {
 		return this._mRadius;
-	},
+	}
 
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
@@ -59,9 +59,9 @@ export const Circle = CircleMarker.extend({
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
 			this._map.layerPointToLatLng(this._point.add(half)));
-	},
+	}
 
-	setStyle: Path.prototype.setStyle,
+	setStyle = Path.prototype.setStyle;
 
 	_project() {
 
@@ -97,4 +97,4 @@ export const Circle = CircleMarker.extend({
 
 		this._updateBounds();
 	}
-});
+}
