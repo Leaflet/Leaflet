@@ -30,7 +30,7 @@ export class Layer extends Evented {
 
 	static {
 		// Classes extending `Layer` will inherit the following options:
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @option pane: String = 'overlayPane'
 			// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
 			// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
