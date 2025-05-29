@@ -22,10 +22,11 @@ import {Point} from '../../geometry/Point.js';
  * Marker dragging handler. Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-export const MarkerDrag = Handler.extend({
-	initialize(marker) {
+export class MarkerDrag extends Handler {
+	constructor(marker) {
+		super();
 		this._marker = marker;
-	},
+	}
 
 	addHooks() {
 		const icon = this._marker._icon;
@@ -42,7 +43,7 @@ export const MarkerDrag = Handler.extend({
 		}, this).enable();
 
 		icon.classList.add('leaflet-marker-draggable');
-	},
+	}
 
 	removeHooks() {
 		this._draggable.off({
@@ -53,11 +54,11 @@ export const MarkerDrag = Handler.extend({
 		}, this).disable();
 
 		this._marker._icon?.classList.remove('leaflet-marker-draggable');
-	},
+	}
 
 	moved() {
 		return this._draggable?._moved;
-	},
+	}
 
 	_adjustPan(e) {
 		const marker = this._marker,
@@ -93,7 +94,7 @@ export const MarkerDrag = Handler.extend({
 
 			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
-	},
+	}
 
 	_onDragStart() {
 		// @section Dragging events
@@ -111,14 +112,14 @@ export const MarkerDrag = Handler.extend({
 		this._marker
 			.fire('movestart')
 			.fire('dragstart');
-	},
+	}
 
 	_onPreDrag(e) {
 		if (this._marker.options.autoPan) {
 			cancelAnimationFrame(this._panRequest);
 			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
-	},
+	}
 
 	_onDrag(e) {
 		const marker = this._marker,
@@ -140,7 +141,7 @@ export const MarkerDrag = Handler.extend({
 		marker
 		    .fire('move', e)
 		    .fire('drag', e);
-	},
+	}
 
 	_onDragEnd(e) {
 		// @event dragend: DragEndEvent
@@ -155,4 +156,4 @@ export const MarkerDrag = Handler.extend({
 		    .fire('moveend')
 		    .fire('dragend', e);
 	}
-});
+}
