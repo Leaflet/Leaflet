@@ -22,7 +22,7 @@ export class Attribution extends Control {
 	static {
 		// @section
 		// @aka Control.Attribution options
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @option position: String = 'bottomright'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
 			// `'topright'`, `'bottomleft'` or `'bottomright'`
