@@ -41,15 +41,11 @@ export const Control = Class.extend({
 	setPosition(position) {
 		const map = this._map;
 
-		if (map) {
-			map.removeControl(this);
-		}
+		map?.removeControl(this);
 
 		this.options.position = position;
 
-		if (map) {
-			map.addControl(this);
-		}
+		map?.addControl(this);
 
 		return this;
 	},

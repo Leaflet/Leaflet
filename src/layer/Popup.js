@@ -282,7 +282,7 @@ export const Popup = DivOverlay.extend({
 
 	_adjustPan() {
 		if (!this.options.autoPan) { return; }
-		if (this._map._panAnim) { this._map._panAnim.stop(); }
+		this._map._panAnim?.stop();
 
 		// We can endlessly recurse if keepInView is set and the view resets.
 		// Let's guard against that by exiting early if we're responding to our own autopan.
@@ -373,9 +373,7 @@ Map.include({
 	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
 	closePopup(popup) {
 		popup = arguments.length ? popup : this._popup;
-		if (popup) {
-			popup.close();
-		}
+		popup?.close();
 		return this;
 	}
 });
@@ -451,18 +449,14 @@ Layer.include({
 	// @method closePopup(): this
 	// Closes the popup bound to this layer if it is open.
 	closePopup() {
-		if (this._popup) {
-			this._popup.close();
-		}
+		this._popup?.close();
 		return this;
 	},
 
 	// @method togglePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup() {
-		if (this._popup) {
-			this._popup.toggle(this);
-		}
+		this._popup?.toggle(this);
 		return this;
 	},
 
@@ -475,9 +469,7 @@ Layer.include({
 	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent(content) {
-		if (this._popup) {
-			this._popup.setContent(content);
-		}
+		this._popup?.setContent(content);
 		return this;
 	},
 

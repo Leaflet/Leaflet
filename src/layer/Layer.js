@@ -66,9 +66,7 @@ export const Layer = Evented.extend({
 	// @method removeFrom(group: LayerGroup): this
 	// Removes the layer from the given `LayerGroup`
 	removeFrom(obj) {
-		if (obj) {
-			obj.removeLayer(this);
-		}
+		obj?.removeLayer(this);
 		return this;
 	},
 
