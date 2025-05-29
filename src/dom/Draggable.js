@@ -23,7 +23,7 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 export class Draggable extends Evented {
 
 	static {
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @section
 			// @aka Draggable options
 			// @option clickTolerance: Number = 3
