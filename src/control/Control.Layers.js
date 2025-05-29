@@ -45,6 +45,41 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 export class Layers extends Control {
+
+	static {
+		// @section
+		// @aka Control.Layers options
+		this.mergeOptions({
+			// @option collapsed: Boolean = true
+			// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
+			collapsed: true,
+			position: 'topright',
+
+			// @option autoZIndex: Boolean = true
+			// If `true`, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.
+			autoZIndex: true,
+
+			// @option hideSingleBase: Boolean = false
+			// If `true`, the base layers in the control will be hidden when there is only one.
+			hideSingleBase: false,
+
+			// @option sortLayers: Boolean = false
+			// Whether to sort the layers. When `false`, layers will keep the order
+			// in which they were added to the control.
+			sortLayers: false,
+
+			// @option sortFunction: Function = *
+			// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+			// that will be used for sorting the layers, when `sortLayers` is `true`.
+			// The function receives both the `Layer` instances and their names, as in
+			// `sortFunction(layerA, layerB, nameA, nameB)`.
+			// By default, it sorts layers alphabetically by their name.
+			sortFunction(layerA, layerB, nameA, nameB) {
+				return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
+			}
+		});
+	}
+
 	constructor(baseLayers, overlays, options) {
 		super(options);
 
@@ -401,35 +436,3 @@ export class Layers extends Control {
 	}
 
 }
-
-// @section
-// @aka Control.Layers options
-Layers.prototype.options = {
-	// @option collapsed: Boolean = true
-	// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
-	collapsed: true,
-	position: 'topright',
-
-	// @option autoZIndex: Boolean = true
-	// If `true`, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.
-	autoZIndex: true,
-
-	// @option hideSingleBase: Boolean = false
-	// If `true`, the base layers in the control will be hidden when there is only one.
-	hideSingleBase: false,
-
-	// @option sortLayers: Boolean = false
-	// Whether to sort the layers. When `false`, layers will keep the order
-	// in which they were added to the control.
-	sortLayers: false,
-
-	// @option sortFunction: Function = *
-	// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
-	// that will be used for sorting the layers, when `sortLayers` is `true`.
-	// The function receives both the `Layer` instances and their names, as in
-	// `sortFunction(layerA, layerB, nameA, nameB)`.
-	// By default, it sorts layers alphabetically by their name.
-	sortFunction(layerA, layerB, nameA, nameB) {
-		return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
-	}
-};

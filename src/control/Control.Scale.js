@@ -18,6 +18,33 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor Control.Scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
 export class Scale extends Control {
+
+	static {
+		// @section
+		// @aka Control.Scale options
+		this.mergeOptions({
+			// @option position: String = 'bottomleft'
+			// The position of the control (one of the map corners). Possible values are `'topleft'`,
+			// `'topright'`, `'bottomleft'` or `'bottomright'`
+			position: 'bottomleft',
+
+			// @option maxWidth: Number = 100
+			// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+			maxWidth: 100,
+
+			// @option metric: Boolean = True
+			// Whether to show the metric scale line (m/km).
+			metric: true,
+
+			// @option imperial: Boolean = True
+			// Whether to show the imperial scale line (mi/ft).
+			imperial: true
+
+			// @option updateWhenIdle: Boolean = false
+			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+		});
+	}
+
 	onAdd(map) {
 		const className = 'leaflet-control-scale',
 		    container = DomUtil.create('div', className),
@@ -103,27 +130,3 @@ export class Scale extends Control {
 		return pow10 * d;
 	}
 }
-
-// @section
-// @aka Control.Scale options
-Scale.prototype.options = {
-	// @option position: String = 'bottomleft'
-	// The position of the control (one of the map corners). Possible values are `'topleft'`,
-	// `'topright'`, `'bottomleft'` or `'bottomright'`
-	position: 'bottomleft',
-
-	// @option maxWidth: Number = 100
-	// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-	maxWidth: 100,
-
-	// @option metric: Boolean = True
-	// Whether to show the metric scale line (m/km).
-	metric: true,
-
-	// @option imperial: Boolean = True
-	// Whether to show the imperial scale line (mi/ft).
-	imperial: true
-
-	// @option updateWhenIdle: Boolean = false
-	// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-};
