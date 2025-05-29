@@ -60,6 +60,10 @@ export class Class {
 		return this;
 	}
 
+	static setDefaultOptions(options) {
+		Util.setOptions(this.prototype, options);
+	}
+
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(options) {

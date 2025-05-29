@@ -41,8 +41,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 export class Map extends Evented {
 
 	static {
-		this.prototype._initHooks = [];
-		this.mergeOptions({
+		this.setDefaultOptions({
 			// @section Map State Options
 			// @option crs: CRS = CRS.EPSG3857
 			// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
