@@ -32,7 +32,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * ```
  */
 
-// @constructor Tilelayer(urlTemplate: String, options?: TileLayer options)
+// @constructor TileLayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 export const TileLayer = GridLayer.extend({
 
