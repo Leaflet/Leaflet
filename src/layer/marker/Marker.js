@@ -303,9 +303,7 @@ export const Marker = Layer.extend({
 	},
 
 	_removeShadow() {
-		if (this._shadow) {
-			this._shadow.remove();
-		}
+		this._shadow?.remove();
 		this._shadow = null;
 	},
 

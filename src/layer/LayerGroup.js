@@ -40,9 +40,7 @@ export const LayerGroup = Layer.extend({
 
 		this._layers[id] = layer;
 
-		if (this._map) {
-			this._map.addLayer(layer);
-		}
+		this._map?.addLayer(layer);
 
 		return this;
 	},
@@ -86,9 +84,7 @@ export const LayerGroup = Layer.extend({
 	// implement `methodName`.
 	invoke(methodName, ...args) {
 		for (const layer of Object.values(this._layers)) {
-			if (layer[methodName]) {
-				layer[methodName].apply(layer, args);
-			}
+			layer[methodName]?.apply(layer, args);
 		}
 		return this;
 	},

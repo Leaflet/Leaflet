@@ -52,9 +52,7 @@ export const MarkerDrag = Handler.extend({
 			dragend: this._onDragEnd
 		}, this).disable();
 
-		if (this._marker._icon) {
-			this._marker._icon.classList.remove('leaflet-marker-draggable');
-		}
+		this._marker._icon?.classList.remove('leaflet-marker-draggable');
 	},
 
 	moved() {

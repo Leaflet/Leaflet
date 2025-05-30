@@ -1266,9 +1266,7 @@ export const Map = Evented.extend({
 
 	_stop() {
 		cancelAnimationFrame(this._flyToFrame);
-		if (this._panAnim) {
-			this._panAnim.stop();
-		}
+		this._panAnim?.stop();
 		return this;
 	},
 
@@ -1745,9 +1743,7 @@ export const Map = Evented.extend({
 	_onZoomTransitionEnd() {
 		if (!this._animatingZoom) { return; }
 
-		if (this._mapPane) {
-			this._mapPane.classList.remove('leaflet-zoom-anim');
-		}
+		this._mapPane?.classList.remove('leaflet-zoom-anim');
 
 		this._animatingZoom = false;
 

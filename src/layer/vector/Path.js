@@ -114,18 +114,14 @@ export const Path = Layer.extend({
 	// @method bringToFront(): this
 	// Brings the layer to the top of all path layers.
 	bringToFront() {
-		if (this._renderer) {
-			this._renderer._bringToFront(this);
-		}
+		this._renderer?._bringToFront(this);
 		return this;
 	},
 
 	// @method bringToBack(): this
 	// Brings the layer to the bottom of all path layers.
 	bringToBack() {
-		if (this._renderer) {
-			this._renderer._bringToBack(this);
-		}
+		this._renderer?._bringToBack(this);
 		return this;
 	},
 

@@ -69,9 +69,7 @@ export const DivOverlay = Layer.extend({
 	// Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
 	// and `layer.closePopup()`/`.closeTooltip()`.
 	close() {
-		if (this._map) {
-			this._map.removeLayer(this);
-		}
+		this._map?.removeLayer(this);
 		return this;
 	},
 

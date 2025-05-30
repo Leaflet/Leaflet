@@ -352,9 +352,7 @@ Layer.include({
 	// @method toggleTooltip(): this
 	// Opens or closes the tooltip bound to this layer depending on its current state.
 	toggleTooltip() {
-		if (this._tooltip) {
-			this._tooltip.toggle(this);
-		}
+		this._tooltip?.toggle(this);
 		return this;
 	},
 
@@ -367,9 +365,7 @@ Layer.include({
 	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
 	// Sets the content of the tooltip bound to this layer.
 	setTooltipContent(content) {
-		if (this._tooltip) {
-			this._tooltip.setContent(content);
-		}
+		this._tooltip?.setContent(content);
 		return this;
 	},
 
@@ -415,9 +411,7 @@ Layer.include({
 
 	_setAriaDescribedByOnLayer(layer) {
 		const el = typeof layer.getElement === 'function' && layer.getElement();
-		if (el) {
-			el.setAttribute('aria-describedby', this._tooltip._container.id);
-		}
+		el?.setAttribute?.('aria-describedby', this._tooltip._container.id);
 	},
 
 
