@@ -58,4 +58,20 @@ describe('Map.DoubleClickZoom', () => {
 		UIEventSimulator.fire('dblclick', container);
 	});
 
+	it('can be disabled using doubleClickZoom: false', (done) => {
+		map.remove();
+		map = new Map(container, {
+			center: [0, 0],
+			zoom: 3,
+			doubleClickZoom: false,
+			zoomAnimation: false
+		});
+
+		UIEventSimulator.fire('dblclick', container);
+
+		expect(map.getZoom()).to.eql(3);
+
+		done();
+	});
+
 });
