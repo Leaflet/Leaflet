@@ -1464,8 +1464,8 @@ export const Map = Evented.extend({
 	},
 
 	_draggableMoved(obj) {
-		obj = obj.dragging && obj.dragging.enabled() ? obj : this;
-		return (obj.dragging && obj.dragging.moved()) || (this.boxZoom && this.boxZoom.moved());
+		obj = obj.dragging?.enabled() ? obj : this;
+		return obj.dragging?.moved() || this.boxZoom?.moved();
 	},
 
 	_clearHandlers() {
