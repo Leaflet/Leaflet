@@ -18,7 +18,7 @@ export class Earth extends CRS {
 	// see https://rosettacode.org/wiki/Haversine_formula
 	static R = 6371000;
 
-	// distance between two geographical points using spherical law of cosines approximation
+	// distance between two geographical points using Haversine approximation
 	static distance(latlng1, latlng2) {
 		const rad = Math.PI / 180,
 		lat1 = latlng1.lat * rad,
