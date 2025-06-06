@@ -649,6 +649,9 @@ export const Map = Evented.extend({
 		onError = this._handleGeolocationError.bind(this);
 
 		if (options.watch) {
+			if (this._locationWatchId !== undefined) {
+				navigator.geolocation.clearWatch(this._locationWatchId);
+			}
 			this._locationWatchId =
 			        navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
