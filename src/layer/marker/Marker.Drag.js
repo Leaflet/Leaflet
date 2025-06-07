@@ -106,7 +106,7 @@ export const MarkerDrag = Handler.extend({
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
-		this._marker.closePopup && this._marker.closePopup();
+		this._marker.closePopup?.();
 
 		this._marker
 			.fire('movestart')

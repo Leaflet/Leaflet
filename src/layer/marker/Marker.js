@@ -125,7 +125,7 @@ export const Marker = Layer.extend({
 	},
 
 	onRemove(map) {
-		if (this.dragging && this.dragging.enabled()) {
+		if (this.dragging?.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
 		}
