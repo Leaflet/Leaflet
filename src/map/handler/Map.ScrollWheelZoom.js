@@ -16,7 +16,7 @@ Map.mergeOptions({
 	scrollWheelZoom: true,
 
 	// @option wheelDebounceTime: Number = 40
-	// Limits the rate at which a wheel can fire (in milliseconds). By default
+	// Limits the rate at which a wheel can fire (in milliseconds). By default, the
 	// user can't zoom via wheel more often than once per 40 ms.
 	wheelDebounceTime: 40,
 
