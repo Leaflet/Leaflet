@@ -176,9 +176,16 @@ jobs:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
-      - name: Compress artifacts
+      - name: Compress artifacts to zip file
         working-directory: dist
         run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
+
+      - name: Create tarball for NPM install
+        run: |
+          mkdir package
+          cp -r package.json dist package
+          tar cf leaflet.tar package
+          mv leaflet.tar dist/
 
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1
