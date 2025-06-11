@@ -626,7 +626,20 @@ export const GridLayer = Layer.extend({
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
 
-		return new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
+		var tiledPixelBounds = new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
+
+		// Crop to tile bounds
+		if (this.options.bounds && scale < 1) {
+			var pixelNorthEastBounds = map.project(this.options.bounds._northEast, this._tileZoom),
+			    pixelSouthWestBounds = map.project(this.options.bounds._southWest, this._tileZoom);
+
+			tiledPixelBounds.min.x = tiledPixelBounds.min.x < pixelSouthWestBounds.x ? pixelSouthWestBounds.x : tiledPixelBounds.min.x;
+			tiledPixelBounds.max.x = tiledPixelBounds.max.x > pixelNorthEastBounds.x ? pixelNorthEastBounds.x : tiledPixelBounds.max.x;
+			tiledPixelBounds.min.y = tiledPixelBounds.min.y < pixelSouthWestBounds.y ? pixelSouthWestBounds.y : tiledPixelBounds.min.y;
+			tiledPixelBounds.max.y = tiledPixelBounds.max.y > pixelNorthEastBounds.y ? pixelNorthEastBounds.y : tiledPixelBounds.max.y;
+		}
+
+		return tiledPixelBounds;
 	},
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
