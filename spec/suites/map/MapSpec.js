@@ -269,6 +269,13 @@ describe('Map', () => {
 				map2.remove(); // clean up
 				expect(zoom).to.equal(13);
 			});
+
+			it('should have an accessible name [a11y]', () => {
+				const container = map.getContainer();
+				const name = container.getAttribute('aria-label');
+
+				expect(name).to.equal('Map');
+			});
 		});
 
 		it('changes previous zoom level', () => {

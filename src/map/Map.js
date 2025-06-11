@@ -78,6 +78,11 @@ export const Map = Evented.extend({
 		// [`setMaxBounds`](#map-setmaxbounds) method.
 		maxBounds: undefined,
 
+		// @option title: String = 'Map'
+		// Short text for the `aria-label` attribute of the map container.
+		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/).
+		title: 'Map',
+
 		// @option renderer: Renderer = *
 		// The default method for drawing vector layers on the map. `SVG`
 		// or `Canvas` by default depending on browser support.
@@ -1127,6 +1132,11 @@ export const Map = Evented.extend({
 
 		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
 			container.style.position = 'relative';
+		}
+
+		// Give the container an accessible name [accessibility, a11y]
+		if (!container.hasAttribute('aria-label')) {
+			container.setAttribute('aria-label', this.options.title);
 		}
 
 		this._initPanes();
