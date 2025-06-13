@@ -25,7 +25,7 @@ import * as Util from './Util.js';
  * ```
  */
 
-export const Events = {
+export class Evented extends Class {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -51,7 +51,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	/* @method off(type: String, fn?: Function, context?: Object): this
 	 * Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to `on`, you must pass the same context to `off` in order to remove the listener.
@@ -87,7 +87,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	// attach listener (without syntactic sugar now)
 	_on(type, fn, context, _once) {
@@ -114,7 +114,7 @@ export const Events = {
 		this._events ??= {};
 		this._events[type] ??= [];
 		this._events[type].push(newListener);
-	},
+	}
 
 	_off(type, fn, context) {
 		if (!this._events) {
@@ -157,7 +157,7 @@ export const Events = {
 			}
 			listeners.splice(index, 1);
 		}
-	},
+	}
 
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
 	// Fires an event of the specified type. You can optionally provide a data
@@ -196,7 +196,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	// @method listens(type: String, propagate?: Boolean): Boolean
 	// @method listens(type: String, fn: Function, context?: Object, propagate?: Boolean): Boolean
@@ -230,7 +230,7 @@ export const Events = {
 			}
 		}
 		return false;
-	},
+	}
 
 	// returns the index (number) or false
 	_listens(type, fn, context) {
@@ -251,7 +251,7 @@ export const Events = {
 		const index = listeners.findIndex(l => l.fn === fn && l.ctx === context);
 		return index === -1 ? false : index;
 
-	},
+	}
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
@@ -273,7 +273,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
@@ -281,7 +281,7 @@ export const Events = {
 		this._eventParents ??= {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
-	},
+	}
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
@@ -290,7 +290,7 @@ export const Events = {
 			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
-	},
+	}
 
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
@@ -300,31 +300,30 @@ export const Events = {
 			}, true);
 		}
 	}
+
+	// aliases; we should ditch those eventually
+
+	// @method addEventListener(…): this
+	// Alias to [`on(…)`](#evented-on)
+	addEventListener = this.on;
+
+	// @method removeEventListener(…): this
+	// Alias to [`off(…)`](#evented-off)
+	removeEventListener = this.off;
+
+	// @method clearAllEventListeners(…): this
+	// Alias to [`off()`](#evented-off)
+	clearAllEventListeners = this.off;
+
+	// @method addOneTimeEventListener(…): this
+	// Alias to [`once(…)`](#evented-once)
+	addOneTimeEventListener = this.once;
+
+	// @method fireEvent(…): this
+	// Alias to [`fire(…)`](#evented-fire)
+	fireEvent = this.fire;
+
+	// @method hasEventListeners(…): Boolean
+	// Alias to [`listens(…)`](#evented-listens)
+	hasEventListeners = this.listens;
 };
-
-// aliases; we should ditch those eventually
-
-// @method addEventListener(…): this
-// Alias to [`on(…)`](#evented-on)
-Events.addEventListener = Events.on;
-
-// @method removeEventListener(…): this
-// Alias to [`off(…)`](#evented-off)
-
-// @method clearAllEventListeners(…): this
-// Alias to [`off()`](#evented-off)
-Events.removeEventListener = Events.clearAllEventListeners = Events.off;
-
-// @method addOneTimeEventListener(…): this
-// Alias to [`once(…)`](#evented-once)
-Events.addOneTimeEventListener = Events.once;
-
-// @method fireEvent(…): this
-// Alias to [`fire(…)`](#evented-fire)
-Events.fireEvent = Events.fire;
-
-// @method hasEventListeners(…): Boolean
-// Alias to [`listens(…)`](#evented-listens)
-Events.hasEventListeners = Events.listens;
-
-export const Evented = Class.extend(Events);
