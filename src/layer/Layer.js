@@ -5,11 +5,10 @@ import * as Util from '../core/Util.js';
 /*
  * @class Layer
  * @inherits Evented
- * @aka L.Layer
  * @aka ILayer
  *
  * A set of methods from the Layer base class that all Leaflet layers use.
- * Inherits all methods, options and events from `L.Evented`.
+ * Inherits all methods, options and events from `Evented`.
  *
  * @example
  *
@@ -29,7 +28,7 @@ import * as Util from '../core/Util.js';
 
 export const Layer = Evented.extend({
 
-	// Classes extending `L.Layer` will inherit the following options:
+	// Classes extending `Layer` will inherit the following options:
 	options: {
 		// @option pane: String = 'overlayPane'
 		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
@@ -40,11 +39,11 @@ export const Layer = Evented.extend({
 		// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
 		attribution: null,
 
-		bubblingMouseEvents: true
+		bubblingPointerEvents: true
 	},
 
 	/* @section
-	 * Classes extending `L.Layer` will inherit the following methods:
+	 * Classes extending `Layer` will inherit the following methods:
 	 *
 	 * @method addTo(map: Map|LayerGroup): this
 	 * Adds the layer to the given map or layer group.
@@ -67,9 +66,7 @@ export const Layer = Evented.extend({
 	// @method removeFrom(group: LayerGroup): this
 	// Removes the layer from the given `LayerGroup`
 	removeFrom(obj) {
-		if (obj) {
-			obj.removeLayer(this);
-		}
+		obj?.removeLayer(this);
 		return this;
 	},
 
@@ -120,7 +117,7 @@ export const Layer = Evented.extend({
 /* @section Extension methods
  * @uninheritable
  *
- * Every layer should extend from `L.Layer` and (re-)implement the following methods.
+ * Every layer should extend from `Layer` and (re-)implement the following methods.
  *
  * @method onAdd(map: Map): this
  * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).

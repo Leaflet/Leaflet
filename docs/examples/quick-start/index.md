@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Quick Start Guide
+title: Leaflet Quick Start Guide
 ---
 
 ## Leaflet Quick Start Guide

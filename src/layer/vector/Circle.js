@@ -1,14 +1,13 @@
 import {CircleMarker} from './CircleMarker.js';
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
-import {toLatLng} from '../../geo/LatLng.js';
+import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 
 /*
  * @class Circle
- * @aka L.Circle
  * @inherits CircleMarker
  *
  * A class for drawing circle overlays on a map. Extends `CircleMarker`.
@@ -18,19 +17,18 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
  * @example
  *
  * ```js
- * L.circle([50.5, 30.5], {radius: 200}).addTo(map);
+ * new Circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
  */
 
+// @constructor Circle(latlng: LatLng, options?: Circle options)
+// Instantiates a circle object given a geographical point, and an options object
+// which contains the circle radius.
 export const Circle = CircleMarker.extend({
 
-	initialize(latlng, options, legacyOptions) {
-		if (typeof options === 'number') {
-			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-			options = {...legacyOptions, radius: options};
-		}
+	initialize(latlng, options) {
 		Util.setOptions(this, options);
-		this._latlng = toLatLng(latlng);
+		this._latlng = new LatLng(latlng);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
@@ -100,14 +98,3 @@ export const Circle = CircleMarker.extend({
 		this._updateBounds();
 	}
 });
-
-// @factory L.circle(latlng: LatLng, options?: Circle options)
-// Instantiates a circle object given a geographical point, and an options object
-// which contains the circle radius.
-// @alternative
-// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
-// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
-// Do not use in new applications or plugins.
-export function circle(latlng, options, legacyOptions) {
-	return new Circle(latlng, options, legacyOptions);
-}

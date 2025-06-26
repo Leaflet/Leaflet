@@ -4,7 +4,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class LayerGroup
- * @aka L.LayerGroup
  * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,
@@ -14,12 +13,14 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * L.layerGroup([marker1, marker2])
+ * new LayerGroup([marker1, marker2])
  * 	.addLayer(polyline)
  * 	.addTo(map);
  * ```
  */
 
+// @constructor LayerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
 export const LayerGroup = Layer.extend({
 
 	initialize(layers, options) {
@@ -39,9 +40,7 @@ export const LayerGroup = Layer.extend({
 
 		this._layers[id] = layer;
 
-		if (this._map) {
-			this._map.addLayer(layer);
-		}
+		this._map?.addLayer(layer);
 
 		return this;
 	},
@@ -85,9 +84,7 @@ export const LayerGroup = Layer.extend({
 	// implement `methodName`.
 	invoke(methodName, ...args) {
 		for (const layer of Object.values(this._layers)) {
-			if (layer[methodName]) {
-				layer[methodName].apply(layer, args);
-			}
+			layer[methodName]?.apply(layer, args);
 		}
 		return this;
 	},
@@ -138,10 +135,3 @@ export const LayerGroup = Layer.extend({
 		return Util.stamp(layer);
 	}
 });
-
-
-// @factory L.layerGroup(layers?: Layer[], options?: Object)
-// Create a layer group, optionally given an initial set of layers and an `options` object.
-export const layerGroup = function (layers, options) {
-	return new LayerGroup(layers, options);
-};

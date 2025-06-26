@@ -6,7 +6,7 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*
- * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map
+ * Handler.BoxZoom is used to add shift-drag zoom interaction to the map
  * (zoom to a selected bounding box), enabled by default.
  */
 
@@ -68,7 +68,7 @@ export const BoxZoom = Handler.extend({
 		DomUtil.disableTextSelection();
 		DomUtil.disableImageDrag();
 
-		this._startPoint = this._map.mouseEventToContainerPoint(e);
+		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
 		DomEvent.on(document, {
 			contextmenu: DomEvent.stop,
@@ -88,7 +88,7 @@ export const BoxZoom = Handler.extend({
 			this._map.fire('boxzoomstart');
 		}
 
-		this._point = this._map.mouseEventToContainerPoint(e);
+		this._point = this._map.pointerEventToContainerPoint(e);
 
 		const bounds = new Bounds(this._point, this._startPoint),
 		    size = bounds.getSize();
@@ -128,8 +128,8 @@ export const BoxZoom = Handler.extend({
 		this._resetStateTimeout = setTimeout(this._resetState.bind(this), 0);
 
 		const bounds = new LatLngBounds(
-		        this._map.containerPointToLatLng(this._startPoint),
-		        this._map.containerPointToLatLng(this._point));
+			this._map.containerPointToLatLng(this._startPoint),
+			this._map.containerPointToLatLng(this._point));
 
 		this._map
 			.fitBounds(bounds)

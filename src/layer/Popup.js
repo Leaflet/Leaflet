@@ -1,7 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import {Point, toPoint} from '../geometry/Point.js';
+import {Point} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
@@ -10,7 +10,6 @@ import {FeatureGroup} from './FeatureGroup.js';
 /*
  * @class Popup
  * @inherits DivOverlay
- * @aka L.Popup
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup) to
  * open popups while making sure that only one popup is open at one time
  * (recommended for usability), or use [Map.addLayer](#map-addlayer) to open as many as you want.
@@ -41,6 +40,11 @@ import {FeatureGroup} from './FeatureGroup.js';
 
 
 // @namespace Popup
+// @constructor Popup(options?: Popup options, source?: Layer)
+// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
+// @alternative
+// @constructor Popup(latlng: LatLng, options?: Popup options)
+// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
 export const Popup = DivOverlay.extend({
 
 	// @section
@@ -58,9 +62,9 @@ export const Popup = DivOverlay.extend({
 		// Max width of the popup, in pixels.
 		maxWidth: 300,
 
-		// @option minWidth: Number = 50
+		// @option minWidth: Number = 100
 		// Min width of the popup, in pixels.
-		minWidth: 50,
+		minWidth: 100,
 
 		// @option maxHeight: Number = null
 		// If set, creates a scrollable container of the given height
@@ -278,7 +282,7 @@ export const Popup = DivOverlay.extend({
 
 	_adjustPan() {
 		if (!this.options.autoPan) { return; }
-		if (this._map._panAnim) { this._map._panAnim.stop(); }
+		this._map._panAnim?.stop();
 
 		// We can endlessly recurse if keepInView is set and the view resets.
 		// Let's guard against that by exiting early if we're responding to our own autopan.
@@ -296,9 +300,9 @@ export const Popup = DivOverlay.extend({
 		layerPos._add(DomUtil.getPosition(this._container));
 
 		const containerPos = map.layerPointToContainerPoint(layerPos),
-		      padding = toPoint(this.options.autoPanPadding),
-		      paddingTL = toPoint(this.options.autoPanPaddingTopLeft ?? padding),
-		      paddingBR = toPoint(this.options.autoPanPaddingBottomRight ?? padding),
+		      padding = new Point(this.options.autoPanPadding),
+		      paddingTL = new Point(this.options.autoPanPaddingTopLeft ?? padding),
+		      paddingBR = new Point(this.options.autoPanPaddingBottomRight ?? padding),
 		      size = map.getSize();
 		let dx = 0,
 		    dy = 0;
@@ -334,20 +338,10 @@ export const Popup = DivOverlay.extend({
 
 	_getAnchor() {
 		// Where should we anchor the popup on the source layer?
-		return toPoint(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
+		return new Point(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
 });
-
-// @namespace Popup
-// @factory L.popup(options?: Popup options, source?: Layer)
-// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.popup(latlng: LatLng, options?: Popup options)
-// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export const popup = function (options, source) {
-	return new Popup(options, source);
-};
 
 
 /* @namespace Map
@@ -379,9 +373,7 @@ Map.include({
 	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
 	closePopup(popup) {
 		popup = arguments.length ? popup : this._popup;
-		if (popup) {
-			popup.close();
-		}
+		popup?.close();
 		return this;
 	}
 });
@@ -393,7 +385,7 @@ Map.include({
  * All layers share a set of methods convenient for binding popups to it.
  *
  * ```js
- * const layer = L.Polygon(latlngs).bindPopup('Hi There!').addTo(map);
+ * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
  * layer.openPopup();
  * layer.closePopup();
  * ```
@@ -457,33 +449,27 @@ Layer.include({
 	// @method closePopup(): this
 	// Closes the popup bound to this layer if it is open.
 	closePopup() {
-		if (this._popup) {
-			this._popup.close();
-		}
+		this._popup?.close();
 		return this;
 	},
 
 	// @method togglePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup() {
-		if (this._popup) {
-			this._popup.toggle(this);
-		}
+		this._popup?.toggle(this);
 		return this;
 	},
 
 	// @method isPopupOpen(): boolean
 	// Returns `true` if the popup bound to this layer is currently open.
 	isPopupOpen() {
-		return (this._popup ? this._popup.isOpen() : false);
+		return this._popup?.isOpen() ?? false;
 	},
 
 	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent(content) {
-		if (this._popup) {
-			this._popup.setContent(content);
-		}
+		this._popup?.setContent(content);
 		return this;
 	},
 
@@ -500,7 +486,7 @@ Layer.include({
 		// prevent map click
 		DomEvent.stop(e);
 
-		const target = e.layer ?? e.target;
+		const target = e.propagatedFrom ?? e.target;
 		if (this._popup._source === target && !(target instanceof Path)) {
 			// treat it like a marker and figure out
 			// if we should toggle it open/closed

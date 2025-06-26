@@ -1,13 +1,12 @@
 /*
  * @namespace Browser
- * @aka L.Browser
  *
  * A namespace with static properties for browser/feature detection used by Leaflet internally.
  *
  * @example
  *
  * ```js
- * if (L.Browser.chrome) {
+ * if (Browser.chrome) {
  *   alert('You are running Chrome!');
  * }
  * ```

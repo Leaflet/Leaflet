@@ -15,4 +15,4 @@ import {PinchZoom} from './handler/Map.PinchZoom.js';
 Map.PinchZoom = PinchZoom;
 Map.TouchZoom = PinchZoom; // backward compatibility
 
-export {Map, createMap as map} from './Map.js';
+export {Map} from './Map.js';

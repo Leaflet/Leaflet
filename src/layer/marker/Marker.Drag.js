@@ -1,11 +1,11 @@
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
-import {toBounds} from '../../geometry/Bounds.js';
-import {toPoint} from '../../geometry/Point.js';
+import {Bounds} from '../../geometry/Bounds.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
- * L.Handler.MarkerDrag is used internally by L.Marker to make the markers draggable.
+ * Handler.MarkerDrag is used internally by Marker to make the markers draggable.
  */
 
 
@@ -19,7 +19,7 @@ import {toPoint} from '../../geometry/Point.js';
  * ```
  *
  * @property dragging: Handler
- * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
+ * Marker dragging handler. Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
 export const MarkerDrag = Handler.extend({
@@ -52,9 +52,7 @@ export const MarkerDrag = Handler.extend({
 			dragend: this._onDragEnd
 		}, this).disable();
 
-		if (this._marker._icon) {
-			this._marker._icon.classList.remove('leaflet-marker-draggable');
-		}
+		this._marker._icon?.classList.remove('leaflet-marker-draggable');
 	},
 
 	moved() {
@@ -70,14 +68,14 @@ export const MarkerDrag = Handler.extend({
 		    bounds = map.getPixelBounds(),
 		    origin = map.getPixelOrigin();
 
-		const panBounds = toBounds(
+		const panBounds = new Bounds(
 			bounds.min._subtract(origin).add(padding),
 			bounds.max._subtract(origin).subtract(padding)
 		);
 
 		if (!panBounds.contains(iconPos)) {
 			// Compute incremental movement
-			const movement = toPoint(
+			const movement = new Point(
 				(Math.max(panBounds.max.x, iconPos.x) - panBounds.max.x) / (bounds.max.x - panBounds.max.x) -
 				(Math.min(panBounds.min.x, iconPos.x) - panBounds.min.x) / (bounds.min.x - panBounds.min.x),
 
@@ -108,7 +106,7 @@ export const MarkerDrag = Handler.extend({
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
-		this._marker.closePopup && this._marker.closePopup();
+		this._marker.closePopup?.();
 
 		this._marker
 			.fire('movestart')

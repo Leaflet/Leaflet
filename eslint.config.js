@@ -20,9 +20,10 @@ export default [
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
-			'docs/examples/extending/extending-2-layers.md',
+			'docs/examples/extending-2-layers/index.md',
 			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
 			'docs/download.md', // importmap is not recognized by eslint
+			'docs/_posts/2025-05-18-leaflet-2.0.0-alpha.md', // importmap is not recognized by eslint
 			'docs/_posts/201*',
 			'docs/_site',
 			'coverage'

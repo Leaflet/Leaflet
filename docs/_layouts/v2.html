@@ -3,10 +3,13 @@
 <head>
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 
-	<title>{{ title }}Leaflet - a JavaScript library for interactive maps</title>
-
+	{% if title != '' %}
+	<title>{{ title }}Leaflet</title>
+	{% else %}
+	<title>Leaflet - a JavaScript library for interactive maps</title>
+	{% endif %}
+	
 	<meta charset="utf-8" />
-
 	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for building powerful interactive maps." />

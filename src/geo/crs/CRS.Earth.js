@@ -2,7 +2,7 @@ import {CRS} from './CRS.js';
 
 /*
  * @namespace CRS
- * @crs L.CRS.Earth
+ * @crs CRS.Earth
  *
  * Serves as the base for CRS that are global such that they cover the earth.
  * Can only be used as the base for other CRS and cannot be used directly,
@@ -10,17 +10,16 @@ import {CRS} from './CRS.js';
  * meters.
  */
 
-export const Earth = {
-	...CRS,
-	wrapLng: [-180, 180],
+export class Earth extends CRS {
+	static wrapLng = [-180, 180];
 
 	// Mean Earth Radius, as recommended for use by
 	// the International Union of Geodesy and Geophysics,
 	// see https://rosettacode.org/wiki/Haversine_formula
-	R: 6371000,
+	static R = 6371000;
 
-	// distance between two geographical points using spherical law of cosines approximation
-	distance(latlng1, latlng2) {
+	// distance between two geographical points using Haversine approximation
+	static distance(latlng1, latlng2) {
 		const rad = Math.PI / 180,
 		lat1 = latlng1.lat * rad,
 		lat2 = latlng2.lat * rad,
@@ -30,4 +29,4 @@ export const Earth = {
 		c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return this.R * c;
 	}
-};
+}

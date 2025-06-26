@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: CRS.Simple example
+title: CRS.Simple Example
 ---
 <script type="module">
 	import L, {Map, CRS, ImageOverlay} from 'leaflet';

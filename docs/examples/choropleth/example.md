@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Choropleth Tutorial
+title: Full Choropleth Example
 css: "#map {
 			width: 800px;
 			height: 500px;
@@ -115,8 +115,8 @@ css: "#map {
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			pointerover: highlightFeature,
+			pointerout: resetHighlight,
 			click: zoomToFeature
 		});
 	}

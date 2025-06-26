@@ -116,9 +116,9 @@ jobs:
         run: node ./spec/ssr/ssr_node.js
 
       - name: Set up Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
 
       - name: Run Deno SSR script
         run: deno run ./spec/ssr/ssr_deno.js
@@ -132,7 +132,6 @@ jobs:
         include:
           - browser: Chrome
           - browser: Firefox
-          - browser: FirefoxNoTouch
           - browser: FirefoxRetina
           - browser: Chrome
             os: windows-latest
@@ -163,6 +162,9 @@ jobs:
       - name: Run tests on ${{ matrix.browser }}
         run: npm test -- --browsers ${{ matrix.browser }} --single-run
 
+      - name: Run tests on ${{ matrix.browser }} with touch
+        run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
+
   publish-artifacts:
     needs: setup
     if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
@@ -176,7 +178,7 @@ jobs:
 
       - name: Compress artifacts
         working-directory: dist
-        run: zip -r leaflet.zip .
+        run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
 
       - name: Publish artifacts
         uses: jakejarvis/s3-sync-action@v0.5.1

@@ -1,13 +1,12 @@
 import {Polygon} from './Polygon.js';
-import {toLatLngBounds} from '../../geo/LatLngBounds.js';
+import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 /*
- * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
+ * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
 
 /*
  * @class Rectangle
- * @aka L.Rectangle
  * @inherits Polygon
  *
  * A class for drawing rectangle overlays on a map. Extends `Polygon`.
@@ -27,7 +26,7 @@ import {toLatLngBounds} from '../../geo/LatLngBounds.js';
  *
  */
 
-
+// @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export const Rectangle = Polygon.extend({
 	initialize(latLngBounds, options) {
 		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
@@ -40,7 +39,7 @@ export const Rectangle = Polygon.extend({
 	},
 
 	_boundsToLatLngs(latLngBounds) {
-		latLngBounds = toLatLngBounds(latLngBounds);
+		latLngBounds = new LatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),
@@ -49,9 +48,3 @@ export const Rectangle = Polygon.extend({
 		];
 	}
 });
-
-
-// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-export function rectangle(latLngBounds, options) {
-	return new Rectangle(latLngBounds, options);
-}

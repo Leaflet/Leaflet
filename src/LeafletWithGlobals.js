@@ -3,7 +3,12 @@ export * from './Leaflet.js';
 
 export default L;
 
+const oldL = getGlobalObject().L;
 getGlobalObject().L = L;
+getGlobalObject().L.noConflict = function () {
+	getGlobalObject().L = oldL;
+	return this;
+};
 
 function getGlobalObject() {
 	if (typeof globalThis !== 'undefined') { return globalThis; }
