@@ -250,14 +250,8 @@ export const Popup = DivOverlay.extend({
 		const container = this._contentNode,
 		    style = container.style;
 
-		style.width = '';
-		style.whiteSpace = 'nowrap';
-
 		style.maxWidth = `${this.options.maxWidth}px`;
 		style.minWidth = `${this.options.minWidth}px`;
-		style.whiteSpace = '';
-
-		style.height = '';
 
 		const height = this._containerHeight ?? container.offsetHeight,
 		    maxHeight = this.options.maxHeight,
