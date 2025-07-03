@@ -319,7 +319,7 @@ export const Layers = Control.extend({
 		const label = document.createElement('label'),
 		checked = this._map.hasLayer(obj.layer);
 
-		let input = document.createElement('input');
+		const input = document.createElement('input');
 		input.type = obj.overlay ? 'checkbox' : 'radio';
 		input.className = 'leaflet-control-layers-selector';
 		input.defaultChecked = checked;
