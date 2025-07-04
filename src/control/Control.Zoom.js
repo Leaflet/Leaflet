@@ -14,10 +14,10 @@ import * as DomEvent from '../dom/DomEvent.js';
 // @namespace Control.Zoom
 // @constructor Control.Zoom(options: Control.Zoom options)
 // Creates a zoom control
-export const Zoom = Control.extend({
+export class Zoom extends Control {
 	// @section
 	// @aka Control.Zoom options
-	options: {
+	static options = {
 		// @option position: String = 'topleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -38,7 +38,7 @@ export const Zoom = Control.extend({
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
 		zoomOutTitle: 'Zoom out'
-	},
+	};
 
 	onAdd(map) {
 		const zoomName = 'leaflet-control-zoom',
@@ -54,35 +54,35 @@ export const Zoom = Control.extend({
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
-	},
+	}
 
 	onRemove(map) {
 		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
-	},
+	}
 
 	disable() {
 		this._disabled = true;
 		this._updateDisabled();
 		return this;
-	},
+	}
 
 	enable() {
 		this._disabled = false;
 		this._updateDisabled();
 		return this;
-	},
+	}
 
 	_zoomIn(e) {
 		if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
 			this._map.zoomIn(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
-	},
+	}
 
 	_zoomOut(e) {
 		if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
 			this._map.zoomOut(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
-	},
+	}
 
 	_createButton(html, title, className, container, fn) {
 		const link = DomUtil.create('a', className, container);
@@ -102,7 +102,7 @@ export const Zoom = Control.extend({
 		DomEvent.on(link, 'click', this._refocusOnMap, this);
 
 		return link;
-	},
+	}
 
 	_updateDisabled() {
 		const map = this._map,
@@ -122,7 +122,7 @@ export const Zoom = Control.extend({
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}
-});
+}
 
 // @namespace Map
 // @section Control options

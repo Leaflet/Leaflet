@@ -44,10 +44,10 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 // @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-export const Layers = Control.extend({
+export class Layers extends Control {
 	// @section
 	// @aka Control.Layers options
-	options: {
+	static options = {
 		// @option collapsed: Boolean = true
 		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 		collapsed: true,
@@ -75,7 +75,7 @@ export const Layers = Control.extend({
 		sortFunction(layerA, layerB, nameA, nameB) {
 			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
 		}
-	},
+	};
 
 	initialize(baseLayers, overlays, options) {
 		Util.setOptions(this, options);
@@ -93,7 +93,7 @@ export const Layers = Control.extend({
 		for (const [name, layer] of Object.entries(overlays ?? {})) {
 			this._addLayer(layer, name, true);
 		}
-	},
+	}
 
 	onAdd(map) {
 		this._initLayout();
@@ -112,13 +112,13 @@ export const Layers = Control.extend({
 		}
 
 		return this._container;
-	},
+	}
 
 	addTo(map) {
 		Control.prototype.addTo.call(this, map);
 		// Trigger expand after Layers Control has been inserted into DOM so that is now has an actual height.
 		return this._expandIfNotCollapsed();
-	},
+	}
 
 	onRemove() {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
@@ -128,21 +128,21 @@ export const Layers = Control.extend({
 		}
 
 		this._map.off('resize', this._expandIfNotCollapsed, this);
-	},
+	}
 
 	// @method addBaseLayer(layer: Layer, name: String): this
 	// Adds a base layer (radio button entry) with the given name to the control.
 	addBaseLayer(layer, name) {
 		this._addLayer(layer, name);
 		return (this._map) ? this._update() : this;
-	},
+	}
 
 	// @method addOverlay(layer: Layer, name: String): this
 	// Adds an overlay (checkbox entry) with the given name to the control.
 	addOverlay(layer, name) {
 		this._addLayer(layer, name, true);
 		return (this._map) ? this._update() : this;
-	},
+	}
 
 	// @method removeLayer(layer: Layer): this
 	// Remove the given layer from the control.
@@ -154,7 +154,7 @@ export const Layers = Control.extend({
 			this._layers.splice(this._layers.indexOf(obj), 1);
 		}
 		return (this._map) ? this._update() : this;
-	},
+	}
 
 	// @method expand(): this
 	// Expand the control container if collapsed.
@@ -170,7 +170,7 @@ export const Layers = Control.extend({
 		}
 		this._checkDisabledLayers();
 		return this;
-	},
+	}
 
 	// @method collapse(): this
 	// Collapse the control container if expanded.
@@ -182,7 +182,7 @@ export const Layers = Control.extend({
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;
-	},
+	}
 
 	_initLayout() {
 		const className = 'leaflet-control-layers',
@@ -230,7 +230,7 @@ export const Layers = Control.extend({
 		this._overlaysList = DomUtil.create('div', `${className}-overlays`, section);
 
 		container.appendChild(section);
-	},
+	}
 
 	_getLayer(id) {
 		for (const layer of this._layers) {
@@ -238,7 +238,7 @@ export const Layers = Control.extend({
 				return layer;
 			}
 		}
-	},
+	}
 
 	_addLayer(layer, name, overlay) {
 		if (this._map) {
@@ -261,7 +261,7 @@ export const Layers = Control.extend({
 		}
 
 		this._expandIfNotCollapsed();
-	},
+	}
 
 	_update() {
 		if (!this._container) { return this; }
@@ -288,7 +288,7 @@ export const Layers = Control.extend({
 		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
 
 		return this;
-	},
+	}
 
 	_onLayerChange(e) {
 		if (!this._handlingClick) {
@@ -313,7 +313,7 @@ export const Layers = Control.extend({
 		if (type) {
 			this._map.fire(type, obj);
 		}
-	},
+	}
 
 	_addItem(obj) {
 		const label = document.createElement('label'),
@@ -348,7 +348,7 @@ export const Layers = Control.extend({
 
 		this._checkDisabledLayers();
 		return label;
-	},
+	}
 
 	_onInputClick(e) {
 		// expanding the control on mobile with a click can cause adding a layer - we don't want this
@@ -387,7 +387,7 @@ export const Layers = Control.extend({
 		this._handlingClick = false;
 
 		this._refocusOnMap(e);
-	},
+	}
 
 	_checkDisabledLayers() {
 		const inputs = this._layerControlInputs,
@@ -399,14 +399,14 @@ export const Layers = Control.extend({
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 
 		}
-	},
+	}
 
 	_expandIfNotCollapsed() {
 		if (this._map && !this.options.collapsed) {
 			this.expand();
 		}
 		return this;
-	},
+	}
 
 	_expandSafely() {
 		const section = this._section;
@@ -419,4 +419,4 @@ export const Layers = Control.extend({
 		});
 	}
 
-});
+}
