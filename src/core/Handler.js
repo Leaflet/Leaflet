@@ -7,11 +7,17 @@ import {Class} from './Class.js';
 
 // @class Handler
 // Abstract class for map interaction handlers
+export class Handler extends Class {
+	constructor(...args) {
+		super(...args);
+		if (!this.addHooks || !this.removeHooks) {
+			throw new Error('Classes inheriting from `Handler` must implement the addHooks and removeHooks methods.');
+		}
+	}
 
-export const Handler = Class.extend({
 	initialize(map) {
 		this._map = map;
-	},
+	}
 
 	// @method enable(): this
 	// Enables the handler
@@ -21,7 +27,7 @@ export const Handler = Class.extend({
 		this._enabled = true;
 		this.addHooks();
 		return this;
-	},
+	}
 
 	// @method disable(): this
 	// Disables the handler
@@ -31,12 +37,20 @@ export const Handler = Class.extend({
 		this._enabled = false;
 		this.removeHooks();
 		return this;
-	},
+	}
 
 	// @method enabled(): Boolean
 	// Returns `true` if the handler is enabled
 	enabled() {
 		return !!this._enabled;
+	}
+
+	// @section There is static function which can be called without instantiating Handler:
+	// @function addTo(map: Map, name: String): this
+	// Adds a new Handler to the given map with the given name.
+	static addTo(map, name) {
+		map.addHandler(name, this);
+		return this;
 	}
 
 	// @section Extension methods
@@ -45,12 +59,4 @@ export const Handler = Class.extend({
 	// Called when the handler is enabled, should add event hooks.
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
-});
-
-// @section There is static function which can be called without instantiating Handler:
-// @function addTo(map: Map, name: String): this
-// Adds a new Handler to the given map with the given name.
-Handler.addTo = function (map, name) {
-	map.addHandler(name, this);
-	return this;
-};
+}
