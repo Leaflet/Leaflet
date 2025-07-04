@@ -50,7 +50,7 @@ Map.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-export const Drag = Handler.extend({
+export class Drag extends Handler {
 	addHooks() {
 		if (!this._draggable) {
 			const map = this._map;
@@ -75,20 +75,20 @@ export const Drag = Handler.extend({
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];
-	},
+	}
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-grab', 'leaflet-touch-drag');
 		this._draggable.disable();
-	},
+	}
 
 	moved() {
 		return this._draggable?._moved;
-	},
+	}
 
 	moving() {
 		return this._draggable?._moving;
-	},
+	}
 
 	_onDragStart() {
 		const map = this._map;
@@ -115,7 +115,7 @@ export const Drag = Handler.extend({
 			this._positions = [];
 			this._times = [];
 		}
-	},
+	}
 
 	_onDrag(e) {
 		if (this._map.options.inertia) {
@@ -131,14 +131,14 @@ export const Drag = Handler.extend({
 		this._map
 		    .fire('move', e)
 		    .fire('drag', e);
-	},
+	}
 
 	_prunePositions(time) {
 		while (this._positions.length > 1 && time - this._times[0] > 50) {
 			this._positions.shift();
 			this._times.shift();
 		}
-	},
+	}
 
 	_onZoomEnd() {
 		const pxCenter = this._map.getSize().divideBy(2),
@@ -146,11 +146,11 @@ export const Drag = Handler.extend({
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
-	},
+	}
 
 	_viscousLimit(value, threshold) {
 		return value - (value - threshold) * this._viscosity;
-	},
+	}
 
 	_onPreDragLimit() {
 		if (!this._viscosity || !this._offsetLimit) { return; }
@@ -164,7 +164,7 @@ export const Drag = Handler.extend({
 		if (offset.y > limit.max.y) { offset.y = this._viscousLimit(offset.y, limit.max.y); }
 
 		this._draggable._newPos = this._draggable._startPos.add(offset);
-	},
+	}
 
 	_onPreDragWrap() {
 		// TODO refactor to be able to adjust map pane position after zoom
@@ -178,7 +178,7 @@ export const Drag = Handler.extend({
 
 		this._draggable._absPos = this._draggable._newPos.clone();
 		this._draggable._newPos.x = newX;
-	},
+	}
 
 	_onDragEnd(e) {
 		const map = this._map,
@@ -224,7 +224,7 @@ export const Drag = Handler.extend({
 			}
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property dragging: Handler
