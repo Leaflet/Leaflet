@@ -71,8 +71,8 @@ export class Bounds {
 		// @property max: Point
 		// The bottom right corner of the rectangle.
 		if (!this.min && !this.max) {
-			this.min = min2.clone();
-			this.max = max2.clone();
+			this.min = new Point(min2);
+			this.max = new Point(max2);
 		} else {
 			this.min.x = Math.min(min2.x, this.min.x);
 			this.max.x = Math.max(max2.x, this.max.x);
