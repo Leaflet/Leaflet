@@ -982,7 +982,7 @@ describe('GridLayer', () => {
 					expect(counts.tileunload).to.equal(0);
 					grid.off('load');
 
-					grid.addEventListener('load', spy);
+					grid.on('load', spy);
 
 					map.panBy([-512, -512], {animate: false});
 					clock.tick(250);
