@@ -315,29 +315,16 @@ export const Layers = Control.extend({
 		}
 	},
 
-	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see https://stackoverflow.com/a/119079)
-	_createRadioElement(name, checked) {
-
-		const radioHtml = `<input type="radio" class="leaflet-control-layers-selector" name="${name}"${checked ? ' checked="checked"' : ''}/>`;
-
-		const radioFragment = document.createElement('div');
-		radioFragment.innerHTML = radioHtml;
-
-		return radioFragment.firstChild;
-	},
-
 	_addItem(obj) {
 		const label = document.createElement('label'),
 		checked = this._map.hasLayer(obj.layer);
-		let input;
 
-		if (obj.overlay) {
-			input = document.createElement('input');
-			input.type = 'checkbox';
-			input.className = 'leaflet-control-layers-selector';
-			input.defaultChecked = checked;
-		} else {
-			input = this._createRadioElement(`leaflet-base-layers_${Util.stamp(this)}`, checked);
+		const input = document.createElement('input');
+		input.type = obj.overlay ? 'checkbox' : 'radio';
+		input.className = 'leaflet-control-layers-selector';
+		input.defaultChecked = checked;
+		if (!obj.overlay) {
+			input.name = `leaflet-base-layers_${Util.stamp(this)}`;
 		}
 
 		this._layerControlInputs.push(input);
