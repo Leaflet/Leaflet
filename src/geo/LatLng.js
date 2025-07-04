@@ -30,6 +30,10 @@ import {LatLngBounds} from './LatLngBounds.js';
 // Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
 
 // @alternative
+// @constructor LatLng(coords: LatLng)
+// Expects a LatLng object instead.
+
+// @alternative
 // @constructor LatLng(coords: Array): LatLng
 // Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
 
@@ -46,9 +50,9 @@ export class LatLng {
 
 		let _lat, _lng, _alt;
 		if (lat instanceof LatLng) {
-			// We can use the same object, no need to clone it
-			// eslint-disable-next-line no-constructor-return
-			return lat;
+			lat = lat.lat;
+			lng = lat.lng;
+			alt = lat.alt;
 		} else if (Array.isArray(lat) && typeof lat[0] !== 'object') {
 			if (lat.length === 3) {
 				_lat = lat[0];

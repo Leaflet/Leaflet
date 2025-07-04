@@ -833,7 +833,7 @@ export const Map = Evented.extend({
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
-			return this._lastCenter.clone();
+			return new LatLng(this._lastCenter);
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
@@ -907,7 +907,7 @@ export const Map = Evented.extend({
 
 			this._sizeChanged = false;
 		}
-		return this._size.clone();
+		return new Point(this._size);
 	},
 
 	// @method getPixelBounds(): Bounds

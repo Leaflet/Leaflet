@@ -3,6 +3,7 @@ import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
  * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
@@ -176,7 +177,7 @@ export const Drag = Handler.extend({
 		    newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
 		    newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
 
-		this._draggable._absPos = this._draggable._newPos.clone();
+		this._draggable._absPos = new Point(this._draggable._newPos);
 		this._draggable._newPos.x = newX;
 	},
 

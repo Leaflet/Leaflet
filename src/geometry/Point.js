@@ -27,6 +27,10 @@ import {formatNum} from '../core/Util.js';
 // Creates a Point object with the given `x` and `y` coordinates. If optional `round` is set to true, rounds the `x` and `y` values.
 
 // @alternative
+// @constructor Point(coords: Point)
+// Expects a Point object instead.
+
+// @alternative
 // @constructor Point(coords: Number[])
 // Expects an array of the form `[x, y]` instead.
 
@@ -43,9 +47,8 @@ export class Point {
 
 		let _x, _y;
 		if (x instanceof Point) {
-			// We can use the same object, no need to clone it
-			// eslint-disable-next-line no-constructor-return
-			return x;
+			_x = x.x;
+			_y = x.y;
 		} else if (Array.isArray(x)) {
 			_x = x[0];
 			_y = x[1];
@@ -87,21 +90,11 @@ export class Point {
 		return false;
 	}
 
-	// @method clone(): Point
-	// Returns a copy of the current point.
-	clone() {
-		// to skip the validation in the constructor we need to initialize with 0 and then set the values later
-		const p = new Point(0, 0);
-		p.x = this.x;
-		p.y = this.y;
-		return p;
-	}
-
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
 	add(point) {
 		// non-destructive, returns a new point
-		return this.clone()._add(new Point(point));
+		return new Point(this)._add(new Point(point));
 	}
 
 	_add(point) {
@@ -114,7 +107,7 @@ export class Point {
 	// @method subtract(otherPoint: Point): Point
 	// Returns the result of subtraction of the given point from the current.
 	subtract(point) {
-		return this.clone()._subtract(new Point(point));
+		return new Point(this)._subtract(new Point(point));
 	}
 
 	_subtract(point) {
@@ -126,7 +119,7 @@ export class Point {
 	// @method divideBy(num: Number): Point
 	// Returns the result of division of the current point by the given number.
 	divideBy(num) {
-		return this.clone()._divideBy(num);
+		return new Point(this)._divideBy(num);
 	}
 
 	_divideBy(num) {
@@ -138,7 +131,7 @@ export class Point {
 	// @method multiplyBy(num: Number): Point
 	// Returns the result of multiplication of the current point by the given number.
 	multiplyBy(num) {
-		return this.clone()._multiplyBy(num);
+		return new Point(this)._multiplyBy(num);
 	}
 
 	_multiplyBy(num) {
@@ -165,7 +158,7 @@ export class Point {
 
 	// Returns a copy of the current point with rounded coordinates.
 	round() {
-		return this.clone()._round();
+		return new Point(this)._round();
 	}
 
 	_round() {
@@ -177,7 +170,7 @@ export class Point {
 	// @method floor(): Point
 	// Returns a copy of the current point with floored coordinates (rounded down).
 	floor() {
-		return this.clone()._floor();
+		return new Point(this)._floor();
 	}
 
 	_floor() {
@@ -189,7 +182,7 @@ export class Point {
 	// @method ceil(): Point
 	// Returns a copy of the current point with ceiled coordinates (rounded up).
 	ceil() {
-		return this.clone()._ceil();
+		return new Point(this)._ceil();
 	}
 
 	_ceil() {
@@ -200,7 +193,7 @@ export class Point {
 
 	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
 	trunc() {
-		return this.clone()._trunc();
+		return new Point(this)._trunc();
 	}
 
 	_trunc() {
