@@ -84,6 +84,9 @@ export class Class {
 		this._initHooksCalled = false;
 
 		Util.setOptions(this);
+		if (this.constructor?.options) {
+			Util.setOptions(this, this.constructor?.options);
+		}
 
 		// call the constructor
 		if (this.initialize) {
