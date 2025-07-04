@@ -754,16 +754,8 @@ export const Map = Evented.extend({
 			throw new Error('Map container is being reused by another instance');
 		}
 
-		try {
-			// throws error in IE6-8
-			delete this._container._leaflet_id;
-			delete this._containerId;
-		} catch (e) {
-			/*eslint-disable */
-			this._container._leaflet_id = undefined;
-			/* eslint-enable */
-			this._containerId = undefined;
-		}
+		delete this._container._leaflet_id;
+		delete this._containerId;
 
 		if (this._locationWatchId !== undefined) {
 			this.stopLocate();
