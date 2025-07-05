@@ -1,4 +1,3 @@
-
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as Util from '../core/Util.js';
@@ -105,21 +104,73 @@ export const Attribution = Control.extend({
 	},
 
 	_update() {
-		if (!this._map) { return; }
+    if (!this._map) { return; }
 
-		const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]);
+    const attribs = Object.keys(this._attributions).filter(i => this._attributions[i]);
 
-		const prefixAndAttribs = [];
+    const prefixAndAttribs = [];
 
-		if (this.options.prefix) {
-			prefixAndAttribs.push(this.options.prefix);
-		}
-		if (attribs.length) {
-			prefixAndAttribs.push(attribs.join(', '));
-		}
+    if (this.options.prefix) {
+        prefixAndAttribs.push(this.options.prefix);
+    }
+    if (attribs.length) {
+        prefixAndAttribs.push(attribs.join(', '));
+    }
 
-		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
-	}
+    // Clear container safely
+    this._container.textContent = '';
+
+    // Build DOM manually instead of using innerHTML for Trusted Types compatibility
+    for (let i = 0; i < prefixAndAttribs.length; i++) {
+        if (i > 0) {
+            // Add separator: ' | '
+            this._container.appendChild(document.createTextNode(' '));
+            const separator = DomUtil.create('span', '', this._container);
+            separator.setAttribute('aria-hidden', 'true');
+            separator.textContent = '|';
+            this._container.appendChild(document.createTextNode(' '));
+        }
+
+        if (i === 0 && this.options.prefix && this.options.prefix.includes('leafletjs.com')) {
+            // Build the default Leaflet prefix manually
+            const link = DomUtil.create('a', '', this._container);
+            link.target = '_blank';
+            link.href = 'https://leafletjs.com';
+            link.title = 'A JavaScript library for interactive maps';
+            
+            // Create Ukrainian flag SVG manually
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            svg.setAttribute('width', '12');
+            svg.setAttribute('height', '8');
+            svg.setAttribute('viewBox', '0 0 12 8');
+            svg.setAttribute('class', 'leaflet-attribution-flag');
+            
+            const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path1.setAttribute('fill', '#4C7BE1');
+            path1.setAttribute('d', 'M0 0h12v4H0z');
+            
+            const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path2.setAttribute('fill', '#FFD500');
+            path2.setAttribute('d', 'M0 4h12v3H0z');
+            
+            const path3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path3.setAttribute('fill', '#E0BC00');
+            path3.setAttribute('d', 'M0 7h12v1H0z');
+            
+            svg.appendChild(path1);
+            svg.appendChild(path2);
+            svg.appendChild(path3);
+            
+            link.appendChild(svg);
+            link.appendChild(document.createTextNode('Leaflet'));
+        } else {
+            // For attribution text or custom prefix, use safe text content
+            this._container.appendChild(document.createTextNode(prefixAndAttribs[i]));
+        }
+    }
+}
 });
 
 // @namespace Map
