@@ -186,9 +186,8 @@ export const Layers = Control.extend({
 	collapse(ev) {
 		// On touch devices `pointerleave` & `pointerout` is fired while clicking on a checkbox.
 		// The control was collapsed instead of adding the layer to the map.
-<<<<<<< feat/collapse-deplay
-		// So we allow collapse if it is not touch and pointerleave.
-		if (!ev || !(ev.type === 'pointerleave' && ev.pointerType === 'touch')) {
+		// So we allow collapse only if it is not touch.
+		if (!ev || !((ev.type === 'pointerleave' || ev.type === 'pointerout') && ev.pointerType === 'touch')) {
 			if (this.options.collapseDelay > 0) {
 				// Collapse delayed
 				this._collapseDelayTimeout = setTimeout(() => {
@@ -198,10 +197,6 @@ export const Layers = Control.extend({
 			}
 
 			// Collapse immediatelly
-=======
-		// So we allow collapse only if it is not touch.
-		if (!ev || !((ev.type === 'pointerleave' || ev.type === 'pointerout') && ev.pointerType === 'touch')) {
->>>>>>> main
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;
