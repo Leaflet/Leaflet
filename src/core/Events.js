@@ -301,5 +301,3 @@ export class Evented extends Class {
 		}
 	}
 };
-
-export const Evented = Class.extend(Events);
