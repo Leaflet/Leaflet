@@ -302,29 +302,4 @@ export const Events = {
 	}
 };
 
-// aliases; we should ditch those eventually
-
-// @method addEventListener(…): this
-// Alias to [`on(…)`](#evented-on)
-Events.addEventListener = Events.on;
-
-// @method removeEventListener(…): this
-// Alias to [`off(…)`](#evented-off)
-
-// @method clearAllEventListeners(…): this
-// Alias to [`off()`](#evented-off)
-Events.removeEventListener = Events.clearAllEventListeners = Events.off;
-
-// @method addOneTimeEventListener(…): this
-// Alias to [`once(…)`](#evented-once)
-Events.addOneTimeEventListener = Events.once;
-
-// @method fireEvent(…): this
-// Alias to [`fire(…)`](#evented-fire)
-Events.fireEvent = Events.fire;
-
-// @method hasEventListeners(…): Boolean
-// Alias to [`listens(…)`](#evented-listens)
-Events.hasEventListeners = Events.listens;
-
 export const Evented = Class.extend(Events);
