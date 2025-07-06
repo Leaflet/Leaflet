@@ -300,30 +300,6 @@ export class Evented extends Class {
 			}, true);
 		}
 	}
-
-	// aliases; we should ditch those eventually
-
-	// @method addEventListener(…): this
-	// Alias to [`on(…)`](#evented-on)
-	addEventListener = this.on;
-
-	// @method removeEventListener(…): this
-	// Alias to [`off(…)`](#evented-off)
-	removeEventListener = this.off;
-
-	// @method clearAllEventListeners(…): this
-	// Alias to [`off()`](#evented-off)
-	clearAllEventListeners = this.off;
-
-	// @method addOneTimeEventListener(…): this
-	// Alias to [`once(…)`](#evented-once)
-	addOneTimeEventListener = this.once;
-
-	// @method fireEvent(…): this
-	// Alias to [`fire(…)`](#evented-fire)
-	fireEvent = this.fire;
-
-	// @method hasEventListeners(…): Boolean
-	// Alias to [`listens(…)`](#evented-listens)
-	hasEventListeners = this.listens;
 };
+
+export const Evented = Class.extend(Events);
