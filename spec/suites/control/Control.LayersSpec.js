@@ -238,7 +238,7 @@ describe('Control.Layers', () => {
 
 		it('should collapse with a delay', (done) => {
 			const layersCtrl = new Control.Layers(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
-			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
