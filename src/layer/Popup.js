@@ -400,6 +400,7 @@ Layer.include({
 			this.on({
 				click: this._openPopup,
 				keypress: this._onKeyPress,
+				keydown: this._onKeyDown,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -416,6 +417,7 @@ Layer.include({
 			this.off({
 				click: this._openPopup,
 				keypress: this._onKeyPress,
+				keydown: this._onKeyDown,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -502,6 +504,12 @@ Layer.include({
 	_onKeyPress(e) {
 		if (e.originalEvent.code === 'Enter') {
 			this._openPopup(e);
+		}
+	},
+
+	_onKeyDown: function (e) {
+		if (e.originalEvent.keyCode === 27) {
+			this.closePopup(e);
 		}
 	}
 });
