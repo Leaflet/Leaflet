@@ -35,8 +35,7 @@ export class BlanketOverlay extends Layer {
 		});
 	}
 
-	constructor(options) {
-		super();
+	initialize(options) {
 		Util.setOptions(this, options);
 	}
 
