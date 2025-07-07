@@ -20,8 +20,8 @@ Map.mergeOptions({
 });
 
 export class BoxZoom extends Handler {
-	constructor(map) {
-		super(map);
+	initialize(map) {
+		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 		this._resetStateTimeout = 0;

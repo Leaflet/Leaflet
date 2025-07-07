@@ -9,8 +9,7 @@ import {Class} from './Class.js';
 // Abstract class for map interaction handlers
 
 export class Handler extends Class {
-	constructor(map, ...args) {
-		super(map, ...args); // for compatibility of code using `Handler.extend`
+	initialize(map) {
 		this._map = map;
 	}
 
