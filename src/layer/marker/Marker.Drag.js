@@ -23,8 +23,7 @@ import {Point} from '../../geometry/Point.js';
  */
 
 export class MarkerDrag extends Handler {
-	constructor(marker) {
-		super();
+	initialize(marker) {
 		this._marker = marker;
 	}
 
