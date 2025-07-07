@@ -42,8 +42,7 @@ export class DivOverlay extends Layer {
 		});
 	}
 
-	constructor(options, source) {
-		super();
+	initialize(options, source) {
 		if (options instanceof LatLng || Array.isArray(options)) {
 			this._latlng = new LatLng(options);
 			Util.setOptions(this, source);
