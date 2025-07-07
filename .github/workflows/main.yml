@@ -152,7 +152,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         if: contains(matrix.browser, 'Chrome')
 
       - name: Set up Firefox
