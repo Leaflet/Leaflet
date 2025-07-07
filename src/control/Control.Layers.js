@@ -80,8 +80,8 @@ export class Layers extends Control {
 		});
 	}
 
-	constructor(baseLayers, overlays, options) {
-		super(options);
+	initialize(baseLayers, overlays, options) {
+		Util.setOptions(this, options);
 
 		this._layerControlInputs = [];
 		this._layers = [];

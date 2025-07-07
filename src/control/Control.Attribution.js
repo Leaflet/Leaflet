@@ -1,6 +1,7 @@
 
 import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
+import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -34,8 +35,9 @@ export class Attribution extends Control {
 		});
 	}
 
-	constructor(options) {
-		super(options);
+	initialize(options) {
+		Util.setOptions(this, options);
+
 		this._attributions = {};
 	}
 
