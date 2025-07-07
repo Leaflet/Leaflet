@@ -134,8 +134,7 @@ export class Map extends Evented {
 		});
 	}
 
-	constructor(id, options) { // (HTMLElement or String, Object)
-		super();
+	initialize(id, options) { // (HTMLElement or String, Object)
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,
@@ -162,7 +161,7 @@ export class Map extends Evented {
 			this.setView(new LatLng(options.center), options.zoom, {reset: true});
 		}
 
-		super.callInitHooks();
+		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android
 		this._zoomAnimated = this.options.zoomAnimation;
@@ -174,10 +173,6 @@ export class Map extends Evented {
 		}
 
 		this._addLayers(this.options.layers);
-	}
-
-	callInitHooks() {
-		// callInitHooks manually once this class is initialized, see constructor
 	}
 
 	// @section Methods for modifying map state
