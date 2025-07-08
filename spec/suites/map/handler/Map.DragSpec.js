@@ -139,7 +139,7 @@ describe('Map.Drag', () => {
 			});
 
 			const originalCenter = new LatLng(0, 0);
-			map.setView(originalCenter.clone(), 1);
+			map.setView(new LatLng(originalCenter), 1);
 
 			const spy = sinon.spy();
 			map.on('drag', spy);
@@ -280,7 +280,7 @@ describe('Map.Drag', () => {
 				inertia: false
 			});
 			const originalCenter = new LatLng(0, 0);
-			map.setView(originalCenter.clone(), 1);
+			map.setView(new LatLng(originalCenter), 1);
 
 			map.on('pointerdown', () => {
 				map.dragging.disable();

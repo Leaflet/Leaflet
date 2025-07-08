@@ -1682,7 +1682,7 @@ describe('Map', () => {
 		beforeEach(() => {
 			container.style.height = container.style.width = '500px';
 			map.setView(new LatLng([53.0, 0.15]), 12, {animate: false});
-			center = map.getCenter().clone();
+			center = new LatLng(map.getCenter());
 			tl = map.getBounds().getNorthWest();
 			tlPix = map.getPixelBounds().min;
 		});
