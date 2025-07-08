@@ -53,9 +53,7 @@ export function closestPointOnSegment(p, p1, p2) {
 function _simplifyDP(points, sqTolerance) {
 
 	const len = points.length,
-	    ArrayConstructor = typeof Uint8Array !== `${undefined}` ? Uint8Array : Array,
-	    markers = new ArrayConstructor(len);
-
+	    markers = new Uint8Array(len);
 	    markers[0] = markers[len - 1] = 1;
 
 	_simplifyDPStep(points, markers, sqTolerance, 0, len - 1);

@@ -63,9 +63,9 @@ export class Popup extends DivOverlay {
 			// Max width of the popup, in pixels.
 			maxWidth: 300,
 
-			// @option minWidth: Number = 100
+			// @option minWidth: Number = 50
 			// Min width of the popup, in pixels.
-			minWidth: 100,
+			minWidth: 50,
 
 			// @option maxHeight: Number = null
 			// If set, creates a scrollable container of the given height
@@ -252,14 +252,8 @@ export class Popup extends DivOverlay {
 		const container = this._contentNode,
 		    style = container.style;
 
-		style.width = '';
-		style.whiteSpace = 'nowrap';
-
 		style.maxWidth = `${this.options.maxWidth}px`;
 		style.minWidth = `${this.options.minWidth}px`;
-		style.whiteSpace = '';
-
-		style.height = '';
 
 		const height = this._containerHeight ?? container.offsetHeight,
 		    maxHeight = this.options.maxHeight,

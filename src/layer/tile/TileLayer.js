@@ -189,14 +189,14 @@ export class TileLayer extends GridLayer {
 	// Called only internally, returns the URL for a tile given its coordinates.
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl(coords) {
-		const data = {
-			...this.options,
+		const data = Object.create(this.options);
+		Object.assign(data, {
 			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
 			z: this._getZoomForUrl()
-		};
+		});
 		if (this._map && !this._map.options.crs.infinite) {
 			const invertedY = this._globalTileRange.max.y - coords.y;
 			if (this.options.tms) {

@@ -53,6 +53,11 @@ export class Layers extends Control {
 			// @option collapsed: Boolean = true
 			// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 			collapsed: true,
+
+			// @option collapseDelay: Number = 0
+			// Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.
+			collapseDelay: 0,
+
 			position: 'topright',
 
 			// @option autoZIndex: Boolean = true
@@ -162,6 +167,8 @@ export class Layers extends Control {
 	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand() {
+		clearTimeout(this._collapseDelayTimeout);
+
 		this._container.classList.add('leaflet-control-layers-expanded');
 		this._section.style.height = null;
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
@@ -182,6 +189,15 @@ export class Layers extends Control {
 		// The control was collapsed instead of adding the layer to the map.
 		// So we allow collapse only if it is not touch.
 		if (!ev || !((ev.type === 'pointerleave' || ev.type === 'pointerout') && ev.pointerType === 'touch')) {
+			if (this.options.collapseDelay > 0) {
+				// Collapse delayed
+				this._collapseDelayTimeout = setTimeout(() => {
+					this._container.classList.remove('leaflet-control-layers-expanded');
+				}, this.options.collapseDelay);
+				return this;
+			}
+
+			// Collapse immediatelly
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;
