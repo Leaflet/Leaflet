@@ -3,8 +3,8 @@ import {Class, Evented, FeatureGroup, Marker, Util} from 'leaflet';
 import sinon from 'sinon';
 
 describe('Events', () => {
-	describe('#fireEvent', () => {
-		it('fires all listeners added through #addEventListener', () => {
+	describe('#fire', () => {
+		it('fires all listeners added through #on', () => {
 			const obj = new Evented(),
 			    spy1 = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -13,11 +13,11 @@ describe('Events', () => {
 			    spy5 = sinon.spy();
 			    // spy6 = sinon.spy();
 
-			obj.addEventListener('test', spy1);
-			obj.addEventListener('test', spy2);
-			obj.addEventListener('other', spy3);
-			obj.addEventListener({test: spy4, other: spy5});
-			// obj.addEventListener({'test other': spy6 });
+			obj.on('test', spy1);
+			obj.on('test', spy2);
+			obj.on('other', spy3);
+			obj.on({test: spy4, other: spy5});
+			// obj.on({'test other': spy6 });
 
 			expect(spy1.called).to.be.false;
 			expect(spy2.called).to.be.false;
@@ -26,7 +26,7 @@ describe('Events', () => {
 			expect(spy5.called).to.be.false;
 			// expect(spy6.called).to.be.false;
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.be.true;
@@ -85,7 +85,7 @@ describe('Events', () => {
 			obj.on('test', listener3, ctx2);
 			obj.on('test', listener4, ctx2);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(count.one).to.equal(1);
 			expect(count.two).to.equal(3);
@@ -128,18 +128,18 @@ describe('Events', () => {
 				expect(e.baz).to.eql(4);
 			}
 
-			obj.addEventListener('test', listener1);
-			obj2.addEventListener('test', listener2, foo);
-			obj3.addEventListener({test: listener3});
-			obj4.addEventListener({test: listener4}, foo);
+			obj.on('test', listener1);
+			obj2.on('test', listener2, foo);
+			obj3.on({test: listener3});
+			obj4.on({test: listener4}, foo);
 
-			obj.fireEvent('test', {baz: 1});
-			obj2.fireEvent('test', {baz: 2});
-			obj3.fireEvent('test', {baz: 3});
-			obj4.fireEvent('test', {baz: 4});
+			obj.fire('test', {baz: 1});
+			obj2.fire('test', {baz: 2});
+			obj3.fire('test', {baz: 3});
+			obj4.fire('test', {baz: 4});
 		});
 
-		it('calls no listeners removed through #removeEventListener', () => {
+		it('calls no listeners removed through #off', () => {
 			const obj = new Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
@@ -147,40 +147,40 @@ describe('Events', () => {
 			    spy4 = sinon.spy(),
 			    spy5 = sinon.spy();
 
-			obj.addEventListener('test', spy);
-			obj.removeEventListener('test', spy);
+			obj.on('test', spy);
+			obj.off('test', spy);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy.called).to.be.false;
 
-			obj.addEventListener('test2', spy2);
-			obj.addEventListener('test2', spy3);
-			obj.removeEventListener('test2');
+			obj.on('test2', spy2);
+			obj.on('test2', spy3);
+			obj.off('test2');
 
-			obj.fireEvent('test2');
+			obj.fire('test2');
 
 			expect(spy2.called).to.be.false;
 			expect(spy3.called).to.be.false;
 
-			obj.addEventListener('test3', spy4);
-			obj.addEventListener('test4', spy5);
-			obj.removeEventListener({
+			obj.on('test3', spy4);
+			obj.on('test4', spy5);
+			obj.off({
 				test3: spy4,
 				test4: spy5
 			});
 
-			obj.fireEvent('test3');
-			obj.fireEvent('test4');
+			obj.fire('test3');
+			obj.fire('test4');
 
 			expect(spy4.called).to.be.false;
 			expect(spy5.called).to.be.false;
 		});
 
-		it('can handle calls to #removeEventListener on objects with no registered event listeners', () => {
+		it('can handle calls to #off on objects with no registered event listeners', () => {
 			const obj = new Evented();
 			const removeNonExistentListener = function () {
-				obj.removeEventListener('test');
+				obj.off('test');
 			};
 			expect(removeNonExistentListener).to.not.throw();
 		});
@@ -194,10 +194,10 @@ describe('Events', () => {
 
 			Util.stamp(foo);
 
-			obj.addEventListener('test', spy1, foo);
-			obj.addEventListener('test', spy2, foo);
+			obj.on('test', spy1, foo);
+			obj.on('test', spy2, foo);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.be.true;
@@ -211,12 +211,12 @@ describe('Events', () => {
 
 			Util.stamp(foo);
 
-			obj.addEventListener('test', spy1, foo);
-			obj.addEventListener('test', spy2, foo);
+			obj.on('test', spy1, foo);
+			obj.on('test', spy2, foo);
 
-			obj.removeEventListener('test', spy1, foo);
+			obj.off('test', spy1, foo);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy1.called).to.be.false;
 			expect(spy2.called).to.be.true;
@@ -228,14 +228,14 @@ describe('Events', () => {
 			    spy2 = sinon.spy(),
 			    foo = {};
 
-			obj.addEventListener('test', spy1, foo);
+			obj.on('test', spy1, foo);
 			Util.stamp(foo);
-			obj.addEventListener('test', spy2, foo);
+			obj.on('test', spy2, foo);
 
-			obj.removeEventListener('test', spy1, foo);
-			obj.removeEventListener('test', spy2, foo);
+			obj.off('test', spy1, foo);
+			obj.off('test', spy2, foo);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy1.called).to.be.false;
 			expect(spy2.called).to.be.false;
@@ -248,16 +248,16 @@ describe('Events', () => {
 			    spy2 = sinon.spy(),
 			    spy3 = sinon.spy();
 
-			obj.addEventListener('test', spy1, obj);
+			obj.on('test', spy1, obj);
 			Util.stamp(obj);
-			obj.addEventListener('test', spy2, obj);
-			obj.addEventListener('test', spy3, obj2); // So that there is a contextId based listener, otherwise removeEventListener will do correct behaviour anyway
+			obj.on('test', spy2, obj);
+			obj.on('test', spy3, obj2); // So that there is a contextId based listener, otherwise off will do correct behaviour anyway
 
-			obj.removeEventListener('test', spy1, obj);
-			obj.removeEventListener('test', spy2, obj);
-			obj.removeEventListener('test', spy3, obj2);
+			obj.off('test', spy1, obj);
+			obj.off('test', spy2, obj);
+			obj.off('test', spy3, obj2);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy1.called).to.be.false;
 			expect(spy2.called).to.be.false;
@@ -274,14 +274,14 @@ describe('Events', () => {
 			Util.stamp(foo);
 			Util.stamp(foo2);
 
-			obj.addEventListener('test', spy, foo2);
+			obj.on('test', spy, foo2);
 
-			obj.removeEventListener('test', spy, foo); // Decrements test_idx to 0, even though event listener isn't registered with foo's _leaflet_id
-			obj.removeEventListener('test', spy, foo2);  // Doesn't get removed
+			obj.off('test', spy, foo); // Decrements test_idx to 0, even though event listener isn't registered with foo's _leaflet_id
+			obj.off('test', spy, foo2);  // Doesn't get removed
 
-			obj.addEventListener('test', spy2, foo);
+			obj.on('test', spy2, foo);
 
-			obj.fireEvent('test');
+			obj.fire('test');
 
 			expect(spy.called).to.be.false;
 		});
@@ -292,22 +292,22 @@ describe('Events', () => {
 			    foo2 = {},
 			    foo3 = {};
 
-			obj.addEventListener('test', spy, foo2);
-			obj.addEventListener('test', spy, foo3);
+			obj.on('test', spy, foo2);
+			obj.on('test', spy, foo3);
 
-			obj.removeEventListener('test'); // Removes both of the above listeners
+			obj.off('test'); // Removes both of the above listeners
 
 			expect(obj.listens('test')).to.be.false;
 
 			// Add and remove a listener
-			obj.addEventListener('test', spy, foo2);
-			obj.removeEventListener('test', spy, foo2);
+			obj.on('test', spy, foo2);
+			obj.off('test', spy, foo2);
 
 			expect(obj.listens('test')).to.be.false;
 
 			// Add and remove a listener without context
-			obj.addEventListener('test', spy);
-			obj.removeEventListener('test', spy);
+			obj.on('test', spy);
+			obj.off('test', spy);
 
 			expect(obj.listens('test')).to.be.false;
 		});
@@ -319,24 +319,24 @@ describe('Events', () => {
 			    foo = {};
 
 			/* without context */
-			obj.addEventListener('test', () => { obj.removeEventListener('test', spy); });
-			obj.addEventListener('test', spy);
-			obj.fireEvent('test');
+			obj.on('test', () => { obj.off('test', spy); });
+			obj.on('test', spy);
+			obj.fire('test');
 
 			expect(spy.called).to.be.false;
 
 			/* with context */
-			obj.addEventListener('test2', () => { obj.removeEventListener('test2', spy2, foo); }, foo);
-			obj.addEventListener('test2', spy2, foo);
-			obj.fireEvent('test2');
+			obj.on('test2', () => { obj.off('test2', spy2, foo); }, foo);
+			obj.on('test2', spy2, foo);
+			obj.fire('test2');
 		});
 
 		it('makes sure an event is not triggered if all listeners are removed during dispatch', () => {
 			const obj = new Evented(),
 			    spy = sinon.spy();
 
-			obj.addEventListener('test', () => { obj.removeEventListener('test'); });
-			obj.addEventListener('test', spy);
+			obj.on('test', () => { obj.off('test'); });
+			obj.on('test', spy);
 			obj.fire('test');
 
 			expect(spy.called).to.be.false;
@@ -348,16 +348,16 @@ describe('Events', () => {
 			    spy2 = sinon.spy();
 
 			obj
-				.addEventListener('test1', () => {
+				.on('test1', () => {
 					obj.fire('test2');
 				})
-				.addEventListener('test2', spy1)
-				.addEventListener('test1', () => {
-					obj.removeEventListener('test1', spy2);
+				.on('test2', spy1)
+				.on('test1', () => {
+					obj.off('test1', spy2);
 				})
-				.addEventListener('test1', spy2);
+				.on('test1', spy2);
 
-			obj.fireEvent('test1');
+			obj.fire('test1');
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.be.false;
 		});
@@ -367,15 +367,15 @@ describe('Events', () => {
 			    spy = sinon.spy();
 
 			const removeSpy = function () {
-				obj.removeEventListener('test', spy);
+				obj.off('test', spy);
 			};
 
-			obj.addEventListener('test', spy);
-			obj.addEventListener('test', removeSpy);
+			obj.on('test', spy);
+			obj.on('test', removeSpy);
 
 			obj.fire('test');
 
-			obj.removeEventListener('test', removeSpy);
+			obj.off('test', removeSpy);
 
 			expect(obj.listens('test')).to.be.false;
 		});
@@ -412,21 +412,6 @@ describe('Events', () => {
 			});
 
 			// todo? make `fire` and `listen` to throw with wrong type
-		});
-
-		it('works like #addEventListener && #removeEventListener', () => {
-			const obj = new Evented(),
-			    spy = sinon.spy();
-
-			obj.on('test', spy);
-			obj.fire('test');
-
-			expect(spy.called).to.be.true;
-
-			obj.off('test', spy);
-			obj.fireEvent('test');
-
-			expect(spy.callCount).to.be.lessThan(2);
 		});
 
 		it('does not override existing methods with the same name', () => {

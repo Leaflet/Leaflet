@@ -440,6 +440,26 @@ describe('TileLayer', () => {
 				i++;
 			});
 		});
+
+		it('consults options.foo for {foo}', () => {
+			const OSMLayer = TileLayer.extend({options: {foo: 'bar'}});
+			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
+			map.options.zoomSnap = 0;
+			map._resetView(new LatLng(0, 0), 2.3);
+
+			const urls = [
+				'https://tile.openstreetmap.org/2/1/1.png?bar',
+				'https://tile.openstreetmap.org/2/2/1.png?bar',
+				'https://tile.openstreetmap.org/2/1/2.png?bar',
+				'https://tile.openstreetmap.org/2/2/2.png?bar'
+			];
+
+			let i = 0;
+			eachImg(layer, (img) => {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
 	});
 
 	describe('crossOrigin option', () => {
