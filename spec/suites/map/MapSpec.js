@@ -2295,13 +2295,17 @@ describe('Map', () => {
 				getCurrentPosition(onSuccess) {
 					onSuccess(
 						{
-							coords:
-							{
-								latitude: 50,
-								longitude: 50,
-								accuracy: 14
-							},
-
+							coords: new class { // Mock GeolocationCoordinates instance
+								get latitude() {
+									return 50;
+								}
+								get longitude() {
+									return 50;
+								}
+								get accuracy() {
+									return 14;
+								}
+							}(),
 							timestamp: 1670000000000
 						});
 
@@ -2311,13 +2315,17 @@ describe('Map', () => {
 				watchPosition(onSuccess) {
 					onSuccess(
 						{
-							coords:
-							{
-								latitude: 25,
-								longitude: 25,
-								accuracy: 14
-							},
-
+							coords: new class { // Mock GeolocationCoordinates instance
+								get latitude() {
+									return 25;
+								}
+								get longitude() {
+									return 25;
+								}
+								get accuracy() {
+									return 14;
+								}
+							}(),
 							timestamp: 1660000000000
 						});
 
@@ -2399,6 +2407,7 @@ describe('Map', () => {
 			const expectedLatLngs = [25, 25];
 
 			map.on('locationfound', (data) => {
+				expect(data.accuracy).to.equal(14);
 				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
 				expect(data.timestamp).to.equal(1660000000000);
 
@@ -2432,6 +2441,7 @@ describe('Map', () => {
 			});
 
 			map.on('locationfound', (data) => {
+				expect(data.accuracy).to.equal(14);
 				expect(data.latlng).to.be.nearLatLng([50, 50]);
 				expect(data.timestamp).to.equal(1670000000000);
 
