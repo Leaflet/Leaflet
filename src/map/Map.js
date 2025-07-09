@@ -710,18 +710,7 @@ export const Map = Evented.extend({
 			timestamp: pos.timestamp
 		};
 
-		// Collect getter property names from GeolocationCoordinates:
-		const descriptors = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(pos.coords));
-		const getterProps = Object.entries(descriptors)
-			.filter(e => ((typeof e[1].get === 'function' && e[0] !== '__proto__')))
-			.map(e => e[0]);
-
-		// Collect own properties from plain object coordinates:
-		const ownKeys = Object.keys(pos.coords);
-
-		const props = [].concat(getterProps, ownKeys);
-
-		for (const i of props) {
+		for (const i in pos.coords) { // do not use Object.keys here to access getters of GeolocationCoordinates
 			if (typeof pos.coords[i] === 'number') {
 				data[i] = pos.coords[i];
 			}
