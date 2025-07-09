@@ -10,6 +10,7 @@ import * as Util from './Util.js';
 export class Class {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
+	// Deprecated - use `class X extends Class` instead!
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	static extend({statics, includes, ...props}) {
 		const NewClass = class extends this {};

@@ -62,7 +62,7 @@ Use the [`extends` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScr
         }
     };
 
-### `L.Class.extend()`
+### Deprecated: `L.Class.extend()`
 
 In order to create a subclass of anything in Leaflet, use the `.extend()` method. This accepts one parameter: a plain object with key-value pairs, each key being the name of a property or method, and each value being the initial value of a property, or the implementation of a method:
 
