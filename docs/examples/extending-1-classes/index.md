@@ -45,6 +45,23 @@ Leaflet works around this by having `L.Class`, which eases up class inheritance.
 
 Even though modern JavaScript can use ES6 classes, Leaflet is not designed around them.
 
+### Extending `L.Class`
+
+Use the [`extends` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) to inherit from `L.Class`. Initialization code goes to `initialize`. Overriding the [`constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) and calling [`super`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super) is not officially supported by Leaflet.
+
+    class RotateMarker extends Marker {
+        static {
+            this.setDefaultOptions({
+                rotate: true,
+            });
+        }
+    
+        initialize(rotation, options) {
+            this.rotation = rotation;
+            Util.setOptions(this, options);
+        }
+    };
+
 ### `L.Class.extend()`
 
 In order to create a subclass of anything in Leaflet, use the `.extend()` method. This accepts one parameter: a plain object with key-value pairs, each key being the name of a property or method, and each value being the initial value of a property, or the implementation of a method:
