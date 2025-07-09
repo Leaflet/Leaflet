@@ -2335,7 +2335,6 @@ describe('Map', () => {
 			geolocation: {
 				getCurrentPosition(onSuccess) {
 					const x = new MockGeolocationCoordinates({latitude: 50, longitude: 50, accuracy: 14});
-					console.error(x.latitude);
 					onSuccess(
 						{
 							coords: x,
