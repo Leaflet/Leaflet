@@ -2334,10 +2334,9 @@ describe('Map', () => {
 		const geolocationStub = {
 			geolocation: {
 				getCurrentPosition(onSuccess) {
-					const x = new MockGeolocationCoordinates({latitude: 50, longitude: 50, accuracy: 14});
 					onSuccess(
 						{
-							coords: x,
+							coords: new MockGeolocationCoordinates({latitude: 50, longitude: 50, accuracy: 14}),
 							timestamp: 1670000000000
 						});
 
