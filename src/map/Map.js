@@ -713,7 +713,7 @@ export const Map = Evented.extend({
 			timestamp: pos.timestamp
 		};
 
-		for (const i of Object.keys(pos.coords)) {
+		for (const i in pos.coords) { // do not use Object.keys here to access getters of GeolocationCoordinates
 			if (typeof pos.coords[i] === 'number') {
 				data[i] = pos.coords[i];
 			}
