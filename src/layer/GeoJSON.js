@@ -35,7 +35,7 @@ import * as LineUtil from '../geometry/LineUtil.js';
 // Creates a GeoJSON layer. Optionally accepts an object in
 // [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
-export const GeoJSON = FeatureGroup.extend({
+export class GeoJSON extends FeatureGroup {
 
 	/* @section
 	 * @aka GeoJSON options
@@ -95,7 +95,7 @@ export const GeoJSON = FeatureGroup.extend({
 		if (geojson) {
 			this.addData(geojson);
 		}
-	},
+	}
 
 	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
@@ -130,7 +130,7 @@ export const GeoJSON = FeatureGroup.extend({
 		}
 
 		return this.addLayer(layer);
-	},
+	}
 
 	// @method resetStyle( <Path> layer? ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
@@ -143,13 +143,13 @@ export const GeoJSON = FeatureGroup.extend({
 		layer.options = Object.create(layer.defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
 		return this;
-	},
+	}
 
 	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle(style) {
 		return this.eachLayer(layer => this._setLayerStyle(layer, style));
-	},
+	}
 
 	_setLayerStyle(layer, style) {
 		if (layer.setStyle) {
@@ -159,7 +159,7 @@ export const GeoJSON = FeatureGroup.extend({
 			layer.setStyle(style);
 		}
 	}
-});
+}
 
 // @section
 // There are several static functions which can be called without instantiating GeoJSON:
