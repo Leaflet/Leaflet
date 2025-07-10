@@ -1106,9 +1106,8 @@ export const Map = Evented.extend({
 
 		this._fadeAnimated = this.options.fadeAnimation;
 
-		const classes = ['leaflet-container'];
+		const classes = ['leaflet-container', 'leaflet-touch'];
 
-		if (Browser.touch) { classes.push('leaflet-touch'); }
 		if (Browser.retina) { classes.push('leaflet-retina'); }
 		if (Browser.safari) { classes.push('leaflet-safari'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
