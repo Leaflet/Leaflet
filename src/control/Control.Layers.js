@@ -51,6 +51,11 @@ export const Layers = Control.extend({
 		// @option collapsed: Boolean = true
 		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 		collapsed: true,
+
+		// @option collapseDelay: Number = 0
+		// Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.
+		collapseDelay: 0,
+
 		position: 'topright',
 
 		// @option autoZIndex: Boolean = true
@@ -128,6 +133,8 @@ export const Layers = Control.extend({
 		}
 
 		this._map.off('resize', this._expandIfNotCollapsed, this);
+
+		clearTimeout(this._collapseDelayTimeout);
 	},
 
 	// @method addBaseLayer(layer: Layer, name: String): this
@@ -159,6 +166,8 @@ export const Layers = Control.extend({
 	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand() {
+		clearTimeout(this._collapseDelayTimeout);
+
 		this._container.classList.add('leaflet-control-layers-expanded');
 		this._section.style.height = null;
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
@@ -179,6 +188,15 @@ export const Layers = Control.extend({
 		// The control was collapsed instead of adding the layer to the map.
 		// So we allow collapse only if it is not touch.
 		if (!ev || !((ev.type === 'pointerleave' || ev.type === 'pointerout') && ev.pointerType === 'touch')) {
+			if (this.options.collapseDelay > 0) {
+				// Collapse delayed
+				this._collapseDelayTimeout = setTimeout(() => {
+					this._container.classList.remove('leaflet-control-layers-expanded');
+				}, this.options.collapseDelay);
+				return this;
+			}
+
+			// Collapse immediatelly
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;
@@ -315,29 +333,16 @@ export const Layers = Control.extend({
 		}
 	},
 
-	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see https://stackoverflow.com/a/119079)
-	_createRadioElement(name, checked) {
-
-		const radioHtml = `<input type="radio" class="leaflet-control-layers-selector" name="${name}"${checked ? ' checked="checked"' : ''}/>`;
-
-		const radioFragment = document.createElement('div');
-		radioFragment.innerHTML = radioHtml;
-
-		return radioFragment.firstChild;
-	},
-
 	_addItem(obj) {
 		const label = document.createElement('label'),
 		checked = this._map.hasLayer(obj.layer);
-		let input;
 
-		if (obj.overlay) {
-			input = document.createElement('input');
-			input.type = 'checkbox';
-			input.className = 'leaflet-control-layers-selector';
-			input.defaultChecked = checked;
-		} else {
-			input = this._createRadioElement(`leaflet-base-layers_${Util.stamp(this)}`, checked);
+		const input = document.createElement('input');
+		input.type = obj.overlay ? 'checkbox' : 'radio';
+		input.className = 'leaflet-control-layers-selector';
+		input.defaultChecked = checked;
+		if (!obj.overlay) {
+			input.name = `leaflet-base-layers_${Util.stamp(this)}`;
 		}
 
 		this._layerControlInputs.push(input);
