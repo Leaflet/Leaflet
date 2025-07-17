@@ -3,7 +3,7 @@ import {DomUtil, LatLng, Map, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, touchEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
 describe('Map.Drag', () => {
 	let container, map;
@@ -64,7 +64,7 @@ describe('Map.Drag', () => {
 		this._initialPos = this._getPosition();
 	});
 
-	describe('mouse events', () => {
+	describe('pointer events', () => {
 		it('change the center of the map', (done) => {
 			map = new MyMap(container, {
 				dragging: true,
@@ -87,9 +87,9 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
-			mouse.moveTo(start.x, start.y, 0)
+			pointer.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
@@ -103,8 +103,8 @@ describe('Map.Drag', () => {
 
 			it('change the center of the map, compensating for CSS scale', (done) => {
 				map = new MyMap(container, {
-				    dragging: true,
-				    inertia: false
+					dragging: true,
+					inertia: false
 				});
 				map.setView([0, 0], 1);
 
@@ -123,16 +123,16 @@ describe('Map.Drag', () => {
 						done();
 					}
 				});
-				const mouse = hand.growFinger('mouse');
+				const pointer = hand.growFinger('pointer');
 
 				const startScaled = start.scaleBy(scale);
 				const finishScaled = finish.scaleBy(scale);
-				mouse.moveTo(startScaled.x, startScaled.y, 0)
+				pointer.moveTo(startScaled.x, startScaled.y, 0)
 					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
 			});
 		});
 
-		it('does not change the center of the map when mouse is moved less than the drag threshold', (done) => {
+		it('does not change the center of the map when pointer is moved less than the drag threshold', (done) => {
 			map = new Map(container, {
 				dragging: true,
 				inertia: false
@@ -155,11 +155,11 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
-			mouse.moveTo(200, 200, 0)
+			pointer.moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
@@ -179,7 +179,7 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					// A real user scenario would trigger a click on mouseup.
+					// A real user scenario would trigger a click on pointerup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', container);
 					expect(dragSpy.called).to.be.true;
@@ -188,9 +188,9 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
-			mouse.moveTo(200, 200, 0)
+			pointer.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
 		});
 
@@ -216,7 +216,7 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					// A real user scenario would trigger a click on mouseup.
+					// A real user scenario would trigger a click on pointerup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', container);
 					expect(mapDragSpy.called).to.be.true;
@@ -226,11 +226,11 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			mouse.moveTo(300, 280, 0)
+			pointer.moveTo(300, 280, 0)
 				.down().moveBy(5, 0, 20).moveBy(20, 20, 100).up();
 		});
 
@@ -256,7 +256,7 @@ describe('Map.Drag', () => {
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStop() {
-					// A real user scenario would trigger a click on mouseup.
+					// A real user scenario would trigger a click on pointerup.
 					// We want to be sure we are cancelling it after a drag.
 					UIEventSimulator.fire('click', marker._icon);
 					expect(markerDragSpy.called).to.be.true;
@@ -266,11 +266,11 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			mouse.moveTo(300, 280, 0)
+			pointer.moveTo(300, 280, 0)
 				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
 		});
 
@@ -282,7 +282,7 @@ describe('Map.Drag', () => {
 			const originalCenter = new LatLng(0, 0);
 			map.setView(originalCenter.clone(), 1);
 
-			map.on('mousedown', () => {
+			map.on('pointerdown', () => {
 				map.dragging.disable();
 			});
 			const spy = sinon.spy();
@@ -299,11 +299,11 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger('mouse');
+			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			mouse.moveTo(200, 200, 0)
+			pointer.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 		});
 	});
@@ -331,7 +331,7 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger(touchEventType);
+			const toucher = hand.growFinger(...pointerEventType);
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
@@ -361,7 +361,7 @@ describe('Map.Drag', () => {
 				}
 			});
 
-			const toucher = hand.growFinger(touchEventType);
+			const toucher = hand.growFinger(...pointerEventType);
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
@@ -369,7 +369,7 @@ describe('Map.Drag', () => {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it.skipIfNotTouch('reset itself after touchend', (done) => {
+		it.skipIfNotTouch('reset itself after pointerup', (done) => {
 			map = new Map(container, {
 				dragging: true,
 				inertia: false,
@@ -377,7 +377,7 @@ describe('Map.Drag', () => {
 			});
 			map.setView([0, 0], 1);
 
-			// Change default events order to make the tap comming before the touchzoom.
+			// Change default events order to make the tap comming before the pinchZoom.
 			// See #4315
 			map.dragging.disable();
 			map.dragging.enable();
@@ -388,7 +388,7 @@ describe('Map.Drag', () => {
 				zoom = map.getZoom();
 			}
 
-			const mouseHand = new Hand({
+			const pointerHand = new Hand({
 				timing: 'fastframe',
 				onStart: savePos,
 				onStop() {
@@ -398,7 +398,7 @@ describe('Map.Drag', () => {
 					done();
 				}
 			});
-			const mouse = mouseHand.growFinger('mouse');
+			const pointer = pointerHand.growFinger('pointer', {pointerType: 'touch'});
 			const hand = new Hand({
 				timing: 'fastframe',
 				onStart: savePos,
@@ -406,12 +406,12 @@ describe('Map.Drag', () => {
 					expect(map.getCenter()).not.to.eql(center);
 					expect(map.getZoom()).not.to.eql(zoom);
 
-					mouse.moveTo(220, 220, 0).moveBy(200, 0, 2000);
+					pointer.moveTo(220, 220, 0).moveBy(200, 0, 2000);
 				}
 			});
 
-			const f1 = hand.growFinger(touchEventType);
-			const f2 = hand.growFinger(touchEventType);
+			const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
+			const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
 
 			hand.sync(5);
 			f1.moveTo(275, 300, 0)

@@ -3,7 +3,6 @@ import * as Util from './Util.js';
 
 /*
  * @class Evented
- * @aka L.Evented
  * @inherits Class
  *
  * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire `'click'` event).
@@ -32,26 +31,22 @@ export const Events = {
 	 *
 	 * @alternative
 	 * @method on(eventMap: Object): this
-	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 	 */
 	on(types, fn, context) {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					// we don't process space-separated events here for performance;
-					// it's a hot path since Layer uses the on(obj) syntax
-					this._on(type, types[type], fn);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
+				this._on(type, f, fn);
 			}
 
 		} else {
 			// types can be a string of space-separated words
-			types = Util.splitWords(types);
-
-			for (let i = 0, len = types.length; i < len; i++) {
-				this._on(types[i], fn, context);
+			for (const type of Util.splitWords(types)) {
+				this._on(type, fn, context);
 			}
 		}
 
@@ -76,21 +71,17 @@ export const Events = {
 			delete this._events;
 
 		} else if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					this._off(type, types[type], fn);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				this._off(type, f, fn);
 			}
 
 		} else {
-			types = Util.splitWords(types);
-
 			const removeAll = arguments.length === 1;
-			for (let i = 0, len = types.length; i < len; i++) {
+			for (const type of Util.splitWords(types)) {
 				if (removeAll) {
-					this._off(types[i]);
+					this._off(type);
 				} else {
-					this._off(types[i], fn, context);
+					this._off(type, fn, context);
 				}
 			}
 		}
@@ -120,21 +111,17 @@ export const Events = {
 			newListener.once = true;
 		}
 
-		this._events = this._events || {};
-		this._events[type] = this._events[type] || [];
+		this._events ??= {};
+		this._events[type] ??= [];
 		this._events[type].push(newListener);
 	},
 
 	_off(type, fn, context) {
-		let listeners,
-		    i,
-		    len;
-
 		if (!this._events) {
 			return;
 		}
 
-		listeners = this._events[type];
+		let listeners = this._events[type];
 		if (!listeners) {
 			return;
 		}
@@ -143,8 +130,8 @@ export const Events = {
 			if (this._firingCount) {
 				// Set all removed listeners to noop
 				// so they are not called if remove happens in fire
-				for (i = 0, len = listeners.length; i < len; i++) {
-					listeners[i].fn = Util.falseFn;
+				for (const listener of listeners) {
+					listener.fn = Util.falseFn;
 				}
 			}
 			// clear all listeners for a type if function isn't specified
@@ -179,19 +166,19 @@ export const Events = {
 	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		const event = Util.extend({}, data, {
+		const event = {
+			...data,
 			type,
 			target: this,
-			sourceTarget: data && data.sourceTarget || this
-		});
+			sourceTarget: data?.sourceTarget || this
+		};
 
 		if (this._events) {
 			const listeners = this._events[type];
 			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
-				for (let i = 0, len = listeners.length; i < len; i++) {
-					const l = listeners[i];
-					// off overwrites l.fn, so we need to copy fn to a var
+				for (const l of listeners) {
+					// off overwrites l.fn, so we need to copy fn to a variable
 					const fn = l.fn;
 					if (l.once) {
 						this.off(type, fn, l.ctx);
@@ -228,8 +215,7 @@ export const Events = {
 			context = undefined;
 		}
 
-		const listeners = this._events && this._events[type];
-		if (listeners && listeners.length) {
+		if (this._events?.[type]?.length) {
 			if (this._listens(type, _fn, context) !== false) {
 				return true;
 			}
@@ -237,8 +223,10 @@ export const Events = {
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
-			for (const id in this._eventParents) {
-				if (this._eventParents[id].listens(type, fn, context, propagate)) { return true; }
+			for (const p of Object.values(this._eventParents ?? {})) {
+				if (p.listens(type, fn, context, propagate)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -250,7 +238,7 @@ export const Events = {
 			return false;
 		}
 
-		const listeners = this._events[type] || [];
+		const listeners = this._events[type] ?? [];
 		if (!fn) {
 			return !!listeners.length;
 		}
@@ -260,12 +248,8 @@ export const Events = {
 			context = undefined;
 		}
 
-		for (let i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return i;
-			}
-		}
-		return false;
+		const index = listeners.findIndex(l => l.fn === fn && l.ctx === context);
+		return index === -1 ? false : index;
 
 	},
 
@@ -275,20 +259,16 @@ export const Events = {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (const type in types) {
-				if (Object.hasOwn(types, type)) {
-					// we don't process space-separated events here for performance;
-					// it's a hot path since Layer uses the on(obj) syntax
-					this._on(type, types[type], fn, true);
-				}
+			for (const [type, f] of Object.entries(types)) {
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
+				this._on(type, f, fn, true);
 			}
 
 		} else {
 			// types can be a string of space-separated words
-			types = Util.splitWords(types);
-
-			for (let i = 0, len = types.length; i < len; i++) {
-				this._on(types[i], fn, context, true);
+			for (const type of Util.splitWords(types)) {
+				this._on(type, fn, context, true);
 			}
 		}
 
@@ -298,7 +278,7 @@ export const Events = {
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
 	addEventParent(obj) {
-		this._eventParents = this._eventParents || {};
+		this._eventParents ??= {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
 	},
@@ -313,40 +293,13 @@ export const Events = {
 	},
 
 	_propagateEvent(e) {
-		for (const id in this._eventParents) {
-			if (Object.hasOwn(this._eventParents, id)) {
-				this._eventParents[id].fire(e.type, Util.extend({
-					layer: e.target,
-					propagatedFrom: e.target
-				}, e), true);
-			}
+		for (const p of Object.values(this._eventParents ?? {})) {
+			p.fire(e.type, {
+				propagatedFrom: e.target,
+				...e
+			}, true);
 		}
 	}
 };
-
-// aliases; we should ditch those eventually
-
-// @method addEventListener(…): this
-// Alias to [`on(…)`](#evented-on)
-Events.addEventListener = Events.on;
-
-// @method removeEventListener(…): this
-// Alias to [`off(…)`](#evented-off)
-
-// @method clearAllEventListeners(…): this
-// Alias to [`off()`](#evented-off)
-Events.removeEventListener = Events.clearAllEventListeners = Events.off;
-
-// @method addOneTimeEventListener(…): this
-// Alias to [`once(…)`](#evented-once)
-Events.addOneTimeEventListener = Events.once;
-
-// @method fireEvent(…): this
-// Alias to [`fire(…)`](#evented-fire)
-Events.fireEvent = Events.fire;
-
-// @method hasEventListeners(…): Boolean
-// Alias to [`listens(…)`](#evented-listens)
-Events.hasEventListeners = Events.listens;
 
 export const Evented = Class.extend(Events);

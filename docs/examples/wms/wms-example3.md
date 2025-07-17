@@ -1,34 +1,37 @@
 ---
 layout: tutorial_frame
-title: WMS example
+title: WMS Example 3
 ---
-<script type='text/javascript'>
+<script type="module">
+	import L, {Map, CRS, TileLayer, Control} from 'leaflet';
 
-	const map = L.map('map', {
+	const map = new Map('map', {
 		center: [-17, -67],
 		zoom: 3
 	});
 
 	const basemaps = {
-		Topography: L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		Topography: new TileLayer.WMS('http://ows.mundialis.de/services/service?', {
 			layers: 'TOPO-WMS'
 		}),
 
-		Places: L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		Places: new TileLayer.WMS('http://ows.mundialis.de/services/service?', {
 			layers: 'OSM-Overlay-WMS'
 		}),
 
-		'Topography, then places': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		'Topography, then places': new TileLayer.WMS('http://ows.mundialis.de/services/service?', {
 			layers: 'TOPO-WMS,OSM-Overlay-WMS'
 		}),
 
-		'Places, then topography': L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+		'Places, then topography': new TileLayer.WMS('http://ows.mundialis.de/services/service?', {
 			layers: 'OSM-Overlay-WMS,TOPO-WMS'
 		})
 	};
 
-	const layerControl = L.control.layers(basemaps, {}, {collapsed: false}).addTo(map);
+	const layerControl = new Control.Layers(basemaps, {}, {collapsed: false}).addTo(map);
 
 	basemaps.Topography.addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

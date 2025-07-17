@@ -3,7 +3,6 @@ import * as Util from '../../core/Util.js';
 
 /*
  * @class Path
- * @aka L.Path
  * @inherits Interactive layer
  *
  * An abstract class that contains options and constants shared between vector
@@ -44,7 +43,7 @@ export const Path = Layer.extend({
 		dashArray: null,
 
 		// @option dashOffset: String = null
-		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset). Doesn't work on `Canvas`-powered layers in [some old browsers](https://developer.mozilla.org/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility).
+		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset).
 		dashOffset: null,
 
 		// @option fill: Boolean = depends
@@ -68,10 +67,10 @@ export const Path = Layer.extend({
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
 
-		// @option bubblingMouseEvents: Boolean = true
-		// When `true`, a mouse event on this path will trigger the same event on the map
-		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingMouseEvents: true
+		// @option bubblingPointerEvents: Boolean = true
+		// When `true`, a pointer event on this path will trigger the same event on the map
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingPointerEvents: true
 	},
 
 	beforeAdd(map) {
@@ -115,18 +114,14 @@ export const Path = Layer.extend({
 	// @method bringToFront(): this
 	// Brings the layer to the top of all path layers.
 	bringToFront() {
-		if (this._renderer) {
-			this._renderer._bringToFront(this);
-		}
+		this._renderer?._bringToFront(this);
 		return this;
 	},
 
 	// @method bringToBack(): this
 	// Brings the layer to the bottom of all path layers.
 	bringToBack() {
-		if (this._renderer) {
-			this._renderer._bringToBack(this);
-		}
+		this._renderer?._bringToBack(this);
 		return this;
 	},
 

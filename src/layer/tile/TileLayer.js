@@ -6,13 +6,12 @@ import * as DomEvent from '../../dom/DomEvent.js';
 /*
  * @class TileLayer
  * @inherits GridLayer
- * @aka L.TileLayer
  * Used to load and display tile layers on the map. Note that most tile servers require attribution, which you can set under `Layer`. Extends `GridLayer`.
  *
  * @example
  *
  * ```js
- * L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+ * new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  * ```
  *
  * @section URL template
@@ -29,11 +28,12 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
  *
  * ```
- * L.tileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * new TileLayer('https://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
  */
 
-
+// @constructor TileLayer(urlTemplate: String, options?: TileLayer options)
+// Instantiates a tile layer object given a `URL template` and optionally an options object.
 export const TileLayer = GridLayer.extend({
 
 	// @section
@@ -187,13 +187,14 @@ export const TileLayer = GridLayer.extend({
 	// Called only internally, returns the URL for a tile given its coordinates.
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl(coords) {
-		const data = {
+		const data = Object.create(this.options);
+		Object.assign(data, {
 			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
 			z: this._getZoomForUrl()
-		};
+		});
 		if (this._map && !this._map.options.crs.infinite) {
 			const invertedY = this._globalTileRange.max.y - coords.y;
 			if (this.options.tms) {
@@ -202,7 +203,7 @@ export const TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return Util.template(this._url, Util.extend(data, this.options));
+		return Util.template(this._url, data);
 	},
 
 	_tileOnLoad(done, tile) {
@@ -242,7 +243,7 @@ export const TileLayer = GridLayer.extend({
 	// stops loading all tiles in the background layer
 	_abortLoading() {
 		let i, tile;
-		for (i in this._tiles) {
+		for (i of Object.keys(this._tiles)) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
@@ -287,11 +288,3 @@ export const TileLayer = GridLayer.extend({
 		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
 	}
 });
-
-
-// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
-// Instantiates a tile layer object given a `URL template` and optionally an options object.
-
-export function tileLayer(url, options) {
-	return new TileLayer(url, options);
-}

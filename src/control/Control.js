@@ -6,10 +6,9 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control
- * @aka L.Control
  * @inherits Class
  *
- * L.Control is a base class for implementing map controls. Handles positioning.
+ * Control is a base class for implementing map controls. Handles positioning.
  * All other controls extend from this class.
  */
 
@@ -28,7 +27,7 @@ export const Control = Class.extend({
 	},
 
 	/* @section
-	 * Classes extending L.Control will inherit the following methods:
+	 * Classes extending Control will inherit the following methods:
 	 *
 	 * @method getPosition: string
 	 * Returns the position of the control.
@@ -42,15 +41,11 @@ export const Control = Class.extend({
 	setPosition(position) {
 		const map = this._map;
 
-		if (map) {
-			map.removeControl(this);
-		}
+		map?.removeControl(this);
 
 		this.options.position = position;
 
-		if (map) {
-			map.addControl(this);
-		}
+		map?.addControl(this);
 
 		return this;
 	},
@@ -68,8 +63,8 @@ export const Control = Class.extend({
 		this._map = map;
 
 		const container = this._container = this.onAdd(map),
-		    pos = this.getPosition(),
-		    corner = map._controlCorners[pos];
+		pos = this.getPosition(),
+		corner = map._controlCorners[pos];
 
 		container.classList.add('leaflet-control');
 
@@ -112,14 +107,10 @@ export const Control = Class.extend({
 	}
 });
 
-export const control = function (options) {
-	return new Control(options);
-};
-
 /* @section Extension methods
  * @uninheritable
  *
- * Every control should extend from `L.Control` and (re-)implement the following methods.
+ * Every control should extend from `Control` and (re-)implement the following methods.
  *
  * @method onAdd(map: Map): HTMLElement
  * Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).
@@ -148,8 +139,8 @@ Map.include({
 
 	_initControlPos() {
 		const corners = this._controlCorners = {},
-		    l = 'leaflet-',
-		    container = this._controlContainer =
+		l = 'leaflet-',
+		container = this._controlContainer =
 		            DomUtil.create('div', `${l}control-container`, this._container);
 
 		function createCorner(vSide, hSide) {
@@ -165,10 +156,8 @@ Map.include({
 	},
 
 	_clearControlPos() {
-		for (const i in this._controlCorners) {
-			if (Object.hasOwn(this._controlCorners, i)) {
-				this._controlCorners[i].remove();
-			}
+		for (const c of Object.values(this._controlCorners)) {
+			c.remove();
 		}
 		this._controlContainer.remove();
 		delete this._controlCorners;

@@ -23,11 +23,9 @@ export function get(id) {
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
 export function create(tagName, className, container) {
 	const el = document.createElement(tagName);
-	el.className = className || '';
+	el.className = className ?? '';
 
-	if (container) {
-		container.appendChild(el);
-	}
+	container?.appendChild(el);
 	return el;
 }
 
@@ -54,7 +52,7 @@ export function toBack(el) {
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
 export function setTransform(el, offset, scale) {
-	const pos = offset || new Point(0, 0);
+	const pos = offset ?? new Point(0, 0);
 
 	el.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)${scale ? ` scale(${scale})` : ''}`;
 }
@@ -99,7 +97,7 @@ export function disableTextSelection() {
 }
 
 // @function enableTextSelection()
-// Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
+// Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
 export function enableTextSelection() {
 	if (typeof prevUserSelect === 'undefined') {
 		return;
@@ -116,7 +114,7 @@ export function disableImageDrag() {
 }
 
 // @function enableImageDrag()
-// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disableimagedrag).
+// Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
@@ -140,7 +138,7 @@ export function preventOutline(element) {
 }
 
 // @function restoreOutline()
-// Cancels the effects of a previous [`L.DomUtil.preventOutline`](#domutil-preventoutline).
+// Cancels the effects of a previous [`DomUtil.preventOutline`](#domutil-preventoutline).
 export function restoreOutline() {
 	if (!_outlineElement) { return; }
 	_outlineElement.style.outlineStyle = _outlineStyle;

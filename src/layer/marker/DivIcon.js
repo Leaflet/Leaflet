@@ -1,9 +1,8 @@
 import {Icon} from './Icon.js';
-import {toPoint as point} from '../../geometry/Point.js';
+import {Point} from '../../geometry/Point.js';
 
 /*
  * @class DivIcon
- * @aka L.DivIcon
  * @inherits Icon
  *
  * Represents a lightweight icon for markers that uses a simple `<div>`
@@ -11,15 +10,17 @@ import {toPoint as point} from '../../geometry/Point.js';
  *
  * @example
  * ```js
- * var myIcon = L.divIcon({className: 'my-div-icon'});
+ * const myIcon = new DivIcon({className: 'my-div-icon'});
  * // you can set .my-div-icon styles in CSS
  *
- * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+ * new Marker([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
  */
 
+// @constructor DivIcon(options: DivIcon options)
+// Creates a `DivIcon` instance with the given options.
 export const DivIcon = Icon.extend({
 	options: {
 		// @section
@@ -53,7 +54,7 @@ export const DivIcon = Icon.extend({
 		}
 
 		if (options.bgPos) {
-			const bgPos = point(options.bgPos);
+			const bgPos = new Point(options.bgPos);
 			div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
 		}
 		this._setIconStyles(div, 'icon');
@@ -65,9 +66,3 @@ export const DivIcon = Icon.extend({
 		return null;
 	}
 });
-
-// @factory L.divIcon(options: DivIcon options)
-// Creates a `DivIcon` instance with the given options.
-export function divIcon(options) {
-	return new DivIcon(options);
-}

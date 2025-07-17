@@ -49,24 +49,24 @@ Even though modern JavaScript can use ES6 classes, Leaflet is not designed aroun
 
 In order to create a subclass of anything in Leaflet, use the `.extend()` method. This accepts one parameter: a plain object with key-value pairs, each key being the name of a property or method, and each value being the initial value of a property, or the implementation of a method:
 
-    var MyDemoClass = L.Class.extend({
+    const MyDemoClass = Class.extend({
     
         // A property with initial value = 42
         myDemoProperty: 42,   
     
         // A method 
-        myDemoMethod: function() { return this.myDemoProperty; }
+        myDemoMethod() { return this.myDemoProperty; }
         
     });
 
-    var myDemoInstance = new MyDemoClass();
+    const myDemoInstance = new MyDemoClass();
     
     // This will output "42" to the development console
     console.log( myDemoInstance.myDemoMethod() );   
 
 When naming classes, methods and properties, adhere to the following conventions:
     
-* Function, method, property and factory names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
+* Function, method and property names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
@@ -80,11 +80,11 @@ If a class is already defined, existing properties/methods can be redefined, or 
         _myPrivateProperty: 78,
         
         // Redefining a method
-        myDemoMethod: function() { return this._myPrivateProperty; }
+        myDemoMethod() { return this._myPrivateProperty; }
     
     });
 
-    var mySecondDemoInstance = new MyDemoClass();
+    const mySecondDemoInstance = new MyDemoClass();
     
     // This will output "78"
     console.log( mySecondDemoInstance.myDemoMethod() );
@@ -100,21 +100,21 @@ In OOP, classes have a constructor method. In Leaflet's `L.Class`, the construct
 If your class has some specific `options`, it's a good idea to initialize them with `L.setOptions()` in the constructor. This utility function will merge the provided options with the default options of the class.
 
 
-    var MyBoxClass = L.Class.extend({
+    const MyBoxClass = Class.extend({
     
         options: {
             width: 1,
             height: 1
         },
     
-        initialize: function(name, options) {
+        initialize(name, options) {
             this.name = name;
-            L.setOptions(this, options);
+            Util.setOptions(this, options);
         }
         
     });
     
-    var instance = new MyBoxClass('Red', {width: 10});
+    const instance = new MyBoxClass('Red', {width: 10});
 
     console.log(instance.name); // Outputs "Red"
     console.log(instance.options.width); // Outputs "10"
@@ -122,13 +122,13 @@ If your class has some specific `options`, it's a good idea to initialize them w
     
 Leaflet handles the `options` property in a special way: options available for a parent class will be inherited by a children class:.
 
-    var MyCubeClass = MyBoxClass.extend({
+    const MyCubeClass = MyBoxClass.extend({
         options: {
             depth: 1
         }
     });
     
-    var instance = new MyCubeClass('Blue');
+    const instance = new MyCubeClass('Blue');
     
     console.log(instance.options.width); // Outputs "1", parent class default
     console.log(instance.options.height); // Outputs "1", parent class default
@@ -146,7 +146,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
 `addInitHook` has an alternate syntax, which uses method names and can fill method arguments in:
 
     MyCubeClass.include({
-        _calculateVolume: function(arg1, arg2) {
+        _calculateVolume(arg1, arg2) {
             this._volume = this.options.width * this.options.length * this.options.depth;
         }
     });
@@ -158,39 +158,30 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
 
 Calling a method of a parent class is achieved by reaching into the prototype of the parent class and using [`Function.call(…)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call). This can be seen, for example, in the code for `L.FeatureGroup`:
 
-    L.FeatureGroup = L.LayerGroup.extend({
+    const FeatureGroup = LayerGroup.extend({
     
-        addLayer: function (layer) {
+        addLayer(layer) {
             …
-            L.LayerGroup.prototype.addLayer.call(this, layer);
+            LayerGroup.prototype.addLayer.call(this, layer);
         },
         
-        removeLayer: function (layer) {
+        removeLayer(layer) {
             …
-            L.LayerGroup.prototype.removeLayer.call(this, layer);
+            LayerGroup.prototype.removeLayer.call(this, layer);
         },
     
         …
     });
 
 Calling the parent's constructor is done in a similar way, but using `ParentClass.prototype.initialize.call(this, …)` instead.
-    
-    
-### Factories    
 
-Most Leaflet classes have a corresponding [factory function](https://en.wikipedia.org/wiki/Factory_%28object-oriented_programming%29). A factory function has the same name as the class, but in `lowerCamelCase` instead of `UpperCamelCase`:
-    
-    function myBoxClass(name, options) {
-        return new MyBoxClass(name, options);
-    }
-    
-    
+
 ### Naming conventions
 
 When naming classes for Leaflet plugins, please adhere to the following naming conventions:
 
 * Never expose global variables in your plugin.
-* If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-* If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
+* If you inherit one of the existing classes or have a new class, export it and make it available via import.
+* Make your plugin importable like this: `import MyPlugin from 'leaflet-my-plugin'`.
 
 

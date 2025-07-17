@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LatLngBounds, Map, imageOverlay} from 'leaflet';
+import {LatLngBounds, Map, ImageOverlay} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -19,7 +19,7 @@ describe('ImageOverlay', () => {
 
 	describe('#setStyle', () => {
 		it('sets opacity', () => {
-			const overlay = imageOverlay().setStyle({opacity: 0.5});
+			const overlay = new ImageOverlay().setStyle({opacity: 0.5});
 			expect(overlay.options.opacity).to.equal(0.5);
 		});
 	});
@@ -30,7 +30,7 @@ describe('ImageOverlay', () => {
 				[14, 12],
 				[30, 40]
 			);
-			const overlay = imageOverlay().setBounds(bounds);
+			const overlay = new ImageOverlay().setBounds(bounds);
 			expect(overlay._bounds).to.equal(bounds);
 		});
 	});
@@ -44,7 +44,7 @@ describe('ImageOverlay', () => {
 
 		// Create overlay for each test
 		beforeEach(() => {
-			overlay = imageOverlay(blankUrl, imageBounds, {
+			overlay = new ImageOverlay(blankUrl, imageBounds, {
 				errorOverlayUrl: errorUrl,
 				className: 'my-custom-image-class'
 			});
@@ -102,46 +102,46 @@ describe('ImageOverlay', () => {
 
 	describe('#setZIndex', () => {
 		it('sets the z-index of the image', () => {
-			const overlay = imageOverlay();
+			const overlay = new ImageOverlay();
 			overlay.setZIndex(10);
 			expect(overlay.options.zIndex).to.equal(10);
 		});
 
 		it('should update the z-index of the image if it has allready been added to the map', () => {
-			const overlay = imageOverlay('', imageBounds);
+			const overlay = new ImageOverlay('', imageBounds);
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('1'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('1');
 
 			overlay.setZIndex('10');
-			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('10');
 		});
 
 		it('should set the z-index of the image when it is added to the map', () => {
-			const overlay = imageOverlay('', imageBounds);
+			const overlay = new ImageOverlay('', imageBounds);
 			overlay.setZIndex('10');
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('10'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('10');
 		});
 
 		it('should use the z-index specified in options', () => {
-			const overlay = imageOverlay('', imageBounds, {zIndex: 20});
+			const overlay = new ImageOverlay('', imageBounds, {zIndex: 20});
 			overlay.addTo(map);
-			expect(overlay._image.style.zIndex).to.eql('20'); // Number type in IE
+			expect(overlay._image.style.zIndex).to.eql('20');
 		});
 
 		it('should be fluent', () => {
-			const overlay = imageOverlay();
+			const overlay = new ImageOverlay();
 			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
 
 	describe('#getCenter', () => {
 		it('should return the correct center', () => {
-			const overlay = imageOverlay('', imageBounds).addTo(map);
+			const overlay = new ImageOverlay('', imageBounds).addTo(map);
 			expect(overlay.getCenter()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
 		it('should open popup at the center', () => {
-			const overlay = imageOverlay('', imageBounds).addTo(map);
+			const overlay = new ImageOverlay('', imageBounds).addTo(map);
 			overlay.bindPopup('Center').openPopup();
 			expect(overlay.getPopup().getLatLng()).to.be.nearLatLng([40.743078, -74.175995]);
 		});
@@ -160,7 +160,7 @@ describe('ImageOverlay', () => {
 
 		function testCrossOriginValue(crossOrigin, expectedValue) {
 			it(`uses crossOrigin option value ${crossOrigin}`, () => {
-				overlay = imageOverlay(blankUrl, imageBounds, {
+				overlay = new ImageOverlay(blankUrl, imageBounds, {
 					crossOrigin
 				});
 				map.addLayer(overlay);

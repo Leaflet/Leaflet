@@ -1,6 +1,6 @@
 ---
 layout: tutorial_frame
-title: Choropleth Tutorial
+title: Full Choropleth Example
 css: "#map {
 			width: 800px;
 			height: 500px;
@@ -34,20 +34,21 @@ css: "#map {
 ---
 
 <script type="text/javascript" src="us-states.js"></script>
-<script type="text/javascript">
+<script type="module">
+	import L, {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
 
-	const map = L.map('map').setView([37.8, -96], 4);
+	const map = new Map('map').setView([37.8, -96], 4);
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
 	// control that shows state info on hover
-	const info = L.control();
+	const info = new Control();
 
 	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info');
+		this._div = DomUtil.create('div', 'info');
 		this.update();
 		return this._div;
 	};
@@ -98,7 +99,7 @@ css: "#map {
 	}
 
 	/* global statesData */
-	const geojson = L.geoJson(statesData, {
+	const geojson = new GeoJSON(statesData, {
 		style,
 		onEachFeature
 	}).addTo(map);
@@ -114,8 +115,8 @@ css: "#map {
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			pointerover: highlightFeature,
+			pointerout: resetHighlight,
 			click: zoomToFeature
 		});
 	}
@@ -123,11 +124,11 @@ css: "#map {
 	map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
 
-	const legend = L.control({position: 'bottomright'});
+	const legend = new Control({position: 'bottomright'});
 
 	legend.onAdd = function (map) {
 
-		const div = L.DomUtil.create('div', 'info legend');
+		const div = DomUtil.create('div', 'info legend');
 		const grades = [0, 10, 20, 50, 100, 200, 500, 1000];
 		const labels = [];
 		let from, to;
@@ -145,4 +146,6 @@ css: "#map {
 
 	legend.addTo(map);
 
+	globalThis.L = L; // only for debugging in the developer console
+	globalThis.map = map; // only for debugging in the developer console
 </script>

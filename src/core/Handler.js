@@ -1,12 +1,11 @@
 import {Class} from './Class.js';
 
 /*
-	L.Handler is a base class for handler classes that are used internally to inject
+	Handler is a base class for handler classes that are used internally to inject
 	interaction features like dragging to classes like Map and Marker.
 */
 
 // @class Handler
-// @aka L.Handler
 // Abstract class for map interaction handlers
 
 export const Handler = Class.extend({
@@ -48,7 +47,7 @@ export const Handler = Class.extend({
 	// Called when the handler is disabled, should remove the event hooks added previously.
 });
 
-// @section There is static function which can be called without instantiating L.Handler:
+// @section There is static function which can be called without instantiating Handler:
 // @function addTo(map: Map, name: String): this
 // Adds a new Handler to the given map with the given name.
 Handler.addTo = function (map, name) {

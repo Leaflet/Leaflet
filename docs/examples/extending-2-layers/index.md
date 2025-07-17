@@ -9,49 +9,47 @@ This tutorial assumes you've read the [theory of Leaflet class inheritance](./ex
 
 In Leaflet, a "layer" is anything that moves around when the map is moved around. Before seeing how to create them from scratch, it's easier to explain how to do simple extensions.
 
-## "Extension methods"
+## "Extension Methods"
 
 A few of the Leaflet classes have so-called "extension methods": entry points for writing code for sub-classes.
 
 One of them is `L.TileLayer.getTileUrl()`. This method is called internally by `L.TileLayer` whenever a new tile needs to know which image to load. By making a subclass of `L.TileLayer` and rewriting its `getTileUrl()` function, we can create custom behaviour.
 
-Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [PlaceKitten](https://placekitten.com):
+Let's illustrate with a custom `L.TileLayer` that will display random kitten images from [Cataas](https://cataas.com):
 
-    L.TileLayer.Kitten = L.TileLayer.extend({
-        getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
-            return "https://placekitten.com/256/256?image=" + i;
-        },
-        getAttribution: function() {
-            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
-        }
-    });
+	TileLayer.Kitten = TileLayer.extend({
+		getTileUrl(coords) {
+			const i = Math.ceil(Math.random() * 4) - 1;
+			const tag = ['orange', 'hat', 'cute', 'small'];
+			return `https://cataas.com/cat/${tag[i]}?width=256&height=256`;
+		},
+		getAttribution() {
+			return '<a href="https://cataas.com/">CATAAS - Cat as a service</a>';
+		}
+	});
 
-    L.tileLayer.kitten = function() {
-        return new L.TileLayer.Kitten();
-    }
-
-    L.tileLayer.kitten().addTo(map);
+    new TileLayer.Kitten().addTo(map);
 
 {% include frame.html url="kittenlayer.html" %}
 
 Normally, `getTileUrl()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and generates a tile URL from them. In our example, we ignore those and simply use a random number to get a different kitten every time.
 
-### Splitting away the plugin code
+### Splitting Away the Plugin Code
 
 In the previous example, `L.TileLayer.Kitten` is defined in the same place as it's used. For plugins, it's better to split the plugin code into its own file, and include that file when it's used.
 
 For the KittenLayer, you should create a file like `L.KittenLayer.js` with:
 
-    L.TileLayer.Kitten = L.TileLayer.extend({
-        getTileUrl: function(coords) {
-            var i = Math.ceil( Math.random() * 4 );
-            return "https://placekitten.com/256/256?image=" + i;
-        },
-        getAttribution: function() {
-            return "<a href='https://placekitten.com/attribution.html'>PlaceKitten</a>"
-        }
-    });
+	TileLayer.Kitten = TileLayer.extend({
+		getTileUrl(coords) {
+			const i = Math.ceil(Math.random() * 4) - 1;
+			const tag = ['orange', 'hat', 'cute', 'small'];
+			return `https://cataas.com/cat/${tag[i]}?width=256&height=256`;
+		},
+		getAttribution() {
+			return '<a href="https://cataas.com/">CATAAS - Cat as a service</a>';
+		}
+	});
 
 And then, include that file when showing a map:
 
@@ -60,13 +58,13 @@ And then, include that file when showing a map:
 	<script src='leaflet.js'>
 	<script src='L.KittenLayer.js'>
 	<script>
-		var map = L.map('map-div-id');
-		L.tileLayer.kitten().addTo(map);
+		const map = new Map('map-div-id');
+		new TileLayer.Kitten().addTo(map);
 	</script>
 	…
 
 
-### `L.GridLayer` and DOM elements
+### `L.GridLayer` and DOM Elements
 
 Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assumes that there is a grid of images (as `<img>` elements), `L.GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
@@ -74,32 +72,27 @@ Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assu
 
 An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
 
-	L.GridLayer.DebugCoords = L.GridLayer.extend({
-		createTile: function (coords) {
-			var tile = document.createElement('div');
+	GridLayer.DebugCoords = GridLayer.extend({
+		createTile(coords) {
+			const tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 			return tile;
 		}
 	});
 
-	L.gridLayer.debugCoords = function(opts) {
-		return new L.GridLayer.DebugCoords(opts);
-	};
-
-	map.addLayer( L.gridLayer.debugCoords() );
+	map.addLayer(new GridLayer.DebugCoords() );
 
 
 If the element has to do some asynchronous initialization, then use the second function parameter `done` and call it back when the tile is ready (for example, when an image has been fully loaded) or when there is an error. In here, we'll just delay the tiles artificially:
 
-	createTile: function (coords, done) {
-		var tile = document.createElement('div');
+	createTile(coords, done) {
+		const tile = document.createElement('div');
 		tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 		tile.style.outline = '1px solid red';
 
-		setTimeout(function () {
-			done(null, tile);	// Syntax is 'done(error, tile)'
-		}, 500 + Math.random() * 1500);
+        // Syntax is 'done(error, tile)'
+		setTimeout(() => done(null, tile), 500 + Math.random() * 1500);
 
 		return tile;
 	}
@@ -110,15 +103,15 @@ With these custom `GridLayer`s, a plugin can have full control of the HTML eleme
 
 A very basic `<canvas>` `GridLayer` looks like:
 
-	L.GridLayer.CanvasCircles = L.GridLayer.extend({
-		createTile: function (coords) {
-			var tile = document.createElement('canvas');
+	GridLayer.CanvasCircles = GridLayer.extend({
+		createTile(coords) {
+			const tile = document.createElement('canvas');
 
-			var tileSize = this.getTileSize();
+			const tileSize = this.getTileSize();
 			tile.setAttribute('width', tileSize.x);
 			tile.setAttribute('height', tileSize.y);
 
-			var ctx = tile.getContext('2d');
+			const ctx = tile.getContext('2d');
 
 			// Draw whatever is needed in the canvas context
 			// For example, circles which get bigger as we zoom in
@@ -133,7 +126,7 @@ A very basic `<canvas>` `GridLayer` looks like:
 {% include frame.html url="canvascircles.html" %}
 
 
-## The pixel origin
+## The Pixel Origin
 
 Creating custom `L.Layer`s is possible, but needs a deeper knowledge of how Leaflet positions HTML elements. The abridged version is:
 
@@ -164,31 +157,31 @@ At their core, all `L.Layer`s are HTML elements inside a map pane, their positio
 
 In other words: the map calls the `onAdd()` method of the layer, then the layer creates its HTML element(s) (commonly named 'container' element) and adds them to the map pane. Conversely, when the layer is removed from the map, its `onRemove()` method is called. The layer must update its contents when added to the map, and reposition them when the map view is updated. A layer skeleton looks like:
 
-	L.CustomLayer = L.Layer.extend({
-		onAdd: function(map) {
-			var pane = map.getPane(this.options.pane);
-			this._container = L.DomUtil.create(…);
+	const CustomLayer = Layer.extend({
+		onAdd(map) {
+			const pane = map.getPane(this.options.pane);
+			this._container = DomUtil.create(…);
 
 			pane.appendChild(this._container);
 
 			// Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
 
-			L.DomUtil.setPosition(this._container, point);
+			DomUtil.setPosition(this._container, point);
 
 			// Add and position children elements if needed
 
 			map.on('zoomend viewreset', this._update, this);
 		},
 
-		onRemove: function(map) {
+		onRemove(map) {
 			this._container.remove();
 			map.off('zoomend viewreset', this._update, this);
 		},
 
-		_update: function() {
+		_update() {
 			// Recalculate position of container
 
-			L.DomUtil.setPosition(this._container, point);        
+			DomUtil.setPosition(this._container, point);        
 
 			// Add/remove/reposition children elements if needed
 		}
@@ -196,15 +189,15 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 
 How to exactly position the HTML elements for a layer depends on the specifics of the layer, but this introduction should help you to read Leaflet's layer code, and create new layers.
 
-### Using the parent's `onAdd`
+### Using the Parent's `onAdd`
 
 Some use cases don't need the whole `onAdd` code to be recreated, but instead the code for the parent can be reused, then some specifics can be added before _or_ after that initialization (as needed).
 
 To give an example, we can have a subclass of `L.Polyline` that will always be red (ignoring the options), like:
 
-	L.Polyline.Red = L.Polyline.extend({
-		onAdd: function(map) {
+	Polyline.Red = Polyline.extend({
+		onAdd(map) {
 			this.options.color = 'red';
-			L.Polyline.prototype.onAdd.call(this, map);
+			Polyline.prototype.onAdd.call(this, map);
 		}
 	});

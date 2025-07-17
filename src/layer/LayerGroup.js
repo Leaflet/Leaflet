@@ -4,7 +4,6 @@ import * as Util from '../core/Util.js';
 
 /*
  * @class LayerGroup
- * @aka L.LayerGroup
  * @inherits Interactive layer
  *
  * Used to group several layers and handle them as one. If you add it to the map,
@@ -14,12 +13,14 @@ import * as Util from '../core/Util.js';
  * @example
  *
  * ```js
- * L.layerGroup([marker1, marker2])
+ * new LayerGroup([marker1, marker2])
  * 	.addLayer(polyline)
  * 	.addTo(map);
  * ```
  */
 
+// @constructor LayerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
 export const LayerGroup = Layer.extend({
 
 	initialize(layers, options) {
@@ -27,12 +28,8 @@ export const LayerGroup = Layer.extend({
 
 		this._layers = {};
 
-		let i, len;
-
-		if (layers) {
-			for (i = 0, len = layers.length; i < len; i++) {
-				this.addLayer(layers[i]);
-			}
+		for (const layer of layers ?? []) {
+			this.addLayer(layer);
 		}
 	},
 
@@ -43,9 +40,7 @@ export const LayerGroup = Layer.extend({
 
 		this._layers[id] = layer;
 
-		if (this._map) {
-			this._map.addLayer(layer);
-		}
+		this._map?.addLayer(layer);
 
 		return this;
 	},
@@ -88,18 +83,9 @@ export const LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke(methodName, ...args) {
-		let i, layer;
-
-		for (i in this._layers) {
-			if (Object.hasOwn(this._layers, i)) {
-				layer = this._layers[i];
-
-				if (layer[methodName]) {
-					layer[methodName].apply(layer, args);
-				}
-			}
+		for (const layer of Object.values(this._layers)) {
+			layer[methodName]?.apply(layer, args);
 		}
-
 		return this;
 	},
 
@@ -114,15 +100,11 @@ export const LayerGroup = Layer.extend({
 	// @method eachLayer(fn: Function, context?: Object): this
 	// Iterates over the layers of the group, optionally specifying context of the iterator function.
 	// ```js
-	// group.eachLayer(function (layer) {
-	// 	layer.bindPopup('Hello');
-	// });
+	// group.eachLayer(layer => layer.bindPopup('Hello'));
 	// ```
 	eachLayer(method, context) {
-		for (const i in this._layers) {
-			if (Object.hasOwn(this._layers, i)) {
-				method.call(context, this._layers[i]);
-			}
+		for (const layer of Object.values(this._layers)) {
+			method.call(context, layer);
 		}
 		return this;
 	},
@@ -153,10 +135,3 @@ export const LayerGroup = Layer.extend({
 		return Util.stamp(layer);
 	}
 });
-
-
-// @factory L.layerGroup(layers?: Layer[], options?: Object)
-// Create a layer group, optionally given an initial set of layers and an `options` object.
-export const layerGroup = function (layers, options) {
-	return new LayerGroup(layers, options);
-};

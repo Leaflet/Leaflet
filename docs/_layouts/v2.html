@@ -3,10 +3,13 @@
 <head>
 	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
 
-	<title>{{ title }}Leaflet - a JavaScript library for interactive maps</title>
-
+	{% if title != '' %}
+	<title>{{ title }}Leaflet</title>
+	{% else %}
+	<title>Leaflet - a JavaScript library for interactive maps</title>
+	{% endif %}
+	
 	<meta charset="utf-8" />
-
 	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for building powerful interactive maps." />
@@ -42,9 +45,17 @@
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+	<script type="importmap">
+		{
+			"imports": {
+				"leaflet": "https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+			},
+			"integrity": {
+				"https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js": "{{site.integrity_hash_uglified}}"
+			}
+		}
+	</script>
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
 	<script>

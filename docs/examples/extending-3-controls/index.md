@@ -1,6 +1,6 @@
 ---
 layout: tutorial_v2
-title: Extending Leaflet, New Handlers and Controls
+title: Extending Leaflet, Handlers and Controls
 ---
 
 <br>
@@ -15,44 +15,44 @@ Map handlers are a new concept in Leaflet 1.0, and their function is to process 
 
 Handlers are relatively simple: they just need an `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
 
-	L.CustomHandler = L.Handler.extend({
-		addHooks: function() {
-			L.DomEvent.on(document, 'eventname', this._doSomething, this);
+	const CustomHandler = Handler.extend({
+		addHooks() {
+			DomEvent.on(document, 'eventname', this._doSomething, this);
 		},
 
-		removeHooks: function() {
-			L.DomEvent.off(document, 'eventname', this._doSomething, this);
+		removeHooks() {
+			DomEvent.off(document, 'eventname', this._doSomething, this);
 		},
 
-		_doSomething: function(event) { … }
+		_doSomething(event) { … }
 	});
 
 This can be illustrated with a simple handler to pan the map when a mobile device is tilted, through [`deviceorientation` events](https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation):
 
-	L.TiltHandler = L.Handler.extend({
-		addHooks: function() {
-			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
+	const TiltHandler = Handler.extend({
+		addHooks() {
+			DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
 
-		removeHooks: function() {
-			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
+		removeHooks() {
+			DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
 
-		_tilt: function(ev) {
+		_tilt(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-			this._map.panBy( L.point( ev.gamma, ev.beta ) );
+			this._map.panBy( new Point( ev.gamma, ev.beta ) );
 		}
 	});
 
 The handler can be attached to the map using `map.addHandler('tilt', L.TiltHandler)` - this will store an instance of `L.TiltHandler` as `map.tilt`. However, it's more usual to attach handlers to all maps with the `addInitHook` syntax:
 
-	L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
+	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
 Our handler can now be enabled by running `map.tilt.enable()` and disabled by `map.tilt.disable()`
 
 Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that options is `true`, so this will enable our handler by default:
 
-	var map = L.map('mapDiv', { tilt: true });
+	const map = new Map('mapDiv', { tilt: true });
 
 To see this example, you'll need a mobile browser which [supports the `deviceorientation` event](http://caniuse.com/#search=deviceorientation) - and even so, this event is particularly flaky and ill-specified, so beware.
 
@@ -68,9 +68,9 @@ To make a control, simply inherit from `L.Control` and implement `onAdd()` and `
 
 The simplest example of a custom control would be a watermark, which is just an image:
 
-	L.Control.Watermark = L.Control.extend({
-		onAdd: function(map) {
-			var img = L.DomUtil.create('img');
+	Control.Watermark = Control.extend({
+		onAdd(map) {
+			const img = DomUtil.create('img');
 
 			img.src = '../../docs/images/logo.png';
 			img.style.width = '200px';
@@ -78,16 +78,12 @@ The simplest example of a custom control would be a watermark, which is just an 
 			return img;
 		},
 
-		onRemove: function(map) {
+		onRemove(map) {
 			// Nothing to do here
 		}
 	});
 
-	L.control.watermark = function(opts) {
-		return new L.Control.Watermark(opts);
-	}
-
-	L.control.watermark({ position: 'bottomleft' }).addTo(map);
+	new Control.Watermark({ position: 'bottomleft' }).addTo(map);
 
 {% include frame.html url="watermark.html" %}
 
@@ -95,6 +91,6 @@ If your custom control has interactive elements such as clickable buttons, remem
 
 If your custom control consists of more than one HTML element (like `L.Control.Zoom`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
 
-## Publishing your plugin
+## Publishing Your Plugin
 
 If you have understood everything so far, you're ready to make some Leaflet plugins! But make sure to read the [`PLUGIN-GUIDE.md` file](https://github.com/Leaflet/Leaflet/blob/main/PLUGIN-GUIDE.md), as it contains some tips and good practices about naming and publishing your plugin.

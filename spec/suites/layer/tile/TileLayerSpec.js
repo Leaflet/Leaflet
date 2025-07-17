@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, DomUtil, Map, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, CRS, Map, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -175,14 +175,14 @@ describe('TileLayer', () => {
 	});
 
 	function kittenLayerFactory(options) {
-		return new TileLayer(placeKitten, options || {});
+		return new TileLayer(placeKitten, options ?? {});
 	}
 
 	function eachImg(layer, callback) {
 		const imgtags = layer._container.children[0].children;
-		for (const i in imgtags) {
-			if (imgtags[i].tagName === 'IMG') {
-				callback(imgtags[i]);
+		for (const tag of imgtags) {
+			if (tag.tagName === 'IMG') {
+				callback(tag);
 			}
 		}
 	}
@@ -440,10 +440,29 @@ describe('TileLayer', () => {
 				i++;
 			});
 		});
+
+		it('consults options.foo for {foo}', () => {
+			const OSMLayer = TileLayer.extend({options: {foo: 'bar'}});
+			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
+			map.options.zoomSnap = 0;
+			map._resetView(new LatLng(0, 0), 2.3);
+
+			const urls = [
+				'https://tile.openstreetmap.org/2/1/1.png?bar',
+				'https://tile.openstreetmap.org/2/2/1.png?bar',
+				'https://tile.openstreetmap.org/2/1/2.png?bar',
+				'https://tile.openstreetmap.org/2/2/2.png?bar'
+			];
+
+			let i = 0;
+			eachImg(layer, (img) => {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
 	});
 
-	const _describe = 'crossOrigin' in DomUtil.create('img') ? describe : describe.skip; // skip in IE<11
-	_describe('crossOrigin option', () => {
+	describe('crossOrigin option', () => {
 		beforeEach(() => {
 			map.setView([0, 0], 2);
 		});

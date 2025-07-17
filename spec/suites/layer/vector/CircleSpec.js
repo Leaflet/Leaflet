@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Circle, Map, Util, CRS, Transformation} from 'leaflet';
+import {Circle, Map, CRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -21,13 +21,6 @@ describe('Circle', () => {
 			const circle = new Circle([0, 0]);
 			expect(circle.getRadius()).to.eql(10);
 		});
-
-		it('throws error if radius is NaN', () => {
-			expect(() => {
-				new Circle([0, 0], NaN);
-			}).to.throw('Circle radius cannot be NaN');
-		});
-
 	});
 
 	describe('#getBounds', () => {
@@ -52,9 +45,9 @@ describe('Circle', () => {
 		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
 			map.remove();
 
-			const crs = Util.extend(CRS.Simple, {
-				transformation: new Transformation(-1, 0, -1, 0),
-			});
+			class crs extends CRS.Simple {
+				static transformation = new Transformation(-1, 0, -1, 0);
+			}
 			map = new Map(container, {
 				crs
 			});

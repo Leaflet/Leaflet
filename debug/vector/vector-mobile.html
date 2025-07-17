@@ -22,11 +22,7 @@
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			const map = new Map('map', {layers: [osm]});
-			const latlngs = [];
-
-			for (let i = 0; i < route.length; i++) {
-				latlngs.push(new LatLng(route[i][0], route[i][1]));
-			}
+			const latlngs = route.map(p => new LatLng(p[0], p[1]));
 
 			map.fitBounds(new LatLngBounds(latlngs));
 			map.addLayer(new Marker(latlngs[0]));
