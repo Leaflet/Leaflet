@@ -24,7 +24,7 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 // @constructor FeatureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
-export const FeatureGroup = LayerGroup.extend({
+export class FeatureGroup extends LayerGroup {
 
 	addLayer(layer) {
 		if (this.hasLayer(layer)) {
@@ -38,7 +38,7 @@ export const FeatureGroup = LayerGroup.extend({
 		// @event layeradd: LayerEvent
 		// Fired when a layer is added to this `FeatureGroup`
 		return this.fire('layeradd', {layer});
-	},
+	}
 
 	removeLayer(layer) {
 		if (!this.hasLayer(layer)) {
@@ -55,25 +55,25 @@ export const FeatureGroup = LayerGroup.extend({
 		// @event layerremove: LayerEvent
 		// Fired when a layer is removed from this `FeatureGroup`
 		return this.fire('layerremove', {layer});
-	},
+	}
 
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
 	setStyle(style) {
 		return this.invoke('setStyle', style);
-	},
+	}
 
 	// @method bringToFront(): this
 	// Brings the layer group to the top of all other layers
 	bringToFront() {
 		return this.invoke('bringToFront');
-	},
+	}
 
 	// @method bringToBack(): this
 	// Brings the layer group to the back of all other layers
 	bringToBack() {
 		return this.invoke('bringToBack');
-	},
+	}
 
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
@@ -85,4 +85,4 @@ export const FeatureGroup = LayerGroup.extend({
 		}
 		return bounds;
 	}
-});
+}
