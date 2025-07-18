@@ -4,7 +4,7 @@ category: markers-renderers
 repo: https://github.com/CarMi0Proggramer/leaflet-labels-renderer
 author: Carlos Miguel
 author-url: https://github.com/CarMi0Proggramer
-demo:
+demo: https://leaflet-labels-renderer.onrender.com
 compatible-v0:
 compatible-v1: true
 ---
