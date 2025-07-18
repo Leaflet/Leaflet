@@ -44,7 +44,7 @@ export class Transformation {
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts actual `Point` instances, not arrays.
 	transform(point, scale) { // (Point, Number) -> Point
-		return this._transform(point.clone(), scale);
+		return this._transform(new Point(point), scale);
 	}
 
 	// destructive transform (faster)

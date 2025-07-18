@@ -120,10 +120,10 @@ describe('LatLng', () => {
 		});
 	});
 
-	describe('#clone', () => {
-		it('should clone attributes', () => {
+	describe('copy constructor', () => {
+		it('should copy attributes', () => {
 			const a = new LatLng(50.5, 30.5, 100);
-			const b = a.clone();
+			const b = new LatLng(a);
 
 			expect(b.lat).to.equal(50.5);
 			expect(b.lng).to.equal(30.5);
@@ -132,7 +132,7 @@ describe('LatLng', () => {
 
 		it('should create another reference', () => {
 			const a = new LatLng(50.5, 30.5, 100);
-			const b = a.clone();
+			const b = new LatLng(a);
 
 			expect(a === b).to.be.false;
 		});
