@@ -2290,18 +2290,53 @@ describe('Map', () => {
 		let getCurrentPosSpy;
 		let watchPosSpy;
 
+		class MockGeolocationCoordinates {
+			/* GeolocationCoordinates instances in browsers have these characteristics:
+			 * 1. Enumerable instance properties for latitude, longitude, accuracy, etc.;
+			 * 2. Which are also getter functions;
+			 * 3. Which are all on the prototype, not reachable by Object.keys() on an instance object;
+			 * 4. Which are reachable by for…in traversal.
+			 *
+			 * This mock class mimics those characteristics by establishing getters acting on
+			 * private fields; and redefining those public getter properties as also enumerable (non-default behavior).
+			 */
+			#latitude;
+			#longitude;
+			#accuracy;
+
+			constructor(coords) {
+				this.#latitude = coords.latitude;
+				this.#longitude = coords.longitude;
+				this.#accuracy = coords.accuracy;
+			}
+
+			get latitude() {
+				return this.#latitude;
+			}
+
+			get longitude() {
+				return this.#longitude;
+			}
+
+			get accuracy() {
+				return this.#accuracy;
+			}
+		}
+
+		const mockProps = Object.getOwnPropertyDescriptors(MockGeolocationCoordinates);
+
+		Object.defineProperties(MockGeolocationCoordinates.prototype, {
+			latitude: {...mockProps.latitude, enumerable: true},
+			longitude: {...mockProps.longitude, enumerable: true},
+			accuracy: {...mockProps.accuracy, enumerable: true}
+		});
+
 		const geolocationStub = {
 			geolocation: {
 				getCurrentPosition(onSuccess) {
 					onSuccess(
 						{
-							coords:
-							{
-								latitude: 50,
-								longitude: 50,
-								accuracy: 14
-							},
-
+							coords: new MockGeolocationCoordinates({latitude: 50, longitude: 50, accuracy: 14}),
 							timestamp: 1670000000000
 						});
 
@@ -2311,13 +2346,7 @@ describe('Map', () => {
 				watchPosition(onSuccess) {
 					onSuccess(
 						{
-							coords:
-							{
-								latitude: 25,
-								longitude: 25,
-								accuracy: 14
-							},
-
+							coords: new MockGeolocationCoordinates({latitude: 25, longitude: 25, accuracy: 14}),
 							timestamp: 1660000000000
 						});
 
@@ -2399,6 +2428,7 @@ describe('Map', () => {
 			const expectedLatLngs = [25, 25];
 
 			map.on('locationfound', (data) => {
+				expect(data.accuracy).to.equal(14);
 				expect(data.latlng).to.be.nearLatLng(expectedLatLngs);
 				expect(data.timestamp).to.equal(1660000000000);
 
@@ -2432,6 +2462,7 @@ describe('Map', () => {
 			});
 
 			map.on('locationfound', (data) => {
+				expect(data.accuracy).to.equal(14);
 				expect(data.latlng).to.be.nearLatLng([50, 50]);
 				expect(data.timestamp).to.equal(1670000000000);
 
