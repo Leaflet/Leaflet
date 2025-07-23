@@ -25,9 +25,7 @@ export function create(tagName, className, container) {
 	const el = document.createElement(tagName);
 	el.className = className ?? '';
 
-	if (container) {
-		container.appendChild(el);
-	}
+	container?.appendChild(el);
 	return el;
 }
 

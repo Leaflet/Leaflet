@@ -51,9 +51,7 @@ export function createContainer(width, height) {
 }
 
 export function removeMapContainer(map, container) {
-	if (map) {
-		map.remove();
-	}
+	map?.remove();
 	if (container) {
 		document.body.removeChild(container);
 	}

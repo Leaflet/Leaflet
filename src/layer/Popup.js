@@ -45,89 +45,91 @@ import {FeatureGroup} from './FeatureGroup.js';
 // @alternative
 // @constructor Popup(latlng: LatLng, options?: Popup options)
 // Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export const Popup = DivOverlay.extend({
+export class Popup extends DivOverlay {
 
-	// @section
-	// @aka Popup options
-	options: {
-		// @option pane: String = 'popupPane'
-		// `Map pane` where the popup will be added.
-		pane: 'popupPane',
+	static {
+		// @section
+		// @aka Popup options
+		this.setDefaultOptions({
+			// @option pane: String = 'popupPane'
+			// `Map pane` where the popup will be added.
+			pane: 'popupPane',
 
-		// @option offset: Point = Point(0, 7)
-		// The offset of the popup position.
-		offset: [0, 7],
+			// @option offset: Point = Point(0, 7)
+			// The offset of the popup position.
+			offset: [0, 7],
 
-		// @option maxWidth: Number = 300
-		// Max width of the popup, in pixels.
-		maxWidth: 300,
+			// @option maxWidth: Number = 300
+			// Max width of the popup, in pixels.
+			maxWidth: 300,
 
-		// @option minWidth: Number = 50
-		// Min width of the popup, in pixels.
-		minWidth: 50,
+			// @option minWidth: Number = 50
+			// Min width of the popup, in pixels.
+			minWidth: 50,
 
-		// @option maxHeight: Number = null
-		// If set, creates a scrollable container of the given height
-		// inside a popup if its content exceeds it.
-		// The scrollable container can be styled using the
-		// `leaflet-popup-scrolled` CSS class selector.
-		maxHeight: null,
+			// @option maxHeight: Number = null
+			// If set, creates a scrollable container of the given height
+			// inside a popup if its content exceeds it.
+			// The scrollable container can be styled using the
+			// `leaflet-popup-scrolled` CSS class selector.
+			maxHeight: null,
 
-		// @option autoPan: Boolean = true
-		// Set it to `false` if you don't want the map to do panning animation
-		// to fit the opened popup.
-		autoPan: true,
+			// @option autoPan: Boolean = true
+			// Set it to `false` if you don't want the map to do panning animation
+			// to fit the opened popup.
+			autoPan: true,
 
-		// @option autoPanPaddingTopLeft: Point = null
-		// The margin between the popup and the top left corner of the map
-		// view after autopanning was performed.
-		autoPanPaddingTopLeft: null,
+			// @option autoPanPaddingTopLeft: Point = null
+			// The margin between the popup and the top left corner of the map
+			// view after autopanning was performed.
+			autoPanPaddingTopLeft: null,
 
-		// @option autoPanPaddingBottomRight: Point = null
-		// The margin between the popup and the bottom right corner of the map
-		// view after autopanning was performed.
-		autoPanPaddingBottomRight: null,
+			// @option autoPanPaddingBottomRight: Point = null
+			// The margin between the popup and the bottom right corner of the map
+			// view after autopanning was performed.
+			autoPanPaddingBottomRight: null,
 
-		// @option autoPanPadding: Point = Point(5, 5)
-		// Equivalent of setting both top left and bottom right autopan padding to the same value.
-		autoPanPadding: [5, 5],
+			// @option autoPanPadding: Point = Point(5, 5)
+			// Equivalent of setting both top left and bottom right autopan padding to the same value.
+			autoPanPadding: [5, 5],
 
-		// @option keepInView: Boolean = false
-		// Set it to `true` if you want to prevent users from panning the popup
-		// off of the screen while it is open.
-		keepInView: false,
+			// @option keepInView: Boolean = false
+			// Set it to `true` if you want to prevent users from panning the popup
+			// off of the screen while it is open.
+			keepInView: false,
 
-		// @option closeButton: Boolean = true
-		// Controls the presence of a close button in the popup.
-		closeButton: true,
+			// @option closeButton: Boolean = true
+			// Controls the presence of a close button in the popup.
+			closeButton: true,
 
-		// @option closeButtonLabel: String = 'Close popup'
-		// Specifies the 'aria-label' attribute of the close button.
-		closeButtonLabel: 'Close popup',
+			// @option closeButtonLabel: String = 'Close popup'
+			// Specifies the 'aria-label' attribute of the close button.
+			closeButtonLabel: 'Close popup',
 
-		// @option autoClose: Boolean = true
-		// Set it to `false` if you want to override the default behavior of
-		// the popup closing when another popup is opened.
-		autoClose: true,
+			// @option autoClose: Boolean = true
+			// Set it to `false` if you want to override the default behavior of
+			// the popup closing when another popup is opened.
+			autoClose: true,
 
-		// @option closeOnEscapeKey: Boolean = true
-		// Set it to `false` if you want to override the default behavior of
-		// the ESC key for closing of the popup.
-		closeOnEscapeKey: true,
+			// @option closeOnEscapeKey: Boolean = true
+			// Set it to `false` if you want to override the default behavior of
+			// the ESC key for closing of the popup.
+			closeOnEscapeKey: true,
 
-		// @option closeOnClick: Boolean = *
-		// Set it if you want to override the default behavior of the popup closing when user clicks
-		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
+			// @option closeOnClick: Boolean = *
+			// Set it if you want to override the default behavior of the popup closing when user clicks
+			// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
 
-		// @option className: String = ''
-		// A custom CSS class name to assign to the popup.
-		className: '',
+			// @option className: String = ''
+			// A custom CSS class name to assign to the popup.
+			className: '',
 
-		// @option trackResize: Boolean = true
-		// Whether the popup shall react to changes in the size of its contents
-		// (e.g. when an image inside the popup loads) and reposition itself.
-		trackResize: true,
-	},
+			// @option trackResize: Boolean = true
+			// Whether the popup shall react to changes in the size of its contents
+			// (e.g. when an image inside the popup loads) and reposition itself.
+			trackResize: true,
+		});
+	}
 
 	// @namespace Popup
 	// @method openOn(map: Map): this
@@ -142,7 +144,7 @@ export const Popup = DivOverlay.extend({
 		map._popup = this;
 
 		return DivOverlay.prototype.openOn.call(this, map);
-	},
+	}
 
 	onAdd(map) {
 		DivOverlay.prototype.onAdd.call(this, map);
@@ -165,7 +167,7 @@ export const Popup = DivOverlay.extend({
 				this._source.on('preclick', DomEvent.stopPropagation);
 			}
 		}
-	},
+	}
 
 	onRemove(map) {
 		DivOverlay.prototype.onRemove.call(this, map);
@@ -186,7 +188,7 @@ export const Popup = DivOverlay.extend({
 				this._source.off('preclick', DomEvent.stopPropagation);
 			}
 		}
-	},
+	}
 
 	getEvents() {
 		const events = DivOverlay.prototype.getEvents.call(this);
@@ -200,7 +202,7 @@ export const Popup = DivOverlay.extend({
 		}
 
 		return events;
-	},
+	}
 
 	_initLayout() {
 		const prefix = 'leaflet-popup',
@@ -244,20 +246,14 @@ export const Popup = DivOverlay.extend({
 
 			this._resizeObserver.observe(this._contentNode);
 		}
-	},
+	}
 
 	_updateLayout() {
 		const container = this._contentNode,
 		    style = container.style;
 
-		style.width = '';
-		style.whiteSpace = 'nowrap';
-
 		style.maxWidth = `${this.options.maxWidth}px`;
 		style.minWidth = `${this.options.minWidth}px`;
-		style.whiteSpace = '';
-
-		style.height = '';
 
 		const height = this._containerHeight ?? container.offsetHeight,
 		    maxHeight = this.options.maxHeight,
@@ -272,17 +268,17 @@ export const Popup = DivOverlay.extend({
 
 		this._containerWidth = this._container.offsetWidth;
 		this._containerHeight = this._container.offsetHeight;
-	},
+	}
 
 	_animateZoom(e) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		    anchor = this._getAnchor();
 		DomUtil.setPosition(this._container, pos.add(anchor));
-	},
+	}
 
 	_adjustPan() {
 		if (!this.options.autoPan) { return; }
-		if (this._map._panAnim) { this._map._panAnim.stop(); }
+		this._map._panAnim?.stop();
 
 		// We can endlessly recurse if keepInView is set and the view resets.
 		// Let's guard against that by exiting early if we're responding to our own autopan.
@@ -334,14 +330,14 @@ export const Popup = DivOverlay.extend({
 			    .fire('autopanstart')
 			    .panBy([dx, dy]);
 		}
-	},
+	}
 
 	_getAnchor() {
 		// Where should we anchor the popup on the source layer?
 		return new Point(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
-});
+}
 
 
 /* @namespace Map
@@ -373,9 +369,7 @@ Map.include({
 	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
 	closePopup(popup) {
 		popup = arguments.length ? popup : this._popup;
-		if (popup) {
-			popup.close();
-		}
+		popup?.close();
 		return this;
 	}
 });
@@ -451,33 +445,27 @@ Layer.include({
 	// @method closePopup(): this
 	// Closes the popup bound to this layer if it is open.
 	closePopup() {
-		if (this._popup) {
-			this._popup.close();
-		}
+		this._popup?.close();
 		return this;
 	},
 
 	// @method togglePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup() {
-		if (this._popup) {
-			this._popup.toggle(this);
-		}
+		this._popup?.toggle(this);
 		return this;
 	},
 
 	// @method isPopupOpen(): boolean
 	// Returns `true` if the popup bound to this layer is currently open.
 	isPopupOpen() {
-		return (this._popup ? this._popup.isOpen() : false);
+		return this._popup?.isOpen() ?? false;
 	},
 
 	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent(content) {
-		if (this._popup) {
-			this._popup.setContent(content);
-		}
+		this._popup?.setContent(content);
 		return this;
 	},
 

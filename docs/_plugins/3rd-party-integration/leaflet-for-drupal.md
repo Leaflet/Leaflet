@@ -2,11 +2,15 @@
 name: Leaflet for Drupal
 category: 3rd-party-integration
 repo: https://www.drupal.org/project/leaflet
-author: Marzee Labs
-author-url: https://marzeelabs.org/
-demo: 
+author: Italo Mairo
+author-url: https://www.drupal.org/u/itamair
+demo: https://www.geodemocracy.com/drupal_geofield_stack_demo/web/leaflet_choropleth
 compatible-v0:
 compatible-v1: true
 ---
 
-A Drupal (7.x and 8.x) module to integrate Leaflet maps in your Drupal site. Contains a field formatter to show a map for fields containing geospatial data, Views integration to plot data on a map, and a lightweight and easy to use API. Currently used by over 10.000 sites.
+An advanced Drupal module to implement (from basic to advanced) Leaflet Maps 
+integrations in Drupal solutions. Implements advanced and easy to use features 
+to both interactively insert | draw geospatial data (points and geometries) and
+represent them dynamically with tokens support from CMS data. Also provides 
+lightweight and easy to use API. Currently used by over 25.000 sites.

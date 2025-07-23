@@ -21,9 +21,9 @@ import * as Util from '../core/Util.js';
 
 // @constructor LayerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
-export const LayerGroup = Layer.extend({
+export class LayerGroup extends Layer {
 
-	initialize(layers, options) {
+	initialize(layers, options) { // for compatibility of code using `LayerGroup.extend`
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -31,7 +31,7 @@ export const LayerGroup = Layer.extend({
 		for (const layer of layers ?? []) {
 			this.addLayer(layer);
 		}
-	},
+	}
 
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the group.
@@ -40,12 +40,10 @@ export const LayerGroup = Layer.extend({
 
 		this._layers[id] = layer;
 
-		if (this._map) {
-			this._map.addLayer(layer);
-		}
+		this._map?.addLayer(layer);
 
 		return this;
-	},
+	}
 
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the group.
@@ -62,7 +60,7 @@ export const LayerGroup = Layer.extend({
 		delete this._layers[id];
 
 		return this;
-	},
+	}
 
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the group.
@@ -72,13 +70,13 @@ export const LayerGroup = Layer.extend({
 	hasLayer(layer) {
 		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
-	},
+	}
 
 	// @method clearLayers(): this
 	// Removes all the layers from the group.
 	clearLayers() {
 		return this.eachLayer(this.removeLayer, this);
-	},
+	}
 
 	// @method invoke(methodName: String, …): this
 	// Calls `methodName` on every layer contained in this group, passing any
@@ -86,20 +84,18 @@ export const LayerGroup = Layer.extend({
 	// implement `methodName`.
 	invoke(methodName, ...args) {
 		for (const layer of Object.values(this._layers)) {
-			if (layer[methodName]) {
-				layer[methodName].apply(layer, args);
-			}
+			layer[methodName]?.apply(layer, args);
 		}
 		return this;
-	},
+	}
 
 	onAdd(map) {
 		this.eachLayer(map.addLayer, map);
-	},
+	}
 
 	onRemove(map) {
 		this.eachLayer(map.removeLayer, map);
-	},
+	}
 
 	// @method eachLayer(fn: Function, context?: Object): this
 	// Iterates over the layers of the group, optionally specifying context of the iterator function.
@@ -111,13 +107,13 @@ export const LayerGroup = Layer.extend({
 			method.call(context, layer);
 		}
 		return this;
-	},
+	}
 
 	// @method getLayer(id: Number): Layer
 	// Returns the layer with the given internal ID.
 	getLayer(id) {
 		return this._layers[id];
-	},
+	}
 
 	// @method getLayers(): Layer[]
 	// Returns an array of all the layers added to the group.
@@ -125,17 +121,17 @@ export const LayerGroup = Layer.extend({
 		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
-	},
+	}
 
 	// @method setZIndex(zIndex: Number): this
 	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	setZIndex(zIndex) {
 		return this.invoke('setZIndex', zIndex);
-	},
+	}
 
 	// @method getLayerId(layer: Layer): Number
 	// Returns the internal ID for a layer
 	getLayerId(layer) {
 		return Util.stamp(layer);
 	}
-});
+}
