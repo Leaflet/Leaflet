@@ -1763,3 +1763,5 @@ export const Map = Evented.extend({
 		this._moveEnd(true);
 	}
 });
+
+export const LeafletMap = Map
