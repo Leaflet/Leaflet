@@ -1756,4 +1756,4 @@ export class Map extends Evented {
 	}
 }
 
-export const LeafletMap = Map
+export const LeafletMap = Map;
