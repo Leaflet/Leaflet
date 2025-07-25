@@ -1756,4 +1756,13 @@ export class Map extends Evented {
 	}
 }
 
+// @section
+// @constructor LeafletMap(id: String, options?: LeafletMap options)
+// Instantiates a map object given the DOM ID of a `<div>` element
+// and optionally an object literal with `LeafletMap options`.
+//
+// @alternative
+// @constructor LeafletMap(el: HTMLElement, options?: LeafletMap options)
+// Instantiates a map object given an instance of a `<div>` HTML element
+// and optionally an object literal with `LeafletMap options`.
 export const LeafletMap = Map;
