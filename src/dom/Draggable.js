@@ -70,10 +70,6 @@ export class Draggable extends Evented {
 	}
 
 	_onDown(e) {
-		// Ignore the event if disabled; this happens in IE11
-		// under some circumstances, see #3666.
-		if (!this._enabled) { return; }
-
 		this._moved = false;
 
 		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
@@ -115,10 +111,6 @@ export class Draggable extends Evented {
 	}
 
 	_onMove(e) {
-		// Ignore the event if disabled; this happens in IE11
-		// under some circumstances, see #3666.
-		if (!this._enabled) { return; }
-
 		if (PointerEvents.getPointers().length > 1) {
 			this._moved = true;
 			return;
@@ -174,9 +166,6 @@ export class Draggable extends Evented {
 	}
 
 	_onUp() {
-		// Ignore the event if disabled; this happens in IE11
-		// under some circumstances, see #3666.
-		if (!this._enabled) { return; }
 		this.finishDrag();
 	}
 
