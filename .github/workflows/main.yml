@@ -165,32 +165,6 @@ jobs:
       - name: Run tests on ${{ matrix.browser }} with touch
         run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
-  publish-artifacts:
-    needs: setup
-    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore setup
-        uses: actions/cache@v4
-        with:
-          path: ./*
-          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
-
-      - name: Compress artifacts
-        working-directory: dist
-        run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
-
-      - name: Publish artifacts
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --delete --exact-timestamps
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: dist
-          DEST_DIR: content/leaflet/${{ github.ref_name }}
-
   publish-npm:
     needs: setup
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
