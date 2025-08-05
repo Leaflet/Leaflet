@@ -39,7 +39,7 @@ And the way to use that in a Leaflet map is simply:
 
 An instance of `L.TileLayer.WMS` needs at least one option: `layers`. Be careful, as the concept of "layer" in Leaflet is different from the concept of "layer" in WMS!
 
-WMS servers define a set of *layers* in the service. These are defined in the `GetCapabilities` XML document, which most times is tedious and difficult to understand. Usually it's a good idea to use software such as [QGIS to see what layers are available in a WMS server](http://www.qgistutorials.com/en/docs/working_with_wms.html) to see the layer names available:
+WMS servers define a set of *layers* in the service. These are defined in the `GetCapabilities` XML document, which most times is tedious and difficult to understand. Usually it's a good idea to use software such as [QGIS to see what layers are available in a WMS server](https://www.qgistutorials.com/en/docs/3/working_with_wms.html) to see the layer names available:
 
 ![Discovering WMS layers with QGIS](qgis-wms-layers.png)
 
