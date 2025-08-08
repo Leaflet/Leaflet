@@ -7,6 +7,7 @@ author-url: http://ursudio.com/webgl-heatmap-leaflet/
 demo: https://ursudio.github.io/leaflet-webgl-heatmap/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 High performance Javascript heatmap plugin using WebGL.

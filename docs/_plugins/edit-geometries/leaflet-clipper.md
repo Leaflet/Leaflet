@@ -7,6 +7,7 @@ author-url: https://github.com/willfarrell
 demo: https://willfarrell.github.io/Leaflet.Clipper/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows Union, Difference, Xor, and Intersection operations on two polygons.

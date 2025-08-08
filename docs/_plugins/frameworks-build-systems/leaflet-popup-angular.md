@@ -7,6 +7,7 @@ author-url: https://github.com/grantHarris
 demo: http://grantharris.github.io/leaflet-popup-angular/examples/examples.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Use AngularJS in your Leaflet popups. Extends the built-in L.popup.

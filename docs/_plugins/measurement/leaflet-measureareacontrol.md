@@ -7,6 +7,7 @@ author-url: https://github.com/zvaraondrej
 demo: http://zvaraondrej.github.io/Leaflet.MeasureAreaControl/example/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Control for measuring element's area.

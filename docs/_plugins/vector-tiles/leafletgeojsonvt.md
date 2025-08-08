@@ -7,6 +7,7 @@ author-url: https://github.com/iamtekson
 demo: https://iamtekson.github.io/leaflet-geojson-vt/demo/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displaying the vector tiles of GeoJSON data on the fly on leaflet

@@ -7,6 +7,7 @@ author-url: https://github.com/tinuzz/
 demo: https://www.grendelman.net/leaflet/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display a temporary text message on a map.

@@ -7,6 +7,7 @@ author-url: https://github.com/gregallensworth
 demo: http://gregallensworth.github.io/L.Control.jQueryDialog/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Trigger a jQuery UI dialog/modal using an on-map control.

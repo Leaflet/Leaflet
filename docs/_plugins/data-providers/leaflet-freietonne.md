@@ -7,6 +7,7 @@ author-url: https://github.com/cdauth
 demo: https://unpkg.com/leaflet-freie-tonne/example.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 An overlay with nautical features from <a href="https://www.freietonne.de/">FreieTonne</a>.

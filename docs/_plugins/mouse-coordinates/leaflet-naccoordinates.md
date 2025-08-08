@@ -7,6 +7,7 @@ author-url: https://github.com/mahmoodvcs
 demo:
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays NAC coordinate of the mouse pointer on mouse move.

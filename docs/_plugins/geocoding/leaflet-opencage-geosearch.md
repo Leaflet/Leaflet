@@ -7,6 +7,7 @@ author-url: https://github.com/opencagedata
 demo: https://opencagedata.com/tutorials/leaflet-location-search
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A plugin that uses <a href="https://opencagedata.com/geosearch">OpenCage's geosearch</a> for location autosuggest.

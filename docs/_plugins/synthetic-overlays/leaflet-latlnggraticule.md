@@ -7,6 +7,7 @@ author-url: https://github.com/cloudybay/
 demo: https://cloudybay.github.io/leaflet.latlng-graticule/example/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Create a Canvas as ImageOverlay to draw the Lat/Lon Graticule, and show the grid tick label at the edges of the map.

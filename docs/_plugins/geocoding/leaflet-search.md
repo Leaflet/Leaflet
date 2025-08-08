@@ -7,6 +7,7 @@ author-url: https://github.com/sjaakp
 demo: https://sjaakpriester.nl/software/leaflet-search
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A Search Control with autocomplete/suggest capabilities. Supports Nominatim, GeoNames, Here, TomTom, and Kadaster (Netherlands).

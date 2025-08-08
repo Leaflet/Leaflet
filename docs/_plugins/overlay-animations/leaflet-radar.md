@@ -7,6 +7,7 @@ author-url: https://github.com/cygis2011
 demo: https://cygis2011.github.io/leaflet-radar/demo/index.html
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Radar sector scan animation

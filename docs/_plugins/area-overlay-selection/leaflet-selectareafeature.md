@@ -7,6 +7,7 @@ author-url: https://github.com/sandropibia
 demo: https://sandropibia.github.io/Leaflet.SelectAreaFeature/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Selecting feature layers on a map by drawing an area.

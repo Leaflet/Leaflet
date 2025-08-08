@@ -7,6 +7,7 @@ author-url: https://www.drupal.org/u/itamair
 demo: https://www.geodemocracy.com/drupal_geofield_stack_demo/web/leaflet_choropleth
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 An advanced Drupal module to implement (from basic to advanced) Leaflet Maps 

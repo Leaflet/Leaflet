@@ -7,6 +7,7 @@ author-url: https://www.digital-democracy.org/
 demo: http://lab.digital-democracy.org/leaflet-side-by-side/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A Leaflet control to add a split screen to compare two map overlays.

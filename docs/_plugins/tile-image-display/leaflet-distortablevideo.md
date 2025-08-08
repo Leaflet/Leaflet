@@ -7,6 +7,7 @@ author-url: https://github.com/ronikar
 demo: https://ronikar.github.io/Leaflet.DistortableVideo/examples/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Enable users to scale, rotate, and distort videos on Leaflet maps.

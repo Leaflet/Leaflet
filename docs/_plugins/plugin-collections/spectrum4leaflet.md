@@ -7,6 +7,7 @@ author-url: https://github.com/SVoyt
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Tools for using Spectrum Spatial Server services with leaflet. This plugin supports: map service, tile service, feature service. It has layers, legend and feature controls.

@@ -7,6 +7,7 @@ author-url: http://www.kartena.se/index.html
 demo: https://kartena.github.io/Proj4Leaflet/#examples
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 <a href="https://trac.osgeo.org/proj4js/">Proj4js</a> integration plugin, allowing you to use all kinds of weird projections in Leaflet.

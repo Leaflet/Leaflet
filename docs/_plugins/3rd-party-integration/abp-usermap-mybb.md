@@ -7,6 +7,7 @@ author-url: https://gitlab.com/AnoBug
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A plugin for <a href="https://mybb.com/">MyBB</a> creating a map of users based on Open Street Map and Leaflet, with customisable popup and markers

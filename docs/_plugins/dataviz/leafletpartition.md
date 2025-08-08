@@ -7,6 +7,7 @@ author-url: https://github.com/locknono
 demo: https://locknono.github.io/leaflet-partition/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Divide the area into parts in different ways such as voronoi(triangulation) and hexagonal tiling.

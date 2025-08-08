@@ -7,6 +7,7 @@ author-url: https://github.com/zimmicz
 demo: https://www.zimmi.cz/Leaflet-Coordinates-Control/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Captures mouseclick and displays its coordinates with easy way to copy them.

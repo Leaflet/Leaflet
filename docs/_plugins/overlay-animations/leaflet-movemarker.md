@@ -7,6 +7,7 @@ author-url: https://github.com/dekguh
 demo: https://real-demo-leaflet-movemarker.netlify.app
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Used to create moving marker animation and also trail polyline animation.

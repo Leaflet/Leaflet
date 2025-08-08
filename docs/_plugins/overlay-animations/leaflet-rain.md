@@ -7,6 +7,7 @@ author-url: https://github.com/ggolikov
 demo: https://ggolikov.github.io/Leaflet.Rain/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Customizable WebGL rain animation for Leaflet. Useful for weather maps.

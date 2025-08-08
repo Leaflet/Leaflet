@@ -7,6 +7,7 @@ author-url: https://github.com/lizardtechblog/
 demo: https://lizardtechblog.github.io/Leaflet.OpacityControls/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Simple Leaflet controls to adjust the opacity of a map layer.

@@ -7,6 +7,7 @@ author-url: http://mackerron.com/
 demo: http://jawj.github.io/OverlappingMarkerSpiderfier-Leaflet/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Deals with overlapping markers in a Google Earth-inspired way by gracefully springing them apart on click.

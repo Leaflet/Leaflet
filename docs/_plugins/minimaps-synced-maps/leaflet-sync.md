@@ -7,6 +7,7 @@ author-url: https://github.com/turban
 demo: https://jieter.github.io/Leaflet.Sync/examples/dual.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Synchronized view of two maps.

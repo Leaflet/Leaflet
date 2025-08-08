@@ -7,6 +7,7 @@ author-url: https://github.com/alcalin
 demo: https://alcalin.github.io/L.TileLayer.WMTS/example.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple WMTS Tile Layer plugin for Leaflet.

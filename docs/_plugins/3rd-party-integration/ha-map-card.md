@@ -7,5 +7,6 @@ author-url: https://nathan.gs
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 A [Home Assistant](https://www.home-assistant.io/) map-card based on Leaflet, it contains more advanced features then the stock map-card (also based on Leaflet). 

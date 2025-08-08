@@ -7,6 +7,7 @@ author-url: https://github.com/ismyrnow
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows you to define tile layer URLs using a function. Even works with asynchronous sources, using promises.

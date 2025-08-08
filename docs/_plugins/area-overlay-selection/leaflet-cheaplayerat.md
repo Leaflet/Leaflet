@@ -7,6 +7,7 @@ author-url: https://github.com/IvanSanchez
 demo: http://ivansanchez.github.io/Leaflet.CheapLayerAt/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows querying which layer is under a screen coordinate.

@@ -7,6 +7,7 @@ author-url: https://github.com/rwev
 demo: https://rwev.github.io/leaflet-view-meta/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Plugin control that displays and persists map view meta-data, center and boundary coordinates to URL for precise sharing and view reconstruction.

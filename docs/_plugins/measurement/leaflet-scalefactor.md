@@ -7,6 +7,7 @@ author-url: https://github.com/MarcChasse
 demo: https://marcchasse.github.io/leaflet.ScaleFactor/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display a Scale Factor (e.g. 1:50,000) for Leaflet maps.

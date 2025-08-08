@@ -7,6 +7,7 @@ author-url: https://github.com/axyjo
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 This gem provides the leaflet.js map display library for your Rails 5 application. <a href="https://rubygems.org/gems/leaflet-rails">leaflet-rails on RubyGems</a>

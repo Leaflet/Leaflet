@@ -7,6 +7,7 @@ author-url: https://asymmetrik.com/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet components and extensions for <a href="https://angular.io/">Angular.io</a>.

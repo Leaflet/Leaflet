@@ -7,6 +7,7 @@ author-url: https://github.com/wrwrh/
 demo: https://wrwrh.github.io/leaflet-popupmovable/Demo/index.html
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 This plug-in makes L.Popup movable by user drag and automatically draws leads.

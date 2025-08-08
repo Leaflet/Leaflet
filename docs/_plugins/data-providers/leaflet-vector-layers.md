@@ -7,6 +7,7 @@ author-url: http://geojason.info/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows to easily create vector layers from a number of geo web services, such as ArcGIS Server, Arc2Earth, GeoIQ, CartoDB and GIS Cloud.

@@ -7,6 +7,7 @@ author-url: https://github.com/kalisio
 demo: https://kalisio.github.io/leaflet-graphicscale
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Configurable and animated graphic scale control.

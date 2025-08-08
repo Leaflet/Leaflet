@@ -7,6 +7,7 @@ author-url: https://github.com/jonshutt
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Overlays UK Ordinance Survey (OS) 1km grid squares and labels.

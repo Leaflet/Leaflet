@@ -7,6 +7,7 @@ author-url: https://github.com/andy-kay
 demo: http://andy-kay.github.io/Leaflet.GridCluster/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Create grid-based clusters in realtime.

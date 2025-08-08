@@ -7,6 +7,7 @@ author-url: https://github.com/GuillaumeAmat
 demo: https://leaflet-overpass-layer-demo.stackblitz.io/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Easily include data from the <a href="http://overpass-api.de">overpass api</a>.

@@ -7,6 +7,7 @@ author-url: https://day-journal.com/
 demo: https://dayjournal.github.io/Leaflet.Control.Opacity/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Make multiple tile layers transparent.

@@ -7,6 +7,7 @@ author-url: https://github.com/springmeyer
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A JS library for drawing great circle routes that can be used with Leaflet.

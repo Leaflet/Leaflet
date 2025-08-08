@@ -7,6 +7,7 @@ author-url: https://github.com/powerpan
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Adds a Search Box for your Leaflet Map and Your [leaflet-ais-trackymbol](https://github.com/PowerPan/leaflet-ais-tracksymbol)

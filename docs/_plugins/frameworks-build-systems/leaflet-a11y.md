@@ -7,6 +7,7 @@ author-url: https://nick.freear.org.uk/
 demo: https://nfreear.github.io/leaflet.a11y/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 An accessibility and localization/translation plugin for Leaflet.

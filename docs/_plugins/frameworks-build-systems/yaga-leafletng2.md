@@ -7,6 +7,7 @@ author-url: https://github.com/yagajs
 demo:
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Granular integration into Angular2/4.

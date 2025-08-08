@@ -7,6 +7,7 @@ author-url: https://github.com/ewoken
 demo: http://ewoken.github.io/Leaflet.MovingMarker/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allow to move markers along a polyline with custom durations.

@@ -7,6 +7,7 @@ author-url: https://github.com/ismyrnow
 demo: https://ismyrnow.github.io/leaflet-groupedlayercontrol/example/advanced.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet layer control with support for grouping overlays together.

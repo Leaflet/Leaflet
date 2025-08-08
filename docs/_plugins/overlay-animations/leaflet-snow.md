@@ -7,6 +7,7 @@ author-url: https://github.com/ggolikov
 demo: https://ggolikov.github.io/Leaflet.Snow/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Customizable WebGL snow animation for Leaflet. Useful for weather maps.

@@ -7,6 +7,7 @@ author-url: https://gitlab.com/IvanSanchez
 demo: http://https//ivansanchez.gitlab.io/Leaflet.GLMarkers/demo/repl.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display thousands of markers with custom WebGL shaders, optionally animated.

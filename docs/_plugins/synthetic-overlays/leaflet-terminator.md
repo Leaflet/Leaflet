@@ -7,6 +7,7 @@ author-url: https://github.com/joergdietrich
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Overlay day and night regions on a map.

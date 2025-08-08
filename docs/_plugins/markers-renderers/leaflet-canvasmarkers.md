@@ -7,6 +7,7 @@ author-url: https://github.com/eJuke
 demo: https://ejuke.github.io/Leaflet.Canvas-Markers/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays markers on canvas instead of DOM.
