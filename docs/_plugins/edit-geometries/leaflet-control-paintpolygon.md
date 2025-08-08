@@ -7,6 +7,7 @@ author-url: https://github.com/tcoupin
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Draw yours polygons with a circle brush like Paint[brush]. Includes turf.js dependencies.

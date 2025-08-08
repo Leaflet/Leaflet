@@ -7,6 +7,7 @@ author-url: https://github.com/utahemre
 demo: https://utahemre.github.io/geojsonautocompletedemo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet Autocomplete For Remote Searching with GeoJSON Services.

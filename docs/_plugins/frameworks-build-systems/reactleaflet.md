@@ -7,6 +7,7 @@ author-url: http://paullecam.github.io/
 demo: https://react-leaflet.js.org/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 <a href="https://reactjs.org/">React</a> components for Leaflet maps.

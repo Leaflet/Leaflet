@@ -7,6 +7,7 @@ author-url: https://bozdoz.com/projects/leaflet-map
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Interactive and flexible shortcode to create multiple maps in posts and pages,			and to add multiple markers on those maps.

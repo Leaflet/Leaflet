@@ -7,6 +7,7 @@ author-url: https://github.com/albburtsev/
 demo: http://albburtsev.github.io/Leaflet.geojsonCSS/src/demo/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 <a href="https://wiki.openstreetmap.org/wiki/Geojson_CSS">Geojson CSS</a> implementation for Leaflet.

@@ -7,6 +7,7 @@ author-url: https://github.com/mattesCZ
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Tiny LeafletJS map directive for your AngularJS apps.

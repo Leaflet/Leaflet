@@ -7,6 +7,7 @@ author-url: https://github.com/IvanSanchez
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Animates (poly)lines into existence, as if they were being slowly drawn from start to end.

@@ -7,6 +7,7 @@ author-url: https://github.com/mattiasb
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.

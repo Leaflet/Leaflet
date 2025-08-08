@@ -7,6 +7,7 @@ author-url: https://github.com/maneoverland
 demo: https://maneoverland.github.io/leaflet.WorldMiniMap/
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 A small minimap showing the map-view on a world-mini-map to aid navigation.

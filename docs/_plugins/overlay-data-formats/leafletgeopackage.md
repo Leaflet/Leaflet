@@ -7,6 +7,7 @@ author-url: https://github.com/danielbarela
 demo: https://ngageoint.github.io/leaflet-geopackage/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Load <a href="http://www.geopackage.org/">GeoPackage</a> Tile and Feature Layers.

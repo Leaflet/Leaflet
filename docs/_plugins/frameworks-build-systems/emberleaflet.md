@@ -7,6 +7,7 @@ author-url: https://github.com/miguelcobain
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Easy and declarative mapping for <a href="https://emberjs.com/">Ember.js</a> using Leaflet.

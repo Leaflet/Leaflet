@@ -7,6 +7,7 @@ author-url: https://webkid.io/
 demo: https://wbkd.github.io/leaflet-truesize/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A plugin for creating projection aware draggable polygons and polylines.

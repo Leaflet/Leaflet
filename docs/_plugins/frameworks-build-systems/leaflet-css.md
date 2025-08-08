@@ -7,6 +7,7 @@ author-url: https://github.com/calvinmetcalf
 demo: https://leaflet-extras.github.io/leaflet.css/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Add the main Leaflet CSS files (or any css) from within JavaScript, be gone conditional comments.

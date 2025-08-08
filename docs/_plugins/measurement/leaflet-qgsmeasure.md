@@ -7,6 +7,7 @@ author-url: https://github.com/gabriel-russo/
 demo: https://gabriel-russo.github.io/Leaflet.QgsMeasure/example/
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet control to measure segment distances on the map like Qgis Ruler.

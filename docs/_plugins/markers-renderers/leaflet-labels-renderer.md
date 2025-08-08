@@ -7,6 +7,7 @@ author-url: https://github.com/CarMi0Proggramer
 demo: https://leaflet-labels-renderer.onrender.com
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Adds a custom Canvas renderer to show labels on polylines along the path.

@@ -7,6 +7,7 @@ author-url: https://github.com/mstahv
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Use Leaflet as a component for the <a href="https://vaadin.com/">Vaadin</a> Java/HTML framework.

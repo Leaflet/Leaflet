@@ -7,6 +7,7 @@ author-url: https://github.com/xguaita
 demo: http://xguaita.github.io/Leaflet.MapCenterCoord/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A Leaflet control to display the coordinates of the map center, especially useful on touch/mobile devices.

@@ -7,6 +7,7 @@ author-url: https://github.com/zverik
 demo: https://zverik.github.io/Leaflet.LimitZoom/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Plugins to limit available zoom levels to a given list, either by restricting zooming or by interpolating tiles.

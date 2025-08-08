@@ -7,6 +7,7 @@ author-url: https://github.com/BenjaminVadant/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Add an auto updating GeoJSON data Layer via ajax post requests.

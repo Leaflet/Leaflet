@@ -7,6 +7,7 @@ author-url: https://github.com/Igor-Vladyka/
 demo: https://igor-vladyka.github.io/leaflet.motion/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Adds simple motion to your polyline with marker in a head on line.

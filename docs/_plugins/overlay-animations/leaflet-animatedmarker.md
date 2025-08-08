@@ -7,6 +7,7 @@ author-url: https://github.com/atogle
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Animate a marker along a polyline.

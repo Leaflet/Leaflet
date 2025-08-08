@@ -7,6 +7,7 @@ author-url: https://github.com/phloose/
 demo: https://phloose.github.io/leaflet-layervisibility/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Extends L.Layer and L.LayerGroup with methods to hide/show layers without removing/re-adding them.

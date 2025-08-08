@@ -7,6 +7,7 @@ author-url: https://github.com/barryhunter/
 demo: https://www.geograph.org/leaflet/Leaflet.GeographPhotos/GeographPhotos-example.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display Geographical-Photos from Geograph Britain and Ireland in an interactive overlay, using their API.

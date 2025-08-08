@@ -7,6 +7,7 @@ author-url: https://github.com/tomchadwin
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A <a href="https://qgis.org/">QGIS</a> plugin to make webmaps without coding.

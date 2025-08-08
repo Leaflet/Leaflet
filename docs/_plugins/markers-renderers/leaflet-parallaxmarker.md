@@ -7,6 +7,7 @@ author-url: https://github.com/dagjomar/
 demo: https://dagjomar.github.io/Leaflet.ParallaxMarker/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Add markers that moves with a parallax-effect relative to the map when panning.

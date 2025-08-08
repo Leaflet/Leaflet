@@ -7,6 +7,7 @@ author-url: https://github.com/yellowiscool
 demo: http://sintef-9012.github.io/PruneCluster/examples/random.10000-size.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Fast and realtime marker clustering library.

@@ -7,6 +7,7 @@ author-url: https://github.com/manleyjster
 demo: https://justinmanley.github.io/Leaflet.Illustrate/examples/0.0.2/simple/
 compatible-v0: true
 compatible-v1: false
+compatible-v2: false
 ---
 
 Extension for Leaflet.draw enabling users to type annotations directly on maps.

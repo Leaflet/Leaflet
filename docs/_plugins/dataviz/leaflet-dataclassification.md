@@ -7,6 +7,7 @@ author-url: https://github.com/balladaniel/
 demo: https://balladaniel.github.io/leaflet-dataclassification/examples/combined.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Single-step data classification, symbology and legend creation for GeoJSON data powered thematic maps.

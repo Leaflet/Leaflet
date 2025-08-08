@@ -7,6 +7,7 @@ author-url: https://github.com/ebertin
 demo: http://image.iap.fr/iip/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Add support for <a href="https://iipimage.sourceforge.io/">IIPImage</a> layers in Leaflet.

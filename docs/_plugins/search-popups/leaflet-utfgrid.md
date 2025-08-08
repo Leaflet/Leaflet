@@ -7,6 +7,7 @@ author-url: https://github.com/danzel
 demo: 
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Provides a utfgrid interaction handler for leaflet a very small footprint.

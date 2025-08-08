@@ -7,6 +7,7 @@ author-url: https://github.com/mapshakers
 demo: http://mapshakers.com/projects/leaflet-pulse-icon/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Renders pulsing icon using CSS. It can be used for location marker.

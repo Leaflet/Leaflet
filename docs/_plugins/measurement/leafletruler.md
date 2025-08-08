@@ -7,6 +7,7 @@ author-url: https://github.com/gokertanrisever
 demo: https://gokertanrisever.github.io/leaflet-ruler/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple leaflet plugin to measure true bearing and distance between clicked points.

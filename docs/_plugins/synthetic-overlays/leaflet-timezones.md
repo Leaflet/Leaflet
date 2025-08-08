@@ -7,6 +7,7 @@ author-url: https://github.com/dj0001
 demo: https://dj0001.github.io/Leaflet.timezones/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Overlay timezones on a Leaflet Earth map.

@@ -7,6 +7,7 @@ author-url: https://github.com/perliedman
 demo: https://www.liedman.net/leaflet-touch-helper/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Makes it easy to touch vector overlays with thick fingers on a small display by adding a transparent, larger touch surface

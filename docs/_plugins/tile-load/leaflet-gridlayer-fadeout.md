@@ -7,6 +7,7 @@ author-url: https://github.com/IvanSanchez
 demo: https://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Fades out grid layers and tilelayers when they are removed, making basemap changes smoother (for 1.0.0).
