@@ -28,14 +28,8 @@
             }
 
             if (config.version) {
-                if (config.version === 'main') {
-                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.css',
-                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet-src.js'
-                } else {
-                    config.cssFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet.css`
-                    config.jsFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet-src.js`
-                }
-
+                config.cssFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet.css`
+                config.jsFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet-src.js`
             }
 
             function createForm (action) {
