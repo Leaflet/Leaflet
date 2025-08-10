@@ -19,6 +19,15 @@ table.plugins td > p {
 	max-width: none;
 	margin-right: 5px;
 }
+.compatible {
+	padding: 3px;
+}
+table.plugins th {
+	cursor: pointer;
+}
+table.plugins th:hover {
+	background: #dbdbdb;
+}
 </style>
 
 ## Leaflet Plugins database
@@ -452,4 +461,61 @@ function loadRepoData() {
 	});
 }
 loadRepoData();
+
+document.querySelectorAll('table.plugins th').forEach((th) => {
+	th.addEventListener('click', () => {
+		sortTable(th);
+	});
+});
+
+function sortTable(header) {
+	const table = header.closest('table');
+	const tbody = table.tBodies[0];
+	const rows = Array.from(tbody.rows);
+
+	// Column index to sort by
+	const columnIndex = Array.from(header.parentNode.children).indexOf(header);
+
+	// Skip the first row (headers)
+	const fixedRow = rows.shift(); // Remove and keep the first row
+
+	const dir = header.dataset.sortDir === 'asc' ? 'desc' : 'asc';
+	header.dataset.sortDir = dir;
+
+	rows.sort((a, b) => {
+		const aText = a.cells[columnIndex].textContent.trim();
+		const bText = b.cells[columnIndex].textContent.trim();
+
+		const aEmpty = aText === '';
+		const bEmpty = bText === '';
+
+		if (aEmpty && !bEmpty) {
+			return dir === 'asc' ? 1 : -1;
+		}
+		if (!aEmpty && bEmpty) {
+			return dir === 'asc' ? -1 : 1;
+		}
+		if (aEmpty && bEmpty) {
+			return 0;
+		}
+
+		// Try to convert to numbers if possible
+		const aVal = isNaN(aText) ? aText.toLowerCase() : parseFloat(aText);
+		const bVal = isNaN(bText) ? bText.toLowerCase() : parseFloat(bText);
+
+		if (aVal > bVal) {
+			return dir === 'asc' ? 1 : -1;
+		}
+		if (aVal < bVal) {
+			return dir === 'asc' ? -1 : 1;
+		}
+		return 0;
+	});
+
+	// Clear tbody and re-add the fixed row and sorted rows
+	tbody.innerHTML = '';
+	tbody.appendChild(fixedRow);
+	rows.forEach(row => tbody.appendChild(row));
+}
+
 </script>

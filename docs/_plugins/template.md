@@ -4,7 +4,7 @@ category: required (same name as directory)
 repo: required
 author: required
 author-url:
-demo: 
+demo: required
 compatible-v0:
 compatible-v1: true
 compatible-v2: false
