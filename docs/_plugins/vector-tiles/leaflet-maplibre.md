@@ -7,6 +7,7 @@ author-url: https://www.maplibre.org/
 demo:
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Loads a [maplibre-gl-js](https://maplibre.org/projects/maplibre-gl-js/) map as a Leaflet layer

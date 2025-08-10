@@ -7,6 +7,7 @@ author-url: https://github.com/commenthol
 demo: https://commenthol.github.io/leaflet-rastercoords/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Renders large tiled images generated with <a href="https://github.com/commenthol/gdal2tiles-leaflet">gdal2tiles-leaflet</a>. Image raster coordinates can be used to set markers, etc.

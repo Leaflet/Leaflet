@@ -7,6 +7,7 @@ author-url: https://github.com/oliverroick
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Deflates lines and polygons to a marker when their screen size becomes too small in lower zoom levels.

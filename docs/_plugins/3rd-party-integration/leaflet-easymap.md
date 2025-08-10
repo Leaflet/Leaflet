@@ -7,6 +7,7 @@ author-url: https://github.com/Lapizistik
 demo: https://lapizistik.github.io/leaflet-easymap/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Include a map in your HTML page without one line of programming. A data-driven Javascript module.

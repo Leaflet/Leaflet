@@ -7,6 +7,7 @@ author-url: https://github.com/wandergis
 demo: https://wandergis.com/leaflet-echarts/index-en.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A plugin for Leaflet to load <a href="https://github.com/apache/echarts">echarts</a> map and make big data visualization easier.

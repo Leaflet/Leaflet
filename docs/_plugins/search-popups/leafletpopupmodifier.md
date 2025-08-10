@@ -7,6 +7,7 @@ author-url: https://github.com/slutske22
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows user to edit the contents of a popup, or use the popup to remove its source marker.

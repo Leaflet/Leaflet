@@ -7,6 +7,7 @@ author-url: https://github.com/MIERUNE
 demo: https://tile.mierune.co.jp/
 compatible-v0: true
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays tiles from Mierune map.

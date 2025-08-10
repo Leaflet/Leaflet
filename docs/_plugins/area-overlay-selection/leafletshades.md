@@ -7,6 +7,7 @@ author-url: https://github.com/mkong0216
 demo: https://mkong0216.github.io/leaflet-shades/examples/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A draggable and resizable rectangle for selecting an area on a map and creating a gray overlay in unselected areas.

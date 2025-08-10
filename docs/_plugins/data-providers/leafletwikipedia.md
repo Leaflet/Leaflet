@@ -7,6 +7,7 @@ author-url: https://github.com/MatthewBarker
 demo: https://matthewbarker.github.io/leaflet-wikipedia/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A leaflet plugin to display Wikipedia API entries on a map layer.

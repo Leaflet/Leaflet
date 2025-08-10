@@ -7,6 +7,7 @@ author-url: https://github.com/unbam
 demo: http://unbam.github.io/Leaflet.SlideMenu/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple slide menu for Leaflet.

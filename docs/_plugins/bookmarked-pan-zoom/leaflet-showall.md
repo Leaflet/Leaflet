@@ -7,6 +7,7 @@ author-url: https://github.com/florpor
 demo: http://florpor.github.io/Leaflet.ShowAll/examples/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A control that can show a predefined extent while saving the current one so it can be jumped back to.

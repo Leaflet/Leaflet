@@ -7,6 +7,7 @@ author-url: https://github.com/dj0001
 demo: https://dj0001.github.io/Leaflet.Sun/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Get sunset or sunrise at map click.

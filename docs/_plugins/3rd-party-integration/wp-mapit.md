@@ -7,6 +7,7 @@ author-url: https://chandnipatel.in/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Easy to use, WordPress Map plugin based on Open Street Map and Leaflet with custom markers images, descriptions and links.

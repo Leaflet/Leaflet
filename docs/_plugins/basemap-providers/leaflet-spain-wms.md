@@ -7,6 +7,7 @@ author-url: https://github.com/sigdeletras
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Provides easy setup for several Web Map Services (WMS) layers for Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.

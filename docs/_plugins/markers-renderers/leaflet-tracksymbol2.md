@@ -7,6 +7,7 @@ author-url: https://github.com/org-arl
 demo: https://org-arl.github.io/leaflet-tracksymbol2/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A plugin for showing tracks (triangular symbol) and AIS contacts on the map.

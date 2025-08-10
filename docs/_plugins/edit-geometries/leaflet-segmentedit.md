@@ -7,6 +7,7 @@ author-url: https://github.com/Lemaf
 demo: https://lemaf.github.io/leaflet-polyline-segment-edit/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 An extension to Leaflet.draw to allow editing large polylines one chunk at the time.

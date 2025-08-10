@@ -7,6 +7,7 @@ author-url: https://github.com/bbecquet
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A collection of utilities for Leaflet geometries (linear referencing, etc.)

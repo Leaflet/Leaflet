@@ -7,6 +7,7 @@ author-url: https://github.com/calvinmetcalf
 demo: https://leaflet.calvinmetcalf.com/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Put a shapefile onto your map as a layer.

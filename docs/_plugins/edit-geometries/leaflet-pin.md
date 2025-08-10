@@ -7,6 +7,7 @@ author-url: https://github.com/kklimczak
 demo: https://kklimczak.github.io/Leaflet.Pin/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Enable attaching of markers to other layers during draw or edit features with Leaflet.Draw.

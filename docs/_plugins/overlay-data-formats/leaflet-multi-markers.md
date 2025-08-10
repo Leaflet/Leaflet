@@ -7,6 +7,7 @@ author-url: https://github.com/mfhsieh/
 demo: https://mfhsieh.github.io/leaflet-multi-markers/
 compatible-v0: 
 compatible-v1: true
+compatible-v2: false
 ---
 
 A Leaflet plugin for displaying a large number of highly customizable markers, such as those from a CSV file read using <a href="https://www.papaparse.com/">Papa Parse</a>.

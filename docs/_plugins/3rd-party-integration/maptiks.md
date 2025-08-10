@@ -7,6 +7,7 @@ author-url: https://sparkgeo.com/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Analytics platform for web maps. Track map activities, layer load times, marker clicks, and more!

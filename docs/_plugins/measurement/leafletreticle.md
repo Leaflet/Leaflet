@@ -7,6 +7,7 @@ author-url: https://github.com/rwev
 demo: https://rwev.github.io/leaflet-reticle/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet control adding a centering reticle consisting of independently calculated latitude and longitude scales.

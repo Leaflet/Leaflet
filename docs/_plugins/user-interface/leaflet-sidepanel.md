@@ -7,6 +7,7 @@ author-url: https://github.com/maxwell-ilai
 demo: https://maxwell-ilai.github.io/Leaflet.SidePanel/examples/
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Sidepanel with tabs. Keep it short and check out the [plugin guide](https://github.com/maxwell-ilai/Leaflet.SidePanel/blob/main/README.md).

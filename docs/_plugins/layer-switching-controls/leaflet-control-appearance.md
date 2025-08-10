@@ -7,6 +7,7 @@ author-url: https://www.labo288.site/
 demo:
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Extend of Control.Layers, can control Appearances of Layers - color, opacity and able to remove a overlay layer.

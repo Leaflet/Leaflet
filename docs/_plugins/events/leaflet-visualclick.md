@@ -7,6 +7,7 @@ author-url: https://github.com/dagjomar
 demo: https://github.com/MazeMap/Leaflet.VisualClick#readme
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Adds visual feedback when user clicks/taps the map. Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick. Only tested with Leaflet 1.0.0-beta1.

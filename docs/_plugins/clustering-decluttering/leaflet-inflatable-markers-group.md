@@ -7,6 +7,7 @@ author-url: https://github.com/Meteo-Concept
 demo: https://meteo-concept.github.io/leaflet-inflatable-markers-group/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 An alternative to the most excellent Leaflet marker cluster plugin.

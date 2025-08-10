@@ -7,6 +7,7 @@ author-url: https://github.com/w8r/
 demo: https://milevski.co/leaflet-labeled-circle/demo/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Special type of SVG marker with a label inside and draggable around the anchor point.

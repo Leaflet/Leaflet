@@ -7,6 +7,7 @@ author-url: https://github.com/rowanwins
 demo: https://rowanwins.github.io/leaflet-easyPrint/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple plugin which adds an icon to print your Leaflet map.

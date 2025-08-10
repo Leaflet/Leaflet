@@ -1,6 +1,14 @@
 {% assign filteredplugins = site.plugins | where: "category", include.category %}
 
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Demo</th><th>Maintainer</th></tr>
+<table class="plugins">
+	<tr>
+		<th>Plugin</th>
+		<th>Description</th>
+		<th title="Compatible with V1" class="compatible">V1</th>
+		<th title="Compatible with V2" class="compatible">V2</th>
+		<th>Demo</th>
+		<th>Maintainer</th>
+	</tr>
 {% for plugin in filteredplugins %}
 	<tr>
 		<td><a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
@@ -8,13 +16,23 @@
 			{{ plugin.content }}
 			<div class="repo-data"></div>
 		</td>
+		<td class="compatible">
+		{% if plugin.compatible-v1 %}
+			<span title="Compatible with V1">✔️</span>
+		{% endif %}
+		</td>
+		<td class="compatible">
+		{% if plugin.compatible-v2 %}
+			<span title="Compatible with V2">✔️</span>
+		{% endif %}
+		</td>
 		<td>
 		{% if plugin.demo %}
 			<a href="{{ plugin.demo }}">Demo</a>
 		{% endif %}
 		</td>
 		<td>
-		{% if plugin.category %}
+		{% if plugin.author-url %}
 			<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>
 		{% else %}
 			{{ plugin.author }}

@@ -7,6 +7,7 @@ author-url: https://github.com/IvanSanchez
 demo: https://github.com/Leaflet/Leaflet.VectorGrid#demos
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display gridded vector data (GeoJSON or TopoJSON sliced with geojson-vt, or protobuf vector tiles) in Leaflet 1.0.0.

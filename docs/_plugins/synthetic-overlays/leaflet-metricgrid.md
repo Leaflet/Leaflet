@@ -7,6 +7,7 @@ author-url: https://github.com/bill-chadwick
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A general purpose Metric Grid overlay for Leaflet with ready defined UTM, British and Irish Grids.

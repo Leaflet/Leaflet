@@ -7,6 +7,7 @@ author-url: https://github.com/calvinmetcalf/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Use PouchDB to sync CouchDB data to local storage (indexedDB), to just add couchDB data or as just a less confusing implementation of indexedDB.

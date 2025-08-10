@@ -7,6 +7,7 @@ author-url: https://github.com/hallahan
 demo: http://spatialdev.github.io/q-cluster/demo/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Quick point clustering library with D3 categorization.

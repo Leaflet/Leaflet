@@ -7,6 +7,7 @@ author-url: https://github.com/gherardovarando
 demo: https://gherardovarando.github.io/leaflet-csvtiles/demo/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Load points from tiled csv files, using the amazing <a href="https://www.papaparse.com/">PapaParse</a> library.

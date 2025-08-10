@@ -7,6 +7,7 @@ author-url: https://github.com/perliedman
 demo: https://prominentedge.com/leaflet-measure-path/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Show measurements on paths; polylines, polygons and circles currently supported.

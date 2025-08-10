@@ -7,6 +7,7 @@ author-url: https://github.com/turistforeningen
 demo: 
 compatible-v0: true
 compatible-v1: false
+compatible-v2: false
 ---
 
 Leaflet controller and interface for routing paths between waypoints using any user provided routing service.

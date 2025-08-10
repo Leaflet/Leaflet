@@ -7,6 +7,7 @@ author-url: https://github.com/ptma
 demo: https://ptma.github.io/Leaflet.Legend/examples/legend.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Display legend symbols and toggle overlays.

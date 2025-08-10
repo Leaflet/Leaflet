@@ -7,6 +7,7 @@ author-url: https://github.com/edihasaj
 demo: https://edihasaj.github.io/leaflet-coord-projection/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Shows coordinates on mouse move and displays it based on given projection.

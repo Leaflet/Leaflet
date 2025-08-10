@@ -7,6 +7,7 @@ author-url: https://github.com/albertkun
 demo: https://albertkun.github.io/leaflet_hex_timeslider/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Minimalistic time slider using leaflet + d3.js and nouislider for displaying time series data using a geoJSON file.

@@ -7,6 +7,7 @@ author-url: https://github.com/dynmeth
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.

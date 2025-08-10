@@ -7,6 +7,7 @@ author-url: https://github.com/IvanSanchez
 demo: https://mazemap.github.io/Leaflet.TileLayer.PouchDBCached/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows all Leaflet TileLayers to cache into PouchDB for offline use.

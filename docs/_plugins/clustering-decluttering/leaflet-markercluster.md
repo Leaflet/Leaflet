@@ -7,6 +7,7 @@ author-url: https://github.com/danzel
 demo: https://leaflet.github.io/Leaflet.markercluster/example/marker-clustering-realworld.388.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>

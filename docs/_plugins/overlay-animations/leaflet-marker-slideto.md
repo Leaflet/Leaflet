@@ -7,6 +7,7 @@ author-url: https://gitlab.com/u/IvanSanchez
 demo: http://ivansanchez.gitlab.io/Leaflet.Marker.SlideTo/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Smoothly move (slide) markers to a new location.

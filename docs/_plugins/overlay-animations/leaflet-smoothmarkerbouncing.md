@@ -7,6 +7,7 @@ author-url: https://github.com/hosuaby
 demo: https://hosuaby.github.io/Leaflet.SmoothMarkerBouncing/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Smooth animation of marker bouncing for Leaflet.

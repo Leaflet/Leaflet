@@ -7,6 +7,7 @@ author-url: https://github.com/yigityuce
 demo: https://yigityuce.github.io/Leaflet.Control.Custom/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Fully customizable Leaflet control panel with HTML element.

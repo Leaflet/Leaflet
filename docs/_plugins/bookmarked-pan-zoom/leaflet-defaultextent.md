@@ -7,6 +7,7 @@ author-url: https://github.com/nguyenning
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A control that returns to the original start extent of the map.  Similar to the <a href="/javascript/3/jssamples/widget_home.html">HomeButton</a> widget.

@@ -7,6 +7,7 @@ author-url: https://github.com/jjimenezshaw/
 demo: https://jjimenezshaw.github.io/Leaflet.Control.Resizer/examples/basic.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Control to resize your map on the right or bottom side.

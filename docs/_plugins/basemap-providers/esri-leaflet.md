@@ -7,6 +7,7 @@ author-url: https://github.com/patrickarlt/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A set of tools for using ArcGIS services with Leaflet. Support for map services, feature layers, ArcGIS Online tiles and more.

@@ -7,6 +7,7 @@ author-url: http://terrayazilim.com.tr/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Comprehensive Java Server Faces(JSF) Component/Wrapper for Leaflet.
