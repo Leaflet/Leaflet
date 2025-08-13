@@ -241,6 +241,7 @@ export class Layers extends Control {
 		}, this);
 
 		if (!collapsed) {
+			section.setAttribute('aria-label', link.title);
 			this.expand();
 		}
 
