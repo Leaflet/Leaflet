@@ -111,6 +111,7 @@ export class CRS {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	static wrapLatLng(latlng) {
+		latlng = new LatLng(latlng);
 		const lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
 		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
@@ -121,8 +122,8 @@ export class CRS {
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
 	// Returns a `LatLngBounds` with the same size as the given one, ensuring
 	// that its center is within the CRS's bounds.
-	// Only accepts actual `LatLngBounds` instances, not arrays.
 	static wrapLatLngBounds(bounds) {
+		bounds = new LatLngBounds(bounds);
 		const center = bounds.getCenter(),
 		    newCenter = this.wrapLatLng(center),
 		    latShift = center.lat - newCenter.lat,

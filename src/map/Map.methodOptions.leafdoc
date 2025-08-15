@@ -85,6 +85,16 @@ panning inertia).
 @inherits Zoom options
 @inherits Pan options
 
+@miniclass InvalidateSize options (Map)
+@aka invalidateSize options
+@inherits Zoom/pan options
+
+@option pan: Boolean = true
+If `false`, panning will not occur
+
+@option debounceMoveend: Boolean = false
+If `true`, it will delay `moveend` event so that it doesn't happen often even if the
+method is called many times in a row.
 
 @miniclass Padding options (Map)
 @aka padding options

@@ -45,7 +45,7 @@ function _onDelete(e) {
 	activePointers.delete(e.pointerId);
 }
 
-// @function getPointers(): PointerEvents[]
+// @function getPointers(): PointerEvent[]
 // Returns the active pointers on the document.
 function getPointers() {
 	return [...activePointers.values()];

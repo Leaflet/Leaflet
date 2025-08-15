@@ -187,7 +187,7 @@ export class Map extends Evented {
 
 	// @section Methods for modifying map state
 
-	// @method setView(center: LatLng, zoom: Number, options?: Zoom/pan options): this
+	// @method setView(center: LatLng, zoom?: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) with the given
 	// animation options.
 	setView(center, zoom, options) {
@@ -319,7 +319,7 @@ export class Map extends Evented {
 
 	// @method panTo(latlng: LatLng, options?: Pan options): this
 	// Pans the map to a given center.
-	panTo(center, options) { // (LatLng)
+	panTo(center, options) {
 		return this.setView(center, this._zoom, {pan: options});
 	}
 
@@ -556,7 +556,7 @@ export class Map extends Evented {
 		return this;
 	}
 
-	// @method invalidateSize(options: Zoom/pan options): this
+	// @method invalidateSize(options: invalidateSize options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
 	// pan by default. If `options.pan` is `false`, panning will not occur.
@@ -913,9 +913,10 @@ export class Map extends Evented {
 		return this._size.clone();
 	}
 
-	// @method getPixelBounds(): Bounds
+	// @method getPixelBounds(center?: LatLng, zoom?: Number): Bounds
 	// Returns the bounds of the current map view in projected pixel
 	// coordinates (sometimes useful in layer and overlay implementations).
+	// If `center` and `zoom` is omitted, the map's current zoom level and center is used.
 	getPixelBounds(center, zoom) {
 		const topLeftPoint = this._getTopLeftPoint(center, zoom);
 		return new Bounds(topLeftPoint, topLeftPoint.add(this.getSize()));
@@ -963,7 +964,7 @@ export class Map extends Evented {
 
 	// @section Conversion Methods
 
-	// @method getZoomScale(toZoom: Number, fromZoom: Number): Number
+	// @method getZoomScale(toZoom: Number, fromZoom?: Number): Number
 	// Returns the scale factor to be applied to a map transition from zoom level
 	// `fromZoom` to `toZoom`. Used internally to help with zoom animations.
 	getZoomScale(toZoom, fromZoom) {
@@ -973,7 +974,7 @@ export class Map extends Evented {
 		return crs.scale(toZoom) / crs.scale(fromZoom);
 	}
 
-	// @method getScaleZoom(scale: Number, fromZoom: Number): Number
+	// @method getScaleZoom(scale: Number, fromZoom?: Number): Number
 	// Returns the zoom level that the map would end up at, if it is at `fromZoom`
 	// level and everything is scaled by a factor of `scale`. Inverse of
 	// [`getZoomScale`](#map-getZoomScale).
@@ -984,7 +985,7 @@ export class Map extends Evented {
 		return isNaN(zoom) ? Infinity : zoom;
 	}
 
-	// @method project(latlng: LatLng, zoom: Number): Point
+	// @method project(latlng: LatLng, zoom?: Number): Point
 	// Projects a geographical coordinate `LatLng` according to the projection
 	// of the map's CRS, then scales it according to `zoom` and the CRS's
 	// `Transformation`. The result is pixel coordinate relative to
@@ -994,7 +995,7 @@ export class Map extends Evented {
 		return this.options.crs.latLngToPoint(new LatLng(latlng), zoom);
 	}
 
-	// @method unproject(point: Point, zoom: Number): LatLng
+	// @method unproject(point: Point, zoom?: Number): LatLng
 	// Inverse of [`project`](#map-project).
 	unproject(point, zoom) {
 		zoom ??= this._zoom;
@@ -1033,8 +1034,8 @@ export class Map extends Evented {
 	// By default this means the center longitude is wrapped around the dateline so its
 	// value is between -180 and +180 degrees, and the majority of the bounds
 	// overlaps the CRS's bounds.
-	wrapLatLngBounds(latlng) {
-		return this.options.crs.wrapLatLngBounds(new LatLngBounds(latlng));
+	wrapLatLngBounds(bounds) {
+		return this.options.crs.wrapLatLngBounds(new LatLngBounds(bounds));
 	}
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
