@@ -51,7 +51,7 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 <script type="importmap">
 	{
 		"imports": {
-			"leaflet": "https://unpkg.com/leaflet@2.0.0-alpha1/dist/leaflet.js"
+			"leaflet": "https://unpkg.com/leaflet@2.0.0-alpha/dist/leaflet.js"
 		}
 	}
 </script>
@@ -67,7 +67,7 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 
 ##### Global Script
 ```
-<script src="https://unpkg.com/leaflet@2.0.0-alpha1/dist/leaflet-global.js"></script>
+<script src="https://unpkg.com/leaflet@2.0.0-alpha/dist/leaflet-global.js"></script>
 <script>
 	const map = new L.Map('map').setView([51.505, -0.09], 13);
 	const tiles = new L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
