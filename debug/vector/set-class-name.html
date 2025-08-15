@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Vector Simple</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<style>
+			.mapped-item {
+				stroke: #aa6;
+			}
+			.mapped-item.modified {
+				stroke: #c44;
+			}
+			.mapped-item.highlighted {
+				stroke: #ee8;
+			}
+			.mapped-item.modified.highlighted {
+				stroke: #f66;
+			}
+		</style>
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<table>
+			<tr><th>circle</th><th>polygon</th></tr>
+			<tr>
+				<td><label><input type="checkbox" id="circleHighlighted" autocomplete="off">highlighted</label></td>
+				<td><label><input type="checkbox" id="polygonHighlighted" autocomplete="off">highlighted</label></td>
+			</tr>
+			<tr>
+				<td><label><input type="checkbox" id="circleModified" autocomplete="off">modified</label></td>
+				<td><label><input type="checkbox" id="polygonModified" autocomplete="off" checked>modified</label></td>
+			</tr>
+			<tr>
+				<td><button id="circleReset">Reset classes</button></td>
+				<td><button id="polygonReset">Reset classes</button></td>
+			</tr>
+		</table>
+		<script type="module">
+			import {Map, TileLayer, Circle, Polygon} from 'leaflet';
+
+			const map = new Map('map')
+				.setView([51.505, -0.09], 13);
+
+			map.addLayer(new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}));
+
+			const circle = new Circle([51.508, -0.11], 500, {className: 'mapped-item'})
+				.bindPopup('I am a circle.')
+				.addTo(map);
+
+			const polygon = new Polygon([[51.509, -0.08], [51.503, -0.06], [51.51,  -0.047]], {className: 'mapped-item modified'})
+				.bindPopup('I am a polygon.')
+				.addTo(map);
+
+			for (const [item, itemName] of [[circle, 'circle'], [polygon, 'polygon']]) {
+				const updateListener = () => {
+					const classList = ['mapped-item'];
+					if (document.getElementById(`${itemName}Highlighted`).checked) classList.push('highlighted');
+					if (document.getElementById(`${itemName}Modified`).checked) classList.push('modified');
+					item.setClassName(classList.join(' '));
+				};
+
+				const resetListener = () => {
+					document.getElementById(`${itemName}Highlighted`).checked = false;
+					document.getElementById(`${itemName}Modified`).checked = false;
+					item.setClassName();
+				};
+
+				document.getElementById(`${itemName}Highlighted`).addEventListener('input', updateListener);
+				document.getElementById(`${itemName}Modified`).addEventListener('input', updateListener);
+				document.getElementById(`${itemName}Reset`).addEventListener('click', resetListener);
+			}
+		</script>
+	</body>
+</html>
