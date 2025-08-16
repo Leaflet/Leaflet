@@ -111,6 +111,22 @@ describe('Class', () => {
 			expect(a.off).to.eql(Evented.prototype.off);
 		});
 
+		it('includes inherited mixins', () => {
+			class A {
+				foo() {}
+			}
+			class B extends A {
+				bar() {}
+			}
+			const Klass2 = Class.extend({
+				includes: B.prototype
+			});
+			const a = new Klass2();
+
+			expect(a.bar).to.eql(B.prototype.bar);
+			expect(a.foo).to.eql(B.prototype.foo);
+		});
+
 		it('grants the ability to include the given mixin', () => {
 			Klass.include({mixin2: true});
 
