@@ -61,7 +61,14 @@ export class Circle extends CircleMarker {
 			this._map.layerPointToLatLng(this._point.add(half)));
 	}
 
-	setStyle = Path.prototype.setStyle;
+	setStyle(options) {
+		if (options?.radius !== undefined) {
+			this.setRadius(options.radius);   // meters, not pixels
+		}
+		Path.prototype.setStyle.call(this, options);
+		return this;
+	}
+
 
 	_project() {
 

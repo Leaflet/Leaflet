@@ -6,7 +6,7 @@ describe('Circle', () => {
 	let map, container, circle;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new Map(container);
 		map.setView([0, 0], 4);
 		circle = new Circle([50, 30], {radius: 200}).addTo(map);
@@ -24,7 +24,7 @@ describe('Circle', () => {
 	});
 
 	describe('#getBounds', () => {
-		it('returns bounds', () => {
+		it('returns correct bounds', () => {
 			const bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
@@ -33,7 +33,7 @@ describe('Circle', () => {
 	});
 
 	describe('Legacy factory', () => {
-		it('returns same bounds as 1.0 factory', () => {
+		it('produces the same bounds as the 1.0 factory', () => {
 			const bounds = circle.getBounds();
 
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
@@ -41,20 +41,22 @@ describe('Circle', () => {
 		});
 	});
 
-	describe('CRS Simple', () => {
-		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
+	describe('CRS.Simple', () => {
+		it('returns a positive radius when the x/y axes are inverted', () => {
 			map.remove();
 
-			class crs extends CRS.Simple {
-				static transformation = new Transformation(-1, 0, -1, 0);
-			}
-			map = new Map(container, {
-				crs
-			});
+			// Custom CRS with inverted transformation
+			const customCRS = {
+				...CRS.Simple,
+				transformation: new Transformation(-1, 0, -1, 0)
+			};
+
+			map = new Map(container, {crs: customCRS});
 			map.setView([0, 0], 4);
 
 			const circle = new Circle([0, 0], {radius: 200}).addTo(map);
 
+			// Leaflet converts circle radius into projected units
 			expect(circle._radius).to.eql(3200);
 		});
 	});
