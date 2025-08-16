@@ -1,5 +1,5 @@
 // !!! NEXT LINE IS AUTO-GENERATED VIA `NPM VERSION` !!!
-export const version = '2.0.0-alpha';
+export const version = '2.0.0-alpha.1';
 
 // control
 export * from './control/index.js';
