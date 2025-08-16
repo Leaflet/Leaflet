@@ -9,7 +9,7 @@ Leaflet Changelog
 
 ### ❇️ New Features
 
-* Map: New export `LeafletMap` as an alias for `Map` by @willfarrell4 in https://github.com/Leaflet/Leaflet/pull/9804
+* Map: New export `LeafletMap` as an alias for `Map` by @willfarrell in https://github.com/Leaflet/Leaflet/pull/9804
 * Control.Layer: New option `collapseDelay` by @fyyyyy in https://github.com/Leaflet/Leaflet/pull/9612
 
 ### ✨ Refactorings (⚠️ Breaking Changes)

@@ -16,8 +16,8 @@ bodyclass: download-page
 		<td>Stable version, released on May 18, 2023.</td>
 	</tr>
 	<tr>
-		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/v2.0.0-alpha/leaflet.zip">Leaflet 2.0.0-alpha</a></td>
-		<td>Prerelease version, released on May 18, 2025.</td>
+		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/v2.0.0-alpha.1/leaflet.zip">Leaflet 2.0.0-alpha.1</a></td>
+		<td>Prerelease version, released on August 16, 2025.</td>
 	</tr>
 </table>
 
