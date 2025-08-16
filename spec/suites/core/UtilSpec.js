@@ -6,13 +6,13 @@ describe('Util', () => {
 	describe('#stamp', () => {
 		it('sets a unique id on the given object and returns it', () => {
 			const a = {},
-			    id = Util.stamp(a);
+			id = Util.stamp(a);
 
 			expect(typeof id).to.eql('number');
 			expect(Util.stamp(a)).to.eql(id);
 
 			const b = {},
-			    id2 = Util.stamp(b);
+			id2 = Util.stamp(b);
 
 			expect(id2).not.to.eql(id);
 		});
@@ -80,21 +80,21 @@ describe('Util', () => {
 
 		it('creates a distinct options object', () => {
 			const opts = {},
-			    o = Object.create({options: opts});
+			o = Object.create({options: opts});
 			Util.setOptions(o, {});
 			expect(o.options).not.to.equal(opts);
 		});
 
 		it('doesn\'t create a distinct options object if object already has own options', () => {
 			const opts = {},
-			    o = {options: opts};
+			o = {options: opts};
 			Util.setOptions(o, {});
 			expect(o.options).to.equal(opts);
 		});
 
 		it('inherits options prototypally', () => {
 			const opts = {},
-			    o = Object.create({options: opts});
+			o = Object.create({options: opts});
 			Util.setOptions(o, {});
 			opts.foo = 'bar';
 			expect(o.options.foo).to.eql('bar');

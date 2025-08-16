@@ -17,10 +17,12 @@ import {Point} from '../../geometry/Point.js';
 
 export const LonLat = {
 	project(latlng) {
+		latlng = new LatLng(latlng);
 		return new Point(latlng.lng, latlng.lat);
 	},
 
 	unproject(point) {
+		point = new Point(point);
 		return new LatLng(point.y, point.x);
 	},
 

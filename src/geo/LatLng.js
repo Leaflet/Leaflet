@@ -129,7 +129,7 @@ export class LatLng {
 		return margin <= (maxMargin ?? 1.0E-9);
 	}
 
-	// @method toString(): String
+	// @method toString(precision?: Number): String
 	// Returns a string representation of the point (for debugging purposes).
 	toString(precision) {
 		return `LatLng(${Util.formatNum(this.lat, precision)}, ${Util.formatNum(this.lng, precision)})`;
@@ -154,8 +154,8 @@ export class LatLng {
 		lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
 		return new LatLngBounds(
-		        [this.lat - latAccuracy, this.lng - lngAccuracy],
-		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
+			[this.lat - latAccuracy, this.lng - lngAccuracy],
+			[this.lat + latAccuracy, this.lng + lngAccuracy]);
 	}
 
 	// @method clone(): LatLng

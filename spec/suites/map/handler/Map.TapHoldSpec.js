@@ -130,7 +130,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	it('ignores long movements', () => {
 		expect(new Point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
-		  .to.be.above(map.options.tapTolerance);
+			.to.be.above(map.options.tapTolerance);
 
 		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);

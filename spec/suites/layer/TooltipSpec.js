@@ -404,8 +404,8 @@ describe('Tooltip', () => {
 	it('map.openTooltip considers interactive option', () => {
 		const spy = sinon.spy();
 		const tooltip = new Tooltip({interactive: true, permanent: true})
-		  .setContent('Tooltip')
-		  .on('click', spy);
+			.setContent('Tooltip')
+			.on('click', spy);
 		map.openTooltip(tooltip, center);
 
 		UIEventSimulator.fire('click', tooltip._container);

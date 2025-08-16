@@ -92,6 +92,7 @@ export class Polyline extends Path {
 	// @method closestLayerPoint(p: Point): Point
 	// Returns the point closest to `p` on the Polyline.
 	closestLayerPoint(p) {
+		p = new Point(p);
 		let minDistance = Infinity,
 		minPoint = null,
 		p1, p2;

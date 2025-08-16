@@ -155,7 +155,7 @@ export class DivOverlay extends Layer {
 		return this;
 	}
 
-	// @method getContent: String|HTMLElement
+	// @method getContent: String|HTMLElement|Function)
 	// Returns the content of the overlay.
 	getContent() {
 		return this._content;
@@ -170,7 +170,7 @@ export class DivOverlay extends Layer {
 		return this;
 	}
 
-	// @method getElement: String|HTMLElement
+	// @method getElement: HTMLElement
 	// Returns the HTML container of the overlay.
 	getElement() {
 		return this._container;
@@ -294,7 +294,7 @@ export class DivOverlay extends Layer {
 		if (!this._map) { return; }
 
 		const pos = this._map.latLngToLayerPoint(this._latlng),
-		      anchor = this._getAnchor();
+		anchor = this._getAnchor();
 		let offset = new Point(this.options.offset);
 
 		if (this._zoomAnimated) {
@@ -304,7 +304,7 @@ export class DivOverlay extends Layer {
 		}
 
 		const bottom = this._containerBottom = -offset.y,
-		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
+		left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the overlay in case the height of the overlay changes (images loading etc)
 		this._container.style.bottom = `${bottom}px`;

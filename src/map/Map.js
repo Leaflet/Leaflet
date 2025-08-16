@@ -187,7 +187,7 @@ export class Map extends Evented {
 
 	// @section Methods for modifying map state
 
-	// @method setView(center: LatLng, zoom: Number, options?: Zoom/pan options): this
+	// @method setView(center: LatLng, zoom?: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) with the given
 	// animation options.
 	setView(center, zoom, options) {
@@ -270,7 +270,7 @@ export class Map extends Evented {
 		bounds = bounds.getBounds ? bounds.getBounds() : new LatLngBounds(bounds);
 
 		const paddingTL = new Point(options.paddingTopLeft || options.padding || [0, 0]),
-		      paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]);
+		paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]);
 
 		let zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
@@ -319,7 +319,7 @@ export class Map extends Evented {
 
 	// @method panTo(latlng: LatLng, options?: Pan options): this
 	// Pans the map to a given center.
-	panTo(center, options) { // (LatLng)
+	panTo(center, options) {
 		return this.setView(center, this._zoom, {pan: options});
 	}
 
@@ -388,10 +388,10 @@ export class Map extends Evented {
 		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
-		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
-		    u1 = (to.distanceTo(from)) || 1,
-		    rho = 1.42,
-		    rho2 = rho * rho;
+		w1 = w0 * this.getZoomScale(startZoom, targetZoom),
+		u1 = (to.distanceTo(from)) || 1,
+		rho = 1.42,
+		rho2 = rho * rho;
 
 		function r(i) {
 			const s1 = i ? -1 : 1,
@@ -537,12 +537,12 @@ export class Map extends Evented {
 		options ??= {};
 
 		const paddingTL = new Point(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]),
-		    pixelCenter = this.project(this.getCenter()),
-		    pixelPoint = this.project(latlng),
-		    pixelBounds = this.getPixelBounds(),
-		    paddedBounds = new Bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
-		    paddedSize = paddedBounds.getSize();
+		paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]),
+		pixelCenter = this.project(this.getCenter()),
+		pixelPoint = this.project(latlng),
+		pixelBounds = this.getPixelBounds(),
+		paddedBounds = new Bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
+		paddedSize = paddedBounds.getSize();
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
@@ -556,7 +556,7 @@ export class Map extends Evented {
 		return this;
 	}
 
-	// @method invalidateSize(options: Zoom/pan options): this
+	// @method invalidateSize(options: invalidateSize options): this
 	// Checks if the map container size changed and updates the map if so —
 	// call it after you've changed the map size dynamically, also animating
 	// pan by default. If `options.pan` is `false`, panning will not occur.
@@ -820,7 +820,7 @@ export class Map extends Evented {
 	// as a child of the main map pane if not set.
 	createPane(name, container) {
 		const className = `leaflet-pane${name ? ` leaflet-${name.replace('Pane', '')}-pane` : ''}`,
-		    pane = DomUtil.create('div', className, container || this._mapPane);
+		pane = DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
 			this._panes[name] = pane;
@@ -913,9 +913,10 @@ export class Map extends Evented {
 		return this._size.clone();
 	}
 
-	// @method getPixelBounds(): Bounds
+	// @method getPixelBounds(center?: LatLng, zoom?: Number): Bounds
 	// Returns the bounds of the current map view in projected pixel
 	// coordinates (sometimes useful in layer and overlay implementations).
+	// If `center` and `zoom` is omitted, the map's current zoom level and center is used.
 	getPixelBounds(center, zoom) {
 		const topLeftPoint = this._getTopLeftPoint(center, zoom);
 		return new Bounds(topLeftPoint, topLeftPoint.add(this.getSize()));
@@ -963,7 +964,7 @@ export class Map extends Evented {
 
 	// @section Conversion Methods
 
-	// @method getZoomScale(toZoom: Number, fromZoom: Number): Number
+	// @method getZoomScale(toZoom: Number, fromZoom?: Number): Number
 	// Returns the scale factor to be applied to a map transition from zoom level
 	// `fromZoom` to `toZoom`. Used internally to help with zoom animations.
 	getZoomScale(toZoom, fromZoom) {
@@ -973,7 +974,7 @@ export class Map extends Evented {
 		return crs.scale(toZoom) / crs.scale(fromZoom);
 	}
 
-	// @method getScaleZoom(scale: Number, fromZoom: Number): Number
+	// @method getScaleZoom(scale: Number, fromZoom?: Number): Number
 	// Returns the zoom level that the map would end up at, if it is at `fromZoom`
 	// level and everything is scaled by a factor of `scale`. Inverse of
 	// [`getZoomScale`](#map-getZoomScale).
@@ -984,7 +985,7 @@ export class Map extends Evented {
 		return isNaN(zoom) ? Infinity : zoom;
 	}
 
-	// @method project(latlng: LatLng, zoom: Number): Point
+	// @method project(latlng: LatLng, zoom?: Number): Point
 	// Projects a geographical coordinate `LatLng` according to the projection
 	// of the map's CRS, then scales it according to `zoom` and the CRS's
 	// `Transformation`. The result is pixel coordinate relative to
@@ -994,7 +995,7 @@ export class Map extends Evented {
 		return this.options.crs.latLngToPoint(new LatLng(latlng), zoom);
 	}
 
-	// @method unproject(point: Point, zoom: Number): LatLng
+	// @method unproject(point: Point, zoom?: Number): LatLng
 	// Inverse of [`project`](#map-project).
 	unproject(point, zoom) {
 		zoom ??= this._zoom;
@@ -1033,8 +1034,8 @@ export class Map extends Evented {
 	// By default this means the center longitude is wrapped around the dateline so its
 	// value is between -180 and +180 degrees, and the majority of the bounds
 	// overlaps the CRS's bounds.
-	wrapLatLngBounds(latlng) {
-		return this.options.crs.wrapLatLngBounds(new LatLngBounds(latlng));
+	wrapLatLngBounds(bounds) {
+		return this.options.crs.wrapLatLngBounds(new LatLngBounds(bounds));
 	}
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -1117,9 +1118,8 @@ export class Map extends Evented {
 
 		this._fadeAnimated = this.options.fadeAnimation;
 
-		const classes = ['leaflet-container'];
+		const classes = ['leaflet-container', 'leaflet-touch'];
 
-		if (Browser.touch) { classes.push('leaflet-touch'); }
 		if (Browser.retina) { classes.push('leaflet-retina'); }
 		if (Browser.safari) { classes.push('leaflet-safari'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
@@ -1372,9 +1372,9 @@ export class Map extends Evented {
 
 	_findEventTargets(e, type) {
 		let targets = [],
-		    target,
-		    src = e.target || e.srcElement,
-		    dragging = false;
+		target,
+		src = e.target || e.srcElement,
+		dragging = false;
 		const isHover = type === 'pointerout' || type === 'pointerover';
 
 		while (src) {

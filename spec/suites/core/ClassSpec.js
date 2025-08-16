@@ -5,9 +5,9 @@ import sinon from 'sinon';
 describe('Class', () => {
 	describe('#extend', () => {
 		let Klass,
-		    props,
-		    constructor,
-		    method;
+		props,
+		constructor,
+		method;
 
 		beforeEach(() => {
 			constructor = sinon.spy();
@@ -177,7 +177,7 @@ describe('Class', () => {
 
 		it('inherits constructor hooks', () => {
 			const spy1 = sinon.spy(),
-			    spy2 = sinon.spy();
+			spy2 = sinon.spy();
 
 			const Klass2 = Klass.extend({});
 
@@ -192,7 +192,7 @@ describe('Class', () => {
 
 		it('does not call child constructor hooks', () => {
 			const spy1 = sinon.spy(),
-			    spy2 = sinon.spy();
+			spy2 = sinon.spy();
 
 			const Klass2 = Klass.extend({});
 

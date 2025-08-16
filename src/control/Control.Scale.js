@@ -38,17 +38,18 @@ export class Scale extends Control {
 
 			// @option imperial: Boolean = True
 			// Whether to show the imperial scale line (mi/ft).
-			imperial: true
+			imperial: true,
 
 			// @option updateWhenIdle: Boolean = false
 			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+			updateWhenIdle: false
 		});
 	}
 
 	onAdd(map) {
 		const className = 'leaflet-control-scale',
-		    container = DomUtil.create('div', className),
-		    options = this.options;
+		container = DomUtil.create('div', className),
+		options = this.options;
 
 		this._addScales(options, `${className}-line`, container);
 
@@ -73,7 +74,7 @@ export class Scale extends Control {
 
 	_update() {
 		const map = this._map,
-		    y = map.getSize().y / 2;
+		y = map.getSize().y / 2;
 
 		const maxMeters = map.distance(
 			map.containerPointToLatLng([0, y]),
@@ -93,7 +94,7 @@ export class Scale extends Control {
 
 	_updateMetric(maxMeters) {
 		const meters = this._getRoundNum(maxMeters),
-		    label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
+		label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	}
@@ -123,9 +124,9 @@ export class Scale extends Control {
 		let d = num / pow10;
 
 		d = d >= 10 ? 10 :
-		    d >= 5 ? 5 :
-		    d >= 3 ? 3 :
-		    d >= 2 ? 2 : 1;
+			d >= 5 ? 5 :
+			d >= 3 ? 3 :
+			d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}

@@ -45,13 +45,13 @@ export class Zoom extends Control {
 
 	onAdd(map) {
 		const zoomName = 'leaflet-control-zoom',
-		    container = DomUtil.create('div', `${zoomName} leaflet-bar`),
-		    options = this.options;
+		container = DomUtil.create('div', `${zoomName} leaflet-bar`),
+		options = this.options;
 
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
-		        `${zoomName}-in`,  container, this._zoomIn);
+			`${zoomName}-in`,  container, this._zoomIn);
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-		        `${zoomName}-out`, container, this._zoomOut);
+			`${zoomName}-out`, container, this._zoomOut);
 
 		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
@@ -109,7 +109,7 @@ export class Zoom extends Control {
 
 	_updateDisabled() {
 		const map = this._map,
-		    className = 'leaflet-disabled';
+		className = 'leaflet-disabled';
 
 		this._zoomInButton.classList.remove(className);
 		this._zoomOutButton.classList.remove(className);

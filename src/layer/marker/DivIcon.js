@@ -47,7 +47,7 @@ export class DivIcon extends Icon {
 
 	createIcon(oldIcon) {
 		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
-		    options = this.options;
+		options = this.options;
 
 		if (options.html instanceof Element) {
 			div.replaceChildren();

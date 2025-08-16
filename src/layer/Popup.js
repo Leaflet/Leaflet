@@ -206,7 +206,7 @@ export class Popup extends DivOverlay {
 
 	_initLayout() {
 		const prefix = 'leaflet-popup',
-		    container = this._container = DomUtil.create('div', `${prefix} ${this.options.className || ''} leaflet-zoom-animated`);
+		container = this._container = DomUtil.create('div', `${prefix} ${this.options.className || ''} leaflet-zoom-animated`);
 
 		const wrapper = this._wrapper = DomUtil.create('div', `${prefix}-content-wrapper`, container);
 		this._contentNode = DomUtil.create('div', `${prefix}-content`, wrapper);
@@ -250,14 +250,14 @@ export class Popup extends DivOverlay {
 
 	_updateLayout() {
 		const container = this._contentNode,
-		    style = container.style;
+		style = container.style;
 
 		style.maxWidth = `${this.options.maxWidth}px`;
 		style.minWidth = `${this.options.minWidth}px`;
 
 		const height = this._containerHeight ?? container.offsetHeight,
-		    maxHeight = this.options.maxHeight,
-		    scrolledClass = 'leaflet-popup-scrolled';
+		maxHeight = this.options.maxHeight,
+		scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
 			style.height = `${maxHeight}px`;
@@ -272,7 +272,7 @@ export class Popup extends DivOverlay {
 
 	_animateZoom(e) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
-		    anchor = this._getAnchor();
+		anchor = this._getAnchor();
 		DomUtil.setPosition(this._container, pos.add(anchor));
 	}
 
@@ -288,20 +288,20 @@ export class Popup extends DivOverlay {
 		}
 
 		const map = this._map,
-		    marginBottom = parseInt(getComputedStyle(this._container).marginBottom, 10) || 0,
-		    containerHeight = this._containerHeight + marginBottom,
-		    containerWidth = this._containerWidth,
-		    layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
+		marginBottom = parseInt(getComputedStyle(this._container).marginBottom, 10) || 0,
+		containerHeight = this._containerHeight + marginBottom,
+		containerWidth = this._containerWidth,
+		layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		layerPos._add(DomUtil.getPosition(this._container));
 
 		const containerPos = map.layerPointToContainerPoint(layerPos),
-		      padding = new Point(this.options.autoPanPadding),
-		      paddingTL = new Point(this.options.autoPanPaddingTopLeft ?? padding),
-		      paddingBR = new Point(this.options.autoPanPaddingBottomRight ?? padding),
-		      size = map.getSize();
+		padding = new Point(this.options.autoPanPadding),
+		paddingTL = new Point(this.options.autoPanPaddingTopLeft ?? padding),
+		paddingBR = new Point(this.options.autoPanPaddingBottomRight ?? padding),
+		size = map.getSize();
 		let dx = 0,
-		    dy = 0;
+		dy = 0;
 
 		if (containerPos.x + containerWidth + paddingBR.x > size.x) { // right
 			dx = containerPos.x + containerWidth - size.x + paddingBR.x;
@@ -327,8 +327,8 @@ export class Popup extends DivOverlay {
 			}
 
 			map
-			    .fire('autopanstart')
-			    .panBy([dx, dy]);
+				.fire('autopanstart')
+				.panBy([dx, dy]);
 		}
 	}
 
@@ -360,7 +360,7 @@ Map.include({
 	// Creates a popup with the specified content and options and opens it in the given point on a map.
 	openPopup(popup, latlng, options) {
 		this._initOverlay(Popup, popup, latlng, options)
-		  .openOn(this);
+			.openOn(this);
 
 		return this;
 	},

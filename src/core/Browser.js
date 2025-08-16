@@ -44,7 +44,7 @@ const retina = typeof window === 'undefined' || typeof window.devicePixelRatio =
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
 
-// @property mac: Boolean; `true` when the browser is running in a Linux platform
+// @property linux: Boolean; `true` when the browser is running in a Linux platform
 const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
 
 function userAgentContains(str) {
