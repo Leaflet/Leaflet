@@ -45,6 +45,7 @@ bodyclass: api-page
 			<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
 			<li><a href="#imageoverlay">ImageOverlay</a></li>
 			<li><a href="#videooverlay">VideoOverlay</a></li>
+			<li><a href="#svgoverlay">SVGOverlay</a></li>
 		</ul>
 		<h4>Vector Layers</h4>
 		<ul>
@@ -54,7 +55,6 @@ bodyclass: api-page
 			<li><a href="#rectangle">Rectangle</a></li>
 			<li><a href="#circle">Circle</a></li>
 			<li><a href="#circlemarker">CircleMarker</a></li>
-			<li><a href="#svgoverlay">SVGOverlay</a></li>
 			<li><a href="#svg">SVG</a></li>
 			<li><a href="#canvas">Canvas</a></li>
 		</ul>
@@ -110,7 +110,6 @@ bodyclass: api-page
 			<li><a href="#interactive-layer">Interactive layer</a></li>
 			<li><a href="#control">Control</a></li>
 			<li><a href="#handler">Handler</a></li>
-			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
 			<li><a href="#projection">Projection</a></li>
 			<li><a href="#crs">CRS</a></li>
 			<li><a href="#blanketoverlay">BlanketOverlay</a></li>
@@ -120,7 +119,6 @@ bodyclass: api-page
 		<h4>Misc</h4>
 		<ul>
 			<li><a href="#event-objects">Event objects</a></li>
-			<li><a href="#global-switches">Global switches</a></li>
 			<li><a href="#version">version</a></li>
 		</ul>
 	</div>
@@ -172,6 +170,16 @@ and optionally an object literal with <code>Map options</code>.</td>
 		<td><code><b>new Map</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Map options&gt;</nobr> <i>options?</i>)</code></td>
 		<td>Instantiates a map object given an instance of a <code>&lt;div&gt;</code> HTML element
 and optionally an object literal with <code>Map options</code>.</td>
+	</tr>
+	<tr id='map-leafletmap'>
+		<td><code><b>new LeafletMap</b>(<nobr>&lt;String&gt;</nobr> <i>id</i>, <nobr>&lt;LeafletMap options&gt;</nobr> <i>options?</i>)</code></td>
+		<td>Instantiates a map object given the DOM ID of a <code>&lt;div&gt;</code> element
+and optionally an object literal with <code>LeafletMap options</code>.</td>
+	</tr>
+	<tr id='map-leafletmap'>
+		<td><code><b>new LeafletMap</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;LeafletMap options&gt;</nobr> <i>options?</i>)</code></td>
+		<td>Instantiates a map object given an instance of a <code>&lt;div&gt;</code> HTML element
+and optionally an object literal with <code>LeafletMap options</code>.</td>
 	</tr>
 </tbody></table>
 
@@ -455,7 +463,7 @@ it will zoom to the center of the view regardless of where the pointer was.</td>
 		<td><code><b>wheelDebounceTime</b></code></td>
 		<td><code>Number</code></td>
 		<td><code>40</code></td>
-		<td>Limits the rate at which a wheel can fire (in milliseconds). By default
+		<td>Limits the rate at which a wheel can fire (in milliseconds). By default, the
 user can't zoom via wheel more often than once per 40 ms.</td>
 	</tr>
 	<tr id='map-wheelpxperzoomlevel'>
@@ -1021,7 +1029,7 @@ are respected, and that the renderers do exist on the map.</p>
 	</tr>
 	</thead><tbody>
 	<tr id='map-setview'>
-		<td><code><b>setView</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>center</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code><b>setView</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>center</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the view of the map (geographical center and zoom) with the given
 animation options.</p>
@@ -1132,7 +1140,7 @@ the map will not be panned.</p>
 </td>
 	</tr>
 	<tr id='map-invalidatesize'>
-		<td><code><b>invalidateSize</b>(<nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options</i>)</code></td>
+		<td><code><b>invalidateSize</b>(<nobr>&lt;<a href='#invalidatesize-options'>invalidateSize options</a>&gt;</nobr> <i>options</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Checks if the map container size changed and updates the map if so —
 call it after you've changed the map size dynamically, also animating
@@ -1311,10 +1319,11 @@ the given bounds in its entirety.</p>
 </td>
 	</tr>
 	<tr id='map-getpixelbounds'>
-		<td><code><b>getPixelBounds</b>()</code></td>
+		<td><code><b>getPixelBounds</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>center?</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>)</code></td>
 		<td><code><a href='#bounds'>Bounds</a></code></td>
 		<td><p>Returns the bounds of the current map view in projected pixel
-coordinates (sometimes useful in layer and overlay implementations).</p>
+coordinates (sometimes useful in layer and overlay implementations).
+If <code>center</code> and <code>zoom</code> is omitted, the map's current zoom level and center is used.</p>
 </td>
 	</tr>
 	<tr id='map-getpixelorigin'>
@@ -1346,14 +1355,14 @@ If <code>zoom</code> is omitted, the map's current zoom level is used.</p>
 	</tr>
 	</thead><tbody>
 	<tr id='map-getzoomscale'>
-		<td><code><b>getZoomScale</b>(<nobr>&lt;Number&gt;</nobr> <i>toZoom</i>, <nobr>&lt;Number&gt;</nobr> <i>fromZoom</i>)</code></td>
+		<td><code><b>getZoomScale</b>(<nobr>&lt;Number&gt;</nobr> <i>toZoom</i>, <nobr>&lt;Number&gt;</nobr> <i>fromZoom?</i>)</code></td>
 		<td><code>Number</code></td>
 		<td><p>Returns the scale factor to be applied to a map transition from zoom level
 <code>fromZoom</code> to <code>toZoom</code>. Used internally to help with zoom animations.</p>
 </td>
 	</tr>
 	<tr id='map-getscalezoom'>
-		<td><code><b>getScaleZoom</b>(<nobr>&lt;Number&gt;</nobr> <i>scale</i>, <nobr>&lt;Number&gt;</nobr> <i>fromZoom</i>)</code></td>
+		<td><code><b>getScaleZoom</b>(<nobr>&lt;Number&gt;</nobr> <i>scale</i>, <nobr>&lt;Number&gt;</nobr> <i>fromZoom?</i>)</code></td>
 		<td><code>Number</code></td>
 		<td><p>Returns the zoom level that the map would end up at, if it is at <code>fromZoom</code>
 level and everything is scaled by a factor of <code>scale</code>. Inverse of
@@ -1361,7 +1370,7 @@ level and everything is scaled by a factor of <code>scale</code>. Inverse of
 </td>
 	</tr>
 	<tr id='map-project'>
-		<td><code><b>project</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom</i>)</code></td>
+		<td><code><b>project</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>)</code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Projects a geographical coordinate <a href="#latlng"><code>LatLng</code></a> according to the projection
 of the map's CRS, then scales it according to <code>zoom</code> and the CRS's
@@ -1370,7 +1379,7 @@ the CRS origin.</p>
 </td>
 	</tr>
 	<tr id='map-unproject'>
-		<td><code><b>unproject</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom</i>)</code></td>
+		<td><code><b>unproject</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>)</code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>Inverse of <a href="#map-project"><code>project</code></a>.</p>
 </td>
@@ -1541,42 +1550,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='map-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='map-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='map-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='map-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='map-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='map-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -1955,6 +1928,116 @@ without animation.</td>
 and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='zoom/pan-options-nomovestart'>
+		<td><code><b>noMoveStart</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, panning won't fire <code>movestart</code> event on start (used internally for
+panning inertia).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><span id='invalidatesize-options'></span>
+
+<section>
+<h3 id='invalidatesize-options-option'>InvalidateSize options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='invalidatesize-options-pan'>
+		<td><code><b>pan</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code></td>
+		<td>If <code>false</code>, panning will not occur</td>
+	</tr>
+	<tr id='invalidatesize-options-debouncemoveend'>
+		<td><code><b>debounceMoveend</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, it will delay <code>moveend</code> event so that it doesn't happen often even if the
+method is called many times in a row.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#zoom-options'>Zoom options</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='invalidatesize-options-animate'>
+		<td><code><b>animate</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code></code></td>
+		<td>If not specified, zoom animation will happen if the zoom origin is inside the
+current view. If <code>true</code>, the map will attempt animating zoom disregarding where
+zoom origin is. Setting <code>false</code> will make it always reset the view completely
+without animation.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#pan-options'>Pan options</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='invalidatesize-options-duration'>
+		<td><code><b>duration</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>0.25</code></td>
+		<td>Duration of animated panning, in seconds.</td>
+	</tr>
+	<tr id='invalidatesize-options-easelinearity'>
+		<td><code><b>easeLinearity</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>0.25</code></td>
+		<td>The curvature factor of panning animation easing (third parameter of the
+<a href="https://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
+and the smaller this number, the more bowed the curve.</td>
+	</tr>
+	<tr id='invalidatesize-options-nomovestart'>
 		<td><code><b>noMoveStart</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>false</code></td>
@@ -2974,42 +3057,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='marker-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='marker-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='marker-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='marker-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='marker-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='marker-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -3384,7 +3431,7 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	</tr>
 	<tr id='divoverlay-getcontent'>
 		<td><code><b>getContent</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>String|HTMLElement|Function)</code></td>
 		<td><p>Returns the content of the overlay.</p>
 </td>
 	</tr>
@@ -3397,7 +3444,7 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 	</tr>
 	<tr id='divoverlay-getelement'>
 		<td><code><b>getElement</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML container of the overlay.</p>
 </td>
 	</tr>
@@ -3705,42 +3752,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='divoverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divoverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -4292,7 +4303,7 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	</tr>
 	<tr id='popup-getcontent'>
 		<td><code><b>getContent</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>String|HTMLElement|Function)</code></td>
 		<td><p>Returns the content of the overlay.</p>
 </td>
 	</tr>
@@ -4305,7 +4316,7 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 	</tr>
 	<tr id='popup-getelement'>
 		<td><code><b>getElement</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML container of the overlay.</p>
 </td>
 	</tr>
@@ -4614,42 +4625,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='popup-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='popup-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='popup-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='popup-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='popup-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='popup-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -5126,7 +5101,7 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	</tr>
 	<tr id='tooltip-getcontent'>
 		<td><code><b>getContent</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>String|HTMLElement|Function)</code></td>
 		<td><p>Returns the content of the overlay.</p>
 </td>
 	</tr>
@@ -5139,7 +5114,7 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 	</tr>
 	<tr id='tooltip-getelement'>
 		<td><code><b>getElement</b>()</code></td>
-		<td><code>String|HTMLElement</code></td>
+		<td><code>HTMLElement</code></td>
 		<td><p>Returns the HTML container of the overlay.</p>
 </td>
 	</tr>
@@ -5450,42 +5425,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='tooltip-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tooltip-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tooltip-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='tooltip-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tooltip-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tooltip-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -5542,7 +5481,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 	</tr>
 	</thead><tbody>
 	<tr id='tilelayer-tilelayer'>
-		<td><code><b>new Tilelayer</b>(<nobr>&lt;String&gt;</nobr> <i>urlTemplate</i>, <nobr>&lt;<a href='#tilelayer-option'>TileLayer options</a>&gt;</nobr> <i>options?</i>)</code></td>
+		<td><code><b>new TileLayer</b>(<nobr>&lt;String&gt;</nobr> <i>urlTemplate</i>, <nobr>&lt;<a href='#tilelayer-option'>TileLayer options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td>Instantiates a tile layer object given a <code>URL template</code> and optionally an options object.</td>
 	</tr>
 </tbody></table>
@@ -6348,42 +6287,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='tilelayer-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -7319,42 +7222,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='tilelayer-wms-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -8077,42 +7944,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='imageoverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='imageoverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='imageoverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='imageoverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='imageoverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -8937,42 +8768,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='videooverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='videooverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='videooverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='videooverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='videooverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='videooverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -9736,42 +9531,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='svgoverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svgoverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svgoverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='svgoverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svgoverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svgoverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -10435,42 +10194,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='path-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='path-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='path-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='path-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='path-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='path-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -11307,42 +11030,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='polyline-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polyline-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polyline-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='polyline-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polyline-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polyline-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -12207,42 +11894,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='polygon-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polygon-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polygon-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='polygon-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polygon-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='polygon-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -13119,42 +12770,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='rectangle-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='rectangle-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='rectangle-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='rectangle-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='rectangle-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='rectangle-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -13995,42 +13610,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='circle-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circle-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circle-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='circle-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circle-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circle-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -14818,42 +14397,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='circlemarker-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circlemarker-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circlemarker-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='circlemarker-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circlemarker-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='circlemarker-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -15399,42 +14942,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='svg-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svg-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svg-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='svg-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svg-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='svg-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -16037,42 +15544,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='canvas-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='canvas-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='canvas-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='canvas-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='canvas-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='canvas-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -16740,42 +16211,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='layergroup-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layergroup-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layergroup-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='layergroup-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layergroup-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layergroup-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -17518,42 +16953,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='featuregroup-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='featuregroup-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='featuregroup-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='featuregroup-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='featuregroup-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='featuregroup-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -18414,42 +17813,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='geojson-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='geojson-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='geojson-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='geojson-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='geojson-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='geojson-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -18505,6 +17868,11 @@ Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</c
 <code>close</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.
 Coordinates values are rounded with <a href="#util-formatnum"><code>formatNum</code></a> function.</td>
 	</tr>
+	<tr id='geojson-getfeature'>
+		<td><code><b>getFeature</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>, <nobr>&lt;Object&gt;</nobr> <i>newGeometry</i>)</code></td>
+		<td><code>Object</code></td>
+		<td>Returns GeoJSON geometries/features of layer with new GeoJSON geometry.</td>
+	</tr>
 	<tr id='geojson-asfeature'>
 		<td><code><b>asFeature</b>(<nobr>&lt;Object&gt;</nobr> <i>geojson</i>)</code></td>
 		<td><code>Object</code></td>
@@ -18528,8 +17896,8 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 
 
 <p>To create a custom layer, extend GridLayer and implement the <code>createTile()</code> method, which will be passed a <a href="#point"><code>Point</code></a> object with the <code>x</code>, <code>y</code>, and <code>z</code> (zoom level) coordinates to draw your tile.</p>
-<pre><code class="language-js">const CanvasLayer = GridLayer.extend({
-    createTile: function(coords){
+<pre><code class="language-js">class CanvasLayer extends GridLayer {
+    createTile(coords) {
         // create a &lt;canvas&gt; element for drawing
         const tile = DomUtil.create('canvas', 'leaflet-tile');
 
@@ -18544,7 +17912,7 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
         // return the tile so it can be rendered on screen
         return tile;
     }
-});
+}
 </code></pre>
 
 
@@ -18556,8 +17924,8 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 
 
 <p>Tile creation can also be asynchronous, this is useful when using a third-party drawing library. Once the tile is finished drawing it can be passed to the <code>done()</code> callback.</p>
-<pre><code class="language-js">const CanvasLayer = GridLayer.extend({
-    createTile: function(coords, done){
+<pre><code class="language-js">class CanvasLayer extends GridLayer {
+    createTile(coords, done) {
         const error;
 
         // create a &lt;canvas&gt; element for drawing
@@ -18575,7 +17943,7 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 
         return tile;
     }
-});
+}
 </code></pre>
 
 
@@ -19268,42 +18636,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='gridlayer-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='gridlayer-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='gridlayer-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='gridlayer-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='gridlayer-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='gridlayer-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -19393,7 +18725,7 @@ You can also use <code>lon</code> in place of <code>lng</code> in the object for
 </td>
 	</tr>
 	<tr id='latlng-tostring'>
-		<td><code><b>toString</b>()</code></td>
+		<td><code><b>toString</b>(<nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</code></td>
 		<td><code>String</code></td>
 		<td><p>Returns a string representation of the point (for debugging purposes).</p>
 </td>
@@ -19401,7 +18733,7 @@ You can also use <code>lon</code> in place of <code>lng</code> in the object for
 	<tr id='latlng-distanceto'>
 		<td><code><b>distanceTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>otherLatLng</i>)</code></td>
 		<td><code>Number</code></td>
-		<td><p>Returns the distance (in meters) to the given <a href="#latlng"><code>LatLng</code></a> calculated using the <a href="https://en.wikipedia.org/wiki/Spherical_law_of_cosines">Spherical Law of Cosines</a>.</p>
+		<td><p>Returns the distance (in meters) to the given <a href="#latlng"><code>LatLng</code></a> calculated using the <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>.</p>
 </td>
 	</tr>
 	<tr id='latlng-wrap'>
@@ -20934,6 +20266,12 @@ new Control.Layers(baseLayers, overlays).addTo(map);
 		<td><code>true</code></td>
 		<td>If <code>true</code>, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.</td>
 	</tr>
+	<tr id='control-layers-collapsedelay'>
+		<td><code><b>collapseDelay</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>0</code></td>
+		<td>Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.</td>
+	</tr>
 	<tr id='control-layers-autozindex'>
 		<td><code><b>autoZIndex</b></code></td>
 		<td><code>Boolean</code></td>
@@ -21328,8 +20666,12 @@ Note: pointer events will be preferred (if available), and processed for all <co
 	<tr id='browser-mac'>
 		<td><code><b>mac</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> when the browser is running in a Mac platform
-<code>true</code> when the browser is running in a Linux platform</td>
+		<td><code>true</code> when the browser is running in a Mac platform</td>
+	</tr>
+	<tr id='browser-linux'>
+		<td><code><b>linux</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> when the browser is running in a Linux platform</td>
 	</tr>
 </tbody></table>
 
@@ -21737,16 +21079,6 @@ pixels scrolled (negative if scrolling down).
 Events from pointing devices without precise scrolling are mapped to
 a best guess of 60 pixels.</td>
 	</tr>
-	<tr id='domevent-addlistener'>
-		<td><code><b>addListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td>Alias to <a href="#domevent-on"><code>DomEvent.on</code></a></td>
-	</tr>
-	<tr id='domevent-removelistener'>
-		<td><code><b>removeListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td>Alias to <a href="#domevent-off"><code>DomEvent.off</code></a></td>
-	</tr>
 </tbody></table>
 
 </section><section class='collapsable'>
@@ -21774,7 +21106,7 @@ a best guess of 60 pixels.</td>
 	</tr>
 	<tr id='domevent-getpointers'>
 		<td><code><b>getPointers</b>()</code></td>
-		<td><code>PointerEvents[]</code></td>
+		<td><code>PointerEvent[]</code></td>
 		<td>Returns the active pointers on the document.</td>
 	</tr>
 	<tr id='domevent-cleanuppointers'>
@@ -22106,42 +21438,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='posanimation-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='posanimation-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='posanimation-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='posanimation-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='posanimation-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='posanimation-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -22149,8 +21445,7 @@ The verification can optionally be propagated, it will return <code>true</code> 
 </div>
 
 </section><h2 id='draggable'>Draggable</h2><p>A class for making DOM elements draggable.
-Used internally for map and marker dragging. Only works for elements
-that were positioned with <a href="#domutil-setposition"><code>DomUtil.setPosition</code></a>.</p>
+Used internally for map and marker dragging. Works on any DOM element</p>
 
 <section>
 <h3 id='draggable-example'>Usage example</h3>
@@ -22378,42 +21673,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='draggable-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='draggable-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='draggable-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='draggable-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='draggable-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='draggable-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -22615,12 +21874,18 @@ MyClass.FOO; // 'bar'
 		<td><code><b>extend</b>(<nobr>&lt;Object&gt;</nobr> <i>props</i>)</code></td>
 		<td><code>Function</code></td>
 		<td><a href="#class-inheritance">Extends the current class</a> given the properties to be included.
+Deprecated - use <code>class X extends Class</code> instead!
 Returns a Javascript function that is a class constructor (to be called with <code>new</code>).</td>
 	</tr>
 	<tr id='class-include'>
 		<td><code><b>include</b>(<nobr>&lt;Object&gt;</nobr> <i>properties</i>)</code></td>
 		<td><code>this</code></td>
 		<td><a href="#class-includes">Includes a mixin</a> into the current class.</td>
+	</tr>
+	<tr id='class-setdefaultoptions'>
+		<td><code><b>setDefaultOptions</b>(<nobr>&lt;Object&gt;</nobr> <i>options</i>)</code></td>
+		<td><code>this</code></td>
+		<td>Configures the <a href="#class-options">default <code>options</code></a> on the prototype of this class.</td>
 	</tr>
 	<tr id='class-mergeoptions'>
 		<td><code><b>mergeOptions</b>(<nobr>&lt;Object&gt;</nobr> <i>options</i>)</code></td>
@@ -22740,42 +22005,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='evented-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='evented-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='evented-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='evented-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='evented-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='evented-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -22999,7 +22228,7 @@ Not effective if the <code>renderer</code> option is set (the <code>renderer</co
 	<tr id='layer-getevents'>
 		<td><code><b>getEvents</b>()</code></td>
 		<td><code>Object</code></td>
-		<td><p>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#evented-addeventlistener"><code>addEventListener</code></a>. The event handlers in this object will be automatically added and removed from the map with your layer.</p>
+		<td><p>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#evented-on"><code>on</code></a>. The event handlers in this object will be automatically added and removed from the map with your layer.</p>
 </td>
 	</tr>
 	<tr id='layer-getattribution'>
@@ -23234,42 +22463,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='layer-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layer-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layer-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='layer-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layer-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='layer-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -23786,42 +22979,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='interactive-layer-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='interactive-layer-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='interactive-layer-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='interactive-layer-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='interactive-layer-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='interactive-layer-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -24212,8 +23369,7 @@ CRS's <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outs
 		<td><code><b>wrapLatLngBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</code></td>
 		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
 		<td><p>Returns a <a href="#latlngbounds"><code>LatLngBounds</code></a> with the same size as the given one, ensuring
-that its center is within the CRS's bounds.
-Only accepts actual <a href="#latlngbounds"><code>LatLngBounds</code></a> instances, not arrays.</p>
+that its center is within the CRS's bounds.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -24846,42 +24002,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
 </td>
 	</tr>
-	<tr id='blanketoverlay-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='blanketoverlay-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='blanketoverlay-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='blanketoverlay-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='blanketoverlay-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='blanketoverlay-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
 </tbody></table>
 
 </section></div>
@@ -25377,42 +24497,6 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='renderer-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='renderer-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='renderer-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='renderer-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='renderer-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='renderer-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
