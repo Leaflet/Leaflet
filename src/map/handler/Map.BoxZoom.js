@@ -91,7 +91,7 @@ export class BoxZoom extends Handler {
 		this._point = this._map.pointerEventToContainerPoint(e);
 
 		const bounds = new Bounds(this._point, this._startPoint),
-		    size = bounds.getSize();
+		size = bounds.getSize();
 
 		DomUtil.setPosition(this._box, bounds.min);
 

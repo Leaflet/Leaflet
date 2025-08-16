@@ -69,8 +69,8 @@ export class SVG extends Renderer {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		const b = this._bounds,
-		    size = b.getSize(),
-		    container = this._container;
+		size = b.getSize(),
+		container = this._container;
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
@@ -117,7 +117,7 @@ export class SVG extends Renderer {
 
 	_updateStyle(layer) {
 		const path = layer._path,
-		    options = layer.options;
+		options = layer.options;
 
 		if (!path) { return; }
 
@@ -158,9 +158,9 @@ export class SVG extends Renderer {
 
 	_updateCircle(layer) {
 		const p = layer._point,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
-		    arc = `a${r},${r2} 0 1,0 `;
+		r = Math.max(Math.round(layer._radius), 1),
+		r2 = Math.max(Math.round(layer._radiusY), 1) || r,
+		arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
 		const d = layer._empty() ? 'M0 0' :

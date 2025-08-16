@@ -61,12 +61,12 @@ export class MarkerDrag extends Handler {
 
 	_adjustPan(e) {
 		const marker = this._marker,
-		    map = marker._map,
-		    speed = this._marker.options.autoPanSpeed,
-		    padding = this._marker.options.autoPanPadding,
-		    iconPos = DomUtil.getPosition(marker._icon),
-		    bounds = map.getPixelBounds(),
-		    origin = map.getPixelOrigin();
+		map = marker._map,
+		speed = this._marker.options.autoPanSpeed,
+		padding = this._marker.options.autoPanPadding,
+		iconPos = DomUtil.getPosition(marker._icon),
+		bounds = map.getPixelBounds(),
+		origin = map.getPixelOrigin();
 
 		const panBounds = new Bounds(
 			bounds.min._subtract(origin).add(padding),
@@ -122,9 +122,9 @@ export class MarkerDrag extends Handler {
 
 	_onDrag(e) {
 		const marker = this._marker,
-		    shadow = marker._shadow,
-		    iconPos = DomUtil.getPosition(marker._icon),
-		    latlng = marker._map.layerPointToLatLng(iconPos);
+		shadow = marker._shadow,
+		iconPos = DomUtil.getPosition(marker._icon),
+		latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// update shadow position
 		if (shadow) {
@@ -138,21 +138,21 @@ export class MarkerDrag extends Handler {
 		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
 		marker
-		    .fire('move', e)
-		    .fire('drag', e);
+			.fire('move', e)
+			.fire('drag', e);
 	}
 
 	_onDragEnd(e) {
 		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
 
-		 cancelAnimationFrame(this._panRequest);
+		cancelAnimationFrame(this._panRequest);
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
 		delete this._oldLatLng;
 		this._marker
-		    .fire('moveend')
-		    .fire('dragend', e);
+			.fire('moveend')
+			.fire('dragend', e);
 	}
 }

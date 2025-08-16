@@ -64,7 +64,7 @@ describe('GridLayer', () => {
 
 		for (const tile of tiles) {
 			const coords = tile.coords,
-			    pos = DomUtil.getPosition(tile.tile);
+			pos = DomUtil.getPosition(tile.tile);
 
 			loaded[`${pos.x}:${pos.y}`] = [coords.x, coords.y];
 		}
@@ -139,7 +139,7 @@ describe('GridLayer', () => {
 		it('only creates tiles for visible area on zoom in', (done) => {
 			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
 			let count = 0,
-			    loadCount = 0;
+			loadCount = 0;
 			grid.createTile = function () {
 				count++;
 				return document.createElement('div');
@@ -217,7 +217,7 @@ describe('GridLayer', () => {
 			const layer = new GridLayer().addTo(map);
 
 			const onAdd = layer.onAdd,
-			    onAddSpy = sinon.spy();
+			onAddSpy = sinon.spy();
 			layer.onAdd = function (...args) {
 				onAdd.apply(this, args);
 				onAddSpy();
@@ -239,7 +239,7 @@ describe('GridLayer', () => {
 		describe('when a gridlayer is added to a map with no other layers', () => {
 			it('has the same zoomlevels as the gridlayer', () => {
 				const maxZoom = 10,
-				    minZoom = 5;
+				minZoom = 5;
 
 				new GridLayer({
 					maxZoom,

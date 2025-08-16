@@ -105,13 +105,13 @@ export class TileLayerWMS extends TileLayer {
 	getTileUrl(coords) {
 
 		const tileBounds = this._tileCoordsToNwSe(coords),
-		    crs = this._crs,
-		    bounds = new Bounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
-		    min = bounds.min,
-		    max = bounds.max,
-		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
-		    [min.y, min.x, max.y, max.x] :
-		    [min.x, min.y, max.x, max.y]).join(',');
+		crs = this._crs,
+		bounds = new Bounds(crs.project(tileBounds[0]), crs.project(tileBounds[1])),
+		min = bounds.min,
+		max = bounds.max,
+		bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
+			[min.y, min.x, max.y, max.x] :
+			[min.x, min.y, max.x, max.y]).join(',');
 		const url = new URL(TileLayer.prototype.getTileUrl.call(this, coords));
 		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
 			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);

@@ -20,9 +20,9 @@ export const Mercator = {
 	project(latlng) {
 		latlng = new LatLng(latlng);
 		const d = Math.PI / 180,
-		      r = this.R,
-		      tmp = this.R_MINOR / r,
-		      e = Math.sqrt(1 - tmp * tmp);
+		r = this.R,
+		tmp = this.R_MINOR / r,
+		e = Math.sqrt(1 - tmp * tmp);
 		let y = latlng.lat * d;
 		const con = e * Math.sin(y);
 
@@ -35,10 +35,10 @@ export const Mercator = {
 	unproject(point) {
 		point = new Point(point);
 		const d = 180 / Math.PI,
-		      r = this.R,
-		      tmp = this.R_MINOR / r,
-		      e = Math.sqrt(1 - tmp * tmp),
-		      ts = Math.exp(-point.y / r);
+		r = this.R,
+		tmp = this.R_MINOR / r,
+		e = Math.sqrt(1 - tmp * tmp),
+		ts = Math.exp(-point.y / r);
 		let phi = Math.PI / 2 - 2 * Math.atan(ts);
 
 		for (let i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {

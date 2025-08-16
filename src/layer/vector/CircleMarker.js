@@ -78,9 +78,9 @@ export class CircleMarker extends Path {
 
 	_updateBounds() {
 		const r = this._radius,
-		    r2 = this._radiusY ?? r,
-		    w = this._clickTolerance(),
-		    p = [r + w, r2 + w];
+		r2 = this._radiusY ?? r,
+		w = this._clickTolerance(),
+		p = [r + w, r2 + w];
 		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
 	}
 

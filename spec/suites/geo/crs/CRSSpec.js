@@ -44,8 +44,8 @@ describe('CRS.EPSG3857', () => {
 	describe('#getProjectedBounds', () => {
 		it('gives correct size', () => {
 			let i,
-			    worldSize = 256,
-			    crsSize;
+			worldSize = 256,
+			crsSize;
 			for (i = 0; i <= 22; i++) {
 				crsSize = crs.getProjectedBounds(i).getSize();
 				expect(crsSize.x).equal(worldSize);
@@ -150,8 +150,8 @@ describe('CRS.EPSG4326', () => {
 	describe('#getSize', () => {
 		it('gives correct size', () => {
 			let i,
-			    worldSize = 256,
-			    crsSize;
+			worldSize = 256,
+			crsSize;
 			for (i = 0; i <= 22; i++) {
 				crsSize = crs.getProjectedBounds(i).getSize();
 				expect(crsSize.x).equal(worldSize * 2);

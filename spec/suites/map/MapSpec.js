@@ -6,7 +6,7 @@ import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('Map', () => {
 	let container,
-	    map;
+	map;
 
 	beforeEach(() => {
 		container = container = createContainer();
@@ -42,12 +42,12 @@ describe('Map', () => {
 		describe('corner case checking', () => {
 			it('throws an exception upon reinitialization', () => {
 				expect(() => new Map(container))
-				  .to.throw('Map container is already initialized.');
+					.to.throw('Map container is already initialized.');
 			});
 
 			it('throws an exception if a container is not found', () => {
 				expect(() => new Map('nonexistentdivelement'))
-				  .to.throw('Map container not found.');
+					.to.throw('Map container not found.');
 			});
 		});
 
@@ -987,7 +987,7 @@ describe('Map', () => {
 
 		it('fires a layeradd event immediately if the map is ready', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layeradd', spy);
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
@@ -996,7 +996,7 @@ describe('Map', () => {
 
 		it('fires a layeradd event when the map becomes ready', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layeradd', spy);
 			map.addLayer(layer);
 			expect(spy.called).not.to.be.true;
@@ -1006,7 +1006,7 @@ describe('Map', () => {
 
 		it('does not fire a layeradd event if the layer is removed before the map becomes ready', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layeradd', spy);
 			map.addLayer(layer);
 			map.removeLayer(layer);
@@ -1091,7 +1091,7 @@ describe('Map', () => {
 
 		it('fires a layerremove event if the map is ready', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layerremove', spy);
 			map.setView([0, 0], 0);
 			map.addLayer(layer);
@@ -1101,7 +1101,7 @@ describe('Map', () => {
 
 		it('does not fire a layerremove if the layer was not added', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layerremove', spy);
 			map.setView([0, 0], 0);
 			map.removeLayer(layer);
@@ -1110,7 +1110,7 @@ describe('Map', () => {
 
 		it('does not fire a layerremove if the map is not ready', () => {
 			const layer = layerSpy(),
-			    spy = sinon.spy();
+			spy = sinon.spy();
 			map.on('layerremove', spy);
 			map.addLayer(layer);
 			map.removeLayer(layer);
@@ -1159,7 +1159,7 @@ describe('Map', () => {
 				map.setView([0, 0], 0);
 				new TileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map);
 				const spy = sinon.spy(),
-				    t2 = new TileLayer('', {minZoom: 0, maxZoom: 15}).addTo(map);
+				t2 = new TileLayer('', {minZoom: 0, maxZoom: 15}).addTo(map);
 
 				map.on('zoomlevelschange', spy);
 				expect(spy.called).to.be.false;
@@ -1172,9 +1172,9 @@ describe('Map', () => {
 			it('fires no zoomlevelschange event', () => {
 				map.setView([0, 0], 0);
 				const spy = sinon.spy(),
-				    t1 = new TileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map),
-				    t2 = new TileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map),
-				    t3 = new TileLayer('', {minZoom: 0, maxZoom: 5}).addTo(map);
+				t1 = new TileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map),
+				t2 = new TileLayer('', {minZoom: 0, maxZoom: 10}).addTo(map),
+				t3 = new TileLayer('', {minZoom: 0, maxZoom: 5}).addTo(map);
 
 				map.on('zoomlevelschange', spy);
 				map.removeLayer(t2);
@@ -1194,8 +1194,8 @@ describe('Map', () => {
 
 		it('calls the provided function for each layer', () => {
 			const t1 = new TileLayer('').addTo(map),
-			    t2 = new TileLayer('').addTo(map),
-			    spy = sinon.spy();
+			t2 = new TileLayer('').addTo(map),
+			spy = sinon.spy();
 
 			map.eachLayer(spy);
 
@@ -1416,7 +1416,7 @@ describe('Map', () => {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
 			const newCenter = new LatLng(10, 11),
-			    newZoom = 12;
+			newZoom = 12;
 			const callback = function () {
 				expect(map.getCenter()).to.eqlLatLng(newCenter);
 				expect(map.getZoom()).to.eql(newZoom);
@@ -1443,7 +1443,7 @@ describe('Map', () => {
 
 		it('flyTo should honour maxZoom', (done) => {
 			const newCenter = new LatLng(10, 11),
-			    maxZoom = 20;
+			maxZoom = 20;
 			map.options.maxZoom = maxZoom;
 
 			map.setView([0, 0], 0);
@@ -1543,7 +1543,7 @@ describe('Map', () => {
 	describe('#fitBounds', () => {
 		const center = new LatLng(50.5, 30.51);
 		let bounds = new LatLngBounds(new LatLng(1, 102), new LatLng(11, 122)),
-		    boundsCenter = bounds.getCenter();
+		boundsCenter = bounds.getCenter();
 
 		beforeEach(() => {
 			// fitBounds needs a map container with non-null area
@@ -1588,7 +1588,7 @@ describe('Map', () => {
 
 		it('Fits to same scale and zoom', (done) => {
 			const bounds = map.getBounds(),
-			    zoom = map.getZoom();
+			zoom = map.getZoom();
 			map.once('moveend zoomend', () => {
 				const newBounds = map.getBounds();
 				expect(newBounds.getSouthWest()).to.nearLatLng(bounds.getSouthWest());
@@ -1632,7 +1632,7 @@ describe('Map', () => {
 
 	describe('#fitBounds after layers set', () => {
 		const center = new LatLng(22, 33),
-		    bounds = new LatLngBounds(new LatLng(1, 102), new LatLng(11, 122));
+		bounds = new LatLngBounds(new LatLng(1, 102), new LatLng(11, 122));
 
 		beforeEach(() => {
 			// fitBounds needs a map container with non-null area
@@ -1676,8 +1676,8 @@ describe('Map', () => {
 
 	describe('#panInside', () => {
 		let center,
-		    tl,
-		    tlPix;
+		tl,
+		tlPix;
 
 		beforeEach(() => {
 			container.style.height = container.style.width = '500px';
@@ -1695,7 +1695,7 @@ describe('Map', () => {
 		it('pans the map when padding is provided and the target is within the border area', () => {
 			const padding = [40, 20];
 			let p = tlPix.add([30, 0]),	// Top-left
-			    distanceMoved;
+			distanceMoved;
 			map.panInside(map.unproject(p), {padding, animate: false});
 			distanceMoved = map.getPixelBounds().min.subtract(tlPix);
 			expect(distanceMoved.equals(new Point(-10, -20))).to.eql(true);
@@ -1721,7 +1721,7 @@ describe('Map', () => {
 
 		it('supports different padding values for each border', () => {
 			const p = tlPix.add([40, 0]),	// Top-Left
-			    opts = {paddingTL: [60, 20], paddingBR: [10, 10], animate: false};
+			opts = {paddingTL: [60, 20], paddingBR: [10, 10], animate: false};
 			map.panInside(map.unproject(p), opts);
 			expect(center).to.eql(map.getCenter());
 
@@ -1762,7 +1762,7 @@ describe('Map', () => {
 			const target = oldCenter.add(targetOffset);
 			const paddingOffset = new Point(0, 15);
 			const padding = map.getSize().divideBy(2) // half size
-			  .add(paddingOffset); // padding more than half the display bounds (replicates issue #7445)
+				.add(paddingOffset); // padding more than half the display bounds (replicates issue #7445)
 			map.panInside(map.unproject(target), {paddingBottomRight: [0, padding.y], animate: false});
 			const offset = map.project(map.getCenter()).subtract(oldCenter); // distance moved during the pan
 			const result = paddingOffset.add(targetOffset).subtract(offset);
@@ -1815,8 +1815,8 @@ describe('Map', () => {
 
 		it('pointerout is forwarded if fired on the original target', () => {
 			const mapSpy = sinon.spy(),
-			    layerSpy = sinon.spy(),
-			    otherSpy = sinon.spy();
+			layerSpy = sinon.spy(),
+			otherSpy = sinon.spy();
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			const other = new Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
 			map.on('pointerout', mapSpy);
@@ -1834,8 +1834,8 @@ describe('Map', () => {
 				iconSize: [100, 100]
 			});
 			const mapSpy = sinon.spy(),
-			    layerSpy = sinon.spy(),
-			    layer = new Marker([1, 2], {icon}).addTo(map);
+			layerSpy = sinon.spy(),
+			layer = new Marker([1, 2], {icon}).addTo(map);
 			map.on('pointerout', mapSpy);
 			layer.on('pointerout', layerSpy);
 			UIEventSimulator.fire('pointerout', layer._icon, {relatedTarget: container});
@@ -1849,9 +1849,9 @@ describe('Map', () => {
 				iconSize: [100, 100]
 			});
 			const mapSpy = sinon.spy(),
-			    layerSpy = sinon.spy(),
-			    layer = new Marker([1, 2], {icon}).addTo(map),
-			    child = layer._icon.querySelector('p');
+			layerSpy = sinon.spy(),
+			layer = new Marker([1, 2], {icon}).addTo(map),
+			child = layer._icon.querySelector('p');
 			map.on('pointerout', mapSpy);
 			layer.on('pointerout', layerSpy);
 			UIEventSimulator.fire('pointerout', layer._icon, {relatedTarget: child});
@@ -1865,9 +1865,9 @@ describe('Map', () => {
 				iconSize: [100, 100]
 			});
 			const mapSpy = sinon.spy(),
-			    layerSpy = sinon.spy(),
-			    layer = new Marker([1, 2], {icon}).addTo(map),
-			    child = layer._icon.querySelector('p');
+			layerSpy = sinon.spy(),
+			layer = new Marker([1, 2], {icon}).addTo(map),
+			child = layer._icon.querySelector('p');
 			map.on('pointerout', mapSpy);
 			layer.on('pointerout', layerSpy);
 			UIEventSimulator.fire('pointerout', child, {relatedTarget: layer._icon});
@@ -1877,8 +1877,8 @@ describe('Map', () => {
 
 		it('pointerout is not forwarded to layers if fired on the map', () => {
 			const mapSpy = sinon.spy(),
-			    layerSpy = sinon.spy(),
-			    otherSpy = sinon.spy();
+			layerSpy = sinon.spy(),
+			otherSpy = sinon.spy();
 			const layer = new Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			const other = new Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
 			map.on('pointerout', mapSpy);

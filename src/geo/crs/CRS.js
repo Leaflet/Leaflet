@@ -29,7 +29,7 @@ export class CRS {
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	static latLngToPoint(latlng, zoom) {
 		const projectedPoint = this.projection.project(latlng),
-		    scale = this.scale(zoom);
+		scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
 	}
@@ -39,7 +39,7 @@ export class CRS {
 	// zoom into geographical coordinates.
 	static pointToLatLng(point, zoom) {
 		const scale = this.scale(zoom),
-		    untransformedPoint = this.transformation.untransform(point, scale);
+		untransformedPoint = this.transformation.untransform(point, scale);
 
 		return this.projection.unproject(untransformedPoint);
 	}
@@ -79,9 +79,9 @@ export class CRS {
 		if (this.infinite) { return null; }
 
 		const b = this.projection.bounds,
-		    s = this.scale(zoom),
-		    min = this.transformation.transform(b.min, s),
-		    max = this.transformation.transform(b.max, s);
+		s = this.scale(zoom),
+		min = this.transformation.transform(b.min, s),
+		max = this.transformation.transform(b.max, s);
 
 		return new Bounds(min, max);
 	}
@@ -113,8 +113,8 @@ export class CRS {
 	static wrapLatLng(latlng) {
 		latlng = new LatLng(latlng);
 		const lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
-		    alt = latlng.alt;
+		lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		alt = latlng.alt;
 
 		return new LatLng(lat, lng, alt);
 	}
@@ -125,18 +125,18 @@ export class CRS {
 	static wrapLatLngBounds(bounds) {
 		bounds = new LatLngBounds(bounds);
 		const center = bounds.getCenter(),
-		    newCenter = this.wrapLatLng(center),
-		    latShift = center.lat - newCenter.lat,
-		    lngShift = center.lng - newCenter.lng;
+		newCenter = this.wrapLatLng(center),
+		latShift = center.lat - newCenter.lat,
+		lngShift = center.lng - newCenter.lng;
 
 		if (latShift === 0 && lngShift === 0) {
 			return bounds;
 		}
 
 		const sw = bounds.getSouthWest(),
-		    ne = bounds.getNorthEast(),
-		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
-		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
+		ne = bounds.getNorthEast(),
+		newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
+		newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
 
 		return new LatLngBounds(newSw, newNe);
 	}

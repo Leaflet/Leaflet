@@ -57,8 +57,8 @@ export function throttle(fn, time, context) {
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
 	const max = range[1],
-	    min = range[0],
-	    d = max - min;
+	min = range[0],
+	d = max - min;
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 }
 

@@ -24,7 +24,7 @@ describe('Projection.Mercator', () => {
 
 			// from https://github.com/Leaflet/Leaflet/issues/1578
 			expect(p.project(new LatLng(51.9371170300465, 80.11230468750001)))
-			        .near([8918060.964088084, 6755099.410887127]);
+				.near([8918060.964088084, 6755099.410887127]);
 		});
 	});
 

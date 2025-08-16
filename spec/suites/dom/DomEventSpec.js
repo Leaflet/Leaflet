@@ -253,7 +253,7 @@ describe('DomEvent', () => {
 
 		it('binds "this" to the given context when passed an event map', () => {
 			const listener = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, {click: listener}, ctx);
 
@@ -264,7 +264,7 @@ describe('DomEvent', () => {
 
 		it('binds "this" to the given context when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, {click: listener, keypress: listener2}, ctx);
 
@@ -336,7 +336,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added listener when passed an event map', () => {
 			const listener = sinon.spy(),
-			    events = {click: listener};
+			events = {click: listener};
 
 			DomEvent.on(el, events);
 			DomEvent.off(el, events);
@@ -348,7 +348,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added listener when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2};
+			events = {click: listener, keypress: listener2};
 
 			DomEvent.on(el, events);
 			DomEvent.off(el, events);
@@ -362,7 +362,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added event when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2},
+			events = {click: listener, keypress: listener2},
 			events2 = {click: listener};
 
 			DomEvent.on(el, events);
@@ -377,7 +377,7 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context', () => {
 			const listener = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, 'click', listener, ctx);
 			DomEvent.off(el, 'click', listener, ctx);
@@ -389,8 +389,8 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context when passed an event map', () => {
 			const listener = sinon.spy(),
-			    events = {click: listener},
-			    ctx = {foo: 'bar'};
+			events = {click: listener},
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events, ctx);
@@ -402,9 +402,9 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2},
+			events = {click: listener, keypress: listener2},
 			events2 = {click: listener},
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events2, ctx);
@@ -439,7 +439,7 @@ describe('DomEvent', () => {
 
 		it('only removes listener when proper context specified when passed an event map', () => {
 			let listener = sinon.spy(),
-			    events = {click: listener};
+			events = {click: listener};
 			const ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events);
@@ -450,7 +450,7 @@ describe('DomEvent', () => {
 			sinon.assert.called(listener);
 
 			listener = sinon.spy();
-			   events = {click: listener};
+			events = {click: listener};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events);

@@ -6,9 +6,9 @@ import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker', () => {
 	let map,
-	    container,
-	    icon1,
-	    icon2;
+	container,
+	icon1,
+	icon2;
 
 	beforeEach(() => {
 		container = container = createContainer();

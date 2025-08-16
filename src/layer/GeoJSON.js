@@ -171,10 +171,10 @@ export class GeoJSON extends FeatureGroup {
 export function geometryToLayer(geojson, options) {
 
 	const geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-	      coords = geometry?.coordinates,
-	      layers = [],
-	      pointToLayer = options?.pointToLayer,
-	      _coordsToLatLng = options?.coordsToLatLng ?? coordsToLatLng;
+	coords = geometry?.coordinates,
+	layers = [],
+	pointToLayer = options?.pointToLayer,
+	_coordsToLatLng = options?.coordsToLatLng ?? coordsToLatLng;
 	let latlng, latlngs;
 
 	if (!coords && !geometry) {
@@ -352,7 +352,7 @@ Polyline.include({
 Polygon.include({
 	toGeoJSON(precision) {
 		const holes = !LineUtil.isFlat(this._latlngs),
-		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
+		multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
 		let coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
 
@@ -395,7 +395,7 @@ LayerGroup.include({
 		}
 
 		const isGeometryCollection = type === 'GeometryCollection',
-		    jsons = [];
+		jsons = [];
 
 		this.eachLayer((layer) => {
 			if (layer.toGeoJSON) {

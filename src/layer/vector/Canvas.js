@@ -277,7 +277,7 @@ export class Canvas extends Renderer {
 		ctx.beginPath();
 
 		parts.forEach((p0) => {
-			 p0.forEach((p, j) => {
+			p0.forEach((p, j) => {
 				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
 			});
 			if (closed) {
