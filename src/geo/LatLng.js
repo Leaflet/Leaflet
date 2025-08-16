@@ -154,8 +154,8 @@ export class LatLng {
 		lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
 		return new LatLngBounds(
-		        [this.lat - latAccuracy, this.lng - lngAccuracy],
-		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
+			[this.lat - latAccuracy, this.lng - lngAccuracy],
+			[this.lat + latAccuracy, this.lng + lngAccuracy]);
 	}
 
 	// @method clone(): LatLng

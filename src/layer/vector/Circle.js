@@ -66,17 +66,17 @@ export class Circle extends CircleMarker {
 	_project() {
 
 		const lng = this._latlng.lng,
-		    lat = this._latlng.lat,
-		    map = this._map,
-		    crs = map.options.crs;
+		lat = this._latlng.lat,
+		map = this._map,
+		crs = map.options.crs;
 
 		if (crs.distance === Earth.distance) {
 			const d = Math.PI / 180,
-			      latR = (this._mRadius / Earth.R) / d,
-			      top = map.project([lat + latR, lng]),
-			      bottom = map.project([lat - latR, lng]),
-			      p = top.add(bottom).divideBy(2),
-			      lat2 = map.unproject(p).lat;
+			latR = (this._mRadius / Earth.R) / d,
+			top = map.project([lat + latR, lng]),
+			bottom = map.project([lat - latR, lng]),
+			p = top.add(bottom).divideBy(2),
+			lat2 = map.unproject(p).lat;
 			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
 			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 

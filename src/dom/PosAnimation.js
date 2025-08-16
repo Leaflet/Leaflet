@@ -74,7 +74,7 @@ export class PosAnimation extends Evented {
 
 	_step(round) {
 		const elapsed = (+new Date()) - this._startTime,
-		    duration = this._duration * 1000;
+		duration = this._duration * 1000;
 
 		if (elapsed < duration) {
 			this._runFrame(this._easeOut(elapsed / duration), round);

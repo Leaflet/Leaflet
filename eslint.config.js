@@ -42,11 +42,11 @@ export default [
 
 			'import/extensions': ['error', 'ignorePackages'],
 
-			'@stylistic/js/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true}],
-			'@stylistic/js/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
-			'@stylistic/js/key-spacing': 'off',
-			'@stylistic/js/linebreak-style': ['off', 'unix'],
-			'@stylistic/js/spaced-comment': 'error',
+			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true}],
+			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+			'@stylistic/key-spacing': 'off',
+			'@stylistic/linebreak-style': ['off', 'unix'],
+			'@stylistic/spaced-comment': 'error',
 
 			// TODO: Re-enable the rules below and fix the linting issues.
 			'no-invalid-this': 'off',
@@ -55,6 +55,12 @@ export default [
 			'prefer-spread': 'off',
 			'no-new': 'off'
 		}
+	},
+	{
+		files: ['docs/examples/**', 'docs/plugins.md'],
+		rules: {
+			'@stylistic/eol-last': 'off',
+		},
 	},
 	{
 		files: ['spec/**'],

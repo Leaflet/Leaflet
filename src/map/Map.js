@@ -270,7 +270,7 @@ export class Map extends Evented {
 		bounds = bounds.getBounds ? bounds.getBounds() : new LatLngBounds(bounds);
 
 		const paddingTL = new Point(options.paddingTopLeft || options.padding || [0, 0]),
-		      paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]);
+		paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]);
 
 		let zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
@@ -388,10 +388,10 @@ export class Map extends Evented {
 		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
-		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
-		    u1 = (to.distanceTo(from)) || 1,
-		    rho = 1.42,
-		    rho2 = rho * rho;
+		w1 = w0 * this.getZoomScale(startZoom, targetZoom),
+		u1 = (to.distanceTo(from)) || 1,
+		rho = 1.42,
+		rho2 = rho * rho;
 
 		function r(i) {
 			const s1 = i ? -1 : 1,
@@ -537,12 +537,12 @@ export class Map extends Evented {
 		options ??= {};
 
 		const paddingTL = new Point(options.paddingTopLeft || options.padding || [0, 0]),
-		    paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]),
-		    pixelCenter = this.project(this.getCenter()),
-		    pixelPoint = this.project(latlng),
-		    pixelBounds = this.getPixelBounds(),
-		    paddedBounds = new Bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
-		    paddedSize = paddedBounds.getSize();
+		paddingBR = new Point(options.paddingBottomRight || options.padding || [0, 0]),
+		pixelCenter = this.project(this.getCenter()),
+		pixelPoint = this.project(latlng),
+		pixelBounds = this.getPixelBounds(),
+		paddedBounds = new Bounds([pixelBounds.min.add(paddingTL), pixelBounds.max.subtract(paddingBR)]),
+		paddedSize = paddedBounds.getSize();
 
 		if (!paddedBounds.contains(pixelPoint)) {
 			this._enforcingBounds = true;
@@ -820,7 +820,7 @@ export class Map extends Evented {
 	// as a child of the main map pane if not set.
 	createPane(name, container) {
 		const className = `leaflet-pane${name ? ` leaflet-${name.replace('Pane', '')}-pane` : ''}`,
-		    pane = DomUtil.create('div', className, container || this._mapPane);
+		pane = DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
 			this._panes[name] = pane;
@@ -1373,9 +1373,9 @@ export class Map extends Evented {
 
 	_findEventTargets(e, type) {
 		let targets = [],
-		    target,
-		    src = e.target || e.srcElement,
-		    dragging = false;
+		target,
+		src = e.target || e.srcElement,
+		dragging = false;
 		const isHover = type === 'pointerout' || type === 'pointerover';
 
 		while (src) {

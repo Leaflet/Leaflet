@@ -9,8 +9,8 @@ describe('Control', () => {
 	}
 
 	let map,
-	    container,
-	    control;
+	container,
+	control;
 
 	beforeEach(() => {
 		container = container = createContainer();

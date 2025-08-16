@@ -238,7 +238,7 @@ describe('Polygon', () => {
 		it('should return first latlngs on a multipolygon with hole', () => {
 			const latlngs = [
 				[[new LatLng([0, 10]), new LatLng([10, 10]), new LatLng([10, 0])],
-				 [new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]],
+					[new LatLng([2, 3]), new LatLng([2, 4]), new LatLng([3, 4])]],
 				[[new LatLng([10, 20]), new LatLng([30, 40]), new LatLng([50, 60])]]
 			];
 

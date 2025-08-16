@@ -192,8 +192,8 @@ describe('Canvas', () => {
 
 	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = Util.stamp(layer),
-		    canvas = map.getRenderer(layer);
+		layerId = Util.stamp(layer),
+		canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);
 
@@ -207,8 +207,8 @@ describe('Canvas', () => {
 
 	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = Util.stamp(layer),
-		    canvas = map.getRenderer(layer);
+		layerId = Util.stamp(layer),
+		canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);
 

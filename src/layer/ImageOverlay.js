@@ -228,17 +228,17 @@ export class ImageOverlay extends Layer {
 
 	_animateZoom(e) {
 		const scale = this._map.getZoomScale(e.zoom),
-		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
+		offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
 	}
 
 	_reset() {
 		const image = this._image,
-		    bounds = new Bounds(
-		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
-		    size = bounds.getSize();
+		bounds = new Bounds(
+			this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+			this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
+		size = bounds.getSize();
 
 		DomUtil.setPosition(image, bounds.min);
 

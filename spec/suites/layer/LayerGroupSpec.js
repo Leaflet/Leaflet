@@ -18,7 +18,7 @@ describe('LayerGroup', () => {
 	describe('#addLayer', () => {
 		it('adds a layer', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
 
@@ -29,7 +29,7 @@ describe('LayerGroup', () => {
 	describe('#removeLayer', () => {
 		it('removes a layer', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.removeLayer(marker)).to.eql(lg);
@@ -41,7 +41,7 @@ describe('LayerGroup', () => {
 	describe('#clearLayers', () => {
 		it('removes all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.clearLayers()).to.eql(lg);
@@ -53,7 +53,7 @@ describe('LayerGroup', () => {
 	describe('#getLayers', () => {
 		it('gets all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 
@@ -64,8 +64,8 @@ describe('LayerGroup', () => {
 	describe('#eachLayer', () => {
 		it('iterates over all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]),
-			    ctx = {foo: 'bar'};
+			marker = new Marker([0, 0]),
+			ctx = {foo: 'bar'};
 
 			lg.addLayer(marker);
 

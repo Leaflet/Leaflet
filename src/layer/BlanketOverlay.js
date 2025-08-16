@@ -82,10 +82,10 @@ export class BlanketOverlay extends Layer {
 
 	_updateTransform(center, zoom) {
 		const scale = this._map.getZoomScale(zoom, this._zoom),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._center, zoom),
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
-		        .subtract(this._map._getNewPixelOrigin(center, zoom));
+		viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
+		currentCenterPoint = this._map.project(this._center, zoom),
+		topLeftOffset = viewHalf.multiplyBy(-scale).add(currentCenterPoint)
+			.subtract(this._map._getNewPixelOrigin(center, zoom));
 
 		DomUtil.setTransform(this._container, topLeftOffset, scale);
 	}
@@ -93,8 +93,8 @@ export class BlanketOverlay extends Layer {
 	_onMoveEnd(ev) {
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		const p = this.options.padding,
-		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+		size = this._map.getSize(),
+		min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
 
@@ -157,7 +157,7 @@ export class BlanketOverlay extends Layer {
 	}
 	_resizeContainer() {
 		const p = this.options.padding,
-		    size = this._map.getSize().multiplyBy(1 + p * 2).round();
+		size = this._map.getSize().multiplyBy(1 + p * 2).round();
 		this._container.style.width = `${size.x}px`;
 		this._container.style.height = `${size.y}px`;
 		return size;

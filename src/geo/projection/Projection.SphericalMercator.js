@@ -21,9 +21,9 @@ export const SphericalMercator = {
 	project(latlng) {
 		latlng = new LatLng(latlng);
 		const d = Math.PI / 180,
-		    max = this.MAX_LATITUDE,
-		    lat = Math.max(Math.min(max, latlng.lat), -max),
-		    sin = Math.sin(lat * d);
+		max = this.MAX_LATITUDE,
+		lat = Math.max(Math.min(max, latlng.lat), -max),
+		sin = Math.sin(lat * d);
 
 		return new Point(
 			this.R * latlng.lng * d,

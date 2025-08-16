@@ -139,7 +139,7 @@ export class Tooltip extends DivOverlay {
 
 	_initLayout() {
 		const prefix = 'leaflet-tooltip',
-		    className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
@@ -154,13 +154,13 @@ export class Tooltip extends DivOverlay {
 	_setPosition(pos) {
 		let subX, subY, direction = this.options.direction;
 		const map = this._map,
-		      container = this._container,
-		      centerPoint = map.latLngToContainerPoint(map.getCenter()),
-		      tooltipPoint = map.layerPointToContainerPoint(pos),
-		      tooltipWidth = container.offsetWidth,
-		      tooltipHeight = container.offsetHeight,
-		      offset = new Point(this.options.offset),
-		      anchor = this._getAnchor();
+		container = this._container,
+		centerPoint = map.latLngToContainerPoint(map.getCenter()),
+		tooltipPoint = map.layerPointToContainerPoint(pos),
+		tooltipWidth = container.offsetWidth,
+		tooltipHeight = container.offsetHeight,
+		offset = new Point(this.options.offset),
+		anchor = this._getAnchor();
 
 		if (direction === 'top') {
 			subX = tooltipWidth / 2;
@@ -235,7 +235,7 @@ Map.include({
 	// Creates a tooltip with the specified content and options and open it.
 	openTooltip(tooltip, latlng, options) {
 		this._initOverlay(Tooltip, tooltip, latlng, options)
-		  .openOn(this);
+			.openOn(this);
 
 		return this;
 	},
