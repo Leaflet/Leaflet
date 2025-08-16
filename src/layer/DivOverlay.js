@@ -155,7 +155,7 @@ export class DivOverlay extends Layer {
 		return this;
 	}
 
-	// @method getContent: String|HTMLElement
+	// @method getContent: String|HTMLElement|Function)
 	// Returns the content of the overlay.
 	getContent() {
 		return this._content;
@@ -170,7 +170,7 @@ export class DivOverlay extends Layer {
 		return this;
 	}
 
-	// @method getElement: String|HTMLElement
+	// @method getElement: HTMLElement
 	// Returns the HTML container of the overlay.
 	getElement() {
 		return this._container;

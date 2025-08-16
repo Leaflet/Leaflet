@@ -2,6 +2,8 @@ export {Layer} from './Layer.js';
 export {LayerGroup} from './LayerGroup.js';
 export {FeatureGroup} from './FeatureGroup.js';
 import {GeoJSON, geometryToLayer, coordsToLatLng, coordsToLatLngs, latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSON.js';
+
+// TODO: can they be static functions in the GeoJSON Class?
 GeoJSON.geometryToLayer = geometryToLayer;
 GeoJSON.coordsToLatLng = coordsToLatLng;
 GeoJSON.coordsToLatLngs = coordsToLatLngs;

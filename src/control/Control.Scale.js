@@ -38,10 +38,11 @@ export class Scale extends Control {
 
 			// @option imperial: Boolean = True
 			// Whether to show the imperial scale line (mi/ft).
-			imperial: true
+			imperial: true,
 
 			// @option updateWhenIdle: Boolean = false
 			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+			updateWhenIdle: false
 		});
 	}
 

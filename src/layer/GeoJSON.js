@@ -282,6 +282,8 @@ export function latLngsToCoords(latlngs, levelsDeep, close, precision) {
 	return coords;
 }
 
+// @function getFeature(layer: Layer, newGeometry: Object): Object
+// Returns GeoJSON geometries/features of layer with new GeoJSON geometry.
 export function getFeature(layer, newGeometry) {
 	return layer.feature ?
 		{...layer.feature, geometry: newGeometry} :

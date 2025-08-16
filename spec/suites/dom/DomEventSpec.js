@@ -26,7 +26,7 @@ describe('DomEvent', () => {
 		});
 	});
 
-	describe('#on (addListener)', () => {
+	describe('#on', () => {
 		it('throws when type is undefined and context is falseFn', () => {
 			expect(() => DomEvent.on(el, undefined, Util.falseFn)).to.throw();
 		});
@@ -298,13 +298,9 @@ describe('DomEvent', () => {
 
 			expect(res).to.equal(DomEvent);
 		});
-
-		it('is aliased to addListener ', () => {
-			expect(DomEvent.on).to.equal(DomEvent.addListener);
-		});
 	});
 
-	describe('#off (removeListener)', () => {
+	describe('#off', () => {
 		it('removes a previously added listener', () => {
 			DomEvent.on(el, 'click', listener);
 			DomEvent.off(el, 'click', listener);
@@ -518,10 +514,6 @@ describe('DomEvent', () => {
 			const res = DomEvent.off(el, 'click', () => {});
 
 			expect(res).to.equal(DomEvent);
-		});
-
-		it('is aliased to removeListener ', () => {
-			expect(DomEvent.off).to.equal(DomEvent.removeListener);
 		});
 	});
 
