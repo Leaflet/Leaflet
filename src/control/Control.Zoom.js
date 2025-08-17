@@ -30,17 +30,9 @@ export class Zoom extends Control {
 			// The text set on the 'zoom in' button.
 			zoomInText: '<span aria-hidden="true">+</span>',
 
-			// @option zoomInTitle: String = 'Zoom in'
-			// The title set on the 'zoom in' button.
-			zoomInTitle: '',
-
 			// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
 			// The text set on the 'zoom out' button.
 			zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
-
-			// @option zoomOutTitle: String = 'Zoom out'
-			// The title set on the 'zoom out' button.
-			zoomOutTitle: ''
 		});
 	}
 
@@ -49,9 +41,9 @@ export class Zoom extends Control {
 		container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		options = this.options;
 
-		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle || translate('Zoom in'),
+		this._zoomInButton  = this._createButton(options.zoomInText, translate('Zoom in'),
 			`${zoomName}-in`,  container, this._zoomIn);
-		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle || translate('Zoom out'),
+		this._zoomOutButton = this._createButton(options.zoomOutText, translate('Zoom out'),
 			`${zoomName}-out`, container, this._zoomOut);
 
 		this._updateDisabled();
