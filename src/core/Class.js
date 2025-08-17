@@ -44,8 +44,6 @@ export class Class {
 			Object.assign(proto.options, props.options);
 		}
 
-		proto._initHooks = [];
-
 		return NewClass;
 	}
 
@@ -96,7 +94,9 @@ export class Class {
 			this[fn].apply(this, args);
 		};
 
-		this.prototype._initHooks ??= [];
+		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here
+			this.prototype._initHooks = [];
+		}
 		this.prototype._initHooks.push(init);
 		return this;
 	}
