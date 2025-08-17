@@ -1,7 +1,4 @@
 import {CircleMarker} from './CircleMarker.js';
-import {Path} from './Path.js';
-import * as Util from '../../core/Util.js';
-import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Earth} from '../../geo/crs/CRS.Earth.js';
 
@@ -27,8 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 export class Circle extends CircleMarker {
 
 	initialize(latlng, options) {
-		Util.setOptions(this, options);
-		this._latlng = new LatLng(latlng);
+		super.initialize(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
@@ -42,6 +38,7 @@ export class Circle extends CircleMarker {
 	// Sets the radius of a circle. Units are in meters.
 	setRadius(radius) {
 		this._mRadius = radius;
+		this._project();
 		return this.redraw();
 	}
 
@@ -60,8 +57,6 @@ export class Circle extends CircleMarker {
 			this._map.layerPointToLatLng(this._point.subtract(half)),
 			this._map.layerPointToLatLng(this._point.add(half)));
 	}
-
-	setStyle = Path.prototype.setStyle;
 
 	_project() {
 
