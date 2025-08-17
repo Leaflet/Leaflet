@@ -6,37 +6,43 @@ import * as Util from './Util.js';
  * Utility functions to deal with translations.
  */
 
-export const locales = {};
+export class I18n {
+	// @property messages: Object
+	// All localized strings.
+	static messages = {};
 
-// @property locale: String
-// The current locale code, that will be used when translating strings.
-export let locale = null;
+	// @property locale: String
+	// The current locale code, that will be used when translating strings.
+	static locale = null;
 
-// @function registerLocale(code: String, locale?: Object): String
-// Define localized strings for a given locale, defined by `code`.
-export function registerLocale(code, locale) {
-	locales[code] = Util.extend({}, locales[code], locale);
-}
-
-// @function setLocale(code: String): undefined
-// Define or change the locale code to be used when translating strings.
-export function setLocale(code) {
-	locale = code;
-}
-
-// @function translate(string: String, data?: Object): String
-// Actually try to translate the `string`, with optional variable passed in `data`.
-export function translate(string, data = {}) {
-	if (locale && locales[locale] && locales[locale][string] !== undefined) {
-		string = locales[locale][string];
-	}
-	try {
-		// Do not fail if some data is missing
-		// a bad translation should not break the app
-		string = Util.template(string, data);
-	} catch (err) {
-		console.error('Leaflet translate', err);
+	// @function registerLocale(locale: String, messages?: Object): String
+	// Define localized strings for a given locale, defined by `locale`.
+	static registerLocale(locale, messages) {
+		this.messages[locale] = {...this.messages[locale], ...messages};
 	}
 
-	return string;
+	// @function setLocale(locale: String): undefined
+	// Define or change the locale code to be used when translating strings.
+	static setLocale(locale) {
+		this.locale = locale;
+	}
+
+	// @function translate(string: String, data?: Object): String
+	// Actually try to translate the `string`, with optional variable passed in `data`.
+	static translate(string, data = {}) {
+		const s = this.messages[this.locale ?? '?']?.[string];
+		if (typeof s === 'string') {
+			string = s;
+		}
+		try {
+			// Do not fail if some data is missing
+			// a bad translation should not break the app
+			string = Util.template(string, data);
+		} catch (err) {
+			console.error('Leaflet translate', err);
+		}
+
+		return string;
+	}
+
 }

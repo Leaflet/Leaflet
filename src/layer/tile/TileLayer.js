@@ -2,7 +2,7 @@ import {GridLayer} from './GridLayer.js';
 import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import {translate} from '../../core/I18n.js';
+import {I18n} from '../../core/I18n.js';
 
 /*
  * @class TileLayer
@@ -102,7 +102,7 @@ export class TileLayer extends GridLayer {
 			// check for Open Street Map hosts
 			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 			if (osmHosts.some(host => urlHostname.endsWith(host))) {
-				options.attribution = translate('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+				options.attribution = I18n.translate('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
 			}
 		}
 

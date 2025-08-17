@@ -3,7 +3,7 @@ import {Control} from './Control.js';
 import {Map} from '../map/Map.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {translate} from '../core/I18n.js';
+import {I18n} from '../core/I18n.js';
 
 /*
  * @class Control.Zoom
@@ -41,9 +41,9 @@ export class Zoom extends Control {
 		container = DomUtil.create('div', `${zoomName} leaflet-bar`),
 		options = this.options;
 
-		this._zoomInButton  = this._createButton(options.zoomInText, translate('Zoom in'),
+		this._zoomInButton  = this._createButton(options.zoomInText, I18n.translate('Zoom in'),
 			`${zoomName}-in`,  container, this._zoomIn);
-		this._zoomOutButton = this._createButton(options.zoomOutText, translate('Zoom out'),
+		this._zoomOutButton = this._createButton(options.zoomOutText, I18n.translate('Zoom out'),
 			`${zoomName}-out`, container, this._zoomOut);
 
 		this._updateDisabled();

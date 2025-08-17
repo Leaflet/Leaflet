@@ -1,5 +1,6 @@
-import {locale, setLocale, registerLocale, translate, Map} from 'leaflet';
+import {I18n, Map} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {expect} from 'chai';
 
 describe('I18n', () => {
 	beforeEach(() => {
@@ -8,44 +9,44 @@ describe('I18n', () => {
 			'A phrase with a {variable} to translate': 'Une phrase à traduire avec une {variable}',
 			'A phrase with empty translation': ''
 		};
-		registerLocale('fr', fr);
-		setLocale('fr');
+		I18n.registerLocale('fr', fr);
+		I18n.setLocale('fr');
 	});
 
 	it('expects current locale to be fr', () => {
-		expect(locale).to.eql('fr');
+		expect(I18n.locale).to.eql('fr');
 	});
 
 	it('should translate simple sentences', () => {
-		expect(translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
+		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});
 
 	it('should translate sentences with a variable', () => {
-		expect(translate('A phrase with a {variable} to translate', {variable: 'foo'})).to.eql('Une phrase à traduire avec une foo');
+		expect(I18n.translate('A phrase with a {variable} to translate', {variable: 'foo'})).to.eql('Une phrase à traduire avec une foo');
 	});
 
 	it('should translate empty translations', () => {
-		expect(translate('A phrase with empty translation')).to.eql('');
+		expect(I18n.translate('A phrase with empty translation')).to.eql('');
 	});
 
 	it('should allow to override some translations', () => {
-		registerLocale('fr', {'A phrase with empty translation': 'my custom translation'});
-		expect(translate('A phrase with empty translation')).to.eql('my custom translation');
+		I18n.registerLocale('fr', {'A phrase with empty translation': 'my custom translation'});
+		expect(I18n.translate('A phrase with empty translation')).to.eql('my custom translation');
 		// Unchanged
-		expect(translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
+		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});
 
 	it('should not fail if a variable is missing', () => {
-		expect(translate('A phrase with a {variable} to translate')).to.eql('Une phrase à traduire avec une {variable}');
+		expect(I18n.translate('A phrase with a {variable} to translate')).to.eql('Une phrase à traduire avec une {variable}');
 	});
 
 	it('should not fail if the translation is missing', () => {
-		expect(translate('A missing translation')).to.eql('A missing translation');
+		expect(I18n.translate('A missing translation')).to.eql('A missing translation');
 	});
 
 	it('should not fail if the locale is missing', () => {
-		setLocale('foo');
-		expect(translate('Simple phrase to translate')).to.eql('Simple phrase to translate');
+		I18n.setLocale('foo');
+		expect(I18n.translate('Simple phrase to translate')).to.eql('Simple phrase to translate');
 	});
 
 	it('should allow to add many locales', () => {
@@ -54,11 +55,11 @@ describe('I18n', () => {
 			'A phrase with a {variable} to translate': 'Una frase da tradurre con {variable}',
 			'A phrase with empty translation': ''
 		};
-		registerLocale('it', it);
-		setLocale('it');
-		expect(translate('Simple phrase to translate')).to.eql('Frase semplice da tradurre');
-		setLocale('fr');
-		expect(translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
+		I18n.registerLocale('it', it);
+		I18n.setLocale('it');
+		expect(I18n.translate('Simple phrase to translate')).to.eql('Frase semplice da tradurre');
+		I18n.setLocale('fr');
+		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});
 
 });
@@ -73,9 +74,9 @@ describe('Map.I18n', () => {
 			'Zoom out': 'Dézoomer',
 			'A JavaScript library for interactive maps': 'Bibliothèque JavaScript pour cartes interactives',
 		};
-		registerLocale('fr', fr);
-		setLocale('fr');
-	    const map = new Map(container);
+		I18n.registerLocale('fr', fr);
+		I18n.setLocale('fr');
+		const map = new Map(container);
 		map.setView([0, 0], 0);
 		expect(document.querySelector('.leaflet-control-zoom-in').title).to.eql('Zoomer');
 		expect(document.querySelector('.leaflet-control-zoom-out').title).to.eql('Dézoomer');
