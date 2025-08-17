@@ -63,17 +63,23 @@ export class SVG extends Renderer {
 			this._container.setAttribute('width', size.x);
 			this._container.setAttribute('height', size.y);
 		}
+
+		// Reset the <SVG>'s viewBox as per _update, but skip redrawing paths.
+		// This keeps paths visually aligned when resizing.
+		const b = this._bounds;
+		if (b) {
+			this._container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		}
 	}
 
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		const b = this._bounds,
-		size = b.getSize(),
-		container = this._container;
+		size = b.getSize();
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
-		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		this._container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		this.fire('update');
 	}

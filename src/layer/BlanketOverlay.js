@@ -61,6 +61,7 @@ export class BlanketOverlay extends Layer {
 			viewreset: this._reset,
 			zoom: this._onZoom,
 			moveend: this._onMoveEnd,
+			resize: this._resizeContainer,
 			zoomend: this._onZoomEnd
 		};
 		if (this._zoomAnimated) {
@@ -103,8 +104,6 @@ export class BlanketOverlay extends Layer {
 		this._updateTransform(this._center, this._zoom);
 
 		this._onSettled(ev);
-
-		this._resizeContainer();
 	}
 
 	_reset() {
