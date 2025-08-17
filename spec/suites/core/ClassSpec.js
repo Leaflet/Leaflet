@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Class} from 'leaflet';
+import {Class, Evented} from 'leaflet';
 import sinon from 'sinon';
 
 describe('Class', () => {
@@ -99,6 +99,32 @@ describe('Class', () => {
 
 			expect(a.mixin).to.be.true;
 			expect(a.mixin2).to.be.true;
+		});
+
+		it('includes Evented mixins', () => {
+			const Klass2 = Class.extend({
+				includes: Evented.prototype
+			});
+			const a = new Klass2();
+
+			expect(a.on).to.eql(Evented.prototype.on);
+			expect(a.off).to.eql(Evented.prototype.off);
+		});
+
+		it('includes inherited mixins', () => {
+			class A {
+				foo() {}
+			}
+			class B extends A {
+				bar() {}
+			}
+			const Klass2 = Class.extend({
+				includes: B.prototype
+			});
+			const a = new Klass2();
+
+			expect(a.bar).to.eql(B.prototype.bar);
+			expect(a.foo).to.eql(B.prototype.foo);
 		});
 
 		it('grants the ability to include the given mixin', () => {
