@@ -35,7 +35,7 @@ export function translate(string, data = {}) {
 		// a bad translation should not break the app
 		string = Util.template(string, data);
 	} catch (err) {
-		console.error(err);
+		console.error('Leaflet translate', err);
 	}
 
 	return string;
