@@ -58,4 +58,14 @@ describe('Circle', () => {
 			expect(circle._radius).to.eql(3200);
 		});
 	});
+
+	describe('#setStyle is used to change the radius', () => {
+		it('takes the given radius', () => {
+			const marker = new Circle([0, 0], {radius: 20});
+			marker.addTo(map);
+			marker.setStyle({radius: 15});
+			expect(marker.getRadius()).to.equal(15);
+			expect(marker._radius).to.equal(0.0015348501378866786);
+		});
+	});
 });
