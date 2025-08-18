@@ -50,6 +50,8 @@ export class Renderer extends BlanketOverlay {
 		}
 	}
 
+	_updateClassName() {},
+
 	_updatePaths() {
 		for (const layer of Object.values(this._layers)) {
 			layer._update();
