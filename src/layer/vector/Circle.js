@@ -61,7 +61,13 @@ export class Circle extends CircleMarker {
 			this._map.layerPointToLatLng(this._point.add(half)));
 	}
 
-	setStyle = Path.prototype.setStyle;
+	setStyle(options) {
+		Path.prototype.setStyle.call(this, options);
+		if (options?.radius !== undefined) {
+			this.setRadius(options.radius);
+		}
+		return this;
+	}
 
 	_project() {
 
@@ -78,7 +84,7 @@ export class Circle extends CircleMarker {
 			p = top.add(bottom).divideBy(2),
 			lat2 = map.unproject(p).lat;
 			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
-			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+				        (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
