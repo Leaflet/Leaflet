@@ -59,3 +59,20 @@ describe('Circle', () => {
 		});
 	});
 });
+
+describe('Circle#setStyle', () => {
+	it('updates radius when style includes radius', () => {
+		const circle = new Circle([0, 0], {radius: 10});
+
+		circle.setStyle({radius: 20});
+		expect(circle.getRadius()).to.equal(20);
+	});
+
+	it('does not change radius if radius not provided', () => {
+		const circle = new Circle([0, 0], {radius: 10});
+
+		circle.setStyle({color: 'red'});
+		expect(circle.options.color).to.equal('red');
+		expect(circle.getRadius()).to.equal(10);
+	});
+});

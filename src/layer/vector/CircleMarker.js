@@ -65,9 +65,10 @@ export class CircleMarker extends Path {
 	}
 
 	setStyle(options) {
-		const radius = options?.radius ?? this._radius;
 		Path.prototype.setStyle.call(this, options);
-		this.setRadius(radius);
+		if (options?.radius !== undefined) {
+			this.setRadius(options.radius);
+		}
 		return this;
 	}
 
