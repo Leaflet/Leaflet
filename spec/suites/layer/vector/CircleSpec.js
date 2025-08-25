@@ -65,7 +65,6 @@ describe('Circle#setStyle', () => {
 		const circle = new Circle([0, 0], {radius: 10});
 
 		circle.setStyle({radius: 20});
-		console.log(circle.getRadius());
 		expect(circle.getRadius()).to.equal(20);
 	});
 
@@ -73,7 +72,6 @@ describe('Circle#setStyle', () => {
 		const circle = new Circle([0, 0], {radius: 10});
 
 		circle.setStyle({color: 'red'});
-		console.log(circle.getRadius());
 		expect(circle.options.color).to.equal('red');
 		expect(circle.getRadius()).to.equal(10);
 	});
