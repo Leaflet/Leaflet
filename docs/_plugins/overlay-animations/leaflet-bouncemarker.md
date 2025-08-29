@@ -7,7 +7,7 @@ author-url: https://github.com/maximeh
 demo: https://maximeh.github.io/leaflet.bouncemarker/
 compatible-v0:
 compatible-v1: true
-compatible-v2: false
+compatible-v2: true
 ---
 
 Make a marker bounce when you add it to a map.
