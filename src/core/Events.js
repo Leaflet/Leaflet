@@ -91,6 +91,10 @@ export class Evented extends Class {
 
 	// attach listener (without syntactic sugar now)
 	_on(type, fn, context, _once) {
+		if (['mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove'].includes(type)) {
+			console.error(`The event ${type} has been removed. Use the pointer* variant instead.`);
+		}
+
 		if (typeof fn !== 'function') {
 			console.warn(`wrong listener type: ${typeof fn}`);
 			return;
