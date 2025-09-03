@@ -6,7 +6,7 @@ updates:
     rebase-strategy: disabled
     versioning-strategy: increase
     schedule:
-      interval: weekly
+      interval: quarterly
     labels:
       - dependencies
   - package-ecosystem: github-actions
@@ -14,7 +14,7 @@ updates:
     open-pull-requests-limit: 999
     rebase-strategy: disabled
     schedule:
-      interval: weekly
+      interval: quarterly
     labels:
       - dependencies
   - package-ecosystem: bundler
@@ -22,6 +22,6 @@ updates:
     open-pull-requests-limit: 999
     rebase-strategy: disabled
     schedule:
-      interval: weekly
+      interval: quarterly
     labels:
       - dependencies
