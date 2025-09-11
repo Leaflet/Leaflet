@@ -165,6 +165,33 @@ jobs:
       - name: Run tests on ${{ matrix.browser }} with touch
         run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
+  publish-artifacts:
+    needs: setup
+    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v4
+        with:
+          path: ./*
+          key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
+
+      - name: Compress artifacts
+        working-directory: dist
+        run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
+
+      - name: Publish Nightly Pre-release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: "Nightly Build"
+          prerelease: true
+          files: dist/*
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   publish-npm:
     needs: setup
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
