@@ -5,7 +5,7 @@ title: GeoJSON Example
 <script src="sample-geojson.js" type="text/javascript"></script>
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
+	import {Map, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
 
 	const map = new Map('map').setView([39.74739, -105], 13);
 
@@ -73,7 +73,4 @@ title: GeoJSON Example
 
 		onEachFeature
 	}).addTo(map);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>
