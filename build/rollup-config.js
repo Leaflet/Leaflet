@@ -1,5 +1,6 @@
 import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
+import {defineConfig} from 'rollup';
 import rollupGitVersion from 'rollup-plugin-git-version';
 import {simpleGit} from 'simple-git';
 
@@ -10,25 +11,25 @@ const release = process.env.NODE_ENV === 'release';
 const version = await getVersion();
 const banner = createBanner(version);
 
-/** @type {import('rollup').RollupOptions} */
-const config = {
-	input: 'src/LeafletWithGlobals.js',
+export default defineConfig({
+	input: 'src/Leaflet.js',
 	output: [
 		{
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
 			sourcemap: true,
-			freeze: false
+			generatedCode: 'es2015'
 		},
 		{
 			file: './dist/leaflet-global-src.js',
-			name: 'leaflet',
 			format: 'umd',
 			banner,
 			sourcemap: true,
-			freeze: false,
-			esModule: false
+			generatedCode: 'es2015',
+			name: 'L',
+			noConflict: true,
+			freeze: false
 		}
 	],
 	plugins: [
@@ -51,9 +52,7 @@ const config = {
 			},
 		},
 	]
-};
-
-export default config;
+});
 
 async function getVersion() {
 	// Skip the git branch+rev in the banner when doing a release build

@@ -24,7 +24,7 @@ Note that the white area in the images is actually transparent.
 
 ### Creating an icon
 
-Marker icons in Leaflet are defined by [L.Icon](/reference.html#icon) objects, which are passed as an option when creating markers. Let's create a green leaf icon:
+Marker icons in Leaflet are defined by [Icon](/reference.html#icon) objects, which are passed as an option when creating markers. Let's create a green leaf icon:
 
 	const greenIcon = new Icon({
 		iconUrl: 'leaf-green.png',
@@ -44,7 +44,7 @@ Now putting a marker with this icon on a map is easy:
 
 ### Defining an icon class
 
-What if we need to create several icons that have lots in common? Let's define our own icon class containing the shared options, inheriting from `L.Icon`! It's really easy in Leaflet:
+What if we need to create several icons that have lots in common? Let's define our own icon class containing the shared options, inheriting from `Icon`! It's really easy in Leaflet:
 
 	const LeafIcon = Icon.extend({
 		options: {
@@ -69,4 +69,4 @@ OK, let's finally put some markers with these icons on the map:
 	new Marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
 	new Marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
 
-That's it. Now take a look at the [full example](example.html), the [`L.Icon` docs](/reference.html#icon), or browse [other examples](../../examples.html).
+That's it. Now take a look at the [full example](example.html), the [`Icon` docs](/reference.html#icon), or browse [other examples](../../examples.html).

@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Image Overlay Tutorial
 ---
 <script type="module">
-	import L, {Map, TileLayer, LatLngBounds, ImageOverlay, Rectangle} from 'leaflet';
+	import {Map, TileLayer, LatLngBounds, ImageOverlay, Rectangle} from 'leaflet';
 
 	const map = new Map('map').setView([37.8, -96], 4);
 
@@ -26,7 +26,4 @@ title: Image Overlay Tutorial
 
 	new Rectangle(latLngBounds).addTo(map);
 	map.fitBounds(latLngBounds);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

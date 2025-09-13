@@ -18,36 +18,36 @@ Please note that this tutorial assumes you have a good grasp of:
 
 ## Leaflet architecture
 
-Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 JavaScript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
+Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 JavaScript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `ImageOverlay`:
 
 {% include frame.html url="class-diagram.html" %}
 
 
 From a technical point of view, Leaflet can be extended in different ways:
 
-* The most common: creating a new subclass of `L.Layer`, `L.Handler` or `L.Control`, with `L.Class.extend()`
+* The most common: creating a new subclass of `Layer`, `Handler` or `Control`, with `Class.extend()`
 	* Layers move when the map is moved/zoomed
 	* Handlers are invisible and interpret browser events
 	* Controls are fixed interface elements
-* Including more functionality in an existing class with `L.Class.include()`
+* Including more functionality in an existing class with `Class.include()`
 	* Adding new methods and options
 	* Changing some methods
 	* Using `addInitHook` to run extra constructor code.
-* Changing parts of an existing class (replacing how a class method works) with `L.Class.include()`.
+* Changing parts of an existing class (replacing how a class method works) with `Class.include()`.
 
 This tutorial covers some classes and methods available only in Leaflet 1.0.0. Use caution if you are developing a plugin for a previous version.
 
-## `L.Class`
+## `Class`
 
 JavaScript is a bit of a weird language. It's not really an object-oriented language, but rather a [prototype-oriented language](https://en.wikipedia.org/wiki/Prototype-based_programming). This has made JavaScript historically difficult to use class inheritance in the classic OOP meaning of the term.
 
-Leaflet works around this by having `L.Class`, which eases up class inheritance.
+Leaflet works around this by having `Class`, which eases up class inheritance.
 
 Even though modern JavaScript can use ES6 classes, Leaflet is not designed around them.
 
-### Extending `L.Class`
+### Extending `Class`
 
-Use the [`extends` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) to inherit from `L.Class`. Initialization code goes to `initialize`. Overriding the [`constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) and calling [`super`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super) is not officially supported by Leaflet.
+Use the [`extends` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) to inherit from `Class`. Initialization code goes to `initialize`. Overriding the [`constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) and calling [`super`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super) is not officially supported by Leaflet.
 
     class RotateMarker extends Marker {
         static {
@@ -62,7 +62,7 @@ Use the [`extends` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScr
         }
     };
 
-### Deprecated: `L.Class.extend()`
+### Deprecated: `Class.extend()`
 
 In order to create a subclass of anything in Leaflet, use the `.extend()` method. This accepts one parameter: a plain object with key-value pairs, each key being the name of a property or method, and each value being the initial value of a property, or the implementation of a method:
 
@@ -87,7 +87,7 @@ When naming classes, methods and properties, adhere to the following conventions
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
-### `L.Class.include()`    
+### `Class.include()`    
     
 If a class is already defined, existing properties/methods can be redefined, or new ones can be added by using `.include()`:
 
@@ -110,11 +110,11 @@ If a class is already defined, existing properties/methods can be redefined, or 
     // This will output "42"
     console.log( mySecondDemoInstance.myDemoProperty );
 
-### `L.Class.initialize()`
+### `Class.initialize()`
     
-In OOP, classes have a constructor method. In Leaflet's `L.Class`, the constructor method is always named `initialize`.
+In OOP, classes have a constructor method. In Leaflet's `Class`, the constructor method is always named `initialize`.
 
-If your class has some specific `options`, it's a good idea to initialize them with `L.setOptions()` in the constructor. This utility function will merge the provided options with the default options of the class.
+If your class has some specific `options`, it's a good idea to initialize them with `setOptions()` in the constructor. This utility function will merge the provided options with the default options of the class.
 
 
     const MyBoxClass = Class.extend({
@@ -152,7 +152,7 @@ Leaflet handles the `options` property in a special way: options available for a
     console.log(instance.options.depth); // Outputs "1"
 
 
-It's quite common for child classes to run the parent's constructor, and then their own constructor. In Leaflet this is achieved using `L.Class.addInitHook()`. This method can be used to "hook" initialization functions that run right after the class' `initialize()`, for example:
+It's quite common for child classes to run the parent's constructor, and then their own constructor. In Leaflet this is achieved using `Class.addInitHook()`. This method can be used to "hook" initialization functions that run right after the class' `initialize()`, for example:
 
     MyBoxClass.addInitHook(function(){
         this._area = this.options.width * this.options.length;
@@ -173,7 +173,7 @@ That will run after `initialize()` is called (which calls `setOptions()`). This 
 
 ### Methods of the parent class
 
-Calling a method of a parent class is achieved by reaching into the prototype of the parent class and using [`Function.call(…)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call). This can be seen, for example, in the code for `L.FeatureGroup`:
+Calling a method of a parent class is achieved by reaching into the prototype of the parent class and using [`Function.call(…)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call). This can be seen, for example, in the code for `FeatureGroup`:
 
     const FeatureGroup = LayerGroup.extend({
     

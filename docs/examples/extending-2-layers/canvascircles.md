@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: CanvasCircles Example
 ---
 <script type="module">
-	import L, {Map, GridLayer} from 'leaflet';
+	import {Map, GridLayer} from 'leaflet';
 
 	const map = new Map('map', {
 		center: [0, 0],
@@ -31,7 +31,4 @@ title: CanvasCircles Example
 
 	const cavasGridLayer = new GridLayer.CanvasCircles();
 	map.addLayer(cavasGridLayer);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

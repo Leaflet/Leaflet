@@ -44,7 +44,7 @@ This can be illustrated with a simple handler to pan the map when a mobile devic
 		}
 	});
 
-The handler can be attached to the map using `map.addHandler('tilt', L.TiltHandler)` - this will store an instance of `L.TiltHandler` as `map.tilt`. However, it's more usual to attach handlers to all maps with the `addInitHook` syntax:
+The handler can be attached to the map using `map.addHandler('tilt', TiltHandler)` - this will store an instance of `TiltHandler` as `map.tilt`. However, it's more usual to attach handlers to all maps with the `addInitHook` syntax:
 
 	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
@@ -58,13 +58,13 @@ To see this example, you'll need a mobile browser which [supports the `deviceori
 
 {% include frame.html url="tilt.html" %}
 
-Depending on the type of event, a map handler can attach event listeners to the `document`, the `window`, or the container of the `L.Map` it's attached to.
+Depending on the type of event, a map handler can attach event listeners to the `document`, the `window`, or the container of the `Map` it's attached to.
 
 ## Controls
 
-You already know controls - the zoom control in the top left corner, the scale at the bottom left, the layer switcher at the top right. At their core, an `L.Control` is an HTML Element that is at a static position in the map container.
+You already know controls - the zoom control in the top left corner, the scale at the bottom left, the layer switcher at the top right. At their core, an `Control` is an HTML Element that is at a static position in the map container.
 
-To make a control, simply inherit from `L.Control` and implement `onAdd()` and `onRemove()`. These methods work in a similar way to their `L.Layer` counterparts (they run whenever the control is added to or removed from the map), except that `onAdd()` must return an instance of `HTMLElement` representing the control. Adding the element to the map is done automatically, and so is removing it.
+To make a control, simply inherit from `Control` and implement `onAdd()` and `onRemove()`. These methods work in a similar way to their `Layer` counterparts (they run whenever the control is added to or removed from the map), except that `onAdd()` must return an instance of `HTMLElement` representing the control. Adding the element to the map is done automatically, and so is removing it.
 
 The simplest example of a custom control would be a watermark, which is just an image:
 
@@ -87,9 +87,9 @@ The simplest example of a custom control would be a watermark, which is just an 
 
 {% include frame.html url="watermark.html" %}
 
-If your custom control has interactive elements such as clickable buttons, remember to use `L.DomEvent.on()` inside `onAdd()` and `L.DomEvent.off()` inside `onRemove()`.
+If your custom control has interactive elements such as clickable buttons, remember to use `DomEvent.on()` inside `onAdd()` and `DomEvent.off()` inside `onRemove()`.
 
-If your custom control consists of more than one HTML element (like `L.Control.Zoom`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
+If your custom control consists of more than one HTML element (like `Control.Zoom`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
 
 ## Publishing Your Plugin
 

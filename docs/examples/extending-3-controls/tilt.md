@@ -25,7 +25,7 @@ title: Tilt Handler Example
 
 
 <script type="module">
-	import L, {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
+	import {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 	
@@ -64,7 +64,4 @@ title: Tilt Handler Example
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
-	
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

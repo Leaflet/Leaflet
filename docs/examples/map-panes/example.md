@@ -5,7 +5,7 @@ title: Custom Pane Example
 <script type="text/javascript" src="eu-countries.js"></script>
 
 <script type="module">
-	import L, {Map, TileLayer, GeoJSON} from 'leaflet';
+	import {Map, TileLayer, GeoJSON} from 'leaflet';
 	const map = new Map('map');
 
 	map.createPane('labels');
@@ -35,7 +35,4 @@ title: Custom Pane Example
 	});
 
 	map.setView({lat: 47.040182144806664, lng: 9.667968750000002}, 4);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>
