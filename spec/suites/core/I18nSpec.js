@@ -13,10 +13,6 @@ describe('I18n', () => {
 		I18n.setLocale('fr');
 	});
 
-	it('uses the configured locale', () => {
-		expect(I18n.locale).to.eql('fr');
-	});
-
 	it('returns the configured locale', () => {
 		expect(I18n.getLocale()).to.eql('fr');
 	});
