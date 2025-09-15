@@ -23,6 +23,7 @@ export class I18n {
 
 	// @function setLocale(locale: String): undefined
 	// Define or change the locale code to be used when translating strings.
+	// Note that changing the locale does not affect already instantiated objects.
 	static setLocale(locale) {
 		this.locale = locale;
 	}
