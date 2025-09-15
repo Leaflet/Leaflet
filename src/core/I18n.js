@@ -15,7 +15,7 @@ export class I18n {
 	// The current locale code, that will be used when translating strings.
 	static locale = null;
 
-	// @function registerLocale(locale: String, messages?: Object): String
+	// @function registerLocale(locale: String, messages?: Object): undefined
 	// Define localized strings for a given locale, defined by `locale`.
 	static registerLocale(locale, messages) {
 		this.messages[locale] = {...this.messages[locale], ...messages};
