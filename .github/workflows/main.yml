@@ -184,7 +184,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: dev
-          name: "Nightly Build"
+          name: Development snapshot
           prerelease: true
           files: dist/*
           generate_release_notes: false
