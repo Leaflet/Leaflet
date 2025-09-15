@@ -180,7 +180,7 @@ jobs:
         working-directory: dist
         run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
 
-      - name: Publish Nightly Pre-release
+      - name: Publish development snapshot
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
