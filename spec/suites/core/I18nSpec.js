@@ -29,8 +29,8 @@ describe('I18n', () => {
 		expect(I18n.translate('A phrase with a {variable} to translate', {variable: 'foo'})).to.eql('Une phrase à traduire avec une foo');
 	});
 
-	it('translates empty translations', () => {
-		expect(I18n.translate('A phrase with empty translation')).to.eql('');
+	it('preserves the input when the translation is empty', () => {
+		expect(I18n.translate('A phrase with empty translation')).to.eql('A phrase with empty translation');
 	});
 
 	it('extends existing translations', () => {

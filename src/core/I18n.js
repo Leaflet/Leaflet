@@ -38,7 +38,7 @@ export class I18n {
 	static translate(string, data = {}) {
 		// If the locale is not set, localization is not enabled.
 		if (this.locale === null) {
-			return string;
+			return Util.template(string);
 		}
 
 		const translation = this.messages[this.locale]?.[string];
