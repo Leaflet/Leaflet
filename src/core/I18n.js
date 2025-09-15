@@ -30,19 +30,26 @@ export class I18n {
 	// @function translate(string: String, data?: Object): String
 	// Actually try to translate the `string`, with optional variable passed in `data`.
 	static translate(string, data = {}) {
-		const s = this.messages[this.locale ?? '?']?.[string];
-		if (typeof s === 'string') {
-			string = s;
+		// If the locale is not set, localization is not enabled.
+		if (this.locale === null) {
+			return string;
 		}
+
+		const translation = this.messages[this.locale]?.[string];
+
+		if (!translation) {
+			console.warn(`No translation found for "${string}", falling back to the original string.`);
+			return string;
+		}
+
 		try {
 			// Do not fail if some data is missing
 			// a bad translation should not break the app
-			string = Util.template(string, data);
+			return Util.template(translation, data);
 		} catch (err) {
-			console.error('Leaflet translate', err);
+			console.error(`Error while translating "${translation}".`, err);
+			return translation;
 		}
-
-		return string;
 	}
 
 }
