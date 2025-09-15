@@ -17,6 +17,10 @@ describe('I18n', () => {
 		expect(I18n.locale).to.eql('fr');
 	});
 
+	it('returns the configured locale', () => {
+		expect(I18n.getLocale()).to.eql('fr');
+	});
+
 	it('translates simple sentences', () => {
 		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});

@@ -27,6 +27,12 @@ export class I18n {
 		this.locale = locale;
 	}
 
+	// @method getLocale(): String
+	// Returns the current locale code, that will be used when translating strings.
+	static getLocale() {
+		return this.locale;
+	}
+
 	// @function translate(string: String, data?: Object): String
 	// Actually try to translate the `string`, with optional variable passed in `data`.
 	static translate(string, data = {}) {
