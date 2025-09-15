@@ -13,43 +13,43 @@ describe('I18n', () => {
 		I18n.setLocale('fr');
 	});
 
-	it('expects current locale to be fr', () => {
+	it('uses the configured locale', () => {
 		expect(I18n.locale).to.eql('fr');
 	});
 
-	it('should translate simple sentences', () => {
+	it('translates simple sentences', () => {
 		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});
 
-	it('should translate sentences with a variable', () => {
+	it('translates sentences with a variable', () => {
 		expect(I18n.translate('A phrase with a {variable} to translate', {variable: 'foo'})).to.eql('Une phrase à traduire avec une foo');
 	});
 
-	it('should translate empty translations', () => {
+	it('translates empty translations', () => {
 		expect(I18n.translate('A phrase with empty translation')).to.eql('');
 	});
 
-	it('should allow to override some translations', () => {
+	it('extends existing translations', () => {
 		I18n.registerLocale('fr', {'A phrase with empty translation': 'my custom translation'});
 		expect(I18n.translate('A phrase with empty translation')).to.eql('my custom translation');
 		// Unchanged
 		expect(I18n.translate('Simple phrase to translate')).to.eql('Une simple phrase à traduire');
 	});
 
-	it('should not fail if a variable is missing', () => {
+	it('preserves placeholders when omitting variables', () => {
 		expect(I18n.translate('A phrase with a {variable} to translate')).to.eql('Une phrase à traduire avec une {variable}');
 	});
 
-	it('should not fail if the translation is missing', () => {
+	it('preserves the input when a translation is missing', () => {
 		expect(I18n.translate('A missing translation')).to.eql('A missing translation');
 	});
 
-	it('should not fail if the locale is missing', () => {
+	it('preserves the input if the locale is unknown', () => {
 		I18n.setLocale('foo');
 		expect(I18n.translate('Simple phrase to translate')).to.eql('Simple phrase to translate');
 	});
 
-	it('should allow to add many locales', () => {
+	it('translates from multiple locales', () => {
 		const it = {
 			'Simple phrase to translate': 'Frase semplice da tradurre',
 			'A phrase with a {variable} to translate': 'Una frase da tradurre con {variable}',
@@ -67,7 +67,7 @@ describe('I18n', () => {
 
 describe('Map.I18n', () => {
 
-	it('should be possible to translate Leaflet strings', () => {
+	it('translates built-in Leaflet strings', () => {
 		const container = createContainer();
 		const fr = {
 			'Zoom in': 'Zoomer',
