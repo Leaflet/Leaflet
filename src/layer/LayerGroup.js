@@ -78,17 +78,6 @@ export class LayerGroup extends Layer {
 		return this.eachLayer(this.removeLayer, this);
 	}
 
-	// @method invoke(methodName: String, …): this
-	// Calls `methodName` on every layer contained in this group, passing any
-	// additional parameters. Has no effect if the layers contained do not
-	// implement `methodName`.
-	invoke(methodName, ...args) {
-		for (const layer of Object.values(this._layers)) {
-			layer[methodName]?.apply(layer, args);
-		}
-		return this;
-	}
-
 	onAdd(map) {
 		this.eachLayer(map.addLayer, map);
 	}
@@ -126,7 +115,7 @@ export class LayerGroup extends Layer {
 	// @method setZIndex(zIndex: Number): this
 	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	setZIndex(zIndex) {
-		return this.invoke('setZIndex', zIndex);
+		return this.eachLayer(l => l.setZIndex(zIndex));
 	}
 
 	// @method getLayerId(layer: Layer): Number
