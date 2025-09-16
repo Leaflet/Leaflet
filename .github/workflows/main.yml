@@ -166,6 +166,8 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
   publish-artifacts:
+    permissions: 
+      contents: write 
     needs: setup
     if: github.repository_owner == 'Leaflet' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
