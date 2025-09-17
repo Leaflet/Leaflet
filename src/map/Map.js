@@ -12,7 +12,7 @@ import {PosAnimation} from '../dom/PosAnimation.js';
 import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 
 /*
- * @class Map
+ * @class LeafletMap
  * @inherits Evented
  *
  * The central class of the API — it is used to create a map on a page and manipulate it.
@@ -48,7 +48,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // @constructor LeafletMap(el: HTMLElement, options?: LeafletMap options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `LeafletMap options`.
-export class Map extends Evented {
+export class LeafletMap extends Evented {
 
 	static {
 		this.setDefaultOptions({
@@ -1465,7 +1465,7 @@ export class Map extends Evented {
 		for (const t of targets) {
 			t.fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(t.options.bubblingPointerEvents === false && Map._pointerEvents.includes(type))) { return; }
+				(t.options.bubblingPointerEvents === false && LeafletMap._pointerEvents.includes(type))) { return; }
 		}
 	}
 
@@ -1766,4 +1766,4 @@ export class Map extends Evented {
 	}
 }
 
-export const LeafletMap = Map;
+export const Map = LeafletMap;
