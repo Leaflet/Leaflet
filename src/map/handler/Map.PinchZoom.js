@@ -135,6 +135,7 @@ Map.addInitHook(function () {
 	this.touchZoom = this.pinchZoom;
 
 	if (this.options.touchZoom !== undefined) {
+		// To be removed in leaflet 3
 		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 		this.options.pinchZoom = this.options.touchZoom;
 		delete this.options.touchZoom;
