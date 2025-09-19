@@ -110,13 +110,13 @@ export function enableTextSelection() {
 // @function disableImageDrag()
 // Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
-	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
+	DomEvent.on(window, 'dragstart', DomEvent.stop);
 }
 
 // @function enableImageDrag()
 // Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
-	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
+	DomEvent.off(window, 'dragstart', DomEvent.stop);
 }
 
 let _outlineElement, _outlineStyle;

@@ -190,24 +190,10 @@ export function disableClickPropagation(el) {
 	return this;
 }
 
-// @function preventDefault(ev: DOMEvent): this
-// Prevents the default action of the DOM Event `ev` from happening (such as
-// following a link in the href of the a element, or doing a POST request
-// with page reload when a `<form>` is submitted).
-// Use it inside listener functions.
-export function preventDefault(e) {
-	if (e.preventDefault) {
-		e.preventDefault();
-	} else {
-		e.returnValue = false;
-	}
-	return this;
-}
-
 // @function stop(ev: DOMEvent): this
 // Does `stopPropagation` and `preventDefault` at the same time.
 export function stop(e) {
-	preventDefault(e);
+	e.preventDefault?.();
 	stopPropagation(e);
 	return this;
 }

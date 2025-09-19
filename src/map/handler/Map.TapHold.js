@@ -47,7 +47,7 @@ export class TapHold extends Handler {
 			if (!this._isTapValid()) { return; }
 
 			// prevent simulated mouse events https://w3c.github.io/touch-events/#mouse-events
-			DomEvent.on(document, 'pointerup', DomEvent.preventDefault);
+			DomEvent.on(document, 'pointerup', DomEvent.stop);
 			DomEvent.on(document, 'pointerup pointercancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', e);
 		}), tapHoldDelay);
@@ -57,7 +57,7 @@ export class TapHold extends Handler {
 	}
 
 	_cancelClickPrevent = function _cancelClickPrevent() {
-		DomEvent.off(document, 'pointerup', DomEvent.preventDefault);
+		DomEvent.off(document, 'pointerup', DomEvent.stop);
 		DomEvent.off(document, 'pointerup pointercancel', _cancelClickPrevent);
 	};
 
