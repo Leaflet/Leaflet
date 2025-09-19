@@ -235,7 +235,7 @@ export class Layers extends Control {
 			},
 			// Certain screen readers intercept the key event and instead send a click event
 			click(e) {
-				DomEvent.preventDefault(e);
+				e.preventDefault();
 				this._expandSafely();
 			}
 		}, this);
@@ -430,10 +430,11 @@ export class Layers extends Control {
 	_expandSafely() {
 		const section = this._section;
 		this._preventClick = true;
-		DomEvent.on(section, 'click', DomEvent.preventDefault);
+		const preventDefault = e => e.preventDefault();
+		DomEvent.on(section, 'click', preventDefault);
 		this.expand();
 		setTimeout(() => {
-			DomEvent.off(section, 'click', DomEvent.preventDefault);
+			DomEvent.off(section, 'click', preventDefault);
 			this._preventClick = false;
 		});
 	}

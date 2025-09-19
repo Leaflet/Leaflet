@@ -588,19 +588,4 @@ describe('DomEvent', () => {
 			map.remove();
 		});
 	});
-
-	describe('#preventDefault', () => {
-		it('prevents the default action of event', (done) => {
-			DomEvent.on(el, 'click', (e) => {
-				expect(e.defaultPrevented).not.to.be.true; // control case
-
-				DomEvent.preventDefault(e);
-
-				expect(e.defaultPrevented).to.be.true;
-				done();
-			});
-
-			UIEventSimulator.fire('click', el);
-		});
-	});
 });
