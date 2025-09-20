@@ -39,14 +39,14 @@ export class I18n {
 	static translate(string, data = {}) {
 		// If the locale is not set, localization is not enabled.
 		if (this.#locale === null) {
-			return Util.template(string);
+			return Util.template(string, data);
 		}
 
 		const translation = this.#messages[this.#locale]?.[string];
 
 		if (!translation) {
 			console.warn(`No translation found for "${string}", falling back to the original string.`);
-			return string;
+			return Util.template(string, data);
 		}
 
 		try {

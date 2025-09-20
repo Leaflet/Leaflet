@@ -40,6 +40,11 @@ describe('I18n', () => {
 		expect(I18n.translate('A phrase with a {variable} to translate')).to.eql('Une phrase à traduire avec une {variable}');
 	});
 
+	it('preserves placeholders when omitting variables when a translation is missing', () => {
+		I18n.registerLocale('fr', {'A phrase with a {variable} to translate': ''});
+		expect(I18n.translate('A phrase with a {variable} to translate', {variable: 'foo'})).to.eql('A phrase with a foo to translate');
+	});
+
 	it('preserves the input when a translation is missing', () => {
 		expect(I18n.translate('A missing translation')).to.eql('A missing translation');
 	});
