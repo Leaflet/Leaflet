@@ -19,6 +19,10 @@ bodyclass: download-page
 		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/v2.0.0-alpha.1/leaflet.zip">Leaflet 2.0.0-alpha.1</a></td>
 		<td>Prerelease version, released on August 16, 2025.</td>
 	</tr>
+		<tr>
+		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/dev/leaflet.zip">Development Snapshot</a> / (<a href="https://github.com/Leaflet/Leaflet/releases/tag/dev" target="_blank">Single files</a>)</td>
+		<td>In-progress version, developed on the <code>main</code> branch.</td>
+	</tr>
 </table>
 
 [View Changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md)
