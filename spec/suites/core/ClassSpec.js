@@ -44,6 +44,7 @@ describe('Class', () => {
 					initialize();
 				}
 			});
+			Toolbar.include(Evented.prototype);
 			const DrawToolbar = Toolbar.extend({
 				initialize(options) {
 					initializeDraw();
