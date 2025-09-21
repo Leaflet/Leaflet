@@ -1944,7 +1944,7 @@ describe('Map', () => {
 			const errorSpy = sinon.spy(console, 'error');
 			map.on('mouseover', () => {});
 			expect(errorSpy.calledOnce).to.be.true;
-			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseover has been removed. Use the pointer* variant instead.');
+			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseover has been removed. Use the PointerEvent variant instead.');
 		});
 	});
 
