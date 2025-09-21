@@ -115,11 +115,6 @@ export class Class {
 		this.callInitHooks();
 	}
 
-	initialize(/* ...args */) {
-		// Override this method in subclasses to implement custom initialization logic.
-		// This method is called automatically when a new instance of the class is created.
-	}
-
 	callInitHooks() {
 		if (this._initHooksCalled) {
 			return;
