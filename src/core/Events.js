@@ -96,7 +96,6 @@ export class Evented extends Class {
 		// To be removed in leaflet 3
 		if (Evented.__REMOVED_EVENTS.includes(type)) {
 			console.error(`The event ${type} has been removed. Use the PointerEvent variant instead.`);
-
 		}
 
 		if (typeof fn !== 'function') {
