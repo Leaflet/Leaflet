@@ -1,5 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
@@ -50,7 +51,7 @@ Map.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-export class Drag extends Handler {
+export const Drag = withInitHooks(class Drag extends Handler {
 	addHooks() {
 		if (!this._draggable) {
 			const map = this._map;
@@ -224,7 +225,7 @@ export class Drag extends Handler {
 			}
 		}
 	}
-}
+});
 
 // @section Handlers
 // @property dragging: Handler

@@ -1,6 +1,7 @@
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
+import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
@@ -13,7 +14,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
-export class DivOverlay extends Layer {
+export const DivOverlay = withInitHooks(class DivOverlay extends Layer {
 
 	static {
 		// @section
@@ -42,7 +43,9 @@ export class DivOverlay extends Layer {
 		});
 	}
 
-	initialize(options, source) {
+	constructor(options, source) {
+		super();
+
 		if (options instanceof LatLng || Array.isArray(options)) {
 			this._latlng = new LatLng(options);
 			Util.setOptions(this, source);
@@ -315,7 +318,7 @@ export class DivOverlay extends Layer {
 		return [0, 0];
 	}
 
-}
+});
 
 Map.include({
 	_initOverlay(OverlayClass, content, latlng, options) {

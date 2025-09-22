@@ -1,4 +1,5 @@
 import {DivOverlay} from './DivOverlay.js';
+import {withInitHooks} from '../core/Class.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {Point} from '../geometry/Point.js';
@@ -45,7 +46,7 @@ import {FeatureGroup} from './FeatureGroup.js';
 // @alternative
 // @constructor Popup(latlng: LatLng, options?: Popup options)
 // Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export class Popup extends DivOverlay {
+export const Popup = withInitHooks(class Popup extends DivOverlay {
 
 	static {
 		// @section
@@ -337,7 +338,7 @@ export class Popup extends DivOverlay {
 		return new Point(this._source?._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
-}
+});
 
 
 /* @namespace Map

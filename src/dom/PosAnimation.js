@@ -1,4 +1,5 @@
 import {Evented} from '../core/Events.js';
+import {withInitHooks} from '../core/Class.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 
@@ -31,7 +32,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  *
  */
 
-export class PosAnimation extends Evented {
+export const PosAnimation = withInitHooks(class PosAnimation extends Evented {
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
@@ -108,4 +109,4 @@ export class PosAnimation extends Evented {
 	_easeOut(t) {
 		return 1 - (1 - t) ** this._easeOutPower;
 	}
-}
+});

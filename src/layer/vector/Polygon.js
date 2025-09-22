@@ -4,6 +4,7 @@ import * as LineUtil from '../../geometry/LineUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import * as PolyUtil from '../../geometry/PolyUtil.js';
+import {withInitHooks} from '../../core/Class.js';
 
 /*
  * @class Polygon
@@ -51,7 +52,7 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  */
 
 // @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
-export class Polygon extends Polyline {
+export const Polygon = withInitHooks(class Polygon extends Polyline {
 
 	static {
 		this.setDefaultOptions({
@@ -152,4 +153,4 @@ export class Polygon extends Polyline {
 		return inside || super._containsPoint(p, true);
 	}
 
-}
+});

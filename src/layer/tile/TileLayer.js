@@ -1,4 +1,5 @@
 import {GridLayer} from './GridLayer.js';
+import {withInitHooks} from '../../core/Class.js';
 import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
@@ -34,7 +35,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
 
 // @constructor TileLayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
-export class TileLayer extends GridLayer {
+export const TileLayer = withInitHooks(class TileLayer extends GridLayer {
 
 	static {
 		// @section
@@ -88,7 +89,8 @@ export class TileLayer extends GridLayer {
 		});
 	}
 
-	initialize(url, options) {
+	constructor(url, options) {
+		super();
 
 		this._url = url;
 
@@ -289,4 +291,4 @@ export class TileLayer extends GridLayer {
 	_clampZoom(zoom) {
 		return Math.round(super._clampZoom(zoom));
 	}
-}
+});
