@@ -7,7 +7,7 @@ import * as Util from './Util.js';
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
-export class Class {
+export const Class = withInitHooks(class Class {
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
@@ -50,55 +50,53 @@ export class Class {
 
 	// @function addInitHook(fn: Function): this
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
-	static addInitHook(fn, ...args) { // (Function) || (String, args...)
-		const init = typeof fn === 'function' ? fn : function () {
-			this[fn].apply(this, args);
-		};
-
-		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here
-			this.prototype._initHooks = [];
-		}
-		this.prototype._initHooks.push(init);
-		return this;
-	}
 
 	constructor(...args) {
-		this._initHooksCalled = false;
-
 		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
+			console.warn('The \'initialize()\' method is deprecated, use a class constructor instead.');
 			this.initialize(...args);
 		}
-
-		// call all constructor hooks
-		this.callInitHooks();
 	}
+});
 
-	callInitHooks() {
-		if (this._initHooksCalled) {
-			return;
-		}
+// @function withInitHooks(Object TargetClass): Function
+// Decorates a class to be able to use [constructor hooks](#class-constructor-hooks) functionality.
+/**
+ * @template T
+ * @param {T} TargetClass
+ * @returns {T}
+ */
+export function withInitHooks(TargetClass) {
+	const hooks = [];
+	const proxy = new Proxy(TargetClass, {
+		construct(target, args, newTarget) {
+			const instance = Reflect.construct(target, args, newTarget);
 
-		// collect all prototypes in chain
-		const prototypes = [];
-		let current = this;
-
-		while ((current = Object.getPrototypeOf(current)) !== null) {
-			prototypes.push(current);
-		}
-
-		// reverse so the parent prototype is first
-		prototypes.reverse();
-
-		// call init hooks on each prototype
-		for (const proto of prototypes) {
-			for (const hook of proto._initHooks ?? []) {
-				hook.call(this);
+			for (const hook of hooks) {
+				hook.call(instance);
 			}
+
+			return instance;
+		}
+	});
+
+	TargetClass.addInitHook = function addInitHook(fn, ...args) {
+		if (this !== proxy) {
+			const className = this.name || '(anonymous)';
+			throw new Error(`The 'addInitHook()' method can only be called on classes wrapped with 'withInitHooks()'. Try wrapping your class:\n\nconst ${className} = withInitHooks(class ${className} { ... });\n`);
 		}
 
-		this._initHooksCalled = true;
-	}
+		const init = typeof fn === 'function' ? fn : function () {
+			this[fn].apply(this, args);
+		};
+
+		hooks.push(init);
+
+		return this;
+	};
+
+	return proxy;
 }

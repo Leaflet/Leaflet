@@ -1,6 +1,7 @@
 
 import {Control} from './Control.js';
 import {LeafletMap} from '../map/Map.js';
+import {withInitHooks} from '../core/Class.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 
@@ -14,7 +15,7 @@ import * as DomEvent from '../dom/DomEvent.js';
 // @namespace Control.Zoom
 // @constructor Control.Zoom(options: Control.Zoom options)
 // Creates a zoom control
-export class Zoom extends Control {
+export const Zoom = withInitHooks(class Zoom extends Control {
 
 	static {
 		// @section
@@ -125,7 +126,7 @@ export class Zoom extends Control {
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}
-}
+});
 
 // @namespace LeafletMap
 // @section Control options

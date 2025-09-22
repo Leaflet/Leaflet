@@ -1,4 +1,4 @@
-import {Class} from '../../core/Class.js';
+import {Class, withInitHooks} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
@@ -32,7 +32,7 @@ import Browser from '../../core/Browser.js';
 
 // @constructor Icon(options: Icon options)
 // Creates an icon instance with the given options.
-export class Icon extends Class {
+export const Icon = withInitHooks(class Icon extends Class {
 
 	static {
 		/* @section
@@ -86,7 +86,8 @@ export class Icon extends Class {
 		});
 	}
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		setOptions(this, options);
 	}
 
@@ -158,4 +159,4 @@ export class Icon extends Class {
 	_getIconUrl(name) {
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
-}
+});

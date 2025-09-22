@@ -1,5 +1,5 @@
 
-import {Class} from '../core/Class.js';
+import {Class, withInitHooks} from '../core/Class.js';
 import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -12,7 +12,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  * All other controls extend from this class.
  */
 
-export class Control extends Class {
+export const Control = withInitHooks(class Control extends Class {
 
 	static {
 		// @section
@@ -26,7 +26,8 @@ export class Control extends Class {
 	}
 
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
 	}
 
@@ -109,7 +110,7 @@ export class Control extends Class {
 			this._map.getContainer().focus();
 		}
 	}
-}
+});
 
 /* @section Extension methods
  * @uninheritable

@@ -1,5 +1,6 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 import Browser from '../../core/Browser.js';
@@ -26,7 +27,7 @@ LeafletMap.mergeOptions({
 	tapTolerance: 15
 });
 
-export class TapHold extends Handler {
+export const TapHold = withInitHooks(class TapHold extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onDown, this);
 	}
@@ -93,7 +94,7 @@ export class TapHold extends Handler {
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
-}
+});
 
 // @section Handlers
 // @property tapHold: Handler
