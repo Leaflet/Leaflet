@@ -1,4 +1,5 @@
 import {Layer} from './Layer.js';
+import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
@@ -22,7 +23,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor ImageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
-export class ImageOverlay extends Layer {
+export const ImageOverlay = withInitHooks(class ImageOverlay extends Layer {
 
 	static {
 		// @section
@@ -67,7 +68,9 @@ export class ImageOverlay extends Layer {
 		});
 	}
 
-	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
+	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
+		super();
+
 		this._url = url;
 		this._bounds = new LatLngBounds(bounds);
 
@@ -273,4 +276,4 @@ export class ImageOverlay extends Layer {
 	getCenter() {
 		return this._bounds.getCenter();
 	}
-}
+});

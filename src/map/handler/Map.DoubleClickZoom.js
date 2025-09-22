@@ -1,5 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 
 /*
  * Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
@@ -17,7 +18,7 @@ Map.mergeOptions({
 	doubleClickZoom: true
 });
 
-export class DoubleClickZoom extends Handler {
+export const DoubleClickZoom = withInitHooks(class DoubleClickZoom extends Handler {
 	addHooks() {
 		this._map.on('dblclick', this._onDoubleClick, this);
 	}
@@ -38,7 +39,7 @@ export class DoubleClickZoom extends Handler {
 			map.setZoomAround(e.containerPoint, zoom);
 		}
 	}
-}
+});
 
 // @section Handlers
 //
