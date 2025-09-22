@@ -21,7 +21,7 @@
     "karma-safarinative-launcher": "^1.1.0",
     "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^16.2.0",
     "mocha": "^11.7.2",
     "prosthetic-hand": "^2.0.0",
     "rollup": "^4.50.2",
