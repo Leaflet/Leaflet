@@ -61,7 +61,7 @@ export class PinchZoom extends Handler {
 		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
-		e.preventDefault();
+		DomEvent.preventDefault(e);
 	}
 
 	_onPointerMove(e) {
@@ -101,7 +101,7 @@ export class PinchZoom extends Handler {
 		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
-		e.preventDefault();
+		DomEvent.preventDefault(e);
 	}
 
 	_onPointerEnd() {

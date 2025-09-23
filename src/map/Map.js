@@ -1446,7 +1446,7 @@ export class Map extends Evented {
 		if (!targets.length) { return; }
 
 		if (type === 'contextmenu') {
-			e.preventDefault();
+			DomEvent.preventDefault(e);
 		}
 
 		const target = targets[0];

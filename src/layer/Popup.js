@@ -227,7 +227,7 @@ export class Popup extends DivOverlay {
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', (ev) => {
-				ev.preventDefault();
+				DomEvent.preventDefault(ev);
 				this.close();
 			});
 		}
