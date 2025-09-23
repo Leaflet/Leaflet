@@ -196,7 +196,7 @@ export function disableClickPropagation(el) {
 // with page reload when a `<form>` is submitted).
 // Use it inside listener functions.
 export function preventDefault(e) {
-	e.preventDefault();
+	e.preventDefault?.();
 	return this;
 }
 
