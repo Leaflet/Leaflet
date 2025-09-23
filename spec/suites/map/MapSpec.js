@@ -1939,6 +1939,13 @@ describe('Map', () => {
 			expect(spy.firstCall.lastArg).to.be.true;
 			expect(spy.secondCall.lastArg).to.be.true;
 		});
+
+		it('prints to console.error about deprecated mouse* events', () => {
+			const errorSpy = sinon.spy(console, 'error');
+			map.on('mouseover', () => {});
+			expect(errorSpy.calledOnce).to.be.true;
+			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseover has been removed. Use the PointerEvent variant instead.');
+		});
 	});
 
 	describe('#getScaleZoom && #getZoomScale', () => {
