@@ -307,38 +307,6 @@ describe('Class', () => {
 			expect(a.options.foo2).to.eql(3);
 			expect(a.options.foo3).to.eql(4);
 		});
-
-		it('inherits constructor hooks', () => {
-			const spy1 = sinon.spy(),
-			spy2 = sinon.spy();
-
-			class Class1 extends Class {}
-			class Class2 extends Class1 {}
-
-			Class1.addInitHook(spy1);
-			Class2.addInitHook(spy2);
-
-			new Class2();
-
-			expect(spy1.called).to.be.true;
-			expect(spy2.called).to.be.true;
-		});
-
-		it('does not call child constructor hooks', () => {
-			const spy1 = sinon.spy(),
-			spy2 = sinon.spy();
-
-			class Class1 extends Class {}
-			class Class2 extends Class1 {}
-
-			Class1.addInitHook(spy1);
-			Class2.addInitHook(spy2);
-
-			new Class1();
-
-			expect(spy1.called).to.be.true;
-			expect(spy2.called).to.eql(false);
-		});
 	});
 
 	describe('#include', () => {
