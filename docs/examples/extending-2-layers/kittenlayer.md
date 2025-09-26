@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: KittenLayer Example
 ---
 <script type="module">
-	import L, {Map, CRS, TileLayer} from 'leaflet';
+	import {Map, CRS, TileLayer} from 'leaflet';
 
 	const map = new Map('map', {
 		crs: CRS.Simple,
@@ -24,7 +24,4 @@ title: KittenLayer Example
 
 	const kittenTiles = new TileLayer.Kitten();
 	map.addLayer(kittenTiles);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

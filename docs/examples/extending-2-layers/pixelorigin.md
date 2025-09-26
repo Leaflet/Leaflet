@@ -24,7 +24,7 @@ title: Pixel Origin Examples
 <div id='info' style=''></div>
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
+	import {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 
@@ -82,7 +82,4 @@ title: Pixel Origin Examples
 	map.on('load move moveend zoomend viewreset', info);
 
 	info();
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>
