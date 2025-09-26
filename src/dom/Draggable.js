@@ -128,7 +128,7 @@ export class Draggable extends Evented {
 		offset.y /= this._parentScale.y;
 
 		if (e.cancelable) {
-			DomEvent.preventDefault(e);
+			e.preventDefault();
 		}
 
 		if (!this._moved) {
