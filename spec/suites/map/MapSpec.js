@@ -2550,6 +2550,30 @@ describe('Map', () => {
 		});
 	});
 
+	describe('#pointerEventToLayerPoint', () => {
+		it('throws if map is not set before', () => {
+			expect(() => {
+				map.pointerEventToLayerPoint();
+			}).to.throw();
+		});
+
+		it('converts a pointer event to a layer point', () => {
+			const client = {
+				x: 50,
+				y: 250
+			};
+
+			const event = new PointerEvent('pointerenter', {
+				clientX: client.x,
+				clientY: client.y
+			});
+
+			const point = map.pointerEventToLayerPoint(event);
+			expect(point.x).equal(client.x);
+			expect(point.y).equal(client.y);
+		});
+	});
+
 	describe('#panBy', () => {
 		const offset = new Point(1000, 1000);
 
