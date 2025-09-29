@@ -24,7 +24,7 @@
     "lint-staged": "^16.2.0",
     "mocha": "^11.7.2",
     "prosthetic-hand": "^2.0.0",
-    "rollup": "^4.52.0",
+    "rollup": "^4.52.3",
     "rollup-plugin-git-version": "^0.3.1",
     "simple-git": "^3.28.0",
     "sinon": "^21.0.0",
