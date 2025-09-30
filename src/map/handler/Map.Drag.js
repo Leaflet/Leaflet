@@ -7,49 +7,6 @@ import {Bounds} from '../../geometry/Bounds.js';
 /*
  * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
-
-// @namespace Map
-// @section Interaction Options
-Map.mergeOptions({
-	// @option dragging: Boolean = true
-	// Whether the map is draggable with pointer or not.
-	dragging: true,
-
-	// @section Panning Inertia Options
-	// @option inertia: Boolean = *
-	// If enabled, panning of the map will have an inertia effect where
-	// the map builds momentum while dragging and continues moving in
-	// the same direction for some time. Feels especially nice on touch
-	// devices. Enabled by default.
-	inertia: true,
-
-	// @option inertiaDeceleration: Number = 3000
-	// The rate with which the inertial movement slows down, in pixels/second².
-	inertiaDeceleration: 3400, // px/s^2
-
-	// @option inertiaMaxSpeed: Number = Infinity
-	// Max speed of the inertial movement, in pixels/second.
-	inertiaMaxSpeed: Infinity, // px/s
-
-	// @option easeLinearity: Number = 0.2
-	easeLinearity: 0.2,
-
-	// TODO refactor, move to CRS
-	// @option worldCopyJump: Boolean = false
-	// With this option enabled, the map tracks when you pan to another "copy"
-	// of the world and seamlessly jumps to the original one so that all overlays
-	// like markers and vector layers are still visible.
-	worldCopyJump: false,
-
-	// @option maxBoundsViscosity: Number = 0.0
-	// If `maxBounds` is set, this option will control how solid the bounds
-	// are when dragging the map around. The default value of `0.0` allows the
-	// user to drag outside the bounds at normal speed, higher values will
-	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
-	// solid, preventing the user from dragging outside the bounds.
-	maxBoundsViscosity: 0.0
-});
-
 export class Drag extends Handler {
 	addHooks() {
 		if (!this._draggable) {
@@ -224,9 +181,54 @@ export class Drag extends Handler {
 			}
 		}
 	}
-}
 
-// @section Handlers
-// @property dragging: Handler
-// Map dragging handler.
-Map.addInitHook('addHandler', 'dragging', Drag);
+	static register() {
+		// @namespace Map
+		// @section Interaction Options
+		Map.mergeOptions({
+			// @option dragging: Boolean = true
+			// Whether the map is draggable with pointer or not.
+			dragging: true,
+
+			// @section Panning Inertia Options
+			// @option inertia: Boolean = *
+			// If enabled, panning of the map will have an inertia effect where
+			// the map builds momentum while dragging and continues moving in
+			// the same direction for some time. Feels especially nice on touch
+			// devices. Enabled by default.
+			inertia: true,
+
+			// @option inertiaDeceleration: Number = 3000
+			// The rate with which the inertial movement slows down, in pixels/second².
+			inertiaDeceleration: 3400, // px/s^2
+
+			// @option inertiaMaxSpeed: Number = Infinity
+			// Max speed of the inertial movement, in pixels/second.
+			inertiaMaxSpeed: Infinity, // px/s
+
+			// @option easeLinearity: Number = 0.2
+			easeLinearity: 0.2,
+
+			// TODO refactor, move to CRS
+			// @option worldCopyJump: Boolean = false
+			// With this option enabled, the map tracks when you pan to another "copy"
+			// of the world and seamlessly jumps to the original one so that all overlays
+			// like markers and vector layers are still visible.
+			worldCopyJump: false,
+
+			// @option maxBoundsViscosity: Number = 0.0
+			// If `maxBounds` is set, this option will control how solid the bounds
+			// are when dragging the map around. The default value of `0.0` allows the
+			// user to drag outside the bounds at normal speed, higher values will
+			// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+			// solid, preventing the user from dragging outside the bounds.
+			maxBoundsViscosity: 0.0
+		});
+
+		// @section Handlers
+		// @property dragging: Handler
+		// Map dragging handler.
+		Map.addInitHook('addHandler', 'dragging', Drag);
+	}
+
+}

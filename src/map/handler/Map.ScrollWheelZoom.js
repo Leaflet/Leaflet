@@ -5,28 +5,6 @@ import * as DomEvent from '../../dom/DomEvent.js';
 /*
  * Handler.ScrollWheelZoom is used by Map to enable mouse scroll wheel zoom on the map.
  */
-
-// @namespace Map
-// @section Interaction Options
-Map.mergeOptions({
-	// @section Mouse wheel options
-	// @option scrollWheelZoom: Boolean|String = true
-	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
-	// it will zoom to the center of the view regardless of where the pointer was.
-	scrollWheelZoom: true,
-
-	// @option wheelDebounceTime: Number = 40
-	// Limits the rate at which a wheel can fire (in milliseconds). By default, the
-	// user can't zoom via wheel more often than once per 40 ms.
-	wheelDebounceTime: 40,
-
-	// @option wheelPxPerZoomLevel: Number = 60
-	// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
-	// mean a change of one full zoom level. Smaller values will make wheel-zooming
-	// faster (and vice versa).
-	wheelPxPerZoomLevel: 60
-});
-
 export class ScrollWheelZoom extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
@@ -83,9 +61,33 @@ export class ScrollWheelZoom extends Handler {
 			map.setZoomAround(this._lastMousePos, zoom + delta);
 		}
 	}
-}
 
-// @section Handlers
-// @property scrollWheelZoom: Handler
-// Scroll wheel zoom handler.
-Map.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);
+	static register() {
+		// @namespace Map
+		// @section Interaction Options
+		Map.mergeOptions({
+			// @section Mouse wheel options
+			// @option scrollWheelZoom: Boolean|String = true
+			// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
+			// it will zoom to the center of the view regardless of where the pointer was.
+			scrollWheelZoom: true,
+
+			// @option wheelDebounceTime: Number = 40
+			// Limits the rate at which a wheel can fire (in milliseconds). By default, the
+			// user can't zoom via wheel more often than once per 40 ms.
+			wheelDebounceTime: 40,
+
+			// @option wheelPxPerZoomLevel: Number = 60
+			// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
+			// mean a change of one full zoom level. Smaller values will make wheel-zooming
+			// faster (and vice versa).
+			wheelPxPerZoomLevel: 60
+		});
+
+		// @section Handlers
+		// @property scrollWheelZoom: Handler
+		// Scroll wheel zoom handler.
+		Map.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);
+	}
+
+}

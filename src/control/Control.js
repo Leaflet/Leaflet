@@ -109,62 +109,65 @@ export class Control extends Class {
 			this._map.getContainer().focus();
 		}
 	}
+
+	static register() {
+		/* @namespace Map
+		* @section Methods for Layers and Controls
+		*/
+		Map.include({
+			// @method addControl(control: Control): this
+			// Adds the given control to the map
+			addControl(control) {
+				control.addTo(this);
+				return this;
+			},
+
+			// @method removeControl(control: Control): this
+			// Removes the given control from the map
+			removeControl(control) {
+				control.remove();
+				return this;
+			},
+
+			_initControlPos() {
+				const corners = this._controlCorners = {},
+				l = 'leaflet-',
+				container = this._controlContainer =
+							DomUtil.create('div', `${l}control-container`, this._container);
+
+				function createCorner(vSide, hSide) {
+					const className = `${l + vSide} ${l}${hSide}`;
+
+					corners[vSide + hSide] = DomUtil.create('div', className, container);
+				}
+
+				createCorner('top', 'left');
+				createCorner('top', 'right');
+				createCorner('bottom', 'left');
+				createCorner('bottom', 'right');
+			},
+
+			_clearControlPos() {
+				for (const c of Object.values(this._controlCorners)) {
+					c.remove();
+				}
+				this._controlContainer.remove();
+				delete this._controlCorners;
+				delete this._controlContainer;
+			}
+		});
+
+	}
 }
 
 /* @section Extension methods
- * @uninheritable
- *
- * Every control should extend from `Control` and (re-)implement the following methods.
- *
- * @method onAdd(map: Map): HTMLElement
- * Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).
- *
- * @method onRemove(map: Map)
- * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
- */
-
-/* @namespace Map
- * @section Methods for Layers and Controls
- */
-Map.include({
-	// @method addControl(control: Control): this
-	// Adds the given control to the map
-	addControl(control) {
-		control.addTo(this);
-		return this;
-	},
-
-	// @method removeControl(control: Control): this
-	// Removes the given control from the map
-	removeControl(control) {
-		control.remove();
-		return this;
-	},
-
-	_initControlPos() {
-		const corners = this._controlCorners = {},
-		l = 'leaflet-',
-		container = this._controlContainer =
-		            DomUtil.create('div', `${l}control-container`, this._container);
-
-		function createCorner(vSide, hSide) {
-			const className = `${l + vSide} ${l}${hSide}`;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
-		}
-
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
-	},
-
-	_clearControlPos() {
-		for (const c of Object.values(this._controlCorners)) {
-			c.remove();
-		}
-		this._controlContainer.remove();
-		delete this._controlCorners;
-		delete this._controlContainer;
-	}
-});
+* @uninheritable
+*
+* Every control should extend from `Control` and (re-)implement the following methods.
+*
+* @method onAdd(map: Map): HTMLElement
+* Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).
+*
+* @method onRemove(map: Map)
+* Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
+*/

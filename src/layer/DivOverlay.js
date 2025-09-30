@@ -315,32 +315,34 @@ export class DivOverlay extends Layer {
 		return [0, 0];
 	}
 
+	static register() {
+		Map.include({
+			_initOverlay(OverlayClass, content, latlng, options) {
+				let overlay = content;
+				if (!(overlay instanceof OverlayClass)) {
+					overlay = new OverlayClass(options).setContent(content);
+				}
+				if (latlng) {
+					overlay.setLatLng(latlng);
+				}
+				return overlay;
+			}
+		});
+
+
+		Layer.include({
+			_initOverlay(OverlayClass, old, content, options) {
+				let overlay = content;
+				if (overlay instanceof OverlayClass) {
+					Util.setOptions(overlay, options);
+					overlay._source = this;
+				} else {
+					overlay = (old && !options) ? old : new OverlayClass(options, this);
+					overlay.setContent(content);
+				}
+				return overlay;
+			}
+		});
+	}
+
 }
-
-Map.include({
-	_initOverlay(OverlayClass, content, latlng, options) {
-		let overlay = content;
-		if (!(overlay instanceof OverlayClass)) {
-			overlay = new OverlayClass(options).setContent(content);
-		}
-		if (latlng) {
-			overlay.setLatLng(latlng);
-		}
-		return overlay;
-	}
-});
-
-
-Layer.include({
-	_initOverlay(OverlayClass, old, content, options) {
-		let overlay = content;
-		if (overlay instanceof OverlayClass) {
-			Util.setOptions(overlay, options);
-			overlay._source = this;
-		} else {
-			overlay = (old && !options) ? old : new OverlayClass(options, this);
-			overlay.setContent(content);
-		}
-		return overlay;
-	}
-});

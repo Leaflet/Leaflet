@@ -9,16 +9,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Handler.BoxZoom is used to add shift-drag zoom interaction to the map
  * (zoom to a selected bounding box), enabled by default.
  */
-
-// @namespace Map
-// @section Interaction Options
-Map.mergeOptions({
-	// @option boxZoom: Boolean = true
-	// Whether the map can be zoomed to a rectangular area specified by
-	// dragging the pointer while pressing the shift key.
-	boxZoom: true
-});
-
 export class BoxZoom extends Handler {
 	initialize(map) {
 		this._map = map;
@@ -143,9 +133,20 @@ export class BoxZoom extends Handler {
 			this._resetState();
 		}
 	}
-}
 
-// @section Handlers
-// @property boxZoom: Handler
-// Box (shift-drag with pointer) zoom handler.
-Map.addInitHook('addHandler', 'boxZoom', BoxZoom);
+	static register() {
+		// @namespace Map
+		// @section Interaction Options
+		Map.mergeOptions({
+			// @option boxZoom: Boolean = true
+			// Whether the map can be zoomed to a rectangular area specified by
+			// dragging the pointer while pressing the shift key.
+			boxZoom: true
+		});
+
+		// @section Handlers
+		// @property boxZoom: Handler
+		// Box (shift-drag with pointer) zoom handler.
+		Map.addInitHook('addHandler', 'boxZoom', BoxZoom);
+	}
+}

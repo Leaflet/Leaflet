@@ -35,6 +35,7 @@
   "type": "module",
   "exports": {
     ".": "./dist/leaflet-src.js",
+    "./src/": "./src/",
     "./styles.css": "./dist/leaflet.css"
   },
   "style": "dist/leaflet.css",

@@ -114,6 +114,141 @@ export class Layer extends Evented {
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
 	}
+
+	static register() {
+		/* @namespace Map
+		* @section Layer events
+		*
+		* @event layeradd: LayerEvent
+		* Fired when a new layer is added to the map.
+		*
+		* @event layerremove: LayerEvent
+		* Fired when some layer is removed from the map
+		*
+		* @section Methods for Layers and Controls
+		*/
+		Map.include({
+			// @method addLayer(layer: Layer): this
+			// Adds the given layer to the map
+			addLayer(layer) {
+				if (!layer._layerAdd) {
+					throw new Error('The provided object is not a Layer.');
+				}
+
+				const id = Util.stamp(layer);
+				if (this._layers[id]) { return this; }
+				this._layers[id] = layer;
+
+				layer._mapToAdd = this;
+
+				if (layer.beforeAdd) {
+					layer.beforeAdd(this);
+				}
+
+				this.whenReady(layer._layerAdd, layer);
+
+				return this;
+			},
+
+			// @method removeLayer(layer: Layer): this
+			// Removes the given layer from the map.
+			removeLayer(layer) {
+				const id = Util.stamp(layer);
+
+				if (!this._layers[id]) { return this; }
+
+				if (this._loaded) {
+					layer.onRemove(this);
+				}
+
+				delete this._layers[id];
+
+				if (this._loaded) {
+					this.fire('layerremove', {layer});
+					layer.fire('remove');
+				}
+
+				layer._map = layer._mapToAdd = null;
+
+				return this;
+			},
+
+			// @method hasLayer(layer: Layer): Boolean
+			// Returns `true` if the given layer is currently added to the map
+			hasLayer(layer) {
+				return Util.stamp(layer) in this._layers;
+			},
+
+			/* @method eachLayer(fn: Function, context?: Object): this
+			* Iterates over the layers of the map, optionally specifying context of the iterator function.
+			* ```
+			* map.eachLayer(function(layer){
+			*     layer.bindPopup('Hello');
+			* });
+			* ```
+			*/
+			eachLayer(method, context) {
+				for (const layer of Object.values(this._layers)) {
+					method.call(context, layer);
+				}
+				return this;
+			},
+
+			_addLayers(layers) {
+				layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
+
+				for (const layer of layers) {
+					this.addLayer(layer);
+				}
+			},
+
+			_addZoomLimit(layer) {
+				if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+					this._zoomBoundLayers[Util.stamp(layer)] = layer;
+					this._updateZoomLevels();
+				}
+			},
+
+			_removeZoomLimit(layer) {
+				const id = Util.stamp(layer);
+
+				if (this._zoomBoundLayers[id]) {
+					delete this._zoomBoundLayers[id];
+					this._updateZoomLevels();
+				}
+			},
+
+			_updateZoomLevels() {
+				let minZoom = Infinity,
+				maxZoom = -Infinity;
+				const oldZoomSpan = this._getZoomSpan();
+
+				for (const l of Object.values(this._zoomBoundLayers)) {
+					const options = l.options;
+					minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
+					maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
+				}
+
+				this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
+				this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
+
+				// @section Map state change events
+				// @event zoomlevelschange: Event
+				// Fired when the number of zoomlevels on the map is changed due
+				// to adding or removing a layer.
+				if (oldZoomSpan !== this._getZoomSpan()) {
+					this.fire('zoomlevelschange');
+				}
+
+				if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+					this.setZoom(this._layersMaxZoom);
+				}
+				if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+					this.setZoom(this._layersMinZoom);
+				}
+			}
+		});
+	}
 }
 
 /* @section Extension methods
@@ -136,137 +271,3 @@ export class Layer extends Evented {
  * @method beforeAdd(map: Map): this
  * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.
  */
-
-
-/* @namespace Map
- * @section Layer events
- *
- * @event layeradd: LayerEvent
- * Fired when a new layer is added to the map.
- *
- * @event layerremove: LayerEvent
- * Fired when some layer is removed from the map
- *
- * @section Methods for Layers and Controls
- */
-Map.include({
-	// @method addLayer(layer: Layer): this
-	// Adds the given layer to the map
-	addLayer(layer) {
-		if (!layer._layerAdd) {
-			throw new Error('The provided object is not a Layer.');
-		}
-
-		const id = Util.stamp(layer);
-		if (this._layers[id]) { return this; }
-		this._layers[id] = layer;
-
-		layer._mapToAdd = this;
-
-		if (layer.beforeAdd) {
-			layer.beforeAdd(this);
-		}
-
-		this.whenReady(layer._layerAdd, layer);
-
-		return this;
-	},
-
-	// @method removeLayer(layer: Layer): this
-	// Removes the given layer from the map.
-	removeLayer(layer) {
-		const id = Util.stamp(layer);
-
-		if (!this._layers[id]) { return this; }
-
-		if (this._loaded) {
-			layer.onRemove(this);
-		}
-
-		delete this._layers[id];
-
-		if (this._loaded) {
-			this.fire('layerremove', {layer});
-			layer.fire('remove');
-		}
-
-		layer._map = layer._mapToAdd = null;
-
-		return this;
-	},
-
-	// @method hasLayer(layer: Layer): Boolean
-	// Returns `true` if the given layer is currently added to the map
-	hasLayer(layer) {
-		return Util.stamp(layer) in this._layers;
-	},
-
-	/* @method eachLayer(fn: Function, context?: Object): this
-	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
-	 * ```
-	 * map.eachLayer(function(layer){
-	 *     layer.bindPopup('Hello');
-	 * });
-	 * ```
-	 */
-	eachLayer(method, context) {
-		for (const layer of Object.values(this._layers)) {
-			method.call(context, layer);
-		}
-		return this;
-	},
-
-	_addLayers(layers) {
-		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
-
-		for (const layer of layers) {
-			this.addLayer(layer);
-		}
-	},
-
-	_addZoomLimit(layer) {
-		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
-			this._zoomBoundLayers[Util.stamp(layer)] = layer;
-			this._updateZoomLevels();
-		}
-	},
-
-	_removeZoomLimit(layer) {
-		const id = Util.stamp(layer);
-
-		if (this._zoomBoundLayers[id]) {
-			delete this._zoomBoundLayers[id];
-			this._updateZoomLevels();
-		}
-	},
-
-	_updateZoomLevels() {
-		let minZoom = Infinity,
-		maxZoom = -Infinity;
-		const oldZoomSpan = this._getZoomSpan();
-
-		for (const l of Object.values(this._zoomBoundLayers)) {
-			const options = l.options;
-			minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
-			maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
-		}
-
-		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
-		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
-
-		// @section Map state change events
-		// @event zoomlevelschange: Event
-		// Fired when the number of zoomlevels on the map is changed due
-		// to adding or removing a layer.
-		if (oldZoomSpan !== this._getZoomSpan()) {
-			this.fire('zoomlevelschange');
-		}
-
-		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
-			this.setZoom(this._layersMaxZoom);
-		}
-		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
-			this.setZoom(this._layersMinZoom);
-		}
-	}
-});
