@@ -40,9 +40,8 @@ const config = {
 					'leaflet.css',
 					'images/logo.svg',
 					'images/layers.svg',
-					'images/marker-icon.png',
-					'images/marker-icon-2x.png',
-					'images/marker-shadow.png',
+					'images/marker-icon.svg',
+					'images/marker-shadow.svg',
 				];
 				for (const fileName of fileNames) {
 					const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
