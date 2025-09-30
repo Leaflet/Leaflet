@@ -81,7 +81,7 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 	}
 </script>
 <script type="module">
-	import L, {Map, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
+	import {Map, TileLayer} from 'leaflet';
 	const map = new Map('map').setView([51.505, -0.09], 13);
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

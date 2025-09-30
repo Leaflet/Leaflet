@@ -11,7 +11,7 @@ css: "body {
 	}"
 ---
 <script type="module">
-	import L, {Map, TileLayer, Marker, Circle} from 'leaflet';
+	import {Map, TileLayer, Marker, Circle} from 'leaflet';
 	const map = new Map('map').fitWorld();
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -36,7 +36,4 @@ css: "body {
 	map.on('locationerror', onLocationError);
 
 	map.locate({setView: true, maxZoom: 16});
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

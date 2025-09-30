@@ -42,7 +42,7 @@ describe('Circle', () => {
 	});
 
 	describe('CRS Simple', () => {
-		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
+		it('returns a positive radius if the x axis of CRS.Simple is inverted', () => {
 			map.remove();
 
 			class crs extends CRS.Simple {
