@@ -3,24 +3,9 @@ import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-
 /*
  * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
-
-// @namespace Map
-// @section Keyboard Navigation Options
-Map.mergeOptions({
-	// @option keyboard: Boolean = true
-	// Makes the map focusable and allows users to navigate the map with keyboard
-	// arrows and `+`/`-` keys.
-	keyboard: true,
-
-	// @option keyboardPanDelta: Number = 80
-	// Amount of pixels to pan when pressing an arrow key.
-	keyboardPanDelta: 80
-});
-
 export class Keyboard extends Handler {
 
 	static keyCodes = {
@@ -176,10 +161,26 @@ export class Keyboard extends Handler {
 
 		stop(e);
 	}
-}
 
-// @section Handlers
-// @section Handlers
-// @property keyboard: Handler
-// Keyboard navigation handler.
-Map.addInitHook('addHandler', 'keyboard', Keyboard);
+	static register() {
+		// @namespace Map
+		// @section Keyboard Navigation Options
+		Map.mergeOptions({
+			// @option keyboard: Boolean = true
+			// Makes the map focusable and allows users to navigate the map with keyboard
+			// arrows and `+`/`-` keys.
+			keyboard: true,
+
+			// @option keyboardPanDelta: Number = 80
+			// Amount of pixels to pan when pressing an arrow key.
+			keyboardPanDelta: 80
+		});
+
+		// @section Handlers
+		// @section Handlers
+		// @property keyboard: Handler
+		// Keyboard navigation handler.
+		Map.addInitHook('addHandler', 'keyboard', Keyboard);
+	}
+
+}
