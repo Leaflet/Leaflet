@@ -64,7 +64,19 @@ export default [
 		...css.configs.recommended,
 		rules: {
 			...css.configs.recommended.rules,
-			'css/use-baseline': ['error', {available: 'newly'}]
+			'css/no-important': 'warn',
+			'css/use-baseline': ['error', {
+				allowProperties: [
+					'clip',
+					'outline',
+					'print-color-adjust',
+					'user-select',
+					'word-break',
+				],
+				allowSelectors: [
+					'has',
+				]
+			}]
 		}
 	},
 	{
