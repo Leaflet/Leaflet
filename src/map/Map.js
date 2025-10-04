@@ -1088,7 +1088,7 @@ export class Map extends Evented {
 		return this.containerPointToLayerPoint(this.pointerEventToContainerPoint(e));
 	}
 
-	// @method pointerEventToLayerPoint(ev: PointerEvent): LatLng
+	// @method pointerEventToLatLng(ev: PointerEvent): LatLng
 	// Given a PointerEvent object, returns geographical coordinate where the
 	// event took place.
 	pointerEventToLatLng(e) { // (PointerEvent)
