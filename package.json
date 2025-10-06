@@ -22,7 +22,7 @@
     "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",
     "lint-staged": "^16.2.3",
-    "mocha": "^11.7.2",
+    "mocha": "^11.7.4",
     "prosthetic-hand": "^2.0.0",
     "rollup": "^4.52.4",
     "rollup-plugin-git-version": "^0.3.1",
