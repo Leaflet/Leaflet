@@ -9,4 +9,10 @@ Control.Zoom = Zoom;
 Control.Scale = Scale;
 Control.Attribution = Attribution;
 
-export {Control};
+export {
+	Control,
+	Layers as LayersControl,
+	Zoom as ZoomControl,
+	Scale as ScaleControl,
+	Attribution as AttributionControl,
+};

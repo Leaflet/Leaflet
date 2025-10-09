@@ -16,3 +16,12 @@ Map.PinchZoom = PinchZoom;
 Map.TouchZoom = PinchZoom; // backward compatibility
 
 export {Map, LeafletMap} from './Map.js';
+export {
+	BoxZoom as MapBoxZoom,
+	DoubleClickZoom as MapDoubleClickZoom,
+	Drag as MapDrag,
+	Keyboard as MapKeyboard,
+	ScrollWheelZoom as MapScrollWheelZoom,
+	TapHold as MapTapHold,
+	PinchZoom as MapPinchZoom,
+};
