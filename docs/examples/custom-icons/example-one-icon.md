@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Single Custom Icon Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';
+	import {Map, TileLayer, Marker, Icon} from 'leaflet';
 	const map = new Map('map').setView([51.5, -0.09], 13);
 
 	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -24,7 +24,4 @@ title: Single Custom Icon Example
 	const greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 
 	const mGreen = new Marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

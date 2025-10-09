@@ -4,7 +4,7 @@ title: Accessible Markers Example
 ---
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';
+	import {Map, TileLayer, Marker} from 'leaflet';
 
 	const map = new Map('map').setView([50.4501, 30.5234], 4);
 
@@ -15,7 +15,4 @@ title: Accessible Markers Example
 
 	const marker = new Marker([50.4501, 30.5234], {alt: 'Kyiv'}).addTo(map)
 		.bindPopup('Kyiv, Ukraine is the birthplace of Leaflet!');
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>
