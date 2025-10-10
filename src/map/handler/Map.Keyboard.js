@@ -1,5 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
@@ -21,7 +22,7 @@ Map.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export class Keyboard extends Handler {
+export const Keyboard = withInitHooks(class Keyboard extends Handler {
 
 	static keyCodes = {
 		left:    ['ArrowLeft'],
@@ -32,7 +33,9 @@ export class Keyboard extends Handler {
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
 	};
 
-	initialize(map) {
+	constructor(map) {
+		super();
+
 		this._map = map;
 
 		this._setPanDelta(map.options.keyboardPanDelta);
@@ -176,7 +179,7 @@ export class Keyboard extends Handler {
 
 		stop(e);
 	}
-}
+});
 
 // @section Handlers
 // @section Handlers
