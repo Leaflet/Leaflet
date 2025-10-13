@@ -59,3 +59,28 @@ export function removeMapContainer(map, container) {
 	DomEvent.PointerEvents.cleanupPointers();
 }
 
+/**
+ * @param {string} src
+ * @returns {Promise<void>}
+ */
+export function loadScript(src) {
+	return new Promise((resolve, reject) => {
+		const script = document.createElement('script');
+		script.src = src;
+		script.onload = resolve;
+		script.onerror = () => {
+			reject(new Error(`Failed to load script: ${src}`));
+		};
+		document.head.appendChild(script);
+	});
+}
+
+/**
+ * @param {string} src
+ */
+export function removeScript(src) {
+	const script = document.querySelector(`script[src="${src}"]`);
+	if (script) {
+		document.head.removeChild(script);
+	}
+}

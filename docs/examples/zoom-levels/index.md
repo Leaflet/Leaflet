@@ -146,7 +146,7 @@ the cylindrical projection that Leaflet uses is <i>conformal</i> (preserves shap
 but not <i>equidistant</i> (does not preserve distances), and not <i>equal-area</i>
 (does not preserve areas, as things near the equator appear smaller than they are).
 
-By adding a `L.Control.Scale` to a map, and panning to the equator and to 60° north,
+By adding a `Control.Scale` to a map, and panning to the equator and to 60° north,
 we can see how the scale factor <b>doubles</b>. The following example uses
 [javascript timeouts](https://developer.mozilla.org/docs/Web/API/WindowTimers/setTimeout)
 to  do this automatically:
@@ -162,7 +162,7 @@ to  do this automatically:
 
 {% include frame.html url="example-scale.html" %}
 
-`L.Control.Scale` shows the scale which applies to the center point of the map.
+`Control.Scale` shows the scale which applies to the center point of the map.
 At high zoom levels, the scale changes very little, and is not noticeable.
 
 
@@ -234,7 +234,7 @@ snap the zoom level.
 
 There is another important map option related to `zoomSnap`: [the `zoomDelta` option](/reference.html#map-zoomdelta).
 This controls how many zoom levels to zoom in/out when using the zoom buttons
-(from the default [`L.Control.Zoom`](/reference.html#control-zoom))
+(from the default [`Control.Zoom`](/reference.html#control-zoom))
 or the `+`/`-` keys in your keyboard.
 
 For the mousewheel zoom, the [`wheelPxPerZoomLevel`](/reference.html#map-wheelpxperzoomlevel)

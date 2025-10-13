@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Grid Coordinates Example
 ---
 <script type="module">
-	import L, {Map, GridLayer} from 'leaflet';
+	import {Map, GridLayer} from 'leaflet';
 
 	const map = new Map('map', {
 		center: [0, 0],
@@ -26,7 +26,4 @@ title: Grid Coordinates Example
 	
 	const debugCoordsGrid = new GridLayer.DebugCoords();
 	map.addLayer(debugCoordsGrid);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

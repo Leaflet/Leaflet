@@ -22,6 +22,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			{pattern: 'node_modules/sinon/**/*', included: false, served: true},
 			{pattern: 'node_modules/ui-event-simulator/**/*', included: false, served: true},
 			{pattern: 'dist/leaflet-src.js', included: false, served: true},
+			{pattern: 'dist/leaflet-global-src.js', included: false, served: true},
 			{pattern: 'src/**/*.js', included: false, served: true},
 			{pattern: 'package.json', included: false, served: true},
 			{pattern: 'dist/**/*.png', included: false, served: true},
