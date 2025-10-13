@@ -163,11 +163,11 @@ export class Tooltip extends DivOverlay {
 		anchor = this._getAnchor();
 
 		if (direction === 'top') {
-			subX = tooltipWidth / 2;
+			subX = tooltipWidth / 2 + anchor.x;
 			subY = tooltipHeight;
 		} else if (direction === 'bottom') {
-			subX = tooltipWidth / 2;
-			subY = 0;
+			subX = tooltipWidth / 2 + anchor.x;
+			subY = anchor.y;
 		} else if (direction === 'center') {
 			subX = tooltipWidth / 2;
 			subY = tooltipHeight / 2;
