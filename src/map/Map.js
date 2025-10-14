@@ -154,7 +154,7 @@ export class Map extends Evented {
 		this._zoomBoundLayers = {};
 		this._sizeChanged = true;
 
-		this._initContainer(id);
+		this._initContainer(id, options.document);
 		this._initLayout();
 
 		this._initEvents();
@@ -1098,8 +1098,8 @@ export class Map extends Evented {
 
 	// map initialization methods
 
-	_initContainer(id) {
-		const container = this._container = DomUtil.get(id);
+	_initContainer(id, ownerDocument) {
+		const container = this._container = DomUtil.get(id, ownerDocument);
 
 		if (!container) {
 			throw new Error('Map container not found.');
@@ -1110,7 +1110,7 @@ export class Map extends Evented {
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
-		PointerEvents.enablePointerDetection();
+		PointerEvents.enablePointerDetection(container.ownerDocument);
 	}
 
 	_initLayout() {

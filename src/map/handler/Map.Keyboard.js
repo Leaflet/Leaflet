@@ -81,8 +81,8 @@ export class Keyboard extends Handler {
 	_onPointerDown() {
 		if (this._focused) { return; }
 
-		const body = document.body,
-		docEl = document.documentElement,
+		const body = this._map._container.ownerDocument.body,
+		docEl = this._map._container.ownerDocument.documentElement,
 		top = body.scrollTop || docEl.scrollTop,
 		left = body.scrollLeft || docEl.scrollLeft;
 
@@ -132,11 +132,11 @@ export class Keyboard extends Handler {
 	}
 
 	_addHooks() {
-		on(document, 'keydown', this._onKeyDown, this);
+		on(this._map._container.ownerDocument, 'keydown', this._onKeyDown, this);
 	}
 
 	_removeHooks() {
-		off(document, 'keydown', this._onKeyDown, this);
+		off(this._map._container.ownerDocument, 'keydown', this._onKeyDown, this);
 	}
 
 	_onKeyDown(e) {

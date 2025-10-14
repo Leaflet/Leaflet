@@ -47,24 +47,24 @@ export class TapHold extends Handler {
 			if (!this._isTapValid()) { return; }
 
 			// prevent simulated mouse events https://w3c.github.io/touch-events/#mouse-events
-			DomEvent.on(document, 'pointerup', DomEvent.preventDefault);
-			DomEvent.on(document, 'pointerup pointercancel', this._cancelClickPrevent);
+			DomEvent.on(this._map._container.ownerDocument, 'pointerup', DomEvent.preventDefault);
+			DomEvent.on(this._map._container.ownerDocument, 'pointerup pointercancel', this._cancelClickPrevent);
 			this._simulateEvent('contextmenu', e);
 		}), tapHoldDelay);
 
-		DomEvent.on(document, 'pointerup pointercancel contextmenu', this._cancel, this);
-		DomEvent.on(document, 'pointermove', this._onMove, this);
+		DomEvent.on(this._map._container.ownerDocument, 'pointerup pointercancel contextmenu', this._cancel, this);
+		DomEvent.on(this._map._container.ownerDocument, 'pointermove', this._onMove, this);
 	}
 
 	_cancelClickPrevent = function _cancelClickPrevent() {
-		DomEvent.off(document, 'pointerup', DomEvent.preventDefault);
-		DomEvent.off(document, 'pointerup pointercancel', _cancelClickPrevent);
+		DomEvent.off(this._map._container.ownerDocument, 'pointerup', DomEvent.preventDefault);
+		DomEvent.off(this._map._container.ownerDocument, 'pointerup pointercancel', _cancelClickPrevent);
 	};
 
 	_cancel() {
 		clearTimeout(this._holdTimeout);
-		DomEvent.off(document, 'pointerup pointercancel contextmenu', this._cancel, this);
-		DomEvent.off(document, 'pointermove', this._onMove, this);
+		DomEvent.off(this._map._container.ownerDocument, 'pointerup pointercancel contextmenu', this._cancel, this);
+		DomEvent.off(this._map._container.ownerDocument, 'pointermove', this._onMove, this);
 	}
 
 	_onMove(e) {

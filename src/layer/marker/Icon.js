@@ -93,18 +93,18 @@ export class Icon extends Class {
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
 	// Called internally when the icon has to be shown, returns a `<img>` HTML element
 	// styled according to the options.
-	createIcon(oldIcon) {
-		return this._createIcon('icon', oldIcon);
+	createIcon(oldIcon, ownerDocument) {
+		return this._createIcon('icon', oldIcon, ownerDocument);
 	}
 
 	// @method createShadow(oldIcon?: HTMLElement): HTMLElement
 	// As `createIcon`, but for the shadow beneath it.
-	createShadow(oldIcon) {
-		return this._createIcon('shadow', oldIcon);
+	createShadow(oldIcon, ownerDocument) {
+		return this._createIcon('shadow', oldIcon, ownerDocument);
 	}
 
-	_createIcon(name, oldIcon) {
-		const src = this._getIconUrl(name);
+	_createIcon(name, oldIcon, ownerDocument) {
+		const src = this._getIconUrl(name, ownerDocument);
 
 		if (!src) {
 			if (name === 'icon') {

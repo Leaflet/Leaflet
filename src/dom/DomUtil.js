@@ -15,8 +15,8 @@ import {Point} from '../geometry/Point.js';
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
-export function get(id) {
-	return typeof id === 'string' ? document.getElementById(id) : id;
+export function get(id, ownerDocument = window.document) {
+	return typeof id === 'string' ? ownerDocument.getElementById(id) : id;
 }
 
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
@@ -152,7 +152,7 @@ export function restoreOutline() {
 export function getSizedParentNode(element) {
 	do {
 		element = element.parentNode;
-	} while ((!element.offsetWidth || !element.offsetHeight) && element !== document.body);
+	} while ((!element.offsetWidth || !element.offsetHeight) && element !== element.ownerDocument.body);
 	return element;
 }
 

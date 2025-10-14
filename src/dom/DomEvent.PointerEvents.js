@@ -9,25 +9,25 @@ let initialized = false;
 
 // @function enablePointerDetection()
 // Enables pointer detection for the document.
-function enablePointerDetection() {
+function enablePointerDetection(ownerDocument = window.document) {
 	if (initialized) {
 		return;
 	}
 	initialized = true;
-	document.addEventListener('pointerdown', _onSet, {capture: true});
-	document.addEventListener('pointermove', _onUpdate, {capture: true});
-	document.addEventListener('pointerup', _onDelete, {capture: true});
-	document.addEventListener('pointercancel', _onDelete, {capture: true});
+	ownerDocument.addEventListener('pointerdown', _onSet, {capture: true});
+	ownerDocument.addEventListener('pointermove', _onUpdate, {capture: true});
+	ownerDocument.addEventListener('pointerup', _onDelete, {capture: true});
+	ownerDocument.addEventListener('pointercancel', _onDelete, {capture: true});
 	activePointers = new Map();
 }
 
 // @function disablePointerDetection()
 // Disables pointer detection for the document.
-function disablePointerDetection() {
-	document.removeEventListener('pointerdown', _onSet, {capture: true});
-	document.removeEventListener('pointermove', _onUpdate, {capture: true});
-	document.removeEventListener('pointerup', _onDelete, {capture: true});
-	document.removeEventListener('pointercancel', _onDelete, {capture: true});
+function disablePointerDetection(ownerDocument = window.document) {
+	ownerDocument.removeEventListener('pointerdown', _onSet, {capture: true});
+	ownerDocument.removeEventListener('pointermove', _onUpdate, {capture: true});
+	ownerDocument.removeEventListener('pointerup', _onDelete, {capture: true});
+	ownerDocument.removeEventListener('pointercancel', _onDelete, {capture: true});
 	initialized = false;
 }
 

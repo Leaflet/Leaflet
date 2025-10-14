@@ -218,7 +218,7 @@ export class Marker extends Layer {
 		const options = this.options,
 		classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
-		const icon = options.icon.createIcon(this._icon);
+		const icon = options.icon.createIcon(this._icon, this._map._container.ownerDocument);
 		let addIcon = false;
 
 		// if we're not reusing the icon, remove the old one and init new one

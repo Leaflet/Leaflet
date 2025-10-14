@@ -31,10 +31,10 @@ export class IconDefault extends Icon {
 		});
 	}
 
-	_getIconUrl(name) {
+	_getIconUrl(name, ownerDocument) {
 		// only detect once
 		if (!IconDefault.imagePath) {
-			IconDefault.imagePath = this._detectIconPath();
+			IconDefault.imagePath = this._detectIconPath(ownerDocument);
 		}
 
 		const url = super._getIconUrl(name);
@@ -58,13 +58,13 @@ export class IconDefault extends Icon {
 		return path && strip(path, /^(.*)marker-icon\.png$/, 1);
 	}
 
-	_detectIconPath() {
-		const el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+	_detectIconPath(ownerDocument = window.document) {
+		const el = DomUtil.create('div',  'leaflet-default-icon-path', ownerDocument.body);
 		const path = this._stripUrl(getComputedStyle(el).backgroundImage);
 
-		document.body.removeChild(el);
+		ownerDocument.body.removeChild(el);
 		if (path) { return path; }
-		const link = document.querySelector('link[href$="leaflet.css"]');
+		const link = ownerDocument.querySelector('link[href$="leaflet.css"]');
 		if (!link) { return ''; }
 		return link.href.substring(0, link.href.length - 'leaflet.css'.length - 1);
 	}
