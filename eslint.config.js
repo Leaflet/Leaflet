@@ -75,6 +75,7 @@ export default [
 				],
 				allowSelectors: [
 					'has',
+					'nesting',
 				]
 			}]
 		}
