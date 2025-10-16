@@ -125,24 +125,26 @@ export class Zoom extends Control {
 			this._zoomInButton.setAttribute('aria-disabled', 'true');
 		}
 	}
-}
 
-// @namespace Map
-// @section Control options
-// @option zoomControl: Boolean = true
-// Whether a [zoom control](#control-zoom) is added to the map by default.
-Map.mergeOptions({
-	zoomControl: true
-});
+	static register() {
+		// @namespace Map
+		// @section Control options
+		// @option zoomControl: Boolean = true
+		// Whether a [zoom control](#control-zoom) is added to the map by default.
+		Map.mergeOptions({
+			zoomControl: true
+		});
 
-Map.addInitHook(function () {
-	if (this.options.zoomControl) {
-		// @section Controls
-		// @property zoomControl: Control.Zoom
-		// The default zoom control (only available if the
-		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new Zoom();
-		this.addControl(this.zoomControl);
+		Map.addInitHook(function () {
+			if (this.options.zoomControl) {
+				// @section Controls
+				// @property zoomControl: Control.Zoom
+				// The default zoom control (only available if the
+				// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
+				this.zoomControl = new Zoom();
+				this.addControl(this.zoomControl);
+			}
+		});
 	}
-});
 
+}
