@@ -149,7 +149,7 @@ export class Popup extends DivOverlay {
 	onAdd(map) {
 		DivOverlay.prototype.onAdd.call(this, map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event popupopen: PopupEvent
 		// Fired when a popup is opened in the map
@@ -172,7 +172,7 @@ export class Popup extends DivOverlay {
 	onRemove(map) {
 		DivOverlay.prototype.onRemove.call(this, map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event popupclose: PopupEvent
 		// Fired when a popup in the map is closed
@@ -316,7 +316,7 @@ export class Popup extends DivOverlay {
 			dy = containerPos.y - paddingTL.y;
 		}
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event autopanstart: Event
 		// Fired when the map starts autopanning when opening a popup.
@@ -340,7 +340,7 @@ export class Popup extends DivOverlay {
 }
 
 
-/* @namespace Map
+/* @namespace LeafletMap
  * @section Interaction Options
  * @option closePopupOnClick: Boolean = true
  * Set it to `false` if you don't want popups to close when user clicks the map.
@@ -350,7 +350,7 @@ Map.mergeOptions({
 });
 
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Methods for Layers and Controls
 Map.include({
 	// @method openPopup(popup: Popup): this

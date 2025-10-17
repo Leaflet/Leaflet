@@ -21,7 +21,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
  *
  * ```js
  * // initialize the map on the "map" div with a given center and zoom
- * const map = new Map('map', {
+ * const map = new LeafletMap('map', {
  * 	center: [51.505, -0.09],
  * 	zoom: 13
  * });
@@ -30,16 +30,6 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
  */
 
 // @section
-// @constructor Map(id: String, options?: Map options)
-// Instantiates a map object given the DOM ID of a `<div>` element
-// and optionally an object literal with `Map options`.
-//
-// @alternative
-// @constructor Map(el: HTMLElement, options?: Map options)
-// Instantiates a map object given an instance of a `<div>` HTML element
-// and optionally an object literal with `Map options`.
-//
-// @alternative
 // @constructor LeafletMap(id: String, options?: LeafletMap options)
 // Instantiates a map object given the DOM ID of a `<div>` element
 // and optionally an object literal with `LeafletMap options`.
@@ -48,6 +38,16 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // @constructor LeafletMap(el: HTMLElement, options?: LeafletMap options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `LeafletMap options`.
+//
+// @alternative
+// @constructor Map(id: String, options?: Map options)
+// Instantiates a map object given the DOM ID of a `<div>` element
+// and optionally an object literal with `Map options`.
+//
+// @alternative
+// @constructor Map(el: HTMLElement, options?: Map options)
+// Instantiates a map object given an instance of a `<div>` HTML element
+// and optionally an object literal with `Map options`.
 export class LeafletMap extends Evented {
 
 	static {

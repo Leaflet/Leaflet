@@ -125,7 +125,7 @@ export class Attribution extends Control {
 	}
 }
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Control options
 // @option attributionControl: Boolean = true
 // Whether a [attribution control](#control-attribution) is added to the map by default.

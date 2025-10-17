@@ -138,7 +138,7 @@ export class Layer extends Evented {
  */
 
 
-/* @namespace Map
+/* @namespace LeafletMap
  * @section Layer events
  *
  * @event layeradd: LayerEvent

@@ -12,7 +12,7 @@ import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 const tapHoldDelay = 600;
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options

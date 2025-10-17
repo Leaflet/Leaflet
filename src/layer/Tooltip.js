@@ -90,7 +90,7 @@ export class Tooltip extends DivOverlay {
 		DivOverlay.prototype.onAdd.call(this, map);
 		this.setOpacity(this.options.opacity);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Tooltip events
 		// @event tooltipopen: TooltipEvent
 		// Fired when a tooltip is opened in the map.
@@ -110,7 +110,7 @@ export class Tooltip extends DivOverlay {
 	onRemove(map) {
 		DivOverlay.prototype.onRemove.call(this, map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Tooltip events
 		// @event tooltipclose: TooltipEvent
 		// Fired when a tooltip in the map is closed.
@@ -224,7 +224,7 @@ export class Tooltip extends DivOverlay {
 
 }
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Methods for Layers and Controls
 Map.include({
 

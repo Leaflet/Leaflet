@@ -7,7 +7,7 @@ import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
  * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
