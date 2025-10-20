@@ -115,7 +115,7 @@ export class LayerGroup extends Layer {
 	// @method setZIndex(zIndex: Number): this
 	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	setZIndex(zIndex) {
-		return this.eachLayer(l => l.setZIndex(zIndex));
+		return this.eachLayer(l => l.setZIndex?.(zIndex));
 	}
 
 	// @method getLayerId(layer: Layer): Number
