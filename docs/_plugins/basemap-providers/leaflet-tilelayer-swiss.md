@@ -7,7 +7,7 @@ author-url: https://github.com/rkaravia
 demo: https://leaflet-tilelayer-swiss.karavia.ch/
 compatible-v0:
 compatible-v1: true
-compatible-v2: false
+compatible-v2: true
 ---
 
 Displays national maps of Switzerland using map tiles from Swisstopo.
