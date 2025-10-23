@@ -96,5 +96,22 @@ describe('CircleMarker', () => {
 			expect(circlemarker._containsPoint(point1)).to.be.true;
 			expect(circlemarker._containsPoint(point2)).to.be.false;
 		});
+
+		it('edge cases: point exactly at radius is contained, just outside is not', () => {
+			const circlemarker = new CircleMarker([0, 0], {radius: 20});
+			circlemarker.addTo(map);
+
+			// Use the marker internal pixel center to build edge/nearby points
+			const center = circlemarker._point;
+			const r = circlemarker._radius;
+
+			// exactly on the edge
+			const onEdge = new Point(center.x + r, center.y);
+			// slightly outside
+			const outside = new Point(center.x + r + 5, center.y);
+
+			expect(circlemarker._containsPoint(onEdge)).to.be.true;
+			expect(circlemarker._containsPoint(outside)).to.be.false;
+		});
 	});
 });

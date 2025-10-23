@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Map, LatLng, Polyline} from 'leaflet';
+import {Map, LatLng, Polyline, Point} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Polyline', () => {
@@ -295,6 +295,30 @@ describe('Polyline', () => {
 			const point2 = polyln.closestLayerPoint(p2);
 
 			expect(point.distance).to.be.lessThan(point2.distance);
+		});
+	});
+
+	describe('#_containsPoint', () => {
+		it('detects points on segment and rejects nearby off-segment points', () => {
+			// Use coordinates near the test map center so the polyline is in view
+			const latlngs = [[55.8, 37.6], [55.9, 37.6]]; // vertical segment near center
+			const polyln = new Polyline(latlngs).addTo(map);
+			// ensure computed pixel bounds/parts for Canvas hit-detection
+			if (polyln._update) { polyln._update(); }
+
+			// derive a point from the internal projected parts to avoid projection/viewport issues
+			const parts = polyln._parts;
+			expect(parts.length).to.be.greaterThan(0);
+
+			const p1 = parts[0][0];
+			const p2 = parts[0][1];
+			// midpoint of the first segment (should be on the segment)
+			const onSegment = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+			// point slightly off the segment (offset by click tolerance + extra)
+			const offSegment = new Point(onSegment.x + polyln._clickTolerance() + 5, onSegment.y);
+
+			expect(polyln._containsPoint(onSegment)).to.be.true;
+			expect(polyln._containsPoint(offSegment)).to.be.false;
 		});
 	});
 });
