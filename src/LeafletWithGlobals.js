@@ -1,6 +1,22 @@
 import * as L from './Leaflet.js';
 export * from './Leaflet.js';
 
+// register mixins
+L.AttributionControl.register();
+L.Control.register();
+L.DivOverlay.register();
+L.Layer.register();
+L.MapBoxZoom.register();
+L.MapDoubleClickZoom.register();
+L.MapDrag.register();
+L.MapKeyboard.register();
+L.MapPinchZoom.register();
+L.MapScrollWheelZoom.register();
+L.MapTapHold.register();
+L.Popup.register();
+L.Tooltip.register();
+L.ZoomControl.register();
+
 export default L;
 
 const oldL = getGlobalObject().L;
