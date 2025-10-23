@@ -65,10 +65,11 @@ export class CircleMarker extends Path {
 	}
 
 	setStyle(options) {
-		super.setStyle(options);
+		// Handle radius change first to ensure bounds are updated (#9828)
 		if (options?.radius !== undefined) {
 			this.setRadius(options.radius);
 		}
+		super.setStyle(options);
 		return this;
 	}
 
