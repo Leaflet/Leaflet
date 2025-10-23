@@ -425,4 +425,63 @@ describe('Control.Layers', () => {
 		});
 		expect(spy.calledOnce).to.be.true;
 	});
+
+	describe('regression #9747: overlayremove callback removes another overlay', () => {
+		it('keeps layers control UI in sync when a second overlay is removed inside overlayremove', (done) => {
+			const layer1 = new Marker([0, 0]);
+			const layer2 = new Marker([1, 1]);
+			const overlays = {
+				'Overlay 1': layer1,
+				'Overlay 2': layer2
+			};
+			const control = new Control.Layers(null, overlays).addTo(map);
+
+			// Add both overlays to map
+			map.addLayer(layer1);
+			map.addLayer(layer2);
+
+			// When layer1 is unchecked, remove layer2 inside the overlayremove handler
+			let removed = false;
+			map.on('overlayremove', (e) => {
+				if (e.layer === layer1 && !removed) {
+					removed = true;
+					map.removeLayer(layer2);
+				}
+			});
+
+			// Find and click the checkbox for layer1
+			let layer1Input = null;
+			const labels = control._overlaysList.querySelectorAll('label');
+			labels.forEach((label) => {
+				if (/Overlay 1/.test(label.textContent)) {
+					layer1Input = label.querySelector('input');
+				}
+			});
+
+			expect(layer1Input).to.be.ok;
+
+			// Click to uncheck layer1; this should also cause layer2 to be removed and unchecked
+			UIEventSimulator.fire('click', layer1Input);
+
+			// Let events & updates process
+			setTimeout(() => {
+				// Verify map state
+				expect(map.hasLayer(layer1)).to.be(false);
+				expect(map.hasLayer(layer2)).to.be(false);
+
+				// Verify control UI state: layer2 checkbox should be unchecked
+				let layer2Input = null;
+				const newLabels = control._overlaysList.querySelectorAll('label');
+				newLabels.forEach((label) => {
+					if (/Overlay 2/.test(label.textContent)) {
+						layer2Input = label.querySelector('input');
+					}
+				});
+
+				expect(layer2Input).to.be.ok;
+				expect(layer2Input.checked).to.be(false);
+				done();
+			}, 50);
+		});
+	});
 });

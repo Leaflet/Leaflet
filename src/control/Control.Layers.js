@@ -310,7 +310,8 @@ export class Layers extends Control {
 	}
 
 	_onLayerChange(e) {
-		if (!this._handlingClick) {
+		// Update UI unless we're handling a control click AND this is not a nested add/remove (#9747)
+		if (!this._handlingClick || (e.type === 'add' || e.type === 'remove')) {
 			this._update();
 		}
 
