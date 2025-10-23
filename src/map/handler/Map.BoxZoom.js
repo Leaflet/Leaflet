@@ -1,5 +1,6 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
@@ -19,8 +20,9 @@ Map.mergeOptions({
 	boxZoom: true
 });
 
-export class BoxZoom extends Handler {
-	initialize(map) {
+export const BoxZoom = withInitHooks(class BoxZoom extends Handler {
+	constructor(map) {
+		super();
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
@@ -143,7 +145,7 @@ export class BoxZoom extends Handler {
 			this._resetState();
 		}
 	}
-}
+});
 
 // @section Handlers
 // @property boxZoom: Handler

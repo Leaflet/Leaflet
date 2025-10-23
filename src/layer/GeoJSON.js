@@ -1,5 +1,6 @@
 import {LayerGroup} from './LayerGroup.js';
 import {FeatureGroup} from './FeatureGroup.js';
+import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {Marker} from './marker/Marker.js';
 import {Circle} from './vector/Circle.js';
@@ -35,7 +36,7 @@ import * as LineUtil from '../geometry/LineUtil.js';
 // Creates a GeoJSON layer. Optionally accepts an object in
 // [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
-export class GeoJSON extends FeatureGroup {
+export const GeoJSON = withInitHooks(class GeoJSON extends FeatureGroup {
 
 	/* @section
 	 * @aka GeoJSON options
@@ -87,7 +88,8 @@ export class GeoJSON extends FeatureGroup {
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize(geojson, options) {
+	constructor(geojson, options) {
+		super();
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -303,7 +305,7 @@ export class GeoJSON extends FeatureGroup {
 		};
 	}
 
-}
+});
 
 const PointToGeoJSON = {
 	toGeoJSON(precision) {
