@@ -26,6 +26,24 @@ describe('GridLayer', () => {
 			const grid = new GridLayer().addTo(map);
 			expect(grid.redraw()).to.equal(grid);
 		});
+
+		it('rounds fractional zoom to integer tile z (#9930)', () => {
+			// Enable fractional zoom via zoomSnap: 0.25
+			map.setView([0, 0], 1, {zoom: 1});
+			map.options.zoomSnap = 0.25;
+
+			const grid = new GridLayer().addTo(map);
+
+			// Set a fractional zoom level
+			map.setZoom(1.5625);
+
+			// Redraw should round the zoom before computing tileZoom
+			grid.redraw();
+
+			// Assert: _tileZoom must be an integer
+			expect(Number.isInteger(grid._tileZoom)).to.be.true;
+			expect(grid._tileZoom).to.equal(2); // Math.round(1.5625) = 2
+		});
 	});
 
 	describe('#setOpacity', () => {

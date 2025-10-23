@@ -232,7 +232,8 @@ export class GridLayer extends Layer {
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(this._map.getZoom());
+			// Round zoom to integer before clamping to ensure tile URLs never contain fractional z (#9930)
+			const tileZoom = this._clampZoom(Math.round(this._map.getZoom()));
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
