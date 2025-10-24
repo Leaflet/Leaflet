@@ -8,7 +8,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @option dragging: Boolean = true
