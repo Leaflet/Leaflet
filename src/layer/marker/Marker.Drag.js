@@ -126,6 +126,11 @@ export class MarkerDrag extends Handler {
 		iconPos = DomUtil.getPosition(marker._icon),
 		latlng = marker._map.layerPointToLatLng(iconPos);
 
+		// Preserve altitude from previous LatLng (issue #9689)
+		if (marker._latlng?.alt != null) {
+			latlng.alt = marker._latlng.alt;
+		}
+
 		// update shadow position
 		if (shadow) {
 			DomUtil.setPosition(shadow, iconPos);

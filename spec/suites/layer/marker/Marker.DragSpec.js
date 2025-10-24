@@ -118,4 +118,23 @@ describe('Marker.Drag', () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 	});
+
+	describe('regression #9689: preserve altitude after drag', () => {
+		it('keeps LatLng.alt after internal move', () => {
+			const marker = new Marker([10, 20, 123], {draggable: true}).addTo(map);
+
+			// Verify initial alt
+			expect(marker.getLatLng().alt).to.be(123);
+
+			// Simulate an internal drag step by calling _move with new pixel position
+			const newPixelPos = map.latLngToLayerPoint([11, 21]);
+			marker._newPos = newPixelPos;
+			marker._move(newPixelPos);
+
+			// After move, altitude should still be preserved
+			const movedLatLng = marker.getLatLng();
+			expect(movedLatLng).to.ok;
+			expect(movedLatLng.alt).to.be(123);
+		});
+	});
 });
