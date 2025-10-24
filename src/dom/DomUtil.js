@@ -132,6 +132,7 @@ export function disableImageDrag() {
 	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
+
 let _outlineElement, _outlineStyle;
 // @function preventOutline(el: HTMLElement)
 // Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
