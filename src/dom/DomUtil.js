@@ -85,38 +85,51 @@ let prevUserSelect;
 // Prevents the user from selecting text in the document. Used internally
 // by Leaflet to override the behaviour of any click-and-drag interaction on
 // the map. Affects drag interactions on the whole document.
-export function disableTextSelection() {
-	const value = documentStyle[userSelectProp];
+// @function disableTextSelection()
+// Prevents the user from selecting text in the document. Used internally
+// by Leaflet to override the behaviour of any click-and-drag interaction on
+// the map. Affects drag interactions on the whole document.
+//
+// @param {HTMLElement} el Optional container element. If provided, only disables
+// text selection on that element. If omitted, disables globally (backward compatible).
+export function disableTextSelection(el) {
+	const element = el || document.documentElement;
+	const style = element.style;
+	const value = style[userSelectProp];
 
 	if (value === 'none') {
 		return;
 	}
 
 	prevUserSelect = value;
-	documentStyle[userSelectProp] = 'none';
+	style[userSelectProp] = 'none';
 }
 
 // @function enableTextSelection()
 // Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export function enableTextSelection() {
+//
+// @param {HTMLElement} el Optional container element. If provided, restores
+// text selection on that element only. If omitted, restores globally.
+export function enableTextSelection(el) {
 	if (typeof prevUserSelect === 'undefined') {
 		return;
 	}
 
-	documentStyle[userSelectProp] = prevUserSelect;
+	const element = el || document.documentElement;
+	element.style[userSelectProp] = prevUserSelect;
 	prevUserSelect = undefined;
-}
-
-// @function disableImageDrag()
-// Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
-export function disableImageDrag() {
-	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 // @function enableImageDrag()
 // Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
+}
+
+// @function disableImageDrag()
+// Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
+export function disableImageDrag() {
+	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 let _outlineElement, _outlineStyle;
