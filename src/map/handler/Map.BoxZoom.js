@@ -105,7 +105,7 @@ export class BoxZoom extends Handler {
 			this._container.classList.remove('leaflet-crosshair');
 		}
 
-		DomUtil.enableTextSelection();
+		DomUtil.enableTextSelection(this._container);
 		DomUtil.enableImageDrag();
 
 		DomEvent.off(document, {
