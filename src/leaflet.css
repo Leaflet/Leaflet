@@ -208,7 +208,7 @@
 
 .leaflet-zoom-animated {
 	transform-origin: 0 0;
-	&svg {
+	svg& {
 		will-change: transform;
 	}
 }
