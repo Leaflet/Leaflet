@@ -234,11 +234,13 @@ describe('Canvas', () => {
 
 		map.addLayer(layer);
 
-		setTimeout(() => {
-			// we need the timeout, because else the requestAnimFrame is not called
-			expect(spy.callCount).to.eql(1);
-			done();
-		}, 50);
+		// Double requestAnimationFrame needed: first to schedule the _redraw, second to verify it executed
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				expect(spy.callCount).to.eql(1);
+				done();
+			});
+		});
 	});
 
 	describe('#bringToBack', () => {
