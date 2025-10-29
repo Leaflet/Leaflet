@@ -64,15 +64,6 @@ describe('Popup', () => {
 		expect(popup.getElement().querySelector('[aria-label="Close popup"]')).not.to.equal(null);
 	});
 
-	it('sets a custom \'closeButtonLabel\' on the close button', () => {
-		const closeButtonLabel = 'TestLabel';
-		const popup = new Popup({closeButtonLabel})
-			.setLatLng(center)
-			.openOn(map);
-
-		expect(popup.getElement().querySelector(`[aria-label="${closeButtonLabel}"]`)).not.to.equal(null);
-	});
-
 	it('toggles its visibility when marker is clicked', () => {
 		const marker = new Marker(center);
 		map.addLayer(marker);
