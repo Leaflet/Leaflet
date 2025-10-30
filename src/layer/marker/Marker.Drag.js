@@ -1,3 +1,4 @@
+import {withInitHooks} from '../../core/Class.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
@@ -22,8 +23,10 @@ import {Point} from '../../geometry/Point.js';
  * Marker dragging handler. Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-export class MarkerDrag extends Handler {
-	initialize(marker) {
+export const MarkerDrag = withInitHooks(class MarkerDrag extends Handler {
+	constructor(marker) {
+		super();
+
 		this._marker = marker;
 	}
 
@@ -155,4 +158,4 @@ export class MarkerDrag extends Handler {
 			.fire('moveend')
 			.fire('dragend', e);
 	}
-}
+});

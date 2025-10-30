@@ -1,4 +1,5 @@
 import {Path} from './Path.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
 import {LatLng} from '../../geo/LatLng.js';
@@ -48,7 +49,7 @@ import {Point} from '../../geometry/Point.js';
 // optionally an options object. You can create a `Polyline` object with
 // multiple separate lines (`MultiPolyline`) by passing an array of arrays
 // of geographic points.
-export class Polyline extends Path {
+export const Polyline = withInitHooks(class Polyline extends Path {
 
 	static {
 		// @section
@@ -65,7 +66,8 @@ export class Polyline extends Path {
 		});
 	}
 
-	initialize(latlngs, options) {
+	constructor(latlngs, options) {
+		super();
 		Util.setOptions(this, options);
 		this._setLatLngs(latlngs);
 	}
@@ -289,4 +291,4 @@ export class Polyline extends Path {
 		}
 		return false;
 	}
-}
+});
