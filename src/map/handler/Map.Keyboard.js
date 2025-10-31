@@ -8,7 +8,7 @@ import {Point} from '../../geometry/Point.js';
  * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Keyboard Navigation Options
 Map.mergeOptions({
 	// @option keyboard: Boolean = true
