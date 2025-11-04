@@ -19,7 +19,7 @@
 		<button id="start">Start</button>
 		<button id="stop">Stop</button>
 		<script type="module">
-			import {TileLayer, Map} from 'leaflet';
+			import {TileLayer, LeafletMap} from 'leaflet';
 
 			let map;
 			let mapDiv;
@@ -44,7 +44,7 @@
 				mapDiv.style.width = '200px';
 				document.getElementsByTagName('body')[0].appendChild(mapDiv);
 				// attach map to div
-				map = new Map(randomDivId).setView([51.505, -0.09], 13);
+				map = new LeafletMap(randomDivId).setView([51.505, -0.09], 13);
 				map.addLayer(osm);
 			}
 

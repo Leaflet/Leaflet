@@ -78,7 +78,7 @@
 		</table>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, Polygon, Marker} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap, Polygon, Marker} from 'leaflet';
 
 			const osm = new TileLayer(
 				'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -86,7 +86,7 @@
 			);
 
 			const latlng = new LatLng(39.05, 8.4);
-			const map = new Map('map', {center: latlng, zoom: 12, layers: [osm]});
+			const map = new LeafletMap('map', {center: latlng, zoom: 12, layers: [osm]});
 
 			function update(id) {
 				return function () {

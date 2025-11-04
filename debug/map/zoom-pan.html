@@ -44,7 +44,7 @@
 			<tr><td>on grid load</td><td id='load'></td></tr>
 		</div>
 		<script type="module">
-			import {Map, TileLayer, Polyline, Marker, ImageOverlay} from 'leaflet';
+			import {LeafletMap, TileLayer, Polyline, Marker, ImageOverlay} from 'leaflet';
 
 			const kyiv = [50.5, 30.5];
 			const lnd = [51.51, -0.12];
@@ -54,7 +54,7 @@
 			const madBounds = [[40.70, -4.19], [40.12, -3.31]];
 			const mad = [40.40, -3.7];
 
-			const map = new Map('map', {zoomSnap: 0.25}).setView(dc, 14);
+			const map = new LeafletMap('map', {zoomSnap: 0.25}).setView(dc, 14);
 			const positron = new TileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(map);
 			
 			new Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);

@@ -44,10 +44,10 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
+			import {LeafletMap, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
 			import statesData from './us-states.js';
 
-			const map = new Map('map').setView([37.8, -96], 4);
+			const map = new LeafletMap('map').setView([37.8, -96], 4);
 			const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
 
 			map.addLayer(tiles);

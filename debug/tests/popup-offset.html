@@ -17,10 +17,10 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, Map, Marker} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-			const map = new Map('map').setView([50.5, 30.51], 15).addLayer(osm);
+			const map = new LeafletMap('map').setView([50.5, 30.51], 15).addLayer(osm);
 
 			new Marker(map.getCenter())
 				.addTo(map)

@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {GridLayer, Map} from 'leaflet';
+			import {GridLayer, LeafletMap} from 'leaflet';
 
 			const grid = new GridLayer({
 				attribution: 'Grid Layer'
@@ -42,7 +42,7 @@
 				console.log('tileunload', `${tile.coords.x}, ${tile.coords.y}, ${tile.coords.z}`);
 			});
 
-			new Map('map')
+			new LeafletMap('map')
 				.setView([50.5, 30.51], 10)
 				.addLayer(grid);
 		</script>
