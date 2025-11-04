@@ -61,8 +61,8 @@ Let's create a map of the center of London with pretty OpenStreetMap tiles. From
 
 ```javascript
 <script type="module">
-	import {Map, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
-	const map = new Map('map').setView([51.505, -0.09], 13);
+	import {LeafletMap, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
+	const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 	// ...
 </script>

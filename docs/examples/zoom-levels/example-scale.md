@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Zoom Scale Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Control} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Control} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		minZoom: 1,
 		maxZoom: 1,
 		dragging: false

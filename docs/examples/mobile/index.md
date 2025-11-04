@@ -32,7 +32,7 @@ Also, we need to tell the mobile browser to disable unwanted scaling of the page
 We'll now initialize the map in the JavaScript code like we did in the [quick start guide](../quick-start/), showing the whole world:
 
 ```javascript
-const map =  new Map('map').fitWorld();
+const map =  new LeafletMap('map').fitWorld();
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,

@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: WMS CRS Example
 ---
 <script type="module">
-	import L, {Map, CRS, TileLayer} from 'leaflet';
+	import L, {LeafletMap, CRS, TileLayer} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [0, 0],
 		zoom: 1,
 		crs: CRS.EPSG4326

@@ -138,7 +138,7 @@ bodyclass: api-page
 
 
 <pre><code class="language-js">// initialize the map on the &quot;map&quot; div with a given center and zoom
-const map = new Map('map', {
+const map = new LeafletMap('map', {
 	center: [51.505, -0.09],
 	zoom: 13
 });
@@ -14873,12 +14873,12 @@ Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
 
 
 <p>Use SVG by default for all paths in the map:</p>
-<pre><code class="language-js">const map = new Map('map', {
+<pre><code class="language-js">const map = new LeafletMap('map', {
 	renderer: new SVG()
 });
 </code></pre>
 <p>Use a SVG renderer with extra padding for specific vector geometries:</p>
-<pre><code class="language-js">const map = new Map('map');
+<pre><code class="language-js">const map = new LeafletMap('map');
 const myRenderer = new SVG({ padding: 0.5 });
 const line = new Polyline( coordinates, { renderer: myRenderer } );
 const circle = new Circle( center, { renderer: myRenderer, radius: 100 } );
@@ -15490,12 +15490,12 @@ Inherits <a href="#renderer"><code>Renderer</code></a>.</p>
 
 
 <p>Use Canvas by default for all paths in the map:</p>
-<pre><code class="language-js">const map = new Map('map', {
+<pre><code class="language-js">const map = new LeafletMap('map', {
 	renderer: new Canvas()
 });
 </code></pre>
 <p>Use a Canvas renderer with extra padding for specific vector geometries:</p>
-<pre><code class="language-js">const map = new Map('map');
+<pre><code class="language-js">const map = new LeafletMap('map');
 const myRenderer = new Canvas({ padding: 0.5 });
 const line = new Polyline( coordinates, { renderer: myRenderer } );
 const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );
