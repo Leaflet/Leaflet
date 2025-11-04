@@ -53,7 +53,7 @@ describe('Map.Drag', () => {
 		});
 	});
 
-	const MyMap = Map.extend({
+	const MyMap = LeafletMap.extend({
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
 		},
