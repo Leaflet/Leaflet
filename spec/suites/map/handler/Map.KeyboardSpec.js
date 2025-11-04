@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Map, Popup} from 'leaflet';
+import {LeafletMap, Popup} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -18,7 +18,7 @@ describe('Map.Keyboard', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {
+		map = new LeafletMap(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 

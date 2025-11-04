@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomEvent, Map, Util} from 'leaflet';
+import {DomEvent, LeafletMap, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 
@@ -566,7 +566,7 @@ describe('DomEvent', () => {
 			const grandChild = document.createElement('div');
 			child.appendChild(grandChild);
 
-			const map = new Map(el).setView([0, 0], 0);
+			const map = new LeafletMap(el).setView([0, 0], 0);
 			const mapClickListener = sinon.spy();
 			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case

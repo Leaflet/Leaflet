@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Map} from 'leaflet';
+import {LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -9,7 +9,7 @@ describe('Map.BoxZoom', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {
+		map = new LeafletMap(container, {
 			center: [0, 0],
 			zoom: 3
 		});

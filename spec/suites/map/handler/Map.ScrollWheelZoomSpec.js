@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomEvent, Map} from 'leaflet';
+import {DomEvent, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -18,7 +18,7 @@ describe('Map.ScrollWheelZoom', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {
+		map = new LeafletMap(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false

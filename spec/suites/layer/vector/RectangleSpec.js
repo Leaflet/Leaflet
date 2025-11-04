@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, LineUtil, Map, Polygon, LatLng, Rectangle} from 'leaflet';
+import {Canvas, LineUtil, LeafletMap, Polygon, LatLng, Rectangle} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Rectangle', () => {
@@ -7,7 +7,7 @@ describe('Rectangle', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {center: [55.8, 37.6], zoom: 6});
+		map = new LeafletMap(container, {center: [55.8, 37.6], zoom: 6});
 	});
 
 	afterEach(() => {
@@ -119,7 +119,7 @@ describe('Rectangle', () => {
 		it('doesn\'t apply `focus` listener if element is undefined', () => {
 			map.remove();
 
-			map = new Map(container, {renderer: new Canvas()});
+			map = new LeafletMap(container, {renderer: new Canvas()});
 			map.setView([0, 0], 6);
 			expect(() => {
 				new Polygon([[[2, 3], [4, 5]]]).addTo(map).bindTooltip('test');

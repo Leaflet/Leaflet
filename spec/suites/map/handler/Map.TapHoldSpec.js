@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, Map, Point} from 'leaflet';
+import {Browser, LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -13,7 +13,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {
+		map = new LeafletMap(container, {
 			center: [51.505, -0.09],
 			zoom: 13,
 			tapHold: true

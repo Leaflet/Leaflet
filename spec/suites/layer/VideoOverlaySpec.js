@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LatLngBounds, Map, VideoOverlay} from 'leaflet';
+import {LatLngBounds, LeafletMap, VideoOverlay} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 import Hand from 'prosthetic-hand';
 
@@ -9,7 +9,7 @@ describe('VideoOverlay', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		map.setView([20, -115], 4);	// view needs to be set so when layer is added it is initilized
 	});
 
