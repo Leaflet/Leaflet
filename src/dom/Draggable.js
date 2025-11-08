@@ -88,9 +88,8 @@ export class Draggable extends Evented {
 		if (this._preventOutline) {
 			DomUtil.preventOutline(this._element);
 		}
-
 		DomUtil.disableImageDrag();
-		DomUtil.disableTextSelection();
+		DomUtil.disableTextSelection(this._element);
 
 		if (this._moving) { return; }
 
@@ -181,7 +180,7 @@ export class Draggable extends Evented {
 		DomEvent.off(document, 'pointerup pointercancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
-		DomUtil.enableTextSelection();
+		DomUtil.enableTextSelection(this._element);
 
 		const fireDragend = this._moved && this._moving;
 
@@ -199,3 +198,4 @@ export class Draggable extends Evented {
 	}
 
 }
+
