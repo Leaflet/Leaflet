@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('Map.BoxZoom', () => {
+describe('LeafletMap.BoxZoom', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -143,7 +143,7 @@ describe('Map.BoxZoom', () => {
 		const stub = sinon.stub(map.boxZoom, '_clearDeferredResetState');
 		stub.callsFake(() => {
 			resetTimeout = map.boxZoom._resetStateTimeout !== 0;
-			Map.BoxZoom.prototype._clearDeferredResetState.call(map.boxZoom);
+			LeafletMap.BoxZoom.prototype._clearDeferredResetState.call(map.boxZoom);
 		});
 
 		let clientX = 100;

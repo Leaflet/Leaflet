@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
-describe('Map.Drag', () => {
+describe('LeafletMap.Drag', () => {
 	let container, map;
 
 	beforeEach(() => {

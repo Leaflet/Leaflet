@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('Map.Keyboard', () => {
+describe('LeafletMap.Keyboard', () => {
 	const KEYCODE_LOWERCASE_A = 'KeyA';
 	const KEYCODE_ARROW_LEFT = 'ArrowLeft';
 	const KEYCODE_ARROW_UP = 'ArrowUp';
@@ -23,7 +23,7 @@ describe('Map.Keyboard', () => {
 		});
 
 		// make keyboard-caused panning instant to cut down on test running time
-		map.panBy = function (offset) { return Map.prototype.panBy.call(this, offset, {animate: false}); };
+		map.panBy = function (offset) { return LeafletMap.prototype.panBy.call(this, offset, {animate: false}); };
 
 		map.setView([0, 0], 5);
 
