@@ -123,18 +123,20 @@ export class Attribution extends Control {
 
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
-}
 
-// @namespace Map
-// @section Control options
-// @option attributionControl: Boolean = true
-// Whether a [attribution control](#control-attribution) is added to the map by default.
-Map.mergeOptions({
-	attributionControl: true
-});
+	static register() {
+		// @namespace Map
+		// @section Control options
+		// @option attributionControl: Boolean = true
+		// Whether a [attribution control](#control-attribution) is added to the map by default.
+		Map.mergeOptions({
+			attributionControl: true
+		});
 
-Map.addInitHook(function () {
-	if (this.options.attributionControl) {
-		new Attribution().addTo(this);
+		Map.addInitHook(function () {
+			if (this.options.attributionControl) {
+				new Attribution().addTo(this);
+			}
+		});
 	}
-});
+}
