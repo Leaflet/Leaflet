@@ -1,18 +1,27 @@
 import * as Util from './Util.js';
 
 // @class Class
-
-// @section
 // @uninheritable
-
+// Base class that Leaflet classes inherit from.
 // Thanks to John Resig and Dean Edwards for inspiration!
 
 export class Class {
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
-	// Deprecated - use `class X extends Class` instead!
-	// Returns a Javascript function that is a class constructor (to be called with `new`).
+	// @deprecated This legacy method is retained for backward compatibility.
+	// It will be **removed in Leaflet 3.0**.
+	// Please use standard ES6 syntax instead:
+	//     class MyLayer extends L.Class {}
 	static extend({statics, includes, ...props}) {
+		// Warn developers that this API is deprecated
+		if (typeof console !== 'undefined' && console.warn) {
+			console.warn(
+				'[Leaflet] Class.extend() is deprecated and will be removed in Leaflet 3.0. ' +
+				'Use standard ES6 class syntax instead.'
+			);
+		}
+
+		// Maintain backward compatibility
 		const NewClass = class extends this {};
 
 		// inherit parent's static properties
@@ -38,7 +47,7 @@ export class Class {
 		// mix given properties into the prototype
 		Object.assign(proto, props);
 
-		// merge options
+		// merge options (used heavily by Leaflet components)
 		if (proto.options) {
 			proto.options = parentProto.options ? Object.create(parentProto.options) : {};
 			Object.assign(proto.options, props.options);
@@ -51,15 +60,19 @@ export class Class {
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
 		const parentOptions = this.prototype.options;
+
 		for (const k of getAllMethodNames(props)) {
 			this.prototype[k] = props[k];
 		}
+
 		if (props.options) {
 			this.prototype.options = parentOptions;
 			this.mergeOptions(props.options);
 		}
+
 		return this;
 
+		// helper function: yield all property names from the prototype chain
 		function *getAllMethodNames(obj) {
 			do {
 				if (obj === Object || obj === Object.prototype) {
@@ -90,9 +103,11 @@ export class Class {
 	// @function addInitHook(fn: Function): this
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
 	static addInitHook(fn, ...args) { // (Function) || (String, args...)
-		const init = typeof fn === 'function' ? fn : function () {
-			this[fn].apply(this, args);
-		};
+		const init = typeof fn === 'function' ?
+			fn :
+			function () {
+				this[fn].apply(this, args);
+			};
 
 		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here
 			this.prototype._initHooks = [];

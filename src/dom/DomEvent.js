@@ -1,4 +1,5 @@
 import {Point} from '../geometry/Point.js';
+
 import * as Util from '../core/Util.js';
 import Browser from '../core/Browser.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';

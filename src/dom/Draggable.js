@@ -90,8 +90,7 @@ export class Draggable extends Evented {
 		}
 
 		DomUtil.disableImageDrag();
-		DomUtil.disableTextSelection();
-
+		DomUtil.disableTextSelection(this._element);
 		if (this._moving) { return; }
 
 		// @event down: Event
@@ -106,7 +105,7 @@ export class Draggable extends Evented {
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
 
-		DomEvent.on(document, 'pointermove', this._onMove, this);
+		DomEvent.on(this._element, 'pointermove', this._onMove, this);
 		DomEvent.on(document, 'pointerup pointercancel', this._onUp, this);
 	}
 
@@ -181,8 +180,7 @@ export class Draggable extends Evented {
 		DomEvent.off(document, 'pointerup pointercancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
-		DomUtil.enableTextSelection();
-
+		DomUtil.enableTextSelection(this._element);
 		const fireDragend = this._moved && this._moving;
 
 		this._moving = false;
