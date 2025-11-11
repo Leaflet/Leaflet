@@ -86,7 +86,7 @@
 		<div><button id="nul">NUL</button>(image overlay)</div>
 		<div><button id="stop">stop</button></div>
 		<script type="module">
-			import {Map, TileLayer, GridLayer, Point, DomUtil} from 'leaflet';
+			import {LeafletMap, TileLayer, GridLayer, Point, DomUtil} from 'leaflet';
 
 			const kyiv = [50.5, 30.5];
 			const lnd = [51.51, -0.12];
@@ -98,7 +98,7 @@
 				[40.12, -3.31],
 			];
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: [35, -122],
 				zoom: 5.75,
 				zoomSnap: 0.25,

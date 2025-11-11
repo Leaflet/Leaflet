@@ -35,9 +35,9 @@ css: "#map {
 
 <script type="text/javascript" src="us-states.js"></script>
 <script type="module">
-	import L, {Map, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Control, DomUtil, GeoJSON} from 'leaflet';
 
-	const map = new Map('map').setView([37.8, -96], 4);
+	const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

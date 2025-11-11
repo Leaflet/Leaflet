@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LatLngBounds, Map, ImageOverlay} from 'leaflet';
+import {LatLngBounds, LeafletMap, ImageOverlay} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -9,7 +9,7 @@ describe('ImageOverlay', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
 	});
 

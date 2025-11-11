@@ -17,9 +17,9 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Polygon, CircleMarker} from 'leaflet';
+			import {LeafletMap, TileLayer, Polygon, CircleMarker} from 'leaflet';
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: [20, 20],
 				zoom: 3,
 				preferCanvas: true,

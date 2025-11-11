@@ -123,7 +123,7 @@ export class Control extends Class {
  * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
  */
 
-/* @namespace Map
+/* @namespace LeafletMap
  * @section Methods for Layers and Controls
  */
 Map.include({

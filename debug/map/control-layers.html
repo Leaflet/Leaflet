@@ -22,7 +22,7 @@
 			}
 		</style>
 		<script type="module">
-			import {Map, TileLayer, Control, Circle, Polygon, GeoJSON} from 'leaflet';
+			import {LeafletMap, TileLayer, Control, Circle, Polygon, GeoJSON} from 'leaflet';
 
 			const GrayscaleTileLayer = TileLayer.extend({
 				createTile(...args) {
@@ -32,7 +32,7 @@
 				}
 			});
 
-			const map = new Map('map').setView([50.5, 0], 5);
+			const map = new LeafletMap('map').setView([50.5, 0], 5);
 			const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const regularTiles = new TileLayer(tileUrl).addTo(map);
 			const blackAndWhiteTiles = new GrayscaleTileLayer(tileUrl);

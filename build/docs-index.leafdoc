@@ -3,7 +3,7 @@ This file just defines the order of the classes in the docs.
 
 
 
-@class Map
+@class LeafletMap
 
 @class Marker
 @class DivOverlay

@@ -22,11 +22,11 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, DivIcon, Point, Marker} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap, DivIcon, Point, Marker} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			const latlng = new LatLng(50.5, 30.51);
-			const map = new Map('map', {center: latlng, zoom: 15, layers: [osm]});
+			const map = new LeafletMap('map', {center: latlng, zoom: 15, layers: [osm]});
 
 			// Create a marker, clicking it toggles opacity
 			const opaqueIcon = new DivIcon({

@@ -4,9 +4,9 @@ title: Accessible Markers Example
 ---
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, Icon} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Marker, Icon} from 'leaflet';
 
-	const map = new Map('map').setView([50.4501, 30.5234], 4);
+	const map = new LeafletMap('map').setView([50.4501, 30.5234], 4);
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

@@ -41,7 +41,7 @@ const osmHOT = new TileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'});
 
-const map = new Map('map', {
+const map = new LeafletMap('map', {
 	center: [39.73, -104.99],
 	zoom: 10,
 	layers: [osm, cities]

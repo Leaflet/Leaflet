@@ -5,7 +5,7 @@ import {Handler} from '../../core/Handler.js';
  * Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 
 Map.mergeOptions({

@@ -127,7 +127,7 @@ export class Zoom extends Control {
 	}
 }
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Control options
 // @option zoomControl: Boolean = true
 // Whether a [zoom control](#control-zoom) is added to the map by default.

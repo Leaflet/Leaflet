@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, Map, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, CRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -165,7 +165,7 @@ describe('TileLayer', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
 	});
@@ -335,7 +335,7 @@ describe('TileLayer', () => {
 			simplediv.style.visibility = 'hidden';
 
 			document.body.appendChild(simplediv);
-			const simpleMap = new Map(simplediv, {
+			const simpleMap = new LeafletMap(simplediv, {
 				crs: CRS.Simple
 			}).setView([0, 0], 5);
 			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png');

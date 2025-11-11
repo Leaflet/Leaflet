@@ -6,7 +6,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * Handler.ScrollWheelZoom is used by Map to enable mouse scroll wheel zoom on the map.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Mouse wheel options

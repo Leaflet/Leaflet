@@ -15,7 +15,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Use Canvas by default for all paths in the map:
  *
  * ```js
- * const map = new Map('map', {
+ * const map = new LeafletMap('map', {
  * 	renderer: new Canvas()
  * });
  * ```
@@ -23,7 +23,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Use a Canvas renderer with extra padding for specific vector geometries:
  *
  * ```js
- * const map = new Map('map');
+ * const map = new LeafletMap('map');
  * const myRenderer = new Canvas({ padding: 0.5 });
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );

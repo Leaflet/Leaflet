@@ -56,9 +56,9 @@ Then, in your script, import the needed Leaflet Classes as follows:
 
 ```js
 <script type="module">
-	import {Map, TileLayer} from 'leaflet';
+	import {LeafletMap, TileLayer} from 'leaflet';
 
-	const map = new Map('map').setView([51.505, -0.09], 13);
+	const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 	
 	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -107,9 +107,9 @@ Unzip the downloaded archive to your website's directory and add this to the `he
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import {LeafletMap, TileLayer} from 'leaflet';
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -128,9 +128,9 @@ npm install leaflet
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import {LeafletMap, TileLayer} from 'leaflet';
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,

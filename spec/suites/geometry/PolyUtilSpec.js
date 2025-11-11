@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Bounds, Map, Point, PolyUtil, Polygon} from 'leaflet';
+import {Bounds, LeafletMap, Point, PolyUtil, Polygon} from 'leaflet';
 import sinon from 'sinon';
 import '../SpecHelper.js';
 
@@ -47,7 +47,7 @@ describe('PolyUtil', () => {
 	describe('#polygonCenter', () => {
 		let map, crs, zoom;
 		beforeEach(() => {
-			map = new Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
+			map = new LeafletMap(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
 			zoom = map.getZoom();
 		});
