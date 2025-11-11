@@ -21,6 +21,6 @@
 
  */
 
-export {LonLat} from './Projection.LonLat.js';
-export {Mercator} from './Projection.Mercator.js';
-export {SphericalMercator} from './Projection.SphericalMercator.js';
+export { LonLat } from "./Projection.LonLat.js";
+export { Mercator } from "./Projection.Mercator.js";
+export { SphericalMercator } from "./Projection.SphericalMercator.js";

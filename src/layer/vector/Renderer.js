@@ -1,5 +1,5 @@
-import {BlanketOverlay} from '../BlanketOverlay.js';
-import * as Util from '../../core/Util.js';
+import { BlanketOverlay } from "../BlanketOverlay.js";
+import * as Util from "../../core/Util.js";
 
 /*
  * @class Renderer
@@ -24,50 +24,48 @@ import * as Util from '../../core/Util.js';
  */
 
 export class Renderer extends BlanketOverlay {
+  initialize(options) {
+    Util.setOptions(this, { ...options, continuous: false });
+    Util.stamp(this);
+    this._layers ??= {};
+  }
 
-	initialize(options) {
-		Util.setOptions(this, {...options, continuous: false});
-		Util.stamp(this);
-		this._layers ??= {};
-	}
+  onAdd(map) {
+    super.onAdd(map);
+    this.on("update", this._updatePaths, this);
+  }
 
-	onAdd(map) {
-		super.onAdd(map);
-		this.on('update', this._updatePaths, this);
-	}
+  onRemove() {
+    super.onRemove();
+    this.off("update", this._updatePaths, this);
+  }
 
-	onRemove() {
-		super.onRemove();
-		this.off('update', this._updatePaths, this);
-	}
+  _onZoomEnd() {
+    // When a zoom ends, the "origin pixel" changes. Internal coordinates
+    // of paths are relative to the origin pixel and therefore need to
+    // be recalculated.
+    for (const layer of Object.values(this._layers)) {
+      layer._project();
+    }
+  }
 
-	_onZoomEnd() {
-		// When a zoom ends, the "origin pixel" changes. Internal coordinates
-		// of paths are relative to the origin pixel and therefore need to
-		// be recalculated.
-		for (const layer of Object.values(this._layers)) {
-			layer._project();
-		}
-	}
+  _updatePaths() {
+    for (const layer of Object.values(this._layers)) {
+      layer._update();
+    }
+  }
 
-	_updatePaths() {
-		for (const layer of Object.values(this._layers)) {
-			layer._update();
-		}
-	}
+  _onViewReset() {
+    for (const layer of Object.values(this._layers)) {
+      layer._reset();
+    }
+  }
 
-	_onViewReset() {
-		for (const layer of Object.values(this._layers)) {
-			layer._reset();
-		}
-	}
+  _onSettled() {
+    this._update();
+  }
 
-	_onSettled() {
-		this._update();
-	}
-
-	// Subclasses are responsible of implementing `_update()`. It should fire
-	// the 'update' event whenever appropriate (before/after rendering).
-	_update() {}
-
+  // Subclasses are responsible of implementing `_update()`. It should fire
+  // the 'update' event whenever appropriate (before/after rendering).
+  _update() {}
 }

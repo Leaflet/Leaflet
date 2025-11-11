@@ -1,5 +1,5 @@
-import {LayerGroup} from './LayerGroup.js';
-import {LatLngBounds} from '../geo/LatLngBounds.js';
+import { LayerGroup } from "./LayerGroup.js";
+import { LatLngBounds } from "../geo/LatLngBounds.js";
 
 /*
  * @class FeatureGroup
@@ -25,64 +25,63 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 // @constructor FeatureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
 export class FeatureGroup extends LayerGroup {
+  addLayer(layer) {
+    if (this.hasLayer(layer)) {
+      return this;
+    }
 
-	addLayer(layer) {
-		if (this.hasLayer(layer)) {
-			return this;
-		}
+    layer.addEventParent(this);
 
-		layer.addEventParent(this);
+    super.addLayer(layer);
 
-		super.addLayer(layer);
+    // @event layeradd: LayerEvent
+    // Fired when a layer is added to this `FeatureGroup`
+    return this.fire("layeradd", { layer });
+  }
 
-		// @event layeradd: LayerEvent
-		// Fired when a layer is added to this `FeatureGroup`
-		return this.fire('layeradd', {layer});
-	}
+  removeLayer(layer) {
+    if (!this.hasLayer(layer)) {
+      return this;
+    }
+    if (layer in this._layers) {
+      layer = this._layers[layer];
+    }
 
-	removeLayer(layer) {
-		if (!this.hasLayer(layer)) {
-			return this;
-		}
-		if (layer in this._layers) {
-			layer = this._layers[layer];
-		}
+    layer.removeEventParent(this);
 
-		layer.removeEventParent(this);
+    super.removeLayer(layer);
 
-		super.removeLayer(layer);
+    // @event layerremove: LayerEvent
+    // Fired when a layer is removed from this `FeatureGroup`
+    return this.fire("layerremove", { layer });
+  }
 
-		// @event layerremove: LayerEvent
-		// Fired when a layer is removed from this `FeatureGroup`
-		return this.fire('layerremove', {layer});
-	}
+  // @method setStyle(style: Path options): this
+  // Sets the given path options to each layer of the group that has a `setStyle` method.
+  setStyle(style) {
+    return this.eachLayer((l) => l.setStyle?.(style));
+  }
 
-	// @method setStyle(style: Path options): this
-	// Sets the given path options to each layer of the group that has a `setStyle` method.
-	setStyle(style) {
-		return this.eachLayer(l => l.setStyle?.(style));
-	}
+  // @method bringToFront(): this
+  // Brings the layer group to the top of all other layers
+  bringToFront() {
+    return this.eachLayer((l) => l.bringToFront?.());
+  }
 
-	// @method bringToFront(): this
-	// Brings the layer group to the top of all other layers
-	bringToFront() {
-		return this.eachLayer(l => l.bringToFront?.());
-	}
+  // @method bringToBack(): this
+  // Brings the layer group to the back of all other layers
+  bringToBack() {
+    return this.eachLayer((l) => l.bringToBack?.());
+  }
 
-	// @method bringToBack(): this
-	// Brings the layer group to the back of all other layers
-	bringToBack() {
-		return this.eachLayer(l => l.bringToBack?.());
-	}
+  // @method getBounds(): LatLngBounds
+  // Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
+  getBounds() {
+    const bounds = new LatLngBounds();
 
-	// @method getBounds(): LatLngBounds
-	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
-	getBounds() {
-		const bounds = new LatLngBounds();
-
-		for (const layer of Object.values(this._layers)) {
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
-		}
-		return bounds;
-	}
+    for (const layer of Object.values(this._layers)) {
+      bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+    }
+    return bounds;
+  }
 }

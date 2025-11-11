@@ -1,3 +1,3 @@
-import {Icon} from 'leaflet';
+import { Icon } from "leaflet";
 
-Icon.Default.imagePath = '/base/dist/images/';
+Icon.Default.imagePath = "/base/dist/images/";

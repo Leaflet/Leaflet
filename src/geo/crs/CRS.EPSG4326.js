@@ -1,6 +1,6 @@
-import {Earth} from './CRS.Earth.js';
-import {LonLat} from '../projection/Projection.LonLat.js';
-import {Transformation} from '../../geometry/Transformation.js';
+import { Earth } from "./CRS.Earth.js";
+import { LonLat } from "../projection/Projection.LonLat.js";
+import { Transformation } from "../../geometry/Transformation.js";
 
 /*
  * @namespace CRS
@@ -15,7 +15,7 @@ import {Transformation} from '../../geometry/Transformation.js';
  */
 
 export class EPSG4326 extends Earth {
-	static code = 'EPSG:4326';
-	static projection = LonLat;
-	static transformation = new Transformation(1 / 180, 1, -1 / 180, 0.5);
+  static code = "EPSG:4326";
+  static projection = LonLat;
+  static transformation = new Transformation(1 / 180, 1, -1 / 180, 0.5);
 }

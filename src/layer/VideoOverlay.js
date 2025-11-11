@@ -1,7 +1,7 @@
-import {ImageOverlay} from './ImageOverlay.js';
-import * as DomUtil from '../dom/DomUtil.js';
-import * as DomEvent from '../dom/DomEvent.js';
-import * as Util from '../core/Util.js';
+import { ImageOverlay } from "./ImageOverlay.js";
+import * as DomUtil from "../dom/DomUtil.js";
+import * as DomEvent from "../dom/DomEvent.js";
+import * as Util from "../core/Util.js";
 
 /*
  * @class VideoOverlay
@@ -25,82 +25,92 @@ import * as Util from '../core/Util.js';
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
 export class VideoOverlay extends ImageOverlay {
+  static {
+    // @section
+    // @aka VideoOverlay options
+    this.setDefaultOptions({
+      // @option autoplay: Boolean = true
+      // Whether the video starts playing automatically when loaded.
+      // On some browsers autoplay will only work with `muted: true`
+      autoplay: true,
 
-	static {
-		// @section
-		// @aka VideoOverlay options
-		this.setDefaultOptions({
-			// @option autoplay: Boolean = true
-			// Whether the video starts playing automatically when loaded.
-			// On some browsers autoplay will only work with `muted: true`
-			autoplay: true,
+      // @option controls: Boolean = false
+      // Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+      controls: false,
 
-			// @option controls: Boolean = false
-			// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
-			controls: false,
+      // @option loop: Boolean = true
+      // Whether the video will loop back to the beginning when played.
+      loop: true,
 
-			// @option loop: Boolean = true
-			// Whether the video will loop back to the beginning when played.
-			loop: true,
+      // @option keepAspectRatio: Boolean = true
+      // Whether the video will save aspect ratio after the projection.
+      keepAspectRatio: true,
 
-			// @option keepAspectRatio: Boolean = true
-			// Whether the video will save aspect ratio after the projection.
-			keepAspectRatio: true,
+      // @option muted: Boolean = false
+      // Whether the video starts on mute when loaded.
+      muted: false,
 
-			// @option muted: Boolean = false
-			// Whether the video starts on mute when loaded.
-			muted: false,
+      // @option playsInline: Boolean = true
+      // Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+      playsInline: true,
+    });
+  }
 
-			// @option playsInline: Boolean = true
-			// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
-			playsInline: true
-		});
-	}
+  _initImage() {
+    const wasElementSupplied = this._url.tagName === "VIDEO";
+    const vid = (this._image = wasElementSupplied
+      ? this._url
+      : DomUtil.create("video"));
 
-	_initImage() {
-		const wasElementSupplied = this._url.tagName === 'VIDEO';
-		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
+    vid.classList.add("leaflet-image-layer");
+    if (this._zoomAnimated) {
+      vid.classList.add("leaflet-zoom-animated");
+    }
+    if (this.options.className) {
+      vid.classList.add(...Util.splitWords(this.options.className));
+    }
 
-		vid.classList.add('leaflet-image-layer');
-		if (this._zoomAnimated) { vid.classList.add('leaflet-zoom-animated'); }
-		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
+    DomEvent.on(vid, "pointerdown", (e) => {
+      if (vid.controls) {
+        // Prevent the map from moving when the video or the seekbar is moved
+        DomEvent.stopPropagation(e);
+      }
+    });
 
-		DomEvent.on(vid, 'pointerdown', (e) => {
-			if (vid.controls) {
-				// Prevent the map from moving when the video or the seekbar is moved
-				DomEvent.stopPropagation(e);
-			}
-		});
+    // @event load: Event
+    // Fired when the video has finished loading the first frame
+    vid.onloadeddata = this.fire.bind(this, "load");
 
-		// @event load: Event
-		// Fired when the video has finished loading the first frame
-		vid.onloadeddata = this.fire.bind(this, 'load');
+    if (wasElementSupplied) {
+      const sourceElements = vid.getElementsByTagName("source");
+      const sources = sourceElements.map((e) => e.src);
+      this._url = sourceElements.length > 0 ? sources : [vid.src];
+      return;
+    }
 
-		if (wasElementSupplied) {
-			const sourceElements = vid.getElementsByTagName('source');
-			const sources = sourceElements.map(e => e.src);
-			this._url = (sourceElements.length > 0) ? sources : [vid.src];
-			return;
-		}
+    if (!Array.isArray(this._url)) {
+      this._url = [this._url];
+    }
 
-		if (!Array.isArray(this._url)) { this._url = [this._url]; }
+    if (
+      !this.options.keepAspectRatio &&
+      Object.hasOwn(vid.style, "objectFit")
+    ) {
+      vid.style["objectFit"] = "fill";
+    }
+    vid.autoplay = !!this.options.autoplay;
+    vid.controls = !!this.options.controls;
+    vid.loop = !!this.options.loop;
+    vid.muted = !!this.options.muted;
+    vid.playsInline = !!this.options.playsInline;
+    for (const url of this._url) {
+      const source = DomUtil.create("source");
+      source.src = url;
+      vid.appendChild(source);
+    }
+  }
 
-		if (!this.options.keepAspectRatio && Object.hasOwn(vid.style, 'objectFit')) {
-			vid.style['objectFit'] = 'fill';
-		}
-		vid.autoplay = !!this.options.autoplay;
-		vid.controls = !!this.options.controls;
-		vid.loop = !!this.options.loop;
-		vid.muted = !!this.options.muted;
-		vid.playsInline = !!this.options.playsInline;
-		for (const url of this._url) {
-			const source = DomUtil.create('source');
-			source.src = url;
-			vid.appendChild(source);
-		}
-	}
-
-	// @method getElement(): HTMLVideoElement
-	// Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
-	// used by this overlay.
+  // @method getElement(): HTMLVideoElement
+  // Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
+  // used by this overlay.
 }

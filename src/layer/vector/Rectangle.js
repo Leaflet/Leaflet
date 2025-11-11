@@ -1,5 +1,5 @@
-import {Polygon} from './Polygon.js';
-import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import { Polygon } from "./Polygon.js";
+import { LatLngBounds } from "../../geo/LatLngBounds.js";
 
 /*
  * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
@@ -28,23 +28,23 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export class Rectangle extends Polygon {
-	initialize(latLngBounds, options) {
-		super.initialize(this._boundsToLatLngs(latLngBounds), options);
-	}
+  initialize(latLngBounds, options) {
+    super.initialize(this._boundsToLatLngs(latLngBounds), options);
+  }
 
-	// @method setBounds(latLngBounds: LatLngBounds): this
-	// Redraws the rectangle with the passed bounds.
-	setBounds(latLngBounds) {
-		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
-	}
+  // @method setBounds(latLngBounds: LatLngBounds): this
+  // Redraws the rectangle with the passed bounds.
+  setBounds(latLngBounds) {
+    return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+  }
 
-	_boundsToLatLngs(latLngBounds) {
-		latLngBounds = new LatLngBounds(latLngBounds);
-		return [
-			latLngBounds.getSouthWest(),
-			latLngBounds.getNorthWest(),
-			latLngBounds.getNorthEast(),
-			latLngBounds.getSouthEast()
-		];
-	}
+  _boundsToLatLngs(latLngBounds) {
+    latLngBounds = new LatLngBounds(latLngBounds);
+    return [
+      latLngBounds.getSouthWest(),
+      latLngBounds.getNorthWest(),
+      latLngBounds.getNorthEast(),
+      latLngBounds.getSouthEast(),
+    ];
+  }
 }

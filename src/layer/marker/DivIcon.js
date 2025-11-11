@@ -1,5 +1,5 @@
-import {Icon} from './Icon.js';
-import {Point} from '../../geometry/Point.js';
+import { Icon } from "./Icon.js";
+import { Point } from "../../geometry/Point.js";
 
 /*
  * @class DivIcon
@@ -22,50 +22,52 @@ import {Point} from '../../geometry/Point.js';
 // @constructor DivIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
 export class DivIcon extends Icon {
+  static {
+    this.setDefaultOptions({
+      // @section
+      // @aka DivIcon options
+      iconSize: [12, 12], // also can be set through CSS
 
-	static {
-		this.setDefaultOptions({
-			// @section
-			// @aka DivIcon options
-			iconSize: [12, 12], // also can be set through CSS
+      // iconAnchor: (Point),
+      // popupAnchor: (Point),
 
-			// iconAnchor: (Point),
-			// popupAnchor: (Point),
+      // @option html: String|HTMLElement = ''
+      // Custom HTML code to put inside the div element, empty by default. Alternatively,
+      // an instance of `HTMLElement`.
+      html: false,
 
-			// @option html: String|HTMLElement = ''
-			// Custom HTML code to put inside the div element, empty by default. Alternatively,
-			// an instance of `HTMLElement`.
-			html: false,
+      // @option bgPos: Point = [0, 0]
+      // Optional relative position of the background, in pixels
+      bgPos: null,
 
-			// @option bgPos: Point = [0, 0]
-			// Optional relative position of the background, in pixels
-			bgPos: null,
+      className: "leaflet-div-icon",
+    });
+  }
 
-			className: 'leaflet-div-icon'
-		});
-	}
+  createIcon(oldIcon) {
+    const div =
+        oldIcon && oldIcon.tagName === "DIV"
+          ? oldIcon
+          : document.createElement("div"),
+      options = this.options;
 
-	createIcon(oldIcon) {
-		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
-		options = this.options;
+    if (options.html instanceof Element) {
+      div.replaceChildren();
+      div.appendChild(options.html);
+    } else {
+      div.innerHTML = options.html !== false ? options.html : "";
+    }
 
-		if (options.html instanceof Element) {
-			div.replaceChildren();
-			div.appendChild(options.html);
-		} else {
-			div.innerHTML = options.html !== false ? options.html : '';
-		}
+    if (options.bgPos) {
+      const bgPos = new Point(options.bgPos);
+      div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
+    }
+    this._setIconStyles(div, "icon");
 
-		if (options.bgPos) {
-			const bgPos = new Point(options.bgPos);
-			div.style.backgroundPosition = `${-bgPos.x}px ${-bgPos.y}px`;
-		}
-		this._setIconStyles(div, 'icon');
+    return div;
+  }
 
-		return div;
-	}
-
-	createShadow() {
-		return null;
-	}
+  createShadow() {
+    return null;
+  }
 }

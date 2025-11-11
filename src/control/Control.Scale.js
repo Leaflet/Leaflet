@@ -1,6 +1,5 @@
-
-import {Control} from './Control.js';
-import * as DomUtil from '../dom/DomUtil.js';
+import { Control } from "./Control.js";
+import * as DomUtil from "../dom/DomUtil.js";
 
 /*
  * @class Control.Scale
@@ -18,116 +17,116 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor Control.Scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
 export class Scale extends Control {
+  static {
+    // @section
+    // @aka Control.Scale options
+    this.setDefaultOptions({
+      // @option position: String = 'bottomleft'
+      // The position of the control (one of the map corners). Possible values are `'topleft'`,
+      // `'topright'`, `'bottomleft'` or `'bottomright'`
+      position: "bottomleft",
 
-	static {
-		// @section
-		// @aka Control.Scale options
-		this.setDefaultOptions({
-			// @option position: String = 'bottomleft'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'bottomleft',
+      // @option maxWidth: Number = 100
+      // Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+      maxWidth: 100,
 
-			// @option maxWidth: Number = 100
-			// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-			maxWidth: 100,
+      // @option metric: Boolean = True
+      // Whether to show the metric scale line (m/km).
+      metric: true,
 
-			// @option metric: Boolean = True
-			// Whether to show the metric scale line (m/km).
-			metric: true,
+      // @option imperial: Boolean = True
+      // Whether to show the imperial scale line (mi/ft).
+      imperial: true,
 
-			// @option imperial: Boolean = True
-			// Whether to show the imperial scale line (mi/ft).
-			imperial: true,
+      // @option updateWhenIdle: Boolean = false
+      // If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+      updateWhenIdle: false,
+    });
+  }
 
-			// @option updateWhenIdle: Boolean = false
-			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-			updateWhenIdle: false
-		});
-	}
+  onAdd(map) {
+    const className = "leaflet-control-scale",
+      container = DomUtil.create("div", className),
+      options = this.options;
 
-	onAdd(map) {
-		const className = 'leaflet-control-scale',
-		container = DomUtil.create('div', className),
-		options = this.options;
+    this._addScales(options, `${className}-line`, container);
 
-		this._addScales(options, `${className}-line`, container);
+    map.on(options.updateWhenIdle ? "moveend" : "move", this._update, this);
+    map.whenReady(this._update, this);
 
-		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-		map.whenReady(this._update, this);
+    return container;
+  }
 
-		return container;
-	}
+  onRemove(map) {
+    map.off(
+      this.options.updateWhenIdle ? "moveend" : "move",
+      this._update,
+      this,
+    );
+  }
 
-	onRemove(map) {
-		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-	}
+  _addScales(options, className, container) {
+    if (options.metric) {
+      this._mScale = DomUtil.create("div", className, container);
+    }
+    if (options.imperial) {
+      this._iScale = DomUtil.create("div", className, container);
+    }
+  }
 
-	_addScales(options, className, container) {
-		if (options.metric) {
-			this._mScale = DomUtil.create('div', className, container);
-		}
-		if (options.imperial) {
-			this._iScale = DomUtil.create('div', className, container);
-		}
-	}
+  _update() {
+    const map = this._map,
+      y = map.getSize().y / 2;
 
-	_update() {
-		const map = this._map,
-		y = map.getSize().y / 2;
+    const maxMeters = map.distance(
+      map.containerPointToLatLng([0, y]),
+      map.containerPointToLatLng([this.options.maxWidth, y]),
+    );
 
-		const maxMeters = map.distance(
-			map.containerPointToLatLng([0, y]),
-			map.containerPointToLatLng([this.options.maxWidth, y]));
+    this._updateScales(maxMeters);
+  }
 
-		this._updateScales(maxMeters);
-	}
+  _updateScales(maxMeters) {
+    if (this.options.metric && maxMeters) {
+      this._updateMetric(maxMeters);
+    }
+    if (this.options.imperial && maxMeters) {
+      this._updateImperial(maxMeters);
+    }
+  }
 
-	_updateScales(maxMeters) {
-		if (this.options.metric && maxMeters) {
-			this._updateMetric(maxMeters);
-		}
-		if (this.options.imperial && maxMeters) {
-			this._updateImperial(maxMeters);
-		}
-	}
+  _updateMetric(maxMeters) {
+    const meters = this._getRoundNum(maxMeters),
+      label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
-	_updateMetric(maxMeters) {
-		const meters = this._getRoundNum(maxMeters),
-		label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
+    this._updateScale(this._mScale, label, meters / maxMeters);
+  }
 
-		this._updateScale(this._mScale, label, meters / maxMeters);
-	}
+  _updateImperial(maxMeters) {
+    const maxFeet = maxMeters * 3.2808399;
+    let maxMiles, miles, feet;
 
-	_updateImperial(maxMeters) {
-		const maxFeet = maxMeters * 3.2808399;
-		let maxMiles, miles, feet;
+    if (maxFeet > 5280) {
+      maxMiles = maxFeet / 5280;
+      miles = this._getRoundNum(maxMiles);
+      this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
+    } else {
+      feet = this._getRoundNum(maxFeet);
+      this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
+    }
+  }
 
-		if (maxFeet > 5280) {
-			maxMiles = maxFeet / 5280;
-			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
+  _updateScale(scale, text, ratio) {
+    scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
+    scale.innerHTML = text;
+  }
 
-		} else {
-			feet = this._getRoundNum(maxFeet);
-			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
-		}
-	}
+  _getRoundNum(num) {
+    const pow10 = 10 ** (`${Math.floor(num)}`.length - 1);
+    let d = num / pow10;
 
-	_updateScale(scale, text, ratio) {
-		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
-		scale.innerHTML = text;
-	}
+    d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1;
 
-	_getRoundNum(num) {
-		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
-		let d = num / pow10;
-
-		d = d >= 10 ? 10 :
-			d >= 5 ? 5 :
-			d >= 3 ? 3 :
-			d >= 2 ? 2 : 1;
-
-		return pow10 * d;
-	}
+    return pow10 * d;
+  }
 }

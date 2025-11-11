@@ -1,6 +1,6 @@
-import {Earth} from './CRS.Earth.js';
-import {SphericalMercator} from '../projection/Projection.SphericalMercator.js';
-import {Transformation} from '../../geometry/Transformation.js';
+import { Earth } from "./CRS.Earth.js";
+import { SphericalMercator } from "../projection/Projection.SphericalMercator.js";
+import { Transformation } from "../../geometry/Transformation.js";
 
 /*
  * @namespace CRS
@@ -12,15 +12,15 @@ import {Transformation} from '../../geometry/Transformation.js';
  */
 
 export class EPSG3857 extends Earth {
-	static code = 'EPSG:3857';
-	static projection = SphericalMercator;
+  static code = "EPSG:3857";
+  static projection = SphericalMercator;
 
-	static transformation = (() => {
-		const scale = 0.5 / (Math.PI * SphericalMercator.R);
-		return new Transformation(scale, 0.5, -scale, 0.5);
-	})();
+  static transformation = (() => {
+    const scale = 0.5 / (Math.PI * SphericalMercator.R);
+    return new Transformation(scale, 0.5, -scale, 0.5);
+  })();
 }
 
 export class EPSG900913 extends EPSG3857 {
-	static code = 'EPSG:900913';
+  static code = "EPSG:900913";
 }

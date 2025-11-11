@@ -1,11 +1,14 @@
-import {Point} from '../geometry/Point.js';
-import * as Util from '../core/Util.js';
-import Browser from '../core/Browser.js';
-import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
-import {getScale} from './DomUtil.js';
+import { Point } from "../geometry/Point.js";
+import * as Util from "../core/Util.js";
+import Browser from "../core/Browser.js";
+import {
+  addDoubleTapListener,
+  removeDoubleTapListener,
+} from "./DomEvent.DoubleTap.js";
+import { getScale } from "./DomUtil.js";
 
-import * as PointerEvents from './DomEvent.PointerEvents.js';
-export {PointerEvents};
+import * as PointerEvents from "./DomEvent.PointerEvents.js";
+export { PointerEvents };
 
 /*
  * @namespace DomEvent
@@ -24,21 +27,20 @@ export {PointerEvents};
 // @function on(el: HTMLElement, eventMap: Object, context?: Object): this
 // Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
 export function on(obj, types, fn, context) {
+  if (types && typeof types === "object") {
+    for (const [type, listener] of Object.entries(types)) {
+      addOne(obj, type, listener, fn);
+    }
+  } else {
+    for (const type of Util.splitWords(types)) {
+      addOne(obj, type, fn, context);
+    }
+  }
 
-	if (types && typeof types === 'object') {
-		for (const [type, listener] of Object.entries(types)) {
-			addOne(obj, type, listener, fn);
-		}
-	} else {
-		for (const type of Util.splitWords(types)) {
-			addOne(obj, type, fn, context);
-		}
-	}
-
-	return this;
+  return this;
 }
 
-const eventsKey = '_leaflet_events';
+const eventsKey = "_leaflet_events";
 
 // @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
 // Removes a previously added listener function.
@@ -57,103 +59,102 @@ const eventsKey = '_leaflet_events';
 // @function off(el: HTMLElement): this
 // Removes all previously added listeners from given HTMLElement
 export function off(obj, types, fn, context) {
+  if (arguments.length === 1) {
+    batchRemove(obj);
+    delete obj[eventsKey];
+  } else if (types && typeof types === "object") {
+    for (const [type, listener] of Object.entries(types)) {
+      removeOne(obj, type, listener, fn);
+    }
+  } else {
+    types = Util.splitWords(types);
 
-	if (arguments.length === 1) {
-		batchRemove(obj);
-		delete obj[eventsKey];
+    if (arguments.length === 2) {
+      batchRemove(obj, (type) => types.includes(type));
+    } else {
+      for (const type of types) {
+        removeOne(obj, type, fn, context);
+      }
+    }
+  }
 
-	} else if (types && typeof types === 'object') {
-		for (const [type, listener] of Object.entries(types)) {
-			removeOne(obj, type, listener, fn);
-		}
-
-	} else {
-		types = Util.splitWords(types);
-
-		if (arguments.length === 2) {
-			batchRemove(obj, type => types.includes(type));
-		} else {
-			for (const type of types) {
-				removeOne(obj, type, fn, context);
-			}
-		}
-	}
-
-	return this;
+  return this;
 }
 
 function batchRemove(obj, filterFn) {
-	for (const id of Object.keys(obj[eventsKey] ?? {})) {
-		const type = id.split(/\d/)[0];
-		if (!filterFn || filterFn(type)) {
-			removeOne(obj, type, null, null, id);
-		}
-	}
+  for (const id of Object.keys(obj[eventsKey] ?? {})) {
+    const type = id.split(/\d/)[0];
+    if (!filterFn || filterFn(type)) {
+      removeOne(obj, type, null, null, id);
+    }
+  }
 }
 
 const pointerSubst = {
-	pointerenter: 'pointerover',
-	pointerleave: 'pointerout',
-	wheel: typeof window === 'undefined' ? false : !('onwheel' in window) && 'mousewheel'
+  pointerenter: "pointerover",
+  pointerleave: "pointerout",
+  wheel:
+    typeof window === "undefined"
+      ? false
+      : !("onwheel" in window) && "mousewheel",
 };
 
 function addOne(obj, type, fn, context) {
-	const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
+  const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : "");
 
-	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
+  if (obj[eventsKey] && obj[eventsKey][id]) {
+    return this;
+  }
 
-	let handler = function (e) {
-		return fn.call(context || obj, e || window.event);
-	};
+  let handler = function (e) {
+    return fn.call(context || obj, e || window.event);
+  };
 
-	const originalHandler = handler;
+  const originalHandler = handler;
 
-	if (Browser.touch && (type === 'dblclick')) {
-		handler = addDoubleTapListener(obj, handler);
+  if (Browser.touch && type === "dblclick") {
+    handler = addDoubleTapListener(obj, handler);
+  } else if ("addEventListener" in obj) {
+    if (type === "wheel" || type === "mousewheel") {
+      obj.addEventListener(pointerSubst[type] || type, handler, {
+        passive: false,
+      });
+    } else if (type === "pointerenter" || type === "pointerleave") {
+      handler = function (e) {
+        e ??= window.event;
+        if (isExternalTarget(obj, e)) {
+          originalHandler(e);
+        }
+      };
+      obj.addEventListener(pointerSubst[type], handler, false);
+    } else {
+      obj.addEventListener(type, originalHandler, false);
+    }
+  } else {
+    obj.attachEvent(`on${type}`, handler);
+  }
 
-	} else if ('addEventListener' in obj) {
-
-		if (type === 'wheel' ||  type === 'mousewheel') {
-			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
-		} else if (type === 'pointerenter' || type === 'pointerleave') {
-			handler = function (e) {
-				e ??= window.event;
-				if (isExternalTarget(obj, e)) {
-					originalHandler(e);
-				}
-			};
-			obj.addEventListener(pointerSubst[type], handler, false);
-
-		} else {
-			obj.addEventListener(type, originalHandler, false);
-		}
-
-	} else {
-		obj.attachEvent(`on${type}`, handler);
-	}
-
-	obj[eventsKey] ??= {};
-	obj[eventsKey][id] = handler;
+  obj[eventsKey] ??= {};
+  obj[eventsKey][id] = handler;
 }
 
 function removeOne(obj, type, fn, context, id) {
-	id ??= type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
-	const handler = obj[eventsKey] && obj[eventsKey][id];
+  id ??= type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : "");
+  const handler = obj[eventsKey] && obj[eventsKey][id];
 
-	if (!handler) { return this; }
+  if (!handler) {
+    return this;
+  }
 
-	if (Browser.touch && (type === 'dblclick')) {
-		removeDoubleTapListener(obj, handler);
+  if (Browser.touch && type === "dblclick") {
+    removeDoubleTapListener(obj, handler);
+  } else if ("removeEventListener" in obj) {
+    obj.removeEventListener(pointerSubst[type] || type, handler, false);
+  } else {
+    obj.detachEvent(`on${type}`, handler);
+  }
 
-	} else if ('removeEventListener' in obj) {
-
-		obj.removeEventListener(pointerSubst[type] || type, handler, false);
-
-	} else {
-		obj.detachEvent(`on${type}`, handler);
-	}
-
-	obj[eventsKey][id] = null;
+  obj[eventsKey][id] = null;
 }
 
 // @function stopPropagation(ev: DOMEvent): this
@@ -162,32 +163,32 @@ function removeOne(obj, type, fn, context, id) {
 // DomEvent.on(div, 'click', DomEvent.stopPropagation);
 // ```
 export function stopPropagation(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  } else if (e.originalEvent) {
+    // In case of Leaflet event.
+    e.originalEvent._stopped = true;
+  } else {
+    e.cancelBubble = true;
+  }
 
-	if (e.stopPropagation) {
-		e.stopPropagation();
-	} else if (e.originalEvent) {  // In case of Leaflet event.
-		e.originalEvent._stopped = true;
-	} else {
-		e.cancelBubble = true;
-	}
-
-	return this;
+  return this;
 }
 
 // @function disableScrollPropagation(el: HTMLElement): this
 // Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
 export function disableScrollPropagation(el) {
-	addOne(el, 'wheel', stopPropagation);
-	return this;
+  addOne(el, "wheel", stopPropagation);
+  return this;
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
 // Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`
 // and `'pointerdown'` events (plus browser variants).
 export function disableClickPropagation(el) {
-	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
-	el['_leaflet_disable_click'] = true;
-	return this;
+  on(el, "pointerdown dblclick contextmenu", stopPropagation);
+  el["_leaflet_disable_click"] = true;
+  return this;
 }
 
 // @function preventDefault(ev: DOMEvent): this
@@ -196,54 +197,57 @@ export function disableClickPropagation(el) {
 // with page reload when a `<form>` is submitted).
 // Use it inside listener functions.
 export function preventDefault(e) {
-	e.preventDefault?.();
-	return this;
+  e.preventDefault?.();
+  return this;
 }
 
 // @function stop(ev: DOMEvent): this
 // Does `stopPropagation` and `preventDefault` at the same time.
 export function stop(e) {
-	preventDefault(e);
-	stopPropagation(e);
-	return this;
+  preventDefault(e);
+  stopPropagation(e);
+  return this;
 }
 
 // @function getPropagationPath(ev: DOMEvent): Array
 // Returns an array containing the `HTMLElement`s that the given DOM event
 // should propagate to (if not stopped).
 export function getPropagationPath(ev) {
-	return ev.composedPath();
+  return ev.composedPath();
 }
-
 
 // @function getPointerPosition(ev: DOMEvent, container?: HTMLElement): Point
 // Gets normalized pointer position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
 export function getPointerPosition(e, container) {
-	if (!container) {
-		return new Point(e.clientX, e.clientY);
-	}
+  if (!container) {
+    return new Point(e.clientX, e.clientY);
+  }
 
-	const scale = getScale(container),
-	offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
+  const scale = getScale(container),
+    offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
 
-	return new Point(
-		// offset.left/top values are in page scale (like clientX/Y),
-		// whereas clientLeft/Top (border width) values are the original values (before CSS scale applies).
-		(e.clientX - offset.left) / scale.x - container.clientLeft,
-		(e.clientY - offset.top) / scale.y - container.clientTop
-	);
+  return new Point(
+    // offset.left/top values are in page scale (like clientX/Y),
+    // whereas clientLeft/Top (border width) values are the original values (before CSS scale applies).
+    (e.clientX - offset.left) / scale.x - container.clientLeft,
+    (e.clientY - offset.top) / scale.y - container.clientTop,
+  );
 }
 
 // @function getWheelPxFactor(): Number
 // Gets the wheel pixel factor based on the devicePixelRatio
 export function getWheelPxFactor() {
-	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
-	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-	const ratio = window.devicePixelRatio;
-	return Browser.linux && Browser.chrome ? ratio :
-		Browser.mac ? ratio * 3 :
-		ratio > 0 ? 2 * ratio : 1;
+  // We need double the scroll pixels (see #7403 and #4538) for all Browsers
+  // except OSX (Mac) -> 3x, Chrome running on Linux 1x
+  const ratio = window.devicePixelRatio;
+  return Browser.linux && Browser.chrome
+    ? ratio
+    : Browser.mac
+      ? ratio * 3
+      : ratio > 0
+        ? 2 * ratio
+        : 1;
 }
 
 // @function getWheelDelta(ev: DOMEvent): Number
@@ -252,26 +256,31 @@ export function getWheelPxFactor() {
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
-	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
-		(e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
-		(e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
-		(e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
-		0;
+  return e.deltaY && e.deltaMode === 0
+    ? -e.deltaY / getWheelPxFactor() // Pixels
+    : e.deltaY && e.deltaMode === 1
+      ? -e.deltaY * 20 // Lines
+      : e.deltaY && e.deltaMode === 2
+        ? -e.deltaY * 60 // Pages
+        : e.deltaX || e.deltaZ
+          ? 0 // Skip horizontal/depth wheel events
+          : 0;
 }
 
 // check if element really left/entered the event target (for pointerenter/pointerleave)
 export function isExternalTarget(el, e) {
+  let related = e.relatedTarget;
 
-	let related = e.relatedTarget;
+  if (!related) {
+    return true;
+  }
 
-	if (!related) { return true; }
-
-	try {
-		while (related && (related !== el)) {
-			related = related.parentNode;
-		}
-	} catch (err) {
-		return false;
-	}
-	return (related !== el);
+  try {
+    while (related && related !== el) {
+      related = related.parentNode;
+    }
+  } catch (err) {
+    return false;
+  }
+  return related !== el;
 }
