@@ -23,10 +23,11 @@ export class Earth extends CRS {
 		const rad = Math.PI / 180,
 		lat1 = latlng1.lat * rad,
 		lat2 = latlng2.lat * rad,
-		sinDLat = Math.sin((latlng2.lat - latlng1.lat) * rad / 2),
-		sinDLon = Math.sin((latlng2.lng - latlng1.lng) * rad / 2),
-		a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
-		c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		return this.R * c;
+		dLng = (latlng1.lng - latlng2.lng) * rad,
+		sinDLatHalfSquared = Math.sin((lat1 - lat2) / 2) ** 2,
+		sinDLngHalfSquared = Math.sin(dLng / 2) ** 2
+		chordHalfSquared = sinDLatHalfSquared + sinDLngHalfSquared * Math.cos(lat1) * Math.cos(lat2),
+		return this.R * chordHalfSquared >= 1 ? Math.PI : 2 * Math.asin(Math.sqrt(chordHalfSquared))
+		// asin(x) = atan2(x, sqrt(1-x**2)
 	}
 }
