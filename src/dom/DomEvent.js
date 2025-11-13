@@ -238,11 +238,10 @@ export function getPointerPosition(e, container) {
 // @function getWheelPxFactor(): Number
 // Gets the wheel pixel factor based on the devicePixelRatio
 export function getWheelPxFactor() {
-	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
-	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
+	// We need double the scroll pixels (see #8859, #7403 and #4538) for all Browsers
+	// except OSX (Mac) -> 3x
 	const ratio = window.devicePixelRatio;
-	return Browser.linux && Browser.chrome ? ratio :
-		Browser.mac ? ratio * 3 :
+	return Browser.mac ? ratio * 3 :
 		ratio > 0 ? 2 * ratio : 1;
 }
 
