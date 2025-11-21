@@ -10,7 +10,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * (zoom to a selected bounding box), enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @option boxZoom: Boolean = true

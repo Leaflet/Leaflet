@@ -17,10 +17,10 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, Map, FeatureGroup, Polyline} from 'leaflet';
+			import {TileLayer, LeafletMap, FeatureGroup, Polyline} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				minZoom: 1,
 				maxZoom: 19,
 				center: [51.505, -0.09],

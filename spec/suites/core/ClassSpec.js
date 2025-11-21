@@ -35,6 +35,46 @@ describe('Class', () => {
 			expect(method.called).to.be.true;
 		});
 
+		it('calls the correct parent initialize function', () => {
+			const initialize = sinon.spy();
+			const initializeDraw = sinon.spy();
+			const initializeEdit = sinon.spy();
+			const Toolbar = Class.extend({
+				initialize() {
+					initialize();
+				}
+			});
+			Toolbar.include(Evented.prototype);
+			const DrawToolbar = Toolbar.extend({
+				initialize(options) {
+					initializeDraw();
+					Toolbar.prototype.initialize.call(this, options);
+				}
+			});
+			const EditToolbar = Toolbar.extend({
+				initialize(options) {
+					initializeEdit();
+					Toolbar.prototype.initialize.call(this, options);
+				}
+			});
+
+			new Toolbar();
+			sinon.assert.calledOnce(initialize);
+			sinon.assert.notCalled(initializeDraw);
+			sinon.assert.notCalled(initializeEdit);
+			initialize.resetHistory();
+
+			new DrawToolbar();
+			sinon.assert.callOrder(initializeDraw, initialize);
+			sinon.assert.notCalled(initializeEdit);
+			initialize.resetHistory();
+			initializeDraw.resetHistory();
+
+			new EditToolbar();
+			sinon.assert.callOrder(initializeEdit, initialize);
+			sinon.assert.notCalled(initializeDraw);
+		});
+
 		it('inherits parent classes\' constructor & properties', () => {
 			const Klass2 = Klass.extend({baz: 2});
 

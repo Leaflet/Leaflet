@@ -143,13 +143,13 @@ export class Popup extends DivOverlay {
 		}
 		map._popup = this;
 
-		return DivOverlay.prototype.openOn.call(this, map);
+		return super.openOn(map);
 	}
 
 	onAdd(map) {
-		DivOverlay.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event popupopen: PopupEvent
 		// Fired when a popup is opened in the map
@@ -170,9 +170,9 @@ export class Popup extends DivOverlay {
 	}
 
 	onRemove(map) {
-		DivOverlay.prototype.onRemove.call(this, map);
+		super.onRemove(map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event popupclose: PopupEvent
 		// Fired when a popup in the map is closed
@@ -191,7 +191,7 @@ export class Popup extends DivOverlay {
 	}
 
 	getEvents() {
-		const events = DivOverlay.prototype.getEvents.call(this);
+		const events = super.getEvents();
 
 		if (this.options.closeOnClick ?? this._map.options.closePopupOnClick) {
 			events.preclick = this.close;
@@ -227,7 +227,7 @@ export class Popup extends DivOverlay {
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', (ev) => {
-				DomEvent.preventDefault(ev);
+				ev.preventDefault();
 				this.close();
 			});
 		}
@@ -316,7 +316,7 @@ export class Popup extends DivOverlay {
 			dy = containerPos.y - paddingTL.y;
 		}
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Popup events
 		// @event autopanstart: Event
 		// Fired when the map starts autopanning when opening a popup.
@@ -340,7 +340,7 @@ export class Popup extends DivOverlay {
 }
 
 
-/* @namespace Map
+/* @namespace LeafletMap
  * @section Interaction Options
  * @option closePopupOnClick: Boolean = true
  * Set it to `false` if you don't want popups to close when user clicks the map.
@@ -350,7 +350,7 @@ Map.mergeOptions({
 });
 
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Methods for Layers and Controls
 Map.include({
 	// @method openPopup(popup: Popup): this

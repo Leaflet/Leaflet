@@ -17,14 +17,14 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, Map, Marker, LatLng, Control} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker, LatLng, Control} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 			const osm2 = new TileLayer(osmUrl, {attribution: 'Hello world'});
 
-			const map = new Map('map').addLayer(osm).setView(new LatLng(50.5, 30.512), 15);
+			const map = new LeafletMap('map').addLayer(osm).setView(new LatLng(50.5, 30.512), 15);
 
 			const marker = new Marker(new LatLng(50.5, 30.505));
 			map.addLayer(marker);

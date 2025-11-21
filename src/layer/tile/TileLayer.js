@@ -278,7 +278,7 @@ export class TileLayer extends GridLayer {
 		// Cancels any pending http requests associated with the tile
 		tile.el.setAttribute('src', Util.emptyImageUrl);
 
-		return GridLayer.prototype._removeTile.call(this, key);
+		return super._removeTile(key);
 	}
 
 	_tileReady(coords, err, tile) {
@@ -286,10 +286,10 @@ export class TileLayer extends GridLayer {
 			return;
 		}
 
-		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+		return super._tileReady(coords, err, tile);
 	}
 
 	_clampZoom(zoom) {
-		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
+		return Math.round(super._clampZoom(zoom));
 	}
 }

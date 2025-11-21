@@ -18,9 +18,9 @@
 		<div id="map"></div>
 		<button id="populate">Populate with 10 markers</button>
 		<script type="module">
-			import {Map, TileLayer, GeoJSON, Marker} from 'leaflet';
+			import {LeafletMap, TileLayer, GeoJSON, Marker} from 'leaflet';
 
-			const map = new Map('map').setView([36.9, -95.4], 5);
+			const map = new LeafletMap('map').setView([36.9, -95.4], 5);
 
 			map.on('contextmenu', () => {
 				alert('The map has been right-clicked');

@@ -58,7 +58,7 @@ And then, include that file when showing a map:
 	<script src='leaflet.js'>
 	<script src='L.KittenLayer.js'>
 	<script>
-		const map = new Map('map-div-id');
+		const map = new LeafletMap('map-div-id');
 		new TileLayer.Kitten().addTo(map);
 	</script>
 	…

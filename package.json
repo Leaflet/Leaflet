@@ -4,11 +4,12 @@
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
+    "@eslint/css": "^0.14.1",
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
     "@rollup/plugin-json": "^6.1.0",
     "bundlemon": "^3.1.0",
-    "chai": "^6.0.1",
-    "eslint": "^9.35.0",
+    "chai": "^6.2.1",
+    "eslint": "^9.39.1",
     "eslint-config-mourner": "^4.1.0",
     "eslint-plugin-import-x": "^4.16.1",
     "http-server": "^14.1.1",
@@ -21,22 +22,21 @@
     "karma-safarinative-launcher": "^1.1.0",
     "karma-time-stats-reporter": "^0.1.0",
     "leafdoc": "^2.3.0",
-    "lint-staged": "^16.1.6",
-    "mocha": "^11.7.2",
+    "lint-staged": "^16.2.6",
+    "mocha": "^11.7.5",
     "prosthetic-hand": "^2.0.0",
-    "rollup": "^4.50.2",
+    "rollup": "^4.53.2",
     "rollup-plugin-git-version": "^0.3.1",
-    "simple-git": "^3.28.0",
+    "simple-git": "^3.30.0",
     "sinon": "^21.0.0",
-    "ssri": "^12.0.0",
+    "ssri": "^13.0.0",
     "uglify-js": "^3.19.3",
     "ui-event-simulator": "^2.0.0"
   },
   "type": "module",
   "exports": {
-    "./src/": "./src/",
-    "./dist/": "./dist/",
-    ".": "./dist/leaflet-src.js"
+    ".": "./dist/leaflet-src.js",
+    "./styles.css": "./dist/leaflet.css"
   },
   "style": "dist/leaflet.css",
   "files": [
@@ -58,7 +58,7 @@
     "watch": "rollup -w -c build/rollup-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
     "uglify-global": "uglifyjs dist/leaflet-global-src.js -c -m -o dist/leaflet-global.js --source-map filename=dist/leaflet-global.js.map --source-map content=dist/leaflet-global-src.js.map --source-map url=leaflet-global.js.map --comments",
-    "bundlemon": "bundlemon --subProject js --defaultCompression none && bundlemon --subProject js-gzip --defaultCompression gzip",
+    "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",
     "prepare": "husky",
     "version": "node ./build/version.js && git add ./src/Leaflet.js"

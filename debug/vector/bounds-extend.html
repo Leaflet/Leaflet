@@ -19,7 +19,7 @@
 		<button type="button" id="extendBounds">Extend the bounds of the center rectangle with the upper right rectangle</button>
 		<button type="button" id="extendLatLng">Extend the bounds of the center rectangle with the lower left marker</button>
 		<script type="module">
-			import {TileLayer, LatLngBounds, LatLng, Map, Rectangle, Marker} from 'leaflet';
+			import {TileLayer, LatLngBounds, LatLng, LeafletMap, Rectangle, Marker} from 'leaflet';
 
 			const bounds1 = new LatLngBounds(
 				new LatLng(54.559322, -5.767822),
@@ -34,7 +34,7 @@
 			let bounds3 = null;
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				layers: [osm],
 				center: bounds1.getCenter(),
 				zoom: 7

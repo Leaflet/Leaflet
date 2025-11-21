@@ -29,7 +29,7 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export class Rectangle extends Polygon {
 	initialize(latLngBounds, options) {
-		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
+		super.initialize(this._boundsToLatLngs(latLngBounds), options);
 	}
 
 	// @method setBounds(latLngBounds: LatLngBounds): this

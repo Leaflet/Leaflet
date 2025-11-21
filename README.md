@@ -25,7 +25,7 @@ Leaflet maintainers.
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
 
-Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 40 kB of gzipped JS plus 3.2 kB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,

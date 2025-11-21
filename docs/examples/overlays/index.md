@@ -27,7 +27,7 @@ const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-const map = new Map('map').setView([37.8, -96], 4);
+const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -97,7 +97,7 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-const map = new Map('map').setView([37.8, -96], 4);
+const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Circle, Map, CRS, Transformation} from 'leaflet';
+import {Circle, LeafletMap, CRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -7,7 +7,7 @@ describe('Circle', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		map.setView([0, 0], 4);
 		circle = new Circle([50, 30], {radius: 200}).addTo(map);
 	});
@@ -48,7 +48,7 @@ describe('Circle', () => {
 			class crs extends CRS.Simple {
 				static transformation = new Transformation(-1, 0, -1, 0);
 			}
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				crs
 			});
 			map.setView([0, 0], 4);

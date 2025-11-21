@@ -24,13 +24,13 @@
 			<button id="movePopup">Move last popup</button>
 		</div>
 		<script type="module">
-			import {TileLayer, Map, LatLng, Popup} from 'leaflet';
+			import {TileLayer, LeafletMap, LatLng, Popup} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18});
 
 			const center = [50.5, 30.51];
-			const map = new Map('map')
+			const map = new LeafletMap('map')
 				.setView(center, 15)
 				.addLayer(osm);
 

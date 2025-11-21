@@ -37,7 +37,7 @@ To understand how zoom levels work, first we need a basic introduction to <i>geo
 
 Let's have a look at a simple map locked at zoom zero:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		minZoom: 0,
 		maxZoom: 0
 	});
@@ -215,7 +215,7 @@ If you set a value of `0.1`, the valid zoom levels of the map will be `0`, `0.1`
 
 The following example uses a `zoomSnap` value of `0.25`:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		zoomSnap: 0.25
 	});
 
@@ -242,7 +242,7 @@ option controls how fast the mousewheel zooms in or out.
 
 Here is an example with `zoomSnap` set to zero:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		zoomDelta: 0.25,
 		zoomSnap: 0
 	});

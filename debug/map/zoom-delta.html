@@ -53,7 +53,7 @@
 			<span id="zoom2"></span>
 		</div>		
 		<script type="module">
-			import {TileLayer, LatLng, Map} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap} from 'leaflet';
 
 			const sf = [37.77, -122.42];
 			const trd = [63.41, 10.41];
@@ -63,7 +63,7 @@
 			const osm2 = new TileLayer(osmUrl, {maxZoom: 18});
 			const center = new LatLng(63.41, 10.41);
 
-			const map1 = new Map('map1', {
+			const map1 = new LeafletMap('map1', {
 				center,
 				layers: [osm1],
 				zoom: 5,
@@ -72,7 +72,7 @@
 				wheelPxPerZoomLevel: 50
 			});
 
-			const map2 = new Map('map2', {
+			const map2 = new LeafletMap('map2', {
 				center,
 				layers: [osm2],
 				zoom: 5,

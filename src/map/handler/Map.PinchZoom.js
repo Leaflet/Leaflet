@@ -7,7 +7,7 @@ import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
  * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
@@ -61,7 +61,7 @@ export class PinchZoom extends Handler {
 		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
-		DomEvent.preventDefault(e);
+		e.preventDefault();
 	}
 
 	_onPointerMove(e) {
@@ -101,7 +101,7 @@ export class PinchZoom extends Handler {
 		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
-		DomEvent.preventDefault(e);
+		e.preventDefault();
 	}
 
 	_onPointerEnd() {
@@ -135,6 +135,7 @@ Map.addInitHook(function () {
 	this.touchZoom = this.pinchZoom;
 
 	if (this.options.touchZoom !== undefined) {
+		// To be removed in leaflet 3
 		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 		this.options.pinchZoom = this.options.touchZoom;
 		delete this.options.touchZoom;

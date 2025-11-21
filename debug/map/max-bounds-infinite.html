@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLngBounds, LatLng, Map} from 'leaflet';
+			import {TileLayer, LatLngBounds, LatLng, LeafletMap} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18});
@@ -26,7 +26,7 @@
 				new LatLng(61.2, Number.POSITIVE_INFINITY)
 			);
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: new LatLng(49.5, 30),
 				zoom: 7,
 				layers: [osm],

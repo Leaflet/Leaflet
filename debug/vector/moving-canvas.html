@@ -17,14 +17,14 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, Map, CircleMarker} from 'leaflet';
+			import {TileLayer, LeafletMap, CircleMarker} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				maxZoom: 19,
 				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 			});
 
-			const map = new Map('map', {preferCanvas: true})
+			const map = new LeafletMap('map', {preferCanvas: true})
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 

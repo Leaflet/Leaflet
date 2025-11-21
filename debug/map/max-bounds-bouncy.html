@@ -19,14 +19,14 @@
 		<div id="map1" style="float: left; width:45%; height: 80%;"></div>
 		<div id="map2" style="float: left; width:45%; height: 80%;"></div>
 		<script type="module">
-			import {TileLayer, LatLngBounds, LatLng, Map, Rectangle, Polyline} from 'leaflet';
+			import {TileLayer, LatLngBounds, LatLng, LeafletMap, Rectangle, Polyline} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm1 = new TileLayer(osmUrl, {maxZoom: 18});
 			const osm2 = new TileLayer(osmUrl, {maxZoom: 18});
 			const bounds = new LatLngBounds(new LatLng(49.5, -11.3), new LatLng(61.2, 2.5));
 
-			const map1 = new Map('map1', {
+			const map1 = new LeafletMap('map1', {
 				center: bounds.getCenter(),
 				zoom: 5,
 				layers: [osm1],
@@ -34,7 +34,7 @@
 				maxBoundsViscosity: 0.75
 			});
 
-			const map2 = new Map('map2', {
+			const map2 = new LeafletMap('map2', {
 				center: bounds.getCenter(),
 				zoom: 5,
 				layers: [osm2],

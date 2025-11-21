@@ -37,7 +37,7 @@ export class IconDefault extends Icon {
 			IconDefault.imagePath = this._detectIconPath();
 		}
 
-		const url = Icon.prototype._getIconUrl.call(this, name);
+		const url = super._getIconUrl(name);
 		if (!url) {
 			return null;
 		}
