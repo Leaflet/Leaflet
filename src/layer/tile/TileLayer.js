@@ -95,8 +95,8 @@ export class TileLayer extends GridLayer {
 		options = Util.setOptions(this, options);
 
 		// in case the attribution hasn't been specified, check for known hosts that require attribution
-		if (options.attribution === null && URL.canParse(url)) {
-			const urlHostname = new URL(url).hostname;
+		if (options.attribution === null) {
+			const urlHostname = new URL(url, location.href).hostname;
 
 			// check for Open Street Map hosts
 			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
