@@ -240,7 +240,7 @@ export function getPointerPosition(e, container) {
 export function getWheelPxFactor() {
 	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
 	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-	const ratio = window.devicePixelRatio;
+	const ratio = window.devicePixelRatio; // eslint-disable-line baseline-js/use-baseline
 	return Browser.linux && Browser.chrome ? ratio :
 		Browser.mac ? ratio * 3 :
 		ratio > 0 ? 2 * ratio : 1;

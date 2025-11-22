@@ -3,6 +3,7 @@ import css from '@eslint/css';
 import scriptTags from '@mapbox/eslint-plugin-script-tags';
 import importPlugin from 'eslint-plugin-import-x';
 import globals from 'globals';
+import baselineJs from 'eslint-plugin-baseline-js';
 
 export default [
 	...config.map(c => ({
@@ -79,6 +80,17 @@ export default [
 				]
 			}]
 		}
+	},
+	{
+		files: ['**/*.{js,ts,jsx,tsx}'],
+		plugins: {'baseline-js': baselineJs},
+		rules: {
+			'baseline-js/use-baseline': ['error', {
+				available: 'widely',
+				includeWebApis: {preset: 'auto'},
+				includeJsBuiltins: {preset: 'auto'},
+			}],
+		},
 	},
 	{
 		files: ['docs/examples/**', 'docs/plugins.md'],
