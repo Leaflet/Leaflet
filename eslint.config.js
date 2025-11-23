@@ -3,6 +3,7 @@ import css from '@eslint/css';
 import scriptTags from '@mapbox/eslint-plugin-script-tags';
 import importPlugin from 'eslint-plugin-import-x';
 import globals from 'globals';
+import baselineJs from 'eslint-plugin-baseline-js';
 
 export default [
 	...config.map(c => ({
@@ -79,6 +80,21 @@ export default [
 				]
 			}]
 		}
+	},
+	{
+		files: ['**/*.{js,ts,jsx,tsx}'],
+		plugins: {'baseline-js': baselineJs},
+		rules: {
+			'baseline-js/use-baseline': ['error', {
+				available: 'widely',
+				includeWebApis: {preset: 'auto', ignore: [
+					// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
+					// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
+					'devicepixelratio',
+				]},
+				includeJsBuiltins: {preset: 'auto'},
+			}],
+		},
 	},
 	{
 		files: ['docs/examples/**', 'docs/plugins.md'],
