@@ -87,7 +87,11 @@ export default [
 		rules: {
 			'baseline-js/use-baseline': ['error', {
 				available: 'widely',
-				includeWebApis: {preset: 'auto'},
+				includeWebApis: {preset: 'auto', ignore: [
+					// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
+					// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
+					'devicepixelratio',
+				]},
 				includeJsBuiltins: {preset: 'auto'},
 			}],
 		},

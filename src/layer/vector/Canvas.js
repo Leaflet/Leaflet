@@ -89,7 +89,7 @@ export class Canvas extends Renderer {
 
 	_resizeContainer() {
 		const size = super._resizeContainer();
-		const m = this._ctxScale = window.devicePixelRatio; // eslint-disable-line baseline-js/use-baseline
+		const m = this._ctxScale = window.devicePixelRatio;
 
 		// set canvas size (also clearing it); use double size on retina
 		this._container.width = m * size.x;
