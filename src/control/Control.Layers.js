@@ -3,6 +3,7 @@ import {Control} from './Control.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import {I18n} from '../core/I18n.js';
 
 /*
  * @class Control.Layers
@@ -224,7 +225,7 @@ export class Layers extends Control {
 
 		const link = this._layersLink = DomUtil.create('a', `${className}-toggle`, container);
 		link.href = '#';
-		link.title = 'Layers';
+		link.title = I18n.translate('Layers');
 		link.setAttribute('role', 'button');
 
 		DomEvent.on(link, {
