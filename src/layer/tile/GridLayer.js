@@ -873,7 +873,7 @@ export class GridLayer extends Layer {
 	}
 
 	_getTilePos(coords) {
-		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin);
+		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin).round();
 	}
 
 	_wrapCoords(coords) {
