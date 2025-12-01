@@ -11,7 +11,7 @@
     "chai": "^6.2.1",
     "eslint": "^9.39.1",
     "eslint-config-mourner": "^4.1.0",
-    "eslint-plugin-baseline-js": "^0.4.1",
+    "eslint-plugin-baseline-js": "^0.4.2",
     "eslint-plugin-import-x": "^4.16.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
