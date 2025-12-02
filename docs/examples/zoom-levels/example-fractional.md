@@ -33,7 +33,7 @@ title: Fractional Zoom Example
 
 	const zoomingInterval = setInterval(zoomCycle, 8000);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const container = DomUtil.create('div');
 			const gauge = DomUtil.create('div');
@@ -46,7 +46,7 @@ title: Fractional Zoom Example
 			container.appendChild(gauge);
 			return container;
 		}
-	});
+	}
 
 	const zoomViewerControl = (new ZoomViewer()).addTo(map);
 
