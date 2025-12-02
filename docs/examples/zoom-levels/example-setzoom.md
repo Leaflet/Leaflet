@@ -26,7 +26,7 @@ title: Zoom Control Example
 
 	}, 4000);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const gauge = DomUtil.create('div');
 			gauge.style.width = '200px';
@@ -37,7 +37,7 @@ title: Zoom Control Example
 			});
 			return gauge;
 		}
-	});
+	}
 
 	const zoomViewer = (new ZoomViewer()).addTo(map);
 

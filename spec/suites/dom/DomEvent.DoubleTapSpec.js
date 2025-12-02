@@ -97,11 +97,11 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		const spyCtrl = sinon.spy();
 		const ctrl = DomUtil.create('div');
 		DomEvent.disableClickPropagation(ctrl);
-		const MyControl = Control.extend({
+		class MyControl extends Control {
 			onAdd() {
 				return ctrl;
 			}
-		});
+		}
 		map.addControl(new MyControl());
 		DomEvent.on(ctrl, 'dblclick', spyCtrl);
 
@@ -119,14 +119,14 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		map.on('dblclick', spyMap);
 
 		let div;
-		const MyControl = Control.extend({
+		class MyControl extends Control {
 			onAdd() {
 				div = DomUtil.create('div');
 				div.innerHTML = '<input type="checkbox" id="input">' +
 					'<label for="input" style="background: #ffffff; width: 100px; height: 100px;display: block;">Click Me</label>';
 				return div;
 			}
-		});
+		}
 		map.addControl(new MyControl());
 		// click on the label
 		UIEventSimulator.fire('click', div.children[1], {detail: 1});

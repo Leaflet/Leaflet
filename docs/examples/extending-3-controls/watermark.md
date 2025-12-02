@@ -15,7 +15,7 @@ title: Watermark Control Example
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	Control.Watermark = Control.extend({
+	class WatermarkControl extends Control {
 		onAdd(map) {
 			const img = DomUtil.create('img');
 
@@ -23,14 +23,14 @@ title: Watermark Control Example
 			img.style.width = '200px';
 
 			return img;
-		},
+		}
 
 		onRemove(map) {
 			// Nothing to do here
 		}
-	});
+	}
 	
-	const watermarkControl = new Control.Watermark({position: 'bottomleft'}).addTo(map);
+	const watermarkControl = new WatermarkControl({position: 'bottomleft'}).addTo(map);
 
 	globalThis.L = L; // only for debugging in the developer console
 	globalThis.map = map; // only for debugging in the developer console

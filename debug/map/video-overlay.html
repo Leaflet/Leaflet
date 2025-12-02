@@ -43,7 +43,7 @@
 			overlay.on('dblclick', () => console.log('Double click on image.'));
 
 			overlay.on('load', () => {
-				const MyPauseControl = Control.extend({
+				class MyPauseControl extends Control {
 					onAdd() {
 						const button = DomUtil.create('button');
 						button.textContent = '⏸';
@@ -52,9 +52,9 @@
 						});
 						return button;
 					}
-				});
+				}
 
-				const MyPlayControl = Control.extend({
+				class MyPlayControl extends Control {
 					onAdd() {
 						const button = DomUtil.create('button');
 						button.textContent = '⏵';
@@ -63,7 +63,7 @@
 						});
 						return button;
 					}
-				});
+				}
 
 				new MyPauseControl().addTo(map);
 				new MyPlayControl().addTo(map);

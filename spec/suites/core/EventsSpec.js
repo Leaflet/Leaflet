@@ -419,11 +419,11 @@ describe('Events', () => {
 			spy2 = sinon.spy(),
 			spy3 = sinon.spy();
 
-			const Klass = Evented.extend({
-				on: spy1,
-				off: spy2,
-				fire: spy3
-			});
+			class Klass extends Evented {
+				on = spy1;
+				off = spy2;
+				fire = spy3;
+			}
 
 			const obj = new Klass();
 
