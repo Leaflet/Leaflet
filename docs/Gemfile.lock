@@ -289,7 +289,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
     uri (1.1.1)
-    webrick (1.9.1)
+    webrick (1.9.2)
 
 PLATFORMS
   aarch64-linux-gnu
