@@ -55,6 +55,27 @@ describe('Marker.Drag', () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
+		it('carries over altitude when dragging', (done) => {
+			const alt = 123321;
+			const marker = new MyMarker([0, 0, alt], {draggable: true}).addTo(map);
+
+			const start = new Point(300, 280);
+			const offset = new Point(56, 32);
+			const finish = start.add(offset);
+
+			const hand = new Hand({
+				timing: 'fastframe',
+				onStop() {
+					expect(marker.getLatLng().alt === alt).to.be.true;
+					done();
+				}
+			});
+			const toucher = hand.growFinger('mouse');
+
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+		});
+
 		describe('in CSS scaled container', () => {
 			const scale = new Point(2, 1.5);
 
