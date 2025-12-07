@@ -67,19 +67,19 @@
 			<div id="map6" class="map"></div>
 		</div>
 		<script type="module">
-			import {Map, TileLayer} from 'leaflet';
+			import {LeafletMap, TileLayer} from 'leaflet';
 
 			const mapopts = {
 				center: [35, -122],
 				zoom : 5
 			};
 
-			const map1 = new Map('map1', mapopts);
-			const map2 = new Map('map2', mapopts);
-			const map3 = new Map('map3', mapopts);
-			const map4 = new Map('map4', mapopts);
-			const map5 = new Map('map5', mapopts);
-			const map6 = new Map('map6', mapopts);
+			const map1 = new LeafletMap('map1', mapopts);
+			const map2 = new LeafletMap('map2', mapopts);
+			const map3 = new LeafletMap('map3', mapopts);
+			const map4 = new LeafletMap('map4', mapopts);
+			const map5 = new LeafletMap('map5', mapopts);
+			const map6 = new LeafletMap('map6', mapopts);
 
 			// CASE 1: no opacity set on any layers
 			// OSM Basemap

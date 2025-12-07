@@ -99,7 +99,7 @@ export class TileLayerWMS extends TileLayer {
 		const projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = this._crs.code;
 
-		TileLayer.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 	}
 
 	getTileUrl(coords) {
@@ -112,7 +112,7 @@ export class TileLayerWMS extends TileLayer {
 		bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 			[min.y, min.x, max.y, max.x] :
 			[min.x, min.y, max.x, max.y]).join(',');
-		const url = new URL(TileLayer.prototype.getTileUrl.call(this, coords));
+		const url = new URL(super.getTileUrl(coords));
 		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
 			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);
 		}

@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {GridLayer, Map, LatLng} from 'leaflet';
+			import {GridLayer, LeafletMap, LatLng} from 'leaflet';
 
 			const tiles = new GridLayer();
 
@@ -45,7 +45,7 @@
 				return tile;
 			};
 
-			new Map('map', {center: new LatLng(50.5, 30.51), zoom: 15, layers: [tiles]});
+			new LeafletMap('map', {center: new LatLng(50.5, 30.51), zoom: 15, layers: [tiles]});
 		</script>
 	</body>
 </html>

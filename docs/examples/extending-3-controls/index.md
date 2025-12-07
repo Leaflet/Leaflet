@@ -52,7 +52,7 @@ Our handler can now be enabled by running `map.tilt.enable()` and disabled by `m
 
 Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that options is `true`, so this will enable our handler by default:
 
-	const map = new Map('mapDiv', { tilt: true });
+	const map = new LeafletMap('mapDiv', { tilt: true });
 
 To see this example, you'll need a mobile browser which [supports the `deviceorientation` event](http://caniuse.com/#search=deviceorientation) - and even so, this event is particularly flaky and ill-specified, so beware.
 

@@ -89,8 +89,15 @@ export class Evented extends Class {
 		return this;
 	}
 
+	static __REMOVED_EVENTS = ['mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove'];
+
 	// attach listener (without syntactic sugar now)
 	_on(type, fn, context, _once) {
+		// To be removed in leaflet 3
+		if (Evented.__REMOVED_EVENTS.includes(type)) {
+			console.error(`The event ${type} has been removed. Use the PointerEvent variant instead.`);
+		}
+
 		if (typeof fn !== 'function') {
 			console.warn(`wrong listener type: ${typeof fn}`);
 			return;

@@ -26,10 +26,10 @@
 		</style>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Polygon, Marker, CircleMarker, DivIcon, FeatureGroup, Polyline} from 'leaflet';
+			import {LeafletMap, TileLayer, Polygon, Marker, CircleMarker, DivIcon, FeatureGroup, Polyline} from 'leaflet';
 
 			const center = [41.2058, 9.4307];
-			const map = new Map('map').setView(center, 13);
+			const map = new LeafletMap('map').setView(center, 13);
 
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 

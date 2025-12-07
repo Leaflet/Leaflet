@@ -81,8 +81,8 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 	}
 </script>
 <script type="module">
-	import L, {Map, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
-	const map = new Map('map').setView([51.505, -0.09], 13);
+	import L, {LeafletMap, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
+	const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -94,7 +94,7 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 ```
 <script src="https://unpkg.com/leaflet@2.0.0-alpha/dist/leaflet-global.js"></script>
 <script>
-	const map = new L.Map('map').setView([51.505, -0.09], 13);
+	const map = new L.LeafletMap('map').setView([51.505, -0.09], 13);
 	const tiles = new L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

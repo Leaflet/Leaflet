@@ -20,13 +20,13 @@
 		<button id="featureGroupBounds" type="button">Show feature group bounds</button>
 		<script src="geojson-sample.js"></script>
 		<script type="module">
-			import {TileLayer, Map, GeoJSON, LatLng, Marker, Polyline, FeatureGroup, Rectangle} from 'leaflet';
+			import {TileLayer, LeafletMap, GeoJSON, LatLng, Marker, Polyline, FeatureGroup, Rectangle} from 'leaflet';
 			import geojsonSample from './geojson-sample.js';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			let rectangle;
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: new LatLng(0.78, 102.37),
 				zoom: 7,
 				layers: [osm]

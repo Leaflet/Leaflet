@@ -19,6 +19,10 @@ bodyclass: download-page
 		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/v2.0.0-alpha.1/leaflet.zip">Leaflet 2.0.0-alpha.1</a></td>
 		<td>Prerelease version, released on August 16, 2025.</td>
 	</tr>
+		<tr>
+		<td><a href="https://github.com/Leaflet/Leaflet/releases/download/dev/leaflet.zip">Development Snapshot</a> / (<a href="https://github.com/Leaflet/Leaflet/releases/tag/dev" target="_blank">Single files</a>)</td>
+		<td>In-progress version, developed on the <code>main</code> branch.</td>
+	</tr>
 </table>
 
 [View Changelog](https://github.com/Leaflet/Leaflet/blob/main/CHANGELOG.md)
@@ -52,9 +56,9 @@ Then, in your script, import the needed Leaflet Classes as follows:
 
 ```js
 <script type="module">
-	import {Map, TileLayer} from 'leaflet';
+	import {LeafletMap, TileLayer} from 'leaflet';
 
-	const map = new Map('map').setView([51.505, -0.09], 13);
+	const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 	
 	new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -103,9 +107,9 @@ Unzip the downloaded archive to your website's directory and add this to the `he
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import {LeafletMap, TileLayer} from 'leaflet';
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -124,9 +128,9 @@ npm install leaflet
 Then, import Leaflet in your JavaScript file:
 
 ```js
-import {Map, TileLayer} from 'leaflet';
+import {LeafletMap, TileLayer} from 'leaflet';
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,

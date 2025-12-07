@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Map, LatLng, Polyline} from 'leaflet';
+import {LeafletMap, LatLng, Polyline} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Polyline', () => {
@@ -7,7 +7,7 @@ describe('Polyline', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {center: [55.8, 37.6], zoom: 6});
+		map = new LeafletMap(container, {center: [55.8, 37.6], zoom: 6});
 	});
 
 	afterEach(() => {

@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: WMS Example 3
 ---
 <script type="module">
-	import L, {Map, CRS, TileLayer, Control} from 'leaflet';
+	import L, {LeafletMap, CRS, TileLayer, Control} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [-17, -67],
 		zoom: 3
 	});

@@ -17,9 +17,9 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Popup} from 'leaflet';
+			import {LeafletMap, TileLayer, Popup} from 'leaflet';
 
-			const map = new Map('map').setView([51.505, -0.09], 13);
+			const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 

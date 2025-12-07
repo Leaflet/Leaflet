@@ -25,7 +25,7 @@ title: Tilt Handler Example
 
 
 <script type="module">
-	import L, {Map, Handler, Point, DomEvent, TileLayer} from 'leaflet';
+	import L, {LeafletMap, Handler, Point, DomEvent, TileLayer} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 	
@@ -54,7 +54,7 @@ title: Tilt Handler Example
 	
 	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [0, 0],
 		zoom: 1,
 		tilt: true

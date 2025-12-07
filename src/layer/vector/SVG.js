@@ -18,7 +18,7 @@ export const create = svgCreate;
  * Use SVG by default for all paths in the map:
  *
  * ```js
- * const map = new Map('map', {
+ * const map = new LeafletMap('map', {
  * 	renderer: new SVG()
  * });
  * ```
@@ -26,7 +26,7 @@ export const create = svgCreate;
  * Use a SVG renderer with extra padding for specific vector geometries:
  *
  * ```js
- * const map = new Map('map');
+ * const map = new LeafletMap('map');
  * const myRenderer = new SVG({ padding: 0.5 });
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle = new Circle( center, { renderer: myRenderer, radius: 100 } );
@@ -49,13 +49,13 @@ export class SVG extends Renderer {
 	}
 
 	_destroyContainer() {
-		Renderer.prototype._destroyContainer.call(this);
+		super._destroyContainer();
 		delete this._rootGroup;
 		delete this._svgSize;
 	}
 
 	_resizeContainer() {
-		const size = Renderer.prototype._resizeContainer.call(this);
+		const size = super._resizeContainer();
 
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {

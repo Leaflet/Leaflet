@@ -95,16 +95,14 @@ export class TileLayer extends GridLayer {
 		options = Util.setOptions(this, options);
 
 		// Set required OpenStreetMap attribution if it hasn't been specified; upgrade to HTTPS so the referrer policy works.
-		if (URL.canParse(url)) {
-			const urlHostname = new URL(url).hostname;
-			if ((/^tile\.(openstreetmap|osm)\.org$/i).test(urlHostname)) {
-				if (options.attribution === null) {
-					options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-				}
-				this._url = url.replace(/^http:\/\//, 'https://');
+		const urlHostname = new URL(url, location.href).hostname;
+		if ((/^tile\.(openstreetmap|osm)\.org$/i).test(urlHostname)) {
+			if (options.attribution === null) {
+				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			}
-		}
-
+			this._url = url.replace(/^http:\/\//, 'https://');
+    }
+    
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
@@ -275,7 +273,7 @@ export class TileLayer extends GridLayer {
 		// Cancels any pending http requests associated with the tile
 		tile.el.setAttribute('src', Util.emptyImageUrl);
 
-		return GridLayer.prototype._removeTile.call(this, key);
+		return super._removeTile(key);
 	}
 
 	_tileReady(coords, err, tile) {
@@ -283,10 +281,10 @@ export class TileLayer extends GridLayer {
 			return;
 		}
 
-		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
+		return super._tileReady(coords, err, tile);
 	}
 
 	_clampZoom(zoom) {
-		return Math.round(GridLayer.prototype._clampZoom.call(this, zoom));
+		return Math.round(super._clampZoom(zoom));
 	}
 }

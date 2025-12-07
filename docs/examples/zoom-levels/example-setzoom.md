@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Zoom Control Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		minZoom: 0,
 		maxZoom: 1
 	});

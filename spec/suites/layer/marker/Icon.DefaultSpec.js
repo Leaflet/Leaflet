@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Icon, Map, Marker, Browser} from 'leaflet';
+import {Icon, LeafletMap, Marker, Browser} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Icon.Default', () => {
@@ -7,7 +7,7 @@ describe('Icon.Default', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
 		new Marker([0, 0]).addTo(map);
@@ -31,13 +31,13 @@ describe('Icon.Default', () => {
 		const stripUrl = Icon.Default.prototype._stripUrl;
 		const properPath = 'http://localhost:8000/base/dist/images/';
 		[ // valid
-			'url("http://localhost:8000/base/dist/images/marker-icon.png")',  // Firefox
-			'url(\'http://localhost:8000/base/dist/images/marker-icon.png\')',
-			'url(http://localhost:8000/base/dist/images/marker-icon.png)'
+			'url("http://localhost:8000/base/dist/images/marker-icon.svg")',  // Firefox
+			'url(\'http://localhost:8000/base/dist/images/marker-icon.svg\')',
+			'url(http://localhost:8000/base/dist/images/marker-icon.svg)'
 		].map(stripUrl).forEach((str) => { expect(str).to.equal(properPath); });
 
 		[ // invalid
-			'url("http://localhost:8000/base/dist/images/marker-icon.png?2x)"',
+			'url("http://localhost:8000/base/dist/images/marker-icon.svg?2x)"',
 			'url("data:image/png;base64,iVBORw...")',                         // inline image (bundlers)
 		].map(stripUrl).forEach((str) => { expect(str).not.to.be.true; });
 	});

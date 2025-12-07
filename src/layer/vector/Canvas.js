@@ -15,7 +15,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Use Canvas by default for all paths in the map:
  *
  * ```js
- * const map = new Map('map', {
+ * const map = new LeafletMap('map', {
  * 	renderer: new Canvas()
  * });
  * ```
@@ -23,7 +23,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Use a Canvas renderer with extra padding for specific vector geometries:
  *
  * ```js
- * const map = new Map('map');
+ * const map = new LeafletMap('map');
  * const myRenderer = new Canvas({ padding: 0.5 });
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );
@@ -45,7 +45,7 @@ export class Canvas extends Renderer {
 	}
 
 	getEvents() {
-		const events = Renderer.prototype.getEvents.call(this);
+		const events = super.getEvents();
 		events.viewprereset = this._onViewPreReset;
 		return events;
 	}
@@ -56,7 +56,7 @@ export class Canvas extends Renderer {
 	}
 
 	onAdd(map) {
-		Renderer.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
@@ -64,7 +64,7 @@ export class Canvas extends Renderer {
 	}
 
 	onRemove() {
-		Renderer.prototype.onRemove.call(this);
+		super.onRemove();
 
 		clearTimeout(this._pointerHoverThrottleTimeout);
 	}
@@ -84,11 +84,11 @@ export class Canvas extends Renderer {
 		cancelAnimationFrame(this._redrawRequest);
 		this._redrawRequest = null;
 		delete this._ctx;
-		Renderer.prototype._destroyContainer.call(this);
+		super._destroyContainer();
 	}
 
 	_resizeContainer() {
-		const size = Renderer.prototype._resizeContainer.call(this);
+		const size = super._resizeContainer();
 		const m = this._ctxScale = window.devicePixelRatio;
 
 		// set canvas size (also clearing it); use double size on retina
@@ -123,7 +123,7 @@ export class Canvas extends Renderer {
 	}
 
 	_reset() {
-		Renderer.prototype._reset.call(this);
+		super._reset();
 
 		if (this._postponeUpdatePaths) {
 			this._postponeUpdatePaths = false;

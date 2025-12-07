@@ -35,7 +35,7 @@ export class VideoOverlay extends ImageOverlay {
 			// On some browsers autoplay will only work with `muted: true`
 			autoplay: true,
 
-			// @option loop: Boolean = false
+			// @option controls: Boolean = false
 			// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
 			controls: false,
 

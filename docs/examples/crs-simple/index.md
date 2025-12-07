@@ -33,7 +33,7 @@ The game has a built-in square coordinate system, as can be seen in the corners.
 
 A Leaflet map has one CRS (and *one* CRS *only*), that can be changed when creating the map. For our game map we'll use `CRS.Simple`, which represents a square grid:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		crs: CRS.Simple
 	});
 
@@ -57,7 +57,7 @@ In the default Leaflet CRS, `CRS.Earth`, 360 degrees of longitude are mapped to 
 
 In a `CRS.Simple`, one horizontal map unit is mapped to one horizontal pixel, and *idem* with vertical. This means that the whole map is about 1000x1000 pixels big and won't fit in our HTML container. Luckily, we can set `minZoom` to values lower than zero:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		crs: CRS.Simple,
 		minZoom: -5
 	});

@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: CRS.Simple Example
 ---
 <script type="module">
-	import L, {Map, CRS, ImageOverlay, LatLng, Marker} from 'leaflet';
+	import L, {LeafletMap, CRS, ImageOverlay, LatLng, Marker} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		crs: CRS.Simple,
 		minZoom: -3
 	});
