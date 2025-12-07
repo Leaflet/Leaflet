@@ -20,8 +20,8 @@ export class IconDefault extends Icon {
 
 	static {
 		this.setDefaultOptions({
-			iconUrl:       'marker.svg',
-			iconRetinaUrl: 'marker.svg',
+			iconUrl:       'marker-icon.svg',
+			iconRetinaUrl: 'marker-icon.svg',
 			shadowUrl:     'marker-shadow.svg',
 			iconSize:    [25, 41],
 			iconAnchor:  [12, 41],
