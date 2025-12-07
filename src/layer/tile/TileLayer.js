@@ -101,8 +101,7 @@ export class TileLayer extends GridLayer {
 				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			}
 			this._url = url.replace(/^http:\/\//, 'https://');
-    }
-    
+		}
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
