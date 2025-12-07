@@ -21,9 +21,9 @@
 			<button type="button" id="b2">Remove Layer</button>
 		</div>
 		<script type="module">
-			import {LayerGroup, Map, TileLayer, LatLngBounds, Circle, LatLng, Popup, DomUtil, DomEvent} from 'leaflet';
+			import {LayerGroup, LeafletMap, TileLayer, LatLngBounds, Circle, LatLng, Popup, DomUtil, DomEvent} from 'leaflet';
 
-			const map = new Map('map');
+			const map = new LeafletMap('map');
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				minZoom: 1,
 				maxZoom: 17,

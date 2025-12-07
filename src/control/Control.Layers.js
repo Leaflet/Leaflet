@@ -235,7 +235,7 @@ export class Layers extends Control {
 			},
 			// Certain screen readers intercept the key event and instead send a click event
 			click(e) {
-				DomEvent.preventDefault(e);
+				e.preventDefault();
 				this._expandSafely();
 			}
 		}, this);
@@ -316,7 +316,7 @@ export class Layers extends Control {
 
 		const obj = this._getLayer(Util.stamp(e.target));
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Layer events
 		// @event baselayerchange: LayersControlEvent
 		// Fired when the base layer is changed through the [layers control](#control-layers).

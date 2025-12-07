@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Video Overlay Tutorial (Video with Controls)
 ---
 <script type="module">
-	import L, {Map, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
+	import L, {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
 
-	const map = new Map('map');
+	const map = new LeafletMap('map');
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

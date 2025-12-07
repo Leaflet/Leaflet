@@ -31,11 +31,11 @@
 			<div id="mapSvg"></div>
 		</div>
 		<script type="module">
-			import {TileLayer, Map, Marker, CircleMarker} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker, CircleMarker} from 'leaflet';
 
 			function makeMap(container, options) {
 				const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-				const map = new Map(container, options)
+				const map = new LeafletMap(container, options)
 					.setView([50.5, 30.51], 15)
 					.addLayer(osm);
 

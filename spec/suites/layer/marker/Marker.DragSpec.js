@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, Map, Marker, Point} from 'leaflet';
+import {DomUtil, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
@@ -9,7 +9,7 @@ describe('Marker.Drag', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		container.style.width = '600px';
 		container.style.height = '600px';
 		map.setView([0, 0], 0);

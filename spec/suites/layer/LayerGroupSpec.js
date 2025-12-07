@@ -99,20 +99,4 @@ describe('LayerGroup', () => {
 			new GeoJSON(lg.toGeoJSON());
 		});
 	});
-
-	describe('#invoke', () => {
-		it('should invoke `setOpacity` method on every layer', () => {
-			const layers = [
-				new Marker([0, 0]),
-				new Marker([1, 1])
-			];
-			const lg = new LayerGroup(layers);
-			const opacity = 0.5;
-
-			expect(layers[0].options.opacity).to.not.eql(opacity);
-			lg.invoke('setOpacity', opacity);
-			expect(layers[0].options.opacity).to.eql(opacity);
-			expect(layers[1].options.opacity).to.eql(opacity);
-		});
-	});
 });

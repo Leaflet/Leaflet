@@ -39,13 +39,13 @@
 			<div id="map"></div>
 		</div>
 		<script type="module">
-			import {TileLayer, Map, Marker, DomEvent} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker, DomEvent} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-			const map = new Map('map')
+			const map = new LeafletMap('map')
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 

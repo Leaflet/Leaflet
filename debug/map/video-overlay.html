@@ -17,9 +17,9 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, LatLngBounds, VideoOverlay, Control, DomEvent, DomUtil} from 'leaflet';
+			import {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomEvent, DomUtil} from 'leaflet';
 
-			const map = new Map('map');
+			const map = new LeafletMap('map');
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
 
 			const bounds = new LatLngBounds([[32, -130], [13, -100]]);

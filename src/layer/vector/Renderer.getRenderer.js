@@ -3,7 +3,7 @@ import {Canvas} from './Canvas.js';
 import {SVG} from './SVG.js';
 
 Map.include({
-	// @namespace Map; @method getRenderer(layer: Path): Renderer
+	// @namespace LeafletMap; @method getRenderer(layer: Path): Renderer
 	// Returns the instance of `Renderer` that should be used to render the given
 	// `Path`. It will ensure that the `renderer` options of the map and paths
 	// are respected, and that the renderers do exist on the map.
@@ -38,7 +38,7 @@ Map.include({
 	},
 
 	_createRenderer(options) {
-		// @namespace Map; @option preferCanvas: Boolean = false
+		// @namespace LeafletMap; @option preferCanvas: Boolean = false
 		// Whether `Path`s should be rendered on a `Canvas` renderer.
 		// By default, all `Path`s are rendered in a `SVG` renderer.
 		return (this.options.preferCanvas && new Canvas(options)) || new SVG(options);

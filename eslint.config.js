@@ -1,13 +1,15 @@
 import config from 'eslint-config-mourner';
+import css from '@eslint/css';
 import scriptTags from '@mapbox/eslint-plugin-script-tags';
 import importPlugin from 'eslint-plugin-import-x';
 import globals from 'globals';
+import baselineJs from 'eslint-plugin-baseline-js';
 
 export default [
-	...config,
-	{
-		files: ['*.js', '*.cjs'],
-	},
+	...config.map(c => ({
+		...c,
+		files: ['**/*.js', '**/*.cjs'],
+	})),
 	{
 		languageOptions: {
 			ecmaVersion: 'latest',
@@ -15,7 +17,7 @@ export default [
 	},
 	{
 		ignores: [
-			'dist',
+			'dist/*.js',
 			'docs/docs/highlight',
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
@@ -30,6 +32,7 @@ export default [
 		]
 	},
 	{
+		files: ['**/*.js', '**/*.cjs'],
 		plugins: {
 			import: importPlugin
 		},
@@ -55,6 +58,43 @@ export default [
 			'prefer-spread': 'off',
 			'no-new': 'off'
 		}
+	},
+	{
+		files: ['**/*.css'],
+		language: 'css/css',
+		...css.configs.recommended,
+		rules: {
+			...css.configs.recommended.rules,
+			'css/no-important': 'warn',
+			'css/use-baseline': ['error', {
+				allowProperties: [
+					'clip',
+					'outline',
+					'print-color-adjust',
+					'user-select',
+					'word-break',
+				],
+				allowSelectors: [
+					'has',
+					'nesting',
+				]
+			}]
+		}
+	},
+	{
+		files: ['**/*.{js,ts,jsx,tsx}'],
+		plugins: {'baseline-js': baselineJs},
+		rules: {
+			'baseline-js/use-baseline': ['error', {
+				available: 'widely',
+				includeWebApis: {preset: 'auto', ignore: [
+					// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
+					// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
+					'devicepixelratio',
+				]},
+				includeJsBuiltins: {preset: 'auto'},
+			}],
+		},
 	},
 	{
 		files: ['docs/examples/**', 'docs/plugins.md'],

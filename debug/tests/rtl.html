@@ -23,10 +23,10 @@
 		<p>Click the map to place a popup at the mouse location</p>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, Popup} from 'leaflet';
+			import {LeafletMap, TileLayer, Popup} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
-			const map = new Map('map')
+			const map = new LeafletMap('map')
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 

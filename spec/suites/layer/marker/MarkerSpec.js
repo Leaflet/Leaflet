@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DivIcon, Icon, LatLng, Map, Marker, Point} from 'leaflet';
+import {DivIcon, Icon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -12,7 +12,7 @@ describe('Marker', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
 		icon1 = new Icon.Default();

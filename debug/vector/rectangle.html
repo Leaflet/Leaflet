@@ -20,7 +20,7 @@
 			Set blue rectangle bounds as current map extent.
 		</button>
 		<script type="module">
-			import {TileLayer, LatLngBounds, LatLng, Rectangle, Map} from 'leaflet';
+			import {TileLayer, LatLngBounds, LatLng, Rectangle, LeafletMap} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 			const bounds = new LatLngBounds(new LatLng(54.559322, -5.767822), new LatLng(56.1210604, -3.021240));
@@ -40,7 +40,7 @@
 
 			rectangle.bindPopup('I\'m a rectangle!');
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: bounds.getCenter(),
 				zoom: 7,
 				layers: [osm]

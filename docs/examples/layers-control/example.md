@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Layers Control Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Marker, LayerGroup, Control} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Marker, LayerGroup, Control} from 'leaflet';
 	const cities = new LayerGroup();
 	const mLittleton = new Marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities);
 	const mDenver = new Marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities);
@@ -19,7 +19,7 @@ title: Layers Control Example
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
 	});
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [39.73, -104.99],
 		zoom: 10,
 		layers: [osm, cities]

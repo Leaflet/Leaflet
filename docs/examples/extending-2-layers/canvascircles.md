@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: CanvasCircles Example
 ---
 <script type="module">
-	import L, {Map, GridLayer} from 'leaflet';
+	import L, {LeafletMap, GridLayer} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [0, 0],
 		zoom: 0
 	});

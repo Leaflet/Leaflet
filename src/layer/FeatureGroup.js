@@ -60,19 +60,19 @@ export class FeatureGroup extends LayerGroup {
 	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
 	setStyle(style) {
-		return this.invoke('setStyle', style);
+		return this.eachLayer(l => l.setStyle?.(style));
 	}
 
 	// @method bringToFront(): this
 	// Brings the layer group to the top of all other layers
 	bringToFront() {
-		return this.invoke('bringToFront');
+		return this.eachLayer(l => l.bringToFront?.());
 	}
 
 	// @method bringToBack(): this
 	// Brings the layer group to the back of all other layers
 	bringToBack() {
-		return this.invoke('bringToBack');
+		return this.eachLayer(l => l.bringToBack?.());
 	}
 
 	// @method getBounds(): LatLngBounds

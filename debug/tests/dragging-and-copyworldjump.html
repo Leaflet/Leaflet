@@ -25,7 +25,7 @@
 		<div id="map1" style="height: 300px; width: 400px; float:left;"></div>
 		<div id="map2" style="height: 300px; width: 400px; float:left; margin-left: 10px;"></div>
 		<script type="module">
-			import {TileLayer, Marker, Map, LatLng} from 'leaflet';
+			import {TileLayer, Marker, LeafletMap, LatLng} from 'leaflet';
 
 			function addLayerAndMarker(map) {
 				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -35,14 +35,14 @@
 				new Marker([50.5, 30.5]).addTo(map);
 			}
 
-			const map1 = new Map('map1', {
+			const map1 = new LeafletMap('map1', {
 				center : new LatLng(45.50144, -122.67599),
 				zoom : 0,
 				dragging : true,
 				worldCopyJump : true
 			});
 
-			const map2 = new Map('map2', {
+			const map2 = new LeafletMap('map2', {
 				center: new LatLng(45.50144, -122.67599),
 				zoom: 0,
 				dragging: false,

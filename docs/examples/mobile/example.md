@@ -11,8 +11,8 @@ css: "body {
 	}"
 ---
 <script type="module">
-	import L, {Map, TileLayer, Marker, Circle} from 'leaflet';
-	const map = new Map('map').fitWorld();
+	import L, {LeafletMap, TileLayer, Marker, Circle} from 'leaflet';
+	const map = new LeafletMap('map').fitWorld();
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

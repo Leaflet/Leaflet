@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Control, Map, Marker, TileLayer, Util} from 'leaflet';
+import {Control, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, pointerType, removeMapContainer} from '../SpecHelper.js';
@@ -9,7 +9,7 @@ describe('Control.Layers', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		map.setView([0, 0], 14);
 	});
@@ -277,7 +277,7 @@ describe('Control.Layers', () => {
 			// gives it an actual size.
 			map.remove();
 			container.style.height = container.style.width = '200px';
-			map = new Map(container);
+			map = new LeafletMap(container);
 
 			for (; i < 20; i += 1) {
 				// Default text size: 12px => 12 * 20 = 240px height (not even considering padding/margin).
@@ -299,7 +299,7 @@ describe('Control.Layers', () => {
 			// gives it an actual size.
 			map.remove();
 			container.style.height = container.style.width = '200px';
-			map = new Map(container);
+			map = new LeafletMap(container);
 
 			layersCtrl.addTo(map);
 			expect(layersCtrl._section.classList.contains('leaflet-control-layers-scrollbar')).to.be.false;

@@ -5,9 +5,9 @@ title: GeoJSON Example
 <script src="sample-geojson.js" type="text/javascript"></script>
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Marker, Icon, GeoJSON, CircleMarker} from 'leaflet';
 
-	const map = new Map('map').setView([39.74739, -105], 13);
+	const map = new LeafletMap('map').setView([39.74739, -105], 13);
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

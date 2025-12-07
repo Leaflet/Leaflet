@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<script type="module">
-			import {GeoJSON, Map, TileLayer} from 'leaflet';
+			import {GeoJSON, LeafletMap, TileLayer} from 'leaflet';
 
 			const features = [
 				{
@@ -172,7 +172,7 @@
 				div.style.width = '800px';
 				div.style.height = '600px';
 				document.body.appendChild(div);
-				const map = new Map(div).setView([0.0, 0.0], 4);
+				const map = new LeafletMap(div).setView([0.0, 0.0], 4);
 				new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 				const geojson = new GeoJSON(feature).addTo(map)
 				map.fitBounds(geojson.getBounds());

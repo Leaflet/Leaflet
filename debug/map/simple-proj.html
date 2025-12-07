@@ -17,9 +17,9 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, CRS, Polygon, Marker, ImageOverlay, GridLayer, Circle} from 'leaflet';
+			import {LeafletMap, CRS, Polygon, Marker, ImageOverlay, GridLayer, Circle} from 'leaflet';
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				crs: CRS.Simple
 			}).setView([0, 0], 0);
 

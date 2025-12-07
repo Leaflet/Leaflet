@@ -19,7 +19,7 @@
 		<button id="zoomToPath" type="button">Zoom to path</button>
 		<button id="zoomToPolygon" type="button">Zoom to polygon</button>
 		<script type="module">
-			import {TileLayer, Polyline, LatLng, Polygon, Map} from 'leaflet';
+			import {TileLayer, Polyline, LatLng, Polygon, LeafletMap} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
 
@@ -49,7 +49,7 @@
 
 			const latlngs2 = polyPoints.map(p => new LatLng(p[0], p[1]));
 			const poly = new Polygon(latlngs2);
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				layers: [osm],
 				center: new LatLng(39.69596043694606, -104.95084762573242),
 				zoom: 12
