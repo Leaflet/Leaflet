@@ -1,38 +1,53 @@
-import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
-import rollupGitVersion from 'rollup-plugin-git-version';
+import {defineConfig} from 'rolldown';
 import {simpleGit} from 'simple-git';
+import pkg from '../package.json' with {type: 'json'};
 
-// TODO: Replace this with a regular import when ESLint adds support for import assertions.
-// See: https://rollupjs.org/guide/en/#importing-packagejson
-const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 const release = process.env.NODE_ENV === 'release';
 const version = await getVersion();
 const banner = createBanner(version);
 
-/** @type {import('rollup').RollupOptions} */
-const config = {
+export default defineConfig({
 	input: 'src/LeafletWithGlobals.js',
 	output: [
 		{
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
+			minify: false,
 			sourcemap: true,
 			freeze: false
+		},
+		{
+			file: './dist/leaflet.js',
+			format: 'es',
+			banner,
+			minify: true,
+			sourcemap: true,
+			freeze: false
+		},
+		{
+			file: './dist/leaflet-global.js',
+			name: 'leaflet',
+			format: 'umd',
+			banner,
+			minify: false,
+			sourcemap: true,
+			freeze: false,
+			esModule: false
 		},
 		{
 			file: './dist/leaflet-global-src.js',
 			name: 'leaflet',
 			format: 'umd',
 			banner,
+			minify: true,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion(),
 		{
 			name: 'copy-leaflet-assets',
 			generateBundle() {
@@ -50,9 +65,7 @@ const config = {
 			},
 		},
 	]
-};
-
-export default config;
+});
 
 async function getVersion() {
 	// Skip the git branch+rev in the banner when doing a release build
