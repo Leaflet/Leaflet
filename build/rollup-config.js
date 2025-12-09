@@ -1,7 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rolldown';
 import {simpleGit} from 'simple-git';
-import pkg from '../package.json' with {type: 'json'};
+import pkg from '../package.json';
 
 const release = process.env.NODE_ENV === 'release';
 const version = await getVersion();
