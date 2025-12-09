@@ -161,9 +161,9 @@ videoOverlay.getElement().pause();
 
 This allows us to build custom interfaces. For example, we can build a small subclass of `L.Control` to play/pause this video overlay once it's loaded:
 
-```
+```js
 videoOverlay.on('load', function () {
-	const MyPauseControl = Control.extend({
+	class MyPauseControl extends Control {
 		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Pause';
@@ -173,8 +173,8 @@ videoOverlay.on('load', function () {
 			});
 			return button;
 		}
-	});
-	const MyPlayControl = Control.extend({
+	}
+	class MyPlayControl extends Control {
 		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Play';
@@ -184,7 +184,7 @@ videoOverlay.on('load', function () {
 			});
 			return button;
 		}
-	});
+	}
 
 	const pauseControl = (new MyPauseControl()).addTo(map);
 	const playControl = (new MyPlayControl()).addTo(map);

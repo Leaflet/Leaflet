@@ -459,7 +459,11 @@ describe('TileLayer', () => {
 		});
 
 		it('consults options.foo for {foo}', () => {
-			const OSMLayer = TileLayer.extend({options: {foo: 'bar'}});
+			class OSMLayer extends TileLayer {
+				static {
+					this.setDefaultOptions({foo: 'bar'});
+				}
+			}
 			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
 			map.options.zoomSnap = 0;
 			map._resetView(new LatLng(0, 0), 2.3);

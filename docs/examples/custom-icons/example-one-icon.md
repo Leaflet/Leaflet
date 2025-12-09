@@ -10,16 +10,18 @@ title: Single Custom Icon Example
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
-	const LeafIcon = Icon.extend({
-		options: {
-			shadowUrl: 'leaf-shadow.png',
-			iconSize:     [38, 95],
-			shadowSize:   [50, 64],
-			iconAnchor:   [22, 94],
-			shadowAnchor: [4, 62],
-			popupAnchor:  [-3, -76]
+	class LeafIcon extends Icon {
+		static {
+			this.setDefaultOptions({
+				shadowUrl: 'leaf-shadow.png',
+				iconSize:     [38, 95],
+				shadowSize:   [50, 64],
+				iconAnchor:   [22, 94],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [-3, -76]
+			});
 		}
-	});
+	}
 
 	const greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'});
 

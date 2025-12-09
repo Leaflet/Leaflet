@@ -31,7 +31,7 @@ title: Video Overlay Tutorial (Video with Controls)
 	}).addTo(map);
 
 	videoOverlay.on('load', () => {
-		const MyPauseControl = Control.extend({
+		class MyPauseControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Pause';
@@ -41,8 +41,8 @@ title: Video Overlay Tutorial (Video with Controls)
 				});
 				return button;
 			}
-		});
-		const MyPlayControl = Control.extend({
+		}
+		class MyPlayControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Play';
@@ -52,7 +52,7 @@ title: Video Overlay Tutorial (Video with Controls)
 				});
 				return button;
 			}
-		});
+		}
 
 		const pauseControl = (new MyPauseControl()).addTo(map);
 		const playControl = (new MyPlayControl()).addTo(map);
