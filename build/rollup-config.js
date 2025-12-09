@@ -16,14 +16,14 @@ export default defineConfig({
 			banner,
 			sourcemap: true
 		},
-		{
+		release && {
 			file: './dist/leaflet.js',
 			format: 'es',
 			banner,
 			minify: true,
 			sourcemap: true
 		},
-		{
+		release && {
 			file: './dist/leaflet-global.js',
 			name: 'leaflet',
 			format: 'umd',
@@ -32,7 +32,7 @@ export default defineConfig({
 			sourcemap: true,
 			esModule: false
 		},
-		{
+		release && {
 			file: './dist/leaflet-global-src.js',
 			name: 'leaflet',
 			format: 'umd',
