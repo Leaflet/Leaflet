@@ -14,16 +14,14 @@ export default defineConfig({
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
-			sourcemap: true,
-			freeze: false
+			sourcemap: true
 		},
 		{
 			file: './dist/leaflet.js',
 			format: 'es',
 			banner,
 			minify: true,
-			sourcemap: true,
-			freeze: false
+			sourcemap: true
 		},
 		{
 			file: './dist/leaflet-global.js',
@@ -32,7 +30,6 @@ export default defineConfig({
 			banner,
 			minify: true,
 			sourcemap: true,
-			freeze: false,
 			esModule: false
 		},
 		{
@@ -41,7 +38,6 @@ export default defineConfig({
 			format: 'umd',
 			banner,
 			sourcemap: true,
-			freeze: false,
 			esModule: false
 		}
 	],
