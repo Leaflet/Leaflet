@@ -40,7 +40,6 @@ export default defineConfig({
 			name: 'leaflet',
 			format: 'umd',
 			banner,
-			minify: false,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
