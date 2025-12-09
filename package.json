@@ -49,11 +49,10 @@
     "docs": "node ./build/docs.js && node ./build/integrity.js",
     "test": "karma start ./spec/karma.conf.cjs",
     "coverage": "karma start ./spec/karma.conf.cjs --coverage --single-run",
-    "build": "npm run rolldown",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
-    "rolldown": "rolldown -c build/rollup-config.js",
-    "watch": "rolldown -w -c build/rollup-config.js",
+    "build": "rolldown -c build/rollup-config.js",
+    "watch": "npm run build -- -w",
     "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",
     "prepare": "husky"
