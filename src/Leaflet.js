@@ -1,4 +1,4 @@
-export {version} from '../package.json';
+export {version} from '../package.json' with {type: 'json'};
 
 // control
 export * from './control/index.js';
