@@ -14,7 +14,6 @@ export default defineConfig({
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
-			minify: false,
 			sourcemap: true,
 			freeze: false
 		},
@@ -31,7 +30,7 @@ export default defineConfig({
 			name: 'leaflet',
 			format: 'umd',
 			banner,
-			minify: false,
+			minify: true,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
@@ -41,7 +40,7 @@ export default defineConfig({
 			name: 'leaflet',
 			format: 'umd',
 			banner,
-			minify: true,
+			minify: false,
 			sourcemap: true,
 			freeze: false,
 			esModule: false
