@@ -21,6 +21,9 @@ jobs:
           check-latest: true
           cache: npm
 
+      - name: Set version in package.json using `git describe`
+        run: npm version --no-git-tag-version $(git describe --always)
+
       - name: Install dependencies
         run: npm ci
 

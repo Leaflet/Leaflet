@@ -1,11 +1,13 @@
 import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rolldown';
-import {simpleGit} from 'simple-git';
 import pkg from '../package.json' with {type: 'json'};
 
 const release = process.env.NODE_ENV === 'release';
-const version = await getVersion();
-const banner = createBanner(version);
+const banner = `/* @preserve
+ * Leaflet ${pkg.version}, a JS library for interactive maps. https://leafletjs.com
+ * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
+ */
+`;
 
 export default defineConfig({
 	input: 'src/LeafletWithGlobals.js',
@@ -60,24 +62,3 @@ export default defineConfig({
 		},
 	]
 });
-
-async function getVersion() {
-	// Skip the git branch+rev in the banner when doing a release build
-	if (release) {
-		return pkg.version;
-	}
-
-	const git = simpleGit();
-	const branch = (await git.branch()).current;
-	const commit = await git.revparse(['--short', 'HEAD']);
-
-	return `${pkg.version}+${branch}.${commit}`;
-}
-
-export function createBanner(version) {
-	return `/* @preserve
- * Leaflet ${version}, a JS library for interactive maps. https://leafletjs.com
- * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
-}
