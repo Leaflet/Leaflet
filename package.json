@@ -6,7 +6,6 @@
   "devDependencies": {
     "@eslint/css": "^0.14.1",
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
-    "@rollup/plugin-json": "^6.1.0",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.1",
     "eslint": "^9.39.1",
@@ -26,12 +25,9 @@
     "lint-staged": "^16.2.7",
     "mocha": "^11.7.5",
     "prosthetic-hand": "^2.0.0",
-    "rollup": "^4.53.3",
-    "rollup-plugin-git-version": "^0.3.1",
-    "simple-git": "^3.30.0",
+    "rolldown": "^1.0.0-beta.53",
     "sinon": "^21.0.0",
     "ssri": "^13.0.0",
-    "uglify-js": "^3.19.3",
     "ui-event-simulator": "^2.0.0"
   },
   "type": "module",
@@ -52,17 +48,13 @@
     "docs": "node ./build/docs.js && node ./build/integrity.js",
     "test": "karma start ./spec/karma.conf.cjs",
     "coverage": "karma start ./spec/karma.conf.cjs --coverage --single-run",
-    "build": "npm run rollup && npm run uglify && npm run uglify-global",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
-    "rollup": "rollup -c build/rollup-config.js",
-    "watch": "rollup -w -c build/rollup-config.js",
-    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --source-map content=dist/leaflet-src.js.map --source-map url=leaflet.js.map --comments",
-    "uglify-global": "uglifyjs dist/leaflet-global-src.js -c -m -o dist/leaflet-global.js --source-map filename=dist/leaflet-global.js.map --source-map content=dist/leaflet-global-src.js.map --source-map url=leaflet-global.js.map --comments",
+    "build": "rolldown -c build/rollup-config.js",
+    "watch": "npm run build -- -w",
     "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",
-    "prepare": "husky",
-    "version": "node ./build/version.js && git add ./src/Leaflet.js"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
