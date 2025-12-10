@@ -18,7 +18,7 @@ title: No Zoom Snap Example
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const container = DomUtil.create('div');
 			const gauge = DomUtil.create('div');
@@ -31,7 +31,7 @@ title: No Zoom Snap Example
 			container.appendChild(gauge);
 			return container;
 		}
-	});
+	}
 
 	const zoomViewerControl = (new ZoomViewer()).addTo(map);
 

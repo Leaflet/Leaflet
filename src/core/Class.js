@@ -8,45 +8,6 @@ import * as Util from './Util.js';
 // Thanks to John Resig and Dean Edwards for inspiration!
 
 export class Class {
-	// @function extend(props: Object): Function
-	// [Extends the current class](#class-inheritance) given the properties to be included.
-	// Deprecated - use `class X extends Class` instead!
-	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	static extend({statics, includes, ...props}) {
-		const NewClass = class extends this {};
-
-		// inherit parent's static properties
-		Object.setPrototypeOf(NewClass, this);
-
-		const parentProto = this.prototype;
-		const proto = NewClass.prototype;
-
-		// mix static properties into the class
-		if (statics) {
-			Object.assign(NewClass, statics);
-		}
-
-		// mix includes into the prototype
-		if (Array.isArray(includes)) {
-			for (const include of includes) {
-				NewClass.include(include);
-			}
-		} else if (includes) {
-			NewClass.include(includes);
-		}
-
-		// mix given properties into the prototype
-		Object.assign(proto, props);
-
-		// merge options
-		if (proto.options) {
-			proto.options = parentProto.options ? Object.create(parentProto.options) : {};
-			Object.assign(proto.options, props.options);
-		}
-
-		return NewClass;
-	}
-
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {

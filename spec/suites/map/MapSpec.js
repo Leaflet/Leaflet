@@ -676,17 +676,18 @@ describe('Map', () => {
 
 	describe('#addHandler', () => {
 		function getHandler(callback = () => {}) {
-			return Handler.extend({
+			class CustomHandler extends Handler {
 				addHooks() {
 					DomEvent.on(window, 'click', this.handleClick, this);
-				},
+				}
 
 				removeHooks() {
 					DomEvent.off(window, 'click', this.handleClick, this);
-				},
+				}
 
-				handleClick: callback
-			});
+				handleClick = callback;
+			}
+			return CustomHandler;
 		}
 
 		it('checking enabled method', () => {

@@ -26,7 +26,7 @@
 				layers: [osm]
 			});
 
-			const DebugBlanket = BlanketOverlay.extend({
+			class DebugBlanket extends BlanketOverlay {
 				_initContainer() {
 					const container = this._container = document.createElement('div');
 					container.style.border = '2px solid black';
@@ -34,7 +34,7 @@
 					container.style.display = 'flex';
 					container.style.justifyContent = 'center';
 					container.style.alignItems = 'center';
-				},
+				}
 
 				_onSettled() {
 					this._container.innerHTML = `
@@ -44,7 +44,7 @@
 					map bounds: <br>${this._map.getBounds().toBBoxString().split(',').map(n => Number(n).toFixed(6)).join('<br>')}<br>
 					px bounds: ${this._bounds.min}, ${this._bounds.max}`;
 				}
-			});
+			}
 
 			new DebugBlanket({
 				padding: -0.1,

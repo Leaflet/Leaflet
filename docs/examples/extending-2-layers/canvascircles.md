@@ -10,7 +10,7 @@ title: CanvasCircles Example
 		zoom: 0
 	});
 
-	GridLayer.CanvasCircles = GridLayer.extend({
+	class CanvasCirclesGridLayer extends GridLayer {
 		createTile(coords) {
 			const tile = document.createElement('canvas');
 
@@ -27,9 +27,9 @@ title: CanvasCircles Example
 
 			return tile;
 		}
-	});
+	}
 
-	const cavasGridLayer = new GridLayer.CanvasCircles();
+	const cavasGridLayer = new CanvasCirclesGridLayer();
 	map.addLayer(cavasGridLayer);
 
 	globalThis.L = L; // only for debugging in the developer console
