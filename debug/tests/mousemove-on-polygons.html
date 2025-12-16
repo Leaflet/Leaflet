@@ -78,7 +78,7 @@
 		</table>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, Polygon, Marker} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap, Polygon, Marker} from 'leaflet';
 
 			const osm = new TileLayer(
 				'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -86,7 +86,7 @@
 			);
 
 			const latlng = new LatLng(39.05, 8.4);
-			const map = new Map('map', {center: latlng, zoom: 12, layers: [osm]});
+			const map = new LeafletMap('map', {center: latlng, zoom: 12, layers: [osm]});
 
 			function update(id) {
 				return function () {
@@ -106,9 +106,9 @@
 				[39.05, 8.3],
 			])
 				.addTo(map)
-				.on('mouseover', update('enter1'))
-				.on('mousemove', update('move1'))
-				.on('mouseout', update('exit1'))
+				.on('pointerover', update('enter1'))
+				.on('pointermove', update('move1'))
+				.on('pointerout', update('exit1'))
 				.on('click', update('click1'))
 				.bindPopup('Triangle 1');
 
@@ -118,9 +118,9 @@
 				[39.0, 8.3],
 			])
 				.addTo(map)
-				.on('mouseover', update('enter2'))
-				.on('mousemove', update('move2'))
-				.on('mouseout', update('exit2'))
+				.on('pointerover', update('enter2'))
+				.on('pointermove', update('move2'))
+				.on('pointerout', update('exit2'))
 				.on('click', update('click2'))
 				.bindPopup('Triangle 2');
 
@@ -130,9 +130,9 @@
 			map.addLayer(marker);
 
 			map
-				.on('mouseover', update('enter3'))
-				.on('mousemove', update('move3'))
-				.on('mouseout', update('exit3'))
+				.on('pointerover', update('enter3'))
+				.on('pointermove', update('move3'))
+				.on('pointerout', update('exit3'))
 				.on('click', update('click3'));
 
 			// We should be able to move marker around in a fluid way,

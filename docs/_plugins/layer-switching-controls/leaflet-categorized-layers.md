@@ -7,6 +7,7 @@ author-url: https://robbies.domains
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet Control Layers extended for groups of categorized layers

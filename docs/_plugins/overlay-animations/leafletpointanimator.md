@@ -7,6 +7,7 @@ author-url: https://github.com/danwild
 demo: https://onaci.github.io/leaflet-point-animator/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Animate a large number of GeoJSON points.

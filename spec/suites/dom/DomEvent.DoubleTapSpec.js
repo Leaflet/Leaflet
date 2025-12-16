@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Control, DomEvent, DomUtil, Map} from 'leaflet';
+import {Control, DomEvent, DomUtil, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -91,17 +91,17 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 
 	it('respects disableClickPropagation', () => {
 		const spyMap = sinon.spy();
-		const map = new Map(container).setView([51.505, -0.09], 13);
+		const map = new LeafletMap(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		const spyCtrl = sinon.spy();
 		const ctrl = DomUtil.create('div');
 		DomEvent.disableClickPropagation(ctrl);
-		const MyControl = Control.extend({
+		class MyControl extends Control {
 			onAdd() {
 				return ctrl;
 			}
-		});
+		}
 		map.addControl(new MyControl());
 		DomEvent.on(ctrl, 'dblclick', spyCtrl);
 
@@ -115,18 +115,18 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 
 	it('doesn\'t fire double-click while clicking on a label with `for` attribute', () => {
 		const spyMap = sinon.spy();
-		const map = new Map(container).setView([51.505, -0.09], 13);
+		const map = new LeafletMap(container).setView([51.505, -0.09], 13);
 		map.on('dblclick', spyMap);
 
 		let div;
-		const MyControl = Control.extend({
+		class MyControl extends Control {
 			onAdd() {
 				div = DomUtil.create('div');
 				div.innerHTML = '<input type="checkbox" id="input">' +
 					'<label for="input" style="background: #ffffff; width: 100px; height: 100px;display: block;">Click Me</label>';
 				return div;
 			}
-		});
+		}
 		map.addControl(new MyControl());
 		// click on the label
 		UIEventSimulator.fire('click', div.children[1], {detail: 1});

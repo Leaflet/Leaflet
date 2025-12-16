@@ -7,6 +7,7 @@ author-url: https://github.com/pa7
 demo: https://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 JavaScript Library for HTML canvas based heatmaps.			Its Leaflet layer implementation supports large datasets because it is tile based and uses a quadtree index to store the data.

@@ -7,6 +7,7 @@ author-url: https://github.com/hiasinho
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Vector SVG markers for Leaflet, with an option for Font Awesome/Twitter Bootstrap icons.

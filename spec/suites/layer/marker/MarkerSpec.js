@@ -1,18 +1,18 @@
 import {expect} from 'chai';
-import {Browser, DivIcon, Icon, LatLng, Map, Marker, Point} from 'leaflet';
+import {DivIcon, Icon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker', () => {
 	let map,
-	    container,
-	    icon1,
-	    icon2;
+	container,
+	icon1,
+	icon2;
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
 		icon1 = new Icon.Default();
@@ -157,11 +157,7 @@ describe('Marker', () => {
 			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
 			expect(oldIcon.parentNode).to.equal(null);
 
-			if (Browser.retina) {
-				expect(marker._icon.src).to.contain('marker-icon-2x.png');
-			} else {
-				expect(marker._icon.src).to.contain('marker-icon.png');
-			}
+			expect(marker._icon.src).to.contain('marker-icon.svg');
 			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
 		});
 

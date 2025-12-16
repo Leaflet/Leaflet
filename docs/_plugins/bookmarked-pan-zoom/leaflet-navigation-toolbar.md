@@ -7,6 +7,7 @@ author-url: https://github.com/davidchouse
 demo: http://davidchouse.github.io/Leaflet.NavBar/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet control for simple back, forward and home navigation.

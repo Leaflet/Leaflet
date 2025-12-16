@@ -7,6 +7,7 @@ author-url: https://heyman.info/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Marker that is kept fixed to the center of the map when the map is panned by dragging.			Can be seen in action on <a href="https://whatismyaddress.net/">What is my address?</a>

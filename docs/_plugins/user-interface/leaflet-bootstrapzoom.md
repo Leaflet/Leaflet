@@ -7,6 +7,7 @@ author-url: https://github.com/MAD-GooZe
 demo: https://mad-gooze.github.io/Leaflet.BootstrapZoom/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Overrides default zoom control buttons with Twitter Bootstrap styled ones

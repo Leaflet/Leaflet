@@ -7,6 +7,7 @@ author-url: https://github.com/dwilhelm89
 demo: https://dwilhelm89.github.io/Leaflet.StyleEditor/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Enables editing the styles of features (lines, polygons, etc) and markers with a GUI.

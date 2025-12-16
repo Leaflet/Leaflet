@@ -2,7 +2,7 @@
 layout: v2
 ---
 
-<div class="announcement">May 18, 2025 — <a href="/2025/05/18/leaflet-2.0.0-alpha.html">Leaflet 2.0.0-alpha</a> has been released!</div>
+<div class="announcement">August 16, 2025 — <a href="/2025/05/18/leaflet-2.0.0-alpha.html">Leaflet 2.0.0-alpha.1</a> has been released!</div>
 
 <p>Leaflet is the leading open-source JavaScript library for building powerful interactive maps.
 Weighing just about <abbr title="42 KB gzipped &mdash; that's 142 KB minified and 431 KB in the source form, with 14.5 KB of CSS (3.5 KB gzipped) and 6 KB of images.">42 KB of JS</abbr>,
@@ -19,9 +19,9 @@ and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" 
 
 <p>Here we create a map in the <code>'map'</code> div, add <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, and then add a marker with some text in a popup:</p>
 
-<pre class="basic-code javascript"><code>import {Map, TileLayer, Marker} from 'leaflet';
+<pre class="basic-code javascript"><code>import {LeafletMap, TileLayer, Marker} from 'leaflet';
 
-const map = new Map('map').setView([51.505, -0.09], 13);
+const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&amp;copy; &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
@@ -196,9 +196,9 @@ and spreading the word about Leaflet among your colleagues and friends.</p>
 </div>
 
 <script type="module">
-    import {Map, TileLayer, Marker} from 'leaflet';
+    import {LeafletMap, TileLayer, Marker} from 'leaflet';
     
-    const map = new Map('map').setView([51.505, -0.159], 15);
+    const map = new LeafletMap('map').setView([51.505, -0.159], 15);
     
     new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

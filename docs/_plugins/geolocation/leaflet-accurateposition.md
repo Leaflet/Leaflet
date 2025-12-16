@@ -7,6 +7,7 @@ author-url: https://github.com/M165437
 demo: https://m165437.github.io/Leaflet.AccuratePosition/
 compatible-v0: true
 compatible-v1: false
+compatible-v2: false
 ---
 
 Leaflet.AccuratePosition aims to provide a desired device location accuracy.

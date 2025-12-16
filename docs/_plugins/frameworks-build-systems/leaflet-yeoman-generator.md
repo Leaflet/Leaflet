@@ -7,6 +7,7 @@ author-url: https://github.com/moklick
 demo: https://leaf-gen.moritzklack.com/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Yeoman generator that scaffolds out a basic Leaflet map application.

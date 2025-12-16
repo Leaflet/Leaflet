@@ -7,6 +7,7 @@ author-url: https://github.com/mapshakers
 demo: http://mapshakers.com/projects/leaflet-mapkey-icon/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Set of cartographic font icons based on <a href="https://iconsflow.com">mapkeyicons</a>.

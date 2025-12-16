@@ -51,44 +51,46 @@ import {FeatureGroup} from './FeatureGroup.js';
 // @alternative
 // @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export const Tooltip = DivOverlay.extend({
+export class Tooltip extends DivOverlay {
 
-	// @section
-	// @aka Tooltip options
-	options: {
-		// @option pane: String = 'tooltipPane'
-		// `Map pane` where the tooltip will be added.
-		pane: 'tooltipPane',
+	static {
+		// @section
+		// @aka Tooltip options
+		this.setDefaultOptions({
+			// @option pane: String = 'tooltipPane'
+			// `Map pane` where the tooltip will be added.
+			pane: 'tooltipPane',
 
-		// @option offset: Point = Point(0, 0)
-		// Optional offset of the tooltip position.
-		offset: [0, 0],
+			// @option offset: Point = Point(0, 0)
+			// Optional offset of the tooltip position.
+			offset: [0, 0],
 
-		// @option direction: String = 'auto'
-		// Direction where to open the tooltip. Possible values are: `right`, `left`,
-		// `top`, `bottom`, `center`, `auto`.
-		// `auto` will dynamically switch between `right` and `left` according to the tooltip
-		// position on the map.
-		direction: 'auto',
+			// @option direction: String = 'auto'
+			// Direction where to open the tooltip. Possible values are: `right`, `left`,
+			// `top`, `bottom`, `center`, `auto`.
+			// `auto` will dynamically switch between `right` and `left` according to the tooltip
+			// position on the map.
+			direction: 'auto',
 
-		// @option permanent: Boolean = false
-		// Whether to open the tooltip permanently or only on pointerover.
-		permanent: false,
+			// @option permanent: Boolean = false
+			// Whether to open the tooltip permanently or only on pointerover.
+			permanent: false,
 
-		// @option sticky: Boolean = false
-		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
-		sticky: false,
+			// @option sticky: Boolean = false
+			// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
+			sticky: false,
 
-		// @option opacity: Number = 0.9
-		// Tooltip container opacity.
-		opacity: 0.9
-	},
+			// @option opacity: Number = 0.9
+			// Tooltip container opacity.
+			opacity: 0.9
+		});
+	}
 
 	onAdd(map) {
-		DivOverlay.prototype.onAdd.call(this, map);
+		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Tooltip events
 		// @event tooltipopen: TooltipEvent
 		// Fired when a tooltip is opened in the map.
@@ -103,12 +105,12 @@ export const Tooltip = DivOverlay.extend({
 			// Fired when a tooltip bound to this layer is opened.
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
-	},
+	}
 
 	onRemove(map) {
-		DivOverlay.prototype.onRemove.call(this, map);
+		super.onRemove(map);
 
-		// @namespace Map
+		// @namespace LeafletMap
 		// @section Tooltip events
 		// @event tooltipclose: TooltipEvent
 		// Fired when a tooltip in the map is closed.
@@ -123,42 +125,42 @@ export const Tooltip = DivOverlay.extend({
 			// Fired when a tooltip bound to this layer is closed.
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
-	},
+	}
 
 	getEvents() {
-		const events = DivOverlay.prototype.getEvents.call(this);
+		const events = super.getEvents();
 
 		if (!this.options.permanent) {
 			events.preclick = this.close;
 		}
 
 		return events;
-	},
+	}
 
 	_initLayout() {
 		const prefix = 'leaflet-tooltip',
-		    className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
 		this._container.setAttribute('role', 'tooltip');
 		this._container.setAttribute('id', `leaflet-tooltip-${Util.stamp(this)}`);
-	},
+	}
 
-	_updateLayout() {},
+	_updateLayout() {}
 
-	_adjustPan() {},
+	_adjustPan() {}
 
 	_setPosition(pos) {
 		let subX, subY, direction = this.options.direction;
 		const map = this._map,
-		      container = this._container,
-		      centerPoint = map.latLngToContainerPoint(map.getCenter()),
-		      tooltipPoint = map.layerPointToContainerPoint(pos),
-		      tooltipWidth = container.offsetWidth,
-		      tooltipHeight = container.offsetHeight,
-		      offset = new Point(this.options.offset),
-		      anchor = this._getAnchor();
+		container = this._container,
+		centerPoint = map.latLngToContainerPoint(map.getCenter()),
+		tooltipPoint = map.layerPointToContainerPoint(pos),
+		tooltipWidth = container.offsetWidth,
+		tooltipHeight = container.offsetHeight,
+		offset = new Point(this.options.offset),
+		anchor = this._getAnchor();
 
 		if (direction === 'top') {
 			subX = tooltipWidth / 2;
@@ -195,12 +197,12 @@ export const Tooltip = DivOverlay.extend({
 		);
 		container.classList.add(`leaflet-tooltip-${direction}`);
 		DomUtil.setPosition(container, pos);
-	},
+	}
 
 	_updatePosition() {
 		const pos = this._map.latLngToLayerPoint(this._latlng);
 		this._setPosition(pos);
-	},
+	}
 
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
@@ -208,21 +210,21 @@ export const Tooltip = DivOverlay.extend({
 		if (this._container) {
 			this._container.style.opacity = opacity;
 		}
-	},
+	}
 
 	_animateZoom(e) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 		this._setPosition(pos);
-	},
+	}
 
 	_getAnchor() {
 		// Where should we anchor the tooltip on the source layer?
 		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
-});
+}
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Methods for Layers and Controls
 Map.include({
 
@@ -233,7 +235,7 @@ Map.include({
 	// Creates a tooltip with the specified content and options and open it.
 	openTooltip(tooltip, latlng, options) {
 		this._initOverlay(Tooltip, tooltip, latlng, options)
-		  .openOn(this);
+			.openOn(this);
 
 		return this;
 	},

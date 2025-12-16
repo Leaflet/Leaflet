@@ -7,6 +7,7 @@ author-url: https://github.com/zimmicz
 demo: https://codesandbox.io/s/leaflet-timeline-control-ibyby
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Unopinionated timeline control that helps you display time series data.

@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {Browser, Map, Point} from 'leaflet';
+import {Browser, LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('Map.TapHoldSpec.js', () => {
+describe('LeafletMap.TapHoldSpec.js', () => {
 	let container, clock, spy, map;
 
 	const posStart = {clientX:1, clientY:1};
@@ -13,7 +13,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {
+		map = new LeafletMap(container, {
 			center: [51.505, -0.09],
 			zoom: 13,
 			tapHold: true
@@ -130,7 +130,7 @@ describe('Map.TapHoldSpec.js', () => {
 
 	it('ignores long movements', () => {
 		expect(new Point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
-		  .to.be.above(map.options.tapTolerance);
+			.to.be.above(map.options.tapTolerance);
 
 		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
 		clock.tick(550);

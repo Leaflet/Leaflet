@@ -7,6 +7,7 @@ author-url: https://github.com/calvinmetcalf
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Put an ESRI File GeoDatabase onto your map as a layer.

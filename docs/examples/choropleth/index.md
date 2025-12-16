@@ -33,7 +33,7 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 Let's display our states data on the map:
 
-	const map = new Map('map').setView([37.8, -96], 4);
+	const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

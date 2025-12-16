@@ -7,6 +7,7 @@ author-url: https://ivan.sanchezortega.es/
 demo: https://ivansanchez.gitlab.io/Leaflet.ImageOverlay.Arrugator/demo.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays reprojected ImageOverlays, given four control points and a proj4js projection function.

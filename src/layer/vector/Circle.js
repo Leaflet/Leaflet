@@ -24,7 +24,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 // @constructor Circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-export const Circle = CircleMarker.extend({
+export class Circle extends CircleMarker {
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
@@ -36,20 +36,20 @@ export const Circle = CircleMarker.extend({
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
-	},
+	}
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
 	setRadius(radius) {
 		this._mRadius = radius;
 		return this.redraw();
-	},
+	}
 
 	// @method getRadius(): Number
 	// Returns the current radius of a circle. Units are in meters.
 	getRadius() {
 		return this._mRadius;
-	},
+	}
 
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.
@@ -59,26 +59,32 @@ export const Circle = CircleMarker.extend({
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
 			this._map.layerPointToLatLng(this._point.add(half)));
-	},
+	}
 
-	setStyle: Path.prototype.setStyle,
+	setStyle(options) {
+		Path.prototype.setStyle.call(this, options);
+		if (options?.radius !== undefined) {
+			this.setRadius(options.radius);
+		}
+		return this;
+	}
 
 	_project() {
 
 		const lng = this._latlng.lng,
-		    lat = this._latlng.lat,
-		    map = this._map,
-		    crs = map.options.crs;
+		lat = this._latlng.lat,
+		map = this._map,
+		crs = map.options.crs;
 
 		if (crs.distance === Earth.distance) {
 			const d = Math.PI / 180,
-			      latR = (this._mRadius / Earth.R) / d,
-			      top = map.project([lat + latR, lng]),
-			      bottom = map.project([lat - latR, lng]),
-			      p = top.add(bottom).divideBy(2),
-			      lat2 = map.unproject(p).lat;
+			latR = (this._mRadius / Earth.R) / d,
+			top = map.project([lat + latR, lng]),
+			bottom = map.project([lat - latR, lng]),
+			p = top.add(bottom).divideBy(2),
+			lat2 = map.unproject(p).lat;
 			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
-			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+				        (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
@@ -97,4 +103,4 @@ export const Circle = CircleMarker.extend({
 
 		this._updateBounds();
 	}
-});
+}

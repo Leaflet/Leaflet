@@ -7,6 +7,7 @@ author-url: https://newlighttechnologies.com/
 demo: https://nltgit.github.io/Leaflet.LinearMeasurement/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Leaflet Linear Measurement plugin that creates polylines with incremental measures along the path.

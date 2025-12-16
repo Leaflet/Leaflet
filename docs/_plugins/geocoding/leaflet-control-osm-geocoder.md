@@ -7,6 +7,7 @@ author-url: https://github.com/k4r573n
 demo: https://k4r573n.github.io/leaflet-control-osm-geocoder/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple geocoder that uses OpenstreetMap Nominatim to locate places by address.

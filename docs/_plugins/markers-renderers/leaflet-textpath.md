@@ -7,6 +7,7 @@ author-url: https://github.com/leplatrem
 demo: https://makinacorpus.github.io/Leaflet.TextPath/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows you to draw text along Polylines.

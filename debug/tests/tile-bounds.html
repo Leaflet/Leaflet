@@ -27,9 +27,9 @@
 		<button id="zoomOut" type="button"> Zoom - 0.1 </button>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, GridLayer, Point} from 'leaflet';
+			import {LeafletMap, GridLayer, Point} from 'leaflet';
 
-			const map = new Map('map', {
+			const map = new LeafletMap('map', {
 				center: [35, -122],
 				zoom: 5.7,
 				zoomSnap: 0.1

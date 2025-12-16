@@ -7,6 +7,7 @@ author-url: https://github.com/gregallensworth
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 For use with Cordova/Phonegap, adds tile caching onto local device storage, switching between offline and online mode.

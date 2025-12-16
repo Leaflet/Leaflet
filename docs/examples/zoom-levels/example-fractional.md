@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Fractional Zoom Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		minZoom: 0,
 		maxZoom: 1,
 		zoomSnap: 0.25,
@@ -33,7 +33,7 @@ title: Fractional Zoom Example
 
 	const zoomingInterval = setInterval(zoomCycle, 8000);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const container = DomUtil.create('div');
 			const gauge = DomUtil.create('div');
@@ -46,7 +46,7 @@ title: Fractional Zoom Example
 			container.appendChild(gauge);
 			return container;
 		}
-	});
+	}
 
 	const zoomViewerControl = (new ZoomViewer()).addTo(map);
 

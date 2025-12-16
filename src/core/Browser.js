@@ -19,7 +19,7 @@ const chrome = userAgentContains('chrome');
 const safari = !chrome && userAgentContains('safari');
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
-const mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
+const mobile = typeof orientation !== 'undefined';
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
@@ -44,7 +44,7 @@ const retina = typeof window === 'undefined' || typeof window.devicePixelRatio =
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
 const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
 
-// @property mac: Boolean; `true` when the browser is running in a Linux platform
+// @property linux: Boolean; `true` when the browser is running in a Linux platform
 const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
 
 function userAgentContains(str) {

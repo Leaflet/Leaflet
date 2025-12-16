@@ -7,6 +7,7 @@ author-url: https://github.com/yakitoritabetai
 demo: https://yakitoritabetai.github.io/Leaflet.LabelTextCollision/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays labels on paths (polylines, polygons, circles) avoiding label collision.

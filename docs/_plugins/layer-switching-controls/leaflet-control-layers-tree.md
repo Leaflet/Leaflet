@@ -7,6 +7,7 @@ author-url: https://github.com/jjimenezshaw/
 demo: https://jjimenezshaw.github.io/Leaflet.Control.Layers.Tree/examples/
 compatible-v0:
 compatible-v1: true
+compatible-v2: true
 ---
 
 L.Control.Layers extension that supports a Tree structure, both for base and overlay layers. Simple and highly configurable.

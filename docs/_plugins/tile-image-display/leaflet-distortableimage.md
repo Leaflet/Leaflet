@@ -7,6 +7,7 @@ author-url: https://github.com/publiclab
 demo: https://publiclab.github.io/Leaflet.DistortableImage/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Enable users to <a href="https://publiclab.github.io/Leaflet.DistortableImage/examples/">scale, rotate, and distort images</a> on Leaflet maps.

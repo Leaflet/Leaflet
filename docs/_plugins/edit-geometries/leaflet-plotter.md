@@ -7,6 +7,7 @@ author-url: https://github.com/scripter-co
 demo: http://scripter-co.github.io/leaflet-plotter/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 leaflet-plotter allows you to create routes using a leaflet powered map. You can click on the mid-points to create a new, draggable point.

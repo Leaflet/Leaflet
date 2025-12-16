@@ -7,6 +7,7 @@ author-url: http://glat.info/
 demo: https://outdooractive.github.io/Leaflet.FeatureGroup.LoadEvents/
 compatible-v0: true
 compatible-v1: false
+compatible-v2: false
 ---
 
 `FeatureGroup` that supports the `"loading"` and `"load"` events (for v0.7.*).

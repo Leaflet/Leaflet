@@ -7,6 +7,7 @@ author-url: https://github.com/aratcliffe/
 demo: https://aratcliffe.github.io/Leaflet.contextmenu/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A context menu for Leaflet.

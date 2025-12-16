@@ -51,15 +51,17 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  */
 
 // @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
-export const Polygon = Polyline.extend({
+export class Polygon extends Polyline {
 
-	options: {
-		fill: true
-	},
+	static {
+		this.setDefaultOptions({
+			fill: true
+		});
+	}
 
 	isEmpty() {
 		return !this._latlngs.length || !this._latlngs[0].length;
-	},
+	}
 
 	// @method getCenter(): LatLng
 	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
@@ -69,10 +71,10 @@ export const Polygon = Polyline.extend({
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
-	},
+	}
 
 	_convertLatLngs(latlngs) {
-		const result = Polyline.prototype._convertLatLngs.call(this, latlngs),
+		const result = super._convertLatLngs(latlngs),
 		len = result.length;
 
 		// remove last point if it equals first one
@@ -80,18 +82,18 @@ export const Polygon = Polyline.extend({
 			result.pop();
 		}
 		return result;
-	},
+	}
 
 	_setLatLngs(latlngs) {
-		Polyline.prototype._setLatLngs.call(this, latlngs);
+		super._setLatLngs(latlngs);
 		if (LineUtil.isFlat(this._latlngs)) {
 			this._latlngs = [this._latlngs];
 		}
-	},
+	}
 
 	_defaultShape() {
 		return LineUtil.isFlat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
-	},
+	}
 
 	_clipPoints() {
 		// polygons need a different clipping algorithm so we redefine that
@@ -119,11 +121,11 @@ export const Polygon = Polyline.extend({
 				this._parts.push(clipped);
 			}
 		}
-	},
+	}
 
 	_updatePath() {
 		this._renderer._updatePoly(this, true);
-	},
+	}
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
@@ -147,7 +149,7 @@ export const Polygon = Polyline.extend({
 		}
 
 		// also check if it's on polygon stroke
-		return inside || Polyline.prototype._containsPoint.call(this, p, true);
+		return inside || super._containsPoint(p, true);
 	}
 
-});
+}

@@ -7,6 +7,7 @@ author-url: https://github.com/PowerPan
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Displays the mouse coordinate in a box. Multiple formats are possible: GPS, UTM, UTMREF / MGRS, QTH

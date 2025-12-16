@@ -23,13 +23,13 @@
 			</div>
 		</div>
 		<script type="module">
-			import {TileLayer, LatLng, Map, Popup} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap, Popup} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl, {maxZoom: 18});
 			const latlng = new LatLng(50.5, 30.51);
 
-			const map = new Map('map', {center: latlng, zoom: 15, layers: [osm]});
+			const map = new LeafletMap('map', {center: latlng, zoom: 15, layers: [osm]});
 
 			let s = '';
 			for (let i = 0; i < 100; i++) {

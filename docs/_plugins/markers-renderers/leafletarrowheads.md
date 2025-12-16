@@ -7,6 +7,7 @@ author-url: https://github.com/slutske22
 demo: https://codesandbox.io/s/leaflet-arrowheads-example-zfxxc
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Allows user to quickly draw arrowheads on polylines for vector visualization.

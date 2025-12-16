@@ -10,7 +10,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * (zoom to a selected bounding box), enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @option boxZoom: Boolean = true
@@ -19,43 +19,43 @@ Map.mergeOptions({
 	boxZoom: true
 });
 
-export const BoxZoom = Handler.extend({
+export class BoxZoom extends Handler {
 	initialize(map) {
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 		this._resetStateTimeout = 0;
 		map.on('unload', this._destroy, this);
-	},
+	}
 
 	addHooks() {
 		DomEvent.on(this._container, 'pointerdown', this._onPointerDown, this);
-	},
+	}
 
 	removeHooks() {
 		DomEvent.off(this._container, 'pointerdown', this._onPointerDown, this);
-	},
+	}
 
 	moved() {
 		return this._moved;
-	},
+	}
 
 	_destroy() {
 		this._pane.remove();
 		delete this._pane;
-	},
+	}
 
 	_resetState() {
 		this._resetStateTimeout = 0;
 		this._moved = false;
-	},
+	}
 
 	_clearDeferredResetState() {
 		if (this._resetStateTimeout !== 0) {
 			clearTimeout(this._resetStateTimeout);
 			this._resetStateTimeout = 0;
 		}
-	},
+	}
 
 	_onPointerDown(e) {
 		if (!e.shiftKey || (e.button !== 0)) { return false; }
@@ -76,7 +76,7 @@ export const BoxZoom = Handler.extend({
 			pointerup: this._onPointerUp,
 			keydown: this._onKeyDown
 		}, this);
-	},
+	}
 
 	_onPointerMove(e) {
 		if (!this._moved) {
@@ -91,13 +91,13 @@ export const BoxZoom = Handler.extend({
 		this._point = this._map.pointerEventToContainerPoint(e);
 
 		const bounds = new Bounds(this._point, this._startPoint),
-		    size = bounds.getSize();
+		size = bounds.getSize();
 
 		DomUtil.setPosition(this._box, bounds.min);
 
 		this._box.style.width  = `${size.x}px`;
 		this._box.style.height = `${size.y}px`;
-	},
+	}
 
 	_finish() {
 		if (this._moved) {
@@ -114,7 +114,7 @@ export const BoxZoom = Handler.extend({
 			pointerup: this._onPointerUp,
 			keydown: this._onKeyDown
 		}, this);
-	},
+	}
 
 	_onPointerUp(e) {
 		if (e.button !== 0) { return; }
@@ -134,7 +134,7 @@ export const BoxZoom = Handler.extend({
 		this._map
 			.fitBounds(bounds)
 			.fire('boxzoomend', {boxZoomBounds: bounds});
-	},
+	}
 
 	_onKeyDown(e) {
 		if (e.code === 'Escape') {
@@ -143,7 +143,7 @@ export const BoxZoom = Handler.extend({
 			this._resetState();
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property boxZoom: Handler

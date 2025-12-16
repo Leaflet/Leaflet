@@ -1,4 +1,4 @@
-import {Map, Control, Layer} from 'leaflet';
+import {LeafletMap, Control, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 import {expect} from 'chai';
 
@@ -7,7 +7,7 @@ describe('Control.Attribution', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		control = new Control.Attribution({
 			prefix: 'prefix'

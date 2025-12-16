@@ -7,6 +7,7 @@ author-url: https://github.com/amrHH
 demo: https://amrhh.github.io/Leaflet.OSMDataPicker/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Simple and fast way to get any Open Street Map (OSM) data in your drawn zone. Data from [overpass-turbo](https://overpass-turbo.eu/).

@@ -7,6 +7,7 @@ author-url: https://github.com/bgx1012
 demo: 
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Extend the Polygon Object to fill canvas element with an image pattern. Performance is better than svg rendering. Can improve the rendering performance of big data.

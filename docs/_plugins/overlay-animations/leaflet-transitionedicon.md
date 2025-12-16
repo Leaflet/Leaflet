@@ -7,6 +7,7 @@ author-url: https://github.com/brianreavis
 demo: http://naturalatlas.github.io/leaflet-transitionedicon/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Transition in/out markers with CSS transitions. It supports jitter for staggering markers into view to prevent visual overload.

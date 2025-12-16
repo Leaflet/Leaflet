@@ -7,6 +7,7 @@ author-url: https://github.com/ka7eh
 demo: https://consbio.github.io/Leaflet.HtmlLegend/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple Leaflet plugin for creating legends using HTML elements.

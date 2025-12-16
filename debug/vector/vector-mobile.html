@@ -17,11 +17,11 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, Map, LatLng, LatLngBounds, Marker, Polyline} from 'leaflet';
+			import {TileLayer, LeafletMap, LatLng, LatLngBounds, Marker, Polyline} from 'leaflet';
 			import route from './route.js';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
-			const map = new Map('map', {layers: [osm]});
+			const map = new LeafletMap('map', {layers: [osm]});
 			const latlngs = route.map(p => new LatLng(p[0], p[1]));
 
 			map.fitBounds(new LatLngBounds(latlngs));

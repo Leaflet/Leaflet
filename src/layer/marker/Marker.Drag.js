@@ -22,10 +22,10 @@ import {Point} from '../../geometry/Point.js';
  * Marker dragging handler. Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
-export const MarkerDrag = Handler.extend({
+export class MarkerDrag extends Handler {
 	initialize(marker) {
 		this._marker = marker;
-	},
+	}
 
 	addHooks() {
 		const icon = this._marker._icon;
@@ -42,7 +42,7 @@ export const MarkerDrag = Handler.extend({
 		}, this).enable();
 
 		icon.classList.add('leaflet-marker-draggable');
-	},
+	}
 
 	removeHooks() {
 		this._draggable.off({
@@ -53,20 +53,20 @@ export const MarkerDrag = Handler.extend({
 		}, this).disable();
 
 		this._marker._icon?.classList.remove('leaflet-marker-draggable');
-	},
+	}
 
 	moved() {
 		return this._draggable?._moved;
-	},
+	}
 
 	_adjustPan(e) {
 		const marker = this._marker,
-		    map = marker._map,
-		    speed = this._marker.options.autoPanSpeed,
-		    padding = this._marker.options.autoPanPadding,
-		    iconPos = DomUtil.getPosition(marker._icon),
-		    bounds = map.getPixelBounds(),
-		    origin = map.getPixelOrigin();
+		map = marker._map,
+		speed = this._marker.options.autoPanSpeed,
+		padding = this._marker.options.autoPanPadding,
+		iconPos = DomUtil.getPosition(marker._icon),
+		bounds = map.getPixelBounds(),
+		origin = map.getPixelOrigin();
 
 		const panBounds = new Bounds(
 			bounds.min._subtract(origin).add(padding),
@@ -93,7 +93,7 @@ export const MarkerDrag = Handler.extend({
 
 			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
-	},
+	}
 
 	_onDragStart() {
 		// @section Dragging events
@@ -111,20 +111,20 @@ export const MarkerDrag = Handler.extend({
 		this._marker
 			.fire('movestart')
 			.fire('dragstart');
-	},
+	}
 
 	_onPreDrag(e) {
 		if (this._marker.options.autoPan) {
 			cancelAnimationFrame(this._panRequest);
 			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
-	},
+	}
 
 	_onDrag(e) {
 		const marker = this._marker,
-		    shadow = marker._shadow,
-		    iconPos = DomUtil.getPosition(marker._icon),
-		    latlng = marker._map.layerPointToLatLng(iconPos);
+		shadow = marker._shadow,
+		iconPos = DomUtil.getPosition(marker._icon),
+		latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// update shadow position
 		if (shadow) {
@@ -138,21 +138,21 @@ export const MarkerDrag = Handler.extend({
 		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
 		marker
-		    .fire('move', e)
-		    .fire('drag', e);
-	},
+			.fire('move', e)
+			.fire('drag', e);
+	}
 
 	_onDragEnd(e) {
 		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
 
-		 cancelAnimationFrame(this._panRequest);
+		cancelAnimationFrame(this._panRequest);
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
 		delete this._oldLatLng;
 		this._marker
-		    .fire('moveend')
-		    .fire('dragend', e);
+			.fire('moveend')
+			.fire('dragend', e);
 	}
-});
+}

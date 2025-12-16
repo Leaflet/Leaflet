@@ -7,6 +7,7 @@ author-url: https://github.com/turban
 demo: https://cmulders.github.io/Leaflet.Zoomify/examples/hubble-image.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A TileLayer for Zoomify images.

@@ -7,6 +7,7 @@ author-url: https://wordpress.org/plugins/wp-trip-summary/
 demo: https://github.com/alexboia/WP-Trip-Summary/#screenshots
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A WordPress trip summary plugin to help travel bloggers manage and display structured information about their train rides and biking or hiking trips.

@@ -7,6 +7,7 @@ author-url: https://github.com/rowanwins/
 demo: https://rowanwins.github.io/leaflet-simplestyle/example/basic.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Extends L.geoJSON to support the <a href="https://github.com/mapbox/simplestyle-spec">simple style</a> spec.

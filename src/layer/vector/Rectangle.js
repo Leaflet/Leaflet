@@ -27,16 +27,16 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
  */
 
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-export const Rectangle = Polygon.extend({
+export class Rectangle extends Polygon {
 	initialize(latLngBounds, options) {
-		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
-	},
+		super.initialize(this._boundsToLatLngs(latLngBounds), options);
+	}
 
 	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
 	setBounds(latLngBounds) {
 		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
-	},
+	}
 
 	_boundsToLatLngs(latLngBounds) {
 		latLngBounds = new LatLngBounds(latLngBounds);
@@ -47,4 +47,4 @@ export const Rectangle = Polygon.extend({
 			latLngBounds.getSouthEast()
 		];
 	}
-});
+}

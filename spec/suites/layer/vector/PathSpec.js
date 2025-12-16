@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {LayerGroup, Map, Polygon, Polyline} from 'leaflet';
+import {LayerGroup, LeafletMap, Polygon, Polyline} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -9,7 +9,7 @@ describe('Path', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		map.setView([0, 0], 0);
 	});
 

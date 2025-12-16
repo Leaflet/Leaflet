@@ -7,6 +7,7 @@ author-url: https://github.com/w8r/
 demo: https://milevski.co/Leaflet.Path.Drag
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Drag handler and interaction for polygons and polylines.

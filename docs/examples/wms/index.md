@@ -33,13 +33,13 @@ The base WMS URL is simply the `GetCapabilities` URL, without any parameters, li
 
 And the way to use that in a Leaflet map is simply:
 
-	const map = new Map(mapDiv, mapOptions);
+	const map = new LeafletMap(mapDiv, mapOptions);
 
 	const wmsLayer = new TileLayer.WMS('http://ows.mundialis.de/services/service?', wmsOptions).addTo(map);
 
 An instance of `L.TileLayer.WMS` needs at least one option: `layers`. Be careful, as the concept of "layer" in Leaflet is different from the concept of "layer" in WMS!
 
-WMS servers define a set of *layers* in the service. These are defined in the `GetCapabilities` XML document, which most times is tedious and difficult to understand. Usually it's a good idea to use software such as [QGIS to see what layers are available in a WMS server](http://www.qgistutorials.com/en/docs/working_with_wms.html) to see the layer names available:
+WMS servers define a set of *layers* in the service. These are defined in the `GetCapabilities` XML document, which most times is tedious and difficult to understand. Usually it's a good idea to use software such as [QGIS to see what layers are available in a WMS server](https://www.qgistutorials.com/en/docs/3/working_with_wms.html) to see the layer names available:
 
 ![Discovering WMS layers with QGIS](qgis-wms-layers.png)
 
@@ -108,7 +108,7 @@ From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `Ge
 
 Also note that Leaflet supports very few [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `CRS:3857`, `CRS:3395` and `CRS:4326` (See the documentation for `L.CRS`). If your WMS service doesn't serve images in those coordinate systems, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet. Other than that, just use the right CRS when initializing your map, and any WMS layers added will use it:
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		crs: L.CRS.EPSG4326
 	});
 

@@ -7,6 +7,7 @@ author-url: https://github.com/htoooth/
 demo: http://htoooth.github.io/Leaflet.ChineseTmsProviders/examples/indexTianDiTu.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Contains configurations for various Chinese tile providers — TianDiTu, MapABC, GaoDe, etc.

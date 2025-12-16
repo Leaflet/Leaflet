@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, FeatureGroup, LatLng, Marker} from 'leaflet';
+			import {LeafletMap, TileLayer, FeatureGroup, LatLng, Marker} from 'leaflet';
 
 			/*
 			 * Can be used to profile performance of event system.
@@ -26,7 +26,7 @@
 			 * profiler and examine times for _on, _off and fire.
 			 */
 
-			const map = new Map('map').setView([50.5, 30.51], 15);
+			const map = new LeafletMap('map').setView([50.5, 30.51], 15);
 
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
 

@@ -66,7 +66,7 @@ export function addDoubleTapListener(obj, handler) {
 	// It seems that in all such cases `detail` property of `click` event is always `1`.
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
-	    detail;
+	detail;
 	function simDblclick(ev) {
 		if (ev.detail !== 1) {
 			detail = ev.detail; // keep in sync to avoid false dblclick in some cases

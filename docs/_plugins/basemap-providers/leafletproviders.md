@@ -7,6 +7,7 @@ author-url: https://github.com/leaflet-extras
 demo: https://leaflet-extras.github.io/leaflet-providers/preview/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Contains configurations for various free tile providers — OSM, OpenCycleMap, Stamen, Esri, etc.

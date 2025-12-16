@@ -7,6 +7,7 @@ author-url: https://github.com/iamtekson
 demo: https://iamtekson.github.io/leaflet-geoserver-request/examples/maps.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Basic geoserver requests in leaflet. Currently supports wms, wfs, legend, wmsImage request on the leaflet.

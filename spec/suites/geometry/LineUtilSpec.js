@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Bounds, LineUtil, Map, LatLng, Point, Polyline} from 'leaflet';
+import {Bounds, LineUtil, LeafletMap, LatLng, Point, Polyline} from 'leaflet';
 import sinon from 'sinon';
 import '../SpecHelper.js';
 
@@ -114,7 +114,7 @@ describe('LineUtil', () => {
 	describe('#polylineCenter', () => {
 		let map, crs, zoom;
 		beforeEach(() => {
-			map = new Map(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
+			map = new LeafletMap(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
 		});
 

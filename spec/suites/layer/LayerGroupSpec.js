@@ -18,7 +18,7 @@ describe('LayerGroup', () => {
 	describe('#addLayer', () => {
 		it('adds a layer', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
 
@@ -29,7 +29,7 @@ describe('LayerGroup', () => {
 	describe('#removeLayer', () => {
 		it('removes a layer', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.removeLayer(marker)).to.eql(lg);
@@ -41,7 +41,7 @@ describe('LayerGroup', () => {
 	describe('#clearLayers', () => {
 		it('removes all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.clearLayers()).to.eql(lg);
@@ -53,7 +53,7 @@ describe('LayerGroup', () => {
 	describe('#getLayers', () => {
 		it('gets all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]);
+			marker = new Marker([0, 0]);
 
 			lg.addLayer(marker);
 
@@ -64,8 +64,8 @@ describe('LayerGroup', () => {
 	describe('#eachLayer', () => {
 		it('iterates over all layers', () => {
 			const lg = new LayerGroup(),
-			    marker = new Marker([0, 0]),
-			    ctx = {foo: 'bar'};
+			marker = new Marker([0, 0]),
+			ctx = {foo: 'bar'};
 
 			lg.addLayer(marker);
 
@@ -97,22 +97,6 @@ describe('LayerGroup', () => {
 			lg.addLayer(layer);
 
 			new GeoJSON(lg.toGeoJSON());
-		});
-	});
-
-	describe('#invoke', () => {
-		it('should invoke `setOpacity` method on every layer', () => {
-			const layers = [
-				new Marker([0, 0]),
-				new Marker([1, 1])
-			];
-			const lg = new LayerGroup(layers);
-			const opacity = 0.5;
-
-			expect(layers[0].options.opacity).to.not.eql(opacity);
-			lg.invoke('setOpacity', opacity);
-			expect(layers[0].options.opacity).to.eql(opacity);
-			expect(layers[1].options.opacity).to.eql(opacity);
 		});
 	});
 });

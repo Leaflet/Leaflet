@@ -7,6 +7,7 @@ author-url: https://github.com/ggolikov
 demo: https://ggolikov.github.io/Leaflet.River/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Draw lines with different width (like rivers) on a map. Useful when you want to show how rivers 'flow' on the map.

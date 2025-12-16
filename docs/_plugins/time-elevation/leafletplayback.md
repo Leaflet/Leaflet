@@ -7,6 +7,7 @@ author-url: http://theoutpost.io/
 demo: http://virtualfence.theoutpost.io/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Play back time-stamped GPS Tracks synchronized to a clock.

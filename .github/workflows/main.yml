@@ -12,10 +12,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           check-latest: true
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -62,7 +62,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -81,7 +81,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -107,7 +107,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -147,12 +147,12 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         if: contains(matrix.browser, 'Chrome')
 
       - name: Set up Firefox
@@ -166,8 +166,10 @@ jobs:
         run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
 
   publish-artifacts:
+    permissions: 
+      contents: write 
     needs: setup
-    if: github.repository_owner == 'Leaflet' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    if: github.repository_owner == 'Leaflet' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
@@ -180,16 +182,16 @@ jobs:
         working-directory: dist
         run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
 
-      - name: Publish artifacts
-        uses: jakejarvis/s3-sync-action@v0.5.1
+      - name: Publish development snapshot
+        uses: softprops/action-gh-release@v2
         with:
-          args: --acl public-read --delete --exact-timestamps
+          tag_name: dev
+          name: Development snapshot
+          prerelease: true
+          files: dist/*
+          generate_release_notes: false
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: dist
-          DEST_DIR: content/leaflet/${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-npm:
     needs: setup
@@ -203,7 +205,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org

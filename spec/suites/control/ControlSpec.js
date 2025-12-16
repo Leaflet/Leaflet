@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Control, DomUtil, Map} from 'leaflet';
+import {Control, DomUtil, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -9,12 +9,12 @@ describe('Control', () => {
 	}
 
 	let map,
-	    container,
-	    control;
+	container,
+	control;
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 
 		map.setView([0, 0], 1);
 		control = new Control();

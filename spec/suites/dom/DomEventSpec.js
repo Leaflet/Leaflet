@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomEvent, Map, Util} from 'leaflet';
+import {DomEvent, LeafletMap, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 
@@ -26,7 +26,7 @@ describe('DomEvent', () => {
 		});
 	});
 
-	describe('#on (addListener)', () => {
+	describe('#on', () => {
 		it('throws when type is undefined and context is falseFn', () => {
 			expect(() => DomEvent.on(el, undefined, Util.falseFn)).to.throw();
 		});
@@ -253,7 +253,7 @@ describe('DomEvent', () => {
 
 		it('binds "this" to the given context when passed an event map', () => {
 			const listener = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, {click: listener}, ctx);
 
@@ -264,7 +264,7 @@ describe('DomEvent', () => {
 
 		it('binds "this" to the given context when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, {click: listener, keypress: listener2}, ctx);
 
@@ -298,13 +298,9 @@ describe('DomEvent', () => {
 
 			expect(res).to.equal(DomEvent);
 		});
-
-		it('is aliased to addListener ', () => {
-			expect(DomEvent.on).to.equal(DomEvent.addListener);
-		});
 	});
 
-	describe('#off (removeListener)', () => {
+	describe('#off', () => {
 		it('removes a previously added listener', () => {
 			DomEvent.on(el, 'click', listener);
 			DomEvent.off(el, 'click', listener);
@@ -340,7 +336,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added listener when passed an event map', () => {
 			const listener = sinon.spy(),
-			    events = {click: listener};
+			events = {click: listener};
 
 			DomEvent.on(el, events);
 			DomEvent.off(el, events);
@@ -352,7 +348,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added listener when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2};
+			events = {click: listener, keypress: listener2};
 
 			DomEvent.on(el, events);
 			DomEvent.off(el, events);
@@ -366,7 +362,7 @@ describe('DomEvent', () => {
 
 		it('removes a previously added event when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2},
+			events = {click: listener, keypress: listener2},
 			events2 = {click: listener};
 
 			DomEvent.on(el, events);
@@ -381,7 +377,7 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context', () => {
 			const listener = sinon.spy(),
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, 'click', listener, ctx);
 			DomEvent.off(el, 'click', listener, ctx);
@@ -393,8 +389,8 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context when passed an event map', () => {
 			const listener = sinon.spy(),
-			    events = {click: listener},
-			    ctx = {foo: 'bar'};
+			events = {click: listener},
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events, ctx);
@@ -406,9 +402,9 @@ describe('DomEvent', () => {
 
 		it('removes listener added with context when passed an event map with multiple events', () => {
 			const listener2 = sinon.spy(),
-			    events = {click: listener, keypress: listener2},
+			events = {click: listener, keypress: listener2},
 			events2 = {click: listener},
-			    ctx = {foo: 'bar'};
+			ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events2, ctx);
@@ -443,7 +439,7 @@ describe('DomEvent', () => {
 
 		it('only removes listener when proper context specified when passed an event map', () => {
 			let listener = sinon.spy(),
-			    events = {click: listener};
+			events = {click: listener};
 			const ctx = {foo: 'bar'};
 
 			DomEvent.on(el, events);
@@ -454,7 +450,7 @@ describe('DomEvent', () => {
 			sinon.assert.called(listener);
 
 			listener = sinon.spy();
-			   events = {click: listener};
+			events = {click: listener};
 
 			DomEvent.on(el, events, ctx);
 			DomEvent.off(el, events);
@@ -519,10 +515,6 @@ describe('DomEvent', () => {
 
 			expect(res).to.equal(DomEvent);
 		});
-
-		it('is aliased to removeListener ', () => {
-			expect(DomEvent.off).to.equal(DomEvent.removeListener);
-		});
 	});
 
 	describe('#stopPropagation', () => {
@@ -574,7 +566,7 @@ describe('DomEvent', () => {
 			const grandChild = document.createElement('div');
 			child.appendChild(grandChild);
 
-			const map = new Map(el).setView([0, 0], 0);
+			const map = new LeafletMap(el).setView([0, 0], 0);
 			const mapClickListener = sinon.spy();
 			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case

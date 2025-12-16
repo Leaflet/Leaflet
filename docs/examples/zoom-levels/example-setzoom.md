@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Zoom Control Example
 ---
 <script type="module">
-	import L, {Map, TileLayer, Control, DomUtil} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		minZoom: 0,
 		maxZoom: 1
 	});
@@ -26,7 +26,7 @@ title: Zoom Control Example
 
 	}, 4000);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const gauge = DomUtil.create('div');
 			gauge.style.width = '200px';
@@ -37,7 +37,7 @@ title: Zoom Control Example
 			});
 			return gauge;
 		}
-	});
+	}
 
 	const zoomViewer = (new ZoomViewer()).addTo(map);
 

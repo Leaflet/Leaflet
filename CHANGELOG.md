@@ -3,6 +3,31 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## 2.0.0-alpha.1 (2025-08-16)
+
+## Changes
+
+### ❇️ New Features
+
+* Map: New export `LeafletMap` as an alias for `Map` by @willfarrell in https://github.com/Leaflet/Leaflet/pull/9804
+* Control.Layer: New option `collapseDelay` by @fyyyyy in https://github.com/Leaflet/Leaflet/pull/9612
+
+### ✨ Refactorings (⚠️ Breaking Changes)
+
+* Fully converted all classes to ESM by @simon04 in https://github.com/Leaflet/Leaflet/pull/9677
+* Use optional chaining with function calls by @simon04 in https://github.com/Leaflet/Leaflet/pull/9737
+
+### ❌ Removed Features (⚠️ Breaking Changes)
+
+* Drop aliased functions `addEventListener`, `removeEventListener`, `addOneTimeEventListener`, `fireEvent`, `hasEventListeners` on Evented by @lukewarlow in https://github.com/Leaflet/Leaflet/pull/9781
+* Drop aliased functions `addListener`, `removeListener` on DomEvent by @Falke-Design in https://github.com/Leaflet/Leaflet/pull/9834
+
+### 🐞 Bugfixes
+
+* Cleanup map.locate() by @jorri11 in https://github.com/Leaflet/Leaflet/pull/9746
+* Popup width by @IvanSanchez in https://github.com/Leaflet/Leaflet/pull/9765
+* Fix overlay shifting with new BlanketOverlay by @Falke-Design in https://github.com/Leaflet/Leaflet/pull/9822
+
 ## 2.0.0-alpha (2025-05-18) ⚡ Modernization of Leaflet
 
 After two and a half years of hard work, we’re thrilled to announce the first alpha release of **Leaflet 2.0**!
@@ -51,13 +76,13 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 <script type="importmap">
 	{
 		"imports": {
-			"leaflet": "https://unpkg.com/leaflet@2.0.0-alpha1/dist/leaflet.js"
+			"leaflet": "https://unpkg.com/leaflet@2.0.0-alpha/dist/leaflet.js"
 		}
 	}
 </script>
 <script type="module">
-	import L, {Map, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
-	const map = new Map('map').setView([51.505, -0.09], 13);
+	import L, {LeafletMap, TileLayer, Marker, Circle, Polygon, Popup} from 'leaflet';
+	const map = new LeafletMap('map').setView([51.505, -0.09], 13);
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -67,9 +92,9 @@ For more information checkout the blog post: https://leafletjs.com/2025/05/18/le
 
 ##### Global Script
 ```
-<script src="https://unpkg.com/leaflet@2.0.0-alpha1/dist/leaflet-global.js"></script>
+<script src="https://unpkg.com/leaflet@2.0.0-alpha/dist/leaflet-global.js"></script>
 <script>
-	const map = new L.Map('map').setView([51.505, -0.09], 13);
+	const map = new L.LeafletMap('map').setView([51.505, -0.09], 13);
 	const tiles = new L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

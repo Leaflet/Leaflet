@@ -7,6 +7,7 @@ author-url: https://github.com/turbo87/
 demo: https://turbo87.github.io/sidebar-v2/examples/index.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Another responsive sidebar plugin. This time with tabs!

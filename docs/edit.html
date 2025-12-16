@@ -15,7 +15,7 @@
                 cssFile: 'https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css',
                 css: 'body {\n\tmargin: 0;\n}\nhtml, body, #map {\n\theight: 100%\n}',
                 jsFile: 'https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet-src.js',
-                js: "import {Map, TileLayer, Marker} from 'leaflet';\n\nconst map = new Map('map', {\n\tcenter: [0, 0],\n\tzoom: 0\n});\n\nnew TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n}).addTo(map);\n\nnew Marker(map.getCenter()).addTo(map);"
+                js: "import {LeafletMap, TileLayer, Marker} from 'leaflet';\n\nconst map = new LeafletMap('map', {\n\tcenter: [0, 0],\n\tzoom: 0\n});\n\nnew TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t'attribution': 'Map data © <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors'\n}).addTo(map);\n\nnew Marker(map.getCenter()).addTo(map);"
             };
 
             const hash = location.hash.substring(1);
@@ -28,14 +28,8 @@
             }
 
             if (config.version) {
-                if (config.version === 'main') {
-                    config.cssFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet.css',
-                    config.jsFile = 'https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/main/leaflet-src.js'
-                } else {
-                    config.cssFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet.css`
-                    config.jsFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet-src.js`
-                }
-
+                config.cssFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet.css`
+                config.jsFile = `https://cdn.jsdelivr.net/npm/leaflet@${config.version}/dist/leaflet-src.js`
             }
 
             function createForm (action) {

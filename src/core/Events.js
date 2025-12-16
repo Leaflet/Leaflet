@@ -25,7 +25,7 @@ import * as Util from './Util.js';
  * ```
  */
 
-export const Events = {
+export class Evented extends Class {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -51,7 +51,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	/* @method off(type: String, fn?: Function, context?: Object): this
 	 * Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to `on`, you must pass the same context to `off` in order to remove the listener.
@@ -87,10 +87,17 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
+
+	static __REMOVED_EVENTS = ['mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove'];
 
 	// attach listener (without syntactic sugar now)
 	_on(type, fn, context, _once) {
+		// To be removed in leaflet 3
+		if (Evented.__REMOVED_EVENTS.includes(type)) {
+			console.error(`The event ${type} has been removed. Use the PointerEvent variant instead.`);
+		}
+
 		if (typeof fn !== 'function') {
 			console.warn(`wrong listener type: ${typeof fn}`);
 			return;
@@ -114,7 +121,7 @@ export const Events = {
 		this._events ??= {};
 		this._events[type] ??= [];
 		this._events[type].push(newListener);
-	},
+	}
 
 	_off(type, fn, context) {
 		if (!this._events) {
@@ -157,7 +164,7 @@ export const Events = {
 			}
 			listeners.splice(index, 1);
 		}
-	},
+	}
 
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
 	// Fires an event of the specified type. You can optionally provide a data
@@ -196,7 +203,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	// @method listens(type: String, propagate?: Boolean): Boolean
 	// @method listens(type: String, fn: Function, context?: Object, propagate?: Boolean): Boolean
@@ -230,7 +237,7 @@ export const Events = {
 			}
 		}
 		return false;
-	},
+	}
 
 	// returns the index (number) or false
 	_listens(type, fn, context) {
@@ -251,7 +258,7 @@ export const Events = {
 		const index = listeners.findIndex(l => l.fn === fn && l.ctx === context);
 		return index === -1 ? false : index;
 
-	},
+	}
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
@@ -273,7 +280,7 @@ export const Events = {
 		}
 
 		return this;
-	},
+	}
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
@@ -281,7 +288,7 @@ export const Events = {
 		this._eventParents ??= {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
-	},
+	}
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
@@ -290,7 +297,7 @@ export const Events = {
 			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
-	},
+	}
 
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
@@ -301,5 +308,3 @@ export const Events = {
 		}
 	}
 };
-
-export const Evented = Class.extend(Events);

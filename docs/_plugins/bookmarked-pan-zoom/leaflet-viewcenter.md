@@ -7,6 +7,7 @@ author-url: https://github.com/pwldp/
 demo: https://pwldp.github.io/leaflet.viewcenter/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A simple control that adds a button to change view and zoom to predefined values in options.

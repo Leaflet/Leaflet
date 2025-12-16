@@ -3,9 +3,9 @@ layout: tutorial_frame
 title: Video Overlay Tutorial (Video with Controls)
 ---
 <script type="module">
-	import L, {Map, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
+	import L, {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
 
-	const map = new Map('map');
+	const map = new LeafletMap('map');
 
 	const tiles = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -31,7 +31,7 @@ title: Video Overlay Tutorial (Video with Controls)
 	}).addTo(map);
 
 	videoOverlay.on('load', () => {
-		const MyPauseControl = Control.extend({
+		class MyPauseControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Pause';
@@ -41,8 +41,8 @@ title: Video Overlay Tutorial (Video with Controls)
 				});
 				return button;
 			}
-		});
-		const MyPlayControl = Control.extend({
+		}
+		class MyPlayControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Play';
@@ -52,7 +52,7 @@ title: Video Overlay Tutorial (Video with Controls)
 				});
 				return button;
 			}
-		});
+		}
 
 		const pauseControl = (new MyPauseControl()).addTo(map);
 		const playControl = (new MyPlayControl()).addTo(map);

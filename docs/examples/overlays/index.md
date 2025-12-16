@@ -27,7 +27,7 @@ const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-const map = new Map('map').setView([37.8, -96], 4);
+const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -97,7 +97,7 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
 
 ```
-const map = new Map('map').setView([37.8, -96], 4);
+const map = new LeafletMap('map').setView([37.8, -96], 4);
 
 const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -161,9 +161,9 @@ videoOverlay.getElement().pause();
 
 This allows us to build custom interfaces. For example, we can build a small subclass of `L.Control` to play/pause this video overlay once it's loaded:
 
-```
+```js
 videoOverlay.on('load', function () {
-	const MyPauseControl = Control.extend({
+	class MyPauseControl extends Control {
 		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Pause';
@@ -173,8 +173,8 @@ videoOverlay.on('load', function () {
 			});
 			return button;
 		}
-	});
-	const MyPlayControl = Control.extend({
+	}
+	class MyPlayControl extends Control {
 		onAdd() {
 			const button = DomUtil.create('button');
 			button.title = 'Play';
@@ -184,7 +184,7 @@ videoOverlay.on('load', function () {
 			});
 			return button;
 		}
-	});
+	}
 
 	const pauseControl = (new MyPauseControl()).addTo(map);
 	const playControl = (new MyPlayControl()).addTo(map);

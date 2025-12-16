@@ -7,6 +7,7 @@ author-url: https://github.com/will4906/
 demo: https://will4906.github.io/leaflet-zoompanel/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A Zoom Control Panel Of Leaflet.

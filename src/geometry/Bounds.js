@@ -86,8 +86,8 @@ export class Bounds {
 	// Returns the center point of the bounds.
 	getCenter(round) {
 		return new Point(
-		        (this.min.x + this.max.x) / 2,
-		        (this.min.y + this.max.y) / 2, round);
+			(this.min.x + this.max.x) / 2,
+			(this.min.y + this.max.y) / 2, round);
 	}
 
 	// @method getBottomLeft(): Point

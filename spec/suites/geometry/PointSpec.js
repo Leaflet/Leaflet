@@ -19,7 +19,7 @@ describe('Point', () => {
 	describe('#subtract', () => {
 		it('subtracts the given point from this one', () => {
 			const a = new Point(50, 30),
-			    b = new Point(20, 10);
+			b = new Point(20, 10);
 			expect(a.subtract(b)).to.eql(new Point(30, 20));
 		});
 	});
@@ -78,9 +78,9 @@ describe('Point', () => {
 	describe('#contains', () => {
 		it('returns true if the point is bigger in absolute dimensions than the passed one', () => {
 			const p1 = new Point(50, 30),
-			    p2 = new Point(-40, 20),
-			    p3 = new Point(60, -20),
-			    p4 = new Point(-40, -40);
+			p2 = new Point(-40, 20),
+			p3 = new Point(60, -20),
+			p4 = new Point(-40, -40);
 
 			expect(p1.contains(p2)).to.be.true;
 			expect(p1.contains(p3)).to.be.false;

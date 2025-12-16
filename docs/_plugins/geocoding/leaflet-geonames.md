@@ -7,6 +7,7 @@ author-url: https://github.com/brendan-ward
 demo: https://consbio.github.io/Leaflet.Geonames/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 A lightweight geocoding control powered by <a href="http://www.geonames.org/">GeoNames</a>.

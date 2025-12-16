@@ -17,35 +17,39 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 // @constructor Control.Scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-export const Scale = Control.extend({
-	// @section
-	// @aka Control.Scale options
-	options: {
-		// @option position: String = 'bottomleft'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'bottomleft',
+export class Scale extends Control {
 
-		// @option maxWidth: Number = 100
-		// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-		maxWidth: 100,
+	static {
+		// @section
+		// @aka Control.Scale options
+		this.setDefaultOptions({
+			// @option position: String = 'bottomleft'
+			// The position of the control (one of the map corners). Possible values are `'topleft'`,
+			// `'topright'`, `'bottomleft'` or `'bottomright'`
+			position: 'bottomleft',
 
-		// @option metric: Boolean = True
-		// Whether to show the metric scale line (m/km).
-		metric: true,
+			// @option maxWidth: Number = 100
+			// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+			maxWidth: 100,
 
-		// @option imperial: Boolean = True
-		// Whether to show the imperial scale line (mi/ft).
-		imperial: true
+			// @option metric: Boolean = True
+			// Whether to show the metric scale line (m/km).
+			metric: true,
 
-		// @option updateWhenIdle: Boolean = false
-		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-	},
+			// @option imperial: Boolean = True
+			// Whether to show the imperial scale line (mi/ft).
+			imperial: true,
+
+			// @option updateWhenIdle: Boolean = false
+			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+			updateWhenIdle: false
+		});
+	}
 
 	onAdd(map) {
 		const className = 'leaflet-control-scale',
-		    container = DomUtil.create('div', className),
-		    options = this.options;
+		container = DomUtil.create('div', className),
+		options = this.options;
 
 		this._addScales(options, `${className}-line`, container);
 
@@ -53,11 +57,11 @@ export const Scale = Control.extend({
 		map.whenReady(this._update, this);
 
 		return container;
-	},
+	}
 
 	onRemove(map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-	},
+	}
 
 	_addScales(options, className, container) {
 		if (options.metric) {
@@ -66,18 +70,18 @@ export const Scale = Control.extend({
 		if (options.imperial) {
 			this._iScale = DomUtil.create('div', className, container);
 		}
-	},
+	}
 
 	_update() {
 		const map = this._map,
-		    y = map.getSize().y / 2;
+		y = map.getSize().y / 2;
 
 		const maxMeters = map.distance(
 			map.containerPointToLatLng([0, y]),
 			map.containerPointToLatLng([this.options.maxWidth, y]));
 
 		this._updateScales(maxMeters);
-	},
+	}
 
 	_updateScales(maxMeters) {
 		if (this.options.metric && maxMeters) {
@@ -86,14 +90,14 @@ export const Scale = Control.extend({
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
-	},
+	}
 
 	_updateMetric(maxMeters) {
 		const meters = this._getRoundNum(maxMeters),
-		    label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
+		label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
-	},
+	}
 
 	_updateImperial(maxMeters) {
 		const maxFeet = maxMeters * 3.2808399;
@@ -108,22 +112,22 @@ export const Scale = Control.extend({
 			feet = this._getRoundNum(maxFeet);
 			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
 		}
-	},
+	}
 
 	_updateScale(scale, text, ratio) {
 		scale.style.width = `${Math.round(this.options.maxWidth * ratio)}px`;
 		scale.innerHTML = text;
-	},
+	}
 
 	_getRoundNum(num) {
 		const pow10 = 10 ** ((`${Math.floor(num)}`).length - 1);
 		let d = num / pow10;
 
 		d = d >= 10 ? 10 :
-		    d >= 5 ? 5 :
-		    d >= 3 ? 3 :
-		    d >= 2 ? 2 : 1;
+			d >= 5 ? 5 :
+			d >= 3 ? 3 :
+			d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}
-});
+}

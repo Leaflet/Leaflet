@@ -1,14 +1,13 @@
 import {Map} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
  * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Interaction Options
 Map.mergeOptions({
 	// @section Touch interaction options
@@ -17,7 +16,7 @@ Map.mergeOptions({
 	// passed `'center'`, it will zoom to the center of the view regardless of
 	// where the touch events (fingers) were. Enabled for touch-capable web
 	// browsers.
-	pinchZoom: Browser.touch,
+	pinchZoom: true,
 
 	// @option bounceAtZoomLimits: Boolean = true
 	// Set it to false if you don't want the map to zoom beyond min/max zoom
@@ -25,16 +24,16 @@ Map.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const PinchZoom = Handler.extend({
+export class PinchZoom extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
-	},
+	}
 
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
-	},
+	}
 
 	_onPointerStart(e) {
 		const map = this._map;
@@ -62,8 +61,8 @@ export const PinchZoom = Handler.extend({
 		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
 
-		DomEvent.preventDefault(e);
-	},
+		e.preventDefault();
+	}
 
 	_onPointerMove(e) {
 		const pointers = PointerEvents.getPointers();
@@ -102,8 +101,8 @@ export const PinchZoom = Handler.extend({
 		const moveFn = map._move.bind(map, this._center, this._zoom, {pinch: true, round: false}, undefined);
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
-		DomEvent.preventDefault(e);
-	},
+		e.preventDefault();
+	}
 
 	_onPointerEnd() {
 		if (!this._moved || !this._zooming) {
@@ -124,7 +123,7 @@ export const PinchZoom = Handler.extend({
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property pinchZoom: Handler
@@ -136,6 +135,7 @@ Map.addInitHook(function () {
 	this.touchZoom = this.pinchZoom;
 
 	if (this.options.touchZoom !== undefined) {
+		// To be removed in leaflet 3
 		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 		this.options.pinchZoom = this.options.touchZoom;
 		delete this.options.touchZoom;

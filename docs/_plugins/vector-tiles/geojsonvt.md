@@ -7,6 +7,7 @@ author-url: https://www.mapbox.com/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Efficient library for slicing GeoJSON data into vector tiles on the fly.

@@ -18,7 +18,7 @@ export const create = svgCreate;
  * Use SVG by default for all paths in the map:
  *
  * ```js
- * const map = new Map('map', {
+ * const map = new LeafletMap('map', {
  * 	renderer: new SVG()
  * });
  * ```
@@ -26,7 +26,7 @@ export const create = svgCreate;
  * Use a SVG renderer with extra padding for specific vector geometries:
  *
  * ```js
- * const map = new Map('map');
+ * const map = new LeafletMap('map');
  * const myRenderer = new SVG({ padding: 0.5 });
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle = new Circle( center, { renderer: myRenderer, radius: 100 } );
@@ -36,7 +36,7 @@ export const create = svgCreate;
 // @namespace SVG
 // @constructor SVG(options?: Renderer options)
 // Creates a SVG renderer with the given options.
-export const SVG = Renderer.extend({
+export class SVG extends Renderer {
 
 	_initContainer() {
 		this._container = create('svg');
@@ -46,16 +46,16 @@ export const SVG = Renderer.extend({
 
 		this._rootGroup = create('g');
 		this._container.appendChild(this._rootGroup);
-	},
+	}
 
 	_destroyContainer() {
-		Renderer.prototype._destroyContainer.call(this);
+		super._destroyContainer();
 		delete this._rootGroup;
 		delete this._svgSize;
-	},
+	}
 
 	_resizeContainer() {
-		const size = Renderer.prototype._resizeContainer.call(this);
+		const size = super._resizeContainer();
 
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
@@ -63,20 +63,26 @@ export const SVG = Renderer.extend({
 			this._container.setAttribute('width', size.x);
 			this._container.setAttribute('height', size.y);
 		}
-	},
+
+		// Reset the <SVG>'s viewBox as per _update, but skip redrawing paths.
+		// This keeps paths visually aligned when resizing.
+		const b = this._bounds;
+		if (b) {
+			this._container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		}
+	}
 
 	_update() {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
 		const b = this._bounds,
-		    size = b.getSize(),
-		    container = this._container;
+		size = b.getSize();
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
-		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		this._container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		this.fire('update');
-	},
+	}
 
 	// methods below are called by vector layers implementations
 
@@ -96,28 +102,28 @@ export const SVG = Renderer.extend({
 
 		this._updateStyle(layer);
 		this._layers[stamp(layer)] = layer;
-	},
+	}
 
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
-	},
+	}
 
 	_removePath(layer) {
 		layer._path.remove();
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[stamp(layer)];
-	},
+	}
 
 	_updatePath(layer) {
 		layer._project();
 		layer._update();
-	},
+	}
 
 	_updateStyle(layer) {
 		const path = layer._path,
-		    options = layer.options;
+		options = layer.options;
 
 		if (!path) { return; }
 
@@ -150,17 +156,17 @@ export const SVG = Renderer.extend({
 		} else {
 			path.setAttribute('fill', 'none');
 		}
-	},
+	}
 
 	_updatePoly(layer, closed) {
 		this._setPath(layer, pointsToPath(layer._parts, closed));
-	},
+	}
 
 	_updateCircle(layer) {
 		const p = layer._point,
-		    r = Math.max(Math.round(layer._radius), 1),
-		    r2 = Math.max(Math.round(layer._radiusY), 1) || r,
-		    arc = `a${r},${r2} 0 1,0 `;
+		r = Math.max(Math.round(layer._radius), 1),
+		r2 = Math.max(Math.round(layer._radiusY), 1) || r,
+		arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
 		const d = layer._empty() ? 'M0 0' :
@@ -169,19 +175,19 @@ export const SVG = Renderer.extend({
 				arc}${-r * 2},0 `;
 
 		this._setPath(layer, d);
-	},
+	}
 
 	_setPath(layer, path) {
 		layer._path.setAttribute('d', path);
-	},
+	}
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
 	_bringToFront(layer) {
 		DomUtil.toFront(layer._path);
-	},
+	}
 
 	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
-});
+}
 

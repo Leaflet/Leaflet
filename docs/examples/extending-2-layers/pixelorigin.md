@@ -24,11 +24,11 @@ title: Pixel Origin Examples
 <div id='info' style=''></div>
 
 <script type="module">
-	import L, {Map, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
+	import L, {LeafletMap, TileLayer, Marker, DivIcon, Polyline, DomUtil} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 
-	const map = new Map('map', {
+	const map = new LeafletMap('map', {
 		center: [40, 0],
 		zoom: 1
 	});

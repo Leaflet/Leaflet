@@ -7,6 +7,7 @@ author-url: https://timwis.com/
 demo: https://timwis.com/leaflet-choropleth/examples/basic/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Extends L.geoJson to add a choropleth visualization (color scale based on value).

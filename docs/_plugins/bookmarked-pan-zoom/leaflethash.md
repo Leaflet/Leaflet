@@ -7,6 +7,7 @@ author-url: https://github.com/mlevans
 demo: https://mlevans.com/leaflet-hash/map.html
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Plugin for persisting map state and browsing history through the URL hash.

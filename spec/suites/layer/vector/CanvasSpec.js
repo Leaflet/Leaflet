@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, Map, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
+import {Canvas, Circle, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -14,7 +14,7 @@ describe('Canvas', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container, {preferCanvas: true, zoomControl: false});
+		map = new LeafletMap(container, {preferCanvas: true, zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});
@@ -192,8 +192,8 @@ describe('Canvas', () => {
 
 	it('removes vector on next animation frame', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = Util.stamp(layer),
-		    canvas = map.getRenderer(layer);
+		layerId = Util.stamp(layer),
+		canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);
 
@@ -207,8 +207,8 @@ describe('Canvas', () => {
 
 	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = new Circle([0, 0]).addTo(map),
-		    layerId = Util.stamp(layer),
-		    canvas = map.getRenderer(layer);
+		layerId = Util.stamp(layer),
+		canvas = map.getRenderer(layer);
 
 		expect(canvas._layers).to.have.property(layerId);
 
@@ -234,11 +234,13 @@ describe('Canvas', () => {
 
 		map.addLayer(layer);
 
-		setTimeout(() => {
-			// we need the timeout, because else the requestAnimFrame is not called
-			expect(spy.callCount).to.eql(1);
-			done();
-		}, 50);
+		// Double requestAnimationFrame needed: first to schedule the _redraw, second to verify it executed
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				expect(spy.callCount).to.eql(1);
+				done();
+			});
+		});
 	});
 
 	describe('#bringToBack', () => {
@@ -285,7 +287,7 @@ describe('Canvas', () => {
 			map.remove();
 
 			const canvas = new Canvas();
-			map = new Map(container, {renderer: canvas});
+			map = new LeafletMap(container, {renderer: canvas});
 			map.setView([0, 0], 6);
 			new Polygon(latLngs).addTo(map);
 

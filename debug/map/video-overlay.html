@@ -17,9 +17,9 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {Map, TileLayer, LatLngBounds, VideoOverlay, Control, DomEvent, DomUtil} from 'leaflet';
+			import {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomEvent, DomUtil} from 'leaflet';
 
-			const map = new Map('map');
+			const map = new LeafletMap('map');
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
 
 			const bounds = new LatLngBounds([[32, -130], [13, -100]]);
@@ -43,7 +43,7 @@
 			overlay.on('dblclick', () => console.log('Double click on image.'));
 
 			overlay.on('load', () => {
-				const MyPauseControl = Control.extend({
+				class MyPauseControl extends Control {
 					onAdd() {
 						const button = DomUtil.create('button');
 						button.textContent = '⏸';
@@ -52,9 +52,9 @@
 						});
 						return button;
 					}
-				});
+				}
 
-				const MyPlayControl = Control.extend({
+				class MyPlayControl extends Control {
 					onAdd() {
 						const button = DomUtil.create('button');
 						button.textContent = '⏵';
@@ -63,7 +63,7 @@
 						});
 						return button;
 					}
-				});
+				}
 
 				new MyPauseControl().addTo(map);
 				new MyPlayControl().addTo(map);

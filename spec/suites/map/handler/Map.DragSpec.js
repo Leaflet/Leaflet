@@ -1,11 +1,11 @@
 import {expect} from 'chai';
-import {DomUtil, LatLng, Map, Marker, Point} from 'leaflet';
+import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
-describe('Map.Drag', () => {
+describe('LeafletMap.Drag', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -19,7 +19,7 @@ describe('Map.Drag', () => {
 
 	describe('#addHook', () => {
 		it('calls the map with dragging enabled', () => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true
 			});
 
@@ -29,7 +29,7 @@ describe('Map.Drag', () => {
 		});
 
 		it('calls the map with dragging and worldCopyJump enabled', () => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				worldCopyJump: true
 			});
@@ -41,7 +41,7 @@ describe('Map.Drag', () => {
 
 		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
 			'enables dragging after setting center and zoom', () => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: false,
 				worldCopyJump: true
 			});
@@ -53,14 +53,15 @@ describe('Map.Drag', () => {
 		});
 	});
 
-	const MyMap = Map.extend({
+	class MyMap extends LeafletMap {
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
-		},
+		}
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
-	}).addInitHook('on', 'load', function () {
+	}
+	MyMap.addInitHook('on', 'load', function () {
 		this._initialPos = this._getPosition();
 	});
 
@@ -133,7 +134,7 @@ describe('Map.Drag', () => {
 		});
 
 		it('does not change the center of the map when pointer is moved less than the drag threshold', (done) => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -164,7 +165,7 @@ describe('Map.Drag', () => {
 		});
 
 		it('does not trigger preclick nor click', (done) => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -196,7 +197,7 @@ describe('Map.Drag', () => {
 
 		it('does not trigger preclick nor click when dragging on top of a static marker', (done) => {
 			container.style.width = container.style.height = '600px';
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -236,7 +237,7 @@ describe('Map.Drag', () => {
 
 		it('does not trigger preclick nor click when dragging a marker', (done) => {
 			container.style.width = container.style.height = '600px';
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -275,7 +276,7 @@ describe('Map.Drag', () => {
 		});
 
 		it('does not change the center of the map when drag is disabled on click', (done) => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -338,7 +339,7 @@ describe('Map.Drag', () => {
 		});
 
 		it.skipIfNotTouch('does not change the center of the map when finger is moved less than the drag threshold', (done) => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
@@ -370,7 +371,7 @@ describe('Map.Drag', () => {
 		});
 
 		it.skipIfNotTouch('reset itself after pointerup', (done) => {
-			map = new Map(container, {
+			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false,
 				zoomAnimation: false	// If true, the test has to wait extra 250msec

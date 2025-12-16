@@ -1,4 +1,4 @@
-Leaflet was created 14 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
+Leaflet was created in September 2010, 15 years ago, by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
 Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
@@ -25,7 +25,7 @@ Leaflet maintainers.
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
 
-Weighing just about 42 KB of gzipped JS plus 4 KB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
+Weighing just about 40 kB of gzipped JS plus 3.2 kB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, Map, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, CRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -165,7 +165,7 @@ describe('TileLayer', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
 	});
@@ -335,7 +335,7 @@ describe('TileLayer', () => {
 			simplediv.style.visibility = 'hidden';
 
 			document.body.appendChild(simplediv);
-			const simpleMap = new Map(simplediv, {
+			const simpleMap = new LeafletMap(simplediv, {
 				crs: CRS.Simple
 			}).setView([0, 0], 5);
 			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png');
@@ -406,6 +406,23 @@ describe('TileLayer', () => {
 			});
 		});
 
+		it('supports relative tile URLs', () => {
+			const layer = new TileLayer('./tiles/{z}/{y}/{x}.png').addTo(map);
+
+			const urls = [
+				'./tiles/2/1/1.png',
+				'./tiles/2/1/2.png',
+				'./tiles/2/2/1.png',
+				'./tiles/2/2/2.png'
+			];
+
+			let i = 0;
+			eachImg(layer, (img) => {
+				expect(img.src).to.contain(urls[i].slice(1));
+				i++;
+			});
+		});
+
 		it('adds OSM attribution if none are provided and is using OSM tiles', () => {
 			// Uses OSM tiles without providing attribution
 			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
@@ -442,7 +459,11 @@ describe('TileLayer', () => {
 		});
 
 		it('consults options.foo for {foo}', () => {
-			const OSMLayer = TileLayer.extend({options: {foo: 'bar'}});
+			class OSMLayer extends TileLayer {
+				static {
+					this.setDefaultOptions({foo: 'bar'});
+				}
+			}
 			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
 			map.options.zoomSnap = 0;
 			map._resetView(new LatLng(0, 0), 2.3);

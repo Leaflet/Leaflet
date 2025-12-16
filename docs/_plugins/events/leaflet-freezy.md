@@ -7,6 +7,7 @@ author-url: https://gitlab.com/mrubli/
 demo: https://mrubli.gitlab.io/leaflet-freezy/
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Avoid unwanted scroll capture using hover-to-activate or click-to-activate.

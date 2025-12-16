@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, GridLayer, Map, Point, Util} from 'leaflet';
+import {DomUtil, GridLayer, LeafletMap, Point, Util} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -12,7 +12,7 @@ describe('GridLayer', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		container.style.width = '800px';
 		container.style.height = '600px';
 	});
@@ -36,7 +36,7 @@ describe('GridLayer', () => {
 
 		it('works when map has fadeAnimated=false (IE8 is exempt)', (done) => {
 			map.remove();
-			map = new Map(container, {fadeAnimation: false}).setView([0, 0], 0);
+			map = new LeafletMap(container, {fadeAnimation: false}).setView([0, 0], 0);
 
 			const grid = new GridLayer().setOpacity(0.5).addTo(map);
 			grid.on('load', () => {
@@ -64,7 +64,7 @@ describe('GridLayer', () => {
 
 		for (const tile of tiles) {
 			const coords = tile.coords,
-			    pos = DomUtil.getPosition(tile.tile);
+			pos = DomUtil.getPosition(tile.tile);
 
 			loaded[`${pos.x}:${pos.y}`] = [coords.x, coords.y];
 		}
@@ -94,7 +94,7 @@ describe('GridLayer', () => {
 
 		it('removes tiles for unused zoom levels', (done) => {
 			map.remove();
-			map = new Map(container, {fadeAnimation: false});
+			map = new LeafletMap(container, {fadeAnimation: false});
 			map.setView([0, 0], 1);
 
 			const grid = new GridLayer();
@@ -139,7 +139,7 @@ describe('GridLayer', () => {
 		it('only creates tiles for visible area on zoom in', (done) => {
 			map._zoomAnimated = false; // fixme https://github.com/Leaflet/Leaflet/issues/7116
 			let count = 0,
-			    loadCount = 0;
+			loadCount = 0;
 			grid.createTile = function () {
 				count++;
 				return document.createElement('div');
@@ -217,7 +217,7 @@ describe('GridLayer', () => {
 			const layer = new GridLayer().addTo(map);
 
 			const onAdd = layer.onAdd,
-			    onAddSpy = sinon.spy();
+			onAddSpy = sinon.spy();
 			layer.onAdd = function (...args) {
 				onAdd.apply(this, args);
 				onAddSpy();
@@ -239,7 +239,7 @@ describe('GridLayer', () => {
 		describe('when a gridlayer is added to a map with no other layers', () => {
 			it('has the same zoomlevels as the gridlayer', () => {
 				const maxZoom = 10,
-				    minZoom = 5;
+				minZoom = 5;
 
 				new GridLayer({
 					maxZoom,

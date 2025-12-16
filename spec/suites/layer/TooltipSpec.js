@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {CircleMarker, FeatureGroup, LayerGroup, Map, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
+import {CircleMarker, FeatureGroup, LayerGroup, LeafletMap, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -11,7 +11,7 @@ describe('Tooltip', () => {
 
 	beforeEach(() => {
 		container = container = createContainer();
-		map = new Map(container);
+		map = new LeafletMap(container);
 		map.setView(center, 6);
 	});
 
@@ -404,8 +404,8 @@ describe('Tooltip', () => {
 	it('map.openTooltip considers interactive option', () => {
 		const spy = sinon.spy();
 		const tooltip = new Tooltip({interactive: true, permanent: true})
-		  .setContent('Tooltip')
-		  .on('click', spy);
+			.setContent('Tooltip')
+			.on('click', spy);
 		map.openTooltip(tooltip, center);
 
 		UIEventSimulator.fire('click', tooltip._container);

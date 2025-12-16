@@ -7,6 +7,7 @@ author-url: https://github.com/Flexberry/
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 <a href="https://www.ogc.org/standards/wfs">WFS</a> client layer with transaction support

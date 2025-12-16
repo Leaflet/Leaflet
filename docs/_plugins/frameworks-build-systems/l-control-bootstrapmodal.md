@@ -7,6 +7,7 @@ author-url: https://github.com/gregallensworth
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 Trigger a Bootstrap modal using an on-map control.

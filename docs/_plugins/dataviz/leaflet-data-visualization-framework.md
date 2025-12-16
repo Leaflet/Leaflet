@@ -7,6 +7,7 @@ author-url: https://github.com/sfairgrieve
 demo: 
 compatible-v0:
 compatible-v1: true
+compatible-v2: false
 ---
 
 New markers, layers, and utility classes for easy thematic mapping and data visualization.

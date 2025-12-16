@@ -8,7 +8,7 @@ import {Point} from '../../geometry/Point.js';
  * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
-// @namespace Map
+// @namespace LeafletMap
 // @section Keyboard Navigation Options
 Map.mergeOptions({
 	// @option keyboard: Boolean = true
@@ -21,23 +21,23 @@ Map.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export const Keyboard = Handler.extend({
+export class Keyboard extends Handler {
 
-	keyCodes: {
+	static keyCodes = {
 		left:    ['ArrowLeft'],
 		right:   ['ArrowRight'],
 		down:    ['ArrowDown'],
 		up:      ['ArrowUp'],
 		zoomIn:  ['Equal', 'NumpadAdd', 'BracketRight'],
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
-	},
+	};
 
 	initialize(map) {
 		this._map = map;
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
-	},
+	}
 
 	addHooks() {
 		const container = this._map._container;
@@ -48,7 +48,7 @@ export const Keyboard = Handler.extend({
 		}
 
 		// add aria-attribute for keyboard shortcuts to the container
-		container.ariaKeyShortcuts = Object.values(this.keyCodes).flat().join(' ');
+		container.ariaKeyShortcuts = Object.values(Keyboard.keyCodes).flat().join(' ');
 
 		on(container, {
 			focus: this._onFocus,
@@ -60,7 +60,7 @@ export const Keyboard = Handler.extend({
 			focus: this._addHooks,
 			blur: this._removeHooks
 		}, this);
-	},
+	}
 
 	removeHooks() {
 		this._removeHooks();
@@ -75,7 +75,7 @@ export const Keyboard = Handler.extend({
 			focus: this._addHooks,
 			blur: this._removeHooks
 		}, this);
-	},
+	}
 
 	//  acquire/lose focus #594, #1228, #1540
 	_onPointerDown() {
@@ -89,21 +89,21 @@ export const Keyboard = Handler.extend({
 		this._map._container.focus();
 
 		window.scrollTo(left, top);
-	},
+	}
 
 	_onFocus() {
 		this._focused = true;
 		this._map.fire('focus');
-	},
+	}
 
 	_onBlur() {
 		this._focused = false;
 		this._map.fire('blur');
-	},
+	}
 
 	_setPanDelta(panDelta) {
 		const keys = this._panKeys = {},
-		codes = this.keyCodes;
+		codes = Keyboard.keyCodes;
 
 		for (const code of codes.left) {
 			keys[code] = [-1 * panDelta, 0];
@@ -117,11 +117,11 @@ export const Keyboard = Handler.extend({
 		for (const code of codes.up) {
 			keys[code] = [0, -1 * panDelta];
 		}
-	},
+	}
 
 	_setZoomDelta(zoomDelta) {
 		const keys = this._zoomKeys = {},
-		codes = this.keyCodes;
+		codes = Keyboard.keyCodes;
 
 		for (const code of codes.zoomIn) {
 			keys[code] = zoomDelta;
@@ -129,15 +129,15 @@ export const Keyboard = Handler.extend({
 		for (const code of codes.zoomOut) {
 			keys[code] = -zoomDelta;
 		}
-	},
+	}
 
 	_addHooks() {
 		on(document, 'keydown', this._onKeyDown, this);
-	},
+	}
 
 	_removeHooks() {
 		off(document, 'keydown', this._onKeyDown, this);
-	},
+	}
 
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
@@ -176,7 +176,7 @@ export const Keyboard = Handler.extend({
 
 		stop(e);
 	}
-});
+}
 
 // @section Handlers
 // @section Handlers

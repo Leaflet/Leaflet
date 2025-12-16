@@ -7,6 +7,7 @@ author-url: https://github.com/JamesLMilner
 demo: https://terradraw.io
 compatible-v0: false
 compatible-v1: true
+compatible-v2: false
 ---
 
 Terra Draw's TerraDrawLeafletAdapter allows users to create, select and edit a variety of geometry types (points, lines polygons etc) on a Leaflet map.
