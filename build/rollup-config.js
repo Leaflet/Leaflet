@@ -16,7 +16,25 @@ export default defineConfig({
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
-			sourcemap: true
+			sourcemap: true,
+			plugins: [
+				{
+					name: 'copy-leaflet-assets',
+					generateBundle() {
+						const fileNames = [
+							'leaflet.css',
+							'images/logo.svg',
+							'images/layers.svg',
+							'images/marker-icon.svg',
+							'images/marker-shadow.svg',
+						];
+						for (const fileName of fileNames) {
+							const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
+							this.emitFile({type: 'asset',	fileName, source});
+						}
+					},
+				},
+			]
 		},
 		release && {
 			file: './dist/leaflet.js',
@@ -42,23 +60,5 @@ export default defineConfig({
 			sourcemap: true,
 			esModule: false
 		}
-	],
-	plugins: [
-		{
-			name: 'copy-leaflet-assets',
-			generateBundle() {
-				const fileNames = [
-					'leaflet.css',
-					'images/logo.svg',
-					'images/layers.svg',
-					'images/marker-icon.svg',
-					'images/marker-shadow.svg',
-				];
-				for (const fileName of fileNames) {
-					const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
-					this.emitFile({type: 'asset',	fileName, source});
-				}
-			},
-		},
 	]
 });
