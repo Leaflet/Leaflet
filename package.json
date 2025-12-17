@@ -8,7 +8,7 @@
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.1",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.2",
     "eslint-config-mourner": "^4.1.0",
     "eslint-plugin-baseline-js": "^0.4.2",
     "eslint-plugin-import-x": "^4.16.1",
@@ -25,7 +25,7 @@
     "lint-staged": "^16.2.7",
     "mocha": "^11.7.5",
     "prosthetic-hand": "^2.0.0",
-    "rolldown": "^1.0.0-beta.53",
+    "rolldown": "^1.0.0-beta.55",
     "sinon": "^21.0.0",
     "ssri": "^13.0.0",
     "ui-event-simulator": "^2.0.0"
