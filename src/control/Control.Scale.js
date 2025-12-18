@@ -1,6 +1,7 @@
 
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import {I18n} from '../core/I18n.js';
 
 /*
  * @class Control.Scale
@@ -94,7 +95,9 @@ export class Scale extends Control {
 
 	_updateMetric(maxMeters) {
 		const meters = this._getRoundNum(maxMeters),
-		label = meters < 1000 ? `${meters} m` : `${meters / 1000} km`;
+		label = meters < 1000 ?
+			I18n.translate('{meters} m', {meters}) :
+			I18n.translate('{kilometers} km', {kilometers: meters / 1000});
 
 		this._updateScale(this._mScale, label, meters / maxMeters);
 	}
@@ -106,11 +109,11 @@ export class Scale extends Control {
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
 			miles = this._getRoundNum(maxMiles);
-			this._updateScale(this._iScale, `${miles} mi`, miles / maxMiles);
+			this._updateScale(this._iScale, I18n.translate('{miles} mi', {miles}), miles / maxMiles);
 
 		} else {
 			feet = this._getRoundNum(maxFeet);
-			this._updateScale(this._iScale, `${feet} ft`, feet / maxFeet);
+			this._updateScale(this._iScale, I18n.translate('{feet} ft', {feet}), feet / maxFeet);
 		}
 	}
 
