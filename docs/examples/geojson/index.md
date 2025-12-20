@@ -202,4 +202,36 @@ new GeoJSON(someFeatures, {
 	}
 }).addTo(map);</code></pre>
 
+<h3>Layer to GeoJSON Object</h3>
+
+<p><code>Layer</code> can be easily converted to a GeoJSON object.</p>
+
+<p>Suppose we have a following <code>layer</code></p>
+<pre><code>var circle = L.circle([51.508, -0.11], {
+    color: '#ff7800',
+    fillColor: '#000',
+    fillOpacity: 0.5,
+    radius: 500
+})</code></pre>
+
+<p> We can make use of the <code>toGeoJSON</code> method of <code>layer</code> (<code>circle</code> in above case) to convert it to a GeoJSON object</p>
+
+<pre><code>var geoJSONObject = circle.toGeoJSON()</code></pre>
+
+<h4>Coords Precision</h4>
+
+<p>We can also pass the coords precision to the <code>toGeoJSON</code> method, default value is <code>6</code>. Read more about it here <a href="https://leafletjs.com/reference-1.7.1.html#circlemarker-togeojson">toGeoJSON docs</a>.</p>
+
+<pre><code>var geoJSONObject = circle.toGeoJSON(10)</code></pre>
+
+<h4>Style properties</h4>
+<p>When we are converting <code>layer</code> to a GeoJSON Object using <code>toGeoJSON</code>, it doesn't automatically add properties to the GeoJSON object. To get properties, we can use <code>options</code> attribute of the <code>layer</code>.</p>
+
+<pre><code>var geoJSONObject = {
+	...circle.toGeoJSON(),
+	properties: circle.options,
+}</code></pre>
+
+<p>If we want to convert above geoJSONObject to a <code>layer</code>. We can refer to above <code>pointToLayer</code> section of this doc.</p>
+
 <p>View the <a href="example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>
