@@ -107,7 +107,7 @@ describe('ImageOverlay', () => {
 			expect(overlay.options.zIndex).to.equal(10);
 		});
 
-		it('should update the z-index of the image if it has allready been added to the map', () => {
+		it('should update the z-index of the image if it has already been added to the map', () => {
 			const overlay = new ImageOverlay('', imageBounds);
 			overlay.addTo(map);
 			expect(overlay._image.style.zIndex).to.eql('1');
