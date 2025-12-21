@@ -197,7 +197,7 @@ export class Layers extends Control {
 				return this;
 			}
 
-			// Collapse immediatelly
+			// Collapse immediately
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;

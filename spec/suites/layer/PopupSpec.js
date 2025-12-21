@@ -582,7 +582,7 @@ describe('Popup', () => {
 			expect(marker.isPopupOpen()).to.be.false;
 		});
 
-		it('does not throw is popup is inmediately closed', (done) => {
+		it('does not throw is popup is immediately closed', (done) => {
 			map.on('popupopen', () => {
 				marker.closePopup();
 			});

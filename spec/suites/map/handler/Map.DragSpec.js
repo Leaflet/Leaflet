@@ -378,7 +378,7 @@ describe('LeafletMap.Drag', () => {
 			});
 			map.setView([0, 0], 1);
 
-			// Change default events order to make the tap comming before the pinchZoom.
+			// Change default events order to make the tap coming before the pinchZoom.
 			// See #4315
 			map.dragging.disable();
 			map.dragging.enable();

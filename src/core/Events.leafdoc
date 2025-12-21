@@ -43,7 +43,7 @@ The geographical point where the pointer event occurred.
 @property layerPoint: Point
 Pixel coordinates of the point where the pointer event occurred relative to the map layer.
 @property containerPoint: Point
-Pixel coordinates of the point where the pointer event occurred relative to the map сontainer.
+Pixel coordinates of the point where the pointer event occurred relative to the map container.
 @property originalEvent: DOMEvent
 The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent) that triggered this Leaflet event.
 

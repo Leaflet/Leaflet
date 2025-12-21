@@ -573,7 +573,7 @@ describe('TileLayer', () => {
 			layer.on('tileload load', (e) => {
 				counts[e.type]++;
 
-				// Assets are in memory so all of these events should fire within <1ms of eachother
+				// Assets are in memory so all of these events should fire within <1ms of each other
 				// Let's check assertions after a 10ms debounce
 				clearTimeout(timer);
 				timer = setTimeout(() => {
