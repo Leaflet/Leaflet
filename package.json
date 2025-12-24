@@ -25,7 +25,7 @@
     "lint-staged": "^16.2.7",
     "mocha": "^11.7.5",
     "prosthetic-hand": "^2.0.0",
-    "rolldown": "^1.0.0-beta.55",
+    "rolldown": "^1.0.0-beta.57",
     "sinon": "^21.0.0",
     "ssri": "^13.0.0",
     "ui-event-simulator": "^2.0.0"
