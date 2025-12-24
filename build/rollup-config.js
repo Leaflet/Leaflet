@@ -1,17 +1,15 @@
-import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
-import rollupGitVersion from 'rollup-plugin-git-version';
-import {simpleGit} from 'simple-git';
+import {defineConfig} from 'rolldown';
+import pkg from '../package.json' with {type: 'json'};
 
-// TODO: Replace this with a regular import when ESLint adds support for import assertions.
-// See: https://rollupjs.org/guide/en/#importing-packagejson
-const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 const release = process.env.NODE_ENV === 'release';
-const version = await getVersion();
-const banner = createBanner(version);
+const banner = `/* @preserve
+ * Leaflet ${pkg.version}, a JS library for interactive maps. https://leafletjs.com
+ * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
+ */
+`;
 
-/** @type {import('rollup').RollupOptions} */
-const config = {
+export default defineConfig({
 	input: 'src/LeafletWithGlobals.js',
 	output: [
 		{
@@ -19,58 +17,48 @@ const config = {
 			format: 'es',
 			banner,
 			sourcemap: true,
-			freeze: false
+			plugins: [
+				{
+					name: 'copy-leaflet-assets',
+					generateBundle() {
+						const fileNames = [
+							'leaflet.css',
+							'images/logo.svg',
+							'images/layers.svg',
+							'images/marker-icon.svg',
+							'images/marker-shadow.svg',
+						];
+						for (const fileName of fileNames) {
+							const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
+							this.emitFile({type: 'asset',	fileName, source});
+						}
+					},
+				},
+			]
 		},
-		{
+		release && {
+			file: './dist/leaflet.js',
+			format: 'es',
+			banner,
+			minify: true,
+			sourcemap: true
+		},
+		release && {
+			file: './dist/leaflet-global.js',
+			name: 'leaflet',
+			format: 'umd',
+			banner,
+			minify: true,
+			sourcemap: true,
+			esModule: false
+		},
+		release && {
 			file: './dist/leaflet-global-src.js',
 			name: 'leaflet',
 			format: 'umd',
 			banner,
 			sourcemap: true,
-			freeze: false,
 			esModule: false
 		}
-	],
-	plugins: [
-		release ? json() : rollupGitVersion(),
-		{
-			name: 'copy-leaflet-assets',
-			generateBundle() {
-				const fileNames = [
-					'leaflet.css',
-					'images/logo.svg',
-					'images/layers.svg',
-					'images/marker-icon.svg',
-					'images/marker-shadow.svg',
-				];
-				for (const fileName of fileNames) {
-					const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
-					this.emitFile({type: 'asset',	fileName, source});
-				}
-			},
-		},
 	]
-};
-
-export default config;
-
-async function getVersion() {
-	// Skip the git branch+rev in the banner when doing a release build
-	if (release) {
-		return pkg.version;
-	}
-
-	const git = simpleGit();
-	const branch = (await git.branch()).current;
-	const commit = await git.revparse(['--short', 'HEAD']);
-
-	return `${pkg.version}+${branch}.${commit}`;
-}
-
-export function createBanner(version) {
-	return `/* @preserve
- * Leaflet ${version}, a JS library for interactive maps. https://leafletjs.com
- * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
-}
+});
