@@ -80,12 +80,12 @@ If `true`, panning won't fire `movestart` event on start (used internally for
 panning inertia).
 
 
-@miniclass Zoom/pan options (Map)
+@miniclass Zoom/pan options (LeafletMap)
 @aka zoom/pan options
 @inherits Zoom options
 @inherits Pan options
 
-@miniclass InvalidateSize options (Map)
+@miniclass InvalidateSize options (LeafletMap)
 @aka invalidateSize options
 @inherits Zoom/pan options
 
@@ -96,7 +96,7 @@ If `false`, panning will not occur
 If `true`, it will delay `moveend` event so that it doesn't happen often even if the
 method is called many times in a row.
 
-@miniclass Padding options (Map)
+@miniclass Padding options (LeafletMap)
 @aka padding options
 @option paddingTopLeft: Point = [0, 0]
 Sets the amount of padding in the top left corner of a map container that
@@ -111,7 +111,7 @@ The same for the bottom right corner of the map.
 Equivalent of setting both top left and bottom right padding to the same value.
 
 
-@miniclass FitBounds options (Map)
+@miniclass FitBounds options (LeafletMap)
 @aka fitBounds options
 @inherits Zoom/pan options
 @inherits Padding options
