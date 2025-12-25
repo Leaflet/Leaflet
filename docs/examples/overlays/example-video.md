@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Video Overlay Tutorial (Video with Controls)
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
+	import {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
 
 	const map = new LeafletMap('map');
 
@@ -57,7 +57,4 @@ title: Video Overlay Tutorial (Video with Controls)
 		const pauseControl = (new MyPauseControl()).addTo(map);
 		const playControl = (new MyPlayControl()).addTo(map);
 	});
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

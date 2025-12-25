@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: CRS.Simple Example
 ---
 <script type="module">
-	import L, {LeafletMap, CRS, ImageOverlay, LatLng, Marker, Polyline} from 'leaflet';
+	import {LeafletMap, CRS, ImageOverlay, LatLng, Marker, Polyline} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		crs: CRS.Simple,
@@ -35,7 +35,4 @@ title: CRS.Simple Example
 	const travel = new Polyline([sol, deneb]).addTo(map);
 
 	map.setView(xy(120, 70), 1);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

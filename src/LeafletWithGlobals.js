@@ -1,14 +1,16 @@
 import * as L from './Leaflet.js';
 export * from './Leaflet.js';
 
-export default L;
+const global = getGlobalObject();
+const oldL = global.L;
+const newL = Object.assign({}, L);
 
-const oldL = getGlobalObject().L;
-getGlobalObject().L = L;
-getGlobalObject().L.noConflict = function () {
-	getGlobalObject().L = oldL;
+newL.noConflict = function () {
+	global.L = oldL;
 	return this;
 };
+
+global.L = newL;
 
 function getGlobalObject() {
 	if (typeof globalThis !== 'undefined') { return globalThis; }

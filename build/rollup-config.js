@@ -18,8 +18,7 @@ const config = {
 			file: pkg.exports['.'],
 			format: 'es',
 			banner,
-			sourcemap: true,
-			freeze: false
+			sourcemap: true
 		},
 		{
 			file: './dist/leaflet-global-src.js',
