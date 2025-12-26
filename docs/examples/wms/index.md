@@ -12,7 +12,7 @@ iframe {
 
 <br/>
 
-WMS, short for [*web map service*](https://en.wikipedia.org/wiki/Web_Map_Service), is a popular way of publishing maps by professional GIS software (and seldomly used by non-GISers). This format is similar to map tiles, but more generic and not so well optimized for use in web maps. A WMS image is defined by the coordinates of its corners - a calculation that Leaflet does under the hood.
+WMS, short for [*web map service*](https://en.wikipedia.org/wiki/Web_Map_Service), is a popular way of publishing maps by professional GIS software (and seldom used by non-GISers). This format is similar to map tiles, but more generic and not so well optimized for use in web maps. A WMS image is defined by the coordinates of its corners - a calculation that Leaflet does under the hood.
 
 TMS stands for [*tiled map service*](https://en.wikipedia.org/wiki/Tile_Map_Service), and is a map tiling standard more focused on web maps, very similar to the map tiles that Leaflet expects in a `L.TileLayer`.
 

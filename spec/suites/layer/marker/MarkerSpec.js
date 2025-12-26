@@ -77,7 +77,7 @@ describe('Marker', () => {
 			expect(icon.style.height).to.equal(`${expectedXY}px`);
 		});
 
-		it('changes the icon to another image while re-using the IMG element', () => {
+		it('changes the icon to another image while reusing the IMG element', () => {
 			const marker = new Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
@@ -85,7 +85,7 @@ describe('Marker', () => {
 			marker.setIcon(icon2);
 			const afterIcon = marker._icon;
 
-			expect(beforeIcon).to.equal(afterIcon); // Check that the <IMG> element is re-used
+			expect(beforeIcon).to.equal(afterIcon); // Check that the <IMG> element is reused
 			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
 		});
 
@@ -126,7 +126,7 @@ describe('Marker', () => {
 			expect(marker.dragging.enabled()).to.be.true;
 		});
 
-		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
+		it('changes the DivIcon to another DivIcon, while reusing the DIV element', () => {
 			const marker = new Marker([0, 0], {icon: new DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
@@ -134,7 +134,7 @@ describe('Marker', () => {
 			marker.setIcon(new DivIcon({html: 'Inner2Text'}));
 			const afterIcon = marker._icon;
 
-			expect(beforeIcon).to.equal(afterIcon); // Check that the <DIV> element is re-used
+			expect(beforeIcon).to.equal(afterIcon); // Check that the <DIV> element is reused
 			expect(afterIcon.innerHTML).to.contain('Inner2Text');
 		});
 
@@ -154,7 +154,7 @@ describe('Marker', () => {
 
 			marker.setIcon(icon1);
 
-			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
+			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT reused
 			expect(oldIcon.parentNode).to.equal(null);
 
 			expect(marker._icon.src).to.contain('marker-icon.svg');
@@ -168,7 +168,7 @@ describe('Marker', () => {
 
 			marker.setIcon(new DivIcon({html: 'Inner1Text'}));
 
-			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
+			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT reused
 			expect(oldIcon.parentNode).to.equal(null);
 
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');
