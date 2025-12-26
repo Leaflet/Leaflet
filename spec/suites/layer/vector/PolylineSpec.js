@@ -273,6 +273,48 @@ describe('Polyline', () => {
 		});
 	});
 
+	describe('#setClassName', () => {
+		it('should add multiple css classes', () => {
+			const polyln = polyline([]);
+
+			polyln.addTo(map);
+			polyln.setClassName('added-class-one added-class-two');
+
+			expect(polyln.options.className).to.equal('added-class-one added-class-two');
+			expect(polyln._path.classList).to.include.members(['added-class-one', 'added-class-two']);
+		});
+
+		it('should add and remove css classes', () => {
+			const polyln = polyline([], {className: 'removed-class'});
+
+			polyln.addTo(map);
+			polyln.setClassName('added-class');
+
+			expect(polyln.options.className).to.equal('added-class');
+			expect(polyln._path.classList).not.to.include.members(['removed-class']);
+			expect(polyln._path.classList).to.include.members(['added-class']);
+		});
+
+		it('should remove multiple css classes using an undefined value', () => {
+			const polyln = polyline([], {className: 'removed-class-one removed-class-two'});
+
+			polyln.addTo(map);
+			polyln.setClassName();
+
+			expect(polyln._path.classList).not.to.include.members(['removed-class-one']);
+			expect(polyln._path.classList).not.to.include.members(['removed-class-two']);
+		});
+
+		it('should remove multiple css classes using an empty string', () => {
+			const polyln = polyline([], {className: 'removed-class-one removed-class-two'});
+
+			polyln.addTo(map);
+			polyln.setClassName('');
+
+			expect(polyln._path.classList).not.to.include.members(['removed-class-one']).and.not.to.include.members(['removed-class-two']);
+		});
+	});
+
 	describe('#distance', () => {
 		it('calculates closestLayerPoint', () => {
 			const p1 = map.latLngToLayerPoint([55.8, 37.6]);
