@@ -132,7 +132,7 @@ export class Popup extends DivOverlay {
 	}
 
 	// @namespace Popup
-	// @method openOn(map: Map): this
+	// @method openOn(map: LeafletMap): this
 	// Alternative to `map.openPopup(popup)`.
 	// Adds the popup to the map and closes the previous one.
 	openOn(map) {

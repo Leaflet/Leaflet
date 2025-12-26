@@ -47,7 +47,7 @@ export class Layer extends Evented {
 	/* @section
 	 * Classes extending `Layer` will inherit the following methods:
 	 *
-	 * @method addTo(map: Map|LayerGroup): this
+	 * @method addTo(map: LeafletMap|LayerGroup): this
 	 * Adds the layer to the given map or layer group.
 	 */
 	addTo(map) {
@@ -61,7 +61,7 @@ export class Layer extends Evented {
 		return this.removeFrom(this._map || this._mapToAdd);
 	}
 
-	// @method removeFrom(map: Map): this
+	// @method removeFrom(map: LeafletMap): this
 	// Removes the layer from the given map
 	//
 	// @alternative
@@ -121,10 +121,10 @@ export class Layer extends Evented {
  *
  * Every layer should extend from `Layer` and (re-)implement the following methods.
  *
- * @method onAdd(map: Map): this
+ * @method onAdd(map: LeafletMap): this
  * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
  *
- * @method onRemove(map: Map): this
+ * @method onRemove(map: LeafletMap): this
  * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
  *
  * @method getEvents(): Object
@@ -133,7 +133,7 @@ export class Layer extends Evented {
  * @method getAttribution(): String
  * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
  *
- * @method beforeAdd(map: Map): this
+ * @method beforeAdd(map: LeafletMap): this
  * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.
  */
 

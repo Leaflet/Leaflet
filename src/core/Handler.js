@@ -48,7 +48,7 @@ export class Handler extends Class {
 }
 
 // @section There is static function which can be called without instantiating Handler:
-// @function addTo(map: Map, name: String): this
+// @function addTo(map: LeafletMap, name: String): this
 // Adds a new Handler to the given map with the given name.
 Handler.addTo = function (map, name) {
 	map.addHandler(name, this);
