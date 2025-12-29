@@ -1,4 +1,3 @@
-import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
 import rollupGitVersion from 'rollup-plugin-git-version';
 import {simpleGit} from 'simple-git';
@@ -33,7 +32,7 @@ const config = {
 		}
 	],
 	plugins: [
-		release ? json() : rollupGitVersion(),
+		release ? undefined : rollupGitVersion(),
 		{
 			name: 'copy-leaflet-assets',
 			generateBundle() {
