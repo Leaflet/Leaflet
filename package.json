@@ -8,7 +8,7 @@
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
     "@rollup/plugin-json": "^6.1.0",
     "bundlemon": "^3.1.0",
-    "chai": "^6.2.1",
+    "chai": "^6.2.2",
     "eslint": "^9.39.2",
     "eslint-config-mourner": "^4.1.0",
     "eslint-plugin-baseline-js": "^0.4.2",
