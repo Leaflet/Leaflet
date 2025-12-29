@@ -2,10 +2,8 @@ import json from '@rollup/plugin-json';
 import {readFileSync} from 'node:fs';
 import rollupGitVersion from 'rollup-plugin-git-version';
 import {simpleGit} from 'simple-git';
+import pkg from '../package.json' with {type: 'json'};
 
-// TODO: Replace this with a regular import when ESLint adds support for import assertions.
-// See: https://rollupjs.org/guide/en/#importing-packagejson
-const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
 const release = process.env.NODE_ENV === 'release';
 const version = await getVersion();
 const banner = createBanner(version);

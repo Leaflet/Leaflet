@@ -1,8 +1,5 @@
 import {readFileSync, writeFileSync} from 'node:fs';
-
-// TODO: Replace this with a regular import when ESLint adds support for import assertions.
-// See: https://rollupjs.org/guide/en/#importing-packagejson
-const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
+import pkg from '../package.json' with {type: 'json'};
 
 const fileContent = readFileSync(new URL('../src/Leaflet.js', import.meta.url), 'utf8');
 
