@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: SVG Overlay Tutorial
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer, LatLngBounds, SVGOverlay} from 'leaflet';
+	import {LeafletMap, TileLayer, LatLngBounds, SVGOverlay} from 'leaflet';
 
 	const map = new LeafletMap('map');
 
@@ -24,7 +24,4 @@ title: SVG Overlay Tutorial
 		opacity: 0.7,
 		interactive: true
 	}).addTo(map);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>
