@@ -1,6 +1,6 @@
 
 import {Class} from '../core/Class.js';
-import {Map} from '../map/Map.js';
+import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -126,7 +126,7 @@ export class Control extends Class {
 /* @namespace LeafletMap
  * @section Methods for Layers and Controls
  */
-Map.include({
+LeafletMap.include({
 	// @method addControl(control: Control): this
 	// Adds the given control to the map
 	addControl(control) {

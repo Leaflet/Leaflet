@@ -1,4 +1,4 @@
-import {Map} from '../Map.js';
+import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
@@ -10,7 +10,7 @@ import {Point} from '../../geometry/Point.js';
 
 // @namespace LeafletMap
 // @section Keyboard Navigation Options
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	// @option keyboard: Boolean = true
 	// Makes the map focusable and allows users to navigate the map with keyboard
 	// arrows and `+`/`-` keys.
@@ -182,4 +182,4 @@ export class Keyboard extends Handler {
 // @section Handlers
 // @property keyboard: Handler
 // Keyboard navigation handler.
-Map.addInitHook('addHandler', 'keyboard', Keyboard);
+LeafletMap.addInitHook('addHandler', 'keyboard', Keyboard);

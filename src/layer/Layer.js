@@ -1,5 +1,5 @@
 import {Evented} from '../core/Events.js';
-import {Map} from '../map/Map.js';
+import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -149,7 +149,7 @@ export class Layer extends Evented {
  *
  * @section Methods for Layers and Controls
  */
-Map.include({
+LeafletMap.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
 	addLayer(layer) {

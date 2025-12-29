@@ -1,4 +1,4 @@
-import {Map} from '../Map.js';
+import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 
 /*
@@ -8,7 +8,7 @@ import {Handler} from '../../core/Handler.js';
 // @namespace LeafletMap
 // @section Interaction Options
 
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	// @option doubleClickZoom: Boolean|String = true
 	// Whether the map can be zoomed in by double clicking on it and
 	// zoomed out by double clicking while holding shift. If passed
@@ -52,4 +52,4 @@ export class DoubleClickZoom extends Handler {
 //
 // @property doubleClickZoom: Handler
 // Double click zoom handler.
-Map.addInitHook('addHandler', 'doubleClickZoom', DoubleClickZoom);
+LeafletMap.addInitHook('addHandler', 'doubleClickZoom', DoubleClickZoom);
