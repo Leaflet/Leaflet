@@ -12,7 +12,7 @@ const banner = createBanner(version);
 
 /** @type {import('rollup').RollupOptions} */
 const config = {
-	input: 'src/LeafletWithGlobals.js',
+	input: 'src/Leaflet.js',
 	output: [
 		{
 			file: pkg.exports['.'],
@@ -22,12 +22,16 @@ const config = {
 		},
 		{
 			file: './dist/leaflet-global-src.js',
-			name: 'leaflet',
+			name: 'L',
 			format: 'umd',
 			banner,
 			sourcemap: true,
 			freeze: false,
-			esModule: false
+			esModule: false,
+			noConflict: true,
+			amd: {
+				id: pkg.name
+			}
 		}
 	],
 	plugins: [
