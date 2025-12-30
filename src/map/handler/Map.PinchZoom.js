@@ -1,4 +1,4 @@
-import {Map} from '../Map.js';
+import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
@@ -9,7 +9,7 @@ import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 // @namespace LeafletMap
 // @section Interaction Options
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	// @section Touch interaction options
 	// @option pinchZoom: Boolean|String = *
 	// Whether the map can be zoomed by touch-dragging with two fingers. If
@@ -128,10 +128,10 @@ export class PinchZoom extends Handler {
 // @section Handlers
 // @property pinchZoom: Handler
 // Pinch zoom handler.
-Map.addInitHook('addHandler', 'pinchZoom', PinchZoom);
+LeafletMap.addInitHook('addHandler', 'pinchZoom', PinchZoom);
 
 // Deprecated - Backward compatibility touchZoom
-Map.addInitHook(function () {
+LeafletMap.addInitHook(function () {
 	this.touchZoom = this.pinchZoom;
 
 	if (this.options.touchZoom !== undefined) {

@@ -1,6 +1,6 @@
 
 import {Control} from './Control.js';
-import {Map} from '../map/Map.js';
+import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -129,11 +129,11 @@ export class Attribution extends Control {
 // @section Control options
 // @option attributionControl: Boolean = true
 // Whether a [attribution control](#control-attribution) is added to the map by default.
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	attributionControl: true
 });
 
-Map.addInitHook(function () {
+LeafletMap.addInitHook(function () {
 	if (this.options.attributionControl) {
 		new Attribution().addTo(this);
 	}

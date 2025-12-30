@@ -1,4 +1,4 @@
-import {Map} from '../Map.js';
+import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
@@ -8,7 +8,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
 
 // @namespace LeafletMap
 // @section Interaction Options
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
@@ -88,4 +88,4 @@ export class ScrollWheelZoom extends Handler {
 // @section Handlers
 // @property scrollWheelZoom: Handler
 // Scroll wheel zoom handler.
-Map.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);
+LeafletMap.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);

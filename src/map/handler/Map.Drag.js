@@ -1,4 +1,4 @@
-import {Map} from '../Map.js';
+import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
@@ -10,7 +10,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @namespace LeafletMap
 // @section Interaction Options
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	// @option dragging: Boolean = true
 	// Whether the map is draggable with pointer or not.
 	dragging: true,
@@ -229,4 +229,4 @@ export class Drag extends Handler {
 // @section Handlers
 // @property dragging: Handler
 // Map dragging handler.
-Map.addInitHook('addHandler', 'dragging', Drag);
+LeafletMap.addInitHook('addHandler', 'dragging', Drag);
