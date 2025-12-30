@@ -26,8 +26,6 @@ jobs:
 
       - name: Build project
         run: npm run build
-        env:
-          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache setup
         uses: actions/cache@v5
@@ -87,8 +85,6 @@ jobs:
 
       - name: Build project
         run: npm run build
-        env:
-          NODE_ENV: release
 
       - name: Run bundlemon task
         run: npm run bundlemon

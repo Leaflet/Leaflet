@@ -1,15 +1,8 @@
+import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rollup';
-import {simpleGit} from 'simple-git';
 import pkg from '../package.json' with {type: 'json'};
-
-const version = await getVersion();
-const banner = `/* @preserve
- * Leaflet ${version}, a JS library for interactive maps. https://leafletjs.com
- * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
 
 const STATIC_ASSETS = [
 	'leaflet.css',
@@ -29,6 +22,12 @@ const staticAssetsPlugin = {
 		}
 	},
 };
+
+const banner = `/* @preserve
+ * Leaflet ${pkg.version}, a JS library for interactive maps. https://leafletjs.com
+ * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
+ */
+`;
 
 /** @type {import('rollup').OutputOptions} */
 const commonOptions = {
@@ -50,6 +49,7 @@ const umdOptions = {
 
 export default defineConfig({
 	input: './src/Leaflet.js',
+	plugins: [json()],
 	output: [
 		{
 			...commonOptions,
@@ -72,16 +72,3 @@ export default defineConfig({
 		}
 	]
 });
-
-async function getVersion() {
-	// Skip the git branch+rev in the banner when doing a release build
-	if (process.env.NODE_ENV === 'release') {
-		return pkg.version;
-	}
-
-	const git = simpleGit();
-	const branch = (await git.branch()).current;
-	const commit = await git.revparse(['--short', 'HEAD']);
-
-	return `${pkg.version}+${branch}.${commit}`;
-}
