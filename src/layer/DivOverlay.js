@@ -55,7 +55,7 @@ export class DivOverlay extends Layer {
 		}
 	}
 
-	// @method openOn(map: Map): this
+	// @method openOn(map: LeafletMap): this
 	// Adds the overlay to the map.
 	// Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
 	openOn(map) {
