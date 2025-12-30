@@ -6,6 +6,7 @@
   "devDependencies": {
     "@eslint/css": "^0.14.1",
     "@mapbox/eslint-plugin-script-tags": "^1.0.0",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-terser": "^0.4.4",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.2",
@@ -28,7 +29,6 @@
     "prosthetic-hand": "^2.0.0",
     "requirejs": "^2.3.8",
     "rollup": "^4.54.0",
-    "simple-git": "^3.30.0",
     "sinon": "^21.0.1",
     "ssri": "^13.0.0",
     "ui-event-simulator": "^2.0.0"
@@ -57,8 +57,7 @@
     "lintfix": "npm run lint -- --fix",
     "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",
-    "prepare": "husky",
-    "version": "node ./build/version.js && git add ./src/Leaflet.js"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
