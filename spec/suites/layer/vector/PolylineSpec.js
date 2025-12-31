@@ -161,7 +161,7 @@ describe('Polyline', () => {
 			expect(layer.getCenter()).to.be.nearLatLng(center);
 		});
 
-		it('should compute center of a zick-zack line', () => {
+		it('should compute center of a zig-zag line', () => {
 			const polyln = new Polyline([[0, 0], [50, 50], [30, 30], [35, 35]]).addTo(map);
 			expect(polyln.getCenter()).to.be.nearLatLng([40.551864181628666, 38.36684065813897]);
 		});

@@ -232,7 +232,7 @@ describe('CRS', () => {
 	const crs = CRS;
 
 	describe('#zoom && #scale', () => {
-		it('convert zoom to scale and viceversa and return the same values', () => {
+		it('convert zoom to scale and vice-versa and return the same values', () => {
 			const zoom = 2.5;
 			const scale = crs.scale(zoom);
 			const zoom2 = crs.zoom(scale);
@@ -261,7 +261,7 @@ describe('CRS.ZoomNotPowerOfTwo', () => {
 	});
 
 	describe('#zoom && #scale', () => {
-		it('convert zoom to scale and viceversa and return the same values', () => {
+		it('convert zoom to scale and vice-versa and return the same values', () => {
 			const zoom = 2;
 			const scale = crs.scale(zoom);
 			expect(crs.zoom(scale)).to.eql(zoom);

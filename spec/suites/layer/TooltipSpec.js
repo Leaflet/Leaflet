@@ -327,7 +327,7 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 	});
 
-	it('can be added on polygon with bindTooltip before beind added to the map', () => {
+	it('can be added on polygon with bindTooltip before being added to the map', () => {
 		const layer = new Polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
 
 		layer.bindTooltip('Tooltip', {permanent: true});

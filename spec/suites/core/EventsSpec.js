@@ -533,7 +533,7 @@ describe('Events', () => {
 		});
 
 
-		it('works if called from a context that doesnt implement #Events', () => {
+		it('works if called from a context that does not implement #Events', () => {
 			const obj = new Evented(),
 			spy = sinon.spy(),
 			foo = {};

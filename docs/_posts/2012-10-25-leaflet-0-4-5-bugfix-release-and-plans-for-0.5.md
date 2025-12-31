@@ -28,7 +28,7 @@ The current plan is to release 0.5 stable sometime in mid-November. Stay tuned!
 
 ### Contributing to Leaflet
 
-Leaflet is a true open source project, so we're always happy to meet new contributors, accept patches and bugreports. To help others become involved with Leaflet development and make managing contributions easier, I've put up a [Contributing to Leaflet](https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md) guide with best practices and advices &mdash; check it out!
+Leaflet is a true open source project, so we're always happy to meet new contributors, accept patches and bugreports. To help others become involved with Leaflet development and make managing contributions easier, I've put up a [Contributing to Leaflet](https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md) guide with best practices and advice &mdash; check it out!
 
 Thanks to everyone! Leaflet has got quite an amazing community which makes me really proud. Keep it up!
 

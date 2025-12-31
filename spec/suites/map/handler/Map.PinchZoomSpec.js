@@ -188,7 +188,7 @@ describe('LeafletMap.PinchZoom', () => {
 			onStop() {
 				setTimeout(() => {
 					if (alreadyCalled) {
-						return; // Will recursivly call itself otherwise
+						return; // Will recursively call itself otherwise
 					}
 					alreadyCalled = true;
 
