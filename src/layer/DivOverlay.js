@@ -1,7 +1,6 @@
 import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
@@ -14,7 +13,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
-export const DivOverlay = withInitHooks(class DivOverlay extends Layer {
+export class DivOverlay extends Layer {
 
 	static {
 		// @section
@@ -318,7 +317,7 @@ export const DivOverlay = withInitHooks(class DivOverlay extends Layer {
 		return [0, 0];
 	}
 
-});
+}
 
 LeafletMap.include({
 	_initOverlay(OverlayClass, content, latlng, options) {

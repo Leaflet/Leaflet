@@ -1,5 +1,4 @@
 import {TileLayer} from './TileLayer.js';
-import {withInitHooks} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
@@ -24,7 +23,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor TileLayer.WMS(baseUrl: String, options: TileLayer.WMS options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-export const TileLayerWMS = withInitHooks(class TileLayerWMS extends TileLayer {
+export class TileLayerWMS extends TileLayer {
 
 	static {
 		// @section
@@ -133,4 +132,4 @@ export const TileLayerWMS = withInitHooks(class TileLayerWMS extends TileLayer {
 
 		return this;
 	}
-});
+}

@@ -1,6 +1,5 @@
 
 import {Layer} from './Layer.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -22,7 +21,7 @@ import * as Util from '../core/Util.js';
 
 // @constructor LayerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
-export const LayerGroup = withInitHooks(class LayerGroup extends Layer {
+export class LayerGroup extends Layer {
 
 	constructor(layers, options) {
 		super();
@@ -126,4 +125,4 @@ export const LayerGroup = withInitHooks(class LayerGroup extends Layer {
 	getLayerId(layer) {
 		return Util.stamp(layer);
 	}
-});
+}

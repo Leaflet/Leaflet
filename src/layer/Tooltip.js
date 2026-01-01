@@ -4,7 +4,6 @@ import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {FeatureGroup} from './FeatureGroup.js';
 
@@ -52,7 +51,7 @@ import {FeatureGroup} from './FeatureGroup.js';
 // @alternative
 // @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export const Tooltip = withInitHooks(class Tooltip extends DivOverlay {
+export class Tooltip extends DivOverlay {
 
 	static {
 		// @section
@@ -223,7 +222,7 @@ export const Tooltip = withInitHooks(class Tooltip extends DivOverlay {
 		return new Point(this._source?._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
-});
+}
 
 // @namespace LeafletMap
 // @section Methods for Layers and Controls

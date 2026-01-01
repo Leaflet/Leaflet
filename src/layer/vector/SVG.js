@@ -1,5 +1,4 @@
 import {Renderer} from './Renderer.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';
 import {svgCreate, pointsToPath} from './SVG.Util.js';
@@ -37,7 +36,7 @@ export const create = svgCreate;
 // @namespace SVG
 // @constructor SVG(options?: Renderer options)
 // Creates a SVG renderer with the given options.
-export const SVG = withInitHooks(class SVG extends Renderer {
+export class SVG extends Renderer {
 
 	_initContainer() {
 		this._container = create('svg');
@@ -190,5 +189,5 @@ export const SVG = withInitHooks(class SVG extends Renderer {
 	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
-});
+}
 

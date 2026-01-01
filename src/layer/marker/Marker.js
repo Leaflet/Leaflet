@@ -1,6 +1,5 @@
 import {Layer} from '../Layer.js';
 import {IconDefault} from './Icon.Default.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Point} from '../../geometry/Point.js';
@@ -22,7 +21,7 @@ import {MarkerDrag} from './Marker.Drag.js';
 
 // @constructor Marker(latlng: LatLng, options? : Marker options)
 // Instantiates a Marker object given a geographical point and optionally an options object.
-export const Marker = withInitHooks(class Marker extends Layer {
+export class Marker extends Layer {
 
 	static {
 		// @section
@@ -413,4 +412,4 @@ export const Marker = withInitHooks(class Marker extends Layer {
 	_getTooltipAnchor() {
 		return this.options.icon.options.tooltipAnchor;
 	}
-});
+}

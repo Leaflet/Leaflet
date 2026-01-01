@@ -1,7 +1,6 @@
 import {ImageOverlay} from './ImageOverlay.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -25,7 +24,7 @@ import * as Util from '../core/Util.js';
 // @constructor VideoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
-export const VideoOverlay = withInitHooks(class VideoOverlay extends ImageOverlay {
+export class VideoOverlay extends ImageOverlay {
 
 	static {
 		// @section
@@ -104,4 +103,4 @@ export const VideoOverlay = withInitHooks(class VideoOverlay extends ImageOverla
 	// @method getElement(): HTMLVideoElement
 	// Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
 	// used by this overlay.
-});
+}

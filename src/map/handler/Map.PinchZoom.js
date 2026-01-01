@@ -1,6 +1,5 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
@@ -25,7 +24,7 @@ LeafletMap.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export const PinchZoom = withInitHooks(class PinchZoom extends Handler {
+export class PinchZoom extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
@@ -124,7 +123,7 @@ export const PinchZoom = withInitHooks(class PinchZoom extends Handler {
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
 	}
-});
+}
 
 // @section Handlers
 // @property pinchZoom: Handler

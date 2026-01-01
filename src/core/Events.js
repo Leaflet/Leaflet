@@ -1,4 +1,4 @@
-import {Class, withInitHooks} from './Class.js';
+import {Class} from './Class.js';
 import * as Util from './Util.js';
 
 /*
@@ -25,7 +25,7 @@ import * as Util from './Util.js';
  * ```
  */
 
-export const Evented = withInitHooks(class Evented extends Class {
+export class Evented extends Class {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -307,4 +307,4 @@ export const Evented = withInitHooks(class Evented extends Class {
 			}, true);
 		}
 	}
-});
+}

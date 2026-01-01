@@ -1,4 +1,3 @@
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
 import {EPSG3857} from '../geo/crs/CRS.EPSG3857.js';
@@ -49,7 +48,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // @constructor Map(el: HTMLElement, options?: Map options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `LeafletMap options`.
-export const LeafletMap = withInitHooks(class LeafletMap extends Evented {
+export class LeafletMap extends Evented {
 
 	static {
 		this.setDefaultOptions({
@@ -1764,6 +1763,6 @@ export const LeafletMap = withInitHooks(class LeafletMap extends Evented {
 
 		this._moveEnd(true);
 	}
-});
+}
 
 export const Map = LeafletMap;

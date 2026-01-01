@@ -1,6 +1,5 @@
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
@@ -16,7 +15,7 @@ import {Bounds} from '../geometry/Bounds.js';
  * that rely on one single HTML element
  */
 
-export const BlanketOverlay = withInitHooks(class BlanketOverlay extends Layer {
+export class BlanketOverlay extends Layer {
 
 	static {
 		// @section
@@ -167,4 +166,4 @@ export const BlanketOverlay = withInitHooks(class BlanketOverlay extends Layer {
 	_onZoomEnd() {}
 	_onViewReset() {}
 	_onSettled() {}
-});
+}

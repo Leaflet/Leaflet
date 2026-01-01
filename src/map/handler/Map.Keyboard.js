@@ -1,6 +1,5 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
-import {withInitHooks} from '../../core/Class.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
@@ -22,7 +21,7 @@ LeafletMap.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export const Keyboard = withInitHooks(class Keyboard extends Handler {
+export class Keyboard extends Handler {
 
 	static keyCodes = {
 		left:    ['ArrowLeft'],
@@ -179,7 +178,7 @@ export const Keyboard = withInitHooks(class Keyboard extends Handler {
 
 		stop(e);
 	}
-});
+}
 
 // @section Handlers
 // @section Handlers

@@ -1,6 +1,5 @@
 import {Renderer} from './Renderer.js';
 import * as DomEvent from '../../dom/DomEvent.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -33,7 +32,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor Canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
-export const Canvas = withInitHooks(class Canvas extends Renderer {
+export class Canvas extends Renderer {
 
 	static {
 		// @section
@@ -472,4 +471,4 @@ export const Canvas = withInitHooks(class Canvas extends Renderer {
 
 		this._requestRedraw(layer);
 	}
-});
+}

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Class, Evented, withInitHooks} from 'leaflet';
+import {Class, Evented} from 'leaflet';
 import sinon from 'sinon';
 
 describe('Class', () => {
@@ -335,109 +335,5 @@ describe('Class#include', () => {
 		K1.extend(props);
 
 		expect(props.options).to.equal(opts);
-	});
-});
-
-describe('withInitHooks', () => {
-	it('registers and triggers the initialization hooks correctly', () => {
-		const constructASpy = sinon.spy();
-		const initHookASpy = sinon.spy();
-		const constructBSpy = sinon.spy();
-		const initHookBSpy = sinon.spy();
-
-		// Give the spies names so they show up properly in logs.
-		constructASpy.displayName = 'constructA';
-		initHookASpy.displayName = 'initHookA';
-		constructBSpy.displayName = 'constructB';
-		initHookBSpy.displayName = 'initHookB';
-
-		const A = withInitHooks(class A {
-			constructor(argA) {
-				this.constructA = 'constructed A';
-				this.argA = argA;
-				constructASpy(argA);
-			}
-		});
-
-		const hookAReturnValue = A.addInitHook(function () {
-			this.hookedA = 'hooked A';
-			initHookASpy();
-		});
-
-		const B = withInitHooks(class B extends A {
-			constructor(argA, argB) {
-				super(argA);
-				this.constructB = 'constructed B';
-				this.argB = argB;
-				constructBSpy(argB);
-			}
-		});
-
-		const hookBReturnValue = B.addInitHook(function () {
-			this.hookedB = 'hooked B';
-			initHookBSpy();
-		});
-
-		const instance = new B('valueA', 'valueB');
-
-		// Assert that the classes returned by addInitHook are the same as the originals.
-		expect(hookAReturnValue).to.equal(A);
-		expect(hookBReturnValue).to.equal(B);
-
-		// Assert that constructors and hooks were called in the expected order.
-		sinon.assert.callOrder(
-			constructASpy,
-			initHookASpy,
-			constructBSpy,
-			initHookBSpy
-		);
-
-		// Assert that the fields set during construction and hooking are present.
-		expect(instance.constructA).to.eql('constructed A');
-		expect(instance.hookedA).to.eql('hooked A');
-		expect(instance.constructB).to.eql('constructed B');
-		expect(instance.hookedB).to.eql('hooked B');
-
-		// Assert that constructor arguments are properly forwarded.
-		expect(instance.argA).to.eql('valueA');
-		expect(instance.argB).to.eql('valueB');
-		expect(constructASpy.calledWith('valueA')).to.be.true;
-		expect(constructBSpy.calledWith('valueB')).to.be.true;
-	});
-
-	it('triggers hooks registered with method name and arguments', () => {
-		const methodSpy = sinon.spy();
-
-		const TestClass = withInitHooks(class TestClass {
-			testMethod(arg1, arg2, arg3) {
-				methodSpy(arg1, arg2, arg3);
-			}
-		});
-
-		TestClass.addInitHook('testMethod', 'value1', 'value2', 'value3');
-
-		new TestClass();
-
-		expect(methodSpy.calledOnce).to.be.true;
-		expect(methodSpy.calledWith('value1', 'value2', 'value3')).to.be.true;
-	});
-
-	it('throws an error when \'addInitHook()\' is called on an unwrapped named class', () => {
-		const WrappedParent = withInitHooks(class WrappedParent {});
-		class TestClass extends WrappedParent {}
-
-		expect(() => {
-			TestClass.addInitHook(() => {});
-		}).to.throw(Error, 'The \'addInitHook()\' method can only be called on classes wrapped with \'withInitHooks()\'. Try wrapping your class:\n\nconst TestClass = withInitHooks(class TestClass { ... });\n');
-	});
-
-	it('throws an error when \'addInitHook()\' is called on unwrapped anonymous class', () => {
-		const WrappedParent = withInitHooks(class WrappedParent {});
-		// Wrapped with an IFFE to prevent the class from getting the name 'TestClass'.
-		const TestClass = (() => class extends WrappedParent {})();
-
-		expect(() => {
-			TestClass.addInitHook(() => {});
-		}).to.throw(Error, 'The \'addInitHook()\' method can only be called on classes wrapped with \'withInitHooks()\'. Try wrapping your class:\n\nconst (anonymous) = withInitHooks(class (anonymous) { ... });\n');
 	});
 });

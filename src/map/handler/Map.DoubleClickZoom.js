@@ -1,6 +1,5 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
-import {withInitHooks} from '../../core/Class.js';
 
 /*
  * Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
@@ -18,7 +17,7 @@ LeafletMap.mergeOptions({
 	doubleClickZoom: true
 });
 
-export const DoubleClickZoom = withInitHooks(class DoubleClickZoom extends Handler {
+export class DoubleClickZoom extends Handler {
 	addHooks() {
 		this._map.on('dblclick', this._onDoubleClick, this);
 	}
@@ -39,7 +38,7 @@ export const DoubleClickZoom = withInitHooks(class DoubleClickZoom extends Handl
 			map.setZoomAround(e.containerPoint, zoom);
 		}
 	}
-});
+}
 
 // @section Handlers
 //

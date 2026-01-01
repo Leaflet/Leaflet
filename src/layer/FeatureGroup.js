@@ -1,5 +1,4 @@
 import {LayerGroup} from './LayerGroup.js';
-import {withInitHooks} from '../core/Class.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 /*
@@ -25,7 +24,7 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 // @constructor FeatureGroup(layers?: Layer[], options?: Object)
 // Create a feature group, optionally given an initial set of layers and an `options` object.
-export const FeatureGroup = withInitHooks(class FeatureGroup extends LayerGroup {
+export class FeatureGroup extends LayerGroup {
 
 	addLayer(layer) {
 		if (this.hasLayer(layer)) {
@@ -86,4 +85,4 @@ export const FeatureGroup = withInitHooks(class FeatureGroup extends LayerGroup 
 		}
 		return bounds;
 	}
-});
+}

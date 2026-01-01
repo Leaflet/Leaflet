@@ -1,4 +1,4 @@
-import {Class, withInitHooks} from './Class.js';
+import {Class} from './Class.js';
 
 /*
 	Handler is a base class for handler classes that are used internally to inject
@@ -8,7 +8,7 @@ import {Class, withInitHooks} from './Class.js';
 // @class Handler
 // Abstract class for map interaction handlers
 
-export const Handler = withInitHooks(class Handler extends Class {
+export class Handler extends Class {
 	constructor(map) {
 		super();
 		this._map = map;
@@ -46,7 +46,7 @@ export const Handler = withInitHooks(class Handler extends Class {
 	// Called when the handler is enabled, should add event hooks.
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
-});
+}
 
 // @section There is static function which can be called without instantiating Handler:
 // @function addTo(map: LeafletMap, name: String): this

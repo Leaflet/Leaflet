@@ -104,7 +104,3 @@ export class Class {
 		}
 	}
 }
-
-export function withInitHooks(TargetClass) {
-	return TargetClass;
-}

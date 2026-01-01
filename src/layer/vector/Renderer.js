@@ -1,5 +1,4 @@
 import {BlanketOverlay} from '../BlanketOverlay.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -24,7 +23,7 @@ import * as Util from '../../core/Util.js';
  * its map has moved
  */
 
-export const Renderer = withInitHooks(class Renderer extends BlanketOverlay {
+export class Renderer extends BlanketOverlay {
 
 	constructor(options) {
 		super();
@@ -72,4 +71,4 @@ export const Renderer = withInitHooks(class Renderer extends BlanketOverlay {
 	// the 'update' event whenever appropriate (before/after rendering).
 	_update() {}
 
-});
+}

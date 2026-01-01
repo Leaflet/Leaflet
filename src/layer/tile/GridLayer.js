@@ -1,5 +1,4 @@
 import {Layer} from '../Layer.js';
-import {withInitHooks} from '../../core/Class.js';
 import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
@@ -74,7 +73,7 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 // @constructor GridLayer(options?: GridLayer options)
 // Creates a new instance of GridLayer with the supplied options.
-export const GridLayer = withInitHooks(class GridLayer extends Layer {
+export class GridLayer extends Layer {
 
 	static {
 	// @section
@@ -896,4 +895,4 @@ export const GridLayer = withInitHooks(class GridLayer extends Layer {
 	_noTilesToLoad() {
 		return Object.values(this._tiles).every(t => t.loaded);
 	}
-});
+}

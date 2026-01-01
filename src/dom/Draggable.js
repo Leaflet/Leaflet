@@ -1,4 +1,3 @@
-import {withInitHooks} from '../core/Class.js';
 import {Evented} from '../core/Events.js';
 import * as DomEvent from './DomEvent.js';
 import * as DomUtil from './DomUtil.js';
@@ -20,7 +19,7 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
  * ```
  */
 
-export const Draggable = withInitHooks(class Draggable extends Evented {
+export class Draggable extends Evented {
 
 	static {
 		this.setDefaultOptions({
@@ -200,4 +199,4 @@ export const Draggable = withInitHooks(class Draggable extends Evented {
 		}
 	}
 
-});
+}

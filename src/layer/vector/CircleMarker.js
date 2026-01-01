@@ -1,5 +1,4 @@
 import {Path} from './Path.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
@@ -14,7 +13,7 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
-export const CircleMarker = withInitHooks(class CircleMarker extends Path {
+export class CircleMarker extends Path {
 
 	static {
 		// @section
@@ -105,4 +104,4 @@ export const CircleMarker = withInitHooks(class CircleMarker extends Path {
 	_containsPoint(p) {
 		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 	}
-});
+}

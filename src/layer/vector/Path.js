@@ -1,5 +1,4 @@
 import {Layer} from '../Layer.js';
-import {withInitHooks} from '../../core/Class.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -10,7 +9,7 @@ import * as Util from '../../core/Util.js';
  * overlays (Polygon, Polyline, Circle). Do not use it directly. Extends `Layer`.
  */
 
-export const Path = withInitHooks(class Path extends Layer {
+export class Path extends Layer {
 
 	static {
 		// @section
@@ -143,4 +142,4 @@ export const Path = withInitHooks(class Path extends Layer {
 		return (this.options.stroke ? this.options.weight / 2 : 0) +
 		  (this._renderer.options.tolerance || 0);
 	}
-});
+}

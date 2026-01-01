@@ -1,6 +1,5 @@
 
 import {Control} from './Control.js';
-import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
@@ -45,7 +44,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 // @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-export const Layers = withInitHooks(class Layers extends Control {
+export class Layers extends Control {
 
 	static {
 		// @section
@@ -440,4 +439,4 @@ export const Layers = withInitHooks(class Layers extends Control {
 		});
 	}
 
-});
+}

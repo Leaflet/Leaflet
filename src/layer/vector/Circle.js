@@ -1,6 +1,5 @@
 import {CircleMarker} from './CircleMarker.js';
 import {Path} from './Path.js';
-import {withInitHooks} from '../../core/Class.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Earth} from '../../geo/crs/CRS.Earth.js';
 
@@ -23,7 +22,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 // @constructor Circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-export const Circle = withInitHooks(class Circle extends CircleMarker {
+export class Circle extends CircleMarker {
 
 	constructor(latlng, options) {
 		super(latlng, options);
@@ -101,4 +100,4 @@ export const Circle = withInitHooks(class Circle extends CircleMarker {
 
 		this._updateBounds();
 	}
-});
+}

@@ -1,6 +1,5 @@
 import {Polygon} from './Polygon.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
-import {withInitHooks} from '../../core/Class.js';
 
 /*
  * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
@@ -28,7 +27,7 @@ import {withInitHooks} from '../../core/Class.js';
  */
 
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-export const Rectangle = withInitHooks(class Rectangle extends Polygon {
+export class Rectangle extends Polygon {
 	constructor(latLngBounds, options) {
 		super(Rectangle.#boundsToLatLngs(latLngBounds), options);
 	}
@@ -48,4 +47,4 @@ export const Rectangle = withInitHooks(class Rectangle extends Polygon {
 			latLngBounds.getSouthEast()
 		];
 	}
-});
+}
