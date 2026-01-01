@@ -27,6 +27,10 @@ describe('Marker.Drag', () => {
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
+		addTo(map) {
+			this.callInitHooks().then(() => super.addTo(map));
+			return this;
+		}
 	}
 	MyMarker.addInitHook('on', 'add', function () {
 		this._initialPos = this._getPosition();

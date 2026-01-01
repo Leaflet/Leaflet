@@ -9,10 +9,11 @@ describe('Tooltip', () => {
 	let container, map;
 	const center = [55.8, 37.6];
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = container = createContainer();
 		map = new LeafletMap(container);
 		map.setView(center, 6);
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {
