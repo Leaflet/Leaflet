@@ -18,21 +18,23 @@ describe('LeafletMap.Drag', () => {
 	});
 
 	describe('#addHook', () => {
-		it('calls the map with dragging enabled', () => {
+		it('calls the map with dragging enabled', async () => {
 			map = new LeafletMap(container, {
 				dragging: true
 			});
+			await map.callInitHooks();
 
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
 			expect(map.dragging.enabled()).to.be.true;
 		});
 
-		it('calls the map with dragging and worldCopyJump enabled', () => {
+		it('calls the map with dragging and worldCopyJump enabled', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				worldCopyJump: true
 			});
+			await map.callInitHooks();
 
 			expect(map.dragging.enabled()).to.be.true;
 			map.setView([0, 0], 0);
@@ -40,11 +42,12 @@ describe('LeafletMap.Drag', () => {
 		});
 
 		it('calls the map with dragging disabled and worldCopyJump enabled; ' +
-			'enables dragging after setting center and zoom', () => {
+			'enables dragging after setting center and zoom', async () => {
 			map = new LeafletMap(container, {
 				dragging: false,
 				worldCopyJump: true
 			});
+			await map.callInitHooks();
 
 			expect(map.dragging.enabled()).to.be.false;
 			map.setView([0, 0], 0);
@@ -66,11 +69,13 @@ describe('LeafletMap.Drag', () => {
 	});
 
 	describe('pointer events', () => {
-		it('change the center of the map', (done) => {
+		it('change the center of the map', async () => {
+			const {promise, resolve} = Promise.withResolvers();
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
 			});
+			await map.callInitHooks();
 			map.setView([0, 0], 1);
 
 			const start = new Point(200, 200);
@@ -85,13 +90,14 @@ describe('LeafletMap.Drag', () => {
 					expect(map.getZoom()).to.equal(1);
 					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 
-					done();
+					resolve();
 				}
 			});
 			const pointer = hand.growFinger('pointer');
 
 			pointer.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			return promise;
 		});
 
 		describe('in CSS scaled container', () => {
@@ -102,11 +108,13 @@ describe('LeafletMap.Drag', () => {
 				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it('change the center of the map, compensating for CSS scale', (done) => {
+			it('change the center of the map, compensating for CSS scale', async () => {
+				const {promise, resolve} = Promise.withResolvers();
 				map = new MyMap(container, {
 					dragging: true,
 					inertia: false
 				});
+				await map.callInitHooks();
 				map.setView([0, 0], 1);
 
 				const start = new Point(200, 200);
@@ -121,7 +129,7 @@ describe('LeafletMap.Drag', () => {
 						expect(map.getZoom()).to.equal(1);
 						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
 
-						done();
+						resolve();
 					}
 				});
 				const pointer = hand.growFinger('pointer');
@@ -130,14 +138,17 @@ describe('LeafletMap.Drag', () => {
 				const finishScaled = finish.scaleBy(scale);
 				pointer.moveTo(startScaled.x, startScaled.y, 0)
 					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
+				return promise;
 			});
 		});
 
-		it('does not change the center of the map when pointer is moved less than the drag threshold', (done) => {
+		it('does not change the center of the map when pointer is moved less than the drag threshold', async () => {
+			const {promise, resolve} = Promise.withResolvers();
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
+			await map.callInitHooks();
 
 			const originalCenter = new LatLng(0, 0);
 			map.setView(originalCenter.clone(), 1);
@@ -153,7 +164,7 @@ describe('LeafletMap.Drag', () => {
 					expect(map.getCenter()).to.eql(originalCenter);
 					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 
-					done();
+					resolve();
 				}
 			});
 			const pointer = hand.growFinger('pointer');
@@ -162,13 +173,16 @@ describe('LeafletMap.Drag', () => {
 			// Draggable. This should result in a click and not a drag.
 			pointer.moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
+			return promise;
 		});
 
-		it('does not trigger preclick nor click', (done) => {
+		it('does not trigger preclick nor click', async () => {
+			const {promise, resolve} = Promise.withResolvers();
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
 			});
+			await map.callInitHooks();
 			map.setView([0, 0], 1);
 			const clickSpy = sinon.spy();
 			const preclickSpy = sinon.spy();
@@ -186,13 +200,14 @@ describe('LeafletMap.Drag', () => {
 					expect(dragSpy.called).to.be.true;
 					expect(clickSpy.called).to.be.false;
 					expect(preclickSpy.called).to.be.false;
-					done();
+					resolve();
 				}
 			});
 			const pointer = hand.growFinger('pointer');
 
 			pointer.moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
+			return promise;
 		});
 
 		it('does not trigger preclick nor click when dragging on top of a static marker', (done) => {
