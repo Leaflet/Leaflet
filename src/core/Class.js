@@ -83,6 +83,9 @@ export class Class {
 			return;
 		}
 		await this._initHooksReady.promise;
+		if (!this._initHooksReady) { // _initHooksCalled
+			return;
+		}
 		this._initHooksReady = undefined;
 
 		// collect all prototypes in chain
