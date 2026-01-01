@@ -1,7 +1,6 @@
-import json from '@rollup/plugin-json';
-import terser from '@rollup/plugin-terser';
+// @ts-check
 import {readFileSync} from 'node:fs';
-import {defineConfig} from 'rollup';
+import {defineConfig} from 'rolldown';
 import pkg from '../package.json' with {type: 'json'};
 
 const STATIC_ASSETS = [
@@ -12,7 +11,7 @@ const STATIC_ASSETS = [
 	'images/marker-shadow.svg'
 ];
 
-/** @type {import('rollup').OutputPlugin} */
+/** @type {import('rolldown').Plugin} */
 const staticAssetsPlugin = {
 	name: 'static-assets',
 	generateBundle() {
@@ -29,13 +28,13 @@ const banner = `/* @preserve
  */
 `;
 
-/** @type {import('rollup').OutputOptions} */
+/** @type {import('rolldown').OutputOptions} */
 const commonOptions = {
 	banner,
 	sourcemap: true
 };
 
-/** @type {import('rollup').OutputOptions} */
+/** @type {import('rolldown').OutputOptions} */
 const umdOptions = {
 	...commonOptions,
 	name: 'L',
@@ -49,7 +48,6 @@ const umdOptions = {
 
 export default defineConfig({
 	input: './src/Leaflet.js',
-	plugins: [json()],
 	output: [
 		{
 			...commonOptions,
@@ -59,7 +57,7 @@ export default defineConfig({
 		{
 			...commonOptions,
 			file: './dist/leaflet.js',
-			plugins: [terser()],
+			minify: true
 		},
 		{
 			...umdOptions,
@@ -68,7 +66,7 @@ export default defineConfig({
 		{
 			...umdOptions,
 			file: './dist/leaflet-global.js',
-			plugins: [terser()],
+			minify: true
 		}
 	]
 });
