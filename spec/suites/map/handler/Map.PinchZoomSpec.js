@@ -8,7 +8,7 @@ import UIEventSimulator from 'ui-event-simulator';
 describe('LeafletMap.PinchZoom', () => {
 	let container, map;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			pinchZoom: true,
@@ -16,6 +16,7 @@ describe('LeafletMap.PinchZoom', () => {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 		container.style.width = container.style.height = '600px';
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {
@@ -226,7 +227,8 @@ describe('LeafletMap.PinchZoom', () => {
 			.down().moveBy(-200, 0, 500).up();
 	});
 
-	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
+	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', async () => {
+		const {promise, resolve} = Promise.withResolvers();
 		map.remove();
 
 		map = new LeafletMap(container, {
@@ -234,6 +236,7 @@ describe('LeafletMap.PinchZoom', () => {
 			inertia: false,
 			zoomAnimation: false
 		});
+		await map.callInitHooks();
 
 		map.setView([0, 0], 8);
 
@@ -268,8 +271,9 @@ describe('LeafletMap.PinchZoom', () => {
 			expect(x).to.be.within(297, 300);
 			expect(y).to.be.within(270, 280);
 
-			done();
+			resolve();
 		}, 100);
+		return promise;
 	});
 
 	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {

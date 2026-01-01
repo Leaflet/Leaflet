@@ -12,11 +12,12 @@ describe('Canvas', () => {
 		return map.layerPointToLatLng([x, y]);
 	}
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {preferCanvas: true, zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

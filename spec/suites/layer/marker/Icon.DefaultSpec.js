@@ -5,12 +5,13 @@ import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 describe('Icon.Default', () => {
 	let container, map;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = container = createContainer();
 		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
 		new Marker([0, 0]).addTo(map);
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

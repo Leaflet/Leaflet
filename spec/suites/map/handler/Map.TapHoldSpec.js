@@ -11,7 +11,7 @@ describe('LeafletMap.TapHoldSpec.js', () => {
 	const posNear = {clientX:10, clientY:10};
 	const posFar = {clientX:100, clientY:100};
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			center: [51.505, -0.09],
@@ -30,6 +30,7 @@ describe('LeafletMap.TapHoldSpec.js', () => {
 		posStart.target = container;
 		posNear.target = container;
 		posFar.target = container;
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

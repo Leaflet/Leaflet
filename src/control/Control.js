@@ -26,7 +26,8 @@ export class Control extends Class {
 	}
 
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
 	}
 
