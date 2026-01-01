@@ -16,13 +16,14 @@ describe('LeafletMap.ScrollWheelZoom', () => {
 		deltaMode: 0
 	};
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false
 		});
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

@@ -6,13 +6,14 @@ import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 describe('LeafletMap.DoubleClickZoom', () => {
 	let container, map;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			center: [0, 0],
 			zoom: 3,
 			zoomAnimation: false
 		});
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

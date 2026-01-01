@@ -8,7 +8,7 @@ import UIEventSimulator from 'ui-event-simulator';
 describe('LeafletMap.PinchZoom', () => {
 	let container, map;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			pinchZoom: true,
@@ -16,6 +16,7 @@ describe('LeafletMap.PinchZoom', () => {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
 		container.style.width = container.style.height = '600px';
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

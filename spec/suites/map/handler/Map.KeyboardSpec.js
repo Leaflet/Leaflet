@@ -16,7 +16,7 @@ describe('LeafletMap.Keyboard', () => {
 
 	let map, container;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
@@ -31,6 +31,7 @@ describe('LeafletMap.Keyboard', () => {
 		// However this can only happen with trusted events (non-synthetic), so
 		// this bit has to be faked.
 		map.keyboard._onFocus();
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

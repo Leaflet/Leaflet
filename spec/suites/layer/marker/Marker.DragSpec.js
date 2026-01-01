@@ -7,12 +7,13 @@ describe('Marker.Drag', () => {
 	let map,
 	container;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container);
 		container.style.width = '600px';
 		container.style.height = '600px';
 		map.setView([0, 0], 0);
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {
