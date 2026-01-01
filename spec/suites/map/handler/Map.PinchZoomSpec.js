@@ -227,7 +227,8 @@ describe('LeafletMap.PinchZoom', () => {
 			.down().moveBy(-200, 0, 500).up();
 	});
 
-	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', (done) => {
+	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', async () => {
+		const {promise, resolve} = Promise.withResolvers();
 		map.remove();
 
 		map = new LeafletMap(container, {
@@ -235,6 +236,7 @@ describe('LeafletMap.PinchZoom', () => {
 			inertia: false,
 			zoomAnimation: false
 		});
+		await map.callInitHooks();
 
 		map.setView([0, 0], 8);
 
@@ -269,8 +271,9 @@ describe('LeafletMap.PinchZoom', () => {
 			expect(x).to.be.within(297, 300);
 			expect(y).to.be.within(270, 280);
 
-			done();
+			resolve();
 		}, 100);
+		return promise;
 	});
 
 	it.skipIfNotTouch('disables pinchZoom when touchZoom is false (backward compatibility)', () => {

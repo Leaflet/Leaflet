@@ -21,6 +21,7 @@ describe('LeafletMap.Keyboard', () => {
 		map = new LeafletMap(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
+		await map.callInitHooks();
 
 		// make keyboard-caused panning instant to cut down on test running time
 		map.panBy = function (offset) { return LeafletMap.prototype.panBy.call(this, offset, {animate: false}); };
@@ -31,7 +32,6 @@ describe('LeafletMap.Keyboard', () => {
 		// However this can only happen with trusted events (non-synthetic), so
 		// this bit has to be faked.
 		map.keyboard._onFocus();
-		await map.callInitHooks();
 	});
 
 	afterEach(() => {
