@@ -462,7 +462,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 
 /* Default icon URLs */
 .leaflet-default-icon-path {
-	/* used only in path-guessing heuristic, see L.Icon.Default */
+	/* used only in path-guessing heuristic, see L.IconDefault */
 	background-image: url(images/marker-icon.svg);
 }
 

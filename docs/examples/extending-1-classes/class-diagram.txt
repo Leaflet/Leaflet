@@ -63,7 +63,7 @@
 // L.Handler] ^- L.Map.PinchZoom] 
 
 [L.Layer] ^- [L.Marker]
-[L.Icon] ^- [L.Icon.Default]
+[L.Icon] ^- [L.IconDefault]
 [L.Icon] ^- [L.DivIcon]
 
 [L.Marker] drawn as a -.-> [L.Icon]

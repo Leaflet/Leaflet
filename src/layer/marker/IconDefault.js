@@ -2,14 +2,14 @@ import {Icon} from './Icon.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 
 /*
- * @miniclass Icon.Default (Icon)
+ * @miniclass IconDefault (Icon)
  * @section
  *
  * A trivial subclass of `Icon`, represents the icon to use in `Marker`s when
  * no icon is specified. Points to the blue marker image distributed with Leaflet
  * releases.
  *
- * In order to customize the default icon, just change the properties of `Icon.Default.prototype.options`
+ * In order to customize the default icon, just change the properties of `IconDefault.prototype.options`
  * (which is a set of `Icon options`).
  *
  * If you want to _completely_ replace the default icon, override the
@@ -43,7 +43,7 @@ export class IconDefault extends Icon {
 		}
 
 		// @option imagePath: String
-		// `Icon.Default` will try to auto-detect the location of the
+		// `IconDefault` will try to auto-detect the location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right path.
 		return (this.options.imagePath || IconDefault.imagePath) + url;

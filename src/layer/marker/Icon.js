@@ -26,7 +26,7 @@ import Browser from '../../core/Browser.js';
  * new Marker([50.505, 30.57], {icon: myIcon}).addTo(map);
  * ```
  *
- * `Icon.Default` extends `Icon` and is the blue icon Leaflet uses for markers by default.
+ * `IconDefault` extends `Icon` and is the blue icon Leaflet uses for markers by default.
  *
  */
 

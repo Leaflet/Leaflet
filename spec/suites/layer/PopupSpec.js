@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DivIcon, DomUtil, FeatureGroup, Icon, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
+import {DivIcon, DomUtil, FeatureGroup, IconDefault, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -249,8 +249,8 @@ describe('Popup', () => {
 
 		const autoPanBefore = Popup.prototype.options.autoPan;
 		Popup.prototype.options.autoPan = false;
-		const popupAnchorBefore = Icon.Default.prototype.options.popupAnchor;
-		Icon.Default.prototype.options.popupAnchor = [0, 0];
+		const popupAnchorBefore = IconDefault.prototype.options.popupAnchor;
+		IconDefault.prototype.options.popupAnchor = [0, 0];
 
 		const icon = new DivIcon({popupAnchor: offset});
 		const marker1 = new Marker(latlng);
@@ -276,7 +276,7 @@ describe('Popup', () => {
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
 		Popup.prototype.options.autoPan = autoPanBefore;
-		Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
+		IconDefault.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {

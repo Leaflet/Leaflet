@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DivIcon, Icon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, IconDefault, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -15,8 +15,8 @@ describe('Marker', () => {
 		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
-		icon1 = new Icon.Default();
-		icon2 = new Icon.Default({
+		icon1 = new IconDefault();
+		icon2 = new IconDefault({
 			iconUrl: `${icon1.options.iconUrl}?2`,
 			shadowUrl: `${icon1.options.shadowUrl}?2`
 		});
@@ -31,7 +31,7 @@ describe('Marker', () => {
 		it('set the correct x and y size attributes', () => {
 			const expectedX = 96;
 			const expectedY = 100;
-			const sizedIcon = new Icon.Default({
+			const sizedIcon = new IconDefault({
 				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: [expectedX, expectedY]
 			});
@@ -47,7 +47,7 @@ describe('Marker', () => {
 
 		it('set the correct x and y size attributes passing only one value', () => {
 			const expectedXY = 96;
-			const sizedIcon = new Icon.Default({
+			const sizedIcon = new IconDefault({
 				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: expectedXY
 			});
@@ -63,7 +63,7 @@ describe('Marker', () => {
 
 		it('set the correct x and y size attributes passing a Point instance', () => {
 			const expectedXY = 96;
-			const sizedIcon = new Icon.Default({
+			const sizedIcon = new IconDefault({
 				iconUrl: `${icon1.options.iconUrl}?3`,
 				iconSize: new Point(expectedXY, expectedXY)
 			});
