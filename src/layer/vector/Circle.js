@@ -1,7 +1,5 @@
 import {CircleMarker} from './CircleMarker.js';
 import {Path} from './Path.js';
-import * as Util from '../../core/Util.js';
-import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Earth} from '../../geo/crs/CRS.Earth.js';
 
@@ -27,8 +25,7 @@ import {Earth} from '../../geo/crs/CRS.Earth.js';
 export class Circle extends CircleMarker {
 
 	initialize(latlng, options) {
-		Util.setOptions(this, options);
-		this._latlng = new LatLng(latlng);
+		super.initialize(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 

@@ -1,5 +1,4 @@
 import {TileLayer} from './TileLayer.js';
-import {setOptions} from '../../core/Util.js';
 import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
@@ -69,22 +68,20 @@ export class TileLayerWMS extends TileLayer {
 	}
 
 	initialize(url, options) {
-
-		this._url = url;
+		super.initialize(url, options);
 
 		const wmsParams = {...this.defaultWmsParams};
 
-		// all keys that are not TileLayer options go to WMS params
-		for (const i of Object.keys(options)) {
-			if (!(i in this.options)) { // do not use Object.keys here, as it excludes options inherited from TileLayer
-				wmsParams[i] = options[i];
+		// Options that are unknown in the prototype chain are considered WMS params.
+		for (const [key, value] of Object.entries(options)) {
+			if (!(key in TileLayerWMS.prototype.options)) {
+				wmsParams[key] = value;
 			}
 		}
 
-		options = setOptions(this, options);
-
-		const realRetina = options.detectRetina && Browser.retina ? 2 : 1;
+		const realRetina = this.options.detectRetina && Browser.retina ? 2 : 1;
 		const tileSize = this.getTileSize();
+
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;
 
