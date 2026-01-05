@@ -5,7 +5,7 @@ import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
- * @class Control.Layers
+ * @class LayersControl
  * @inherits Control
  *
  * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](https://leafletjs.com/examples/layers-control/)). Extends `Control`.
@@ -23,7 +23,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  * 	"Roads": roadsLayer
  * };
  *
- * new Control.Layers(baseLayers, overlays).addTo(map);
+ * new LayersControl(baseLayers, overlays).addTo(map);
  * ```
  *
  * The `baseLayers` and `overlays` parameters are object literals with layer names as keys and `Layer` objects as values:
@@ -42,13 +42,13 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```
  */
 
-// @constructor Control.Layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
+// @constructor LayersControl(baselayers?: Object, overlays?: Object, options?: LayersControl options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-export class Layers extends Control {
+export class LayersControl extends Control {
 
 	static {
 		// @section
-		// @aka Control.Layers options
+		// @aka LayersControl options
 		this.setDefaultOptions({
 			// @option collapsed: Boolean = true
 			// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
@@ -324,7 +324,7 @@ export class Layers extends Control {
 		// Fired when an overlay is selected through the [layers control](#control-layers).
 		// @event overlayremove: LayersControlEvent
 		// Fired when an overlay is deselected through the [layers control](#control-layers).
-		// @namespace Control.Layers
+		// @namespace LayersControl
 		const type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);

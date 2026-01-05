@@ -5,20 +5,20 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 
 /*
- * @class Control.Zoom
+ * @class ZoomControl
  * @inherits Control
  *
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
-// @namespace Control.Zoom
-// @constructor Control.Zoom(options: Control.Zoom options)
+// @namespace ZoomControl
+// @constructor ZoomControl(options: ZoomControl options)
 // Creates a zoom control
-export class Zoom extends Control {
+export class ZoomControl extends Control {
 
 	static {
 		// @section
-		// @aka Control.Zoom options
+		// @aka ZoomControl options
 		this.setDefaultOptions({
 			// @option position: String = 'topleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
@@ -138,10 +138,10 @@ LeafletMap.mergeOptions({
 LeafletMap.addInitHook(function () {
 	if (this.options.zoomControl) {
 		// @section Controls
-		// @property zoomControl: Control.Zoom
+		// @property zoomControl: ZoomControl
 		// The default zoom control (only available if the
 		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new Zoom();
+		this.zoomControl = new ZoomControl();
 		this.addControl(this.zoomControl);
 	}
 });

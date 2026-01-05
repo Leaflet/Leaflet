@@ -18,12 +18,12 @@
 [L.Class|options|extend();include();initialize()]
 
 [L.Class] ^- [L.Control|onAdd();onRemove()]
-[L.Control] ^- [L.Control.Attribution;L.Control.Layers;L.Control.Scale;L.Control.Zoom]
+[L.Control] ^- [L.AttributionControl;L.LayersControl;L.ScaleControl;L.ZoomControl]
 
-// L.Control] ^- L.Control.Attribution]
-// L.Control] ^- L.Control.Layers]
-// L.Control] ^- L.Control.Scale]
-// L.Control] ^- L.Control.Zoom]
+// L.Control] ^- L.AttributionControl]
+// L.Control] ^- L.LayersControl]
+// L.Control] ^- L.ScaleControl]
+// L.Control] ^- L.ZoomControl]
 
 
 [L.Class] ^- [L.Evented]

@@ -3,7 +3,7 @@ import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
- * @class Control.Scale
+ * @class ScaleControl
  * @inherits Control
  *
  * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
@@ -11,17 +11,17 @@ import * as DomUtil from '../dom/DomUtil.js';
  * @example
  *
  * ```js
- * new Control.Scale().addTo(map);
+ * new ScaleControl().addTo(map);
  * ```
  */
 
-// @constructor Control.Scale(options?: Control.Scale options)
+// @constructor ScaleControl(options?: ScaleControl options)
 // Creates an scale control with the given options.
-export class Scale extends Control {
+export class ScaleControl extends Control {
 
 	static {
 		// @section
-		// @aka Control.Scale options
+		// @aka ScaleControl options
 		this.setDefaultOptions({
 			// @option position: String = 'bottomleft'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,

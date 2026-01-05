@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, TileLayer, LatLngBounds, LatLng, Control} from 'leaflet';
+			import {LeafletMap, TileLayer, LatLngBounds, LatLng, LayersControl} from 'leaflet';
 
 			const map = new LeafletMap('map');
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -36,7 +36,7 @@
 
 			map.addLayer(osm).addLayer(nexrad).fitBounds(bounds);
 
-			new Control.Layers({CM: osm, CM2: osm2}, {NexRad: nexrad}).addTo(map);
+			new LayersControl({CM: osm, CM2: osm2}, {NexRad: nexrad}).addTo(map);
 		</script>
 	</body>
 </html>

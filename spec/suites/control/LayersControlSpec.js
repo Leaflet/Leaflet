@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {Control, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
+import {LayersControl, LeafletMap, Marker, TileLayer, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, pointerType, removeMapContainer} from '../SpecHelper.js';
 
-describe('Control.Layers', () => {
+describe('LayersControl', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -21,7 +21,7 @@ describe('Control.Layers', () => {
 	describe('baselayerchange event', () => {
 		it('is fired on input that changes the base layer', () => {
 			const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
-			layers = new Control.Layers(baseLayers).addTo(map),
+			layers = new LayersControl(baseLayers).addTo(map),
 			spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
@@ -35,9 +35,9 @@ describe('Control.Layers', () => {
 			expect(spy.args[1][0].layer).to.equal(baseLayers['Layer 2']);
 		});
 
-		it('works after removing and readding the Control.Layers to the map', () => {
+		it('works after removing and readding the LayersControl to the map', () => {
 			const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
-			layers = new Control.Layers(baseLayers).addTo(map),
+			layers = new LayersControl(baseLayers).addTo(map),
 			spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
@@ -57,7 +57,7 @@ describe('Control.Layers', () => {
 
 		it('is not fired on input that doesn\'t change the base layer', () => {
 			const overlays = {'Marker 1': new Marker([0, 0]), 'Marker 2': new Marker([0, 0])},
-			layers = new Control.Layers({}, overlays).addTo(map),
+			layers = new LayersControl({}, overlays).addTo(map),
 			spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
@@ -71,7 +71,7 @@ describe('Control.Layers', () => {
 		it('when an included layer is added or removed from the map', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]),
-			layers = new Control.Layers({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
+			layers = new LayersControl({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			const spy = sinon.spy(layers, '_update');
 
@@ -85,7 +85,7 @@ describe('Control.Layers', () => {
 		it('when an included layer is added or removed from the map, it\'s (un)checked', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]);
-			new Control.Layers({'Baselayer': baseLayer}, {'Overlay': overlay}).addTo(map);
+			new LayersControl({'Baselayer': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			function isChecked() {
 				return !!(map._container.querySelector('.leaflet-control-layers-overlays input').checked);
@@ -101,7 +101,7 @@ describe('Control.Layers', () => {
 		it('not when a non-included layer is added or removed', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]),
-			layers = new Control.Layers({'Base': baseLayer}).addTo(map);
+			layers = new LayersControl({'Base': baseLayer}).addTo(map);
 
 			const spy = sinon.spy(layers, '_update');
 
@@ -114,7 +114,7 @@ describe('Control.Layers', () => {
 		it('updates when an included layer is removed from the control', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]),
-			layers = new Control.Layers({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
+			layers = new LayersControl({'Base': baseLayer}, {'Overlay': overlay}).addTo(map);
 
 			layers.removeLayer(overlay);
 			expect(map._container.querySelector('.leaflet-control-layers-overlays').children.length)
@@ -122,7 +122,7 @@ describe('Control.Layers', () => {
 		});
 
 		it('silently returns when trying to remove a non-existing layer from the control', () => {
-			const layers = new Control.Layers({'base': new TileLayer()}).addTo(map);
+			const layers = new LayersControl({'base': new TileLayer()}).addTo(map);
 
 			expect(() => {
 				layers.removeLayer(new Marker([0, 0]));
@@ -134,7 +134,7 @@ describe('Control.Layers', () => {
 		it('having repeated layers works as expected', () => {
 			const layerA = new TileLayer(''), layerB = new TileLayer(''),
 			baseLayers = {'Layer 1': layerA, 'Layer 2': layerB, 'Layer 3': layerA},
-			layers = new Control.Layers(baseLayers).addTo(map);
+			layers = new LayersControl(baseLayers).addTo(map);
 
 			function checkInputs(idx) {
 				const inputs = map._container.querySelectorAll('.leaflet-control-layers-base input');
@@ -161,7 +161,7 @@ describe('Control.Layers', () => {
 	describe('is removed cleanly', () => {
 		it('and layers in the control can still be removed', () => {
 			const baseLayer = new TileLayer('').addTo(map);
-			const layersCtrl = new Control.Layers({'Base': baseLayer}).addTo(map);
+			const layersCtrl = new LayersControl({'Base': baseLayer}).addTo(map);
 			map.removeControl(layersCtrl);
 
 			expect(() => {
@@ -171,7 +171,7 @@ describe('Control.Layers', () => {
 
 		it('and layers in the control can still be removed when added after removing control from map', () => {
 			const baseLayer = new TileLayer('').addTo(map);
-			const layersCtrl = new Control.Layers().addTo(map);
+			const layersCtrl = new LayersControl().addTo(map);
 			map.removeControl(layersCtrl);
 			layersCtrl.addBaseLayer(baseLayer, 'Base');
 
@@ -183,45 +183,45 @@ describe('Control.Layers', () => {
 
 	describe('is created with an expand link', ()  => {
 		it('when collapsed', () => {
-			new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			new LayersControl(null, null, {collapsed: true}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok;
 		});
 
 		it('when not collapsed', () => {
-			new Control.Layers(null, null, {collapsed: false}).addTo(map);
+			new LayersControl(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok;
 		});
 	});
 
 	describe('collapse when collapsed: true', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			UIEventSimulator.fire('keydown', toggle, {code: 'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
 		it('expands on click', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			const toggle = layersCtrl._container.querySelector('.leaflet-control-layers-toggle');
 			UIEventSimulator.fire('click', toggle);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
 		it('does not expand on "Enter" keydown when toggle is not focused', () => {
-			new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			new LayersControl(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('keydown', document, {code:'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 
 		it('expands when mouse is over', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
 		it.skipIfTouch('collapses when mouse is out', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('pointerout', layersCtrl._container, {pointerType});
@@ -229,7 +229,7 @@ describe('Control.Layers', () => {
 		});
 
 		it('collapses when map is clicked', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
@@ -237,7 +237,7 @@ describe('Control.Layers', () => {
 		});
 
 		it('should collapse with a delay', (done) => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
@@ -254,7 +254,7 @@ describe('Control.Layers', () => {
 
 	describe('does not collapse when collapsed: false', () => {
 		it('does not collapse when mouse enters or leaves', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: false}).addTo(map);
+			const layersCtrl = new LayersControl(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
@@ -263,14 +263,14 @@ describe('Control.Layers', () => {
 		});
 
 		it('does not collapse when map is clicked', () => {
-			new Control.Layers(null, null, {collapsed: false}).addTo(map);
+			new LayersControl(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
 		it('is scrollable if necessary when added on map', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: false});
+			const layersCtrl = new LayersControl(null, null, {collapsed: false});
 			let i = 0;
 
 			// Need to create a DIV with specified height and insert it into DOM, so that the browser
@@ -292,7 +292,7 @@ describe('Control.Layers', () => {
 		});
 
 		it('becomes scrollable if necessary when too many layers are added while it is already on map', () => {
-			const layersCtrl = new Control.Layers(null, null, {collapsed: false});
+			const layersCtrl = new LayersControl(null, null, {collapsed: false});
 			let i = 0;
 
 			// Need to create a DIV with specified height and insert it into DOM, so that the browser
@@ -322,7 +322,7 @@ describe('Control.Layers', () => {
 			const markerB = new Marker([0, 1]).addTo(map);
 			const markerA = new Marker([0, 0]).addTo(map);
 
-			new Control.Layers({
+			new LayersControl({
 				'Base One': baseLayerOne,
 				'Base Two': baseLayerTwo
 			}, {
@@ -346,7 +346,7 @@ describe('Control.Layers', () => {
 			const markerB = new Marker([0, 1]).addTo(map);
 			const markerC = new Marker([0, 2]).addTo(map);
 
-			new Control.Layers({
+			new LayersControl({
 				'Base Two': baseLayerTwo,
 				'Base One': baseLayerOne
 			}, {
@@ -372,7 +372,7 @@ describe('Control.Layers', () => {
 			const markerB = new Marker([0, 1], {customOption: 100}).addTo(map);
 			const markerC = new Marker([0, 2], {customOption: 101}).addTo(map);
 
-			new Control.Layers({
+			new LayersControl({
 				'Base One': baseLayerOne,
 				'Base Two': baseLayerTwo
 			}, {
@@ -395,7 +395,7 @@ describe('Control.Layers', () => {
 
 	it('refocus map after interaction', () => {
 		const baseLayers = {'Layer 1': new TileLayer(''), 'Layer 2': new TileLayer('')},
-		control = new Control.Layers(baseLayers).addTo(map);
+		control = new LayersControl(baseLayers).addTo(map);
 
 		const spy = sinon.spy(map.getContainer(), 'focus');
 		map.getContainer().focus();
