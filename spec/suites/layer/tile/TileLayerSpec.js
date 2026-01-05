@@ -426,7 +426,7 @@ describe('TileLayer', () => {
 		it('adds OSM attribution if none are provided and is using OSM tiles', () => {
 			// Uses OSM tiles without providing attribution
 			const layer = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
-			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+			expect(layer.options.attribution).to.eql('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>');
 		});
 
 		it('doesn\'t add OSM attribution if it\'s specifically set as empty', () => {

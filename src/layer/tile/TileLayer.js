@@ -2,6 +2,7 @@ import {GridLayer} from './GridLayer.js';
 import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
+import {I18n} from '../../core/I18n.js';
 
 /*
  * @class TileLayer
@@ -11,7 +12,7 @@ import * as DomEvent from '../../dom/DomEvent.js';
  * @example
  *
  * ```js
- * new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+ * new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}).addTo(map);
  * ```
  *
  * @section URL template
@@ -101,7 +102,7 @@ export class TileLayer extends GridLayer {
 			// check for Open Street Map hosts
 			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 			if (osmHosts.some(host => urlHostname.endsWith(host))) {
-				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+				options.attribution = `&copy; <a href="https://www.openstreetmap.org/copyright">${I18n.translate('OpenStreetMap contributors')}</a>`;
 			}
 		}
 

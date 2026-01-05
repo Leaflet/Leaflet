@@ -6,6 +6,7 @@ import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
 import {FeatureGroup} from './FeatureGroup.js';
+import {I18n} from '../core/I18n.js';
 
 /*
  * @class Popup
@@ -101,10 +102,6 @@ export class Popup extends DivOverlay {
 			// @option closeButton: Boolean = true
 			// Controls the presence of a close button in the popup.
 			closeButton: true,
-
-			// @option closeButtonLabel: String = 'Close popup'
-			// Specifies the 'aria-label' attribute of the close button.
-			closeButtonLabel: 'Close popup',
 
 			// @option autoClose: Boolean = true
 			// Set it to `false` if you want to override the default behavior of
@@ -221,7 +218,7 @@ export class Popup extends DivOverlay {
 		if (this.options.closeButton) {
 			const closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
 			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
-			closeButton.setAttribute('aria-label', this.options.closeButtonLabel);
+			closeButton.setAttribute('aria-label', I18n.translate('Close popup'));
 
 			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
