@@ -17,14 +17,14 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, TileLayer, LatLngBounds, LatLng, LayersControl} from 'leaflet';
+			import {LeafletMap, TileLayer, TileLayerWMS, LatLngBounds, LatLng, LayersControl} from 'leaflet';
 
 			const map = new LeafletMap('map');
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl);
 			const osm2 = new TileLayer(osmUrl);
 
-			const nexrad = new TileLayer.WMS('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
+			const nexrad = new TileLayerWMS('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
 				layers: 'nexrad-n0r-900913',
 				format: 'image/png',
 				transparent: true,
