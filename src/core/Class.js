@@ -63,7 +63,7 @@ export class Class {
 	}
 
 	constructor(...args) {
-		this._initHooksCalled = false;
+		this._initHooksReady = Promise.withResolvers(); //  Baseline 2024 Newly available
 
 		Util.setOptions(this);
 
@@ -74,12 +74,19 @@ export class Class {
 
 		// call all constructor hooks
 		this.callInitHooks();
+
+		this._initHooksReady.resolve();
 	}
 
-	callInitHooks() {
-		if (this._initHooksCalled) {
+	async callInitHooks() {
+		if (!this._initHooksReady) { // _initHooksCalled
 			return;
 		}
+		await this._initHooksReady.promise;
+		if (!this._initHooksReady) { // _initHooksCalled
+			return;
+		}
+		this._initHooksReady = undefined;
 
 		// collect all prototypes in chain
 		const prototypes = [];
@@ -98,7 +105,5 @@ export class Class {
 				hook.call(this);
 			}
 		}
-
-		this._initHooksCalled = true;
 	}
 }

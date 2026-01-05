@@ -25,7 +25,8 @@ import * as Util from '../../core/Util.js';
 
 export class Renderer extends BlanketOverlay {
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, {...options, continuous: false});
 		Util.stamp(this);
 		this._layers ??= {};

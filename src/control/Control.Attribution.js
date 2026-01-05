@@ -35,7 +35,8 @@ export class Attribution extends Control {
 		});
 	}
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
 
 		this._attributions = {};

@@ -10,7 +10,7 @@ describe('Marker', () => {
 	icon1,
 	icon2;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = container = createContainer();
 		map = new LeafletMap(container);
 
@@ -20,6 +20,7 @@ describe('Marker', () => {
 			iconUrl: `${icon1.options.iconUrl}?2`,
 			shadowUrl: `${icon1.options.shadowUrl}?2`
 		});
+		await map.callInitHooks();
 	});
 
 	afterEach(() => {

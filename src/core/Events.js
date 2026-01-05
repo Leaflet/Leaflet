@@ -307,4 +307,4 @@ export class Evented extends Class {
 			}, true);
 		}
 	}
-};
+}

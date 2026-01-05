@@ -28,7 +28,7 @@ describe('Class', () => {
 			expect(a.options.foo3).to.eql(4);
 		});
 
-		it('inherits constructor hooks', () => {
+		it('inherits constructor hooks', async () => {
 			const spy1 = sinon.spy(),
 			spy2 = sinon.spy();
 
@@ -38,13 +38,14 @@ describe('Class', () => {
 			Class1.addInitHook(spy1);
 			Class2.addInitHook(spy2);
 
-			new Class2();
+			const instance = new Class2();
+			await instance.callInitHooks();
 
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.be.true;
 		});
 
-		it('does not call child constructor hooks', () => {
+		it('does not call child constructor hooks', async () => {
 			const spy1 = sinon.spy(),
 			spy2 = sinon.spy();
 
@@ -54,7 +55,8 @@ describe('Class', () => {
 			Class1.addInitHook(spy1);
 			Class2.addInitHook(spy2);
 
-			new Class1();
+			const instance = new Class1();
+			await instance.callInitHooks();
 
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.eql(false);
@@ -109,5 +111,91 @@ describe('Class', () => {
 		});
 	});
 
-	// TODO Class.mergeOptions
+	describe('#callInitHooks', () => {
+		it('registers and triggers the initialization hooks correctly', async () => {
+			const constructASpy = sinon.spy();
+			const initHookASpy = sinon.spy();
+			const constructBSpy = sinon.spy();
+			const initHookBSpy = sinon.spy();
+
+			// Give the spies names so they show up properly in logs.
+			constructASpy.displayName = 'constructA';
+			initHookASpy.displayName = 'initHookA';
+			constructBSpy.displayName = 'constructB';
+			initHookBSpy.displayName = 'initHookB';
+
+			class A extends Class {
+				constructor(argA) {
+					super();
+					this.constructA = 'constructed A';
+					this.argA = argA;
+					constructASpy(argA);
+				}
+			}
+
+			const hookAReturnValue = A.addInitHook(function () {
+				this.hookedA = 'hooked A';
+				initHookASpy();
+			});
+
+			class B extends A {
+				constructor(argA, argB) {
+					super(argA);
+					this.constructB = 'constructed B';
+					this.argB = argB;
+					constructBSpy(argB);
+				}
+			}
+
+			const hookBReturnValue = B.addInitHook(function () {
+				this.hookedB = 'hooked B';
+				initHookBSpy();
+			});
+
+			const instance = new B('valueA', 'valueB');
+			await instance.callInitHooks();
+
+			// Assert that the classes returned by addInitHook are the same as the originals.
+			expect(hookAReturnValue).to.equal(A);
+			expect(hookBReturnValue).to.equal(B);
+
+			// Assert that constructors and hooks were called in the expected order.
+			sinon.assert.callOrder(
+				constructASpy,
+				constructBSpy,
+				initHookASpy,
+				initHookBSpy
+			);
+
+			// Assert that the fields set during construction and hooking are present.
+			expect(instance.constructA).to.eql('constructed A');
+			expect(instance.hookedA).to.eql('hooked A');
+			expect(instance.constructB).to.eql('constructed B');
+			expect(instance.hookedB).to.eql('hooked B');
+
+			// Assert that constructor arguments are properly forwarded.
+			expect(instance.argA).to.eql('valueA');
+			expect(instance.argB).to.eql('valueB');
+			expect(constructASpy.calledWith('valueA')).to.be.true;
+			expect(constructBSpy.calledWith('valueB')).to.be.true;
+		});
+
+		it('triggers hooks registered with method name and arguments', async () => {
+			const methodSpy = sinon.spy();
+
+			class TestClass extends Class {
+				testMethod(arg1, arg2, arg3) {
+					methodSpy(arg1, arg2, arg3);
+				}
+			}
+
+			TestClass.addInitHook('testMethod', 'value1', 'value2', 'value3');
+
+			const instance = new TestClass();
+			await instance.callInitHooks();
+
+			expect(methodSpy.calledOnce).to.be.true;
+			expect(methodSpy.calledWith('value1', 'value2', 'value3')).to.be.true;
+		});
+	});
 });

@@ -32,7 +32,9 @@ export class Keyboard extends Handler {
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
 	};
 
-	initialize(map) {
+	constructor(map) {
+		super();
+
 		this._map = map;
 
 		this._setPanDelta(map.options.keyboardPanDelta);

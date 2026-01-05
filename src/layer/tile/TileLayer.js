@@ -88,7 +88,8 @@ export class TileLayer extends GridLayer {
 		});
 	}
 
-	initialize(url, options) {
+	constructor(url, options) {
+		super();
 
 		this._url = url;
 

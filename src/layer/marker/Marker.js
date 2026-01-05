@@ -110,7 +110,8 @@ export class Marker extends Layer {
 	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
 	 */
 
-	initialize(latlng, options) {
+	constructor(latlng, options) {
+		super();
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
 	}

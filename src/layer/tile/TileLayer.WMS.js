@@ -68,7 +68,8 @@ export class TileLayerWMS extends TileLayer {
 		});
 	}
 
-	initialize(url, options) {
+	constructor(url, options) {
+		super();
 
 		this._url = url;
 

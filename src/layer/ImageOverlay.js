@@ -67,7 +67,9 @@ export class ImageOverlay extends Layer {
 		});
 	}
 
-	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
+	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
+		super();
+
 		this._url = url;
 		this._bounds = new LatLngBounds(bounds);
 

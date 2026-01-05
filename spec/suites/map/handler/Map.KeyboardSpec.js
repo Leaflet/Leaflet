@@ -16,11 +16,12 @@ describe('LeafletMap.Keyboard', () => {
 
 	let map, container;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		container = createContainer();
 		map = new LeafletMap(container, {
 			zoomAnimation: false	// If true, the test has to wait extra 250msec
 		});
+		await map.callInitHooks();
 
 		// make keyboard-caused panning instant to cut down on test running time
 		map.panBy = function (offset) { return LeafletMap.prototype.panBy.call(this, offset, {animate: false}); };
