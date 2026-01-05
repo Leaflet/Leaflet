@@ -27,7 +27,7 @@ LeafletMap.mergeOptions({
 	wheelPxPerZoomLevel: 60
 });
 
-export class ScrollWheelZoom extends Handler {
+export class ScrollWheelZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
@@ -88,4 +88,4 @@ export class ScrollWheelZoom extends Handler {
 // @section Handlers
 // @property scrollWheelZoom: Handler
 // Scroll wheel zoom handler.
-LeafletMap.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);
+LeafletMap.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoomHandler);

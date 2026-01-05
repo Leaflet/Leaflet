@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 import UIEventSimulator from 'ui-event-simulator';
 
-describe('LeafletMap.PinchZoom', () => {
+describe('PinchZoomHandler', () => {
 	let container, map;
 
 	beforeEach(() => {

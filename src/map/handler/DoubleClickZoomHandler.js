@@ -17,7 +17,7 @@ LeafletMap.mergeOptions({
 	doubleClickZoom: true
 });
 
-export class DoubleClickZoom extends Handler {
+export class DoubleClickZoomHandler extends Handler {
 	addHooks() {
 		this._map.on('dblclick', this._onDoubleClick, this);
 	}
@@ -52,4 +52,4 @@ export class DoubleClickZoom extends Handler {
 //
 // @property doubleClickZoom: Handler
 // Double click zoom handler.
-LeafletMap.addInitHook('addHandler', 'doubleClickZoom', DoubleClickZoom);
+LeafletMap.addInitHook('addHandler', 'doubleClickZoom', DoubleClickZoomHandler);

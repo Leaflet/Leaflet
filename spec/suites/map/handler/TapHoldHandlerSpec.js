@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('LeafletMap.TapHoldSpec.js', () => {
+describe('TapHoldSpecHandler', () => {
 	let container, clock, spy, map;
 
 	const posStart = {clientX:1, clientY:1};

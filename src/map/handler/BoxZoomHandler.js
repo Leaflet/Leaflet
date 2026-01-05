@@ -19,7 +19,7 @@ LeafletMap.mergeOptions({
 	boxZoom: true
 });
 
-export class BoxZoom extends Handler {
+export class BoxZoomHandler extends Handler {
 	initialize(map) {
 		super.initialize(map);
 		this._container = map._container;
@@ -148,4 +148,4 @@ export class BoxZoom extends Handler {
 // @section Handlers
 // @property boxZoom: Handler
 // Box (shift-drag with pointer) zoom handler.
-LeafletMap.addInitHook('addHandler', 'boxZoom', BoxZoom);
+LeafletMap.addInitHook('addHandler', 'boxZoom', BoxZoomHandler);

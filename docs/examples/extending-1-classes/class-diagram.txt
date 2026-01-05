@@ -52,15 +52,15 @@
 [L.Map] has one -.-> [L.CRS]
 
 [L.Class] ^- [L.Handler|addHooks();removeHooks()]
-[L.Handler] ^- [L.Map.BoxZoom;L.Map.DoubleClickZoom;L.Map.Drag;L.Map.Keyboard;L.Map.ScrollWheelZoom;L.Map.Tap;L.Map.PinchZoom]
+[L.Handler] ^- [L.BoxZoomHandler;L.DoubleClickZoomHandler;L.DragHandler;L.KeyboardHandler;L.ScrollWheelZoomHandler;L.TapHandler;L.PinchZoomHandler]
 
-// L.Handler] ^- L.Map.BoxZoom]
-// L.Handler] ^- L.Map.DoubleClickZoom]
-// L.Handler] ^- L.Map.Drag]
-// L.Handler] ^- L.Map.Keyboard]
-// L.Handler] ^- L.Map.ScrollWheelZoom]
-// L.Handler] ^- L.Map.Tap]
-// L.Handler] ^- L.Map.PinchZoom] 
+// L.Handler] ^- L.BoxZoomHandler]
+// L.Handler] ^- L.DoubleClickZoomHandler]
+// L.Handler] ^- L.DragHandler]
+// L.Handler] ^- L.KeyboardHandler]
+// L.Handler] ^- L.ScrollWheelZoomHandler]
+// L.Handler] ^- L.TapHandler]
+// L.Handler] ^- L.PinchZoomHandler]
 
 [L.Layer] ^- [L.Marker]
 [L.Icon] ^- [L.Icon.Default]
@@ -96,5 +96,3 @@
 [L.DivOverlay] ^- [L.Tooltip]
 
 [L.Layer] ^- [L.ImageOverlay]
-
-

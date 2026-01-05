@@ -50,7 +50,7 @@ LeafletMap.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-export class Drag extends Handler {
+export class DragHandler extends Handler {
 	addHooks() {
 		if (!this._draggable) {
 			const map = this._map;
@@ -229,4 +229,4 @@ export class Drag extends Handler {
 // @section Handlers
 // @property dragging: Handler
 // Map dragging handler.
-LeafletMap.addInitHook('addHandler', 'dragging', Drag);
+LeafletMap.addInitHook('addHandler', 'dragging', DragHandler);

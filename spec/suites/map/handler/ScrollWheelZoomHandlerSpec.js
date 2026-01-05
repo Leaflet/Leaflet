@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('LeafletMap.ScrollWheelZoom', () => {
+describe('ScrollWheelZoomHandler', () => {
 	let container, map;
 	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 	const scrollIn = {

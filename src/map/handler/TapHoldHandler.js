@@ -6,7 +6,7 @@ import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
- * Map.TapHold is used to simulate `contextmenu` event on long hold,
+ * TapHoldHandler is used to simulate `contextmenu` event on long hold,
  * which otherwise is not fired by mobile Safari.
  */
 
@@ -26,7 +26,7 @@ LeafletMap.mergeOptions({
 	tapTolerance: 15
 });
 
-export class TapHold extends Handler {
+export class TapHoldHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'pointerdown', this._onDown, this);
 	}
@@ -98,4 +98,4 @@ export class TapHold extends Handler {
 // @section Handlers
 // @property tapHold: Handler
 // Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
-LeafletMap.addInitHook('addHandler', 'tapHold', TapHold);
+LeafletMap.addInitHook('addHandler', 'tapHold', TapHoldHandler);

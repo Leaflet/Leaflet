@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('LeafletMap.Keyboard', () => {
+describe('KeyboardHandler', () => {
 	const KEYCODE_LOWERCASE_A = 'KeyA';
 	const KEYCODE_ARROW_LEFT = 'ArrowLeft';
 	const KEYCODE_ARROW_UP = 'ArrowUp';

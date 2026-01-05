@@ -24,7 +24,7 @@ LeafletMap.mergeOptions({
 	bounceAtZoomLimits: true
 });
 
-export class PinchZoom extends Handler {
+export class PinchZoomHandler extends Handler {
 	addHooks() {
 		this._map._container.classList.add('leaflet-touch-zoom');
 		DomEvent.on(this._map._container, 'pointerdown', this._onPointerStart, this);
@@ -128,7 +128,7 @@ export class PinchZoom extends Handler {
 // @section Handlers
 // @property pinchZoom: Handler
 // Pinch zoom handler.
-LeafletMap.addInitHook('addHandler', 'pinchZoom', PinchZoom);
+LeafletMap.addInitHook('addHandler', 'pinchZoom', PinchZoomHandler);
 
 // Deprecated - Backward compatibility touchZoom
 LeafletMap.addInitHook(function () {
