@@ -57,7 +57,7 @@ If we create a Leaflet map with these two tile layers, any marker or polygon wil
 
 We can use the defaults for the basemap tiles and some overlays like GeoJSON layers, but we have to define a custom pane for the labels, so they show on top of the GeoJSON data.
 
-Custom map panes are created on a per-map basis, so first create an instance of `L.Map` and the pane:
+Custom map panes are created on a per-map basis, so first create an instance of `LeafletMap` and the pane:
 
 
     const map = new LeafletMap('map');

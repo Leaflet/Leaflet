@@ -37,7 +37,7 @@ A Leaflet map has one CRS (and *one* CRS *only*), that can be changed when creat
 		crs: CRS.Simple
 	});
 
-Then we can just add a `L.ImageOverlay` with the starmap image and its *approximate* bounds:
+Then we can just add an `ImageOverlay` with the starmap image and its *approximate* bounds:
 
 	const bounds = [[0,0], [1000,1000]];
 	const image = new ImageOverlay('uqm_map_full.png', bounds).addTo(map);
@@ -64,7 +64,7 @@ In a `CRS.Simple`, one horizontal map unit is mapped to one horizontal pixel, an
 
 ### Pixels vs. Map Units
 
-One common mistake when using `CRS.Simple` is assuming that the map units equal image pixels. In this case, the map covers 1000x1000 units, but the image is 2315x2315 pixels big. Different cases will call for one pixel = one map unit, or 64 pixels = one map unit, or anything. **Think in map units** in a grid, and then add your layers (`L.ImageOverlay`s, `L.Marker`s and so on) accordingly.
+One common mistake when using `CRS.Simple` is assuming that the map units equal image pixels. In this case, the map covers 1000x1000 units, but the image is 2315x2315 pixels big. Different cases will call for one pixel = one map unit, or 64 pixels = one map unit, or anything. **Think in map units** in a grid, and then add your layers (`ImageOverlay`s, `Marker`s and so on) accordingly.
 
 In fact, the image we're using covers more than 1000 map units - there is a sizable margin. Measuring how many pixels there are between the 0 and 1000 coordinates, and extrapolating, we can have the right coordinate bounds for this image:
 
@@ -85,9 +85,9 @@ You'll notice that Sol is at coordinates `[145,175]` instead of `[175,145]`, and
 
 <small>(In technical terms, Leaflet prefers to use [`[northing, easting]`](https://en.wikipedia.org/wiki/Easting_and_northing) over `[easting, northing]` - the first coordinate in a coordinate pair points "north" and the second points "east")</small>
 
-The debate about whether `[lng, lat]` or `[lat, lng]` or `[y, x]` or `[x, y]` [is not new, and there is no clear consensus](http://www.macwright.org/lonlat/). This lack of consensus is why Leaflet has a class named `L.LatLng` instead of the more confusion-prone `L.Coordinate`.
+The debate about whether `[lng, lat]` or `[lat, lng]` or `[y, x]` or `[x, y]` [is not new, and there is no clear consensus](http://www.macwright.org/lonlat/). This lack of consensus is why Leaflet has a class named `LatLng` instead of the more confusion-prone `Coordinate`.
 
-If working with `[y, x]` coordinates with something named `L.LatLng` doesn't make much sense to you, you can easily create wrappers for them:
+If working with `[y, x]` coordinates with something named `LatLng` doesn't make much sense to you, you can easily create wrappers for them:
 
 	const yx = LatLng;
 
