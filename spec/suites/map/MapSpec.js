@@ -1459,7 +1459,7 @@ describe('Map', () => {
 		});
 
 		it('should handle parameters leading to Math.log(sq) issue', function (done) {
-			container.style.width =
+			container.style.width = '1024px';
 			container.style.height = '1024px';
 			container.style.visibility = 'visible';
 
