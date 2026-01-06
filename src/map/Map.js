@@ -403,7 +403,7 @@ export class LeafletMap extends Evented {
 
 			// workaround for floating point precision bug when sq = 0, log = -Infinite,
 			// thus triggering an infinite loop in flyTo
-			const log = sq < 0.000000001 ? -18 : Math.log(sq);
+			const log = sq < 0.000000015 ? -18 : Math.log(sq);
 
 			return log;
 		}
