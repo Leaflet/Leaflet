@@ -1,5 +1,5 @@
 import {Layer} from '../Layer.js';
-import {IconDefault} from './IconDefault.js';
+import {DefaultIcon} from './DefaultIcon.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Point} from '../../geometry/Point.js';
@@ -30,8 +30,8 @@ export class Marker extends Layer {
 			// @option icon: Icon = *
 			// Icon instance to use for rendering the marker.
 			// See [Icon documentation](#Icon) for details on how to customize the marker icon.
-			// If not specified, a common instance of `IconDefault` is used.
-			icon: new IconDefault(),
+			// If not specified, a common instance of `DefaultIcon` is used.
+			icon: new DefaultIcon(),
 
 			// Option inherited from "Interactive layer" abstract class
 			interactive: true,

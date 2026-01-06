@@ -2,21 +2,21 @@ import {Icon} from './Icon.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 
 /*
- * @miniclass IconDefault (Icon)
+ * @miniclass DefaultIcon (Icon)
  * @section
  *
  * A trivial subclass of `Icon`, represents the icon to use in `Marker`s when
  * no icon is specified. Points to the blue marker image distributed with Leaflet
  * releases.
  *
- * In order to customize the default icon, just change the properties of `IconDefault.prototype.options`
+ * In order to customize the default icon, just change the properties of `DefaultIcon.prototype.options`
  * (which is a set of `Icon options`).
  *
  * If you want to _completely_ replace the default icon, override the
  * `Marker.prototype.options.icon` with your own icon instead.
  */
 
-export class IconDefault extends Icon {
+export class DefaultIcon extends Icon {
 
 	static {
 		this.setDefaultOptions({
@@ -33,8 +33,8 @@ export class IconDefault extends Icon {
 
 	_getIconUrl(name) {
 		// only detect once
-		if (!IconDefault.imagePath) {
-			IconDefault.imagePath = this._detectIconPath();
+		if (!DefaultIcon.imagePath) {
+			DefaultIcon.imagePath = this._detectIconPath();
 		}
 
 		const url = super._getIconUrl(name);
@@ -43,10 +43,10 @@ export class IconDefault extends Icon {
 		}
 
 		// @option imagePath: String
-		// `IconDefault` will try to auto-detect the location of the
+		// `DefaultIcon` will try to auto-detect the location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right path.
-		return (this.options.imagePath || IconDefault.imagePath) + url;
+		return (this.options.imagePath || DefaultIcon.imagePath) + url;
 	}
 
 	_stripUrl(path) {	// separate function to use in tests

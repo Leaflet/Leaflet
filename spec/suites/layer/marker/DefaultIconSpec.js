@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import {IconDefault, LeafletMap, Marker, Browser} from 'leaflet';
+import {DefaultIcon, LeafletMap, Marker, Browser} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
-describe('IconDefault', () => {
+describe('DefaultIcon', () => {
 	let container, map;
 
 	beforeEach(() => {
@@ -18,17 +18,17 @@ describe('IconDefault', () => {
 	});
 
 	it('detect icon images path', () => {
-		const origPath = IconDefault.imagePath; // set in after.js
+		const origPath = DefaultIcon.imagePath; // set in after.js
 		expect(origPath).to.be.ok;
-		delete IconDefault.imagePath;
+		delete DefaultIcon.imagePath;
 		const marker = new Marker([0, 0]);
 
-		expect(IconDefault.imagePath).to.be.undefined;
+		expect(DefaultIcon.imagePath).to.be.undefined;
 		marker.addTo(map);
 
-		expect(IconDefault.imagePath).to.equal(location.origin + origPath);
+		expect(DefaultIcon.imagePath).to.equal(location.origin + origPath);
 
-		const stripUrl = IconDefault.prototype._stripUrl;
+		const stripUrl = DefaultIcon.prototype._stripUrl;
 		const properPath = 'http://localhost:8000/base/dist/images/';
 		[ // valid
 			'url("http://localhost:8000/base/dist/images/marker-icon.svg")',  // Firefox
@@ -55,30 +55,30 @@ describe('IconDefault', () => {
 	});
 
 	it('don\'t set shadow icon if null', () => {
-		const oldShadowUrl = IconDefault.prototype.options.shadowUrl;
-		IconDefault.prototype.options.shadowUrl = null;
+		const oldShadowUrl = DefaultIcon.prototype.options.shadowUrl;
+		DefaultIcon.prototype.options.shadowUrl = null;
 		const marker = new Marker([0, 0]).addTo(map);
 
 		expect(marker._shadow).to.be.null;
 
 		// This is needed because else other tests will fail
-		IconDefault.prototype.options.shadowUrl = oldShadowUrl;
+		DefaultIcon.prototype.options.shadowUrl = oldShadowUrl;
 	});
 
 	it('don\'t set retina shadow icon if null', () => {
-		const oldShadowRetinaUrl = IconDefault.prototype.options.shadowRetinaUrl;
-		const oldShadowUrl = IconDefault.prototype.options.shadowUrl;
+		const oldShadowRetinaUrl = DefaultIcon.prototype.options.shadowRetinaUrl;
+		const oldShadowUrl = DefaultIcon.prototype.options.shadowUrl;
 		const oldRetinaValue = Browser.retina;
 		Browser.retina = true;
-		IconDefault.prototype.options.shadowRetinaUrl = null;
-		IconDefault.prototype.options.shadowUrl = null;
+		DefaultIcon.prototype.options.shadowRetinaUrl = null;
+		DefaultIcon.prototype.options.shadowUrl = null;
 		const marker = new Marker([0, 0]).addTo(map);
 
 		expect(marker._shadow).to.be.null;
 
 		// This is needed because else other tests will fail
-		IconDefault.prototype.options.shadowRetinaUrl = oldShadowRetinaUrl;
-		IconDefault.prototype.options.shadowUrl = oldShadowUrl;
+		DefaultIcon.prototype.options.shadowRetinaUrl = oldShadowRetinaUrl;
+		DefaultIcon.prototype.options.shadowUrl = oldShadowUrl;
 		Browser.retina = oldRetinaValue;
 	});
 });
