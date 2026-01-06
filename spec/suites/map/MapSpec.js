@@ -1479,7 +1479,7 @@ describe('Map', () => {
 			});
 
 			map.flyTo(center, 11, {animate: true});
-		})
+		});
 	});
 
 	describe('#zoomIn and #zoomOut', () => {
