@@ -1,0 +1,6 @@
+[codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = .git*,*.svg,package-lock.json,*.lock,*.css,*.pack.js,.codespellrc
+check-hidden = true
+ignore-regex = \b(LINZ|scrollIn|ErrorProne|IST|wasn\\'t|^author: .*)\b
+ignore-words-list = statics,commend

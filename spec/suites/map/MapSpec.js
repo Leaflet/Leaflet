@@ -1556,7 +1556,7 @@ describe('Map', () => {
 	describe('#_getBoundsCenterZoom', () => {
 		const center = new LatLng(50.5, 30.51);
 
-		it('Returns valid center on empty bounds in unitialized map', () => {
+		it('Returns valid center on empty bounds in uninitialized map', () => {
 			// Edge case from #5153
 			const centerAndZoom = map._getBoundsCenterZoom([center, center]);
 			expect(centerAndZoom.center).to.eqlLatLng(center);

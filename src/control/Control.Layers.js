@@ -197,7 +197,7 @@ export class Layers extends Control {
 				return this;
 			}
 
-			// Collapse immediatelly
+			// Collapse immediately
 			this._container.classList.remove('leaflet-control-layers-expanded');
 		}
 		return this;
@@ -391,7 +391,7 @@ export class Layers extends Control {
 			}
 		}
 
-		// Bugfix issue 2318: Should remove all old layers before readding new ones
+		// Bugfix issue 2318: Should remove all old layers before re-adding new ones
 		for (const layer of removedLayers) {
 			if (this._map.hasLayer(layer)) {
 				this._map.removeLayer(layer);
