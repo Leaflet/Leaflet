@@ -1,7 +1,6 @@
 
 import {Control} from './Control.js';
 import {LeafletMap} from '../map/Map.js';
-import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -36,7 +35,7 @@ export class Attribution extends Control {
 	}
 
 	initialize(options) {
-		Util.setOptions(this, options);
+		super.initialize(options);
 
 		this._attributions = {};
 	}
