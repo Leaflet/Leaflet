@@ -6,7 +6,7 @@ describe('AttributionControl', () => {
 	let map, control, container, controlContainer;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 
 		control = new AttributionControl({

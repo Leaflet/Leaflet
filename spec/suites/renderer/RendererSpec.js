@@ -6,7 +6,7 @@ describe('Renderer', () => {
 	let container, map;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 	});
 
 	afterEach(() => {

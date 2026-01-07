@@ -6,7 +6,7 @@ describe('Circle', () => {
 	let map, container, circle;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 		map.setView([0, 0], 4);
 		circle = new Circle([50, 30], {radius: 200}).addTo(map);
