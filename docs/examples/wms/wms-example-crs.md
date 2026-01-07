@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: WMS CRS Example
 ---
 <script type="module">
-	import {LeafletMap, CRS, TileLayerWMS} from 'leaflet';
+	import {LeafletMap, CRS, WMSTileLayer} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		center: [0, 0],
@@ -11,7 +11,7 @@ title: WMS CRS Example
 		crs: CRS.EPSG4326
 	});
 
-	const wmsLayer = new TileLayerWMS('http://ows.mundialis.de/services/service?', {
+	const wmsLayer = new WMSTileLayer('http://ows.mundialis.de/services/service?', {
 		layers: 'TOPO-OSM-WMS'
 	}).addTo(map);
 </script>

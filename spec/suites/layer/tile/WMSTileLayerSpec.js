@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {TileLayerWMS} from 'leaflet';
+import {WMSTileLayer} from 'leaflet';
 
-describe('TileLayerWMS', () => {
+describe('WMSTileLayer', () => {
 	describe('constructor', () => {
 		it('sets wmsParams', () => {
-			const layer = new TileLayerWMS('https://example.com/map', {opacity: 0.5, attribution: 'foo'});
+			const layer = new WMSTileLayer('https://example.com/map', {opacity: 0.5, attribution: 'foo'});
 			expect(layer.wmsParams).to.eql({
 				...layer.defaultWmsParams,
 				width: 256,

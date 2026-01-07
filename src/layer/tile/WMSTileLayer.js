@@ -4,14 +4,14 @@ import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*
- * @class TileLayerWMS
+ * @class WMSTileLayer
  * @inherits TileLayer
  * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services as tile layers on the map. Extends `TileLayer`.
  *
  * @example
  *
  * ```js
- * const nexrad = new TileLayerWMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+ * const nexrad = new WMSTileLayer("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
  * 	layers: 'nexrad-n0r-900913',
  * 	format: 'image/png',
  * 	transparent: true,
@@ -20,13 +20,13 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
-// @constructor TileLayerWMS(baseUrl: String, options: TileLayerWMS options)
+// @constructor WMSTileLayer(baseUrl: String, options: WMSTileLayer options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-export class TileLayerWMS extends TileLayer {
+export class WMSTileLayer extends TileLayer {
 
 	static {
 		// @section
-		// @aka TileLayerWMS options
+		// @aka WMSTileLayer options
 		// If any custom options not documented here are used, they will be sent to the
 		// WMS server as extra parameters in each request URL. This can be useful for
 		// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
@@ -74,7 +74,7 @@ export class TileLayerWMS extends TileLayer {
 
 		// Options that are unknown in the prototype chain are considered WMS params.
 		for (const [key, value] of Object.entries(options)) {
-			if (!(key in TileLayerWMS.prototype.options)) {
+			if (!(key in WMSTileLayer.prototype.options)) {
 				wmsParams[key] = value;
 			}
 		}

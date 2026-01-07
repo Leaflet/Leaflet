@@ -71,7 +71,7 @@
 
 [L.Layer] ^- [L.GridLayer|createTile()]
 [L.GridLayer] ^- [L.TileLayer|getTileUrl()]
-[L.TileLayer] ^- [L.TileLayerWMS]
+[L.TileLayer] ^- [L.WMSTileLayer]
 
 
 [L.Layer] ^- [L.Renderer]
