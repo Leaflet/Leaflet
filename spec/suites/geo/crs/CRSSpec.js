@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {CRS, Util, LatLng, LatLngBounds, Point} from 'leaflet';
+import {CRS, EPSG3395, EPSG3857, EPSG4326, EarthCRS, SimpleCRS, Util, LatLng, LatLngBounds, Point} from 'leaflet';
 import '../../SpecHelper.js';
 
-describe('CRS.EPSG3857', () => {
-	const crs = CRS.EPSG3857;
+describe('EPSG3857', () => {
+	const crs = EPSG3857;
 
 	describe('#latLngToPoint', () => {
 		it('projects a center point', () => {
@@ -144,8 +144,8 @@ describe('CRS.EPSG3857', () => {
 
 });
 
-describe('CRS.EPSG4326', () => {
-	const crs = CRS.EPSG4326;
+describe('EPSG4326', () => {
+	const crs = EPSG4326;
 
 	describe('#getSize', () => {
 		it('gives correct size', () => {
@@ -163,8 +163,8 @@ describe('CRS.EPSG4326', () => {
 	});
 });
 
-describe('CRS.EPSG3395', () => {
-	const crs = CRS.EPSG3395;
+describe('EPSG3395', () => {
+	const crs = EPSG3395;
 
 	describe('#latLngToPoint', () => {
 		it('projects a center point', () => {
@@ -187,8 +187,8 @@ describe('CRS.EPSG3395', () => {
 	});
 });
 
-describe('CRS.Simple', () => {
-	const crs = CRS.Simple;
+describe('SimpleCRS', () => {
+	const crs = SimpleCRS;
 
 	describe('#latLngToPoint', () => {
 		it('converts LatLng coords to pixels', () => {
@@ -218,7 +218,7 @@ describe('CRS.Simple', () => {
 		});
 
 		it('wraps coords if configured', () => {
-			class crs extends CRS.Simple {
+			class crs extends SimpleCRS {
 				static wrapLng = [-200, 200];
 				static wrapLat = [-200, 200];
 			}
@@ -269,7 +269,7 @@ describe('CRS.ZoomNotPowerOfTwo', () => {
 	});
 });
 
-describe('CRS.Earth', () => {
+describe('EarthCRS', () => {
 	describe('#distance', () => {
 		// Test values from http://rosettacode.org/wiki/Haversine_formula,
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
@@ -277,6 +277,6 @@ describe('CRS.Earth', () => {
 		// and that sounds serious.
 		const p1 = new LatLng(36.12, -86.67);
 		const p2 = new LatLng(33.94, -118.40);
-		expect(CRS.Earth.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		expect(EarthCRS.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
 	});
 });

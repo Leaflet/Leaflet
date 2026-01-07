@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -336,7 +336,7 @@ describe('TileLayer', () => {
 
 			document.body.appendChild(simplediv);
 			const simpleMap = new LeafletMap(simplediv, {
-				crs: CRS.Simple
+				crs: SimpleCRS
 			}).setView([0, 0], 5);
 			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png');
 

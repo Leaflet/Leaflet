@@ -1,6 +1,6 @@
 import {TileLayer} from './TileLayer.js';
 import Browser from '../../core/Browser.js';
-import {EPSG4326} from '../../geo/crs/CRS.EPSG4326.js';
+import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
 /*

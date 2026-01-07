@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Circle, LeafletMap, CRS, Transformation} from 'leaflet';
+import {Circle, LeafletMap, SimpleCRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Circle', () => {
@@ -42,10 +42,10 @@ describe('Circle', () => {
 	});
 
 	describe('CRS Simple', () => {
-		it('returns a positive radius if the x axis of L.CRS.Simple is inverted', () => {
+		it('returns a positive radius if the x axis of L.SimpleCRS is inverted', () => {
 			map.remove();
 
-			class crs extends CRS.Simple {
+			class crs extends SimpleCRS {
 				static transformation = new Transformation(-1, 0, -1, 0);
 			}
 			map = new LeafletMap(container, {

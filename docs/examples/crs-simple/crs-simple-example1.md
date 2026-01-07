@@ -1,12 +1,12 @@
 ---
 layout: tutorial_frame
-title: CRS.Simple Example
+title: SimpleCRS Example
 ---
 <script type="module">
-	import {LeafletMap, CRS, ImageOverlay} from 'leaflet';
+	import {LeafletMap, SimpleCRS, ImageOverlay} from 'leaflet';
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple
+		crs: SimpleCRS
 	});
 
 	const bounds = [[0, 0], [1000, 1000]];

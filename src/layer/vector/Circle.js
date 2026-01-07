@@ -1,7 +1,7 @@
 import {CircleMarker} from './CircleMarker.js';
 import {Path} from './Path.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
-import {Earth} from '../../geo/crs/CRS.Earth.js';
+import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 
 
 /*
@@ -73,9 +73,9 @@ export class Circle extends CircleMarker {
 		map = this._map,
 		crs = map.options.crs;
 
-		if (crs.distance === Earth.distance) {
+		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,
-			latR = (this._mRadius / Earth.R) / d,
+			latR = (this._mRadius / EarthCRS.R) / d,
 			top = map.project([lat + latR, lng]),
 			bottom = map.project([lat - latR, lng]),
 			p = top.add(bottom).divideBy(2),

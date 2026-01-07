@@ -1,10 +1,10 @@
-import {Earth} from './CRS.Earth.js';
+import {EarthCRS} from './EarthCRS.js';
 import {LonLat} from '../projection/Projection.LonLat.js';
 import {Transformation} from '../../geometry/Transformation.js';
 
 /*
  * @namespace CRS
- * @crs CRS.EPSG4326
+ * @crs EPSG4326
  *
  * A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
  *
@@ -14,7 +14,7 @@ import {Transformation} from '../../geometry/Transformation.js';
  * or (-180,-90) for `TileLayer`s with [the `tms` option](#tilelayer-tms) set.
  */
 
-export class EPSG4326 extends Earth {
+export class EPSG4326 extends EarthCRS {
 	static code = 'EPSG:4326';
 	static projection = LonLat;
 	static transformation = new Transformation(1 / 180, 1, -1 / 180, 0.5);
