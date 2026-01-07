@@ -91,7 +91,7 @@ If we combine this with the [layers control](/examples/layers-control.html), the
 		})
 	};
 
-	new Control.Layers(basemaps).addTo(map);
+	new LayersControl(basemaps).addTo(map);
 
 	basemaps.Topography.addTo(map);
 

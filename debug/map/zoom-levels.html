@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, LatLng, TileLayer, Control, Marker} from 'leaflet';
+			import {LeafletMap, LatLng, TileLayer, LayersControl, ScaleControl, Marker} from 'leaflet';
 
 			// Test that changing between layers with differing zoomlevels also updates
 			// the zoomlevels in the map + also
@@ -27,12 +27,12 @@
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: osmAttrib, minZoom: 0, maxZoom: 10}).addTo(map);
 			const osm2 = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Hello world', minZoom: 5, maxZoom: 18});
 
-			new Control.Layers({
+			new LayersControl({
 				'OSM (5-18)': osm2,
 				'OSM (0-10)': osm
 			}).addTo(map);
 
-			new Control.Scale().addTo(map);
+			new ScaleControl().addTo(map);
 
 			function getRandomLatLng(llbounds) {
 				const s = llbounds.getSouth();

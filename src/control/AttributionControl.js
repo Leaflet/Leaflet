@@ -8,20 +8,20 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 
 
 /*
- * @class Control.Attribution
+ * @class AttributionControl
  * @inherits Control
  *
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
-// @namespace Control.Attribution
-// @constructor Control.Attribution(options: Control.Attribution options)
+// @namespace AttributionControl
+// @constructor AttributionControl(options: AttributionControl options)
 // Creates an attribution control.
-export class Attribution extends Control {
+export class AttributionControl extends Control {
 
 	static {
 		// @section
-		// @aka Control.Attribution options
+		// @aka AttributionControl options
 		this.setDefaultOptions({
 			// @option position: String = 'bottomright'
 			// The position of the control (one of the map corners). Possible values are `'topleft'`,
@@ -134,6 +134,6 @@ LeafletMap.mergeOptions({
 
 LeafletMap.addInitHook(function () {
 	if (this.options.attributionControl) {
-		new Attribution().addTo(this);
+		new AttributionControl().addTo(this);
 	}
 });

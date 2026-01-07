@@ -1,15 +1,15 @@
-import {LeafletMap, Control, Layer} from 'leaflet';
+import {LeafletMap, AttributionControl, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 import {expect} from 'chai';
 
-describe('Control.Attribution', () => {
+describe('AttributionControl', () => {
 	let map, control, container, controlContainer;
 
 	beforeEach(() => {
 		container = container = createContainer();
 		map = new LeafletMap(container);
 
-		control = new Control.Attribution({
+		control = new AttributionControl({
 			prefix: 'prefix'
 		}).addTo(map);
 		map.setView([0, 0], 1);

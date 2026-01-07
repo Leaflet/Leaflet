@@ -22,7 +22,7 @@
 			}
 		</style>
 		<script type="module">
-			import {LeafletMap, TileLayer, Control, Circle, Polygon, GeoJSON} from 'leaflet';
+			import {LeafletMap, TileLayer, LayersControl, Circle, Polygon, GeoJSON} from 'leaflet';
 
 			class GrayscaleTileLayer extends TileLayer {
 				createTile(...args) {
@@ -37,7 +37,7 @@
 			const regularTiles = new TileLayer(tileUrl).addTo(map);
 			const blackAndWhiteTiles = new GrayscaleTileLayer(tileUrl);
 
-			new Control.Layers({
+			new LayersControl({
 				'OSM': regularTiles,
 				'OSM BW': blackAndWhiteTiles
 			}, {
