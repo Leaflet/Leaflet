@@ -5,7 +5,7 @@ import {Point} from '../../geometry/Point.js';
 
 
 /*
- * Map.Keyboard is handling keyboard interaction with the map, enabled by default.
+ * KeyboardHandler is handling keyboard interaction with the map, enabled by default.
  */
 
 // @namespace LeafletMap
@@ -21,7 +21,7 @@ LeafletMap.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export class Keyboard extends Handler {
+export class KeyboardHandler extends Handler {
 
 	static keyCodes = {
 		left:    ['ArrowLeft'],
@@ -48,7 +48,7 @@ export class Keyboard extends Handler {
 		}
 
 		// add aria-attribute for keyboard shortcuts to the container
-		container.ariaKeyShortcuts = Object.values(Keyboard.keyCodes).flat().join(' ');
+		container.ariaKeyShortcuts = Object.values(KeyboardHandler.keyCodes).flat().join(' ');
 
 		on(container, {
 			focus: this._onFocus,
@@ -103,7 +103,7 @@ export class Keyboard extends Handler {
 
 	_setPanDelta(panDelta) {
 		const keys = this._panKeys = {},
-		codes = Keyboard.keyCodes;
+		codes = KeyboardHandler.keyCodes;
 
 		for (const code of codes.left) {
 			keys[code] = [-1 * panDelta, 0];
@@ -121,7 +121,7 @@ export class Keyboard extends Handler {
 
 	_setZoomDelta(zoomDelta) {
 		const keys = this._zoomKeys = {},
-		codes = Keyboard.keyCodes;
+		codes = KeyboardHandler.keyCodes;
 
 		for (const code of codes.zoomIn) {
 			keys[code] = zoomDelta;
@@ -182,4 +182,4 @@ export class Keyboard extends Handler {
 // @section Handlers
 // @property keyboard: Handler
 // Keyboard navigation handler.
-LeafletMap.addInitHook('addHandler', 'keyboard', Keyboard);
+LeafletMap.addInitHook('addHandler', 'keyboard', KeyboardHandler);
