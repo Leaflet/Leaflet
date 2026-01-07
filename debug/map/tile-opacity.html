@@ -17,10 +17,10 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, TileLayer, LatLngBounds, LatLng} from 'leaflet';
+			import {LeafletMap, TileLayerWMS, LatLngBounds, LatLng} from 'leaflet';
 
 			const map = new LeafletMap('map');
-			const nexrad = new TileLayer.WMS('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
+			const nexrad = new TileLayerWMS('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
 				layers: 'nexrad-n0r-900913',
 				format: 'image/png',
 				transparent: true,
