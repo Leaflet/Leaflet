@@ -10,7 +10,7 @@ describe('Popup', () => {
 	const center = [55.8, 37.6];
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 		map.setView(center, 6);
 	});

@@ -6,7 +6,7 @@ describe('DefaultIcon', () => {
 	let container, map;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);

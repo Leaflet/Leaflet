@@ -9,7 +9,7 @@ describe('Map', () => {
 	map;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 	});
 
