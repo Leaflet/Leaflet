@@ -7,12 +7,12 @@ css: "#map {
         }"
 ---
 <script type="module">
-	import {LeafletMap, CRS, ImageOverlay} from 'leaflet';
+	import {LeafletMap, SimpleCRS, ImageOverlay} from 'leaflet';
 
 	const bounds = [[0, 0], [1570, 1910]];
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple,
+		crs: SimpleCRS,
 		maxZoom: 0,
 		minZoom: -4,
 		maxBounds: bounds

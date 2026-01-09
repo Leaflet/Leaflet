@@ -2,7 +2,7 @@ import {CRS} from './CRS.js';
 
 /*
  * @namespace CRS
- * @crs CRS.Earth
+ * @crs EarthCRS
  *
  * Serves as the base for CRS that are global such that they cover the earth.
  * Can only be used as the base for other CRS and cannot be used directly,
@@ -10,7 +10,7 @@ import {CRS} from './CRS.js';
  * meters.
  */
 
-export class Earth extends CRS {
+export class EarthCRS extends CRS {
 	static wrapLng = [-180, 180];
 
 	// Mean Earth Radius, as recommended for use by

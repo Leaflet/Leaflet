@@ -4,7 +4,7 @@ import {Transformation} from '../../geometry/Transformation.js';
 
 /*
  * @namespace CRS
- * @crs CRS.Simple
+ * @crs SimpleCRS
  *
  * A simple CRS that maps longitude and latitude into `x` and `y` directly.
  * May be used for maps of flat surfaces (e.g. game maps). Note that the `y`
@@ -12,7 +12,7 @@ import {Transformation} from '../../geometry/Transformation.js';
  * simple euclidean distance.
  */
 
-export class Simple extends CRS {
+export class SimpleCRS extends CRS {
 	static projection = LonLat;
 	static transformation = new Transformation(1, 0, -1, 0);
 

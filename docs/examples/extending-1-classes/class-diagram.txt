@@ -30,16 +30,16 @@
 [L.Evented|on();off();fire()]
 
 
-[L.CRS]          ^- [L.CRS.Earth]
-[L.CRS]          ^- [L.CRS.Simple]
-[L.CRS.Earth]    ^- [L.CRS.EPSG3395;L.CRS.EPSG3857;L.CRS.EPSG4326]
+[L.CRS]          ^- [L.EarthCRS]
+[L.CRS]          ^- [L.SimpleCRS]
+[L.EarthCRS]    ^- [L.EPSG3395;L.EPSG3857;L.EPSG4326]
 
-// L.CRS]          ^-  L.CRS.Earth]
-// L.CRS]          ^-  L.CRS.Simple]
-// L.CRS.Earth]    ^-  L.CRS.EPSG3395]
-// L.CRS.Earth]    ^-  L.CRS.EPSG3857]
-// L.CRS.EPSG3857] ^-  L.CRS.EPSG900913]
-// L.CRS.Earth]    ^-  L.CRS.EPSG4326]
+// L.CRS]          ^-  L.EarthCRS]
+// L.CRS]          ^-  L.SimpleCRS]
+// L.EarthCRS]    ^-  L.EPSG3395]
+// L.EarthCRS]    ^-  L.EPSG3857]
+// L.EPSG3857] ^-  L.EPSG900913]
+// L.EarthCRS]    ^-  L.EPSG4326]
 
 [L.Evented] ^- [L.Layer]
 

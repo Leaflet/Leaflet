@@ -76,7 +76,7 @@ description="A deeper look into what zoom levels are."
 page="crs-simple/"
 thumbnail="crs-simple/thumbnail.png"
 title="Non-geographical Maps"
-description="A primer on `L.CRS.Simple`, how to make maps with no concept of \"latitude\" or \"longitude\"."
+description="A primer on `SimpleCRS`, how to make maps with no concept of \"latitude\" or \"longitude\"."
 %}
 
 
@@ -130,4 +130,3 @@ thumbnail="extending-3-controls/thumbnail.png"
 title="Extending Leaflet: Handlers and Controls"
 description="How to extend or create non-layers."
 %}
-

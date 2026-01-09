@@ -109,7 +109,7 @@ From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `Ge
 Also note that Leaflet supports very few [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `CRS:3857`, `CRS:3395` and `CRS:4326` (See the documentation for `L.CRS`). If your WMS service doesn't serve images in those coordinate systems, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet. Other than that, just use the right CRS when initializing your map, and any WMS layers added will use it:
 
 	const map = new LeafletMap('map', {
-		crs: L.CRS.EPSG4326
+		crs: EPSG4326
 	});
 
 	const wmsLayer = new WMSTileLayer('http://ows.mundialis.de/services/service?', {
