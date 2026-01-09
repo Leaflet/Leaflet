@@ -14,9 +14,9 @@ In this tutorial, you’ll learn how to use these overlays.
 
 ### `ImageOverlay`
 
-`L.ImageOverlay` is used to load and display a single image over specific bounds of the map. 
+`ImageOverlay` is used to load and display a single image over specific bounds of the map. 
 
-To add an image overlay [`L.ImageOverlay`](/reference.html#imageoverlay) use this:
+To add an image overlay [`ImageOverlay`](/reference.html#imageoverlay) use this:
 
 ```
 const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
@@ -24,7 +24,7 @@ const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, options);
 
 #### Creating a Map
 
-First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
+First of all, create a Leaflet map and add a background `TileLayer` in the usual way:
 
 ```
 const map = new LeafletMap('map').setView([37.8, -96], 4);
@@ -51,7 +51,7 @@ const imageOverlay = new ImageOverlay(imageUrl, latLngBounds, {
 }).addTo(map);
 ```
 
-If you want to see the area which is covered by the ImageOverlay, you can add a [`L.Rectangle`](/reference.html#rectangle) with the same `L.LatLngBounds` to the map:
+If you want to see the area which is covered by the ImageOverlay, you can add a [`Rectangle`](/reference.html#rectangle) with the same `LatLngBounds` to the map:
 
 ```
 const rectangle = new Rectangle(latLngBounds).addTo(map);
@@ -66,7 +66,7 @@ map.fitBounds(latLngBounds);
 
 - `interactive` is `false` by default. If `true`, the image overlay will emit mouse events when clicked or hovered.
 
-You can find other options of `L.ImageOverlay` in the [documentation](/reference.html#imageoverlay).
+You can find other options of `ImageOverlay` in the [documentation](/reference.html#imageoverlay).
 
 {% include frame.html url="example-image.html" %}
 
@@ -94,7 +94,7 @@ If a video can be shown in a webpage in this way, then Leaflet can display it in
 
 #### Creating a Map
 
-First of all, create a Leaflet map and add a background `L.TileLayer` in the usual way:
+First of all, create a Leaflet map and add a background `TileLayer` in the usual way:
 
 ```
 const map = new LeafletMap('map').setView([37.8, -96], 4);
@@ -111,8 +111,8 @@ Adding a video overlay works very similar to adding an image overlay.
 
 For a video overlay, just:
 
-- Use `L.VideoOverlay` instead of `L.ImageOverlay`
-- `L.VideoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`L.ImageOverlay`](/reference.html#imageoverlay). 
+- Use `VideoOverlay` instead of `ImageOverlay`
+- `VideoOverlay` is used to load and display a video player over specific bounds of the map. Extends [`ImageOverlay`](/reference.html#imageoverlay). 
 A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element.
 - Instead of the image URL, specify one video URL *or* an array of video URLs
 
@@ -144,14 +144,14 @@ And just like that, you'll get the video on your map:
 
 - `playsInline` option when it is set to `true` allows video to play inline without automatically entering fullscreen mode when playback begins in the mobile browser. It is `true` by default.
 
-You can find other options of `L.videoOverlay` in the [documentation](/reference.html#videooverlay).
+You can find other options of `VideoOverlay` in the [documentation](/reference.html#videooverlay).
 
 Video overlays behave like any other Leaflet layer - you can add and remove them, let the user select from several videos using a [layers control](../layers-control/), etc.
 
 
 #### A Bit of Control over the Video
 
-If you read the API documentation, you'll notice that the `L.VideoOverlay` class does not have a `play()` or `pause()` method.
+If you read the API documentation, you'll notice that the `VideoOverlay` class does not have a `play()` or `pause()` method.
 
 For this, the `getElement()` method of the video overlay is useful. It returns the [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement) (which inherits from [`HTMLMediaElement`](https://developer.mozilla.org/docs/Web/API/HTMLMediaElement)) for the overlay - and that has methods like `play()` and `pause()`, e.g.
 
@@ -159,7 +159,7 @@ For this, the `getElement()` method of the video overlay is useful. It returns t
 videoOverlay.getElement().pause();
 ```
 
-This allows us to build custom interfaces. For example, we can build a small subclass of `L.Control` to play/pause this video overlay once it's loaded:
+This allows us to build custom interfaces. For example, we can build a small subclass of `Control` to play/pause this video overlay once it's loaded:
 
 ```js
 videoOverlay.on('load', function () {
@@ -195,9 +195,9 @@ videoOverlay.on('load', function () {
 
 ### `SVGOverlay`
 
-`L.SVGOverlay` is used to load, display and provide DOM access to an SVG file over specific bounds of the map. 
+`SVGOverlay` is used to load, display and provide DOM access to an SVG file over specific bounds of the map. 
 
-To add an SVG overlay [`L.SVGOverlay`](/reference.html#svgoverlay) use this:
+To add an SVG overlay [`SVGOverlay`](/reference.html#svgoverlay) use this:
 
 ```
 const svgOverlay = new SVGOverlay(SVGElement, svgElementBounds, options);
@@ -243,6 +243,6 @@ const svgOverlay = new SVGOverlay(svgElement, latLngBounds, {
 ```
 
 Although SVGOverlay does not have its own unique options, it inherits a variety of options from ImageOverlay, Interactive layer and Layer.
-Check out the documentation to find out more [`L.SVGOverlay`](/reference.html#svgoverlay) options.
+Check out the documentation to find out more [`SVGOverlay`](/reference.html#svgoverlay) options.
 
 {% include frame.html url="example-svg.html" %}
