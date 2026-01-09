@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: WMS Example 3
 ---
 <script type="module">
-	import {LeafletMap, CRS, TileLayerWMS, LayersControl} from 'leaflet';
+	import {LeafletMap, CRS, WMSTileLayer, LayersControl} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		center: [-17, -67],
@@ -11,19 +11,19 @@ title: WMS Example 3
 	});
 
 	const basemaps = {
-		Topography: new TileLayerWMS('http://ows.mundialis.de/services/service?', {
+		Topography: new WMSTileLayer('http://ows.mundialis.de/services/service?', {
 			layers: 'TOPO-WMS'
 		}),
 
-		Places: new TileLayerWMS('http://ows.mundialis.de/services/service?', {
+		Places: new WMSTileLayer('http://ows.mundialis.de/services/service?', {
 			layers: 'OSM-Overlay-WMS'
 		}),
 
-		'Topography, then places': new TileLayerWMS('http://ows.mundialis.de/services/service?', {
+		'Topography, then places': new WMSTileLayer('http://ows.mundialis.de/services/service?', {
 			layers: 'TOPO-WMS,OSM-Overlay-WMS'
 		}),
 
-		'Places, then topography': new TileLayerWMS('http://ows.mundialis.de/services/service?', {
+		'Places, then topography': new WMSTileLayer('http://ows.mundialis.de/services/service?', {
 			layers: 'OSM-Overlay-WMS,TOPO-WMS'
 		})
 	};
