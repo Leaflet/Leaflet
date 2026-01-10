@@ -297,4 +297,56 @@ describe('Canvas', () => {
 			requestAnimationFrame(() => { done(); });
 		});
 	});
+		describe('Canvas _containsPoint', () => {
+		it('detects point inside polygon', () => {
+			const polygon = new Polygon([
+				[0, 0],
+				[0, 10],
+				[10, 10],
+				[10, 0]
+			]).addTo(map);
+
+			const renderer = map.getRenderer(polygon);
+			const layerPoint = map.latLngToLayerPoint([5, 5]);
+
+			expect(renderer._containsPoint(polygon, layerPoint)).to.be.true;
+		});
+
+		it('does not detect point outside polygon', () => {
+			const polygon = new Polygon([
+				[0, 0],
+				[0, 10],
+				[10, 10],
+				[10, 0]
+			]).addTo(map);
+
+			const renderer = map.getRenderer(polygon);
+			const layerPoint = map.latLngToLayerPoint([20, 20]);
+
+			expect(renderer._containsPoint(polygon, layerPoint)).to.be.false;
+		});
+
+		it('does not detect point inside polygon hole', () => {
+			const polygon = new Polygon([
+				[
+					[0, 0],
+					[0, 10],
+					[10, 10],
+					[10, 0]
+				],
+				[
+					[3, 3],
+					[3, 7],
+					[7, 7],
+					[7, 3]
+				]
+			]).addTo(map);
+
+			const renderer = map.getRenderer(polygon);
+			const layerPoint = map.latLngToLayerPoint([5, 5]);
+
+			expect(renderer._containsPoint(polygon, layerPoint)).to.be.false;
+		});
+	});
+
 });
