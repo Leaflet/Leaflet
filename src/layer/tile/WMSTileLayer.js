@@ -72,7 +72,7 @@ export class WMSTileLayer extends TileLayer {
 
 		// Options that are unknown in the prototype chain are considered WMS params.
 		for (const [key, value] of Object.entries(options)) {
-			if (!(key in this.getDefaultOptions())) {
+			if (!(key in WMSTileLayer.prototype.options)) {
 				wmsParams[key] = value;
 			}
 		}

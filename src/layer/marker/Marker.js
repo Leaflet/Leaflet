@@ -23,87 +23,85 @@ import {MarkerDrag} from './Marker.Drag.js';
 // Instantiates a Marker object given a geographical point and optionally an options object.
 export class Marker extends Layer {
 
-	static {
-		// @section
-		// @aka Marker options
-		this.setDefaultOptions({
-			// @option icon: Icon = *
-			// Icon instance to use for rendering the marker.
-			// See [Icon documentation](#Icon) for details on how to customize the marker icon.
-			// If not specified, a common instance of `DefaultIcon` is used.
-			icon: new DefaultIcon(),
+	// @section
+	// @aka Marker options
+	static defaultOptions = ({
+		// @option icon: Icon = *
+		// Icon instance to use for rendering the marker.
+		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
+		// If not specified, a common instance of `DefaultIcon` is used.
+		icon: new DefaultIcon(),
 
-			// Option inherited from "Interactive layer" abstract class
-			interactive: true,
+		// Option inherited from "Interactive layer" abstract class
+		interactive: true,
 
-			// @option keyboard: Boolean = true
-			// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
-			keyboard: true,
+		// @option keyboard: Boolean = true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+		keyboard: true,
 
-			// @option title: String = ''
-			// Text for the browser tooltip that appear on marker hover (no tooltip by default).
-			// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
-			title: '',
+		// @option title: String = ''
+		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+		title: '',
 
-			// @option alt: String = 'Marker'
-			// Text for the `alt` attribute of the icon image.
-			// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
-			alt: 'Marker',
+		// @option alt: String = 'Marker'
+		// Text for the `alt` attribute of the icon image.
+		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+		alt: 'Marker',
 
-			// @option zIndexOffset: Number = 0
-			// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
-			zIndexOffset: 0,
+		// @option zIndexOffset: Number = 0
+		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
+		zIndexOffset: 0,
 
-			// @option opacity: Number = 1.0
-			// The opacity of the marker.
-			opacity: 1,
+		// @option opacity: Number = 1.0
+		// The opacity of the marker.
+		opacity: 1,
 
-			// @option riseOnHover: Boolean = false
-			// If `true`, the marker will get on top of others when you hover the pointer over it.
-			riseOnHover: false,
+		// @option riseOnHover: Boolean = false
+		// If `true`, the marker will get on top of others when you hover the pointer over it.
+		riseOnHover: false,
 
-			// @option riseOffset: Number = 250
-			// The z-index offset used for the `riseOnHover` feature.
-			riseOffset: 250,
+		// @option riseOffset: Number = 250
+		// The z-index offset used for the `riseOnHover` feature.
+		riseOffset: 250,
 
-			// @option pane: String = 'markerPane'
-			// `Map pane` where the markers icon will be added.
-			pane: 'markerPane',
+		// @option pane: String = 'markerPane'
+		// `Map pane` where the markers icon will be added.
+		pane: 'markerPane',
 
-			// @option shadowPane: String = 'shadowPane'
-			// `Map pane` where the markers shadow will be added.
-			shadowPane: 'shadowPane',
+		// @option shadowPane: String = 'shadowPane'
+		// `Map pane` where the markers shadow will be added.
+		shadowPane: 'shadowPane',
 
-			// @option bubblingPointerEvents: Boolean = false
-			// When `true`, a pointer event on this marker will trigger the same event on the map
-			// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-			bubblingPointerEvents: false,
+		// @option bubblingPointerEvents: Boolean = false
+		// When `true`, a pointer event on this marker will trigger the same event on the map
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingPointerEvents: false,
 
-			// @option autoPanOnFocus: Boolean = true
-			// When `true`, the map will pan whenever the marker is focused (via
-			// e.g. pressing `tab` on the keyboard) to ensure the marker is
-			// visible within the map's bounds
-			autoPanOnFocus: true,
+		// @option autoPanOnFocus: Boolean = true
+		// When `true`, the map will pan whenever the marker is focused (via
+		// e.g. pressing `tab` on the keyboard) to ensure the marker is
+		// visible within the map's bounds
+		autoPanOnFocus: true,
 
-			// @section Draggable marker options
-			// @option draggable: Boolean = false
-			// Whether the marker is draggable with pointer or not.
-			draggable: false,
+		// @section Draggable marker options
+		// @option draggable: Boolean = false
+		// Whether the marker is draggable with pointer or not.
+		draggable: false,
 
-			// @option autoPan: Boolean = false
-			// Whether to pan the map when dragging this marker near its edge or not.
-			autoPan: false,
+		// @option autoPan: Boolean = false
+		// Whether to pan the map when dragging this marker near its edge or not.
+		autoPan: false,
 
-			// @option autoPanPadding: Point = Point(50, 50)
-			// Distance (in pixels to the left/right and to the top/bottom) of the
-			// map edge to start panning the map.
-			autoPanPadding: [50, 50],
+		// @option autoPanPadding: Point = Point(50, 50)
+		// Distance (in pixels to the left/right and to the top/bottom) of the
+		// map edge to start panning the map.
+		autoPanPadding: [50, 50],
 
-			// @option autoPanSpeed: Number = 10
-			// Number of pixels the map should pan by.
-			autoPanSpeed: 10
-		});
-	}
+		// @option autoPanSpeed: Number = 10
+		// Number of pixels the map should pan by.
+		autoPanSpeed: 10
+	});
 
 	/* @section
 	 *

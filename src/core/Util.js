@@ -88,7 +88,6 @@ export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
 		obj.options = obj.options ? Object.create(obj.options) : {};
 	}
-	Object.assign(obj.options, obj.getDefaultOptions?.() ?? {});
 	for (const i in options) {
 		if (Object.hasOwn(options, i)) {
 			obj.options[i] = options[i];

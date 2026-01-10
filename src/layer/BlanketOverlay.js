@@ -17,23 +17,21 @@ import {Bounds} from '../geometry/Bounds.js';
 
 export class BlanketOverlay extends Layer {
 
-	static {
-		// @section
-		// @aka BlanketOverlay options
-		this.setDefaultOptions({
-			// @option padding: Number = 0.1
-			// How much to extend the clip area around the map view (relative to its size)
-			// e.g. 0.1 would be 10% of map view in each direction
-			padding: 0.1,
+	// @section
+	// @aka BlanketOverlay options
+	static defaultOptions = ({
+		// @option padding: Number = 0.1
+		// How much to extend the clip area around the map view (relative to its size)
+		// e.g. 0.1 would be 10% of map view in each direction
+		padding: 0.1,
 
-			// @option continuous: Boolean = false
-			// When `false`, the blanket will update its position only when the
-			// map state settles (*after* a pan/zoom animation). When `true`,
-			// it will update when the map state changes (*during* pan/zoom
-			// animations)
-			continuous: false,
-		});
-	}
+		// @option continuous: Boolean = false
+		// When `false`, the blanket will update its position only when the
+		// map state settles (*after* a pan/zoom animation). When `true`,
+		// it will update when the map state changes (*during* pan/zoom
+		// animations)
+		continuous: false,
+	});
 
 	initialize(options) {
 		Util.setOptions(this, options);

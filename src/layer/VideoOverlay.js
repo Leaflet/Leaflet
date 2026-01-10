@@ -26,36 +26,34 @@ import * as Util from '../core/Util.js';
 // geographical bounds it is tied to.
 export class VideoOverlay extends ImageOverlay {
 
-	static {
-		// @section
-		// @aka VideoOverlay options
-		this.setDefaultOptions({
-			// @option autoplay: Boolean = true
-			// Whether the video starts playing automatically when loaded.
-			// On some browsers autoplay will only work with `muted: true`
-			autoplay: true,
+	// @section
+	// @aka VideoOverlay options
+	static defaultOptions = ({
+		// @option autoplay: Boolean = true
+		// Whether the video starts playing automatically when loaded.
+		// On some browsers autoplay will only work with `muted: true`
+		autoplay: true,
 
-			// @option controls: Boolean = false
-			// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
-			controls: false,
+		// @option controls: Boolean = false
+		// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+		controls: false,
 
-			// @option loop: Boolean = true
-			// Whether the video will loop back to the beginning when played.
-			loop: true,
+		// @option loop: Boolean = true
+		// Whether the video will loop back to the beginning when played.
+		loop: true,
 
-			// @option keepAspectRatio: Boolean = true
-			// Whether the video will save aspect ratio after the projection.
-			keepAspectRatio: true,
+		// @option keepAspectRatio: Boolean = true
+		// Whether the video will save aspect ratio after the projection.
+		keepAspectRatio: true,
 
-			// @option muted: Boolean = false
-			// Whether the video starts on mute when loaded.
-			muted: false,
+		// @option muted: Boolean = false
+		// Whether the video starts on mute when loaded.
+		muted: false,
 
-			// @option playsInline: Boolean = true
-			// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
-			playsInline: true
-		});
-	}
+		// @option playsInline: Boolean = true
+		// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+		playsInline: true
+	});
 
 	_initImage() {
 		const wasElementSupplied = this._url.tagName === 'VIDEO';

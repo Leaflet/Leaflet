@@ -11,6 +11,7 @@ export class Class {
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
+		this._initDefaultOptions();
 		const parentOptions = this.prototype.options;
 		for (const k of getAllMethodNames(props)) {
 			this.prototype[k] = props[k];
@@ -33,16 +34,10 @@ export class Class {
 		}
 	}
 
-	// @function setDefaultOptions(options: Object): this
-	// Configures the [default `options`](#class-options) on the prototype of this class.
-	static setDefaultOptions(options) {
-		Util.setOptions(this.prototype, options);
-		return this;
-	}
-
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(options) {
+		this._initDefaultOptions();
 		this.prototype.options ??= {};
 		Object.assign(this.prototype.options, options);
 		return this;
@@ -62,9 +57,21 @@ export class Class {
 		return this;
 	}
 
+	static _initDefaultOptions(proto = this.prototype) {
+		if (!proto) { return; }
+		Class._initDefaultOptions(Object.getPrototypeOf(proto));
+		const options = proto.constructor.defaultOptions;
+		if (!options) { return; }
+		if (Object.hasOwn(proto, 'options')) { return; }
+		Util.setOptions(proto, options);
+	}
+
 	constructor(...args) {
 		this._initHooksCalled = false;
 
+		for (const proto of this._prototypes) {
+			Class._initDefaultOptions(proto);
+		}
 		Util.setOptions(this);
 
 		// call the constructor
@@ -76,21 +83,12 @@ export class Class {
 		this.callInitHooks();
 	}
 
-	// Collect `static defaultOptions` in reverse order wrt. prototype chain
-	getDefaultOptions() {
-		const obj = {};
-		for (const proto of this._prototypes) {
-			Object.assign(obj, proto.constructor.defaultOptions);
-		}
-		return obj;
-	}
-
 	// collect all prototypes in chain in reverse order
 	get _prototypes() {
+		// collect all prototypes in chain
 		const prototypes = [];
 		let current = this;
 
-		// collect all prototypes in chain
 		while ((current = Object.getPrototypeOf(current)) !== null) {
 			prototypes.push(current);
 		}

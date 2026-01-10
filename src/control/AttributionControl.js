@@ -19,20 +19,18 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // Creates an attribution control.
 export class AttributionControl extends Control {
 
-	static {
-		// @section
-		// @aka AttributionControl options
-		this.setDefaultOptions({
-			// @option position: String = 'bottomright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'bottomright',
+	// @section
+	// @aka AttributionControl options
+	static defaultOptions = ({
+		// @option position: String = 'bottomright'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		position: 'bottomright',
 
-			// @option prefix: String|false = 'Leaflet'
-			// The HTML text shown before the attributions. Pass `false` to disable.
-			prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-		});
-	}
+		// @option prefix: String|false = 'Leaflet'
+		// The HTML text shown before the attributions. Pass `false` to disable.
+		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+	});
 
 	initialize(options) {
 		super.initialize(options);
