@@ -76,24 +76,37 @@ export class Class {
 		this.callInitHooks();
 	}
 
-	callInitHooks() {
-		if (this._initHooksCalled) {
-			return;
+	// Collect `static defaultOptions` in reverse order wrt. prototype chain
+	getDefaultOptions() {
+		const obj = {};
+		for (const proto of this._prototypes) {
+			Object.assign(obj, proto.constructor.defaultOptions);
 		}
+		return obj;
+	}
 
-		// collect all prototypes in chain
+	// collect all prototypes in chain in reverse order
+	get _prototypes() {
 		const prototypes = [];
 		let current = this;
 
+		// collect all prototypes in chain
 		while ((current = Object.getPrototypeOf(current)) !== null) {
 			prototypes.push(current);
 		}
 
 		// reverse so the parent prototype is first
 		prototypes.reverse();
+		return prototypes;
+	}
+
+	callInitHooks() {
+		if (this._initHooksCalled) {
+			return;
+		}
 
 		// call init hooks on each prototype
-		for (const proto of prototypes) {
+		for (const proto of this._prototypes) {
 			for (const hook of proto._initHooks ?? []) {
 				hook.call(this);
 			}
