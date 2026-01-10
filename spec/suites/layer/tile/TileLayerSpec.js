@@ -460,9 +460,7 @@ describe('TileLayer', () => {
 
 		it('consults options.foo for {foo}', () => {
 			class OSMLayer extends TileLayer {
-				static {
-					this.setDefaultOptions({foo: 'bar'});
-				}
+				static defaultOptions = {foo: 'bar'};
 			}
 			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
 			map.options.zoomSnap = 0;

@@ -6,20 +6,16 @@ describe('Class', () => {
 	describe('#extends', () => {
 		it('merges options instead of replacing them', () => {
 			class KlassWithOptions1 extends Class {
-				static {
-					this.setDefaultOptions({
-						foo1: 1,
-						foo2: 2
-					});
-				}
+				static defaultOptions = {
+					foo1: 1,
+					foo2: 2
+				};
 			}
 			class KlassWithOptions2 extends KlassWithOptions1 {
-				static {
-					this.setDefaultOptions({
-						foo2: 3,
-						foo3: 4
-					});
-				}
+				static defaultOptions = {
+					foo2: 3,
+					foo3: 4
+				};
 			}
 
 			const a = new KlassWithOptions2();
@@ -87,9 +83,7 @@ describe('Class', () => {
 		it('keeps parent options', () => { // #6070
 
 			class Quux extends Class {
-				static {
-					this.setDefaultOptions({foo: 'Foo!'});
-				}
+				static defaultOptions = {foo: 'Foo!'};
 			}
 
 			Quux.include({
@@ -109,5 +103,15 @@ describe('Class', () => {
 		});
 	});
 
-	// TODO Class.mergeOptions
+	describe('#mergeOptions', () => {
+		it('merges options', () => {
+			class MergingClass extends Class {
+				static defaultOptions = {foo: 'Foo!'};
+			}
+			MergingClass.mergeOptions({bar: 'Bar!'});
+			const k = new MergingClass();
+			expect(k.options.foo).to.eql('Foo!');
+			expect(k.options.bar).to.eql('Bar!');
+		});
+	});
 });

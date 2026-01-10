@@ -30,25 +30,21 @@ a.greet("World");
 @section Options
 @example
 
-`options` is a special property that will be merged with the parent class options instead of overriding them completely, which makes managing configuration of objects and default values convenient. Use `setDefaultOptions()` in a static block to configure options:
+`options` is a special property that will be merged with the parent class options instead of overriding them completely, which makes managing configuration of objects and default values convenient. Specify `static defaultOptions = {...}`: to configure options:
 
 ```js
 class MyClass extends Class {
-    static {
-        this.setDefaultOptions({
-            myOption1: 'foo',
-            myOption2: 'bar'
-        });
-    }
+    static defaultOptions = {
+        myOption1: 'foo',
+        myOption2: 'bar'
+    };
 }
 
 class MyChildClass extends MyClass {
-    static {
-        this.setDefaultOptions({
-            myOption1: 'baz',
-            myOption3: 5
-        });
-    }
+    static defaultOptions = {
+        myOption1: 'baz',
+        myOption3: 5
+    };
 }
 
 const a = new MyChildClass();
@@ -63,12 +59,10 @@ defined in the class:
 
 ```js
 class MyClass extends Class {
-    static {
-        this.setDefaultOptions({
-            foo: 'bar',
-            bla: 5
-        });
-    }
+    static defaultOptions = {
+        foo: 'bar',
+        bla: 5
+    };
 
     initialize(options) {
         Util.setOptions(this, options);

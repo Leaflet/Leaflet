@@ -52,16 +52,14 @@ What if we need to create several icons that have lots in common? Let's define o
 
 ```js
 class LeafIcon extends Icon {
-	static {
-		this.setDefaultOptions({
-			shadowUrl: 'leaf-shadow.png',
-			iconSize:     [38, 95],
-			shadowSize:   [50, 64],
-			iconAnchor:   [22, 94],
-			shadowAnchor: [4, 62],
-			popupAnchor:  [-3, -76]
-		});
-	}
+	static defaultOptions = {
+		shadowUrl: 'leaf-shadow.png',
+		iconSize:     [38, 95],
+		shadowSize:   [50, 64],
+		iconAnchor:   [22, 94],
+		shadowAnchor: [4, 62],
+		popupAnchor:  [-3, -76]
+	};
 }
 ```
 

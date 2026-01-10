@@ -11,6 +11,7 @@ export class Class {
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
+		this._initDefaultOptions();
 		const parentOptions = this.prototype.options;
 		for (const k of getAllMethodNames(props)) {
 			this.prototype[k] = props[k];
@@ -33,16 +34,10 @@ export class Class {
 		}
 	}
 
-	// @function setDefaultOptions(options: Object): this
-	// Configures the [default `options`](#class-options) on the prototype of this class.
-	static setDefaultOptions(options) {
-		Util.setOptions(this.prototype, options);
-		return this;
-	}
-
 	// @function mergeOptions(options: Object): this
 	// [Merges `options`](#class-options) into the defaults of the class.
 	static mergeOptions(options) {
+		this._initDefaultOptions();
 		this.prototype.options ??= {};
 		Object.assign(this.prototype.options, options);
 		return this;
@@ -62,9 +57,19 @@ export class Class {
 		return this;
 	}
 
+	static _initDefaultOptions(proto = this.prototype) {
+		if (!proto) { return; }
+		Class._initDefaultOptions(Object.getPrototypeOf(proto)); // parent
+		if (Object.hasOwn(proto, 'options')) { return; }
+		const options = proto.constructor.defaultOptions;
+		if (!options) { return; }
+		Util.setOptions(proto, options);
+	}
+
 	constructor(...args) {
 		this._initHooksCalled = false;
 
+		Class._initDefaultOptions(Object.getPrototypeOf(this));
 		Util.setOptions(this);
 
 		// call the constructor

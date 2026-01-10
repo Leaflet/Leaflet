@@ -75,82 +75,80 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 // Creates a new instance of GridLayer with the supplied options.
 export class GridLayer extends Layer {
 
-	static {
 	// @section
 	// @aka GridLayer options
-		this.setDefaultOptions({
-			// @option tileSize: Number|Point = 256
-			// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
-			tileSize: 256,
+	static defaultOptions = {
+		// @option tileSize: Number|Point = 256
+		// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
+		tileSize: 256,
 
-			// @option opacity: Number = 1.0
-			// Opacity of the tiles. Can be used in the `createTile()` function.
-			opacity: 1,
+		// @option opacity: Number = 1.0
+		// Opacity of the tiles. Can be used in the `createTile()` function.
+		opacity: 1,
 
-			// @option updateWhenIdle: Boolean = (depends)
-			// Load new tiles only when panning ends.
-			// `true` by default on mobile browsers, in order to avoid too many requests and keep smooth navigation.
-			// `false` otherwise in order to display new tiles _during_ panning, since it is easy to pan outside the
-			// [`keepBuffer`](#gridlayer-keepbuffer) option in desktop browsers.
-			updateWhenIdle: Browser.mobile,
+		// @option updateWhenIdle: Boolean = (depends)
+		// Load new tiles only when panning ends.
+		// `true` by default on mobile browsers, in order to avoid too many requests and keep smooth navigation.
+		// `false` otherwise in order to display new tiles _during_ panning, since it is easy to pan outside the
+		// [`keepBuffer`](#gridlayer-keepbuffer) option in desktop browsers.
+		updateWhenIdle: Browser.mobile,
 
-			// @option updateWhenZooming: Boolean = true
-			// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
-			updateWhenZooming: true,
+		// @option updateWhenZooming: Boolean = true
+		// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+		updateWhenZooming: true,
 
-			// @option updateInterval: Number = 200
-			// Tiles will not update more than once every `updateInterval` milliseconds when panning.
-			updateInterval: 200,
+		// @option updateInterval: Number = 200
+		// Tiles will not update more than once every `updateInterval` milliseconds when panning.
+		updateInterval: 200,
 
-			// @option zIndex: Number = 1
-			// The explicit zIndex of the tile layer.
-			zIndex: 1,
+		// @option zIndex: Number = 1
+		// The explicit zIndex of the tile layer.
+		zIndex: 1,
 
-			// @option bounds: LatLngBounds = undefined
-			// If set, tiles will only be loaded inside the set `LatLngBounds`.
-			bounds: null,
+		// @option bounds: LatLngBounds = undefined
+		// If set, tiles will only be loaded inside the set `LatLngBounds`.
+		bounds: null,
 
-			// @option minZoom: Number = 0
-			// The minimum zoom level down to which this layer will be displayed (inclusive).
-			minZoom: 0,
+		// @option minZoom: Number = 0
+		// The minimum zoom level down to which this layer will be displayed (inclusive).
+		minZoom: 0,
 
-			// @option maxZoom: Number = undefined
-			// The maximum zoom level up to which this layer will be displayed (inclusive).
-			maxZoom: undefined,
+		// @option maxZoom: Number = undefined
+		// The maximum zoom level up to which this layer will be displayed (inclusive).
+		maxZoom: undefined,
 
-			// @option maxNativeZoom: Number = undefined
-			// Maximum zoom number the tile source has available. If it is specified,
-			// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-			// from `maxNativeZoom` level and auto-scaled.
-			maxNativeZoom: undefined,
+		// @option maxNativeZoom: Number = undefined
+		// Maximum zoom number the tile source has available. If it is specified,
+		// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
+		// from `maxNativeZoom` level and auto-scaled.
+		maxNativeZoom: undefined,
 
-			// @option minNativeZoom: Number = undefined
-			// Minimum zoom number the tile source has available. If it is specified,
-			// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
-			// from `minNativeZoom` level and auto-scaled.
-			minNativeZoom: undefined,
+		// @option minNativeZoom: Number = undefined
+		// Minimum zoom number the tile source has available. If it is specified,
+		// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
+		// from `minNativeZoom` level and auto-scaled.
+		minNativeZoom: undefined,
 
-			// @option noWrap: Boolean = false
-			// Whether the layer is wrapped around the antimeridian. If `true`, the
-			// GridLayer will only be displayed once at low zoom levels. Has no
-			// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
-			// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
-			// tiles outside the CRS limits.
-			noWrap: false,
+		// @option noWrap: Boolean = false
+		// Whether the layer is wrapped around the antimeridian. If `true`, the
+		// GridLayer will only be displayed once at low zoom levels. Has no
+		// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
+		// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
+		// tiles outside the CRS limits.
+		noWrap: false,
 
-			// @option pane: String = 'tilePane'
-			// `Map pane` where the grid layer will be added.
-			pane: 'tilePane',
+		// @option pane: String = 'tilePane'
+		// `Map pane` where the grid layer will be added.
+		pane: 'tilePane',
 
-			// @option className: String = ''
-			// A custom class name to assign to the tile layer. Empty by default.
-			className: '',
+		// @option className: String = ''
+		// A custom class name to assign to the tile layer. Empty by default.
+		className: '',
 
-			// @option keepBuffer: Number = 2
-			// When panning the map, keep this many rows and columns of tiles before unloading them.
-			keepBuffer: 2
-		});
-	}
+		// @option keepBuffer: Number = 2
+		// When panning the map, keep this many rows and columns of tiles before unloading them.
+		keepBuffer: 2
+	};
 
 	initialize(options) {
 		Util.setOptions(this, options);

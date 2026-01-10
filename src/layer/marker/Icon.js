@@ -34,8 +34,7 @@ import Browser from '../../core/Browser.js';
 // Creates an icon instance with the given options.
 export class Icon extends Class {
 
-	static {
-		/* @section
+	/* @section
 		 * @aka Icon options
 		 *
 		 * @option iconUrl: String = null
@@ -74,17 +73,16 @@ export class Icon extends Class {
 		 * @option className: String = ''
 		 * A custom class name to assign to both icon and shadow images. Empty by default.
 		 */
-		this.setDefaultOptions({
-			popupAnchor: [0, 0],
-			tooltipAnchor: [0, 0],
+	static defaultOptions = {
+		popupAnchor: [0, 0],
+		tooltipAnchor: [0, 0],
 
-			// @option crossOrigin: Boolean|String = false
-			// Whether the crossOrigin attribute will be added to the tiles.
-			// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
-			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-			crossOrigin: false
-		});
-	}
+		// @option crossOrigin: Boolean|String = false
+		// Whether the crossOrigin attribute will be added to the tiles.
+		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		crossOrigin: false
+	};
 
 	initialize(options) {
 		setOptions(this, options);

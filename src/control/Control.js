@@ -14,16 +14,14 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 export class Control extends Class {
 
-	static {
-		// @section
-		// @aka Control Options
-		this.setDefaultOptions({
-			// @option position: String = 'topright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'topright'
-		});
-	}
+	// @section
+	// @aka Control Options
+	static defaultOptions = {
+		// @option position: String = 'topright'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		position: 'topright'
+	};
 
 
 	initialize(options) {

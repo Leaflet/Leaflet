@@ -54,16 +54,14 @@ When creating Leaflet classes, adhere to these conventions:
 
 ### Setting default options
 
-All classes that extend from `L.Class` can be provided with default options by calling `setDefaultOptions()` in a [static initialization block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks):
+All classes that extend from `L.Class` can be provided with default options by specifying `static defaultOptions = {...}`:
 
 ```js
 class MyBox extends Class {
-	static {
-		this.setDefaultOptions({
-			width: 1,
-			height: 1
-		});
-	}
+	static defaultOptions = {
+		width: 1,
+		height: 1
+	};
 
 	initialize(name, options) {
 		super.initialize(options);
@@ -82,11 +80,9 @@ These options are inherited from parent classes, and merged automatically:
 
 ```js
 class MyCube extends MyBox {
-	static {
-		this.setDefaultOptions({
-			depth: 1
-		});
-	}
+	static defaultOptions = {
+		depth: 1
+	};
 }
 
 const cube = new MyCube('Blue');
@@ -135,12 +131,10 @@ Use `addInitHook()` to run code after `initialize()` completes. This is useful f
 
 ```js
 class MyBox extends Class {
-	static {
-		this.setDefaultOptions({
-			width: 1,
-			height: 1
-		});
-	}
+	static defaultOptions = {
+		width: 1,
+		height: 1
+	};
 }
 
 MyBox.addInitHook(function() {
@@ -161,11 +155,9 @@ console.log(box.getArea()); // Outputs "50"
 
 ```js
 class MyCube extends MyBox {
-	static {
-		this.setDefaultOptions({
-			depth: 1
-		});
-	}
+	static defaultOptions = {
+		depth: 1
+	};
 
 	_calculateVolume(multiplier/*, arg2, arg3. etc. */) {
 		this._volume = this.options.width * this.options.height * this.options.depth * multiplier;
