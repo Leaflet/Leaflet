@@ -252,7 +252,7 @@ export class TileLayer extends GridLayer {
 				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
-					tile.src = Util.emptyImageUrl;
+					tile.setAttribute('src', '');
 					const coords = this._tiles[i].coords;
 					tile.remove();
 					delete this._tiles[i];
@@ -272,13 +272,13 @@ export class TileLayer extends GridLayer {
 		if (!tile) { return; }
 
 		// Cancels any pending http requests associated with the tile
-		tile.el.setAttribute('src', Util.emptyImageUrl);
+		tile.el.setAttribute('src', '');
 
 		return super._removeTile(key);
 	}
 
 	_tileReady(coords, err, tile) {
-		if (!this._map || (tile && tile.getAttribute('src') === Util.emptyImageUrl)) {
+		if (!this._map || (tile && tile.getAttribute('src') === '')) {
 			return;
 		}
 

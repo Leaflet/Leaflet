@@ -117,8 +117,4 @@ export function template(str, data) {
 	});
 }
 
-// @property emptyImageUrl: String
-// Data URI string containing a base64-encoded empty GIF image.
-// Used as a hack to free memory from unused images on WebKit-powered
-// mobile devices (by setting image `src` to this string).
-export const emptyImageUrl = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
