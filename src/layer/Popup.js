@@ -49,7 +49,7 @@ export class Popup extends DivOverlay {
 
 	// @section
 	// @aka Popup options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option pane: String = 'popupPane'
 		// `Map pane` where the popup will be added.
 		pane: 'popupPane',
@@ -127,7 +127,7 @@ export class Popup extends DivOverlay {
 		// Whether the popup shall react to changes in the size of its contents
 		// (e.g. when an image inside the popup loads) and reposition itself.
 		trackResize: true,
-	});
+	};
 
 	// @namespace Popup
 	// @method openOn(map: LeafletMap): this

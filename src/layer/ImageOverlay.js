@@ -26,7 +26,7 @@ export class ImageOverlay extends Layer {
 
 	// @section
 	// @aka ImageOverlay options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option opacity: Number = 1.0
 		// The opacity of the image overlay.
 		opacity: 1,
@@ -63,7 +63,7 @@ export class ImageOverlay extends Layer {
 		// If the image overlay is flickering when being added/removed, set
 		// this option to `'sync'`.
 		decoding: 'auto'
-	});
+	};
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;

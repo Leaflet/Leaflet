@@ -50,7 +50,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // and optionally an object literal with `Map options`.
 export class LeafletMap extends Evented {
 
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @section Map State Options
 		// @option crs: CRS = EPSG3857
 		// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
@@ -140,7 +140,7 @@ export class LeafletMap extends Evented {
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
 		trackResize: true
-	});
+	};
 
 	initialize(id, options) { // (HTMLElement or String, Object)
 		options = Util.setOptions(this, options);

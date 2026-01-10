@@ -18,7 +18,7 @@ export class ZoomControl extends Control {
 
 	// @section
 	// @aka ZoomControl options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option position: String = 'topleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -39,7 +39,7 @@ export class ZoomControl extends Control {
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
 		zoomOutTitle: 'Zoom out'
-	});
+	};
 
 	onAdd(map) {
 		const zoomName = 'leaflet-control-zoom',

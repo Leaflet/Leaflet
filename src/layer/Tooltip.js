@@ -55,7 +55,7 @@ export class Tooltip extends DivOverlay {
 
 	// @section
 	// @aka Tooltip options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option pane: String = 'tooltipPane'
 		// `Map pane` where the tooltip will be added.
 		pane: 'tooltipPane',
@@ -82,7 +82,7 @@ export class Tooltip extends DivOverlay {
 		// @option opacity: Number = 0.9
 		// Tooltip container opacity.
 		opacity: 0.9
-	});
+	};
 
 	onAdd(map) {
 		super.onAdd(map);

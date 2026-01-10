@@ -28,7 +28,7 @@ export class VideoOverlay extends ImageOverlay {
 
 	// @section
 	// @aka VideoOverlay options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option autoplay: Boolean = true
 		// Whether the video starts playing automatically when loaded.
 		// On some browsers autoplay will only work with `muted: true`
@@ -53,7 +53,7 @@ export class VideoOverlay extends ImageOverlay {
 		// @option playsInline: Boolean = true
 		// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
 		playsInline: true
-	});
+	};
 
 	_initImage() {
 		const wasElementSupplied = this._url.tagName === 'VIDEO';

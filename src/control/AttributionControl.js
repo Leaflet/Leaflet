@@ -21,7 +21,7 @@ export class AttributionControl extends Control {
 
 	// @section
 	// @aka AttributionControl options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option position: String = 'bottomright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -30,7 +30,7 @@ export class AttributionControl extends Control {
 		// @option prefix: String|false = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
 		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-	});
+	};
 
 	initialize(options) {
 		super.initialize(options);

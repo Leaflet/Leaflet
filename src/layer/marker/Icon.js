@@ -73,7 +73,7 @@ export class Icon extends Class {
 		 * @option className: String = ''
 		 * A custom class name to assign to both icon and shadow images. Empty by default.
 		 */
-	static defaultOptions = ({
+	static defaultOptions = {
 		popupAnchor: [0, 0],
 		tooltipAnchor: [0, 0],
 
@@ -82,7 +82,7 @@ export class Icon extends Class {
 		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
 		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
 		crossOrigin: false
-	});
+	};
 
 	initialize(options) {
 		setOptions(this, options);

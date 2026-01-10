@@ -17,13 +17,13 @@ export class CircleMarker extends Path {
 
 	// @section
 	// @aka CircleMarker options
-	static defaultOptions = ({
+	static defaultOptions = {
 		fill: true,
 
 		// @option radius: Number = 10
 		// Radius of the circle marker, in pixels
 		radius: 10
-	});
+	};
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);

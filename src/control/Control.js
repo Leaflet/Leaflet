@@ -16,12 +16,12 @@ export class Control extends Class {
 
 	// @section
 	// @aka Control Options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option position: String = 'topright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'topright'
-	});
+	};
 
 
 	initialize(options) {

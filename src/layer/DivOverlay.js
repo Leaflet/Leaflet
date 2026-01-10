@@ -17,7 +17,7 @@ export class DivOverlay extends Layer {
 
 	// @section
 	// @aka DivOverlay options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option interactive: Boolean = false
 		// If true, the popup/tooltip will listen to the pointer events.
 		interactive: false,
@@ -38,7 +38,7 @@ export class DivOverlay extends Layer {
 		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
 		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
 		content: ''
-	});
+	};
 
 	initialize(options, source) {
 		if (options instanceof LatLng || Array.isArray(options)) {

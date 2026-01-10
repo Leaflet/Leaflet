@@ -19,7 +19,7 @@ export class BlanketOverlay extends Layer {
 
 	// @section
 	// @aka BlanketOverlay options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option padding: Number = 0.1
 		// How much to extend the clip area around the map view (relative to its size)
 		// e.g. 0.1 would be 10% of map view in each direction
@@ -31,7 +31,7 @@ export class BlanketOverlay extends Layer {
 		// it will update when the map state changes (*during* pan/zoom
 		// animations)
 		continuous: false,
-	});
+	};
 
 	initialize(options) {
 		Util.setOptions(this, options);

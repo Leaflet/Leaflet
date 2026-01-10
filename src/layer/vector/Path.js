@@ -13,7 +13,7 @@ export class Path extends Layer {
 
 	// @section
 	// @aka Path options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option stroke: Boolean = true
 		// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
 		stroke: true,
@@ -71,7 +71,7 @@ export class Path extends Layer {
 		// When `true`, a pointer event on this path will trigger the same event on the map
 		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingPointerEvents: true
-	});
+	};
 
 	beforeAdd(map) {
 		// Renderer is set here because we need to call renderer.getEvents

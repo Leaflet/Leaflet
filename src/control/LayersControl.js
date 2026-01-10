@@ -48,7 +48,7 @@ export class LayersControl extends Control {
 
 	// @section
 	// @aka LayersControl options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option collapsed: Boolean = true
 		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
 		collapsed: true,
@@ -81,7 +81,7 @@ export class LayersControl extends Control {
 		sortFunction(layerA, layerB, nameA, nameB) {
 			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
 		}
-	});
+	};
 
 	initialize(baseLayers, overlays, options) {
 		super.initialize(options);

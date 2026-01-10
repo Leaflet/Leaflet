@@ -18,7 +18,7 @@ import * as DomUtil from '../../dom/DomUtil.js';
 
 export class DefaultIcon extends Icon {
 
-	static defaultOptions = ({
+	static defaultOptions = {
 		iconUrl:       'marker-icon.svg',
 		iconRetinaUrl: 'marker-icon.svg',
 		shadowUrl:     'marker-shadow.svg',
@@ -27,7 +27,7 @@ export class DefaultIcon extends Icon {
 		popupAnchor: [1, -34],
 		tooltipAnchor: [16, -28],
 		shadowSize:  [41, 41]
-	});
+	};
 
 	_getIconUrl(name) {
 		// only detect once

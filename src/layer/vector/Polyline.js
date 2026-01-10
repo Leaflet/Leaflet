@@ -52,7 +52,7 @@ export class Polyline extends Path {
 
 	// @section
 	// @aka Polyline options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option smoothFactor: Number = 1.0
 		// How much to simplify the polyline on each zoom level. More means
 		// better performance and smoother look, and less means more accurate representation.
@@ -61,7 +61,7 @@ export class Polyline extends Path {
 		// @option noClip: Boolean = false
 		// Disable polyline clipping.
 		noClip: false
-	});
+	};
 
 	initialize(latlngs, options) {
 		Util.setOptions(this, options);

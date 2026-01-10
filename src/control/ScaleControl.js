@@ -21,7 +21,7 @@ export class ScaleControl extends Control {
 
 	// @section
 	// @aka ScaleControl options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option position: String = 'bottomleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
@@ -42,7 +42,7 @@ export class ScaleControl extends Control {
 		// @option updateWhenIdle: Boolean = false
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
 		updateWhenIdle: false
-	});
+	};
 
 	onAdd(map) {
 		const className = 'leaflet-control-scale',

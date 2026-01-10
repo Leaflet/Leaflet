@@ -25,7 +25,7 @@ export class Marker extends Layer {
 
 	// @section
 	// @aka Marker options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option icon: Icon = *
 		// Icon instance to use for rendering the marker.
 		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
@@ -101,7 +101,7 @@ export class Marker extends Layer {
 		// @option autoPanSpeed: Number = 10
 		// Number of pixels the map should pan by.
 		autoPanSpeed: 10
-	});
+	};
 
 	/* @section
 	 *

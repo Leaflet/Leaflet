@@ -53,9 +53,9 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
 // @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
 export class Polygon extends Polyline {
 
-	static defaultOptions = ({
+	static defaultOptions = {
 		fill: true
-	});
+	};
 
 	isEmpty() {
 		return !this._latlngs.length || !this._latlngs[0].length;

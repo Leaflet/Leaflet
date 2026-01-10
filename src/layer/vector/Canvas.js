@@ -36,11 +36,11 @@ export class Canvas extends Renderer {
 
 	// @section
 	// @aka Canvas options
-	static defaultOptions = ({
+	static defaultOptions = {
 		// @option tolerance: Number = 0
 		// How much to extend the click tolerance around a path/object on the map.
 		tolerance: 0
-	});
+	};
 
 	getEvents() {
 		const events = super.getEvents();
