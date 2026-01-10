@@ -59,19 +59,17 @@ export class Class {
 
 	static _initDefaultOptions(proto = this.prototype) {
 		if (!proto) { return; }
-		Class._initDefaultOptions(Object.getPrototypeOf(proto));
+		Class._initDefaultOptions(Object.getPrototypeOf(proto)); // parent
+		if (Object.hasOwn(proto, 'options')) { return; }
 		const options = proto.constructor.defaultOptions;
 		if (!options) { return; }
-		if (Object.hasOwn(proto, 'options')) { return; }
 		Util.setOptions(proto, options);
 	}
 
 	constructor(...args) {
 		this._initHooksCalled = false;
 
-		for (const proto of this._prototypes) {
-			Class._initDefaultOptions(proto);
-		}
+		Class._initDefaultOptions(Object.getPrototypeOf(this));
 		Util.setOptions(this);
 
 		// call the constructor
@@ -83,8 +81,11 @@ export class Class {
 		this.callInitHooks();
 	}
 
-	// collect all prototypes in chain in reverse order
-	get _prototypes() {
+	callInitHooks() {
+		if (this._initHooksCalled) {
+			return;
+		}
+
 		// collect all prototypes in chain
 		const prototypes = [];
 		let current = this;
@@ -95,16 +96,9 @@ export class Class {
 
 		// reverse so the parent prototype is first
 		prototypes.reverse();
-		return prototypes;
-	}
-
-	callInitHooks() {
-		if (this._initHooksCalled) {
-			return;
-		}
 
 		// call init hooks on each prototype
-		for (const proto of this._prototypes) {
+		for (const proto of prototypes) {
 			for (const hook of proto._initHooks ?? []) {
 				hook.call(this);
 			}
