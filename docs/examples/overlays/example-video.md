@@ -47,7 +47,7 @@ title: Video Overlay Tutorial (Video with Controls)
 				const button = DomUtil.create('button');
 				button.title = 'Play';
 				button.innerHTML = '<span aria-hidden="true">▶️</span>';
-				L.DomEvent.on(button, 'click', () => {
+				DomEvent.on(button, 'click', () => {
 					videoOverlay.getElement().play();
 				});
 				return button;
