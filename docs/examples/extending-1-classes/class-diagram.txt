@@ -4,95 +4,95 @@
 // understands and draws things from
 
 
-[L.Util]
-[L.Browser]
-[L.LatLng|lat;lng]
-[L.LatLngBounds] has 2 -.-> [L.LatLng]
-[L.Point|x;y]
-[L.Bounds] has 2 -.-> [L.Point]
-[L.DomUtil]
-[L.DomEvent]
+[Util]
+[Browser]
+[LatLng|lat;lng]
+[LatLngBounds] has 2 -.-> [LatLng]
+[Point|x;y]
+[Bounds] has 2 -.-> [Point]
+[DomUtil]
+[DomEvent]
 
 
 
-[L.Class|options|extend();include();initialize()]
+[Class|options|extend();include();initialize()]
 
-[L.Class] ^- [L.Control|onAdd();onRemove()]
-[L.Control] ^- [L.AttributionControl;L.LayersControl;L.ScaleControl;L.ZoomControl]
+[Class] ^- [Control|onAdd();onRemove()]
+[Control] ^- [AttributionControl;LayersControl;ScaleControl;ZoomControl]
 
-// L.Control] ^- L.AttributionControl]
-// L.Control] ^- L.LayersControl]
-// L.Control] ^- L.ScaleControl]
-// L.Control] ^- L.ZoomControl]
-
-
-[L.Class] ^- [L.Evented]
-[L.Evented|on();off();fire()]
+// Control] ^- AttributionControl]
+// Control] ^- LayersControl]
+// Control] ^- ScaleControl]
+// Control] ^- ZoomControl]
 
 
-[L.CRS]          ^- [L.EarthCRS]
-[L.CRS]          ^- [L.SimpleCRS]
-[L.EarthCRS]    ^- [L.EPSG3395;L.EPSG3857;L.EPSG4326]
-
-// L.CRS]          ^-  L.EarthCRS]
-// L.CRS]          ^-  L.SimpleCRS]
-// L.EarthCRS]    ^-  L.EPSG3395]
-// L.EarthCRS]    ^-  L.EPSG3857]
-// L.EPSG3857] ^-  L.EPSG900913]
-// L.EarthCRS]    ^-  L.EPSG4326]
-
-[L.Evented] ^- [L.Layer]
-
-[L.Layer|onAdd();onRemove();getEvents();getAttribution();beforeAdd()]
-
-[L.Evented] ^- [L.Map|addHandler();addControl();removeControl();addLayer();removeLayer()]
-[L.Map] contains -.-> [L.Layer]
-[L.Map] contains -.-> [L.Control]
-[L.Map] contains -.-> [L.Handler]
-[L.Map] has one -.-> [L.CRS]
-
-[L.Class] ^- [L.Handler|addHooks();removeHooks()]
-[L.Handler] ^- [L.BoxZoomHandler;L.DoubleClickZoomHandler;L.DragHandler;L.KeyboardHandler;L.ScrollWheelZoomHandler;L.TapHandler;L.PinchZoomHandler]
-
-// L.Handler] ^- L.BoxZoomHandler]
-// L.Handler] ^- L.DoubleClickZoomHandler]
-// L.Handler] ^- L.DragHandler]
-// L.Handler] ^- L.KeyboardHandler]
-// L.Handler] ^- L.ScrollWheelZoomHandler]
-// L.Handler] ^- L.TapHandler]
-// L.Handler] ^- L.PinchZoomHandler]
-
-[L.Layer] ^- [L.Marker]
-[L.Icon] ^- [L.DefaultIcon]
-[L.Icon] ^- [L.DivIcon]
-
-[L.Marker] drawn as a -.-> [L.Icon]
+[Class] ^- [Evented]
+[Evented|on();off();fire()]
 
 
-[L.Layer] ^- [L.GridLayer|createTile()]
-[L.GridLayer] ^- [L.TileLayer|getTileUrl()]
-[L.TileLayer] ^- [L.WMSTileLayer]
+[CRS]          ^- [EarthCRS]
+[CRS]          ^- [SimpleCRS]
+[EarthCRS]    ^- [EPSG3395;EPSG3857;EPSG4326]
+
+// CRS]          ^-  EarthCRS]
+// CRS]          ^-  SimpleCRS]
+// EarthCRS]    ^-  EPSG3395]
+// EarthCRS]    ^-  EPSG3857]
+// EPSG3857] ^-  EPSG900913]
+// EarthCRS]    ^-  EPSG4326]
+
+[Evented] ^- [Layer]
+
+[Layer|onAdd();onRemove();getEvents();getAttribution();beforeAdd()]
+
+[Evented] ^- [LeafletMap|addHandler();addControl();removeControl();addLayer();removeLayer()]
+[LeafletMap] contains -.--> [Layer]
+[LeafletMap] contains -.--> [Control]
+[LeafletMap] contains -.--> [Handler]
+[LeafletMap] has one -.--> [CRS]
+
+[Class] ^- [Handler|addHooks();removeHooks()]
+[Handler] ^- [BoxZoomHandler;DoubleClickZoomHandler;DragHandler;KeyboardHandler;ScrollWheelZoomHandler;TapHandler;PinchZoomHandler]
+
+// Handler] ^- BoxZoomHandler]
+// Handler] ^- DoubleClickZoomHandler]
+// Handler] ^- DragHandler]
+// Handler] ^- KeyboardHandler]
+// Handler] ^- ScrollWheelZoomHandler]
+// Handler] ^- TapHandler]
+// Handler] ^- PinchZoomHandler]
+
+[Layer] ^- [Marker]
+[Icon] ^- [DefaultIcon]
+[Icon] ^- [DivIcon]
+
+[Marker] drawn as a -.--> [Icon]
 
 
-[L.Layer] ^- [L.Renderer]
-[L.Renderer] ^- [L.Canvas]
-[L.Renderer] ^- [L.SVG]
-
-[L.Layer] ^- [L.Path]
-[L.CircleMarker] ^- [L.Circle]
-[L.Path] ^- [L.CircleMarker]
-[L.Path] ^- [L.Polyline]
-[L.Polyline] ^- [L.Polygon]
-[L.Polygon] ^- [L.Rectangle]
-[L.Path] drawn in a -.-> [L.Renderer]
+[Layer] ^- [GridLayer|createTile()]
+[GridLayer] ^- [TileLayer|getTileUrl()]
+[TileLayer] ^- [WMSTileLayer]
 
 
-[L.Layer] ^- [L.LayerGroup]
-[L.LayerGroup] ^- [L.FeatureGroup]
-[L.FeatureGroup] ^- [L.GeoJSON]
+[Layer] ^- [Renderer]
+[Renderer] ^- [Canvas]
+[Renderer] ^- [SVG]
 
-[L.Layer] ^- [L.DivOverlay]
-[L.DivOverlay] ^- [L.Popup]
-[L.DivOverlay] ^- [L.Tooltip]
+[Layer] ^- [Path]
+[CircleMarker] ^- [Circle]
+[Path] ^- [CircleMarker]
+[Path] ^- [Polyline]
+[Polyline] ^- [Polygon]
+[Polygon] ^- [Rectangle]
+[Path] drawn in a -.--> [Renderer]
 
-[L.Layer] ^- [L.ImageOverlay]
+
+[Layer] ^- [LayerGroup]
+[LayerGroup] ^- [FeatureGroup]
+[FeatureGroup] ^- [GeoJSON]
+
+[Layer] ^- [DivOverlay]
+[DivOverlay] ^- [Popup]
+[DivOverlay] ^- [Tooltip]
+
+[Layer] ^- [ImageOverlay]

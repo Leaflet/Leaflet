@@ -11,28 +11,28 @@ Please note that this tutorial assumes you have a good grasp of [JavaScript](htt
 
 ## Leaflet architecture
 
-Let's have a look at a simplified UML Class diagram for Leaflet. There are more than 60 classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
+Let's have a look at a simplified UML Class diagram for Leaflet. There are more than 60 classes, so the diagram is a bit big. Luckily we can make a zoomable image with an `ImageOverlay`:
 
 {% include frame.html url="class-diagram.html" %}
 
 From a technical point of view, Leaflet can be extended in different ways:
 
-* The most common: creating a new subclass of `L.Layer`, `L.Handler` or `L.Control`.
+* The most common: creating a new subclass of `Layer`, `Handler` or `Control`.
 	* Layers move when the map is moved/zoomed
 	* Handlers are invisible and interpret browser events
 	* Controls are fixed interface elements
-* Including more, or replacing functionality (methods, fields) of an existing class with `L.Class.include()`
-* Using `L.Class.addInitHook()` to run additional constructor code.
+* Including more, or replacing functionality (methods, fields) of an existing class with `Class.include()`
+* Using `Class.addInitHook()` to run additional constructor code.
 
 ## Extending Leaflet Classes
 
 JavaScript is a bit of a weird language. It's not really object-oriented in the traditional sense, but handles inheritance using a [prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain). Only at a later point during its lifetime [syntax was added](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) to allow more 'class-like' inheritance.
 
-Because Leaflet was created before any standardized class syntax existed, it comes with its own implementation for classes in the form of a base class called `L.Class`. Almost all classes in Leaflet extend from `L.Class`, as well as most classes you'll find in plugins. It also contains various utility methods to further modify class behavior.
+Because Leaflet was created before any standardized class syntax existed, it comes with its own implementation for classes in the form of a base class called `Class`. Almost all classes in Leaflet extend from `Class`, as well as most classes you'll find in plugins. It also contains various utility methods to further modify class behavior.
 
 ### Creating a subclass
 
-`L.Class`, or other built-in Leaflet classes derived from it (such as `L.Layer`, `L.Handler`, `L.Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword. However, unlike regular JavaScript classes, Leaflet classes do not support the [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) method. Instead, constructor logic should go into a special `initialize()` method to preserve backwards compatibility with older versions of Leaflet:
+`Class`, or other built-in Leaflet classes derived from it (such as `Layer`, `Handler`, `Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword. However, unlike regular JavaScript classes, Leaflet classes do not support the [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) method. Instead, constructor logic should go into a special `initialize()` method to preserve backwards compatibility with older versions of Leaflet:
 
 
 ```js
@@ -54,7 +54,7 @@ When creating Leaflet classes, adhere to these conventions:
 
 ### Setting default options
 
-All classes that extend from `L.Class` can be provided with default options by calling `setDefaultOptions()` in a [static initialization block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks):
+All classes that extend from `Class` can be provided with default options by calling `setDefaultOptions()` in a [static initialization block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks):
 
 ```js
 class MyBox extends Class {
@@ -96,7 +96,7 @@ console.log(cube.options.height); // Outputs "1", parent class default
 console.log(cube.options.depth); // Outputs "1"
 ```
 
-### `L.Class.include()`
+### `Class.include()`
 
 Leaflet provides `.include()` to add or override methods in existing classes. This is useful for monkey-patching or adding functionality to base classes:
 

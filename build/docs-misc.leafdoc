@@ -27,5 +27,7 @@ const Leaflet = L.noConflict();
 A constant that represents the Leaflet version in use.
 
 ```js
-L.version; // contains "1.0.0" (or whatever version is currently in use)
+import { version } from 'leaflet';
+
+console.log(version); // contains "2.0.0" (or whatever version is currently in use)
 ```
