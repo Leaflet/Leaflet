@@ -297,7 +297,7 @@ describe('Canvas', () => {
 			requestAnimationFrame(() => { done(); });
 		});
 	});
-		describe('Canvas _containsPoint', () => {
+	describe('Canvas _containsPoint', () => {
 		it('detects point inside polygon', () => {
 			const polygon = new Polygon([
 				[0, 0],
