@@ -1455,7 +1455,7 @@ export class LeafletMap extends Evented {
 		};
 
 		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
-			const isMarker = target.getLatLng && (!target._radius || target._radius <= 10);
+			const isMarker = target.getLatLng && (!target._pxRadius || target._pxRadius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);

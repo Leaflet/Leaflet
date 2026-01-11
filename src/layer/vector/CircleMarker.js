@@ -22,7 +22,7 @@ export class CircleMarker extends Path {
 			fill: true,
 
 			// @option radius: Number = 10
-			// Radius of the circle marker, in pixels
+			// Radius of the circle marker
 			radius: 10
 		});
 	}
@@ -52,7 +52,7 @@ export class CircleMarker extends Path {
 	}
 
 	// @method setRadius(radius: Number): this
-	// Sets the radius of a circle marker. Units are in pixels.
+	// Sets the radius of a circle marker.
 	setRadius(radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
@@ -74,12 +74,13 @@ export class CircleMarker extends Path {
 
 	_project() {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._pxRadius = this._radius;
 		this._updateBounds();
 	}
 
 	_updateBounds() {
-		const r = this._radius,
-		r2 = this._radiusY ?? r,
+		const r = this._pxRadius,
+		r2 = this._pxRadiusY ?? r,
 		w = this._clickTolerance(),
 		p = [r + w, r2 + w];
 		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
@@ -96,11 +97,11 @@ export class CircleMarker extends Path {
 	}
 
 	_empty() {
-		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
+		return this._pxRadius && !this._renderer._bounds.intersects(this._pxBounds);
 	}
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
-		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
+		return p.distanceTo(this._point) <= this._pxRadius + this._clickTolerance();
 	}
 }
