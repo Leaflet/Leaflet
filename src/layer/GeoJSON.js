@@ -88,9 +88,7 @@ export class GeoJSON extends FeatureGroup {
 	 */
 
 	initialize(geojson, options) {
-		Util.setOptions(this, options);
-
-		this._layers = {};
+		super.initialize(undefined, options);
 
 		if (geojson) {
 			this.addData(geojson);

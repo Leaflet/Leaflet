@@ -11,11 +11,6 @@ export default [
 		files: ['**/*.js', '**/*.cjs'],
 	})),
 	{
-		languageOptions: {
-			ecmaVersion: 'latest',
-		},
-	},
-	{
 		ignores: [
 			'dist/*.js',
 			'docs/docs/highlight',
@@ -109,14 +104,6 @@ export default [
 		},
 		rules: {
 			'no-unused-expressions': 'off'
-		}
-	},
-	{
-		files: ['build/**'],
-		languageOptions: {
-			parserOptions: {
-				ecmaVersion: 2022
-			}
 		}
 	},
 	{

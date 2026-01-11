@@ -27,14 +27,14 @@ The game has a built-in square coordinate system, as can be seen in the corners.
 </center>
 
 
-## CRS.Simple
+## SimpleCRS
 
 **CRS** stands for [coordinate reference system](https://en.wikipedia.org/wiki/Spatial_reference_system), a term used by geographers to explain what the coordinates mean in a coordinate vector. For example, `[15, 60]` represents a point in the Indian Ocean if using latitude-longitude on the earth, or the solar system Krueger-Z in our starmap.
 
-A Leaflet map has one CRS (and *one* CRS *only*), that can be changed when creating the map. For our game map we'll use `CRS.Simple`, which represents a square grid:
+A Leaflet map has one CRS (and *one* CRS *only*), that can be changed when creating the map. For our game map we'll use `SimpleCRS`, which represents a square grid:
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple
+		crs: SimpleCRS
 	});
 
 Then we can just add a `L.ImageOverlay` with the starmap image and its *approximate* bounds:
@@ -51,20 +51,20 @@ And show the whole map:
 This example doesn't quite work, as we cannot see the whole map after doing a `fitBounds()`.
 
 
-## Common Gotchas in CRS.Simple Maps
+## Common Gotchas in SimpleCRS Maps
 
-In the default Leaflet CRS, `CRS.Earth`, 360 degrees of longitude are mapped to 256 horizontal pixels (at zoom level 0) and approximately 170 degrees of latitude are mapped to 256 vertical pixels (at zoom level 0).
+In the default Leaflet CRS, `EarthCRS`, 360 degrees of longitude are mapped to 256 horizontal pixels (at zoom level 0) and approximately 170 degrees of latitude are mapped to 256 vertical pixels (at zoom level 0).
 
-In a `CRS.Simple`, one horizontal map unit is mapped to one horizontal pixel, and *idem* with vertical. This means that the whole map is about 1000x1000 pixels big and won't fit in our HTML container. Luckily, we can set `minZoom` to values lower than zero:
+In a `SimpleCRS`, one horizontal map unit is mapped to one horizontal pixel, and *idem* with vertical. This means that the whole map is about 1000x1000 pixels big and won't fit in our HTML container. Luckily, we can set `minZoom` to values lower than zero:
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple,
+		crs: SimpleCRS,
 		minZoom: -5
 	});
 
 ### Pixels vs. Map Units
 
-One common mistake when using `CRS.Simple` is assuming that the map units equal image pixels. In this case, the map covers 1000x1000 units, but the image is 2315x2315 pixels big. Different cases will call for one pixel = one map unit, or 64 pixels = one map unit, or anything. **Think in map units** in a grid, and then add your layers (`L.ImageOverlay`s, `L.Marker`s and so on) accordingly.
+One common mistake when using `SimpleCRS` is assuming that the map units equal image pixels. In this case, the map covers 1000x1000 units, but the image is 2315x2315 pixels big. Different cases will call for one pixel = one map unit, or 64 pixels = one map unit, or anything. **Think in map units** in a grid, and then add your layers (`L.ImageOverlay`s, `L.Marker`s and so on) accordingly.
 
 In fact, the image we're using covers more than 1000 map units - there is a sizable margin. Measuring how many pixels there are between the 0 and 1000 coordinates, and extrapolating, we can have the right coordinate bounds for this image:
 
@@ -81,7 +81,7 @@ While we're at it, let's add some markers:
 
 ### This is not the `LatLng` You're Looking for
 
-You'll notice that Sol is at coordinates `[145,175]` instead of `[175,145]`, and the same happens with the map center. Coordinates in `CRS.Simple` take the form of `[y, x]` instead of `[x, y]`, in the same way Leaflet uses `[lat, lng]` instead of `[lng, lat]`.
+You'll notice that Sol is at coordinates `[145,175]` instead of `[175,145]`, and the same happens with the map center. Coordinates in `SimpleCRS` take the form of `[y, x]` instead of `[x, y]`, in the same way Leaflet uses `[lat, lng]` instead of `[lng, lat]`.
 
 <small>(In technical terms, Leaflet prefers to use [`[northing, easting]`](https://en.wikipedia.org/wiki/Easting_and_northing) over `[easting, northing]` - the first coordinate in a coordinate pair points "north" and the second points "east")</small>
 

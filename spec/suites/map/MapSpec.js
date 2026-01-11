@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, Control, LatLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -9,7 +9,7 @@ describe('Map', () => {
 	map;
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
 	});
 
@@ -1026,7 +1026,7 @@ describe('Map', () => {
 		});
 
 		it('throws if adding something which is not a layer', () => {
-			const control = new Control.Layers();
+			const control = new LayersControl();
 			expect(() => {
 				map.addLayer(control);
 			}).to.throw();
@@ -1456,6 +1456,29 @@ describe('Map', () => {
 			});
 
 			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
+		});
+
+		it('should handle parameters leading to Math.log(sq) issue', function (done) {
+			container.style.width = '1024px';
+			container.style.height = '1024px';
+			container.style.visibility = 'visible';
+
+			this.timeout(20000);
+
+			const coordinatesA = new LatLng(59.0009, 60.0);
+			const coordinatesB = new LatLng(59, 60.02);
+			const bounds = new LatLngBounds([coordinatesA, coordinatesB]);
+			const center = bounds.getCenter();
+
+			map.fitBounds(bounds);
+
+			map.on('zoomend', () => {
+				expect(map.getCenter()).to.eqlLatLng(center);
+
+				done();
+			});
+
+			map.flyTo(center, 11, {animate: true});
 		});
 	});
 

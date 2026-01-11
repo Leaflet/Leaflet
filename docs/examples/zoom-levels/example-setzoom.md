@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Zoom Control Example
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
+	import {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		minZoom: 0,
@@ -42,7 +42,4 @@ title: Zoom Control Example
 	const zoomViewer = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

@@ -1,5 +1,5 @@
-// !!! NEXT LINE IS AUTO-GENERATED VIA `NPM VERSION` !!!
-export const version = '2.0.0-alpha.1';
+import pkg from '../package.json' with {type: 'json'};
+export const version = pkg.version;
 
 // control
 export * from './control/index.js';
