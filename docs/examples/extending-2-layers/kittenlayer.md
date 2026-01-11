@@ -3,10 +3,10 @@ layout: tutorial_frame
 title: KittenLayer Example
 ---
 <script type="module">
-	import {LeafletMap, CRS, TileLayer} from 'leaflet';
+	import {LeafletMap, SimpleCRS, TileLayer} from 'leaflet';
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple,
+		crs: SimpleCRS,
 		center: [0, 0],
 		zoom: 5
 	});

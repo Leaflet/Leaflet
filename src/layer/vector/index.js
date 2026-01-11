@@ -1,9 +1,6 @@
 export {Renderer} from './Renderer.js';
 export {Canvas} from './Canvas.js';
-import {SVG, create, pointsToPath} from './SVG.js';
-SVG.create = create;
-SVG.pointsToPath = pointsToPath;
-export {SVG};
+export {SVG} from './SVG.js';
 import './Renderer.getRenderer.js';	// This is a bit of a hack, but needed because circular dependencies
 
 export {Path} from './Path.js';

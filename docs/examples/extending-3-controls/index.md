@@ -95,7 +95,7 @@ new WatermarkControl({ position: 'bottomleft' }).addTo(map);
 
 If your custom control has interactive elements such as clickable buttons, remember to use `L.DomEvent.on()` inside `onAdd()` and `L.DomEvent.off()` inside `onRemove()`.
 
-If your custom control consists of more than one HTML element (like `L.Control.Zoom`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
+If your custom control consists of more than one HTML element (like `L.ZoomControl`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
 
 ## Publishing Your Plugin
 
