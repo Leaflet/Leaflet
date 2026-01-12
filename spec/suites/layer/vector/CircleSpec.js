@@ -59,25 +59,18 @@ describe('Circle', () => {
 			expect(circle._pxRadius).to.eql(3200);
 		});
 	});
-});
-
-describe('Circle', () => {
-	let map, container;
-
-	beforeEach(() => {
-		container = createContainer();
-
-		map = new LeafletMap(container, {
-			crs: SimpleCRS
-		});
-		map.setView([0, 0], 4);
-	});
-
-	afterEach(() => {
-		removeMapContainer(map, container);
-	});
 
 	describe('#_radius', () => {
+
+		beforeEach(() => {
+			container = createContainer();
+
+			map = new LeafletMap(container, {
+				crs: SimpleCRS
+			});
+			map.setView([0, 0], 4);
+		});
+
 		describe('when a Circle is added to the map ', () => {
 			describe('with a radius set as an option', () => {
 				it('takes that radius', () => {
