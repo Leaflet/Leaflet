@@ -59,8 +59,8 @@ export class Class {
 
 	static _initDefaultOptions(proto = this.prototype) {
 		if (!proto) { return; }
-		Class._initDefaultOptions(Object.getPrototypeOf(proto)); // parent
 		if (Object.hasOwn(proto, 'options')) { return; }
+		Class._initDefaultOptions(Object.getPrototypeOf(proto)); // parent
 		const options = proto.constructor.defaultOptions;
 		if (!options) { return; }
 		Util.setOptions(proto, options);
