@@ -18,7 +18,7 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
  * ```
  */
 
-// @constructor Circle(latlng: LatLng, options?: CircleMarker options)
+// @constructor Circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
 export class Circle extends CircleMarker {
@@ -27,7 +27,16 @@ export class Circle extends CircleMarker {
 		super.initialize(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
+
+		// @section
+		// @aka Circle options
+		// @option radius: Number; Radius of the circle, in meters.
 	}
+
+	// @method setRadius(radius: Number): this
+	// Sets the radius of a circle. Units are in meters.
+	// @method getRadius(): Number
+	// Returns the current radius of a circle. Units are in meters.
 
 	// @method getBounds(): LatLngBounds
 	// Returns the `LatLngBounds` of the path.

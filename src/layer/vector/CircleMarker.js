@@ -8,7 +8,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * @class CircleMarker
  * @inherits Path
  *
- * A circle of a fixed size with radius specified in pixels. Extends `Path`.
+ * A circle of a fixed size with radius specified in CSS pixels. Extends `Path`.
  */
 
 // @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
@@ -22,7 +22,7 @@ export class CircleMarker extends Path {
 			fill: true,
 
 			// @option radius: Number = 10
-			// Radius of the circle marker
+			// Radius of the circle marker, in CSS pixels
 			radius: 10
 		});
 	}
@@ -52,14 +52,14 @@ export class CircleMarker extends Path {
 	}
 
 	// @method setRadius(radius: Number): this
-	// Sets the radius of a circle marker.
+	// Sets the radius of a circle marker. Units are in CSS pixels.
 	setRadius(radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 
 	// @method getRadius(): Number
-	// Returns the current radius of the circle
+	// Returns the current radius of the circle. Units are in CSS pixels.
 	getRadius() {
 		return this._radius;
 	}
