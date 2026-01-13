@@ -10,4 +10,4 @@ compatible-v1: true
 compatible-v2: false
 ---
 
-Leaflet plugin that creates a synchronized minimap preview to switch betweeen multiple basemap layers. With a click on the minimap the next basemap layer in the sequence is applied.
+Leaflet plugin that creates a synchronized minimap preview to switch between multiple basemap layers. With a click on the minimap the next basemap layer in the sequence is applied.

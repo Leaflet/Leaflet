@@ -10,7 +10,7 @@ describe('VideoOverlay', () => {
 	beforeEach(() => {
 		container = createContainer();
 		map = new LeafletMap(container);
-		map.setView([20, -115], 4);	// view needs to be set so when layer is added it is initilized
+		map.setView([20, -115], 4);	// view needs to be set so when layer is added it is initialized
 	});
 
 	afterEach(() => {
