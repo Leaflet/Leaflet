@@ -192,6 +192,14 @@
 	}
 }
 
+@media screen and (max-width: 520px){
+	.leaflet-bottom {
+		.leaflet-left{
+			bottom: 34px;
+		}
+	}
+}
+
 
 /* zoom and fade animations */
 
