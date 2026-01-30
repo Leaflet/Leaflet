@@ -54,10 +54,11 @@ export class Polyline extends Path {
 		// @section
 		// @aka Polyline options
 		this.setDefaultOptions({
-			// @option smoothFactor: Number = 1.0
-			// How much to simplify the polyline on each zoom level. More means
-			// better performance and smoother look, and less means more accurate representation.
-			smoothFactor: 1.0,
+			// @option smoothFactor: Number = 0.5
+			// How much to simplify the polyline on each zoom level (Douglas–Peucker
+			// epsilon, in pixels). Higher values mean faster rendering but less
+			// accuracy; lower values mean more accuracy but slower rendering.
+			smoothFactor: 0.5,
 
 			// @option noClip: Boolean = false
 			// Disable polyline clipping.
