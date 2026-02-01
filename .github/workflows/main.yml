@@ -3,7 +3,7 @@ on: [push, pull_request]
 permissions:
   contents: read
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 24
 jobs:
   setup:
     runs-on: ${{ matrix.os }}
@@ -26,11 +26,9 @@ jobs:
 
       - name: Build project
         run: npm run build
-        env:
-          NODE_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || '' }}
 
       - name: Cache setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -56,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -75,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -87,8 +85,6 @@ jobs:
 
       - name: Build project
         run: npm run build
-        env:
-          NODE_ENV: release
 
       - name: Run bundlemon task
         run: npm run bundlemon
@@ -101,7 +97,7 @@ jobs:
 
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -141,7 +137,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -173,7 +169,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup
@@ -199,7 +195,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ runner.os }}-${{ github.ref }}-${{ github.sha }}-setup

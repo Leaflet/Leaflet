@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Browser, CRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
+import {Browser, SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -336,7 +336,7 @@ describe('TileLayer', () => {
 
 			document.body.appendChild(simplediv);
 			const simpleMap = new LeafletMap(simplediv, {
-				crs: CRS.Simple
+				crs: SimpleCRS
 			}).setView([0, 0], 5);
 			const layer = new TileLayer('http://example.com/{z}/{-y}/{x}.png');
 
@@ -459,7 +459,11 @@ describe('TileLayer', () => {
 		});
 
 		it('consults options.foo for {foo}', () => {
-			const OSMLayer = TileLayer.extend({options: {foo: 'bar'}});
+			class OSMLayer extends TileLayer {
+				static {
+					this.setDefaultOptions({foo: 'bar'});
+				}
+			}
 			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
 			map.options.zoomSnap = 0;
 			map._resetView(new LatLng(0, 0), 2.3);
@@ -569,7 +573,7 @@ describe('TileLayer', () => {
 			layer.on('tileload load', (e) => {
 				counts[e.type]++;
 
-				// Assets are in memory so all of these events should fire within <1ms of eachother
+				// Assets are in memory so all of these events should fire within <1ms of each other
 				// Let's check assertions after a 10ms debounce
 				clearTimeout(timer);
 				timer = setTimeout(() => {

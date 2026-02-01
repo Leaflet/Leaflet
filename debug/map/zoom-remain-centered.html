@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LatLng, LeafletMap, Marker, Control} from 'leaflet';
+			import {TileLayer, LatLng, LeafletMap, Marker, ScaleControl} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osm = new TileLayer(osmUrl, {minZoom: 14});
@@ -34,7 +34,7 @@
 
 			new Marker(latlng).addTo(map);
 
-			new Control.Scale().addTo(map);
+			new ScaleControl().addTo(map);
 		</script>
 	</body>
 </html>

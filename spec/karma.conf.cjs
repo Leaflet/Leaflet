@@ -24,7 +24,7 @@ module.exports = function (/** @type {import('karma').Config} */ config) {
 			{pattern: 'dist/leaflet-src.js', included: false, served: true},
 			{pattern: 'src/**/*.js', included: false, served: true},
 			{pattern: 'package.json', included: false, served: true},
-			{pattern: 'dist/**/*.png', included: false, served: true},
+			{pattern: 'dist/**/*.svg', included: false, served: true},
 			{pattern: 'spec/setup.js', type: 'module'},
 			{pattern: 'spec/suites/**/*.js', type: 'module'},
 			{pattern: 'dist/*.css', type: 'css'},

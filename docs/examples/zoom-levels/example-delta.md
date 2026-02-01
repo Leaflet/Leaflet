@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: No Zoom Snap Example
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
+	import {LeafletMap, TileLayer, Control, DomUtil} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		minZoom: 0,
@@ -18,7 +18,7 @@ title: No Zoom Snap Example
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const ZoomViewer = Control.extend({
+	class ZoomViewer extends Control {
 		onAdd() {
 			const container = DomUtil.create('div');
 			const gauge = DomUtil.create('div');
@@ -31,12 +31,9 @@ title: No Zoom Snap Example
 			container.appendChild(gauge);
 			return container;
 		}
-	});
+	}
 
 	const zoomViewerControl = (new ZoomViewer()).addTo(map);
 
 	map.setView([0, 0], 0);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

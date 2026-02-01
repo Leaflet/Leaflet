@@ -8,9 +8,9 @@ describe('ImageOverlay', () => {
 	const imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
 	beforeEach(() => {
-		container = container = createContainer();
+		container = createContainer();
 		map = new LeafletMap(container);
-		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initilized
+		map.setView([55.8, 37.6], 6);	// view needs to be set so when layer is added it is initialized
 	});
 
 	afterEach(() => {
