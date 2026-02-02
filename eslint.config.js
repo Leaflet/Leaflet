@@ -77,7 +77,7 @@ export default [
 		}
 	},
 	{
-		files: ['**/*.{js,ts,jsx,tsx}'],
+		files: ['src/**/*.{js,ts,jsx,tsx}'],
 		plugins: {'baseline-js': baselineJs},
 		rules: {
 			'baseline-js/use-baseline': ['error', {
