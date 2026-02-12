@@ -204,6 +204,9 @@ export class Marker extends Layer {
 		return this._icon;
 	}
 
+	// @method update(): this
+	// Updates the marker position based on the current geographical coordinates.
+	// Useful for updating marker position after programmatically changing coordinates.
 	update() {
 
 		if (this._icon && this._map) {
