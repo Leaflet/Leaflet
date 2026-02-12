@@ -42,10 +42,10 @@ const touch = touchNative || pointer;
 const retina = typeof window === 'undefined' || typeof window.devicePixelRatio === 'undefined' ? false : window.devicePixelRatio > 1;
 
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
+const mac = userAgentContains('mac');
 
 // @property linux: Boolean; `true` when the browser is running in a Linux platform
-const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
+const linux = userAgentContains('linux');
 
 function userAgentContains(str) {
 	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
