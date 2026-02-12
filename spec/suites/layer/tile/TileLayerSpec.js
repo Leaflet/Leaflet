@@ -274,7 +274,7 @@ describe('TileLayer', () => {
 					done();
 				});
 
-				map.flyTo(trd, 12, {animate: true});
+				map.flyTo(trd, 12, {animate: true, duration: 0.1});
 
 				// map.on('_frame', function () {
 				// 	console.log('frame', counts);
