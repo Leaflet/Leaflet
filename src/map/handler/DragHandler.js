@@ -119,7 +119,7 @@ export class DragHandler extends Handler {
 
 	_onDrag(e) {
 		if (this._map.options.inertia) {
-			const time = this._lastTime = +new Date(),
+			const time = this._lastTime = Date.now(),
 			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
@@ -192,7 +192,7 @@ export class DragHandler extends Handler {
 			map.fire('moveend');
 
 		} else {
-			this._prunePositions(+new Date());
+			this._prunePositions(Date.now());
 
 			const direction = this._lastPos.subtract(this._positions[0]),
 			duration = (this._lastTime - this._times[0]) / 1000,

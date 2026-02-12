@@ -48,10 +48,10 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._lastMousePos = this._map.pointerEventToContainerPoint(e);
 
 		if (!this._startTime) {
-			this._startTime = +new Date();
+			this._startTime = Date.now();
 		}
 
-		const left = Math.max(debounce - (+new Date() - this._startTime), 0);
+		const left = Math.max(debounce - (Date.now() - this._startTime), 0);
 
 		clearTimeout(this._timer);
 		this._timer = setTimeout(this._performZoom.bind(this), left);
