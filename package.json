@@ -31,7 +31,10 @@
     "rollup": "^4.57.1",
     "sinon": "^21.0.1",
     "ssri": "^13.0.0",
-    "ui-event-simulator": "^2.0.0"
+    "ui-event-simulator": "^2.0.0",
+    "vitepress": "2.0.0-alpha.16",
+    "tailwindcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18"
   },
   "type": "module",
   "exports": {
@@ -57,7 +60,10 @@
     "lintfix": "npm run lint -- --fix",
     "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docs:build": "vitepress build hub",
+    "docs:preview": "vitepress preview hub",
+    "docs:dev": "vitepress dev hub"
   },
   "repository": {
     "type": "git",
