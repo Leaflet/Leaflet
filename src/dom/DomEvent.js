@@ -103,7 +103,7 @@ function addOne(obj, type, fn, context) {
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
 	let handler = function (e) {
-		return fn.call(context || obj, e || window.event);
+		return fn.call(context || obj, e);
 	};
 
 	const originalHandler = handler;
@@ -117,7 +117,6 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
 		} else if (type === 'pointerenter' || type === 'pointerleave') {
 			handler = function (e) {
-				e ??= window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
