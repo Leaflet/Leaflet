@@ -31,6 +31,7 @@ describe('CircleMarker', () => {
 					marker.setRadius(15);
 					marker.addTo(map);
 					expect(marker._radius).to.equal(15);
+					expect(marker._pxRadius).to.equal(15);
 				});
 			});
 
@@ -40,6 +41,7 @@ describe('CircleMarker', () => {
 					marker.addTo(map);
 					marker.setRadius(15);
 					expect(marker._radius).to.equal(15);
+					expect(marker._pxRadius).to.equal(15);
 				});
 			});
 
@@ -49,6 +51,7 @@ describe('CircleMarker', () => {
 					marker.addTo(map);
 					marker.setStyle({radius: 15});
 					expect(marker._radius).to.equal(15);
+					expect(marker._pxRadius).to.equal(15);
 				});
 			});
 
@@ -58,6 +61,7 @@ describe('CircleMarker', () => {
 					marker.setStyle({radius: 15});
 					marker.addTo(map);
 					expect(marker._radius).to.equal(15);
+					expect(marker._pxRadius).to.equal(15);
 				});
 			});
 		});
