@@ -364,4 +364,22 @@ describe('Polygon', () => {
 			}
 		});
 	});
+
+	describe("#_containsPoint", () => {
+		it("returns true or false if polygon contains the point", () => {
+			map.setZoom(0);
+			const latlngs = [[37, -109.05], [41, -109.03], [41, -102.05], [37, -102.04]];
+			const polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+
+			const latLngTest1 = {lat: 39, lng: -104};
+			const latLngTest2 = {lat: 50, lng: -110};
+			const latLngTest3 = {lat: 37, lng: -102};
+			const latLngTest4 = {lat: 30, lng: -102};
+
+			expect(polygon._containsPoint((map.latLngToLayerPoint(latLngTest1)))).to.be(true);
+			expect(polygon._containsPoint((map.latLngToLayerPoint(latLngTest2)))).to.be(false);
+			expect(polygon._containsPoint((map.latLngToLayerPoint(latLngTest3)))).to.be(true);
+			expect(polygon._containsPoint((map.latLngToLayerPoint(latLngTest4)))).to.be(false);
+		});
+	});
 });
