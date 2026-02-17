@@ -297,4 +297,20 @@ describe('Polyline', () => {
 			expect(point.distance).to.be.lessThan(point2.distance);
 		});
 	});
+	describe("#_containsPoint", () => {
+		const points = [[50, 50], [50, 51]];
+		it("return true when the point is on the line", () => {
+			map.setZoom(0);
+			const line = L.polyline(points).addTo(map);
+			map.options.preferCanvas = true;
+			expect(line._containsPoint(map.latLngToLayerPoint([50, 51]))).to.be(true);
+		});
+
+		it("return false when the point is out of the line", () => {
+			map.setView([50, 50], 6);
+			const line = L.polyline(points).addTo(map);
+			map.options.preferCanvas = true;
+			expect(line._containsPoint(map.latLngToLayerPoint([50, 49]))).to.be(false);
+		});
+	});
 });
