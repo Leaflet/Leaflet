@@ -78,11 +78,16 @@ export class Layer extends Evented {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	}
 
+	// @method addInteractiveTarget(targetEl: HTMLElement): this
+	// Registers a DOM element as an interactive target for this layer.
+	// Used internally to handle events on layer elements.
 	addInteractiveTarget(targetEl) {
 		this._map._targets[Util.stamp(targetEl)] = this;
 		return this;
 	}
 
+	// @method removeInteractiveTarget(targetEl: HTMLElement): this
+	// Unregisters a DOM element as an interactive target for this layer.
 	removeInteractiveTarget(targetEl) {
 		delete this._map._targets[Util.stamp(targetEl)];
 		return this;

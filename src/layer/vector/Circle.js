@@ -58,6 +58,8 @@ export class Circle extends CircleMarker {
 			this._map.layerPointToLatLng(this._point.add(half)));
 	}
 
+	// @method setStyle(options: Path options): this
+	// Sets the style of the circle. Also updates the circle radius if the `radius` option is specified.
 	setStyle(options) {
 		Path.prototype.setStyle.call(this, options);
 		if (options?.radius !== undefined) {
