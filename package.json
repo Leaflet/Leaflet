@@ -30,7 +30,7 @@
     "requirejs": "^2.3.8",
     "rollup": "^4.57.1",
     "sinon": "^21.0.1",
-    "ssri": "^13.0.0",
+    "ssri": "^13.0.1",
     "ui-event-simulator": "^2.0.0"
   },
   "type": "module",
