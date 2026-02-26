@@ -160,8 +160,8 @@ export class SVG extends Renderer {
 
 	_updateCircle(layer) {
 		const p = layer._point,
-		r = Math.max(Math.round(layer._radius), 1),
-		r2 = Math.max(Math.round(layer._radiusY), 1) || r,
+		r = Math.max(Math.round(layer._pxRadius), 1),
+		r2 = Math.max(Math.round(layer._pxRadiusY), 1) || r,
 		arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
