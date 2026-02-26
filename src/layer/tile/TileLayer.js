@@ -118,6 +118,15 @@ export class TileLayer extends GridLayer {
 			}
 
 			this.options.minZoom = Math.max(0, this.options.minZoom);
+
+			// Also adjust maxNativeZoom/minNativeZoom to prevent requesting
+			// tiles beyond the tile server's native zoom range (#8850)
+			if (this.options.maxNativeZoom !== undefined) {
+				this.options.maxNativeZoom--;
+			}
+			if (this.options.minNativeZoom !== undefined) {
+				this.options.minNativeZoom = Math.max(0, this.options.minNativeZoom - 1);
+			}
 		} else if (!this.options.zoomReverse) {
 			// make sure maxZoom is gte minZoom
 			this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom);
