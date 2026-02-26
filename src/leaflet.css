@@ -470,7 +470,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 
 .leaflet-container .leaflet-control-attribution {
 	background: #fff;
-	background: rgba(255, 255, 255, 0.8);
+	background: rgba(255, 255, 255, 0.9);
 	margin: 0;
 }
 
