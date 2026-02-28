@@ -7,7 +7,7 @@ author-url: https://github.com/mfhsieh
 demo: https://mfhsieh.github.io/leaflet-iconex/
 compatible-v0:
 compatible-v1: true
-compatible-v2: false
+compatible-v2: true
 ---
 
 A Leaflet plugin that creates a DivIcon with three customizable layers.
