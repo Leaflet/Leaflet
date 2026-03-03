@@ -7,7 +7,7 @@ author-url: https://github.com/gabriel-russo/
 demo: https://gabriel-russo.github.io/Leaflet.BetterFileLayer/example/
 compatible-v0: false
 compatible-v1: true
-compatible-v2: false
+compatible-v2: true
 ---
 
 The definitive plugin to load your spatialized files into leaflet.
