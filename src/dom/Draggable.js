@@ -106,8 +106,9 @@ export class Draggable extends Evented {
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
 		this._parentScale = DomUtil.getScale(sizedParent);
 
-		DomEvent.on(this._element.ownerDocument, 'pointermove', this._onMove, this);
-		DomEvent.on(this._element.ownerDocument, 'pointerup pointercancel', this._onUp, this);
+		this._element.setPointerCapture(this._capturedPointerId = e.pointerId);
+		DomEvent.on(this._element, 'pointermove', this._onMove, this);
+		DomEvent.on(this._element, 'pointerup pointercancel', this._onUp, this);
 	}
 
 	_onMove(e) {
@@ -177,8 +178,9 @@ export class Draggable extends Evented {
 			this._lastTarget = null;
 		}
 
-		DomEvent.off(this._element.ownerDocument, 'pointermove', this._onMove, this);
-		DomEvent.off(this._element.ownerDocument, 'pointerup pointercancel', this._onUp, this);
+		this._element.releasePointerCapture(this._capturedPointerId);
+		DomEvent.off(this._element, 'pointermove', this._onMove, this);
+		DomEvent.off(this._element, 'pointerup pointercancel', this._onUp, this);
 
 		DomUtil.enableImageDrag();
 		DomUtil.enableTextSelection();

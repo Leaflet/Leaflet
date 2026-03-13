@@ -805,6 +805,8 @@ export class LeafletMap extends Evented {
 			pane.remove();
 		}
 
+		PointerEvents.disablePointerDetection(this._container);
+
 		this._layers = {};
 		this._panes = {};
 		delete this._mapPane;
@@ -1110,7 +1112,7 @@ export class LeafletMap extends Evented {
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
-		PointerEvents.enablePointerDetection();
+		PointerEvents.enablePointerDetection(container);
 	}
 
 	_initLayout() {

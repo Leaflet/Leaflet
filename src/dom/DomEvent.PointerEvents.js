@@ -4,34 +4,39 @@
  * Detects the pointers that are currently active on the document.
  */
 
-let activePointers = new Map();
+// NOTE: There is an uncovered rare edge case: creating a new instance of a
+// Leaflet map while a drag or pinch-zoom operation is happening on a different
+// instance of another Leaflet map in the same HTML document.
+
+const activePointers = new Map();
 let initialized = false;
 
-// @function enablePointerDetection()
-// Enables pointer detection for the document.
-function enablePointerDetection() {
+// @function enablePointerDetection(el: HTMLElement)
+// Enables pointer detection and capture for the document.
+function enablePointerDetection(el) {
 	if (initialized) {
 		return;
 	}
 	initialized = true;
-	document.addEventListener('pointerdown', _onSet, {capture: true});
-	document.addEventListener('pointermove', _onUpdate, {capture: true});
-	document.addEventListener('pointerup', _onDelete, {capture: true});
-	document.addEventListener('pointercancel', _onDelete, {capture: true});
-	activePointers = new Map();
+	el.addEventListener('pointerdown', _onSet, {capture: true});
+	el.addEventListener('pointermove', _onUpdate, {capture: true});
+	el.addEventListener('pointerup', _onDelete, {capture: true});
+	el.addEventListener('pointercancel', _onDelete, {capture: true});
+	activePointers.clear();
 }
 
-// @function disablePointerDetection()
-// Disables pointer detection for the document.
-function disablePointerDetection() {
-	document.removeEventListener('pointerdown', _onSet, {capture: true});
-	document.removeEventListener('pointermove', _onUpdate, {capture: true});
-	document.removeEventListener('pointerup', _onDelete, {capture: true});
-	document.removeEventListener('pointercancel', _onDelete, {capture: true});
+// @function disablePointerDetection(el: HTMLElement)
+// Disables pointer detection and capture for the document.
+function disablePointerDetection(el) {
+	el.removeEventListener('pointerdown', _onSet, {capture: true});
+	el.removeEventListener('pointermove', _onUpdate, {capture: true});
+	el.removeEventListener('pointerup', _onDelete, {capture: true});
+	el.removeEventListener('pointercancel', _onDelete, {capture: true});
 	initialized = false;
 }
 
 function _onSet(e) {
+	e.target.setPointerCapture(e.pointerId);
 	activePointers.set(e.pointerId, e);
 }
 
@@ -42,6 +47,7 @@ function _onUpdate(e) {
 }
 
 function _onDelete(e) {
+	e.target.releasePointerCapture(e.pointerId);
 	activePointers.delete(e.pointerId);
 }
 
