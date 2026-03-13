@@ -774,6 +774,7 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
+		PointerEvents.disablePointerDetection(this._container);
 		this._mapPane.remove();
 
 		if (this._clearControlPos) {
@@ -805,7 +806,6 @@ export class LeafletMap extends Evented {
 			pane.remove();
 		}
 
-		PointerEvents.disablePointerDetection(this._container);
 
 		this._layers = {};
 		this._panes = {};
@@ -1109,10 +1109,10 @@ export class LeafletMap extends Evented {
 			throw new Error('Map container is already initialized.');
 		}
 
+		PointerEvents.enablePointerDetection(container);
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
-		PointerEvents.enablePointerDetection(container);
 	}
 
 	_initLayout() {
