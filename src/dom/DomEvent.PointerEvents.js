@@ -4,34 +4,29 @@
  * Detects the pointers that are currently active on the document.
  */
 
-let activePointers = new Map();
-let initialized = false;
+const activePointers = new Map();
 
-// @function enablePointerDetection()
-// Enables pointer detection for the document.
-function enablePointerDetection() {
-	if (initialized) {
-		return;
-	}
-	initialized = true;
-	document.addEventListener('pointerdown', _onSet, {capture: true});
-	document.addEventListener('pointermove', _onUpdate, {capture: true});
-	document.addEventListener('pointerup', _onDelete, {capture: true});
-	document.addEventListener('pointercancel', _onDelete, {capture: true});
-	activePointers = new Map();
+// @function enablePointerDetection(el: HTMLElement)
+// Enables pointer detection and capture for the document.
+function enablePointerDetection(el) {
+	el.addEventListener('pointerdown', _onSet, {capture: true});
+	el.addEventListener('pointermove', _onUpdate, {capture: true});
+	el.addEventListener('pointerup', _onDelete, {capture: true});
+	el.addEventListener('pointercancel', _onDelete, {capture: true});
+	activePointers.clear();
 }
 
-// @function disablePointerDetection()
-// Disables pointer detection for the document.
-function disablePointerDetection() {
-	document.removeEventListener('pointerdown', _onSet, {capture: true});
-	document.removeEventListener('pointermove', _onUpdate, {capture: true});
-	document.removeEventListener('pointerup', _onDelete, {capture: true});
-	document.removeEventListener('pointercancel', _onDelete, {capture: true});
-	initialized = false;
+// @function disablePointerDetection(el: HTMLElement)
+// Disables pointer detection and capture for the document.
+function disablePointerDetection(el) {
+	el.removeEventListener('pointerdown', _onSet, {capture: true});
+	el.removeEventListener('pointermove', _onUpdate, {capture: true});
+	el.removeEventListener('pointerup', _onDelete, {capture: true});
+	el.removeEventListener('pointercancel', _onDelete, {capture: true});
 }
 
 function _onSet(e) {
+	e.isTrusted && e.target.setPointerCapture(e.pointerId);
 	activePointers.set(e.pointerId, e);
 }
 
@@ -42,6 +37,7 @@ function _onUpdate(e) {
 }
 
 function _onDelete(e) {
+	e.isTrusted && e.target.releasePointerCapture(e.pointerId);
 	activePointers.delete(e.pointerId);
 }
 
