@@ -63,6 +63,8 @@ export class GeoJSON extends FeatureGroup {
 	 * @option onEachFeature: Function = *
 	 * A `Function` that will be called once for each created `Feature`, after it has
 	 * been created and styled. Useful for attaching events and popups to features.
+	 * It will receive the `feature` as the first argument and its corresponding
+	 * spawned `layer` from [`asFeature`](#geojson-asFeature) as the second.
 	 * The default is to do nothing with the newly created layers:
 	 * ```js
 	 * function (feature, layer) {}
