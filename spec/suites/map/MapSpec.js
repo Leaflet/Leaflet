@@ -1478,7 +1478,7 @@ describe('Map', () => {
 				done();
 			});
 
-			map.flyTo(center, 11, {animate: true});
+			map.flyTo(center, 11, {animate: true, duration: 0.1});
 		});
 	});
 
