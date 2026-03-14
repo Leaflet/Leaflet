@@ -98,7 +98,7 @@ export class LeafletMap extends Evented {
 			// @section Animation Options
 			// @option zoomAnimation: Boolean = true
 			// Whether the map zoom animation is enabled. By default it's enabled
-			// in all browsers that support CSS Transitions except Android.
+			// in all browsers that support CSS Transitions.
 			zoomAnimation: true,
 
 			// @option zoomAnimationThreshold: Number = 4
@@ -107,13 +107,13 @@ export class LeafletMap extends Evented {
 
 			// @option fadeAnimation: Boolean = true
 			// Whether the tile fade animation is enabled. By default it's enabled
-			// in all browsers that support CSS Transitions except Android.
+			// in all browsers that support CSS Transitions.
 			fadeAnimation: true,
 
 			// @option markerZoomAnimation: Boolean = true
 			// Whether markers animate their zoom with the zoom animation, if disabled
 			// they will disappear for the length of the animation. By default it's
-			// enabled in all browsers that support CSS Transitions except Android.
+			// enabled in all browsers that support CSS Transitions.
 			markerZoomAnimation: true,
 
 			// @option transform3DLimit: Number = 2^23
