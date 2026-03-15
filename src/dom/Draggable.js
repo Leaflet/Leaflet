@@ -108,7 +108,7 @@ export class Draggable extends Evented {
 
 		DomEvent.on(this._element.ownerDocument, 'pointermove', this._onMove, this);
 		DomEvent.on(this._element.ownerDocument, 'pointerup pointercancel', this._onUp, this);
-	},
+	}
 
 	_onMove(e) {
 		if (PointerEvents.getPointers().length > 1) {

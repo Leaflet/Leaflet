@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Global</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script src="../../dist/leaflet-global-src.js"></script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="module">
+			const map = new L.LeafletMap('map', {
+				center: [39.84, -96.591],
+				zoom: 4,
+			});
+
+			new L.TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+			// It should be possible to extend the L namespace.
+			L.Util.foo = 'bar';
+			L.Foo = 'Bar';
+
+			console.log('L.Util.foo:', L.Util.foo);
+			console.log('L.Foo:', L.Foo);
+		</script>
+	</body>
+</html>

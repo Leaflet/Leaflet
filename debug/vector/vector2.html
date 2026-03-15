@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, SVG, LeafletMap, Marker, Canvas, Polyline, Circle, CircleMarker, Control} from 'leaflet';
+			import {TileLayer, SVG, LeafletMap, Marker, Canvas, Polyline, Circle, CircleMarker, LayersControl} from 'leaflet';
 			import route from './route.js';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
@@ -43,7 +43,7 @@
 
 			map.setView([36, 52], 3);
 
-			const layersControl = new Control.Layers({}, {
+			const layersControl = new LayersControl({}, {
 				poly,
 				path,
 				circle,

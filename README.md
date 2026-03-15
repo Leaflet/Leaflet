@@ -21,7 +21,7 @@ Leaflet maintainers.
 
 ---
 
-<img width="600" src="https://rawgit.com/Leaflet/Leaflet/main/src/images/logo.svg" alt="Leaflet" />
+<img width="600" src="src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
 

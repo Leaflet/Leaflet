@@ -1,19 +1,16 @@
 ---
 layout: tutorial_frame
-title: CRS.Simple Example
+title: SimpleCRS Example
 ---
 <script type="module">
-	import L, {LeafletMap, CRS, ImageOverlay} from 'leaflet';
+	import {LeafletMap, SimpleCRS, ImageOverlay} from 'leaflet';
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple
+		crs: SimpleCRS
 	});
 
 	const bounds = [[0, 0], [1000, 1000]];
 	const image = new ImageOverlay('uqm_map_full.png', bounds).addTo(map);
 
 	map.fitBounds(bounds);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

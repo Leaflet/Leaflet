@@ -10,4 +10,4 @@ compatible-v1: true
 compatible-v2: false
 ---
 
-This plugin adds L.Polyline.Arc function which wraps arc.js functionality for creation of Great Cirlce arcs.
+This plugin adds L.Polyline.Arc function which wraps arc.js functionality for creation of Great Circle arcs.

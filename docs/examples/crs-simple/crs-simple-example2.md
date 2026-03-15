@@ -1,12 +1,12 @@
 ---
 layout: tutorial_frame
-title: CRS.Simple Example
+title: SimpleCRS Example
 ---
 <script type="module">
-	import L, {LeafletMap, CRS, ImageOverlay, LatLng, Marker} from 'leaflet';
+	import {LeafletMap, SimpleCRS, ImageOverlay, LatLng, Marker} from 'leaflet';
 
 	const map = new LeafletMap('map', {
-		crs: CRS.Simple,
+		crs: SimpleCRS,
 		minZoom: -3
 	});
 
@@ -17,7 +17,4 @@ title: CRS.Simple Example
 	const marker = new Marker(sol).addTo(map);
 
 	map.setView([70, 120], 1);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

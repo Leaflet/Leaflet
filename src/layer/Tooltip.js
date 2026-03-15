@@ -1,6 +1,6 @@
 import {DivOverlay} from './DivOverlay.js';
 import {Point} from '../geometry/Point.js';
-import {Map} from '../map/Map.js';
+import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
@@ -226,7 +226,7 @@ export class Tooltip extends DivOverlay {
 
 // @namespace LeafletMap
 // @section Methods for Layers and Controls
-Map.include({
+LeafletMap.include({
 
 	// @method openTooltip(tooltip: Tooltip): this
 	// Opens the specified tooltip.

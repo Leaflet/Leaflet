@@ -1,6 +1,6 @@
 import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
-import {EPSG3857} from '../geo/crs/CRS.EPSG3857.js';
+import {EPSG3857} from '../geo/crs/EPSG3857.js';
 import {Point} from '../geometry/Point.js';
 import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
@@ -53,7 +53,7 @@ export class LeafletMap extends Evented {
 	static {
 		this.setDefaultOptions({
 			// @section Map State Options
-			// @option crs: CRS = CRS.EPSG3857
+			// @option crs: CRS = EPSG3857
 			// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
 			// sure what it means.
 			crs: EPSG3857,
@@ -403,7 +403,7 @@ export class LeafletMap extends Evented {
 
 			// workaround for floating point precision bug when sq = 0, log = -Infinite,
 			// thus triggering an infinite loop in flyTo
-			const log = sq < 0.000000001 ? -18 : Math.log(sq);
+			const log = sq < 0.000000015 ? -18 : Math.log(sq);
 
 			return log;
 		}

@@ -286,7 +286,7 @@ New ways to interact with the map itself.
 
 ### Layer switching controls
 
-The following plugins enhance or extend `L.Control.Layers`.
+The following plugins enhance or extend `LayersControl`.
 
 {% include plugin_category_table.html category="layer-switching-controls" %}
 

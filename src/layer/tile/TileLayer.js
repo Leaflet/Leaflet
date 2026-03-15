@@ -89,46 +89,45 @@ export class TileLayer extends GridLayer {
 	}
 
 	initialize(url, options) {
+		super.initialize(options);
 
 		this._url = url;
 
-		options = Util.setOptions(this, options);
-
 		// in case the attribution hasn't been specified, check for known hosts that require attribution
-		if (options.attribution === null) {
+		if (this.options.attribution === null) {
 			const urlHostname = new URL(url, location.href).hostname;
 
 			// check for Open Street Map hosts
 			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 			if (osmHosts.some(host => urlHostname.endsWith(host))) {
-				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+				this.options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			}
 		}
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
+		if (this.options.detectRetina && Browser.retina && this.options.maxZoom > 0) {
 
-			options.tileSize = Math.floor(options.tileSize / 2);
+			this.options.tileSize = Math.floor(this.options.tileSize / 2);
 
-			if (!options.zoomReverse) {
-				options.zoomOffset++;
-				options.maxZoom = Math.max(options.minZoom, options.maxZoom - 1);
+			if (!this.options.zoomReverse) {
+				this.options.zoomOffset++;
+				this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom - 1);
 			} else {
-				options.zoomOffset--;
-				options.minZoom = Math.min(options.maxZoom, options.minZoom + 1);
+				this.options.zoomOffset--;
+				this.options.minZoom = Math.min(this.options.maxZoom, this.options.minZoom + 1);
 			}
 
-			options.minZoom = Math.max(0, options.minZoom);
-		} else if (!options.zoomReverse) {
+			this.options.minZoom = Math.max(0, this.options.minZoom);
+		} else if (!this.options.zoomReverse) {
 			// make sure maxZoom is gte minZoom
-			options.maxZoom = Math.max(options.minZoom, options.maxZoom);
+			this.options.maxZoom = Math.max(this.options.minZoom, this.options.maxZoom);
 		} else {
 			// make sure minZoom is lte maxZoom
-			options.minZoom = Math.min(options.maxZoom, options.minZoom);
+			this.options.minZoom = Math.min(this.options.maxZoom, this.options.minZoom);
 		}
 
-		if (typeof options.subdomains === 'string') {
-			options.subdomains = options.subdomains.split('');
+		if (typeof this.options.subdomains === 'string') {
+			this.options.subdomains = this.options.subdomains.split('');
 		}
 
 		this.on('tileunload', this._onTileRemove);
@@ -253,7 +252,7 @@ export class TileLayer extends GridLayer {
 				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
-					tile.src = Util.emptyImageUrl;
+					tile.setAttribute('src', '');
 					const coords = this._tiles[i].coords;
 					tile.remove();
 					delete this._tiles[i];
@@ -273,13 +272,13 @@ export class TileLayer extends GridLayer {
 		if (!tile) { return; }
 
 		// Cancels any pending http requests associated with the tile
-		tile.el.setAttribute('src', Util.emptyImageUrl);
+		tile.el.setAttribute('src', '');
 
 		return super._removeTile(key);
 	}
 
 	_tileReady(coords, err, tile) {
-		if (!this._map || (tile && tile.getAttribute('src') === Util.emptyImageUrl)) {
+		if (!this._map || (tile && tile.getAttribute('src') === '')) {
 			return;
 		}
 
