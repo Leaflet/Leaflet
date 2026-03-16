@@ -27,7 +27,7 @@
     "leafdoc": "^2.3.0",
     "lint-staged": "^16.3.3",
     "mocha": "^11.7.5",
-    "prosthetic-hand": "^2.0.0",
+    "prosthetic-hand": "^2.1.0",
     "requirejs": "^2.3.8",
     "rollup": "^4.59.0",
     "sinon": "^21.0.2",
