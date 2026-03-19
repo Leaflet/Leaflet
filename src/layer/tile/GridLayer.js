@@ -836,7 +836,7 @@ export class GridLayer extends Layer {
 		if (!tile) { return; }
 
 		tile.loaded = +new Date();
-		if (this._map._fadeAnimated) {
+		if (this._map && this._map._fadeAnimated) {
 			tile.el.style.opacity = 0;
 			cancelAnimationFrame(this._fadeFrame);
 			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
@@ -861,6 +861,9 @@ export class GridLayer extends Layer {
 			// @event load: Event
 			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
+
+			// Check if map still exists (it could be removed in load event handler)
+			if (!this._map) { return; }
 
 			if (!this._map._fadeAnimated) {
 				requestAnimationFrame(this._pruneTiles.bind(this));
