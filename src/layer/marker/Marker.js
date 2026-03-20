@@ -45,10 +45,10 @@ export class Marker extends Layer {
 			// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
 			title: '',
 
-			// @option alt: String = 'Marker'
+			// @option alt: String = ''
 			// Text for the `alt` attribute of the icon image.
 			// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
-			alt: 'Marker',
+			alt: '',
 
 			// @option zIndexOffset: Number = 0
 			// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).

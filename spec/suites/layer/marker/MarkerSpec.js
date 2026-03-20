@@ -195,7 +195,7 @@ describe('Marker', () => {
 			map.addLayer(marker);
 			const icon = marker._icon;
 			expect(icon.hasAttribute('alt')).to.be.true;
-			expect(icon.alt).to.equal('Marker');
+			expect(icon.alt).to.equal('');
 		});
 
 		it('doesn\'t set the alt attribute for DivIcons', () => {

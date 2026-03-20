@@ -24,6 +24,7 @@ Leaflet Changelog
 
 ### 🐞 Bugfixes
 
+* Remove default `alt`/`title` strings from layer options (#8267)
 * Cleanup map.locate() by @jorri11 in https://github.com/Leaflet/Leaflet/pull/9746
 * Popup width by @IvanSanchez in https://github.com/Leaflet/Leaflet/pull/9765
 * Fix overlay shifting with new BlanketOverlay by @Falke-Design in https://github.com/Leaflet/Leaflet/pull/9822
