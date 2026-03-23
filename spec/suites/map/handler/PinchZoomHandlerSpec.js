@@ -195,6 +195,9 @@ describe('PinchZoomHandler', () => {
 		hand.sync(100);
 		await hand.run();
 
+		// Wait for zoom snap animations as well
+		await new Promise((res) => { setTimeout(res, 200); });
+
 		const renderedRect = polygon._path.getBoundingClientRect();
 
 		const width = renderedRect.width;
@@ -209,10 +212,6 @@ describe('PinchZoomHandler', () => {
 
 		expect(x).to.be.within(299, 301);
 		expect(y).to.be.within(270, 280);
-
-		// Fingers lifted after expects as bug goes away when lifted
-		this._fingers[0].up();
-		this._fingers[1].up();
 
 	});
 
