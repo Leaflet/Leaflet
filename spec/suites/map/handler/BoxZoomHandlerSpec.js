@@ -170,4 +170,33 @@ describe('BoxZoomHandler', () => {
 		mouseFinger.down().up().unshift();
 		await hand.run();
 	});
+
+	it('zooms out when dragged box is larger than map', async () => {
+
+		const smallMap = new LeafletMap(createContainer('75px', '75px'), {
+			center: [0, 0],
+			zoom: 10,
+			zoomAnimation: false
+		});
+
+		const hand = new Hand({timing: 'fastframe'});
+		const mouseFinger = hand.growFinger('pointer', {pointerType: 'mouse'});
+
+		mouseFinger.moveTo(50, 50).shift().down();
+		mouseFinger.moveBy(150, 150).unshift().up().wait(200);
+
+		await hand.run();
+
+		expect(smallMap.getZoom()).to.eql(9);
+
+		mouseFinger.moveTo(50, 50).shift().down();
+		mouseFinger.moveBy(300, 300).unshift().up().wait(200);
+
+		await hand.run();
+
+		expect(smallMap.getZoom()).to.eql(7);
+
+		removeMapContainer(smallMap, smallMap.getContainer());
+	});
+
 });
