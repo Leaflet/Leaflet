@@ -77,17 +77,15 @@ describe('DragHandler', () => {
 			const offset = new Point(256, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getOffset()).to.eql(offset);
+			const hand = new Hand({timing: 'fastframe'});
 
-					expect(map.getZoom()).to.equal(1);
-					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
-
-					done();
-				}
+			hand.addEventListener('stop', () => {
+				expect(map.getOffset()).to.eql(offset);
+				expect(map.getZoom()).to.equal(1);
+				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
+				done();
 			});
+
 			const pointer = hand.growFinger('pointer');
 
 			pointer.moveTo(start.x, start.y, 0)
@@ -113,16 +111,13 @@ describe('DragHandler', () => {
 				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
-				const hand = new Hand({
-					timing: 'fastframe',
-					onStop() {
-						expect(map.getOffset()).to.eql(offset);
+				const hand = new Hand({timing: 'fastframe'});
 
-						expect(map.getZoom()).to.equal(1);
-						expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
-
-						done();
-					}
+				hand.addEventListener('stop', () => {
+					expect(map.getOffset()).to.eql(offset);
+					expect(map.getZoom()).to.equal(1);
+					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
+					done();
 				});
 				const pointer = hand.growFinger('pointer');
 
@@ -145,16 +140,16 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getZoom()).to.equal(1);
-					// Expect center point to be the same as before the click
-					expect(map.getCenter()).to.eql(originalCenter);
-					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
+			const hand = new Hand({timing: 'fastframe'});
 
-					done();
-				}
+			hand.addEventListener('stop', () => {
+				expect(map.getZoom()).to.equal(1);
+				// Expect center point to be the same as before the click
+				expect(map.getCenter()).to.eql(originalCenter);
+				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
+
+				done();
+
 			});
 			const pointer = hand.growFinger('pointer');
 
@@ -177,17 +172,15 @@ describe('DragHandler', () => {
 			map.on('preclick', preclickSpy);
 			map.on('drag', dragSpy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					// A real user scenario would trigger a click on pointerup.
-					// We want to be sure we are cancelling it after a drag.
-					UIEventSimulator.fire('click', container);
-					expect(dragSpy.called).to.be.true;
-					expect(clickSpy.called).to.be.false;
-					expect(preclickSpy.called).to.be.false;
-					done();
-				}
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				// A real user scenario would trigger a click on pointerup.
+				// We want to be sure we are cancelling it after a drag.
+				UIEventSimulator.fire('click', container);
+				expect(dragSpy.called).to.be.true;
+				expect(clickSpy.called).to.be.false;
+				expect(preclickSpy.called).to.be.false;
+				done();
 			});
 			const pointer = hand.growFinger('pointer');
 
@@ -214,18 +207,16 @@ describe('DragHandler', () => {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					// A real user scenario would trigger a click on pointerup.
-					// We want to be sure we are cancelling it after a drag.
-					UIEventSimulator.fire('click', container);
-					expect(mapDragSpy.called).to.be.true;
-					expect(markerDragSpy.called).to.be.false;
-					expect(clickSpy.called).to.be.false;
-					expect(preclickSpy.called).to.be.false;
-					done();
-				}
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				// A real user scenario would trigger a click on pointerup.
+				// We want to be sure we are cancelling it after a drag.
+				UIEventSimulator.fire('click', container);
+				expect(mapDragSpy.called).to.be.true;
+				expect(markerDragSpy.called).to.be.false;
+				expect(clickSpy.called).to.be.false;
+				expect(preclickSpy.called).to.be.false;
+				done();
 			});
 			const pointer = hand.growFinger('pointer');
 
@@ -254,18 +245,16 @@ describe('DragHandler', () => {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					// A real user scenario would trigger a click on pointerup.
-					// We want to be sure we are cancelling it after a drag.
-					UIEventSimulator.fire('click', marker._icon);
-					expect(markerDragSpy.called).to.be.true;
-					expect(mapDragSpy.called).to.be.false;
-					expect(clickSpy.called).to.be.false;
-					expect(preclickSpy.called).to.be.false;
-					done();
-				}
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				// A real user scenario would trigger a click on pointerup.
+				// We want to be sure we are cancelling it after a drag.
+				UIEventSimulator.fire('click', marker._icon);
+				expect(markerDragSpy.called).to.be.true;
+				expect(mapDragSpy.called).to.be.false;
+				expect(clickSpy.called).to.be.false;
+				expect(preclickSpy.called).to.be.false;
+				done();
 			});
 			const pointer = hand.growFinger('pointer');
 
@@ -289,16 +278,13 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getZoom()).to.equal(1);
-					// Expect center point to be the same as before the click
-					expect(map.getCenter()).to.eql(originalCenter);
-					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-
-					done();
-				}
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				expect(map.getZoom()).to.equal(1);
+				// Expect center point to be the same as before the click
+				expect(map.getCenter()).to.eql(originalCenter);
+				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
+				done();
 			});
 			const pointer = hand.growFinger('pointer');
 
@@ -321,16 +307,12 @@ describe('DragHandler', () => {
 			const offset = new Point(256, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getOffset()).to.eql(offset);
-
-					expect(map.getZoom()).to.equal(1);
-					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
-
-					done();
-				}
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				expect(map.getOffset()).to.eql(offset);
+				expect(map.getZoom()).to.equal(1);
+				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
+				done();
 			});
 			const toucher = hand.growFinger(...pointerEventType);
 
@@ -350,16 +332,14 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getZoom()).to.equal(1);
-					// Expect center point to be the same as before the click
-					expect(map.getCenter().equals(originalCenter)).to.be.true; // small margin of error allowed
-					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('stop', () => {
+				expect(map.getZoom()).to.equal(1);
+				// Expect center point to be the same as before the click
+				expect(map.getCenter().equals(originalCenter)).to.be.true; // small margin of error allowed
+				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 
-					done();
-				}
+				done();
 			});
 
 			const toucher = hand.growFinger(...pointerEventType);
@@ -389,26 +369,21 @@ describe('DragHandler', () => {
 				zoom = map.getZoom();
 			}
 
-			const pointerHand = new Hand({
-				timing: 'fastframe',
-				onStart: savePos,
-				onStop() {
-					expect(map.getCenter()).to.eql(center);
-					expect(map.getZoom()).to.eql(zoom);
-
-					done();
-				}
+			const pointerHand = new Hand({timing: 'fastframe'});
+			pointerHand.addEventListener('start', savePos);
+			pointerHand.addEventListener('stop', () => {
+				expect(map.getCenter()).to.eql(center);
+				expect(map.getZoom()).to.eql(zoom);
+				done();
 			});
 			const pointer = pointerHand.growFinger('pointer', {pointerType: 'touch'});
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStart: savePos,
-				onStop() {
-					expect(map.getCenter()).not.to.eql(center);
-					expect(map.getZoom()).not.to.eql(zoom);
+			const hand = new Hand({timing: 'fastframe'});
+			hand.addEventListener('start', savePos);
+			hand.addEventListener('stop', () => {
+				expect(map.getCenter()).not.to.eql(center);
+				expect(map.getZoom()).not.to.eql(zoom);
 
-					pointer.moveTo(220, 220, 0).moveBy(200, 0, 2000);
-				}
+				pointer.moveTo(220, 220, 0).moveBy(200, 0, 2000);
 			});
 
 			const f1 = hand.growFinger('pointer', {pointerType: 'touch'});

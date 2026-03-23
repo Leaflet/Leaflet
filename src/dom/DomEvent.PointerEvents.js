@@ -25,8 +25,12 @@ function disablePointerDetection(el) {
 	el.removeEventListener('pointercancel', _onDelete, {capture: true});
 }
 
+// NOTE: pointers are captured unconditionally, which can become a problem for
+// synthetic events. The prosthetic-hand library does handle pointer capture,
+// but others don't.
+// If this becomers an issue, replace with `e.isTrusted && e.target.setPointerCapture()`
 function _onSet(e) {
-	e.isTrusted && e.target.setPointerCapture(e.pointerId);
+	e.target.setPointerCapture(e.pointerId);
 	activePointers.set(e.pointerId, e);
 }
 
@@ -36,8 +40,9 @@ function _onUpdate(e) {
 	}
 }
 
+// NOTE: idem as _onSet.
 function _onDelete(e) {
-	e.isTrusted && e.target.releasePointerCapture(e.pointerId);
+	e.target.releasePointerCapture(e.pointerId);
 	activePointers.delete(e.pointerId);
 }
 
