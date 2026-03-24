@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - DivOverlay style option</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../dist/leaflet-src.js"
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<style>
+			#controls {
+				font: 13px/1.4 sans-serif;
+				background: #f4f4f4;
+				border: 1px solid #ccc;
+				padding: 10px 12px;
+				margin-bottom: 8px;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+				gap: 6px 16px;
+				align-items: center;
+			}
+			#controls label { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+			#controls input[type="color"] { width: 44px; height: 24px; padding: 0; border: 1px solid #aaa; }
+			#controls input[type="range"] { flex: 1; }
+			#controls select { flex: 1; }
+			#controls .full { grid-column: 1 / -1; }
+			#style-preview {
+				grid-column: 1 / -1;
+				font-family: monospace;
+				font-size: 11px;
+				white-space: pre-wrap;
+				background: #fff;
+				border: 1px solid #ddd;
+				padding: 6px;
+				margin: 0;
+			}
+		</style>
+
+		<p>
+			Demo for the <code>style</code> option and <code>setStyle()</code> method on <code>Tooltip</code> / <code>Popup</code>.
+			The static examples on the map use the <code>style</code> option at creation time. The controls below call <code>setStyle()</code>
+			on the <b>live tooltip</b> (center) and <b>live popup</b> (top) in real time.
+		</p>
+
+		<form id="controls">
+			<label>Background <input type="color" id="bg" value="#4682b4"></label>
+			<label>Text color <input type="color" id="fg" value="#ffffff"></label>
+			<label>Font size <span id="fs-val">14</span>px <input type="range" id="fs" min="10" max="28" value="14"></label>
+			<label>Font family
+				<select id="ff">
+					<option value="">(default)</option>
+					<option>sans-serif</option>
+					<option>serif</option>
+					<option>monospace</option>
+					<option>cursive</option>
+				</select>
+			</label>
+			<label>Font weight
+				<select id="fw">
+					<option>normal</option>
+					<option>bold</option>
+				</select>
+			</label>
+			<label>Border radius <span id="br-val">3</span>px <input type="range" id="br" min="0" max="24" value="3"></label>
+			<label>Border
+				<select id="bd">
+					<option value="">(default)</option>
+					<option>none</option>
+					<option>1px solid currentColor</option>
+					<option>2px dashed currentColor</option>
+					<option>3px double currentColor</option>
+				</select>
+			</label>
+			<label>Tooltip direction
+				<select id="dir">
+					<option>right</option>
+					<option>left</option>
+					<option>top</option>
+					<option>bottom</option>
+					<option>center</option>
+				</select>
+			</label>
+			<label class="full">
+				<input type="checkbox" id="arrow-auto" checked>
+				Auto-sync arrow color with background (uncheck to set manually)
+			</label>
+			<label>Arrow color <input type="color" id="arrow" value="#4682b4" disabled></label>
+			<label class="full">
+				<input type="checkbox" id="close-auto" checked>
+				Auto-sync popup close-button (&times;) with text color (uncheck to set manually)
+			</label>
+			<label>Close &times; color <input type="color" id="close" value="#ffffff" disabled></label>
+			<span class="full">
+				<button type="button" id="apply-popup">Apply to popup too</button>
+				<button type="reset">Reset</button>
+			</span>
+			<pre id="style-preview"></pre>
+		</form>
+
+		<div id="map"></div>
+		<script type="module">
+			import {LeafletMap, TileLayer, Marker, CircleMarker, Polygon, Tooltip, Popup} from 'leaflet';
+
+			const center = [41.2058, 9.4307];
+			const map = new LeafletMap('map').setView(center, 13);
+
+			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+			// --- Tooltip: style option ---
+
+			new Marker([41.22, 9.40]).addTo(map)
+				.bindTooltip('Dark tooltip (style option)', {
+					permanent: true,
+					direction: 'right',
+					style: {
+						backgroundColor: '#222',
+						color: '#fff',
+						border: '1px solid #555',
+						fontFamily: 'monospace',
+						fontSize: '14px'
+					}
+				});
+
+			new CircleMarker([41.21, 9.44], {color: 'crimson', radius: 10}).addTo(map)
+				.bindTooltip('Crimson tooltip', {
+					permanent: true,
+					direction: 'top',
+					style: {
+						backgroundColor: 'crimson',
+						color: 'white',
+						fontWeight: 'bold',
+						borderRadius: '12px',
+						border: 'none',
+						boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
+					}
+				});
+
+			new Polygon([[41.19, 9.39], [41.20, 9.38], [41.20, 9.40]]).addTo(map)
+				.bindTooltip('Large serif text on hover', {
+					sticky: true,
+					style: {
+						fontFamily: 'Georgia, serif',
+						fontSize: '18px',
+						padding: '8px 12px'
+					}
+				});
+
+			// Default (no style) for comparison — arrow stays white
+			new Marker([41.22, 9.46]).addTo(map)
+				.bindTooltip('Default tooltip (no style)', {permanent: true, direction: 'right'});
+
+			// Arrow auto-syncs with backgroundColor — no extra config needed
+			new Marker([41.205, 9.41]).addTo(map)
+				.bindTooltip('Arrow auto-matches background', {
+					permanent: true,
+					direction: 'top',
+					style: {backgroundColor: 'steelblue', color: 'white', border: 'none'}
+				});
+
+			// Arrow color explicitly overridden (different from background)
+			new Marker([41.205, 9.46]).addTo(map)
+				.bindTooltip('Black bg, orange arrow', {
+					permanent: true,
+					direction: 'top',
+					style: {
+						backgroundColor: 'black',
+						color: 'white',
+						border: 'none',
+						'--leaflet-tooltip-arrow-color': 'orange'
+					}
+				});
+
+			// --- Popup: style option ---
+
+			new Marker([41.19, 9.44]).addTo(map)
+				.bindPopup('<b>Dark popup</b><br>Background + tip pick up the style.<br>Click to open.', {
+					style: {
+						backgroundColor: '#222',
+						color: '#fff',
+						fontFamily: 'monospace',
+						fontSize: '14px'
+					}
+				});
+
+			new CircleMarker([41.18, 9.41], {color: 'teal', radius: 12}).addTo(map)
+				.bindPopup('Teal popup<br>background + tip auto-synced', {
+					style: {
+						backgroundColor: 'teal',
+						color: 'white',
+						fontStyle: 'italic'
+					}
+				});
+
+			// --- Live overlays driven by the control panel via setStyle() ---
+
+			let liveTooltip;
+			const liveTooltipLatLng = [41.195, 9.455];
+
+			const livePopup = new Popup(
+				[41.225, 9.43],
+				{content: '<b>Live popup</b><br>Click "Apply to popup too"', autoClose: false, closeOnClick: false}
+			).openOn(map);
+
+			// --- Control panel wiring ---
+
+			const $ = id => document.getElementById(id);
+			const controls = $('controls');
+			const preview = $('style-preview');
+
+			function buildStyle() {
+				const style = {
+					backgroundColor: $('bg').value,
+					color: $('fg').value,
+					fontSize: `${$('fs').value}px`,
+					fontWeight: $('fw').value,
+					borderRadius: `${$('br').value}px`
+				};
+				if ($('ff').value) { style.fontFamily = $('ff').value; }
+				if ($('bd').value) { style.border = $('bd').value; }
+				if (!$('arrow-auto').checked) {
+					style['--leaflet-tooltip-arrow-color'] = $('arrow').value;
+				}
+				if (!$('close-auto').checked) {
+					style['--leaflet-popup-close-button-color'] = $('close').value;
+				}
+				return style;
+			}
+
+			function applyToTooltip() {
+				const style = buildStyle();
+
+				// Recreate the tooltip so that previously-applied inline styles and
+				// direction changes don't linger — this keeps the preview honest.
+				liveTooltip?.remove();
+				liveTooltip = new Tooltip(liveTooltipLatLng, {
+					content: '<b>Live tooltip</b> — edit controls above',
+					direction: $('dir').value
+				}).setStyle(style).addTo(map);
+
+				preview.textContent = `tooltip.setStyle(${JSON.stringify(style, null, 2)})`;
+			}
+
+			$('arrow-auto').addEventListener('change', (e) => {
+				$('arrow').disabled = e.target.checked;
+				applyToTooltip();
+			});
+
+			$('close-auto').addEventListener('change', (e) => {
+				$('close').disabled = e.target.checked;
+			});
+
+			$('fs').addEventListener('input', () => { $('fs-val').textContent = $('fs').value; });
+			$('br').addEventListener('input', () => { $('br-val').textContent = $('br').value; });
+
+			controls.addEventListener('input', applyToTooltip);
+
+			controls.addEventListener('reset', () => {
+				requestAnimationFrame(() => {
+					$('arrow').disabled = true;
+					$('close').disabled = true;
+					$('fs-val').textContent = $('fs').value;
+					$('br-val').textContent = $('br').value;
+					applyToTooltip();
+				});
+			});
+
+			$('apply-popup').addEventListener('click', () => {
+				livePopup.setStyle(buildStyle());
+			});
+
+			applyToTooltip();
+		</script>
+	</body>
+</html>

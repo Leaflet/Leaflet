@@ -149,6 +149,17 @@ export class Tooltip extends DivOverlay {
 
 	_updateLayout() {}
 
+	_updateStyle() {
+		super._updateStyle();
+
+		// Auto-sync the arrow color with the tooltip background, unless the user
+		// explicitly overrode it by setting `--leaflet-tooltip-arrow-color` in the style option.
+		const style = this.options.style;
+		if (this._container && style?.backgroundColor && !style['--leaflet-tooltip-arrow-color']) {
+			this._container.style.setProperty('--leaflet-tooltip-arrow-color', style.backgroundColor);
+		}
+	}
+
 	_adjustPan() {}
 
 	_setPosition(pos) {

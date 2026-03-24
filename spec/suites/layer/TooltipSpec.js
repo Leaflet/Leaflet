@@ -541,6 +541,106 @@ describe('Tooltip', () => {
 		expect(tooltip.getElement().classList.contains('testClass')).to.be.true;
 	});
 
+	describe('#style', () => {
+		it('applies the style option to the container element', () => {
+			const tooltip = new Tooltip(center, {
+				content: 'Tooltip',
+				style: {backgroundColor: 'black', color: 'white', fontSize: '14px', fontFamily: 'monospace'}
+			}).addTo(map);
+
+			const el = tooltip.getElement();
+			expect(el.style.backgroundColor).to.equal('black');
+			expect(el.style.color).to.equal('white');
+			expect(el.style.fontSize).to.equal('14px');
+			expect(el.style.fontFamily).to.equal('monospace');
+		});
+
+		it('does not set inline styles when the style option is not given', () => {
+			const tooltip = new Tooltip(center, {content: 'Tooltip'}).addTo(map);
+
+			expect(tooltip.getElement().style.backgroundColor).to.equal('');
+			expect(tooltip.getElement().style.color).to.equal('');
+		});
+
+		it('applies style via setStyle when already open', () => {
+			const tooltip = new Tooltip(center, {content: 'Tooltip'}).addTo(map);
+
+			tooltip.setStyle({backgroundColor: 'red', color: 'yellow'});
+
+			expect(tooltip.getElement().style.backgroundColor).to.equal('red');
+			expect(tooltip.getElement().style.color).to.equal('yellow');
+		});
+
+		it('applies style set via setStyle before being added to map', () => {
+			const tooltip = new Tooltip(center, {content: 'Tooltip'});
+
+			tooltip.setStyle({backgroundColor: 'blue'});
+
+			expect(tooltip.options.style.backgroundColor).to.equal('blue');
+
+			tooltip.addTo(map);
+
+			expect(tooltip.getElement().style.backgroundColor).to.equal('blue');
+		});
+
+		it('returns this from setStyle', () => {
+			const tooltip = new Tooltip(center, {content: 'Tooltip'});
+			expect(tooltip.setStyle({color: 'red'})).to.equal(tooltip);
+		});
+
+		it('applies style when bound to a layer', () => {
+			const layer = new Marker(center).addTo(map);
+			layer.bindTooltip('Tooltip', {permanent: true, style: {backgroundColor: 'green'}}).openTooltip();
+
+			expect(layer.getTooltip().getElement().style.backgroundColor).to.equal('green');
+		});
+
+		it('defaults the arrow color to the style background color', () => {
+			const tooltip = new Tooltip(center, {
+				content: 'Tooltip',
+				direction: 'right',
+				style: {backgroundColor: 'crimson'}
+			}).addTo(map);
+
+			const el = tooltip.getElement();
+			expect(el.style.getPropertyValue('--leaflet-tooltip-arrow-color')).to.equal('crimson');
+			expect(getComputedStyle(el, '::before').borderRightColor).to.equal('rgb(220, 20, 60)');
+		});
+
+		it('allows the arrow color to be overridden explicitly', () => {
+			const tooltip = new Tooltip(center, {
+				content: 'Tooltip',
+				direction: 'right',
+				style: {backgroundColor: 'black', '--leaflet-tooltip-arrow-color': 'orange'}
+			}).addTo(map);
+
+			const el = tooltip.getElement();
+			expect(el.style.backgroundColor).to.equal('black');
+			expect(el.style.getPropertyValue('--leaflet-tooltip-arrow-color')).to.equal('orange');
+			expect(getComputedStyle(el, '::before').borderRightColor).to.equal('rgb(255, 165, 0)');
+		});
+
+		it('leaves the default arrow color when no background color is set', () => {
+			const tooltip = new Tooltip(center, {
+				content: 'Tooltip',
+				direction: 'right',
+				style: {color: 'red'}
+			}).addTo(map);
+
+			const el = tooltip.getElement();
+			expect(el.style.getPropertyValue('--leaflet-tooltip-arrow-color')).to.equal('');
+			expect(getComputedStyle(el, '::before').borderRightColor).to.equal('rgb(255, 255, 255)');
+		});
+
+		it('syncs arrow color via setStyle', () => {
+			const tooltip = new Tooltip(center, {content: 'Tooltip', direction: 'top'}).addTo(map);
+
+			tooltip.setStyle({backgroundColor: 'navy'});
+
+			expect(tooltip.getElement().style.getPropertyValue('--leaflet-tooltip-arrow-color')).to.equal('navy');
+		});
+	});
+
 	it('adds tooltip with passed content in options while initializing', () => {
 		const tooltip = new Tooltip(center, {content: 'Test'})
 			.addTo(map);

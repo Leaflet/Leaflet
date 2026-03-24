@@ -3,6 +3,12 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
+## main (unreleased)
+
+### ❇️ New Features
+
+* DivOverlay: New `style` option and `setStyle()` method for `Tooltip` and `Popup` to set inline CSS (background, color, font, etc.) on the overlay container. `backgroundColor` auto-forwards to the tooltip arrow and popup tip; `color` auto-forwards to the popup close button. Each can be overridden explicitly via the CSS custom properties `--leaflet-tooltip-arrow-color`, `--leaflet-popup-background`, and `--leaflet-popup-close-button-color`.
+
 ## 2.0.0-alpha.1 (2025-08-16)
 
 ## Changes

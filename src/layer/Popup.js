@@ -248,6 +248,24 @@ export class Popup extends DivOverlay {
 		}
 	}
 
+	_updateStyle() {
+		super._updateStyle();
+
+		// The visible background is on `.leaflet-popup-content-wrapper` and `.leaflet-popup-tip`,
+		// not on `_container`. Pipe `backgroundColor` through a CSS custom property so both pick it up.
+		// The close button's `color` is also set on a nested element — pipe `color` the same way.
+		const style = this.options.style;
+		if (this._container && style) {
+			const elStyle = this._container.style;
+			if (style.backgroundColor && !style['--leaflet-popup-background']) {
+				elStyle.setProperty('--leaflet-popup-background', style.backgroundColor);
+			}
+			if (style.color && !style['--leaflet-popup-close-button-color']) {
+				elStyle.setProperty('--leaflet-popup-close-button-color', style.color);
+			}
+		}
+	}
+
 	_updateLayout() {
 		const container = this._contentNode,
 		style = container.style;

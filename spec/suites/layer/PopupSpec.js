@@ -388,6 +388,158 @@ describe('Popup', () => {
 		expect(popup.getElement().classList.contains('testClass')).to.be.true;
 	});
 
+	describe('#style', () => {
+		it('applies the style option to the container element', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {color: 'white', fontSize: '14px', fontFamily: 'monospace'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.color).to.equal('white');
+			expect(el.style.fontSize).to.equal('14px');
+			expect(el.style.fontFamily).to.equal('monospace');
+		});
+
+		it('does not set inline styles when the style option is not given', () => {
+			const popup = new Popup(center, {content: 'Popup'}).openOn(map);
+
+			expect(popup.getElement().style.color).to.equal('');
+			expect(popup.getElement().style.fontSize).to.equal('');
+		});
+
+		it('applies style via setStyle when already open', () => {
+			const popup = new Popup(center, {content: 'Popup'}).openOn(map);
+
+			popup.setStyle({color: 'red', fontSize: '20px'});
+
+			expect(popup.getElement().style.color).to.equal('red');
+			expect(popup.getElement().style.fontSize).to.equal('20px');
+		});
+
+		it('applies style set via setStyle before being added to map', () => {
+			const popup = new Popup(center, {content: 'Popup'});
+
+			popup.setStyle({color: 'blue'});
+
+			expect(popup.options.style.color).to.equal('blue');
+
+			popup.openOn(map);
+
+			expect(popup.getElement().style.color).to.equal('blue');
+		});
+
+		it('returns this from setStyle', () => {
+			const popup = new Popup(center, {content: 'Popup'});
+			expect(popup.setStyle({color: 'red'})).to.equal(popup);
+		});
+
+		it('applies style when bound to a layer', () => {
+			const marker = new Marker(center).addTo(map);
+			marker.bindPopup('Popup', {style: {color: 'green'}}).openPopup();
+
+			expect(marker.getPopup().getElement().style.color).to.equal('green');
+		});
+
+		it('pipes backgroundColor to the content wrapper and tip', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {backgroundColor: 'crimson'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-background')).to.equal('crimson');
+
+			const wrapper = el.querySelector('.leaflet-popup-content-wrapper');
+			const tip = el.querySelector('.leaflet-popup-tip');
+			expect(getComputedStyle(wrapper).backgroundColor).to.equal('rgb(220, 20, 60)');
+			expect(getComputedStyle(tip).backgroundColor).to.equal('rgb(220, 20, 60)');
+		});
+
+		it('allows the popup background to be overridden explicitly', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {backgroundColor: 'black', '--leaflet-popup-background': 'orange'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-background')).to.equal('orange');
+
+			const wrapper = el.querySelector('.leaflet-popup-content-wrapper');
+			expect(getComputedStyle(wrapper).backgroundColor).to.equal('rgb(255, 165, 0)');
+		});
+
+		it('leaves the default popup background when no background color is set', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {color: 'red'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-background')).to.equal('');
+
+			const wrapper = el.querySelector('.leaflet-popup-content-wrapper');
+			expect(getComputedStyle(wrapper).backgroundColor).to.equal('rgb(255, 255, 255)');
+		});
+
+		it('inherits text color down to the content wrapper', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {color: 'teal'}
+			}).openOn(map);
+
+			const wrapper = popup.getElement().querySelector('.leaflet-popup-content-wrapper');
+			expect(getComputedStyle(wrapper).color).to.equal('rgb(0, 128, 128)');
+		});
+
+		it('syncs background via setStyle', () => {
+			const popup = new Popup(center, {content: 'Popup'}).openOn(map);
+
+			popup.setStyle({backgroundColor: 'navy'});
+
+			expect(popup.getElement().style.getPropertyValue('--leaflet-popup-background')).to.equal('navy');
+		});
+
+		it('defaults the close button color to the style text color', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {color: 'white'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-close-button-color')).to.equal('white');
+
+			const closeBtn = el.querySelector('.leaflet-popup-close-button');
+			expect(getComputedStyle(closeBtn).color).to.equal('rgb(255, 255, 255)');
+		});
+
+		it('allows the close button color to be overridden explicitly', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {color: 'white', '--leaflet-popup-close-button-color': 'red'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-close-button-color')).to.equal('red');
+
+			const closeBtn = el.querySelector('.leaflet-popup-close-button');
+			expect(getComputedStyle(closeBtn).color).to.equal('rgb(255, 0, 0)');
+		});
+
+		it('leaves the default close button color when no text color is set', () => {
+			const popup = new Popup(center, {
+				content: 'Popup',
+				style: {backgroundColor: 'black'}
+			}).openOn(map);
+
+			const el = popup.getElement();
+			expect(el.style.getPropertyValue('--leaflet-popup-close-button-color')).to.equal('');
+
+			const closeBtn = el.querySelector('.leaflet-popup-close-button');
+			expect(getComputedStyle(closeBtn).color).to.equal('rgb(117, 117, 117)');
+		});
+	});
+
 	it('adds popup with passed content in options while initializing', () => {
 		const popup = new Popup(center, {content: 'Test'})
 			.addTo(map);

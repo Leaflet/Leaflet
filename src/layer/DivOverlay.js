@@ -31,6 +31,15 @@ export class DivOverlay extends Layer {
 			// A custom CSS class name to assign to the overlay.
 			className: '',
 
+			// @option style: Object = null
+			// An object of CSS properties to set on the overlay container's
+			// [`style`](https://developer.mozilla.org/docs/Web/API/HTMLElement/style)
+			// attribute (e.g. `{backgroundColor: 'black', color: 'white', fontSize: '14px'}`).
+			// Keys may be camelCase CSS properties or CSS custom properties (keys
+			// starting with `--`). See [`setStyle`](#divoverlay-setstyle) for details on
+			// how some properties are forwarded to nested elements for `Tooltip` and `Popup`.
+			style: null,
+
 			// @option pane: String = undefined
 			// `Map pane` where the overlay will be added.
 			pane: undefined,
@@ -101,6 +110,7 @@ export class DivOverlay extends Layer {
 
 		if (!this._container) {
 			this._initLayout();
+			this._updateStyle();
 		}
 
 		if (map._fadeAnimated) {
@@ -174,6 +184,61 @@ export class DivOverlay extends Layer {
 	// Returns the HTML container of the overlay.
 	getElement() {
 		return this._container;
+	}
+
+	// @method setStyle(style: Object): this
+	// Sets inline CSS style properties on the overlay container element. Accepts the same
+	// object shape as the [`style`](#divoverlay-style) option — camelCase CSS properties
+	// and/or CSS custom properties (keys starting with `--`).
+	//
+	// The whole object replaces any previously set `style` option.
+	// If the overlay has not been added to a map yet, the style is stored and applied
+	// once the container is created.
+	//
+	// Some properties are forwarded to nested elements via CSS custom properties:
+	//
+	// | In | Property | Forwarded to | Override with |
+	// |---|---|---|---|
+	// | `Tooltip` | `backgroundColor` | Arrow (`::before`) | `--leaflet-tooltip-arrow-color` |
+	// | `Popup` | `backgroundColor` | Content wrapper & tip | `--leaflet-popup-background` |
+	// | `Popup` | `color` | Close button (&times;) | `--leaflet-popup-close-button-color` |
+	//
+	// Setting the CSS custom property explicitly in the style object disables the
+	// corresponding auto-forwarding rule.
+	//
+	// ```js
+	// // Tooltip: arrow auto-matches background
+	// marker.bindTooltip('Hi', {style: {backgroundColor: 'crimson', color: 'white'}});
+	//
+	// // Tooltip: arrow explicitly different from background
+	// marker.bindTooltip('Hi', {style: {
+	//     backgroundColor: 'black',
+	//     '--leaflet-tooltip-arrow-color': 'orange'
+	// }});
+	//
+	// // Popup: dark theme — background, tip, and close button all match
+	// marker.bindPopup('Hi', {style: {backgroundColor: '#222', color: 'white'}});
+	//
+	// // Change style after open
+	// popup.setStyle({backgroundColor: 'navy', color: 'lightyellow'});
+	// ```
+	setStyle(style) {
+		this.options.style = style;
+		this._updateStyle();
+		return this;
+	}
+
+	_updateStyle() {
+		if (this._container && this.options.style) {
+			const elStyle = this._container.style;
+			for (const [prop, value] of Object.entries(this.options.style)) {
+				if (prop.startsWith('--')) {
+					elStyle.setProperty(prop, value);
+				} else {
+					elStyle[prop] = value;
+				}
+			}
+		}
 	}
 
 	// @method update: null

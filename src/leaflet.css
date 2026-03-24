@@ -546,6 +546,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 .leaflet-popup {
 	position: absolute;
 	text-align: center;
+	color: #333;
 	margin-bottom: 20px;
 }
 
@@ -590,8 +591,8 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-	background: white;
-	color: #333;
+	background: var(--leaflet-popup-background, white);
+	color: inherit;
 	box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
 
@@ -604,13 +605,14 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	width: 24px;
 	height: 24px;
 	font: 16px/24px Tahoma, Verdana, sans-serif;
-	color: #757575;
+	color: var(--leaflet-popup-close-button-color, #757575);
 	text-decoration: none;
 	background: transparent;
 
 	&:hover,
 	&:focus {
-		color: #585858;
+		color: var(--leaflet-popup-close-button-color, #585858);
+		filter: brightness(0.8);
 	}
 }
 
@@ -667,7 +669,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		top: 0;
 		margin-top: -12px;
 		margin-left: -6px;
-		border-bottom-color: #fff;
+		border-bottom-color: var(--leaflet-tooltip-arrow-color, #fff);
 	}
 }
 
@@ -679,7 +681,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		margin-left: -6px;
 		bottom: 0;
 		margin-bottom: -12px;
-		border-top-color: #fff;
+		border-top-color: var(--leaflet-tooltip-arrow-color, #fff);
 	}
 }
 
@@ -692,7 +694,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		margin-top: -6px;
 		right: 0;
 		margin-right: -12px;
-		border-left-color: #fff;
+		border-left-color: var(--leaflet-tooltip-arrow-color, #fff);
 	}
 }
 
@@ -704,7 +706,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		margin-top: -6px;
 		left: 0;
 		margin-left: -12px;
-		border-right-color: #fff;
+		border-right-color: var(--leaflet-tooltip-arrow-color, #fff);
 	}
 }
 
