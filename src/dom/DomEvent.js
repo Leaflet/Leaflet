@@ -181,8 +181,10 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`
+// Adds `stopPropagation` to the element's `'dblclick'`, `'contextmenu'`
 // and `'pointerdown'` events (plus browser variants).
+// For `'click'` events, prevents the map from handling the click
+// while still allowing the native DOM click event to propagate normally.
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	el['_leaflet_disable_click'] = true;
