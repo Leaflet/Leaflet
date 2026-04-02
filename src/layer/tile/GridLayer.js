@@ -276,6 +276,44 @@ export class GridLayer extends Layer {
 		return document.createElement('div');
 	}
 
+	// @method refreshTiles: this
+	// Triggers creating of new tile HTML element for each existing tile.
+	// In contrast to `redraw` it doesn't clear all the tiles before refresh, but creates
+	// new tile behind the curtain and replaces each tile separately when it is ready.
+	refreshTiles() {
+		const tileUpdateCallback = function (tile, err, el) {
+			if (err) {
+				this.fire('tileerror', {
+					error: err,
+					tile: el,
+					coords: tile.coords
+				});
+				return;
+			}
+
+			el.classList.add('leaflet-tile-loaded');
+			tile.el.replaceWith(el);
+			tile.el = el;
+			tile.loaded = +new Date();
+
+			// @event tileupdate: TileEvent
+			// Fired when a tile updated (tile DOM element replaced with newly created DOM element).
+			this.fire('tileupdate', {
+				tile: el,
+				coords: tile.coords
+			});
+		};
+
+		for (const key in this._tiles) {
+			if (Object.hasOwn(this._tiles, key)) {
+				const tile = this._tiles[key];
+				this._initTileElement(tile.coords, tileUpdateCallback.bind(this, tile));
+			}
+		}
+
+		return this;
+	},
+
 	// @section
 	// @method getTileSize: Point
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
@@ -775,6 +813,24 @@ export class GridLayer extends Layer {
 		});
 	}
 
+	_initTileElement(coords, done) {
+		const el = this.createTile(this._wrapCoords(coords), done);
+
+		this._initTile(el);
+
+		// if createTile is defined with a second argument ("done" callback),
+		// we know that tile is async and will be ready later; otherwise
+		if (this.createTile.length < 2) {
+			// mark tile as ready, but delay one frame for opacity animation to happen
+			requestAnimationFrame(done.bind(this, null, el));
+		}
+
+		const tilePos = this._getTilePos(coords);
+		DomUtil.setPosition(el, tilePos);
+
+		return el;
+	},
+
 	_initTile(tile) {
 		tile.classList.add('leaflet-tile');
 
@@ -787,34 +843,22 @@ export class GridLayer extends Layer {
 	}
 
 	_addTile(coords, container) {
-		const tilePos = this._getTilePos(coords),
-		key = this._tileCoordsToKey(coords);
+		const el = this._initTileElement(coords, this._tileReady.bind(this, coords));
 
-		const tile = this.createTile(this._wrapCoords(coords), this._tileReady.bind(this, coords));
-
-		this._initTile(tile);
-
-		// if createTile is defined with a second argument ("done" callback),
-		// we know that tile is async and will be ready later; otherwise
-		if (this.createTile.length < 2) {
-			// mark tile as ready, but delay one frame for opacity animation to happen
-			requestAnimationFrame(this._tileReady.bind(this, coords, null, tile));
-		}
-
-		DomUtil.setPosition(tile, tilePos);
+		const key = this._tileCoordsToKey(coords);
 
 		// save tile in cache
 		this._tiles[key] = {
-			el: tile,
+			el,
 			coords,
 			current: true
 		};
 
-		container.appendChild(tile);
+		container.appendChild(el);
 		// @event tileloadstart: TileEvent
 		// Fired when a tile is requested and starts loading.
 		this.fire('tileloadstart', {
-			tile,
+			tile: el,
 			coords
 		});
 	}
