@@ -45,7 +45,8 @@
     "src",
     "!dist/leaflet.zip",
     "!*.leafdoc",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "scripts": {
     "debug": "http-server -c-1",

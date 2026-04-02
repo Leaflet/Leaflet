@@ -24,6 +24,7 @@ Leaflet maintainers.
 <img width="600" src="src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
+It is released under the [BSD 2-Clause license](https://github.com/Leaflet/Leaflet/blob/main/LICENSE).
 
 Weighing just about 40 kB of gzipped JS plus 3.2 kB of gzipped CSS code, it has all the mapping [features][] most developers ever need.
 
