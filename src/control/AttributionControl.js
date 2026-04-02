@@ -45,18 +45,20 @@ export class AttributionControl extends Control {
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
 
-		// TODO ugly, refactor
-		for (const layer of Object.values(map._layers)) {
-			if (layer.getAttribution) {
-				this.addAttribution(layer.getAttribution());
-			}
-		}
-
+		this._collectInitialAttributions(map);
 		this._update();
 
 		map.on('layeradd', this._addAttribution, this);
 
 		return this._container;
+	}
+
+	_collectInitialAttributions(map) {
+		for (const layer of Object.values(map._layers)) {
+			if (layer.getAttribution) {
+				this.addAttribution(layer.getAttribution());
+			}
+		}
 	}
 
 	onRemove(map) {
