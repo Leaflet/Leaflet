@@ -58,8 +58,8 @@ export class PinchZoomHandler extends Handler {
 
 		map._stop();
 
-		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
-		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
+		DomEvent.on(this._map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		e.preventDefault();
 	}
@@ -113,8 +113,8 @@ export class PinchZoomHandler extends Handler {
 		this._zooming = false;
 		cancelAnimationFrame(this._animRequest);
 
-		DomEvent.off(document, 'pointermove', this._onPointerMove, this);
-		DomEvent.off(document, 'pointerup pointercancel', this._onPointerEnd, this);
+		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {

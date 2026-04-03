@@ -70,12 +70,13 @@ export class BoxZoomHandler extends Handler {
 
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
-		DomEvent.on(document, {
+		DomEvent.on(this._container, {
 			contextmenu: DomEvent.stop,
 			pointermove: this._onPointerMove,
 			pointerup: this._onPointerUp,
 			keydown: this._onKeyDown
 		}, this);
+		DomEvent.on(document, 'keydown', this._onKeyDown, this);
 	}
 
 	_onPointerMove(e) {
@@ -108,12 +109,12 @@ export class BoxZoomHandler extends Handler {
 		DomUtil.enableTextSelection();
 		DomUtil.enableImageDrag();
 
-		DomEvent.off(document, {
+		DomEvent.off(this._container, {
 			contextmenu: DomEvent.stop,
 			pointermove: this._onPointerMove,
 			pointerup: this._onPointerUp,
-			keydown: this._onKeyDown
 		}, this);
+		DomEvent.off(document, 'keydown', this._onKeyDown, this);
 	}
 
 	_onPointerUp(e) {
