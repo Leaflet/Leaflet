@@ -34,15 +34,14 @@ import {Bounds} from '../../geometry/Bounds.js';
 // Creates a Canvas renderer with the given options.
 export class Canvas extends Renderer {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka Canvas options
-		this.setDefaultOptions({
-			// @option tolerance: Number = 0
-			// How much to extend the click tolerance around a path/object on the map.
-			tolerance: 0
-		});
-	}
+
+		// @option tolerance: Number = 0
+		// How much to extend the click tolerance around a path/object on the map.
+		tolerance: 0
+	};
 
 	getEvents() {
 		const events = super.getEvents();

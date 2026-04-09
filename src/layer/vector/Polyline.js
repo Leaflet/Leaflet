@@ -50,21 +50,20 @@ import {Point} from '../../geometry/Point.js';
 // of geographic points.
 export class Polyline extends Path {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka Polyline options
-		this.setDefaultOptions({
-			// @option smoothFactor: Number = 0.5
-			// How much to simplify the polyline on each zoom level (Douglas–Peucker
-			// epsilon, in pixels). Higher values mean faster rendering but less
-			// accuracy; lower values mean more accuracy but slower rendering.
-			smoothFactor: 0.5,
 
-			// @option noClip: Boolean = false
-			// Disable polyline clipping.
-			noClip: false
-		});
-	}
+		// @option smoothFactor: Number = 0.5
+		// How much to simplify the polyline on each zoom level (Douglas–Peucker
+		// epsilon, in pixels). Higher values mean faster rendering but less
+		// accuracy; lower values mean more accuracy but slower rendering.
+		smoothFactor: 0.5,
+
+		// @option noClip: Boolean = false
+		// Disable polyline clipping.
+		noClip: false
+	};
 
 	initialize(latlngs, options) {
 		Util.setOptions(this, options);

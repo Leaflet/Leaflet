@@ -15,17 +15,16 @@ import {Bounds} from '../../geometry/Bounds.js';
 // Instantiates a circle marker object given a geographical point, and an optional options object.
 export class CircleMarker extends Path {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka CircleMarker options
-		this.setDefaultOptions({
-			fill: true,
 
-			// @option radius: Number = 10
-			// Radius of the circle marker, in pixels
-			radius: 10
-		});
-	}
+		fill: true,
+
+		// @option radius: Number = 10
+		// Radius of the circle marker, in pixels
+		radius: 10
+	};
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);

@@ -53,38 +53,37 @@ import {FeatureGroup} from './FeatureGroup.js';
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
 export class Tooltip extends DivOverlay {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka Tooltip options
-		this.setDefaultOptions({
-			// @option pane: String = 'tooltipPane'
-			// `Map pane` where the tooltip will be added.
-			pane: 'tooltipPane',
 
-			// @option offset: Point = Point(0, 0)
-			// Optional offset of the tooltip position.
-			offset: [0, 0],
+		// @option pane: String = 'tooltipPane'
+		// `Map pane` where the tooltip will be added.
+		pane: 'tooltipPane',
 
-			// @option direction: String = 'auto'
-			// Direction where to open the tooltip. Possible values are: `right`, `left`,
-			// `top`, `bottom`, `center`, `auto`.
-			// `auto` will dynamically switch between `right` and `left` according to the tooltip
-			// position on the map.
-			direction: 'auto',
+		// @option offset: Point = Point(0, 0)
+		// Optional offset of the tooltip position.
+		offset: [0, 0],
 
-			// @option permanent: Boolean = false
-			// Whether to open the tooltip permanently or only on pointerover.
-			permanent: false,
+		// @option direction: String = 'auto'
+		// Direction where to open the tooltip. Possible values are: `right`, `left`,
+		// `top`, `bottom`, `center`, `auto`.
+		// `auto` will dynamically switch between `right` and `left` according to the tooltip
+		// position on the map.
+		direction: 'auto',
 
-			// @option sticky: Boolean = false
-			// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
-			sticky: false,
+		// @option permanent: Boolean = false
+		// Whether to open the tooltip permanently or only on pointerover.
+		permanent: false,
 
-			// @option opacity: Number = 0.9
-			// Tooltip container opacity.
-			opacity: 0.9
-		});
-	}
+		// @option sticky: Boolean = false
+		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
+		sticky: false,
+
+		// @option opacity: Number = 0.9
+		// Tooltip container opacity.
+		opacity: 0.9
+	};
 
 	onAdd(map) {
 		super.onAdd(map);

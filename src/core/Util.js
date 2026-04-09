@@ -86,11 +86,48 @@ export function splitWords(str) {
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`.
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
-		obj.options = obj.options ? Object.create(obj.options) : {};
+		// Collect static defaultOptions from the prototype chain.
+		// This supports tree-shaking: each class declares only its own defaults as a
+		// static class field (`static defaultOptions = {...}`), and inheritance is
+		// resolved here at construction time rather than at class-definition time.
+		const staticDefaults = [];
+		const protoOptions = [];
+		let proto = obj;
+		while ((proto = Object.getPrototypeOf(proto)) !== null) {
+			const ctor = proto.constructor;
+			if (ctor && Object.hasOwn(ctor, 'defaultOptions')) {
+				staticDefaults.unshift(ctor.defaultOptions);
+			}
+			// Also collect prototype.options set by plugins via mergeOptions/include
+			if (Object.hasOwn(proto, 'options')) {
+				protoOptions.unshift(proto.options);
+			}
+		}
+		if (staticDefaults.length > 0) {
+			// Link each defaultOptions object to its parent via prototype chain (once per pairing).
+			// This creates live inheritance: modifying a class's defaultOptions is immediately
+			// visible to all instances that haven't overridden that property.
+			for (let i = 1; i < staticDefaults.length; i++) {
+				if (Object.getPrototypeOf(staticDefaults[i]) === Object.prototype) {
+					Object.setPrototypeOf(staticDefaults[i], staticDefaults[i - 1]);
+				}
+			}
+			// Instance options inherit directly from the most-derived defaultOptions object
+			obj.options = Object.create(staticDefaults[staticDefaults.length - 1]);
+			// Layer in any plugin-added options (from mergeOptions/include)
+			for (const pluginOpts of protoOptions) {
+				Object.assign(obj.options, pluginOpts);
+			}
+		} else {
+			// Legacy path: options set via setDefaultOptions on the prototype
+			obj.options = obj.options ? Object.create(obj.options) : {};
+		}
 	}
-	for (const i in options) {
-		if (Object.hasOwn(options, i)) {
-			obj.options[i] = options[i];
+	if (options) {
+		for (const i in options) {
+			if (Object.hasOwn(options, i)) {
+				obj.options[i] = options[i];
+			}
 		}
 	}
 	return obj.options;

@@ -55,30 +55,30 @@ describe('DefaultIcon', () => {
 	});
 
 	it('don\'t set shadow icon if null', () => {
-		const oldShadowUrl = DefaultIcon.prototype.options.shadowUrl;
-		DefaultIcon.prototype.options.shadowUrl = null;
+		const oldShadowUrl = DefaultIcon.defaultOptions.shadowUrl;
+		DefaultIcon.defaultOptions.shadowUrl = null;
 		const marker = new Marker([0, 0]).addTo(map);
 
 		expect(marker._shadow).to.be.null;
 
 		// This is needed because else other tests will fail
-		DefaultIcon.prototype.options.shadowUrl = oldShadowUrl;
+		DefaultIcon.defaultOptions.shadowUrl = oldShadowUrl;
 	});
 
 	it('don\'t set retina shadow icon if null', () => {
-		const oldShadowRetinaUrl = DefaultIcon.prototype.options.shadowRetinaUrl;
-		const oldShadowUrl = DefaultIcon.prototype.options.shadowUrl;
+		const oldShadowRetinaUrl = DefaultIcon.defaultOptions.shadowRetinaUrl;
+		const oldShadowUrl = DefaultIcon.defaultOptions.shadowUrl;
 		const oldRetinaValue = Browser.retina;
 		Browser.retina = true;
-		DefaultIcon.prototype.options.shadowRetinaUrl = null;
-		DefaultIcon.prototype.options.shadowUrl = null;
+		DefaultIcon.defaultOptions.shadowRetinaUrl = null;
+		DefaultIcon.defaultOptions.shadowUrl = null;
 		const marker = new Marker([0, 0]).addTo(map);
 
 		expect(marker._shadow).to.be.null;
 
 		// This is needed because else other tests will fail
-		DefaultIcon.prototype.options.shadowRetinaUrl = oldShadowRetinaUrl;
-		DefaultIcon.prototype.options.shadowUrl = oldShadowUrl;
+		DefaultIcon.defaultOptions.shadowRetinaUrl = oldShadowRetinaUrl;
+		DefaultIcon.defaultOptions.shadowUrl = oldShadowUrl;
 		Browser.retina = oldRetinaValue;
 	});
 });

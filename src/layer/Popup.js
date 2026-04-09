@@ -47,89 +47,88 @@ import {FeatureGroup} from './FeatureGroup.js';
 // Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
 export class Popup extends DivOverlay {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka Popup options
-		this.setDefaultOptions({
-			// @option pane: String = 'popupPane'
-			// `Map pane` where the popup will be added.
-			pane: 'popupPane',
 
-			// @option offset: Point = Point(0, 7)
-			// The offset of the popup position.
-			offset: [0, 7],
+		// @option pane: String = 'popupPane'
+		// `Map pane` where the popup will be added.
+		pane: 'popupPane',
 
-			// @option maxWidth: Number = 300
-			// Max width of the popup, in pixels.
-			maxWidth: 300,
+		// @option offset: Point = Point(0, 7)
+		// The offset of the popup position.
+		offset: [0, 7],
 
-			// @option minWidth: Number = 50
-			// Min width of the popup, in pixels.
-			minWidth: 50,
+		// @option maxWidth: Number = 300
+		// Max width of the popup, in pixels.
+		maxWidth: 300,
 
-			// @option maxHeight: Number = null
-			// If set, creates a scrollable container of the given height
-			// inside a popup if its content exceeds it.
-			// The scrollable container can be styled using the
-			// `leaflet-popup-scrolled` CSS class selector.
-			maxHeight: null,
+		// @option minWidth: Number = 50
+		// Min width of the popup, in pixels.
+		minWidth: 50,
 
-			// @option autoPan: Boolean = true
-			// Set it to `false` if you don't want the map to do panning animation
-			// to fit the opened popup.
-			autoPan: true,
+		// @option maxHeight: Number = null
+		// If set, creates a scrollable container of the given height
+		// inside a popup if its content exceeds it.
+		// The scrollable container can be styled using the
+		// `leaflet-popup-scrolled` CSS class selector.
+		maxHeight: null,
 
-			// @option autoPanPaddingTopLeft: Point = null
-			// The margin between the popup and the top left corner of the map
-			// view after autopanning was performed.
-			autoPanPaddingTopLeft: null,
+		// @option autoPan: Boolean = true
+		// Set it to `false` if you don't want the map to do panning animation
+		// to fit the opened popup.
+		autoPan: true,
 
-			// @option autoPanPaddingBottomRight: Point = null
-			// The margin between the popup and the bottom right corner of the map
-			// view after autopanning was performed.
-			autoPanPaddingBottomRight: null,
+		// @option autoPanPaddingTopLeft: Point = null
+		// The margin between the popup and the top left corner of the map
+		// view after autopanning was performed.
+		autoPanPaddingTopLeft: null,
 
-			// @option autoPanPadding: Point = Point(5, 5)
-			// Equivalent of setting both top left and bottom right autopan padding to the same value.
-			autoPanPadding: [5, 5],
+		// @option autoPanPaddingBottomRight: Point = null
+		// The margin between the popup and the bottom right corner of the map
+		// view after autopanning was performed.
+		autoPanPaddingBottomRight: null,
 
-			// @option keepInView: Boolean = false
-			// Set it to `true` if you want to prevent users from panning the popup
-			// off of the screen while it is open.
-			keepInView: false,
+		// @option autoPanPadding: Point = Point(5, 5)
+		// Equivalent of setting both top left and bottom right autopan padding to the same value.
+		autoPanPadding: [5, 5],
 
-			// @option closeButton: Boolean = true
-			// Controls the presence of a close button in the popup.
-			closeButton: true,
+		// @option keepInView: Boolean = false
+		// Set it to `true` if you want to prevent users from panning the popup
+		// off of the screen while it is open.
+		keepInView: false,
 
-			// @option closeButtonLabel: String = 'Close popup'
-			// Specifies the 'aria-label' attribute of the close button.
-			closeButtonLabel: 'Close popup',
+		// @option closeButton: Boolean = true
+		// Controls the presence of a close button in the popup.
+		closeButton: true,
 
-			// @option autoClose: Boolean = true
-			// Set it to `false` if you want to override the default behavior of
-			// the popup closing when another popup is opened.
-			autoClose: true,
+		// @option closeButtonLabel: String = 'Close popup'
+		// Specifies the 'aria-label' attribute of the close button.
+		closeButtonLabel: 'Close popup',
 
-			// @option closeOnEscapeKey: Boolean = true
-			// Set it to `false` if you want to override the default behavior of
-			// the ESC key for closing of the popup.
-			closeOnEscapeKey: true,
+		// @option autoClose: Boolean = true
+		// Set it to `false` if you want to override the default behavior of
+		// the popup closing when another popup is opened.
+		autoClose: true,
 
-			// @option closeOnClick: Boolean = *
-			// Set it if you want to override the default behavior of the popup closing when user clicks
-			// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
+		// @option closeOnEscapeKey: Boolean = true
+		// Set it to `false` if you want to override the default behavior of
+		// the ESC key for closing of the popup.
+		closeOnEscapeKey: true,
 
-			// @option className: String = ''
-			// A custom CSS class name to assign to the popup.
-			className: '',
+		// @option closeOnClick: Boolean = *
+		// Set it if you want to override the default behavior of the popup closing when user clicks
+		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
 
-			// @option trackResize: Boolean = true
-			// Whether the popup shall react to changes in the size of its contents
-			// (e.g. when an image inside the popup loads) and reposition itself.
-			trackResize: true,
-		});
-	}
+		// @option className: String = ''
+		// A custom CSS class name to assign to the popup.
+		className: '',
+
+		// @option trackResize: Boolean = true
+		// Whether the popup shall react to changes in the size of its contents
+		// (e.g. when an image inside the popup loads) and reposition itself.
+		trackResize: true,
+	};
 
 	// @namespace Popup
 	// @method openOn(map: LeafletMap): this

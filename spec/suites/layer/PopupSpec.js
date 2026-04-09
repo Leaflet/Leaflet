@@ -247,10 +247,10 @@ describe('Popup', () => {
 		const latlng = center;
 		const offset = new Point(20, 30);
 
-		const autoPanBefore = Popup.prototype.options.autoPan;
-		Popup.prototype.options.autoPan = false;
-		const popupAnchorBefore = DefaultIcon.prototype.options.popupAnchor;
-		DefaultIcon.prototype.options.popupAnchor = [0, 0];
+		const autoPanBefore = Popup.defaultOptions.autoPan;
+		Popup.defaultOptions.autoPan = false;
+		const popupAnchorBefore = DefaultIcon.defaultOptions.popupAnchor;
+		DefaultIcon.defaultOptions.popupAnchor = [0, 0];
 
 		const icon = new DivIcon({popupAnchor: offset});
 		const marker1 = new Marker(latlng);
@@ -275,8 +275,8 @@ describe('Popup', () => {
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
-		Popup.prototype.options.autoPan = autoPanBefore;
-		DefaultIcon.prototype.options.popupAnchor = popupAnchorBefore;
+		Popup.defaultOptions.autoPan = autoPanBefore;
+		DefaultIcon.defaultOptions.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {

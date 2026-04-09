@@ -24,48 +24,47 @@ import * as DomUtil from '../dom/DomUtil.js';
 // geographical bounds it is tied to.
 export class ImageOverlay extends Layer {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka ImageOverlay options
-		this.setDefaultOptions({
-			// @option opacity: Number = 1.0
-			// The opacity of the image overlay.
-			opacity: 1,
 
-			// @option alt: String = ''
-			// Text for the `alt` attribute of the image (useful for accessibility).
-			alt: '',
+		// @option opacity: Number = 1.0
+		// The opacity of the image overlay.
+		opacity: 1,
 
-			// @option interactive: Boolean = false
-			// If `true`, the image overlay will emit [pointer events](#interactive-layer) when clicked or hovered.
-			interactive: false,
+		// @option alt: String = ''
+		// Text for the `alt` attribute of the image (useful for accessibility).
+		alt: '',
 
-			// @option crossOrigin: Boolean|String = false
-			// Whether the crossOrigin attribute will be added to the image.
-			// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
-			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-			crossOrigin: false,
+		// @option interactive: Boolean = false
+		// If `true`, the image overlay will emit [pointer events](#interactive-layer) when clicked or hovered.
+		interactive: false,
 
-			// @option errorOverlayUrl: String = ''
-			// URL to the overlay image to show in place of the overlay that failed to load.
-			errorOverlayUrl: '',
+		// @option crossOrigin: Boolean|String = false
+		// Whether the crossOrigin attribute will be added to the image.
+		// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+		crossOrigin: false,
 
-			// @option zIndex: Number = 1
-			// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
-			zIndex: 1,
+		// @option errorOverlayUrl: String = ''
+		// URL to the overlay image to show in place of the overlay that failed to load.
+		errorOverlayUrl: '',
 
-			// @option className: String = ''
-			// A custom class name to assign to the image. Empty by default.
-			className: '',
+		// @option zIndex: Number = 1
+		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
+		zIndex: 1,
 
-			// @option decoding: String = 'auto'
-			// Tells the browser whether to decode the image in a synchronous fashion,
-			// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
-			// If the image overlay is flickering when being added/removed, set
-			// this option to `'sync'`.
-			decoding: 'auto'
-		});
-	}
+		// @option className: String = ''
+		// A custom class name to assign to the image. Empty by default.
+		className: '',
+
+		// @option decoding: String = 'auto'
+		// Tells the browser whether to decode the image in a synchronous fashion,
+		// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
+		// If the image overlay is flickering when being added/removed, set
+		// this option to `'sync'`.
+		decoding: 'auto'
+	};
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
