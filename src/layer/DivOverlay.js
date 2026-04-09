@@ -15,32 +15,31 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @namespace DivOverlay
 export class DivOverlay extends Layer {
 
-	static {
+	static defaultOptions = {
 		// @section
 		// @aka DivOverlay options
-		this.setDefaultOptions({
-			// @option interactive: Boolean = false
-			// If true, the popup/tooltip will listen to the pointer events.
-			interactive: false,
 
-			// @option offset: Point = Point(0, 0)
-			// The offset of the overlay position.
-			offset: [0, 0],
+		// @option interactive: Boolean = false
+		// If true, the popup/tooltip will listen to the pointer events.
+		interactive: false,
 
-			// @option className: String = ''
-			// A custom CSS class name to assign to the overlay.
-			className: '',
+		// @option offset: Point = Point(0, 0)
+		// The offset of the overlay position.
+		offset: [0, 0],
 
-			// @option pane: String = undefined
-			// `Map pane` where the overlay will be added.
-			pane: undefined,
+		// @option className: String = ''
+		// A custom CSS class name to assign to the overlay.
+		className: '',
 
-			// @option content: String|HTMLElement|Function = ''
-			// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-			// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
-			content: ''
-		});
-	}
+		// @option pane: String = undefined
+		// `Map pane` where the overlay will be added.
+		pane: undefined,
+
+		// @option content: String|HTMLElement|Function = ''
+		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+		content: ''
+	};
 
 	initialize(options, source) {
 		if (options instanceof LatLng || Array.isArray(options)) {

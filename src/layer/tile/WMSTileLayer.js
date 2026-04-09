@@ -24,57 +24,58 @@ import {Bounds} from '../../geometry/Bounds.js';
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 export class WMSTileLayer extends TileLayer {
 
-	static {
-		// @section
-		// @aka WMSTileLayer options
-		// If any custom options not documented here are used, they will be sent to the
-		// WMS server as extra parameters in each request URL. This can be useful for
-		// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
-		this.prototype.defaultWmsParams = {
-			service: 'WMS',
-			request: 'GetMap',
+	// @section
+	// @aka WMSTileLayer options
+	// If any custom options not documented here are used, they will be sent to the
+	// WMS server as extra parameters in each request URL. This can be useful for
+	// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
 
-			// @option layers: String = ''
-			// **(required)** Comma-separated list of WMS layers to show.
-			layers: '',
+	// Default WMS request parameters. Subclasses may override by defining their own
+	// `static defaultWmsParams` field.
+	static defaultWmsParams = {
+		service: 'WMS',
+		request: 'GetMap',
 
-			// @option styles: String = ''
-			// Comma-separated list of WMS styles.
-			styles: '',
+		// @option layers: String = ''
+		// **(required)** Comma-separated list of WMS layers to show.
+		layers: '',
 
-			// @option format: String = 'image/jpeg'
-			// WMS image format (use `'image/png'` for layers with transparency).
-			format: 'image/jpeg',
+		// @option styles: String = ''
+		// Comma-separated list of WMS styles.
+		styles: '',
 
-			// @option transparent: Boolean = false
-			// If `true`, the WMS service will return images with transparency.
-			transparent: false,
+		// @option format: String = 'image/jpeg'
+		// WMS image format (use `'image/png'` for layers with transparency).
+		format: 'image/jpeg',
 
-			// @option version: String = '1.1.1'
-			// Version of the WMS service to use
-			version: '1.1.1'
-		};
+		// @option transparent: Boolean = false
+		// If `true`, the WMS service will return images with transparency.
+		transparent: false,
 
-		this.setDefaultOptions({
-			// @option crs: CRS = null
-			// Coordinate Reference System to use for the WMS requests, defaults to
-			// map CRS. Don't change this if you're not sure what it means.
-			crs: null,
+		// @option version: String = '1.1.1'
+		// Version of the WMS service to use
+		version: '1.1.1'
+	};
 
-			// @option uppercase: Boolean = false
-			// If `true`, WMS request parameter keys will be uppercase.
-			uppercase: false
-		});
-	}
+	static defaultOptions = {
+		// @option crs: CRS = null
+		// Coordinate Reference System to use for the WMS requests, defaults to
+		// map CRS. Don't change this if you're not sure what it means.
+		crs: null,
+
+		// @option uppercase: Boolean = false
+		// If `true`, WMS request parameter keys will be uppercase.
+		uppercase: false
+	};
 
 	initialize(url, options) {
 		super.initialize(url, options);
 
-		const wmsParams = {...this.defaultWmsParams};
+		const wmsParams = {...this.constructor.defaultWmsParams};
 
 		// Options that are unknown in the prototype chain are considered WMS params.
 		for (const [key, value] of Object.entries(options)) {
-			if (!(key in WMSTileLayer.prototype.options)) {
+			if (!(key in this.options)) {
 				wmsParams[key] = value;
 			}
 		}
