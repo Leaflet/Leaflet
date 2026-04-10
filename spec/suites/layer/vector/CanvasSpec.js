@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
+import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -370,6 +370,12 @@ describe('Canvas', () => {
 			expect(line._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.false;
 			expect(line._containsPoint(map.latLngToLayerPoint([-5.1, -5]))).to.be.false;
 			expect(line._containsPoint(map.latLngToLayerPoint([-5, -5.1]))).to.be.false;
+		});
+
+		it('detects point in circle marker', () => {
+			const circlemarker = new CircleMarker([0, 0], {radius: 10}).addTo(map);
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.true;
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([20, 0]))).to.be.false;
 		});
 	});
 });
