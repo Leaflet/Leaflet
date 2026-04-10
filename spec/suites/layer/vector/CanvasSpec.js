@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
+import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -295,6 +295,87 @@ describe('Canvas', () => {
 			map.remove();
 			map = null;
 			requestAnimationFrame(() => { done(); });
+		});
+	});
+
+	describe('#_containsPoint', () => {
+		it('detects point inside polygon', () => {
+			const polygon = new Polygon([
+				[-5, -5],
+				[-5, 5],
+				[5, 5],
+				[5, -5]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([5, 5]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5, -5]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5, 5]))).to.be.true;
+		});
+
+		it('does not detect point outside polygon', () => {
+			const polygon = new Polygon([
+				[-5, -5],
+				[-5, 5],
+				[5, 5],
+				[5, -5]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5.1, 5]))).to.be.false;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([0, 7]))).to.be.false;
+		});
+
+		it('does not detect point which is outside of rendered polygon but is inside of polygon coords', () => {
+			// TODO: Is this a wanted behavior? The point is inside the polygon but outside of the rendered area, so it is not detected as inside. Maybe we should detect it as inside anyway?
+			const polygon = new Polygon([
+				[0, 0],
+				[0, 10],
+				[10, 10], // outside of rendered area
+				[10, 0]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([9, 9]))).to.be.false;
+		});
+
+		it('does detect point in multi-polygon correctly', () => {
+			const polygon = new Polygon([
+				[
+					[-5, -5],
+					[-5, 5],
+					[5, 5],
+					[5, -5]
+				],
+				[
+					[3, 3],
+					[3, 7],
+					[7, 7],
+					[7, 3]
+				]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([4, 4]))).to.be.false; // inside the hole
+			expect(polygon._containsPoint(map.latLngToLayerPoint([5, 5]))).to.be.true;
+		});
+
+		it('detects point on the line', () => {
+			const line = new Polyline([[-5, -5], [0, -5]]).addTo(map);
+			expect(line._containsPoint(map.latLngToLayerPoint([-5, -5]))).to.be.true;
+			expect(line._containsPoint(map.latLngToLayerPoint([-2.5, -5]))).to.be.true;
+			expect(line._containsPoint(map.latLngToLayerPoint([0, -5]))).to.be.true;
+		});
+
+		it('does not detect point on the line', () => {
+			const line = new Polyline([[-5, -5], [0, -5]]).addTo(map);
+			expect(line._containsPoint(map.latLngToLayerPoint([-10, -5]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([-5.1, -5]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([-5, -5.1]))).to.be.false;
+		});
+
+		it('detects point in circle marker', () => {
+			const circlemarker = new CircleMarker([0, 0], {radius: 10}).addTo(map);
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.true;
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([20, 0]))).to.be.false;
 		});
 	});
 });
