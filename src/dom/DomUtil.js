@@ -161,7 +161,7 @@ export function getSizedParentNode(element) {
 // Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
 // and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
 export function getScale(element) {
-	const rect = element.getBoundingClientRect(); // Read-only in old browsers.
+	const rect = element.getBoundingClientRect();
 
 	return {
 		x: rect.width / element.offsetWidth || 1,
