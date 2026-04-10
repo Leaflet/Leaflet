@@ -78,13 +78,13 @@ export class TileLayer extends GridLayer {
 			// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
 			crossOrigin: false,
 
-			// @option referrerPolicy: Boolean|String = false
-			// Whether the referrerPolicy attribute will be added to the tiles.
-			// If a String is provided, all tiles will have their referrerPolicy attribute set to the String provided.
-			// This may be needed if your map's rendering context has a strict default but your tile provider expects a valid referrer
-			// (e.g. to validate an API token).
-			// Refer to [HTMLImageElement.referrerPolicy](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for valid String values.
-			referrerPolicy: false
+			// @option referrerPolicy: String = 'strict-origin-when-cross-origin'
+			// Sets the tiles' `referrerPolicy` attribute set to the String provided. See
+			// [`HTMLImageElement.referrerPolicy`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for possible values.
+			//
+			// Tile providers might require you to use a specific referrer policy (e.g. to verify API tokens or prevent abuse).
+			// Specifically, if you are using tiles from `tile.openstreetmap.org` or `tile.osm.org`, you [should not change this value](https://operations.osmfoundation.org/policies/tiles/).
+			referrerPolicy: 'strict-origin-when-cross-origin'
 		});
 	}
 
@@ -93,14 +93,19 @@ export class TileLayer extends GridLayer {
 
 		this._url = url;
 
-		// in case the attribution hasn't been specified, check for known hosts that require attribution
-		if (this.options.attribution === null) {
-			const urlHostname = new URL(url, location.href).hostname;
+		options = Util.setOptions(this, options);
 
-			// check for Open Street Map hosts
-			const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
-			if (osmHosts.some(host => urlHostname.endsWith(host))) {
-				this.options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+		// Set required OpenStreetMap attribution if it hasn't been specified; upgrade to HTTPS so the referrer policy works.
+		const tileUrl = new URL(this._url, location.href);
+		const urlHostname = tileUrl.hostname;
+		const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
+		if (osmHosts.some(host => urlHostname.endsWith(host))) {
+			if (options.attribution === null) {
+				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			}
+			if (tileUrl.protocol === 'http:') {
+				tileUrl.protocol = 'https:';
+				this._url = tileUrl.toString();
 			}
 		}
 
