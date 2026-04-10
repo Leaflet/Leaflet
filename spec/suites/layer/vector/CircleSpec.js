@@ -55,7 +55,70 @@ describe('Circle', () => {
 
 			const circle = new Circle([0, 0], {radius: 200}).addTo(map);
 
-			expect(circle._radius).to.eql(3200);
+			expect(circle._radius).to.eql(200);
+			expect(circle._pxRadius).to.eql(3200);
+		});
+	});
+
+	describe('#_radius', () => {
+
+		beforeEach(() => {
+			container = createContainer();
+
+			map = new LeafletMap(container, {
+				crs: SimpleCRS
+			});
+			map.setView([0, 0], 4);
+		});
+
+		describe('when a Circle is added to the map ', () => {
+			describe('with a radius set as an option', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20}).addTo(map);
+
+					expect(circle._radius).to.equal(20);
+				});
+			});
+
+			describe('and radius is set before adding it', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.setRadius(15);
+					circle.addTo(map);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and radius is set after adding it', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.addTo(map);
+					circle.setRadius(15);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and setStyle is used to change the radius after adding', () => {
+				it('takes the given radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.addTo(map);
+					circle.setStyle({radius: 15});
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and setStyle is used to change the radius before adding', () => {
+				it('takes the given radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.setStyle({radius: 15});
+					circle.addTo(map);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
 		});
 	});
 });
