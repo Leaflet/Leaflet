@@ -7,7 +7,7 @@ author-url: https://github.com/monircse403
 demo: https://github.com/monircse403/leaflet-datatable-map/blob/51b62883f1a3f56fb51e6cc65bd7a06def2a51e6/examples/index.html
 compatible-v0: false
 compatible-v1: true
-compatible-v2: true
+compatible-v2: false
 ---
 
 A Leaflet plugin that integrates **DataTables**, **AJAX-loaded markers**, and **marker clustering**. 
