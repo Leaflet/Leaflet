@@ -1242,6 +1242,8 @@ export class LeafletMap extends Evented {
 			// @event zoom: Event
 			// Fired repeatedly during any change in zoom level,
 			// including zoom and fly animations.
+			// The event object may contain a `pinch` property (boolean) indicating
+			// whether the zoom originated from a pinch gesture.
 			if (zoomChanged || (data?.pinch)) {	// Always fire 'zoom' if pinching because #3530
 				this.fire('zoom', data);
 			}
@@ -1249,6 +1251,9 @@ export class LeafletMap extends Evented {
 			// @event move: Event
 			// Fired repeatedly during any movement of the map,
 			// including pan and fly animations.
+			// The event object contains a `flyTo` property (boolean) indicating
+			// whether the move is part of a flyTo animation, and may contain
+			// a `pinch` property (boolean) for pinch-related moves.
 			this.fire('move', data);
 		} else if (data?.pinch) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
