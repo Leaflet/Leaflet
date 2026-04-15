@@ -437,6 +437,17 @@ describe('TileLayer', () => {
 			expect(layer.options.attribution).to.eql('');
 		});
 
+		it('changes OSM URL to https', () => {
+			const layerOpenStreetMap = new TileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
+			expect(layerOpenStreetMap._url.startsWith('https://')).to.eql(true);
+
+			const layerOSM = new TileLayer('http://tile.osm.org/{z}/{x}/{y}.png', {}).addTo(map);
+			expect(layerOSM._url.startsWith('https://')).to.eql(true);
+
+			const layerOther = new TileLayer('http://someotherurl.org/{z}/{x}/{y}.png', {}).addTo(map);
+			expect(layerOther._url.startsWith('http://')).to.eql(true);
+		});
+
 		it('requests tiles with an integer {z} when the map\'s zoom level is fractional', () => {
 			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 			map.options.zoomSnap = 0;
