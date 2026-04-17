@@ -56,6 +56,7 @@ export class DrawControl extends Control {
 		this._editMode = false;
 		this._selectedLayer = null;
 		this._editMarkers = [];
+		this._mapInteractionState = {};
 	}
 
 	onAdd(map) {
@@ -163,6 +164,7 @@ export class DrawControl extends Control {
 		}
 
 		this._map.getContainer().classList.add('leaflet-crosshair');
+		this._disableMapInteraction();
 
 		switch (tool) {
 		case 'marker':
@@ -202,6 +204,7 @@ export class DrawControl extends Control {
 
 		if (this._map) {
 			this._map.getContainer().classList.remove('leaflet-crosshair');
+			this._restoreMapInteraction();
 		}
 	}
 
@@ -548,6 +551,67 @@ export class DrawControl extends Control {
 			marker.remove();
 		});
 		this._editMarkers = [];
+	}
+
+	_disableMapInteraction() {
+		const map = this._map;
+		if (!map) { return; }
+
+		this._mapInteractionState = {
+			dragging: map.dragging?.enabled(),
+			scrollWheelZoom: map.scrollWheelZoom?.enabled(),
+			doubleClickZoom: map.doubleClickZoom?.enabled(),
+			boxZoom: map.boxZoom?.enabled(),
+			keyboard: map.keyboard?.enabled(),
+			tapHold: map.tapHold?.enabled()
+		};
+
+		if (map.dragging?.enabled()) {
+			map.dragging.disable();
+		}
+		if (map.scrollWheelZoom?.enabled()) {
+			map.scrollWheelZoom.disable();
+		}
+		if (map.doubleClickZoom?.enabled()) {
+			map.doubleClickZoom.disable();
+		}
+		if (map.boxZoom?.enabled()) {
+			map.boxZoom.disable();
+		}
+		if (map.keyboard?.enabled()) {
+			map.keyboard.disable();
+		}
+		if (map.tapHold?.enabled()) {
+			map.tapHold.disable();
+		}
+	}
+
+	_restoreMapInteraction() {
+		const map = this._map;
+		if (!map) { return; }
+
+		const state = this._mapInteractionState;
+
+		if (state.dragging && !map.dragging?.enabled()) {
+			map.dragging.enable();
+		}
+		if (state.scrollWheelZoom && !map.scrollWheelZoom?.enabled()) {
+			map.scrollWheelZoom.enable();
+		}
+		if (state.doubleClickZoom && !map.doubleClickZoom?.enabled()) {
+			map.doubleClickZoom.enable();
+		}
+		if (state.boxZoom && !map.boxZoom?.enabled()) {
+			map.boxZoom.enable();
+		}
+		if (state.keyboard && !map.keyboard?.enabled()) {
+			map.keyboard.enable();
+		}
+		if (state.tapHold && !map.tapHold?.enabled()) {
+			map.tapHold.enable();
+		}
+
+		this._mapInteractionState = {};
 	}
 
 	_fireDrawEvent(type, data) {
