@@ -710,6 +710,36 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 
 /* Printing */
 
+/* draw control */
+
+.leaflet-control-draw {
+	a {
+		font-size: 14px;
+		line-height: 26px;
+		text-align: center;
+
+		&.leaflet-draw-active {
+			background-color: #3388ff;
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				background-color: #2a73d8;
+			}
+		}
+	}
+}
+
+.leaflet-draw-separator {
+	height: 1px;
+	background-color: #ccc;
+	margin: 0 4px;
+}
+
+.leaflet-edit-marker {
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
 @media print {
 	/* Prevent printers from removing background-images of controls. */
 	.leaflet-control {
