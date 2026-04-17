@@ -9,38 +9,17 @@ import {Polygon} from '../layer/vector/Polygon.js';
 import {Circle} from '../layer/vector/Circle.js';
 import {FeatureGroup} from '../layer/FeatureGroup.js';
 
-/*
- * @class DrawControl
- * @inherits Control
- *
- * A control for drawing and editing shapes on the map.
- * Provides tools for drawing markers, polylines, polygons, and circles.
- */
-
-// @namespace DrawControl
-// @constructor DrawControl(options?: DrawControl options)
-// Creates a draw control
 export class DrawControl extends Control {
 
 	static {
-		// @section
-		// @aka DrawControl options
 		this.setDefaultOptions({
-			// @option position: String = 'topright'
-			// The position of the control (one of the map corners).
 			position: 'topright',
-
-			// @option draw: Object = {}
-			// Options for drawing tools.
 			draw: {
 				marker: true,
 				polyline: true,
 				polygon: true,
 				circle: true
 			},
-
-			// @option edit: Object = {}
-			// Options for editing tools.
 			edit: {
 				edit: true,
 				remove: true
@@ -52,11 +31,19 @@ export class DrawControl extends Control {
 		super.initialize(options);
 		this._activeTool = null;
 		this._drawnLayers = new FeatureGroup();
-		this._tempLayer = null;
-		this._editMode = false;
-		this._selectedLayer = null;
 		this._editMarkers = [];
+		this._selectedLayer = null;
 		this._mapInteractionState = {};
+
+		this._polylinePoints = [];
+		this._tempPolyline = null;
+		this._polygonPoints = [];
+		this._tempPolygon = null;
+		this._circleCenter = null;
+		this._tempCircle = null;
+		this._isDrawingCircle = false;
+		this._editMode = false;
+		this._deleteMode = false;
 	}
 
 	onAdd(map) {
@@ -253,13 +240,11 @@ export class DrawControl extends Control {
 		this._polylinePoints = [];
 		this._tempPolyline = null;
 		this._map.on('click', this._onPolylineClick, this);
-		this._map.on('dblclick', this._onPolylineDblClick, this);
 		this._map.on('mousemove', this._onPolylineMouseMove, this);
 	}
 
 	_disablePolylineDraw() {
 		this._map.off('click', this._onPolylineClick, this);
-		this._map.off('dblclick', this._onPolylineDblClick, this);
 		this._map.off('mousemove', this._onPolylineMouseMove, this);
 		if (this._tempPolyline) {
 			this._tempPolyline.remove();
@@ -269,6 +254,18 @@ export class DrawControl extends Control {
 	}
 
 	_onPolylineClick(e) {
+		DomEvent.stopPropagation(e);
+
+		if (this._polylinePoints.length >= 2) {
+			const lastPoint = this._polylinePoints[this._polylinePoints.length - 1];
+			const dist = this._map.distance(lastPoint, e.latlng);
+
+			if (dist < 20 && this._polylinePoints.length >= 2) {
+				this._finishPolyline();
+				return;
+			}
+		}
+
 		this._polylinePoints.push(e.latlng);
 
 		if (this._polylinePoints.length === 1) {
@@ -285,14 +282,13 @@ export class DrawControl extends Control {
 	}
 
 	_onPolylineMouseMove(e) {
-		if (this._polylinePoints.length > 0) {
+		if (this._polylinePoints.length > 0 && this._tempPolyline) {
 			const tempPoints = [...this._polylinePoints, e.latlng];
 			this._tempPolyline.setLatLngs(tempPoints);
 		}
 	}
 
-	_onPolylineDblClick(e) {
-		DomEvent.preventDefault(e);
+	_finishPolyline() {
 		if (this._polylinePoints.length >= 2) {
 			const polyline = new Polyline(this._polylinePoints);
 			polyline.addTo(this._drawnLayers);
@@ -306,13 +302,11 @@ export class DrawControl extends Control {
 		this._polygonPoints = [];
 		this._tempPolygon = null;
 		this._map.on('click', this._onPolygonClick, this);
-		this._map.on('dblclick', this._onPolygonDblClick, this);
 		this._map.on('mousemove', this._onPolygonMouseMove, this);
 	}
 
 	_disablePolygonDraw() {
 		this._map.off('click', this._onPolygonClick, this);
-		this._map.off('dblclick', this._onPolygonDblClick, this);
 		this._map.off('mousemove', this._onPolygonMouseMove, this);
 		if (this._tempPolygon) {
 			this._tempPolygon.remove();
@@ -322,6 +316,18 @@ export class DrawControl extends Control {
 	}
 
 	_onPolygonClick(e) {
+		DomEvent.stopPropagation(e);
+
+		if (this._polygonPoints.length >= 3) {
+			const firstPoint = this._polygonPoints[0];
+			const dist = this._map.distance(firstPoint, e.latlng);
+
+			if (dist < 20) {
+				this._finishPolygon();
+				return;
+			}
+		}
+
 		this._polygonPoints.push(e.latlng);
 
 		if (this._polygonPoints.length === 1) {
@@ -339,14 +345,13 @@ export class DrawControl extends Control {
 	}
 
 	_onPolygonMouseMove(e) {
-		if (this._polygonPoints.length > 0) {
+		if (this._polygonPoints.length > 0 && this._tempPolygon) {
 			const tempPoints = [...this._polygonPoints, e.latlng];
 			this._tempPolygon.setLatLngs(tempPoints);
 		}
 	}
 
-	_onPolygonDblClick(e) {
-		DomEvent.preventDefault(e);
+	_finishPolygon() {
 		if (this._polygonPoints.length >= 3) {
 			const polygon = new Polygon(this._polygonPoints);
 			polygon.addTo(this._drawnLayers);
@@ -376,6 +381,8 @@ export class DrawControl extends Control {
 	}
 
 	_onCircleClick(e) {
+		DomEvent.stopPropagation(e);
+
 		if (!this._isDrawingCircle) {
 			this._circleCenter = e.latlng;
 			this._isDrawingCircle = true;
@@ -401,7 +408,7 @@ export class DrawControl extends Control {
 	}
 
 	_onCircleMouseMove(e) {
-		if (this._isDrawingCircle && this._circleCenter) {
+		if (this._isDrawingCircle && this._circleCenter && this._tempCircle) {
 			const radius = this._map.distance(this._circleCenter, e.latlng);
 			this._tempCircle.setRadius(radius);
 		}
@@ -411,7 +418,9 @@ export class DrawControl extends Control {
 		this._editMode = true;
 		this._drawnLayers.eachLayer((layer) => {
 			layer.on('click', this._onLayerClick, this);
-			layer.setStyle({weight: 4});
+			if (layer.setStyle) {
+				layer.setStyle({weight: 4});
+			}
 		});
 	}
 
@@ -421,7 +430,9 @@ export class DrawControl extends Control {
 		this._selectedLayer = null;
 		this._drawnLayers.eachLayer((layer) => {
 			layer.off('click', this._onLayerClick, this);
-			layer.setStyle({weight: 3});
+			if (layer.setStyle) {
+				layer.setStyle({weight: 3});
+			}
 		});
 	}
 
@@ -429,7 +440,9 @@ export class DrawControl extends Control {
 		this._deleteMode = true;
 		this._drawnLayers.eachLayer((layer) => {
 			layer.on('click', this._onDeleteLayerClick, this);
-			layer.setStyle({color: '#ff0000'});
+			if (layer.setStyle) {
+				layer.setStyle({color: '#ff0000'});
+			}
 		});
 	}
 
@@ -437,7 +450,9 @@ export class DrawControl extends Control {
 		this._deleteMode = false;
 		this._drawnLayers.eachLayer((layer) => {
 			layer.off('click', this._onDeleteLayerClick, this);
-			layer.setStyle({color: '#3388ff'});
+			if (layer.setStyle) {
+				layer.setStyle({color: '#3388ff'});
+			}
 		});
 	}
 
@@ -476,14 +491,17 @@ export class DrawControl extends Control {
 
 		if (layer instanceof Circle) {
 			const center = layer.getLatLng();
-			const radius = layer.getRadius();
-			const point = this._map.latLngToLayerPoint(center);
-			const edgePoint = point.add([radius / this._map.getZoomScale(this._map.getZoom()), 0]);
-			const edgeLatLng = this._map.layerPointToLatLng(edgePoint);
 
 			this._createEditMarker(center, (newLatLng) => {
 				layer.setLatLng(newLatLng);
 			});
+
+			const radius = layer.getRadius();
+			const point = this._map.latLngToLayerPoint(center);
+			const zoom = this._map.getZoom();
+			const scale = this._map.getZoomScale(zoom, zoom);
+			const edgePoint = point.add([radius / scale, 0]);
+			const edgeLatLng = this._map.layerPointToLatLng(edgePoint);
 
 			this._createEditMarker(edgeLatLng, (newLatLng) => {
 				const newRadius = this._map.distance(center, newLatLng);
@@ -494,7 +512,8 @@ export class DrawControl extends Control {
 		}
 
 		if (layer instanceof Polygon) {
-			latlngs = layer.getLatLngs()[0] || layer.getLatLngs();
+			const layerLatLngs = layer.getLatLngs();
+			latlngs = Array.isArray(layerLatLngs[0]) ? layerLatLngs[0] : layerLatLngs;
 		} else if (layer instanceof Polyline) {
 			latlngs = layer.getLatLngs();
 		}
@@ -620,24 +639,16 @@ export class DrawControl extends Control {
 		}
 	}
 
-	// @method getDrawnLayers(): FeatureGroup
-	// Returns the FeatureGroup containing all drawn layers.
 	getDrawnLayers() {
 		return this._drawnLayers;
 	}
 
-	// @method clearLayers(): this
-	// Removes all drawn layers from the map.
 	clearLayers() {
 		this._drawnLayers.clearLayers();
 		return this;
 	}
 }
 
-// @namespace LeafletMap
-// @section Control options
-// @option drawControl: Boolean = false
-// Whether a [draw control](#control-draw) is added to the map by default.
 LeafletMap.mergeOptions({
 	drawControl: false
 });
