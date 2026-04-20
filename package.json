@@ -29,7 +29,7 @@
     "mocha": "^11.7.5",
     "prosthetic-hand": "^2.2.2",
     "requirejs": "^2.3.8",
-    "rollup": "^4.60.1",
+    "rollup": "^4.60.2",
     "sinon": "^21.0.3",
     "ssri": "^13.0.1",
     "ui-event-simulator": "^2.0.0"
