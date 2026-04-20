@@ -107,9 +107,21 @@ export class Polygon extends Polyline {
 
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+			for (var lyr in this._eventParents) {
+				if (this._eventParents[lyr].getTooltip()) {
+					this._eventParents[lyr].closeTooltip();
+				}
+			}
 			return;
 		}
 
+		for (var lyr2 in this._eventParents) {
+			if (this._eventParents[lyr2].getTooltip()) {
+				if (!this._eventParents[lyr2].isTooltipOpen()) {
+					this._eventParents[lyr2].openTooltip();
+				}
+			}
+		}
 		if (this.options.noClip) {
 			this._parts = this._rings;
 			return;
