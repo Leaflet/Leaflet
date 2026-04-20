@@ -358,7 +358,7 @@ export class LeafletMap extends Evented {
 			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
 		} else {
 			this._rawPanBy(offset);
-			this.fire('move').fire('moveend');
+			this.fire('move', {flyTo: false}).fire('moveend');
 		}
 
 		return this;
@@ -594,7 +594,7 @@ export class LeafletMap extends Evented {
 				this._rawPanBy(offset);
 			}
 
-			this.fire('move');
+			this.fire('move', {flyTo: false});
 
 			if (options.debounceMoveend) {
 				clearTimeout(this._sizeTimer);
@@ -1605,7 +1605,7 @@ export class LeafletMap extends Evented {
 	}
 
 	_onPanTransitionStep() {
-		this.fire('move');
+		this.fire('move', {flyTo: false});
 	}
 
 	_onPanTransitionEnd() {
@@ -1759,7 +1759,7 @@ export class LeafletMap extends Evented {
 		}
 		delete this._tempFireZoomEvent;
 
-		this.fire('move');
+		this.fire('move', {flyTo: false});
 
 		this._moveEnd(true);
 	}
