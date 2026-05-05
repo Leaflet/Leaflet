@@ -20,10 +20,14 @@
 
             const hash = location.hash.substring(1);
 
+            const ALLOWED_HASH_KEYS = ['version', 'provider'];
+
             if (hash) {
                 hash.split(';').forEach((str) => {
                     const arg = str.split(':');
-                    config[arg[0]] = arg[1];
+                    if (ALLOWED_HASH_KEYS.includes(arg[0])) {
+                        config[arg[0]] = arg[1];
+                    }
                 });
             }
 
