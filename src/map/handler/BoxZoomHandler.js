@@ -1,5 +1,6 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
@@ -19,9 +20,9 @@ LeafletMap.mergeOptions({
 	boxZoom: true
 });
 
-export class BoxZoomHandler extends Handler {
-	initialize(map) {
-		super.initialize(map);
+export const BoxZoomHandler = withInitHooks(class BoxZoomHandler extends Handler {
+	constructor(map) {
+		super(map);
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 		this._resetStateTimeout = 0;
@@ -144,7 +145,7 @@ export class BoxZoomHandler extends Handler {
 			this._resetState();
 		}
 	}
-}
+});
 
 // @section Handlers
 // @property boxZoom: Handler

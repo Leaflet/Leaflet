@@ -1,5 +1,6 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
@@ -27,7 +28,7 @@ LeafletMap.mergeOptions({
 	wheelPxPerZoomLevel: 60
 });
 
-export class ScrollWheelZoomHandler extends Handler {
+export const ScrollWheelZoomHandler = withInitHooks(class ScrollWheelZoomHandler extends Handler {
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
@@ -83,7 +84,7 @@ export class ScrollWheelZoomHandler extends Handler {
 			map.setZoomAround(this._lastMousePos, zoom + delta);
 		}
 	}
-}
+});
 
 // @section Handlers
 // @property scrollWheelZoom: Handler

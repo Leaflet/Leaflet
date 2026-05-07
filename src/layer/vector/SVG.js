@@ -1,4 +1,5 @@
 import {Renderer} from './Renderer.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';
 
@@ -32,7 +33,7 @@ import {splitWords, stamp} from '../../core/Util.js';
 // @namespace SVG
 // @constructor SVG(options?: Renderer options)
 // Creates a SVG renderer with the given options.
-export class SVG extends Renderer {
+export const SVG = withInitHooks(class SVG extends Renderer {
 
 	_initContainer() {
 		this._container = SVG.create('svg');
@@ -208,4 +209,4 @@ export class SVG extends Renderer {
 		return str || 'M0 0';
 	}
 
-}
+});

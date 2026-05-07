@@ -1,5 +1,6 @@
 import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
+import {withInitHooks} from '../../core/Class.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
@@ -21,7 +22,7 @@ LeafletMap.mergeOptions({
 	keyboardPanDelta: 80
 });
 
-export class KeyboardHandler extends Handler {
+export const KeyboardHandler = withInitHooks(class KeyboardHandler extends Handler {
 
 	static keyCodes = {
 		left:    ['ArrowLeft'],
@@ -32,8 +33,8 @@ export class KeyboardHandler extends Handler {
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
 	};
 
-	initialize(map) {
-		super.initialize(map);
+	constructor(map) {
+		super(map);
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
@@ -176,7 +177,7 @@ export class KeyboardHandler extends Handler {
 
 		stop(e);
 	}
-}
+});
 
 // @section Handlers
 // @section Handlers

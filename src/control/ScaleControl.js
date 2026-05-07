@@ -1,5 +1,6 @@
 
 import {Control} from './Control.js';
+import {withInitHooks} from '../core/Class.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 /*
@@ -17,7 +18,7 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 // @constructor ScaleControl(options?: ScaleControl options)
 // Creates an scale control with the given options.
-export class ScaleControl extends Control {
+export const ScaleControl = withInitHooks(class ScaleControl extends Control {
 
 	static {
 		// @section
@@ -130,4 +131,4 @@ export class ScaleControl extends Control {
 
 		return pow10 * d;
 	}
-}
+});

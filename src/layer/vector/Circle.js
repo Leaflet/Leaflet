@@ -1,4 +1,5 @@
 import {CircleMarker} from './CircleMarker.js';
+import {withInitHooks} from '../../core/Class.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 
@@ -21,10 +22,10 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 // @constructor Circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
-export class Circle extends CircleMarker {
+export const Circle = withInitHooks(class Circle extends CircleMarker {
 
-	initialize(latlng, options) {
-		super.initialize(latlng, options);
+	constructor(latlng, options) {
+		super(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
@@ -82,4 +83,4 @@ export class Circle extends CircleMarker {
 
 		this._updateBounds();
 	}
-}
+});

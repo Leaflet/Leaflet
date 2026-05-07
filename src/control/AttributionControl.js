@@ -1,6 +1,7 @@
 
 import {Control} from './Control.js';
 import {LeafletMap} from '../map/Map.js';
+import {withInitHooks} from '../core/Class.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -17,7 +18,7 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // @namespace AttributionControl
 // @constructor AttributionControl(options: AttributionControl options)
 // Creates an attribution control.
-export class AttributionControl extends Control {
+export const AttributionControl = withInitHooks(class AttributionControl extends Control {
 
 	static {
 		// @section
@@ -34,8 +35,8 @@ export class AttributionControl extends Control {
 		});
 	}
 
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super(options);
 
 		this._attributions = {};
 	}
@@ -122,7 +123,7 @@ export class AttributionControl extends Control {
 
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
-}
+});
 
 // @namespace LeafletMap
 // @section Control options
