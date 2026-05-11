@@ -13,60 +13,45 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
           working-directory: ./docs
 
-      - name: Run jekyll build
-        working-directory: ./docs
+      - working-directory: ./docs
         run: bundle exec jekyll build --strict_front_matter
 
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run lint task
-        run: npm run lint
+      - run: npm ci
+      - run: npm run lint
 
   bundlemon:
     if: github.repository_owner == 'Leaflet'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
-
-      - name: Run bundlemon task
-        run: npm run bundlemon
+      - run: npm ci
+      - run: npm run build
+      - run: npm run bundlemon
         env:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
@@ -74,31 +59,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
+      - run: npm run build
+      - run: node ./spec/ssr/ssr_node.js
 
-      - name: Build project
-        run: npm run build
-
-      - name: Run Node.js SSR script
-        run: node ./spec/ssr/ssr_node.js
-
-      - name: Set up Deno
-        uses: denoland/setup-deno@v2
+      - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
-      - name: Run Deno SSR script
-        run: deno run ./spec/ssr/ssr_deno.js
+      - run: deno run ./spec/ssr/ssr_deno.js
 
   test:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
@@ -111,28 +87,21 @@ jobs:
         include:
           - project: chromium
           - project: firefox
-          - project: firefox-retina
+          - project: chromium-retina
           - project: chromium
             os: windows-latest
-          - project: chromium
-            os: macos-latest
           - project: webkit
             os: macos-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Cache Playwright browsers
         uses: actions/cache@v5
@@ -141,13 +110,13 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
+        run: npx playwright install ${{ matrix.project == 'chromium-retina' && 'chromium' || matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
+        run: npx vitest --run --project=${{ matrix.project }}
 
       - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
+        run: npx vitest --run --project=${{ matrix.project }}
         env:
           VITE_TOUCH: '1'
 
@@ -158,20 +127,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Compress artifacts
         working-directory: dist
@@ -193,21 +157,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           registry-url: https://registry.npmjs.org
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Publish to NPM
         run: |

@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {Bounds, LineUtil, LeafletMap, LatLng, Point, Polyline} from 'leaflet';
 import sinon from 'sinon';
-import '../SpecHelper.js';
 
 describe('LineUtil', () => {
 	describe('#clipSegment', () => {
