@@ -3,13 +3,14 @@ import {fileURLToPath} from 'node:url';
 import config from 'eslint-config-mourner';
 import css from '@eslint/css';
 import html from 'eslint-plugin-html';
-import importPlugin from 'eslint-plugin-import-x';
+import {flatConfigs as importX} from 'eslint-plugin-import-x';
 import baselineJs from 'eslint-plugin-baseline-js';
 import e18e from '@e18e/eslint-plugin';
 
 export default [
 	...config.map(c => ({...c, files: ['**/*.js']})),
 	{...e18e.configs.recommended, files: ['**/*.js']},
+	{...importX.recommended, files: ['**/*.js']},
 	includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
 	{
 		ignores: [
@@ -21,9 +22,6 @@ export default [
 	},
 	{
 		files: ['**/*.js'],
-		plugins: {
-			import: importPlugin
-		},
 		rules: {
 			'dot-notation': 'off',
 			'consistent-return': 'off',
@@ -31,7 +29,8 @@ export default [
 			'no-unused-expressions': ['error', {allowShortCircuit: true}],
 			'no-unused-vars': ['error', {caughtErrors: 'none'}],
 
-			'import/extensions': ['error', 'ignorePackages'],
+			'import-x/extensions': ['error', 'ignorePackages'],
+			'import-x/no-unresolved': ['error', {ignore: ['\\.css$']}],
 
 			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
