@@ -1706,7 +1706,7 @@ describe('Map', () => {
 		});
 
 		it('does not pan the map when the target is within bounds', () => {
-			map.panInside(tl, {animate:false});
+			map.panInside(tl, {animate: false});
 			expect(center).to.eql(map.getCenter());
 		});
 

@@ -25,6 +25,7 @@ export default [
 		rules: {
 			'dot-notation': 'off',
 			'consistent-return': 'off',
+
 			'curly': 'error',
 			'no-unused-expressions': ['error', {allowShortCircuit: true}],
 			'no-unused-vars': ['error', {caughtErrors: 'none'}],
@@ -34,7 +35,6 @@ export default [
 
 			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
-			'@stylistic/key-spacing': 'off',
 			'@stylistic/spaced-comment': 'error',
 
 			'prefer-exponentiation-operator': 'error',

@@ -79,13 +79,13 @@ describe('LayerGroup', () => {
 	describe('#toGeoJSON', () => {
 		it('should return valid GeoJSON for a layer with a FeatureCollection', () => {
 			const geoJSON = {
-				'type':'FeatureCollection',
-				'features':[
+				'type': 'FeatureCollection',
+				'features': [
 					{
-						'type':'Feature',
-						'properties':{},
+						'type': 'Feature',
+						'properties': {},
 						'geometry': {
-							'type':'Point',
+							'type': 'Point',
 							'coordinates': [78.3984375, 56.9449741808516]
 						}
 					}

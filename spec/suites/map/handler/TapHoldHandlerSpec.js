@@ -10,9 +10,9 @@ describe('TapHoldHandler', () => {
 	let touchHand, mouseHand;
 	let touchFinger, touchFinger2, mouseFinger;
 
-	const posStart = {x:1, y:1};
-	const posNear = {x:10, y:10};
-	const posFar = {x:100, y:100};
+	const posStart = {x: 1, y: 1};
+	const posNear = {x: 10, y: 10};
+	const posFar = {x: 100, y: 100};
 
 	beforeEach(() => {
 		container = createContainer();
