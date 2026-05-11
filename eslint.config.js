@@ -40,7 +40,7 @@ export default [
 
 			'import/extensions': ['error', 'ignorePackages'],
 
-			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true}],
+			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 			'@stylistic/key-spacing': 'off',
 			'@stylistic/linebreak-style': ['off', 'unix'],
