@@ -33,7 +33,8 @@ export class TapHoldHandler extends Handler {
 
 	removeHooks() {
 		DomEvent.off(this._map._container, 'pointerdown', this._onDown, this);
-		clearTimeout(this._holdTimeout);
+		this._cancel();
+		this._cancelClickPrevent();
 	}
 
 	_onDown(e) {
