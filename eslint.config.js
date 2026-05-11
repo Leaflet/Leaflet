@@ -31,7 +31,7 @@ export default [
 			'no-unused-vars': ['error', {caughtErrors: 'none'}],
 
 			'import-x/extensions': ['error', 'ignorePackages'],
-			'import-x/no-unresolved': ['error', {ignore: ['\\.css$']}],
+			'import-x/no-unresolved': ['error', {ignore: ['\\.css$', '^leaflet$']}],
 
 			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
