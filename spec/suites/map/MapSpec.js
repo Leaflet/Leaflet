@@ -216,16 +216,12 @@ describe('Map', () => {
 		it('prevents firing movestart noMoveStart', (done) => {
 			const movestartSpy = sinon.spy();
 			map.on('movestart', movestartSpy);
-			const moveendSpy = sinon.spy();
-			map.on('moveend', moveendSpy);
+			map.on('moveend', () => {
+				expect(movestartSpy.notCalled).to.eql(true);
+				done();
+			});
 
 			map.setView([51.505, -0.09], 13, {pan: {noMoveStart: true}});
-
-			setTimeout(() => {
-				expect(movestartSpy.notCalled).to.eql(true);
-				expect(moveendSpy.calledOnce).to.eql(true);
-				done();
-			}, 100);
 		});
 	});
 

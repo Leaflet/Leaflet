@@ -193,10 +193,15 @@ describe('PinchZoomHandler', () => {
 			.down().moveBy(-200, 0, 500).up();
 
 		hand.sync(100);
+		const zoomEnded = new Promise((res) => { map.once('zoomend', res); });
 		await hand.run();
 
-		// Wait for zoom snap animations as well
-		await new Promise((res) => { setTimeout(res, 200); });
+		// Wait for the zoom-snap animation triggered by pinch end to finish,
+		// then one frame for the renderer to redraw the path. A fixed timeout
+		// here flakes on slower CI (webkit/macOS) when the animation hasn't
+		// settled yet and the polygon's `<path>` has an empty `d` attribute.
+		await zoomEnded;
+		await new Promise((res) => { requestAnimationFrame(res); });
 
 		const renderedRect = polygon._path.getBoundingClientRect();
 
