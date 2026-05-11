@@ -38,6 +38,7 @@ export class DivOverlay extends Layer {
 			// @option content: String|HTMLElement|Function = ''
 			// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
 			// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+			// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 			content: ''
 		});
 	}
@@ -162,8 +163,11 @@ export class DivOverlay extends Layer {
 	}
 
 	// @method setContent(htmlContent: String|HTMLElement|Function): this
-	// Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
-	// The function should return a `String` or `HTMLElement` to be used in the overlay.
+	// Sets the HTML content of the overlay. A `String` argument is rendered as
+	// HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+	// or pass an `HTMLElement` with safe `textContent` instead. If a function is
+	// passed the source layer will be passed to the function. The function should
+	// return a `String` or `HTMLElement` to be used in the overlay.
 	setContent(content) {
 		this._content = content;
 		this.update();

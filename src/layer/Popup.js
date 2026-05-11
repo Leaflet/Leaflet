@@ -36,6 +36,17 @@ import {FeatureGroup} from './FeatureGroup.js';
  * const popup = new Popup(latlng, {content: '<p>Hello world!<br />This is a nice popup.</p>'})
  * 	.openOn(map);
  * ```
+ *
+ * **Security note.** Popup string content is rendered as HTML. If your content
+ * may include untrusted input (e.g. data from users or external APIs), sanitize
+ * it with a library like [DOMPurify](https://github.com/cure53/DOMPurify), or
+ * build a DOM element using `textContent` to render it as plain text:
+ *
+ * ```js
+ * const el = document.createElement('div');
+ * el.textContent = untrustedString;
+ * marker.bindPopup(el);
+ * ```
  */
 
 
@@ -358,6 +369,7 @@ LeafletMap.include({
 	// @alternative
 	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
 	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	openPopup(popup, latlng, options) {
 		this._initOverlay(Popup, popup, latlng, options)
 			.openOn(this);
@@ -394,8 +406,11 @@ Layer.include({
 
 	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
 	// Binds a popup to the layer with the passed `content` and sets up the
-	// necessary event listeners. If a `Function` is passed it will receive
-	// the layer as the first argument and should return a `String` or `HTMLElement`.
+	// necessary event listeners. A `String` argument is rendered as HTML; if it
+	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
+	// it will receive the layer as the first argument and should return a
+	// `String` or `HTMLElement`.
 	bindPopup(content, options) {
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
 		if (!this._popupHandlersAdded) {
@@ -464,6 +479,7 @@ Layer.include({
 
 	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	setPopupContent(content) {
 		this._popup?.setContent(content);
 		return this;
