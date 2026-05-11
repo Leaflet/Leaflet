@@ -1,3 +1,4 @@
+import {fileURLToPath} from 'node:url';
 import {defineConfig} from 'vitest/config';
 import {playwright} from '@vitest/browser-playwright';
 
@@ -12,6 +13,11 @@ const viewport = {width: 1280, height: 720};
 export default defineConfig({
 	build: {
 		assetsInlineLimit: 0,
+	},
+	resolve: {
+		alias: {
+			leaflet: fileURLToPath(new URL('./src/Leaflet.js', import.meta.url)),
+		},
 	},
 	test: {
 		globals: true,

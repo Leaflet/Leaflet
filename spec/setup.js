@@ -1,6 +1,6 @@
 import {Assertion, util} from 'chai';
 import {DefaultIcon, LatLng, Point} from 'leaflet';
-import '../dist/leaflet.css';
+import '../src/leaflet.css';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = new Point(expected);
@@ -25,7 +25,7 @@ util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
 	new Assertion(this._obj.alt).to.eql(expected.alt);
 });
 
-DefaultIcon.imagePath = '/dist/images/';
+DefaultIcon.imagePath = '/src/images/';
 
 // Shim Mocha-style `done` callback on top of Vitest's promise-based runner.
 // Wraps any `it(name, (done) => { ... })` into a promise so existing specs

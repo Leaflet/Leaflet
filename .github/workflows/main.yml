@@ -101,7 +101,6 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run build
 
       - name: Cache Playwright browsers
         uses: actions/cache@v5
