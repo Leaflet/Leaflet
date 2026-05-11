@@ -1,3 +1,5 @@
+import {includeIgnoreFile} from '@eslint/compat';
+import {fileURLToPath} from 'node:url';
 import config from 'eslint-config-mourner';
 import css from '@eslint/css';
 import html from 'eslint-plugin-html';
@@ -8,20 +10,13 @@ import e18e from '@e18e/eslint-plugin';
 export default [
 	...config.map(c => ({...c, files: ['**/*.js']})),
 	{...e18e.configs.recommended, files: ['**/*.js']},
+	includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
 	{
 		ignores: [
-			'dist/*.js',
 			'docs/docs/highlight',
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
-			'docs/examples/extending-2-layers/index.md',
-			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
-			'docs/download.md', // importmap is not recognized by eslint
-			'docs/_posts/2025-05-18-leaflet-2.0.0-alpha.md', // importmap is not recognized by eslint
-			'docs/_posts/201*',
-			'docs/_site',
-			'coverage'
 		]
 	},
 	{
