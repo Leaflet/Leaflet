@@ -7,6 +7,7 @@ env:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -23,6 +24,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -42,6 +44,7 @@ jobs:
   bundlemon:
     if: github.repository_owner == 'Leaflet'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -65,6 +68,7 @@ jobs:
 
   test-ssr:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -94,6 +98,7 @@ jobs:
 
   test:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -133,10 +138,10 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
 
       - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
         env:
           VITE_TOUCH: '1'
 
@@ -145,6 +150,7 @@ jobs:
       contents: write
     if: github.repository_owner == 'Leaflet' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -179,6 +185,7 @@ jobs:
   publish-npm:
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v6

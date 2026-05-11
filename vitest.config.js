@@ -17,6 +17,11 @@ export default defineConfig({
 		globals: true,
 		include: ['spec/suites/**/*Spec.js'],
 		setupFiles: ['spec/setup.js'],
+		// Bound individual test/hook/teardown durations so a stuck spec fails
+		// fast with a useful stack instead of hanging the whole worker.
+		testTimeout: 15000,
+		hookTimeout: 15000,
+		teardownTimeout: 10000,
 		browser: {
 			enabled: true,
 			provider: playwright({contextOptions: {hasTouch: touch}}),
