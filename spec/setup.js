@@ -1,5 +1,16 @@
 import {DefaultIcon} from 'leaflet';
-import '../dist/leaflet.css';
+
+// Load leaflet.css as a real <link> (not a Vite-injected <style>) so the
+// DefaultIcon path autodetection can find it via document.querySelector.
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = '/dist/leaflet.css';
+const cssLoaded = new Promise((resolve, reject) => {
+	link.addEventListener('load', resolve);
+	link.addEventListener('error', () => reject(new Error('Failed to load /dist/leaflet.css')));
+});
+document.head.appendChild(link);
+await cssLoaded;
 
 DefaultIcon.imagePath = '/dist/images/';
 

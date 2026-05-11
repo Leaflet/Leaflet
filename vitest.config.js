@@ -4,6 +4,9 @@ import {playwright} from '@vitest/browser-playwright';
 const touch = process.env.VITE_TOUCH === '1';
 
 export default defineConfig({
+	build: {
+		assetsInlineLimit: 0,
+	},
 	test: {
 		globals: true,
 		include: ['spec/suites/**/*Spec.js'],

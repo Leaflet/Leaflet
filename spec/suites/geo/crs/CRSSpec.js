@@ -275,8 +275,10 @@ describe('EarthCRS', () => {
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
 		// is correct, since that's what International Union of Geodesy and Geophysics recommends,
 		// and that sounds serious.
-		const p1 = new LatLng(36.12, -86.67);
-		const p2 = new LatLng(33.94, -118.40);
-		expect(EarthCRS.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		it('computes great-circle distance between two points', () => {
+			const p1 = new LatLng(36.12, -86.67);
+			const p2 = new LatLng(33.94, -118.40);
+			expect(EarthCRS.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		});
 	});
 });
