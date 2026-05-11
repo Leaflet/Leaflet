@@ -1,26 +1,13 @@
 import config from 'eslint-config-mourner';
 import css from '@eslint/css';
-import scriptTags from '@mapbox/eslint-plugin-script-tags';
+import html from 'eslint-plugin-html';
 import importPlugin from 'eslint-plugin-import-x';
 import baselineJs from 'eslint-plugin-baseline-js';
 import e18e from '@e18e/eslint-plugin';
 
 export default [
-	e18e.configs.recommended,
-	...config.map(c => ({
-		...c,
-		files: ['**/*.js', '**/*.cjs'],
-	})),
-	{
-		rules: {
-			// TODO disable for now but reenable gradually
-			'e18e/prefer-spread-syntax': 'off',
-			'e18e/prefer-array-at': 'off',
-			'e18e/prefer-static-regex': 'off',
-			'e18e/prefer-includes': 'off',
-			'e18e/prefer-date-now': 'off'
-		}
-	},
+	...config.map(c => ({...c, files: ['**/*.js']})),
+	{...e18e.configs.recommended, files: ['**/*.js']},
 	{
 		ignores: [
 			'dist/*.js',
@@ -38,7 +25,7 @@ export default [
 		]
 	},
 	{
-		files: ['**/*.js', '**/*.cjs'],
+		files: ['**/*.js'],
 		plugins: {
 			import: importPlugin
 		},
@@ -54,15 +41,22 @@ export default [
 			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 			'@stylistic/key-spacing': 'off',
-			'@stylistic/linebreak-style': ['off', 'unix'],
 			'@stylistic/spaced-comment': 'error',
+
+			'prefer-exponentiation-operator': 'error',
+			'prefer-object-has-own': 'error',
 
 			// TODO: Re-enable the rules below and fix the linting issues.
 			'no-invalid-this': 'off',
-			'prefer-exponentiation-operator': 'error',
-			'prefer-object-has-own': 'error',
 			'prefer-spread': 'off',
 			'no-new': 'off',
+
+			// TODO disable for now but reenable gradually
+			'e18e/prefer-spread-syntax': 'off',
+			'e18e/prefer-array-at': 'off',
+			'e18e/prefer-static-regex': 'off',
+			'e18e/prefer-includes': 'off',
+			'e18e/prefer-date-now': 'off'
 		}
 	},
 	{
@@ -73,39 +67,22 @@ export default [
 			...css.configs.recommended.rules,
 			'css/no-important': 'warn',
 			'css/use-baseline': ['error', {
-				allowProperties: [
-					'clip',
-					'outline',
-					'print-color-adjust',
-					'user-select',
-					'word-break',
-				],
-				allowSelectors: [
-					'has',
-					'nesting',
-				]
+				allowProperties: ['clip', 'outline', 'print-color-adjust', 'user-select', 'word-break'],
+				allowSelectors: ['has', 'nesting']
 			}]
 		}
 	},
 	{
-		files: ['src/**/*.{js,ts,jsx,tsx}'],
+		files: ['src/**/*.js'],
 		plugins: {'baseline-js': baselineJs},
 		rules: {
 			'baseline-js/use-baseline': ['error', {
 				available: 'widely',
-				includeWebApis: {preset: 'auto', ignore: [
-					// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
-					// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
-					'devicepixelratio',
-				]},
+				// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
+				// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
+				includeWebApis: {preset: 'auto', ignore: ['devicepixelratio']},
 				includeJsBuiltins: {preset: 'auto'},
 			}],
-		},
-	},
-	{
-		files: ['docs/examples/**', 'docs/plugins.md'],
-		rules: {
-			'@stylistic/eol-last': 'off',
 		},
 	},
 	{
@@ -125,18 +102,10 @@ export default [
 	},
 	{
 		files: ['docs/**/*.md'],
-		plugins: {
-			scriptTags: {
-				processors: {md: scriptTags.processors['.md']}
-			}
-		},
-		processor: 'scriptTags/md',
+		plugins: {html},
+		settings: {'html/html-extensions': ['.md']},
 		rules: {
-			'no-unused-vars': 'off',
-			'@stylistic/js/eol-last': 'off'
-		},
-		languageOptions: {
-			globals: {L: false}
+			'no-unused-vars': 'off'
 		}
 	}
 ];
