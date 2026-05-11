@@ -103,10 +103,17 @@ jobs:
       - run: npm ci
 
       - name: Cache Playwright browsers
+        id: pw-cache
         uses: actions/cache@v5
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Inspect Playwright cache
+        run: |
+          echo "cache-hit: ${{ steps.pw-cache.outputs.cache-hit }}"
+          echo "PLAYWRIGHT_BROWSERS_PATH=$PLAYWRIGHT_BROWSERS_PATH"
+          ls -la "$PLAYWRIGHT_BROWSERS_PATH" || echo "(missing)"
 
       - name: Install Playwright browser
         run: npx playwright install ${{ matrix.project == 'chromium-retina' && 'chromium' || matrix.project }}
