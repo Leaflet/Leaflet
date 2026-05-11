@@ -1270,6 +1270,7 @@ export class LeafletMap extends Evented {
 
 	_stop() {
 		cancelAnimationFrame(this._flyToFrame);
+		cancelAnimationFrame(this._zoomAnimFrame);
 		this._panAnim?.stop();
 		return this;
 	}
@@ -1703,7 +1704,8 @@ export class LeafletMap extends Evented {
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		requestAnimationFrame(() => {
+		this._zoomAnimFrame = requestAnimationFrame(() => {
+			this._zoomAnimFrame = null;
 			this
 				._moveStart(true, options.noMoveStart ?? false)
 				._animateZoom(center, zoom, true);

@@ -53,7 +53,7 @@
     "coverage": "vitest --run --project=chromium --coverage",
     "build": "rollup --config build/rollup-config.js",
     "watch": "npm run build -- --watch",
-    "lint": "eslint .",
+    "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
     "bundlemon": "bundlemon",
     "serve": "cd docs && bundle exec jekyll serve",

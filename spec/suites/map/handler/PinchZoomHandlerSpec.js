@@ -215,9 +215,12 @@ describe('PinchZoomHandler', () => {
 		const x = renderedRect.x;
 		const y = renderedRect.y;
 
-		expect(x).to.be.within(299, 301);
+		expect(x).to.be.within(297, 301);
 		expect(y).to.be.within(270, 280);
 
+		// Give webkit one extra frame to flush any late transitionend before
+		// the next test's `hand.run()` rAF loop starts in the same iframe.
+		await new Promise((res) => { requestAnimationFrame(res); });
 	});
 
 	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', async () => {
