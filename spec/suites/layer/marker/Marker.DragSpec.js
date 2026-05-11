@@ -60,8 +60,8 @@ describe('Marker.Drag', () => {
 			const scale = new Point(2, 1.5);
 
 			beforeEach(() => {
-				container.style.webkitTransformOrigin = 'top left';
-				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
+				container.style.transformOrigin = 'top left';
+				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
 			it('drags a marker with mouse, compensating for CSS scale', (done) => {

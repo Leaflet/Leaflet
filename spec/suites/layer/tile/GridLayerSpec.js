@@ -791,9 +791,7 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', function (done) {
-			this.timeout(10000); // This test takes longer than usual due to frames
-
+		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			grid.on('load', () => {
@@ -823,7 +821,7 @@ describe('GridLayer', () => {
 
 			map.addLayer(grid).setView(mad, 12);
 			clock.tick(250);
-		});
+		}, 10000);
 
 	});
 

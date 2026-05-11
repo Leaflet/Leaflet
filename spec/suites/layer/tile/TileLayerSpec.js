@@ -252,9 +252,7 @@ describe('TileLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', function (done) {
-			this.timeout(10000); // This test takes longer than usual due to frames
-
+		it('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.on('load', () => {
@@ -285,7 +283,7 @@ describe('TileLayer', () => {
 
 			map.addLayer(kittenLayer).setView(mad, 12);
 			clock.tick(250);
-		});
+		}, 10000);
 
 	});
 

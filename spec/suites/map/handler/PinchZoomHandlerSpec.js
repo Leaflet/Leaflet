@@ -215,7 +215,7 @@ describe('PinchZoomHandler', () => {
 
 	});
 
-	it('Layer is rendered correctly while pinch zoom when zoomAnim is false', async () => {
+	it.skipIfNotTouch('Layer is rendered correctly while pinch zoom when zoomAnim is false', async () => {
 		map.remove();
 
 		map = new LeafletMap(container, {

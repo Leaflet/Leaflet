@@ -56,6 +56,13 @@ function getPointers() {
 // Clears the detected pointers on the document.
 // Note: This function should be not necessary to call, as the pointers are automatically cleared with `pointerup`, `pointercancel` and `pointerout` events.
 function cleanupPointers() {
+	for (const e of activePointers.values()) {
+		try {
+			e.target.releasePointerCapture(e.pointerId);
+		} catch {
+			// target may already be detached; capture was on a dead node
+		}
+	}
 	activePointers.clear();
 }
 
