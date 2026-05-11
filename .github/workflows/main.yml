@@ -137,7 +137,7 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ runner.os == 'Linux' && '--with-deps' || '' }} ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
+        run: npx playwright install ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
         run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
