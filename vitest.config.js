@@ -3,6 +3,12 @@ import {playwright} from '@vitest/browser-playwright';
 
 const touch = process.env.VITE_TOUCH === '1';
 
+// Vitest's tester iframe defaults to a small viewport (414x896) under Playwright's
+// touch context, which truncates `document.elementFromPoint` beyond that range and
+// breaks specs simulating pointer events at desktop coordinates. Pin a desktop
+// viewport so behavior is identical between touch and non-touch runs.
+const viewport = {width: 1280, height: 720};
+
 export default defineConfig({
 	build: {
 		assetsInlineLimit: 0,
@@ -13,17 +19,18 @@ export default defineConfig({
 		setupFiles: ['spec/setup.js'],
 		browser: {
 			enabled: true,
-			provider: playwright(),
+			provider: playwright({contextOptions: {hasTouch: touch}}),
 			headless: true,
 			screenshotFailures: false,
+			viewport,
 			instances: [
-				{browser: 'chromium', context: {hasTouch: touch}},
-				{browser: 'firefox', context: {hasTouch: touch}},
-				{browser: 'webkit', context: {hasTouch: touch}},
+				{browser: 'chromium'},
+				{browser: 'firefox'},
+				{browser: 'webkit'},
 				{
 					browser: 'firefox',
 					name: 'firefox-retina',
-					context: {hasTouch: touch, deviceScaleFactor: 2},
+					provider: playwright({contextOptions: {hasTouch: touch, deviceScaleFactor: 2}}),
 				},
 			],
 		},

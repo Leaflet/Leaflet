@@ -64,9 +64,7 @@ describe('Marker.Drag', () => {
 				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			// TODO: re-enable once prosthetic-hand pointer dispatch lands correctly on
-			// CSS-transformed targets under Playwright (the unscaled drag test passes).
-			it.skip('drags a marker with mouse, compensating for CSS scale', (done) => {
+			it('drags a marker with mouse, compensating for CSS scale', (done) => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				const start = new Point(300, 280);
