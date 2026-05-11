@@ -1,5 +1,6 @@
 import {Assertion, util} from 'chai';
 import {DefaultIcon, LatLng, Point} from 'leaflet';
+import '../dist/leaflet.css';
 
 util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = new Point(expected);
@@ -27,18 +28,6 @@ util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
 const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
 it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
 it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
-
-// Load leaflet.css as a real <link> (not a Vite-injected <style>) so the
-// DefaultIcon path autodetection can find it via document.querySelector.
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = '/dist/leaflet.css';
-const cssLoaded = new Promise((resolve, reject) => {
-	link.addEventListener('load', resolve);
-	link.addEventListener('error', () => reject(new Error('Failed to load /dist/leaflet.css')));
-});
-document.head.appendChild(link);
-await cssLoaded;
 
 DefaultIcon.imagePath = '/dist/images/';
 
