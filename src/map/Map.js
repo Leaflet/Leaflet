@@ -660,8 +660,7 @@ export class LeafletMap extends Evented {
 			if (this._locationWatchId !== undefined) {
 				navigator.geolocation.clearWatch(this._locationWatchId);
 			}
-			this._locationWatchId =
-			        navigator.geolocation.watchPosition(onResponse, onError, options);
+			this._locationWatchId = navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
 			navigator.geolocation.getCurrentPosition(onResponse, onError, options);
 		}

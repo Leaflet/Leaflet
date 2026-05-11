@@ -4,12 +4,24 @@ import scriptTags from '@mapbox/eslint-plugin-script-tags';
 import importPlugin from 'eslint-plugin-import-x';
 import globals from 'globals';
 import baselineJs from 'eslint-plugin-baseline-js';
+import e18e from '@e18e/eslint-plugin';
 
 export default [
+	e18e.configs.recommended,
 	...config.map(c => ({
 		...c,
 		files: ['**/*.js', '**/*.cjs'],
 	})),
+	{
+		rules: {
+			// TODO disable for now but reenable gradually
+			'e18e/prefer-spread-syntax': 'off',
+			'e18e/prefer-array-at': 'off',
+			'e18e/prefer-static-regex': 'off',
+			'e18e/prefer-includes': 'off',
+			'e18e/prefer-date-now': 'off'
+		}
+	},
 	{
 		ignores: [
 			'dist/*.js',
@@ -40,7 +52,7 @@ export default [
 
 			'import/extensions': ['error', 'ignorePackages'],
 
-			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true}],
+			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 			'@stylistic/key-spacing': 'off',
 			'@stylistic/linebreak-style': ['off', 'unix'],
@@ -51,7 +63,7 @@ export default [
 			'prefer-exponentiation-operator': 'error',
 			'prefer-object-has-own': 'error',
 			'prefer-spread': 'off',
-			'no-new': 'off'
+			'no-new': 'off',
 		}
 	},
 	{

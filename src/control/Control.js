@@ -144,8 +144,7 @@ LeafletMap.include({
 	_initControlPos() {
 		const corners = this._controlCorners = {},
 		l = 'leaflet-',
-		container = this._controlContainer =
-		            DomUtil.create('div', `${l}control-container`, this._container);
+		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
 
 		function createCorner(vSide, hSide) {
 			const className = `${l + vSide} ${l}${hSide}`;
