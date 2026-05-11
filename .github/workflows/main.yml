@@ -126,14 +126,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - browser: Chrome
-          - browser: Firefox
-          - browser: FirefoxRetina
-          - browser: Chrome
+          - project: chromium
+          - project: firefox
+          - project: firefox-retina
+          - project: chromium
             os: windows-latest
-          - browser: Chrome
+          - project: chromium
             os: macos-latest
-          - browser: SafariNative
+          - project: webkit
             os: macos-latest
     steps:
       - name: Restore setup
@@ -147,19 +147,22 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Set up Google Chrome
-        uses: browser-actions/setup-chrome@v2
-        if: contains(matrix.browser, 'Chrome')
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - name: Set up Firefox
-        uses: browser-actions/setup-firefox@v1
-        if: contains(matrix.browser, 'Firefox')
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
 
-      - name: Run tests on ${{ matrix.browser }}
-        run: npm test -- --browsers ${{ matrix.browser }} --single-run
+      - name: Run tests on ${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }}
 
-      - name: Run tests on ${{ matrix.browser }} with touch
-        run: npm test -- --browsers ${{ matrix.browser }} --touch-browser --single-run
+      - name: Run tests on ${{ matrix.project }} with touch
+        run: npx vitest --run --project=${{ matrix.project }}
+        env:
+          VITE_TOUCH: '1'
 
   publish-artifacts:
     permissions: 

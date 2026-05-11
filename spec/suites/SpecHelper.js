@@ -24,7 +24,7 @@ util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
 	new Assertion(this._obj.alt).to.eql(expected.alt);
 });
 
-const runAsTouchBrowser = window.__karma__.config.runAsTouchBrowser || false;
+const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
 
 // A couple of tests need the browser to be touch-capable
 it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
@@ -32,8 +32,6 @@ it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
 
 export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
 export const pointerEventType = ['pointer', {pointerType}];
-
-console.error('Touch', runAsTouchBrowser);
 
 export function createContainer(width, height) {
 	width = width ? width : '400px';

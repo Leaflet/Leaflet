@@ -118,24 +118,33 @@ on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
-Before running the tests, make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet, it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
-
-To run the tests from the command line, ensure you have [Google Chrome](https://www.google.com/chrome/) installed and then run:
+Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider). Make sure the project has been built first (or run `npm run watch` in another terminal).
 
 ```
 npm test
 ```
 
-By default the tests will run in Google Chrome headlessly (without a UI), to run the tests in other browsers you can pass in the [`--browsers`](https://karma-runner.github.io/latest/config/configuration-file.html#browsers) flag.
+Runs the suite in headless Chromium and stays in watch mode. To override the browser, pass `--project`:
 
 ```
-npm test -- --browsers Firefox
+npm test -- --project=firefox
+npm test -- --project=webkit
+npm test -- --project=firefox-retina
 ```
 
-For a list of available browsers see the documentation of the included launcher plugins:
-- [`karma-chrome-launcher`](https://github.com/karma-runner/karma-chrome-launcher#available-browsers)
-- [`karma-firefox-launcher`](https://github.com/karma-runner/karma-firefox-launcher#configuration)
-- [`karma-safarinative-launcher`](https://github.com/muthu90ec/karma-safarinative-launcher#readme)
+For one-shot CI-style runs, add `--run`. To enable touch event emulation (matching what CI runs as the "touch" pass), set `VITE_TOUCH=1`:
+
+```
+VITE_TOUCH=1 npm test -- --run
+```
+
+To open the Vitest UI for interactive debugging:
+
+```
+npm test -- --ui
+```
+
+Playwright will install its own browser binaries the first time it runs (`npx playwright install chromium firefox webkit`).
 
 ## Improving Documentation
 
