@@ -24,7 +24,7 @@
     "husky": "^9.1.7",
     "leafdoc": "^2.3.0",
     "lint-staged": "^17.0.4",
-    "playwright": "^1.59.1",
+    "playwright": "^1.60.0",
     "prosthetic-hand": "^2.2.2",
     "rollup": "^4.60.3",
     "sinon": "^22.0.0",
