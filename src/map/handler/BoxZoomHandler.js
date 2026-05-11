@@ -65,7 +65,7 @@ export class BoxZoomHandler extends Handler {
 		this._clearDeferredResetState();
 		this._resetState();
 
-		DomUtil.disableTextSelection();
+		DomUtil.disableTextSelection(this._container);
 		DomUtil.disableImageDrag();
 
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
@@ -106,7 +106,7 @@ export class BoxZoomHandler extends Handler {
 			this._container.classList.remove('leaflet-crosshair');
 		}
 
-		DomUtil.enableTextSelection();
+		DomUtil.enableTextSelection(this._container);
 		DomUtil.enableImageDrag();
 
 		DomEvent.off(this._container, {

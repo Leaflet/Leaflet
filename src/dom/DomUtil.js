@@ -80,12 +80,21 @@ const documentStyle = typeof document === 'undefined' ? {} : document.documentEl
 // Safari still needs a vendor prefix, we need to detect with property name is supported.
 const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 let prevUserSelect;
+let prevUserSelectEl;
 
-// @function disableTextSelection()
-// Prevents the user from selecting text in the document. Used internally
-// by Leaflet to override the behaviour of any click-and-drag interaction on
-// the map. Affects drag interactions on the whole document.
-export function disableTextSelection() {
+// @function disableTextSelection(el?: HTMLElement)
+// Prevents the user from generating `selectstart` DOM events, usually
+// generated when the user starts dragging. When an element is provided,
+// only disables text selection within that element. Otherwise falls back
+// to disabling text selection on the whole document.
+export function disableTextSelection(el) {
+	if (el) {
+		const style = el.style;
+		prevUserSelectEl = style[userSelectProp];
+		style[userSelectProp] = 'none';
+		return;
+	}
+
 	const value = documentStyle[userSelectProp];
 
 	if (value === 'none') {
@@ -96,9 +105,18 @@ export function disableTextSelection() {
 	documentStyle[userSelectProp] = 'none';
 }
 
-// @function enableTextSelection()
+// @function enableTextSelection(el?: HTMLElement)
 // Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export function enableTextSelection() {
+export function enableTextSelection(el) {
+	if (el) {
+		if (typeof prevUserSelectEl === 'undefined') {
+			return;
+		}
+		el.style[userSelectProp] = prevUserSelectEl;
+		prevUserSelectEl = undefined;
+		return;
+	}
+
 	if (typeof prevUserSelect === 'undefined') {
 		return;
 	}
