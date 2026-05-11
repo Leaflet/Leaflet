@@ -52,7 +52,7 @@ export class Class {
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
 	static addInitHook(fn, ...args) { // (Function) || (String, args...)
 		const init = typeof fn === 'function' ? fn : function () {
-			this[fn].apply(this, args);
+			this[fn](...args);
 		};
 
 		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here

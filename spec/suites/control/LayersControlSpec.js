@@ -210,7 +210,7 @@ describe('LayersControl', () => {
 
 		it('does not expand on "Enter" keydown when toggle is not focused', () => {
 			new LayersControl(null, null, {collapsed: true}).addTo(map);
-			UIEventSimulator.fire('keydown', document, {code:'Enter'});
+			UIEventSimulator.fire('keydown', document, {code: 'Enter'});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 

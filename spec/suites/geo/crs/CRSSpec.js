@@ -241,14 +241,15 @@ describe('CRS', () => {
 });
 
 describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = Object.assign({}, CRS, {
+	const crs = {
+		...CRS,
 		scale(zoom) {
 			return 256 * 1.5 ** zoom;
 		},
 		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);
 		}
-	});
+	};
 
 	describe('#scale', () => {
 		it('of zoom levels are related by a power of 1.5', () => {

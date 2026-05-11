@@ -1,68 +1,47 @@
+import {includeIgnoreFile} from '@eslint/compat';
+import {fileURLToPath} from 'node:url';
 import config from 'eslint-config-mourner';
 import css from '@eslint/css';
-import scriptTags from '@mapbox/eslint-plugin-script-tags';
-import importPlugin from 'eslint-plugin-import-x';
+import html from 'eslint-plugin-html';
+import {flatConfigs as importX} from 'eslint-plugin-import-x';
 import baselineJs from 'eslint-plugin-baseline-js';
 import e18e from '@e18e/eslint-plugin';
 
 export default [
-	e18e.configs.recommended,
-	...config.map(c => ({
-		...c,
-		files: ['**/*.js', '**/*.cjs'],
-	})),
-	{
-		rules: {
-			// TODO disable for now but reenable gradually
-			'e18e/prefer-spread-syntax': 'off',
-			'e18e/prefer-array-at': 'off',
-			'e18e/prefer-static-regex': 'off',
-			'e18e/prefer-includes': 'off',
-			'e18e/prefer-date-now': 'off'
-		}
-	},
+	...config.map(c => ({...c, files: ['**/*.js']})),
+	{...e18e.configs.recommended, files: ['**/*.js']},
+	{...importX.recommended, files: ['**/*.js']},
+	includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
 	{
 		ignores: [
-			'dist/*.js',
 			'docs/docs/highlight',
 			'docs/examples/choropleth/us-states.js',
 			'docs/examples/geojson/sample-geojson.js',
 			'docs/examples/map-panes/eu-countries.js',
-			'docs/examples/extending-2-layers/index.md',
-			'docs/examples/quick-start/index.md', // importmap is not recognized by eslint
-			'docs/download.md', // importmap is not recognized by eslint
-			'docs/_posts/2025-05-18-leaflet-2.0.0-alpha.md', // importmap is not recognized by eslint
-			'docs/_posts/201*',
-			'docs/_site',
-			'coverage'
 		]
 	},
 	{
-		files: ['**/*.js', '**/*.cjs'],
-		plugins: {
-			import: importPlugin
-		},
+		files: ['**/*.js'],
 		rules: {
 			'dot-notation': 'off',
 			'consistent-return': 'off',
+
 			'curly': 'error',
 			'no-unused-expressions': ['error', {allowShortCircuit: true}],
 			'no-unused-vars': ['error', {caughtErrors: 'none'}],
 
-			'import/extensions': ['error', 'ignorePackages'],
+			'import-x/extensions': ['error', 'ignorePackages'],
+			'import-x/no-unresolved': ['error', {ignore: ['\\.css$', '^leaflet$', '/dist/leaflet-src\\.js$']}],
 
 			'@stylistic/indent': ['error', 'tab', {VariableDeclarator: 0, flatTernaryExpressions: true, SwitchCase: 0}],
 			'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
-			'@stylistic/key-spacing': 'off',
-			'@stylistic/linebreak-style': ['off', 'unix'],
 			'@stylistic/spaced-comment': 'error',
 
-			// TODO: Re-enable the rules below and fix the linting issues.
-			'no-invalid-this': 'off',
 			'prefer-exponentiation-operator': 'error',
 			'prefer-object-has-own': 'error',
-			'prefer-spread': 'off',
-			'no-new': 'off',
+
+			'no-invalid-this': 'off', // used a lot by functions passed to addInitHook
+			'e18e/prefer-array-at': 'off', // Safari 15.4+, pretty high baseline
 		}
 	},
 	{
@@ -73,39 +52,22 @@ export default [
 			...css.configs.recommended.rules,
 			'css/no-important': 'warn',
 			'css/use-baseline': ['error', {
-				allowProperties: [
-					'clip',
-					'outline',
-					'print-color-adjust',
-					'user-select',
-					'word-break',
-				],
-				allowSelectors: [
-					'has',
-					'nesting',
-				]
+				allowProperties: ['clip', 'outline', 'print-color-adjust', 'user-select', 'word-break'],
+				allowSelectors: ['has', 'nesting']
 			}]
 		}
 	},
 	{
-		files: ['src/**/*.{js,ts,jsx,tsx}'],
+		files: ['src/**/*.js'],
 		plugins: {'baseline-js': baselineJs},
 		rules: {
 			'baseline-js/use-baseline': ['error', {
 				available: 'widely',
-				includeWebApis: {preset: 'auto', ignore: [
-					// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
-					// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
-					'devicepixelratio',
-				]},
+				// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
+				// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
+				includeWebApis: {preset: 'auto', ignore: ['devicepixelratio']},
 				includeJsBuiltins: {preset: 'auto'},
 			}],
-		},
-	},
-	{
-		files: ['docs/examples/**', 'docs/plugins.md'],
-		rules: {
-			'@stylistic/eol-last': 'off',
 		},
 	},
 	{
@@ -120,23 +82,16 @@ export default [
 			}
 		},
 		rules: {
-			'no-unused-expressions': 'off'
+			'no-unused-expressions': 'off',
+			'no-new': 'off',
 		}
 	},
 	{
 		files: ['docs/**/*.md'],
-		plugins: {
-			scriptTags: {
-				processors: {md: scriptTags.processors['.md']}
-			}
-		},
-		processor: 'scriptTags/md',
+		plugins: {html},
+		settings: {'html/html-extensions': ['.md']},
 		rules: {
-			'no-unused-vars': 'off',
-			'@stylistic/js/eol-last': 'off'
-		},
-		languageOptions: {
-			globals: {L: false}
+			'no-unused-vars': 'off'
 		}
 	}
 ];

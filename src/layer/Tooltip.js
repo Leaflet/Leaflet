@@ -403,7 +403,7 @@ Layer.include({
 	_addFocusListenersOnLayer(layer, remove) {
 		const el = typeof layer.getElement === 'function' && layer.getElement();
 		if (el) {
-			const onOff = remove ? 'off' : 'on';
+			const toggle = remove ? DomEvent.off : DomEvent.on;
 			if (!remove) {
 				// Remove focus listener, if already existing
 				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
@@ -417,8 +417,8 @@ Layer.include({
 				};
 			}
 
-			el._leaflet_focus_handler && DomEvent[onOff](el, 'focus', el._leaflet_focus_handler, this);
-			DomEvent[onOff](el, 'blur', this.closeTooltip, this);
+			el._leaflet_focus_handler && toggle(el, 'focus', el._leaflet_focus_handler, this);
+			toggle(el, 'blur', this.closeTooltip, this);
 
 			if (remove) {
 				delete el._leaflet_focus_handler;

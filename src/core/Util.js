@@ -76,10 +76,12 @@ export function formatNum(num, precision) {
 	return Math.round(num * pow) / pow;
 }
 
+const WHITESPACE_RE = /\s+/;
+
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
 export function splitWords(str) {
-	return str.trim().split(/\s+/);
+	return str.trim().split(WHITESPACE_RE);
 }
 
 // @function setOptions(obj: Object, options: Object): Object

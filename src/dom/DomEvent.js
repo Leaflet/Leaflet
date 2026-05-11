@@ -82,9 +82,11 @@ export function off(obj, types, fn, context) {
 	return this;
 }
 
+const DIGIT_RE = /\d/;
+
 function batchRemove(obj, filterFn) {
 	for (const id of Object.keys(obj[eventsKey] ?? {})) {
-		const type = id.split(/\d/)[0];
+		const type = id.split(DIGIT_RE)[0];
 		if (!filterFn || filterFn(type)) {
 			removeOne(obj, type, null, null, id);
 		}

@@ -24,11 +24,11 @@ LeafletMap.mergeOptions({
 export class KeyboardHandler extends Handler {
 
 	static keyCodes = {
-		left:    ['ArrowLeft'],
-		right:   ['ArrowRight'],
-		down:    ['ArrowDown'],
-		up:      ['ArrowUp'],
-		zoomIn:  ['Equal', 'NumpadAdd', 'BracketRight'],
+		left: ['ArrowLeft'],
+		right: ['ArrowRight'],
+		down: ['ArrowDown'],
+		up: ['ArrowUp'],
+		zoomIn: ['Equal', 'NumpadAdd', 'BracketRight'],
 		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
 	};
 
