@@ -141,8 +141,10 @@ VITE_TOUCH=1 npm test -- --run
 To open the Vitest UI for interactive debugging:
 
 ```
-npm test -- --ui
+npm run test:ui
 ```
+
+This opens a dashboard at `http://localhost:51204/__vitest__/` and spawns a visible browser window. Open DevTools in that window to set breakpoints in source (sourcemaps work), inspect the test DOM, and step through specs. Use `it.only(...)` to isolate a single test, or `debugger;` statements to pause inline.
 
 Playwright will install its own browser binaries the first time it runs (`npx playwright install chromium firefox webkit`).
 
