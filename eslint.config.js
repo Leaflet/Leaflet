@@ -45,7 +45,6 @@ export default [
 
 			// TODO disable for now but reenable gradually
 			'e18e/prefer-array-at': 'off',
-			'e18e/prefer-static-regex': 'off',
 			'e18e/prefer-includes': 'off',
 			'e18e/prefer-date-now': 'off'
 		}

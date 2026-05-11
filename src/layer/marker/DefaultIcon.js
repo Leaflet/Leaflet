@@ -1,6 +1,9 @@
 import {Icon} from './Icon.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 
+const URL_RE = /^url\((['"])?(.+)\1\)$/;
+const MARKER_ICON_RE = /^(.*)marker-icon\.svg$/;
+
 /*
  * @miniclass DefaultIcon (Icon)
  * @section
@@ -54,8 +57,8 @@ export class DefaultIcon extends Icon {
 			const match = re.exec(str);
 			return match && match[idx];
 		};
-		path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
-		return path && strip(path, /^(.*)marker-icon\.svg$/, 1);
+		path = strip(path, URL_RE, 2);
+		return path && strip(path, MARKER_ICON_RE, 1);
 	}
 
 	_detectIconPath() {

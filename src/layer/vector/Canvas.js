@@ -3,6 +3,8 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
+const DASH_SEPARATOR_RE = /[, ]+/;
+
 /*
  * @class Canvas
  * @inherits Renderer
@@ -190,7 +192,7 @@ export class Canvas extends Renderer {
 
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
-			const parts = layer.options.dashArray.split(/[, ]+/);
+			const parts = layer.options.dashArray.split(DASH_SEPARATOR_RE);
 			// Ignore dash array containing invalid lengths
 			layer.options._dashArray = parts.map(n => Number(n)).filter(n => !isNaN(n));
 		} else {
