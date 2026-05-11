@@ -111,11 +111,9 @@ jobs:
         include:
           - project: chromium
           - project: firefox
-          - project: firefox-retina
+          - project: chromium-retina
           - project: chromium
             os: windows-latest
-          - project: chromium
-            os: macos-latest
           - project: webkit
             os: macos-latest
     steps:
@@ -141,7 +139,7 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
+        run: npx playwright install ${{ matrix.project == 'chromium-retina' && 'chromium' || matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
         run: npx vitest --run --project=${{ matrix.project }}

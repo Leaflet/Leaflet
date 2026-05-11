@@ -34,8 +34,8 @@ export default defineConfig({
 				{browser: 'firefox'},
 				{browser: 'webkit'},
 				{
-					browser: 'firefox',
-					name: 'firefox-retina',
+					browser: 'chromium',
+					name: 'chromium-retina',
 					provider: playwright({contextOptions: {hasTouch: touch, deviceScaleFactor: 2}}),
 				},
 			],
