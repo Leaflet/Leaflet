@@ -1,4 +1,32 @@
-import {DefaultIcon} from 'leaflet';
+import {Assertion, util} from 'chai';
+import {DefaultIcon, LatLng, Point} from 'leaflet';
+
+util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
+	expected = new Point(expected);
+
+	new Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
+	new Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
+});
+
+util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
+	expected = new LatLng(expected);
+
+	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
+	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
+	new Assertion(this._obj.alt).to.eql(expected.alt);
+});
+
+util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
+	expected = new LatLng(expected);
+
+	new Assertion(this._obj.lat).to.eql(expected.lat);
+	new Assertion(this._obj.lng).to.eql(expected.lng);
+	new Assertion(this._obj.alt).to.eql(expected.alt);
+});
+
+const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
+it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
+it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
 
 // Load leaflet.css as a real <link> (not a Vite-injected <style>) so the
 // DefaultIcon path autodetection can find it via document.querySelector.
