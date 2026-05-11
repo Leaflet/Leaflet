@@ -7,7 +7,7 @@ env:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -24,7 +24,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -44,7 +44,7 @@ jobs:
   bundlemon:
     if: github.repository_owner == 'Leaflet'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -68,7 +68,7 @@ jobs:
 
   test-ssr:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -98,7 +98,7 @@ jobs:
 
   test:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-    timeout-minutes: 15
+    timeout-minutes: 8
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
     strategy:
@@ -152,7 +152,7 @@ jobs:
       contents: write
     if: github.repository_owner == 'Leaflet' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -187,7 +187,7 @@ jobs:
   publish-npm:
     if: github.repository_owner == 'Leaflet' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v6

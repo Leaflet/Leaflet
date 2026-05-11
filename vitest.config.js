@@ -18,10 +18,11 @@ export default defineConfig({
 		include: ['spec/suites/**/*Spec.js'],
 		setupFiles: ['spec/setup.js'],
 		// Bound individual test/hook/teardown durations so a stuck spec fails
-		// fast with a useful stack instead of hanging the whole worker.
-		testTimeout: 15000,
-		hookTimeout: 15000,
-		teardownTimeout: 10000,
+		// fast with a useful stack instead of hanging the whole worker. Long
+		// flyTo specs (~2-3s normally) set their own higher timeout per-test.
+		testTimeout: 8000,
+		hookTimeout: 8000,
+		teardownTimeout: 5000,
 		browser: {
 			enabled: true,
 			provider: playwright({contextOptions: {hasTouch: touch}}),
