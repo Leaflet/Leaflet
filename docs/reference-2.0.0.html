@@ -987,7 +987,8 @@ are respected, and that the renderers do exist on the map.</p>
 	<tr id='map-openpopup'>
 		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Creates a popup with the specified content and options and opens it in the given point on a map.</p>
+		<td><p>Creates a popup with the specified content and options and opens it in the given point on a map.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='map-closepopup'>
@@ -1005,7 +1006,8 @@ are respected, and that the renderers do exist on the map.</p>
 	<tr id='map-opentooltip'>
 		<td><code><b>openTooltip</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Creates a tooltip with the specified content and options and open it.</p>
+		<td><p>Creates a tooltip with the specified content and options and open it.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='map-closetooltip'>
@@ -2856,8 +2858,11 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='marker-unbindpopup'>
@@ -2893,7 +2898,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='marker-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='marker-getpopup'>
@@ -2927,8 +2933,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='marker-unbindtooltip'>
@@ -2964,7 +2973,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='marker-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='marker-gettooltip'>
@@ -3138,7 +3148,8 @@ The verification can optionally be propagated, it will return <code>true</code> 
 		<td><code>String|HTMLElement|Function</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</td>
 	</tr>
 </tbody></table>
 
@@ -3438,8 +3449,11 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	<tr id='divoverlay-setcontent'>
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
-The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
+HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
+passed the source layer will be passed to the function. The function should
+return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-getelement'>
@@ -3553,8 +3567,11 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-unbindpopup'>
@@ -3590,7 +3607,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='divoverlay-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-getpopup'>
@@ -3624,8 +3642,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-unbindtooltip'>
@@ -3661,7 +3682,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='divoverlay-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-gettooltip'>
@@ -3786,6 +3808,11 @@ open popups while making sure that only one popup is open at one time
 <p>or</p>
 <pre><code class="language-js">const popup = new Popup(latlng, {content: '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;'})
 	.openOn(map);
+</code></pre>
+<p><strong>Security note.</strong> Popup string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element using <code>textContent</code> to render it as plain text:</p>
+<pre><code class="language-js">const el = document.createElement('div');
+el.textContent = untrustedString;
+marker.bindPopup(el);
 </code></pre>
 
 
@@ -3982,7 +4009,8 @@ on the map. Defaults to the map's <a href="#map-closepopuponclick"><code>closePo
 		<td><code>String|HTMLElement|Function</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</td>
 	</tr>
 </tbody></table>
 
@@ -4310,8 +4338,11 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	<tr id='popup-setcontent'>
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
-The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
+HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
+passed the source layer will be passed to the function. The function should
+return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
 </td>
 	</tr>
 	<tr id='popup-getelement'>
@@ -4426,8 +4457,11 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='popup-unbindpopup'>
@@ -4463,7 +4497,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='popup-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='popup-getpopup'>
@@ -4497,8 +4532,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='popup-unbindtooltip'>
@@ -4534,7 +4572,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='popup-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='popup-gettooltip'>
@@ -4657,6 +4696,11 @@ The verification can optionally be propagated, it will return <code>true</code> 
 <p>or</p>
 <pre><code class="language-js">const tooltip = new Tooltip(latlng, {content: 'Hello world!&lt;br /&gt;This is a nice tooltip.'})
 	.addTo(map);
+</code></pre>
+<p><strong>Security note.</strong> Tooltip string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element using <code>textContent</code> to render it as plain text:</p>
+<pre><code class="language-js">const el = document.createElement('div');
+el.textContent = untrustedString;
+marker.bindTooltip(el);
 </code></pre>
 <p>Note about tooltip offset. Leaflet takes two options in consideration
 for computing tooltip offsetting:</p>
@@ -4794,7 +4838,8 @@ position on the map.</td>
 		<td><code>String|HTMLElement|Function</code></td>
 		<td><code>&#x27;&#x27;</code></td>
 		<td>Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</td>
+passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</td>
 	</tr>
 </tbody></table>
 
@@ -5108,8 +5153,11 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 	<tr id='tooltip-setcontent'>
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the HTML content of the overlay. If a function is passed the source layer will be passed to the function.
-The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
+		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
+HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
+passed the source layer will be passed to the function. The function should
+return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
 </td>
 	</tr>
 	<tr id='tooltip-getelement'>
@@ -5224,8 +5272,11 @@ The function should return a <code>String</code> or <code>HTMLElement</code> to 
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tooltip-unbindpopup'>
@@ -5261,7 +5312,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tooltip-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tooltip-getpopup'>
@@ -5295,8 +5347,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tooltip-unbindtooltip'>
@@ -5332,7 +5387,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tooltip-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tooltip-gettooltip'>
@@ -6088,8 +6144,11 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-unbindpopup'>
@@ -6125,7 +6184,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-getpopup'>
@@ -6159,8 +6219,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-unbindtooltip'>
@@ -6196,7 +6259,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-gettooltip'>
@@ -7021,8 +7085,11 @@ callback is called when the tile has been loaded.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-unbindpopup'>
@@ -7058,7 +7125,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-wms-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-getpopup'>
@@ -7092,8 +7160,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-unbindtooltip'>
@@ -7129,7 +7200,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='tilelayer-wms-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-gettooltip'>
@@ -7745,8 +7817,11 @@ used by this overlay.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-unbindpopup'>
@@ -7782,7 +7857,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='imageoverlay-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-getpopup'>
@@ -7816,8 +7892,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-unbindtooltip'>
@@ -7853,7 +7932,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='imageoverlay-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-gettooltip'>
@@ -8567,8 +8647,11 @@ used by this overlay.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-unbindpopup'>
@@ -8604,7 +8687,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='videooverlay-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-getpopup'>
@@ -8638,8 +8722,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-unbindtooltip'>
@@ -8675,7 +8762,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='videooverlay-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='videooverlay-gettooltip'>
@@ -9330,8 +9418,11 @@ used by this overlay.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-unbindpopup'>
@@ -9367,7 +9458,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svgoverlay-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-getpopup'>
@@ -9401,8 +9493,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-unbindtooltip'>
@@ -9438,7 +9533,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svgoverlay-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='svgoverlay-gettooltip'>
@@ -9995,8 +10091,11 @@ for a second (also called long press).</td>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='path-unbindpopup'>
@@ -10032,7 +10131,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='path-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='path-getpopup'>
@@ -10066,8 +10166,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='path-unbindtooltip'>
@@ -10103,7 +10206,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='path-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='path-gettooltip'>
@@ -10831,8 +10935,11 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='polyline-unbindpopup'>
@@ -10868,7 +10975,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polyline-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='polyline-getpopup'>
@@ -10902,8 +11010,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='polyline-unbindtooltip'>
@@ -10939,7 +11050,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polyline-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='polyline-gettooltip'>
@@ -11695,8 +11807,11 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='polygon-unbindpopup'>
@@ -11732,7 +11847,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polygon-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='polygon-getpopup'>
@@ -11766,8 +11882,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='polygon-unbindtooltip'>
@@ -11803,7 +11922,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='polygon-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='polygon-gettooltip'>
@@ -12569,8 +12689,11 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='rectangle-unbindpopup'>
@@ -12606,7 +12729,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='rectangle-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='rectangle-getpopup'>
@@ -12640,8 +12764,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='rectangle-unbindtooltip'>
@@ -12677,7 +12804,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='rectangle-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='rectangle-gettooltip'>
@@ -13409,8 +13537,11 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='circle-unbindpopup'>
@@ -13446,7 +13577,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circle-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='circle-getpopup'>
@@ -13480,8 +13612,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='circle-unbindtooltip'>
@@ -13517,7 +13652,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circle-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='circle-gettooltip'>
@@ -14196,8 +14332,11 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-unbindpopup'>
@@ -14233,7 +14372,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circlemarker-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-getpopup'>
@@ -14267,8 +14407,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-unbindtooltip'>
@@ -14304,7 +14447,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='circlemarker-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-gettooltip'>
@@ -14743,8 +14887,11 @@ its map has moved</td>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='svg-unbindpopup'>
@@ -14780,7 +14927,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svg-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='svg-getpopup'>
@@ -14814,8 +14962,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='svg-unbindtooltip'>
@@ -14851,7 +15002,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='svg-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='svg-gettooltip'>
@@ -15345,8 +15497,11 @@ its map has moved</td>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='canvas-unbindpopup'>
@@ -15382,7 +15537,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='canvas-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='canvas-getpopup'>
@@ -15416,8 +15572,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='canvas-unbindtooltip'>
@@ -15453,7 +15612,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='canvas-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='canvas-gettooltip'>
@@ -16012,8 +16172,11 @@ implement <code>methodName</code>.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='layergroup-unbindpopup'>
@@ -16049,7 +16212,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layergroup-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='layergroup-getpopup'>
@@ -16083,8 +16247,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='layergroup-unbindtooltip'>
@@ -16120,7 +16287,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layergroup-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='layergroup-gettooltip'>
@@ -16754,8 +16922,11 @@ implement <code>methodName</code>.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-unbindpopup'>
@@ -16791,7 +16962,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='featuregroup-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-getpopup'>
@@ -16825,8 +16997,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-unbindtooltip'>
@@ -16862,7 +17037,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='featuregroup-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-gettooltip'>
@@ -17612,8 +17788,11 @@ implement <code>methodName</code>.</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='geojson-unbindpopup'>
@@ -17649,7 +17828,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='geojson-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='geojson-getpopup'>
@@ -17683,8 +17863,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='geojson-unbindtooltip'>
@@ -17720,7 +17903,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='geojson-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='geojson-gettooltip'>
@@ -18435,8 +18619,11 @@ is specified, it must be called when the tile has finished loading and drawing.<
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-unbindpopup'>
@@ -18472,7 +18659,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='gridlayer-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-getpopup'>
@@ -18506,8 +18694,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-unbindtooltip'>
@@ -18543,7 +18734,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='gridlayer-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-gettooltip'>
@@ -22267,8 +22459,11 @@ layer.closePopup();
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='layer-unbindpopup'>
@@ -22304,7 +22499,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layer-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='layer-getpopup'>
@@ -22336,8 +22532,11 @@ layer.closeTooltip();
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='layer-unbindtooltip'>
@@ -22373,7 +22572,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='layer-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='layer-gettooltip'>
@@ -22778,8 +22978,11 @@ for a second (also called long press).</td>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-unbindpopup'>
@@ -22815,7 +23018,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='interactive-layer-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-getpopup'>
@@ -22849,8 +23053,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-unbindtooltip'>
@@ -22886,7 +23093,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='interactive-layer-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-gettooltip'>
@@ -23801,8 +24009,11 @@ any map state change (including <em>during</em> pan/zoom animations).</p>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='blanketoverlay-unbindpopup'>
@@ -23838,7 +24049,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='blanketoverlay-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='blanketoverlay-getpopup'>
@@ -23872,8 +24084,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='blanketoverlay-unbindtooltip'>
@@ -23909,7 +24124,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='blanketoverlay-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='blanketoverlay-gettooltip'>
@@ -24298,8 +24514,11 @@ its map has moved</td>
 		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='renderer-unbindpopup'>
@@ -24335,7 +24554,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='renderer-setpopupcontent'>
 		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
+		<td><p>Sets the content of the popup bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='renderer-getpopup'>
@@ -24369,8 +24589,11 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-necessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
+may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+<code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
+it will receive the layer as the first argument and should return a
+<code>String</code> or <code>HTMLElement</code>.</p>
 </td>
 	</tr>
 	<tr id='renderer-unbindtooltip'>
@@ -24406,7 +24629,8 @@ the layer as the first argument and should return a <code>String</code> or <code
 	<tr id='renderer-settooltipcontent'>
 		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
+		<td><p>Sets the content of the tooltip bound to this layer.
+String content is rendered as HTML; sanitize untrusted input or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead.</p>
 </td>
 	</tr>
 	<tr id='renderer-gettooltip'>

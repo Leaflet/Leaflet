@@ -168,6 +168,12 @@ L.geoJSON(geojsonFeature, {
 	onEachFeature: onEachFeature
 }).addTo(map);</code></pre>
 
+<p><strong>Security note.</strong> <code>bindPopup</code> renders its string argument as HTML. If your GeoJSON comes from untrusted sources (user uploads, third-party APIs, etc.), sanitize <code>popupContent</code> with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element via <code>textContent</code> and bind that instead:</p>
+
+<pre><code>var el = document.createElement('div');
+el.textContent = feature.properties.popupContent;
+layer.bindPopup(el);</code></pre>
+
 <h4>filter</h4>
 
 <p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and gets passed the <code>feature</code> and the <code>layer</code>. You can then utilise the values in the feature's properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
