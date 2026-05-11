@@ -144,10 +144,10 @@ jobs:
         run: npx playwright install ${{ matrix.project == 'firefox-retina' && 'firefox' || matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
+        run: npx vitest --run --project=${{ matrix.project }}
 
       - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }} --reporter=verbose --reporter=hanging-process
+        run: npx vitest --run --project=${{ matrix.project }}
         env:
           VITE_TOUCH: '1'
 

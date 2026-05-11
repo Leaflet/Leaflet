@@ -14,7 +14,6 @@ export function createContainer(width, height) {
 	container.style.left = '0px';
 	container.style.height = height;
 	container.style.width = width;
-	container.style.opacity = '0.4';
 	document.body.appendChild(container);
 
 	return container;
