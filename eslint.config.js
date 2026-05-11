@@ -40,13 +40,8 @@ export default [
 			'prefer-exponentiation-operator': 'error',
 			'prefer-object-has-own': 'error',
 
-			// TODO: Re-enable the rules below and fix the linting issues.
-			'no-invalid-this': 'off',
-
-			// TODO disable for now but reenable gradually
-			'e18e/prefer-array-at': 'off',
-			'e18e/prefer-includes': 'off',
-			'e18e/prefer-date-now': 'off'
+			'no-invalid-this': 'off', // used a lot by functions passed to addInitHook
+			'e18e/prefer-array-at': 'off', // Safari 15.4+, pretty high baseline
 		}
 	},
 	{

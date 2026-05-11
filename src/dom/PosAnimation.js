@@ -48,7 +48,7 @@ export class PosAnimation extends Evented {
 
 		this._startPos = DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
-		this._startTime = +new Date();
+		this._startTime = Date.now();
 
 		// @event start: Event
 		// Fired when the animation starts
@@ -73,7 +73,7 @@ export class PosAnimation extends Evented {
 	}
 
 	_step(round) {
-		const elapsed = (+new Date()) - this._startTime,
+		const elapsed = (Date.now()) - this._startTime,
 		duration = this._duration * 1000;
 
 		if (elapsed < duration) {
