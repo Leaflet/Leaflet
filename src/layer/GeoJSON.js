@@ -407,7 +407,7 @@ LayerGroup.include({
 					const feature = GeoJSON.asFeature(json);
 					// Squash nested feature collections
 					if (feature.type === 'FeatureCollection') {
-						jsons.push.apply(jsons, feature.features);
+						jsons.push(...feature.features);
 					} else {
 						jsons.push(feature);
 					}

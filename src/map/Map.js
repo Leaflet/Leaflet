@@ -1438,7 +1438,7 @@ export class LeafletMap extends Evented {
 		if (canvasTargets) {
 			// pick only targets with listeners
 			const filtered = canvasTargets.filter(t => t.listens(type, true));
-			targets = filtered.concat(targets);
+			targets = [...filtered, ...targets];
 		}
 
 		if (!targets.length) { return; }

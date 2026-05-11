@@ -55,9 +55,9 @@ describe('DomUtil', () => {
 			DomUtil.create('div', 'test', el);
 			DomUtil.create('div', 'test1', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
+			expect([...el.children].indexOf(elm)).to.equal(0);
 			DomUtil.toFront(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
+			expect([...el.children].indexOf(elm)).to.equal(2);
 		});
 
 		it('doesn\'t move an element if he\'s already in the front', () => {
@@ -81,9 +81,9 @@ describe('DomUtil', () => {
 			DomUtil.create('div', 'test1', el);
 			const elm = DomUtil.create('div', 'childContainer', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
+			expect([...el.children].indexOf(elm)).to.equal(2);
 			DomUtil.toBack(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
+			expect([...el.children].indexOf(elm)).to.equal(0);
 		});
 
 		it('doesn\'t move an element if it is already in the back', () => {

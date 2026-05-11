@@ -42,11 +42,8 @@ export default [
 
 			// TODO: Re-enable the rules below and fix the linting issues.
 			'no-invalid-this': 'off',
-			'prefer-spread': 'off',
-			'no-new': 'off',
 
 			// TODO disable for now but reenable gradually
-			'e18e/prefer-spread-syntax': 'off',
 			'e18e/prefer-array-at': 'off',
 			'e18e/prefer-static-regex': 'off',
 			'e18e/prefer-includes': 'off',
@@ -91,7 +88,8 @@ export default [
 			}
 		},
 		rules: {
-			'no-unused-expressions': 'off'
+			'no-unused-expressions': 'off',
+			'no-new': 'off',
 		}
 	},
 	{
