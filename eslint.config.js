@@ -2,7 +2,6 @@ import config from 'eslint-config-mourner';
 import css from '@eslint/css';
 import scriptTags from '@mapbox/eslint-plugin-script-tags';
 import importPlugin from 'eslint-plugin-import-x';
-import globals from 'globals';
 import baselineJs from 'eslint-plugin-baseline-js';
 import e18e from '@e18e/eslint-plugin';
 
@@ -112,7 +111,13 @@ export default [
 	{
 		files: ['spec/**'],
 		languageOptions: {
-			globals: {...globals.mocha}
+			globals: {
+				describe: 'readonly',
+				it: 'readonly',
+				beforeEach: 'readonly',
+				afterEach: 'readonly',
+				expect: 'readonly',
+			}
 		},
 		rules: {
 			'no-unused-expressions': 'off'
