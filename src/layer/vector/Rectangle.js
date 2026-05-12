@@ -1,5 +1,6 @@
 import {Polygon} from './Polygon.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {withInitHooks} from '../../core/Class.js';
 
 /*
  * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
@@ -27,18 +28,18 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
  */
 
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-export class Rectangle extends Polygon {
-	initialize(latLngBounds, options) {
-		super.initialize(this._boundsToLatLngs(latLngBounds), options);
+export const Rectangle = withInitHooks(class Rectangle extends Polygon {
+	constructor(latLngBounds, options) {
+		super(Rectangle.#boundsToLatLngs(latLngBounds), options);
 	}
 
 	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
 	setBounds(latLngBounds) {
-		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+		return this.setLatLngs(Rectangle.#boundsToLatLngs(latLngBounds));
 	}
 
-	_boundsToLatLngs(latLngBounds) {
+	static #boundsToLatLngs(latLngBounds) {
 		latLngBounds = new LatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),
@@ -47,4 +48,4 @@ export class Rectangle extends Polygon {
 			latLngBounds.getSouthEast()
 		];
 	}
-}
+});

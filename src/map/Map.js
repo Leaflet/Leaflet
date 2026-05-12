@@ -1,3 +1,4 @@
+import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
 import {EPSG3857} from '../geo/crs/EPSG3857.js';
@@ -48,7 +49,7 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // @constructor Map(el: HTMLElement, options?: Map options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `Map options`.
-export class LeafletMap extends Evented {
+export const LeafletMap = withInitHooks(class LeafletMap extends Evented {
 
 	static {
 		this.setDefaultOptions({
@@ -141,7 +142,8 @@ export class LeafletMap extends Evented {
 		});
 	}
 
-	initialize(id, options) { // (HTMLElement or String, Object)
+	constructor(id, options) { // (HTMLElement or String, Object)
+		super();
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,
@@ -167,8 +169,6 @@ export class LeafletMap extends Evented {
 		if (options.center && options.zoom !== undefined) {
 			this.setView(new LatLng(options.center), options.zoom, {reset: true});
 		}
-
-		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android
 		this._zoomAnimated = this.options.zoomAnimation;
@@ -1764,6 +1764,6 @@ export class LeafletMap extends Evented {
 
 		this._moveEnd(true);
 	}
-}
+});
 
 export const Map = LeafletMap;

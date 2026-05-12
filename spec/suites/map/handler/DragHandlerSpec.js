@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DomUtil, LatLng, LeafletMap, Marker, Point, withInitHooks} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -53,14 +53,15 @@ describe('DragHandler', () => {
 		});
 	});
 
-	class MyMap extends LeafletMap {
+	const MyMap = withInitHooks(class MyMap extends LeafletMap {
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
 		}
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
-	}
+	});
+
 	MyMap.addInitHook('on', 'load', function () {
 		this._initialPos = this._getPosition();
 	});

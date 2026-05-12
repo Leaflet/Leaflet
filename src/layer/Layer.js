@@ -1,5 +1,6 @@
 import {Evented} from '../core/Events.js';
 import {LeafletMap} from '../map/Map.js';
+import {withInitHooks} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
 /*
@@ -26,7 +27,7 @@ import * as Util from '../core/Util.js';
  */
 
 
-export class Layer extends Evented {
+export const Layer = withInitHooks(class Layer extends Evented {
 
 	static {
 		// Classes extending `Layer` will inherit the following options:
@@ -114,7 +115,7 @@ export class Layer extends Evented {
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
 	}
-}
+});
 
 /* @section Extension methods
  * @uninheritable

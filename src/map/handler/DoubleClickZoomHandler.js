@@ -1,4 +1,5 @@
 import {LeafletMap} from '../Map.js';
+import {withInitHooks} from '../../core/Class.js';
 import {Handler} from '../../core/Handler.js';
 
 /*
@@ -17,7 +18,7 @@ LeafletMap.mergeOptions({
 	doubleClickZoom: true
 });
 
-export class DoubleClickZoomHandler extends Handler {
+export const DoubleClickZoomHandler = withInitHooks(class DoubleClickZoomHandler extends Handler {
 	addHooks() {
 		this._map.on('dblclick', this._onDoubleClick, this);
 	}
@@ -38,7 +39,7 @@ export class DoubleClickZoomHandler extends Handler {
 			map.setZoomAround(e.containerPoint, zoom);
 		}
 	}
-}
+});
 
 // @section Handlers
 //

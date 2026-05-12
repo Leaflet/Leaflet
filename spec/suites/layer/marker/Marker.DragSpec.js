@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, LeafletMap, Marker, Point} from 'leaflet';
+import {DomUtil, LeafletMap, Marker, Point, withInitHooks} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
@@ -19,14 +19,15 @@ describe('Marker.Drag', () => {
 		removeMapContainer(map, container);
 	});
 
-	class MyMarker extends Marker {
+	const MyMarker = withInitHooks(class MyMarker extends Marker {
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
 		}
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
-	}
+	});
+
 	MyMarker.addInitHook('on', 'add', function () {
 		this._initialPos = this._getPosition();
 	});

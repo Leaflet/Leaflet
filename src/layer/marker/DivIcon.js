@@ -1,4 +1,5 @@
 import {Icon} from './Icon.js';
+import {withInitHooks} from '../../core/Class.js';
 import {Point} from '../../geometry/Point.js';
 
 /*
@@ -21,7 +22,7 @@ import {Point} from '../../geometry/Point.js';
 
 // @constructor DivIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
-export class DivIcon extends Icon {
+export const DivIcon = withInitHooks(class DivIcon extends Icon {
 
 	static {
 		this.setDefaultOptions({
@@ -68,4 +69,4 @@ export class DivIcon extends Icon {
 	createShadow() {
 		return null;
 	}
-}
+});

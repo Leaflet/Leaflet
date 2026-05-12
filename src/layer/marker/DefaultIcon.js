@@ -1,4 +1,5 @@
 import {Icon} from './Icon.js';
+import {withInitHooks} from '../../core/Class.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 
 const URL_RE = /^url\((['"])?(.+)\1\)$/;
@@ -19,7 +20,7 @@ const MARKER_ICON_RE = /^(.*)marker-icon\.svg$/;
  * `Marker.prototype.options.icon` with your own icon instead.
  */
 
-export class DefaultIcon extends Icon {
+export const DefaultIcon = withInitHooks(class DefaultIcon extends Icon {
 
 	static {
 		this.setDefaultOptions({
@@ -71,4 +72,4 @@ export class DefaultIcon extends Icon {
 		if (!link) { return ''; }
 		return link.href.substring(0, link.href.length - 'leaflet.css'.length - 1);
 	}
-}
+});
