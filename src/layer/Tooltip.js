@@ -36,8 +36,8 @@ import {FeatureGroup} from './FeatureGroup.js';
  *
  * **Security note.** Tooltip string content is rendered as HTML. If your content
  * may include untrusted input (e.g. data from users or external APIs), sanitize
- * it with a library like [DOMPurify](https://github.com/cure53/DOMPurify), or
- * build a DOM element using `textContent` to render it as plain text:
+ * it before passing it to Leaflet, or build a DOM element using `textContent`
+ * to render it as plain text:
  *
  * ```js
  * const el = document.createElement('div');
@@ -279,10 +279,10 @@ Layer.include({
 	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
 	// Binds a tooltip to the layer with the passed `content` and sets up the
 	// necessary event listeners. A `String` argument is rendered as HTML; if it
-	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
-	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
-	// it will receive the layer as the first argument and should return a
-	// `String` or `HTMLElement`.
+	// may contain untrusted input, sanitize it before passing it to Leaflet,
+	// or pass an `HTMLElement` with safe `textContent` instead. If a `Function`
+	// is passed it will receive the layer as the first argument and should return
+	// a `String` or `HTMLElement`.
 	bindTooltip(content, options) {
 
 		if (this._tooltip && this.isTooltipOpen()) {
