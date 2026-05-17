@@ -1,7 +1,7 @@
 /*
 /* @namespace DomEvent
  * @section Pointer detection
- * Detects the pointers that are currently active on the document.
+ * Detects the pointers that are active on the document.
  */
 
 const activePointers = new Map();

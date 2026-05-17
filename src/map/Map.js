@@ -615,7 +615,7 @@ export class LeafletMap extends Evented {
 
 	// @section Methods for modifying map state
 	// @method stop(): this
-	// Stops the currently running `panTo` or `flyTo` animation, if any.
+	// Stops the running `panTo` or `flyTo` animation, if any.
 	stop() {
 		this.setZoom(this._limitZoom(this._zoom));
 		if (!this.options.zoomSnap) {

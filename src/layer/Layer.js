@@ -56,7 +56,7 @@ export class Layer extends Evented {
 	}
 
 	// @method remove: this
-	// Removes the layer from the map it is currently active on.
+	// Removes the layer from the map it is active on.
 	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
 	}
@@ -196,7 +196,7 @@ LeafletMap.include({
 	},
 
 	// @method hasLayer(layer: Layer): Boolean
-	// Returns `true` if the given layer is currently added to the map
+	// Returns `true` if the given layer is added to the map
 	hasLayer(layer) {
 		return Util.stamp(layer) in this._layers;
 	},

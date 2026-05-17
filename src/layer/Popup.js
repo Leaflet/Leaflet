@@ -472,7 +472,7 @@ Layer.include({
 	},
 
 	// @method isPopupOpen(): boolean
-	// Returns `true` if the popup bound to this layer is currently open.
+	// Returns `true` if the popup bound to this layer is open.
 	isPopupOpen() {
 		return this._popup?.isOpen() ?? false;
 	},

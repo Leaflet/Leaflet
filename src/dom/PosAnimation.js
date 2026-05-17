@@ -58,7 +58,7 @@ export class PosAnimation extends Evented {
 	}
 
 	// @method stop()
-	// Stops the animation (if currently running).
+	// Stops the animation (if running).
 	stop() {
 		if (!this._inProgress) { return; }
 

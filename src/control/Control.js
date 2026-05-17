@@ -84,7 +84,7 @@ export class Control extends Class {
 	}
 
 	// @method remove: this
-	// Removes the control from the map it is currently active on.
+	// Removes the control from the map it is active on.
 	remove() {
 		if (!this._map) {
 			return this;

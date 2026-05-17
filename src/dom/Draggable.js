@@ -57,7 +57,7 @@ export class Draggable extends Evented {
 	disable() {
 		if (!this._enabled) { return; }
 
-		// If we're currently dragging this draggable,
+		// If we're dragging this draggable,
 		// disabling it counts as first ending the drag.
 		if (Draggable._dragging === this) {
 			this.finishDrag(true);

@@ -63,10 +63,10 @@ export class LayerGroup extends Layer {
 	}
 
 	// @method hasLayer(layer: Layer): Boolean
-	// Returns `true` if the given layer is currently added to the group.
+	// Returns `true` if the given layer is added to the group.
 	// @alternative
 	// @method hasLayer(id: Number): Boolean
-	// Returns `true` if the given internal ID is currently added to the group.
+	// Returns `true` if the given internal ID is added to the group.
 	hasLayer(layer) {
 		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;

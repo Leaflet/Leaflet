@@ -262,7 +262,7 @@ export class TileLayer extends GridLayer {
 					tile.remove();
 					delete this._tiles[i];
 					// @event tileabort: TileEvent
-					// Fired when a tile was loading but is now not wanted.
+					// Fired when a tile was loading but is no longer wanted.
 					this.fire('tileabort', {
 						tile,
 						coords

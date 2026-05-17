@@ -157,7 +157,7 @@ export function getSizedParentNode(element) {
 }
 
 // @function getScale(el: HTMLElement): Object
-// Computes the CSS scale currently applied on the element.
+// Computes the CSS scale applied on the element.
 // Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
 // and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
 export function getScale(element) {

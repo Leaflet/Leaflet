@@ -373,7 +373,7 @@ Layer.include({
 	},
 
 	// @method isTooltipOpen(): boolean
-	// Returns `true` if the tooltip bound to this layer is currently open.
+	// Returns `true` if the tooltip bound to this layer is open.
 	isTooltipOpen() {
 		return this._tooltip.isOpen();
 	},
