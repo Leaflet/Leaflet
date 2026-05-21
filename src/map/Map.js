@@ -170,7 +170,7 @@ export class LeafletMap extends Evented {
 
 		this.callInitHooks();
 
-		// don't animate on browsers without hardware-accelerated transitions or old Android
+		// don't animate on browsers without hardware-accelerated transitions
 		this._zoomAnimated = this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
