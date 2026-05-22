@@ -326,10 +326,8 @@ export class Canvas extends Renderer {
 		}
 
 		if (options.stroke && options.weight !== 0) {
-			if (ctx.setLineDash) {
-				ctx.lineDashOffset = Number(options.dashOffset ?? 0);
-				ctx.setLineDash(options._dashArray ?? []);
-			}
+			ctx.lineDashOffset = Number(options.dashOffset ?? 0);
+			ctx.setLineDash(options._dashArray ?? []);
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
