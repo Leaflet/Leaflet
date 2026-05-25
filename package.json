@@ -9,7 +9,7 @@
     "@eslint/css": "^1.2.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-terser": "^1.0.0",
-    "@vitest/browser": "^4.1.6",
+    "@vitest/browser": "^4.1.7",
     "@vitest/browser-playwright": "^4.1.6",
     "@vitest/coverage-v8": "^4.1.6",
     "@vitest/ui": "^4.1.6",
