@@ -30,7 +30,7 @@
     "sinon": "^22.0.0",
     "ssri": "^14.0.0",
     "ui-event-simulator": "^2.0.0",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.7"
   },
   "type": "module",
   "exports": {
