@@ -12,7 +12,7 @@
     "@vitest/browser": "^4.1.6",
     "@vitest/browser-playwright": "^4.1.6",
     "@vitest/coverage-v8": "^4.1.6",
-    "@vitest/ui": "^4.1.6",
+    "@vitest/ui": "^4.1.7",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.2",
     "eslint": "^10.3.0",
