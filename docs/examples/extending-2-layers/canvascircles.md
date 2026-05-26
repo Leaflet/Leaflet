@@ -3,14 +3,14 @@ layout: tutorial_frame
 title: CanvasCircles Example
 ---
 <script type="module">
-	import L, {LeafletMap, GridLayer} from 'leaflet';
+	import {LeafletMap, GridLayer} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		center: [0, 0],
 		zoom: 0
 	});
 
-	GridLayer.CanvasCircles = GridLayer.extend({
+	class CanvasCirclesGridLayer extends GridLayer {
 		createTile(coords) {
 			const tile = document.createElement('canvas');
 
@@ -27,11 +27,8 @@ title: CanvasCircles Example
 
 			return tile;
 		}
-	});
+	}
 
-	const cavasGridLayer = new GridLayer.CanvasCircles();
+	const cavasGridLayer = new CanvasCirclesGridLayer();
 	map.addLayer(cavasGridLayer);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

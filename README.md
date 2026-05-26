@@ -1,4 +1,4 @@
-Leaflet was created 14 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
+Leaflet was created in September 2010, 15 years ago, by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
 Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
 
@@ -21,7 +21,7 @@ Leaflet maintainers.
 
 ---
 
-<img width="600" src="https://rawgit.com/Leaflet/Leaflet/main/src/images/logo.svg" alt="Leaflet" />
+<img width="600" src="src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **building powerful interactive maps**.
 

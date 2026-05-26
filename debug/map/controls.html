@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LeafletMap, Marker, LatLng, Control} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker, LatLng, LayersControl, ScaleControl} from 'leaflet';
 
 			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -33,7 +33,7 @@
 			const marker2 = new Marker(new LatLng(50.502, 30.515));
 			map.addLayer(marker2);
 
-			const layersControl = new Control.Layers({
+			const layersControl = new LayersControl({
 				'OSM': osm,
 				'OSM2': osm2
 			}, {
@@ -42,7 +42,7 @@
 			});
 
 			map.addControl(layersControl);
-			map.addControl(new Control.Scale());
+			map.addControl(new ScaleControl());
 		</script>
 	</body>
 </html>

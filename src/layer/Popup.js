@@ -2,7 +2,7 @@ import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {Point} from '../geometry/Point.js';
-import {Map} from '../map/Map.js';
+import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
 import {FeatureGroup} from './FeatureGroup.js';
@@ -132,7 +132,7 @@ export class Popup extends DivOverlay {
 	}
 
 	// @namespace Popup
-	// @method openOn(map: Map): this
+	// @method openOn(map: LeafletMap): this
 	// Alternative to `map.openPopup(popup)`.
 	// Adds the popup to the map and closes the previous one.
 	openOn(map) {
@@ -345,14 +345,14 @@ export class Popup extends DivOverlay {
  * @option closePopupOnClick: Boolean = true
  * Set it to `false` if you don't want popups to close when user clicks the map.
  */
-Map.mergeOptions({
+LeafletMap.mergeOptions({
 	closePopupOnClick: true
 });
 
 
 // @namespace LeafletMap
 // @section Methods for Layers and Controls
-Map.include({
+LeafletMap.include({
 	// @method openPopup(popup: Popup): this
 	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
 	// @alternative

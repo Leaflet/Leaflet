@@ -60,7 +60,7 @@ const overlayMaps = {
 
 Now, all that's left to do is to create a [Layers Control](/reference.html#control-layers) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional: you can pass just a base layers object by omitting the second argument, or just an overlays objects by passing `null` as the first argument. In each case, the omitted layer type will not appear for the user to select.
 
-<pre><code>const layerControl = new Control.Layers(baseMaps, overlayMaps).addTo(map);</code></pre>
+<pre><code>const layerControl = new LayersControl(baseMaps, overlayMaps).addTo(map);</code></pre>
 
 Note that we added `osm` and `cities` layers to the map but didn't add `osmHOT`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 

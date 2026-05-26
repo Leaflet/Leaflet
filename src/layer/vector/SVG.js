@@ -1,10 +1,6 @@
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';
-import {svgCreate, pointsToPath} from './SVG.Util.js';
-export {pointsToPath};
-
-export const create = svgCreate;
 
 /*
  * @class SVG
@@ -39,12 +35,12 @@ export const create = svgCreate;
 export class SVG extends Renderer {
 
 	_initContainer() {
-		this._container = create('svg');
+		this._container = SVG.create('svg');
 
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 
-		this._rootGroup = create('g');
+		this._rootGroup = SVG.create('g');
 		this._container.appendChild(this._rootGroup);
 	}
 
@@ -87,7 +83,7 @@ export class SVG extends Renderer {
 	// methods below are called by vector layers implementations
 
 	_initPath(layer) {
-		const path = layer._path = create('path');
+		const path = layer._path = SVG.create('path');
 
 		// @namespace Path
 		// @option className: String = null
@@ -159,7 +155,7 @@ export class SVG extends Renderer {
 	}
 
 	_updatePoly(layer, closed) {
-		this._setPath(layer, pointsToPath(layer._parts, closed));
+		this._setPath(layer, SVG.pointsToPath(layer._parts, closed));
 	}
 
 	_updateCircle(layer) {
@@ -189,5 +185,27 @@ export class SVG extends Renderer {
 	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
-}
 
+	// @function create(name: String): SVGElement
+	// Returns a instance of [SVGElement](https://developer.mozilla.org/docs/Web/API/SVGElement),
+	// corresponding to the class name passed. For example, using 'line' will return
+	// an instance of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
+	static create(name) {
+		return document.createElementNS('http://www.w3.org/2000/svg', name);
+	}
+
+	// @function pointsToPath(rings: Point[], closed: Boolean): String
+	// Generates a SVG path string for multiple rings, with each ring turning
+	// into "M..L..L.." instructions
+	static pointsToPath(rings, closed) {
+		const str = rings.flatMap(points => [
+			...points.map((p, j) => `${(j ? 'L' : 'M') + p.x} ${p.y}`),
+			// closes the ring for polygons
+			closed ? 'z' : ''
+		]).join('');
+
+		// SVG complains about empty path strings
+		return str || 'M0 0';
+	}
+
+}

@@ -19,14 +19,15 @@ describe('Marker.Drag', () => {
 		removeMapContainer(map, container);
 	});
 
-	const MyMarker = Marker.extend({
+	class MyMarker extends Marker {
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
-		},
+		}
 		getOffset() {
 			return this._getPosition().subtract(this._initialPos);
 		}
-	}).addInitHook('on', 'add', function () {
+	}
+	MyMarker.addInitHook('on', 'add', function () {
 		this._initialPos = this._getPosition();
 	});
 

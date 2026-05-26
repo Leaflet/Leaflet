@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Video Overlay Tutorial (Video with Controls)
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
+	import {LeafletMap, TileLayer, LatLngBounds, VideoOverlay, Control, DomUtil, DomEvent} from 'leaflet';
 
 	const map = new LeafletMap('map');
 
@@ -31,7 +31,7 @@ title: Video Overlay Tutorial (Video with Controls)
 	}).addTo(map);
 
 	videoOverlay.on('load', () => {
-		const MyPauseControl = Control.extend({
+		class MyPauseControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Pause';
@@ -41,23 +41,20 @@ title: Video Overlay Tutorial (Video with Controls)
 				});
 				return button;
 			}
-		});
-		const MyPlayControl = Control.extend({
+		}
+		class MyPlayControl extends Control {
 			onAdd() {
 				const button = DomUtil.create('button');
 				button.title = 'Play';
 				button.innerHTML = '<span aria-hidden="true">▶️</span>';
-				L.DomEvent.on(button, 'click', () => {
+				DomEvent.on(button, 'click', () => {
 					videoOverlay.getElement().play();
 				});
 				return button;
 			}
-		});
+		}
 
 		const pauseControl = (new MyPauseControl()).addTo(map);
 		const playControl = (new MyPlayControl()).addTo(map);
 	});
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

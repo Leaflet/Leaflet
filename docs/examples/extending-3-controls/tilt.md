@@ -25,18 +25,18 @@ title: Tilt Handler Example
 
 
 <script type="module">
-	import L, {LeafletMap, Handler, Point, DomEvent, TileLayer} from 'leaflet';
+	import {LeafletMap, Handler, Point, DomEvent, TileLayer} from 'leaflet';
 
 	const trd = [63.41, 10.41];
 	
-	const TiltHandler = Handler.extend({
+	class TiltHandler extends Handler {
 		addHooks() {
 			DomEvent.on(window, 'deviceorientation', this._tilt, this);
-		},
+		}
 	
 		removeHooks() {
 			DomEvent.off(window, 'deviceorientation', this._tilt, this);
-		},
+		}
 
 		_tilt(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
@@ -50,7 +50,7 @@ title: Tilt Handler Example
 			}
 			document.getElementById('info').innerHTML = info;
 		}
-	});
+	}
 	
 	Map.addInitHook('addHandler', 'tilt', TiltHandler);
 
@@ -64,7 +64,4 @@ title: Tilt Handler Example
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
-	
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

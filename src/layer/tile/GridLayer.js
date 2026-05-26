@@ -315,7 +315,7 @@ export class GridLayer extends Layer {
 
 		this._container.style.opacity = this.options.opacity;
 
-		const now = +new Date();
+		const now = Date.now();
 		let nextFrame = false,
 		willPrune = false;
 
@@ -835,7 +835,7 @@ export class GridLayer extends Layer {
 		tile = this._tiles[key];
 		if (!tile) { return; }
 
-		tile.loaded = +new Date();
+		tile.loaded = Date.now();
 		if (this._map._fadeAnimated) {
 			tile.el.style.opacity = 0;
 			cancelAnimationFrame(this._fadeFrame);

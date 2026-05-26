@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Zoom Level Zero Example
 ---
 <script type="module">
-	import L, {LeafletMap, TileLayer} from 'leaflet';
+	import {LeafletMap, TileLayer} from 'leaflet';
 
 	const map = new LeafletMap('map', {
 		minZoom: 0,
@@ -17,7 +17,4 @@ title: Zoom Level Zero Example
 	}).addTo(map);
 
 	map.setView([0, 0], 0);
-
-	globalThis.L = L; // only for debugging in the developer console
-	globalThis.map = map; // only for debugging in the developer console
 </script>

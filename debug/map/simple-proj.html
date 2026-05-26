@@ -17,10 +17,10 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, CRS, Polygon, Marker, ImageOverlay, GridLayer, Circle} from 'leaflet';
+			import {LeafletMap, SimpleCRS, Polygon, Marker, ImageOverlay, GridLayer, Circle} from 'leaflet';
 
 			const map = new LeafletMap('map', {
-				crs: CRS.Simple
+				crs: SimpleCRS
 			}).setView([0, 0], 0);
 
 			new Polygon([

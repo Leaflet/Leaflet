@@ -1,5 +1,5 @@
 import * as Util from '../core/Util.js';
-import {Earth} from './crs/CRS.Earth.js';
+import {EarthCRS} from './crs/EarthCRS.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
 /* @class LatLng
@@ -138,13 +138,13 @@ export class LatLng {
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula).
 	distanceTo(other) {
-		return Earth.distance(this, new LatLng(other));
+		return EarthCRS.distance(this, new LatLng(other));
 	}
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap() {
-		return Earth.wrapLatLng(this);
+		return EarthCRS.wrapLatLng(this);
 	}
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
@@ -169,4 +169,3 @@ export class LatLng {
 		return latlng;
 	}
 };
-

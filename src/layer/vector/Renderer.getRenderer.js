@@ -1,8 +1,8 @@
-import {Map} from '../../map/Map.js';
+import {LeafletMap} from '../../map/Map.js';
 import {Canvas} from './Canvas.js';
 import {SVG} from './SVG.js';
 
-Map.include({
+LeafletMap.include({
 	// @namespace LeafletMap; @method getRenderer(layer: Path): Renderer
 	// Returns the instance of `Renderer` that should be used to render the given
 	// `Path`. It will ensure that the `renderer` options of the map and paths

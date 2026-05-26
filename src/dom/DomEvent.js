@@ -103,7 +103,7 @@ function addOne(obj, type, fn, context) {
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
 	let handler = function (e) {
-		return fn.call(context || obj, e || window.event);
+		return fn.call(context || obj, e);
 	};
 
 	const originalHandler = handler;
@@ -117,7 +117,6 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
 		} else if (type === 'pointerenter' || type === 'pointerleave') {
 			handler = function (e) {
-				e ??= window.event;
 				if (isExternalTarget(obj, e)) {
 					originalHandler(e);
 				}
@@ -182,8 +181,10 @@ export function disableScrollPropagation(el) {
 }
 
 // @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'click'`, `'dblclick'`, `'contextmenu'`
+// Adds `stopPropagation` to the element's `'dblclick'`, `'contextmenu'`
 // and `'pointerdown'` events (plus browser variants).
+// For `'click'` events, prevents the map from handling the click
+// while still allowing the native DOM click event to propagate normally.
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	el['_leaflet_disable_click'] = true;
