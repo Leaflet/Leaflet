@@ -373,7 +373,7 @@ export class LeafletMap extends Evented {
 	flyTo(targetCenter, targetZoom, options) {
 
 		options ??= {};
-		if (options.animate === false) {
+		if (Browser.reducedMotion || options.animate === false) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
