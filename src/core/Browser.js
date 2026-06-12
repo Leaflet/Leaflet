@@ -19,7 +19,12 @@ const chrome = userAgentContains('chrome');
 const safari = !chrome && userAgentContains('safari');
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
-const mobile = typeof orientation !== 'undefined';
+const mobile = typeof window !== 'undefined' && (
+	// Standard Screen Orientation API
+	(typeof window.screen !== 'undefined' && typeof window.screen.orientation !== 'undefined') ||
+	// Deprecated fallback for older browsers
+	typeof window.orientation !== 'undefined'
+);
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
@@ -42,10 +47,10 @@ const touch = touchNative || pointer;
 const retina = typeof window === 'undefined' || typeof window.devicePixelRatio === 'undefined' ? false : window.devicePixelRatio > 1;
 
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
+const mac = userAgentContains('macintosh');
 
 // @property linux: Boolean; `true` when the browser is running in a Linux platform
-const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
+const linux = userAgentContains('linux') && !userAgentContains('android');
 
 function userAgentContains(str) {
 	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
