@@ -26,7 +26,7 @@ const mobile = typeof orientation !== 'undefined';
 // Determines whether animations should play or not.
 const reducedMotion = navigator.preferences?.reducedMotion?.value ?
 	navigator.preferences.reducedMotion.value === 'reduce' :
-	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
