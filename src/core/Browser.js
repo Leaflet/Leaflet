@@ -21,6 +21,13 @@ const safari = !chrome && userAgentContains('safari');
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 const mobile = typeof orientation !== 'undefined';
 
+// @property reducedMotion: Boolean
+// `true` if the user has [configured their environment for reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
+// Determines whether animations should play or not.
+const reducedMotion = navigator.preferences?.reducedMotion?.value ?
+	navigator.preferences.reducedMotion.value === 'reduce' :
+	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
 const pointer = typeof window === 'undefined' ? false : !!window.PointerEvent;
@@ -58,6 +65,7 @@ export default {
 	chrome,
 	safari,
 	mobile,
+	reducedMotion,
 	pointer,
 	touch,
 	touchNative,
