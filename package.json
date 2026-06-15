@@ -26,7 +26,7 @@
     "lint-staged": "^17.0.5",
     "playwright": "^1.60.0",
     "prosthetic-hand": "^2.2.2",
-    "rollup": "^4.60.4",
+    "rollup": "^4.62.0",
     "sinon": "^22.0.0",
     "ssri": "^14.0.0",
     "ui-event-simulator": "^2.0.0",
