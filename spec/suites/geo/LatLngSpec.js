@@ -136,5 +136,11 @@ describe('LatLng', () => {
 
 			expect(a === b).to.be.false;
 		});
+		it('does not set alt as own property when original has no alt', () => {
+			const a = new LatLng(50.5, 30.5);
+			const b = a.clone();
+
+			expect(Object.hasOwn(b, 'alt')).to.be.false;
+		});
 	});
 });
