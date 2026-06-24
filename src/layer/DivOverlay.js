@@ -44,17 +44,19 @@ export class DivOverlay extends Layer {
 	}
 
 	constructor(options, source) {
-		super();
-		if (options instanceof LatLng || Array.isArray(options)) {
-			this._latlng = new LatLng(options);
-			Util.setOptions(this, source);
-		} else {
-			Util.setOptions(this, options);
-			this._source = source;
-		}
-		if (this.options.content) {
-			this._content = this.options.content;
-		}
+		// the first argument may be a `LatLng` (the overlay position) instead of
+		// an options object, in which case `source` carries the options
+		const isLatLng = options instanceof LatLng || Array.isArray(options);
+		super(isLatLng ? source : options, (layer) => {
+			if (isLatLng) {
+				layer._latlng = new LatLng(options);
+			} else {
+				layer._source = source;
+			}
+			if (layer.options.content) {
+				layer._content = layer.options.content;
+			}
+		});
 	}
 
 	// @method openOn(map: LeafletMap): this

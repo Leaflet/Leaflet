@@ -44,16 +44,24 @@ export class Layer extends Evented {
 		});
 	}
 
-	constructor(options) {
+	// `Layer` is abstract; subclasses construct it via `super(options, beforeInit)`:
+	// - `options`: an options object, merged into the layer's default `options`.
+	// - `beforeInit(layer)`: optional callback that lets a subclass set up its
+	//   essential state before the `init` event fires. It is passed the new layer
+	//   instance (a subclass cannot reference `this` until `super()` returns), and
+	//   runs after `options` are set but before `init`.
+	constructor(options, beforeInit = () => {}) {
 		super();
 		Util.setOptions(this, options);
 
+		beforeInit(this);
+
 		// @event init: Event
-		// Fired for every layer instance as it is constructed. Listeners are
-		// registered on the class itself (`Layer.on('init', fn)`) and run for every
-		// layer created, with the new layer as `e.target`. Note that this fires from
-		// the `Layer` constructor, i.e. before any subclass constructor body has run,
-		// so subclass-specific state (e.g. a marker's `_latlng`) is not set yet.
+		// Fired for every layer instance once it has been constructed. Listeners
+		// are registered on the class itself (`Layer.on('init', fn)`) and run for
+		// every layer created, with the new layer as `e.target`. Subclasses that
+		// want their state available to `init` listeners must set it up via the
+		// `beforeInit` callback passed to `super()`.
 		Layer.fire('init', {target: this});
 	}
 

@@ -66,8 +66,9 @@ export class Polyline extends Path {
 	}
 
 	constructor(latlngs, options) {
-		super(options);
-		this._setLatLngs(latlngs);
+		super(options, (layer) => {
+			layer._setLatLngs(latlngs);
+		});
 	}
 
 	// @method getLatLngs(): LatLng[]

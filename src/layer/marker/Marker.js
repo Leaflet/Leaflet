@@ -110,8 +110,9 @@ export class Marker extends Layer {
 	 */
 
 	constructor(latlng, options) {
-		super(options);
-		this._latlng = new LatLng(latlng);
+		super(options, (layer) => {
+			layer._latlng = new LatLng(latlng);
+		});
 	}
 
 	onAdd(map) {

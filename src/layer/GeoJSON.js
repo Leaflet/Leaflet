@@ -90,11 +90,11 @@ export class GeoJSON extends FeatureGroup {
 	 */
 
 	constructor(geojson, options) {
-		super(undefined, options);
-
-		if (geojson) {
-			this.addData(geojson);
-		}
+		super(undefined, options, (layer) => {
+			if (geojson) {
+				layer.addData(geojson);
+			}
+		});
 	}
 
 	// @method addData( <GeoJSON> data ): this

@@ -27,9 +27,10 @@ export class CircleMarker extends Path {
 	}
 
 	constructor(latlng, options) {
-		super(options);
-		this._latlng = new LatLng(latlng);
-		this._radius = this.options.radius;
+		super(options, (layer) => {
+			layer._latlng = new LatLng(latlng);
+			layer._radius = layer.options.radius;
+		});
 	}
 
 	// @method setLatLng(latLng: LatLng): this

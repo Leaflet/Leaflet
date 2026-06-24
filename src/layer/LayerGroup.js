@@ -23,14 +23,17 @@ import * as Util from '../core/Util.js';
 // Create a layer group, optionally given an initial set of layers and an `options` object.
 export class LayerGroup extends Layer {
 
-	constructor(layers, options) {
-		super(options);
+	constructor(layers, options, beforeInit = () => {}) {
+		super(options, (group) => {
+			group._layers = {};
 
-		this._layers = {};
+			for (const layer of layers ?? []) {
+				group.addLayer(layer);
+			}
 
-		for (const layer of layers ?? []) {
-			this.addLayer(layer);
-		}
+			// let subclasses (e.g. GeoJSON) add their own state before `init`
+			beforeInit(group);
+		});
 	}
 
 	// @method addLayer(layer: Layer): this

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DivIcon, DefaultIcon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, Layer, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -344,6 +344,24 @@ describe('Marker', () => {
 				done();
 			});
 			UIEventSimulator.fire('pointermove', marker._icon);
+		});
+	});
+
+	describe('init event', () => {
+		it('has its latlng set (via runBeforeInitEvent) when the `init` event fires', () => {
+			let latlngWhenFired;
+			const onInit = ({target}) => {
+				if (target instanceof Marker) {
+					latlngWhenFired = target.getLatLng();
+				}
+			};
+			Layer.on('init', onInit);
+
+			new Marker([1, 2]);
+
+			Layer.off('init', onInit);
+
+			expect(latlngWhenFired).to.be.nearLatLng([1, 2]);
 		});
 	});
 });
