@@ -22,7 +22,7 @@ From a technical point of view, Leaflet can be extended in different ways:
 	* Handlers are invisible and interpret browser events
 	* Controls are fixed interface elements
 * Including more, or replacing functionality (methods, fields) of an existing class with `Class.include()`
-* Using `Class.addInitHook()` to run additional constructor code.
+* Listening for a class's `init` event to run additional code whenever an instance is created.
 
 ## Extending Leaflet Classes
 
@@ -129,22 +129,29 @@ console.log(instance.incrementCount()); // Outputs "2"
 
 Note: Use `.include()` sparingly, as modifying base classes can have unexpected side effects. As a general rule of thumb, try to extend existing classes instead.
 
-### Initialization hooks
+### Initialization events
 
-Use `addInitHook()` to run code after `initialize()` completes. This is useful for setup that depends on state from the class being modified (e.g. using `.include()`):
+Leaflet's eventful classes such as `Layer` and `LeafletMap` fire an `init` event once an instance has finished initializing, and your own `Evented` subclasses can do the same by firing it at the end of `initialize()`. By registering a class-level listener with `.on('init', …)`, you can run code for every instance that gets created. This is useful for setup that depends on state from the class being modified (e.g. using `.include()`). The new instance is passed as the event's `target`:
 
 ```js
-class MyBox extends Class {
+class MyBox extends Evented {
 	static {
 		this.setDefaultOptions({
 			width: 1,
 			height: 1
 		});
 	}
+
+	initialize(options) {
+		Util.setOptions(this, options);
+
+		// notify class-level `init` listeners once the instance is ready
+		MyBox.fire('init', {target: this});
+	}
 }
 
-MyBox.addInitHook(function() {
-	this._area = this.options.width * this.options.height;
+MyBox.on('init', ({target: box}) => {
+	box._area = box.options.width * box.options.height;
 });
 
 MyBox.include({
@@ -155,25 +162,4 @@ MyBox.include({
 
 const box = new MyBox({width: 5, height: 10});
 console.log(box.getArea()); // Outputs "50"
-```
-
-`addInitHook()` can also call a named method with arguments:
-
-```js
-class MyCube extends MyBox {
-	static {
-		this.setDefaultOptions({
-			depth: 1
-		});
-	}
-
-	_calculateVolume(multiplier/*, arg2, arg3. etc. */) {
-		this._volume = this.options.width * this.options.height * this.options.depth * multiplier;
-	}
-}
-
-MyCube.addInitHook('_calculateVolume', 1/*, arg2, arg3. etc. */);
-
-const cube = new MyCube({width: 2, height: 3, depth: 4});
-console.log(cube._volume); // Outputs "24"
 ```

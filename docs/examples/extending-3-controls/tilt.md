@@ -52,7 +52,7 @@ title: Tilt Handler Example
 		}
 	}
 	
-	Map.addInitHook('addHandler', 'tilt', TiltHandler);
+	LeafletMap.on('init', ({target: map}) => map.addHandler('tilt', TiltHandler));
 
 	const map = new LeafletMap('map', {
 		center: [0, 0],
