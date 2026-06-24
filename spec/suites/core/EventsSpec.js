@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Class, Evented, FeatureGroup, Marker, Util} from 'leaflet';
+import {Class, Evented, FeatureGroup, Layer, Marker, Util} from 'leaflet';
 import sinon from 'sinon';
 
 describe('Events', () => {
@@ -772,6 +772,41 @@ describe('Events', () => {
 			Foo.fire('test');
 
 			expect(spy.called).to.be.false;
+		});
+	});
+
+	describe('Layer init event', () => {
+		it('fires `init` on the `Layer` class for every layer, with the instance as target', () => {
+			const spy = sinon.spy();
+			Layer.on('init', spy);
+
+			const marker = new Marker([0, 0]),
+			group = new FeatureGroup();
+
+			Layer.off('init', spy);
+
+			expect(spy.callCount).to.eql(2);
+			expect(spy.getCall(0).args[0].target).to.equal(marker);
+			expect(spy.getCall(1).args[0].target).to.equal(group);
+		});
+
+		it('allows a single `Layer` listener to dispatch by instanceof', () => {
+			const seen = [];
+			const onInit = ({target}) => {
+				if (target instanceof FeatureGroup) {
+					seen.push('group');
+				} else if (target instanceof Marker) {
+					seen.push('marker');
+				}
+			};
+			Layer.on('init', onInit);
+
+			new FeatureGroup();
+			new Marker([0, 0]);
+
+			Layer.off('init', onInit);
+
+			expect(seen).to.eql(['group', 'marker']);
 		});
 	});
 });

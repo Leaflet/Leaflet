@@ -47,6 +47,14 @@ export class Layer extends Evented {
 	constructor(options) {
 		super();
 		Util.setOptions(this, options);
+
+		// @event init: Event
+		// Fired for every layer instance as it is constructed. Listeners are
+		// registered on the class itself (`Layer.on('init', fn)`) and run for every
+		// layer created, with the new layer as `e.target`. Note that this fires from
+		// the `Layer` constructor, i.e. before any subclass constructor body has run,
+		// so subclass-specific state (e.g. a marker's `_latlng`) is not set yet.
+		Layer.fire('init', {target: this});
 	}
 
 	/* @section
