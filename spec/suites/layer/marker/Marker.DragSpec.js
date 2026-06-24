@@ -20,8 +20,8 @@ describe('Marker.Drag', () => {
 	});
 
 	class MyMarker extends Marker {
-		initialize(...args) {
-			super.initialize(...args);
+		constructor(latlng, options) {
+			super(latlng, options);
 			this.on('add', () => {
 				this._initialPos = this._getPosition();
 			});

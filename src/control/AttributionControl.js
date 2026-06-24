@@ -34,8 +34,8 @@ export class AttributionControl extends Control {
 		});
 	}
 
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super(options);
 
 		this._attributions = {};
 	}

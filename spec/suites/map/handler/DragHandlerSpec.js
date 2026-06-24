@@ -54,8 +54,8 @@ describe('DragHandler', () => {
 	});
 
 	class MyMap extends LeafletMap {
-		initialize(...args) {
-			super.initialize(...args);
+		constructor(id, options) {
+			super(id, options);
 			this.on('load', () => {
 				this._initialPos = this._getPosition();
 			});

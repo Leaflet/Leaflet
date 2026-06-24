@@ -3,16 +3,16 @@
 
 Class powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.
 
-It implements a simple classical inheritance model using JavaScript's standard `extends` keyword, and introduces several special properties for convenient code organization — options and init hooks.
+It implements a simple classical inheritance model using JavaScript's standard `extends` keyword, and introduces a special `options` property for convenient code organization.
 
 
 @example
 
 ```js
 class MyClass extends Class {
-    initialize(greeter) {
+    constructor(greeter) {
+        super();
         this.greeter = greeter;
-        // class constructor
     }
 
     greet(name) {
@@ -70,7 +70,8 @@ class MyClass extends Class {
         });
     }
 
-    initialize(options) {
+    constructor(options) {
+        super();
         Util.setOptions(this, options);
         ...
     }

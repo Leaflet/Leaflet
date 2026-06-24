@@ -141,7 +141,9 @@ export class LeafletMap extends Evented {
 		});
 	}
 
-	initialize(id, options) { // (HTMLElement or String, Object)
+	constructor(id, options) { // (HTMLElement or String, Object)
+		super();
+
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,

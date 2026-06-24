@@ -89,8 +89,8 @@ export class GeoJSON extends FeatureGroup {
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize(geojson, options) {
-		super.initialize(undefined, options);
+	constructor(geojson, options) {
+		super(undefined, options);
 
 		if (geojson) {
 			this.addData(geojson);

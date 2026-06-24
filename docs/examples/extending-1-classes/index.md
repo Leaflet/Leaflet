@@ -32,13 +32,13 @@ Because Leaflet was created before any standardized class syntax existed, it com
 
 ### Creating a subclass
 
-`Class`, or other built-in Leaflet classes derived from it (such as `Layer`, `Handler`, `Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword. However, unlike regular JavaScript classes, Leaflet classes do not support the [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor) method. Instead, constructor logic should go into a special `initialize()` method to preserve backwards compatibility with older versions of Leaflet:
+`Class`, or other built-in Leaflet classes derived from it (such as `Layer`, `Handler`, `Control`, etc.), can be extended in the same manner as any other JavaScript class, by using the [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends) keyword and a standard [`constructor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor). As in any subclass, call `super()` (forwarding the parent constructor's arguments where appropriate) before using `this`:
 
 
 ```js
 class RotateMarker extends Marker {
-	initialize(latlng, rotation, options) {
-		super.initialize(latlng, options);
+	constructor(latlng, rotation, options) {
+		super(latlng, options);
 		this._rotation = rotation;
 	}
 }
@@ -65,8 +65,9 @@ class MyBox extends Class {
 		});
 	}
 
-	initialize(name, options) {
-		super.initialize(options);
+	constructor(name, options) {
+		super();
+		Util.setOptions(this, options);
 		this.name = name;
 	}
 }
@@ -102,8 +103,9 @@ Leaflet provides `.include()` to add or override methods in existing classes. Th
 
 ```js
 class MyLayer extends Layer {
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super();
+		Util.setOptions(this, options);
 		this._count = 0;
 	}
 
@@ -131,7 +133,7 @@ Note: Use `.include()` sparingly, as modifying base classes can have unexpected 
 
 ### Initialization events
 
-Leaflet's eventful classes such as `Layer` and `LeafletMap` fire an `init` event once an instance has finished initializing, and your own `Evented` subclasses can do the same by firing it at the end of `initialize()`. By registering a class-level listener with `.on('init', …)`, you can run code for every instance that gets created. This is useful for setup that depends on state from the class being modified (e.g. using `.include()`). The new instance is passed as the event's `target`:
+A class can expose its own class-level events. `LeafletMap`, for example, fires an `init` event from its constructor once a map has finished initializing, and any `Evented` subclass can do the same by firing an event at the end of its `constructor()`. By registering a class-level listener with `.on('init', …)`, you can run code for every instance that gets created. This is useful for setup that depends on state from the class being modified (e.g. using `.include()`). The new instance is passed as the event's `target`:
 
 ```js
 class MyBox extends Evented {
@@ -142,7 +144,8 @@ class MyBox extends Evented {
 		});
 	}
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
 
 		// notify class-level `init` listeners once the instance is ready

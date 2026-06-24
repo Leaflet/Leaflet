@@ -86,7 +86,8 @@ export class Icon extends Class {
 		});
 	}
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		setOptions(this, options);
 	}
 

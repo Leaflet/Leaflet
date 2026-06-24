@@ -15,7 +15,7 @@
 
 
 
-[Class|options|extend();include();initialize()]
+[Class|options|include();setDefaultOptions();mergeOptions()]
 
 [Class] ^- [Control|onAdd();onRemove()]
 [Control] ^- [AttributionControl;LayersControl;ScaleControl;ZoomControl]

@@ -48,12 +48,9 @@ export class Class {
 		return this;
 	}
 
-	constructor(...args) {
+	constructor() {
+		// set up `this.options` from the class defaults; subclasses merge their
+		// own options on top via `Util.setOptions(this, options)`
 		Util.setOptions(this);
-
-		// call the constructor
-		if (this.initialize) {
-			this.initialize(...args);
-		}
 	}
 }

@@ -67,8 +67,8 @@ export class WMSTileLayer extends TileLayer {
 		});
 	}
 
-	initialize(url, options) {
-		super.initialize(url, options);
+	constructor(url, options) {
+		super(url, options);
 
 		const wmsParams = {...this.defaultWmsParams};
 
