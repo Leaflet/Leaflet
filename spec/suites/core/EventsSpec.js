@@ -773,30 +773,5 @@ describe('Events', () => {
 
 			expect(spy.called).to.be.false;
 		});
-
-		it('fires an `init` event after each instance is created', () => {
-			const spy = sinon.spy();
-			Foo.on('init', spy);
-
-			const instance = new Foo();
-			Foo.off('init', spy);
-
-			expect(spy.calledOnce).to.be.true;
-			expect(spy.firstCall.args[0].target).to.equal(instance);
-		});
-
-		it('fires `init` for a subclass that does not call super.initialize()', () => {
-			// `Marker.initialize()` sets up the instance without chaining to a
-			// parent `initialize()`, yet the `init` event still fires (it is
-			// fired from the `Evented` constructor, after initialization).
-			const spy = sinon.spy();
-			Marker.on('init', spy);
-
-			const marker = new Marker([0, 0]);
-			Marker.off('init', spy);
-
-			expect(spy.calledOnce).to.be.true;
-			expect(spy.firstCall.args[0].target).to.equal(marker);
-		});
 	});
 });

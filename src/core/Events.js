@@ -26,17 +26,6 @@ import * as Util from './Util.js';
  */
 
 export class Evented extends Class {
-	constructor(...args) {
-		super(...args);
-
-		// @event init: Event
-		// Fired once an instance has finished initializing. Listeners are registered
-		// on the class itself (e.g. `Marker.on('init', fn)` or
-		// `LeafletMap.on('init', fn)`) and run for every instance created, with the
-		// new instance available as `e.target`.
-		this.constructor.fire('init', {target: this});
-	}
-
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
