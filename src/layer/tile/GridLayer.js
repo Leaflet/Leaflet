@@ -152,11 +152,6 @@ export class GridLayer extends Layer {
 		});
 	}
 
-	constructor(options) {
-		super();
-		Util.setOptions(this, options);
-	}
-
 	onAdd() {
 		this._initContainer();
 

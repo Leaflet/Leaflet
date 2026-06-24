@@ -93,15 +93,13 @@ export class TileLayer extends GridLayer {
 
 		this._url = url;
 
-		options = Util.setOptions(this, options);
-
 		// Set required OpenStreetMap attribution if it hasn't been specified; upgrade to HTTPS so the referrer policy works.
 		const tileUrl = new URL(this._url, location.href);
 		const urlHostname = tileUrl.hostname;
 		const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 		if (osmHosts.some(host => urlHostname.endsWith(host))) {
-			if (options.attribution === null) {
-				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			if (this.options.attribution === null) {
+				this.options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 			}
 			if (tileUrl.protocol === 'http:') {
 				tileUrl.protocol = 'https:';

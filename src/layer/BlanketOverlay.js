@@ -1,6 +1,5 @@
 import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
@@ -33,11 +32,6 @@ export class BlanketOverlay extends Layer {
 			// animations)
 			continuous: false,
 		});
-	}
-
-	constructor(options) {
-		super();
-		Util.setOptions(this, options);
 	}
 
 	onAdd() {

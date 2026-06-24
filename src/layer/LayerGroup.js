@@ -24,8 +24,7 @@ import * as Util from '../core/Util.js';
 export class LayerGroup extends Layer {
 
 	constructor(layers, options) {
-		super();
-		Util.setOptions(this, options);
+		super(options);
 
 		this._layers = {};
 

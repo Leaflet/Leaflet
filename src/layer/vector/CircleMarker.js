@@ -1,5 +1,4 @@
 import {Path} from './Path.js';
-import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -28,8 +27,7 @@ export class CircleMarker extends Path {
 	}
 
 	constructor(latlng, options) {
-		super();
-		Util.setOptions(this, options);
+		super(options);
 		this._latlng = new LatLng(latlng);
 		this._radius = this.options.radius;
 	}

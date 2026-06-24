@@ -44,6 +44,11 @@ export class Layer extends Evented {
 		});
 	}
 
+	constructor(options) {
+		super();
+		Util.setOptions(this, options);
+	}
+
 	/* @section
 	 * Classes extending `Layer` will inherit the following methods:
 	 *

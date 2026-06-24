@@ -1,5 +1,4 @@
 import {Path} from './Path.js';
-import * as Util from '../../core/Util.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
@@ -67,8 +66,7 @@ export class Polyline extends Path {
 	}
 
 	constructor(latlngs, options) {
-		super();
-		Util.setOptions(this, options);
+		super(options);
 		this._setLatLngs(latlngs);
 	}
 

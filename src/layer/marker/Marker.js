@@ -1,6 +1,5 @@
 import {Layer} from '../Layer.js';
 import {DefaultIcon} from './DefaultIcon.js';
-import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Point} from '../../geometry/Point.js';
 import * as DomUtil from '../../dom/DomUtil.js';
@@ -111,8 +110,7 @@ export class Marker extends Layer {
 	 */
 
 	constructor(latlng, options) {
-		super();
-		Util.setOptions(this, options);
+		super(options);
 		this._latlng = new LatLng(latlng);
 	}
 
