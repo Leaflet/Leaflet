@@ -49,7 +49,7 @@ export class Layer extends Evented {
 		// Fired when a layer instance has finished initializing. Listeners for this
 		// event are registered on the class itself (e.g. `Layer.on('init', fn)`)
 		// and are invoked for every layer created, with the new layer as `e.target`.
-		Layer.fire('init', {target: this});
+		this.constructor.fire('init', {target: this});
 	}
 
 	/* @section

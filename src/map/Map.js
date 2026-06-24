@@ -182,7 +182,7 @@ export class LeafletMap extends Evented {
 		// Fired when a map instance has finished initializing. Listeners for this
 		// event are registered on the class itself (e.g. `LeafletMap.on('init', fn)`)
 		// and are invoked for every map created, with the new map as `e.target`.
-		LeafletMap.fire('init', {target: this});
+		this.constructor.fire('init', {target: this});
 	}
 
 	// @section Methods for modifying map state

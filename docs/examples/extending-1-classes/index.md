@@ -145,8 +145,9 @@ class MyBox extends Evented {
 	initialize(options) {
 		Util.setOptions(this, options);
 
-		// notify class-level `init` listeners once the instance is ready
-		MyBox.fire('init', {target: this});
+		// notify class-level `init` listeners once the instance is ready;
+		// `this.constructor` makes the event fire on the actual (sub)class
+		this.constructor.fire('init', {target: this});
 	}
 }
 
@@ -162,4 +163,24 @@ MyBox.include({
 
 const box = new MyBox({width: 5, height: 10});
 console.log(box.getArea()); // Outputs "50"
+```
+
+Listeners are inherited: firing on a class runs the listeners registered on it **and** on all of its ancestors, ancestors first. So a subclass instance also triggers its parent's `init` listeners:
+
+```js
+class MyCube extends MyBox {
+	static {
+		this.setDefaultOptions({
+			depth: 1
+		});
+	}
+}
+
+MyCube.on('init', ({target: cube}) => {
+	// `_area` is already set by MyBox's `init` listener, which runs first
+	cube._volume = cube._area * cube.options.depth;
+});
+
+const cube = new MyCube({width: 2, height: 3, depth: 4});
+console.log(cube._volume); // Outputs "24"
 ```

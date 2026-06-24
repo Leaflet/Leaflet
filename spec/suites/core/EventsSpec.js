@@ -773,5 +773,57 @@ describe('Events', () => {
 
 			expect(spy.called).to.be.false;
 		});
+
+		it('fires only once even after the same listener was added once', () => {
+			const spy = sinon.spy();
+			Foo.once('test', spy);
+			Foo.fire('test');
+			Foo.fire('test');
+
+			expect(spy.callCount).to.eql(1);
+		});
+
+		describe('inheritance', () => {
+			let Base, Sub;
+
+			beforeEach(() => {
+				Base = class extends Evented {};
+				Sub = class extends Base {};
+			});
+
+			it('runs a base-class listener for a subclass, ancestors first', () => {
+				const calls = [];
+				Base.on('test', () => calls.push('base'));
+				Sub.on('test', () => calls.push('sub'));
+
+				Sub.fire('test');
+
+				expect(calls).to.eql(['base', 'sub']);
+			});
+
+			it('does not run a subclass listener when firing on the base', () => {
+				const baseSpy = sinon.spy(),
+				subSpy = sinon.spy();
+				Base.on('test', baseSpy);
+				Sub.on('test', subSpy);
+
+				Base.fire('test');
+
+				expect(baseSpy.called).to.be.true;
+				expect(subSpy.called).to.be.false;
+			});
+
+			it('does not pollute the base class when registering on a subclass', () => {
+				const baseSpy = sinon.spy(),
+				subSpy = sinon.spy();
+				Base.on('test', baseSpy);
+				Sub.on('test', subSpy);
+
+				Base.fire('test');
+
+				expect(subSpy.called).to.be.false;
+				expect(baseSpy.callCount).to.eql(1);
+			});
+		});
 	});
 });

@@ -176,7 +176,7 @@ export class Evented extends Class {
 		const event = {
 			...data,
 			type,
-			target: data?.target ?? this,
+			target: this,
 			sourceTarget: data?.sourceTarget || this
 		};
 
@@ -302,20 +302,110 @@ export class Evented extends Class {
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
 			p.fire(e.type, {
-				...e,
 				propagatedFrom: e.target,
-				target: p
+				...e
 			}, true);
 		}
 	}
-};
 
-// Expose the event methods as static methods too, so listeners can be registered
-// on a class itself (e.g. `LeafletMap.on('init', fn)`) and not just on instances.
-// The class object then acts as an event target, keeping its listeners on a
-// static `_events` store.
-for (const name of Object.getOwnPropertyNames(Evented.prototype)) {
-	if (name !== 'constructor') {
-		Evented[name] = Evented.prototype[name];
+	// @section Class-level events
+	// The following static methods mirror their instance counterparts, but operate
+	// on the class itself, so listeners can be registered for every instance of a
+	// class (and its subclasses) — e.g. `LeafletMap.on('init', fn)`. Each class
+	// keeps its own listeners; `fire` walks the class hierarchy and runs ancestor
+	// listeners first, so a listener on a base class also fires for instances of
+	// its subclasses.
+
+	// @function on(type: String, fn: Function, context?: Object): this
+	// Adds a class-level listener, invoked for every instance of this class (and
+	// its subclasses) on which the event is fired.
+	static on(types, fn, context) {
+		if (!Object.hasOwn(this, '_events')) {
+			this._events = {};
+		}
+		return Evented.prototype.on.call(this, types, fn, context);
 	}
-}
+
+	// @function once(…): this
+	// As `on`, except the listener is removed after being fired once.
+	static once(types, fn, context) {
+		if (!Object.hasOwn(this, '_events')) {
+			this._events = {};
+		}
+		return Evented.prototype.once.call(this, types, fn, context);
+	}
+
+	// @function off(…): this
+	// Removes a previously added class-level listener.
+	static off(...args) {
+		if (Object.hasOwn(this, '_events')) {
+			Evented.prototype.off.apply(this, args);
+		}
+		return this;
+	}
+
+	// @function fire(type: String, data?: Object): this
+	// Fires an event on the class, invoking the listeners registered on it and on
+	// all of its ancestor classes (ancestors first).
+	static fire(type, data) {
+		// collect the classes in the hierarchy that have listeners for this type
+		const classes = [];
+		for (let cls = this; cls; cls = Object.getPrototypeOf(cls)) {
+			if (Object.hasOwn(cls, '_events') && cls._events[type]?.length) {
+				classes.push(cls);
+			}
+			if (cls === Evented) {
+				break;
+			}
+		}
+		if (!classes.length) {
+			return this;
+		}
+
+		const event = {
+			...data,
+			type,
+			target: data?.target ?? this,
+			sourceTarget: data?.sourceTarget ?? this
+		};
+
+		// run ancestor listeners first
+		for (let i = classes.length - 1; i >= 0; i--) {
+			const cls = classes[i];
+			for (const l of cls._events[type].slice()) {
+				if (l.once) {
+					cls.off(type, l.fn, l.ctx);
+				}
+				l.fn.call(l.ctx ?? this, event);
+			}
+		}
+		return this;
+	}
+
+	// @function listens(type: String): Boolean
+	// Returns `true` if the class or any of its ancestors has a listener for the
+	// given event type.
+	static listens(type) {
+		for (let cls = this; cls; cls = Object.getPrototypeOf(cls)) {
+			if (Object.hasOwn(cls, '_events') && cls._events[type]?.length) {
+				return true;
+			}
+			if (cls === Evented) {
+				break;
+			}
+		}
+		return false;
+	}
+
+	static _on(...args) {
+		return Evented.prototype._on.apply(this, args);
+	}
+
+	static _off(...args) {
+		return Evented.prototype._off.apply(this, args);
+	}
+
+	static _listens(...args) {
+		return Evented.prototype._listens.apply(this, args);
+	}
+};
