@@ -88,4 +88,4 @@ export class ScrollWheelZoomHandler extends Handler {
 // @section Handlers
 // @property scrollWheelZoom: Handler
 // Scroll wheel zoom handler.
-LeafletMap.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoomHandler);
+LeafletMap.on('init', ({target: map}) => map.addHandler('scrollWheelZoom', ScrollWheelZoomHandler));

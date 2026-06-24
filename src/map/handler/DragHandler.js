@@ -229,4 +229,4 @@ export class DragHandler extends Handler {
 // @section Handlers
 // @property dragging: Handler
 // Map dragging handler.
-LeafletMap.addInitHook('addHandler', 'dragging', DragHandler);
+LeafletMap.on('init', ({target: map}) => map.addHandler('dragging', DragHandler));

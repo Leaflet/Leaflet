@@ -149,4 +149,4 @@ export class BoxZoomHandler extends Handler {
 // @section Handlers
 // @property boxZoom: Handler
 // Box (shift-drag with pointer) zoom handler.
-LeafletMap.addInitHook('addHandler', 'boxZoom', BoxZoomHandler);
+LeafletMap.on('init', ({target: map}) => map.addHandler('boxZoom', BoxZoomHandler));

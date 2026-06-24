@@ -132,8 +132,8 @@ LeafletMap.mergeOptions({
 	attributionControl: true
 });
 
-LeafletMap.addInitHook(function () {
-	if (this.options.attributionControl) {
-		new AttributionControl().addTo(this);
+LeafletMap.on('init', ({target: map}) => {
+	if (map.options.attributionControl) {
+		new AttributionControl().addTo(map);
 	}
 });

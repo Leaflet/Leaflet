@@ -130,21 +130,21 @@ export class PinchZoomHandler extends Handler {
 // @section Handlers
 // @property pinchZoom: Handler
 // Pinch zoom handler.
-LeafletMap.addInitHook('addHandler', 'pinchZoom', PinchZoomHandler);
+LeafletMap.on('init', ({target: map}) => map.addHandler('pinchZoom', PinchZoomHandler));
 
 // Deprecated - Backward compatibility touchZoom
-LeafletMap.addInitHook(function () {
-	this.touchZoom = this.pinchZoom;
+LeafletMap.on('init', ({target: map}) => {
+	map.touchZoom = map.pinchZoom;
 
-	if (this.options.touchZoom !== undefined) {
+	if (map.options.touchZoom !== undefined) {
 		// To be removed in leaflet 3
 		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
-		this.options.pinchZoom = this.options.touchZoom;
-		delete this.options.touchZoom;
+		map.options.pinchZoom = map.options.touchZoom;
+		delete map.options.touchZoom;
 	}
-	if (this.options.pinchZoom) {
-		this.pinchZoom.enable();
+	if (map.options.pinchZoom) {
+		map.pinchZoom.enable();
 	} else {
-		this.pinchZoom.disable();
+		map.pinchZoom.disable();
 	}
 });
