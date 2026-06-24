@@ -715,4 +715,63 @@ describe('Events', () => {
 			expect(marker.listens('test', spy, fg, true)).to.be.true;
 		});
 	});
+
+	describe('static (class-level) listeners', () => {
+		let Foo;
+
+		beforeEach(() => {
+			Foo = class extends Evented {};
+		});
+
+		it('registers and fires listeners on the class itself', () => {
+			const spy = sinon.spy();
+			Foo.on('test', spy);
+			Foo.fire('test');
+
+			expect(spy.called).to.be.true;
+		});
+
+		it('passes the event object with the class as target by default', () => {
+			const spy = sinon.spy();
+			Foo.on('test', spy);
+			Foo.fire('test', {foo: 'bar'});
+
+			expect(spy.calledWithMatch({type: 'test', target: Foo, foo: 'bar'})).to.be.true;
+		});
+
+		it('honors an explicit target passed via the event data', () => {
+			const spy = sinon.spy(),
+			instance = new Foo();
+			Foo.on('test', spy);
+			Foo.fire('test', {target: instance});
+
+			expect(spy.calledWithMatch({type: 'test', target: instance})).to.be.true;
+		});
+
+		it('keeps class listeners separate from instance listeners', () => {
+			const classSpy = sinon.spy(),
+			instanceSpy = sinon.spy(),
+			instance = new Foo();
+
+			Foo.on('test', classSpy);
+			instance.on('test', instanceSpy);
+
+			instance.fire('test');
+			expect(instanceSpy.called).to.be.true;
+			expect(classSpy.called).to.be.false;
+
+			Foo.fire('test');
+			expect(classSpy.callCount).to.eql(1);
+			expect(instanceSpy.callCount).to.eql(1);
+		});
+
+		it('removes listeners with off', () => {
+			const spy = sinon.spy();
+			Foo.on('test', spy);
+			Foo.off('test', spy);
+			Foo.fire('test');
+
+			expect(spy.called).to.be.false;
+		});
+	});
 });

@@ -176,7 +176,7 @@ export class Evented extends Class {
 		const event = {
 			...data,
 			type,
-			target: this,
+			target: data?.target ?? this,
 			sourceTarget: data?.sourceTarget || this
 		};
 
@@ -302,9 +302,20 @@ export class Evented extends Class {
 	_propagateEvent(e) {
 		for (const p of Object.values(this._eventParents ?? {})) {
 			p.fire(e.type, {
+				...e,
 				propagatedFrom: e.target,
-				...e
+				target: p
 			}, true);
 		}
 	}
 };
+
+// Expose the event methods as static methods too, so listeners can be registered
+// on a class itself (e.g. `LeafletMap.on('init', fn)`) and not just on instances.
+// The class object then acts as an event target, keeping its listeners on a
+// static `_events` store.
+for (const name of Object.getOwnPropertyNames(Evented.prototype)) {
+	if (name !== 'constructor') {
+		Evented[name] = Evented.prototype[name];
+	}
+}

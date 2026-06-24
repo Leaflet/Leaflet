@@ -17,6 +17,26 @@ describe('Map', () => {
 		removeMapContainer(map, container);
 	});
 
+	describe('init event', () => {
+		it('fires a class-level init event with the new map as target', () => {
+			const spy = sinon.spy();
+			LeafletMap.on('init', spy);
+
+			const extraContainer = createContainer(),
+			extraMap = new LeafletMap(extraContainer);
+
+			LeafletMap.off('init', spy);
+
+			try {
+				expect(spy.calledOnce).to.be.true;
+				expect(spy.firstCall.args[0].type).to.eql('init');
+				expect(spy.firstCall.args[0].target).to.equal(extraMap);
+			} finally {
+				removeMapContainer(extraMap, extraContainer);
+			}
+		});
+	});
+
 	describe('#remove', () => {
 		let spy;
 
