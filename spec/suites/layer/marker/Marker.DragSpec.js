@@ -20,6 +20,12 @@ describe('Marker.Drag', () => {
 	});
 
 	class MyMarker extends Marker {
+		initialize(...args) {
+			super.initialize(...args);
+			this.on('add', () => {
+				this._initialPos = this._getPosition();
+			});
+		}
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
 		}
@@ -27,9 +33,6 @@ describe('Marker.Drag', () => {
 			return this._getPosition().subtract(this._initialPos);
 		}
 	}
-	MyMarker.addInitHook('on', 'add', function () {
-		this._initialPos = this._getPosition();
-	});
 
 	describe('drag', () => {
 		it('drags a marker with mouse', (done) => {

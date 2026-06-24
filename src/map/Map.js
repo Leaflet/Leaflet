@@ -168,8 +168,6 @@ export class LeafletMap extends Evented {
 			this.setView(new LatLng(options.center), options.zoom, {reset: true});
 		}
 
-		this.callInitHooks();
-
 		this._zoomAnimated = this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events

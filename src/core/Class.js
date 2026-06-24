@@ -48,57 +48,12 @@ export class Class {
 		return this;
 	}
 
-	// @function addInitHook(fn: Function): this
-	// Adds a [constructor hook](#class-constructor-hooks) to the class.
-	static addInitHook(fn, ...args) { // (Function) || (String, args...)
-		const init = typeof fn === 'function' ? fn : function () {
-			this[fn](...args);
-		};
-
-		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here
-			this.prototype._initHooks = [];
-		}
-		this.prototype._initHooks.push(init);
-		return this;
-	}
-
 	constructor(...args) {
-		this._initHooksCalled = false;
-
 		Util.setOptions(this);
 
 		// call the constructor
 		if (this.initialize) {
 			this.initialize(...args);
 		}
-
-		// call all constructor hooks
-		this.callInitHooks();
-	}
-
-	callInitHooks() {
-		if (this._initHooksCalled) {
-			return;
-		}
-
-		// collect all prototypes in chain
-		const prototypes = [];
-		let current = this;
-
-		while ((current = Object.getPrototypeOf(current)) !== null) {
-			prototypes.push(current);
-		}
-
-		// reverse so the parent prototype is first
-		prototypes.reverse();
-
-		// call init hooks on each prototype
-		for (const proto of prototypes) {
-			for (const hook of proto._initHooks ?? []) {
-				hook.call(this);
-			}
-		}
-
-		this._initHooksCalled = true;
 	}
 }

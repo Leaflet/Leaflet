@@ -104,22 +104,3 @@ MyClass.include(MyMixin);
 const a = new MyClass();
 a.foo();
 ```
-
-
-@section Constructor hooks
-@example
-
-If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
-
-```js
-MyClass.addInitHook(() => {
-    // ... do something in constructor additionally
-    // e.g. add event listeners, set custom properties etc.
-});
-```
-
-You can also use the following shortcut when you just need to make one additional method call:
-
-```js
-MyClass.addInitHook('methodName', arg1, arg2, …);
-```

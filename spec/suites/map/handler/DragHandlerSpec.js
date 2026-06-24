@@ -54,6 +54,12 @@ describe('DragHandler', () => {
 	});
 
 	class MyMap extends LeafletMap {
+		initialize(...args) {
+			super.initialize(...args);
+			this.on('load', () => {
+				this._initialPos = this._getPosition();
+			});
+		}
 		_getPosition() {
 			return DomUtil.getPosition(this.dragging._draggable._element);
 		}
@@ -61,9 +67,6 @@ describe('DragHandler', () => {
 			return this._getPosition().subtract(this._initialPos);
 		}
 	}
-	MyMap.addInitHook('on', 'load', function () {
-		this._initialPos = this._getPosition();
-	});
 
 	describe('pointer events', () => {
 		it('change the center of the map', (done) => {
