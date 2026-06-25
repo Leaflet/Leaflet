@@ -101,7 +101,7 @@ export class LatLng {
 
 	// eslint-disable-next-line no-unused-vars
 	static validate(lat, lng, alt) {
-		if (lat instanceof LatLng || (typeof lat === 'object' && 'lat' in lat)) {
+		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
 			return true;
 		} else if (lat && Array.isArray(lat) && typeof lat[0] !== 'object') {
 			if (lat.length === 3 || lat.length === 2) {
