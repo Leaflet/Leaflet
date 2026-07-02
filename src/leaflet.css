@@ -25,6 +25,7 @@
 .leaflet-marker-shadow {
 	user-select: none;
 	-webkit-user-drag: none;
+	-webkit-touch-callout: none;
 }
 
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
