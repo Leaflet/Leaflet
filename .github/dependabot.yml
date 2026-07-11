@@ -7,6 +7,8 @@ updates:
     versioning-strategy: increase
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     labels:
       - dependencies
     groups:
@@ -20,6 +22,8 @@ updates:
     rebase-strategy: disabled
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     labels:
       - dependencies
   - package-ecosystem: bundler
@@ -28,5 +32,7 @@ updates:
     rebase-strategy: disabled
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     labels:
       - dependencies
