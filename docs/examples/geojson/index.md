@@ -168,7 +168,7 @@ new GeoJSON(geojsonFeature, {
 	onEachFeature: onEachFeature
 }).addTo(map);</code></pre>
 
-<p><strong>Security note.</strong> <code>bindPopup</code> renders its string argument as HTML. If your GeoJSON comes from untrusted sources (user uploads, third-party APIs, etc.), sanitize <code>popupContent</code> with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element via <code>textContent</code> and bind that instead:</p>
+<p><strong>Security note.</strong> <code>bindPopup</code> renders its string argument as HTML. If your GeoJSON comes from untrusted sources (user uploads, third-party APIs, etc.), sanitize <code>popupContent</code> before passing it to Leaflet, or build a DOM element via <code>textContent</code> to render it as plain text:</p>
 
 <pre><code>const el = document.createElement('div');
 el.textContent = feature.properties.popupContent;

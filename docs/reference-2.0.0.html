@@ -2776,7 +2776,8 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -2851,7 +2852,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -3403,7 +3405,8 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
-HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+HTML; if it may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>)
 or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
 passed the source layer will be passed to the function. The function should
 return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
@@ -3521,7 +3524,8 @@ return a <code>String</code> or <code>HTMLElement</code> to be used in the overl
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -3596,7 +3600,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -3798,7 +3803,12 @@ open popups while making sure that only one popup is open at one time
 <pre><code class="language-js">const popup = new Popup(latlng, {content: '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;'})
 	.openOn(map);
 </code></pre>
-<p><strong>Security note.</strong> Popup string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element using <code>textContent</code> to render it as plain text:</p>
+<p><strong>Security note.</strong> Popup string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with the browser's built-in <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a> (with a fallback for unsupported browsers):</p>
+<pre><code class="language-js">const el = document.createElement('div');
+el.setHTML(untrustedString);
+marker.bindPopup(el);
+</code></pre>
+<p>Or build a DOM element using <code>textContent</code> to render it as plain text:</p>
 <pre><code class="language-js">const el = document.createElement('div');
 el.textContent = untrustedString;
 marker.bindPopup(el);
@@ -4328,7 +4338,8 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
-HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+HTML; if it may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>)
 or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
 passed the source layer will be passed to the function. The function should
 return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
@@ -4447,7 +4458,8 @@ return a <code>String</code> or <code>HTMLElement</code> to be used in the overl
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -4522,7 +4534,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -4722,7 +4735,12 @@ The verification can optionally be propagated, it will return <code>true</code> 
 <pre><code class="language-js">const tooltip = new Tooltip(latlng, {content: 'Hello world!&lt;br /&gt;This is a nice tooltip.'})
 	.addTo(map);
 </code></pre>
-<p><strong>Security note.</strong> Tooltip string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with a library like <a href="https://github.com/cure53/DOMPurify">DOMPurify</a>, or build a DOM element using <code>textContent</code> to render it as plain text:</p>
+<p><strong>Security note.</strong> Tooltip string content is rendered as HTML. If your content may include untrusted input (e.g. data from users or external APIs), sanitize it with the browser's built-in <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a> (with a fallback for unsupported browsers):</p>
+<pre><code class="language-js">const el = document.createElement('div');
+el.setHTML(untrustedString);
+marker.bindTooltip(el);
+</code></pre>
+<p>Or build a DOM element using <code>textContent</code> to render it as plain text:</p>
 <pre><code class="language-js">const el = document.createElement('div');
 el.textContent = untrustedString;
 marker.bindTooltip(el);
@@ -5179,7 +5197,8 @@ Alternative to <code>layer.togglePopup()</code>/<code>.toggleTooltip()</code>.</
 		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the HTML content of the overlay. A <code>String</code> argument is rendered as
-HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
+HTML; if it may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>)
 or pass an <code>HTMLElement</code> with safe <code>textContent</code> instead. If a function is
 passed the source layer will be passed to the function. The function should
 return a <code>String</code> or <code>HTMLElement</code> to be used in the overlay.</p>
@@ -5298,7 +5317,8 @@ return a <code>String</code> or <code>HTMLElement</code> to be used in the overl
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -5373,7 +5393,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -6206,7 +6227,8 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -6281,7 +6303,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -7183,7 +7206,8 @@ callback is called when the tile has been loaded.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -7258,7 +7282,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -7951,7 +7976,8 @@ used by this overlay.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -8026,7 +8052,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -8817,7 +8844,8 @@ used by this overlay.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -8892,7 +8920,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -9624,7 +9653,8 @@ used by this overlay.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -9699,7 +9729,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -10333,7 +10364,8 @@ for a second (also called long press).</td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -10408,7 +10440,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -11213,7 +11246,8 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -11288,7 +11322,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -12121,7 +12156,8 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -12196,7 +12232,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -13039,7 +13076,8 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -13114,7 +13152,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -13923,7 +13962,8 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -13998,7 +14038,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -14754,7 +14795,8 @@ Returns a <a href="https://en.wikipedia.org/wiki/GeoJSON"><code>GeoJSON</code></
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -14829,7 +14871,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -15345,7 +15388,8 @@ its map has moved</td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -15420,7 +15464,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -15991,7 +16036,8 @@ its map has moved</td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -16066,7 +16112,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -16702,7 +16749,8 @@ implement <code>methodName</code>.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -16777,7 +16825,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -17488,7 +17537,8 @@ implement <code>methodName</code>.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -17563,7 +17613,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -18390,7 +18441,8 @@ implement <code>methodName</code>.</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -18465,7 +18517,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -19252,7 +19305,8 @@ is specified, it must be called when the tile has finished loading and drawing.<
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -19327,7 +19381,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -23231,7 +23286,8 @@ layer.closePopup();
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -23304,7 +23360,8 @@ layer.closeTooltip();
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -23786,7 +23843,8 @@ for a second (also called long press).</td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -23861,7 +23919,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -24854,7 +24913,8 @@ any map state change (including <em>during</em> pan/zoom animations).</p>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -24929,7 +24989,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -25395,7 +25456,8 @@ its map has moved</td>
 		<td><code>this</code></td>
 		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
@@ -25470,7 +25532,8 @@ String content is rendered as HTML; sanitize untrusted input or pass an <code>HT
 		<td><code>this</code></td>
 		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
 necessary event listeners. A <code>String</code> argument is rendered as HTML; if it
-may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+may contain untrusted input, sanitize it (e.g. with the browser's built-in
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">Sanitizer API</a>) or pass an
 <code>HTMLElement</code> with safe <code>textContent</code> instead. If a <code>Function</code> is passed
 it will receive the layer as the first argument and should return a
 <code>String</code> or <code>HTMLElement</code>.</p>
