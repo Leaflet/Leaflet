@@ -15,7 +15,7 @@
     "@vitest/ui": "^4.1.7",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.2",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "eslint-config-mourner": "^5.0.1",
     "eslint-plugin-baseline-js": "^0.7.0",
     "eslint-plugin-html": "^8.1.4",
