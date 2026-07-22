@@ -639,4 +639,142 @@ describe('Popup', () => {
 			expect(popup._source).to.equal(marker2);
 		});
 	});
+
+	describe('DivOverlay methods', () => {
+		it('#bringToFront brings the popup to the front', () => {
+			const popup1 = new Popup()
+				.setLatLng(center)
+				.setContent('Popup 1')
+				.openOn(map);
+
+			const popup2 = new Popup({autoClose: false})
+				.setLatLng([55.9, 37.7])
+				.setContent('Popup 2')
+				.openOn(map);
+
+			const initialZIndex1 = popup1.getElement().style.zIndex;
+			const initialZIndex2 = popup2.getElement().style.zIndex;
+
+			popup1.bringToFront();
+
+			const newZIndex1 = popup1.getElement().style.zIndex;
+
+			expect(parseInt(newZIndex1)).to.be.greaterThan(parseInt(initialZIndex2));
+		});
+
+		it('#bringToBack brings the popup to the back', () => {
+			const popup1 = new Popup()
+				.setLatLng(center)
+				.setContent('Popup 1')
+				.openOn(map);
+
+			const popup2 = new Popup({autoClose: false})
+				.setLatLng([55.9, 37.7])
+				.setContent('Popup 2')
+				.openOn(map);
+
+			popup2.bringToFront();
+			const zIndexAfterFront = popup2.getElement().style.zIndex;
+
+			popup2.bringToBack();
+			const zIndexAfterBack = popup2.getElement().style.zIndex;
+
+			expect(parseInt(zIndexAfterBack)).to.be.lessThan(parseInt(zIndexAfterFront));
+		});
+
+		it('#toggle closes open popup', () => {
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent('Test')
+				.openOn(map);
+
+			expect(map.hasLayer(popup)).to.be.true;
+
+			popup.toggle();
+
+			expect(map.hasLayer(popup)).to.be.false;
+		});
+
+		it('#toggle opens closed popup', () => {
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent('Test');
+
+			expect(map.hasLayer(popup)).to.be.false;
+
+			popup.toggle();
+
+			expect(map.hasLayer(popup)).to.be.true;
+		});
+
+		it('#toggle with layer argument updates source', () => {
+			const marker1 = new Marker(center).addTo(map);
+			const marker2 = new Marker([55.9, 37.7]).addTo(map);
+
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent('Test')
+				.openOn(map);
+
+			popup.toggle(marker1);
+			expect(popup._source).to.equal(marker1);
+
+			popup.toggle(marker2);
+			expect(popup._source).to.equal(marker2);
+		});
+
+		it('#setContent accepts HTMLElement', () => {
+			const div = document.createElement('div');
+			div.innerHTML = '<strong>HTML Element</strong>';
+
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent(div)
+				.openOn(map);
+
+			expect(popup.getContent()).to.equal(div);
+			expect(popup._contentNode.querySelector('strong').textContent).to.equal('HTML Element');
+		});
+
+		it('#setContent accepts Function', () => {
+			const marker = new Marker(center).addTo(map);
+			marker.customText = 'Custom marker text';
+
+			const contentFunc = (layer) => `Content: ${layer.customText}`;
+
+			const popup = new Popup({}, marker)
+				.setContent(contentFunc)
+				.openOn(map);
+
+			expect(popup._contentNode.textContent).to.contain('Content: Custom marker text');
+		});
+
+		it('#update repositions popup when latlng changes', () => {
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent('Test')
+				.openOn(map);
+
+			const initialPos = DomUtil.getPosition(popup._container);
+
+			popup.setLatLng([56.0, 38.0]);
+			popup.update();
+
+			const newPos = DomUtil.getPosition(popup._container);
+
+			expect(initialPos.x).to.not.equal(newPos.x);
+			expect(initialPos.y).to.not.equal(newPos.y);
+		});
+
+		it('#update does nothing when popup is not on map', () => {
+			const popup = new Popup()
+				.setLatLng(center)
+				.setContent('Test');
+
+			// Should not throw
+			expect(() => {
+				popup.update();
+			}).to.not.throw();
+		});
+	});
 });
