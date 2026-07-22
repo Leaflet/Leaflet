@@ -113,6 +113,17 @@ export class Path extends Layer {
 		return this;
 	}
 
+	// @method setOpacity(opacity: Number): this
+	// Changes the opacity of a path based on the options in the 'Path options' object.
+	setOpacity: function (opacity) {
+		if (typeof opacity ===  'number') {
+			this.setStyle({'opacity' : opacity, 'fillOpacity': opacity});
+		} else {
+			this.setStyle(opacity);
+		}
+		return this;
+	},
+
 	// @method bringToFront(): this
 	// Brings the layer to the top of all path layers.
 	bringToFront() {
