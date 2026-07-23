@@ -18,7 +18,11 @@ LeafletMap.mergeOptions({
 
 	// @option keyboardPanDelta: Number = 80
 	// Amount of pixels to pan when pressing an arrow key.
-	keyboardPanDelta: 80
+	keyboardPanDelta: 80,
+
+	// @option ariaKeyShortcuts: Boolean = false
+	// Adds the aria-keyshortcuts attribute to the map container
+	ariaKeyShortcuts: false
 });
 
 export class KeyboardHandler extends Handler {
@@ -37,6 +41,7 @@ export class KeyboardHandler extends Handler {
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
+		this._ariaKeyShortcuts = map.options.ariaKeyShortcuts;
 	}
 
 	addHooks() {
@@ -47,8 +52,10 @@ export class KeyboardHandler extends Handler {
 			container.tabIndex = '0';
 		}
 
-		// add aria-attribute for keyboard shortcuts to the container
-		container.ariaKeyShortcuts = Object.values(KeyboardHandler.keyCodes).flat().join(' ');
+		// add aria-attribute for keyboard shortcuts to the container, when option is set
+		if (this._ariaKeyShortcuts) {
+			container.ariaKeyShortcuts = Object.values(KeyboardHandler.keyCodes).flat().join(' ');
+		}
 
 		on(container, {
 			focus: this._onFocus,
