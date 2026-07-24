@@ -2,10 +2,12 @@ name: CI
 on:
   push:
     branches: [main]
-    tags: ['v*']
+              
+    tags: ['*']
   pull_request:
 permissions:
   contents: read
+            write
 env:
   NODE_VERSION: 24
 jobs:
@@ -82,7 +84,7 @@ jobs:
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - project: chromium
@@ -145,9 +147,9 @@ jobs:
         with:
           tag_name: dev
           name: Development snapshot
-          prerelease: true
+          prerelease: false
           files: dist/*
-          generate_release_notes: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
