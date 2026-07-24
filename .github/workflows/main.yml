@@ -19,7 +19,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: false
+          bundler-cache: true
           working-directory: ./docs
 
       - working-directory: ./docs
@@ -84,7 +84,7 @@ jobs:
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - project: chromium
@@ -147,9 +147,9 @@ jobs:
         with:
           tag_name: dev
           name: Development snapshot
-          prerelease: true
+          prerelease: false
           files: dist/*
-          generate_release_notes: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
