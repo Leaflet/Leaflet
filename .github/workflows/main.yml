@@ -2,10 +2,12 @@ name: CI
 on:
   push:
     branches: [main]
+              [develop]
     tags: ['v*']
   pull_request:
 permissions:
   contents: read
+            write
 env:
   NODE_VERSION: 24
 jobs:
