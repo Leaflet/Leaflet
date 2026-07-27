@@ -17,6 +17,8 @@ Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/
 
 This is why, in Leaflet maps, popups always show "on top" of other layers, markers always show on top of tile layers, etc.
 
+Within a pane, layers are ordered according to the CSS [stacking context](https://developer.mozilla.org/docs/Web/CSS/CSS_positioned_layout/Stacking_context). `Path`s that use the same `Renderer` are drawn together in one SVG or Canvas element, so they are stacked as a group relative to other layers in the pane. Use custom panes to control the order of a `Path` relative to `ImageOverlay`s or `VideoOverlay`s.
+
 Custom map panes offer the capability to customize this order.
 
 ## The Default Is Not Always Right
@@ -98,6 +100,5 @@ Finally, add some interaction to each feature on the GeoJSON layer:
 
 
 Now the [example map](example.html) is complete!
-
 
 
