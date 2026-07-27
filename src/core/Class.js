@@ -92,10 +92,14 @@ export class Class {
 		// reverse so the parent prototype is first
 		prototypes.reverse();
 
-		// call init hooks on each prototype
+		// call init hooks on each prototype, using only each prototype's own
+		// hooks. Reading the inherited `_initHooks` would re-run a parent's hooks
+		// for every subclass level that doesn't define its own (see #10294).
 		for (const proto of prototypes) {
-			for (const hook of proto._initHooks ?? []) {
-				hook.call(this);
+			if (Object.hasOwn(proto, '_initHooks')) {
+				for (const hook of proto._initHooks) {
+					hook.call(this);
+				}
 			}
 		}
 
