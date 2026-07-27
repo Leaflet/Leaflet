@@ -35,7 +35,7 @@ import {LatLngBounds} from './LatLngBounds.js';
 
 // @alternative
 // @constructor LatLng(coords: Object): LatLng
-// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+// Expects a plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 //  You can also use `lon` in place of `lng` in the object form.
 export class LatLng {
 	constructor(lat, lng, alt) {
