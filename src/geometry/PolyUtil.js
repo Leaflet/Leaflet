@@ -67,8 +67,7 @@ export function polygonCenter(latlngs, crs) {
 	}
 
 	if (!LineUtil.isFlat(latlngs)) {
-		console.warn('latlngs are not flat! Only the first ring will be used');
-		latlngs = latlngs[0];
+		throw new Error('latlngs are not flat! Expected a flat array of LatLng points, not a polygon ring array.');
 	}
 
 	let centroidLatLng = new LatLng([0, 0]);
