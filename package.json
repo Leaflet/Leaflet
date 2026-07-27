@@ -27,7 +27,7 @@
     "playwright": "^1.61.1",
     "prosthetic-hand": "^2.2.2",
     "rollup": "^4.62.2",
-    "sinon": "^22.0.0",
+    "sinon": "^22.1.0",
     "ssri": "^14.0.0",
     "ui-event-simulator": "^2.0.0",
     "vitest": "^4.1.7"
