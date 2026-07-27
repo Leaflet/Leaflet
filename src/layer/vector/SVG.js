@@ -152,6 +152,18 @@ export class SVG extends Renderer {
 		} else {
 			path.setAttribute('fill', 'none');
 		}
+
+		if (options.title) {
+			path.setAttribute('title', options.title);
+		} else {
+			path.removeAttribute('title');
+		}
+
+		if (options.alt != null) {
+			path.setAttribute('alt', options.alt);
+		} else {
+			path.removeAttribute('alt');
+		}
 	}
 
 	_updatePoly(layer, closed) {
