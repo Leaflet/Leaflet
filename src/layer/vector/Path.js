@@ -102,6 +102,9 @@ export class Path extends Layer {
 
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
+	// Note that [`className`](#path-classname) is an exception: it is applied only when
+	// the path element is created, so passing it here updates the option but leaves the
+	// element's class unchanged.
 	setStyle(style) {
 		Util.setOptions(this, style);
 		if (this._renderer) {
