@@ -101,6 +101,16 @@ focusing on _quality_ instead of _quantity_, and leaving all the rest to plugin 
 Check out [this video](http://www.youtube.com/watch?v=_P2SaCPbJ4w) of a talk by the Leaflet creator for more background on the story and philosophy behind Leaflet.
 Another essential read is [Advocating Simplicity in Open Source](http://blog.universalmind.com/advocating-simplicity-in-open-source/) by the same guy.
 
+#### How do I prevent clicks on a custom control from reaching the map?
+
+Pass the control's container element to `DomEvent.disableClickPropagation`:
+
+```js
+DomEvent.disableClickPropagation(container);
+```
+
+This prevents Leaflet from handling clicks on the container while allowing its native DOM click events to propagate normally.
+
 
 ## Performance
 
