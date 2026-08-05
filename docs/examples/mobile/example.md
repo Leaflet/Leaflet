@@ -25,7 +25,7 @@ css: "body {
 		const locationMarker = new Marker(e.latlng).addTo(map)
 			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
-		const locationCircle = new Circle(e.latlng, radius).addTo(map);
+		const locationCircle = new Circle(e.latlng, {radius}).addTo(map);
 	}
 
 	function onLocationError(e) {
