@@ -139,3 +139,7 @@ The distance in pixels the draggable element was moved by.
 @property center: LatLng; The current center of the map
 @property zoom: Number; The current zoom level of the map
 @property noUpdate: Boolean; Whether layers should update their contents due to this event
+
+@miniclass WorldCopyJumpEvent (Event objects)
+@inherits Event
+@property worlds: Number; The signed number of world widths by which the map pane moved
