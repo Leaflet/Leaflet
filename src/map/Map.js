@@ -96,17 +96,21 @@ export class LeafletMap extends Evented {
 
 
 			// @section Animation Options
-			// @option zoomAnimation: Boolean = true
+			// @option zoomAnimation: Boolean = *
 			// Whether the map zoom animation is enabled.
-			zoomAnimation: true,
+			// Animations are enabled by default unless the user has configured
+			// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
+			zoomAnimation: !Browser.reducedMotion,
 
 			// @option zoomAnimationThreshold: Number = 4
 			// Won't animate zoom if the zoom difference exceeds this value.
 			zoomAnimationThreshold: 4,
 
-			// @option fadeAnimation: Boolean = true
+			// @option fadeAnimation: Boolean = *
 			// Whether the tile fade animation is enabled.
-			fadeAnimation: true,
+			// Animations are enabled by default unless the user has configured
+			// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
+			fadeAnimation: !Browser.reducedMotion,
 
 			// @option markerZoomAnimation: Boolean = true
 			// Whether markers animate their zoom with the zoom animation, if disabled
@@ -349,8 +353,8 @@ export class LeafletMap extends Evented {
 			this.fire('movestart');
 		}
 
-		// animate pan unless animate: false specified
-		if (options.animate !== false) {
+		// animate pan unless browser prefers reduced motion or animate: false specified
+		if (!Browser.reducedMotion && options.animate !== false) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
 			const newPos = this._getMapPanePos().subtract(offset).round();
@@ -369,7 +373,7 @@ export class LeafletMap extends Evented {
 	flyTo(targetCenter, targetZoom, options) {
 
 		options ??= {};
-		if (options.animate === false) {
+		if (Browser.reducedMotion || options.animate === false) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 

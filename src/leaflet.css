@@ -25,6 +25,7 @@
 .leaflet-marker-shadow {
 	user-select: none;
 	-webkit-user-drag: none;
+	-webkit-touch-callout: none;
 }
 
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
@@ -705,6 +706,20 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 		left: 0;
 		margin-left: -12px;
 		border-right-color: #fff;
+	}
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+	.leaflet-fade-anim .leaflet-popup {
+		transition: none;
+	}
+	.leaflet-fade-anim .leaflet-map-pane .leaflet-tile {
+		transition: none;
+	}
+	.leaflet-zoom-anim .leaflet-zoom-animated {
+		transition: none;
 	}
 }
 

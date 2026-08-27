@@ -1,6 +1,7 @@
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import Browser from '../core/Browser.js';
 import {Point} from '../geometry/Point.js';
 import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
@@ -88,7 +89,7 @@ export class Popup extends DivOverlay {
 			// @option autoPan: Boolean = true
 			// Set it to `false` if you don't want the map to do panning animation
 			// to fit the opened popup.
-			autoPan: true,
+			autoPan: !Browser.reducedMotion,
 
 			// @option autoPanPaddingTopLeft: Point = null
 			// The margin between the popup and the top left corner of the map

@@ -791,19 +791,24 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {
+		it('Loads 224, unloads 209 tiles on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
-			grid.on('load', () => {
-				expect(counts.tileloadstart).to.equal(12);
-				expect(counts.tileload).to.equal(12);
-				expect(counts.tileunload).to.equal(0);
-				grid.off('load');
+			grid.once('load', () => {
+				expect(counts).to.deep.equal({
+					tileloadstart: 12,
+					tileload: 12,
+					tileunload: 0,
+					tileerror: 0,
+				});
 
 				map.on('zoomend', () => {
-					expect(counts.tileloadstart).to.equal(290);
-					expect(counts.tileunload).to.equal(275);
-					expect(counts.tileload).to.equal(290);
+					expect(counts).to.deep.equal({
+						tileloadstart: 224,
+						tileload: 224,
+						tileunload: 209,
+						tileerror: 0,
+					});
 					expect(grid._container.querySelectorAll('div').length).to.equal(16);	// 15 + container
 					done();
 				});
