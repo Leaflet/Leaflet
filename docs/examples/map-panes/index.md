@@ -33,18 +33,19 @@ In some particular cases, the default order is not the right one for the map. We
 
 <div class='tiles'>
 <div style='display: inline-block'>
-<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png" class="bordered-img" /><br/>
+<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png?key={{site.cartocdn_key}}" class="bordered-img" /><br/>
 Basemap tile with no labels
 </div>
 
 <div style='display: inline-block'>
-<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png" class="bordered-img" /><br/>
+<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png?key={{site.cartocdn_key}}" class="bordered-img" /><br/>
 Transparent labels-only tile
 </div>
 
 <div style='display: inline-block; position:relative;'>
-<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png" class="bordered-img" />
-<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png"  style='position:absolute; left:0; top:0;'/><br/>
+<img src="https://a.basemaps.cartocdn.com/light_nolabels/4/8/5.png?key={{site.cartocdn_key}}" class="bordered-img" />
+
+<img src="https://a.basemaps.cartocdn.com/light_only_labels/4/8/5.png?key={{site.cartocdn_key}}"  style='position:absolute; left:0; top:0;'/><br/>
 Labels on top of basemap
 </div>
 </div>
