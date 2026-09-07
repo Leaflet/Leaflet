@@ -6,7 +6,7 @@
   "devDependencies": {
     "@e18e/eslint-plugin": "^0.6.0",
     "@eslint/compat": "^2.1.0",
-    "@eslint/css": "^1.4.0",
+    "@eslint/css": "^2.0.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-terser": "^1.0.0",
     "@vitest/browser": "^4.1.10",
