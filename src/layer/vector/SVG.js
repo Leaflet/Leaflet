@@ -87,7 +87,8 @@ export class SVG extends Renderer {
 
 		// @namespace Path
 		// @option className: String = null
-		// Custom class name set on an element. Only for SVG renderer.
+		// Custom class name set on an element. Only for SVG renderer. Applied when the
+		// element is created; [`setStyle`](#path-setstyle) does not update it afterwards.
 		if (layer.options.className) {
 			path.classList.add(...splitWords(layer.options.className));
 		}
