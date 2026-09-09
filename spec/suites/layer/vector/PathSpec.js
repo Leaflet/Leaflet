@@ -108,4 +108,22 @@ describe('Path', () => {
 			expect(path._clickTolerance()).to.equal(0);
 		});
 	});
+
+	describe('#options', () => {
+		it('sets title and alt attributes on SVG paths after re-adding', () => {
+			const path = new Polyline([[1, 2], [3, 4]], {
+				alt: 'Filtering route',
+				title: 'Searchable route'
+			}).addTo(map);
+
+			expect(path.getElement().getAttribute('title')).to.equal('Searchable route');
+			expect(path.getElement().getAttribute('alt')).to.equal('Filtering route');
+
+			map.removeLayer(path);
+			map.addLayer(path);
+
+			expect(path.getElement().getAttribute('title')).to.equal('Searchable route');
+			expect(path.getElement().getAttribute('alt')).to.equal('Filtering route');
+		});
+	});
 });

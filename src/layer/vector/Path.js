@@ -63,6 +63,14 @@ export class Path extends Layer {
 			// A string that defines [how the inside of a shape](https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule) is determined.
 			fillRule: 'evenodd',
 
+			// @option title: String = ''
+			// Text for the browser tooltip that appears on path hover. Only for SVG renderer.
+			title: '',
+
+			// @option alt: String = null
+			// Text for the `alt` attribute of the path element. Only for SVG renderer.
+			alt: null,
+
 			// className: '',
 
 			// Option inherited from "Interactive layer" abstract class
