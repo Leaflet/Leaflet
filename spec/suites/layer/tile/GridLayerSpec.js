@@ -1067,6 +1067,31 @@ describe('GridLayer', () => {
 				done();
 			});
 		});
+
+		it('When false, wraps the columns of non-square tiles by the tile width', (done) => {
+			container.style.width = '512px';
+			container.style.height = '512px';
+
+			const grid = new GridLayer({
+				attribution: 'Grid Layer',
+				tileSize: new Point(256, 512),
+				noWrap: false
+			});
+			const loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(`${coords.x}:${coords.y}:${coords.z}`);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 1);
+
+			grid.on('load', () => {
+				// At zoom 1 the world is 512px wide, i.e. two columns of 256px tiles
+				expect(loadedTileKeys).to.eql(['0:0:1', '1:0:1']);
+				done();
+			});
+		});
 	});
 
 	describe('Sanity checks for infinity', () => {
