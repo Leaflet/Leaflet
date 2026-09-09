@@ -1423,7 +1423,7 @@ export class LeafletMap extends Evented {
 		this._fireDOMEvent(e, type);
 	};
 
-	static _pointerEvents = ['click', 'dblclick', 'pointerover', 'pointerout', 'contextmenu'];
+	static _pointerEvents = ['click', 'dblclick', 'pointerover', 'pointerout', 'pointermove', 'contextmenu'];
 
 	_fireDOMEvent(e, type, canvasTargets) {
 
