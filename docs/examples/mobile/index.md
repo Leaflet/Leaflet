@@ -54,7 +54,7 @@ Here we specify 16 as the maximum zoom when setting the map view automatically. 
 		new Marker(e.latlng).addTo(map)
 			.bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-		new Circle(e.latlng, radius).addTo(map);
+		new Circle(e.latlng, {radius}).addTo(map);
 	}
 
 	map.on('locationfound', onLocationFound);
