@@ -312,6 +312,10 @@ export class LayersControl extends Control {
 	_onLayerChange(e) {
 		if (!this._handlingClick) {
 			this._update();
+		} else if (e.target !== this._handlingLayer) {
+			const pendingLayers = e.type === 'add' ? this._layersToRemove : this._layersToAdd;
+			pendingLayers.delete(e.target);
+			this._layerStateChanged = true;
 		}
 
 		const obj = this._getLayer(Util.stamp(e.target));
@@ -376,8 +380,8 @@ export class LayersControl extends Control {
 		}
 
 		const inputs = this._layerControlInputs,
-		addedLayers = [],
-		removedLayers = [];
+		addedLayers = this._layersToAdd = new Set(),
+		removedLayers = this._layersToRemove = new Set();
 
 		this._handlingClick = true;
 
@@ -385,25 +389,34 @@ export class LayersControl extends Control {
 			const layer = this._getLayer(input.layerId).layer;
 
 			if (input.checked) {
-				addedLayers.push(layer);
+				addedLayers.add(layer);
 			} else if (!input.checked) {
-				removedLayers.push(layer);
+				removedLayers.add(layer);
 			}
 		}
 
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
 		for (const layer of removedLayers) {
 			if (this._map.hasLayer(layer)) {
+				this._handlingLayer = layer;
 				this._map.removeLayer(layer);
 			}
 		}
 		for (const layer of addedLayers) {
 			if (!this._map.hasLayer(layer)) {
+				this._handlingLayer = layer;
 				this._map.addLayer(layer);
 			}
 		}
 
 		this._handlingClick = false;
+		delete this._handlingLayer;
+		delete this._layersToAdd;
+		delete this._layersToRemove;
+		if (this._layerStateChanged) {
+			delete this._layerStateChanged;
+			this._update();
+		}
 
 		this._refocusOnMap(e);
 	}
