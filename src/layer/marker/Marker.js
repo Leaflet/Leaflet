@@ -345,6 +345,10 @@ export class Marker extends Layer {
 		this.addInteractiveTarget(this._icon);
 
 		if (MarkerDrag) {
+			if (this.dragging?._draggable?._element === this._icon) {
+				return;
+			}
+
 			let draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
