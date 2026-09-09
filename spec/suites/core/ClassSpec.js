@@ -59,6 +59,19 @@ describe('Class', () => {
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.eql(false);
 		});
+
+		it('calls inherited init hooks only once when subclass adds none', () => { // #10294
+			const spy = sinon.spy();
+
+			class Parent extends Class {}
+			class Child extends Parent {} // does not add its own init hooks
+
+			Parent.addInitHook(spy);
+
+			new Child();
+
+			expect(spy.callCount).to.equal(1);
+		});
 	});
 
 	describe('#include', () => {
