@@ -352,6 +352,16 @@ export class Canvas extends Renderer {
 				}
 			}
 		}
+
+		if (e.type === 'pointerdown') {
+			this._pointerDownLayer = clickedLayer ?? null;
+		} else if (e.type === 'click' && this._pointerDownLayer !== undefined) {
+			if (clickedLayer !== this._pointerDownLayer) {
+				clickedLayer = undefined;
+			}
+			delete this._pointerDownLayer;
+		}
+
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	}
 
