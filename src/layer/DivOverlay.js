@@ -164,8 +164,8 @@ export class DivOverlay extends Layer {
 
 	// @method setContent(htmlContent: String|HTMLElement|Function): this
 	// Sets the HTML content of the overlay. A `String` argument is rendered as
-	// HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
-	// or pass an `HTMLElement` with safe `textContent` instead. If a function is
+	// HTML; if it may contain untrusted input, sanitize it before passing it to
+	// Leaflet, or pass an `HTMLElement` with safe `textContent` instead. If a function is
 	// passed the source layer will be passed to the function. The function should
 	// return a `String` or `HTMLElement` to be used in the overlay.
 	setContent(content) {
