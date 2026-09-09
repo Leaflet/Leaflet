@@ -1,3 +1,4 @@
+---
 name: Leaflet.CityAutocompleteUSA
 category: geocoding
 repo: https://github.com/slbarriosdev/leaflet-city-autocomplete-usa
