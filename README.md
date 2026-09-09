@@ -49,8 +49,8 @@ and push the limits of what's possible with online maps!
  [plugins]: http://leafletjs.com/plugins.html
  [well-documented]: http://leafletjs.com/reference.html "Leaflet API reference"
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
- [hosted on GitHub]: http://github.com/Leaflet/Leaflet
+ [hosted on GitHub]: https://github.com/Leaflet/Leaflet
  [contribute]: https://github.com/Leaflet/Leaflet/blob/main/CONTRIBUTING.md "A guide to contributing to Leaflet"
- [official website]: http://leafletjs.com
+ [official website]: https://leafletjs.com
  [download page]: http://leafletjs.com/download.html
 

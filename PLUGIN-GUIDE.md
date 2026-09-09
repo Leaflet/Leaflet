@@ -210,7 +210,7 @@ trigger a build/minification just before publishing your package with a
   "name": "my-leaflet-plugin",
   ...
   "scripts": {
-    "prepublish": "grunt build"
+    "prepublishOnly": "grunt build"
   }
 }
 ```
