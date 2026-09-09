@@ -207,7 +207,7 @@
 	}
 }
 
-.leaflet-zoom-animated {
+.leaflet-zoom-animated:not(.leaflet-marker-icon) {
 	transform-origin: 0 0;
 	svg& {
 		will-change: transform;

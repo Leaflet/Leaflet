@@ -26,6 +26,13 @@ describe('Marker', () => {
 		removeMapContainer(map, container);
 	});
 
+	it('does not override the transform origin of zoom-animated markers', () => {
+		const marker = new Marker([0, 0]).addTo(map);
+
+		expect(marker._icon.classList.contains('leaflet-zoom-animated')).to.be.true;
+		expect(getComputedStyle(marker._icon).transformOrigin).to.not.equal('0px 0px');
+	});
+
 	describe('#setIcon', () => {
 
 		it('set the correct x and y size attributes', () => {
