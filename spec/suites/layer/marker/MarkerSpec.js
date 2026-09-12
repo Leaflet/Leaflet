@@ -222,6 +222,40 @@ describe('Marker', () => {
 				marker._panOnFocus();
 			}).to.not.throw();
 		});
+
+		it('pan map to focus marker with auto iconSize (#9253)', () => {
+			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: 'auto'})});
+			map.addLayer(marker);
+
+			expect(() => {
+				marker._panOnFocus();
+			}).to.not.throw();
+		});
+
+		it('pan map to focus marker with partially auto iconSize (#9253)', () => {
+			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: [100, 'auto']})});
+			map.addLayer(marker);
+
+			expect(() => {
+				marker._panOnFocus();
+			}).to.not.throw();
+		});
+
+		it('pan map to focus marker passes finite padding for auto-sized icons (#9253)', () => {
+			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: [100, 'auto']})});
+			map.addLayer(marker);
+
+			const spy = sinon.spy(map, 'panInside');
+			marker._panOnFocus();
+
+			expect(spy.calledOnce).to.be.true;
+			const [, options] = spy.firstCall.args;
+			expect(Number.isFinite(options.paddingTopLeft.x)).to.be.true;
+			expect(Number.isFinite(options.paddingTopLeft.y)).to.be.true;
+			expect(Number.isFinite(options.paddingBottomRight.x)).to.be.true;
+			expect(Number.isFinite(options.paddingBottomRight.y)).to.be.true;
+			spy.restore();
+		});
 	});
 
 	describe('#setLatLng', () => {
