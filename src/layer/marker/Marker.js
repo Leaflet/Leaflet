@@ -230,10 +230,14 @@ export class Marker extends Layer {
 
 			if (options.title) {
 				icon.title = options.title;
+			} else if (icon.tagName === "IMG") {
+				icon.title = "Marker";
 			}
 
-			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt ?? '';
+			if (icon.tagName === "IMG") {
+				icon.alt = options.alt ?? "";
+				icon.setAttribute("role", "img");
+				icon.setAttribute("aria-label", options.alt ?? "Map marker");
 			}
 		}
 
