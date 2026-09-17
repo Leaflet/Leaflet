@@ -16,6 +16,10 @@ integrity_hash_uglified: "sha256-gj5JhNAaMi6LCs+jVFOk8sXDe1sWSS2Zlc87m+trLiQ="
 integrity_hash_global_source: "sha256-SnNOWrUASCy0Jw4FGryafJamqNk15qDnW00Y/biE2dU="
 integrity_hash_global_uglified: "sha256-lJUxSvvKo54k90cTx9u9DCAP1MtAEqnLmx6Sx3no03c="
 
+# Starting september 2026, Carto required a token/key for the raster tiles
+# The one provided in the Leaflet repo only works for the www.leafletjs.com domain
+cartocdn_key: "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
+
 collections:
   plugins:
     output: false

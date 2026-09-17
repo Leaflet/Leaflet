@@ -9,10 +9,10 @@
     "@eslint/css": "^1.4.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-terser": "^1.0.0",
-    "@vitest/browser": "^4.1.10",
-    "@vitest/browser-playwright": "^4.1.7",
-    "@vitest/coverage-v8": "^4.1.7",
-    "@vitest/ui": "^4.1.7",
+    "@vitest/browser": "^5.0.0",
+    "@vitest/browser-playwright": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/ui": "^5.0.0",
     "bundlemon": "^3.1.0",
     "chai": "^6.2.2",
     "eslint": "^10.8.0",
@@ -30,7 +30,7 @@
     "sinon": "^22.1.0",
     "ssri": "^14.0.0",
     "ui-event-simulator": "^2.0.0",
-    "vitest": "^4.1.7"
+    "vitest": "^5.0.0"
   },
   "type": "module",
   "exports": {
