@@ -37,7 +37,7 @@ const pointer = typeof window === 'undefined' ? false : !!window.PointerEvent;
 // **This does not necessarily mean** that the browser is running in a computer with
 // a touchscreen, it only means that the browser is capable of understanding
 // touch events.
-const touchNative = typeof window === 'undefined' ? false : 'ontouchstart' in window || !!(window.TouchEvent);
+const touchNative = typeof window === 'undefined' ? false : 'ontouchstart' in window;
 
 // @property touch: Boolean
 // `true` for all browsers supporting either [touch](#browser-touch) or [pointer](#browser-pointer) events.
