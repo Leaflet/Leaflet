@@ -28,6 +28,16 @@ export class MarkerDrag extends Handler {
 		this._marker = marker;
 	}
 
+	enable() {
+		this._marker.options.draggable = true;
+		return super.enable();
+	}
+
+	disable() {
+		this._marker.options.draggable = false;
+		return super.disable();
+	}
+
 	addHooks() {
 		const icon = this._marker._icon;
 

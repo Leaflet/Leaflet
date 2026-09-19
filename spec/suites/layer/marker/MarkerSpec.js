@@ -126,6 +126,16 @@ describe('Marker', () => {
 			expect(marker.dragging.enabled()).to.be.true;
 		});
 
+		it('preserves disabled dragging when readded to the map', () => {
+			const marker = new Marker([0, 0], {draggable: true}).addTo(map);
+			marker.dragging.disable();
+
+			map.removeLayer(marker);
+			map.addLayer(marker);
+
+			expect(marker.dragging.enabled()).to.be.false;
+		});
+
 		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
 			const marker = new Marker([0, 0], {icon: new DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
