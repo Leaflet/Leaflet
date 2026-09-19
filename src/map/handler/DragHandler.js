@@ -34,13 +34,6 @@ LeafletMap.mergeOptions({
 	// @option easeLinearity: Number = 0.2
 	easeLinearity: 0.2,
 
-	// TODO refactor, move to CRS
-	// @option worldCopyJump: Boolean = false
-	// With this option enabled, the map tracks when you pan to another "copy"
-	// of the world and seamlessly jumps to the original one so that all overlays
-	// like markers and vector layers are still visible.
-	worldCopyJump: false,
-
 	// @option maxBoundsViscosity: Number = 0.0
 	// If `maxBounds` is set, this option will control how solid the bounds
 	// are when dragging the map around. The default value of `0.0` allows the
@@ -66,9 +59,6 @@ export class DragHandler extends Handler {
 			this._draggable.on('predrag', this._onPreDragLimit, this);
 			if (map.options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDragWrap, this);
-				map.on('zoomend', this._onZoomEnd, this);
-
-				map.whenReady(this._onZoomEnd, this);
 			}
 		}
 		this._map._container.classList.add('leaflet-grab', 'leaflet-touch-drag');
@@ -107,6 +97,9 @@ export class DragHandler extends Handler {
 			this._offsetLimit = null;
 		}
 
+		this._worldCopyOffset = 0;
+		this._pendingWorldCopy = 0;
+
 		map
 			.fire('movestart')
 			.fire('dragstart');
@@ -118,6 +111,11 @@ export class DragHandler extends Handler {
 	}
 
 	_onDrag(e) {
+		if (this._pendingWorldCopy) {
+			this._map._fireWorldCopyJump(this._pendingWorldCopy);
+			this._pendingWorldCopy = 0;
+		}
+
 		if (this._map.options.inertia) {
 			const time = this._lastTime = Date.now(),
 			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
@@ -140,14 +138,6 @@ export class DragHandler extends Handler {
 		}
 	}
 
-	_onZoomEnd() {
-		const pxCenter = this._map.getSize().divideBy(2),
-		pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
-
-		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
-		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
-	}
-
 	_viscousLimit(value, threshold) {
 		return value - (value - threshold) * this._viscosity;
 	}
@@ -167,17 +157,17 @@ export class DragHandler extends Handler {
 	}
 
 	_onPreDragWrap() {
-		// TODO refactor to be able to adjust map pane position after zoom
-		const worldWidth = this._worldWidth,
-		halfWidth = Math.round(worldWidth / 2),
-		dx = this._initialWorldOffset,
-		x = this._draggable._newPos.x,
-		newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+		const draggable = this._draggable,
+		unwrapped = draggable._newPos,
+		wrapped = this._map._wrapPanePos(unwrapped),
+		offset = wrapped.x - unwrapped.x;
 
-		this._draggable._absPos = this._draggable._newPos.clone();
-		this._draggable._newPos.x = newX;
+		draggable._absPos = unwrapped.clone();
+		draggable._newPos = wrapped;
+
+		// Announce the jump from _onDrag, after Draggable has moved the pane.
+		this._pendingWorldCopy = offset - this._worldCopyOffset;
+		this._worldCopyOffset = offset;
 	}
 
 	_onDragEnd(e) {

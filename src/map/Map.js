@@ -141,7 +141,13 @@ export class LeafletMap extends Evented {
 
 			// @option trackResize: Boolean = true
 			// Whether the map automatically handles browser window resize to update itself.
-			trackResize: true
+			trackResize: true,
+
+			// @option worldCopyJump: Boolean = false
+			// With this option enabled, the map tracks when you pan to another "copy"
+			// of the world and seamlessly jumps to the original one so that all overlays
+			// like markers and vector layers are still visible.
+			worldCopyJump: false
 		});
 	}
 
@@ -335,7 +341,11 @@ export class LeafletMap extends Evented {
 		// If we pan too far, Chrome gets issues with tiles
 		// and makes them disappear or appear in the wrong place (slightly offset) #2602
 		if (options.animate !== true && !this.getSize().contains(offset)) {
-			this._resetView(this.unproject(this.project(this.getCenter()).add(offset)), this.getZoom());
+			let center = this.unproject(this.project(this.getCenter()).add(offset));
+			if (this.options.worldCopyJump) {
+				center = this.wrapLatLng(center);
+			}
+			this._resetView(center, this.getZoom());
 			return this;
 		}
 
@@ -361,6 +371,7 @@ export class LeafletMap extends Evented {
 			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
 		} else {
 			this._rawPanBy(offset);
+			this._wrapWorldCopy();
 			this.fire('move').fire('moveend');
 		}
 
@@ -1282,6 +1293,44 @@ export class LeafletMap extends Evented {
 		DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	}
 
+	// Returns a prospective map pane position shifted into the original world.
+	_wrapPanePos(pos) {
+		const worldBounds = this._loaded && this.getPixelWorldBounds();
+
+		if (!worldBounds) { return pos; }
+
+		const worldWidth = worldBounds.getSize().x,
+		halfWidth = Math.round(worldWidth / 2),
+		dx = this.latLngToLayerPoint([0, 0]).subtract(this.getSize().divideBy(2)).x,
+		x = pos.x,
+		newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
+		newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
+		newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+
+		return new Point(newX, pos.y);
+	}
+
+	_wrapWorldCopy() {
+		if (!this.options.worldCopyJump) { return; }
+
+		const pos = this._getMapPanePos(),
+		wrapped = this._wrapPanePos(pos);
+
+		if (wrapped.x === pos.x) { return; }
+
+		DomUtil.setPosition(this._mapPane, wrapped);
+		this._fireWorldCopyJump(wrapped.x - pos.x);
+	}
+
+	_fireWorldCopyJump(offsetX) {
+		// @event worldcopyjump: WorldCopyJumpEvent
+		// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
+		// or more world widths.
+		this.fire('worldcopyjump', {
+			worlds: Math.round(offsetX / this.getPixelWorldBounds().getSize().x)
+		});
+	}
+
 	_getZoomSpan() {
 		return this.getMaxZoom() - this.getMinZoom();
 	}
@@ -1613,6 +1662,7 @@ export class LeafletMap extends Evented {
 
 	_onPanTransitionEnd() {
 		this._mapPane.classList.remove('leaflet-pan-anim');
+		this._wrapWorldCopy();
 		this.fire('moveend');
 	}
 
