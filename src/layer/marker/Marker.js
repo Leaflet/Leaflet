@@ -233,7 +233,7 @@ export class Marker extends Layer {
 			}
 
 			if (icon.tagName === 'IMG') {
-				icon.alt = options.alt ?? '';
+				icon.alt = options.alt || 'Marker';
 			}
 		}
 
