@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {DomUtil, LeafletMap, Marker, Point} from 'leaflet';
+import {DefaultIcon, DomUtil, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
 
@@ -32,6 +32,35 @@ describe('Marker.Drag', () => {
 	});
 
 	describe('drag', () => {
+		it('continues dragging after changing a reused icon', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
+
+			const start = new Point(300, 280);
+			const offset = new Point(56, 32);
+			const finish = start.add(offset);
+			let dragEvents = 0;
+
+			marker.on('drag', () => {
+				dragEvents++;
+				if (dragEvents === 1) {
+					marker.setIcon(new DefaultIcon());
+				}
+			});
+
+			const hand = new Hand({
+				timing: 'fastframe',
+				onStop() {
+					expect(dragEvents).to.be.greaterThan(1);
+					expect(marker.getOffset()).to.eql(offset);
+					done();
+				}
+			});
+			const toucher = hand.growFinger(...pointerEventType);
+
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+		});
+
 		it('drags a marker with mouse', (done) => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
