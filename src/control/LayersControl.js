@@ -377,18 +377,31 @@ export class LayersControl extends Control {
 
 		const inputs = this._layerControlInputs,
 		addedLayers = [],
-		removedLayers = [];
+		removedLayers = [],
+		toggledInputs = new Set();
 
 		this._handlingClick = true;
 
 		for (const input of inputs) {
+			// Only act on inputs actually toggled by the user: layers added or
+			// removed by the event handlers fired below must keep their new
+			// state instead of being re-enforced from the stale input (#9747)
+			if (input.checked === input.defaultChecked) {
+				continue;
+			}
+
 			const layer = this._getLayer(input.layerId).layer;
 
 			if (input.checked) {
 				addedLayers.push(layer);
-			} else if (!input.checked) {
+			} else {
 				removedLayers.push(layer);
 			}
+
+			toggledInputs.add(input);
+
+			// remember the input as enforced until the sync below
+			input.defaultChecked = input.checked;
 		}
 
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
@@ -404,6 +417,19 @@ export class LayersControl extends Control {
 		}
 
 		this._handlingClick = false;
+
+		// Reflect the final map state on the inputs, as event handlers may
+		// have added or removed layers while this click was handled (#9747).
+		// Inputs sharing their layer with a toggled input are left alone, as
+		// the map state cannot tell which control entry the user selected.
+		const toggledLayers = new Set(Array.from(toggledInputs, input => this._getLayer(input.layerId).layer));
+		for (const input of this._layerControlInputs) {
+			const layer = this._getLayer(input.layerId).layer;
+			if (toggledLayers.has(layer) && !toggledInputs.has(input)) {
+				continue;
+			}
+			input.checked = this._map.hasLayer(layer);
+		}
 
 		this._refocusOnMap(e);
 	}
