@@ -161,11 +161,6 @@ export class LatLng {
 	// @method clone(): LatLng
 	// Returns a copy of the current LatLng.
 	clone() {
-		// to skip the validation in the constructor we need to initialize with 0 and then set the values later
-		const latlng = new LatLng(0, 0);
-		latlng.lat = this.lat;
-		latlng.lng = this.lng;
-		latlng.alt = this.alt;
-		return latlng;
+		return new LatLng(this.lat, this.lng, this.alt);
 	}
 };
