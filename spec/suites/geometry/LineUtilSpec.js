@@ -50,6 +50,19 @@ describe('LineUtil', () => {
 			expect(segment2[0]).to.eql(new Point(5, 5));
 			expect(segment2[1]).to.eql(b);
 		});
+
+		it('terminates when rounding against fractional bounds', () => {
+			const a = new Point(301.4418194964528, 342.73335686232895);
+			const b = new Point(116, 279);
+			const bounds = new Bounds(
+				new Point(116.30943011350813, 22.55244562255804),
+				new Point(1588.709430113508, 1115.752445622558));
+
+			const segment = LineUtil.clipSegment(a, b, bounds, false, true);
+
+			expect(segment[0]).to.eql(a);
+			expect(segment[1]).to.eql(new Point(116, 279));
+		});
 	});
 
 	describe('#pointToSegmentDistance & #closestPointOnSegment', () => {

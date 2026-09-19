@@ -117,6 +117,7 @@ let _lastCode;
 // (modifying the segment points directly!). Used by Leaflet to only show polyline
 // points that are on the screen or near, increasing performance.
 export function clipSegment(a, b, bounds, useLastCode, round) {
+	const a0 = a, b0 = b;
 	let codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
 	codeB = _getBitCode(b, bounds),
 
@@ -128,6 +129,12 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 	while (true) {
 		// if a,b is inside the clip window (trivial accept)
 		if (!(codeA | codeB)) {
+			// round only the endpoints that were replaced by a clipped intersection;
+			// rounding while iterating can push a point back outside and loop forever
+			if (round) {
+				if (a !== a0) { a = a.round(); }
+				if (b !== b0) { b = b.round(); }
+			}
 			return [a, b];
 		}
 
@@ -138,7 +145,7 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 
 		// other cases
 		codeOut = codeA || codeB;
-		p = _getEdgeIntersection(a, b, codeOut, bounds, round);
+		p = _getEdgeIntersection(a, b, codeOut, bounds);
 		newCode = _getBitCode(p, bounds);
 
 		if (codeOut === codeA) {
