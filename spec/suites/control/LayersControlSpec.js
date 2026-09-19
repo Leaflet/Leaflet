@@ -68,6 +68,24 @@ describe('LayersControl', () => {
 	});
 
 	describe('updates', () => {
+		it('does not restore a layer removed by an overlayremove listener', () => {
+			const overlayA = new Marker([0, 0]).addTo(map),
+			overlayB = new Marker([0, 0]).addTo(map),
+			layers = new LayersControl({}, {'Overlay A': overlayA, 'Overlay B': overlayB}).addTo(map);
+
+			map.once('overlayremove', (e) => {
+				if (e.layer === overlayA) {
+					map.removeLayer(overlayB);
+				}
+			});
+
+			UIEventSimulator.fire('click', layers._overlaysList.getElementsByTagName('input')[0]);
+
+			expect(map.hasLayer(overlayA)).to.be.false;
+			expect(map.hasLayer(overlayB)).to.be.false;
+			expect(layers._overlaysList.getElementsByTagName('input')[1].checked).to.be.false;
+		});
+
 		it('when an included layer is added or removed from the map', () => {
 			const baseLayer = new TileLayer(),
 			overlay = new Marker([0, 0]),
