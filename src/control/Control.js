@@ -33,14 +33,14 @@ export class Control extends Class {
 	/* @section
 	 * Classes extending Control will inherit the following methods:
 	 *
-	 * @method getPosition: string
+	 * @method getPosition(): String
 	 * Returns the position of the control.
 	 */
 	getPosition() {
 		return this.options.position;
 	}
 
-	// @method setPosition(position: string): this
+	// @method setPosition(position: String): this
 	// Sets the position of the control.
 	setPosition(position) {
 		const map = this._map;
@@ -54,7 +54,7 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method getContainer: HTMLElement
+	// @method getContainer(): HTMLElement
 	// Returns the HTMLElement that contains the control.
 	getContainer() {
 		return this._container;
@@ -83,7 +83,7 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method remove: this
+	// @method remove(): this
 	// Removes the control from the map it is currently active on.
 	remove() {
 		if (!this._map) {
