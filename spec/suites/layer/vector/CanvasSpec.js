@@ -140,6 +140,27 @@ describe('Canvas', () => {
 				.down().moveBy(20, 10, 200).up();
 		});
 
+		it('should not fire click when pointerdown starts outside the layer', (done) => {
+			const spy = sinon.spy();
+			layer.on('click', spy);
+			map.dragging.disable();
+
+			const hand = new Hand({
+				timing: 'fastframe',
+				onStop() {
+					// Prosthetic does not fire a click after pointerdown+pointerup, but
+					// real browsers fire it on the shared canvas element.
+					UIEventSimulator.fireAt('click', 50, 50);
+					expect(spy.called).to.be.false;
+					done();
+				}
+			});
+			const mouse = hand.growFinger('pointer');
+
+			mouse.moveTo(150, 150, 0)
+				.down().moveTo(50, 50, 200).up();
+		});
+
 		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
