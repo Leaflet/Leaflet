@@ -40,6 +40,10 @@ import * as DomUtil from '../dom/DomUtil.js';
  * ```js
  * {"<img src='my-layer-icon' /> <span class='my-layer-item'>My Layer</span>": myLayer}
  * ```
+ *
+ * String names are rendered as HTML; if a name may include untrusted input (e.g. data from
+ * users or external APIs), sanitize it (e.g. with DOMPurify) or pass an `HTMLElement` with
+ * safe `textContent` instead.
  */
 
 // @constructor LayersControl(baselayers?: Object, overlays?: Object, options?: LayersControl options)
@@ -352,7 +356,12 @@ export class LayersControl extends Control {
 		DomEvent.on(input, 'click', this._onInputClick, this);
 
 		const name = document.createElement('span');
-		name.innerHTML = ` ${obj.name}`;
+		if (typeof obj.name === 'string') {
+			name.innerHTML = ` ${obj.name}`;
+		} else {
+			name.appendChild(document.createTextNode(' '));
+			name.appendChild(obj.name);
+		}
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
