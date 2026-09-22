@@ -105,22 +105,27 @@ function userAgentContains(str) {
 }
 const chromeBrowser = userAgentContains('chrome');
 
+/**
+ * Scrolls the page to a header element with appropriate offset,
+ * depending on browser and anchor behavior.
+ *
+ * @param {HTMLElement} elemHeader - The header element to scroll to.
+ * @param {boolean} sameAnchor - Whether the user clicked the same anchor again.
+ */
 function scrollToHeader(elemHeader, sameAnchor) {
-	let scrollBy = elemHeader.nextSibling.offsetTop;
+	if (!elemHeader || !elemHeader.nextSibling) { return; }
 
-	if (chromeBrowser && sameAnchor) {
-		// chromium remove the anchor element from the scroll-position
-		// we check with sameAnchor if the User has clicked on the same anchor link again
-		scrollBy = scrollBy - elemHeader.offsetHeight;
-	} else {
-		// we scroll a little bit more down to get the element already sticky
-		scrollBy += 5;
-	}
-	// scroll to the anchor
-	window.scrollTo(0, scrollBy);
-	// apply the new anchor to the location url
+	const nextOffset = elemHeader.nextSibling.offsetTop;
+	const offsetCorrection = chromeBrowser && sameAnchor ?
+		-elemHeader.offsetHeight :
+		5;
+
+	const scrollTarget = nextOffset + offsetCorrection;
+
+	window.scrollTo(0, scrollTarget);
 	currentAnchor = window.location.hash = `#${elemHeader.id}`;
 }
+
 
 const backToTop = document.querySelector('#back-to-top');
 backToTop.addEventListener('click', () => {
