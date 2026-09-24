@@ -94,7 +94,13 @@ export class Class {
 
 		// call init hooks on each prototype
 		for (const proto of prototypes) {
-			for (const hook of proto._initHooks ?? []) {
+			// `_initHooks` is inherited, so a subclass prototype without its own hooks
+			// would run its parent's hooks a second time (#10294)
+			if (!Object.hasOwn(proto, '_initHooks')) {
+				continue;
+			}
+
+			for (const hook of proto._initHooks) {
 				hook.call(this);
 			}
 		}
