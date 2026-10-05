@@ -14,7 +14,7 @@
     "@vitest/coverage-v8": "^5.0.0",
     "@vitest/ui": "^5.0.0",
     "bundlemon": "^3.1.0",
-    "chai": "^6.2.2",
+    "chai": "^6.3.0",
     "eslint": "^10.8.0",
     "eslint-config-mourner": "^5.0.1",
     "eslint-plugin-baseline-js": "^0.7.0",
