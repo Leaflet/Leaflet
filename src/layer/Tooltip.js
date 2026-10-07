@@ -285,8 +285,12 @@ Layer.include({
 	// `String` or `HTMLElement`.
 	bindTooltip(content, options) {
 
-		if (this._tooltip && this.isTooltipOpen()) {
-			this.unbindTooltip();
+		if (this._tooltip) {
+			if (this.isTooltipOpen()) {
+				this.unbindTooltip();
+			} else {
+				this._initTooltipInteractions(true);
+			}
 		}
 
 		this._tooltip = this._initOverlay(Tooltip, this._tooltip, content, options);
@@ -321,10 +325,9 @@ Layer.include({
 			events.pointerover = this._openTooltip;
 			events.pointerout = this.closeTooltip;
 			events.click = this._openTooltip;
+			events.add = this._addFocusListenersOnAdd;
 			if (this._map) {
 				this._addFocusListeners(remove);
-			} else {
-				events.add = () => this._addFocusListeners(remove);
 			}
 		} else {
 			events.add = this._openTooltip;
@@ -390,6 +393,10 @@ Layer.include({
 	// Returns the tooltip bound to this layer.
 	getTooltip() {
 		return this._tooltip;
+	},
+
+	_addFocusListenersOnAdd() {
+		this._addFocusListeners(false);
 	},
 
 	_addFocusListeners(remove) {

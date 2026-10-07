@@ -126,6 +126,73 @@ describe('Tooltip', () => {
 
 	});
 
+	it('updates interactions when replacing a closed tooltip with a permanent tooltip', () => {
+		const layer = new Marker(center).addTo(map);
+		layer.bindTooltip('Hover');
+		layer.bindTooltip('Permanent', {permanent: true});
+
+		UIEventSimulator.fire('pointerout', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.true;
+		layer.remove().addTo(map);
+		expect(layer.isTooltipOpen()).to.be.true;
+		expect(layer.getTooltip().getContent()).to.equal('Permanent');
+	});
+
+	it('updates interactions when replacing a closed permanent tooltip', () => {
+		const layer = new Marker(center).addTo(map);
+		layer.bindTooltip('Permanent', {permanent: true});
+		layer.closeTooltip();
+		layer.bindTooltip('Hover', {permanent: false});
+
+		UIEventSimulator.fire('pointerover', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.true;
+		UIEventSimulator.fire('pointerout', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.false;
+		layer.remove().addTo(map);
+		expect(layer.isTooltipOpen()).to.be.false;
+	});
+
+	it('updates sticky interactions when replacing a closed tooltip', () => {
+		const layer = new Marker(center).addTo(map);
+		layer.bindTooltip('Hover');
+		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();
+		layer.fire('pointermove', {latlng: [56, 38]});
+		expect(layer.getTooltip().getLatLng()).to.eql({lat: 56, lng: 38});
+		layer.closeTooltip();
+		layer.bindTooltip('Not sticky', {sticky: false}).openTooltip();
+		layer.fire('pointermove', {latlng: [57, 39]});
+		expect(layer.getTooltip().getLatLng()).to.eql(layer.getLatLng());
+	});
+
+	it('preserves a closed tooltip instance when only updating content', () => {
+		const layer = new Marker(center).bindTooltip('Old');
+		const tooltip = layer.getTooltip();
+		layer.bindTooltip('New');
+		expect(layer.getTooltip()).to.equal(tooltip);
+		layer.addTo(map);
+		UIEventSimulator.fire('focus', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.true;
+		expect(tooltip.getContent()).to.equal('New');
+	});
+
+	it('removes deferred focus listeners when rebinding before adding to the map', () => {
+		const layer = new Marker(center).bindTooltip('Hover');
+		layer.bindTooltip('Permanent', {permanent: true}).addTo(map);
+		layer.closeTooltip();
+		UIEventSimulator.fire('focus', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.false;
+	});
+
+	it('restores focus interactions after rebinding and re-adding a marker', () => {
+		const layer = new Marker(center).bindTooltip('Hover').addTo(map);
+		layer.bindTooltip('Updated');
+		layer.remove().addTo(map);
+		UIEventSimulator.fire('focus', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.true;
+		UIEventSimulator.fire('blur', layer.getElement());
+		expect(layer.isTooltipOpen()).to.be.false;
+	});
+
 	it('stays open on marker when permanent', () => {
 		const layer = new Marker(center).addTo(map);
 
