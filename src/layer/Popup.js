@@ -292,6 +292,9 @@ export class Popup extends DivOverlay {
 		if (!this.options.autoPan) { return; }
 		this._map._panAnim?.stop();
 
+		// Stopping the pan fires `moveend`, whose listeners may have removed this popup.
+		if (!this._map) { return; }
+
 		// We can endlessly recurse if keepInView is set and the view resets.
 		// Let's guard against that by exiting early if we're responding to our own autopan.
 		if (this._autopanning) {
