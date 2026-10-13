@@ -172,6 +172,7 @@ export var GridLayer = Layer.extend({
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = undefined;
+		this._previousTileZoom = undefined;
 	},
 
 	// @method bringToFront: this
@@ -441,12 +442,16 @@ export var GridLayer = Layer.extend({
 			}
 		}
 
+		this._retainPreviousTiles();
+
 		for (key in this._tiles) {
 			if (!this._tiles[key].retain) {
 				this._removeTile(key);
 			}
 		}
 	},
+
+	_retainPreviousTiles: Util.falseFn,
 
 	_removeTilesAtZoom: function (zoom) {
 		for (var key in this._tiles) {
@@ -472,6 +477,7 @@ export var GridLayer = Layer.extend({
 		this._removeAllTiles();
 
 		this._tileZoom = undefined;
+		this._previousTileZoom = undefined;
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -561,6 +567,10 @@ export var GridLayer = Layer.extend({
 
 		if (!noUpdate || tileZoomChanged) {
 
+			if (tileZoom !== this._tileZoom) {
+				this._previousTileZoom = this._tileZoom;
+			}
+
 			this._tileZoom = tileZoom;
 
 			if (this._abortLoading) {
@@ -633,7 +643,7 @@ export var GridLayer = Layer.extend({
 
 	_getTiledPixelBounds: function (center) {
 		var map = this._map,
-		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		    mapZoom = map._animatingZoom ? map._animateToZoom : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
 		    halfSize = map.getSize().divideBy(scale * 2);
@@ -645,7 +655,7 @@ export var GridLayer = Layer.extend({
 	_update: function (center) {
 		var map = this._map;
 		if (!map) { return; }
-		var zoom = this._clampZoom(map.getZoom());
+		var zoom = this._clampZoom(map._animatingZoom ? map._animateToZoom : map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
@@ -685,6 +695,11 @@ export var GridLayer = Layer.extend({
 
 				var tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
+					if (tile.cached) {
+						tile.el.style.visibility = tile.cachedVisibility;
+						delete tile.cached;
+						delete tile.cachedVisibility;
+					}
 					tile.current = true;
 				} else {
 					queue.push(coords);

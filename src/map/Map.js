@@ -763,6 +763,7 @@ export var Map = Evented.extend({
 		}
 
 		this._stop();
+		this._animatingZoom = false;
 
 		DomUtil.remove(this._mapPane);
 
@@ -775,6 +776,7 @@ export var Map = Evented.extend({
 		}
 
 		this._clearHandlers();
+		clearTimeout(this._transitionEndTimer);
 
 		if (this._loaded) {
 			// @section Map state change events
@@ -1256,6 +1258,7 @@ export var Map = Evented.extend({
 
 	_stop: function () {
 		Util.cancelAnimFrame(this._flyToFrame);
+		Util.cancelAnimFrame(this._zoomAnimFrame);
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
@@ -1673,7 +1676,8 @@ export var Map = Evented.extend({
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		Util.requestAnimFrame(function () {
+		this._zoomAnimFrame = Util.requestAnimFrame(function () {
+			this._zoomAnimFrame = null;
 			this
 			    ._moveStart(true, options.noMoveStart || false)
 			    ._animateZoom(center, zoom, true);
@@ -1711,7 +1715,7 @@ export var Map = Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
+		this._transitionEndTimer = setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {

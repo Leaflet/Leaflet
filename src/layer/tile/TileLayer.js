@@ -49,6 +49,12 @@ export var TileLayer = GridLayer.extend({
 		// The maximum zoom level up to which this layer will be displayed (inclusive).
 		maxZoom: 18,
 
+		// @option keepPreviousTiles: Number = 128
+		// After animated zooms, keep up to this many loaded image tiles from the previous level,
+		// nearest the map center, so zooming back reuses their decoded images.
+		// Set to `0` to disable. Redraw and layer removal clear the retained tiles.
+		keepPreviousTiles: 128,
+
 		// @option subdomains: String|String[] = 'abc'
 		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
 		subdomains: 'abc',
@@ -258,6 +264,42 @@ export var TileLayer = GridLayer.extend({
 					});
 				}
 			}
+		}
+	},
+
+	_retainPreviousTiles: function () {
+		for (var cachedKey in this._tiles) {
+			var previous = this._tiles[cachedKey];
+			if (previous.cached) {
+				previous.el.style.visibility = previous.retain ? previous.cachedVisibility : 'hidden';
+			}
+		}
+		if (!this.options.keepPreviousTiles || this._previousTileZoom === undefined) { return; }
+
+		var center = this._map.project(this._map.getCenter(), this._previousTileZoom)
+			.unscaleBy(this.getTileSize()).subtract([0.5, 0.5]);
+		var tiles = [];
+		for (var key in this._tiles) {
+			var tile = this._tiles[key];
+			if (tile.coords.z === this._previousTileZoom && tile.loaded && tile.active &&
+				tile.el.naturalWidth > 0 && DomUtil.hasClass(tile.el, 'leaflet-tile-loaded')) {
+				tiles.push(tile);
+			}
+		}
+
+		tiles.sort(function (a, b) {
+			return a.coords.distanceTo(center) - b.coords.distanceTo(center);
+		});
+		for (var i = 0; i < Math.min(tiles.length, Math.max(0, Math.floor(this.options.keepPreviousTiles))); i++) {
+			var cachedTile = tiles[i];
+			if (!cachedTile.retain) {
+				if (!cachedTile.cached) {
+					cachedTile.cached = true;
+					cachedTile.cachedVisibility = cachedTile.el.style.visibility;
+				}
+				cachedTile.el.style.visibility = 'hidden';
+			}
+			cachedTile.retain = true;
 		}
 	},
 

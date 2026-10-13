@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Animated tile zoom regression</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<style>
+			#map {height: 70vh; background: #222;}
+			pre {white-space: pre-wrap;}
+		</style>
+		<script src="../../dist/leaflet-src.js"></script>
+	</head>
+	<body>
+		<p>Build Leaflet, serve this directory, then zoom between levels 11 and 14.
+		The target and tile zoom should match during zoomanim. Loaded map tiles should stay visible.</p>
+		<button id="zoom-in" type="button">Zoom to 14</button>
+		<button id="zoom-out" type="button">Zoom to 11</button>
+		<div id="map"></div>
+		<pre id="trace"></pre>
+		<script>
+
+			const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect width="256" height="256" fill="#357b91"/><path d="M0 0H256V256H0Z" fill="none" stroke="white"/></svg>';
+			const map = L.map('map', {zoomAnimation: true}).setView([44, -121], 11);
+			const tiles = L.tileLayer(`data:image/svg+xml,${encodeURIComponent(svg)}`, {maxZoom: 20}).addTo(map);
+			map.on('zoomanim', event => {
+				const row = {target: event.zoom, mapZoom: map.getZoom(), tileZoom: tiles._tileZoom};
+				document.getElementById('trace').textContent += `${JSON.stringify(row)}\n`;
+			});
+			map.on('moveend', () => {
+				const images = Object.keys(tiles._tiles).map(key => tiles._tiles[key]);
+				const previous = images.filter(tile => tile.coords.z !== tiles._tileZoom).length;
+				document.getElementById('trace').textContent += `Loaded images: ${images.length}; previous zoom: ${previous}\n`;
+			});
+			document.getElementById('zoom-in').addEventListener('click', () => map.setZoom(14, {animate: true}));
+			document.getElementById('zoom-out').addEventListener('click', () => map.setZoom(11, {animate: true}));
+		</script>
+	</body>
+</html>
