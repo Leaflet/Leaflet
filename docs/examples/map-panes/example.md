@@ -17,11 +17,11 @@ title: Custom Icons Tutorial
 
 	const cartodbAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>';
 
-	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+	const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png?key={{site.cartocdn_key}}', {
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const positronLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+	const positronLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png?key={{site.cartocdn_key}}', {
 		attribution: cartodbAttribution,
 		pane: 'labels'
 	}).addTo(map);
