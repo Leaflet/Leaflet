@@ -13,7 +13,7 @@
     "@vitest/browser-playwright": "^5.0.0",
     "@vitest/coverage-v8": "^5.0.0",
     "@vitest/ui": "^5.0.0",
-    "bundlemon": "^3.1.0",
+    "bundlemon": "^3.2.0",
     "chai": "^6.2.2",
     "eslint": "^10.8.0",
     "eslint-config-mourner": "^5.0.1",
