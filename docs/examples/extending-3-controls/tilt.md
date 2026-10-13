@@ -40,10 +40,9 @@ title: Tilt Handler Example
 
 		_tilt(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
-			const offset = new Point(ev.gamma, ev.beta);
 			let info;
-			if (offset) {
-				this._map.panBy(offset);
+			if (ev.gamma !== null && ev.beta !== null) {
+				this._map.panBy(new Point(ev.gamma, ev.beta));
 				info = `${ev.gamma},${ev.beta}`;
 			} else {
 				info = 'Device orientation not detected';
@@ -52,7 +51,7 @@ title: Tilt Handler Example
 		}
 	}
 	
-	Map.addInitHook('addHandler', 'tilt', TiltHandler);
+	LeafletMap.addInitHook('addHandler', 'tilt', TiltHandler);
 
 	const map = new LeafletMap('map', {
 		center: [0, 0],

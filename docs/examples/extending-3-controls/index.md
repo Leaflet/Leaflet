@@ -50,7 +50,7 @@ class TiltHandler extends Handler {
 
 The handler can be attached to the map using `map.addHandler('tilt', TiltHandler)` - this will store an instance of `TiltHandler` as `map.tilt`. However, it's more usual to attach handlers to all maps with the `addInitHook` syntax:
 
-	Map.addInitHook('addHandler', 'tilt', TiltHandler);
+	LeafletMap.addInitHook('addHandler', 'tilt', TiltHandler);
 
 Our handler can now be enabled by running `map.tilt.enable()` and disabled by `map.tilt.disable()`
 

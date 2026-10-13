@@ -22,7 +22,7 @@ title: Custom Pane Example
 		attribution: cartodbAttribution
 	}).addTo(map);
 
-	const positronLabels = new TileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+	const positronLabels = new TileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png?key={{site.cartocdn_key}}', {
 		attribution: cartodbAttribution,
 		pane: 'labels'
 	}).addTo(map);
