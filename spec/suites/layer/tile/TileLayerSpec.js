@@ -211,7 +211,7 @@ describe('TileLayer', () => {
 				toFake: ['setTimeout', 'clearTimeout', 'Date']
 			});
 
-			kittenLayer = kittenLayerFactory({keepBuffer: 0});
+			kittenLayer = kittenLayerFactory({keepBuffer: 0, keepPreviousTiles: 0, updateWhenIdle: true});
 
 			counts = {
 				tileload: 0,

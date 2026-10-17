@@ -772,6 +772,7 @@ export class LeafletMap extends Evented {
 		}
 
 		this._stop();
+		this._animatingZoom = false;
 
 		PointerEvents.disablePointerDetection(this._container);
 		this._mapPane.remove();

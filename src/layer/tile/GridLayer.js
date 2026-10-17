@@ -91,7 +91,7 @@ export class GridLayer extends Layer {
 			// Load new tiles only when panning ends.
 			// Defaults to `false` (tiles are loaded _during_ panning) unless
 			// the browser is configured for reduced motion.
-			updateWhenIdle: !Browser.reducedMotion,
+			updateWhenIdle: Browser.reducedMotion,
 
 			// @option updateWhenZooming: Boolean = true
 			// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
@@ -176,6 +176,7 @@ export class GridLayer extends Layer {
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = undefined;
+		this._previousTileZoom = undefined;
 		clearTimeout(this._pruneTimeout);
 	}
 
@@ -437,12 +438,16 @@ export class GridLayer extends Layer {
 			}
 		}
 
+		this._retainPreviousTiles();
+
 		for (const [key, tile] of Object.entries(this._tiles)) {
 			if (!tile.retain) {
 				this._removeTile(key);
 			}
 		}
 	}
+
+	_retainPreviousTiles() {}
 
 	_removeTilesAtZoom(zoom) {
 		for (const [key, tile] of Object.entries(this._tiles)) {
@@ -467,6 +472,7 @@ export class GridLayer extends Layer {
 		this._removeAllTiles();
 
 		this._tileZoom = undefined;
+		this._previousTileZoom = undefined;
 	}
 
 	_retainParent(x, y, z, minZoom) {
@@ -556,6 +562,10 @@ export class GridLayer extends Layer {
 
 		if (!noUpdate || tileZoomChanged) {
 
+			if (tileZoom !== this._tileZoom) {
+				this._previousTileZoom = this._tileZoom;
+			}
+
 			this._tileZoom = tileZoom;
 
 			if (this._abortLoading) {
@@ -624,7 +634,7 @@ export class GridLayer extends Layer {
 
 	_getTiledPixelBounds(center) {
 		const map = this._map,
-		mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		mapZoom = map._animatingZoom ? map._animateToZoom : map.getZoom(),
 		scale = map.getZoomScale(mapZoom, this._tileZoom),
 		pixelCenter = map.project(center, this._tileZoom).floor(),
 		halfSize = map.getSize().divideBy(scale * 2);
@@ -636,7 +646,7 @@ export class GridLayer extends Layer {
 	_update(center) {
 		const map = this._map;
 		if (!map) { return; }
-		const zoom = this._clampZoom(map.getZoom());
+		const zoom = this._clampZoom(map._animatingZoom ? map._animateToZoom : map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
@@ -676,6 +686,11 @@ export class GridLayer extends Layer {
 
 				const tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
+					if (tile.cached) {
+						tile.el.style.visibility = tile.cachedVisibility;
+						delete tile.cached;
+						delete tile.cachedVisibility;
+					}
 					tile.current = true;
 				} else {
 					queue.push(coords);
