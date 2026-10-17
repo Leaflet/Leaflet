@@ -608,10 +608,10 @@ export class GridLayer extends Layer {
 
 		this._wrapX = crs.wrapLng && !this.options.noWrap && [
 			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize.x),
-			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.y)
+			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.x)
 		];
 		this._wrapY = crs.wrapLat && !this.options.noWrap && [
-			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.x),
+			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.y),
 			Math.ceil(map.project([crs.wrapLat[1], 0], tileZoom).y / tileSize.y)
 		];
 	}
