@@ -58,6 +58,7 @@ export class DragHandler extends Handler {
 			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
+				down: this._onDown,
 				dragstart: this._onDragStart,
 				drag: this._onDrag,
 				dragend: this._onDragEnd
@@ -88,6 +89,11 @@ export class DragHandler extends Handler {
 
 	moving() {
 		return this._draggable?._moving;
+	}
+
+	_onDown() {
+		// Stop inertia before Draggable captures _startPos (#10376).
+		this._map._stop();
 	}
 
 	_onDragStart() {

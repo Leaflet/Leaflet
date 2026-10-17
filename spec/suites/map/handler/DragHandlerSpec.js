@@ -264,6 +264,51 @@ describe('DragHandler', () => {
 				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
 		});
 
+		// #10376: pointerdown during inertia captured a stale pane position;
+		// after inertia finished, the first move jumped back to that press point.
+		it('does not jump when dragging after pointerdown during inertia panning', async () => {
+			map = new MyMap(container, {
+				dragging: true,
+				inertia: true
+			});
+			map.setView([0, 0], 1);
+
+			// Same animation path as DragHandler inertia (`panBy` after dragend).
+			map.panBy([200, 0], {
+				duration: 0.3,
+				easeLinearity: 0.2,
+				noMoveStart: true,
+				animate: true
+			});
+
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			expect(map._panAnim?._inProgress).to.be.true;
+
+			const inertiaEnded = new Promise((resolve) => {
+				map.once('moveend', resolve);
+			});
+
+			const hand = new Hand({timing: 'fastframe'});
+			const pointer = hand.growFinger('pointer');
+			const start = new Point(200, 200);
+			const drag = new Point(40, 0);
+
+			// Press and hold without moving while inertia is still running.
+			pointer.moveTo(start.x, start.y, 0).down();
+			await hand.run();
+
+			await inertiaEnded;
+
+			const posBeforeMove = map._getPosition().clone();
+
+			pointer.moveBy(drag.x, drag.y, 80);
+			await hand.run();
+
+			// Place under the cursor should follow the pointer, not jump
+			// back to the pane position captured at pointerdown.
+			expect(map._getPosition().subtract(posBeforeMove)).to.be.near(drag);
+		});
+
 		it('does not change the center of the map when drag is disabled on click', (done) => {
 			map = new LeafletMap(container, {
 				dragging: true,
