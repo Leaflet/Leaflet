@@ -91,7 +91,7 @@ export class GridLayer extends Layer {
 			// Load new tiles only when panning ends.
 			// Defaults to `false` (tiles are loaded _during_ panning) unless
 			// the browser is configured for reduced motion.
-			updateWhenIdle: !Browser.reducedMotion,
+			updateWhenIdle: Browser.reducedMotion,
 
 			// @option updateWhenZooming: Boolean = true
 			// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.

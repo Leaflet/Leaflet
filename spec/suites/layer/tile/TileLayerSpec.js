@@ -252,7 +252,7 @@ describe('TileLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 224, unloads 209 kittens on MAD-TRD flyTo()', (done) => {
+		it('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.once('load', () => {
@@ -264,10 +264,8 @@ describe('TileLayer', () => {
 				});
 
 				map.on('zoomend', () => {
-					console.warn(counts);
-
-					expect(counts.tileloadstart).to.equal(224);
-					expect(counts.tileunload).to.equal(209);
+					expect(counts.tileloadstart).to.equal(290);
+					expect(counts.tileunload).to.equal(275);
 
 					// image tiles take time, so then might not be fully loaded yet.
 					expect(counts.tileload).to.be.lessThan(counts.tileloadstart + 1);
