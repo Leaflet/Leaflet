@@ -44,6 +44,19 @@ describe('Class', () => {
 			expect(spy2.called).to.be.true;
 		});
 
+		it('does not call an inherited constructor hook twice', () => { // #10294
+			const spy = sinon.spy();
+
+			class Class1 extends Class {}
+			class Class2 extends Class1 {}
+
+			Class1.addInitHook(spy);
+
+			new Class2();
+
+			expect(spy.calledOnce).to.be.true;
+		});
+
 		it('does not call child constructor hooks', () => {
 			const spy1 = sinon.spy(),
 			spy2 = sinon.spy();
