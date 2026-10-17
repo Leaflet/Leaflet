@@ -67,6 +67,49 @@ describe('LayersControl', () => {
 		});
 	});
 
+	describe('overlayremove event', () => {
+		it('respects a layer removed from within the handler (#9747)', () => {
+			const overlays = {'Layer 1': new Marker([0, 0]), 'Layer 2': new Marker([0, 0])};
+			map.addLayer(overlays['Layer 1']).addLayer(overlays['Layer 2']);
+			const layers = new LayersControl({}, overlays).addTo(map),
+			inputs = layers._overlaysList.getElementsByTagName('input');
+
+			expect(inputs[0].checked).to.be.true;
+			expect(inputs[1].checked).to.be.true;
+
+			map.on('overlayremove', (e) => {
+				if (e.layer === overlays['Layer 1']) {
+					map.removeLayer(overlays['Layer 2']);
+				}
+			});
+
+			UIEventSimulator.fire('click', inputs[0]);
+
+			expect(map.hasLayer(overlays['Layer 1'])).to.be.false;
+			expect(map.hasLayer(overlays['Layer 2'])).to.be.false;
+			// the inputs are rebuilt from the map state, so the checkbox of
+			// the handler-removed layer is unchecked
+			expect(layers._overlaysList.getElementsByTagName('input')[1].checked).to.be.false;
+		});
+
+		it('keeps a layer re-added from within the handler (#9747)', () => {
+			const overlays = {'Layer 1': new Marker([0, 0])};
+			map.addLayer(overlays['Layer 1']);
+			const layers = new LayersControl({}, overlays).addTo(map);
+
+			map.on('overlayremove', (e) => {
+				if (e.layer === overlays['Layer 1']) {
+					map.addLayer(overlays['Layer 1']);
+				}
+			});
+
+			UIEventSimulator.fire('click', layers._overlaysList.getElementsByTagName('input')[0]);
+
+			expect(map.hasLayer(overlays['Layer 1'])).to.be.true;
+			expect(layers._overlaysList.getElementsByTagName('input')[0].checked).to.be.true;
+		});
+	});
+
 	describe('updates', () => {
 		it('when an included layer is added or removed from the map', () => {
 			const baseLayer = new TileLayer(),
