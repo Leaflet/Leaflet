@@ -198,6 +198,12 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
+		// CSS zoom transitions must finish before another view can be applied.
+		if (this._animatingZoom) {
+			this._pendingView = {center, zoom, options};
+			return this;
+		}
+
 		if (this._loaded && !options.reset && options !== true) {
 
 			if (options.animate !== undefined) {
@@ -1272,6 +1278,7 @@ export class LeafletMap extends Evented {
 	}
 
 	_stop() {
+		delete this._pendingView;
 		cancelAnimationFrame(this._flyToFrame);
 		cancelAnimationFrame(this._zoomAnimFrame);
 		this._panAnim?.stop();
@@ -1766,6 +1773,13 @@ export class LeafletMap extends Evented {
 		this.fire('move');
 
 		this._moveEnd(true);
+
+		// A view requested by an end listener takes precedence over an older one.
+		const pending = this._pendingView;
+		if (pending) {
+			delete this._pendingView;
+			this.setView(pending.center, pending.zoom, pending.options);
+		}
 	}
 }
 
