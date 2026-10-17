@@ -55,7 +55,7 @@ export class Layer extends Evented {
 		return this;
 	}
 
-	// @method remove: this
+	// @method remove(): this
 	// Removes the layer from the map it is currently active on.
 	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
@@ -72,7 +72,7 @@ export class Layer extends Evented {
 		return this;
 	}
 
-	// @method getPane(name? : String): HTMLElement
+	// @method getPane(name?: String): HTMLElement
 	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
 	getPane(name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
@@ -88,7 +88,7 @@ export class Layer extends Evented {
 		return this;
 	}
 
-	// @method getAttribution: String
+	// @method getAttribution(): String
 	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
 	getAttribution() {
 		return this.options.attribution;

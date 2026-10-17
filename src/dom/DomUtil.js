@@ -77,7 +77,7 @@ export function getPosition(el) {
 }
 
 const documentStyle = typeof document === 'undefined' ? {} : document.documentElement.style;
-// Safari still needs a vendor prefix, we need to detect with property name is supported.
+// Safari still needs a vendor prefix, we need to detect which property name is supported.
 const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
 let prevUserSelect;
 

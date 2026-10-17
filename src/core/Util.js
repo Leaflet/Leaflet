@@ -53,7 +53,7 @@ export function throttle(fn, time, context) {
 
 // @function wrapNum(num: Number, range: Number[], includeMax?: Boolean): Number
 // Returns the number `num` modulo `range` in such a way so it lies within
-// `range[0]` and `range[1]`. The returned value will be always smaller than
+// `range[0]` and `range[1]`. The returned value will always be smaller than
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
 	const max = range[1],
