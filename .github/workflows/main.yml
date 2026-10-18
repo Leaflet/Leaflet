@@ -23,7 +23,7 @@ jobs:
       - working-directory: ./docs
         run: bundle exec jekyll build --strict_front_matter
 
-  lint:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -36,38 +36,13 @@ jobs:
 
       - run: npm ci
       - run: npm run lint
-
-  bundlemon:
-    if: github.repository_owner == 'Leaflet'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - run: npm ci
       - run: npm run build
+
       - run: npm run bundlemon
+        if: github.repository_owner == 'Leaflet'
         env:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
-  test-ssr:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - run: npm ci
-      - run: npm run build
       - run: node ./spec/ssr/ssr_node.js
 
       - uses: denoland/setup-deno@v2
@@ -86,8 +61,8 @@ jobs:
       matrix:
         include:
           - project: chromium
+            extra: --project=chromium-retina
           - project: firefox
-          - project: chromium-retina
           - project: chromium
             os: windows-latest
           - project: webkit
@@ -109,13 +84,13 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.project == 'chromium-retina' && 'chromium' || matrix.project }}
+        run: npx playwright install ${{ matrix.project }}
 
       - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
 
       - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
         env:
           VITE_TOUCH: '1'
 
