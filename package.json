@@ -27,7 +27,6 @@
     "prosthetic-hand": "^2.2.2",
     "rollup": "^4.64.9",
     "sinon": "^22.1.0",
-    "ssri": "^14.0.0",
     "ui-event-simulator": "^2.0.0",
     "vitest": "^5.0.5"
   },

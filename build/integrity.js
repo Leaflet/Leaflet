@@ -1,15 +1,16 @@
 // This script calculates the integrity hashes of the files in dist/ , and
 // **overwrites** the values in the documentation.
 import {readFileSync, writeFileSync} from 'node:fs';
-import https from 'node:https';
-import ssri from 'ssri';
+import {createHash} from 'node:crypto';
 import pkg from '../package.json' with {type: 'json'};
 
-const getIntegrity = path => new Promise((resolve) => {
-	https.get(`https://cdn.jsdelivr.net/npm/leaflet@${pkg.version}/dist/${path}`, (res) => {
-		ssri.fromStream(res, {algorithms: ['sha256']}).then(integrity => resolve(integrity.toString()));
-	});
-});
+const getIntegrity = async (path) => {
+	const url = `https://cdn.jsdelivr.net/npm/leaflet@${pkg.version}/dist/${path}`;
+	const res = await fetch(url);
+	if (!res.ok) { throw new Error(`Failed to fetch ${url}: ${res.status}`); }
+	const hash = createHash('sha256').update(Buffer.from(await res.arrayBuffer())).digest('base64');
+	return `sha256-${hash}`;
+};
 
 const integrityUglified = await getIntegrity('leaflet.js');
 const integritySrc = await getIntegrity('leaflet-src.js');
