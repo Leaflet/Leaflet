@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';

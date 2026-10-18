@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {LatLngBounds, LeafletMap, VideoOverlay} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 import Hand from 'prosthetic-hand';

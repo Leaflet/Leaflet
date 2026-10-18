@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';

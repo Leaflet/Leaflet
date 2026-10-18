@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {WMSTileLayer} from 'leaflet';
 
 describe('WMSTileLayer', () => {

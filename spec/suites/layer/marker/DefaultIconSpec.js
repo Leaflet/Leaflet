@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DefaultIcon, LeafletMap, Marker, Browser} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

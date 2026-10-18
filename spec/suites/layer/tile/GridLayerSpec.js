@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomUtil, GridLayer, LeafletMap, Point, Util} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';

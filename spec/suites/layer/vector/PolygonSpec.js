@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {LineUtil, LeafletMap, LatLng, Polygon} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 

@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DivIcon, DomUtil, FeatureGroup, DefaultIcon, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';

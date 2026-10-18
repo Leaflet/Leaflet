@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Browser, SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';

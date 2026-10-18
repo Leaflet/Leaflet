@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {CRS, EPSG3395, EPSG3857, EPSG4326, EarthCRS, SimpleCRS, Util, LatLng, LatLngBounds, Point} from 'leaflet';
 
 describe('EPSG3857', () => {

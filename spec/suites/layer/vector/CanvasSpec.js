@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
