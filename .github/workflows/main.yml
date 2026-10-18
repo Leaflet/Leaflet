@@ -38,11 +38,6 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
-      - run: npm run bundlemon
-        if: github.repository_owner == 'Leaflet'
-        env:
-          CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-
       - run: node ./spec/ssr/ssr_node.js
 
       - uses: denoland/setup-deno@v2
@@ -50,6 +45,42 @@ jobs:
           deno-version: v2.x
 
       - run: deno run ./spec/ssr/ssr_deno.js
+
+  size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      summary: ${{ steps.size.outputs.summary }}
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      # copy the script so it survives the base checkout
+      - run: npm ci && npm run build && mv dist dist-head && cp build/size.js "$RUNNER_TEMP/"
+
+      - name: Build base
+        if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
+        run: git checkout "$BASE_SHA" && npm ci && npm run build && mv dist dist-base
+
+      - id: size
+        run: node "$RUNNER_TEMP/size.js" dist-base dist-head >> "$GITHUB_OUTPUT"
+
+  size-report:
+    needs: size
+    if: always() && needs.size.outputs.summary
+    name: 'size: ${{ needs.size.outputs.summary }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: 'true'
 
   test:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
