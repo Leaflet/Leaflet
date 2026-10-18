@@ -26,6 +26,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      size: ${{ steps.size.outputs.summary }}
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
     steps:
       - uses: actions/checkout@v7
 
@@ -46,37 +50,22 @@ jobs:
 
       - run: deno run ./spec/ssr/ssr_deno.js
 
-  size:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      summary: ${{ steps.size.outputs.summary }}
-    env:
-      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
       # copy the script so it survives the base checkout
-      - run: npm ci && npm run build && mv dist dist-head && cp build/size.js "$RUNNER_TEMP/"
+      - run: mv dist dist-head && cp build/size.js "$RUNNER_TEMP/"
 
       - name: Build base
         if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
-        run: git checkout "$BASE_SHA" && npm ci && npm run build && mv dist dist-base
+        run: |
+          git fetch --depth=1 origin "$BASE_SHA"
+          git checkout "$BASE_SHA" && npm ci && npm run build && mv dist dist-base
 
       - id: size
         run: node "$RUNNER_TEMP/size.js" dist-base dist-head >> "$GITHUB_OUTPUT"
 
   size-report:
-    needs: size
-    if: always() && needs.size.outputs.summary
-    name: 'size: ${{ needs.size.outputs.summary }}'
+    needs: check
+    if: always() && needs.check.outputs.size
+    name: 'size: ${{ needs.check.outputs.size }}'
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
