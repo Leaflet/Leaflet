@@ -28,21 +28,19 @@ import * as Util from '../core/Util.js';
 
 export class Layer extends Evented {
 
-	static {
-		// Classes extending `Layer` will inherit the following options:
-		this.setDefaultOptions({
-			// @option pane: String = 'overlayPane'
-			// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
-			// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
-			pane: 'overlayPane',
+	// Classes extending `Layer` will inherit the following options:
+	static defaultOptions = {
+		// @option pane: String = 'overlayPane'
+		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
+		// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
+		pane: 'overlayPane',
 
-			// @option attribution: String = null
-			// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
-			attribution: null,
+		// @option attribution: String = null
+		// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
+		attribution: null,
 
-			bubblingPointerEvents: true
-		});
-	}
+		bubblingPointerEvents: true
+	};
 
 	/* @section
 	 * Classes extending `Layer` will inherit the following methods:

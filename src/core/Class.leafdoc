@@ -30,25 +30,21 @@ a.greet("World");
 @section Options
 @example
 
-`options` is a special property that will be merged with the parent class options instead of overriding them completely, which makes managing configuration of objects and default values convenient. Use `setDefaultOptions()` in a static block to configure options:
+Declare the default options of a class with a static `defaultOptions` field. They are merged with the default options of the parent class instead of replacing them, which makes managing configuration of objects and default values convenient:
 
 ```js
 class MyClass extends Class {
-    static {
-        this.setDefaultOptions({
-            myOption1: 'foo',
-            myOption2: 'bar'
-        });
-    }
+    static defaultOptions = {
+        myOption1: 'foo',
+        myOption2: 'bar'
+    };
 }
 
 class MyChildClass extends MyClass {
-    static {
-        this.setDefaultOptions({
-            myOption1: 'baz',
-            myOption3: 5
-        });
-    }
+    static defaultOptions = {
+        myOption1: 'baz',
+        myOption3: 5
+    };
 }
 
 const a = new MyChildClass();
@@ -57,18 +53,22 @@ a.options.myOption2; // 'bar'
 a.options.myOption3; // 5
 ```
 
+Every instance gets its own `options` object, which inherits from the default options of its class. Changing a default later, like `Marker.defaultOptions.riseOnHover = true`, affects all instances that don't set the option themselves. `mergeOptions()` adds or changes defaults of an existing class without touching the defaults of its parent, which makes it the way to change defaults from a plugin:
+
+```js
+MyChildClass.mergeOptions({myOption4: true});
+```
+
 There's also [`Util.setOptions`](#util-setoptions), a method for
 conveniently merging options passed to constructor with the defaults
 defined in the class:
 
 ```js
 class MyClass extends Class {
-    static {
-        this.setDefaultOptions({
-            foo: 'bar',
-            bla: 5
-        });
-    }
+    static defaultOptions = {
+        foo: 'bar',
+        bla: 5
+    };
 
     initialize(options) {
         Util.setOptions(this, options);
@@ -89,7 +89,7 @@ keys that are already used by the class in question.
 @section Mixins
 @example
 
-You can add methods and properties from other objects using the `include` method (such objects are called mixins):
+You can add methods and properties from other objects using the `include` method (such objects are called mixins). An `options` property of the mixin is merged into the default options of the class:
 
 ```js
 const MyMixin = {

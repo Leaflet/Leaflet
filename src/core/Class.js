@@ -11,12 +11,12 @@ export class Class {
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
-		const parentOptions = this.prototype.options;
 		for (const k of getAllMethodNames(props)) {
-			this.prototype[k] = props[k];
+			if (k !== 'constructor' && k !== 'options') {
+				this.prototype[k] = props[k];
+			}
 		}
 		if (props.options) {
-			this.prototype.options = parentOptions;
 			this.mergeOptions(props.options);
 		}
 		return this;
@@ -29,23 +29,24 @@ export class Class {
 				for (const k of Object.getOwnPropertyNames(obj)) {
 					yield k;
 				}
-			} while ((obj = Object.getPrototypeOf(obj)) !== undefined);
+			} while ((obj = Object.getPrototypeOf(obj)) !== null);
 		}
 	}
 
-	// @function setDefaultOptions(options: Object): this
-	// Configures the [default `options`](#class-options) on the prototype of this class.
-	static setDefaultOptions(options) {
-		Util.setOptions(this.prototype, options);
+	// @function mergeOptions(options: Object): this
+	// [Merges `options`](#class-options) into the `defaultOptions` of the class.
+	static mergeOptions(options) {
+		if (!Object.hasOwn(this, 'defaultOptions')) {
+			this.defaultOptions = Object.create(this.defaultOptions ?? Object.prototype);
+		}
+		Object.assign(this.defaultOptions, options);
 		return this;
 	}
 
-	// @function mergeOptions(options: Object): this
-	// [Merges `options`](#class-options) into the defaults of the class.
-	static mergeOptions(options) {
-		this.prototype.options ??= {};
-		Object.assign(this.prototype.options, options);
-		return this;
+	// @function setDefaultOptions(options: Object): this
+	// Deprecated alias of `mergeOptions`, kept for code written for 2.0.0-alpha.1.
+	static setDefaultOptions(options) {
+		return this.mergeOptions(options);
 	}
 
 	// @function addInitHook(fn: Function): this
