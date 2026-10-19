@@ -782,9 +782,6 @@ export class GridLayer extends Layer {
 		const tileSize = this.getTileSize();
 		tile.style.width = `${tileSize.x}px`;
 		tile.style.height = `${tileSize.y}px`;
-
-		tile.onselectstart = Util.falseFn;
-		tile.onpointermove = Util.falseFn;
 	}
 
 	_addTile(coords, container) {

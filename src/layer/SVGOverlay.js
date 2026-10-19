@@ -31,9 +31,6 @@ export class SVGOverlay extends ImageOverlay {
 		el.classList.add('leaflet-image-layer');
 		if (this._zoomAnimated) { el.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
-
-		el.onselectstart = Util.falseFn;
-		el.onpointermove = Util.falseFn;
 	}
 
 	// @method getElement(): SVGElement
