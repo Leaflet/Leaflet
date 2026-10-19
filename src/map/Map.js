@@ -12,6 +12,8 @@ import {PosAnimation} from '../dom/PosAnimation.js';
 import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 import {AttributionControl} from '../control/AttributionControl.js';
 import {ZoomControl} from '../control/ZoomControl.js';
+import {Popup} from '../layer/Popup.js';
+import {Tooltip} from '../layer/Tooltip.js';
 import {BoxZoomHandler} from './handler/BoxZoomHandler.js';
 import {DoubleClickZoomHandler} from './handler/DoubleClickZoomHandler.js';
 import {DragHandler} from './handler/DragHandler.js';
@@ -910,7 +912,131 @@ export class LeafletMap extends Evented {
 		this.fire('locationfound', data);
 	}
 
+	// @section Layer events
+	// @event layeradd: LayerEvent
+	// Fired when a new layer is added to the map.
+	// @event layerremove: LayerEvent
+	// Fired when some layer is removed from the map
+
 	// @section Methods for Layers and Controls
+	// @method addLayer(layer: Layer): this
+	// Adds the given layer to the map
+	addLayer(layer) {
+		if (!layer._layerAdd) {
+			throw new Error('The provided object is not a Layer.');
+		}
+
+		const id = Util.stamp(layer);
+		if (this._layers[id]) { return this; }
+		this._layers[id] = layer;
+
+		layer._mapToAdd = this;
+
+		if (layer.beforeAdd) {
+			layer.beforeAdd(this);
+		}
+
+		this.whenReady(layer._layerAdd, layer);
+
+		return this;
+	}
+
+	// @method removeLayer(layer: Layer): this
+	// Removes the given layer from the map.
+	removeLayer(layer) {
+		const id = Util.stamp(layer);
+
+		if (!this._layers[id]) { return this; }
+
+		if (this._loaded) {
+			layer.onRemove(this);
+		}
+
+		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer});
+			layer.fire('remove');
+		}
+
+		layer._map = layer._mapToAdd = null;
+
+		return this;
+	}
+
+	// @method hasLayer(layer: Layer): Boolean
+	// Returns `true` if the given layer is currently added to the map
+	hasLayer(layer) {
+		return Util.stamp(layer) in this._layers;
+	}
+
+	/* @method eachLayer(fn: Function, context?: Object): this
+	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
+	 * ```
+	 * map.eachLayer(function(layer){
+	 *     layer.bindPopup('Hello');
+	 * });
+	 * ```
+	 */
+	eachLayer(method, context) {
+		for (const layer of Object.values(this._layers)) {
+			method.call(context, layer);
+		}
+		return this;
+	}
+
+	// @method openPopup(popup: Popup): this
+	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
+	// @alternative
+	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
+	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	openPopup(popup, latlng, options) {
+		this._initOverlay(Popup, popup, latlng, options)
+			.openOn(this);
+
+		return this;
+	}
+
+	// @method closePopup(popup?: Popup): this
+	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
+	closePopup(popup) {
+		popup = arguments.length ? popup : this._popup;
+		popup?.close();
+		return this;
+	}
+
+	// @method openTooltip(tooltip: Tooltip): this
+	// Opens the specified tooltip.
+	// @alternative
+	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
+	// Creates a tooltip with the specified content and options and open it.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	openTooltip(tooltip, latlng, options) {
+		this._initOverlay(Tooltip, tooltip, latlng, options)
+			.openOn(this);
+
+		return this;
+	}
+
+	// @method closeTooltip(tooltip: Tooltip): this
+	// Closes the tooltip given as parameter.
+	closeTooltip(tooltip) {
+		tooltip.close();
+		return this;
+	}
+
+	_initOverlay(OverlayClass, content, latlng, options) {
+		let overlay = content;
+		if (!(overlay instanceof OverlayClass)) {
+			overlay = new OverlayClass(options).setContent(content);
+		}
+		if (latlng) {
+			overlay.setLatLng(latlng);
+		}
+		return overlay;
+	}
+
 	// @method addControl(control: Control): this
 	// Adds the given control to the map
 	addControl(control) {
@@ -1492,6 +1618,60 @@ export class LeafletMap extends Evented {
 
 	_rawPanBy(offset) {
 		DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
+	}
+
+	_addLayers(layers) {
+		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
+
+		for (const layer of layers) {
+			this.addLayer(layer);
+		}
+	}
+
+	_addZoomLimit(layer) {
+		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+			this._zoomBoundLayers[Util.stamp(layer)] = layer;
+			this._updateZoomLevels();
+		}
+	}
+
+	_removeZoomLimit(layer) {
+		const id = Util.stamp(layer);
+
+		if (this._zoomBoundLayers[id]) {
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
+	}
+
+	_updateZoomLevels() {
+		let minZoom = Infinity,
+		maxZoom = -Infinity;
+		const oldZoomSpan = this._getZoomSpan();
+
+		for (const l of Object.values(this._zoomBoundLayers)) {
+			const options = l.options;
+			minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
+			maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
+		}
+
+		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
+		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
+
+		// @section Map state change events
+		// @event zoomlevelschange: Event
+		// Fired when the number of zoomlevels on the map is changed due
+		// to adding or removing a layer.
+		if (oldZoomSpan !== this._getZoomSpan()) {
+			this.fire('zoomlevelschange');
+		}
+
+		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+			this.setZoom(this._layersMaxZoom);
+		}
+		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+			this.setZoom(this._layersMinZoom);
+		}
 	}
 
 	_getZoomSpan() {
