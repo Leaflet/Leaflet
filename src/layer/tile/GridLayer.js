@@ -75,6 +75,8 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 // Creates a new instance of GridLayer with the supplied options.
 export class GridLayer extends Layer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka GridLayer options
 	static defaultOptions = {
@@ -151,8 +153,10 @@ export class GridLayer extends Layer {
 		keepBuffer: 2
 	};
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	onAdd() {

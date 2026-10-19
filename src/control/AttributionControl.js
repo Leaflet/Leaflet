@@ -19,6 +19,8 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // Creates an attribution control.
 export class AttributionControl extends Control {
 
+	static initHooks = true;
+
 	// @section
 	// @aka AttributionControl options
 	static defaultOptions = {
@@ -32,10 +34,11 @@ export class AttributionControl extends Control {
 		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
 	};
 
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super(options);
 
 		this._attributions = {};
+		this.callInitHooks();
 	}
 
 	onAdd(map) {

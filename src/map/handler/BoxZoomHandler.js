@@ -20,12 +20,16 @@ LeafletMap.mergeOptions({
 });
 
 export class BoxZoomHandler extends Handler {
-	initialize(map) {
-		super.initialize(map);
+	static initHooks = true;
+
+	constructor(map) {
+		super(map);
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 		this._resetStateTimeout = 0;
 		map.on('unload', this._destroy, this);
+
+		this.callInitHooks();
 	}
 
 	addHooks() {

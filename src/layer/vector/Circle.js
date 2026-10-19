@@ -23,14 +23,18 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 // which contains the circle radius.
 export class Circle extends CircleMarker {
 
-	initialize(latlng, options) {
-		super.initialize(latlng, options);
+	static initHooks = true;
+
+	constructor(latlng, options) {
+		super(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
 		// @section
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
+
+		this.callInitHooks();
 	}
 
 	// @method setRadius(radius: Number): this

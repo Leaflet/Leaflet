@@ -1,7 +1,31 @@
-import {Class, Evented, Layer, Marker} from 'leaflet';
+import * as L from 'leaflet';
+import {Class, Evented, Layer, LeafletMap, Polygon, Marker} from 'leaflet';
 import sinon from 'sinon';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
+
+const ownConstructorRe = /^\s*constructor\s*\(/m;
 
 describe('Class', () => {
+	describe('constructor', () => {
+		it('throws on a class that defines initialize()', () => {
+			class OldStyle extends Class {
+				initialize() {}
+			}
+			expect(() => new OldStyle()).to.throw('OldStyle: initialize() is not called');
+		});
+
+		it('throws when initialize() is called from a constructor', () => {
+			class HalfPorted extends Class {
+				constructor() {
+					super();
+					this.initialize();
+				}
+				initialize() {}
+			}
+			expect(() => new HalfPorted()).to.throw('Rename it to constructor()');
+		});
+	});
+
 	describe('defaultOptions', () => {
 		it('inherits and overrides parent defaults', () => {
 			class Klass1 extends Class {
@@ -181,8 +205,9 @@ describe('Class', () => {
 
 			new Class2();
 
-			expect(spy1.called).to.be.true;
-			expect(spy2.called).to.be.true;
+			expect(spy1.calledOnce).to.be.true;
+			expect(spy2.calledOnce).to.be.true;
+			expect(spy1.calledBefore(spy2)).to.be.true;
 		});
 
 		it('does not call child constructor hooks', () => {
@@ -199,6 +224,160 @@ describe('Class', () => {
 
 			expect(spy1.called).to.be.true;
 			expect(spy2.called).to.eql(false);
+		});
+
+		it('calls a method by name with arguments', () => {
+			const spy = sinon.spy();
+
+			class Klass extends Class {
+				foo(...args) { spy(this, ...args); }
+			}
+			Klass.addInitHook('foo', 1, 2);
+
+			const a = new Klass();
+			expect(spy.calledOnceWith(a, 1, 2)).to.be.true;
+		});
+
+		it('runs hooks added after the first instance was created', () => {
+			const spy = sinon.spy();
+
+			class Klass extends Class {}
+			new Klass();
+			Klass.addInitHook(spy);
+			new Klass();
+
+			expect(spy.calledOnce).to.be.true;
+		});
+
+		it('runs hooks after the constructor of the deepest marked class', () => {
+			const log = [];
+
+			class Class1 extends Class {
+				static initHooks = true;
+				constructor() {
+					super();
+					log.push('Class1');
+					this.callInitHooks();
+				}
+			}
+			class Class2 extends Class1 {
+				static initHooks = true;
+				constructor() {
+					super();
+					log.push('Class2');
+					this.callInitHooks();
+				}
+			}
+			class Class3 extends Class2 {
+				constructor() {
+					super();
+					log.push('Class3');
+				}
+			}
+			Class1.addInitHook(() => log.push('hook1'));
+			Class3.addInitHook(() => log.push('hook3'));
+
+			new Class3();
+			expect(log).to.eql(['Class1', 'Class2', 'hook1', 'hook3', 'Class3']);
+		});
+
+		it('runs hooks once per instance when a hook creates another instance', () => {
+			const spy = sinon.spy();
+			let nested;
+
+			class Klass extends Class {}
+			Klass.addInitHook(function () {
+				spy(this);
+				if (spy.callCount === 1) {
+					nested = new Klass();
+				}
+			});
+
+			const a = new Klass();
+			expect(spy.callCount).to.eql(2);
+			expect(spy.calledWith(a)).to.be.true;
+			expect(spy.calledWith(nested)).to.be.true;
+		});
+
+		it('runs a Layer hook on a fully built Polygon, once', () => {
+			const spy = sinon.spy();
+			let enabled = true;
+
+			Layer.addInitHook(function () {
+				if (enabled) { spy(this._latlngs); }
+			});
+			new Polygon([[0, 0], [0, 1], [1, 1]]);
+			enabled = false;
+
+			expect(spy.calledOnce).to.be.true;
+			expect(spy.firstCall.args[0]).to.not.be.undefined;
+		});
+
+		it('adds one zoom control to a map subclass', () => { // #10294
+			class NewMap extends LeafletMap {}
+			const container = createContainer();
+			const map = new NewMap(container);
+
+			expect(container.querySelectorAll('.leaflet-control-zoom').length).to.eql(1);
+			expect(map.dragging).to.be.ok;
+
+			removeMapContainer(map, container);
+		});
+	});
+
+	describe('built-in classes', () => {
+		const classes = Object.entries(L)
+			.filter(([, value]) => typeof value === 'function' && value.prototype instanceof Class);
+
+		const hasOwnConstructor = Cls => ownConstructorRe.test(Function.prototype.toString.call(Cls));
+
+		it('mark every class with its own constructor with initHooks', () => {
+			const unmarked = classes
+				.filter(([, Cls]) => hasOwnConstructor(Cls) && !Object.hasOwn(Cls, 'initHooks'))
+				.map(([name]) => name);
+			expect(unmarked).to.eql([]);
+		});
+
+		it('run a hook on Class exactly once per instance', () => {
+			const container = createContainer();
+			const map = new LeafletMap(container);
+			const marker = new Marker([0, 0]).addTo(map);
+
+			const args = {
+				LeafletMap: () => [createContainer()],
+				Map: () => [createContainer()],
+				Marker: () => [[0, 0]],
+				CircleMarker: () => [[0, 0]],
+				Circle: () => [[0, 0], {radius: 10}],
+				Polyline: () => [[[0, 0], [1, 1]]],
+				Polygon: () => [[[0, 0], [1, 1], [1, 0]]],
+				Rectangle: () => [[[0, 0], [1, 1]]],
+				ImageOverlay: () => ['', [[0, 0], [1, 1]]],
+				VideoOverlay: () => ['', [[0, 0], [1, 1]]],
+				SVGOverlay: () => [document.createElementNS('http://www.w3.org/2000/svg', 'svg'), [[0, 0], [1, 1]]],
+				TileLayer: () => [''],
+				WMSTileLayer: () => ['', {}],
+				Draggable: () => [document.createElement('div')],
+				MarkerDrag: () => [marker],
+			};
+
+			const runs = new Map();
+			let recording = true;
+			Class.addInitHook(function () {
+				if (recording) { runs.set(this, (runs.get(this) ?? 0) + 1); }
+			});
+
+			const failed = [];
+			for (const [name, Cls] of classes) {
+				const instance = new Cls(...(args[name]?.() ?? (Cls.prototype instanceof L.Handler ? [map] : [])));
+				if (runs.get(instance) !== 1) { failed.push(`${name}: ${runs.get(instance) ?? 0}`); }
+				if (instance instanceof LeafletMap) { instance.remove(); }
+			}
+			recording = false;
+
+			expect(failed).to.eql([]);
+
+			removeMapContainer(map, container);
 		});
 	});
 });

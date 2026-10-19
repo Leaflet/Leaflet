@@ -23,6 +23,8 @@ import {MarkerDrag} from './Marker.Drag.js';
 // Instantiates a Marker object given a geographical point and optionally an options object.
 export class Marker extends Layer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka Marker options
 	static defaultOptions = {
@@ -108,9 +110,13 @@ export class Marker extends Layer {
 	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
 	 */
 
-	initialize(latlng, options) {
+	constructor(latlng, options) {
+		super();
+
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
+
+		this.callInitHooks();
 	}
 
 	onAdd(map) {

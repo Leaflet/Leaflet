@@ -24,6 +24,8 @@ import {Bounds} from '../../geometry/Bounds.js';
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 export class WMSTileLayer extends TileLayer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka WMSTileLayer options
 	// If any custom options not documented here are used, they will be sent to the
@@ -65,8 +67,8 @@ export class WMSTileLayer extends TileLayer {
 		uppercase: false
 	};
 
-	initialize(url, options) {
-		super.initialize(url, options);
+	constructor(url, options) {
+		super(url, options);
 
 		const wmsParams = {...WMSTileLayer.defaultWmsParams};
 
@@ -84,6 +86,8 @@ export class WMSTileLayer extends TileLayer {
 		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
+
+		this.callInitHooks();
 	}
 
 	onAdd(map) {
