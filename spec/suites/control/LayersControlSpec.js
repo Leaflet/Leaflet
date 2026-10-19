@@ -215,21 +215,21 @@ describe('LayersControl', () => {
 
 		it('expands when mouse is over', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
-			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
 		});
 
 		it.skipIfTouch('collapses when mouse is out', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
-			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
-			UIEventSimulator.fire('pointerout', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
 		});
 
 		it('collapses when map is clicked', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
-			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.null;
@@ -237,7 +237,7 @@ describe('LayersControl', () => {
 
 		it('should collapse with a delay', (done) => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true, collapseDelay: 8}).addTo(map);
-			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 			UIEventSimulator.fire('click', map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok;
@@ -255,9 +255,9 @@ describe('LayersControl', () => {
 		it('does not collapse when mouse enters or leaves', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: false}).addTo(map);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
-			UIEventSimulator.fire('pointerover', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerenter', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
-			UIEventSimulator.fire('pointerout', layersCtrl._container, {pointerType});
+			UIEventSimulator.fire('pointerleave', layersCtrl._container, {pointerType});
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).not.to.be.null;
 		});
 

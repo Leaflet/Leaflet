@@ -199,9 +199,6 @@ export class ImageOverlay extends Layer {
 		if (this._zoomAnimated) { img.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
-		img.onselectstart = Util.falseFn;
-		img.onpointermove = Util.falseFn;
-
 		// @event load: Event
 		// Fired when the ImageOverlay layer has loaded its image
 		img.onload = this.fire.bind(this, 'load');

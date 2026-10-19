@@ -140,7 +140,7 @@ export class Draggable extends Evented {
 
 			this._element.ownerDocument.body.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target ?? e.srcElement;
+			this._lastTarget = e.target;
 			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
