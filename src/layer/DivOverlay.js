@@ -1,4 +1,3 @@
-import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {FeatureGroup} from './FeatureGroup.js';
 import * as Util from '../core/Util.js';
@@ -324,20 +323,6 @@ export class DivOverlay extends Layer {
 	}
 
 }
-
-LeafletMap.include({
-	_initOverlay(OverlayClass, content, latlng, options) {
-		let overlay = content;
-		if (!(overlay instanceof OverlayClass)) {
-			overlay = new OverlayClass(options).setContent(content);
-		}
-		if (latlng) {
-			overlay.setLatLng(latlng);
-		}
-		return overlay;
-	}
-});
-
 
 Layer.include({
 	_initOverlay(OverlayClass, old, content, options) {

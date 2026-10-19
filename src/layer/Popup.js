@@ -3,7 +3,6 @@ import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import Browser from '../core/Browser.js';
 import {Point} from '../geometry/Point.js';
-import {LeafletMap} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
 import {FeatureGroup} from './FeatureGroup.js';
@@ -348,32 +347,6 @@ export class Popup extends DivOverlay {
 	}
 
 }
-
-
-// @namespace LeafletMap
-// @section Methods for Layers and Controls
-LeafletMap.include({
-	// @method openPopup(popup: Popup): this
-	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
-	// @alternative
-	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
-	// Creates a popup with the specified content and options and opens it in the given point on a map.
-	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
-	openPopup(popup, latlng, options) {
-		this._initOverlay(Popup, popup, latlng, options)
-			.openOn(this);
-
-		return this;
-	},
-
-	// @method closePopup(popup?: Popup): this
-	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
-	closePopup(popup) {
-		popup = arguments.length ? popup : this._popup;
-		popup?.close();
-		return this;
-	}
-});
 
 /*
  * @namespace Layer
