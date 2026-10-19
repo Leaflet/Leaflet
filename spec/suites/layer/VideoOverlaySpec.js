@@ -27,51 +27,38 @@ describe('VideoOverlay', () => {
 		expect(map.hasLayer(videoOverlay)).to.be.true;
 	});
 
-	it('drags the map while mousemove on video', (done) => {
-
+	function dragOverVideo(controls, onStop) {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
 		];
 
-		const videoOverlay = new VideoOverlay(videoUrls, videoBounds, {interactive: true}).addTo(map);
-		(videoOverlay.getElement()).controls = true;
+		const videoOverlay = new VideoOverlay(videoUrls, videoBounds, {interactive: true, controls}).addTo(map);
 		expect(map.hasLayer(videoOverlay)).to.be.true;
+
+		map.options.inertia = false;
+		const center = map.getCenter();
 
 		const hand = new Hand({
 			timing: 'fastframe',
-			onStop() {
-				expect(map.getCenter()).nearLatLng([19.973348786110613, -114.96093750000001], 0.03);
-				done();
-			}});
-		const mouse = hand.growFinger('mouse');
-		mouse.moveTo(200, 200, 100)
-			.down().moveBy(50, 50, 10).up();
+			onStop() { onStop(map.latLngToContainerPoint(center)); }
+		});
+		hand.growFinger('pointer', {pointerType: 'mouse'})
+			.moveTo(200, 200, 0)
+			.down().moveBy(50, 50, 100).up();
+	}
+
+	it('drags the map while dragging on video', (done) => {
+		dragOverVideo(false, (centerPoint) => {
+			expect(centerPoint).to.be.near([250, 250]);
+			done();
+		});
 	});
 
-	it('don\'t drags the map if video has enabled controls', (done) => {
-
-		const videoUrls = [
-			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
-			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
-		];
-
-		const videoOverlay = new VideoOverlay(videoUrls, videoBounds, {interactive: true}).addTo(map);
-		(videoOverlay.getElement()).controls = true;
-		expect(map.hasLayer(videoOverlay)).to.be.true;
-
-		setTimeout(() => {
-			const center = map.getCenter();
-
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(map.getCenter()).nearLatLng(center, 0.03);
-					done();
-				}});
-			const mouse = hand.growFinger('mouse');
-			mouse.moveTo(200, 200, 10)
-				.down().moveBy(50, 50, 10).up();
-		}, 100);
+	it('does not drag the map if video has enabled controls', (done) => {
+		dragOverVideo(true, (centerPoint) => {
+			expect(centerPoint).to.be.near([200, 200]);
+			done();
+		});
 	});
 });
