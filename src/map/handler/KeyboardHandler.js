@@ -1,25 +1,10 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
 
-
 /*
  * KeyboardHandler is handling keyboard interaction with the map, enabled by default.
  */
-
-// @namespace LeafletMap
-// @section Keyboard Navigation Options
-LeafletMap.mergeOptions({
-	// @option keyboard: Boolean = true
-	// Makes the map focusable and allows users to navigate the map with keyboard
-	// arrows and `+`/`-` keys.
-	keyboard: true,
-
-	// @option keyboardPanDelta: Number = 80
-	// Amount of pixels to pan when pressing an arrow key.
-	keyboardPanDelta: 80
-});
 
 export class KeyboardHandler extends Handler {
 
@@ -181,9 +166,3 @@ export class KeyboardHandler extends Handler {
 		stop(e);
 	}
 }
-
-// @section Handlers
-// @section Handlers
-// @property keyboard: Handler
-// Keyboard navigation handler.
-LeafletMap.addInitHook('addHandler', 'keyboard', KeyboardHandler);

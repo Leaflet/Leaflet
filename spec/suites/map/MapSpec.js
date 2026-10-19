@@ -724,6 +724,19 @@ describe('Map', () => {
 			UIEventSimulator.fire('click', window);
 			expect(spy.callCount).to.eql(1);
 		});
+
+		it('adds a handler from an init hook after the built-in ones', () => {
+			class MyMap extends LeafletMap {}
+			MyMap.mergeOptions({clickHandler: true});
+			MyMap.addInitHook('addHandler', 'clickHandler', getHandler());
+
+			map.remove();
+			map = new MyMap(container);
+
+			expect(map.clickHandler.enabled()).to.be.true;
+			expect(map.dragging.enabled()).to.be.true;
+			expect(map._handlers.at(-1)).to.equal(map.clickHandler);
+		});
 	});
 
 	describe('createPane', () => {

@@ -10,6 +10,15 @@ import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
 import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
+import {AttributionControl} from '../control/AttributionControl.js';
+import {ZoomControl} from '../control/ZoomControl.js';
+import {BoxZoomHandler} from './handler/BoxZoomHandler.js';
+import {DoubleClickZoomHandler} from './handler/DoubleClickZoomHandler.js';
+import {DragHandler} from './handler/DragHandler.js';
+import {KeyboardHandler} from './handler/KeyboardHandler.js';
+import {ScrollWheelZoomHandler} from './handler/ScrollWheelZoomHandler.js';
+import {TapHoldHandler} from './handler/TapHoldHandler.js';
+import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
 /*
  * @class LeafletMap
@@ -142,7 +151,119 @@ export class LeafletMap extends Evented {
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true
+		trackResize: true,
+
+		// @option closePopupOnClick: Boolean = true
+		// Set it to `false` if you don't want popups to close when user clicks the map.
+		closePopupOnClick: true,
+
+		// @option boxZoom: Boolean = true
+		// Whether the map can be zoomed to a rectangular area specified by
+		// dragging the pointer while pressing the shift key.
+		boxZoom: true,
+
+		// @option doubleClickZoom: Boolean|String = true
+		// Whether the map can be zoomed in by double clicking on it and
+		// zoomed out by double clicking while holding shift. If passed
+		// `'center'`, double-click zoom will zoom to the center of the
+		//  view regardless of where the pointer was.
+		doubleClickZoom: true,
+
+		// @option dragging: Boolean = true
+		// Whether the map is draggable with pointer or not.
+		dragging: true,
+
+		// @section Panning Inertia Options
+		// @option inertia: Boolean = *
+		// If enabled, panning of the map will have an inertia effect where
+		// the map builds momentum while dragging and continues moving in
+		// the same direction for some time. Feels especially nice on touch
+		// devices. Enabled by default.
+		inertia: true,
+
+		// @option inertiaDeceleration: Number = 3000
+		// The rate with which the inertial movement slows down, in pixels/second².
+		inertiaDeceleration: 3400, // px/s^2
+
+		// @option inertiaMaxSpeed: Number = Infinity
+		// Max speed of the inertial movement, in pixels/second.
+		inertiaMaxSpeed: Infinity, // px/s
+
+		// @option easeLinearity: Number = 0.2
+		easeLinearity: 0.2,
+
+		// TODO refactor, move to CRS
+		// @option worldCopyJump: Boolean = false
+		// With this option enabled, the map tracks when you pan to another "copy"
+		// of the world and seamlessly jumps to the original one so that all overlays
+		// like markers and vector layers are still visible.
+		worldCopyJump: false,
+
+		// @option maxBoundsViscosity: Number = 0.0
+		// If `maxBounds` is set, this option will control how solid the bounds
+		// are when dragging the map around. The default value of `0.0` allows the
+		// user to drag outside the bounds at normal speed, higher values will
+		// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+		// solid, preventing the user from dragging outside the bounds.
+		maxBoundsViscosity: 0.0,
+
+		// @section Keyboard Navigation Options
+		// @option keyboard: Boolean = true
+		// Makes the map focusable and allows users to navigate the map with keyboard
+		// arrows and `+`/`-` keys.
+		keyboard: true,
+
+		// @option keyboardPanDelta: Number = 80
+		// Amount of pixels to pan when pressing an arrow key.
+		keyboardPanDelta: 80,
+
+		// @section Mouse wheel options
+		// @option scrollWheelZoom: Boolean|String = true
+		// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
+		// it will zoom to the center of the view regardless of where the pointer was.
+		scrollWheelZoom: true,
+
+		// @option wheelDebounceTime: Number = 40
+		// Limits the rate at which a wheel can fire (in milliseconds). By default, the
+		// user can't zoom via wheel more often than once per 40 ms.
+		wheelDebounceTime: 40,
+
+		// @option wheelPxPerZoomLevel: Number = 60
+		// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
+		// mean a change of one full zoom level. Smaller values will make wheel-zooming
+		// faster (and vice versa).
+		wheelPxPerZoomLevel: 60,
+
+		// @section Touch interaction options
+		// @option tapHold: Boolean
+		// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
+		tapHold: Browser.safari && Browser.mobile,
+
+		// @option tapTolerance: Number = 15
+		// The max number of pixels a user can shift his finger during touch
+		// for it to be considered a valid tap.
+		tapTolerance: 15,
+
+		// @option pinchZoom: Boolean|String = *
+		// Whether the map can be zoomed by touch-dragging with two fingers. If
+		// passed `'center'`, it will zoom to the center of the view regardless of
+		// where the touch events (fingers) were. Enabled for touch-capable web
+		// browsers.
+		pinchZoom: true,
+
+		// @option bounceAtZoomLimits: Boolean = true
+		// Set it to false if you don't want the map to zoom beyond min/max zoom
+		// and then bounce back when pinch-zooming.
+		bounceAtZoomLimits: true,
+
+		// @section Control options
+		// @option zoomControl: Boolean = true
+		// Whether a [zoom control](#control-zoom) is added to the map by default.
+		zoomControl: true,
+
+		// @option attributionControl: Boolean = true
+		// Whether a [attribution control](#control-attribution) is added to the map by default.
+		attributionControl: true
 	};
 
 	constructor(id, options) { // (HTMLElement or String, Object)
@@ -173,6 +294,58 @@ export class LeafletMap extends Evented {
 		if (options.center && options.zoom !== undefined) {
 			this.setView(new LatLng(options.center), options.zoom, {reset: true});
 		}
+
+		if (options.attributionControl) {
+			new AttributionControl().addTo(this);
+		}
+		if (options.zoomControl) {
+			// @section Controls
+			// @property zoomControl: ZoomControl
+			// The default zoom control (only available if the
+			// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
+			this.zoomControl = new ZoomControl();
+			this.addControl(this.zoomControl);
+		}
+
+		if (options.touchZoom !== undefined) {
+			// To be removed in leaflet 3
+			console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
+			options.pinchZoom = options.touchZoom;
+			delete options.touchZoom;
+		}
+
+		// @section Handlers
+		//
+		// Map properties include interaction handlers that allow you to control
+		// interaction behavior in runtime, enabling or disabling certain features such
+		// as dragging or touch zoom (see `Handler` methods). For example:
+		//
+		// ```js
+		// map.doubleClickZoom.disable();
+		// ```
+		//
+		// @property boxZoom: Handler
+		// Box (shift-drag with pointer) zoom handler.
+		this.addHandler('boxZoom', BoxZoomHandler);
+		// @property doubleClickZoom: Handler
+		// Double click zoom handler.
+		this.addHandler('doubleClickZoom', DoubleClickZoomHandler);
+		// @property dragging: Handler
+		// Map dragging handler.
+		this.addHandler('dragging', DragHandler);
+		// @property keyboard: Handler
+		// Keyboard navigation handler.
+		this.addHandler('keyboard', KeyboardHandler);
+		// @property scrollWheelZoom: Handler
+		// Scroll wheel zoom handler.
+		this.addHandler('scrollWheelZoom', ScrollWheelZoomHandler);
+		// @property tapHold: Handler
+		// Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
+		this.addHandler('tapHold', TapHoldHandler);
+		// @property pinchZoom: Handler
+		// Pinch zoom handler.
+		this.addHandler('pinchZoom', PinchZoomHandler);
+		this.touchZoom = this.pinchZoom; // deprecated alias
 
 		this.callInitHooks();
 
@@ -737,6 +910,21 @@ export class LeafletMap extends Evented {
 		this.fire('locationfound', data);
 	}
 
+	// @section Methods for Layers and Controls
+	// @method addControl(control: Control): this
+	// Adds the given control to the map
+	addControl(control) {
+		control.addTo(this);
+		return this;
+	}
+
+	// @method removeControl(control: Control): this
+	// Removes the given control from the map
+	removeControl(control) {
+		control.remove();
+		return this;
+	}
+
 	// TODO Appropriate docs section?
 	// @section Other Methods
 	// @method addHandler(name: String, HandlerClass: Function): this
@@ -778,9 +966,7 @@ export class LeafletMap extends Evented {
 		PointerEvents.disablePointerDetection(this._container);
 		this._mapPane.remove();
 
-		if (this._clearControlPos) {
-			this._clearControlPos();
-		}
+		this._clearControlPos();
 		if (this._resizeRequest) {
 			cancelAnimationFrame(this._resizeRequest);
 			this._resizeRequest = null;
@@ -1137,10 +1323,33 @@ export class LeafletMap extends Evented {
 		}
 
 		this._initPanes();
+		this._initControlPos();
+	}
 
-		if (this._initControlPos) {
-			this._initControlPos();
+	_initControlPos() {
+		const corners = this._controlCorners = {},
+		l = 'leaflet-',
+		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
+
+		function createCorner(vSide, hSide) {
+			const className = `${l + vSide} ${l}${hSide}`;
+
+			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}
+
+		createCorner('top', 'left');
+		createCorner('top', 'right');
+		createCorner('bottom', 'left');
+		createCorner('bottom', 'right');
+	}
+
+	_clearControlPos() {
+		for (const c of Object.values(this._controlCorners)) {
+			c.remove();
+		}
+		this._controlContainer.remove();
+		delete this._controlCorners;
+		delete this._controlContainer;
 	}
 
 	_initPanes() {

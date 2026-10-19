@@ -1,4 +1,3 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
@@ -9,15 +8,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Handler.BoxZoom is used to add shift-drag zoom interaction to the map
  * (zoom to a selected bounding box), enabled by default.
  */
-
-// @namespace LeafletMap
-// @section Interaction Options
-LeafletMap.mergeOptions({
-	// @option boxZoom: Boolean = true
-	// Whether the map can be zoomed to a rectangular area specified by
-	// dragging the pointer while pressing the shift key.
-	boxZoom: true
-});
 
 export class BoxZoomHandler extends Handler {
 	static initHooks = true;
@@ -149,8 +139,3 @@ export class BoxZoomHandler extends Handler {
 		}
 	}
 }
-
-// @section Handlers
-// @property boxZoom: Handler
-// Box (shift-drag with pointer) zoom handler.
-LeafletMap.addInitHook('addHandler', 'boxZoom', BoxZoomHandler);

@@ -1,6 +1,5 @@
 
 import {Control} from './Control.js';
-import {LeafletMap} from '../map/Map.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 
@@ -124,23 +123,3 @@ export class ZoomControl extends Control {
 		}
 	}
 }
-
-// @namespace LeafletMap
-// @section Control options
-// @option zoomControl: Boolean = true
-// Whether a [zoom control](#control-zoom) is added to the map by default.
-LeafletMap.mergeOptions({
-	zoomControl: true
-});
-
-LeafletMap.addInitHook(function () {
-	if (this.options.zoomControl) {
-		// @section Controls
-		// @property zoomControl: ZoomControl
-		// The default zoom control (only available if the
-		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new ZoomControl();
-		this.addControl(this.zoomControl);
-	}
-});
-
