@@ -350,16 +350,6 @@ export class Popup extends DivOverlay {
 }
 
 
-/* @namespace LeafletMap
- * @section Interaction Options
- * @option closePopupOnClick: Boolean = true
- * Set it to `false` if you don't want popups to close when user clicks the map.
- */
-LeafletMap.mergeOptions({
-	closePopupOnClick: true
-});
-
-
 // @namespace LeafletMap
 // @section Methods for Layers and Controls
 LeafletMap.include({
