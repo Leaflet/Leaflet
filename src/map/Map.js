@@ -102,8 +102,8 @@ export class LeafletMap extends Evented {
 		maxBounds: undefined,
 
 		// @option renderer: Renderer = *
-		// The default method for drawing vector layers on the map. `SVG`
-		// or `Canvas` by default depending on browser support.
+		// The default method for drawing vector layers on the map. A new `SVG`
+		// renderer by default; pass `new Canvas()` to draw them on a canvas instead.
 		renderer: undefined,
 
 
@@ -314,6 +314,10 @@ export class LeafletMap extends Evented {
 			console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
 			options.pinchZoom = options.touchZoom;
 			delete options.touchZoom;
+		}
+
+		if (options.preferCanvas !== undefined) {
+			console.error('Map: preferCanvas option has been removed. Use renderer: new Canvas() instead.');
 		}
 
 		// @section Handlers
@@ -1049,6 +1053,38 @@ export class LeafletMap extends Evented {
 	removeControl(control) {
 		control.remove();
 		return this;
+	}
+
+	// @method getRenderer(layer: Path): Renderer
+	// Returns the instance of `Renderer` that should be used to render the given
+	// `Path`. It will ensure that the `renderer` options of the map and paths
+	// are respected, and that the renderers do exist on the map.
+	getRenderer(layer) {
+		const renderer = layer.options.renderer ?? this._getPaneRenderer(layer) ?? this.options.renderer ??
+			(this._renderer ??= layer._createRenderer());
+
+		if (!this.hasLayer(renderer)) {
+			this.addLayer(renderer);
+		}
+		return renderer;
+	}
+
+	_getPaneRenderer(layer) {
+		const name = layer.options.pane;
+		if (name === 'overlayPane' || name === undefined) {
+			return;
+		}
+
+		let renderer = this._paneRenderers[name];
+		if (!renderer) {
+			// custom panes get a renderer of the same kind as the map's default one, so Canvas maps stay Canvas
+			const Renderer = this.options.renderer?.constructor;
+			renderer = Renderer ?
+				new Renderer({...this.options.renderer.options, pane: name}) :
+				layer._createRenderer({pane: name});
+			this._paneRenderers[name] = renderer;
+		}
+		return renderer;
 	}
 
 	// TODO Appropriate docs section?

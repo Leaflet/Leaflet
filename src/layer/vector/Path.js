@@ -1,4 +1,5 @@
 import {Layer} from '../Layer.js';
+import {SVG} from './SVG.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -70,7 +71,13 @@ export class Path extends Layer {
 		// @option bubblingPointerEvents: Boolean = true
 		// When `true`, a pointer event on this path will trigger the same event on the map
 		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingPointerEvents: true
+		bubblingPointerEvents: true,
+
+		// @option renderer: Renderer
+		// Use this specific instance of `Renderer` for this path. Takes
+		// precedence over the map's [default renderer](#map-renderer).
+		// If set, it will override the `pane` option of the path.
+		renderer: undefined
 	};
 
 	beforeAdd(map) {
@@ -127,6 +134,10 @@ export class Path extends Layer {
 
 	getElement() {
 		return this._path;
+	}
+
+	_createRenderer(options) {
+		return new SVG(options);
 	}
 
 	_reset() {

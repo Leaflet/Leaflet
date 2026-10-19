@@ -28,7 +28,7 @@
 
 			const canvas = new Canvas();
 			const path = new Polyline(latlngs, {renderer: canvas});
-			const map = new LeafletMap('map', {layers: [osm], preferCanvas: true});
+			const map = new LeafletMap('map', {layers: [osm], renderer: new Canvas()});
 			const group = new LayerGroup();
 
 			map.fitBounds(new LatLngBounds(latlngs));

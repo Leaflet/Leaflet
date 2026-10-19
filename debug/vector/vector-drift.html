@@ -19,11 +19,11 @@
 		<button id="btn-2" type="button">B</button>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, Marker, Polygon} from 'leaflet';
+			import {LeafletMap, Marker, Polygon, Canvas} from 'leaflet';
 
 			const map = new LeafletMap('map', {
 				zoomAnimation: false,
-				// preferCanvas: true
+				// renderer: new Canvas()
 			}).setView([0, 0], 7);
 
 			const markerA = new Marker([1, 0]).addTo(map);
