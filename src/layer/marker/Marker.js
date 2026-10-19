@@ -6,6 +6,7 @@ import {Point} from '../../geometry/Point.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
+import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 /*
  * @class Marker
@@ -372,6 +373,14 @@ export class Marker extends Layer {
 		}
 
 		return this;
+	}
+
+	// @section Other methods
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
+	toGeoJSON(precision) {
+		return pointToGeoJSON(this, precision);
 	}
 
 	_updateOpacity() {

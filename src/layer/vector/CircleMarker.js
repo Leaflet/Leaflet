@@ -2,6 +2,7 @@ import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
+import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 
 /*
@@ -74,6 +75,13 @@ export class CircleMarker extends Path {
 			this.setRadius(options.radius);
 		}
 		return this;
+	}
+
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
+	toGeoJSON(precision) {
+		return pointToGeoJSON(this, precision);
 	}
 
 	_project() {
