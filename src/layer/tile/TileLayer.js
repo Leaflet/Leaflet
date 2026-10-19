@@ -48,6 +48,12 @@ export class TileLayer extends GridLayer {
 			// The maximum zoom level up to which this layer will be displayed (inclusive).
 			maxZoom: 18,
 
+			// @option keepPreviousTiles: Number = 128
+			// After animated zooms, keep up to this many loaded image tiles from the previous level,
+			// nearest the map center, so zooming back reuses their decoded images.
+			// Set to `0` to disable. Redraw and layer removal clear the retained tiles.
+			keepPreviousTiles: 128,
+
 			// @option subdomains: String|String[] = 'abc'
 			// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
 			subdomains: 'abc',
@@ -269,6 +275,32 @@ export class TileLayer extends GridLayer {
 					});
 				}
 			}
+		}
+	}
+
+	_retainPreviousTiles() {
+		for (const tile of Object.values(this._tiles)) {
+			if (tile.cached) {
+				tile.el.style.visibility = tile.retain ? tile.cachedVisibility : 'hidden';
+			}
+		}
+		if (!this.options.keepPreviousTiles || this._previousTileZoom === undefined) { return; }
+
+		const center = this._map.project(this._map.getCenter(), this._previousTileZoom)
+			.unscaleBy(this.getTileSize()).subtract([0.5, 0.5]);
+		const tiles = Object.values(this._tiles).filter(tile => tile.coords.z === this._previousTileZoom && tile.loaded && tile.active &&
+			tile.el.naturalWidth > 0 && tile.el.classList.contains('leaflet-tile-loaded'));
+
+		tiles.sort((a, b) => a.coords.distanceTo(center) - b.coords.distanceTo(center));
+		for (const tile of tiles.slice(0, Math.max(0, this.options.keepPreviousTiles))) {
+			if (!tile.retain) {
+				if (!tile.cached) {
+					tile.cached = true;
+					tile.cachedVisibility = tile.el.style.visibility;
+				}
+				tile.el.style.visibility = 'hidden';
+			}
+			tile.retain = true;
 		}
 	}
 
