@@ -17,6 +17,8 @@ import {Bounds} from '../geometry/Bounds.js';
 
 export class BlanketOverlay extends Layer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka BlanketOverlay options
 	static defaultOptions = {
@@ -33,8 +35,10 @@ export class BlanketOverlay extends Layer {
 		continuous: false,
 	};
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	onAdd() {

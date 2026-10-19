@@ -36,6 +36,8 @@ import * as DomEvent from '../../dom/DomEvent.js';
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 export class TileLayer extends GridLayer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka TileLayer options
 	static defaultOptions = {
@@ -86,8 +88,8 @@ export class TileLayer extends GridLayer {
 		referrerPolicy: 'strict-origin-when-cross-origin'
 	};
 
-	initialize(url, options) {
-		super.initialize(options);
+	constructor(url, options) {
+		super(options);
 
 		this._url = url;
 
@@ -134,6 +136,8 @@ export class TileLayer extends GridLayer {
 		}
 
 		this.on('tileunload', this._onTileRemove);
+
+		this.callInitHooks();
 	}
 
 	// @method setUrl(url: String, noRedraw?: Boolean): this

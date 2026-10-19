@@ -34,6 +34,8 @@ import Browser from '../../core/Browser.js';
 // Creates an icon instance with the given options.
 export class Icon extends Class {
 
+	static initHooks = true;
+
 	/* @section
 	 * @aka Icon options
 	 *
@@ -84,8 +86,10 @@ export class Icon extends Class {
 		crossOrigin: false
 	};
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement

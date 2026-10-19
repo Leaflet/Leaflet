@@ -14,6 +14,8 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 export class Control extends Class {
 
+	static initHooks = true;
+
 	// @section
 	// @aka Control Options
 	static defaultOptions = {
@@ -24,8 +26,10 @@ export class Control extends Class {
 	};
 
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	/* @section

@@ -5,9 +5,31 @@ import * as Util from './Util.js';
 // @section
 // @uninheritable
 
-// Thanks to John Resig and Dean Edwards for inspiration!
+let hooksVersion = 0;
+const ownHooks = new WeakMap(); // class -> hooks added to that class directly
+const hookPlans = new WeakMap(); // class -> {version, runners, hooks} for its whole chain
+
+// Counts the classes in the chain that end their constructor with `callInitHooks()` and collects their hooks,
+// parents first. Cached per class until the next `addInitHook` call.
+function getHookPlan(cls) {
+	let plan = hookPlans.get(cls);
+	if (plan?.version !== hooksVersion) {
+		plan = {version: hooksVersion, runners: 0, hooks: []};
+		for (let c = cls; c !== Function.prototype; c = Object.getPrototypeOf(c)) {
+			if (Object.hasOwn(c, 'initHooks') && c.initHooks) { plan.runners++; }
+			plan.hooks.unshift(...(ownHooks.get(c) ?? []));
+		}
+		hookPlans.set(cls, plan);
+	}
+	return plan;
+}
 
 export class Class {
+	// @property initHooks: Boolean
+	// Marks a class whose constructor ends with `this.callInitHooks()`. Set it as `static initHooks = true` on
+	// a plugin class whose own [constructor hooks](#class-constructor-hooks) need its constructor to run first.
+	static initHooks = true;
+
 	// @function include(properties: Object): this
 	// [Includes a mixin](#class-includes) into the current class.
 	static include(props) {
@@ -52,54 +74,37 @@ export class Class {
 	// @function addInitHook(fn: Function): this
 	// Adds a [constructor hook](#class-constructor-hooks) to the class.
 	static addInitHook(fn, ...args) { // (Function) || (String, args...)
-		const init = typeof fn === 'function' ? fn : function () {
+		const hook = typeof fn === 'function' ? fn : function () {
 			this[fn](...args);
 		};
-
-		if (!Object.hasOwn(this.prototype, '_initHooks')) { // do not use ??= here
-			this.prototype._initHooks = [];
+		if (!ownHooks.has(this)) {
+			ownHooks.set(this, []);
 		}
-		this.prototype._initHooks.push(init);
+		ownHooks.get(this).push(hook);
+		hooksVersion++;
 		return this;
 	}
 
-	constructor(...args) {
-		this._initHooksCalled = false;
+	constructor() {
+		if (this.initialize) {
+			throw new Error(`${this.constructor.name}: initialize() is not called in Leaflet 2. ` +
+				'Rename it to constructor() and call super() at its start.');
+		}
 
 		Util.setOptions(this);
 
-		// call the constructor
-		if (this.initialize) {
-			this.initialize(...args);
-		}
-
-		// call all constructor hooks
+		this._initHooksLeft = getHookPlan(this.constructor).runners;
 		this.callInitHooks();
 	}
 
+	// @method callInitHooks()
+	// Called at the end of the constructor of every class with `static initHooks = true`. The last of these
+	// calls, from the deepest such class, runs all hooks of the chain once, so they see a fully built instance.
 	callInitHooks() {
-		if (this._initHooksCalled) {
-			return;
-		}
-
-		// collect all prototypes in chain
-		const prototypes = [];
-		let current = this;
-
-		while ((current = Object.getPrototypeOf(current)) !== null) {
-			prototypes.push(current);
-		}
-
-		// reverse so the parent prototype is first
-		prototypes.reverse();
-
-		// call init hooks on each prototype
-		for (const proto of prototypes) {
-			for (const hook of proto._initHooks ?? []) {
+		if (--this._initHooksLeft === 0) {
+			for (const hook of getHookPlan(this.constructor).hooks) {
 				hook.call(this);
 			}
 		}
-
-		this._initHooksCalled = true;
 	}
 }

@@ -24,6 +24,8 @@ import * as DomUtil from '../dom/DomUtil.js';
 // geographical bounds it is tied to.
 export class ImageOverlay extends Layer {
 
+	static initHooks = true;
+
 	// @section
 	// @aka ImageOverlay options
 	static defaultOptions = {
@@ -65,11 +67,15 @@ export class ImageOverlay extends Layer {
 		decoding: 'auto'
 	};
 
-	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
+	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
+		super();
+
 		this._url = url;
 		this._bounds = new LatLngBounds(bounds);
 
 		Util.setOptions(this, options);
+
+		this.callInitHooks();
 	}
 
 	onAdd() {

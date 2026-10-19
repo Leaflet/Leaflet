@@ -50,6 +50,8 @@ import {Point} from '../../geometry/Point.js';
 // of geographic points.
 export class Polyline extends Path {
 
+	static initHooks = true;
+
 	// @section
 	// @aka Polyline options
 	static defaultOptions = {
@@ -64,9 +66,13 @@ export class Polyline extends Path {
 		noClip: false
 	};
 
-	initialize(latlngs, options) {
+	constructor(latlngs, options) {
+		super();
+
 		Util.setOptions(this, options);
 		this._setLatLngs(latlngs);
+
+		this.callInitHooks();
 	}
 
 	// @method getLatLngs(): LatLng[]

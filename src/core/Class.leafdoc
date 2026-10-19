@@ -1,18 +1,17 @@
-
 @class Class
 
-Class powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.
+Class is the base of `Evented`, `Handler`, `Icon` and `Control`, and through them of almost all of the Leaflet classes documented here.
 
-It implements a simple classical inheritance model using JavaScript's standard `extends` keyword, and introduces several special properties for convenient code organization — options and init hooks.
+Leaflet classes are plain JavaScript classes: extend them with `extends` and put setup code in `constructor()`, after calling `super()`. Class adds what plugins need on top of that: default options, mixins and constructor hooks.
 
 
 @example
 
 ```js
 class MyClass extends Class {
-    initialize(greeter) {
+    constructor(greeter) {
+        super();
         this.greeter = greeter;
-        // class constructor
     }
 
     greet(name) {
@@ -26,6 +25,8 @@ const a = new MyClass("Hello");
 // call greet method, alerting "Hello, World"
 a.greet("World");
 ```
+
+Leaflet 1.x classes used an `initialize()` method instead of `constructor()`. Constructing a class that still has an `initialize()` method throws an error.
 
 @section Options
 @example
@@ -70,7 +71,8 @@ class MyClass extends Class {
         bla: 5
     };
 
-    initialize(options) {
+    constructor(options) {
+        super();
         Util.setOptions(this, options);
         ...
     }
@@ -112,7 +114,7 @@ a.foo();
 If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
 
 ```js
-MyClass.addInitHook(() => {
+MyClass.addInitHook(function () {
     // ... do something in constructor additionally
     // e.g. add event listeners, set custom properties etc.
 });
@@ -122,4 +124,21 @@ You can also use the following shortcut when you just need to make one additiona
 
 ```js
 MyClass.addInitHook('methodName', arg1, arg2, …);
+```
+
+Hooks added to a class also run for instances of its subclasses, parent class hooks first, and each hook runs once per instance. For Leaflet's own classes, they run after the constructor has finished, so a hook added to `Layer` sees a fully built `Polygon`. For a class of your own that extends a Leaflet class, they run before the constructor body of your class.
+
+If other code adds hooks to a class of yours and these hooks need the constructor of your class to have run, mark the class with `static initHooks = true` and end its constructor with `this.callInitHooks()`:
+
+```js
+class MyLayer extends Layer {
+    static initHooks = true;
+
+    constructor(options) {
+        super();
+        Util.setOptions(this, options);
+        this._items = [];
+        this.callInitHooks();
+    }
+}
 ```

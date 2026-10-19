@@ -21,6 +21,8 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 export class Draggable extends Evented {
 
+	static initHooks = true;
+
 	static defaultOptions = {
 		// @section
 		// @aka Draggable options
@@ -32,12 +34,16 @@ export class Draggable extends Evented {
 
 	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, preventOutline, options) {
+		super();
+
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
+
+		this.callInitHooks();
 	}
 
 	// @method enable()

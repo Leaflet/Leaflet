@@ -50,6 +50,8 @@ import * as PointerEvents from '../dom/DomEvent.PointerEvents.js';
 // and optionally an object literal with `Map options`.
 export class LeafletMap extends Evented {
 
+	static initHooks = true;
+
 	static defaultOptions = {
 		// @section Map State Options
 		// @option crs: CRS = EPSG3857
@@ -143,7 +145,9 @@ export class LeafletMap extends Evented {
 		trackResize: true
 	};
 
-	initialize(id, options) { // (HTMLElement or String, Object)
+	constructor(id, options) { // (HTMLElement or String, Object)
+		super();
+
 		options = Util.setOptions(this, options);
 
 		// Make sure to assign internal flags at the beginning,

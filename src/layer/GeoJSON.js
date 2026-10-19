@@ -37,6 +37,8 @@ import * as LineUtil from '../geometry/LineUtil.js';
 // (you can alternatively add it later with `addData` method) and an `options` object.
 export class GeoJSON extends FeatureGroup {
 
+	static initHooks = true;
+
 	/* @section
 	 * @aka GeoJSON options
 	 *
@@ -89,12 +91,14 @@ export class GeoJSON extends FeatureGroup {
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize(geojson, options) {
-		super.initialize(undefined, options);
+	constructor(geojson, options) {
+		super(undefined, options);
 
 		if (geojson) {
 			this.addData(geojson);
 		}
+
+		this.callInitHooks();
 	}
 
 	// @method addData( <GeoJSON> data ): this
