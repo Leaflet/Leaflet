@@ -50,7 +50,6 @@ This file just defines the order of the classes in the docs.
 
 @class DomEvent
 @class DomUtil
-@class PosAnimation
 @class Draggable
 
 @class Class
