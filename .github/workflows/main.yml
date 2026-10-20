@@ -43,6 +43,7 @@ jobs:
       - run: npm run build
 
       - run: node ./spec/ssr/ssr_node.js
+      - run: node ./spec/no_patches.js
 
       - uses: denoland/setup-deno@v2
         with:
