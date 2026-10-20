@@ -31,7 +31,7 @@
 			<div id="mapSvg"></div>
 		</div>
 		<script type="module">
-			import {TileLayer, LeafletMap, Marker, CircleMarker} from 'leaflet';
+			import {TileLayer, LeafletMap, Marker, CircleMarker, Canvas} from 'leaflet';
 
 			function makeMap(container, options) {
 				const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18});
@@ -59,7 +59,7 @@
 			}
 
 			makeMap('mapSvg');
-			makeMap('mapCanvas', {preferCanvas: true});
+			makeMap('mapCanvas', {renderer: new Canvas()});
 		</script>
 	</body>
 </html>
