@@ -20,14 +20,15 @@ const bundles = {
 	'map+tiles+polygon': 'LeafletMap, TileLayer, Polygon',
 };
 
-// shown in the job name; the rest only go to the job summary
-const summaryRows = ['leaflet.js', 'leaflet.css', 'map+tiles'];
+// short labels for the job name; the rest only go to the job summary
+const summaryLabels = {'leaflet.js': 'JS', 'map+tiles': 'map+tiles', 'leaflet.css': 'CSS'};
 
 const [baseDir, headDir] = process.argv.slice(2);
 const hasBase = existsSync(`${baseDir}/dist`);
 
 const gzipSize = path => (existsSync(path) ? gzipSync(readFileSync(path)).length : null);
-const formatDiff = d => (d > 0 ? `+${d} B` : d < 0 ? `-${-d} B` : 'no change');
+const kB = bytes => `${+(bytes / 1000).toFixed(2)} kB`;
+const sign = d => (d > 0 ? '+' : '-');
 
 async function bundleSize(dir, imports) {
 	const code = `import {${imports}} from '${resolve(dir, 'src/Leaflet.js')}'; console.log(${imports});`;
@@ -63,14 +64,18 @@ for (const [name, imports] of Object.entries(bundles)) {
 	rows.push({name, size, base});
 }
 
-const diff = ({size, base}) => (base === null ? '' : formatDiff(size - base));
-const summary = rows
-	.filter(({name}) => summaryRows.includes(name))
-	.map(row => `${row.name} ${(row.size / 1024).toFixed(2)} kB${row.base === null ? '' : ` (${diff(row)})`}`);
+// the job name rounds changes of 1 kB or more and leaves out unchanged ones; the table shows exact bytes
+const shortDiff = d => (Math.abs(d) < 1000 ? `${sign(d)}${Math.abs(d)} B` : `${sign(d)}${kB(Math.abs(d))}`);
+const summary = Object.entries(summaryLabels).map(([name, label]) => {
+	const {size, base} = rows.find(row => row.name === name);
+	const d = base === null ? 0 : size - base;
+	return `${label} ${kB(size)}${d ? ` (${shortDiff(d)})` : ''}`;
+});
 
 console.log(`summary=${summary.join(', ')}`);
 
 if (process.env.GITHUB_STEP_SUMMARY) {
+	const diff = ({size, base}) => (base === null ? '' : size === base ? 'no change' : `${sign(size - base)}${Math.abs(size - base)} B`);
 	const table = rows.map(row => `| ${row.name} | ${row.size} B | ${diff(row)} |`);
 	appendFileSync(process.env.GITHUB_STEP_SUMMARY, `| | gzipped | change |\n|---|--:|--:|\n${table.join('\n')}\n`);
 }
