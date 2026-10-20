@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomUtil, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';

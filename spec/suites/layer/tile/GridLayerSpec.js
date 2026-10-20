@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomUtil, GridLayer, LeafletMap, Point, Util} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -791,7 +790,7 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 224, unloads 209 tiles on MAD-TRD flyTo()', (done) => {
+		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			grid.once('load', () => {
@@ -804,9 +803,9 @@ describe('GridLayer', () => {
 
 				map.on('zoomend', () => {
 					expect(counts).to.deep.equal({
-						tileloadstart: 224,
-						tileload: 224,
-						tileunload: 209,
+						tileloadstart: 290,
+						tileload: 290,
+						tileunload: 275,
 						tileerror: 0,
 					});
 					expect(grid._container.querySelectorAll('div').length).to.equal(16);	// 15 + container

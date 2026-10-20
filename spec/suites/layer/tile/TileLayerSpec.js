@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Browser, SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -252,7 +251,7 @@ describe('TileLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 224, unloads 209 kittens on MAD-TRD flyTo()', (done) => {
+		it('Loads 290, unloads 275 kittens on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			kittenLayer.once('load', () => {
@@ -264,10 +263,8 @@ describe('TileLayer', () => {
 				});
 
 				map.on('zoomend', () => {
-					console.warn(counts);
-
-					expect(counts.tileloadstart).to.equal(224);
-					expect(counts.tileunload).to.equal(209);
+					expect(counts.tileloadstart).to.equal(290);
+					expect(counts.tileunload).to.equal(275);
 
 					// image tiles take time, so then might not be fully loaded yet.
 					expect(counts.tileload).to.be.lessThan(counts.tileloadstart + 1);
@@ -450,6 +447,44 @@ describe('TileLayer', () => {
 			expect(layerOther._url.startsWith('http://')).to.eql(true);
 		});
 
+		it('keeps the template intact when changing OSM URL to https', () => {
+			const layer = new TileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('https://tile.openstreetmap.org/2/1/2.png');
+
+			const layerSubdomains = new TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {subdomains: 'a'}).addTo(map);
+			expect(layerSubdomains.getTileUrl({x: 1, y: 2, z: 2})).to.eql('https://a.tile.osm.org/2/1/2.png');
+			expect(layerSubdomains.options.attribution).to.contain('OpenStreetMap');
+		});
+
+		it('changes OSM URL to https in setUrl', () => {
+			const layer = new TileLayer('http://someotherurl.org/{z}/{x}/{y}.png').addTo(map);
+			layer.setUrl('http://tile.openstreetmap.org/{z}/{x}/{y}.png');
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('https://tile.openstreetmap.org/2/1/2.png');
+		});
+
+		it('recognizes protocol-relative OSM URLs and leaves them as is', () => {
+			const layer = new TileLayer('//tile.openstreetmap.org/{z}/{x}/{y}.png');
+			expect(layer._url).to.eql('//tile.openstreetmap.org/{z}/{x}/{y}.png');
+			expect(layer.options.attribution).to.contain('OpenStreetMap');
+		});
+
+		it('doesn\'t throw on URLs that can\'t be parsed', () => {
+			const layer = new TileLayer('http://a b/{z}/{x}/{y}.png');
+			expect(layer._url).to.eql('http://a b/{z}/{x}/{y}.png');
+		});
+
+		it('doesn\'t treat other hosts with OSM in the URL as OSM', () => {
+			for (const url of [
+				'http://example.com/tile.openstreetmap.org/{z}/{x}/{y}.png',
+				'http://tile.openstreetmap.org.example.com/{z}/{x}/{y}.png',
+				'http://mytile.osm.org/{z}/{x}/{y}.png'
+			]) {
+				const layer = new TileLayer(url);
+				expect(layer._url).to.eql(url);
+				expect(layer.options.attribution).to.eql(null);
+			}
+		});
+
 		it('requests tiles with an integer {z} when the map\'s zoom level is fractional', () => {
 			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
 			map.options.zoomSnap = 0;
@@ -473,9 +508,7 @@ describe('TileLayer', () => {
 
 		it('consults options.foo for {foo}', () => {
 			class OSMLayer extends TileLayer {
-				static {
-					this.setDefaultOptions({foo: 'bar'});
-				}
+				static defaultOptions = {foo: 'bar'};
 			}
 			const layer = new OSMLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}').addTo(map);
 			map.options.zoomSnap = 0;

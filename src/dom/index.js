@@ -1,5 +1,3 @@
-export {PosAnimation} from './PosAnimation.js';
-
 import * as DomEvent from './DomEvent.js';
 export {DomEvent};
 

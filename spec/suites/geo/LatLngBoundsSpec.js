@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {LatLngBounds, LatLng} from 'leaflet';
 
 describe('LatLngBounds', () => {

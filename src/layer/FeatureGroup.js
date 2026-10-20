@@ -85,4 +85,9 @@ export class FeatureGroup extends LayerGroup {
 		}
 		return bounds;
 	}
+
+	// bound popups and tooltips open on the first of the group's layers that is on the map
+	_getOverlaySource() {
+		return Object.values(this._layers).find(layer => layer._map);
+	}
 }

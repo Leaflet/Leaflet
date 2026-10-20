@@ -1,4 +1,3 @@
-﻿import {expect} from 'chai';
 import {CircleMarker, LatLng, LeafletMap, Point} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
