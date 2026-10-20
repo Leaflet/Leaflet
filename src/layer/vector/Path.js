@@ -73,10 +73,9 @@ export class Path extends Layer {
 		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
 		bubblingPointerEvents: true,
 
-		// @option renderer: Renderer
-		// Use this specific instance of `Renderer` for this path. Takes
-		// precedence over the map's [default renderer](#map-renderer).
-		// If set, it will override the `pane` option of the path.
+		// @option renderer: Renderer = *
+		// Use this specific instance of `Renderer` for this path. If not set, the path uses the map's
+		// [renderer](#map-renderer), which is `SVG` by default. If set, it overrides the `pane` option.
 		renderer: undefined
 	};
 
