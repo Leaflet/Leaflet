@@ -1,4 +1,4 @@
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -2647,6 +2647,61 @@ describe('Map', () => {
 			expect(map.panBy(offset, {animate: false})).to.equal(map);
 			expect(map.getCenter().distanceTo(target)).to.be.lessThan(5);
 			expect(map.getCenter()).to.be.nearLatLng([-10.9196177602, 10.9863281250]);
+		});
+	});
+
+	describe('with reduced motion', () => {
+		beforeEach(() => {
+			const matchMedia = window.matchMedia.bind(window);
+			const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
+			sinon.stub(window, 'matchMedia').callsFake(reduced);
+			map.setView([0, 0], 5);
+		});
+
+		afterEach(() => {
+			window.matchMedia.restore();
+		});
+
+		it('zooms through the zoom animation instead of resetting the view', (done) => {
+			new GridLayer().addTo(map);
+			const reset = sinon.spy(), zoomanim = sinon.spy();
+			map.on({viewprereset: reset, zoomanim});
+			map.once('zoomend', () => {
+				expect(zoomanim.called).to.be.true;
+				expect(reset.called).to.be.false;
+				done();
+			});
+			map.setZoom(6);
+		});
+
+		it('pans instantly', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			const center = map.getCenter();
+			map.panBy([100, 100]);
+			expect(moveend.calledOnce).to.be.true;
+			expect(map.getCenter().distanceTo(center)).to.be.greaterThan(1000);
+		});
+
+		it('still animates a pan with animate: true', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			map.panBy([100, 100], {animate: true});
+			expect(moveend.called).to.be.false;
+			expect(map._panAnim._inProgress).to.be.true;
+		});
+
+		it('flies instantly', () => {
+			map.flyTo([10, 11], 12);
+			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 11));
+			expect(map.getZoom()).to.equal(12);
+		});
+
+		it('keeps popup autoPan', () => {
+			const spy = sinon.spy();
+			map.on('autopanstart', spy);
+			new Popup({keepInView: false}).setLatLng(map.containerPointToLatLng([5, 5])).setContent('popup').openOn(map);
+			expect(spy.called).to.be.true;
 		});
 	});
 
