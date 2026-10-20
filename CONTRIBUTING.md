@@ -5,9 +5,9 @@ Contributing to Leaflet
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
- 6. [Improving Documentation](#improving-documentation)
- 7. [Code of Conduct](#code-of-conduct)
- 8. [Thank You](#thank-you)
+ 5. [Improving Documentation](#improving-documentation)
+ 6. [Code of Conduct](#code-of-conduct)
+ 7. [Thank You](#thank-you)
 
 ## Getting Involved
 
@@ -65,7 +65,7 @@ please consider submitting another pull request with the corresponding [document
 
 ### Setting up the Build System
 
-The Leaflet build system uses [NodeJS](http://nodejs.org/).
+The Leaflet build system uses [NodeJS](https://nodejs.org/).
 To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
 Then run the following commands in the project root to install dependencies:
 
@@ -151,7 +151,7 @@ Playwright will install its own browser binaries the first time it runs (`npx pl
 ## Improving Documentation
 
 The code of the live Leaflet website that contains all documentation and examples is located in the `docs/` directory of the `main` branch
-and is automatically generated from a set of HTML and Markdown files by [Jekyll](http://jekyllrb.com/).
+and is automatically generated from a set of HTML and Markdown files by [Jekyll](https://jekyllrb.com/).
 
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
