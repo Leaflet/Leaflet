@@ -27,7 +27,7 @@ function detect() {
 	// @property reducedMotion: Boolean
 	// `true` if the user has [configured their environment for reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
 	// Determines whether animations should play or not.
-	const reducedMotion = navigator.preferences?.reducedMotion?.value ?
+	const reducedMotion = typeof navigator !== 'undefined' && navigator.preferences?.reducedMotion?.value ?
 		navigator.preferences.reducedMotion.value === 'reduce' :
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

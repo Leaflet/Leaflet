@@ -1,19 +1,21 @@
 // Compares gzipped sizes of dist files and of minified bundles of typical imports from src between two checkouts,
 // printing a one-line summary as a GitHub Actions output (shown as a job name in PR checks) and a table for the job
-// summary, and failing if any dist file exceeds its limit.
+// summary, and failing if any of them exceeds its limit.
 // Usage: node build/size.js <base-dir> <head-dir>, each with `dist` and `src`
 import {appendFileSync, existsSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {gzipSync} from 'node:zlib';
-import {rollup} from 'rollup';
-import json from '@rollup/plugin-json';
-import terser from '@rollup/plugin-terser';
+import {rolldown} from 'rolldown';
 
 const limits = {
 	'leaflet.js': 40 * 1024,
 	'leaflet.css': 3.2 * 1024,
+	'map+tiles': 27000,
+	'map+tiles+marker': 29500,
+	'map+tiles+polygon': 31500,
 };
 
+const distFiles = ['leaflet.js', 'leaflet.css'];
 const bundles = {
 	'map+tiles': 'LeafletMap, TileLayer',
 	'map+tiles+marker': 'LeafletMap, TileLayer, Marker',
@@ -32,29 +34,24 @@ const sign = d => (d > 0 ? '+' : '-');
 
 async function bundleSize(dir, imports) {
 	const code = `import {${imports}} from '${resolve(dir, 'src/Leaflet.js')}'; console.log(${imports});`;
-	const build = await rollup({
+	const build = await rolldown({
 		input: 'entry',
 		onLog() {},
-		plugins: [json(), {
+		plugins: [{
 			resolveId: id => (id === 'entry' ? id : null),
 			load: id => (id === 'entry' ? code : null)
 		}]
 	});
-	const {output: [chunk]} = await build.generate({format: 'es', plugins: [terser()]});
+	const {output: [chunk]} = await build.generate({format: 'es', minify: true});
 	return gzipSync(chunk.code).length;
 }
 
 let failed = false;
 const rows = [];
 
-for (const [file, limit] of Object.entries(limits)) {
+for (const file of distFiles) {
 	const size = gzipSize(`${headDir}/dist/${file}`);
 	const base = hasBase ? gzipSize(`${baseDir}/dist/${file}`) : null;
-
-	if (size > limit) {
-		console.error(`${file} is ${size} B gzipped, over the ${limit} B limit`);
-		failed = true;
-	}
 	rows.push({name: file, size, base});
 }
 
@@ -62,6 +59,13 @@ for (const [name, imports] of Object.entries(bundles)) {
 	// eslint-disable-next-line no-await-in-loop
 	const [size, base] = await Promise.all([bundleSize(headDir, imports), hasBase ? bundleSize(baseDir, imports) : null]);
 	rows.push({name, size, base});
+}
+
+for (const {name, size} of rows) {
+	if (size > limits[name]) {
+		console.error(`${name} is ${size} B gzipped, over the ${limits[name]} B limit`);
+		failed = true;
+	}
 }
 
 // the job name rounds changes of 1 kB or more and leaves out unchanged ones; the table shows exact bytes

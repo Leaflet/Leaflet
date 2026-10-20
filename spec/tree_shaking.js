@@ -7,8 +7,7 @@
 import {readdirSync} from 'node:fs';
 import {registerHooks} from 'node:module';
 import {fileURLToPath} from 'node:url';
-import {rollup} from 'rollup';
-import json from '@rollup/plugin-json';
+import {rolldown} from 'rolldown';
 
 const srcURL = new URL('../src/', import.meta.url);
 const srcDir = fileURLToPath(srcURL);
@@ -30,42 +29,39 @@ const bundles = {
 	]
 };
 
-async function bundle(code, onLog) {
-	const build = await rollup({
+// every module is treated as having side effects, ignoring the `sideEffects` field in package.json, so only
+// what's at the top level of each module decides whether it stays; property reads are assumed free of side effects,
+// since Rolldown can't tell that e.g. `Browser.reducedMotion` is a plain object field
+async function bundle(code) {
+	const build = await rolldown({
 		input: 'entry',
-		experimentalLogSideEffects: !!onLog,
+		treeshake: {moduleSideEffects: () => true, propertyReadSideEffects: false},
 		onLog(level, log, handler) {
-			if (onLog && log.code === 'FIRST_SIDE_EFFECT') {
-				onLog(log);
-			} else if (log.code !== 'CIRCULAR_DEPENDENCY' && log.code !== 'EMPTY_BUNDLE') {
-				handler(level, log);
-			}
+			if (log.code !== 'CIRCULAR_DEPENDENCY' && log.code !== 'EMPTY_BUNDLE') { handler(level, log); }
 		},
-		plugins: [json(), {
+		plugins: [{
 			resolveId: id => (id === 'entry' ? id : null),
 			load: id => (id === 'entry' ? code : null)
 		}]
 	});
-	const {output: [chunk]} = await build.generate({format: 'es'});
-	return chunk;
+	const {output: [{code: output}]} = await build.generate({format: 'es', comments: false});
+	// per-module info in the chunk is taken before the last pass of dead code removal, so read the region markers
+	const included = Array.from(output.matchAll(/^\/\/#region .*?src\/(.+)\n(?!\/\/#endregion)/gm), m => m[1]);
+	return {code: output.replaceAll(/^\/\/#(end)?region.*$/gm, '').trim(), included};
 }
 
-const sideEffects = [];
-const empty = await bundle(modules.map(file => `import '${srcDir}${file}';`).join('\n'),
-	log => sideEffects.push(log.message.replaceAll(srcDir, '')));
+const empty = await bundle(modules.map(file => `import '${srcDir}${file}';`).join('\n'));
 
-if (empty.code.trim()) {
+if (empty.code) {
 	failed = true;
 	console.error('Unused modules are kept in bundles because of side effects at import, e.g. a top-level call or ' +
-		`a \`new\` in a static field that needs a /* @__PURE__ */ annotation:\n\n${sideEffects.join('\n\n')}\n`);
+		`a \`new\` in a static field that needs a /* @__PURE__ */ annotation: ${empty.included.join(', ')}\n\n` +
+		`${empty.code}\n`);
 }
 
 for (const [imports, absent] of Object.entries(bundles)) {
 	// eslint-disable-next-line no-await-in-loop
-	const chunk = await bundle(`import {${imports}} from '${srcDir}Leaflet.js'; console.log(${imports});`);
-	const included = Object.entries(chunk.modules)
-		.filter(([, {renderedLength}]) => renderedLength > 0)
-		.map(([id]) => id.replace(srcDir, ''));
+	const {included} = await bundle(`import {${imports}} from '${srcDir}Leaflet.js'; console.log(${imports});`);
 	const unexpected = included.filter(file => [...alwaysAbsent, ...absent].some(prefix => file.startsWith(prefix)));
 
 	if (unexpected.length) {

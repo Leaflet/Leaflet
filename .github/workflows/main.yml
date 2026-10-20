@@ -44,6 +44,7 @@ jobs:
 
       - run: node ./spec/ssr/ssr_node.js
       - run: node ./spec/tree_shaking.js
+      - run: node ./spec/dist.js
 
       - uses: denoland/setup-deno@v2
         with:
@@ -52,7 +53,7 @@ jobs:
       - run: deno run ./spec/ssr/ssr_deno.js
 
       # keep the head build, sources and script out of git's way so they survive the base checkout; the script
-      # stays in the repo root to resolve rollup from node_modules
+      # stays in the repo root to resolve rolldown from node_modules
       - run: mkdir head && mv dist head/ && cp -r src package.json head/ && cp build/size.js size.js
 
       - name: Build base
@@ -87,6 +88,9 @@ jobs:
           - project: firefox
           - project: chromium
             os: windows-latest
+          # the minified bundle, to catch what the build breaks
+          - project: chromium
+            dist: '1'
           - project: webkit
             os: macos-latest
     steps:
@@ -108,13 +112,19 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install ${{ matrix.project }}
 
+      - if: matrix.dist
+        run: npm run build
+
       - name: Run tests on ${{ matrix.project }}
         run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
+        env:
+          VITE_DIST: ${{ matrix.dist }}
 
       - name: Run tests on ${{ matrix.project }} with touch
         run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
         env:
           VITE_TOUCH: '1'
+          VITE_DIST: ${{ matrix.dist }}
 
   publish-artifacts:
     permissions:
