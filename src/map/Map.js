@@ -237,8 +237,7 @@ export class LeafletMap extends Evented {
 
 		// @section Touch interaction options
 		// @option tapHold: Boolean = true
-		// Enables simulation of `contextmenu` event on touch long press, for browsers that don't fire it
-		// (mobile Safari).
+		// Fires a `contextmenu` event on a long touch press. iOS Safari doesn't fire one natively.
 		tapHold: true,
 
 		// @option tapTolerance: Number = 15
