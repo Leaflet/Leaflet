@@ -5,9 +5,7 @@
 import {appendFileSync, existsSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {gzipSync} from 'node:zlib';
-import {rollup} from 'rollup';
-import json from '@rollup/plugin-json';
-import terser from '@rollup/plugin-terser';
+import {rolldown} from 'rolldown';
 
 const limits = {
 	'leaflet.js': 40 * 1024,
@@ -36,15 +34,15 @@ const sign = d => (d > 0 ? '+' : '-');
 
 async function bundleSize(dir, imports) {
 	const code = `import {${imports}} from '${resolve(dir, 'src/Leaflet.js')}'; console.log(${imports});`;
-	const build = await rollup({
+	const build = await rolldown({
 		input: 'entry',
 		onLog() {},
-		plugins: [json(), {
+		plugins: [{
 			resolveId: id => (id === 'entry' ? id : null),
 			load: id => (id === 'entry' ? code : null)
 		}]
 	});
-	const {output: [chunk]} = await build.generate({format: 'es', plugins: [terser()]});
+	const {output: [chunk]} = await build.generate({format: 'es', minify: true});
 	return gzipSync(chunk.code).length;
 }
 

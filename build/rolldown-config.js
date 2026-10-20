@@ -1,20 +1,19 @@
-import terser from '@rollup/plugin-terser';
 import {readFileSync} from 'node:fs';
-import {defineConfig} from 'rollup';
+import {defineConfig} from 'rolldown';
 import pkg from '../package.json' with {type: 'json'};
 
 const STATIC_ASSETS = [
 	'leaflet.css',
-	'images/logo.svg',
 	'images/layers.svg',
 	'images/marker-icon.svg',
 	'images/marker-shadow.svg'
 ];
 
-/** @type {import('rollup').OutputPlugin} */
+/** @type {import('rolldown').Plugin} */
 const staticAssetsPlugin = {
 	name: 'static-assets',
-	generateBundle() {
+	generateBundle({format}) {
+		if (format !== 'es') { return; }
 		for (const fileName of STATIC_ASSETS) {
 			const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
 			this.emitFile({type: 'asset', fileName, source});
@@ -25,43 +24,29 @@ const staticAssetsPlugin = {
 const banner = `/* @preserve
  * Leaflet ${pkg.version}, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
+ */`;
 
-/** @type {import('rollup').OutputOptions} */
+/** @type {import('rolldown').OutputOptions} */
 const commonOptions = {
-	banner,
+	postBanner: banner,
+	minify: true,
+	comments: false,
 	sourcemap: true
-};
-
-/** @type {import('rollup').OutputOptions} */
-const umdOptions = {
-	...commonOptions,
-	name: 'L',
-	format: 'umd',
-	freeze: false,
-	noConflict: true,
-	amd: {
-		id: pkg.name
-	}
 };
 
 export default defineConfig({
 	input: './src/Leaflet.js',
+	plugins: [staticAssetsPlugin],
 	output: [
 		{
 			...commonOptions,
 			file: './dist/leaflet.js',
-			plugins: [terser(), staticAssetsPlugin],
 		},
 		{
-			...umdOptions,
-			file: './dist/leaflet-global-src.js',
-		},
-		{
-			...umdOptions,
+			...commonOptions,
 			file: './dist/leaflet-global.js',
-			plugins: [terser()],
+			format: 'iife',
+			name: 'L',
 		}
 	]
 });

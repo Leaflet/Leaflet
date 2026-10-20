@@ -14,21 +14,18 @@ const getIntegrity = async (path) => {
 
 const integrityUglified = await getIntegrity('leaflet.js');
 const integrityUglifiedGlobal = await getIntegrity('leaflet-global.js');
-const integritySrcGlobal = await getIntegrity('leaflet-global-src.js');
 const integrityCss = await getIntegrity('leaflet.css');
 
 console.log(`Integrity hashes for ${pkg.version}:`);
-console.log(`dist/leaflet.js:            ${integrityUglified}`);
-console.log(`dist/leaflet-global.js:     ${integrityUglifiedGlobal}`);
-console.log(`dist/leaflet-global-src.js: ${integritySrcGlobal}`);
-console.log(`dist/leaflet.css:           ${integrityCss}`);
+console.log(`dist/leaflet.js:        ${integrityUglified}`);
+console.log(`dist/leaflet-global.js: ${integrityUglifiedGlobal}`);
+console.log(`dist/leaflet.css:       ${integrityCss}`);
 
 let docConfig = readFileSync('docs/_config.yml', 'utf8');
 
 docConfig = docConfig
 	.replace(/latest_leaflet_version:.*/,  `latest_leaflet_version: ${pkg.version}`)
 	.replace(/integrity_hash_uglified:.*/, `integrity_hash_uglified: "${integrityUglified}"`)
-	.replace(/integrity_hash_global_source:.*/,   `integrity_hash_global_source: "${integritySrcGlobal}"`)
 	.replace(/integrity_hash_global_uglified:.*/, `integrity_hash_global_uglified: "${integrityUglifiedGlobal}"`)
 	.replace(/integrity_hash_css:.*/,      `integrity_hash_css: "${integrityCss}"`);
 

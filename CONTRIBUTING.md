@@ -105,8 +105,8 @@ But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 In order to create this file, run `npm run build` or `yarn run build`.
 
 You'll find `dist/leaflet.js`, a minified ES module, and `dist/leaflet-global.js`,
-a minified script that defines the global `L`, plus `dist/leaflet-global-src.js`,
-its unminified version. The npm package points bundlers at `src/` directly, so they
+a minified script that defines the global `L`, each with a source map that includes
+the original sources. The npm package points bundlers at `src/` directly, so they
 can drop the parts of Leaflet an app doesn't use.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
