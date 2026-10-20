@@ -12,15 +12,13 @@ function detect() {
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
-	const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
 
 	return {
 		chrome,
 		safari,
 		mobile,
 		reducedMotion,
-		mac,
-		linux
+		mac
 	};
 }
 
