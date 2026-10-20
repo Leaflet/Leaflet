@@ -11,7 +11,7 @@ function detect() {
 		navigator.preferences.reducedMotion.value === 'reduce' :
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
+	const mac = userAgentContains('macintosh');
 
 	return {
 		chrome,
