@@ -7,17 +7,7 @@ function detect() {
 		navigator.preferences.reducedMotion.value === 'reduce' :
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	const mac = userAgentContains('macintosh');
-
 	return {
-		reducedMotion,
-		mac
+		reducedMotion
 	};
-}
-
-function userAgentContains(str) {
-	if (typeof navigator === 'undefined' || typeof navigator.userAgent === 'undefined') {
-		return false;
-	}
-	return navigator.userAgent.toLowerCase().includes(str);
 }

@@ -1,6 +1,5 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
-import Browser from '../core/Browser.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
@@ -201,9 +200,8 @@ export function getPointerPosition(e, container) {
 // @function getWheelPxFactor(): Number
 // Gets the wheel pixel factor based on the devicePixelRatio
 export function getWheelPxFactor() {
-	// We need double the scroll pixels for all browsers except Mac, which needs 3x (see #8859, #7403 and #4538)
-	const ratio = window.devicePixelRatio;
-	return Browser.mac ? ratio * 3 : ratio * 2;
+	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
+	return window.devicePixelRatio * 2;
 }
 
 // @function getWheelDelta(ev: DOMEvent): Number
