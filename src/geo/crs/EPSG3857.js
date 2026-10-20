@@ -15,7 +15,7 @@ export class EPSG3857 extends EarthCRS {
 	static code = 'EPSG:3857';
 	static projection = SphericalMercator;
 
-	static transformation = (() => {
+	static transformation = /* @__PURE__ */ (() => {
 		const scale = 0.5 / (Math.PI * SphericalMercator.R);
 		return new Transformation(scale, 0.5, -scale, 0.5);
 	})();

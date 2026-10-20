@@ -49,12 +49,12 @@ export class Handler extends Class {
 	// Called when the handler is enabled, should add event hooks.
 	// @method removeHooks()
 	// Called when the handler is disabled, should remove the event hooks added previously.
-}
 
-// @section There is static function which can be called without instantiating Handler:
-// @function addTo(map: LeafletMap, name: String): this
-// Adds a new Handler to the given map with the given name.
-Handler.addTo = function (map, name) {
-	map.addHandler(name, this);
-	return this;
-};
+	// @section There is static function which can be called without instantiating Handler:
+	// @function addTo(map: LeafletMap, name: String): this
+	// Adds a new Handler to the given map with the given name.
+	static addTo(map, name) {
+		map.addHandler(name, this);
+		return this;
+	}
+}

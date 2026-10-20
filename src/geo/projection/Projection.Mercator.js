@@ -15,7 +15,7 @@ export const Mercator = {
 	R: earthRadius,
 	R_MINOR: 6356752.314245179,
 
-	bounds: new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
+	bounds: /* @__PURE__ */ new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
 	project(latlng) {
 		latlng = new LatLng(latlng);
