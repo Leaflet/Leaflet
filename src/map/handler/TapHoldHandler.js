@@ -19,6 +19,7 @@ export class TapHoldHandler extends Handler {
 		DomEvent.off(this._map._container, 'pointerdown', this._onDown, this);
 		this._cancel();
 		this._cancelClickPrevent();
+		this._stopPreventingNative();
 	}
 
 	_onDown(e) {
@@ -35,6 +36,11 @@ export class TapHoldHandler extends Handler {
 			DomEvent.on(el, 'pointerup', DomEvent.preventDefault);
 			DomEvent.on(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
 			this._simulateEvent('contextmenu', e);
+
+			// browsers that fire a native contextmenu on touch may do it later than us (e.g. Android with a longer
+			// touch & hold delay, or Windows on release), so swallow it until the next press
+			el.addEventListener('contextmenu', this._preventNative, true);
+			el.addEventListener('pointerdown', this._stopPreventingNative, true);
 		}), tapHoldDelay);
 
 		DomEvent.on(el, 'pointerup pointercancel contextmenu', this._cancel, this);
@@ -45,6 +51,16 @@ export class TapHoldHandler extends Handler {
 		const el = this._map._container;
 		DomEvent.off(el, 'pointerup', DomEvent.preventDefault);
 		DomEvent.off(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
+	};
+
+	_preventNative = (e) => {
+		DomEvent.stop(e);
+	};
+
+	_stopPreventingNative = () => {
+		const el = this._map._container;
+		el.removeEventListener('contextmenu', this._preventNative, true);
+		el.removeEventListener('pointerdown', this._stopPreventingNative, true);
 	};
 
 	_cancel() {

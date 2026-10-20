@@ -5,7 +5,6 @@ export default /* @__PURE__ */ detect();
 function detect() {
 	const chrome = userAgentContains('chrome');
 	const safari = !chrome && userAgentContains('safari');
-	const mobile = typeof orientation !== 'undefined';
 
 	const reducedMotion = typeof navigator !== 'undefined' && navigator.preferences?.reducedMotion?.value ?
 		navigator.preferences.reducedMotion.value === 'reduce' :
@@ -16,7 +15,6 @@ function detect() {
 	return {
 		chrome,
 		safari,
-		mobile,
 		reducedMotion,
 		mac
 	};

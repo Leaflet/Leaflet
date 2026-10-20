@@ -237,9 +237,10 @@ export class LeafletMap extends Evented {
 		wheelPxPerZoomLevel: 60,
 
 		// @section Touch interaction options
-		// @option tapHold: Boolean
-		// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
-		tapHold: Browser.safari && Browser.mobile,
+		// @option tapHold: Boolean = true
+		// Enables simulation of `contextmenu` event on touch long press, for browsers that don't fire it
+		// (mobile Safari).
+		tapHold: true,
 
 		// @option tapTolerance: Number = 15
 		// The max number of pixels a user can shift his finger during touch

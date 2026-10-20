@@ -107,10 +107,27 @@ describe('TapHoldHandler', () => {
 		expect(spy.called).to.be.true;
 		expect(spy.calledOnce).to.be.true;
 		expect(spy.lastCall.args[0].originalEvent._simulated).not.to.be.true;
+	});
 
-		// Note: depending on tapHoldDelay value it's also possible that native contextmenu may come after simulated one
-		//       and the only way to handle this gracefully - increase tapHoldDelay value.
-		//       Anyway that is edge case, as tapHold is meant for browsers where native contextmenu is not fired on touch.
+	it('swallows native contextmenu that comes after the simulated one', () => {
+		touchFinger.down().wait(650);
+		clock.tick(660);
+
+		const nativeEvent = new MouseEvent('contextmenu', {bubbles: true, cancelable: true});
+		container.dispatchEvent(nativeEvent);
+
+		expect(spy.calledOnce).to.be.true;
+		expect(spy.lastCall.args[0].originalEvent._simulated).to.be.true;
+		expect(nativeEvent.defaultPrevented).to.be.true;
+
+		touchFinger.wait(100).up();
+		clock.tick(110);
+
+		// up to the next press only, e.g. a right click
+		mouseFinger.down().wait(10).up();
+		clock.tick(20);
+		UIEventSimulator.fire('contextmenu', container);
+		expect(spy.calledTwice).to.be.true;
 	});
 
 	it('prevents native click', () => {
