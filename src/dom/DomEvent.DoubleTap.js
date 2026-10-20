@@ -1,5 +1,3 @@
-import * as DomEvent from './DomEvent.js';
-
 /*
  * Extends the event handling code with double tap support for mobile browsers.
  *
@@ -84,7 +82,7 @@ export function addDoubleTapListener(obj, handler) {
 		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
-		const path = DomEvent.getPropagationPath(ev);
+		const path = ev.composedPath();
 		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
 			!path.some(el => (
 				el instanceof HTMLInputElement ||

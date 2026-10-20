@@ -1,4 +1,3 @@
-﻿import {expect} from 'chai';
 import {Marker, FeatureGroup, LayerGroup, Util} from 'leaflet';
 
 describe('FeatureGroup', () => {

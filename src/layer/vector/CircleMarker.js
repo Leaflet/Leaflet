@@ -2,6 +2,7 @@ import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
+import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 
 /*
@@ -15,22 +16,26 @@ import {Bounds} from '../../geometry/Bounds.js';
 // Instantiates a circle marker object given a geographical point, and an optional options object.
 export class CircleMarker extends Path {
 
-	static {
-		// @section
-		// @aka CircleMarker options
-		this.setDefaultOptions({
-			fill: true,
+	static initHooks = true;
 
-			// @option radius: Number = 10
-			// Radius of the circle marker, in CSS pixels
-			radius: 10
-		});
-	}
+	// @section
+	// @aka CircleMarker options
+	static defaultOptions = {
+		fill: true,
 
-	initialize(latlng, options) {
+		// @option radius: Number = 10
+		// Radius of the circle marker, in CSS pixels
+		radius: 10
+	};
+
+	constructor(latlng, options) {
+		super();
+
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
 		this._radius = this.options.radius;
+
+		this.callInitHooks();
 	}
 
 	// @method setLatLng(latLng: LatLng): this
@@ -70,6 +75,13 @@ export class CircleMarker extends Path {
 			this.setRadius(options.radius);
 		}
 		return this;
+	}
+
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
+	toGeoJSON(precision) {
+		return pointToGeoJSON(this, precision);
 	}
 
 	_project() {

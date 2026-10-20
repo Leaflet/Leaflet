@@ -1,4 +1,5 @@
 import {Layer} from '../Layer.js';
+import {SVG} from './SVG.js';
 import * as Util from '../../core/Util.js';
 
 /*
@@ -11,69 +12,72 @@ import * as Util from '../../core/Util.js';
 
 export class Path extends Layer {
 
-	static {
-		// @section
-		// @aka Path options
-		this.setDefaultOptions({
-			// @option stroke: Boolean = true
-			// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
-			stroke: true,
+	// @section
+	// @aka Path options
+	static defaultOptions = {
+		// @option stroke: Boolean = true
+		// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
+		stroke: true,
 
-			// @option color: String = '#3388ff'
-			// Stroke color
-			color: '#3388ff',
+		// @option color: String = '#3388ff'
+		// Stroke color
+		color: '#3388ff',
 
-			// @option weight: Number = 3
-			// Stroke width in pixels
-			weight: 3,
+		// @option weight: Number = 3
+		// Stroke width in pixels
+		weight: 3,
 
-			// @option opacity: Number = 1.0
-			// Stroke opacity
-			opacity: 1,
+		// @option opacity: Number = 1.0
+		// Stroke opacity
+		opacity: 1,
 
-			// @option lineCap: String= 'round'
-			// A string that defines [shape to be used at the end](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linecap) of the stroke.
-			lineCap: 'round',
+		// @option lineCap: String= 'round'
+		// A string that defines [shape to be used at the end](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linecap) of the stroke.
+		lineCap: 'round',
 
-			// @option lineJoin: String = 'round'
-			// A string that defines [shape to be used at the corners](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linejoin) of the stroke.
-			lineJoin: 'round',
+		// @option lineJoin: String = 'round'
+		// A string that defines [shape to be used at the corners](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linejoin) of the stroke.
+		lineJoin: 'round',
 
-			// @option dashArray: String = null
-			// A string that defines the stroke [dash pattern](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray).
-			dashArray: null,
+		// @option dashArray: String = null
+		// A string that defines the stroke [dash pattern](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray).
+		dashArray: null,
 
-			// @option dashOffset: String = null
-			// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset).
-			dashOffset: null,
+		// @option dashOffset: String = null
+		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset).
+		dashOffset: null,
 
-			// @option fill: Boolean = depends
-			// Whether to fill the path with color. Set it to `false` to disable filling on polygons or circles.
-			fill: false,
+		// @option fill: Boolean = depends
+		// Whether to fill the path with color. Set it to `false` to disable filling on polygons or circles.
+		fill: false,
 
-			// @option fillColor: String = *
-			// Fill color. Defaults to the value of the [`color`](#path-color) option
-			fillColor: null,
+		// @option fillColor: String = *
+		// Fill color. Defaults to the value of the [`color`](#path-color) option
+		fillColor: null,
 
-			// @option fillOpacity: Number = 0.2
-			// Fill opacity.
-			fillOpacity: 0.2,
+		// @option fillOpacity: Number = 0.2
+		// Fill opacity.
+		fillOpacity: 0.2,
 
-			// @option fillRule: String = 'evenodd'
-			// A string that defines [how the inside of a shape](https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule) is determined.
-			fillRule: 'evenodd',
+		// @option fillRule: String = 'evenodd'
+		// A string that defines [how the inside of a shape](https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule) is determined.
+		fillRule: 'evenodd',
 
-			// className: '',
+		// className: '',
 
-			// Option inherited from "Interactive layer" abstract class
-			interactive: true,
+		// Option inherited from "Interactive layer" abstract class
+		interactive: true,
 
-			// @option bubblingPointerEvents: Boolean = true
-			// When `true`, a pointer event on this path will trigger the same event on the map
-			// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-			bubblingPointerEvents: true
-		});
-	}
+		// @option bubblingPointerEvents: Boolean = true
+		// When `true`, a pointer event on this path will trigger the same event on the map
+		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingPointerEvents: true,
+
+		// @option renderer: Renderer = *
+		// Use this specific instance of `Renderer` for this path. If not set, the path uses the map's
+		// [renderer](#map-renderer), which is `SVG` by default. If set, it overrides the `pane` option.
+		renderer: undefined
+	};
 
 	beforeAdd(map) {
 		// Renderer is set here because we need to call renderer.getEvents
@@ -129,6 +133,15 @@ export class Path extends Layer {
 
 	getElement() {
 		return this._path;
+	}
+
+	_createRenderer(options) {
+		return new SVG(options);
+	}
+
+	// popups open where the path was clicked, so another click moves them
+	_togglesPopupOnClick() {
+		return false;
 	}
 
 	_reset() {

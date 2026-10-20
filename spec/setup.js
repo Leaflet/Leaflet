@@ -1,28 +1,28 @@
-import {Assertion, util} from 'chai';
+import {chai} from 'vitest';
 import {DefaultIcon, LatLng, Point} from 'leaflet';
 import '../src/leaflet.css';
 
-util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
+chai.util.addMethod(chai.Assertion.prototype, 'near', function (expected, delta = 1) {
 	expected = new Point(expected);
 
-	new Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
-	new Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
+	new chai.Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
+	new chai.Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
 });
 
-util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
+chai.util.addMethod(chai.Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
 	expected = new LatLng(expected);
 
-	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
-	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
-	new Assertion(this._obj.alt).to.eql(expected.alt);
+	new chai.Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
+	new chai.Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
+	new chai.Assertion(this._obj.alt).to.eql(expected.alt);
 });
 
-util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
+chai.util.addMethod(chai.Assertion.prototype, 'eqlLatLng', function (expected) {
 	expected = new LatLng(expected);
 
-	new Assertion(this._obj.lat).to.eql(expected.lat);
-	new Assertion(this._obj.lng).to.eql(expected.lng);
-	new Assertion(this._obj.alt).to.eql(expected.alt);
+	new chai.Assertion(this._obj.lat).to.eql(expected.lat);
+	new chai.Assertion(this._obj.lng).to.eql(expected.lng);
+	new chai.Assertion(this._obj.alt).to.eql(expected.alt);
 });
 
 DefaultIcon.imagePath = '/src/images/';

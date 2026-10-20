@@ -1,6 +1,4 @@
-import {LeafletMap} from '../map/Map.js';
-import {Layer} from './Layer.js';
-import {FeatureGroup} from './FeatureGroup.js';
+import {LayerBase} from './LayerBase.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
@@ -13,37 +11,39 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
-export class DivOverlay extends Layer {
+export class DivOverlay extends LayerBase {
 
-	static {
-		// @section
-		// @aka DivOverlay options
-		this.setDefaultOptions({
-			// @option interactive: Boolean = false
-			// If true, the popup/tooltip will listen to the pointer events.
-			interactive: false,
+	static initHooks = true;
 
-			// @option offset: Point = Point(0, 0)
-			// The offset of the overlay position.
-			offset: [0, 0],
+	// @section
+	// @aka DivOverlay options
+	static defaultOptions = {
+		// @option interactive: Boolean = false
+		// If true, the popup/tooltip will listen to the pointer events.
+		interactive: false,
 
-			// @option className: String = ''
-			// A custom CSS class name to assign to the overlay.
-			className: '',
+		// @option offset: Point = Point(0, 0)
+		// The offset of the overlay position.
+		offset: [0, 0],
 
-			// @option pane: String = undefined
-			// `Map pane` where the overlay will be added.
-			pane: undefined,
+		// @option className: String = ''
+		// A custom CSS class name to assign to the overlay.
+		className: '',
 
-			// @option content: String|HTMLElement|Function = ''
-			// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-			// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
-			// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
-			content: ''
-		});
-	}
+		// @option pane: String = undefined
+		// `Map pane` where the overlay will be added.
+		pane: undefined,
 
-	initialize(options, source) {
+		// @option content: String|HTMLElement|Function = ''
+		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+		// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+		content: ''
+	};
+
+	constructor(options, source) {
+		super();
+
 		if (options instanceof LatLng || Array.isArray(options)) {
 			this._latlng = new LatLng(options);
 			Util.setOptions(this, source);
@@ -54,6 +54,8 @@ export class DivOverlay extends Layer {
 		if (this.options.content) {
 			this._content = this.options.content;
 		}
+
+		this.callInitHooks();
 	}
 
 	// @method openOn(map: LeafletMap): this
@@ -234,22 +236,11 @@ export class DivOverlay extends Layer {
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
 	_prepareOpen(latlng) {
-		let source = this._source;
-		if (!source._map) { return false; }
+		if (!this._source._map) { return false; }
 
-		if (source instanceof FeatureGroup) {
-			source = null;
-			for (const layer of Object.values(this._source._layers)) {
-				if (layer._map) {
-					source = layer;
-					break;
-				}
-			}
-			if (!source) { return false; } // Unable to get source layer.
-
-			// set overlay source to this layer
-			this._source = source;
-		}
+		const source = this._source._getOverlaySource();
+		if (!source) { return false; } // Unable to get source layer.
+		this._source = source;
 
 		if (!latlng) {
 			if (source.getCenter) {
@@ -320,31 +311,3 @@ export class DivOverlay extends Layer {
 	}
 
 }
-
-LeafletMap.include({
-	_initOverlay(OverlayClass, content, latlng, options) {
-		let overlay = content;
-		if (!(overlay instanceof OverlayClass)) {
-			overlay = new OverlayClass(options).setContent(content);
-		}
-		if (latlng) {
-			overlay.setLatLng(latlng);
-		}
-		return overlay;
-	}
-});
-
-
-Layer.include({
-	_initOverlay(OverlayClass, old, content, options) {
-		let overlay = content;
-		if (overlay instanceof OverlayClass) {
-			Util.setOptions(overlay, options);
-			overlay._source = this;
-		} else {
-			overlay = (old && !options) ? old : new OverlayClass(options, this);
-			overlay.setContent(content);
-		}
-		return overlay;
-	}
-});

@@ -1,6 +1,5 @@
 
 import {Control} from './Control.js';
-import {LeafletMap} from '../map/Map.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
@@ -19,25 +18,26 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // Creates an attribution control.
 export class AttributionControl extends Control {
 
-	static {
-		// @section
-		// @aka AttributionControl options
-		this.setDefaultOptions({
-			// @option position: String = 'bottomright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'bottomright',
+	static initHooks = true;
 
-			// @option prefix: String|false = 'Leaflet'
-			// The HTML text shown before the attributions. Pass `false` to disable.
-			prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-		});
-	}
+	// @section
+	// @aka AttributionControl options
+	static defaultOptions = {
+		// @option position: String = 'bottomright'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		position: 'bottomright',
 
-	initialize(options) {
-		super.initialize(options);
+		// @option prefix: String|false = 'Leaflet'
+		// The HTML text shown before the attributions. Pass `false` to disable.
+		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+	};
+
+	constructor(options) {
+		super(options);
 
 		this._attributions = {};
+		this.callInitHooks();
 	}
 
 	onAdd(map) {
@@ -123,17 +123,3 @@ export class AttributionControl extends Control {
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
 }
-
-// @namespace LeafletMap
-// @section Control options
-// @option attributionControl: Boolean = true
-// Whether a [attribution control](#control-attribution) is added to the map by default.
-LeafletMap.mergeOptions({
-	attributionControl: true
-});
-
-LeafletMap.addInitHook(function () {
-	if (this.options.attributionControl) {
-		new AttributionControl().addTo(this);
-	}
-});

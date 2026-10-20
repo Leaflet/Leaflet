@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomEvent, LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';

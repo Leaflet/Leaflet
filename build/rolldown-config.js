@@ -1,18 +1,15 @@
-import json from '@rollup/plugin-json';
-import terser from '@rollup/plugin-terser';
 import {readFileSync} from 'node:fs';
-import {defineConfig} from 'rollup';
+import {defineConfig} from 'rolldown';
 import pkg from '../package.json' with {type: 'json'};
 
 const STATIC_ASSETS = [
 	'leaflet.css',
-	'images/logo.svg',
 	'images/layers.svg',
 	'images/marker-icon.svg',
 	'images/marker-shadow.svg'
 ];
 
-/** @type {import('rollup').OutputPlugin} */
+/** @type {import('rolldown').Plugin} */
 const staticAssetsPlugin = {
 	name: 'static-assets',
 	generateBundle() {
@@ -26,49 +23,38 @@ const staticAssetsPlugin = {
 const banner = `/* @preserve
  * Leaflet ${pkg.version}, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-${new Date().getFullYear()} Volodymyr Agafonkin, (c) 2010-2011 CloudMade
- */
-`;
+ */`;
 
-/** @type {import('rollup').OutputOptions} */
+/** @type {import('rolldown').OutputOptions} */
 const commonOptions = {
-	banner,
+	postBanner: banner,
+	minify: true,
+	comments: false,
 	sourcemap: true
 };
 
-/** @type {import('rollup').OutputOptions} */
-const umdOptions = {
-	...commonOptions,
-	name: 'L',
-	format: 'umd',
-	freeze: false,
-	noConflict: true,
-	amd: {
-		id: pkg.name
-	}
-};
+// keep the minifier from emitting syntax newer than what the sources may use
+const transform = {target: 'es2022'};
 
-export default defineConfig({
-	input: './src/Leaflet.js',
-	plugins: [json()],
-	output: [
-		{
-			...commonOptions,
-			file: pkg.exports['.'],
-			plugins: [staticAssetsPlugin]
-		},
-		{
+export default defineConfig([
+	{
+		input: './src/Leaflet.js',
+		plugins: [staticAssetsPlugin],
+		transform,
+		output: {
 			...commonOptions,
 			file: './dist/leaflet.js',
-			plugins: [terser()],
-		},
-		{
-			...umdOptions,
-			file: './dist/leaflet-global-src.js',
-		},
-		{
-			...umdOptions,
-			file: './dist/leaflet-global.js',
-			plugins: [terser()],
 		}
-	]
-});
+	},
+	{
+		input: './build/global.js',
+		transform,
+		output: {
+			...commonOptions,
+			file: './dist/leaflet-global.js',
+			format: 'iife',
+			name: 'L',
+			exports: 'default',
+		}
+	}
+]);
