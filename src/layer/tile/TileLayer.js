@@ -3,6 +3,18 @@ import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
+const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
+const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
+const httpRe = /^http:/i;
+
+function isOSMUrl(url) {
+	const host = hostRe.exec(url)?.[2] ?? '';
+	return osmHosts.some(osmHost => host === osmHost || host.endsWith(`.${osmHost}`));
+}
+
+// OSM tiles are upgraded to HTTPS so that the referrer policy works
+const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : url);
+
 /*
  * @class TileLayer
  * @inherits GridLayer
@@ -91,23 +103,13 @@ export class TileLayer extends GridLayer {
 	constructor(url, options) {
 		super(options);
 
-		this._url = url;
-
 		options = Util.setOptions(this, options);
 
-		// Set required OpenStreetMap attribution if it hasn't been specified; upgrade to HTTPS so the referrer policy works.
-		const tileUrl = new URL(this._url, location.href);
-		const urlHostname = tileUrl.hostname;
-		const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
-		if (osmHosts.some(host => urlHostname.endsWith(host))) {
-			if (options.attribution === null) {
-				options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-			}
-			if (tileUrl.protocol === 'http:') {
-				tileUrl.protocol = 'https:';
-				this._url = tileUrl.toString();
-			}
+		// Set required OpenStreetMap attribution if it hasn't been specified
+		if (isOSMUrl(url) && options.attribution === null) {
+			options.attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 		}
+		this._url = upgradeOSMUrl(url);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (this.options.detectRetina && Browser.retina && this.options.maxZoom > 0) {
@@ -145,6 +147,8 @@ export class TileLayer extends GridLayer {
 	// If the URL does not change, the layer will not be redrawn unless
 	// the noRedraw parameter is set to false.
 	setUrl(url, noRedraw) {
+		url = upgradeOSMUrl(url);
+
 		if (this._url === url && noRedraw === undefined) {
 			noRedraw = true;
 		}
