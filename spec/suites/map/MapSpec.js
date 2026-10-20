@@ -1817,6 +1817,17 @@ describe('Map', () => {
 			expect(spy.calledOnce).to.be.true;
 		});
 
+		it('reads the Leaflet 1 bubblingMouseEvents option as bubblingPointerEvents', () => {
+			const mapSpy = sinon.spy();
+			map.on('click', mapSpy);
+			const marker = new Marker([1, 2], {bubblingMouseEvents: true}).on('click', () => {}).addTo(map);
+			const polygon = new Polygon([[1, 2], [3, 4], [5, 6]], {bubblingMouseEvents: false}).on('click', () => {}).addTo(map);
+			UIEventSimulator.fire('click', polygon._path);
+			expect(mapSpy.called).to.be.false;
+			UIEventSimulator.fire('click', marker._icon);
+			expect(mapSpy.calledOnce).to.be.true;
+		});
+
 		it('DOM events fired on marker can be cancelled before being caught by the map', () => {
 			const mapSpy = sinon.spy();
 			const layerSpy = sinon.spy();
@@ -1966,11 +1977,14 @@ describe('Map', () => {
 			expect(spy.secondCall.lastArg).to.be.true;
 		});
 
-		it('prints to console.error about deprecated mouse* events', () => {
+		it('prints to console.error about removed mouse* events, once per name', () => {
 			const errorSpy = sinon.spy(console, 'error');
-			map.on('mouseover', () => {});
+			map.on('mouseout', () => {});
+			map.on('mouseout', () => {});
+			new Marker([0, 0]).on('mouseout', () => {});
 			expect(errorSpy.calledOnce).to.be.true;
-			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseover has been removed. Use the PointerEvent variant instead.');
+			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseout has been removed in Leaflet 2. Use pointerout instead.');
+			errorSpy.restore();
 		});
 	});
 

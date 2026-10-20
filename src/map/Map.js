@@ -1894,8 +1894,10 @@ export class LeafletMap extends Evented {
 
 		for (const t of targets) {
 			t.fire(type, data, true);
+			// bubblingMouseEvents is the Leaflet 1 name of the option
+			const bubbling = t.options.bubblingMouseEvents ?? t.options.bubblingPointerEvents;
 			if (data.originalEvent._stopped ||
-				(t.options.bubblingPointerEvents === false && LeafletMap._pointerEvents.includes(type))) { return; }
+				(bubbling === false && LeafletMap._pointerEvents.includes(type))) { return; }
 		}
 	}
 
