@@ -1472,7 +1472,7 @@ export class LeafletMap extends Evented {
 		// leaflet-touch and leaflet-retina have no rules in leaflet.css, but plugin stylesheets still target them
 		const classes = ['leaflet-container', 'leaflet-touch'];
 
-		if (Browser.retina) { classes.push('leaflet-retina'); }
+		if (window.devicePixelRatio > 1) { classes.push('leaflet-retina'); }
 		if (Browser.safari) { classes.push('leaflet-safari'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
 

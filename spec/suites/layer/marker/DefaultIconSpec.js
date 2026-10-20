@@ -1,5 +1,5 @@
 import {DefaultIcon, LeafletMap, Marker} from 'leaflet';
-import Browser from '../../../../src/core/Browser.js';
+import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('DefaultIcon', () => {
@@ -68,8 +68,7 @@ describe('DefaultIcon', () => {
 	it('don\'t set retina shadow icon if null', () => {
 		const oldShadowRetinaUrl = DefaultIcon.defaultOptions.shadowRetinaUrl;
 		const oldShadowUrl = DefaultIcon.defaultOptions.shadowUrl;
-		const oldRetinaValue = Browser.retina;
-		Browser.retina = true;
+		const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
 		DefaultIcon.defaultOptions.shadowRetinaUrl = null;
 		DefaultIcon.defaultOptions.shadowUrl = null;
 		const marker = new Marker([0, 0]).addTo(map);
@@ -79,6 +78,6 @@ describe('DefaultIcon', () => {
 		// This is needed because else other tests will fail
 		DefaultIcon.defaultOptions.shadowRetinaUrl = oldShadowRetinaUrl;
 		DefaultIcon.defaultOptions.shadowUrl = oldShadowUrl;
-		Browser.retina = oldRetinaValue;
+		dpr.restore();
 	});
 });

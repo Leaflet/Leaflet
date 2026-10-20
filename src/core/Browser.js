@@ -11,9 +11,6 @@ function detect() {
 		navigator.preferences.reducedMotion.value === 'reduce' :
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	// also `true` on a regular screen when the page zoom is above 100%
-	const retina = typeof window === 'undefined' || typeof window.devicePixelRatio === 'undefined' ? false : window.devicePixelRatio > 1;
-
 	const mac = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Mac');
 	const linux = typeof navigator === 'undefined' || typeof navigator.platform === 'undefined' ? false : navigator.platform.startsWith('Linux');
 
@@ -22,7 +19,6 @@ function detect() {
 		safari,
 		mobile,
 		reducedMotion,
-		retina,
 		mac,
 		linux
 	};

@@ -1,5 +1,4 @@
 import {GridLayer} from './GridLayer.js';
-import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
@@ -112,7 +111,7 @@ export class TileLayer extends GridLayer {
 		this._url = upgradeOSMUrl(url);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (this.options.detectRetina && Browser.retina && this.options.maxZoom > 0) {
+		if (this.options.detectRetina && window.devicePixelRatio > 1 && this.options.maxZoom > 0) {
 
 			this.options.tileSize = Math.floor(this.options.tileSize / 2);
 
@@ -201,7 +200,7 @@ export class TileLayer extends GridLayer {
 	getTileUrl(coords) {
 		const data = Object.create(this.options);
 		Object.assign(data, {
-			r: Browser.retina ? '@2x' : '',
+			r: window.devicePixelRatio > 1 ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,

@@ -1,5 +1,4 @@
 import {TileLayer} from './TileLayer.js';
-import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -79,7 +78,7 @@ export class WMSTileLayer extends TileLayer {
 			}
 		}
 
-		const realRetina = this.options.detectRetina && Browser.retina ? 2 : 1;
+		const realRetina = this.options.detectRetina && window.devicePixelRatio > 1 ? 2 : 1;
 		const tileSize = this.getTileSize();
 
 		wmsParams.width = tileSize.x * realRetina;

@@ -69,6 +69,3 @@ if (globalThis.it) {
 const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
 it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
 it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
-
-// the bundle has its own internal copy of src modules, so specs can't stub those in dist mode
-it.skipIfDist = import.meta.env.VITE_DIST === '1' ? it.skip : it;

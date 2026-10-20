@@ -1,5 +1,4 @@
 import {SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
-import Browser from '../../../../src/core/Browser.js';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -554,13 +553,12 @@ describe('TileLayer', () => {
 			});
 		}
 
-		it.skipIfDist('sets min/maxZoom appropriately with detectRetina', (done) => {
+		it('sets min/maxZoom appropriately with detectRetina', (done) => {
 			const maxZoom = 1;
 			const minZoom = 1;
 
 			// override retina to load extra tiles
-			const originalRetina = Browser.retina;
-			Browser.retina = true;
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(2);
 
 			const kittenLayer = kittenLayerFactory({
 				maxZoom,
@@ -572,9 +570,7 @@ describe('TileLayer', () => {
 				expect(kittenLayer.options.maxZoom).to.equal(maxZoom);
 				expect(kittenLayer.options.minZoom).to.equal(minZoom);
 
-				// reset retina value
-				Browser.retina = originalRetina;
-
+				dpr.restore();
 				done();
 			});
 
