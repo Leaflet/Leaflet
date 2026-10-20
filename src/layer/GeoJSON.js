@@ -1,13 +1,9 @@
-import {LayerGroup} from './LayerGroup.js';
 import {FeatureGroup} from './FeatureGroup.js';
-import * as Util from '../core/Util.js';
 import {Marker} from './marker/Marker.js';
-import {Circle} from './vector/Circle.js';
-import {CircleMarker} from './vector/CircleMarker.js';
 import {Polyline} from './vector/Polyline.js';
 import {Polygon} from './vector/Polygon.js';
 import {LatLng} from '../geo/LatLng.js';
-import * as LineUtil from '../geometry/LineUtil.js';
+import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONUtil.js';
 
 
 /*
@@ -36,6 +32,8 @@ import * as LineUtil from '../geometry/LineUtil.js';
 // [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
 export class GeoJSON extends FeatureGroup {
+
+	static initHooks = true;
 
 	/* @section
 	 * @aka GeoJSON options
@@ -89,12 +87,14 @@ export class GeoJSON extends FeatureGroup {
 	 * Whether default Markers for "Point" type Features inherit from group options.
 	 */
 
-	initialize(geojson, options) {
-		super.initialize(undefined, options);
+	constructor(geojson, options) {
+		super(undefined, options);
 
 		if (geojson) {
 			this.addData(geojson);
 		}
+
+		this.callInitHooks();
 	}
 
 	// @method addData( <GeoJSON> data ): this
@@ -257,174 +257,20 @@ export class GeoJSON extends FeatureGroup {
 	// @function latLngToCoords(latlng: LatLng, precision?: Number|false): Array
 	// Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
-	static latLngToCoords(latlng, precision) {
-		latlng = new LatLng(latlng);
-		return latlng.alt !== undefined ?
-			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
-			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
-	}
+	static latLngToCoords = latLngToCoords;
 
 	// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, close?: Boolean, precision?: Number|false): Array
 	// Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 	// `close` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
-	static latLngsToCoords(latlngs, levelsDeep, close, precision) {
-		// Check for flat arrays required to ensure unbalanced arrays are correctly converted in recursion
-		const coords = latlngs.map(latlng => (levelsDeep ?
-			GeoJSON.latLngsToCoords(latlng, LineUtil.isFlat(latlng) ? 0 : levelsDeep - 1, close, precision) :
-			GeoJSON.latLngToCoords(latlng, precision)));
-
-		if (!levelsDeep && close && coords.length > 0) {
-			coords.push(coords[0].slice());
-		}
-
-		return coords;
-	}
+	static latLngsToCoords = latLngsToCoords;
 
 	// @function getFeature(layer: Layer, newGeometry: Object): Object
 	// Returns GeoJSON geometries/features of layer with new GeoJSON geometry.
-	static getFeature(layer, newGeometry) {
-		return layer.feature ?
-			{...layer.feature, geometry: newGeometry} :
-			GeoJSON.asFeature(newGeometry);
-	}
+	static getFeature = getFeature;
 
 	// @function asFeature(geojson: Object): Object
 	// Normalize GeoJSON geometries/features into GeoJSON features.
-	static asFeature(geojson) {
-		if (geojson.type === 'Feature' || geojson.type === 'FeatureCollection') {
-			return geojson;
-		}
-
-		return {
-			type: 'Feature',
-			properties: {},
-			geometry: geojson
-		};
-	}
+	static asFeature = asFeature;
 
 }
-
-const PointToGeoJSON = {
-	toGeoJSON(precision) {
-		return GeoJSON.getFeature(this, {
-			type: 'Point',
-			coordinates: GeoJSON.latLngToCoords(this.getLatLng(), precision)
-		});
-	}
-};
-
-// @namespace Marker
-// @section Other methods
-// @method toGeoJSON(precision?: Number|false): Object
-// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
-Marker.include(PointToGeoJSON);
-
-// @namespace CircleMarker
-// @method toGeoJSON(precision?: Number|false): Object
-// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
-Circle.include(PointToGeoJSON);
-CircleMarker.include(PointToGeoJSON);
-
-
-// @namespace Polyline
-// @method toGeoJSON(precision?: Number|false): Object
-// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
-Polyline.include({
-	toGeoJSON(precision) {
-		const multi = !LineUtil.isFlat(this._latlngs);
-
-		const coords = GeoJSON.latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
-
-		return GeoJSON.getFeature(this, {
-			type: `${multi ? 'Multi' : ''}LineString`,
-			coordinates: coords
-		});
-	}
-});
-
-// @namespace Polygon
-// @method toGeoJSON(precision?: Number|false): Object
-// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
-Polygon.include({
-	toGeoJSON(precision) {
-		const holes = !LineUtil.isFlat(this._latlngs),
-		multi = holes && !LineUtil.isFlat(this._latlngs[0]);
-
-		let coords = GeoJSON.latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
-
-		if (!holes) {
-			coords = [coords];
-		}
-
-		return GeoJSON.getFeature(this, {
-			type: `${multi ? 'Multi' : ''}Polygon`,
-			coordinates: coords
-		});
-	}
-});
-
-
-// @namespace LayerGroup
-LayerGroup.include({
-	toMultiPoint(precision) {
-		const coords = [];
-
-		this.eachLayer((layer) => {
-			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
-		});
-
-		return GeoJSON.getFeature(this, {
-			type: 'MultiPoint',
-			coordinates: coords
-		});
-	},
-
-	// @method toGeoJSON(precision?: Number|false): Object
-	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
-	toGeoJSON(precision) {
-
-		const type = this.feature?.geometry?.type;
-
-		if (type === 'MultiPoint') {
-			return this.toMultiPoint(precision);
-		}
-
-		const isGeometryCollection = type === 'GeometryCollection',
-		jsons = [];
-
-		this.eachLayer((layer) => {
-			if (layer.toGeoJSON) {
-				const json = layer.toGeoJSON(precision);
-				if (isGeometryCollection) {
-					jsons.push(json.geometry);
-				} else {
-					const feature = GeoJSON.asFeature(json);
-					// Squash nested feature collections
-					if (feature.type === 'FeatureCollection') {
-						jsons.push(...feature.features);
-					} else {
-						jsons.push(feature);
-					}
-				}
-			}
-		});
-
-		if (isGeometryCollection) {
-			return GeoJSON.getFeature(this, {
-				geometries: jsons,
-				type: 'GeometryCollection'
-			});
-		}
-
-		return {
-			type: 'FeatureCollection',
-			features: jsons
-		};
-	}
-});

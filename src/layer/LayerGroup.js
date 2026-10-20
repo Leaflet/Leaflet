@@ -1,6 +1,7 @@
 
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
+import {getFeature, asFeature} from './GeoJSONUtil.js';
 
 /*
  * @class LayerGroup
@@ -23,7 +24,11 @@ import * as Util from '../core/Util.js';
 // Create a layer group, optionally given an initial set of layers and an `options` object.
 export class LayerGroup extends Layer {
 
-	initialize(layers, options) { // for compatibility of code using `LayerGroup.extend`
+	static initHooks = true;
+
+	constructor(layers, options) {
+		super();
+
 		Util.setOptions(this, options);
 
 		this._layers = {};
@@ -31,6 +36,8 @@ export class LayerGroup extends Layer {
 		for (const layer of layers ?? []) {
 			this.addLayer(layer);
 		}
+
+		this.callInitHooks();
 	}
 
 	// @method addLayer(layer: Layer): this
@@ -122,5 +129,62 @@ export class LayerGroup extends Layer {
 	// Returns the internal ID for a layer
 	getLayerId(layer) {
 		return Util.stamp(layer);
+	}
+
+	toMultiPoint(precision) {
+		const coords = [];
+
+		this.eachLayer((layer) => {
+			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
+		});
+
+		return getFeature(this, {
+			type: 'MultiPoint',
+			coordinates: coords
+		});
+	}
+
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
+	toGeoJSON(precision) {
+
+		const type = this.feature?.geometry?.type;
+
+		if (type === 'MultiPoint') {
+			return this.toMultiPoint(precision);
+		}
+
+		const isGeometryCollection = type === 'GeometryCollection',
+		jsons = [];
+
+		this.eachLayer((layer) => {
+			if (layer.toGeoJSON) {
+				const json = layer.toGeoJSON(precision);
+				if (isGeometryCollection) {
+					jsons.push(json.geometry);
+				} else {
+					const feature = asFeature(json);
+					// Squash nested feature collections
+					if (feature.type === 'FeatureCollection') {
+						jsons.push(...feature.features);
+					} else {
+						jsons.push(feature);
+					}
+				}
+			}
+		});
+
+		if (isGeometryCollection) {
+			return getFeature(this, {
+				geometries: jsons,
+				type: 'GeometryCollection'
+			});
+		}
+
+		return {
+			type: 'FeatureCollection',
+			features: jsons
+		};
 	}
 }

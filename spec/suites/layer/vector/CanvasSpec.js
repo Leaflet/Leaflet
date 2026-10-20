@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
@@ -14,7 +13,7 @@ describe('Canvas', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new LeafletMap(container, {preferCanvas: true, zoomControl: false});
+		map = new LeafletMap(container, {renderer: new Canvas(), zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});

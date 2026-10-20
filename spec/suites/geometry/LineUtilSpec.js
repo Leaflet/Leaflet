@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Bounds, LineUtil, LeafletMap, LatLng, Point, Polyline} from 'leaflet';
 import sinon from 'sinon';
 
@@ -124,7 +123,7 @@ describe('LineUtil', () => {
 	});
 
 	describe('#polylineCenter', () => {
-		let map, crs, zoom;
+		let map, crs;
 		beforeEach(() => {
 			map = new LeafletMap(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
@@ -163,13 +162,13 @@ describe('LineUtil', () => {
 
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
-				LineUtil.polylineCenter(null, crs, zoom);
+				LineUtil.polylineCenter(null, crs);
 			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
-				LineUtil.polylineCenter([], crs, zoom);
+				LineUtil.polylineCenter([], crs);
 			}).to.throw('latlngs not passed');
 		});
 

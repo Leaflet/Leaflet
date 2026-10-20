@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Class, Evented, FeatureGroup, Marker, Util} from 'leaflet';
 import sinon from 'sinon';
 

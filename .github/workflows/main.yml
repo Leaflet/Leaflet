@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -23,58 +23,56 @@ jobs:
       - working-directory: ./docs
         run: bundle exec jekyll build --strict_front_matter
 
-  lint:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      size: ${{ steps.size.outputs.summary }}
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - run: npm ci
       - run: npm run lint
-
-  bundlemon:
-    if: github.repository_owner == 'Leaflet'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - run: npm ci
       - run: npm run build
-      - run: npm run bundlemon
-        env:
-          CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
-  test-ssr:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-
-      - run: npm ci
-      - run: npm run build
       - run: node ./spec/ssr/ssr_node.js
+      - run: node ./spec/tree_shaking.js
+      - run: node ./spec/dist.js
 
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
 
       - run: deno run ./spec/ssr/ssr_deno.js
+
+      # keep the head build, sources and script out of git's way so they survive the base checkout; the script
+      # stays in the repo root to resolve rolldown from node_modules
+      - run: mkdir head && mv dist head/ && cp -r src package.json head/ && cp build/size.js size.js
+
+      - name: Build base
+        if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
+        run: |
+          git fetch --depth=1 origin "$BASE_SHA"
+          git checkout "$BASE_SHA" && npm ci && npm run build
+
+      - id: size
+        run: node size.js . head >> "$GITHUB_OUTPUT"
+
+  size-report:
+    needs: check
+    if: always() && needs.check.outputs.size
+    name: 'size: ${{ needs.check.outputs.size }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: 'true'
 
   test:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
@@ -86,16 +84,19 @@ jobs:
       matrix:
         include:
           - project: chromium
+            extra: --project=chromium-retina
           - project: firefox
-          - project: chromium-retina
           - project: chromium
             os: windows-latest
+          # the minified bundle, to catch what the build breaks
+          - project: chromium
+            dist: '1'
           - project: webkit
             os: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -103,21 +104,27 @@ jobs:
       - run: npm ci
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.project == 'chromium-retina' && 'chromium' || matrix.project }}
+        run: npx playwright install ${{ matrix.project }}
+
+      - if: matrix.dist
+        run: npm run build
 
       - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
+        env:
+          VITE_DIST: ${{ matrix.dist }}
 
       - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }}
+        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
         env:
           VITE_TOUCH: '1'
+          VITE_DIST: ${{ matrix.dist }}
 
   publish-artifacts:
     permissions:
@@ -126,9 +133,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -156,9 +163,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm

@@ -17,5 +17,5 @@ import {Transformation} from '../../geometry/Transformation.js';
 export class EPSG4326 extends EarthCRS {
 	static code = 'EPSG:4326';
 	static projection = LonLat;
-	static transformation = new Transformation(1 / 180, 1, -1 / 180, 0.5);
+	static transformation = /* @__PURE__ */ new Transformation(1 / 180, 1, -1 / 180, 0.5);
 }

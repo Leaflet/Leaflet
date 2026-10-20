@@ -1,6 +1,5 @@
 import {LeafletMap, AttributionControl, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
-import {expect} from 'chai';
 
 describe('AttributionControl', () => {
 	let map, control, container, controlContainer;

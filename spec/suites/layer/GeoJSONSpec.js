@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, Layer, LayerGroup, LeafletMap, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 

@@ -1,8 +1,6 @@
 
 import {Class} from '../core/Class.js';
-import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
-import * as DomUtil from '../dom/DomUtil.js';
 
 /*
  * @class Control
@@ -14,20 +12,22 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 export class Control extends Class {
 
-	static {
-		// @section
-		// @aka Control Options
-		this.setDefaultOptions({
-			// @option position: String = 'topright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'topright'
-		});
-	}
+	static initHooks = true;
+
+	// @section
+	// @aka Control Options
+	static defaultOptions = {
+		// @option position: String = 'topright'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		position: 'topright'
+	};
 
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	/* @section
@@ -122,48 +122,3 @@ export class Control extends Class {
  * @method onRemove(map: LeafletMap)
  * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
  */
-
-/* @namespace LeafletMap
- * @section Methods for Layers and Controls
- */
-LeafletMap.include({
-	// @method addControl(control: Control): this
-	// Adds the given control to the map
-	addControl(control) {
-		control.addTo(this);
-		return this;
-	},
-
-	// @method removeControl(control: Control): this
-	// Removes the given control from the map
-	removeControl(control) {
-		control.remove();
-		return this;
-	},
-
-	_initControlPos() {
-		const corners = this._controlCorners = {},
-		l = 'leaflet-',
-		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
-
-		function createCorner(vSide, hSide) {
-			const className = `${l + vSide} ${l}${hSide}`;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
-		}
-
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
-	},
-
-	_clearControlPos() {
-		for (const c of Object.values(this._controlCorners)) {
-			c.remove();
-		}
-		this._controlContainer.remove();
-		delete this._controlCorners;
-		delete this._controlContainer;
-	}
-});

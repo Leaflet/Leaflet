@@ -39,7 +39,7 @@ export const SphericalMercator = {
 			point.x * d / this.R);
 	},
 
-	bounds: (() => {
+	bounds: /* @__PURE__ */ (() => {
 		const d = earthRadius * Math.PI;
 		return new Bounds([-d, -d], [d, d]);
 	})()

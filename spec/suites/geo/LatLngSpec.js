@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {LatLng} from 'leaflet';
 
 describe('LatLng', () => {
@@ -30,6 +29,22 @@ describe('LatLng', () => {
 
 			const b = new LatLng(-25, -74, -50);
 			expect(b.alt).to.eql(-50);
+		});
+	});
+
+	describe('validate', () => {
+		it('returns true for valid inputs', () => {
+			expect(LatLng.validate(50, 30)).to.eql(true);
+			expect(LatLng.validate([50, 30])).to.eql(true);
+			expect(LatLng.validate({lat: 50, lng: 30})).to.eql(true);
+			expect(LatLng.validate(new LatLng(50, 30))).to.eql(true);
+		});
+
+		it('returns false for invalid inputs without throwing', () => {
+			expect(LatLng.validate(undefined)).to.eql(false);
+			expect(LatLng.validate(null)).to.eql(false);
+			expect(LatLng.validate('foo')).to.eql(false);
+			expect(LatLng.validate([50])).to.eql(false);
 		});
 	});
 

@@ -1,43 +1,10 @@
 import {Evented} from '../core/Events.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-
-/*
- * @class PosAnimation
- * @inherits Evented
- * Used internally for panning animations and utilizing CSS Transitions for modern browsers.
- *
- * @example
- * ```js
- * const myPositionMarker = new Marker([48.864716, 2.294694]).addTo(map);
- *
- * myPositionMarker.on("click", function() {
- * 	const pos = map.latLngToLayerPoint(myPositionMarker.getLatLng());
- * 	pos.y -= 25;
- * 	const fx = new PosAnimation();
- *
- * 	fx.once('end',function() {
- * 		pos.y += 25;
- * 		fx.run(myPositionMarker._icon, pos, 0.8);
- * 	});
- *
- * 	fx.run(myPositionMarker._icon, pos, 0.3);
- * });
- *
- * ```
- *
- * @constructor PosAnimation()
- * Creates a `PosAnimation` object.
- *
- */
-
+// Runs the map's pan animations: moves an element to a new position on an ease-out curve, firing `start`, `step` and `end`.
 export class PosAnimation extends Evented {
 
-	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
-	// Run an animation of a given element to a new position, optionally setting
-	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
-	// argument of the [cubic bezier curve](https://cubic-bezier.com/#0,0,.5,1),
-	// `0.5` by default).
+	// `duration` is in seconds (0.25 by default), `easeLinearity` is the 3rd argument of the cubic bezier curve (0.5 by default)
 	run(el, newPos, duration, easeLinearity) {
 		this.stop();
 
@@ -50,15 +17,11 @@ export class PosAnimation extends Evented {
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = Date.now();
 
-		// @event start: Event
-		// Fired when the animation starts
 		this.fire('start');
 
 		this._animate();
 	}
 
-	// @method stop()
-	// Stops the animation (if currently running).
 	stop() {
 		if (!this._inProgress) { return; }
 
@@ -90,9 +53,6 @@ export class PosAnimation extends Evented {
 			pos._round();
 		}
 		DomUtil.setPosition(this._el, pos);
-
-		// @event step: Event
-		// Fired continuously during the animation.
 		this.fire('step');
 	}
 
@@ -100,8 +60,6 @@ export class PosAnimation extends Evented {
 		cancelAnimationFrame(this._animId);
 
 		this._inProgress = false;
-		// @event end: Event
-		// Fired when the animation ends.
 		this.fire('end');
 	}
 

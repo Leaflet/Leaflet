@@ -19,32 +19,30 @@ import * as DomUtil from '../dom/DomUtil.js';
 // Creates an scale control with the given options.
 export class ScaleControl extends Control {
 
-	static {
-		// @section
-		// @aka ScaleControl options
-		this.setDefaultOptions({
-			// @option position: String = 'bottomleft'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'bottomleft',
+	// @section
+	// @aka ScaleControl options
+	static defaultOptions = {
+		// @option position: String = 'bottomleft'
+		// The position of the control (one of the map corners). Possible values are `'topleft'`,
+		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		position: 'bottomleft',
 
-			// @option maxWidth: Number = 100
-			// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
-			maxWidth: 100,
+		// @option maxWidth: Number = 100
+		// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+		maxWidth: 100,
 
-			// @option metric: Boolean = True
-			// Whether to show the metric scale line (m/km).
-			metric: true,
+		// @option metric: Boolean = True
+		// Whether to show the metric scale line (m/km).
+		metric: true,
 
-			// @option imperial: Boolean = True
-			// Whether to show the imperial scale line (mi/ft).
-			imperial: true,
+		// @option imperial: Boolean = True
+		// Whether to show the imperial scale line (mi/ft).
+		imperial: true,
 
-			// @option updateWhenIdle: Boolean = false
-			// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
-			updateWhenIdle: false
-		});
-	}
+		// @option updateWhenIdle: Boolean = false
+		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+		updateWhenIdle: false
+	};
 
 	onAdd(map) {
 		const className = 'leaflet-control-scale',

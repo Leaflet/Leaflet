@@ -21,25 +21,29 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 export class Draggable extends Evented {
 
-	static {
-		this.setDefaultOptions({
-			// @section
-			// @aka Draggable options
-			// @option clickTolerance: Number = 3
-			// The max number of pixels a user can shift the pointer during a click
-			// for it to be considered a valid click (as opposed to a pointer drag).
-			clickTolerance: 3
-		});
-	}
+	static initHooks = true;
+
+	static defaultOptions = {
+		// @section
+		// @aka Draggable options
+		// @option clickTolerance: Number = 3
+		// The max number of pixels a user can shift the pointer during a click
+		// for it to be considered a valid click (as opposed to a pointer drag).
+		clickTolerance: 3
+	};
 
 	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, preventOutline, options) {
+		super();
+
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
 		this._preventOutline = preventOutline;
+
+		this.callInitHooks();
 	}
 
 	// @method enable()
@@ -140,7 +144,7 @@ export class Draggable extends Evented {
 
 			this._element.ownerDocument.body.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target ?? e.srcElement;
+			this._lastTarget = e.target;
 			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
@@ -158,6 +162,11 @@ export class Draggable extends Evented {
 		// Fired continuously during dragging *before* each corresponding
 		// update of the element's position.
 		this.fire('predrag', e);
+
+		// pointer events can have fractional coordinates; snap them to device pixels, since an edge in the middle of
+		// one is drawn partly transparent on both sides and shows a seam between tiles
+		const dpr = window.devicePixelRatio;
+		this._newPos = this._newPos.multiplyBy(dpr)._round()._divideBy(dpr);
 		DomUtil.setPosition(this._element, this._newPos);
 
 		// @event drag: Event

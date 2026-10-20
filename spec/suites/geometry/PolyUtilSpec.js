@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Bounds, LeafletMap, Point, PolyUtil, Polygon} from 'leaflet';
 import sinon from 'sinon';
 
