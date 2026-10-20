@@ -62,7 +62,7 @@ export default [
 		plugins: {'baseline-js': baselineJs},
 		rules: {
 			'baseline-js/use-baseline': ['error', {
-				available: 'widely',
+				available: 2022, // a fixed floor (Safari 15.4+); 'widely' moves forward every month
 				// According to https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio, the feature is only partially supported in Safari:
 				// In Safari on iOS, the devicePixelRatio does not change when the page is zoomed. See bug https://webkit.org/b/124862.
 				includeWebApis: {preset: 'auto', ignore: ['devicepixelratio']},
