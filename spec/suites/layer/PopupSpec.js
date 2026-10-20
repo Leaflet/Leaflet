@@ -372,6 +372,19 @@ describe('Popup', () => {
 				autoPanPadding: new Point(10, 10)
 			});
 		});
+
+		it('does not throw if stopping the current pan removes the popup', () => {
+			const marker = new Marker(center).addTo(map);
+			marker.bindPopup('Popup').openPopup();
+			const popup = marker.getPopup();
+
+			map.panBy([100, 0], {animate: true, duration: 1});
+			// e.g. a clustering plugin removing markers that left the view
+			map.once('moveend', () => marker.remove());
+
+			expect(() => popup.update()).to.not.throw();
+			expect(map.hasLayer(popup)).to.be.false;
+		});
 	});
 
 	it('opens popup with passed latlng position while initializing', () => {
