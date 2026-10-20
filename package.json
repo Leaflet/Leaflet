@@ -31,9 +31,12 @@
   },
   "type": "module",
   "exports": {
-    ".": "./dist/leaflet-src.js",
+    ".": "./src/Leaflet.js",
     "./styles.css": "./dist/leaflet.css"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "style": "dist/leaflet.css",
   "files": [
     "dist",
@@ -53,7 +56,8 @@
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
     "serve": "cd docs && bundle exec jekyll serve",
-    "prepare": "husky"
+    "prepare": "husky",
+    "version": "node build/version.js && git add src/Leaflet.js"
   },
   "repository": {
     "type": "git",

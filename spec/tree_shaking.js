@@ -8,7 +8,6 @@ import {readdirSync} from 'node:fs';
 import {registerHooks} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {rollup} from 'rollup';
-import json from '@rollup/plugin-json';
 
 const srcURL = new URL('../src/', import.meta.url);
 const srcDir = fileURLToPath(srcURL);
@@ -41,7 +40,7 @@ async function bundle(code, onLog) {
 				handler(level, log);
 			}
 		},
-		plugins: [json(), {
+		plugins: [{
 			resolveId: id => (id === 'entry' ? id : null),
 			load: id => (id === 'entry' ? code : null)
 		}]

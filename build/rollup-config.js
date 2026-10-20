@@ -1,4 +1,3 @@
-import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rollup';
@@ -49,17 +48,11 @@ const umdOptions = {
 
 export default defineConfig({
 	input: './src/Leaflet.js',
-	plugins: [json()],
 	output: [
 		{
 			...commonOptions,
-			file: pkg.exports['.'],
-			plugins: [staticAssetsPlugin]
-		},
-		{
-			...commonOptions,
 			file: './dist/leaflet.js',
-			plugins: [terser()],
+			plugins: [terser(), staticAssetsPlugin],
 		},
 		{
 			...umdOptions,

@@ -104,17 +104,15 @@ But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
 In order to create this file, run `npm run build` or `yarn run build`.
 
-You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
-`dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
-development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
-for deployment.
+You'll find `dist/leaflet.js`, a minified ES module, and `dist/leaflet-global.js`,
+a minified script that defines the global `L`, plus `dist/leaflet-global-src.js`,
+its unminified version. The npm package points bundlers at `src/` directly, so they
+can drop the parts of Leaflet an app doesn't use.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the tests
-in a graphical browser. This requires regenerating the bundled files quickly.
-
-In order to do so, run `npm run watch` or `yarn run watch`. This will keep
-on rebuilding the bundles whenever any source file changes.
+in a graphical browser. The debug pages load `src/` directly, so changes
+show up on reload without a build.
 
 ## Running the Tests
 
