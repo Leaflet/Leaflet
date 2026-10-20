@@ -64,14 +64,22 @@ export function addDoubleTapListener(obj, handler) {
 	// It seems that in all such cases `detail` property of `click` event is always `1`.
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
-	detail;
+	detail,
+	pointerType;
+
+	// iOS Safari reports `pointerType: 'mouse'` on clicks from touch (WebKit bug 282988), so we take it from the
+	// pointerdown instead; capturing so that it's seen even if a child (e.g. a control) stops its propagation.
+	function onPointerDown(ev) {
+		pointerType = ev.pointerType;
+	}
+
 	function simDblclick(ev) {
 		if (ev.detail !== 1) {
 			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
 			return;
 		}
 
-		if (ev.pointerType === 'mouse' ||
+		if (pointerType === 'mouse' ||
 			(ev.sourceCapabilities && !ev.sourceCapabilities.firesTouchEvents)) {
 
 			return;
@@ -104,15 +112,18 @@ export function addDoubleTapListener(obj, handler) {
 		last = now;
 	}
 
+	obj.addEventListener('pointerdown', onPointerDown, true);
 	obj.addEventListener('click', simDblclick);
 
 	return {
 		dblclick: handler,
+		onPointerDown,
 		simDblclick
 	};
 }
 
 export function removeDoubleTapListener(obj, handlers) {
 	obj.removeEventListener('dblclick', handlers.dblclick);
+	obj.removeEventListener('pointerdown', handlers.onPointerDown, true);
 	obj.removeEventListener('click', handlers.simDblclick);
 }

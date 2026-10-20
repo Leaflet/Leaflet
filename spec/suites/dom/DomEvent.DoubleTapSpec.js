@@ -61,6 +61,27 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 		expect(spy.calledOnce).to.be.true;
 	});
 
+	function tap(pointerDownType, clickType) {
+		container.dispatchEvent(new PointerEvent('pointerdown', {pointerType: pointerDownType, bubbles: true}));
+		container.dispatchEvent(new PointerEvent('click', {pointerType: clickType, detail: 1, bubbles: true}));
+	}
+
+	it('fires synthetic dblclick when touch clicks report a mouse pointerType (iOS Safari)', () => {
+		tap('touch', 'mouse');
+		clock.tick(100);
+		tap('touch', 'mouse');
+
+		expect(spy.calledOnce).to.be.true;
+	});
+
+	it('does not fire synthetic dblclick for mouse clicks', () => {
+		tap('mouse', 'mouse');
+		clock.tick(100);
+		tap('mouse', 'mouse');
+
+		expect(spy.notCalled).to.be.true;
+	});
+
 	it('synthetic dblclick event has expected properties', () => {
 		const click = {
 			detail: 1,
