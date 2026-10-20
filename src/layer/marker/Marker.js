@@ -33,7 +33,7 @@ export class Marker extends Layer {
 		// Icon instance to use for rendering the marker.
 		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
 		// If not specified, a common instance of `DefaultIcon` is used.
-		icon: new DefaultIcon(),
+		icon: /* @__PURE__ */ new DefaultIcon(),
 
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,

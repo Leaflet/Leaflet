@@ -26,5 +26,5 @@ export const LonLat = {
 		return new LatLng(point.y, point.x);
 	},
 
-	bounds: new Bounds([-180, -90], [180, 90])
+	bounds: /* @__PURE__ */ new Bounds([-180, -90], [180, 90])
 };

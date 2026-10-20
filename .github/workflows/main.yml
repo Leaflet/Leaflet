@@ -43,6 +43,7 @@ jobs:
       - run: npm run build
 
       - run: node ./spec/ssr/ssr_node.js
+      - run: node ./spec/tree_shaking.js
 
       - uses: denoland/setup-deno@v2
         with:
@@ -50,17 +51,18 @@ jobs:
 
       - run: deno run ./spec/ssr/ssr_deno.js
 
-      # copy the script so it survives the base checkout
-      - run: mv dist dist-head && cp build/size.js "$RUNNER_TEMP/"
+      # keep the head build, sources and script out of git's way so they survive the base checkout; the script
+      # stays in the repo root to resolve rollup from node_modules
+      - run: mkdir head && mv dist head/ && cp -r src package.json head/ && cp build/size.js size.js
 
       - name: Build base
         if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
         run: |
           git fetch --depth=1 origin "$BASE_SHA"
-          git checkout "$BASE_SHA" && npm ci && npm run build && mv dist dist-base
+          git checkout "$BASE_SHA" && npm ci && npm run build
 
       - id: size
-        run: node "$RUNNER_TEMP/size.js" dist-base dist-head >> "$GITHUB_OUTPUT"
+        run: node size.js . head >> "$GITHUB_OUTPUT"
 
   size-report:
     needs: check

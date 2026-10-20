@@ -14,7 +14,7 @@ import {Transformation} from '../../geometry/Transformation.js';
 
 export class SimpleCRS extends CRS {
 	static projection = LonLat;
-	static transformation = new Transformation(1, 0, -1, 0);
+	static transformation = /* @__PURE__ */ new Transformation(1, 0, -1, 0);
 
 	static scale(zoom) {
 		return 2 ** zoom;
