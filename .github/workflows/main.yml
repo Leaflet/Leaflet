@@ -44,6 +44,7 @@ jobs:
 
       - run: node ./spec/ssr/ssr_node.js
       - run: node ./spec/tree_shaking.js
+      - run: node ./spec/dist.js
 
       - uses: denoland/setup-deno@v2
         with:
@@ -87,6 +88,9 @@ jobs:
           - project: firefox
           - project: chromium
             os: windows-latest
+          # the minified bundle, to catch what the build breaks
+          - project: chromium
+            dist: '1'
           - project: webkit
             os: macos-latest
     steps:
@@ -108,13 +112,19 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install ${{ matrix.project }}
 
+      - if: matrix.dist
+        run: npm run build
+
       - name: Run tests on ${{ matrix.project }}
         run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
+        env:
+          VITE_DIST: ${{ matrix.dist }}
 
       - name: Run tests on ${{ matrix.project }} with touch
         run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
         env:
           VITE_TOUCH: '1'
+          VITE_DIST: ${{ matrix.dist }}
 
   publish-artifacts:
     permissions:

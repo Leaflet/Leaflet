@@ -12,8 +12,7 @@ const STATIC_ASSETS = [
 /** @type {import('rolldown').Plugin} */
 const staticAssetsPlugin = {
 	name: 'static-assets',
-	generateBundle({format}) {
-		if (format !== 'es') { return; }
+	generateBundle() {
 		for (const fileName of STATIC_ASSETS) {
 			const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
 			this.emitFile({type: 'asset', fileName, source});
@@ -34,19 +33,28 @@ const commonOptions = {
 	sourcemap: true
 };
 
-export default defineConfig({
-	input: './src/Leaflet.js',
-	plugins: [staticAssetsPlugin],
-	output: [
-		{
+// keep the minifier from emitting syntax newer than what the sources may use
+const transform = {target: 'es2022'};
+
+export default defineConfig([
+	{
+		input: './src/Leaflet.js',
+		plugins: [staticAssetsPlugin],
+		transform,
+		output: {
 			...commonOptions,
 			file: './dist/leaflet.js',
-		},
-		{
+		}
+	},
+	{
+		input: './build/global.js',
+		transform,
+		output: {
 			...commonOptions,
 			file: './dist/leaflet-global.js',
 			format: 'iife',
 			name: 'L',
+			exports: 'default',
 		}
-	]
-});
+	}
+]);
