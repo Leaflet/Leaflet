@@ -8,7 +8,7 @@ const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
 const httpRe = /^http:/i;
 
 function isOSMUrl(url) {
-	const host = url.match(hostRe)?.[2] ?? '';
+	const host = hostRe.exec(url)?.[2] ?? '';
 	return osmHosts.some(osmHost => host === osmHost || host.endsWith(`.${osmHost}`));
 }
 
