@@ -102,7 +102,7 @@ function addOne(obj, type, fn, context) {
 		return fn.call(context || obj, e);
 	};
 
-	if (Browser.touch && (type === 'dblclick')) {
+	if (type === 'dblclick') {
 		handler = addDoubleTapListener(obj, handler);
 	} else {
 		obj.addEventListener(type, handler, type === 'wheel' ? {passive: false} : false);
@@ -118,7 +118,7 @@ function removeOne(obj, type, fn, context, id) {
 
 	if (!handler) { return this; }
 
-	if (Browser.touch && (type === 'dblclick')) {
+	if (type === 'dblclick') {
 		removeDoubleTapListener(obj, handler);
 	} else {
 		obj.removeEventListener(type, handler, false);

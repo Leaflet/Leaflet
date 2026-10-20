@@ -1,4 +1,5 @@
-import {Browser, SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
+import {SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
+import Browser from '../../../../src/core/Browser.js';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -553,7 +554,7 @@ describe('TileLayer', () => {
 			});
 		}
 
-		it('sets min/maxZoom appropriately with detectRetina', (done) => {
+		it.skipIfDist('sets min/maxZoom appropriately with detectRetina', (done) => {
 			const maxZoom = 1;
 			const minZoom = 1;
 
@@ -581,10 +582,6 @@ describe('TileLayer', () => {
 		});
 
 		it('resets invalid min/maxZoom to allow for tiles to be loaded without detectRetina', (done) => {
-			// override retina to load extra tiles
-			const originalRetina = Browser.retina;
-			Browser.retina = false;
-
 			const kittenLayer = kittenLayerFactory({
 				// invalid min/maxZoom
 				maxZoom: 9,
@@ -595,10 +592,6 @@ describe('TileLayer', () => {
 			kittenLayer.on('load', () => {
 				// zooms should be identical so that we can load tiles for the given zoom level
 				expect(kittenLayer.options.maxZoom).to.equal(kittenLayer.options.minZoom);
-
-				// reset retina value
-				Browser.retina = originalRetina;
-
 				done();
 			});
 

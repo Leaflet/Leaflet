@@ -1,4 +1,4 @@
-import {Browser, LeafletMap, Point} from 'leaflet';
+import {LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import Hand from 'prosthetic-hand';
 import UIEventSimulator from 'ui-event-simulator';
@@ -87,7 +87,7 @@ describe('TapHoldHandler', () => {
 		expect(spy.notCalled).to.be.true;
 	});
 
-	(Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
+	it('ignores events from mouse', () => {
 		mouseFinger.down().wait(650).up();
 		clock.tick(750);
 

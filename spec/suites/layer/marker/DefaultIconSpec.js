@@ -1,4 +1,5 @@
-import {DefaultIcon, LeafletMap, Marker, Browser} from 'leaflet';
+import {DefaultIcon, LeafletMap, Marker} from 'leaflet';
+import Browser from '../../../../src/core/Browser.js';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('DefaultIcon', () => {
