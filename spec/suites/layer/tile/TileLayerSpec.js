@@ -462,6 +462,17 @@ describe('TileLayer', () => {
 			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('https://tile.openstreetmap.org/2/1/2.png');
 		});
 
+		it('recognizes protocol-relative OSM URLs and leaves them as is', () => {
+			const layer = new TileLayer('//tile.openstreetmap.org/{z}/{x}/{y}.png');
+			expect(layer._url).to.eql('//tile.openstreetmap.org/{z}/{x}/{y}.png');
+			expect(layer.options.attribution).to.contain('OpenStreetMap');
+		});
+
+		it('doesn\'t throw on URLs that can\'t be parsed', () => {
+			const layer = new TileLayer('http://a b/{z}/{x}/{y}.png');
+			expect(layer._url).to.eql('http://a b/{z}/{x}/{y}.png');
+		});
+
 		it('doesn\'t treat other hosts with OSM in the URL as OSM', () => {
 			for (const url of [
 				'http://example.com/tile.openstreetmap.org/{z}/{x}/{y}.png',

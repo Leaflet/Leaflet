@@ -3,11 +3,14 @@ import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
-// A regex rather than `new URL()`, which percent-encodes the braces of a template and needs `location` to resolve
-// a relative one; the subdomain can itself be a template like `{s}.`
-const osmUrlRe = /^(https?:)?\/\/([^/?#]*\.)?tile\.(openstreetmap|osm)\.org([:/?#]|$)/i;
+const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
+const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
 const httpRe = /^http:/i;
-const isOSMUrl = url => osmUrlRe.test(url);
+
+function isOSMUrl(url) {
+	const host = url.match(hostRe)?.[2] ?? '';
+	return osmHosts.some(osmHost => host === osmHost || host.endsWith(`.${osmHost}`));
+}
 
 // OSM tiles are upgraded to HTTPS so that the referrer policy works
 const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : url);
