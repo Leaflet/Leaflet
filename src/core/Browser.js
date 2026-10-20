@@ -3,9 +3,6 @@
 export default /* @__PURE__ */ detect();
 
 function detect() {
-	const chrome = userAgentContains('chrome');
-	const safari = !chrome && userAgentContains('safari');
-
 	const reducedMotion = typeof navigator !== 'undefined' && navigator.preferences?.reducedMotion?.value ?
 		navigator.preferences.reducedMotion.value === 'reduce' :
 		typeof window === 'undefined' ? true : window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -13,8 +10,6 @@ function detect() {
 	const mac = userAgentContains('macintosh');
 
 	return {
-		chrome,
-		safari,
 		reducedMotion,
 		mac
 	};

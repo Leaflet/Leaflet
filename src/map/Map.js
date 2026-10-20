@@ -1474,7 +1474,6 @@ export class LeafletMap extends Evented {
 		const classes = ['leaflet-container', 'leaflet-touch'];
 
 		if (window.devicePixelRatio > 1) { classes.push('leaflet-retina'); }
-		if (Browser.safari) { classes.push('leaflet-safari'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
 
 		container.classList.add(...classes);
