@@ -198,9 +198,9 @@ Other ways of setting the zoom are:
 
 ## Fractional Zoom
 
-A feature introduced in Leaflet 1.0.0 was the concept of <em>fractional zoom</em>.
-Before this, the zoom level of the map could be only an integer number (`0`, `1`, `2`, and so on);
-but now you can use fractional numbers like `1.5` or `1.25`.
+Leaflet supports <em>fractional zoom</em>: the zoom level of the map is not limited to
+integer numbers (`0`, `1`, `2`, and so on). You can also use fractional numbers like
+`1.5` or `1.25`.
 
 Fractional zoom is disabled by default. To enable it, use the
 [map's `zoomSnap` option](/reference.html#map-zoomsnap).
