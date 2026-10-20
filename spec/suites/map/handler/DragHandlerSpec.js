@@ -91,6 +91,63 @@ describe('DragHandler', () => {
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
+		describe('with fractional pointer coordinates', () => {
+			const dprDescriptor = Object.getOwnPropertyDescriptor(window, 'devicePixelRatio');
+
+			afterEach(() => {
+				if (dprDescriptor) {
+					Object.defineProperty(window, 'devicePixelRatio', dprDescriptor);
+				} else {
+					delete window.devicePixelRatio;
+				}
+			});
+
+			function dragPositions(dpr, done, check) {
+				Object.defineProperty(window, 'devicePixelRatio', {value: dpr, configurable: true});
+
+				map = new LeafletMap(container, {
+					dragging: true,
+					inertia: false
+				});
+				map.setView([0, 0], 1);
+
+				const positions = [];
+				map.on('drag', () => positions.push(DomUtil.getPosition(map.getPane('mapPane'))));
+
+				const hand = new Hand({timing: 'fastframe'});
+				hand.addEventListener('stop', () => {
+					try {
+						expect(positions.length).to.be.greaterThan(0);
+						check(positions);
+						done();
+					} catch (err) {
+						done(err);
+					}
+				});
+
+				const pointer = hand.growFinger(...pointerEventType);
+				pointer.moveTo(200.3, 200.6, 0)
+					.down().moveBy(5.4, 0.2, 20).moveBy(100.3, 30.7, 200).up();
+			}
+
+			it('keeps the map pane at whole pixels', (done) => {
+				dragPositions(1, done, (positions) => {
+					for (const pos of positions) {
+						expect(pos).to.eql(pos.round());
+					}
+				});
+			});
+
+			it('keeps the map pane at device pixels on a high-DPI screen', (done) => {
+				dragPositions(2, done, (positions) => {
+					for (const pos of positions) {
+						expect(pos).to.eql(pos.multiplyBy(2).round().divideBy(2));
+					}
+					expect(positions.some(pos => !pos.equals(pos.round()))).to.be.true;
+				});
+			});
+		});
+
 		describe('in CSS scaled container', () => {
 			const scale = new Point(2, 1.5);
 
