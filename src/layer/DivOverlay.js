@@ -1,5 +1,4 @@
-import {Layer} from './Layer.js';
-import {FeatureGroup} from './FeatureGroup.js';
+import {LayerBase} from './LayerBase.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
@@ -12,7 +11,7 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
-export class DivOverlay extends Layer {
+export class DivOverlay extends LayerBase {
 
 	static initHooks = true;
 
@@ -237,22 +236,11 @@ export class DivOverlay extends Layer {
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
 	_prepareOpen(latlng) {
-		let source = this._source;
-		if (!source._map) { return false; }
+		if (!this._source._map) { return false; }
 
-		if (source instanceof FeatureGroup) {
-			source = null;
-			for (const layer of Object.values(this._source._layers)) {
-				if (layer._map) {
-					source = layer;
-					break;
-				}
-			}
-			if (!source) { return false; } // Unable to get source layer.
-
-			// set overlay source to this layer
-			this._source = source;
-		}
+		const source = this._source._getOverlaySource();
+		if (!source) { return false; } // Unable to get source layer.
+		this._source = source;
 
 		if (!latlng) {
 			if (source.getCenter) {
@@ -323,17 +311,3 @@ export class DivOverlay extends Layer {
 	}
 
 }
-
-Layer.include({
-	_initOverlay(OverlayClass, old, content, options) {
-		let overlay = content;
-		if (overlay instanceof OverlayClass) {
-			Util.setOptions(overlay, options);
-			overlay._source = this;
-		} else {
-			overlay = (old && !options) ? old : new OverlayClass(options, this);
-			overlay.setContent(content);
-		}
-		return overlay;
-	}
-});

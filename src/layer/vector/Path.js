@@ -139,6 +139,11 @@ export class Path extends Layer {
 		return new SVG(options);
 	}
 
+	// popups open where the path was clicked, so another click moves them
+	_togglesPopupOnClick() {
+		return false;
+	}
+
 	_reset() {
 		// defined in child classes
 		this._project();
