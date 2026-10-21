@@ -47,9 +47,7 @@ export class AttributionControl extends Control {
 
 		// TODO ugly, refactor
 		for (const layer of Object.values(map._layers)) {
-			if (layer.getAttribution) {
-				this.addAttribution(layer.getAttribution());
-			}
+			this._addAttribution({layer});
 		}
 
 		this._update();
