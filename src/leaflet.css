@@ -25,6 +25,7 @@
 .leaflet-marker-icon,
 .leaflet-marker-shadow,
 .leaflet-image-layer {
+	-webkit-user-select: none;
 	user-select: none;
 	-webkit-user-drag: none;
 	-webkit-touch-callout: none;
@@ -554,6 +555,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	border-radius: 3px;
 	color: #222;
 	white-space: nowrap;
+	-webkit-user-select: none;
 	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
