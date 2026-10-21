@@ -624,28 +624,23 @@ export class GridLayer extends Layer {
 		this._update();
 	}
 
-	_onWorldCopyJump(e) {
+	_onWorldCopyJump({worlds}) {
 		// noWrap tiles cannot be reused in another world copy.
 		if (!this._wrapX) { return; }
 
 		const tileSize = this.getTileSize(),
-		worldColumns = {};
-
-		for (const {coords} of Object.values(this._tiles)) {
-			worldColumns[coords.z] ??= this._map.getPixelWorldBounds(coords.z)?.getSize().x / tileSize.x;
-
-			// Tiles cannot be shifted by a fraction of a column.
-			if (!Number.isInteger(worldColumns[coords.z])) { return; }
-		}
-
-		const tiles = {};
+		tiles = {};
 
 		for (const tile of Object.values(this._tiles)) {
-			const columns = e.worlds * worldColumns[tile.coords.z];
+			const {coords, el} = tile,
+			dx = worlds * this._map.getPixelWorldBounds(coords.z).getSize().x;
 
-			tile.coords.x -= columns;
-			DomUtil.setPosition(tile.el, DomUtil.getPosition(tile.el).subtract([columns * tileSize.x, 0]));
-			tiles[this._tileCoordsToKey(tile.coords)] = tile;
+			// tiles can't be shifted by a fraction of a column, so leave those to be reloaded
+			if (dx % tileSize.x === 0) {
+				coords.x -= dx / tileSize.x;
+				DomUtil.setPosition(el, DomUtil.getPosition(el).subtract([dx, 0]));
+			}
+			tiles[this._tileCoordsToKey(coords)] = tile;
 		}
 
 		this._tiles = tiles;

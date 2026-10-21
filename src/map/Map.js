@@ -515,11 +515,8 @@ export class LeafletMap extends Evented {
 		// If we pan too far, Chrome gets issues with tiles
 		// and makes them disappear or appear in the wrong place (slightly offset) #2602
 		if (options.animate !== true && !this.getSize().contains(offset)) {
-			let center = this.unproject(this.project(this.getCenter()).add(offset));
-			if (this.options.worldCopyJump) {
-				center = this.wrapLatLng(center);
-			}
-			this._resetView(center, this.getZoom());
+			const center = this.unproject(this.project(this.getCenter()).add(offset));
+			this._resetView(this.options.worldCopyJump ? this.wrapLatLng(center) : center, this.getZoom());
 			return this;
 		}
 
@@ -1659,44 +1656,26 @@ export class LeafletMap extends Evented {
 		DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	}
 
-	// Returns a prospective map pane position shifted into the original world.
-	_wrapPanePos(pos) {
-		const worldBounds = this._loaded && this.getPixelWorldBounds();
+	// Shifts a map pane position by whole world widths to bring the view center back into the original world, moving
+	// the pane and firing `worldcopyjump` if that makes it jump from where it is now.
+	_wrapWorldCopy(pos = this._getMapPanePos()) {
+		if (!this._loaded || !this.options.worldCopyJump) { return pos; }
 
-		if (!worldBounds) { return pos; }
+		const width = this.getPixelWorldBounds().getSize().x,
+		x = pos.x - width * Math.round((pos.x + this.latLngToLayerPoint([0, 0]).x - this.getSize().x / 2) / width),
+		worlds = Math.round((x - this._getMapPanePos().x) / width);
 
-		const worldWidth = worldBounds.getSize().x,
-		halfWidth = Math.round(worldWidth / 2),
-		dx = this.latLngToLayerPoint([0, 0]).subtract(this.getSize().divideBy(2)).x,
-		x = pos.x,
-		newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+		pos = new Point(x, pos.y);
 
-		return new Point(newX, pos.y);
-	}
-
-	_wrapWorldCopy() {
-		if (!this.options.worldCopyJump) { return; }
-
-		const pos = this._getMapPanePos(),
-		wrapped = this._wrapPanePos(pos);
-
-		if (wrapped.x === pos.x) { return; }
-
-		DomUtil.setPosition(this._mapPane, wrapped);
-		this._fireWorldCopyJump(wrapped.x - pos.x);
-	}
-
-	_fireWorldCopyJump(offsetX) {
-		const worlds = Math.round(offsetX / this.getPixelWorldBounds().getSize().x);
-
-		// @event worldcopyjump: WorldCopyJumpEvent
-		// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
-		// or more world widths.
 		if (worlds) {
+			DomUtil.setPosition(this._mapPane, pos);
+
+			// @event worldcopyjump: WorldCopyJumpEvent
+			// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
+			// or more world widths.
 			this.fire('worldcopyjump', {worlds});
 		}
+		return pos;
 	}
 
 	_addLayers(layers) {

@@ -143,7 +143,7 @@ describe('worldCopyJump', () => {
 			const [keyBefore] = tileAt(200, 200),
 			tileSize = grid.getTileSize().x;
 
-			map._fireWorldCopyJump(map.getPixelWorldBounds().getSize().x);
+			map.fire('worldcopyjump', {worlds: 1});
 
 			// one world is 2^5 columns at zoom 5, but only 2^3 at zoom 3
 			expect(grid._tiles[`${+keyBefore.split(':')[0] - 32}:${keyBefore.split(':')[1]}:5`]).to.not.be.undefined;
@@ -157,7 +157,7 @@ describe('worldCopyJump', () => {
 
 			const keys = Object.keys(grid._tiles).sort();
 
-			map._fireWorldCopyJump(map.getPixelWorldBounds().getSize().x);
+			map.fire('worldcopyjump', {worlds: 1});
 
 			expect(Object.keys(grid._tiles).sort()).to.eql(keys);
 		});

@@ -61,9 +61,6 @@ export class DragHandler extends Handler {
 			this._offsetLimit = null;
 		}
 
-		this._worldCopyOffset = 0;
-		this._pendingWorldCopy = 0;
-
 		map
 			.fire('movestart')
 			.fire('dragstart');
@@ -75,11 +72,6 @@ export class DragHandler extends Handler {
 	}
 
 	_onDrag(e) {
-		if (this._pendingWorldCopy) {
-			this._map._fireWorldCopyJump(this._pendingWorldCopy);
-			this._pendingWorldCopy = 0;
-		}
-
 		if (this._map.options.inertia) {
 			const time = this._lastTime = Date.now(),
 			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
@@ -121,17 +113,9 @@ export class DragHandler extends Handler {
 	}
 
 	_onPreDragWrap() {
-		const draggable = this._draggable,
-		unwrapped = draggable._newPos,
-		wrapped = this._map._wrapPanePos(unwrapped),
-		offset = wrapped.x - unwrapped.x;
-
-		draggable._absPos = unwrapped.clone();
-		draggable._newPos = wrapped;
-
-		// Announce the jump from _onDrag, after Draggable has moved the pane.
-		this._pendingWorldCopy = offset - this._worldCopyOffset;
-		this._worldCopyOffset = offset;
+		const draggable = this._draggable;
+		draggable._absPos = draggable._newPos;
+		draggable._newPos = this._map._wrapWorldCopy(draggable._newPos);
 	}
 
 	_onDragEnd(e) {
