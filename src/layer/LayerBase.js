@@ -1,6 +1,40 @@
 import {Evented} from '../core/Events.js';
 import * as Util from '../core/Util.js';
 
+// @namespace Layer
+
+// Classes extending `Layer` will inherit the following options:
+const defaultOptions = {
+	// @option pane: String = 'overlayPane'
+	// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
+	// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
+	pane: 'overlayPane',
+
+	// @option attribution: String = null
+	// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
+	attribution: null,
+
+	bubblingPointerEvents: true
+};
+
+// @section
+// @event add: Event
+// Fired after the layer is added to a map
+// @event remove: Event
+// Fired after the layer is removed from a map
+
+// @section Popup events
+// @event popupopen: PopupEvent
+// Fired when a popup bound to this layer is opened
+// @event popupclose: PopupEvent
+// Fired when a popup bound to this layer is closed
+
+// @section Tooltip events
+// @event tooltipopen: TooltipEvent
+// Fired when a tooltip bound to this layer is opened.
+// @event tooltipclose: TooltipEvent
+// Fired when a tooltip bound to this layer is closed.
+
 /*
  * @class Layer
  * @inherits Evented
@@ -16,30 +50,12 @@ import * as Util from '../core/Util.js';
  * layer.addTo(map);
  * layer.remove();
  * ```
- *
- * @event add: Event
- * Fired after the layer is added to a map
- *
- * @event remove: Event
- * Fired after the layer is removed from a map
  */
 
 
 export class LayerBase extends Evented {
 
-	// Classes extending `Layer` will inherit the following options:
-	static defaultOptions = {
-		// @option pane: String = 'overlayPane'
-		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
-		// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
-		pane: 'overlayPane',
-
-		// @option attribution: String = null
-		// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
-		attribution: null,
-
-		bubblingPointerEvents: true
-	};
+	static defaultOptions = defaultOptions;
 
 	/* @section
 	 * Classes extending `Layer` will inherit the following methods:

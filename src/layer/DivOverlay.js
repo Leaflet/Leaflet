@@ -4,6 +4,38 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+// @namespace DivOverlay
+
+// @section
+// @aka DivOverlay options
+const defaultOptions = {
+	// @option interactive: Boolean = false
+	// If true, the popup/tooltip will listen to the pointer events.
+	interactive: false,
+
+	// @option offset: Point = Point(0, 0)
+	// The offset of the overlay position.
+	offset: [0, 0],
+
+	// @option className: String = ''
+	// A custom CSS class name to assign to the overlay.
+	className: '',
+
+	// @option pane: String = undefined
+	// `Map pane` where the overlay will be added.
+	pane: undefined,
+
+	// @option content: String|HTMLElement|Function = ''
+	// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+	// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	content: ''
+};
+
+// @section DivOverlay events
+// @event contentupdate: Event
+// Fired when the content of the overlay is updated
+
 /*
  * @class DivOverlay
  * @inherits Interactive layer
@@ -11,35 +43,12 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
+
 export class DivOverlay extends LayerBase {
 
 	static initHooks = true;
 
-	// @section
-	// @aka DivOverlay options
-	static defaultOptions = {
-		// @option interactive: Boolean = false
-		// If true, the popup/tooltip will listen to the pointer events.
-		interactive: false,
-
-		// @option offset: Point = Point(0, 0)
-		// The offset of the overlay position.
-		offset: [0, 0],
-
-		// @option className: String = ''
-		// A custom CSS class name to assign to the overlay.
-		className: '',
-
-		// @option pane: String = undefined
-		// `Map pane` where the overlay will be added.
-		pane: undefined,
-
-		// @option content: String|HTMLElement|Function = ''
-		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
-		// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
-		content: ''
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(options, source) {
 		super();
@@ -272,10 +281,6 @@ export class DivOverlay extends LayerBase {
 			node.appendChild(content);
 		}
 
-		// @namespace DivOverlay
-		// @section DivOverlay events
-		// @event contentupdate: Event
-		// Fired when the content of the overlay is updated
 		this.fire('contentupdate');
 	}
 

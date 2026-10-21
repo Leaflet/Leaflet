@@ -4,6 +4,22 @@ import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
+// @namespace CircleMarker
+
+// @section
+// @aka CircleMarker options
+const defaultOptions = {
+	fill: true,
+
+	// @option radius: Number = 10
+	// Radius of the circle marker, in CSS pixels
+	radius: 10
+};
+
+
+// @section
+// @event move: Event
+// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 
 /*
  * @class CircleMarker
@@ -14,19 +30,12 @@ import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 // @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
+
 export class CircleMarker extends Path {
 
 	static initHooks = true;
 
-	// @section
-	// @aka CircleMarker options
-	static defaultOptions = {
-		fill: true,
-
-		// @option radius: Number = 10
-		// Radius of the circle marker, in CSS pixels
-		radius: 10
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(latlng, options) {
 		super();
@@ -45,8 +54,6 @@ export class CircleMarker extends Path {
 		this._latlng = new LatLng(latlng);
 		this.redraw();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 
