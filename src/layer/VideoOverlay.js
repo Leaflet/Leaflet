@@ -82,7 +82,7 @@ export class VideoOverlay extends ImageOverlay {
 
 		if (wasElementSupplied) {
 			const sourceElements = vid.getElementsByTagName('source');
-			const sources = sourceElements.map(e => e.src);
+			const sources = Array.from(sourceElements, e => e.src);
 			this._url = (sourceElements.length > 0) ? sources : [vid.src];
 			return;
 		}
