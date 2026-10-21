@@ -1,7 +1,6 @@
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
-import Browser from '../../core/Browser.js';
 
 /*
  * @class Icon
@@ -158,6 +157,6 @@ export class Icon extends Class {
 	}
 
 	_getIconUrl(name) {
-		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
+		return window.devicePixelRatio > 1 && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
 }

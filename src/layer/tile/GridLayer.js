@@ -1,5 +1,4 @@
 import {Layer} from '../Layer.js';
-import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
@@ -92,7 +91,7 @@ export class GridLayer extends Layer {
 		// Load new tiles only when panning ends.
 		// Defaults to `false` (tiles are loaded _during_ panning) unless
 		// the browser is configured for reduced motion.
-		updateWhenIdle: Browser.reducedMotion,
+		updateWhenIdle: DomUtil.reducedMotion,
 
 		// @option updateWhenZooming: Boolean = true
 		// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
@@ -102,7 +101,7 @@ export class GridLayer extends Layer {
 		// Tiles will not update more than once every `updateInterval`
 		// milliseconds when panning. The default value is increased to
 		// five seconds if the browser is configured for reduced motion.
-		updateInterval: Browser.reducedMotion ? 5000 : 200,
+		updateInterval: DomUtil.reducedMotion ? 5000 : 200,
 
 		// @option zIndex: Number = 1
 		// The explicit zIndex of the tile layer.

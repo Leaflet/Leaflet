@@ -5,7 +5,6 @@ import {Point} from '../geometry/Point.js';
 import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
-import Browser from '../core/Browser.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
@@ -112,7 +111,7 @@ export class LeafletMap extends Evented {
 		// Whether the map zoom animation is enabled.
 		// Animations are enabled by default unless the user has configured
 		// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-		zoomAnimation: !Browser.reducedMotion,
+		zoomAnimation: !DomUtil.reducedMotion,
 
 		// @option zoomAnimationThreshold: Number = 4
 		// Won't animate zoom if the zoom difference exceeds this value.
@@ -122,7 +121,7 @@ export class LeafletMap extends Evented {
 		// Whether the tile fade animation is enabled.
 		// Animations are enabled by default unless the user has configured
 		// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-		fadeAnimation: !Browser.reducedMotion,
+		fadeAnimation: !DomUtil.reducedMotion,
 
 		// @option markerZoomAnimation: Boolean = true
 		// Whether markers animate their zoom with the zoom animation, if disabled
@@ -237,9 +236,9 @@ export class LeafletMap extends Evented {
 		wheelPxPerZoomLevel: 60,
 
 		// @section Touch interaction options
-		// @option tapHold: Boolean
-		// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
-		tapHold: Browser.safari && Browser.mobile,
+		// @option tapHold: Boolean = true
+		// Fires a `contextmenu` event on a long touch press. iOS Safari doesn't fire one natively.
+		tapHold: true,
 
 		// @option tapTolerance: Number = 15
 		// The max number of pixels a user can shift his finger during touch
@@ -535,7 +534,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// animate pan unless browser prefers reduced motion or animate: false specified
-		if (!Browser.reducedMotion && options.animate !== false) {
+		if (!DomUtil.reducedMotion && options.animate !== false) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
 			const newPos = this._getMapPanePos().subtract(offset).round();
@@ -554,7 +553,7 @@ export class LeafletMap extends Evented {
 	flyTo(targetCenter, targetZoom, options) {
 
 		options ??= {};
-		if (Browser.reducedMotion || options.animate === false) {
+		if (DomUtil.reducedMotion || options.animate === false) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
@@ -1472,8 +1471,7 @@ export class LeafletMap extends Evented {
 		// leaflet-touch and leaflet-retina have no rules in leaflet.css, but plugin stylesheets still target them
 		const classes = ['leaflet-container', 'leaflet-touch'];
 
-		if (Browser.retina) { classes.push('leaflet-retina'); }
-		if (Browser.safari) { classes.push('leaflet-safari'); }
+		if (window.devicePixelRatio > 1) { classes.push('leaflet-retina'); }
 		if (this._fadeAnimated) { classes.push('leaflet-fade-anim'); }
 
 		container.classList.add(...classes);

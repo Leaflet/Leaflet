@@ -42,7 +42,6 @@ This file just defines the order of the classes in the docs.
 @class LayersControl
 @class ScaleControl
 
-@class Browser
 @class Util
 @class Transformation
 @class LineUtil
