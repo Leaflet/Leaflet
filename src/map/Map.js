@@ -1492,16 +1492,11 @@ export class LeafletMap extends Evented {
 		l = 'leaflet-',
 		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
 
-		function createCorner(vSide, hSide) {
-			const className = `${l + vSide} ${l}${hSide}`;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
+		for (const v of ['top', 'bottom']) {
+			for (const h of ['left', 'right']) {
+				corners[v + h] = DomUtil.create('div', `${l + v} ${l}${h}`, container);
+			}
 		}
-
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
 	}
 
 	_initPanes() {
