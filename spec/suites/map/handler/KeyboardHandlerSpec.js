@@ -1,5 +1,6 @@
 import {LeafletMap, Popup} from 'leaflet';
 import sinon from 'sinon';
+import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -201,6 +202,16 @@ describe('KeyboardHandler', () => {
 				expect(keyUpSpy.called).to.be.true;
 				done();
 			}, 50);
+		});
+	});
+
+	describe('focus on click', () => {
+		it('focuses the map without a focus ring', async () => {
+			map.keyboard._onBlur();
+			await userEvent.click(container, {position: {x: 50, y: 50}});
+
+			expect(document.activeElement).to.equal(container);
+			expect(container.matches(':focus-visible')).to.be.false;
 		});
 	});
 });
