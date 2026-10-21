@@ -8,6 +8,7 @@ permissions:
   contents: read
 env:
   NODE_VERSION: 24
+  PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -74,25 +75,14 @@ jobs:
     steps:
       - run: 'true'
 
-  test:
-    name: test (${{ matrix.name || matrix.browser }})
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-    timeout-minutes: 8
+  # separate jobs rather than a matrix so that they show up flat in the run summary
+  test-chromium:
+    name: test (chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - browser: chromium
-          - browser: firefox
-          # the minified bundle, to catch what the build breaks
-          - browser: chromium
-            name: chromium dist
-            dist: '1'
-          - browser: webkit
-            os: macos-latest
-    steps:
+      TEST_BROWSER: chromium
+    steps: &test-steps
       - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v7
@@ -109,15 +99,30 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.browser }}
+        run: npx playwright install "$TEST_BROWSER"
 
-      - if: matrix.dist
+      - if: env.TEST_DIST
         run: npm run build
 
       - run: npm test
-        env:
-          TEST_BROWSER: ${{ matrix.browser }}
-          TEST_DIST: ${{ matrix.dist }}
+
+  # also tests the minified bundle instead of the sources, to catch what the build breaks
+  test-firefox:
+    name: test (firefox, dist)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TEST_BROWSER: firefox
+      TEST_DIST: '1'
+    steps: *test-steps
+
+  test-webkit:
+    name: test (webkit)
+    runs-on: macos-latest
+    timeout-minutes: 5
+    env:
+      TEST_BROWSER: webkit
+    steps: *test-steps
 
   publish-artifacts:
     permissions:
