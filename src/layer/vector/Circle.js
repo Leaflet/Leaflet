@@ -66,8 +66,11 @@ export class Circle extends CircleMarker {
 			bottom = map.project([lat - latR, lng]),
 			p = top.add(bottom).divideBy(2),
 			lat2 = map.unproject(p).lat;
-			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
-				        (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+			// Longitude span from the haversine form of the spherical law of cosines. The plain acos() form
+			// loses precision for radii of about a metre and less, where cos(latR) is too close to 1 (#6120).
+			let lngR = 2 * Math.asin(Math.sqrt(
+				(Math.sin(latR * d / 2) ** 2 - Math.sin((lat2 - lat) * d / 2) ** 2) /
+				(Math.cos(lat * d) * Math.cos(lat2 * d)))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
