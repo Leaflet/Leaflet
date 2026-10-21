@@ -162,16 +162,11 @@ export class ImageOverlay extends Layer {
 	}
 
 	getEvents() {
-		const events = {
+		return {
 			zoom: this._reset,
-			viewreset: this._reset
+			viewreset: this._reset,
+			zoomanim: this._animateZoom
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	}
 
 	// @method setZIndex(value: Number): this
@@ -199,8 +194,7 @@ export class ImageOverlay extends Layer {
 		const wasElementSupplied = this._url.tagName === 'IMG';
 		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
-		img.classList.add('leaflet-image-layer');
-		if (this._zoomAnimated) { img.classList.add('leaflet-zoom-animated'); }
+		img.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
 		// @event load: Event

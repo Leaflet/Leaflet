@@ -250,7 +250,8 @@ export class GridLayer extends Layer {
 			viewreset: this._resetView,
 			zoom: this._resetView,
 			moveend: this._onMoveEnd,
-			worldcopyjump: this._onWorldCopyJump
+			worldcopyjump: this._onWorldCopyJump,
+			zoomanim: this._animateZoom
 		};
 
 		if (!this.options.updateWhenIdle) {
@@ -260,10 +261,6 @@ export class GridLayer extends Layer {
 			}
 
 			events.move = this._onMove;
-		}
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
 		}
 
 		return events;

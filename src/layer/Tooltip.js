@@ -143,7 +143,7 @@ export class Tooltip extends DivOverlay {
 
 	_initLayout() {
 		const prefix = 'leaflet-tooltip',
-		className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		className = `${prefix} ${this.options.className || ''} leaflet-zoom-animated`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 

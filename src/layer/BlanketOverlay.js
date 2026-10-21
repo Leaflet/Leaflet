@@ -64,11 +64,9 @@ export class BlanketOverlay extends Layer {
 			zoom: this._onZoom,
 			moveend: this._onMoveEnd,
 			resize: this._resizeContainer,
-			zoomend: this._onZoomEnd
+			zoomend: this._onZoomEnd,
+			zoomanim: this._onAnimZoom
 		};
-		if (this._zoomAnimated) {
-			events.zoomanim = this._onAnimZoom;
-		}
 		if (this.options.continuous) {
 			events.move = this._onMoveEnd;
 		}
