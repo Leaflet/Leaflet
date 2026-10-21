@@ -136,8 +136,6 @@ export class TileLayer extends GridLayer {
 			this.options.subdomains = this.options.subdomains.split('');
 		}
 
-		this.on('tileunload', this._onTileRemove);
-
 		this.callInitHooks();
 	}
 
@@ -229,10 +227,6 @@ export class TileLayer extends GridLayer {
 		done(e, tile);
 	}
 
-	_onTileRemove(e) {
-		e.tile.onload = null;
-	}
-
 	_getZoomForUrl() {
 		let zoom = this._tileZoom;
 		const maxZoom = this.options.maxZoom,
@@ -257,9 +251,6 @@ export class TileLayer extends GridLayer {
 		for (i of Object.keys(this._tiles)) {
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
-
-				tile.onload = Util.falseFn;
-				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
 					tile.setAttribute('src', '');
