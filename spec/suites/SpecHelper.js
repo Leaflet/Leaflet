@@ -1,8 +1,3 @@
-const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
-
-export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
-export const pointerEventType = ['pointer', {pointerType}];
-
 export function createContainer(width, height) {
 	width = width ? width : '400px';
 	height = height ? height : '400px';

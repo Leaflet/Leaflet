@@ -588,6 +588,17 @@ describe('DomEvent', () => {
 		});
 	});
 
+	describe('#getWheelDelta', () => {
+		it('scales pixel deltas by device pixel ratio', () => {
+			const e = new WheelEvent('wheel', {deltaY: 100, deltaMode: 0});
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			expect(DomEvent.getWheelDelta(e)).to.equal(-50);
+			dpr.value(2);
+			expect(DomEvent.getWheelDelta(e)).to.equal(-25);
+			dpr.restore();
+		});
+	});
+
 	describe('#preventDefault', () => {
 		it('prevents the default action of event', (done) => {
 			DomEvent.on(el, 'click', (e) => {

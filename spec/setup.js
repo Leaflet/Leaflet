@@ -61,9 +61,3 @@ if (globalThis.it) {
 	patch(globalThis.it, 'only');
 	patch(globalThis.it, 'skip');
 }
-
-// Assigned AFTER patching so these reference the wrapped `it`/`it.skip` —
-// otherwise Vitest schedules differently and timing-sensitive specs flake.
-const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
-it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
-it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
