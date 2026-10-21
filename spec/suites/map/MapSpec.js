@@ -16,6 +16,23 @@ describe('Map', () => {
 		removeMapContainer(map, container);
 	});
 
+	describe('container classes', () => {
+		it('adds leaflet-retina only on high-DPI screens', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			const container1 = createContainer();
+			const map1 = new LeafletMap(container1);
+			dpr.value(2);
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			dpr.restore();
+
+			expect(container1.classList.contains('leaflet-retina')).to.be.false;
+			expect(container2.classList.contains('leaflet-retina')).to.be.true;
+			removeMapContainer(map1, container1);
+			removeMapContainer(map2, container2);
+		});
+	});
+
 	describe('#remove', () => {
 		let spy;
 
@@ -92,21 +109,23 @@ describe('Map', () => {
 		});
 
 		// For #9575
-		it('does not throw if removed before transition end complete', (done) => {
+		it('does not throw if removed before transition end complete', async () => {
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+
 			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
-
 			map._createAnimProxy();
-
-			setTimeout(() => {
-				map.remove();
-				map = null;
-			}, 10);
-
-			setTimeout(() => {
-				done();
-			}, 300);
-
 			map.setZoom(2);
+
+			// let the zoom animation start, then remove the map before its transition end timer fires
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			map.remove();
+			map = null;
+
+			try {
+				clock.tick(300);
+			} finally {
+				clock.restore();
+			}
 		});
 
 		it('throws error if container is reused by other instance', () => {
@@ -503,18 +522,14 @@ describe('Map', () => {
 			expect(map.off.called).not.to.be.true;
 		});
 
-		it('avoid subpixel / floating point related wobble (#8532)', (done) => {
+		it('avoid subpixel / floating point related wobble (#8532)', () => {
 			map.setView([50.450036, 30.5241361], 13);
 
 			const spy = sinon.spy();
-			map.on('moveend', spy);
+			map.on('movestart', spy);
 			map.setMaxBounds(map.getBounds());
 
-			// Unfortunately this is one of those tests where we need to allow at least one animation tick
-			setTimeout(() => {
-				expect(spy.called).to.be.false;
-				done();
-			}, 300);
+			expect(spy.called).to.be.false;
 		});
 	});
 
@@ -1482,6 +1497,34 @@ describe('Map', () => {
 
 			map.flyTo(center, 11, {animate: true});
 		}, 20000);
+
+		it('keeps tiles in place on a short same-zoom flight after a pan (#9438)', (done) => {
+			container.style.visibility = 'visible';
+			map.setView([50, 30], 18);
+
+			const grid = new GridLayer();
+			grid.createTile = () => document.createElement('div');
+			grid.addTo(map);
+
+			map.panBy([6, 4], {animate: false});
+
+			map.once('moveend', () => {
+				const {left, top} = container.getBoundingClientRect();
+				for (const {el, coords} of Object.values(grid._tiles)) {
+					const expected = map.latLngToContainerPoint(map.unproject(coords.multiplyBy(256), coords.z));
+					const rect = el.getBoundingClientRect();
+					expect(rect.left - left).to.be.closeTo(expected.x, 1);
+					expect(rect.top - top).to.be.closeTo(expected.y, 1);
+				}
+				done();
+			});
+
+			// skip straight from the first frame to the last one, as when the flight is shorter than a frame
+			const clock = sinon.useFakeTimers({toFake: ['Date']});
+			map.flyTo([50, 30], 18);
+			clock.tick(1000);
+			clock.restore();
+		});
 	});
 
 	describe('#zoomIn and #zoomOut', () => {

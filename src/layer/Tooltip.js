@@ -3,6 +3,39 @@ import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
+// @namespace Tooltip
+
+// @section
+// @aka Tooltip options
+const defaultOptions = {
+	// @option pane: String = 'tooltipPane'
+	// `Map pane` where the tooltip will be added.
+	pane: 'tooltipPane',
+
+	// @option offset: Point = Point(0, 0)
+	// Optional offset of the tooltip position.
+	offset: [0, 0],
+
+	// @option direction: String = 'auto'
+	// Direction where to open the tooltip. Possible values are: `right`, `left`,
+	// `top`, `bottom`, `center`, `auto`.
+	// `auto` will dynamically switch between `right` and `left` according to the tooltip
+	// position on the map.
+	direction: 'auto',
+
+	// @option permanent: Boolean = false
+	// Whether to open the tooltip permanently or only on pointerover.
+	permanent: false,
+
+	// @option sticky: Boolean = false
+	// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
+	sticky: false,
+
+	// @option opacity: Number = 0.9
+	// Tooltip container opacity.
+	opacity: 0.9
+};
+
 /*
  * @class Tooltip
  * @inherits DivOverlay
@@ -57,56 +90,20 @@ import * as Util from '../core/Util.js';
 // @alternative
 // @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
+
 export class Tooltip extends DivOverlay {
 
-	// @section
-	// @aka Tooltip options
-	static defaultOptions = {
-		// @option pane: String = 'tooltipPane'
-		// `Map pane` where the tooltip will be added.
-		pane: 'tooltipPane',
-
-		// @option offset: Point = Point(0, 0)
-		// Optional offset of the tooltip position.
-		offset: [0, 0],
-
-		// @option direction: String = 'auto'
-		// Direction where to open the tooltip. Possible values are: `right`, `left`,
-		// `top`, `bottom`, `center`, `auto`.
-		// `auto` will dynamically switch between `right` and `left` according to the tooltip
-		// position on the map.
-		direction: 'auto',
-
-		// @option permanent: Boolean = false
-		// Whether to open the tooltip permanently or only on pointerover.
-		permanent: false,
-
-		// @option sticky: Boolean = false
-		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
-		sticky: false,
-
-		// @option opacity: Number = 0.9
-		// Tooltip container opacity.
-		opacity: 0.9
-	};
+	static defaultOptions = defaultOptions;
 
 	onAdd(map) {
 		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipopen: TooltipEvent
-		// Fired when a tooltip is opened in the map.
 		map.fire('tooltipopen', {tooltip: this});
 
 		if (this._source) {
 			this.addEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipopen: TooltipEvent
-			// Fired when a tooltip bound to this layer is opened.
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
 	}
@@ -114,19 +111,11 @@ export class Tooltip extends DivOverlay {
 	onRemove(map) {
 		super.onRemove(map);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipclose: TooltipEvent
-		// Fired when a tooltip in the map is closed.
 		map.fire('tooltipclose', {tooltip: this});
 
 		if (this._source) {
 			this.removeEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipclose: TooltipEvent
-			// Fired when a tooltip bound to this layer is closed.
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
 	}
@@ -143,7 +132,7 @@ export class Tooltip extends DivOverlay {
 
 	_initLayout() {
 		const prefix = 'leaflet-tooltip',
-		className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		className = `${prefix} ${this.options.className || ''} leaflet-zoom-animated`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
@@ -212,7 +201,7 @@ export class Tooltip extends DivOverlay {
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			this._container.style.opacity = opacity;
+			this._container.style.opacity = `${opacity}`;
 		}
 	}
 

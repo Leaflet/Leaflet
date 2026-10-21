@@ -46,9 +46,9 @@
   "scripts": {
     "debug": "http-server -c-1",
     "docs": "node ./build/docs.js && node ./build/integrity.js",
-    "test": "vitest run --project=chromium",
-    "test:ui": "vitest --project=chromium --ui --browser.headless=false",
-    "coverage": "vitest run --project=chromium --coverage",
+    "test": "vitest run",
+    "test:ui": "vitest --ui --browser.headless=false",
+    "coverage": "vitest run --coverage",
     "build": "rolldown --config build/rolldown-config.js",
     "watch": "npm run build -- --watch",
     "lint": "eslint . --cache",

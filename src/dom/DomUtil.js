@@ -33,7 +33,13 @@ export function create(tagName, className, container) {
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
 	const parent = el.parentNode;
-	if (parent && parent.lastChild !== el) {
+	if (!parent || parent.lastChild === el) { return; }
+
+	// re-inserting a hovered node (e.g. bringToFront in a pointerover handler) makes Chromium 144+ fire a repeated
+	// pointerover and lose the next pointerout (#10129), so move the nodes after it instead
+	if (el.matches(':hover')) {
+		while (el.nextSibling) { parent.insertBefore(el.nextSibling, el); }
+	} else {
 		parent.appendChild(el);
 	}
 }
@@ -42,7 +48,11 @@ export function toFront(el) {
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
 	const parent = el.parentNode;
-	if (parent && parent.firstChild !== el) {
+	if (!parent || parent.firstChild === el) { return; }
+
+	if (el.matches(':hover')) { // see toFront
+		while (el.previousSibling) { parent.insertBefore(el.previousSibling, el.nextSibling); }
+	} else {
 		parent.insertBefore(el, parent.firstChild);
 	}
 }
@@ -117,34 +127,6 @@ export function disableImageDrag() {
 // Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
-}
-
-let _outlineElement, _outlineStyle;
-// @function preventOutline(el: HTMLElement)
-// Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
-// of the element `el` invisible. Used internally by Leaflet to prevent
-// focusable elements from displaying an outline when the user performs a
-// drag interaction on them.
-export function preventOutline(element) {
-	while (element.tabIndex === -1) {
-		element = element.parentNode;
-	}
-	if (!element.style) { return; }
-	restoreOutline();
-	_outlineElement = element;
-	_outlineStyle = element.style.outlineStyle;
-	element.style.outlineStyle = 'none';
-	DomEvent.on(window, 'keydown', restoreOutline);
-}
-
-// @function restoreOutline()
-// Cancels the effects of a previous [`DomUtil.preventOutline`](#domutil-preventoutline).
-export function restoreOutline() {
-	if (!_outlineElement) { return; }
-	_outlineElement.style.outlineStyle = _outlineStyle;
-	_outlineElement = undefined;
-	_outlineStyle = undefined;
-	DomEvent.off(window, 'keydown', restoreOutline);
 }
 
 // @function getSizedParentNode(el: HTMLElement): HTMLElement

@@ -22,6 +22,38 @@ describe('Canvas', () => {
 		removeMapContainer(map, container);
 	});
 
+	describe('on a high-DPI screen', () => {
+		let dpr;
+
+		beforeEach(() => {
+			// the renderer reads the ratio on resize, so recreate the map with the stub in place
+			dpr = sinon.stub(window, 'devicePixelRatio').value(2);
+			removeMapContainer(map, container);
+			container = createContainer();
+			map = new LeafletMap(container, {renderer: new Canvas(), zoomControl: false});
+			map.setView([0, 0], 6);
+		});
+
+		afterEach(() => {
+			dpr.restore();
+		});
+
+		it('renders at device resolution', async () => {
+			const layer = new Polygon([p2ll(0, 0), p2ll(0, 20), p2ll(20, 20), p2ll(20, 0)], {stroke: false, fillOpacity: 1}).addTo(map);
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+
+			const renderer = layer._renderer;
+			const canvas = renderer._container;
+			expect(canvas.width).to.equal(2 * canvas.clientWidth);
+			expect(canvas.height).to.equal(2 * canvas.clientHeight);
+
+			const min = renderer._bounds.min;
+			const alphaAt = (x, y) => renderer._ctx.getImageData((x - min.x) * 2, (y - min.y) * 2, 1, 1).data[3];
+			expect(alphaAt(15, 15)).to.equal(255);
+			expect(alphaAt(25, 25)).to.equal(0);
+		});
+	});
+
 	describe('#events', () => {
 		let layer;
 

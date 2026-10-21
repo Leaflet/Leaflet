@@ -6,7 +6,7 @@
  */
 
 function makeDblclick(ev) {
-	let init = {
+	const init = {
 		// EventInit
 		bubbles: ev.bubbles,
 		cancelable: ev.cancelable,
@@ -35,7 +35,7 @@ function makeDblclick(ev) {
 	// The `click` event received should be a PointerEvent - but some
 	// Firefox versions still use MouseEvent.
 	if (ev instanceof PointerEvent) {
-		init = {
+		newEvent = new PointerEvent('dblclick', {
 			...init,
 			pointerId: ev.pointerId,
 			width: ev.width,
@@ -47,8 +47,7 @@ function makeDblclick(ev) {
 			twist: ev.twist,
 			pointerType: ev.pointerType,
 			isPrimary: ev.isPrimary,
-		};
-		newEvent = new PointerEvent('dblclick', init);
+		});
 	} else {
 		newEvent = new MouseEvent('dblclick', init);
 	}
@@ -91,7 +90,7 @@ export function addDoubleTapListener(obj, handler) {
 		// attribute (or children of such a label), but not children of
 		// a <input>.
 		const path = ev.composedPath();
-		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
+		if (path.some(el => el instanceof HTMLLabelElement && el.htmlFor) &&
 			!path.some(el => (
 				el instanceof HTMLInputElement ||
 					el instanceof HTMLSelectElement

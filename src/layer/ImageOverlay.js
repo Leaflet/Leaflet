@@ -4,6 +4,55 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+// @namespace ImageOverlay
+
+// @section
+// @aka ImageOverlay options
+const defaultOptions = {
+	// @option opacity: Number = 1.0
+	// The opacity of the image overlay.
+	opacity: 1,
+
+	// @option alt: String = ''
+	// Text for the `alt` attribute of the image (useful for accessibility).
+	alt: '',
+
+	// @option interactive: Boolean = false
+	// If `true`, the image overlay will emit [pointer events](#interactive-layer) when clicked or hovered.
+	interactive: false,
+
+	// @option crossOrigin: Boolean|String = false
+	// Whether the crossOrigin attribute will be added to the image.
+	// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+	// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	crossOrigin: false,
+
+	// @option errorOverlayUrl: String = ''
+	// URL to the overlay image to show in place of the overlay that failed to load.
+	errorOverlayUrl: '',
+
+	// @option zIndex: Number = 1
+	// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
+	zIndex: 1,
+
+	// @option className: String = ''
+	// A custom class name to assign to the image. Empty by default.
+	className: '',
+
+	// @option decoding: String = 'auto'
+	// Tells the browser whether to decode the image in a synchronous fashion,
+	// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
+	// If the image overlay is flickering when being added/removed, set
+	// this option to `'sync'`.
+	decoding: 'auto'
+};
+
+// @section
+// @event load: Event
+// Fired when the ImageOverlay layer has loaded its image
+// @event error: Event
+// Fired when the ImageOverlay layer fails to load its image
+
 /*
  * @class ImageOverlay
  * @inherits Interactive layer
@@ -22,50 +71,12 @@ import * as DomUtil from '../dom/DomUtil.js';
 // @constructor ImageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
+
 export class ImageOverlay extends Layer {
 
 	static initHooks = true;
 
-	// @section
-	// @aka ImageOverlay options
-	static defaultOptions = {
-		// @option opacity: Number = 1.0
-		// The opacity of the image overlay.
-		opacity: 1,
-
-		// @option alt: String = ''
-		// Text for the `alt` attribute of the image (useful for accessibility).
-		alt: '',
-
-		// @option interactive: Boolean = false
-		// If `true`, the image overlay will emit [pointer events](#interactive-layer) when clicked or hovered.
-		interactive: false,
-
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the image.
-		// If a String is provided, the image will have its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false,
-
-		// @option errorOverlayUrl: String = ''
-		// URL to the overlay image to show in place of the overlay that failed to load.
-		errorOverlayUrl: '',
-
-		// @option zIndex: Number = 1
-		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the overlay layer.
-		zIndex: 1,
-
-		// @option className: String = ''
-		// A custom class name to assign to the image. Empty by default.
-		className: '',
-
-		// @option decoding: String = 'auto'
-		// Tells the browser whether to decode the image in a synchronous fashion,
-		// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
-		// If the image overlay is flickering when being added/removed, set
-		// this option to `'sync'`.
-		decoding: 'auto'
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
 		super();
@@ -162,16 +173,11 @@ export class ImageOverlay extends Layer {
 	}
 
 	getEvents() {
-		const events = {
+		return {
 			zoom: this._reset,
-			viewreset: this._reset
+			viewreset: this._reset,
+			zoomanim: this._animateZoom
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	}
 
 	// @method setZIndex(value: Number): this
@@ -196,15 +202,12 @@ export class ImageOverlay extends Layer {
 	}
 
 	_initImage() {
-		const wasElementSupplied = this._url.tagName === 'IMG';
+		const wasElementSupplied = this._url instanceof HTMLImageElement;
 		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
-		img.classList.add('leaflet-image-layer');
-		if (this._zoomAnimated) { img.classList.add('leaflet-zoom-animated'); }
+		img.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
-		// @event load: Event
-		// Fired when the ImageOverlay layer has loaded its image
 		img.onload = this.fire.bind(this, 'load');
 		img.onerror = this._overlayOnError.bind(this);
 
@@ -229,7 +232,7 @@ export class ImageOverlay extends Layer {
 
 	_animateZoom(e) {
 		const scale = this._map.getZoomScale(e.zoom),
-		offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
+		offset = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center);
 
 		DomUtil.setTransform(this._image, offset, scale);
 	}
@@ -248,18 +251,16 @@ export class ImageOverlay extends Layer {
 	}
 
 	_updateOpacity() {
-		this._image.style.opacity = this.options.opacity;
+		this._image.style.opacity = `${this.options.opacity}`;
 	}
 
 	_updateZIndex() {
 		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
-			this._image.style.zIndex = this.options.zIndex;
+			this._image.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
 
 	_overlayOnError() {
-		// @event error: Event
-		// Fired when the ImageOverlay layer fails to load its image
 		this.fire('error');
 
 		const errorUrl = this.options.errorOverlayUrl;

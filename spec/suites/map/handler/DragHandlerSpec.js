@@ -2,7 +2,7 @@ import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('DragHandler', () => {
 	let container, map;
@@ -125,7 +125,7 @@ describe('DragHandler', () => {
 					}
 				});
 
-				const pointer = hand.growFinger(...pointerEventType);
+				const pointer = hand.growFinger('pointer');
 				pointer.moveTo(200.3, 200.6, 0)
 					.down().moveBy(5.4, 0.2, 20).moveBy(100.3, 30.7, 200).up();
 			}
@@ -397,7 +397,7 @@ describe('DragHandler', () => {
 	});
 
 	describe('touch events', () => {
-		it.skipIfNotTouch('change the center of the map', (done) => {
+		it('change the center of the map', (done) => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -415,13 +415,13 @@ describe('DragHandler', () => {
 				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 				done();
 			});
-			const toucher = hand.growFinger(...pointerEventType);
+			const toucher = hand.growFinger('pointer', {pointerType: 'touch'});
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
-		it.skipIfNotTouch('does not change the center of the map when finger is moved less than the drag threshold', (done) => {
+		it('does not change the center of the map when finger is moved less than the drag threshold', (done) => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
@@ -443,7 +443,7 @@ describe('DragHandler', () => {
 				done();
 			});
 
-			const toucher = hand.growFinger(...pointerEventType);
+			const toucher = hand.growFinger('pointer', {pointerType: 'touch'});
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
@@ -451,7 +451,7 @@ describe('DragHandler', () => {
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
 
-		it.skipIfNotTouch('reset itself after pointerup', (done) => {
+		it('reset itself after pointerup', (done) => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false,

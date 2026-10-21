@@ -4,6 +4,38 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+// @namespace DivOverlay
+
+// @section
+// @aka DivOverlay options
+const defaultOptions = {
+	// @option interactive: Boolean = false
+	// If true, the popup/tooltip will listen to the pointer events.
+	interactive: false,
+
+	// @option offset: Point = Point(0, 0)
+	// The offset of the overlay position.
+	offset: [0, 0],
+
+	// @option className: String = ''
+	// A custom CSS class name to assign to the overlay.
+	className: '',
+
+	// @option pane: String = undefined
+	// `Map pane` where the overlay will be added.
+	pane: undefined,
+
+	// @option content: String|HTMLElement|Function = ''
+	// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+	// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	content: ''
+};
+
+// @section DivOverlay events
+// @event contentupdate: Event
+// Fired when the content of the overlay is updated
+
 /*
  * @class DivOverlay
  * @inherits Interactive layer
@@ -11,35 +43,12 @@ import * as DomUtil from '../dom/DomUtil.js';
  */
 
 // @namespace DivOverlay
+
 export class DivOverlay extends LayerBase {
 
 	static initHooks = true;
 
-	// @section
-	// @aka DivOverlay options
-	static defaultOptions = {
-		// @option interactive: Boolean = false
-		// If true, the popup/tooltip will listen to the pointer events.
-		interactive: false,
-
-		// @option offset: Point = Point(0, 0)
-		// The offset of the overlay position.
-		offset: [0, 0],
-
-		// @option className: String = ''
-		// A custom CSS class name to assign to the overlay.
-		className: '',
-
-		// @option pane: String = undefined
-		// `Map pane` where the overlay will be added.
-		pane: undefined,
-
-		// @option content: String|HTMLElement|Function = ''
-		// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-		// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
-		// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
-		content: ''
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(options, source) {
 		super();
@@ -100,14 +109,12 @@ export class DivOverlay extends LayerBase {
 	}
 
 	onAdd(map) {
-		this._zoomAnimated = map._zoomAnimated;
-
 		if (!this._container) {
 			this._initLayout();
 		}
 
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 0;
+			this._container.style.opacity = '0';
 		}
 
 		clearTimeout(this._removeTimeout);
@@ -115,7 +122,7 @@ export class DivOverlay extends LayerBase {
 		this.update();
 
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 1;
+			this._container.style.opacity = '1';
 		}
 
 		this.bringToFront();
@@ -128,7 +135,7 @@ export class DivOverlay extends LayerBase {
 
 	onRemove(map) {
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 0;
+			this._container.style.opacity = '0';
 			this._removeTimeout = setTimeout(() => this._container.remove(), 200);
 		} else {
 			this._container.remove();
@@ -199,15 +206,11 @@ export class DivOverlay extends LayerBase {
 	}
 
 	getEvents() {
-		const events = {
+		return {
 			zoom: this._updatePosition,
-			viewreset: this._updatePosition
+			viewreset: this._updatePosition,
+			zoomanim: this._animateZoom
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-		return events;
 	}
 
 	// @method isOpen: Boolean
@@ -278,10 +281,6 @@ export class DivOverlay extends LayerBase {
 			node.appendChild(content);
 		}
 
-		// @namespace DivOverlay
-		// @section DivOverlay events
-		// @event contentupdate: Event
-		// Fired when the content of the overlay is updated
 		this.fire('contentupdate');
 	}
 
@@ -289,14 +288,9 @@ export class DivOverlay extends LayerBase {
 		if (!this._map) { return; }
 
 		const pos = this._map.latLngToLayerPoint(this._latlng),
-		anchor = this._getAnchor();
-		let offset = new Point(this.options.offset);
+		offset = new Point(this.options.offset);
 
-		if (this._zoomAnimated) {
-			DomUtil.setPosition(this._container, pos.add(anchor));
-		} else {
-			offset = offset.add(pos).add(anchor);
-		}
+		DomUtil.setPosition(this._container, pos.add(this._getAnchor()));
 
 		const bottom = this._containerBottom = -offset.y,
 		left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;

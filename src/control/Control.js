@@ -2,6 +2,17 @@
 import {Class} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
+// @namespace Control
+
+// @section
+// @aka Control Options
+const defaultOptions = {
+	// @option position: String = 'topright'
+	// The position of the control (one of the map corners). Possible values are `'topleft'`,
+	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	position: 'topright'
+};
+
 /*
  * @class Control
  * @inherits Class
@@ -14,14 +25,7 @@ export class Control extends Class {
 
 	static initHooks = true;
 
-	// @section
-	// @aka Control Options
-	static defaultOptions = {
-		// @option position: String = 'topright'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'topright'
-	};
+	static defaultOptions = defaultOptions;
 
 
 	constructor(options) {
@@ -106,7 +110,7 @@ export class Control extends Class {
 		// We exclude keyboard-click event to keep the focus on the control for accessibility.
 		// The position of keyboard-click events are x=0 and y=0.
 		if (this._map && e && !(e.screenX === 0 && e.screenY === 0)) {
-			this._map.getContainer().focus();
+			this._map.getContainer().focus({preventScroll: true, focusVisible: false});
 		}
 	}
 }

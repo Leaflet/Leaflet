@@ -287,27 +287,4 @@ describe('DomUtil', () => {
 			expect(selectionPrevented).to.be.false;
 		});
 	});
-
-	describe('#preventOutline, #restoreOutline', () => {
-		it('prevent / restore outline for the element', () => {
-			const child = document.createElement('div');
-			const originalStyle = child.style.outlineStyle = 'dotted';
-
-			child.tabIndex = 0;
-			el.appendChild(child);
-
-			DomUtil.preventOutline(child);
-			expect(child.style.outlineStyle).to.equal('none');
-
-			// Explicit #restoreOutline through direct call
-			DomUtil.restoreOutline(child);
-			expect(child.style.outlineStyle).to.be.equal(originalStyle);
-
-			// Implicit #restoreOutline test through simulation
-			DomUtil.preventOutline(child);
-			expect(child.style.outlineStyle).to.equal('none');
-			UIEventSimulator.fire('keydown', child);
-			expect(child.style.outlineStyle).to.be.equal(originalStyle);
-		});
-	});
 });

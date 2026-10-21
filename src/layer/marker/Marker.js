@@ -8,6 +8,104 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
+// @namespace Marker
+
+// @section
+// @aka Marker options
+const defaultOptions = {
+	// @option icon: Icon = *
+	// Icon instance to use for rendering the marker.
+	// See [Icon documentation](#Icon) for details on how to customize the marker icon.
+	// If not specified, a common instance of `DefaultIcon` is used.
+	icon: /* @__PURE__ */ new DefaultIcon(),
+
+	// Option inherited from "Interactive layer" abstract class
+	interactive: true,
+
+	// @option keyboard: Boolean = true
+	// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+	keyboard: true,
+
+	// @option title: String = ''
+	// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+	// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	title: '',
+
+	// @option alt: String = 'Marker'
+	// Text for the `alt` attribute of the icon image.
+	// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	alt: 'Marker',
+
+	// @option zIndexOffset: Number = 0
+	// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
+	zIndexOffset: 0,
+
+	// @option opacity: Number = 1.0
+	// The opacity of the marker.
+	opacity: 1,
+
+	// @option riseOnHover: Boolean = false
+	// If `true`, the marker will get on top of others when you hover the pointer over it.
+	riseOnHover: false,
+
+	// @option riseOffset: Number = 250
+	// The z-index offset used for the `riseOnHover` feature.
+	riseOffset: 250,
+
+	// @option pane: String = 'markerPane'
+	// `Map pane` where the markers icon will be added.
+	pane: 'markerPane',
+
+	// @option shadowPane: String = 'shadowPane'
+	// `Map pane` where the markers shadow will be added.
+	shadowPane: 'shadowPane',
+
+	// @option bubblingPointerEvents: Boolean = false
+	// When `true`, a pointer event on this marker will trigger the same event on the map
+	// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+	bubblingPointerEvents: false,
+
+	// @option autoPanOnFocus: Boolean = true
+	// When `true`, the map will pan whenever the marker is focused (via
+	// e.g. pressing `tab` on the keyboard) to ensure the marker is
+	// visible within the map's bounds
+	autoPanOnFocus: true,
+
+	// @section Draggable marker options
+	// @option draggable: Boolean = false
+	// Whether the marker is draggable with pointer or not.
+	draggable: false,
+
+	// @option autoPan: Boolean = false
+	// Whether to pan the map when dragging this marker near its edge or not.
+	autoPan: false,
+
+	// @option autoPanPadding: Point = Point(50, 50)
+	// Distance (in pixels to the left/right and to the top/bottom) of the
+	// map edge to start panning the map.
+	autoPanPadding: [50, 50],
+
+	// @option autoPanSpeed: Number = 10
+	// Number of pixels the map should pan by.
+	autoPanSpeed: 10
+};
+
+// @section
+// @event move: Event
+// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+
+// @section Dragging events
+// @event dragstart: Event
+// Fired when the user starts dragging the marker.
+// @event movestart: Event
+// Fired when the marker starts moving (because of dragging).
+// @event drag: Event
+// Fired repeatedly while the user drags the marker.
+// @event dragend: DragEndEvent
+// Fired when the user stops dragging the marker.
+// @event moveend: Event
+// Fired when the marker stops moving (because of dragging).
+
 /*
  * @class Marker
  * @inherits Interactive layer
@@ -22,89 +120,12 @@ import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 // @constructor Marker(latlng: LatLng, options? : Marker options)
 // Instantiates a Marker object given a geographical point and optionally an options object.
+
 export class Marker extends Layer {
 
 	static initHooks = true;
 
-	// @section
-	// @aka Marker options
-	static defaultOptions = {
-		// @option icon: Icon = *
-		// Icon instance to use for rendering the marker.
-		// See [Icon documentation](#Icon) for details on how to customize the marker icon.
-		// If not specified, a common instance of `DefaultIcon` is used.
-		icon: /* @__PURE__ */ new DefaultIcon(),
-
-		// Option inherited from "Interactive layer" abstract class
-		interactive: true,
-
-		// @option keyboard: Boolean = true
-		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
-		keyboard: true,
-
-		// @option title: String = ''
-		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
-		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
-		title: '',
-
-		// @option alt: String = 'Marker'
-		// Text for the `alt` attribute of the icon image.
-		// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
-		alt: 'Marker',
-
-		// @option zIndexOffset: Number = 0
-		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
-		zIndexOffset: 0,
-
-		// @option opacity: Number = 1.0
-		// The opacity of the marker.
-		opacity: 1,
-
-		// @option riseOnHover: Boolean = false
-		// If `true`, the marker will get on top of others when you hover the pointer over it.
-		riseOnHover: false,
-
-		// @option riseOffset: Number = 250
-		// The z-index offset used for the `riseOnHover` feature.
-		riseOffset: 250,
-
-		// @option pane: String = 'markerPane'
-		// `Map pane` where the markers icon will be added.
-		pane: 'markerPane',
-
-		// @option shadowPane: String = 'shadowPane'
-		// `Map pane` where the markers shadow will be added.
-		shadowPane: 'shadowPane',
-
-		// @option bubblingPointerEvents: Boolean = false
-		// When `true`, a pointer event on this marker will trigger the same event on the map
-		// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingPointerEvents: false,
-
-		// @option autoPanOnFocus: Boolean = true
-		// When `true`, the map will pan whenever the marker is focused (via
-		// e.g. pressing `tab` on the keyboard) to ensure the marker is
-		// visible within the map's bounds
-		autoPanOnFocus: true,
-
-		// @section Draggable marker options
-		// @option draggable: Boolean = false
-		// Whether the marker is draggable with pointer or not.
-		draggable: false,
-
-		// @option autoPan: Boolean = false
-		// Whether to pan the map when dragging this marker near its edge or not.
-		autoPan: false,
-
-		// @option autoPanPadding: Point = Point(50, 50)
-		// Distance (in pixels to the left/right and to the top/bottom) of the
-		// map edge to start panning the map.
-		autoPanPadding: [50, 50],
-
-		// @option autoPanSpeed: Number = 10
-		// Number of pixels the map should pan by.
-		autoPanSpeed: 10
-	};
+	static defaultOptions = defaultOptions;
 
 	/* @section
 	 *
@@ -132,9 +153,10 @@ export class Marker extends Layer {
 	}
 
 	onRemove(map) {
-		if (this.dragging?.enabled()) {
-			this.options.draggable = true;
-			this.dragging.removeHooks();
+		if (this.dragging) {
+			// remember whether dragging is on or off (`dragging.disable()`) for when the marker is added again
+			this.options.draggable = this.dragging.enabled();
+			if (this.options.draggable) { this.dragging.removeHooks(); }
 		}
 		delete this.dragging;
 
@@ -166,8 +188,6 @@ export class Marker extends Layer {
 		this._latlng = new LatLng(latlng);
 		this.update();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 
@@ -193,10 +213,6 @@ export class Marker extends Layer {
 		if (this._map) {
 			this._initIcon();
 			this.update();
-		}
-
-		if (this._popup) {
-			this.bindPopup(this._popup, this._popup.options);
 		}
 
 		return this;
@@ -237,7 +253,7 @@ export class Marker extends Layer {
 				icon.title = options.title;
 			}
 
-			if (icon.tagName === 'IMG') {
+			if (icon instanceof HTMLImageElement) {
 				icon.alt = options.alt ?? '';
 			}
 		}
@@ -245,7 +261,7 @@ export class Marker extends Layer {
 		icon.classList.add(classToAdd);
 
 		if (options.keyboard) {
-			icon.tabIndex = '0';
+			icon.tabIndex = 0;
 			icon.setAttribute('role', 'button');
 		}
 
@@ -331,7 +347,7 @@ export class Marker extends Layer {
 
 	_updateZIndex(offset) {
 		if (this._icon) {
-			this._icon.style.zIndex = this._zIndex + offset;
+			this._icon.style.zIndex = `${this._zIndex + offset}`;
 		}
 	}
 
@@ -395,11 +411,11 @@ export class Marker extends Layer {
 		const opacity = this.options.opacity;
 
 		if (this._icon) {
-			this._icon.style.opacity = opacity;
+			this._icon.style.opacity = `${opacity}`;
 		}
 
 		if (this._shadow) {
-			this._shadow.style.opacity = opacity;
+			this._shadow.style.opacity = `${opacity}`;
 		}
 	}
 

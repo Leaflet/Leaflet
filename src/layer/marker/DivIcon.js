@@ -1,6 +1,28 @@
 import {Icon} from './Icon.js';
 import {Point} from '../../geometry/Point.js';
 
+// @namespace DivIcon
+
+const defaultOptions = {
+	// @section
+	// @aka DivIcon options
+	iconSize: [12, 12], // also can be set through CSS
+
+	// iconAnchor: (Point),
+	// popupAnchor: (Point),
+
+	// @option html: String|HTMLElement = ''
+	// Custom HTML code to put inside the div element, empty by default. Alternatively,
+	// an instance of `HTMLElement`.
+	html: false,
+
+	// @option bgPos: Point = [0, 0]
+	// Optional relative position of the background, in pixels
+	bgPos: null,
+
+	className: 'leaflet-div-icon'
+};
+
 /*
  * @class DivIcon
  * @inherits Icon
@@ -21,30 +43,13 @@ import {Point} from '../../geometry/Point.js';
 
 // @constructor DivIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
+
 export class DivIcon extends Icon {
 
-	static defaultOptions = {
-		// @section
-		// @aka DivIcon options
-		iconSize: [12, 12], // also can be set through CSS
-
-		// iconAnchor: (Point),
-		// popupAnchor: (Point),
-
-		// @option html: String|HTMLElement = ''
-		// Custom HTML code to put inside the div element, empty by default. Alternatively,
-		// an instance of `HTMLElement`.
-		html: false,
-
-		// @option bgPos: Point = [0, 0]
-		// Optional relative position of the background, in pixels
-		bgPos: null,
-
-		className: 'leaflet-div-icon'
-	};
+	static defaultOptions = defaultOptions;
 
 	createIcon(oldIcon) {
-		const div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
+		const div = oldIcon instanceof HTMLDivElement ? oldIcon : document.createElement('div'),
 		options = this.options;
 
 		if (options.html instanceof Element) {

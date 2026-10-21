@@ -1,4 +1,4 @@
-import {SimpleCRS, LeafletMap, TileLayer, Util, LatLng} from 'leaflet';
+import {SimpleCRS, LeafletMap, TileLayer, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -189,20 +189,20 @@ describe('TileLayer', () => {
 	describe('number of kittens loaded', () => {
 		let clock, kittenLayer, counts;
 
-		// animationFrame helper, just runs requestAnimationFrame() a given number of times
-		function runFrames(n) {
-			return _runFrames(n)();
-		}
-
-		function _runFrames(n) {
-			if (n) {
-				return function () {
-					clock.tick(40); // 40msec/frame ~= 25fps
-					map.fire('_frame');
-					requestAnimationFrame(_runFrames(n - 1));
-				};
-			}
-			return Util.falseFn;
+		// calls `start`, then runs up to n frames of 40ms (~25fps) while any animation frame callbacks are queued,
+		// instead of waiting for real frames; yields a task between frames so that image tiles can load
+		function runFrames(n, start) {
+			const callbacks = [];
+			const raf = sinon.stub(window, 'requestAnimationFrame').callsFake(cb => callbacks.push(cb));
+			const {port1, port2} = new MessageChannel();
+			port1.onmessage = () => {
+				clock.tick(40);
+				map.fire('_frame');
+				for (const cb of callbacks.splice(0)) { cb(); }
+				if (--n && callbacks.length) { port2.postMessage(null); } else { raf.restore(); }
+			};
+			start();
+			port2.postMessage(null);
 		}
 
 		beforeEach(() => {
@@ -273,13 +273,7 @@ describe('TileLayer', () => {
 					done();
 				});
 
-				map.flyTo(trd, 12, {animate: true});
-
-				// map.on('_frame', function () {
-				// 	console.log('frame', counts);
-				// });
-
-				runFrames(500);
+				runFrames(500, () => map.flyTo(trd, 12, {animate: true}));
 			});
 
 			map.addLayer(kittenLayer).setView(mad, 12);
@@ -325,6 +319,15 @@ describe('TileLayer', () => {
 				expect(img.src).to.eql(urls[i]);
 				i++;
 			});
+		});
+
+		it('replaces {r} with @2x on high-DPI screens', () => {
+			const layer = new TileLayer('http://example.com/{z}/{x}/{y}{r}.png').addTo(map);
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('http://example.com/2/1/2.png');
+			dpr.value(2);
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('http://example.com/2/1/2@2x.png');
+			dpr.restore();
 		});
 
 		it('Does not replace {-y} on map with infinite CRS', () => {

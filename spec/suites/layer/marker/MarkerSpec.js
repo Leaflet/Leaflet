@@ -1,4 +1,4 @@
-import {DivIcon, DefaultIcon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -234,6 +234,31 @@ describe('Marker', () => {
 			expect(() => {
 				marker._panOnFocus();
 			}).to.not.throw();
+		});
+	});
+
+	describe('dragging', () => {
+		it('keeps dragging switched off when the marker is removed and added again', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true});
+			map.addLayer(marker);
+			expect(marker.dragging.enabled()).to.be.true;
+
+			marker.dragging.disable();
+			map.removeLayer(marker);
+			map.addLayer(marker);
+
+			expect(marker.dragging.enabled()).to.be.false;
+		});
+
+		it('keeps dragging switched off when the layer group of the marker is toggled', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true}),
+			group = new LayerGroup([marker]).addTo(map);
+
+			marker.dragging.disable();
+			map.removeLayer(group);
+			map.addLayer(group);
+
+			expect(marker.dragging.enabled()).to.be.false;
 		});
 	});
 

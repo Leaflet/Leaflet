@@ -32,15 +32,12 @@ export class Layer extends LayerBase {
 	// `String` or `HTMLElement`.
 	bindPopup(content, options) {
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
-		if (!this._popupHandlersAdded) {
-			this.on({
-				click: this._openPopup,
-				keypress: this._onKeyPress,
-				remove: this.closePopup,
-				move: this._movePopup
-			});
-			this._popupHandlersAdded = true;
-		}
+		this.on({
+			click: this._openPopup,
+			keypress: this._onKeyPress,
+			remove: this.closePopup,
+			move: this._movePopup
+		});
 
 		return this;
 	}
@@ -55,7 +52,6 @@ export class Layer extends LayerBase {
 				remove: this.closePopup,
 				move: this._movePopup
 			});
-			this._popupHandlersAdded = false;
 			this._popup = null;
 		}
 		return this;

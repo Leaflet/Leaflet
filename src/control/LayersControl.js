@@ -4,6 +4,45 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+// @namespace LayersControl
+
+// @section
+// @aka LayersControl options
+const defaultOptions = {
+	// @option collapsed: Boolean = true
+	// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
+	collapsed: true,
+
+	// @option collapseDelay: Number = 0
+	// Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.
+	collapseDelay: 0,
+
+	position: 'topright',
+
+	// @option autoZIndex: Boolean = true
+	// If `true`, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.
+	autoZIndex: true,
+
+	// @option hideSingleBase: Boolean = false
+	// If `true`, the base layers in the control will be hidden when there is only one.
+	hideSingleBase: false,
+
+	// @option sortLayers: Boolean = false
+	// Whether to sort the layers. When `false`, layers will keep the order
+	// in which they were added to the control.
+	sortLayers: false,
+
+	// @option sortFunction: Function = *
+	// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+	// that will be used for sorting the layers, when `sortLayers` is `true`.
+	// The function receives both the `Layer` instances and their names, as in
+	// `sortFunction(layerA, layerB, nameA, nameB)`.
+	// By default, it sorts layers alphabetically by their name.
+	sortFunction(layerA, layerB, nameA, nameB) {
+		return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
+	}
+};
+
 /*
  * @class LayersControl
  * @inherits Control
@@ -44,46 +83,12 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 // @constructor LayersControl(baselayers?: Object, overlays?: Object, options?: LayersControl options)
 // Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
+
 export class LayersControl extends Control {
 
 	static initHooks = true;
 
-	// @section
-	// @aka LayersControl options
-	static defaultOptions = {
-		// @option collapsed: Boolean = true
-		// If `true`, the control will be collapsed into an icon and expanded on pointer hover, touch, or keyboard activation.
-		collapsed: true,
-
-		// @option collapseDelay: Number = 0
-		// Collapse delay in milliseconds. If greater than 0, the control will remain open longer, making it easier to scroll through long layer lists.
-		collapseDelay: 0,
-
-		position: 'topright',
-
-		// @option autoZIndex: Boolean = true
-		// If `true`, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.
-		autoZIndex: true,
-
-		// @option hideSingleBase: Boolean = false
-		// If `true`, the base layers in the control will be hidden when there is only one.
-		hideSingleBase: false,
-
-		// @option sortLayers: Boolean = false
-		// Whether to sort the layers. When `false`, layers will keep the order
-		// in which they were added to the control.
-		sortLayers: false,
-
-		// @option sortFunction: Function = *
-		// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
-		// that will be used for sorting the layers, when `sortLayers` is `true`.
-		// The function receives both the `Layer` instances and their names, as in
-		// `sortFunction(layerA, layerB, nameA, nameB)`.
-		// By default, it sorts layers alphabetically by their name.
-		sortFunction(layerA, layerB, nameA, nameB) {
-			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
-		}
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(baseLayers, overlays, options) {
 		super(options);
@@ -172,7 +177,7 @@ export class LayersControl extends Control {
 		clearTimeout(this._collapseDelayTimeout);
 
 		this._container.classList.add('leaflet-control-layers-expanded');
-		this._section.style.height = null;
+		this._section.style.height = '';
 		const acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._section.clientHeight) {
 			this._section.classList.add('leaflet-control-layers-scrollbar');
@@ -318,15 +323,6 @@ export class LayersControl extends Control {
 
 		const obj = this._getLayer(Util.stamp(e.target));
 
-		// @namespace LeafletMap
-		// @section Layer events
-		// @event baselayerchange: LayersControlEvent
-		// Fired when the base layer is changed through the [layers control](#control-layers).
-		// @event overlayadd: LayersControlEvent
-		// Fired when an overlay is selected through the [layers control](#control-layers).
-		// @event overlayremove: LayersControlEvent
-		// Fired when an overlay is deselected through the [layers control](#control-layers).
-		// @namespace LayersControl
 		const type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);

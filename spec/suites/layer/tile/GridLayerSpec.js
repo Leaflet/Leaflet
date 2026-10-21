@@ -1,4 +1,4 @@
-import {DomUtil, GridLayer, LeafletMap, Point, Util} from 'leaflet';
+import {DomUtil, GridLayer, LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -566,20 +566,18 @@ describe('GridLayer', () => {
 		}
 		*/
 
-		// animationFrame helper, just runs requestAnimationFrame() a given number of times
-		function runFrames(n) {
-			return _runFrames(n)();
-		}
-
-		function _runFrames(n) {
-			if (n) {
-				return function () {
-					clock.tick(40); // 40msec/frame ~= 25fps
-					map.fire('_frame');
-					requestAnimationFrame(_runFrames(n - 1));
-				};
+		// calls `start`, then synchronously runs up to n frames of 40ms (~25fps) while any animation frame
+		// callbacks are queued, instead of waiting for real frames
+		function runFrames(n, start) {
+			const callbacks = [];
+			const raf = sinon.stub(window, 'requestAnimationFrame').callsFake(cb => callbacks.push(cb));
+			start();
+			for (let i = 0; i < n && callbacks.length; i++) {
+				clock.tick(40);
+				map.fire('_frame');
+				for (const cb of callbacks.splice(0)) { cb(); }
 			}
-			return Util.falseFn;
+			raf.restore();
 		}
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
@@ -812,13 +810,7 @@ describe('GridLayer', () => {
 					done();
 				});
 
-				map.flyTo(trd, 12, {animate: true});
-
-				// map.on('_frame', function () {
-				// 	console.log('frame', counts);
-				// });
-
-				runFrames(500);
+				runFrames(500, () => map.flyTo(trd, 12, {animate: true}));
 			});
 
 			grid.options.keepBuffer = 0;

@@ -32,8 +32,8 @@ describe('Marker.Drag', () => {
 		this._initialPos = this._getPosition();
 	});
 
-	describe('drag', () => {
-		it('drags a marker with mouse', (done) => {
+	describe.each(['mouse', 'touch'])('drag with %s', (pointerType) => {
+		it('drags a marker', (done) => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 			const start = new Point(300, 280);
@@ -51,9 +51,9 @@ describe('Marker.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger(...pointerEventType);
+			const finger = hand.growFinger('pointer', {pointerType});
 
-			toucher.moveTo(start.x, start.y, 0)
+			finger.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 
@@ -65,7 +65,7 @@ describe('Marker.Drag', () => {
 				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it('drags a marker with mouse, compensating for CSS scale', (done) => {
+			it('drags a marker, compensating for CSS scale', (done) => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				const start = new Point(300, 280);
@@ -83,11 +83,11 @@ describe('Marker.Drag', () => {
 						done();
 					}
 				});
-				const toucher = hand.growFinger(...pointerEventType);
+				const finger = hand.growFinger('pointer', {pointerType});
 
 				const startScaled = start.scaleBy(scale);
 				const finishScaled = finish.scaleBy(scale);
-				toucher.wait(0).moveTo(startScaled.x, startScaled.y, 0)
+				finger.wait(0).moveTo(startScaled.x, startScaled.y, 0)
 					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
 			});
 		});
@@ -114,9 +114,9 @@ describe('Marker.Drag', () => {
 					done();
 				}
 			});
-			const toucher = hand.growFinger(...pointerEventType);
+			const finger = hand.growFinger('pointer', {pointerType});
 
-			toucher.moveTo(start.x, start.y, 0)
+			finger.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
 		});
 	});

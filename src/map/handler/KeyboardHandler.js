@@ -33,7 +33,7 @@ export class KeyboardHandler extends Handler {
 
 		// make the container focusable by tabbing
 		if (container.tabIndex <= 0) {
-			container.tabIndex = '0';
+			container.tabIndex = 0;
 		}
 
 		// add aria-attribute for keyboard shortcuts to the container
@@ -70,14 +70,8 @@ export class KeyboardHandler extends Handler {
 	_onPointerDown() {
 		if (this._focused) { return; }
 
-		const body = document.body,
-		docEl = document.documentElement,
-		top = body.scrollTop || docEl.scrollTop,
-		left = body.scrollLeft || docEl.scrollLeft;
-
-		this._map._container.focus();
-
-		window.scrollTo(left, top);
+		// script focus matches :focus-visible by default, which would show a focus ring on every click
+		this._map._container.focus({preventScroll: true, focusVisible: false});
 	}
 
 	_onFocus() {

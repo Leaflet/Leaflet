@@ -116,25 +116,23 @@ show up on reload without a build.
 
 ## Running the Tests
 
-Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider). Make sure the project has been built first (or run `npm run watch` in another terminal).
+Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider), against the sources in `src/`, so no build is needed.
 
 ```
 npm test
 ```
 
-Runs the suite in headless Chromium and stays in watch mode. To override the browser, pass `--project`:
+Runs the suite once in headless Chromium. To run it in another browser, set `TEST_BROWSER`, and pass spec paths to run only those:
 
 ```
-npm test -- --project=firefox
-npm test -- --project=webkit
-npm test -- --project=firefox-retina
+TEST_BROWSER=firefox npm test
+TEST_BROWSER=webkit npm test
+npm test -- spec/suites/layer/PopupSpec.js
 ```
 
-For one-shot CI-style runs, add `--run`. To enable touch event emulation (matching what CI runs as the "touch" pass), set `VITE_TOUCH=1`:
+For watch mode, run `npx vitest`.
 
-```
-VITE_TOUCH=1 npm test -- --run
-```
+To test the minified bundle instead of the sources, as one of the CI jobs does, run `npm run build` and then `TEST_DIST=1 npm test`.
 
 To open the Vitest UI for interactive debugging:
 

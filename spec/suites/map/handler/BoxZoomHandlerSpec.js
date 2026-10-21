@@ -1,7 +1,7 @@
 import {LeafletMap, BoxZoomHandler} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 import Hand from 'prosthetic-hand';
 
 describe('BoxZoomHandler', () => {
@@ -16,7 +16,7 @@ describe('BoxZoomHandler', () => {
 			zoomAnimation: false
 		});
 		hand = new Hand({timing: 'fastframe'});
-		finger = hand.growFinger(...pointerEventType);
+		finger = hand.growFinger('pointer', {pointerType: 'mouse'});
 	});
 
 	afterEach(() => {
@@ -193,6 +193,17 @@ describe('BoxZoomHandler', () => {
 		expect(smallMap.getZoom()).to.eql(7);
 
 		removeMapContainer(smallMap, smallMap.getContainer());
+	});
+
+	it('doesn\'t break the map when a tiny box collapses to a point at very high zoom (#6709)', async () => {
+		map.setView([50, 100], 50);
+
+		finger.moveTo(100, 100).shift().down();
+		finger.moveBy(1, 1).unshift().up().wait(10);
+		await hand.run();
+
+		expect(map.getZoom()).to.eql(50);
+		expect(map.getCenter()).to.be.nearLatLng([50, 100]);
 	});
 
 });
