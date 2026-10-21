@@ -75,6 +75,7 @@ jobs:
       - run: 'true'
 
   test:
+    name: test (${{ matrix.name }})
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     timeout-minutes: 8
     env:
@@ -83,15 +84,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - project: chromium
+          - name: chromium + retina
+            project: chromium
             extra: --project=chromium-retina
-          - project: firefox
-          - project: chromium
-            os: windows-latest
+          - name: firefox
+            project: firefox
           # the minified bundle, to catch what the build breaks
-          - project: chromium
+          - name: chromium dist
+            project: chromium
             dist: '1'
-          - project: webkit
+          - name: webkit
+            project: webkit
             os: macos-latest
     steps:
       - uses: actions/checkout@v7
