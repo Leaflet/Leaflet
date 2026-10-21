@@ -327,6 +327,15 @@ describe('TileLayer', () => {
 			});
 		});
 
+		it('replaces {r} with @2x on high-DPI screens', () => {
+			const layer = new TileLayer('http://example.com/{z}/{x}/{y}{r}.png').addTo(map);
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('http://example.com/2/1/2.png');
+			dpr.value(2);
+			expect(layer.getTileUrl({x: 1, y: 2, z: 2})).to.eql('http://example.com/2/1/2@2x.png');
+			dpr.restore();
+		});
+
 		it('Does not replace {-y} on map with infinite CRS', () => {
 			const simplediv = document.createElement('div');
 			simplediv.style.width = '400px';

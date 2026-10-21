@@ -75,7 +75,7 @@ jobs:
       - run: 'true'
 
   test:
-    name: test (${{ matrix.name }})
+    name: test (${{ matrix.name || matrix.browser }})
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     timeout-minutes: 8
     env:
@@ -84,17 +84,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: chromium + retina
-            project: chromium
-            extra: --project=chromium-retina
-          - name: firefox
-            project: firefox
+          - browser: chromium
+          - browser: firefox
           # the minified bundle, to catch what the build breaks
-          - name: chromium dist
-            project: chromium
+          - browser: chromium
+            name: chromium dist
             dist: '1'
-          - name: webkit
-            project: webkit
+          - browser: webkit
             os: macos-latest
     steps:
       - uses: actions/checkout@v7
@@ -113,14 +109,14 @@ jobs:
           key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browser
-        run: npx playwright install ${{ matrix.project }}
+        run: npx playwright install ${{ matrix.browser }}
 
       - if: matrix.dist
         run: npm run build
 
-      - name: Run tests on ${{ matrix.project }}
-        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
+      - run: npm test
         env:
+          TEST_BROWSER: ${{ matrix.browser }}
           VITE_DIST: ${{ matrix.dist }}
 
   publish-artifacts:

@@ -5,6 +5,9 @@ import {playwright} from '@vitest/browser-playwright';
 // with VITE_DIST=1, specs run against the minified bundle (after `npm run build`) instead of the sources
 const entry = process.env.VITE_DIST === '1' ? './dist/leaflet.js' : './src/Leaflet.js';
 
+// chromium, firefox or webkit
+const browser = process.env.TEST_BROWSER || 'chromium';
+
 // Vitest's tester iframe defaults to a small viewport (414x896), which truncates `document.elementFromPoint`
 // beyond that range and breaks specs simulating pointer events at desktop coordinates.
 const viewport = {width: 1280, height: 720};
@@ -34,16 +37,7 @@ export default defineConfig({
 			headless: true,
 			screenshotFailures: false,
 			viewport,
-			instances: [
-				{browser: 'chromium'},
-				{browser: 'firefox'},
-				{browser: 'webkit'},
-				{
-					browser: 'chromium',
-					name: 'chromium-retina',
-					provider: playwright({contextOptions: {deviceScaleFactor: 2}}),
-				},
-			],
+			instances: [{browser}],
 		},
 		coverage: {
 			provider: 'v8',

@@ -16,6 +16,23 @@ describe('Map', () => {
 		removeMapContainer(map, container);
 	});
 
+	describe('container classes', () => {
+		it('adds leaflet-retina only on high-DPI screens', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			const container1 = createContainer();
+			const map1 = new LeafletMap(container1);
+			dpr.value(2);
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			dpr.restore();
+
+			expect(container1.classList.contains('leaflet-retina')).to.be.false;
+			expect(container2.classList.contains('leaflet-retina')).to.be.true;
+			removeMapContainer(map1, container1);
+			removeMapContainer(map2, container2);
+		});
+	});
+
 	describe('#remove', () => {
 		let spy;
 

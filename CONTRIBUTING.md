@@ -122,14 +122,15 @@ Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playw
 npm test
 ```
 
-Runs the suite once in headless Chromium. To run it in another browser, or in watch mode, call Vitest directly (without `--project`, it runs all browsers):
+Runs the suite once in headless Chromium. To run it in another browser, set `TEST_BROWSER`, and pass spec paths to run only those:
 
 ```
-npx vitest run --project=firefox
-npx vitest run --project=webkit
-npx vitest run --project=chromium-retina
-npx vitest --project=chromium
+TEST_BROWSER=firefox npm test
+TEST_BROWSER=webkit npm test
+npm test -- spec/suites/layer/PopupSpec.js
 ```
+
+For watch mode, run `npx vitest`.
 
 To test the minified bundle instead of the sources, as one of the CI jobs does, run `npm run build` and then `VITE_DIST=1 npm test`.
 
