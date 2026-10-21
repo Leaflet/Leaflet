@@ -37,6 +37,7 @@ export class AttributionControl extends Control {
 		super(options);
 
 		this._attributions = {};
+		this._layerAttributions = new Map();
 		this.callInitHooks();
 	}
 
@@ -45,27 +46,37 @@ export class AttributionControl extends Control {
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
 
-		// TODO ugly, refactor
-		for (const layer of Object.values(map._layers)) {
-			this._addAttribution({layer});
+		// before the map is loaded, layers already added to it will still fire layeradd once it loads
+		if (map._loaded) {
+			map.eachLayer(layer => this._addLayer({layer}));
 		}
 
 		this._update();
 
-		map.on('layeradd', this._addAttribution, this);
+		map.on({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
 
 		return this._container;
 	}
 
 	onRemove(map) {
-		map.off('layeradd', this._addAttribution, this);
+		map.off({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
+
+		for (const layer of this._layerAttributions.keys()) {
+			this._removeLayer({layer});
+		}
 	}
 
-	_addAttribution(ev) {
-		if (ev.layer.getAttribution) {
-			this.addAttribution(ev.layer.getAttribution());
-			ev.layer.once('remove', () => this.removeAttribution(ev.layer.getAttribution()));
-		}
+	_addLayer({layer}) {
+		const text = layer.getAttribution?.();
+		if (!text || this._layerAttributions.has(layer)) { return; }
+
+		this._layerAttributions.set(layer, text);
+		this.addAttribution(text);
+	}
+
+	_removeLayer({layer}) {
+		this.removeAttribution(this._layerAttributions.get(layer));
+		this._layerAttributions.delete(layer);
 	}
 
 	// @method setPrefix(prefix: String|false): this

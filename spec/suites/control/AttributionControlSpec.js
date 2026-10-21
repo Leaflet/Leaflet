@@ -172,5 +172,35 @@ describe('AttributionControl', () => {
 			map.removeLayer(fooLayer);
 			expect(controlContainer.innerHTML).to.eql('prefix');
 		});
+
+		it('removes the attribution a layer was added with even if it changed since', () => {
+			const fooLayer = dummyLayer();
+			let text = 'foo';
+			fooLayer.getAttribution = function () { return text; };
+
+			map.addLayer(fooLayer);
+			text = 'bar';
+			map.removeLayer(fooLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		it('handles layers added and removed before the map is loaded', () => {
+			const map2 = new LeafletMap(createContainer());
+			const control2 = new AttributionControl({prefix: 'prefix'});
+			const fooLayer = dummyLayer();
+			const barLayer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			barLayer.getAttribution = function () { return 'bar'; };
+
+			map2.addLayer(fooLayer).addLayer(barLayer);
+			control2.addTo(map2);
+			map2.removeLayer(fooLayer);
+			map2.setView([0, 0], 1);
+
+			expect(control2.getContainer().innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
+			map2.removeLayer(barLayer);
+			expect(control2.getContainer().innerHTML).to.eql('prefix');
+			removeMapContainer(map2, map2.getContainer());
+		});
 	});
 });
