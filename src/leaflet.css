@@ -34,8 +34,7 @@
 	display: block;
 }
 
-/* .leaflet-container svg: reset svg max-width declaration shipped in Joomla! (joomla.org) 3.x */
-/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+/* !important to survive host-page resets like `img, svg { max-width: 100% }`, which break the map */
 
 .leaflet-container .leaflet-overlay-pane svg {
 	max-width: none !important;
