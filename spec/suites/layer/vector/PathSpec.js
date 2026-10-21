@@ -1,5 +1,6 @@
 import {LayerGroup, LeafletMap, Polygon, Polyline} from 'leaflet';
 import sinon from 'sinon';
+import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -47,6 +48,26 @@ describe('Path', () => {
 			group.clearLayers();
 
 			expect(path.bringToFront()).to.equal(path);
+		});
+
+		it('keeps hover events paired when called from a pointerover handler (#10129)', async () => {
+			const a = new Polygon([[-10, -30], [10, -30], [10, -10], [-10, -10]]).addTo(map);
+			const b = new Polygon([[-10, -10], [10, -10], [10, 10], [-10, 10]]).addTo(map);
+			const events = [];
+			for (const [name, layer] of [['a', a], ['b', b]]) {
+				layer.on('pointerover', () => { events.push(`over ${name}`); layer.bringToFront(); });
+				layer.on('pointerout', () => events.push(`out ${name}`));
+			}
+
+			await userEvent.hover(a.getElement());
+			await userEvent.hover(container, {position: {x: 5, y: 5}});
+			await userEvent.hover(a.getElement());
+			await userEvent.hover(b.getElement());
+			await userEvent.hover(b.getElement(), {position: {x: 5, y: 5}});
+			await userEvent.hover(container, {position: {x: 5, y: 5}});
+
+			expect(events).to.eql(['over a', 'out a', 'over a', 'out a', 'over b', 'out b']);
+			expect(a.getElement().parentNode.lastChild).to.equal(b.getElement());
 		});
 	});
 
