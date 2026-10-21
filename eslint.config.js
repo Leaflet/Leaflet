@@ -58,6 +58,13 @@ export default [
 		}
 	},
 	{
+		// these !important flags protect the map from host-page resets like `img { max-width: 100% }`
+		files: ['src/leaflet.css'],
+		rules: {
+			'css/no-important': 'off'
+		}
+	},
+	{
 		files: ['src/**/*.js'],
 		plugins: {'baseline-js': baselineJs},
 		rules: {
