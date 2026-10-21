@@ -90,6 +90,22 @@ const defaultOptions = {
 	autoPanSpeed: 10
 };
 
+// @section
+// @event move: Event
+// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+
+// @section Dragging events
+// @event dragstart: Event
+// Fired when the user starts dragging the marker.
+// @event movestart: Event
+// Fired when the marker starts moving (because of dragging).
+// @event drag: Event
+// Fired repeatedly while the user drags the marker.
+// @event dragend: DragEndEvent
+// Fired when the user stops dragging the marker.
+// @event moveend: Event
+// Fired when the marker stops moving (because of dragging).
+
 /*
  * @class Marker
  * @inherits Interactive layer
@@ -172,8 +188,6 @@ export class Marker extends Layer {
 		this._latlng = new LatLng(latlng);
 		this.update();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 

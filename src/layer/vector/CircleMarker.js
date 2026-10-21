@@ -17,6 +17,10 @@ const defaultOptions = {
 };
 
 
+// @section
+// @event move: Event
+// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+
 /*
  * @class CircleMarker
  * @inherits Path
@@ -50,8 +54,6 @@ export class CircleMarker extends Path {
 		this._latlng = new LatLng(latlng);
 		this.redraw();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 

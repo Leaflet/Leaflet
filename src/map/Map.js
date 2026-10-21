@@ -229,6 +229,109 @@ const defaultOptions = {
 	attributionControl: true
 };
 
+// @section Layer events
+// @event baselayerchange: LayersControlEvent
+// Fired when the base layer is changed through the [layers control](#control-layers).
+// @event overlayadd: LayersControlEvent
+// Fired when an overlay is selected through the [layers control](#control-layers).
+// @event overlayremove: LayersControlEvent
+// Fired when an overlay is deselected through the [layers control](#control-layers).
+// @event layeradd: LayerEvent
+// Fired when a new layer is added to the map.
+// @event layerremove: LayerEvent
+// Fired when some layer is removed from the map
+
+// @section Popup events
+// @event popupopen: PopupEvent
+// Fired when a popup is opened in the map
+// @event popupclose: PopupEvent
+// Fired when a popup in the map is closed
+// @event autopanstart: Event
+// Fired when the map starts autopanning when opening a popup.
+
+// @section Tooltip events
+// @event tooltipopen: TooltipEvent
+// Fired when a tooltip is opened in the map.
+// @event tooltipclose: TooltipEvent
+// Fired when a tooltip in the map is closed.
+
+// @section Map state change events
+// @event resize: ResizeEvent
+// Fired when the map is resized.
+// @event unload: Event
+// Fired when the map is destroyed with [remove](#map-remove) method.
+// @event viewreset: Event
+// Fired when the map needs to redraw its content (this usually happens
+// on map zoom or load). Very useful for creating custom overlays.
+// @event load: Event
+// Fired when the map is initialized (when its center and zoom are set
+// for the first time).
+// @event zoomstart: Event
+// Fired when the map zoom is about to change (e.g. before zoom animation).
+// @event movestart: Event
+// Fired when the view of the map starts changing (e.g. user starts dragging the map).
+// @event zoom: Event
+// Fired repeatedly during any change in zoom level,
+// including zoom and fly animations.
+// @event move: Event
+// Fired repeatedly during any movement of the map,
+// including pan and fly animations.
+// @event zoomend: Event
+// Fired when the map zoom changed, after any animations.
+// @event moveend: Event
+// Fired when the center of the map stops changing
+// (e.g. user stopped dragging the map or after non-centered zoom).
+// @event worldcopyjump: WorldCopyJumpEvent
+// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
+// or more world widths.
+// @event zoomlevelschange: Event
+// Fired when the number of zoomlevels on the map is changed due
+// to adding or removing a layer.
+
+// @section Location events
+// @event locationerror: ErrorEvent
+// Fired when geolocation (using the [`locate`](#map-locate) method) failed.
+// @event locationfound: LocationEvent
+// Fired when geolocation (using the [`locate`](#map-locate) method)
+// went successfully.
+
+// @section Interaction events
+// @event click: PointerEvent
+// Fired when the user clicks (or taps) the map.
+// @event dblclick: PointerEvent
+// Fired when the user double-clicks (or double-taps) the map.
+// @event pointerdown: PointerEvent
+// Fired when the user pushes the pointer on the map.
+// @event pointerup: PointerEvent
+// Fired when the user releases the pointer on the map.
+// @event pointerover: PointerEvent
+// Fired when the pointer enters the map.
+// @event pointerout: PointerEvent
+// Fired when the pointer leaves the map.
+// @event pointermove: PointerEvent
+// Fired while the pointer moves over the map.
+// @event contextmenu: PointerEvent
+// Fired when the user pushes the right mouse button on the map, prevents
+// default browser context menu from showing if there are listeners on
+// this event. Also fired on mobile when the user holds a single touch
+// for a second (also called long press).
+// @event keypress: KeyboardEvent
+// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
+// @event keydown: KeyboardEvent
+// Fired when the user presses a key from the keyboard while the map is focused. Unlike the `keypress` event,
+// the `keydown` event is fired for keys that produce a character value and for keys
+// that do not produce a character value.
+// @event keyup: KeyboardEvent
+// Fired when the user releases a key from the keyboard while the map is focused.
+// @event preclick: PointerEvent
+// Fired before pointer click on the map (sometimes useful when you
+// want something to happen on click before any existing click
+// handlers start running).
+
+// @section Other Events
+// @event zoomanim: ZoomAnimEvent
+// Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
+
 /*
  * @class LeafletMap
  * @inherits Evented
@@ -795,9 +898,6 @@ export class LeafletMap extends Evented {
 			}
 		}
 
-		// @section Map state change events
-		// @event resize: ResizeEvent
-		// Fired when the map is resized.
 		return this.fire('resize', {
 			oldSize,
 			newSize
@@ -882,9 +982,6 @@ export class LeafletMap extends Evented {
 			this.fitWorld();
 		}
 
-		// @section Location events
-		// @event locationerror: ErrorEvent
-		// Fired when geolocation (using the [`locate`](#map-locate) method) failed.
 		this.fire('locationerror', {
 			code: c,
 			message: `Geolocation error: ${message}.`
@@ -917,17 +1014,8 @@ export class LeafletMap extends Evented {
 			}
 		}
 
-		// @event locationfound: LocationEvent
-		// Fired when geolocation (using the [`locate`](#map-locate) method)
-		// went successfully.
 		this.fire('locationfound', data);
 	}
-
-	// @section Layer events
-	// @event layeradd: LayerEvent
-	// Fired when a new layer is added to the map.
-	// @event layerremove: LayerEvent
-	// Fired when some layer is removed from the map
 
 	// @section Methods for Layers and Controls
 	// @method addLayer(layer: Layer): this
@@ -1147,9 +1235,6 @@ export class LeafletMap extends Evented {
 		clearTimeout(this._sizeTimer);
 
 		if (this._loaded) {
-			// @section Map state change events
-			// @event unload: Event
-			// Fired when the map is destroyed with [remove](#map-remove) method.
 			this.fire('unload');
 		}
 
@@ -1566,8 +1651,6 @@ export class LeafletMap extends Evented {
 
 
 	// private methods that modify map state
-
-	// @section Map state change events
 	_resetView(center, zoom, noMoveStart) {
 		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
@@ -1583,24 +1666,14 @@ export class LeafletMap extends Evented {
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
-		// @event viewreset: Event
-		// Fired when the map needs to redraw its content (this usually happens
-		// on map zoom or load). Very useful for creating custom overlays.
 		this.fire('viewreset');
 
-		// @event load: Event
-		// Fired when the map is initialized (when its center and zoom are set
-		// for the first time).
 		if (loading) {
 			this.fire('load');
 		}
 	}
 
 	_moveStart(zoomChanged, noMoveStart) {
-		// @event zoomstart: Event
-		// Fired when the map zoom is about to change (e.g. before zoom animation).
-		// @event movestart: Event
-		// Fired when the view of the map starts changing (e.g. user starts dragging the map).
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
@@ -1621,16 +1694,10 @@ export class LeafletMap extends Evented {
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		if (!suppressEvent) {
-			// @event zoom: Event
-			// Fired repeatedly during any change in zoom level,
-			// including zoom and fly animations.
 			if (zoomChanged || (data?.pinch)) {	// Always fire 'zoom' if pinching because #3530
 				this.fire('zoom', data);
 			}
 
-			// @event move: Event
-			// Fired repeatedly during any movement of the map,
-			// including pan and fly animations.
 			this.fire('move', data);
 		} else if (data?.pinch) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
@@ -1639,15 +1706,10 @@ export class LeafletMap extends Evented {
 	}
 
 	_moveEnd(zoomChanged) {
-		// @event zoomend: Event
-		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
 
-		// @event moveend: Event
-		// Fired when the center of the map stops changing
-		// (e.g. user stopped dragging the map or after non-centered zoom).
 		return this.fire('moveend');
 	}
 
@@ -1677,9 +1739,6 @@ export class LeafletMap extends Evented {
 		if (worlds) {
 			DomUtil.setPosition(this._mapPane, pos);
 
-			// @event worldcopyjump: WorldCopyJumpEvent
-			// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
-			// or more world widths.
 			this.fire('worldcopyjump', {worlds});
 		}
 		return pos;
@@ -1723,10 +1782,6 @@ export class LeafletMap extends Evented {
 		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
 		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
 
-		// @section Map state change events
-		// @event zoomlevelschange: Event
-		// Fired when the number of zoomlevels on the map is changed due
-		// to adding or removing a layer.
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire('zoomlevelschange');
 		}
@@ -1756,41 +1811,12 @@ export class LeafletMap extends Evented {
 	}
 
 	// DOM event handling
-
-	// @section Interaction events
 	_initEvents(remove) {
 		this._targets = {};
 		this._targets[Util.stamp(this._container)] = this;
 
 		const onOff = remove ? DomEvent.off : DomEvent.on;
 
-		// @event click: PointerEvent
-		// Fired when the user clicks (or taps) the map.
-		// @event dblclick: PointerEvent
-		// Fired when the user double-clicks (or double-taps) the map.
-		// @event pointerdown: PointerEvent
-		// Fired when the user pushes the pointer on the map.
-		// @event pointerup: PointerEvent
-		// Fired when the user releases the pointer on the map.
-		// @event pointerover: PointerEvent
-		// Fired when the pointer enters the map.
-		// @event pointerout: PointerEvent
-		// Fired when the pointer leaves the map.
-		// @event pointermove: PointerEvent
-		// Fired while the pointer moves over the map.
-		// @event contextmenu: PointerEvent
-		// Fired when the user pushes the right mouse button on the map, prevents
-		// default browser context menu from showing if there are listeners on
-		// this event. Also fired on mobile when the user holds a single touch
-		// for a second (also called long press).
-		// @event keypress: KeyboardEvent
-		// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
-		// @event keydown: KeyboardEvent
-		// Fired when the user presses a key from the keyboard while the map is focused. Unlike the `keypress` event,
-		// the `keydown` event is fired for keys that produce a character value and for keys
-		// that do not produce a character value.
-		// @event keyup: KeyboardEvent
-		// Fired when the user releases a key from the keyboard while the map is focused.
 		onOff(this._container, 'click dblclick pointerdown pointerup ' +
 			'pointerover pointerout pointermove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
 
@@ -1886,10 +1912,6 @@ export class LeafletMap extends Evented {
 
 		if (type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
-			// @event preclick: PointerEvent
-			// Fired before pointer click on the map (sometimes useful when you
-			// want something to happen on click before any existing click
-			// handlers start running).
 			this._fireDOMEvent(e, 'preclick', canvasTargets);
 		}
 
@@ -2190,9 +2212,6 @@ export class LeafletMap extends Evented {
 			this._mapPane.classList.add('leaflet-zoom-anim');
 		}
 
-		// @section Other Events
-		// @event zoomanim: ZoomAnimEvent
-		// Fired at least once per zoom animation. For continuous zoom, like pinch zooming, fired once per frame during zoom.
 		this.fire('zoomanim', {
 			center,
 			zoom,

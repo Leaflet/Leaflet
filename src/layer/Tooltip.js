@@ -99,19 +99,11 @@ export class Tooltip extends DivOverlay {
 		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipopen: TooltipEvent
-		// Fired when a tooltip is opened in the map.
 		map.fire('tooltipopen', {tooltip: this});
 
 		if (this._source) {
 			this.addEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipopen: TooltipEvent
-			// Fired when a tooltip bound to this layer is opened.
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
 	}
@@ -119,19 +111,11 @@ export class Tooltip extends DivOverlay {
 	onRemove(map) {
 		super.onRemove(map);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipclose: TooltipEvent
-		// Fired when a tooltip in the map is closed.
 		map.fire('tooltipclose', {tooltip: this});
 
 		if (this._source) {
 			this.removeEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipclose: TooltipEvent
-			// Fired when a tooltip bound to this layer is closed.
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
 	}

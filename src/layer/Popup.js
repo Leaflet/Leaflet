@@ -159,17 +159,9 @@ export class Popup extends DivOverlay {
 	onAdd(map) {
 		super.onAdd(map);
 
-		// @namespace LeafletMap
-		// @section Popup events
-		// @event popupopen: PopupEvent
-		// Fired when a popup is opened in the map
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
-			// @namespace Layer
-			// @section Popup events
-			// @event popupopen: PopupEvent
-			// Fired when a popup bound to this layer is opened
 			this._source.fire('popupopen', {popup: this}, true);
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
@@ -182,17 +174,9 @@ export class Popup extends DivOverlay {
 	onRemove(map) {
 		super.onRemove(map);
 
-		// @namespace LeafletMap
-		// @section Popup events
-		// @event popupclose: PopupEvent
-		// Fired when a popup in the map is closed
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
-			// @namespace Layer
-			// @section Popup events
-			// @event popupclose: PopupEvent
-			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
 			if (this._source._togglesPopupOnClick()) {
 				this._source.off('preclick', DomEvent.stopPropagation);
@@ -329,10 +313,6 @@ export class Popup extends DivOverlay {
 			dy = containerPos.y - paddingTL.y;
 		}
 
-		// @namespace LeafletMap
-		// @section Popup events
-		// @event autopanstart: Event
-		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
 			// Track that we're autopanning, as this function will be re-ran on moveend
 			if (this.options.keepInView) {

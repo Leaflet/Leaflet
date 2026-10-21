@@ -17,6 +17,24 @@ const defaultOptions = {
 	bubblingPointerEvents: true
 };
 
+// @section
+// @event add: Event
+// Fired after the layer is added to a map
+// @event remove: Event
+// Fired after the layer is removed from a map
+
+// @section Popup events
+// @event popupopen: PopupEvent
+// Fired when a popup bound to this layer is opened
+// @event popupclose: PopupEvent
+// Fired when a popup bound to this layer is closed
+
+// @section Tooltip events
+// @event tooltipopen: TooltipEvent
+// Fired when a tooltip bound to this layer is opened.
+// @event tooltipclose: TooltipEvent
+// Fired when a tooltip bound to this layer is closed.
+
 /*
  * @class Layer
  * @inherits Evented
@@ -32,12 +50,6 @@ const defaultOptions = {
  * layer.addTo(map);
  * layer.remove();
  * ```
- *
- * @event add: Event
- * Fired after the layer is added to a map
- *
- * @event remove: Event
- * Fired after the layer is removed from a map
  */
 
 

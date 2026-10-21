@@ -323,15 +323,6 @@ export class LayersControl extends Control {
 
 		const obj = this._getLayer(Util.stamp(e.target));
 
-		// @namespace LeafletMap
-		// @section Layer events
-		// @event baselayerchange: LayersControlEvent
-		// Fired when the base layer is changed through the [layers control](#control-layers).
-		// @event overlayadd: LayersControlEvent
-		// Fired when an overlay is selected through the [layers control](#control-layers).
-		// @event overlayremove: LayersControlEvent
-		// Fired when an overlay is deselected through the [layers control](#control-layers).
-		// @namespace LayersControl
 		const type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);

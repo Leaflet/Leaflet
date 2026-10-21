@@ -32,6 +32,10 @@ const defaultOptions = {
 	content: ''
 };
 
+// @section DivOverlay events
+// @event contentupdate: Event
+// Fired when the content of the overlay is updated
+
 /*
  * @class DivOverlay
  * @inherits Interactive layer
@@ -283,10 +287,6 @@ export class DivOverlay extends LayerBase {
 			node.appendChild(content);
 		}
 
-		// @namespace DivOverlay
-		// @section DivOverlay events
-		// @event contentupdate: Event
-		// Fired when the content of the overlay is updated
 		this.fire('contentupdate');
 	}
 

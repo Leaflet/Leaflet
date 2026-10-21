@@ -47,6 +47,12 @@ const defaultOptions = {
 	decoding: 'auto'
 };
 
+// @section
+// @event load: Event
+// Fired when the ImageOverlay layer has loaded its image
+// @event error: Event
+// Fired when the ImageOverlay layer fails to load its image
+
 /*
  * @class ImageOverlay
  * @inherits Interactive layer
@@ -208,8 +214,6 @@ export class ImageOverlay extends Layer {
 		if (this._zoomAnimated) { img.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
-		// @event load: Event
-		// Fired when the ImageOverlay layer has loaded its image
 		img.onload = this.fire.bind(this, 'load');
 		img.onerror = this._overlayOnError.bind(this);
 
@@ -263,8 +267,6 @@ export class ImageOverlay extends Layer {
 	}
 
 	_overlayOnError() {
-		// @event error: Event
-		// Fired when the ImageOverlay layer fails to load its image
 		this.fire('error');
 
 		const errorUrl = this.options.errorOverlayUrl;

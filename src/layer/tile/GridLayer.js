@@ -83,6 +83,20 @@ const defaultOptions = {
 	keepBuffer: 2
 };
 
+// @section
+// @event loading: Event
+// Fired when the grid layer starts loading tiles.
+// @event tileunload: TileEvent
+// Fired when a tile is removed (e.g. when a tile goes off the screen).
+// @event tileloadstart: TileEvent
+// Fired when a tile is requested and starts loading.
+// @event tileerror: TileErrorEvent
+// Fired when there is an error loading a tile.
+// @event tileload: TileEvent
+// Fired when a tile loads.
+// @event load: Event
+// Fired when the grid layer loaded all visible tiles.
+
 /*
  * @class GridLayer
  * @inherits Layer
@@ -719,8 +733,6 @@ export class GridLayer extends Layer {
 			// if it's the first batch of tiles to load
 			if (!this._loading) {
 				this._loading = true;
-				// @event loading: Event
-				// Fired when the grid layer starts loading tiles.
 				this.fire('loading');
 			}
 
@@ -797,8 +809,6 @@ export class GridLayer extends Layer {
 
 		delete this._tiles[key];
 
-		// @event tileunload: TileEvent
-		// Fired when a tile is removed (e.g. when a tile goes off the screen).
 		this.fire('tileunload', {
 			tile: tile.el,
 			coords: this._keyToTileCoords(key)
@@ -838,8 +848,6 @@ export class GridLayer extends Layer {
 		};
 
 		container.appendChild(tile);
-		// @event tileloadstart: TileEvent
-		// Fired when a tile is requested and starts loading.
 		this.fire('tileloadstart', {
 			tile,
 			coords
@@ -848,8 +856,6 @@ export class GridLayer extends Layer {
 
 	_tileReady(coords, err, tile) {
 		if (err) {
-			// @event tileerror: TileErrorEvent
-			// Fired when there is an error loading a tile.
 			this.fire('tileerror', {
 				error: err,
 				tile,
@@ -875,8 +881,6 @@ export class GridLayer extends Layer {
 		if (!err) {
 			tile.el.classList.add('leaflet-tile-loaded');
 
-			// @event tileload: TileEvent
-			// Fired when a tile loads.
 			this.fire('tileload', {
 				tile: tile.el,
 				coords
@@ -885,8 +889,6 @@ export class GridLayer extends Layer {
 
 		if (this._noTilesToLoad()) {
 			this._loading = false;
-			// @event load: Event
-			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
 
 			if (!this._map._fadeAnimated) {

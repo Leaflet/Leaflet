@@ -34,6 +34,10 @@ const defaultOptions = {
 	playsInline: true
 };
 
+// @section
+// @event load: Event
+// Fired when the video has finished loading the first frame
+
 /*
  * @class VideoOverlay
  * @inherits ImageOverlay
@@ -75,8 +79,6 @@ export class VideoOverlay extends ImageOverlay {
 			}
 		});
 
-		// @event load: Event
-		// Fired when the video has finished loading the first frame
 		vid.onloadeddata = this.fire.bind(this, 'load');
 
 		if (wasElementSupplied) {

@@ -66,6 +66,10 @@ function isOSMUrl(url) {
 // OSM tiles are upgraded to HTTPS so that the referrer policy works
 const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : url);
 
+// @section
+// @event tileabort: TileEvent
+// Fired when a tile was loading but is now not wanted.
+
 /*
  * @class TileLayer
  * @inherits GridLayer
@@ -273,8 +277,6 @@ export class TileLayer extends GridLayer {
 					const coords = this._tiles[i].coords;
 					tile.remove();
 					delete this._tiles[i];
-					// @event tileabort: TileEvent
-					// Fired when a tile was loading but is now not wanted.
 					this.fire('tileabort', {
 						tile,
 						coords

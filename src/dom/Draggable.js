@@ -16,6 +16,19 @@ const defaultOptions = {
 	clickTolerance: 3
 };
 
+// @section
+// @event down: Event
+// Fired when a drag is about to start.
+// @event dragstart: Event
+// Fired when a drag starts
+// @event predrag: Event
+// Fired continuously during dragging *before* each corresponding
+// update of the element's position.
+// @event drag: Event
+// Fired continuously during dragging.
+// @event dragend: DragEndEvent
+// Fired when the drag ends.
+
 /*
  * @class Draggable
  * @inherits Evented
@@ -102,8 +115,6 @@ export class Draggable extends Evented {
 
 		if (this._moving) { return; }
 
-		// @event down: Event
-		// Fired when a drag is about to start.
 		this.fire('down');
 
 		const sizedParent = DomUtil.getSizedParentNode(this._element);
@@ -140,8 +151,6 @@ export class Draggable extends Evented {
 		}
 
 		if (!this._moved) {
-			// @event dragstart: Event
-			// Fired when a drag starts
 			this.fire('dragstart');
 
 			this._moved = true;
@@ -162,9 +171,6 @@ export class Draggable extends Evented {
 	_updatePosition() {
 		const e = {originalEvent: this._lastEvent};
 
-		// @event predrag: Event
-		// Fired continuously during dragging *before* each corresponding
-		// update of the element's position.
 		this.fire('predrag', e);
 
 		// pointer events can have fractional coordinates; snap them to device pixels, since an edge in the middle of
@@ -173,8 +179,6 @@ export class Draggable extends Evented {
 		this._newPos = this._newPos.multiplyBy(dpr)._round()._divideBy(dpr);
 		DomUtil.setPosition(this._element, this._newPos);
 
-		// @event drag: Event
-		// Fired continuously during dragging.
 		this.fire('drag', e);
 	}
 
@@ -202,8 +206,6 @@ export class Draggable extends Evented {
 		Draggable._dragging = false;
 
 		if (fireDragend) {
-			// @event dragend: DragEndEvent
-			// Fired when the drag ends.
 			this.fire('dragend', {
 				noInertia,
 				distance: this._newPos.distanceTo(this._startPos)
