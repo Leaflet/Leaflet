@@ -2,7 +2,7 @@ import {DivIcon, DomUtil, FeatureGroup, DefaultIcon, LeafletMap, Marker, Point, 
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../SpecHelper.js';
+import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('Popup', () => {
 	let container, map;
@@ -464,7 +464,7 @@ describe('Popup', () => {
 					done();
 				}
 			});
-			const mouse = hand.growFinger(...pointerEventType);
+			const mouse = hand.growFinger('pointer', {pointerType: 'mouse'});
 			mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 				.down().moveBy(10, 10, 20).up();
 		});

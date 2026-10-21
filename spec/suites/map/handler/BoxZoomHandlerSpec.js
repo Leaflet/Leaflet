@@ -1,7 +1,7 @@
 import {LeafletMap, BoxZoomHandler} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 import Hand from 'prosthetic-hand';
 
 describe('BoxZoomHandler', () => {
@@ -16,7 +16,7 @@ describe('BoxZoomHandler', () => {
 			zoomAnimation: false
 		});
 		hand = new Hand({timing: 'fastframe'});
-		finger = hand.growFinger(...pointerEventType);
+		finger = hand.growFinger('pointer', {pointerType: 'mouse'});
 	});
 
 	afterEach(() => {

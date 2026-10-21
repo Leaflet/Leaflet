@@ -372,7 +372,7 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 	});
 
-	it.skipIfNotTouch('is opened when tapping on touch', () => {
+	it('is opened when tapping on touch', () => {
 		const layer = new Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
@@ -381,7 +381,7 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 	});
 
-	it.skipIfNotTouch('is closed if not permanent when clicking on the map elsewhere on touch', () => {
+	it('is closed if not permanent when clicking on the map elsewhere on touch', () => {
 		const layer = new Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');

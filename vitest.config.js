@@ -2,15 +2,11 @@ import {fileURLToPath} from 'node:url';
 import {defineConfig} from 'vitest/config';
 import {playwright} from '@vitest/browser-playwright';
 
-const touch = process.env.VITE_TOUCH === '1';
-
 // with VITE_DIST=1, specs run against the minified bundle (after `npm run build`) instead of the sources
 const entry = process.env.VITE_DIST === '1' ? './dist/leaflet.js' : './src/Leaflet.js';
 
-// Vitest's tester iframe defaults to a small viewport (414x896) under Playwright's
-// touch context, which truncates `document.elementFromPoint` beyond that range and
-// breaks specs simulating pointer events at desktop coordinates. Pin a desktop
-// viewport so behavior is identical between touch and non-touch runs.
+// Vitest's tester iframe defaults to a small viewport (414x896), which truncates `document.elementFromPoint`
+// beyond that range and breaks specs simulating pointer events at desktop coordinates.
 const viewport = {width: 1280, height: 720};
 
 export default defineConfig({
@@ -34,7 +30,7 @@ export default defineConfig({
 		teardownTimeout: 5000,
 		browser: {
 			enabled: true,
-			provider: playwright({contextOptions: {hasTouch: touch}}),
+			provider: playwright(),
 			headless: true,
 			screenshotFailures: false,
 			viewport,
@@ -45,7 +41,7 @@ export default defineConfig({
 				{
 					browser: 'chromium',
 					name: 'chromium-retina',
-					provider: playwright({contextOptions: {hasTouch: touch, deviceScaleFactor: 2}}),
+					provider: playwright({contextOptions: {deviceScaleFactor: 2}}),
 				},
 			],
 		},

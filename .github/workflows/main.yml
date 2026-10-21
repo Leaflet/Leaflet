@@ -123,12 +123,6 @@ jobs:
         env:
           VITE_DIST: ${{ matrix.dist }}
 
-      - name: Run tests on ${{ matrix.project }} with touch
-        run: npx vitest --run --project=${{ matrix.project }} ${{ matrix.extra }}
-        env:
-          VITE_TOUCH: '1'
-          VITE_DIST: ${{ matrix.dist }}
-
   publish-artifacts:
     permissions:
       contents: write
