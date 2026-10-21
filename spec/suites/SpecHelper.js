@@ -1,5 +1,3 @@
-import {DomEvent} from 'leaflet';
-
 const runAsTouchBrowser = import.meta.env.VITE_TOUCH === '1';
 
 export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
@@ -24,6 +22,4 @@ export function removeMapContainer(map, container) {
 	if (container) {
 		document.body.removeChild(container);
 	}
-
-	DomEvent.PointerEvents.cleanupPointers();
 }
