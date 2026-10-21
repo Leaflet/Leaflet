@@ -35,7 +35,7 @@ export class MarkerDrag extends Handler {
 		const icon = this._marker._icon;
 
 		if (!this._draggable) {
-			this._draggable = new Draggable(icon, icon, true);
+			this._draggable = new Draggable(icon);
 		}
 
 		this._draggable.on({

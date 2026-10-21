@@ -32,16 +32,18 @@ export class Draggable extends Evented {
 		clickTolerance: 3
 	};
 
-	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
+	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	constructor(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, options) {
+		if (typeof options === 'boolean') {
+			throw new Error('Draggable: the preventOutline argument is removed in Leaflet 2. Pass options as the third argument.');
+		}
 		super();
 
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
-		this._preventOutline = preventOutline;
 
 		this.callInitHooks();
 	}
@@ -88,10 +90,6 @@ export class Draggable extends Evented {
 
 		if (Draggable._dragging || e.shiftKey || (e.button !== 0 && e.pointerType !== 'touch')) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
-
-		if (this._preventOutline) {
-			DomUtil.preventOutline(this._element);
-		}
 
 		DomUtil.disableImageDrag();
 		DomUtil.disableTextSelection();
