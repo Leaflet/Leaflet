@@ -119,7 +119,7 @@ export class Icon extends Class {
 			return null;
 		}
 
-		const img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
+		const img = this._createImg(src, oldIcon instanceof HTMLImageElement ? oldIcon : null);
 		this._setIconStyles(img, name);
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {

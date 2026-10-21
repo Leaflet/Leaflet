@@ -114,7 +114,7 @@ export class DivOverlay extends LayerBase {
 		}
 
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 0;
+			this._container.style.opacity = '0';
 		}
 
 		clearTimeout(this._removeTimeout);
@@ -122,7 +122,7 @@ export class DivOverlay extends LayerBase {
 		this.update();
 
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 1;
+			this._container.style.opacity = '1';
 		}
 
 		this.bringToFront();
@@ -135,7 +135,7 @@ export class DivOverlay extends LayerBase {
 
 	onRemove(map) {
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 0;
+			this._container.style.opacity = '0';
 			this._removeTimeout = setTimeout(() => this._container.remove(), 200);
 		} else {
 			this._container.remove();

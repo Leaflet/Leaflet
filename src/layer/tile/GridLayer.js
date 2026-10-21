@@ -305,7 +305,7 @@ export class GridLayer extends Layer {
 
 	_updateZIndex() {
 		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
-			this._container.style.zIndex = this.options.zIndex;
+			this._container.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
 
@@ -332,7 +332,7 @@ export class GridLayer extends Layer {
 	_updateOpacity() {
 		if (!this._map) { return; }
 
-		this._container.style.opacity = this.options.opacity;
+		this._container.style.opacity = `${this.options.opacity}`;
 
 		const now = Date.now();
 		let nextFrame = false,
@@ -343,7 +343,7 @@ export class GridLayer extends Layer {
 
 			const fade = Math.min(1, (now - tile.loaded) / 200);
 
-			tile.el.style.opacity = fade;
+			tile.el.style.opacity = `${fade}`;
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
@@ -389,7 +389,7 @@ export class GridLayer extends Layer {
 		for (let z of Object.keys(this._levels)) {
 			z = Number(z);
 			if (this._levels[z].el.children.length || z === zoom) {
-				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+				this._levels[z].el.style.zIndex = `${maxZoom - Math.abs(zoom - z)}`;
 				this._onUpdateLevel(z);
 			} else {
 				this._levels[z].el.remove();
@@ -406,7 +406,7 @@ export class GridLayer extends Layer {
 			level = this._levels[zoom] = {};
 
 			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = maxZoom;
+			level.el.style.zIndex = `${maxZoom}`;
 
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
@@ -830,7 +830,7 @@ export class GridLayer extends Layer {
 
 		tile.loaded = Date.now();
 		if (this._map._fadeAnimated) {
-			tile.el.style.opacity = 0;
+			tile.el.style.opacity = '0';
 			cancelAnimationFrame(this._fadeFrame);
 			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
 		} else {

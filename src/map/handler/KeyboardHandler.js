@@ -33,7 +33,7 @@ export class KeyboardHandler extends Handler {
 
 		// make the container focusable by tabbing
 		if (container.tabIndex <= 0) {
-			container.tabIndex = '0';
+			container.tabIndex = 0;
 		}
 
 		// add aria-attribute for keyboard shortcuts to the container
