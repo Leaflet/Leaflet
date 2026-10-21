@@ -182,7 +182,7 @@ export class LeafletMap extends Evented {
 		// devices. Enabled by default.
 		inertia: true,
 
-		// @option inertiaDeceleration: Number = 3000
+		// @option inertiaDeceleration: Number = 3400
 		// The rate with which the inertial movement slows down, in pixels/second².
 		inertiaDeceleration: 3400, // px/s^2
 
