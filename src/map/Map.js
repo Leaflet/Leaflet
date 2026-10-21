@@ -197,7 +197,8 @@ export class LeafletMap extends Evented {
 		// @option worldCopyJump: Boolean = false
 		// With this option enabled, the map tracks when you pan to another "copy"
 		// of the world and seamlessly jumps to the original one so that all overlays
-		// like markers and vector layers are still visible.
+		// like markers and vector layers are still visible. A map with an infinite
+		// CRS, such as `SimpleCRS`, does not jump, as it has no copies of the world.
 		worldCopyJump: false,
 
 		// @option maxBoundsViscosity: Number = 0.0
@@ -1659,7 +1660,8 @@ export class LeafletMap extends Evented {
 	// Shifts a map pane position by whole world widths to bring the view center back into the original world, moving
 	// the pane and firing `worldcopyjump` if that makes it jump from where it is now.
 	_wrapWorldCopy(pos = this._getMapPanePos()) {
-		if (!this._loaded || !this.options.worldCopyJump) { return pos; }
+		// an infinite CRS has no world to wrap around, and no pixel world bounds either
+		if (!this._loaded || !this.options.worldCopyJump || this.options.crs.infinite) { return pos; }
 
 		const width = this.getPixelWorldBounds().getSize().x,
 		x = pos.x - width * Math.round((pos.x + this.latLngToLayerPoint([0, 0]).x - this.getSize().x / 2) / width),
