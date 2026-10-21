@@ -201,7 +201,7 @@ export class Tooltip extends DivOverlay {
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			this._container.style.opacity = opacity;
+			this._container.style.opacity = `${opacity}`;
 		}
 	}
 

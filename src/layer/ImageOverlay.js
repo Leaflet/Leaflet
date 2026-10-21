@@ -202,7 +202,7 @@ export class ImageOverlay extends Layer {
 	}
 
 	_initImage() {
-		const wasElementSupplied = this._url.tagName === 'IMG';
+		const wasElementSupplied = this._url instanceof HTMLImageElement;
 		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
 		img.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
@@ -251,12 +251,12 @@ export class ImageOverlay extends Layer {
 	}
 
 	_updateOpacity() {
-		this._image.style.opacity = this.options.opacity;
+		this._image.style.opacity = `${this.options.opacity}`;
 	}
 
 	_updateZIndex() {
 		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
-			this._image.style.zIndex = this.options.zIndex;
+			this._image.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
 
