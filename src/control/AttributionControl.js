@@ -5,6 +5,20 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 
+// @namespace AttributionControl
+
+// @section
+// @aka AttributionControl options
+const defaultOptions = {
+	// @option position: String = 'bottomright'
+	// The position of the control (one of the map corners). Possible values are `'topleft'`,
+	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	position: 'bottomright',
+
+	// @option prefix: String|false = 'Leaflet'
+	// The HTML text shown before the attributions. Pass `false` to disable.
+	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+};
 
 /*
  * @class AttributionControl
@@ -16,22 +30,12 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // @namespace AttributionControl
 // @constructor AttributionControl(options: AttributionControl options)
 // Creates an attribution control.
+
 export class AttributionControl extends Control {
 
 	static initHooks = true;
 
-	// @section
-	// @aka AttributionControl options
-	static defaultOptions = {
-		// @option position: String = 'bottomright'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'bottomright',
-
-		// @option prefix: String|false = 'Leaflet'
-		// The HTML text shown before the attributions. Pass `false` to disable.
-		prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(options) {
 		super(options);

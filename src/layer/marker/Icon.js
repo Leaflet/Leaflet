@@ -2,6 +2,58 @@ import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
 
+// @namespace Icon
+
+/* @section
+ * @aka Icon options
+ *
+ * @option iconUrl: String = null
+ * **(required)** The URL to the icon image (absolute or relative to your script path).
+ *
+ * @option iconRetinaUrl: String = null
+ * The URL to a retina sized version of the icon image (absolute or relative to your
+ * script path). Used for Retina screen devices.
+ *
+ * @option iconSize: Point = null
+ * Size of the icon image in pixels.
+ *
+ * @option iconAnchor: Point = null
+ * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
+ * will be aligned so that this point is at the marker's geographical location. Centered
+ * by default if size is specified, also can be set in CSS with negative margins.
+ *
+ * @option popupAnchor: Point = [0, 0]
+ * The coordinates of the point from which popups will "open", relative to the icon anchor.
+ *
+ * @option tooltipAnchor: Point = [0, 0]
+ * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
+ *
+ * @option shadowUrl: String = null
+ * The URL to the icon shadow image. If not specified, no shadow image will be created.
+ *
+ * @option shadowRetinaUrl: String = null
+ *
+ * @option shadowSize: Point = null
+ * Size of the shadow image in pixels.
+ *
+ * @option shadowAnchor: Point = null
+ * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same
+ * as iconAnchor if not specified).
+ *
+ * @option className: String = ''
+ * A custom class name to assign to both icon and shadow images. Empty by default.
+ */
+const defaultOptions = {
+	popupAnchor: [0, 0],
+	tooltipAnchor: [0, 0],
+
+	// @option crossOrigin: Boolean|String = false
+	// Whether the crossOrigin attribute will be added to the tiles.
+	// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+	// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	crossOrigin: false
+};
+
 /*
  * @class Icon
  *
@@ -31,59 +83,12 @@ import {Point} from '../../geometry/Point.js';
 
 // @constructor Icon(options: Icon options)
 // Creates an icon instance with the given options.
+
 export class Icon extends Class {
 
 	static initHooks = true;
 
-	/* @section
-	 * @aka Icon options
-	 *
-	 * @option iconUrl: String = null
-	 * **(required)** The URL to the icon image (absolute or relative to your script path).
-	 *
-	 * @option iconRetinaUrl: String = null
-	 * The URL to a retina sized version of the icon image (absolute or relative to your
-	 * script path). Used for Retina screen devices.
-	 *
-	 * @option iconSize: Point = null
-	 * Size of the icon image in pixels.
-	 *
-	 * @option iconAnchor: Point = null
-	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
-	 * will be aligned so that this point is at the marker's geographical location. Centered
-	 * by default if size is specified, also can be set in CSS with negative margins.
-	 *
-	 * @option popupAnchor: Point = [0, 0]
-	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
-	 *
-	 * @option tooltipAnchor: Point = [0, 0]
-	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
-	 *
-	 * @option shadowUrl: String = null
-	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
-	 *
-	 * @option shadowRetinaUrl: String = null
-	 *
-	 * @option shadowSize: Point = null
-	 * Size of the shadow image in pixels.
-	 *
-	 * @option shadowAnchor: Point = null
-	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same
-	 * as iconAnchor if not specified).
-	 *
-	 * @option className: String = ''
-	 * A custom class name to assign to both icon and shadow images. Empty by default.
-	 */
-	static defaultOptions = {
-		popupAnchor: [0, 0],
-		tooltipAnchor: [0, 0],
-
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the tiles.
-		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(options) {
 		super();

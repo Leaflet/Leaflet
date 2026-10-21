@@ -3,6 +3,39 @@ import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
+// @namespace Tooltip
+
+// @section
+// @aka Tooltip options
+const defaultOptions = {
+	// @option pane: String = 'tooltipPane'
+	// `Map pane` where the tooltip will be added.
+	pane: 'tooltipPane',
+
+	// @option offset: Point = Point(0, 0)
+	// Optional offset of the tooltip position.
+	offset: [0, 0],
+
+	// @option direction: String = 'auto'
+	// Direction where to open the tooltip. Possible values are: `right`, `left`,
+	// `top`, `bottom`, `center`, `auto`.
+	// `auto` will dynamically switch between `right` and `left` according to the tooltip
+	// position on the map.
+	direction: 'auto',
+
+	// @option permanent: Boolean = false
+	// Whether to open the tooltip permanently or only on pointerover.
+	permanent: false,
+
+	// @option sticky: Boolean = false
+	// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
+	sticky: false,
+
+	// @option opacity: Number = 0.9
+	// Tooltip container opacity.
+	opacity: 0.9
+};
+
 /*
  * @class Tooltip
  * @inherits DivOverlay
@@ -57,38 +90,10 @@ import * as Util from '../core/Util.js';
 // @alternative
 // @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
+
 export class Tooltip extends DivOverlay {
 
-	// @section
-	// @aka Tooltip options
-	static defaultOptions = {
-		// @option pane: String = 'tooltipPane'
-		// `Map pane` where the tooltip will be added.
-		pane: 'tooltipPane',
-
-		// @option offset: Point = Point(0, 0)
-		// Optional offset of the tooltip position.
-		offset: [0, 0],
-
-		// @option direction: String = 'auto'
-		// Direction where to open the tooltip. Possible values are: `right`, `left`,
-		// `top`, `bottom`, `center`, `auto`.
-		// `auto` will dynamically switch between `right` and `left` according to the tooltip
-		// position on the map.
-		direction: 'auto',
-
-		// @option permanent: Boolean = false
-		// Whether to open the tooltip permanently or only on pointerover.
-		permanent: false,
-
-		// @option sticky: Boolean = false
-		// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
-		sticky: false,
-
-		// @option opacity: Number = 0.9
-		// Tooltip container opacity.
-		opacity: 0.9
-	};
+	static defaultOptions = defaultOptions;
 
 	onAdd(map) {
 		super.onAdd(map);

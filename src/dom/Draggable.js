@@ -5,6 +5,17 @@ import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 import * as PointerEvents from './DomEvent.PointerEvents.js';
 
+// @namespace Draggable
+
+const defaultOptions = {
+	// @section
+	// @aka Draggable options
+	// @option clickTolerance: Number = 3
+	// The max number of pixels a user can shift the pointer during a click
+	// for it to be considered a valid click (as opposed to a pointer drag).
+	clickTolerance: 3
+};
+
 /*
  * @class Draggable
  * @inherits Evented
@@ -23,14 +34,7 @@ export class Draggable extends Evented {
 
 	static initHooks = true;
 
-	static defaultOptions = {
-		// @section
-		// @aka Draggable options
-		// @option clickTolerance: Number = 3
-		// The max number of pixels a user can shift the pointer during a click
-		// for it to be considered a valid click (as opposed to a pointer drag).
-		clickTolerance: 3
-	};
+	static defaultOptions = defaultOptions;
 
 	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).

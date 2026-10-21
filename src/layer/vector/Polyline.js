@@ -7,6 +7,22 @@ import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
+// @namespace Polyline
+
+// @section
+// @aka Polyline options
+const defaultOptions = {
+	// @option smoothFactor: Number = 0.5
+	// How much to simplify the polyline on each zoom level (Douglas–Peucker
+	// epsilon, in pixels). Higher values mean faster rendering but less
+	// accuracy; lower values mean more accuracy but slower rendering.
+	smoothFactor: 0.5,
+
+	// @option noClip: Boolean = false
+	// Disable polyline clipping.
+	noClip: false
+};
+
 /*
  * @class Polyline
  * @inherits Path
@@ -49,23 +65,12 @@ import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 // optionally an options object. You can create a `Polyline` object with
 // multiple separate lines (`MultiPolyline`) by passing an array of arrays
 // of geographic points.
+
 export class Polyline extends Path {
 
 	static initHooks = true;
 
-	// @section
-	// @aka Polyline options
-	static defaultOptions = {
-		// @option smoothFactor: Number = 0.5
-		// How much to simplify the polyline on each zoom level (Douglas–Peucker
-		// epsilon, in pixels). Higher values mean faster rendering but less
-		// accuracy; lower values mean more accuracy but slower rendering.
-		smoothFactor: 0.5,
-
-		// @option noClip: Boolean = false
-		// Disable polyline clipping.
-		noClip: false
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(latlngs, options) {
 		super();

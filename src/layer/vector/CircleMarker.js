@@ -4,6 +4,18 @@ import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
+// @namespace CircleMarker
+
+// @section
+// @aka CircleMarker options
+const defaultOptions = {
+	fill: true,
+
+	// @option radius: Number = 10
+	// Radius of the circle marker, in CSS pixels
+	radius: 10
+};
+
 
 /*
  * @class CircleMarker
@@ -14,19 +26,12 @@ import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
 // @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
+
 export class CircleMarker extends Path {
 
 	static initHooks = true;
 
-	// @section
-	// @aka CircleMarker options
-	static defaultOptions = {
-		fill: true,
-
-		// @option radius: Number = 10
-		// Radius of the circle marker, in CSS pixels
-		radius: 10
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(latlng, options) {
 		super();

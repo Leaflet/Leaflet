@@ -2,6 +2,49 @@ import {TileLayer} from './TileLayer.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
+// @namespace WMSTileLayer
+
+// @section
+// @aka WMSTileLayer options
+// If any custom options not documented here are used, they will be sent to the
+// WMS server as extra parameters in each request URL. This can be useful for
+// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
+const defaultWmsParams = {
+	service: 'WMS',
+	request: 'GetMap',
+
+	// @option layers: String = ''
+	// **(required)** Comma-separated list of WMS layers to show.
+	layers: '',
+
+	// @option styles: String = ''
+	// Comma-separated list of WMS styles.
+	styles: '',
+
+	// @option format: String = 'image/jpeg'
+	// WMS image format (use `'image/png'` for layers with transparency).
+	format: 'image/jpeg',
+
+	// @option transparent: Boolean = false
+	// If `true`, the WMS service will return images with transparency.
+	transparent: false,
+
+	// @option version: String = '1.1.1'
+	// Version of the WMS service to use
+	version: '1.1.1'
+};
+
+const defaultOptions = {
+	// @option crs: CRS = null
+	// Coordinate Reference System to use for the WMS requests, defaults to
+	// map CRS. Don't change this if you're not sure what it means.
+	crs: null,
+
+	// @option uppercase: Boolean = false
+	// If `true`, WMS request parameter keys will be uppercase.
+	uppercase: false
+};
+
 /*
  * @class WMSTileLayer
  * @inherits TileLayer
@@ -21,50 +64,14 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor WMSTileLayer(baseUrl: String, options: WMSTileLayer options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
+
 export class WMSTileLayer extends TileLayer {
 
 	static initHooks = true;
 
-	// @section
-	// @aka WMSTileLayer options
-	// If any custom options not documented here are used, they will be sent to the
-	// WMS server as extra parameters in each request URL. This can be useful for
-	// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
-	static defaultWmsParams = {
-		service: 'WMS',
-		request: 'GetMap',
+	static defaultWmsParams = defaultWmsParams;
 
-		// @option layers: String = ''
-		// **(required)** Comma-separated list of WMS layers to show.
-		layers: '',
-
-		// @option styles: String = ''
-		// Comma-separated list of WMS styles.
-		styles: '',
-
-		// @option format: String = 'image/jpeg'
-		// WMS image format (use `'image/png'` for layers with transparency).
-		format: 'image/jpeg',
-
-		// @option transparent: Boolean = false
-		// If `true`, the WMS service will return images with transparency.
-		transparent: false,
-
-		// @option version: String = '1.1.1'
-		// Version of the WMS service to use
-		version: '1.1.1'
-	};
-
-	static defaultOptions = {
-		// @option crs: CRS = null
-		// Coordinate Reference System to use for the WMS requests, defaults to
-		// map CRS. Don't change this if you're not sure what it means.
-		crs: null,
-
-		// @option uppercase: Boolean = false
-		// If `true`, WMS request parameter keys will be uppercase.
-		uppercase: false
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(url, options) {
 		super(url, options);

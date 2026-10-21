@@ -21,6 +21,214 @@ import {ScrollWheelZoomHandler} from './handler/ScrollWheelZoomHandler.js';
 import {TapHoldHandler} from './handler/TapHoldHandler.js';
 import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
+// @namespace LeafletMap
+
+const defaultOptions = {
+	// @section Map State Options
+	// @option crs: CRS = EPSG3857
+	// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
+	// sure what it means.
+	crs: EPSG3857,
+
+	// @option center: LatLng = undefined
+	// Initial geographic center of the map
+	center: undefined,
+
+	// @option zoom: Number = undefined
+	// Initial map zoom level
+	zoom: undefined,
+
+	// @option minZoom: Number = *
+	// Minimum zoom level of the map.
+	// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
+	// the lowest of their `minZoom` options will be used instead.
+	minZoom: undefined,
+
+	// @option maxZoom: Number = *
+	// Maximum zoom level of the map.
+	// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
+	// the highest of their `maxZoom` options will be used instead.
+	maxZoom: undefined,
+
+	// @option layers: Layer[] = []
+	// Array of layers that will be added to the map initially
+	layers: [],
+
+	// @option maxBounds: LatLngBounds = null
+	// When this option is set, the map restricts the view to the given
+	// geographical bounds, bouncing the user back if the user tries to pan
+	// outside the view. To set the restriction dynamically, use
+	// [`setMaxBounds`](#map-setmaxbounds) method.
+	maxBounds: undefined,
+
+	// @option renderer: Renderer = *
+	// The default method for drawing vector layers on the map. A new `SVG`
+	// renderer by default; pass `new Canvas()` to draw them on a canvas instead.
+	renderer: undefined,
+
+
+	// @section Animation Options
+	// @option zoomAnimation: Boolean = *
+	// Whether the map zoom animation is enabled.
+	// Animations are enabled by default unless the user has configured
+	// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
+	zoomAnimation: !DomUtil.reducedMotion,
+
+	// @option zoomAnimationThreshold: Number = 4
+	// Won't animate zoom if the zoom difference exceeds this value.
+	zoomAnimationThreshold: 4,
+
+	// @option fadeAnimation: Boolean = *
+	// Whether the tile fade animation is enabled.
+	// Animations are enabled by default unless the user has configured
+	// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
+	fadeAnimation: !DomUtil.reducedMotion,
+
+	// @option markerZoomAnimation: Boolean = true
+	// Whether markers animate their zoom with the zoom animation, if disabled
+	// they will disappear for the length of the animation.
+	markerZoomAnimation: true,
+
+	// @option transform3DLimit: Number = 2^23
+	// Defines the maximum size of a CSS translation transform. The default
+	// value should not be changed unless a web browser positions layers in
+	// the wrong place after doing a large `panBy`.
+	transform3DLimit: 8388608, // Precision limit of a 32-bit float
+
+	// @section Interaction Options
+	// @option zoomSnap: Number = 1
+	// Forces the map's zoom level to always be a multiple of this, particularly
+	// right after a [`fitBounds()`](#map-fitbounds) or a pinch-zoom.
+	// By default, the zoom level snaps to the nearest integer; lower values
+	// (e.g. `0.5` or `0.1`) allow for greater granularity. A value of `0`
+	// means the zoom level will not be snapped after `fitBounds` or a pinch-zoom.
+	zoomSnap: 1,
+
+	// @option zoomDelta: Number = 1
+	// Controls how much the map's zoom level will change after a
+	// [`zoomIn()`](#map-zoomin), [`zoomOut()`](#map-zoomout), pressing `+`
+	// or `-` on the keyboard, or using the [zoom controls](#control-zoom).
+	// Values smaller than `1` (e.g. `0.5`) allow for greater granularity.
+	zoomDelta: 1,
+
+	// @option trackResize: Boolean = true
+	// Whether the map automatically handles browser window resize to update itself.
+	trackResize: true,
+
+	// @option closePopupOnClick: Boolean = true
+	// Set it to `false` if you don't want popups to close when user clicks the map.
+	closePopupOnClick: true,
+
+	// @option boxZoom: Boolean = true
+	// Whether the map can be zoomed to a rectangular area specified by
+	// dragging the pointer while pressing the shift key.
+	boxZoom: true,
+
+	// @option doubleClickZoom: Boolean|String = true
+	// Whether the map can be zoomed in by double clicking on it and
+	// zoomed out by double clicking while holding shift. If passed
+	// `'center'`, double-click zoom will zoom to the center of the
+	//  view regardless of where the pointer was.
+	doubleClickZoom: true,
+
+	// @option dragging: Boolean = true
+	// Whether the map is draggable with pointer or not.
+	dragging: true,
+
+	// @section Panning Inertia Options
+	// @option inertia: Boolean = *
+	// If enabled, panning of the map will have an inertia effect where
+	// the map builds momentum while dragging and continues moving in
+	// the same direction for some time. Feels especially nice on touch
+	// devices. Enabled by default.
+	inertia: true,
+
+	// @option inertiaDeceleration: Number = 3400
+	// The rate with which the inertial movement slows down, in pixels/second².
+	inertiaDeceleration: 3400, // px/s^2
+
+	// @option inertiaMaxSpeed: Number = Infinity
+	// Max speed of the inertial movement, in pixels/second.
+	inertiaMaxSpeed: Infinity, // px/s
+
+	// @option easeLinearity: Number = 0.2
+	easeLinearity: 0.2,
+
+	// TODO refactor, move to CRS
+	// @option worldCopyJump: Boolean = false
+	// With this option enabled, the map tracks when you pan to another "copy"
+	// of the world and seamlessly jumps to the original one so that all overlays
+	// like markers and vector layers are still visible. A map with an infinite
+	// CRS, such as `SimpleCRS`, does not jump, as it has no copies of the world.
+	worldCopyJump: false,
+
+	// @option maxBoundsViscosity: Number = 0.0
+	// If `maxBounds` is set, this option will control how solid the bounds
+	// are when dragging the map around. The default value of `0.0` allows the
+	// user to drag outside the bounds at normal speed, higher values will
+	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+	// solid, preventing the user from dragging outside the bounds.
+	maxBoundsViscosity: 0.0,
+
+	// @section Keyboard Navigation Options
+	// @option keyboard: Boolean = true
+	// Makes the map focusable and allows users to navigate the map with keyboard
+	// arrows and `+`/`-` keys.
+	keyboard: true,
+
+	// @option keyboardPanDelta: Number = 80
+	// Amount of pixels to pan when pressing an arrow key.
+	keyboardPanDelta: 80,
+
+	// @section Mouse wheel options
+	// @option scrollWheelZoom: Boolean|String = true
+	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
+	// it will zoom to the center of the view regardless of where the pointer was.
+	scrollWheelZoom: true,
+
+	// @option wheelDebounceTime: Number = 40
+	// Limits the rate at which a wheel can fire (in milliseconds). By default, the
+	// user can't zoom via wheel more often than once per 40 ms.
+	wheelDebounceTime: 40,
+
+	// @option wheelPxPerZoomLevel: Number = 60
+	// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
+	// mean a change of one full zoom level. Smaller values will make wheel-zooming
+	// faster (and vice versa).
+	wheelPxPerZoomLevel: 60,
+
+	// @section Touch interaction options
+	// @option tapHold: Boolean = true
+	// Fires a `contextmenu` event on a long touch press. iOS Safari doesn't fire one natively.
+	tapHold: true,
+
+	// @option tapTolerance: Number = 15
+	// The max number of pixels a user can shift his finger during touch
+	// for it to be considered a valid tap.
+	tapTolerance: 15,
+
+	// @option pinchZoom: Boolean|String = *
+	// Whether the map can be zoomed by touch-dragging with two fingers. If
+	// passed `'center'`, it will zoom to the center of the view regardless of
+	// where the touch events (fingers) were. Enabled for touch-capable web
+	// browsers.
+	pinchZoom: true,
+
+	// @option bounceAtZoomLimits: Boolean = true
+	// Set it to false if you don't want the map to zoom beyond min/max zoom
+	// and then bounce back when pinch-zooming.
+	bounceAtZoomLimits: true,
+
+	// @section Control options
+	// @option zoomControl: Boolean = true
+	// Whether a [zoom control](#control-zoom) is added to the map by default.
+	zoomControl: true,
+
+	// @option attributionControl: Boolean = true
+	// Whether a [attribution control](#control-attribution) is added to the map by default.
+	attributionControl: true
+};
+
 /*
  * @class LeafletMap
  * @inherits Evented
@@ -58,215 +266,12 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 // @constructor Map(el: HTMLElement, options?: Map options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `Map options`.
+
 export class LeafletMap extends Evented {
 
 	static initHooks = true;
 
-	static defaultOptions = {
-		// @section Map State Options
-		// @option crs: CRS = EPSG3857
-		// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
-		// sure what it means.
-		crs: EPSG3857,
-
-		// @option center: LatLng = undefined
-		// Initial geographic center of the map
-		center: undefined,
-
-		// @option zoom: Number = undefined
-		// Initial map zoom level
-		zoom: undefined,
-
-		// @option minZoom: Number = *
-		// Minimum zoom level of the map.
-		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
-		// the lowest of their `minZoom` options will be used instead.
-		minZoom: undefined,
-
-		// @option maxZoom: Number = *
-		// Maximum zoom level of the map.
-		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
-		// the highest of their `maxZoom` options will be used instead.
-		maxZoom: undefined,
-
-		// @option layers: Layer[] = []
-		// Array of layers that will be added to the map initially
-		layers: [],
-
-		// @option maxBounds: LatLngBounds = null
-		// When this option is set, the map restricts the view to the given
-		// geographical bounds, bouncing the user back if the user tries to pan
-		// outside the view. To set the restriction dynamically, use
-		// [`setMaxBounds`](#map-setmaxbounds) method.
-		maxBounds: undefined,
-
-		// @option renderer: Renderer = *
-		// The default method for drawing vector layers on the map. A new `SVG`
-		// renderer by default; pass `new Canvas()` to draw them on a canvas instead.
-		renderer: undefined,
-
-
-		// @section Animation Options
-		// @option zoomAnimation: Boolean = *
-		// Whether the map zoom animation is enabled.
-		// Animations are enabled by default unless the user has configured
-		// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-		zoomAnimation: !DomUtil.reducedMotion,
-
-		// @option zoomAnimationThreshold: Number = 4
-		// Won't animate zoom if the zoom difference exceeds this value.
-		zoomAnimationThreshold: 4,
-
-		// @option fadeAnimation: Boolean = *
-		// Whether the tile fade animation is enabled.
-		// Animations are enabled by default unless the user has configured
-		// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-		fadeAnimation: !DomUtil.reducedMotion,
-
-		// @option markerZoomAnimation: Boolean = true
-		// Whether markers animate their zoom with the zoom animation, if disabled
-		// they will disappear for the length of the animation.
-		markerZoomAnimation: true,
-
-		// @option transform3DLimit: Number = 2^23
-		// Defines the maximum size of a CSS translation transform. The default
-		// value should not be changed unless a web browser positions layers in
-		// the wrong place after doing a large `panBy`.
-		transform3DLimit: 8388608, // Precision limit of a 32-bit float
-
-		// @section Interaction Options
-		// @option zoomSnap: Number = 1
-		// Forces the map's zoom level to always be a multiple of this, particularly
-		// right after a [`fitBounds()`](#map-fitbounds) or a pinch-zoom.
-		// By default, the zoom level snaps to the nearest integer; lower values
-		// (e.g. `0.5` or `0.1`) allow for greater granularity. A value of `0`
-		// means the zoom level will not be snapped after `fitBounds` or a pinch-zoom.
-		zoomSnap: 1,
-
-		// @option zoomDelta: Number = 1
-		// Controls how much the map's zoom level will change after a
-		// [`zoomIn()`](#map-zoomin), [`zoomOut()`](#map-zoomout), pressing `+`
-		// or `-` on the keyboard, or using the [zoom controls](#control-zoom).
-		// Values smaller than `1` (e.g. `0.5`) allow for greater granularity.
-		zoomDelta: 1,
-
-		// @option trackResize: Boolean = true
-		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true,
-
-		// @option closePopupOnClick: Boolean = true
-		// Set it to `false` if you don't want popups to close when user clicks the map.
-		closePopupOnClick: true,
-
-		// @option boxZoom: Boolean = true
-		// Whether the map can be zoomed to a rectangular area specified by
-		// dragging the pointer while pressing the shift key.
-		boxZoom: true,
-
-		// @option doubleClickZoom: Boolean|String = true
-		// Whether the map can be zoomed in by double clicking on it and
-		// zoomed out by double clicking while holding shift. If passed
-		// `'center'`, double-click zoom will zoom to the center of the
-		//  view regardless of where the pointer was.
-		doubleClickZoom: true,
-
-		// @option dragging: Boolean = true
-		// Whether the map is draggable with pointer or not.
-		dragging: true,
-
-		// @section Panning Inertia Options
-		// @option inertia: Boolean = *
-		// If enabled, panning of the map will have an inertia effect where
-		// the map builds momentum while dragging and continues moving in
-		// the same direction for some time. Feels especially nice on touch
-		// devices. Enabled by default.
-		inertia: true,
-
-		// @option inertiaDeceleration: Number = 3400
-		// The rate with which the inertial movement slows down, in pixels/second².
-		inertiaDeceleration: 3400, // px/s^2
-
-		// @option inertiaMaxSpeed: Number = Infinity
-		// Max speed of the inertial movement, in pixels/second.
-		inertiaMaxSpeed: Infinity, // px/s
-
-		// @option easeLinearity: Number = 0.2
-		easeLinearity: 0.2,
-
-		// TODO refactor, move to CRS
-		// @option worldCopyJump: Boolean = false
-		// With this option enabled, the map tracks when you pan to another "copy"
-		// of the world and seamlessly jumps to the original one so that all overlays
-		// like markers and vector layers are still visible. A map with an infinite
-		// CRS, such as `SimpleCRS`, does not jump, as it has no copies of the world.
-		worldCopyJump: false,
-
-		// @option maxBoundsViscosity: Number = 0.0
-		// If `maxBounds` is set, this option will control how solid the bounds
-		// are when dragging the map around. The default value of `0.0` allows the
-		// user to drag outside the bounds at normal speed, higher values will
-		// slow down map dragging outside bounds, and `1.0` makes the bounds fully
-		// solid, preventing the user from dragging outside the bounds.
-		maxBoundsViscosity: 0.0,
-
-		// @section Keyboard Navigation Options
-		// @option keyboard: Boolean = true
-		// Makes the map focusable and allows users to navigate the map with keyboard
-		// arrows and `+`/`-` keys.
-		keyboard: true,
-
-		// @option keyboardPanDelta: Number = 80
-		// Amount of pixels to pan when pressing an arrow key.
-		keyboardPanDelta: 80,
-
-		// @section Mouse wheel options
-		// @option scrollWheelZoom: Boolean|String = true
-		// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
-		// it will zoom to the center of the view regardless of where the pointer was.
-		scrollWheelZoom: true,
-
-		// @option wheelDebounceTime: Number = 40
-		// Limits the rate at which a wheel can fire (in milliseconds). By default, the
-		// user can't zoom via wheel more often than once per 40 ms.
-		wheelDebounceTime: 40,
-
-		// @option wheelPxPerZoomLevel: Number = 60
-		// How many scroll pixels (as reported by [DomEvent.getWheelDelta](#domevent-getwheeldelta))
-		// mean a change of one full zoom level. Smaller values will make wheel-zooming
-		// faster (and vice versa).
-		wheelPxPerZoomLevel: 60,
-
-		// @section Touch interaction options
-		// @option tapHold: Boolean = true
-		// Fires a `contextmenu` event on a long touch press. iOS Safari doesn't fire one natively.
-		tapHold: true,
-
-		// @option tapTolerance: Number = 15
-		// The max number of pixels a user can shift his finger during touch
-		// for it to be considered a valid tap.
-		tapTolerance: 15,
-
-		// @option pinchZoom: Boolean|String = *
-		// Whether the map can be zoomed by touch-dragging with two fingers. If
-		// passed `'center'`, it will zoom to the center of the view regardless of
-		// where the touch events (fingers) were. Enabled for touch-capable web
-		// browsers.
-		pinchZoom: true,
-
-		// @option bounceAtZoomLimits: Boolean = true
-		// Set it to false if you don't want the map to zoom beyond min/max zoom
-		// and then bounce back when pinch-zooming.
-		bounceAtZoomLimits: true,
-
-		// @section Control options
-		// @option zoomControl: Boolean = true
-		// Whether a [zoom control](#control-zoom) is added to the map by default.
-		zoomControl: true,
-
-		// @option attributionControl: Boolean = true
-		// Whether a [attribution control](#control-attribution) is added to the map by default.
-		attributionControl: true
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(id, options) { // (HTMLElement or String, Object)
 		super();

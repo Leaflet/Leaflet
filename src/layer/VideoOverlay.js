@@ -3,6 +3,37 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
+// @namespace VideoOverlay
+
+// @section
+// @aka VideoOverlay options
+const defaultOptions = {
+	// @option autoplay: Boolean = true
+	// Whether the video starts playing automatically when loaded.
+	// On some browsers autoplay will only work with `muted: true`
+	autoplay: true,
+
+	// @option controls: Boolean = false
+	// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+	controls: false,
+
+	// @option loop: Boolean = true
+	// Whether the video will loop back to the beginning when played.
+	loop: true,
+
+	// @option keepAspectRatio: Boolean = true
+	// Whether the video will save aspect ratio after the projection.
+	keepAspectRatio: true,
+
+	// @option muted: Boolean = false
+	// Whether the video starts on mute when loaded.
+	muted: false,
+
+	// @option playsInline: Boolean = true
+	// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+	playsInline: true
+};
+
 /*
  * @class VideoOverlay
  * @inherits ImageOverlay
@@ -24,36 +55,10 @@ import * as Util from '../core/Util.js';
 // @constructor VideoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
+
 export class VideoOverlay extends ImageOverlay {
 
-	// @section
-	// @aka VideoOverlay options
-	static defaultOptions = {
-		// @option autoplay: Boolean = true
-		// Whether the video starts playing automatically when loaded.
-		// On some browsers autoplay will only work with `muted: true`
-		autoplay: true,
-
-		// @option controls: Boolean = false
-		// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
-		controls: false,
-
-		// @option loop: Boolean = true
-		// Whether the video will loop back to the beginning when played.
-		loop: true,
-
-		// @option keepAspectRatio: Boolean = true
-		// Whether the video will save aspect ratio after the projection.
-		keepAspectRatio: true,
-
-		// @option muted: Boolean = false
-		// Whether the video starts on mute when loaded.
-		muted: false,
-
-		// @option playsInline: Boolean = true
-		// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
-		playsInline: true
-	};
+	static defaultOptions = defaultOptions;
 
 	_initImage() {
 		const wasElementSupplied = this._url.tagName === 'VIDEO';

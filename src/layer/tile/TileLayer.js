@@ -2,6 +2,58 @@ import {GridLayer} from './GridLayer.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
+// @namespace TileLayer
+
+// @section
+// @aka TileLayer options
+const defaultOptions = {
+	// @option minZoom: Number = 0
+	// The minimum zoom level down to which this layer will be displayed (inclusive).
+	minZoom: 0,
+
+	// @option maxZoom: Number = 18
+	// The maximum zoom level up to which this layer will be displayed (inclusive).
+	maxZoom: 18,
+
+	// @option subdomains: String|String[] = 'abc'
+	// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
+	subdomains: 'abc',
+
+	// @option errorTileUrl: String = ''
+	// URL to the tile image to show in place of the tile that failed to load.
+	errorTileUrl: '',
+
+	// @option zoomOffset: Number = 0
+	// The zoom number used in tile URLs will be offset with this value.
+	zoomOffset: 0,
+
+	// @option tms: Boolean = false
+	// If `true`, inverses Y axis numbering for tiles (turn this on for [TMS](https://en.wikipedia.org/wiki/Tile_Map_Service) services).
+	tms: false,
+
+	// @option zoomReverse: Boolean = false
+	// If set to true, the zoom number used in tile URLs will be reversed (`maxZoom - zoom` instead of `zoom`)
+	zoomReverse: false,
+
+	// @option detectRetina: Boolean = false
+	// If `true` and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
+	detectRetina: false,
+
+	// @option crossOrigin: Boolean|String = false
+	// Whether the crossOrigin attribute will be added to the tiles.
+	// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
+	// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	crossOrigin: false,
+
+	// @option referrerPolicy: String = 'strict-origin-when-cross-origin'
+	// Sets the tiles' `referrerPolicy` attribute set to the String provided. See
+	// [`HTMLImageElement.referrerPolicy`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for possible values.
+	//
+	// Tile providers might require you to use a specific referrer policy (e.g. to verify API tokens or prevent abuse).
+	// Specifically, if you are using tiles from `tile.openstreetmap.org` or `tile.osm.org`, you [should not change this value](https://operations.osmfoundation.org/policies/tiles/).
+	referrerPolicy: 'strict-origin-when-cross-origin'
+};
+
 const osmHosts = ['tile.openstreetmap.org', 'tile.osm.org'];
 const hostRe = /^(https?:)?\/\/([^/?#:]*)/i;
 const httpRe = /^http:/i;
@@ -43,61 +95,16 @@ const upgradeOSMUrl = url => (isOSMUrl(url) ? url.replace(httpRe, 'https:') : ur
  * ```
  */
 
+// @section URL template
 // @constructor TileLayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
+
+// @section
 export class TileLayer extends GridLayer {
 
 	static initHooks = true;
 
-	// @section
-	// @aka TileLayer options
-	static defaultOptions = {
-		// @option minZoom: Number = 0
-		// The minimum zoom level down to which this layer will be displayed (inclusive).
-		minZoom: 0,
-
-		// @option maxZoom: Number = 18
-		// The maximum zoom level up to which this layer will be displayed (inclusive).
-		maxZoom: 18,
-
-		// @option subdomains: String|String[] = 'abc'
-		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
-		subdomains: 'abc',
-
-		// @option errorTileUrl: String = ''
-		// URL to the tile image to show in place of the tile that failed to load.
-		errorTileUrl: '',
-
-		// @option zoomOffset: Number = 0
-		// The zoom number used in tile URLs will be offset with this value.
-		zoomOffset: 0,
-
-		// @option tms: Boolean = false
-		// If `true`, inverses Y axis numbering for tiles (turn this on for [TMS](https://en.wikipedia.org/wiki/Tile_Map_Service) services).
-		tms: false,
-
-		// @option zoomReverse: Boolean = false
-		// If set to true, the zoom number used in tile URLs will be reversed (`maxZoom - zoom` instead of `zoom`)
-		zoomReverse: false,
-
-		// @option detectRetina: Boolean = false
-		// If `true` and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
-		detectRetina: false,
-
-		// @option crossOrigin: Boolean|String = false
-		// Whether the crossOrigin attribute will be added to the tiles.
-		// If a String is provided, all tiles will have their crossOrigin attribute set to the String provided. This is needed if you want to access tile pixel data.
-		// Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
-		crossOrigin: false,
-
-		// @option referrerPolicy: String = 'strict-origin-when-cross-origin'
-		// Sets the tiles' `referrerPolicy` attribute set to the String provided. See
-		// [`HTMLImageElement.referrerPolicy`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/referrerPolicy) for possible values.
-		//
-		// Tile providers might require you to use a specific referrer policy (e.g. to verify API tokens or prevent abuse).
-		// Specifically, if you are using tiles from `tile.openstreetmap.org` or `tile.osm.org`, you [should not change this value](https://operations.osmfoundation.org/policies/tiles/).
-		referrerPolicy: 'strict-origin-when-cross-origin'
-	};
+	static defaultOptions = defaultOptions;
 
 	constructor(url, options) {
 		super(options);

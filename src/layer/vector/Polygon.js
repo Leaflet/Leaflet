@@ -6,6 +6,12 @@ import {Bounds} from '../../geometry/Bounds.js';
 import * as PolyUtil from '../../geometry/PolyUtil.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
+// @namespace Polygon
+
+const defaultOptions = {
+	fill: true
+};
+
 /*
  * @class Polygon
  * @inherits Polyline
@@ -52,11 +58,10 @@ import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
  */
 
 // @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
+
 export class Polygon extends Polyline {
 
-	static defaultOptions = {
-		fill: true
-	};
+	static defaultOptions = defaultOptions;
 
 	isEmpty() {
 		return !this._latlngs.length || !this._latlngs[0].length;
