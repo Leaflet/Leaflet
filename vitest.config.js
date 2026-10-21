@@ -25,6 +25,8 @@ export default defineConfig({
 		globals: true,
 		include: ['spec/suites/**/*Spec.js'],
 		setupFiles: ['spec/setup.js'],
+		// many specs trigger warnings on purpose; only show console output of failing tests
+		silent: 'passed-only',
 		// Bound individual test/hook/teardown durations so a stuck spec fails
 		// fast with a useful stack instead of hanging the whole worker. Long
 		// flyTo specs (~2-3s normally) set their own higher timeout per-test.
