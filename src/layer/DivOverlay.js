@@ -100,8 +100,6 @@ export class DivOverlay extends LayerBase {
 	}
 
 	onAdd(map) {
-		this._zoomAnimated = map._zoomAnimated;
-
 		if (!this._container) {
 			this._initLayout();
 		}
@@ -199,15 +197,11 @@ export class DivOverlay extends LayerBase {
 	}
 
 	getEvents() {
-		const events = {
+		return {
 			zoom: this._updatePosition,
-			viewreset: this._updatePosition
+			viewreset: this._updatePosition,
+			zoomanim: this._animateZoom
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-		return events;
 	}
 
 	// @method isOpen: Boolean
@@ -289,14 +283,9 @@ export class DivOverlay extends LayerBase {
 		if (!this._map) { return; }
 
 		const pos = this._map.latLngToLayerPoint(this._latlng),
-		anchor = this._getAnchor();
-		let offset = new Point(this.options.offset);
+		offset = new Point(this.options.offset);
 
-		if (this._zoomAnimated) {
-			DomUtil.setPosition(this._container, pos.add(anchor));
-		} else {
-			offset = offset.add(pos).add(anchor);
-		}
+		DomUtil.setPosition(this._container, pos.add(this._getAnchor()));
 
 		const bottom = this._containerBottom = -offset.y,
 		left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;

@@ -1130,13 +1130,14 @@ export class LeafletMap extends Evented {
 		PointerEvents.disablePointerDetection(this._container);
 		this._mapPane.remove();
 
-		this._clearControlPos();
-		if (this._resizeRequest) {
-			cancelAnimationFrame(this._resizeRequest);
-			this._resizeRequest = null;
-		}
+		this._controlContainer.remove();
+		delete this._controlCorners;
+		delete this._controlContainer;
+		cancelAnimationFrame(this._resizeRequest);
 
-		this._clearHandlers();
+		for (const handler of this._handlers) {
+			handler.disable();
+		}
 
 		clearTimeout(this._transitionEndTimer);
 		clearTimeout(this._sizeTimer);
@@ -1147,8 +1148,6 @@ export class LeafletMap extends Evented {
 			// Fired when the map is destroyed with [remove](#map-remove) method.
 			this.fire('unload');
 		}
-
-		this._destroyAnimProxy();
 
 		for (const layer of Object.values(this._layers)) {
 			layer.remove();
@@ -1494,25 +1493,11 @@ export class LeafletMap extends Evented {
 		l = 'leaflet-',
 		container = this._controlContainer = DomUtil.create('div', `${l}control-container`, this._container);
 
-		function createCorner(vSide, hSide) {
-			const className = `${l + vSide} ${l}${hSide}`;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
+		for (const v of ['top', 'bottom']) {
+			for (const h of ['left', 'right']) {
+				corners[v + h] = DomUtil.create('div', `${l + v} ${l}${h}`, container);
+			}
 		}
-
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
-	}
-
-	_clearControlPos() {
-		for (const c of Object.values(this._controlCorners)) {
-			c.remove();
-		}
-		this._controlContainer.remove();
-		delete this._controlCorners;
-		delete this._controlContainer;
 	}
 
 	_initPanes() {
@@ -1923,12 +1908,6 @@ export class LeafletMap extends Evented {
 		return obj.dragging?.moved() || this.boxZoom?.moved();
 	}
 
-	_clearHandlers() {
-		for (const handler of this._handlers) {
-			handler.disable();
-		}
-	}
-
 	// @section Other Methods
 
 	// @method whenReady(fn: Function, context?: Object): this
@@ -1971,16 +1950,6 @@ export class LeafletMap extends Evented {
 	_latLngToNewLayerPoint(latlng, zoom, center) {
 		const topLeft = this._getNewPixelOrigin(center, zoom);
 		return this.project(latlng, zoom)._subtract(topLeft);
-	}
-
-	_latLngBoundsToNewLayerBounds(latLngBounds, zoom, center) {
-		const topLeft = this._getNewPixelOrigin(center, zoom);
-		return new Bounds([
-			this.project(latLngBounds.getSouthWest(), zoom)._subtract(topLeft),
-			this.project(latLngBounds.getNorthWest(), zoom)._subtract(topLeft),
-			this.project(latLngBounds.getSouthEast(), zoom)._subtract(topLeft),
-			this.project(latLngBounds.getNorthEast(), zoom)._subtract(topLeft)
-		]);
 	}
 
 	// layer point of the current center
@@ -2112,20 +2081,6 @@ export class LeafletMap extends Evented {
 			this.project(c, z),
 			this.getZoomScale(z, 1),
 		);
-	}
-
-	_destroyAnimProxy() {
-		// Just make sure this method is safe to call from anywhere, without knowledge
-		// of whether the animation proxy was created in the first place.
-		if (this._proxy) {
-			DomEvent.off(this._proxy, 'transitionend', this._catchTransitionEnd, this);
-
-			this._proxy.remove();
-			this.off('zoomanim', this._animateProxyZoom, this);
-			this.off('load moveend', this._animMoveEnd, this);
-
-			delete this._proxy;
-		}
 	}
 
 	_catchTransitionEnd(e) {
