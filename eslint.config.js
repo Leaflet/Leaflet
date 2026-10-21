@@ -53,7 +53,7 @@ export default [
 			'css/no-important': 'warn',
 			'css/use-baseline': ['error', {
 				allowProperties: ['clip', 'outline', 'print-color-adjust', 'user-select', 'word-break'],
-				allowSelectors: ['has', 'nesting']
+				allowSelectors: ['has']
 			}]
 		}
 	},
