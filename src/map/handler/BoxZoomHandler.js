@@ -126,9 +126,12 @@ export class BoxZoomHandler extends Handler {
 			this._map.containerPointToLatLng(this._startPoint),
 			this._map.containerPointToLatLng(this._point));
 
-		this._map
-			.fitBounds(bounds)
-			.fire('boxzoomend', {boxZoomBounds: bounds});
+		// a tiny box can collapse to a single LatLng at very high zoom, which fits at an Infinity zoom when no layer
+		// limits it; unlike fitBounds before a tile layer is added, no layer will come along to clamp it (#6709)
+		if (this._map.getBoundsZoom(bounds) !== Infinity) {
+			this._map.fitBounds(bounds);
+		}
+		this._map.fire('boxzoomend', {boxZoomBounds: bounds});
 	}
 
 	_onKeyDown(e) {

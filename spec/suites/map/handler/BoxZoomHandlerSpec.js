@@ -195,4 +195,15 @@ describe('BoxZoomHandler', () => {
 		removeMapContainer(smallMap, smallMap.getContainer());
 	});
 
+	it('doesn\'t break the map when a tiny box collapses to a point at very high zoom (#6709)', async () => {
+		map.setView([50, 100], 50);
+
+		finger.moveTo(100, 100).shift().down();
+		finger.moveBy(1, 1).unshift().up().wait(10);
+		await hand.run();
+
+		expect(map.getZoom()).to.eql(50);
+		expect(map.getCenter()).to.be.nearLatLng([50, 100]);
+	});
+
 });
