@@ -59,6 +59,24 @@ describe('Circle', () => {
 		});
 	});
 
+	describe('with a small radius', () => {
+		// Web Mercator is conformal, so a small circle away from the projection limits stays round on the screen.
+		// Radii below about a metre used to come out as ellipses, because acos() lost precision there.
+		const places = [[0, 0], [0.000001, 0.000001], [0.00001, 0.00003], [45.123, 7.456], [-60.5, 170.25]];
+
+		it('stays round for radii from a millimetre to 100 metres', () => {
+			for (const radius of [0.001, 0.01, 0.1, 1, 10, 100]) {
+				for (const place of places) {
+					map.setView(place, 22);
+
+					const small = new Circle(place, {radius}).addTo(map);
+
+					expect(small._pxRadius / small._pxRadiusY, `radius ${radius} m at ${place}`).to.be.closeTo(1, 0.001);
+				}
+			}
+		});
+	});
+
 	describe('#_radius', () => {
 
 		beforeEach(() => {
