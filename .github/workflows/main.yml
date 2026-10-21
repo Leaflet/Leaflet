@@ -117,7 +117,7 @@ jobs:
       - run: npm test
         env:
           TEST_BROWSER: ${{ matrix.browser }}
-          VITE_DIST: ${{ matrix.dist }}
+          TEST_DIST: ${{ matrix.dist }}
 
   publish-artifacts:
     permissions:

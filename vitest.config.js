@@ -2,8 +2,8 @@ import {fileURLToPath} from 'node:url';
 import {defineConfig} from 'vitest/config';
 import {playwright} from '@vitest/browser-playwright';
 
-// with VITE_DIST=1, specs run against the minified bundle (after `npm run build`) instead of the sources
-const entry = process.env.VITE_DIST === '1' ? './dist/leaflet.js' : './src/Leaflet.js';
+// with TEST_DIST=1, specs run against the minified bundle (after `npm run build`) instead of the sources
+const entry = process.env.TEST_DIST === '1' ? './dist/leaflet.js' : './src/Leaflet.js';
 
 // chromium, firefox or webkit
 const browser = process.env.TEST_BROWSER || 'chromium';
