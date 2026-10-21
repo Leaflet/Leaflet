@@ -369,7 +369,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 }
 
 .leaflet-control-layers-toggle {
-	background-image: url(images/layers.svg);
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26'><path fill='%23b9b9b9' d='m.032 17.056 13-8 13 8-13 8z'/><path fill='%23cdcdcd' d='m0 13.076 13-8 13 8-13 8z'/><path fill='%23e9e9e9' fill-opacity='.585' stroke='%23797979' stroke-width='.1' d='m0 8.986 13-8 13 8-13 8z'/><path fill='%23737373' d='m.032 17.056-.032.93 13 8 13-8 .032-.93-13 8zM0 13.076v.91l13 8 13-8v-.91l-13 8zm0-4.09v1l13 8 13-8v-1l-13 8z'/></svg>");
 	width: 44px;
 	height: 44px;
 }
@@ -419,12 +419,6 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	height: 0;
 	border-top: 1px solid #ddd;
 	margin: 5px -10px 5px -6px;
-}
-
-/* Default icon URLs */
-.leaflet-default-icon-path {
-	/* used only in path-guessing heuristic, see DefaultIcon */
-	background-image: url(images/marker-icon.svg);
 }
 
 /* attribution and scale controls */

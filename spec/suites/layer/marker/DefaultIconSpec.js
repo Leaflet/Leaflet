@@ -17,31 +17,6 @@ describe('DefaultIcon', () => {
 		removeMapContainer(map, container);
 	});
 
-	it('detect icon images path', () => {
-		const origPath = DefaultIcon.imagePath; // set in after.js
-		expect(origPath).to.be.ok;
-		delete DefaultIcon.imagePath;
-		const marker = new Marker([0, 0]);
-
-		expect(DefaultIcon.imagePath).to.be.undefined;
-		marker.addTo(map);
-
-		expect(DefaultIcon.imagePath).to.equal(location.origin + origPath);
-
-		const stripUrl = DefaultIcon.prototype._stripUrl;
-		const properPath = 'http://localhost:8000/src/images/';
-		[ // valid
-			'url("http://localhost:8000/src/images/marker-icon.svg")',  // Firefox
-			'url(\'http://localhost:8000/src/images/marker-icon.svg\')',
-			'url(http://localhost:8000/src/images/marker-icon.svg)'
-		].map(stripUrl).forEach((str) => { expect(str).to.equal(properPath); });
-
-		[ // invalid
-			'url("http://localhost:8000/src/images/marker-icon.svg?2x)"',
-			'url("data:image/png;base64,iVBORw...")',                         // inline image (bundlers)
-		].map(stripUrl).forEach((str) => { expect(str).not.to.be.true; });
-	});
-
 	it('icon measures 25x41px', () => {
 		const img = map.getPane('markerPane').querySelector('img');
 		expect(img.clientHeight).to.equal(41);

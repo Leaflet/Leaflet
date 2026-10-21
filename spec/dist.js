@@ -1,9 +1,9 @@
 // Checks what the spec suite (which can run on `dist/leaflet.js`) doesn't: that the global build loads without a
 // browser, has the same exports as the sources and keeps its namespaces patchable like plain objects (as plugins
-// written for it expect), and that the images the CSS and the default icon point to are next to the CSS.
+// written for it expect), and that the CSS points to no files outside it, since `dist` ships no images.
 
 import assert from 'node:assert/strict';
-import {existsSync, readFileSync} from 'node:fs';
+import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 import * as src from '../src/Leaflet.js';
 
@@ -26,11 +26,8 @@ assert.deepEqual(Object.keys(context.L).sort(), Object.keys(src).sort(), 'dist/l
 })(context.L, src, 'L');
 
 const css = readFileSync(new URL('leaflet.css', distURL), 'utf8');
-const images = Array.from(css.matchAll(/url\(['"]?([^'")]+)/g), match => match[1]);
-images.push(`images/${src.DefaultIcon.defaultOptions.shadowUrl}`);
-
-for (const url of images) {
-	assert.ok(existsSync(new URL(url, distURL)), `dist/${url} is missing`);
+for (const [, url] of css.matchAll(/url\(['"]?([^'")]+)/g)) {
+	assert.ok(url.startsWith('data:'), `dist/leaflet.css points to ${url}, which isn't in dist`);
 }
 
-console.log(`dist/leaflet-global.js matches src, and the ${images.length} images are in place.`);
+console.log('dist/leaflet-global.js matches src, and dist/leaflet.css is self-contained.');
