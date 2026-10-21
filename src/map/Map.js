@@ -717,9 +717,12 @@ export class LeafletMap extends Evented {
 					{flyTo: true});
 
 			} else {
-				this
-					._move(targetCenter, targetZoom)
-					._moveEnd(true);
+				// the last step shifts the pixel origin even at the same zoom, and layers like GridLayer only
+				// re-anchor on 'zoom' (#9438)
+				const zoomChanged = this._zoom !== targetZoom;
+				this._move(targetCenter, targetZoom);
+				if (!zoomChanged) { this.fire('zoom'); }
+				this._moveEnd(true);
 			}
 		};
 
