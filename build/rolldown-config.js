@@ -2,12 +2,7 @@ import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rolldown';
 import pkg from '../package.json' with {type: 'json'};
 
-const STATIC_ASSETS = [
-	'leaflet.css',
-	'images/layers.svg',
-	'images/marker-icon.svg',
-	'images/marker-shadow.svg'
-];
+const STATIC_ASSETS = ['leaflet.css'];
 
 /** @type {import('rolldown').Plugin} */
 const staticAssetsPlugin = {
