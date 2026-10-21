@@ -1,5 +1,7 @@
-import {DomUtil, LeafletMap, Marker, Point} from 'leaflet';
+import {DefaultIcon, DivIcon, DomUtil, LeafletMap, Marker, Point} from 'leaflet';
 import Hand from 'prosthetic-hand';
+import sinon from 'sinon';
+import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker.Drag', () => {
@@ -116,6 +118,112 @@ describe('Marker.Drag', () => {
 
 			finger.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+		});
+	});
+
+	describe.each(['mouse', 'touch'])('changing the icon with %s', (pointerType) => {
+		const start = new Point(300, 280);
+		const offset = new Point(56, 32);
+
+		// large enough to be grabbed at the start point
+		const divIcon = html => new DivIcon({html, iconSize: [40, 80]});
+
+		function dragMarker(onStop) {
+			const finish = start.add(offset);
+
+			const hand = new Hand({timing: 'fastframe', onStop});
+			const toucher = hand.growFinger('pointer', {pointerType});
+
+			toucher.moveTo(start.x, start.y, 0)
+				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+		}
+
+		// https://github.com/Leaflet/Leaflet/issues/4484
+		it('keeps dragging when the icon is changed in a drag listener', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+			const dragSpy = sinon.spy();
+			const dragendSpy = sinon.spy();
+
+			marker.once('drag', () => {
+				marker.setIcon(divIcon('b'));
+			});
+			marker.on('drag', dragSpy);
+			marker.on('dragend', dragendSpy);
+
+			dragMarker(() => {
+				expect(dragSpy.callCount).to.be.above(1);
+				expect(dragendSpy.calledOnce).to.be.true;
+				expect(marker.getOffset().equals(offset)).to.be.true;
+
+				done();
+			});
+		});
+
+		it('finishes the drag when the icon is changed in the dragstart and dragend listeners', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+
+			marker.on('dragstart', () => {
+				marker.setIcon(divIcon('b'));
+			});
+			marker.on('dragend', () => {
+				marker.setIcon(divIcon('a'));
+			});
+
+			dragMarker(() => {
+				expect(marker.getOffset().equals(offset)).to.be.true;
+				expect(marker._icon.innerHTML).to.equal('a');
+				expect(document.body.classList.contains('leaflet-dragging')).to.be.false;
+
+				done();
+			});
+		});
+
+		// https://github.com/Leaflet/Leaflet/issues/5067
+		it('does not fire a click after dragend when the icon is changed in a dragend listener', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+			const clickSpy = sinon.spy();
+
+			marker.on('click', clickSpy);
+			marker.on('dragend', () => {
+				marker.setIcon(divIcon('b'));
+			});
+
+			dragMarker(() => {
+				// A real user scenario would trigger a click on pointerup.
+				// We want to be sure it is cancelled after a drag.
+				UIEventSimulator.fire('click', marker._icon);
+				expect(clickSpy.called).to.be.false;
+
+				done();
+			});
+		});
+
+		it('drags a marker that is enabled again after its icon was changed', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+
+			marker.dragging.disable();
+			marker.setIcon(divIcon('b'));
+			marker.dragging.enable();
+
+			dragMarker(() => {
+				expect(marker.getOffset().equals(offset)).to.be.true;
+
+				done();
+			});
+		});
+
+		it('drags a marker after its icon element was replaced', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+			const oldIcon = marker._icon;
+
+			marker.setIcon(new DefaultIcon());
+			expect(marker._icon).to.not.equal(oldIcon);
+
+			dragMarker(() => {
+				expect(marker.getOffset().equals(offset)).to.be.true;
+
+				done();
+			});
 		});
 	});
 });
