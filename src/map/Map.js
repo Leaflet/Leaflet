@@ -1691,12 +1691,14 @@ export class LeafletMap extends Evented {
 	}
 
 	_fireWorldCopyJump(offsetX) {
+		const worlds = Math.round(offsetX / this.getPixelWorldBounds().getSize().x);
+
 		// @event worldcopyjump: WorldCopyJumpEvent
 		// Fired when [`worldCopyJump`](#map-worldcopyjump) moves the map pane by one
 		// or more world widths.
-		this.fire('worldcopyjump', {
-			worlds: Math.round(offsetX / this.getPixelWorldBounds().getSize().x)
-		});
+		if (worlds) {
+			this.fire('worldcopyjump', {worlds});
+		}
 	}
 
 	_addLayers(layers) {

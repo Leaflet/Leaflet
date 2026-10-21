@@ -78,6 +78,22 @@ describe('worldCopyJump', () => {
 		});
 	});
 
+	describe('dragging within one world', () => {
+		it('does not fire worldcopyjump for fractional pointer coordinates', (done) => {
+			map.setView([0, 10], 5);
+
+			const jumps = [];
+			map.on('worldcopyjump', e => jumps.push(e.worlds));
+
+			const hand = new Hand({timing: 'fastframe'});
+			hand.growFinger('pointer').moveTo(200.3, 200.6, 0).down().moveBy(-5.4, 0.2, 20).moveBy(-40.3, 0.7, 500).up();
+			hand.addEventListener('stop', () => {
+				expect(jumps).to.eql([]);
+				done();
+			});
+		});
+	});
+
 	describe('panning across the antimeridian', () => {
 		it('wraps the centre back into the world when the pan animation ends', (done) => {
 			map.setView([0, 178], 5);
