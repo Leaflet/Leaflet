@@ -31,6 +31,8 @@ export default defineConfig({
 		// fast with a useful stack instead of hanging the whole worker. Long
 		// flyTo specs (~2-3s normally) set their own higher timeout per-test.
 		testTimeout: 8000,
+		// above the ~380ms of specs waiting for a real zoom animation, so that only outliers are reported as slow
+		slowTestThreshold: 400,
 		hookTimeout: 8000,
 		teardownTimeout: 5000,
 		browser: {

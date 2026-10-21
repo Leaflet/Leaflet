@@ -109,21 +109,23 @@ describe('Map', () => {
 		});
 
 		// For #9575
-		it('does not throw if removed before transition end complete', (done) => {
+		it('does not throw if removed before transition end complete', async () => {
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+
 			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
-
 			map._createAnimProxy();
-
-			setTimeout(() => {
-				map.remove();
-				map = null;
-			}, 10);
-
-			setTimeout(() => {
-				done();
-			}, 300);
-
 			map.setZoom(2);
+
+			// let the zoom animation start, then remove the map before its transition end timer fires
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			map.remove();
+			map = null;
+
+			try {
+				clock.tick(300);
+			} finally {
+				clock.restore();
+			}
 		});
 
 		it('throws error if container is reused by other instance', () => {
@@ -520,18 +522,14 @@ describe('Map', () => {
 			expect(map.off.called).not.to.be.true;
 		});
 
-		it('avoid subpixel / floating point related wobble (#8532)', (done) => {
+		it('avoid subpixel / floating point related wobble (#8532)', () => {
 			map.setView([50.450036, 30.5241361], 13);
 
 			const spy = sinon.spy();
-			map.on('moveend', spy);
+			map.on('movestart', spy);
 			map.setMaxBounds(map.getBounds());
 
-			// Unfortunately this is one of those tests where we need to allow at least one animation tick
-			setTimeout(() => {
-				expect(spy.called).to.be.false;
-				done();
-			}, 300);
+			expect(spy.called).to.be.false;
 		});
 	});
 
