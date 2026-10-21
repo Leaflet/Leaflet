@@ -2,7 +2,7 @@ import {DefaultIcon, DivIcon, DomUtil, LeafletMap, Marker, Point} from 'leaflet'
 import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('Marker.Drag', () => {
 	let map,
@@ -121,7 +121,7 @@ describe('Marker.Drag', () => {
 		});
 	});
 
-	describe('changing the icon', () => {
+	describe.each(['mouse', 'touch'])('changing the icon with %s', (pointerType) => {
 		const start = new Point(300, 280);
 		const offset = new Point(56, 32);
 
@@ -132,7 +132,7 @@ describe('Marker.Drag', () => {
 			const finish = start.add(offset);
 
 			const hand = new Hand({timing: 'fastframe', onStop});
-			const toucher = hand.growFinger(...pointerEventType);
+			const toucher = hand.growFinger('pointer', {pointerType});
 
 			toucher.moveTo(start.x, start.y, 0)
 				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
