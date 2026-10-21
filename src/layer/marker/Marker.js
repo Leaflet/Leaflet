@@ -132,9 +132,10 @@ export class Marker extends Layer {
 	}
 
 	onRemove(map) {
-		if (this.dragging?.enabled()) {
-			this.options.draggable = true;
-			this.dragging.removeHooks();
+		if (this.dragging) {
+			// remember whether dragging is on or off (`dragging.disable()`) for when the marker is added again
+			this.options.draggable = this.dragging.enabled();
+			if (this.options.draggable) { this.dragging.removeHooks(); }
 		}
 		delete this.dragging;
 
