@@ -125,6 +125,20 @@ describe('Marker', () => {
 			expect(marker.dragging.enabled()).to.be.true;
 		});
 
+		it('keeps the draggable class on the icon', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true});
+			map.addLayer(marker);
+
+			marker.setIcon(icon2);
+
+			expect(marker._icon.classList.contains('leaflet-marker-draggable')).to.be.true;
+
+			marker.dragging.disable();
+			marker.setIcon(icon1);
+
+			expect(marker._icon.classList.contains('leaflet-marker-draggable')).to.be.false;
+		});
+
 		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
 			const marker = new Marker([0, 0], {icon: new DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);

@@ -350,6 +350,14 @@ export class Marker extends Layer {
 		this.addInteractiveTarget(this._icon);
 
 		if (MarkerDrag) {
+			// When the icon element is reused, the drag handler still refers to it. Keep that handler, because
+			// replacing it ends a drag in progress and forgets that the marker has just been dragged.
+			if (this.dragging?._draggable?._element === this._icon) {
+				// the icon has reset the class names of the element
+				this._icon.classList.toggle('leaflet-marker-draggable', this.dragging.enabled());
+				return;
+			}
+
 			let draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
