@@ -200,16 +200,8 @@ svg.leaflet-zoom-animated {
 	transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
 }
 
-.leaflet-zoom-anim .leaflet-tile {
-	transition: none;
-}
-
 .leaflet-zoom-anim .leaflet-zoom-hide {
 	visibility: hidden;
-}
-
-.leaflet-pan-anim .leaflet-tile {
-	transition: none;
 }
 
 /* cursors */
