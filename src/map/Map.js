@@ -688,25 +688,15 @@ export class LeafletMap extends Evented {
 			const s1 = i ? -1 : 1,
 			s2 = i ? w1 : w0,
 			t1 = w1 * w1 - w0 * w0 + s1 * rho2 * rho2 * u1 * u1,
-			b1 = 2 * s2 * rho2 * u1,
-			b = t1 / b1,
-			sq = Math.sqrt(b * b + 1) - b;
+			b1 = 2 * s2 * rho2 * u1;
 
-			// workaround for floating point precision bug when sq = 0, log = -Infinite,
-			// thus triggering an infinite loop in flyTo
-			const log = sq < 0.000000015 ? -18 : Math.log(sq);
-
-			return log;
+			return -Math.asinh(t1 / b1);
 		}
-
-		function sinh(n) { return (Math.exp(n) - Math.exp(-n)) / 2; }
-		function cosh(n) { return (Math.exp(n) + Math.exp(-n)) / 2; }
-		function tanh(n) { return sinh(n) / cosh(n); }
 
 		const r0 = r(0);
 
-		function w(s) { return w0 * (cosh(r0) / cosh(r0 + rho * s)); }
-		function u(s) { return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2; }
+		function w(s) { return w0 * (Math.cosh(r0) / Math.cosh(r0 + rho * s)); }
+		function u(s) { return w0 * (Math.cosh(r0) * Math.tanh(r0 + rho * s) - Math.sinh(r0)) / rho2; }
 
 		function easeOut(t) { return 1 - (1 - t) ** 1.5; }
 
