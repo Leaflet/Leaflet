@@ -53,12 +53,18 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._delta = 0;
 		this._startTime = null;
 
-		if (!delta) { return; }
+		// an animated zoom drops wheel zooms until it ends, so do the same without one, or a short trackpad
+		// swipe zooms several times as far
+		if (!delta || Date.now() < this._idleUntil) { return; }
 
 		if (map.options.scrollWheelZoom === 'center') {
 			map.setZoom(zoom + delta);
 		} else {
 			map.setZoomAround(this._lastMousePos, zoom + delta);
+		}
+
+		if (!map._zoomAnimated) {
+			this._idleUntil = Date.now() + 250;
 		}
 	}
 }

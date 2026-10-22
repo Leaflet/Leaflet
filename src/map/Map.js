@@ -68,19 +68,19 @@ const defaultOptions = {
 
 
 	// @section Animation Options
-	// @option zoomAnimation: Boolean = true
-	// Whether the map zoom animation is enabled. If the user prefers
-	// [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion),
-	// the zoom still goes through the animation path but happens instantly.
-	zoomAnimation: true,
+	// @option zoomAnimation: Boolean = *
+	// Whether the map zoom animation is enabled. Defaults to `true` unless the user prefers
+	// [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+	zoomAnimation: undefined,
 
 	// @option zoomAnimationThreshold: Number = 4
 	// Won't animate zoom if the zoom difference exceeds this value.
 	zoomAnimationThreshold: 4,
 
-	// @option fadeAnimation: Boolean = true
-	// Whether the tile fade animation is enabled.
-	fadeAnimation: true,
+	// @option fadeAnimation: Boolean = *
+	// Whether the tile and popup fade animation is enabled. Defaults to `true` unless the user prefers
+	// [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+	fadeAnimation: undefined,
 
 	// @option markerZoomAnimation: Boolean = true
 	// Whether markers animate their zoom with the zoom animation, if disabled
@@ -461,7 +461,7 @@ export class LeafletMap extends Evented {
 
 		this.callInitHooks();
 
-		this._zoomAnimated = this.options.zoomAnimation;
+		this._zoomAnimated = this.options.zoomAnimation ?? !prefersReducedMotion();
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
@@ -611,7 +611,8 @@ export class LeafletMap extends Evented {
 	}
 
 	// @method panBy(offset: Point, options?: Pan options): this
-	// Pans the map by a given number of pixels (animated).
+	// Pans the map by a given number of pixels (animated, unless the user prefers reduced motion and
+	// `animate: true` isn't passed).
 	panBy(offset, options) {
 		offset = new Point(offset).round();
 		options ??= {};
@@ -1556,7 +1557,7 @@ export class LeafletMap extends Evented {
 	_initLayout() {
 		const container = this._container;
 
-		this._fadeAnimated = this.options.fadeAnimation;
+		this._fadeAnimated = this.options.fadeAnimation ?? !prefersReducedMotion();
 
 		// leaflet-touch and leaflet-retina have no rules in leaflet.css, but plugin stylesheets still target them
 		const classes = ['leaflet-container', 'leaflet-touch'];
@@ -1641,7 +1642,7 @@ export class LeafletMap extends Evented {
 		this._loaded = true;
 		zoom = this._limitZoom(zoom);
 
-		this.fire('viewprereset');
+		this.fire('viewprereset', {center, zoom});
 
 		const zoomChanged = this._zoom !== zoom;
 		this
@@ -2196,7 +2197,7 @@ export class LeafletMap extends Evented {
 
 export const Map = LeafletMap;
 
-// zoom and fade transitions are handled in CSS, but pan and fly animations run in JS, so they check at call time
+// read when the map is created for the zoom and fade defaults, and on each call for panning and flying
 function prefersReducedMotion() {
 	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }

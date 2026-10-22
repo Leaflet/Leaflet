@@ -473,7 +473,12 @@ export class GridLayer extends Layer {
 		}
 	}
 
-	_invalidateAll() {
+	_invalidateAll(e) {
+		// a zoom without animation keeps the old levels until new tiles load, like the end of an animated one,
+		// unless the view jumps somewhere else
+		const map = this._map;
+		if (e?.zoom !== undefined && e.zoom !== map.getZoom() && map.getBounds().contains(e.center)) { return; }
+
 		for (const z of Object.keys(this._levels)) {
 			this._levels[z].el.remove();
 			this._onRemoveLevel(Number(z));

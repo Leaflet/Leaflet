@@ -2662,16 +2662,20 @@ describe('Map', () => {
 			window.matchMedia.restore();
 		});
 
-		it('zooms through the zoom animation instead of resetting the view', (done) => {
-			new GridLayer().addTo(map);
-			const reset = sinon.spy(), zoomanim = sinon.spy();
-			map.on({viewprereset: reset, zoomanim});
-			map.once('zoomend', () => {
-				expect(zoomanim.called).to.be.true;
-				expect(reset.called).to.be.false;
-				done();
-			});
-			map.setZoom(6);
+		it('turns off zoom and fade animations by default', () => {
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			expect(map2._zoomAnimated).to.be.false;
+			expect(map2._fadeAnimated).to.be.false;
+			removeMapContainer(map2, container2);
+		});
+
+		it('keeps zoom and fade animations that are turned on explicitly', () => {
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2, {zoomAnimation: true, fadeAnimation: true});
+			expect(map2._zoomAnimated).to.be.true;
+			expect(map2._fadeAnimated).to.be.true;
+			removeMapContainer(map2, container2);
 		});
 
 		it('pans instantly', () => {
