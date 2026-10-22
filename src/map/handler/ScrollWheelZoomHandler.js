@@ -53,7 +53,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		this._delta = 0;
 		this._startTime = null;
 
-		if (!delta) { return; }
+		if (!delta || map._zoomInputBlocked()) { return; }
 
 		if (map.options.scrollWheelZoom === 'center') {
 			map.setZoom(zoom + delta);
