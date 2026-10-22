@@ -331,14 +331,15 @@ describe('DragHandler', () => {
 
 			// Same animation path as DragHandler inertia (`panBy` after dragend).
 			map.panBy([200, 0], {
-				duration: 0.3,
+				duration: 0.5,
 				easeLinearity: 0.2,
 				noMoveStart: true,
 				animate: true
 			});
 
-			await new Promise((resolve) => { requestAnimationFrame(resolve); });
-			expect(map._panAnim?._inProgress).to.be.true;
+			// Check at press time rather than after a frame, which can outlast the whole animation on slow CI runners.
+			let inProgressOnDown;
+			map.once('pointerdown', () => { inProgressOnDown = map._panAnim?._inProgress; });
 
 			const inertiaEnded = new Promise((resolve) => {
 				map.once('moveend', resolve);
@@ -352,6 +353,7 @@ describe('DragHandler', () => {
 			// Press and hold without moving while inertia is still running.
 			pointer.moveTo(start.x, start.y, 0).down();
 			await hand.run();
+			expect(inProgressOnDown).to.be.true;
 
 			await inertiaEnded;
 
