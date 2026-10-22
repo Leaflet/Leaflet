@@ -23,7 +23,8 @@ export class ScrollWheelZoomHandler extends Handler {
 		const debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
-		this._lastMousePos = this._map.pointerEventToContainerPoint(e);
+		// resolving the container point reads layout, so defer it to _performZoom
+		this._lastEvent = e;
 
 		if (!this._startTime) {
 			this._startTime = Date.now();
@@ -58,7 +59,7 @@ export class ScrollWheelZoomHandler extends Handler {
 		if (map.options.scrollWheelZoom === 'center') {
 			map.setZoom(zoom + delta);
 		} else {
-			map.setZoomAround(this._lastMousePos, zoom + delta);
+			map.setZoomAround(map.pointerEventToContainerPoint(this._lastEvent), zoom + delta);
 		}
 	}
 }
