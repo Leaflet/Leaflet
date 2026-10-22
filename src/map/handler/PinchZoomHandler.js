@@ -1,5 +1,7 @@
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import {Point} from '../../geometry/Point.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
@@ -25,8 +27,13 @@ export class PinchZoomHandler extends Handler {
 		const pointers = PointerEvents.getPointers();
 		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		const p1 = map.pointerEventToContainerPoint(pointers[0]),
-		p2 = map.pointerEventToContainerPoint(pointers[1]);
+		const p1 = map.pointerEventToContainerPoint(pointers[0]);
+		const p2 = map.pointerEventToContainerPoint(pointers[1]);
+		const {x, y} = DomUtil.getScale(map._container);
+
+		// the container doesn't move during a pinch, so keep its client offset and CSS scale to avoid reading layout on every move
+		this._containerScale = new Point(x, y);
+		this._containerOrigin = new Point(pointers[0].clientX, pointers[0].clientY)._subtract(p1.scaleBy(this._containerScale));
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
@@ -53,8 +60,8 @@ export class PinchZoomHandler extends Handler {
 		if (pointers.length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,
-		p1 = map.pointerEventToContainerPoint(pointers[0]),
-		p2 = map.pointerEventToContainerPoint(pointers[1]),
+		p1 = this._toContainerPoint(pointers[0]),
+		p2 = this._toContainerPoint(pointers[1]),
 		scale = p1.distanceTo(p2) / this._startDist;
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
@@ -86,6 +93,10 @@ export class PinchZoomHandler extends Handler {
 		this._animRequest = requestAnimationFrame(moveFn.bind(this));
 
 		e.preventDefault();
+	}
+
+	_toContainerPoint(e) {
+		return new Point(e.clientX, e.clientY)._subtract(this._containerOrigin).unscaleBy(this._containerScale);
 	}
 
 	_onPointerEnd() {
