@@ -403,8 +403,8 @@ describe('GridLayer', () => {
 			// 	console.log(ev.type, ev.coords, counts);
 			// });
 
-			map.options.fadeAnimation = false;
-			map.options.zoomAnimation = false;
+			map.remove();
+			map = new LeafletMap(container, {fadeAnimation: false, zoomAnimation: false});
 		});
 
 		afterEach(() => {
@@ -462,11 +462,17 @@ describe('GridLayer', () => {
 				grid.on('load', () => {
 					expect(counts.tileloadstart).to.equal(32);
 					expect(counts.tileload).to.equal(32);
-					expect(counts.tileunload).to.equal(16);
-					done();
+
+					// the z10 tiles under the new ones go on the next frame
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(16);
+						done();
+					});
 				});
 
 				map.setZoom(11, {animate: false});
+				// the 4 z10 tiles under the new view stay until the z11 ones load
+				expect(counts.tileunload).to.equal(12);
 				clock.tick(250);
 			});
 
@@ -485,11 +491,17 @@ describe('GridLayer', () => {
 				grid.on('load', () => {
 					expect(counts.tileloadstart).to.equal(32);
 					expect(counts.tileload).to.equal(32);
-					expect(counts.tileunload).to.equal(16);
-					done();
+
+					// the z11 tiles over the new ones go on the next frame
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(16);
+						done();
+					});
 				});
 
 				map.setZoom(10, {animate: false});
+				// the z11 tiles stay until the z10 ones load
+				expect(counts.tileunload).to.equal(0);
 				clock.tick(250);
 			});
 
@@ -517,6 +529,33 @@ describe('GridLayer', () => {
 			});
 
 			map.addLayer(grid).setView([0, 0], 18);
+			clock.tick(250);
+		});
+
+		it('keeps the old tiles when zooming after panning a screen away', (done) => {
+			grid.once('load', () => {
+				map.panBy([1000, 0], {animate: false});
+				grid.once('load', () => {
+					const unloaded = counts.tileunload;
+					map.setZoom(11, {animate: false});
+					expect(counts.tileunload - unloaded).to.be.lessThan(16);
+					done();
+				});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it('unloads all tiles at once when zooming to another place', (done) => {
+			grid.once('load', () => {
+				map.setView([60, 60], 11, {animate: false});
+				expect(counts.tileunload).to.equal(16);
+				done();
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
 			clock.tick(250);
 		});
 	});

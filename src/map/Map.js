@@ -23,6 +23,9 @@ import {PinchZoomHandler} from './handler/PinchZoomHandler.js';
 
 // @namespace LeafletMap
 
+// matches the zoom transition in leaflet.css
+const zoomAnimDuration = 250;
+
 const defaultOptions = {
 	// @section Map State Options
 	// @option crs: CRS = EPSG3857
@@ -1630,15 +1633,19 @@ export class LeafletMap extends Evented {
 
 	// private methods that modify map state
 	_resetView(center, zoom, noMoveStart) {
-		DomUtil.setPosition(this._mapPane, new Point(0, 0));
-
 		const loading = !this._loaded;
 		this._loaded = true;
 		zoom = this._limitZoom(zoom);
 
-		this.fire('viewprereset');
+		// before the pane reset, so that listeners still see the current view
+		this.fire('viewprereset', {center, zoom});
+
+		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		const zoomChanged = this._zoom !== zoom;
+		if (zoomChanged && !loading) {
+			this._instantZoomEnd = Date.now() + zoomAnimDuration;
+		}
 		this
 			._moveStart(zoomChanged, noMoveStart)
 			._move(center, zoom)
@@ -2113,6 +2120,12 @@ export class LeafletMap extends Evented {
 		return !this._container.getElementsByClassName('leaflet-zoom-animated').length;
 	}
 
+	// an animated zoom drops zooms from input until it ends, so hold them as long after an instant zoom too,
+	// or a trackpad swipe or a held key zooms several times as far
+	_zoomInputBlocked() {
+		return this._animatingZoom || Date.now() < this._instantZoomEnd;
+	}
+
 	_tryAnimatedZoom(center, zoom, options) {
 
 		if (this._animatingZoom) { return true; }
@@ -2166,7 +2179,7 @@ export class LeafletMap extends Evented {
 		this._move(this._animateToCenter, this._animateToZoom, undefined, true);
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		this._transitionEndTimer = setTimeout(this._onZoomTransitionEnd.bind(this), 250);
+		this._transitionEndTimer = setTimeout(this._onZoomTransitionEnd.bind(this), zoomAnimDuration);
 	}
 
 	_onZoomTransitionEnd() {

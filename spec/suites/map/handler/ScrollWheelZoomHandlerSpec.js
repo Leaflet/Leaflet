@@ -4,7 +4,7 @@ import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('ScrollWheelZoomHandler', () => {
-	let container, map;
+	let container, map, clock;
 	const wheel = 'onwheel' in window ? 'wheel' : 'mousewheel';
 	const scrollIn = {
 		deltaY: -120,
@@ -25,6 +25,8 @@ describe('ScrollWheelZoomHandler', () => {
 	});
 
 	afterEach(() => {
+		clock?.restore();
+		clock = null;
 		removeMapContainer(map, container);
 	});
 
@@ -92,29 +94,49 @@ describe('ScrollWheelZoomHandler', () => {
 		});
 	});
 
-	it('changes the option \'wheelPxPerZoomLevel\'', (done) => {
+	it('changes the option \'wheelPxPerZoomLevel\'', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
 		const wheelPxPerZoomLevelBefore = map.options.wheelPxPerZoomLevel;
 		map.setZoom(15, {animate: false});
+		clock.tick(300);
 
 		const zoom = map.getZoom();
 		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(100);
 
-		map.once('zoomend', () => {
-			expect(map.getZoom()).to.be.greaterThan(zoom);
-			const zoomDiff = map.getZoom() - zoom;
+		expect(map.getZoom()).to.be.greaterThan(zoom);
+		const zoomDiff = map.getZoom() - zoom;
 
-			map.setZoom(zoom, {animate: false});
-			expect(map.getZoom()).to.equal(zoom);
+		map.setZoom(zoom, {animate: false});
+		expect(map.getZoom()).to.equal(zoom);
 
-			map.options.wheelPxPerZoomLevel = 30 / DomEvent.getWheelPxFactor();
-			UIEventSimulator.fire(wheel, container, scrollIn);
+		map.options.wheelPxPerZoomLevel = 30 / DomEvent.getWheelPxFactor();
+		clock.tick(300);
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(100);
 
-			map.once('zoomend', () => {
-				expect(map.getZoom()).to.be.greaterThan(zoom);
-				expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
-				map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
-				done();
-			});
-		});
+		expect(map.getZoom() - zoom).to.be.greaterThan(zoomDiff);
+		map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
+	});
+
+	it('ignores wheel zooms right after a zoom without animation, like an animated zoom does', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+		const zoom = map.getZoom();
+		const zoomend = sinon.spy();
+		map.on('zoomend', zoomend);
+
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(100);
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(100);
+
+		expect(zoomend.calledOnce).to.be.true;
+		const zoom2 = map.getZoom();
+		expect(zoom2).to.be.greaterThan(zoom);
+
+		clock.tick(200);
+		UIEventSimulator.fire(wheel, container, scrollIn);
+		clock.tick(100);
+		expect(map.getZoom()).to.be.greaterThan(zoom2);
 	});
 });
