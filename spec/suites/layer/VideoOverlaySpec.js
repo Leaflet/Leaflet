@@ -27,6 +27,41 @@ describe('VideoOverlay', () => {
 		expect(map.hasLayer(videoOverlay)).to.be.true;
 	});
 
+	it('create VideoOverlay from a video element with source elements', () => {
+		const videoUrls = [
+			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
+			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
+		];
+
+		const video = document.createElement('video');
+		for (const url of videoUrls) {
+			const source = document.createElement('source');
+			source.src = url;
+			video.appendChild(source);
+		}
+
+		const videoOverlay = new VideoOverlay(video, videoBounds).addTo(map);
+
+		expect(map.hasLayer(videoOverlay)).to.be.true;
+		expect(videoOverlay.getElement()).to.equal(video);
+		expect(video.parentNode).to.equal(map.getPane('overlayPane'));
+		expect(video.getElementsByTagName('source').length).to.equal(2);
+		expect(videoOverlay._url).to.eql(videoUrls);
+	});
+
+	it('create VideoOverlay from a video element with a src attribute', () => {
+		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
+
+		const video = document.createElement('video');
+		video.src = videoUrl;
+
+		const videoOverlay = new VideoOverlay(video, videoBounds).addTo(map);
+
+		expect(map.hasLayer(videoOverlay)).to.be.true;
+		expect(videoOverlay.getElement()).to.equal(video);
+		expect(videoOverlay._url).to.eql([videoUrl]);
+	});
+
 	function dragOverVideo(controls, onStop) {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
