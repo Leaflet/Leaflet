@@ -18,11 +18,9 @@ const defaultOptions = {
 	// Opacity of the tiles. Can be used in the `createTile()` function.
 	opacity: 1,
 
-	// @option updateWhenIdle: Boolean = *
+	// @option updateWhenIdle: Boolean = false
 	// Load new tiles only when panning ends.
-	// Defaults to `false` (tiles are loaded _during_ panning) unless
-	// the browser is configured for reduced motion.
-	updateWhenIdle: DomUtil.reducedMotion,
+	updateWhenIdle: false,
 
 	// @option updateWhenZooming: Boolean = true
 	// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
@@ -30,9 +28,8 @@ const defaultOptions = {
 
 	// @option updateInterval: Number = 200
 	// Tiles will not update more than once every `updateInterval`
-	// milliseconds when panning. The default value is increased to
-	// five seconds if the browser is configured for reduced motion.
-	updateInterval: DomUtil.reducedMotion ? 5000 : 200,
+	// milliseconds when panning.
+	updateInterval: 200,
 
 	// @option zIndex: Number = 1
 	// The explicit zIndex of the tile layer.

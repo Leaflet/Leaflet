@@ -151,8 +151,3 @@ export function getScale(element) {
 		boundingClientRect: rect
 	};
 }
-
-// @property reducedMotion: Boolean
-// `true` if the user prefers reduced motion, as set when Leaflet loads (`true` outside a browser).
-export const reducedMotion =
-	typeof window === 'undefined' || /* @__PURE__ */ window.matchMedia('(prefers-reduced-motion: reduce)').matches;
