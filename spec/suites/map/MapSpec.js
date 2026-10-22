@@ -1495,8 +1495,8 @@ describe('Map', () => {
 				done();
 			});
 
-			map.flyTo(center, 11, {animate: true});
-		}, 20000);
+			map.flyTo(center, 11, {animate: true, duration: 0.1});
+		});
 
 		it('keeps tiles in place on a short same-zoom flight after a pan (#9438)', (done) => {
 			container.style.visibility = 'visible';
