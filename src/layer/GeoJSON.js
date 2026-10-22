@@ -211,6 +211,8 @@ export class GeoJSON extends FeatureGroup {
 				}, options);
 
 				if (geoLayer) {
+					// so toGeoJSON exports MultiPoint and GeometryCollection members with their own type
+					geoLayer.feature = GeoJSON.asFeature(g);
 					layers.push(geoLayer);
 				}
 			}

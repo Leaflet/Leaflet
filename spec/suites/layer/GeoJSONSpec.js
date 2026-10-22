@@ -507,6 +507,33 @@ describe('LayerGroup#toGeoJSON', () => {
 		expect(new GeoJSON(json).toGeoJSON()).to.eql(expected);
 	});
 
+	it('roundtrips MultiPoint and GeometryCollection members of a GeometryCollection', () => {
+		const json = {
+			type: 'FeatureCollection',
+			features: [{
+				type: 'Feature',
+				geometry: {
+					type: 'GeometryCollection',
+					geometries: [{
+						type: 'MultiPoint',
+						coordinates: [[10, 20], [30, 40]]
+					}, {
+						type: 'GeometryCollection',
+						geometries: [{
+							type: 'Point',
+							coordinates: [50, 60]
+						}]
+					}]
+				},
+				properties: {
+					name: 'Test'
+				}
+			}]
+		};
+
+		expect(new GeoJSON(json).toGeoJSON()).to.eql(json);
+	});
+
 	it('omits layers which do not implement toGeoJSON', () => {
 		const tileLayer = new TileLayer(),
 		layerGroup = new LayerGroup([tileLayer]);
