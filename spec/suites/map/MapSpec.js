@@ -2806,4 +2806,21 @@ describe('Map', () => {
 			map.flyToBounds(bounds, {animate: false});
 		});
 	});
+
+	describe('text selection', () => {
+		it('makes the map surface unselectable, but not popups and controls', () => {
+			map.setView([0, 0], 1).openPopup('popup text', [0, 0]);
+			const userSelect = el => getComputedStyle(el).userSelect;
+
+			expect(userSelect(container)).to.equal('none');
+			expect(userSelect(map.getPane('mapPane'))).to.equal('none');
+			expect(userSelect(container.querySelector('.leaflet-popup-content'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-attribution'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-zoom-in'))).to.equal('none');
+
+			new Marker([0, 0]).bindTooltip('tooltip text', {permanent: true}).addTo(map);
+			expect(userSelect(container.querySelector('.leaflet-marker-icon'))).to.equal('none');
+			expect(userSelect(container.querySelector('.leaflet-tooltip'))).to.equal('none');
+		});
+	});
 });
