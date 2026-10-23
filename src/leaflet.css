@@ -102,11 +102,6 @@
 	z-index: 200;
 }
 
-/* tiles use 2D transforms to raster together, so the pane that moves them needs a compositor layer of its own */
-.leaflet-map-pane {
-	will-change: transform;
-}
-
 .leaflet-overlay-pane {
 	z-index: 400;
 }
