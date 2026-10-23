@@ -2029,6 +2029,14 @@ describe('Map', () => {
 			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseout has been removed in Leaflet 2. Use pointerout instead.');
 			errorSpy.restore();
 		});
+
+		it('prints to console.error about the removed keypress event', () => {
+			const errorSpy = sinon.spy(console, 'error');
+			map.on('keypress', () => {});
+			expect(errorSpy.calledOnce).to.be.true;
+			expect(errorSpy.firstCall.args[0]).to.eq('The event keypress has been removed in Leaflet 2. Use keydown instead.');
+			errorSpy.restore();
+		});
 	});
 
 	describe('#getScaleZoom && #getZoomScale', () => {
