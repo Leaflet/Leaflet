@@ -285,6 +285,66 @@ describe('Marker', () => {
 		});
 	});
 
+	describe('keyboard', () => {
+		it('is a focusable button when interactive', () => {
+			const marker = new Marker([0, 0]).addTo(map);
+
+			expect(marker._icon.tabIndex).to.equal(0);
+			expect(marker._icon.getAttribute('role')).to.equal('button');
+			expect(marker._icon.alt).to.equal('Marker');
+		});
+
+		it('is not a button when not interactive', () => {
+			const marker = new Marker([0, 0], {interactive: false}).addTo(map);
+
+			expect(marker._icon.tabIndex).to.equal(0);
+			expect(marker._icon.hasAttribute('role')).to.be.false;
+		});
+
+		it('is not focusable with keyboard: false', () => {
+			const marker = new Marker([0, 0], {keyboard: false}).addTo(map);
+
+			expect(marker._icon.hasAttribute('tabindex')).to.be.false;
+			expect(marker._icon.hasAttribute('role')).to.be.false;
+		});
+
+		it('fires click on Enter and Space', () => {
+			const spy = sinon.spy();
+			const mapSpy = sinon.spy();
+			const marker = new Marker([10, 20]).addTo(map);
+			marker.on('click', spy);
+			map.on('click', mapSpy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+			UIEventSimulator.fire('keydown', marker._icon, {key: ' '});
+
+			expect(spy.calledTwice).to.be.true;
+			expect(spy.firstCall.args[0].latlng.equals(marker.getLatLng())).to.be.true;
+			expect(mapSpy.called).to.be.false;
+		});
+
+		it('does not fire click on other or repeated keys', () => {
+			const spy = sinon.spy();
+			const marker = new Marker([0, 0]).addTo(map);
+			marker.on('click', spy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'a'});
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter', repeat: true});
+
+			expect(spy.called).to.be.false;
+		});
+
+		it('fires click on Enter with DivIcon', () => {
+			const spy = sinon.spy();
+			const marker = new Marker([0, 0], {icon: new DivIcon()}).addTo(map);
+			marker.on('click', spy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+
+			expect(spy.calledOnce).to.be.true;
+		});
+	});
+
 	describe('events', () => {
 		it('fires click event when clicked', () => {
 			const spy = sinon.spy();

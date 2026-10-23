@@ -298,13 +298,26 @@ describe('Popup', () => {
 	});
 
 
-	it('can open a popup with enter keypress when marker has focus', () => {
+	it('toggles a popup with Enter when marker has focus', () => {
 		const layer = new Marker(center).addTo(map);
 		layer.bindPopup('layer popup');
 
-		UIEventSimulator.fire('keypress', layer._icon, {
-			code: 'Enter'
-		});
+		UIEventSimulator.fire('keydown', layer._icon, {key: 'Enter'});
+		expect(map.hasLayer(layer._popup)).to.be.true;
+
+		UIEventSimulator.fire('keydown', layer._icon, {key: 'Enter'});
+		expect(map.hasLayer(layer._popup)).to.be.false;
+	});
+
+	it('opens a popup once with Enter on a button inside a DivIcon', () => {
+		const layer = new Marker(center, {icon: new DivIcon({html: '<button>open</button>'})}).addTo(map);
+		layer.bindPopup('layer popup');
+
+		const button = layer._icon.querySelector('button');
+		// browsers click a focused button natively after keydown
+		UIEventSimulator.fire('keydown', button, {key: 'Enter'});
+		UIEventSimulator.fire('keypress', button, {key: 'Enter', code: 'Enter'});
+		UIEventSimulator.fire('click', button);
 
 		expect(map.hasLayer(layer._popup)).to.be.true;
 	});

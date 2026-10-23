@@ -569,17 +569,17 @@ describe('DomEvent', () => {
 			const mapClickListener = sinon.spy();
 			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case
-			map.on('keypress', mapOtherListener);       // control case
+			map.on('keydown', mapOtherListener);       // control case
 
 			UIEventSimulator.fire('click', grandChild);
-			UIEventSimulator.fire('keypress', grandChild);
+			UIEventSimulator.fire('keydown', grandChild);
 
 			expect(mapOtherListener.called).to.be.true; // control case
 			expect(listener.called).to.be.true;
 			expect(mapClickListener.notCalled).to.be.true;
 
 			UIEventSimulator.fire('click', child);
-			UIEventSimulator.fire('keypress', child);
+			UIEventSimulator.fire('keydown', child);
 
 			expect(listener.calledTwice).to.be.true;
 			expect(mapClickListener.notCalled).to.be.true;

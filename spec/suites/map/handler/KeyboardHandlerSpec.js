@@ -189,20 +189,18 @@ describe('KeyboardHandler', () => {
 	});
 
 	describe('keys events binding', () => {
-		it('keypress', (done) => {
-			const keyDownSpy = sinon.spy();
+		it('keypress is not fired', () => {
 			const keyPressSpy = sinon.spy();
-			const keyUpSpy = sinon.spy();
 
-			map.on('keypress', keyPressSpy);
+			const errorStub = sinon.stub(console, 'error');
+			try {
+				map.on('keypress', keyPressSpy);
+			} finally {
+				errorStub.restore();
+			}
 			UIEventSimulator.fire('keypress', container, KEY_LOWERCASE_A);
 
-			setTimeout(() => {
-				expect(keyDownSpy.called).to.be.false;
-				expect(keyPressSpy.called).to.be.true;
-				expect(keyUpSpy.called).to.be.false;
-				done();
-			}, 50);
+			expect(keyPressSpy.called).to.be.false;
 		});
 
 		it('keydown', (done) => {
