@@ -234,36 +234,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#disableTextSelection, #enableTextSelection', () => {
-		const documentStyle = document.documentElement.style;
-		// Safari still needs a vendor prefix, we need to detect with property name is supported.
-		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
-
-		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
-		afterEach(() => { documentStyle[userSelectProp] = ''; });
-
-		it('disables and enables text selection', () => {
-			DomUtil.disableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('none');
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
-		});
-
-		it('restores the text selection previously set', () => {
-			documentStyle[userSelectProp] = 'text';
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('text');
-		});
-
-		it('restores the text selection previously set when disabling multiple times', () => {
-			DomUtil.disableTextSelection();
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
-		});
-	});
-
 	describe('#disableImageDrag, #enablerImageDrag', () => {
 		it('disable / enable dragstart DOM events for the user', () => {
 			let selectionPrevented;

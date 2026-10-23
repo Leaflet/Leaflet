@@ -21,12 +21,25 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
+/* without this, a long press on the map selects the nearest page text on iOS, and a drag leaving the map selects
+   page text in Firefox; popups and controls stop pointerdown from reaching the map, so their text stays selectable */
+.leaflet-container,
+.leaflet-dragging,
+.leaflet-control-zoom a {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.leaflet-popup-pane,
+.leaflet-control-container {
+	-webkit-user-select: text;
+	user-select: text;
+}
+
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow,
 .leaflet-image-layer {
-	-webkit-user-select: none;
-	user-select: none;
 	-webkit-user-drag: none;
 	-webkit-touch-callout: none;
 }
@@ -224,8 +237,8 @@ svg.leaflet-zoom-animated {
 	cursor: auto;
 }
 
-.leaflet-dragging .leaflet-grab,
-.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging.leaflet-grab,
+.leaflet-dragging.leaflet-grab .leaflet-interactive,
 .leaflet-dragging .leaflet-marker-draggable {
 	cursor: grabbing;
 }
@@ -547,8 +560,6 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	border-radius: 3px;
 	color: #222;
 	white-space: nowrap;
-	-webkit-user-select: none;
-	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
