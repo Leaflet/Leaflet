@@ -59,6 +59,10 @@
 	mix-blend-mode: plus-lighter;
 }
 
+.leaflet-container img.leaflet-tile.leaflet-tile-fading {
+	mix-blend-mode: normal;
+}
+
 .leaflet-container.leaflet-touch-zoom {
 	touch-action: pan-x pan-y;
 }
@@ -96,6 +100,11 @@
 
 .leaflet-tile-pane {
 	z-index: 200;
+}
+
+/* tiles use 2D transforms to raster together, so the pane that moves them needs a compositor layer of its own */
+.leaflet-map-pane {
+	will-change: transform;
 }
 
 .leaflet-overlay-pane {

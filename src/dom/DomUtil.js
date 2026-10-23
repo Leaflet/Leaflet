@@ -69,13 +69,17 @@ export function setTransform(el, offset, scale) {
 
 const positions = new WeakMap();
 
-// @function setPosition(el: HTMLElement, position: Point)
-// Sets the position of `el` to coordinates specified by `position`,
-// using CSS translate or top/left positioning depending on the browser
-// (used by Leaflet internally to position its layers).
-export function setPosition(el, point) {
+// @function setPosition(el: HTMLElement, position: Point, flat?: Boolean)
+// Sets the position of `el` to coordinates specified by `position` using a CSS translate
+// (used by Leaflet internally to position its layers). With `flat`, the translate is 2D,
+// so `el` is painted into its parent's compositor layer instead of getting a layer of its own.
+export function setPosition(el, point, flat) {
 	positions.set(el, point);
-	setTransform(el, point);
+	if (flat) {
+		el.style.transform = `translate(${point.x}px,${point.y}px)`;
+	} else {
+		setTransform(el, point);
+	}
 }
 
 // @function getPosition(el: HTMLElement): Point
