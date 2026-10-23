@@ -183,6 +183,12 @@ const defaultOptions = {
 	// Amount of pixels to pan when pressing an arrow key.
 	keyboardPanDelta: 80,
 
+	// @option ariaKeyShortcuts: Boolean|String = false
+	// Sets the `aria-keyshortcuts` attribute of the map container. ARIA names keys by what they type
+	// on a given layout, so `true` uses the names for a US English layout, which can be wrong for
+	// pages in other languages; pass a string to set the value for your audience's layout instead.
+	ariaKeyShortcuts: false,
+
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
