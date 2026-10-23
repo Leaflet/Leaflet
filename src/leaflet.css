@@ -224,10 +224,16 @@ svg.leaflet-zoom-animated {
 	cursor: auto;
 }
 
-.leaflet-dragging .leaflet-grab,
-.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging.leaflet-grab,
+.leaflet-dragging.leaflet-grab .leaflet-interactive,
 .leaflet-dragging .leaflet-marker-draggable {
 	cursor: grabbing;
+}
+
+/* keeps Firefox from selecting page text when a drag leaves the map */
+.leaflet-dragging {
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 /* marker & overlays interactivity */

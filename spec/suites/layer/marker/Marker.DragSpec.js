@@ -172,7 +172,7 @@ describe('Marker.Drag', () => {
 			dragMarker(() => {
 				expect(marker.getOffset().equals(offset)).to.be.true;
 				expect(marker._icon.innerHTML).to.equal('a');
-				expect(document.body.classList.contains('leaflet-dragging')).to.be.false;
+				expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
 
 				done();
 			});
@@ -207,6 +207,22 @@ describe('Marker.Drag', () => {
 
 			dragMarker(() => {
 				expect(marker.getOffset().equals(offset)).to.be.true;
+
+				done();
+			});
+		});
+
+		it('ends the drag when the icon element is replaced in a dragstart listener', (done) => {
+			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
+			const oldIcon = marker._icon;
+
+			marker.once('dragstart', () => {
+				marker.setIcon(new DefaultIcon());
+			});
+
+			dragMarker(() => {
+				expect(marker._icon).to.not.equal(oldIcon);
+				expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
 
 				done();
 			});

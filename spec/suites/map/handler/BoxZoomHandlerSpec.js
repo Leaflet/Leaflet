@@ -106,6 +106,23 @@ describe('BoxZoomHandler', () => {
 		expect(map.getZoom()).to.eql(5);
 	});
 
+	it('prevents the default action of the shift-press instead of disabling selection on the page', async () => {
+		const prevented = [];
+		container.addEventListener('pointerdown', e => prevented.push(e.defaultPrevented));
+
+		finger.moveTo(100, 100).shift().down();
+		finger.moveBy(100, 100);
+		await hand.run();
+
+		expect(document.documentElement.style.userSelect).to.equal('');
+
+		finger.unshift().up().wait(10);
+		finger.moveTo(100, 100).down().up();
+		await hand.run();
+
+		expect(prevented).to.eql([true, false]);
+	});
+
 	it('doesn\'t start box zoom if shift key is not pressed', async () => {
 		expect(map.getZoom()).to.eql(3);
 		const zoomSpy = sinon.spy();

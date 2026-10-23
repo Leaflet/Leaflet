@@ -59,8 +59,9 @@ export class BoxZoomHandler extends Handler {
 		this._clearDeferredResetState();
 		this._resetState();
 
-		DomUtil.disableTextSelection();
-		DomUtil.disableImageDrag();
+		// stops both text selection and native image drag in every engine without restyling the page; it also
+		// suppresses compatibility mouse events, which is fine for a press that is already a box zoom gesture
+		DomEvent.preventDefault(e);
 
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
@@ -99,9 +100,6 @@ export class BoxZoomHandler extends Handler {
 			this._box.remove();
 			this._container.classList.remove('leaflet-crosshair');
 		}
-
-		DomUtil.enableTextSelection();
-		DomUtil.enableImageDrag();
 
 		DomEvent.off(this._container, {
 			contextmenu: DomEvent.stop,
