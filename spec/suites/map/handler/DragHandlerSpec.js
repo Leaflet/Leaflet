@@ -320,6 +320,30 @@ describe('DragHandler', () => {
 				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
 		});
 
+		it('follows the pointer back to the start point within the drag threshold', async () => {
+			map = new LeafletMap(container, {
+				dragging: true,
+				inertia: false
+			});
+			map.setView([0, 0], 1);
+
+			const startPos = map._getMapPanePos();
+			const hand = new Hand({timing: 'fastframe'});
+			const pointer = hand.growFinger('pointer');
+
+			pointer.moveTo(200, 200, 0).down().moveBy(40, 20, 80);
+			await hand.run();
+			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(40, 20));
+
+			pointer.moveBy(-39, -20, 80);
+			await hand.run();
+			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(1, 0));
+
+			pointer.moveBy(-1, 0, 20).up();
+			await hand.run();
+			expect(map._getMapPanePos()).to.be.near(startPos);
+		});
+
 		// #10376: pointerdown during inertia captured a stale pane position;
 		// after inertia finished, the first move jumped back to that press point.
 		it('does not jump when dragging after pointerdown during inertia panning', async () => {

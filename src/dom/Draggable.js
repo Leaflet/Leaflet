@@ -134,8 +134,9 @@ export class Draggable extends Evented {
 
 		const offset = new Point(e.clientX, e.clientY)._subtract(this._startPoint);
 
-		if (!offset.x && !offset.y) { return; }
-		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
+		// once the drag has started, the pointer must be followed even when it comes back near the start point
+		const dist = Math.abs(offset.x) + Math.abs(offset.y);
+		if (!this._moved && (!dist || dist < this.options.clickTolerance)) { return; }
 
 		// We assume that the parent container's position, border and scale do not change for the duration of the drag.
 		// Therefore there is no need to account for the position and border (they are eliminated by the subtraction)
