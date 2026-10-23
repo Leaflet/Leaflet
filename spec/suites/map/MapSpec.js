@@ -2731,6 +2731,18 @@ describe('Map', () => {
 			expect(map.getZoom()).to.equal(12);
 		});
 
+		it('flies instantly by one zoom level even with zoom animation on', () => {
+			expect(map._zoomAnimated).to.be.true;
+			new GridLayer().addTo(map);
+			const zoomanim = sinon.spy();
+			const zoomend = sinon.spy();
+			map.on({zoomanim, zoomend});
+			map.flyTo([0.1, 0.1], 6);
+			expect(zoomanim.called).to.be.false;
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(6);
+		});
+
 		it('keeps popup autoPan', () => {
 			const spy = sinon.spy();
 			map.on('autopanstart', spy);

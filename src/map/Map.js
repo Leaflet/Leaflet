@@ -668,7 +668,7 @@ export class LeafletMap extends Evented {
 
 		options ??= {};
 		if (options.animate === false || (options.animate !== true && prefersReducedMotion())) {
-			return this.setView(targetCenter, targetZoom, options);
+			return this.setView(targetCenter, targetZoom, {...options, zoom: {...options.zoom, animate: false}});
 		}
 
 		this._stop();
