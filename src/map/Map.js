@@ -2209,7 +2209,7 @@ export class LeafletMap extends Evented {
 	}
 }
 
-export const Map = LeafletMap;
+export {LeafletMap as Map};
 
 // read when the map is created for the zoom and fade defaults, and on each call for panning and flying
 function prefersReducedMotion() {
