@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Animation bench</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../src/Leaflet.js"
+				}
+			}
+		</script>
+		<style>
+			html, body { margin: 0; height: 100%; }
+			#map { position: absolute; inset: 0; background: #f00; }
+			#panel {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				z-index: 1000;
+				padding: 6px 10px;
+				background: rgba(255, 255, 255, 0.92);
+				font: 12px/1.7 monospace;
+			}
+			#panel label { display: block; }
+			#stats { white-space: pre; margin-top: 4px; }
+			.no-plus-lighter .leaflet-container img.leaflet-tile,
+			.no-plus-lighter img.leaflet-tile { mix-blend-mode: normal; }
+			/* a fading tile is its own compositor layer, where plus-lighter adds up overlapping edge AA */
+			.leaflet-container img.leaflet-tile.leaflet-tile-fading { mix-blend-mode: normal; }
+			.level-will-change .leaflet-tile-container { will-change: transform; }
+			.pane-layers .leaflet-map-pane > .leaflet-pane { will-change: transform; }
+			.m { background: #36c; border: 1px solid #fff; border-radius: 50%; }
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div id="panel">
+			<label><input type="checkbox" data-p="tiles2d"> 2D tile transforms</label>
+			<label><input type="checkbox" data-p="markers2d"> 2D marker / popup / pane transforms</label>
+			<label><input type="checkbox" data-p="waapiFade"> WAAPI tile fade</label>
+			<label><input type="checkbox" data-p="waapiPan"> WAAPI pan / inertia</label>
+			<label><input type="checkbox" data-p="plusLighter"> plus-lighter</label>
+				<label><input type="checkbox" data-p="fadeNormal"> normal blending while fading (WAAPI)</label>
+			<label><input type="checkbox" data-p="levelWillChange"> will-change on levels</label>
+			<label><input type="checkbox" data-p="paneLayers"> will-change on panes</label>
+			<label><input type="checkbox" data-p="solid"> solid gray tiles (seams)</label>
+			<label>main-thread burn <input type="number" data-p="burn" style="width: 4em"> ms / 100ms</label>
+			<label>markers <input type="number" data-p="markers" style="width: 5em"></label>
+			<label>zoomSnap <input type="number" data-p="zoomSnap" step="0.05" style="width: 4em"></label>
+			<button id="fling">fling</button> <button id="zoom">zoom ±1</button>
+			<div id="stats"></div>
+		</div>
+
+		<script type="module">
+			import {LeafletMap, GridLayer, Marker, DivIcon, DomUtil, Point} from 'leaflet';
+
+			const defaults = {tiles2d: 1, markers2d: 0, waapiFade: 1, waapiPan: 1, fadeNormal: 1, plusLighter: 1, levelWillChange: 0, paneLayers: 0, solid: 0, burn: 0, markers: 0, zoomSnap: 1, zoom: 12};
+			const params = new URLSearchParams(location.search);
+			const p = Object.fromEntries(Object.entries(defaults).map(([k, v]) => [k, params.has(k) ? +params.get(k) : v]));
+
+			DomUtil.spike.tiles2d = !!p.tiles2d;
+			DomUtil.spike.markers2d = !!p.markers2d;
+			DomUtil.spike.waapiFade = !!p.waapiFade;
+			DomUtil.spike.waapiPan = !!p.waapiPan;
+			DomUtil.spike.fadeNormal = !!p.fadeNormal;
+			document.body.classList.toggle('no-plus-lighter', !p.plusLighter);
+			document.body.classList.toggle('level-will-change', !!p.levelWillChange);
+			document.body.classList.toggle('pane-layers', !!p.paneLayers);
+
+			for (const input of document.querySelectorAll('[data-p]')) {
+				const k = input.dataset.p;
+				if (input.type === 'checkbox') { input.checked = !!p[k]; } else { input.value = p[k]; }
+				input.onchange = () => {
+					params.set(k, input.type === 'checkbox' ? +input.checked : input.value);
+					location.search = params;
+				};
+			}
+
+			// generated tiles (no network): a few textured variants, or one solid white tile for seam checks
+			async function makeTile(i) {
+				const c = document.createElement('canvas');
+				c.width = c.height = 256;
+				const ctx = c.getContext('2d');
+				if (p.solid) {
+					ctx.fillStyle = '#808080';
+					ctx.fillRect(0, 0, 256, 256);
+				} else {
+					const g = ctx.createLinearGradient(0, 0, 256, 256);
+					g.addColorStop(0, `hsl(${i * 45},60%,85%)`);
+					g.addColorStop(1, `hsl(${i * 45 + 60},60%,70%)`);
+					ctx.fillStyle = g;
+					ctx.fillRect(0, 0, 256, 256);
+					ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+					for (let j = 0; j < 40; j++) {
+						ctx.beginPath();
+						ctx.moveTo(Math.random() * 256, Math.random() * 256);
+						ctx.lineTo(Math.random() * 256, Math.random() * 256);
+						ctx.stroke();
+					}
+					ctx.fillStyle = '#333';
+					ctx.font = '20px sans-serif';
+					ctx.fillText(`tile ${i}`, 90, 130);
+				}
+				const blob = await new Promise(resolve => c.toBlob(resolve));
+				return URL.createObjectURL(blob);
+			}
+			const urls = await Promise.all([...Array(p.solid ? 1 : 8).keys()].map(makeTile));
+
+			class BenchTiles extends GridLayer {
+				createTile(coords, done) {
+					const img = document.createElement('img');
+					img.alt = '';
+					img.onload = () => done(null, img);
+					// simulated network latency
+					setTimeout(() => { img.src = urls[Math.abs(coords.x * 3 + coords.y * 5) % urls.length]; }, p.solid ? 0 : 20 + Math.random() * 120);
+					return img;
+				}
+			}
+
+			const map = window.map = new LeafletMap('map', {zoomSnap: p.zoomSnap, zoomControl: false, attributionControl: false})
+				.setView([50.45, 30.52], p.zoom);
+			const tiles = new BenchTiles().addTo(map);
+
+			const icon = new DivIcon({className: 'm', iconSize: [12, 12]});
+			for (let i = 0; i < p.markers; i++) {
+				new Marker([50.45 + (Math.random() - 0.5) * 0.3, 30.52 + (Math.random() - 0.5) * 0.6], {icon}).addTo(map);
+			}
+
+			if (p.burn) {
+				setInterval(() => {
+					const t = performance.now();
+					while (performance.now() - t < p.burn) { /* burn */ }
+				}, 100);
+			}
+
+			// rAF frame monitor: what the main thread manages, which is what an rAF-driven pan can show
+			let frames = null;
+			(function tick(t) {
+				frames?.push(t);
+				requestAnimationFrame(tick);
+			})();
+
+			function stats(times) {
+				const gaps = times.slice(1).map((t, i) => t - times[i]);
+				return {
+					rafFrames: times.length,
+					maxGap: Math.round(Math.max(0, ...gaps)),
+					gapsOver20: gaps.filter(g => g > 20).length
+				};
+			}
+
+			window.bench = {
+				tilesLoaded: () => new Promise(resolve => (tiles.isLoading() ? tiles.once('load', () => setTimeout(resolve, 300)) : setTimeout(resolve, 300))),
+
+				fling(dx = -1500, duration = 1) {
+					return new Promise(resolve => {
+						frames = [];
+						const t0 = performance.now();
+						performance.mark('fling-start');
+						map.once('moveend', () => {
+							performance.mark('fling-end');
+							const s = {...stats(frames), ms: Math.round(performance.now() - t0)};
+							frames = null;
+							resolve(s);
+						});
+						map.panBy(new Point(dx, dx / 3), {animate: true, duration, easeLinearity: 0.2, noMoveStart: true});
+					});
+				},
+
+				zoom(delta) {
+					return new Promise(resolve => {
+						map.once('zoomend', () => setTimeout(resolve, 50));
+						map.setZoom(map.getZoom() + delta);
+					});
+				}
+			};
+
+			let dir = 1;
+			document.getElementById('fling').onclick = async () => {
+				const s = await window.bench.fling(-1500 * dir);
+				dir = -dir;
+				document.getElementById('stats').textContent = JSON.stringify(s, null, 1);
+			};
+			document.getElementById('zoom').onclick = () => window.bench.zoom(map.getZoom() > p.zoom ? -1 : 1);
+		</script>
+	</body>
+</html>

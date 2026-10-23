@@ -334,6 +334,8 @@ export class GridLayer extends Layer {
 
 		this._container.style.opacity = `${this.options.opacity}`;
 
+		if (DomUtil.spike.waapiFade) { return; }
+
 		const now = Date.now();
 		let nextFrame = false,
 		willPrune = false;
@@ -834,7 +836,11 @@ export class GridLayer extends Layer {
 		if (!tile) { return; }
 
 		tile.loaded = Date.now();
-		if (this._map._fadeAnimated) {
+		if (this._map._fadeAnimated && DomUtil.spike.waapiFade) {
+			// a compositor animation: the tile gets its own layer only for the duration of the fade
+			if (DomUtil.spike.fadeNormal) { tile.el.classList.add('leaflet-tile-fading'); }
+			tile.el.animate({opacity: [0, 1]}, 200).onfinish = () => this._onTileFaded(key, tile);
+		} else if (this._map._fadeAnimated) {
 			tile.el.style.opacity = '0';
 			cancelAnimationFrame(this._fadeFrame);
 			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
@@ -864,6 +870,20 @@ export class GridLayer extends Layer {
 				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
+	}
+
+	_onTileFaded(key, tile) {
+		tile.el.classList.remove('leaflet-tile-fading');
+		if (this._tiles[key] !== tile) { return; }
+		tile.active = true;
+		this._onOpaqueTile(tile);
+
+		// coalesce prunes of tiles that finish fading in the same frame
+		if (this._noPrune || this._fadePruneFrame) { return; }
+		this._fadePruneFrame = requestAnimationFrame(() => {
+			this._fadePruneFrame = 0;
+			if (!this._noPrune) { this._pruneTiles(); }
+		});
 	}
 
 	_getTilePos(coords) {

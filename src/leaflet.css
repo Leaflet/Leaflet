@@ -111,6 +111,11 @@
 	z-index: 200;
 }
 
+/* the only pane that moves, so it keeps its own compositor layer now that leaf elements use 2D transforms */
+.leaflet-map-pane {
+	will-change: transform;
+}
+
 .leaflet-overlay-pane {
 	z-index: 400;
 }

@@ -17,6 +17,19 @@ export class PosAnimation extends Evented {
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = Date.now();
 
+		if (DomUtil.spike.waapiPan) {
+			// the compositor moves the element, while the rAF loop below only tracks the model position for `step`
+			// a piecewise linear ease, which the model positions below follow exactly so they match the screen
+			const stops = this._stops = [];
+			for (let i = 0; i <= 32; i++) { stops.push(+this._easeOut(i / 32).toFixed(4)); }
+
+			this._anim = el.animate({transform: [transform(this._startPos), transform(newPos)]}, {
+				duration: this._duration * 1000,
+				easing: `linear(${stops.join(',')})`,
+				fill: 'forwards'
+			});
+		}
+
 		this.fire('start');
 
 		this._animate();
@@ -36,11 +49,11 @@ export class PosAnimation extends Evented {
 	}
 
 	_step(round) {
-		const elapsed = (Date.now()) - this._startTime,
+		const elapsed = this._anim ? this._anim.currentTime : Date.now() - this._startTime,
 		duration = this._duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._easeOut(elapsed / duration), round);
+			this._runFrame(this._anim ? this._linearEase(elapsed / duration) : this._easeOut(elapsed / duration), round);
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -52,12 +65,16 @@ export class PosAnimation extends Evented {
 		if (round) {
 			pos._round();
 		}
-		DomUtil.setPosition(this._el, pos);
+		// while the animation runs, only the final (or stopping) frame writes the inline transform
+		DomUtil.setPosition(this._el, pos, this._anim && !round && progress < 1);
 		this.fire('step');
 	}
 
 	_complete() {
 		cancelAnimationFrame(this._animId);
+
+		this._anim?.cancel();
+		this._anim = null;
 
 		this._inProgress = false;
 		this.fire('end');
@@ -66,4 +83,14 @@ export class PosAnimation extends Evented {
 	_easeOut(t) {
 		return 1 - (1 - t) ** this._easeOutPower;
 	}
+
+	_linearEase(t) {
+		const n = this._stops.length - 1,
+		i = Math.min(Math.floor(t * n), n - 1);
+		return this._stops[i] + (this._stops[i + 1] - this._stops[i]) * (t * n - i);
+	}
+}
+
+function transform(pos) {
+	return DomUtil.spike.markers2d ? `translate(${pos.x}px,${pos.y}px)` : `translate3d(${pos.x}px,${pos.y}px,0)`;
 }

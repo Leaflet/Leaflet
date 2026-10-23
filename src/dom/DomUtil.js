@@ -57,6 +57,9 @@ export function toBack(el) {
 	}
 }
 
+// spike toggles (PLAN-ANIM bench), read at call time so a debug page can flip them
+export const spike = {tiles2d: true, markers2d: false, waapiFade: true, waapiPan: true, fadeNormal: true};
+
 // @function setTransform(el: HTMLElement, offset: Point, scale?: Number)
 // Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 // and optionally scaled by `scale`. Does not have an effect if the
@@ -73,9 +76,14 @@ const positions = new WeakMap();
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
-export function setPosition(el, point) {
+export function setPosition(el, point, noTransform) {
 	positions.set(el, point);
-	setTransform(el, point);
+	if (noTransform) { return; }
+	if (el.classList.contains('leaflet-tile') ? spike.tiles2d : spike.markers2d) {
+		el.style.transform = `translate(${point.x}px,${point.y}px)`;
+	} else {
+		setTransform(el, point);
+	}
 }
 
 // @function getPosition(el: HTMLElement): Point
