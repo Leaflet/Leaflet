@@ -1,9 +1,24 @@
-// Simulates a mouse, pen or touch pointer. Steps are queued and dispatched as pointer events one animation frame
-// apart; awaiting a finger waits for its queue to finish, and Promise.all moves several fingers at once.
+// Simulates a mouse, pen or touch pointer. Steps are queued and dispatched as pointer events, one step per animation
+// frame, with all active fingers stepping in the same frame callback; awaiting a finger waits for its queue to finish.
 
-// keep the real setTimeout in case a test fakes timers
-const {setTimeout} = window;
+const active = new Set();
+let frame = 0;
 let lastId = 1000;
+
+// a single loop for all fingers keeps them in lockstep, and runs after any rAF callbacks queued by the previous step
+function tick() {
+	frame = 0;
+	for (const finger of active) {
+		const step = finger.steps.shift();
+		if (step) {
+			finger.dispatch(...step);
+		} else {
+			active.delete(finger);
+			finger.resolve();
+		}
+	}
+	if (active.size) { frame = requestAnimationFrame(tick); }
+}
 
 export default class Finger {
 	constructor(pointerType = 'mouse') {
@@ -11,7 +26,8 @@ export default class Finger {
 		this.id = ++lastId;
 		this.x = 0;
 		this.y = 0;
-		this.queue = Promise.resolve();
+		this.steps = [];
+		this.done = Promise.resolve();
 	}
 
 	moveTo(x, y, init) { return this.step('move', x, y, init); }
@@ -20,17 +36,18 @@ export default class Finger {
 	up(init) { return this.step('up', this.x, this.y, init); }
 
 	then(resolve, reject) {
-		return this.queue.then(resolve, reject);
+		return this.done.then(resolve, reject);
 	}
 
 	step(type, x, y, init) {
 		this.x = x;
 		this.y = y;
-		this.queue = this.queue.then(() => {
-			this.dispatch(type, x, y, init);
-			// step after all of the next frame's callbacks so that handlers throttled with rAF see every event
-			return new Promise((resolve) => { requestAnimationFrame(() => setTimeout(resolve)); });
-		});
+		this.steps.push([type, x, y, init]);
+		if (!active.has(this)) {
+			active.add(this);
+			this.done = new Promise((resolve) => { this.resolve = resolve; });
+		}
+		frame ||= requestAnimationFrame(tick);
 		return this;
 	}
 
