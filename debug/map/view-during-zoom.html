@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - View during zoom</title>
+		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<style>
+			#map { width: 800px; height: 500px; }
+		</style>
+		<script type="importmap">
+			{"imports": {"leaflet": "../../dist/leaflet-src.js"}}
+		</script>
+	</head>
+	<body>
+		<p>Request a new view while a CSS zoom transition is running. The map should finish at [0.001, 0.001], zoom 15.</p>
+		<button id="run">Run reproduction</button>
+		<p id="result">Ready. No external tiles are needed.</p>
+		<div id="map"></div>
+		<script type="module">
+			import {LeafletMap, Marker, DivIcon, LatLng} from 'leaflet';
+
+			const map = new LeafletMap('map', {zoomAnimation: true}).setView([0, 0], 13);
+			new Marker([0.001, 0.001], {icon: new DivIcon()}).addTo(map);
+			const button = document.getElementById('run');
+			const result = document.getElementById('result');
+			button.onclick = () => {
+				button.disabled = true;
+				map.setView([0, 0], 13, {animate: false});
+				result.textContent = 'Waiting for the zoom transition...';
+				let requestedDuringZoom = false;
+				map.once('zoomanim', () => {
+					setTimeout(() => {
+						requestedDuringZoom = map._animatingZoom;
+						map.setView([0.001, 0.001], 15, {animate: true});
+					}, 10);
+				});
+				map.setView([0.0005, 0.0005], 14, {animate: true});
+				setTimeout(() => {
+					const passed = requestedDuringZoom && map.getZoom() === 15 &&
+						map.getCenter().equals(new LatLng(0.001, 0.001));
+					result.textContent = `${passed ? 'PASS' : 'FAIL'}: ${map.getCenter()}, zoom ${map.getZoom()}. Requested during zoom: ${requestedDuringZoom}.`;
+					button.disabled = false;
+				}, 1000);
+			};
+		</script>
+	</body>
+</html>
