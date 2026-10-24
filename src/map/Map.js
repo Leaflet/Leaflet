@@ -148,9 +148,9 @@ const defaultOptions = {
 	// The rate with which the inertial movement slows down, in pixels/second².
 	inertiaDeceleration: 3400, // px/s^2
 
-	// @option inertiaMaxSpeed: Number = Infinity
+	// @option inertiaMaxSpeed: Number = 1400
 	// Max speed of the inertial movement, in pixels/second.
-	inertiaMaxSpeed: Infinity, // px/s
+	inertiaMaxSpeed: 1400, // px/s
 
 	// @option easeLinearity: Number = 0.2
 	easeLinearity: 0.2,
@@ -649,7 +649,7 @@ export class LeafletMap extends Evented {
 		}
 
 		// with reduced motion, only short pans are animated unless animate: true is specified
-		const tooFarForReducedMotion = prefersReducedMotion() && !size.divideBy(2).contains(offset);
+		const tooFarForReducedMotion = this._prefersReducedMotion() && !size.divideBy(2).contains(offset);
 		if (options.animate === true || (options.animate !== false && !tooFarForReducedMotion)) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
@@ -674,7 +674,7 @@ export class LeafletMap extends Evented {
 		if (options.animate === false) {
 			return this.setView(targetCenter, targetZoom, {...options, zoom: {...options.zoom, animate: false}});
 		}
-		if (options.animate !== true && prefersReducedMotion()) {
+		if (options.animate !== true && this._prefersReducedMotion()) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
@@ -2016,6 +2016,11 @@ export class LeafletMap extends Evented {
 		return this.unproject(centerPoint.add(offset), zoom);
 	}
 
+	// not cached, so that a preference changed mid-session applies right away
+	_prefersReducedMotion() {
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+
 	// adjust offset for view to get inside bounds
 	_limitOffset(offset, bounds) {
 		if (!bounds) { return offset; }
@@ -2142,7 +2147,7 @@ export class LeafletMap extends Evented {
 		// don't animate if disabled, not supported or zoom difference is too large (over 1 with reduced motion,
 		// unless animate: true is specified)
 		const threshold = this.options.zoomAnimationThreshold,
-		maxZoomDiff = prefersReducedMotion() && options.animate !== true ? Math.min(threshold, 1) : threshold;
+		maxZoomDiff = this._prefersReducedMotion() && options.animate !== true ? Math.min(threshold, 1) : threshold;
 		if (!this._zoomAnimated || options.animate === false || this._nothingToAnimate() ||
 		        Math.abs(zoom - this._zoom) > maxZoomDiff) { return false; }
 
@@ -2213,8 +2218,3 @@ export class LeafletMap extends Evented {
 }
 
 export {LeafletMap as Map};
-
-// read on each call so that panning, zooming and flying follow the current preference
-function prefersReducedMotion() {
-	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
