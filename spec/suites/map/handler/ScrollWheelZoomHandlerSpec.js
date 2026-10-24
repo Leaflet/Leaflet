@@ -119,6 +119,29 @@ describe('ScrollWheelZoomHandler', () => {
 		map.options.wheelPxPerZoomLevel = wheelPxPerZoomLevelBefore;
 	});
 
+	it('zooms by at most one level per hard scroll with reduced motion', () => {
+		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
+		const zoom = map.getZoom();
+		const hardScrollIn = {deltaY: -3000, deltaMode: 0};
+
+		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		clock.tick(100);
+		expect(map.getZoom() - zoom).to.be.greaterThan(1);
+
+		map.setZoom(zoom, {animate: false});
+		clock.tick(300);
+
+		const matchMedia = window.matchMedia.bind(window);
+		const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
+		sinon.stub(window, 'matchMedia').callsFake(reduced);
+
+		UIEventSimulator.fire(wheel, container, hardScrollIn);
+		clock.tick(100);
+		expect(map.getZoom() - zoom).to.equal(1);
+
+		window.matchMedia.restore();
+	});
+
 	it('ignores wheel zooms right after a zoom without animation, like an animated zoom does', () => {
 		clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'Date']});
 		const zoom = map.getZoom();

@@ -148,8 +148,18 @@ export class DragHandler extends Handler {
 			limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease);
-			let offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			maxOffset = map.getSize().divideBy(2);
+
+			let decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
+			offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+
+			// with reduced motion, shorten the coast to fit within half the map size; distance grows with the
+			// square of duration, so scaling the duration by the square root keeps the deceleration the same
+			if (map._prefersReducedMotion() && !maxOffset.contains(offset)) {
+				const k = Math.min(maxOffset.x / Math.abs(offset.x), maxOffset.y / Math.abs(offset.y));
+				offset = offset.multiplyBy(k).round();
+				decelerationDuration *= Math.sqrt(k);
+			}
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');

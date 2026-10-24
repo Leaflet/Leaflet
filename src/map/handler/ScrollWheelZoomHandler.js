@@ -49,7 +49,9 @@ export class ScrollWheelZoomHandler extends Handler {
 		const d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4),
 		d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
 		d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
-		delta = map._limitZoom(zoom + (this._delta > 0 ? d4 : -d4)) - zoom;
+		// with reduced motion, only zooms by up to one level are animated, so a hard scroll is capped to that
+		d5 = map._prefersReducedMotion() ? Math.min(d4, 1) : d4,
+		delta = map._limitZoom(zoom + (this._delta > 0 ? d5 : -d5)) - zoom;
 
 		this._delta = 0;
 		this._startTime = null;
