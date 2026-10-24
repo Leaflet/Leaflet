@@ -1,8 +1,7 @@
 import {DefaultIcon, DivIcon, DomUtil, LeafletMap, Marker, Point} from 'leaflet';
-import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('Marker.Drag', () => {
 	let map,
@@ -33,28 +32,18 @@ describe('Marker.Drag', () => {
 	});
 
 	describe.each(['mouse', 'touch'])('drag with %s', (pointerType) => {
-		it('drags a marker', (done) => {
+		it('drags a marker', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 			const start = new Point(300, 280);
 			const offset = new Point(56, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(marker.getOffset().equals(offset)).to.be.true;
+			await new Finger(pointerType).moveTo(start.x, start.y).down().moveBy(5, 0).moveTo(finish.x, finish.y).up();
 
-					expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
-
-					done();
-				}
-			});
-			const finger = hand.growFinger('pointer', {pointerType});
-
-			finger.moveTo(start.x, start.y, 0)
-				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			expect(marker.getOffset().equals(offset)).to.be.true;
+			expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 		});
 
 		describe('in CSS scaled container', () => {
@@ -65,34 +54,25 @@ describe('Marker.Drag', () => {
 				container.style.transform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it('drags a marker, compensating for CSS scale', (done) => {
+			it('drags a marker, compensating for CSS scale', async () => {
 				const marker = new MyMarker([0, 0], {draggable: true}).addTo(map);
 
 				const start = new Point(300, 280);
 				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
-				const hand = new Hand({
-					timing: 'fastframe',
-					onStop() {
-						expect(marker.getOffset()).to.eql(offset);
-
-						expect(map.getCenter()).to.be.nearLatLng([0, 0]);
-						expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
-
-						done();
-					}
-				});
-				const finger = hand.growFinger('pointer', {pointerType});
-
 				const startScaled = start.scaleBy(scale);
 				const finishScaled = finish.scaleBy(scale);
-				finger.wait(0).moveTo(startScaled.x, startScaled.y, 0)
-					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
+				await new Finger(pointerType).moveTo(startScaled.x, startScaled.y)
+					.down().moveBy(5, 0).moveTo(finishScaled.x, finishScaled.y).up();
+
+				expect(marker.getOffset()).to.eql(offset);
+				expect(map.getCenter()).to.be.nearLatLng([0, 0]);
+				expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 			});
 		});
 
-		it('pans map when autoPan is enabled', (done) => {
+		it('pans map when autoPan is enabled', async () => {
 			const marker = new MyMarker([0, 0], {
 				draggable: true,
 				autoPan: true
@@ -102,22 +82,12 @@ describe('Marker.Drag', () => {
 			const offset = new Point(290, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(marker.getOffset()).to.eql(offset);
+			await new Finger(pointerType).moveTo(start.x, start.y).down().moveBy(5, 0).moveTo(finish.x, finish.y).up();
 
-					// small margin of error allowed
-					expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
-					expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 419.0625]);
-
-					done();
-				}
-			});
-			const finger = hand.growFinger('pointer', {pointerType});
-
-			finger.moveTo(start.x, start.y, 0)
-				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			expect(marker.getOffset()).to.eql(offset);
+			// small margin of error allowed
+			expect(map.getCenter()).to.be.nearLatLng([0, 11.25]);
+			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 419.0625]);
 		});
 	});
 
@@ -128,18 +98,13 @@ describe('Marker.Drag', () => {
 		// large enough to be grabbed at the start point
 		const divIcon = html => new DivIcon({html, iconSize: [40, 80]});
 
-		function dragMarker(onStop) {
+		function dragMarker() {
 			const finish = start.add(offset);
-
-			const hand = new Hand({timing: 'fastframe', onStop});
-			const toucher = hand.growFinger('pointer', {pointerType});
-
-			toucher.moveTo(start.x, start.y, 0)
-				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			return new Finger(pointerType).moveTo(start.x, start.y).down().moveBy(5, 0).moveTo(finish.x, finish.y).up();
 		}
 
 		// https://github.com/Leaflet/Leaflet/issues/4484
-		it('keeps dragging when the icon is changed in a drag listener', (done) => {
+		it('keeps dragging when the icon is changed in a drag listener', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 			const dragSpy = sinon.spy();
 			const dragendSpy = sinon.spy();
@@ -150,16 +115,13 @@ describe('Marker.Drag', () => {
 			marker.on('drag', dragSpy);
 			marker.on('dragend', dragendSpy);
 
-			dragMarker(() => {
-				expect(dragSpy.callCount).to.be.above(1);
-				expect(dragendSpy.calledOnce).to.be.true;
-				expect(marker.getOffset().equals(offset)).to.be.true;
-
-				done();
-			});
+			await dragMarker();
+			expect(dragSpy.callCount).to.be.above(1);
+			expect(dragendSpy.calledOnce).to.be.true;
+			expect(marker.getOffset().equals(offset)).to.be.true;
 		});
 
-		it('finishes the drag when the icon is changed in the dragstart and dragend listeners', (done) => {
+		it('finishes the drag when the icon is changed in the dragstart and dragend listeners', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 
 			marker.on('dragstart', () => {
@@ -169,17 +131,14 @@ describe('Marker.Drag', () => {
 				marker.setIcon(divIcon('a'));
 			});
 
-			dragMarker(() => {
-				expect(marker.getOffset().equals(offset)).to.be.true;
-				expect(marker._icon.innerHTML).to.equal('a');
-				expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
-
-				done();
-			});
+			await dragMarker();
+			expect(marker.getOffset().equals(offset)).to.be.true;
+			expect(marker._icon.innerHTML).to.equal('a');
+			expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
 		});
 
 		// https://github.com/Leaflet/Leaflet/issues/5067
-		it('does not fire a click after dragend when the icon is changed in a dragend listener', (done) => {
+		it('does not fire a click after dragend when the icon is changed in a dragend listener', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 			const clickSpy = sinon.spy();
 
@@ -188,31 +147,25 @@ describe('Marker.Drag', () => {
 				marker.setIcon(divIcon('b'));
 			});
 
-			dragMarker(() => {
-				// A real user scenario would trigger a click on pointerup.
-				// We want to be sure it is cancelled after a drag.
-				UIEventSimulator.fire('click', marker._icon);
-				expect(clickSpy.called).to.be.false;
-
-				done();
-			});
+			await dragMarker();
+			// A real user scenario would trigger a click on pointerup.
+			// We want to be sure it is cancelled after a drag.
+			UIEventSimulator.fire('click', marker._icon);
+			expect(clickSpy.called).to.be.false;
 		});
 
-		it('drags a marker that is enabled again after its icon was changed', (done) => {
+		it('drags a marker that is enabled again after its icon was changed', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 
 			marker.dragging.disable();
 			marker.setIcon(divIcon('b'));
 			marker.dragging.enable();
 
-			dragMarker(() => {
-				expect(marker.getOffset().equals(offset)).to.be.true;
-
-				done();
-			});
+			await dragMarker();
+			expect(marker.getOffset().equals(offset)).to.be.true;
 		});
 
-		it('ends the drag when the icon element is replaced in a dragstart listener', (done) => {
+		it('ends the drag when the icon element is replaced in a dragstart listener', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 			const oldIcon = marker._icon;
 
@@ -220,26 +173,20 @@ describe('Marker.Drag', () => {
 				marker.setIcon(new DefaultIcon());
 			});
 
-			dragMarker(() => {
-				expect(marker._icon).to.not.equal(oldIcon);
-				expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
-
-				done();
-			});
+			await dragMarker();
+			expect(marker._icon).to.not.equal(oldIcon);
+			expect(map.getContainer().classList.contains('leaflet-dragging')).to.be.false;
 		});
 
-		it('drags a marker after its icon element was replaced', (done) => {
+		it('drags a marker after its icon element was replaced', async () => {
 			const marker = new MyMarker([0, 0], {draggable: true, icon: divIcon('a')}).addTo(map);
 			const oldIcon = marker._icon;
 
 			marker.setIcon(new DefaultIcon());
 			expect(marker._icon).to.not.equal(oldIcon);
 
-			dragMarker(() => {
-				expect(marker.getOffset().equals(offset)).to.be.true;
-
-				done();
-			});
+			await dragMarker();
+			expect(marker.getOffset().equals(offset)).to.be.true;
 		});
 	});
 });

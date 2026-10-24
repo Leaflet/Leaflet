@@ -1,12 +1,10 @@
 import {LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
-import Hand from 'prosthetic-hand';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('TapHoldHandler', () => {
 	let container, clock, spy, map;
-	let touchHand, mouseHand;
 	let touchFinger, touchFinger2, mouseFinger;
 
 	const posStart = {x: 1, y: 1};
@@ -21,10 +19,7 @@ describe('TapHoldHandler', () => {
 			tapHold: true
 		});
 
-
-		// Tap-Hold depends on timing. This means `minimal` mode for prosthetic-hand
-		// plus the sinon clock faking performance.now() calls, plus a need to
-		// manually tick the sinon clock forward.
+		// Tap-Hold depends on timing, so fake the clock and tick it manually between finger steps.
 		clock = sinon.useFakeTimers({
 			toFake: ['setTimeout', 'clearTimeout', 'Date', 'performance']
 		});
@@ -33,15 +28,9 @@ describe('TapHoldHandler', () => {
 
 		map.on('contextmenu', spy);
 
-		posStart.target = container;
-		posNear.target = container;
-		posFar.target = container;
-
-		touchHand = new Hand({timing: 'minimal'});
-		touchFinger = touchHand.growFinger('pointer', {pointerType: 'touch', ...posStart});
-		touchFinger2 = touchHand.growFinger('pointer', {pointerType: 'touch', ...posStart});
-		mouseHand = new Hand({timing: 'minimal'});
-		mouseFinger = mouseHand.growFinger('pointer', {pointerType: 'mouse', ...posStart});
+		touchFinger = new Finger('touch').moveTo(posStart.x, posStart.y);
+		touchFinger2 = new Finger('touch').moveTo(posStart.x, posStart.y);
+		mouseFinger = new Finger('mouse').moveTo(posStart.x, posStart.y);
 	});
 
 	afterEach(() => {
@@ -49,13 +38,12 @@ describe('TapHoldHandler', () => {
 		removeMapContainer(map, container);
 	});
 
-	it('fires synthetic contextmenu after hold delay>600', () => {
-		touchFinger.moveTo(posStart.x, posStart.y).down().wait(550);
+	it('fires synthetic contextmenu after hold delay>600', async () => {
+		await touchFinger.down();
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.true;
 
-		touchFinger.wait(100);
 		clock.tick(100);
 
 		expect(spy.called).to.be.true;
@@ -64,53 +52,59 @@ describe('TapHoldHandler', () => {
 		const event = spy.lastCall.args[0];
 		expect(event.type).to.equal('contextmenu');
 		expect(event.originalEvent._simulated).to.be.true;
-		touchFinger.up();
+		await touchFinger.up();
 	});
 
-	it('does not fire contextmenu when multiple pointers touches', () => {
-
-		touchFinger.down().wait(100).up();
-		touchFinger2.down().wait(600).up();
-		clock.tick(1000);
+	it('does not fire contextmenu when multiple pointers touches', async () => {
+		await Promise.all([touchFinger.down(), touchFinger2.down()]);
+		clock.tick(100);
+		await touchFinger.up();
+		clock.tick(500);
+		await touchFinger2.up();
+		clock.tick(400);
 
 		expect(spy.notCalled).to.be.true;
 	});
 
-	it('does not fire contextmenu when multiple pointers touches > 1 (case:2)', () => {
+	it('does not fire contextmenu when multiple pointers touches > 1 (case:2)', async () => {
 		expect(spy.notCalled).to.be.true;
 
-		touchFinger.down().wait(650).up();
-		touchFinger2.wait(100).down();
+		await touchFinger.down();
+		clock.tick(100);
+		await touchFinger2.down();
+		clock.tick(550);
+		await touchFinger.up();
+		clock.tick(100);
 
-		clock.tick(750);
+		expect(spy.notCalled).to.be.true;
+		await touchFinger2.up();
+	});
+
+	it('ignores events from mouse', async () => {
+		await mouseFinger.down();
+		clock.tick(650);
+		await mouseFinger.up();
+		clock.tick(100);
 
 		expect(spy.notCalled).to.be.true;
 	});
 
-	it('ignores events from mouse', () => {
-		mouseFinger.down().wait(650).up();
-		clock.tick(750);
-
-		expect(spy.notCalled).to.be.true;
-	});
-
-	it('does not conflict with native contextmenu', () => {
-
-		touchFinger.down().wait(550);
+	it('does not conflict with native contextmenu', async () => {
+		await touchFinger.down();
 		clock.tick(560);
 
 		UIEventSimulator.fire('contextmenu', container);
 
-		touchFinger.wait(100).up();
-		clock.tick(110);
+		clock.tick(100);
+		await touchFinger.up();
 
 		expect(spy.called).to.be.true;
 		expect(spy.calledOnce).to.be.true;
 		expect(spy.lastCall.args[0].originalEvent._simulated).not.to.be.true;
 	});
 
-	it('swallows native contextmenu that comes after the simulated one', () => {
-		touchFinger.down().wait(650);
+	it('swallows native contextmenu that comes after the simulated one', async () => {
+		await touchFinger.down();
 		clock.tick(660);
 
 		const nativeEvent = new MouseEvent('contextmenu', {bubbles: true, cancelable: true});
@@ -120,56 +114,60 @@ describe('TapHoldHandler', () => {
 		expect(spy.lastCall.args[0].originalEvent._simulated).to.be.true;
 		expect(nativeEvent.defaultPrevented).to.be.true;
 
-		touchFinger.wait(100).up();
-		clock.tick(110);
+		await touchFinger.up();
 
 		// up to the next press only, e.g. a right click
-		mouseFinger.down().wait(10).up();
-		clock.tick(20);
+		await mouseFinger.down().up();
 		UIEventSimulator.fire('contextmenu', container);
 		expect(spy.calledTwice).to.be.true;
 	});
 
-	it('prevents native click', () => {
+	it('prevents native click', async () => {
 		const clickSpy = sinon.spy();
 		map.on('click', clickSpy);
 
-		touchFinger.down().wait(650).up();
-		clock.tick(660);
+		await touchFinger.down();
+		clock.tick(650);
+		await touchFinger.up();
 		expect(clickSpy.notCalled).to.be.true;
 
-		touchFinger.down().wait(100).up();
-		clock.tick(110);
+		await touchFinger.down();
+		clock.tick(100);
+		await touchFinger.up();
 		expect(clickSpy.called).to.be.true;
 	});
 
-	it('allows short movements', () => {
-		touchFinger.down().wait(550).moveTo(posNear.x, posNear.y).wait(100).up();
-
-		clock.tick(660);
+	it('allows short movements', async () => {
+		await touchFinger.down();
+		clock.tick(550);
+		await touchFinger.moveTo(posNear.x, posNear.y);
+		clock.tick(100);
+		await touchFinger.up();
 
 		expect(spy.called).to.be.true;
 	});
 
-	it('ignores long movements', () => {
+	it('ignores long movements', async () => {
 		expect(new Point(posStart.x, posStart.y).distanceTo([posFar.x, posFar.y]))
 			.to.be.above(map.options.tapTolerance);
 
-		touchFinger.down().wait(550).moveTo(posFar.x, posFar.y).wait(100).up();
-		clock.tick(660);
+		await touchFinger.down();
+		clock.tick(550);
+		await touchFinger.moveTo(posFar.x, posFar.y);
+		clock.tick(100);
+		await touchFinger.up();
 		expect(spy.notCalled).to.be.true;
 
-		touchFinger.down().wait(550).wait(100).up();
-		clock.tick(660);
+		await touchFinger.down();
+		clock.tick(650);
+		await touchFinger.up();
 		expect(spy.called).to.be.true;
 	});
 
-	it('.originalEvent has expected properties', () => {
-
-		touchFinger.moveTo(2, 2).down().wait(625).up();
-
-		// UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
-		clock.tick(650);
+	it('.originalEvent has expected properties', async () => {
+		await touchFinger.moveTo(2, 2).down();
+		clock.tick(625);
+		await touchFinger.up();
 
 		const originalEvent = spy.lastCall.args[0].originalEvent;
 		const expectedProps = {

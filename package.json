@@ -21,7 +21,6 @@
     "leafdoc": "^2.4.0",
     "lint-staged": "^17.6.0",
     "playwright": "^1.64.1",
-    "prosthetic-hand": "^2.2.2",
     "rolldown": "^1.2.14",
     "sinon": "^22.1.0",
     "ui-event-simulator": "^2.0.0",
