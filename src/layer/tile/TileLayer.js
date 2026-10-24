@@ -143,7 +143,9 @@ export class TileLayer extends GridLayer {
 			this.options.minZoom = Math.min(this.options.maxZoom, this.options.minZoom);
 		}
 
-		if (typeof this.options.subdomains === 'string') {
+		if (!this.options.subdomains) {
+			this.options.subdomains = [];
+		} else if (typeof this.options.subdomains === 'string') {
 			this.options.subdomains = this.options.subdomains.split('');
 		}
 
@@ -252,6 +254,9 @@ export class TileLayer extends GridLayer {
 	}
 
 	_getSubdomain(tilePoint) {
+		if (!this.options.subdomains.length) {
+			return '';
+		}
 		const index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	}
