@@ -34,7 +34,6 @@ export class Layer extends LayerBase {
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
 		this.on({
 			click: this._openPopup,
-			keypress: this._onKeyPress,
 			remove: this.closePopup,
 			move: this._movePopup
 		});
@@ -48,7 +47,6 @@ export class Layer extends LayerBase {
 		if (this._popup) {
 			this.off({
 				click: this._openPopup,
-				keypress: this._onKeyPress,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -131,12 +129,6 @@ export class Layer extends LayerBase {
 
 	_movePopup(e) {
 		this._popup.setLatLng(e.latlng);
-	}
-
-	_onKeyPress(e) {
-		if (e.originalEvent.code === 'Enter') {
-			this._openPopup(e);
-		}
 	}
 
 	/*

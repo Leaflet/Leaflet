@@ -23,7 +23,7 @@ const defaultOptions = {
 	interactive: true,
 
 	// @option keyboard: Boolean = true
-	// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
+	// Whether the marker can be tabbed to with a keyboard and, if interactive, clicked by pressing Enter or Space.
 	keyboard: true,
 
 	// @option title: String = ''
@@ -262,7 +262,10 @@ export class Marker extends Layer {
 
 		if (options.keyboard) {
 			icon.tabIndex = 0;
-			icon.setAttribute('role', 'button');
+			if (options.interactive) {
+				icon.setAttribute('role', 'button');
+				DomEvent.on(icon, 'keydown', this._onKeyDown, this);
+			}
 		}
 
 		this._icon = icon;
@@ -318,6 +321,7 @@ export class Marker extends Layer {
 		if (this.options.autoPanOnFocus) {
 			DomEvent.off(this._icon, 'focus', this._panOnFocus, this);
 		}
+		DomEvent.off(this._icon, 'keydown', this._onKeyDown, this);
 
 		this._icon.remove();
 		this.removeInteractiveTarget(this._icon);
@@ -425,6 +429,14 @@ export class Marker extends Layer {
 
 	_resetZIndex() {
 		this._updateZIndex(0);
+	}
+
+	_onKeyDown(e) {
+		// a key pressed on a focusable element inside a DivIcon (e.g. a <button>) already clicks it natively
+		if (e.target === this._icon && !e.repeat && (e.key === 'Enter' || e.key === ' ')) {
+			e.preventDefault(); // stop Space from scrolling the page
+			this._icon.click();
+		}
 	}
 
 	_panOnFocus() {

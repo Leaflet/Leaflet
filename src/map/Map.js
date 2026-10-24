@@ -322,12 +322,8 @@ const defaultOptions = {
 // default browser context menu from showing if there are listeners on
 // this event. Also fired on mobile when the user holds a single touch
 // for a second (also called long press).
-// @event keypress: KeyboardEvent
-// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
 // @event keydown: KeyboardEvent
-// Fired when the user presses a key from the keyboard while the map is focused. Unlike the `keypress` event,
-// the `keydown` event is fired for keys that produce a character value and for keys
-// that do not produce a character value.
+// Fired when the user presses a key from the keyboard while the map is focused.
 // @event keyup: KeyboardEvent
 // Fired when the user releases a key from the keyboard while the map is focused.
 // @event preclick: PointerEvent
@@ -1810,7 +1806,7 @@ export class LeafletMap extends Evented {
 		const onOff = remove ? DomEvent.off : DomEvent.on;
 
 		onOff(this._container, 'click dblclick pointerdown pointerup ' +
-			'pointerover pointerout pointermove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
+			'pointerover pointerout pointermove contextmenu keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			if (!remove) {
@@ -1920,7 +1916,7 @@ export class LeafletMap extends Evented {
 			originalEvent: e
 		};
 
-		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
+		if (e.type !== 'keydown' && e.type !== 'keyup') {
 			const isMarker = target.getLatLng && (!target._pxRadius || target._pxRadius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
