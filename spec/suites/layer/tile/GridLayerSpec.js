@@ -1,13 +1,9 @@
 import {DomUtil, GridLayer, LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createClock, createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('GridLayer', () => {
 	let container, map;
-
-	const createClock = () => sinon.useFakeTimers({
-		toFake: ['setTimeout', 'clearTimeout', 'Date']
-	});
 
 	beforeEach(() => {
 		container = createContainer();
@@ -633,7 +629,6 @@ describe('GridLayer', () => {
 				expect(counts.tileload).to.equal(16);
 				expect(counts.tileunload).to.equal(0);
 
-				// Wait for a frame to let _updateOpacity starting.
 				requestAnimationFrame(() => {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
@@ -657,30 +652,12 @@ describe('GridLayer', () => {
 						// i.e. _tileReady still did not have a chance to prepare the
 						// setTimeout(250) for pruning after the end of the fade-in animation.
 						clock.tick(300);
-						// At 301 + 250 = 551ms, the pruneTile from the end of the zoom animation executes.
-						// It unloads the 'outside' 12 tiles from z10, but not the 4 tiles in the center,
-						// since _updateOpacity did not have a chance yet to flag the 16 new z11 tiles as "active".
-						expect(counts.tileunload).to.equal(12);
+						// At 501ms, the fade-in of the z11 tiles finishes and flags them as "active" (without
+						// pruning during the zoom animation). At 551ms, the pruneTile from the end of the zoom
+						// animation executes and unloads all 16 tiles from z10, since z11 tiles now cover them.
+						expect(counts.tileunload).to.equal(16);
 						// Date.now() is 601.
-
-						// Wait for a frame to let _updateOpacity starting
-						// + _tileReady to be able to prepare its setTimeout(250)
-						// for pruning after the end of the fade-in animation.
-						// Since we are already > 200ms since the 'load' event fired,
-						// _updateOpacity should directly set the current tiles as "active",
-						// so the remaining 4 tiles from z10 can then be pruned.
-						// However we have skipped any pruning from _updateOpacity,
-						// so we will have to rely on the setTimeout from _tileReady.
-						requestAnimationFrame(() => {
-							// Wait > 250msec for the tile fade-in animation to complete,
-							// which triggers the tile pruning
-							clock.tick(300);
-							// At 851ms, the pruneTile from the end of the z11 tiles fade-in animation executes.
-							// It unloads the remaining 4 tiles from z10.
-							expect(counts.tileunload).to.equal(16);
-							// Date.now() is 901.
-							done();
-						});
+						done();
 					});
 
 					map.setZoom(11, {animate: true});
@@ -738,7 +715,6 @@ describe('GridLayer', () => {
 				expect(counts.tileload).to.equal(16);
 				expect(counts.tileunload).to.equal(0);
 
-				// Wait for a frame to let _updateOpacity starting.
 				requestAnimationFrame(() => {
 					// Wait > 250msec for the tile fade-in animation to complete,
 					// which triggers the tile pruning
@@ -762,24 +738,14 @@ describe('GridLayer', () => {
 						expect(counts.tileloadstart).to.equal(32);
 						expect(counts.tileload).to.equal(20);
 
-						// Now that the zoom animation is complete,
-						// the grid is ready to fire a new "load" event
-						// on next frame, so prepare its listener now.
-						// During that frame, _updateOpacity will flag the 4
-						// central tiles from z10 as "active", since we are now
-						// > 200ms after the first "load" event fired.
+						// Now that the zoom animation is complete, the grid is ready to fire a new "load"
+						// event on next frame, so prepare its listener now. The 4 central tiles from z10
+						// finished fading in during the zoom animation, so the pruneTile at its end already
+						// unloaded all 16 tiles from z11 they cover.
 						grid.once('load', () => {
 							expect(counts.tileload).to.equal(32);
-							// No tile should be unloaded yet.
-							expect(counts.tileunload).to.equal(0);
-
-							// Wait for a frame for next _updateOpacity to prune
-							// all 16 tiles from z11 which are now covered by the
-							// 4 central active tiles of z10.
-							requestAnimationFrame(() => {
-								expect(counts.tileunload).to.equal(16);
-								done();
-							});
+							expect(counts.tileunload).to.equal(16);
+							done();
 						});
 					});
 				});
@@ -914,7 +880,7 @@ describe('GridLayer', () => {
 				expect(counts.tileload).to.equal(16);
 				expect(counts.tileunload).to.equal(0);
 
-				// Wait for a frame to let _updateOpacity starting.
+				// Wait for a frame to let the tile fade-in start.
 				requestAnimationFrame(() => {
 
 					// Wait > 250msec for the tile fade-in animation to complete,
@@ -930,7 +896,7 @@ describe('GridLayer', () => {
 						expect(counts.tileloadstart).to.equal(28);
 						expect(counts.tileload).to.equal(28);
 
-						// Wait for a frame to let _updateOpacity starting
+						// Wait for a frame to let the tile fade-in start
 						// It will prune the 12 tiles outside the new bounds.
 						requestAnimationFrame(() => {
 							expect(counts.tileunload).to.equal(12);
@@ -969,7 +935,7 @@ describe('GridLayer', () => {
 					expect(counts.tileloadstart).to.equal(28);
 					expect(counts.tileload).to.equal(28);
 
-					// Wait for a frame to let _updateOpacity starting
+					// Wait for a frame to let the tile fade-in start
 					// It will prune the 12 tiles outside the new bounds.
 					requestAnimationFrame(() => {
 						expect(counts.tileunload).to.equal(12);
