@@ -62,6 +62,16 @@ describe('VideoOverlay', () => {
 		expect(videoOverlay._url).to.eql([videoUrl]);
 	});
 
+	it('stretches the video to its bounds with keepAspectRatio: false', () => {
+		const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm';
+
+		const keptOverlay = new VideoOverlay(videoUrl, videoBounds).addTo(map);
+		const stretchedOverlay = new VideoOverlay(videoUrl, videoBounds, {keepAspectRatio: false}).addTo(map);
+
+		expect(getComputedStyle(keptOverlay.getElement()).objectFit).to.equal('contain');
+		expect(getComputedStyle(stretchedOverlay.getElement()).objectFit).to.equal('fill');
+	});
+
 	function dragOverVideo(controls, onStop) {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
