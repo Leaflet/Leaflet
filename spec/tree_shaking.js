@@ -30,12 +30,11 @@ const bundles = {
 };
 
 // every module is treated as having side effects, ignoring the `sideEffects` field in package.json, so only
-// what's at the top level of each module decides whether it stays; property reads are assumed free of side effects,
-// since Rolldown can't tell that e.g. `Browser.reducedMotion` is a plain object field
+// what's at the top level of each module decides whether it stays
 async function bundle(code) {
 	const build = await rolldown({
 		input: 'entry',
-		treeshake: {moduleSideEffects: () => true, propertyReadSideEffects: false},
+		treeshake: {moduleSideEffects: () => true},
 		onLog(level, log, handler) {
 			if (log.code !== 'CIRCULAR_DEPENDENCY' && log.code !== 'EMPTY_BUNDLE') { handler(level, log); }
 		},

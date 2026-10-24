@@ -1,4 +1,4 @@
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -1477,6 +1477,25 @@ describe('Map', () => {
 			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
 		});
 
+		it('flyTo should finish within maxBounds without a corrective pan (#9129)', async () => {
+			const target = new LatLng(19, 19);
+			map.options.maxBoundsViscosity = 1;
+			map.setMaxBounds([[-20, -20], [20, 20]]);
+			map.setView(target, 5, {animate: false});
+			const expected = map.getCenter();
+			map.setView([0, 0], 5, {animate: false});
+			const movestart = sinon.spy();
+			map.on('movestart', movestart);
+
+			const actual = await new Promise((resolve) => {
+				map.once('zoomend', () => resolve(map.getCenter()));
+				map.flyTo(target, 5, {animate: true, duration: 0.1});
+			});
+
+			expect(map.project(actual)).to.be.near(map.project(expected));
+			expect(movestart.calledOnce).to.be.true;
+		});
+
 		it('should handle parameters leading to Math.log(sq) issue', (done) => {
 			container.style.width = '1024px';
 			container.style.height = '1024px';
@@ -2027,6 +2046,14 @@ describe('Map', () => {
 			new Marker([0, 0]).on('mouseout', () => {});
 			expect(errorSpy.calledOnce).to.be.true;
 			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseout has been removed in Leaflet 2. Use pointerout instead.');
+			errorSpy.restore();
+		});
+
+		it('prints to console.error about the removed keypress event', () => {
+			const errorSpy = sinon.spy(console, 'error');
+			map.on('keypress', () => {});
+			expect(errorSpy.calledOnce).to.be.true;
+			expect(errorSpy.firstCall.args[0]).to.eq('The event keypress has been removed in Leaflet 2. Use keydown instead.');
 			errorSpy.restore();
 		});
 	});
@@ -2678,6 +2705,79 @@ describe('Map', () => {
 		});
 	});
 
+	describe('with reduced motion', () => {
+		beforeEach(() => {
+			const matchMedia = window.matchMedia.bind(window);
+			const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
+			sinon.stub(window, 'matchMedia').callsFake(reduced);
+			map.setView([0, 0], 5);
+		});
+
+		afterEach(() => {
+			window.matchMedia.restore();
+		});
+
+		it('turns off zoom and fade animations by default', () => {
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			expect(map2._zoomAnimated).to.be.false;
+			expect(map2._fadeAnimated).to.be.false;
+			expect(map2.options.zoomAnimation).to.be.false;
+			expect(map2.options.fadeAnimation).to.be.false;
+			removeMapContainer(map2, container2);
+		});
+
+		it('keeps zoom and fade animations that are turned on explicitly', () => {
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2, {zoomAnimation: true, fadeAnimation: true});
+			expect(map2._zoomAnimated).to.be.true;
+			expect(map2._fadeAnimated).to.be.true;
+			removeMapContainer(map2, container2);
+		});
+
+		it('pans instantly', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			const center = map.getCenter();
+			map.panBy([100, 100]);
+			expect(moveend.calledOnce).to.be.true;
+			expect(map.getCenter().distanceTo(center)).to.be.greaterThan(1000);
+		});
+
+		it('still animates a pan with animate: true', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			map.panBy([100, 100], {animate: true});
+			expect(moveend.called).to.be.false;
+			expect(map._panAnim._inProgress).to.be.true;
+		});
+
+		it('flies instantly', () => {
+			map.flyTo([10, 11], 12);
+			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 11));
+			expect(map.getZoom()).to.equal(12);
+		});
+
+		it('flies instantly by one zoom level even with zoom animation on', () => {
+			expect(map._zoomAnimated).to.be.true;
+			new GridLayer().addTo(map);
+			const zoomanim = sinon.spy();
+			const zoomend = sinon.spy();
+			map.on({zoomanim, zoomend});
+			map.flyTo([0.1, 0.1], 6);
+			expect(zoomanim.called).to.be.false;
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(6);
+		});
+
+		it('keeps popup autoPan', () => {
+			const spy = sinon.spy();
+			map.on('autopanstart', spy);
+			new Popup({keepInView: false}).setLatLng(map.containerPointToLatLng([5, 5])).setContent('popup').openOn(map);
+			expect(spy.called).to.be.true;
+		});
+	});
+
 	describe('#unproject', () => {
 
 		it('returns the latitude and langitude with given point', () => {
@@ -2804,6 +2904,19 @@ describe('Map', () => {
 				done();
 			});
 			map.flyToBounds(bounds, {animate: false});
+		});
+	});
+
+	describe('text selection', () => {
+		it('makes the map surface unselectable, but not popups and controls', () => {
+			map.setView([0, 0], 1).openPopup('popup text', [0, 0]);
+			const userSelect = el => getComputedStyle(el).userSelect;
+
+			// only elements with their own rule: Firefox and WebKit report descendants of a `none` element as `auto`
+			expect(userSelect(container)).to.equal('none');
+			expect(userSelect(container.querySelector('.leaflet-popup-pane'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-container'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-zoom-in'))).to.equal('none');
 		});
 	});
 });

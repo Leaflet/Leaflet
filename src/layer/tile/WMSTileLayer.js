@@ -117,7 +117,7 @@ export class WMSTileLayer extends TileLayer {
 		bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 			[min.y, min.x, max.y, max.x] :
 			[min.x, min.y, max.x, max.y]).join(',');
-		const url = new URL(super.getTileUrl(coords));
+		const url = new URL(super.getTileUrl(coords), document.baseURI);
 		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
 			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, `${v}`);
 		}

@@ -90,37 +90,6 @@ export function getPosition(el) {
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-const documentStyle = /* @__PURE__ */ (() => (typeof document === 'undefined' ? {} : document.documentElement.style))();
-// Safari still needs a vendor prefix, we need to detect with property name is supported.
-const userSelectProp = /* @__PURE__ */ ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
-let prevUserSelect;
-
-// @function disableTextSelection()
-// Prevents the user from selecting text in the document. Used internally
-// by Leaflet to override the behaviour of any click-and-drag interaction on
-// the map. Affects drag interactions on the whole document.
-export function disableTextSelection() {
-	const value = documentStyle[userSelectProp];
-
-	if (value === 'none') {
-		return;
-	}
-
-	prevUserSelect = value;
-	documentStyle[userSelectProp] = 'none';
-}
-
-// @function enableTextSelection()
-// Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export function enableTextSelection() {
-	if (typeof prevUserSelect === 'undefined') {
-		return;
-	}
-
-	documentStyle[userSelectProp] = prevUserSelect;
-	prevUserSelect = undefined;
-}
-
 // @function disableImageDrag()
 // Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
@@ -155,8 +124,3 @@ export function getScale(element) {
 		boundingClientRect: rect
 	};
 }
-
-// @property reducedMotion: Boolean
-// `true` if the user prefers reduced motion, as set when Leaflet loads (`true` outside a browser).
-export const reducedMotion =
-	typeof window === 'undefined' || /* @__PURE__ */ window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -1,8 +1,7 @@
 import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
-import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('DragHandler', () => {
 	let container, map;
@@ -65,7 +64,7 @@ describe('DragHandler', () => {
 	});
 
 	describe('pointer events', () => {
-		it('change the center of the map', (done) => {
+		it('change the center of the map', async () => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -76,19 +75,13 @@ describe('DragHandler', () => {
 			const offset = new Point(256, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({timing: 'fastframe'});
 
-			hand.addEventListener('stop', () => {
-				expect(map.getOffset()).to.eql(offset);
-				expect(map.getZoom()).to.equal(1);
-				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
-				done();
-			});
+			await new Finger().moveTo(start.x, start.y)
+				.down().moveBy(5, 0).moveTo(finish.x, finish.y).up();
 
-			const pointer = hand.growFinger('pointer');
-
-			pointer.moveTo(start.x, start.y, 0)
-				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			expect(map.getOffset()).to.eql(offset);
+			expect(map.getZoom()).to.equal(1);
+			expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 		});
 
 		describe('with fractional pointer coordinates', () => {
@@ -102,7 +95,7 @@ describe('DragHandler', () => {
 				}
 			});
 
-			function dragPositions(dpr, done, check) {
+			async function dragPositions(dpr, check) {
 				Object.defineProperty(window, 'devicePixelRatio', {value: dpr, configurable: true});
 
 				map = new LeafletMap(container, {
@@ -114,32 +107,22 @@ describe('DragHandler', () => {
 				const positions = [];
 				map.on('drag', () => positions.push(DomUtil.getPosition(map.getPane('mapPane'))));
 
-				const hand = new Hand({timing: 'fastframe'});
-				hand.addEventListener('stop', () => {
-					try {
-						expect(positions.length).to.be.greaterThan(0);
-						check(positions);
-						done();
-					} catch (err) {
-						done(err);
-					}
-				});
+				await new Finger().moveTo(200.3, 200.6).down().moveBy(5.4, 0.2).moveBy(100.3, 30.7).up();
 
-				const pointer = hand.growFinger('pointer');
-				pointer.moveTo(200.3, 200.6, 0)
-					.down().moveBy(5.4, 0.2, 20).moveBy(100.3, 30.7, 200).up();
+				expect(positions.length).to.be.greaterThan(0);
+				check(positions);
 			}
 
-			it('keeps the map pane at whole pixels', (done) => {
-				dragPositions(1, done, (positions) => {
+			it('keeps the map pane at whole pixels', async () => {
+				await dragPositions(1, (positions) => {
 					for (const pos of positions) {
 						expect(pos).to.eql(pos.round());
 					}
 				});
 			});
 
-			it('keeps the map pane at device pixels on a high-DPI screen', (done) => {
-				dragPositions(2, done, (positions) => {
+			it('keeps the map pane at device pixels on a high-DPI screen', async () => {
+				await dragPositions(2, (positions) => {
 					for (const pos of positions) {
 						expect(pos).to.eql(pos.multiplyBy(2).round().divideBy(2));
 					}
@@ -156,7 +139,7 @@ describe('DragHandler', () => {
 				container.style.webkitTransform = `scale(${scale.x}, ${scale.y})`;
 			});
 
-			it('change the center of the map, compensating for CSS scale', (done) => {
+			it('change the center of the map, compensating for CSS scale', async () => {
 				map = new MyMap(container, {
 					dragging: true,
 					inertia: false
@@ -167,24 +150,19 @@ describe('DragHandler', () => {
 				const offset = new Point(56, 32);
 				const finish = start.add(offset);
 
-				const hand = new Hand({timing: 'fastframe'});
-
-				hand.addEventListener('stop', () => {
-					expect(map.getOffset()).to.eql(offset);
-					expect(map.getZoom()).to.equal(1);
-					expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
-					done();
-				});
-				const pointer = hand.growFinger('pointer');
 
 				const startScaled = start.scaleBy(scale);
 				const finishScaled = finish.scaleBy(scale);
-				pointer.moveTo(startScaled.x, startScaled.y, 0)
-					.down().moveBy(5, 0, 20).moveTo(finishScaled.x, finishScaled.y, 1000).up();
+				await new Finger().moveTo(startScaled.x, startScaled.y)
+					.down().moveBy(5, 0).moveTo(finishScaled.x, finishScaled.y).up();
+
+				expect(map.getOffset()).to.eql(offset);
+				expect(map.getZoom()).to.equal(1);
+				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -39.375]);
 			});
 		});
 
-		it('does not change the center of the map when pointer is moved less than the drag threshold', (done) => {
+		it('does not change the center of the map when pointer is moved less than the drag threshold', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
@@ -196,26 +174,19 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({timing: 'fastframe'});
-
-			hand.addEventListener('stop', () => {
-				expect(map.getZoom()).to.equal(1);
-				// Expect center point to be the same as before the click
-				expect(map.getCenter()).to.eql(originalCenter);
-				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-
-				done();
-
-			});
-			const pointer = hand.growFinger('pointer');
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
-			pointer.moveTo(200, 200, 0)
-				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
+			await new Finger().moveTo(200, 200)
+				.down().moveBy(1, 0).moveBy(1, 0).up();
+
+			expect(map.getZoom()).to.equal(1);
+			// Expect center point to be the same as before the click
+			expect(map.getCenter()).to.eql(originalCenter);
+			expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 		});
 
-		it('does not trigger preclick nor click', (done) => {
+		it('does not trigger preclick nor click', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
@@ -228,23 +199,19 @@ describe('DragHandler', () => {
 			map.on('preclick', preclickSpy);
 			map.on('drag', dragSpy);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				// A real user scenario would trigger a click on pointerup.
-				// We want to be sure we are cancelling it after a drag.
-				UIEventSimulator.fire('click', container);
-				expect(dragSpy.called).to.be.true;
-				expect(clickSpy.called).to.be.false;
-				expect(preclickSpy.called).to.be.false;
-				done();
-			});
-			const pointer = hand.growFinger('pointer');
 
-			pointer.moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveTo(456, 232, 200).up();
+			await new Finger().moveTo(200, 200)
+				.down().moveBy(5, 0).moveTo(456, 232).up();
+
+			// A real user scenario would trigger a click on pointerup.
+			// We want to be sure we are cancelling it after a drag.
+			UIEventSimulator.fire('click', container);
+			expect(dragSpy.called).to.be.true;
+			expect(clickSpy.called).to.be.false;
+			expect(preclickSpy.called).to.be.false;
 		});
 
-		it('does not trigger preclick nor click when dragging on top of a static marker', (done) => {
+		it('does not trigger preclick nor click when dragging on top of a static marker', async () => {
 			container.style.width = container.style.height = '600px';
 			map = new LeafletMap(container, {
 				dragging: true,
@@ -263,26 +230,22 @@ describe('DragHandler', () => {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				// A real user scenario would trigger a click on pointerup.
-				// We want to be sure we are cancelling it after a drag.
-				UIEventSimulator.fire('click', container);
-				expect(mapDragSpy.called).to.be.true;
-				expect(markerDragSpy.called).to.be.false;
-				expect(clickSpy.called).to.be.false;
-				expect(preclickSpy.called).to.be.false;
-				done();
-			});
-			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			pointer.moveTo(300, 280, 0)
-				.down().moveBy(5, 0, 20).moveBy(20, 20, 100).up();
+			await new Finger().moveTo(300, 280)
+				.down().moveBy(5, 0).moveBy(20, 20).up();
+
+			// A real user scenario would trigger a click on pointerup.
+			// We want to be sure we are cancelling it after a drag.
+			UIEventSimulator.fire('click', container);
+			expect(mapDragSpy.called).to.be.true;
+			expect(markerDragSpy.called).to.be.false;
+			expect(clickSpy.called).to.be.false;
+			expect(preclickSpy.called).to.be.false;
 		});
 
-		it('does not trigger preclick nor click when dragging a marker', (done) => {
+		it('does not trigger preclick nor click when dragging a marker', async () => {
 			container.style.width = container.style.height = '600px';
 			map = new LeafletMap(container, {
 				dragging: true,
@@ -301,23 +264,39 @@ describe('DragHandler', () => {
 			marker.on('preclick', preclickSpy);
 			marker.on('drag', markerDragSpy);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				// A real user scenario would trigger a click on pointerup.
-				// We want to be sure we are cancelling it after a drag.
-				UIEventSimulator.fire('click', marker._icon);
-				expect(markerDragSpy.called).to.be.true;
-				expect(mapDragSpy.called).to.be.false;
-				expect(clickSpy.called).to.be.false;
-				expect(preclickSpy.called).to.be.false;
-				done();
-			});
-			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			pointer.moveTo(300, 280, 0)
-				.down().moveBy(5, 0, 20).moveBy(50, 50, 100).up();
+			await new Finger().moveTo(300, 280)
+				.down().moveBy(5, 0).moveBy(50, 50).up();
+
+			// A real user scenario would trigger a click on pointerup.
+			// We want to be sure we are cancelling it after a drag.
+			UIEventSimulator.fire('click', marker._icon);
+			expect(markerDragSpy.called).to.be.true;
+			expect(mapDragSpy.called).to.be.false;
+			expect(clickSpy.called).to.be.false;
+			expect(preclickSpy.called).to.be.false;
+		});
+
+		it('follows the pointer back to the start point within the drag threshold', async () => {
+			map = new LeafletMap(container, {
+				dragging: true,
+				inertia: false
+			});
+			map.setView([0, 0], 1);
+
+			const startPos = map._getMapPanePos();
+			const finger = new Finger();
+
+			await finger.moveTo(200, 200).down().moveBy(40, 20);
+			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(40, 20));
+
+			await finger.moveBy(-39, -20);
+			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(1, 0));
+
+			await finger.moveBy(-1, 0).up();
+			expect(map._getMapPanePos()).to.be.near(startPos);
 		});
 
 		// #10376: pointerdown during inertia captured a stale pane position;
@@ -345,29 +324,26 @@ describe('DragHandler', () => {
 				map.once('moveend', resolve);
 			});
 
-			const hand = new Hand({timing: 'fastframe'});
-			const pointer = hand.growFinger('pointer');
+			const finger = new Finger();
 			const start = new Point(200, 200);
 			const drag = new Point(40, 0);
 
 			// Press and hold without moving while inertia is still running.
-			pointer.moveTo(start.x, start.y, 0).down();
-			await hand.run();
+			await finger.moveTo(start.x, start.y).down();
 			expect(inProgressOnDown).to.be.true;
 
 			await inertiaEnded;
 
 			const posBeforeMove = map._getPosition().clone();
 
-			pointer.moveBy(drag.x, drag.y, 80);
-			await hand.run();
+			await finger.moveBy(drag.x, drag.y);
 
 			// Place under the cursor should follow the pointer, not jump
 			// back to the pane position captured at pointerdown.
 			expect(map._getPosition().subtract(posBeforeMove)).to.be.near(drag);
 		});
 
-		it('does not change the center of the map when drag is disabled on click', (done) => {
+		it('does not change the center of the map when drag is disabled on click', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
@@ -381,25 +357,21 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				expect(map.getZoom()).to.equal(1);
-				// Expect center point to be the same as before the click
-				expect(map.getCenter()).to.eql(originalCenter);
-				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-				done();
-			});
-			const pointer = hand.growFinger('pointer');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// Draggable.
-			pointer.moveTo(200, 200, 0)
-				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+			await new Finger().moveTo(200, 200)
+				.down().moveBy(5, 0).moveBy(256, 32).up();
+
+			expect(map.getZoom()).to.equal(1);
+			// Expect center point to be the same as before the click
+			expect(map.getCenter()).to.eql(originalCenter);
+			expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 		});
 	});
 
 	describe('touch events', () => {
-		it('change the center of the map', (done) => {
+		it('change the center of the map', async () => {
 			map = new MyMap(container, {
 				dragging: true,
 				inertia: false
@@ -410,20 +382,16 @@ describe('DragHandler', () => {
 			const offset = new Point(256, 32);
 			const finish = start.add(offset);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				expect(map.getOffset()).to.eql(offset);
-				expect(map.getZoom()).to.equal(1);
-				expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
-				done();
-			});
-			const toucher = hand.growFinger('pointer', {pointerType: 'touch'});
 
-			toucher.moveTo(start.x, start.y, 0)
-				.down().moveBy(5, 0, 20).moveTo(finish.x, finish.y, 1000).up();
+			await new Finger('touch').moveTo(start.x, start.y)
+				.down().moveBy(5, 0).moveTo(finish.x, finish.y).up();
+
+			expect(map.getOffset()).to.eql(offset);
+			expect(map.getZoom()).to.equal(1);
+			expect(map.getCenter()).to.be.nearLatLng([21.943045533, -180]);
 		});
 
-		it('does not change the center of the map when finger is moved less than the drag threshold', (done) => {
+		it('does not change the center of the map when finger is moved less than the drag threshold', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false
@@ -435,25 +403,19 @@ describe('DragHandler', () => {
 			const spy = sinon.spy();
 			map.on('drag', spy);
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('stop', () => {
-				expect(map.getZoom()).to.equal(1);
-				// Expect center point to be the same as before the click
-				expect(map.getCenter().equals(originalCenter)).to.be.true; // small margin of error allowed
-				expect(spy.callCount).to.eql(0); // No drag event should have been fired.
-
-				done();
-			});
-
-			const toucher = hand.growFinger('pointer', {pointerType: 'touch'});
 
 			// We move 2 pixels to stay below the default 3-pixel threshold of
 			// Draggable. This should result in a click and not a drag.
-			toucher.moveTo(200, 200, 0)
-				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
+			await new Finger('touch').moveTo(200, 200)
+				.down().moveBy(1, 0).moveBy(1, 0).up();
+
+			expect(map.getZoom()).to.equal(1);
+			// Expect center point to be the same as before the click
+			expect(map.getCenter().equals(originalCenter)).to.be.true; // small margin of error allowed
+			expect(spy.callCount).to.eql(0); // No drag event should have been fired.
 		});
 
-		it('reset itself after pointerup', (done) => {
+		it('reset itself after pointerup', async () => {
 			map = new LeafletMap(container, {
 				dragging: true,
 				inertia: false,
@@ -472,32 +434,19 @@ describe('DragHandler', () => {
 				zoom = map.getZoom();
 			}
 
-			const pointerHand = new Hand({timing: 'fastframe'});
-			pointerHand.addEventListener('start', savePos);
-			pointerHand.addEventListener('stop', () => {
-				expect(map.getCenter()).to.eql(center);
-				expect(map.getZoom()).to.eql(zoom);
-				done();
-			});
-			const pointer = pointerHand.growFinger('pointer', {pointerType: 'touch'});
-			const hand = new Hand({timing: 'fastframe'});
-			hand.addEventListener('start', savePos);
-			hand.addEventListener('stop', () => {
-				expect(map.getCenter()).not.to.eql(center);
-				expect(map.getZoom()).not.to.eql(zoom);
+			savePos();
+			await Promise.all([
+				new Finger('touch').moveTo(275, 300).down().moveBy(-200, 0).up(),
+				// This finger should touch the map after the other one.
+				new Finger('touch').moveTo(325, 300).down().moveBy(210, 0).up()
+			]);
+			expect(map.getCenter()).not.to.eql(center);
+			expect(map.getZoom()).not.to.eql(zoom);
 
-				pointer.moveTo(220, 220, 0).moveBy(200, 0, 2000);
-			});
-
-			const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-			const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-			hand.sync(5);
-			f1.moveTo(275, 300, 0)
-				.down().moveBy(-200, 0, 1000).up();
-			// This finger should touch me map after the other one.
-			f2.wait(10).moveTo(325, 300, 0)
-				.down().moveBy(210, 0, 1000).up();
+			savePos();
+			await new Finger('touch').moveTo(220, 220).moveBy(200, 0);
+			expect(map.getCenter()).to.eql(center);
+			expect(map.getZoom()).to.eql(zoom);
 		});
 	});
 });

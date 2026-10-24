@@ -72,20 +72,18 @@ const defaultOptions = {
 
 	// @section Animation Options
 	// @option zoomAnimation: Boolean = *
-	// Whether the map zoom animation is enabled.
-	// Animations are enabled by default unless the user has configured
-	// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-	zoomAnimation: !DomUtil.reducedMotion,
+	// Whether the map zoom animation is enabled. Defaults to `true` unless the user prefers
+	// [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+	zoomAnimation: undefined,
 
 	// @option zoomAnimationThreshold: Number = 4
 	// Won't animate zoom if the zoom difference exceeds this value.
 	zoomAnimationThreshold: 4,
 
 	// @option fadeAnimation: Boolean = *
-	// Whether the tile fade animation is enabled.
-	// Animations are enabled by default unless the user has configured
-	// their browser for reduced [motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion#user_preferences).
-	fadeAnimation: !DomUtil.reducedMotion,
+	// Whether the tile and popup fade animation is enabled. Defaults to `true` unless the user prefers
+	// [reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
+	fadeAnimation: undefined,
 
 	// @option markerZoomAnimation: Boolean = true
 	// Whether markers animate their zoom with the zoom animation, if disabled
@@ -324,12 +322,8 @@ const defaultOptions = {
 // default browser context menu from showing if there are listeners on
 // this event. Also fired on mobile when the user holds a single touch
 // for a second (also called long press).
-// @event keypress: KeyboardEvent
-// Fired when the user presses a key from the keyboard that produces a character value while the map is focused.
 // @event keydown: KeyboardEvent
-// Fired when the user presses a key from the keyboard while the map is focused. Unlike the `keypress` event,
-// the `keydown` event is fired for keys that produce a character value and for keys
-// that do not produce a character value.
+// Fired when the user presses a key from the keyboard while the map is focused.
 // @event keyup: KeyboardEvent
 // Fired when the user releases a key from the keyboard while the map is focused.
 // @event preclick: PointerEvent
@@ -472,6 +466,7 @@ export class LeafletMap extends Evented {
 
 		this.callInitHooks();
 
+		this.options.zoomAnimation ??= !prefersReducedMotion();
 		this._zoomAnimated = this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
@@ -622,7 +617,8 @@ export class LeafletMap extends Evented {
 	}
 
 	// @method panBy(offset: Point, options?: Pan options): this
-	// Pans the map by a given number of pixels (animated).
+	// Pans the map by a given number of pixels (animated, unless the user prefers reduced motion and
+	// `animate: true` isn't passed).
 	panBy(offset, options) {
 		offset = new Point(offset).round();
 		options ??= {};
@@ -652,8 +648,8 @@ export class LeafletMap extends Evented {
 			this.fire('movestart');
 		}
 
-		// animate pan unless browser prefers reduced motion or animate: false specified
-		if (!DomUtil.reducedMotion && options.animate !== false) {
+		// animate pan unless animate: false specified, or the user prefers reduced motion and animate: true isn't
+		if (options.animate === true || (options.animate !== false && !prefersReducedMotion())) {
 			this._mapPane.classList.add('leaflet-pan-anim');
 
 			const newPos = this._getMapPanePos().subtract(offset).round();
@@ -669,23 +665,23 @@ export class LeafletMap extends Evented {
 
 	// @method flyTo(latlng: LatLng, zoom?: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) performing a smooth
-	// pan-zoom animation.
+	// pan-zoom animation, or instantly if the user prefers reduced motion (unless `animate: true` is passed).
 	flyTo(targetCenter, targetZoom, options) {
 
 		options ??= {};
-		if (DomUtil.reducedMotion || options.animate === false) {
-			return this.setView(targetCenter, targetZoom, options);
+		if (options.animate === false || (options.animate !== true && prefersReducedMotion())) {
+			return this.setView(targetCenter, targetZoom, {...options, zoom: {...options.zoom, animate: false}});
 		}
 
 		this._stop();
+
+		targetZoom = targetZoom === undefined ? this._zoom : this._limitZoom(targetZoom);
+		targetCenter = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
 
 		const from = this.project(this.getCenter()),
 		to = this.project(targetCenter),
 		size = this.getSize(),
 		startZoom = this._zoom;
-
-		targetCenter = new LatLng(targetCenter);
-		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
 		w1 = w0 * this.getZoomScale(startZoom, targetZoom),
@@ -1560,6 +1556,7 @@ export class LeafletMap extends Evented {
 	_initLayout() {
 		const container = this._container;
 
+		this.options.fadeAnimation ??= !prefersReducedMotion();
 		this._fadeAnimated = this.options.fadeAnimation;
 
 		// leaflet-touch and leaflet-retina have no rules in leaflet.css, but plugin stylesheets still target them
@@ -1809,7 +1806,7 @@ export class LeafletMap extends Evented {
 		const onOff = remove ? DomEvent.off : DomEvent.on;
 
 		onOff(this._container, 'click dblclick pointerdown pointerup ' +
-			'pointerover pointerout pointermove contextmenu keypress keydown keyup', this._handleDOMEvent, this);
+			'pointerover pointerout pointermove contextmenu keydown keyup', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			if (!remove) {
@@ -1919,7 +1916,7 @@ export class LeafletMap extends Evented {
 			originalEvent: e
 		};
 
-		if (e.type !== 'keypress' && e.type !== 'keydown' && e.type !== 'keyup') {
+		if (e.type !== 'keydown' && e.type !== 'keyup') {
 			const isMarker = target.getLatLng && (!target._pxRadius || target._pxRadius <= 10);
 			data.containerPoint = isMarker ?
 				this.latLngToContainerPoint(target.getLatLng()) : this.pointerEventToContainerPoint(e);
@@ -2208,4 +2205,9 @@ export class LeafletMap extends Evented {
 	}
 }
 
-export const Map = LeafletMap;
+export {LeafletMap as Map};
+
+// read when the map is created for the zoom and fade defaults, and on each call for panning and flying
+function prefersReducedMotion() {
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}

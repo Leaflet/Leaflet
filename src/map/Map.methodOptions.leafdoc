@@ -62,10 +62,11 @@ parameter. This is a plain javascript object with the following optional
 components:
 
 @option animate: Boolean
-If `true`, panning will always be animated if possible. If `false`, it will
-not animate panning, either resetting the map view if panning more than a
-screen away, or just setting a new offset for the map pane (except for `panBy`
-which always does the latter).
+If `true`, panning will always be animated if possible, even if the user
+prefers reduced motion. If `false`, it will not animate panning, either
+resetting the map view if panning more than a screen away, or just setting
+a new offset for the map pane (except for `panBy` which always does the latter).
+If not specified, panning is animated unless the user prefers reduced motion.
 
 @option duration: Number = 0.25
 Duration of animated panning, in seconds.
