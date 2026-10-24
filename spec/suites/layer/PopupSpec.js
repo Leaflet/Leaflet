@@ -456,7 +456,7 @@ describe('Popup', () => {
 			map.openPopup(p);
 			expect(map.hasLayer(p)).to.be.true;
 			map.on('drag', spy);
-			await new Finger().moveTo(coords.left + 100, coords.left + 100).down().moveBy(10, 10).up();
+			await new Finger().moveTo(coords.left + 100, coords.top + 100).down().moveBy(10, 10).up();
 
 			expect(spy.called).to.be.true;
 			expect(map.hasLayer(p)).to.be.true;

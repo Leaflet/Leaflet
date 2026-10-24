@@ -29,8 +29,7 @@ describe('BoxZoomHandler', () => {
 		let clickSpy = sinon.spy();
 		map.once('click', clickSpy);
 
-		finger.moveTo(100, 100).down().up();
-		await finger;
+		await finger.moveTo(100, 100).down().up();
 
 		// check if click event on the map is fired
 		expect(clickSpy.calledOnce).to.be.true;
@@ -64,8 +63,7 @@ describe('BoxZoomHandler', () => {
 		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
 		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
 
-		finger.up();
-		await finger;
+		await finger.up();
 
 		// check if click event on the map is fired
 		finger.down().up();
@@ -108,14 +106,12 @@ describe('BoxZoomHandler', () => {
 		container.addEventListener('pointerdown', e => prevented.push(e.defaultPrevented));
 
 		finger.moveTo(100, 100).down(shift);
-		finger.moveBy(100, 100, shift);
-		await finger;
+		await finger.moveBy(100, 100, shift);
 
 		expect(document.documentElement.style.userSelect).to.equal('');
 
 		finger.up();
-		finger.moveTo(100, 100).down().up();
-		await finger;
+		await finger.moveTo(100, 100).down().up();
 
 		expect(prevented).to.eql([true, false]);
 	});
@@ -150,8 +146,7 @@ describe('BoxZoomHandler', () => {
 		finger.moveTo(100, 100).down(shift);
 
 		// fire pointermove event with shiftKey = true, to draw the boxZoom
-		finger.moveBy(100, 100, shift);
-		await finger;
+		await finger.moveBy(100, 100, shift);
 
 		// manually fire pointerup event with shiftKey = true and zero async delay,
 		// to finish drawing the boxZoom
@@ -174,8 +169,7 @@ describe('BoxZoomHandler', () => {
 		expect(resetTimeout).to.be.true;
 
 		// cleanup pointerdown - because it breaks other tests
-		finger.down().up();
-		await finger;
+		await finger.down().up();
 	});
 
 	it('zooms out when dragged box is larger than map', async () => {
@@ -207,8 +201,7 @@ describe('BoxZoomHandler', () => {
 		map.setView([50, 100], 50);
 
 		finger.moveTo(100, 100).down(shift);
-		finger.moveBy(1, 1, shift).up();
-		await finger;
+		await finger.moveBy(1, 1, shift).up();
 
 		expect(map.getZoom()).to.eql(50);
 		expect(map.getCenter()).to.be.nearLatLng([50, 100]);

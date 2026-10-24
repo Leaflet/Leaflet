@@ -18,7 +18,7 @@ describe('worldCopyJump', () => {
 	}
 
 	function dragBy(dx) {
-		return new Finger().moveTo(200, 200).down().moveBy(Math.sign(dx) * 5, 0).moveBy(dx - (Math.sign(dx) * 5), 0).up();
+		return new Finger().moveTo(200, 200).down().moveBy(Math.sign(dx) * 5, 0).moveTo(200 + dx, 200).up();
 	}
 
 	beforeEach(() => {

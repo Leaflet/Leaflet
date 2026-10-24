@@ -288,18 +288,15 @@ describe('DragHandler', () => {
 			map.setView([0, 0], 1);
 
 			const startPos = map._getMapPanePos();
-			const pointer = new Finger();
+			const finger = new Finger();
 
-			pointer.moveTo(200, 200).down().moveBy(40, 20);
-			await pointer;
+			await finger.moveTo(200, 200).down().moveBy(40, 20);
 			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(40, 20));
 
-			pointer.moveBy(-39, -20);
-			await pointer;
+			await finger.moveBy(-39, -20);
 			expect(map._getMapPanePos().subtract(startPos)).to.be.near(new Point(1, 0));
 
-			pointer.moveBy(-1, 0).up();
-			await pointer;
+			await finger.moveBy(-1, 0).up();
 			expect(map._getMapPanePos()).to.be.near(startPos);
 		});
 
@@ -328,21 +325,19 @@ describe('DragHandler', () => {
 				map.once('moveend', resolve);
 			});
 
-			const pointer = new Finger();
+			const finger = new Finger();
 			const start = new Point(200, 200);
 			const drag = new Point(40, 0);
 
 			// Press and hold without moving while inertia is still running.
-			pointer.moveTo(start.x, start.y).down();
-			await pointer;
+			await finger.moveTo(start.x, start.y).down();
 			expect(inProgressOnDown).to.be.true;
 
 			await inertiaEnded;
 
 			const posBeforeMove = map._getPosition().clone();
 
-			pointer.moveBy(drag.x, drag.y);
-			await pointer;
+			await finger.moveBy(drag.x, drag.y);
 
 			// Place under the cursor should follow the pointer, not jump
 			// back to the pane position captured at pointerdown.
