@@ -1,5 +1,5 @@
 import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
-import Hand from 'prosthetic-hand';
+import Finger from '../../../helpers/Finger.js';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -145,52 +145,35 @@ describe('Canvas', () => {
 			expect(preclickSpy.callCount).to.eql(1);
 		});
 
-		it('should not fire click when dragging the map on top of it', (done) => {
+		it('should not fire click when dragging the map on top of it', async () => {
 			const downSpy = sinon.spy();
 			const clickSpy = sinon.spy();
 			const preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
 			layer.on('pointerdown', downSpy);
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					// Prosthetic does not fire a click when we down+up, but it real world
-					// browsers would, so let's simulate it.
-					UIEventSimulator.fireAt('click', 70, 60);
-					expect(downSpy.called).to.be.true;
-					expect(clickSpy.called).to.be.false;
-					expect(preclickSpy.called).to.be.false;
-					done();
-				}
-			});
-			const mouse = hand.growFinger('pointer');
+			await new Finger().moveTo(50, 50).down().moveBy(20, 10).up();
 
-			// We move 5 pixels first to overcome the 3-pixel threshold of Draggable.
-			mouse.moveTo(50, 50, 0)
-				.down().moveBy(20, 10, 200).up();
+			// Finger doesn't click after a drag, but some browsers do, so simulate it
+			UIEventSimulator.fireAt('click', 70, 60);
+			expect(downSpy.called).to.be.true;
+			expect(clickSpy.called).to.be.false;
+			expect(preclickSpy.called).to.be.false;
 		});
 
-		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
+		it('does fire pointerdown on layer after dragging map', async () => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
 			const radius = p2ll(200, 200).distanceTo(center);
 			const circle = new Circle(center, {radius}).addTo(map);
 			circle.on('pointerdown', spy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(spy.callCount).to.eql(2);
-					done();
-				}
-			});
-			const mouse = hand.growFinger('pointer');
+			await new Finger()
+				.moveTo(300, 300).down().moveBy(5, 0).up()  // control case
+				.moveTo(100, 100).down().moveBy(5, 0).up()  // drag the map (outside of circle)
+				.moveTo(300, 300).down().moveBy(5, 0).up(); // expect pointerdown ok
 
-			mouse.wait(100)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
-				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect pointerdown ok
+			expect(spy.callCount).to.eql(2);
 		});
 	});
 

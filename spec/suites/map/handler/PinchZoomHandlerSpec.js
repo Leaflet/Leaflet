@@ -1,5 +1,5 @@
 import {LatLng, LeafletMap, Polygon, Rectangle} from 'leaflet';
-import Hand from 'prosthetic-hand';
+import Finger from '../../../helpers/Finger.js';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -30,15 +30,8 @@ describe('PinchZoomHandler', () => {
 			done();
 		});
 
-		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(275, 300, 0)
-			.down().moveBy(-200, 0, 500).up(100);
-		f2.wait(100).moveTo(325, 300, 0)
-			.down().moveBy(200, 0, 500).up(100);
+		new Finger('touch').moveTo(275, 300).down().moveBy(-200, 0).up();
+		new Finger('touch').moveTo(325, 300).down().moveBy(200, 0).up();
 	});
 
 	it('Decreases zoom when pinching in', (done) => {
@@ -51,15 +44,8 @@ describe('PinchZoomHandler', () => {
 			done();
 		});
 
-		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500).up(100);
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up(100);
+		new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up();
+		new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 	});
 
 	it('fires zoom event while pinch zoom', (done) => {
@@ -85,18 +71,11 @@ describe('PinchZoomHandler', () => {
 
 		new Rectangle(map.getBounds().pad(-0.2)).addTo(map);
 
-		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500).up(100);
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up(100);
+		new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up();
+		new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 	});
 
-	it('Dragging is possible after pinch zoom', (done) => {
+	it('Dragging is possible after pinch zoom', async () => {
 		map.setView([0, 0], 8);
 
 		new Polygon([
@@ -106,30 +85,17 @@ describe('PinchZoomHandler', () => {
 			[1, 0]
 		]).addTo(map);
 
-		const hand = new Hand({
-			timing: 'fastframe',
-			onStop() {
-				expect(map.getCenter().lat).to.equal(0);
-				expect(map.getCenter().lng > 5).to.be.true;
-				done();
-			}
-		});
+		await Promise.all([
+			new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up()
+				.moveTo(200, 300).down()
+				.moveBy(5, 0) // We move 5 pixels first to overcome the 3-pixel threshold of Draggable
+				.moveBy(-150, 0) // Dragging
+				.up(),
+			new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up()
+		]);
 
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0).down()
-			.moveBy(200, 0, 500).up();
-
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up(100);
-
-		f1.wait(100).moveTo(200, 300, 0).down()
-			.moveBy(5, 0, 20) // We move 5 pixels first to overcome the 3-pixel threshold of Draggable (fastframe)
-			.moveBy(-150, 0, 200) // Dragging
-			.up();
-
+		expect(map.getCenter().lat).to.equal(0);
+		expect(map.getCenter().lng > 5).to.be.true;
 	});
 
 	it('PinchZoom works with disabled map dragging', (done) => {
@@ -151,15 +117,8 @@ describe('PinchZoomHandler', () => {
 			done();
 		});
 
-		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500).up(100);
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up(100);
+		new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up();
+		new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 	});
 
 	it('Layer is rendered correctly while pinch zoom when zoomAnim is true', async () => {
@@ -180,20 +139,11 @@ describe('PinchZoomHandler', () => {
 			[1, 0]
 		]).addTo(map);
 
-		const hand = new Hand({timing: 'fastframe'});
+		const f1 = new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up();
+		const f2 = new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
-
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 500).up();
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 500).up();
-
-		hand.sync(100);
 		const zoomEnded = new Promise((res) => { map.once('zoomend', res); });
-		await hand.run();
+		await Promise.all([f1, f2]);
 
 		// Wait for the zoom-snap animation triggered by pinch end to finish,
 		// then one frame for the renderer to redraw the path. A fixed timeout
@@ -218,7 +168,7 @@ describe('PinchZoomHandler', () => {
 		expect(y).to.be.within(270, 280);
 
 		// Give webkit one extra frame to flush any late transitionend before
-		// the next test's `hand.run()` rAF loop starts in the same iframe.
+		// the next test's fingers start in the same iframe.
 		await new Promise((res) => { requestAnimationFrame(res); });
 	});
 
@@ -240,18 +190,10 @@ describe('PinchZoomHandler', () => {
 			[1, 0]
 		]).addTo(map);
 
-		const hand = new Hand({timing: 'fastframe'});
-		const f1 = hand.growFinger('pointer', {pointerType: 'touch'});
-		const f2 = hand.growFinger('pointer', {pointerType: 'touch'});
+		const f1 = new Finger('touch').moveTo(75, 300).down().moveBy(200, 0).up();
+		const f2 = new Finger('touch').moveTo(525, 300).down().moveBy(-200, 0).up();
 
-		hand.sync(5);
-		f1.wait(100).moveTo(75, 300, 0)
-			.down().moveBy(200, 0, 300).up();
-		f2.wait(100).moveTo(525, 300, 0)
-			.down().moveBy(-200, 0, 300).up();
-
-		hand.sync(300);
-		await hand.run();
+		await Promise.all([f1, f2]);
 
 		map.pinchZoom._onPointerEnd();
 

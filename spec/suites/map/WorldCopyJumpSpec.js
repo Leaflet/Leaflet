@@ -1,5 +1,5 @@
 import {DomUtil, GridLayer, LeafletMap, Point, SimpleCRS} from 'leaflet';
-import Hand from 'prosthetic-hand';
+import Finger from '../../helpers/Finger.js';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
 describe('worldCopyJump', () => {
@@ -18,10 +18,7 @@ describe('worldCopyJump', () => {
 	}
 
 	function dragBy(dx) {
-		const hand = new Hand({timing: 'fastframe'});
-		const pointer = hand.growFinger('pointer');
-		pointer.moveTo(200, 200, 0).down().moveBy(Math.sign(dx) * 5, 0, 20).moveBy(dx - (Math.sign(dx) * 5), 0, 500).up();
-		return hand;
+		return new Finger().moveTo(200, 200).down().moveBy(Math.sign(dx) * 5, 0).moveBy(dx - (Math.sign(dx) * 5), 0).up();
 	}
 
 	beforeEach(() => {
@@ -40,7 +37,7 @@ describe('worldCopyJump', () => {
 	});
 
 	describe('dragging across the antimeridian', () => {
-		it('keeps the tiles it already has instead of rebuilding the grid', (done) => {
+		it('keeps the tiles it already has instead of rebuilding the grid', async () => {
 			map.setView([0, 178], 5);
 			addGrid();
 
@@ -49,48 +46,40 @@ describe('worldCopyJump', () => {
 			jumps = [];
 			map.on('worldcopyjump', e => jumps.push(e.worlds));
 
-			dragBy(-160).addEventListener('stop', () => {
-				expect(map.getCenter().lng, 'centre did not wrap').to.be.below(0);
+			await dragBy(-160);
+			expect(map.getCenter().lng, 'centre did not wrap').to.be.below(0);
 
-				const found = tileAt(40, 200);
-				expect(found, 'the tile that was at the centre is gone').to.not.be.undefined;
+			const found = tileAt(40, 200);
+			expect(found, 'the tile that was at the centre is gone').to.not.be.undefined;
 
-				const [keyAfter, tileAfter] = found;
-				expect(tileAfter.el, 'tile was rebuilt rather than kept').to.equal(tileBefore.el);
-				expect(+keyAfter.split(':')[0]).to.equal(+keyBefore.split(':')[0] - worldColumns);
-				expect(jumps).to.eql([1]);
-				done();
-			});
+			const [keyAfter, tileAfter] = found;
+			expect(tileAfter.el, 'tile was rebuilt rather than kept').to.equal(tileBefore.el);
+			expect(+keyAfter.split(':')[0]).to.equal(+keyBefore.split(':')[0] - worldColumns);
+			expect(jumps).to.eql([1]);
 		});
 
-		it('wraps the other way round too', (done) => {
+		it('wraps the other way round too', async () => {
 			map.setView([0, -178], 5);
 			addGrid();
 
 			const jumps = [];
 			map.on('worldcopyjump', e => jumps.push(e.worlds));
 
-			dragBy(160).addEventListener('stop', () => {
-				expect(map.getCenter().lng).to.be.above(0);
-				expect(jumps).to.eql([-1]);
-				done();
-			});
+			await dragBy(160);
+			expect(map.getCenter().lng).to.be.above(0);
+			expect(jumps).to.eql([-1]);
 		});
 	});
 
 	describe('dragging within one world', () => {
-		it('does not fire worldcopyjump for fractional pointer coordinates', (done) => {
+		it('does not fire worldcopyjump for fractional pointer coordinates', async () => {
 			map.setView([0, 10], 5);
 
 			const jumps = [];
 			map.on('worldcopyjump', e => jumps.push(e.worlds));
 
-			const hand = new Hand({timing: 'fastframe'});
-			hand.growFinger('pointer').moveTo(200.3, 200.6, 0).down().moveBy(-5.4, 0.2, 20).moveBy(-40.3, 0.7, 500).up();
-			hand.addEventListener('stop', () => {
-				expect(jumps).to.eql([]);
-				done();
-			});
+			await new Finger().moveTo(200.3, 200.6).down().moveBy(-5.4, 0.2).moveBy(-40.3, 0.7).up();
+			expect(jumps).to.eql([]);
 		});
 	});
 
@@ -157,15 +146,13 @@ describe('worldCopyJump', () => {
 			map.panBy([100, 0]);
 		});
 
-		it('can be dragged without firing worldcopyjump', (done) => {
+		it('can be dragged without firing worldcopyjump', async () => {
 			const jumps = [];
 			map.on('worldcopyjump', e => jumps.push(e.worlds));
 
-			dragBy(100).addEventListener('stop', () => {
-				expect(map.getCenter().lng).to.be.closeTo(-50, 0.5);
-				expect(jumps).to.eql([]);
-				done();
-			});
+			await dragBy(100);
+			expect(map.getCenter().lng).to.be.closeTo(-50, 0.5);
+			expect(jumps).to.eql([]);
 		});
 	});
 

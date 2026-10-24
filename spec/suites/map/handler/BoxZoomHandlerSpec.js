@@ -2,11 +2,12 @@ import {LeafletMap, BoxZoomHandler} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
-import Hand from 'prosthetic-hand';
+import Finger from '../../../helpers/Finger.js';
 
 describe('BoxZoomHandler', () => {
 	let container, map;
-	let hand, finger;
+	const shift = {shiftKey: true};
+	let finger;
 
 	beforeEach(() => {
 		container = createContainer();
@@ -15,8 +16,7 @@ describe('BoxZoomHandler', () => {
 			zoom: 3,
 			zoomAnimation: false
 		});
-		hand = new Hand({timing: 'fastframe'});
-		finger = hand.growFinger('pointer', {pointerType: 'mouse'});
+		finger = new Finger();
 	});
 
 	afterEach(() => {
@@ -30,24 +30,24 @@ describe('BoxZoomHandler', () => {
 		map.once('click', clickSpy);
 
 		finger.moveTo(100, 100).down().up();
-		await hand.run();
+		await finger;
 
 		// check if click event on the map is fired
 		expect(clickSpy.calledOnce).to.be.true;
 
 
 		// fire pointerdown event with shiftKey = true, to start drawing the boxZoom
-		finger.moveTo(100, 100).shift().down();
+		finger.moveTo(100, 100).down(shift);
 
 		// fire pointermove event with shiftKey = true, to draw the boxZoom
-		finger.moveBy(100, 100);
+		finger.moveBy(100, 100, shift);
 
 		const boxStartSpy = sinon.spy();
 		map.once('boxzoomstart', boxStartSpy);
 		const boxEndSpy = sinon.spy();
 		map.once('boxzoomend', boxEndSpy);
 
-		await hand.run();
+		await finger;
 
 		expect(boxStartSpy.calledOnce).to.be.true;
 		expect(boxEndSpy.called).to.be.false;
@@ -64,8 +64,8 @@ describe('BoxZoomHandler', () => {
 		expect(map.getContainer().classList.contains('leaflet-crosshair')).to.be.false;
 		expect(map.getContainer().querySelectorAll('.leaflet-zoom-box').length).to.equal(0);
 
-		finger.unshift().up();
-		await hand.run();
+		finger.up();
+		await finger;
 
 		// check if click event on the map is fired
 		finger.down().up();
@@ -73,7 +73,7 @@ describe('BoxZoomHandler', () => {
 		clickSpy = sinon.spy();
 		map.once('click', clickSpy);
 
-		await hand.run();
+		await finger;
 		expect(clickSpy.calledOnce).to.be.true;
 		expect(boxEndSpy.called).to.be.false;
 	});
@@ -87,17 +87,14 @@ describe('BoxZoomHandler', () => {
 		map.on('boxzoomend', boxEndSpy);
 		map.on('zoom', zoomSpy);
 
-		const hand = new Hand({timing: 'fastframe'});
-		const finger = hand.growFinger('pointer', {pointerType: 'mouse'});
-
 		// fire pointerdown event with shiftKey = true, to start drawing the boxZoom
-		finger.shift().moveTo(100, 100).down();
+		finger.moveTo(100, 100).down(shift);
 
 		// fire pointermove event with shiftKey = true, to draw the boxZoom
 		// fire pointerup event with shiftKey = true, to finish drawing the boxZoom
-		finger.moveBy(100, 100).unshift().up();
+		finger.moveBy(100, 100, shift).up();
 
-		await hand.run();
+		await finger;
 
 		expect(boxStartSpy.called).to.be.true;
 		expect(boxEndSpy.called).to.be.true;
@@ -110,15 +107,15 @@ describe('BoxZoomHandler', () => {
 		const prevented = [];
 		container.addEventListener('pointerdown', e => prevented.push(e.defaultPrevented));
 
-		finger.moveTo(100, 100).shift().down();
-		finger.moveBy(100, 100);
-		await hand.run();
+		finger.moveTo(100, 100).down(shift);
+		finger.moveBy(100, 100, shift);
+		await finger;
 
 		expect(document.documentElement.style.userSelect).to.equal('');
 
-		finger.unshift().up().wait(10);
+		finger.up();
 		finger.moveTo(100, 100).down().up();
-		await hand.run();
+		await finger;
 
 		expect(prevented).to.eql([true, false]);
 	});
@@ -128,13 +125,10 @@ describe('BoxZoomHandler', () => {
 		const zoomSpy = sinon.spy();
 		map.on('boxzoomstart', zoomSpy);
 
-		const hand = new Hand({timing: 'fastframe'});
-		const finger = hand.growFinger('pointer', {pointerType: 'mouse'});
+		finger.moveTo(100, 100).down();
+		finger.moveBy(100, 100).up();
 
-		finger.unshift().moveTo(100, 100).down();
-		finger.moveBy(100, 100).unshift().up().wait(200);
-
-		await hand.run();
+		await finger;
 
 		expect(zoomSpy.called).to.be.false;
 		expect(map.getZoom()).to.eql(3);
@@ -149,24 +143,21 @@ describe('BoxZoomHandler', () => {
 			BoxZoomHandler.prototype._clearDeferredResetState.call(map.boxZoom);
 		});
 
-		const hand = new Hand({timing: 'fastframe'});
-		const finger = hand.growFinger('pointer', {pointerType: 'mouse'});
-
 		const clientX = 100;
 		const clientY = 100;
 
 		// fire pointerdown event with shiftKey = true, to start drawing the boxZoom
-		finger.shift().moveTo(100, 100).down();
+		finger.moveTo(100, 100).down(shift);
 
 		// fire pointermove event with shiftKey = true, to draw the boxZoom
-		finger.moveBy(100, 100);
-		await hand.run();
+		finger.moveBy(100, 100, shift);
+		await finger;
 
 		// manually fire pointerup event with shiftKey = true and zero async delay,
 		// to finish drawing the boxZoom
 		// Triggers scheduling a deferredResetState
 		UIEventSimulator.fire('pointerup', map._container, {
-			pointerId: finger._id,
+			pointerId: finger.id,
 			shiftKey: true,
 			clientX,
 			clientY,
@@ -174,7 +165,7 @@ describe('BoxZoomHandler', () => {
 
 		// firing a pointerdown with zero delay triggers the _clearDeferredResetState
 		UIEventSimulator.fire('pointerdown', map._container, {
-			pointerId: finger._id,
+			pointerId: finger.id,
 			shiftKey: true,
 			clientX,
 			clientY,
@@ -183,8 +174,8 @@ describe('BoxZoomHandler', () => {
 		expect(resetTimeout).to.be.true;
 
 		// cleanup pointerdown - because it breaks other tests
-		finger.down().up().unshift();
-		await hand.run();
+		finger.down().up();
+		await finger;
 	});
 
 	it('zooms out when dragged box is larger than map', async () => {
@@ -195,17 +186,17 @@ describe('BoxZoomHandler', () => {
 			zoomAnimation: false
 		});
 
-		finger.moveTo(50, 50).shift().down();
-		finger.moveBy(150, 150).unshift().up().wait(200);
+		finger.moveTo(50, 50).down(shift);
+		finger.moveBy(150, 150, shift).up();
 
-		await hand.run();
+		await finger;
 
 		expect(smallMap.getZoom()).to.eql(9);
 
-		finger.moveTo(50, 50).shift().down();
-		finger.moveBy(300, 300).unshift().up().wait(200);
+		finger.moveTo(50, 50).down(shift);
+		finger.moveBy(300, 300, shift).up();
 
-		await hand.run();
+		await finger;
 
 		expect(smallMap.getZoom()).to.eql(7);
 
@@ -215,9 +206,9 @@ describe('BoxZoomHandler', () => {
 	it('doesn\'t break the map when a tiny box collapses to a point at very high zoom (#6709)', async () => {
 		map.setView([50, 100], 50);
 
-		finger.moveTo(100, 100).shift().down();
-		finger.moveBy(1, 1).unshift().up().wait(10);
-		await hand.run();
+		finger.moveTo(100, 100).down(shift);
+		finger.moveBy(1, 1, shift).up();
+		await finger;
 
 		expect(map.getZoom()).to.eql(50);
 		expect(map.getCenter()).to.be.nearLatLng([50, 100]);

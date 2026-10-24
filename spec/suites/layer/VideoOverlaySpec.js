@@ -1,6 +1,6 @@
 import {LatLngBounds, LeafletMap, VideoOverlay} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
-import Hand from 'prosthetic-hand';
+import Finger from '../../helpers/Finger.js';
 
 describe('VideoOverlay', () => {
 	let container, map;
@@ -62,7 +62,7 @@ describe('VideoOverlay', () => {
 		expect(videoOverlay._url).to.eql([videoUrl]);
 	});
 
-	function dragOverVideo(controls, onStop) {
+	async function dragOverVideo(controls) {
 		const videoUrls = [
 			'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
 			'https://www.mapbox.com/bites/00188/patricia_nasa.mp4'
@@ -74,26 +74,15 @@ describe('VideoOverlay', () => {
 		map.options.inertia = false;
 		const center = map.getCenter();
 
-		const hand = new Hand({
-			timing: 'fastframe',
-			onStop() { onStop(map.latLngToContainerPoint(center)); }
-		});
-		hand.growFinger('pointer', {pointerType: 'mouse'})
-			.moveTo(200, 200, 0)
-			.down().moveBy(50, 50, 100).up();
+		await new Finger().moveTo(200, 200).down().moveBy(50, 50).up();
+		return map.latLngToContainerPoint(center);
 	}
 
-	it('drags the map while dragging on video', (done) => {
-		dragOverVideo(false, (centerPoint) => {
-			expect(centerPoint).to.be.near([250, 250]);
-			done();
-		});
+	it('drags the map while dragging on video', async () => {
+		expect(await dragOverVideo(false)).to.be.near([250, 250]);
 	});
 
-	it('does not drag the map if video has enabled controls', (done) => {
-		dragOverVideo(true, (centerPoint) => {
-			expect(centerPoint).to.be.near([200, 200]);
-			done();
-		});
+	it('does not drag the map if video has enabled controls', async () => {
+		expect(await dragOverVideo(true)).to.be.near([200, 200]);
 	});
 });
