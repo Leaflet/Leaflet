@@ -123,7 +123,7 @@ export class Draggable extends Evented {
 		this._parentScale = DomUtil.getScale(sizedParent);
 
 		DomEvent.on(this._dragStartTarget, 'pointermove', this._onMove, this);
-		DomEvent.on(this._dragStartTarget, 'pointerup pointercancel', this._onUp, this);
+		DomEvent.on(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);
 	}
 
 	_onMove(e) {
@@ -182,7 +182,10 @@ export class Draggable extends Evented {
 		this.fire('drag', e);
 	}
 
-	_onUp() {
+	_onUp(e) {
+		// releasing the button outside the window may fire no pointerup, only a lostpointercapture with no buttons;
+		// capture lost while the button is still held (e.g. the pressed element was removed) shouldn't end the drag
+		if (e.type === 'lostpointercapture' && e.buttons) { return; }
 		this.finishDrag();
 	}
 
@@ -196,7 +199,7 @@ export class Draggable extends Evented {
 		}
 
 		DomEvent.off(this._dragStartTarget, 'pointermove', this._onMove, this);
-		DomEvent.off(this._dragStartTarget, 'pointerup pointercancel', this._onUp, this);
+		DomEvent.off(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);
 
 		DomUtil.enableImageDrag();
 

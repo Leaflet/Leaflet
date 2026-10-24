@@ -49,4 +49,36 @@ describe('Draggable', () => {
 		DomEvent.PointerEvents.disablePointerDetection(el);
 		el.remove();
 	});
+
+	it('ends a drag on losing pointer capture with no buttons pressed', async () => {
+		const el = document.createElement('div');
+		el.style.cssText = 'position: absolute; width: 100px; height: 100px';
+		document.body.appendChild(el);
+		DomEvent.PointerEvents.enablePointerDetection(el);
+		const draggable = new Draggable(el);
+		draggable.enable();
+		let dragend;
+		draggable.on('dragend', (e) => { dragend = e; });
+
+		const {left, top} = el.getBoundingClientRect();
+		const finger = new Finger();
+		await finger.moveTo(left + 10, top + 10).down().moveBy(20, 20);
+
+		const lose = buttons => el.dispatchEvent(new PointerEvent('lostpointercapture', {
+			bubbles: true, pointerId: finger.id, pointerType: 'mouse', buttons
+		}));
+
+		// capture lost while the button is still held, e.g. the pressed element was removed
+		lose(1);
+		expect(dragend).to.be.undefined;
+
+		// released outside the window, which may fire no pointerup
+		lose(0);
+		expect(dragend).to.be.ok;
+		expect(el.classList.contains('leaflet-dragging')).to.be.false;
+
+		await finger.up();
+		DomEvent.PointerEvents.disablePointerDetection(el);
+		el.remove();
+	});
 });
