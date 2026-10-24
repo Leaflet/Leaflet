@@ -1,8 +1,7 @@
 import {LeafletMap, BoxZoomHandler} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
-import Finger from '../../../helpers/Finger.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('BoxZoomHandler', () => {
 	let container, map;

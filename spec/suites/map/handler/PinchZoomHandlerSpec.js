@@ -1,7 +1,6 @@
 import {LatLng, LeafletMap, Polygon, Rectangle} from 'leaflet';
-import Finger from '../../../helpers/Finger.js';
 import sinon from 'sinon';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('PinchZoomHandler', () => {
 	let container, map;

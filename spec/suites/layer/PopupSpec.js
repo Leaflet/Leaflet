@@ -1,8 +1,7 @@
 import {DivIcon, DomUtil, FeatureGroup, DefaultIcon, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
-import Finger from '../../helpers/Finger.js';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('Popup', () => {
 	let container, map;

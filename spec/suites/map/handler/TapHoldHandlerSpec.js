@@ -1,8 +1,7 @@
 import {LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
-import Finger from '../../../helpers/Finger.js';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('TapHoldHandler', () => {
 	let container, clock, spy, map;

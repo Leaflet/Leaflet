@@ -1,6 +1,5 @@
 import {LatLngBounds, LeafletMap, VideoOverlay} from 'leaflet';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
-import Finger from '../../helpers/Finger.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('VideoOverlay', () => {
 	let container, map;

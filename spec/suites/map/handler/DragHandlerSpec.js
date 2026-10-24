@@ -1,8 +1,7 @@
 import {DomUtil, LatLng, LeafletMap, Marker, Point} from 'leaflet';
-import Finger from '../../../helpers/Finger.js';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('DragHandler', () => {
 	let container, map;

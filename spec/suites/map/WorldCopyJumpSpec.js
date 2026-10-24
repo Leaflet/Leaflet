@@ -1,6 +1,5 @@
 import {DomUtil, GridLayer, LeafletMap, Point, SimpleCRS} from 'leaflet';
-import Finger from '../../helpers/Finger.js';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('worldCopyJump', () => {
 	let container, map, grid;

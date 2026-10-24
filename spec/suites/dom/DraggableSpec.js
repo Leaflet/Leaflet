@@ -1,6 +1,5 @@
 import {DomEvent, Draggable, LeafletMap} from 'leaflet';
-import Finger from '../../helpers/Finger.js';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('Draggable', () => {
 	it('throws on the removed preventOutline argument', () => {
