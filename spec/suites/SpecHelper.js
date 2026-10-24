@@ -39,7 +39,7 @@ export function createClock() {
 	};
 	return clock;
 }
-  
+
 // Simulates a mouse, pen or touch pointer. Steps are queued and dispatched as pointer events, one step per animation
 // frame, with all active fingers stepping in the same frame callback; awaiting a finger waits for its queue to finish.
 
