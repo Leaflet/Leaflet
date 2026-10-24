@@ -679,13 +679,13 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
+		targetZoom = targetZoom === undefined ? this._zoom : this._limitZoom(targetZoom);
+		targetCenter = this._limitCenter(new LatLng(targetCenter), targetZoom, this.options.maxBounds);
+
 		const from = this.project(this.getCenter()),
 		to = this.project(targetCenter),
 		size = this.getSize(),
 		startZoom = this._zoom;
-
-		targetCenter = new LatLng(targetCenter);
-		targetZoom = targetZoom === undefined ? startZoom : this._limitZoom(targetZoom);
 
 		const w0 = Math.max(size.x, size.y),
 		w1 = w0 * this.getZoomScale(startZoom, targetZoom),

@@ -1477,6 +1477,25 @@ describe('Map', () => {
 			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
 		});
 
+		it('flyTo should finish within maxBounds without a corrective pan (#9129)', async () => {
+			const target = new LatLng(19, 19);
+			map.options.maxBoundsViscosity = 1;
+			map.setMaxBounds([[-20, -20], [20, 20]]);
+			map.setView(target, 5, {animate: false});
+			const expected = map.getCenter();
+			map.setView([0, 0], 5, {animate: false});
+			const movestart = sinon.spy();
+			map.on('movestart', movestart);
+
+			const actual = await new Promise((resolve) => {
+				map.once('zoomend', () => resolve(map.getCenter()));
+				map.flyTo(target, 5, {animate: true, duration: 0.1});
+			});
+
+			expect(map.project(actual)).to.be.near(map.project(expected));
+			expect(movestart.calledOnce).to.be.true;
+		});
+
 		it('should handle parameters leading to Math.log(sq) issue', (done) => {
 			container.style.width = '1024px';
 			container.style.height = '1024px';
