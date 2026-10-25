@@ -308,9 +308,15 @@ describe('DragHandler', () => {
 			});
 			map.setView([0, 0], 1);
 
-			// Same animation path as DragHandler inertia (`panBy` after dragend).
+			const finger = new Finger();
+			const start = new Point(200, 200);
+			const drag = new Point(40, 0);
+			await finger.moveTo(start.x, start.y);
+
+			// Same animation path as DragHandler inertia (`panBy` after dragend). The press stops it, so a long
+			// duration costs nothing, and keeps it running until the press on slow CI runners.
 			map.panBy([200, 0], {
-				duration: 0.5,
+				duration: 5,
 				easeLinearity: 0.2,
 				noMoveStart: true,
 				animate: true
@@ -324,12 +330,8 @@ describe('DragHandler', () => {
 				map.once('moveend', resolve);
 			});
 
-			const finger = new Finger();
-			const start = new Point(200, 200);
-			const drag = new Point(40, 0);
-
 			// Press and hold without moving while inertia is still running.
-			await finger.moveTo(start.x, start.y).down();
+			await finger.down();
 			expect(inProgressOnDown).to.be.true;
 
 			await inertiaEnded;
@@ -447,6 +449,58 @@ describe('DragHandler', () => {
 			await new Finger('touch').moveTo(220, 220).moveBy(200, 0);
 			expect(map.getCenter()).to.eql(center);
 			expect(map.getZoom()).to.eql(zoom);
+		});
+	});
+
+	describe('inertia', () => {
+		let panBy;
+
+		beforeEach(() => {
+			map = new LeafletMap(container).setView([0, 0], 5);
+			panBy = sinon.stub(map, 'panBy');
+		});
+
+		// simulates a drag that ends moving horizontally at the given speed in px/s
+		async function fling(speed) {
+			const handler = map.dragging,
+			now = Date.now();
+			handler._positions = [new Point(0, 0), new Point(speed / 50, 0)];
+			handler._times = [now - 20, now];
+			handler._lastPos = handler._positions[1];
+			handler._lastTime = now;
+			handler._onDragEnd({});
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			return panBy.lastCall.args;
+		}
+
+		it('limits the coast with the default inertiaMaxSpeed', async () => {
+			const [offset, options] = await fling(10000);
+			expect(offset.x).to.equal(-1441);
+			expect(options.duration).to.be.closeTo(2.06, 0.01);
+		});
+
+		describe('with reduced motion', () => {
+			beforeEach(() => {
+				const matchMedia = window.matchMedia.bind(window);
+				const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
+				sinon.stub(window, 'matchMedia').callsFake(reduced);
+			});
+
+			afterEach(() => {
+				window.matchMedia.restore();
+			});
+
+			it('shortens the coast to half the map size with the same deceleration', async () => {
+				const [offset, options] = await fling(10000);
+				expect(offset.x).to.equal(-200);
+				expect(options.duration).to.be.closeTo(2.06 * Math.sqrt(200 / 1441), 0.01);
+			});
+
+			it('keeps a short coast unchanged', async () => {
+				const [offset, options] = await fling(1000);
+				expect(offset.x).to.equal(-29);
+				expect(options.duration).to.be.closeTo(0.29, 0.01);
+			});
 		});
 	});
 });

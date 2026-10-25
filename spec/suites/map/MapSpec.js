@@ -2717,55 +2717,87 @@ describe('Map', () => {
 			window.matchMedia.restore();
 		});
 
-		it('turns off zoom and fade animations by default', () => {
+		it('keeps zoom and fade animations for user interaction', () => {
 			const container2 = createContainer();
 			const map2 = new LeafletMap(container2);
-			expect(map2._zoomAnimated).to.be.false;
-			expect(map2._fadeAnimated).to.be.false;
-			expect(map2.options.zoomAnimation).to.be.false;
-			expect(map2.options.fadeAnimation).to.be.false;
-			removeMapContainer(map2, container2);
-		});
-
-		it('keeps zoom and fade animations that are turned on explicitly', () => {
-			const container2 = createContainer();
-			const map2 = new LeafletMap(container2, {zoomAnimation: true, fadeAnimation: true});
 			expect(map2._zoomAnimated).to.be.true;
 			expect(map2._fadeAnimated).to.be.true;
 			removeMapContainer(map2, container2);
 		});
 
-		it('pans instantly', () => {
+		it('animates a pan shorter than half the map size', () => {
 			const moveend = sinon.spy();
 			map.on('moveend', moveend);
-			const center = map.getCenter();
 			map.panBy([100, 100]);
-			expect(moveend.calledOnce).to.be.true;
-			expect(map.getCenter().distanceTo(center)).to.be.greaterThan(1000);
-		});
-
-		it('still animates a pan with animate: true', () => {
-			const moveend = sinon.spy();
-			map.on('moveend', moveend);
-			map.panBy([100, 100], {animate: true});
 			expect(moveend.called).to.be.false;
 			expect(map._panAnim._inProgress).to.be.true;
 		});
 
-		it('flies instantly', () => {
+		it('pans instantly further than half the map size', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			const center = map.getCenter();
+			map.panBy([300, 0]);
+			expect(moveend.calledOnce).to.be.true;
+			expect(map.getCenter().distanceTo(center)).to.be.greaterThan(1000);
+		});
+
+		it('still animates a long pan with animate: true', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			map.panBy([300, 0], {animate: true});
+			expect(moveend.called).to.be.false;
+			expect(map._panAnim._inProgress).to.be.true;
+		});
+
+		it('animates a zoom by one level', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(6);
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('zooms instantly by more than one level', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(7);
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(7);
+		});
+
+		it('still animates a zoom by more than one level with animate: true', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(7, {animate: true});
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('flies instantly over a long distance', () => {
 			map.flyTo([10, 11], 12);
 			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 11));
 			expect(map.getZoom()).to.equal(12);
 		});
 
-		it('flies instantly by one zoom level even with zoom animation on', () => {
-			expect(map._zoomAnimated).to.be.true;
+		it('animates a short flight as a regular zoom', () => {
 			new GridLayer().addTo(map);
-			const zoomanim = sinon.spy();
 			const zoomend = sinon.spy();
-			map.on({zoomanim, zoomend});
+			map.on('zoomend', zoomend);
 			map.flyTo([0.1, 0.1], 6);
-			expect(zoomanim.called).to.be.false;
+			expect(map._flyToFrame).to.not.be.ok;
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('flies instantly with animate: false', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.flyTo([0.1, 0.1], 6, {animate: false});
 			expect(zoomend.calledOnce).to.be.true;
 			expect(map.getZoom()).to.equal(6);
 		});
