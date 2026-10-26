@@ -2,8 +2,8 @@
 name: Leaflet Draggable Tooltips
 category: user-interface
 repo: https://github.com/Metopio/leaflet-draggable-tooltips
-author: Georgina Rivero
-author-url: https://github.com/georiv
+author: Metopio
+author-url: https://metopio.com/
 demo: https://metopio.github.io/leaflet-draggable-tooltips/demo/index.html
 compatible-v0:
 compatible-v1: true
