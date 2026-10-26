@@ -25,6 +25,15 @@ describe('GridLayer', () => {
 			const grid = new GridLayer().addTo(map);
 			expect(grid.redraw()).to.equal(grid);
 		});
+
+		it('uses integer tile zoom with fractional map zoom', () => {
+			map.options.zoomSnap = 0.1;
+			map.setView([0, 0], 2.4);
+			const grid = new GridLayer().addTo(map);
+			grid._tileZoom = undefined;
+			grid.redraw();
+			expect(grid._tileZoom).to.equal(2);
+		});
 	});
 
 	describe('#setOpacity', () => {
