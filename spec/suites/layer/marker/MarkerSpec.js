@@ -249,7 +249,7 @@ describe('Marker', () => {
 			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30], iconAnchor: [5, 10]}))).to.eql([5, 10, 15, 20]);
 			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30]}))).to.eql([10, 15, 10, 15]);
 			expect(getPadding(new DivIcon({className: '', iconSize: 32}))).to.eql([16, 16, 16, 16]);
-			expect(getPadding(new DivIcon({className: '', iconSize: 'auto', html}))[3]).to.equal(20);
+			expect(getPadding(new DivIcon({className: '', iconSize: 'auto', html}))).to.eql([0, 0, 40, 20]);
 			expect(getPadding(new DivIcon({className: '', iconSize: [100, 'auto'], html}))).to.eql([50, 0, 50, 20]);
 
 			spy.restore();

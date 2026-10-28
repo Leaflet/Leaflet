@@ -13,6 +13,10 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+}
+
+/* gives popups room to grow to their max-width; not set on icons and layers, which are sized by JS or content */
+.leaflet-pane {
 	width: 100%;
 }
 
