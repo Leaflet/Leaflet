@@ -43,8 +43,10 @@ export class Circle extends CircleMarker {
 	// Returns the current radius of a circle. Units are in meters.
 
 	// @method getBounds(): LatLngBounds
-	// Returns the `LatLngBounds` of the path.
+	// Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
 	getBounds() {
+		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
+
 		const half = [this._pxRadius, this._pxRadiusY ?? this._pxRadius];
 
 		return new LatLngBounds(

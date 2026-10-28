@@ -29,6 +29,13 @@ describe('Circle', () => {
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
 			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
+
+		it('returns bounds when not added to a map', () => {
+			const bounds = new Circle([50, 30], {radius: 200}).getBounds();
+
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
+		});
 	});
 
 	describe('Legacy factory', () => {
