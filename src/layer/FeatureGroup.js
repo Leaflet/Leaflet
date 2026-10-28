@@ -79,12 +79,19 @@ export class FeatureGroup extends LayerGroup {
 	}
 
 	// @method getBounds(): LatLngBounds
-	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
+	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children,
+	// including the layers of nested layer groups).
 	getBounds() {
 		const bounds = new LatLngBounds();
 
 		for (const layer of Object.values(this._layers)) {
-			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+			if (layer.getBounds) {
+				bounds.extend(layer.getBounds());
+			} else if (layer.getLatLng) {
+				bounds.extend(layer.getLatLng());
+			} else if (layer instanceof LayerGroup) {
+				bounds.extend(FeatureGroup.prototype.getBounds.call(layer));
+			}
 		}
 		return bounds;
 	}
