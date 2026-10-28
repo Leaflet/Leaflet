@@ -616,7 +616,6 @@ describe('GridLayer', () => {
 		}
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
-			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
 
@@ -705,7 +704,6 @@ describe('GridLayer', () => {
 		});
 
 		it('Loads 32, unloads 16 tiles zooming out 11-10', (done) => {
-			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
 
@@ -871,7 +869,6 @@ describe('GridLayer', () => {
 		});
 
 		it('Loads map, moves forth by 512 px, keepBuffer = 0', (done) => {
-			// Advance the time to !== 0 otherwise `tile.loaded` timestamp will appear to be falsy.
 			clock.tick(1);
 			// Date.now() is 1.
 

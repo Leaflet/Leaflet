@@ -805,16 +805,16 @@ export class GridLayer extends Layer {
 		tile = this._tiles[key];
 		if (!tile) { return; }
 
-		tile.loaded = Date.now();
-		if (this._map._fadeAnimated) {
+		if (!this._map._fadeAnimated) {
+			tile.active = true;
+			this._pruneTiles();
+		} else if (!tile.loaded) { // with errorTileUrl, a tile is ready twice (on error and on fallback load)
 			// while fading, the tile is a compositor layer of its own where plus-lighter would light up its
 			// antialiased edges, so it's blended normally until the fade ends
 			tile.el.classList.add('leaflet-tile-fading');
-			tile.el.animate({opacity: [0, 1]}, 200).onfinish = this._onTileFaded.bind(this, key, tile);
-		} else {
-			tile.active = true;
-			this._pruneTiles();
+			tile.el.animate({opacity: [0, 1]}, 200).onfinish = this._onTileFaded.bind(this, tile);
 		}
+		tile.loaded = true;
 
 		if (!err) {
 			tile.el.classList.add('leaflet-tile-loaded');
@@ -839,9 +839,10 @@ export class GridLayer extends Layer {
 		}
 	}
 
-	_onTileFaded(key, tile) {
+	_onTileFaded(tile) {
 		tile.el.classList.remove('leaflet-tile-fading');
-		if (this._tiles[key] !== tile) { return; }
+		// the tile's key may have changed after a world copy jump, so look it up again
+		if (this._tiles[this._tileCoordsToKey(tile.coords)] !== tile) { return; }
 
 		tile.active = true;
 		this._onOpaqueTile(tile);
