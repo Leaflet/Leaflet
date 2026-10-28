@@ -1400,7 +1400,7 @@ export class LeafletMap extends Evented {
 		return this._panes;
 	}
 
-	// @method getContainer: HTMLElement
+	// @method getContainer(): HTMLElement
 	// Returns the HTML element that contains the map.
 	getContainer() {
 		return this._container;

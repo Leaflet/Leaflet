@@ -198,7 +198,7 @@ export class GridLayer extends Layer {
 		this._fadePruneFrame = 0;
 	}
 
-	// @method bringToFront: this
+	// @method bringToFront(): this
 	// Brings the tile layer to the top of all tile layers.
 	bringToFront() {
 		if (this._map) {
@@ -208,7 +208,7 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method bringToBack: this
+	// @method bringToBack(): this
 	// Brings the tile layer to the bottom of all tile layers.
 	bringToBack() {
 		if (this._map) {
@@ -218,7 +218,7 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method getContainer: HTMLElement
+	// @method getContainer(): HTMLElement
 	// Returns the HTML element that contains the tiles for this layer.
 	getContainer() {
 		return this._container;
@@ -241,13 +241,13 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method isLoading: Boolean
+	// @method isLoading(): Boolean
 	// Returns `true` if any tile in the grid layer has not finished loading.
 	isLoading() {
 		return this._loading;
 	}
 
-	// @method redraw: this
+	// @method redraw(): this
 	// Causes the layer to clear all the tiles and request them again.
 	redraw() {
 		if (this._map) {
@@ -295,7 +295,7 @@ export class GridLayer extends Layer {
 	}
 
 	// @section
-	// @method getTileSize: Point
+	// @method getTileSize(): Point
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
 	getTileSize() {
 		const s = this.options.tileSize;

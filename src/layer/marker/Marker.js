@@ -175,7 +175,7 @@ export class Marker extends Layer {
 		};
 	}
 
-	// @method getLatLng: LatLng
+	// @method getLatLng(): LatLng
 	// Returns the current geographical position of the marker.
 	getLatLng() {
 		return this._latlng;
@@ -198,7 +198,7 @@ export class Marker extends Layer {
 		return this.update();
 	}
 
-	// @method getIcon: Icon
+	// @method getIcon(): Icon
 	// Returns the current icon used by the marker
 	getIcon() {
 		return this.options.icon;

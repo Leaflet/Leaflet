@@ -63,7 +63,7 @@ export class Evented extends Class {
 	 * Removes a set of type/listener pairs.
 	 *
 	 * @alternative
-	 * @method off: this
+	 * @method off(): this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
 	off(types, fn, context) {

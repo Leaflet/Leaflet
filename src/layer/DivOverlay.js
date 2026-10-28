@@ -148,7 +148,7 @@ export class DivOverlay extends LayerBase {
 	}
 
 	// @namespace DivOverlay
-	// @method getLatLng: LatLng
+	// @method getLatLng(): LatLng
 	// Returns the geographical point of the overlay.
 	getLatLng() {
 		return this._latlng;
@@ -165,7 +165,7 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method getContent: String|HTMLElement|Function)
+	// @method getContent(): String|HTMLElement|Function
 	// Returns the content of the overlay.
 	getContent() {
 		return this._content;
@@ -183,13 +183,13 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method getElement: HTMLElement
+	// @method getElement(): HTMLElement
 	// Returns the HTML container of the overlay.
 	getElement() {
 		return this._container;
 	}
 
-	// @method update: null
+	// @method update(): null
 	// Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.
 	update() {
 		if (!this._map) { return; }
@@ -213,13 +213,13 @@ export class DivOverlay extends LayerBase {
 		};
 	}
 
-	// @method isOpen: Boolean
+	// @method isOpen(): Boolean
 	// Returns `true` when the overlay is visible on the map.
 	isOpen() {
 		return !!this._map && this._map.hasLayer(this);
 	}
 
-	// @method bringToFront: this
+	// @method bringToFront(): this
 	// Brings this overlay in front of other overlays (in the same map pane).
 	bringToFront() {
 		if (this._map) {
@@ -228,7 +228,7 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method bringToBack: this
+	// @method bringToBack(): this
 	// Brings this overlay to the back of other overlays (in the same map pane).
 	bringToBack() {
 		if (this._map) {
