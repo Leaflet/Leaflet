@@ -373,35 +373,39 @@ export class LayersControl extends Control {
 			return;
 		}
 
-		const inputs = this._layerControlInputs,
-		addedLayers = [],
-		removedLayers = [];
+		// a layer can be listed under several inputs, so it should be on the map if any of them is checked
+		const checked = new Map();
+		for (const input of this._layerControlInputs) {
+			const {layer} = this._getLayer(input.layerId);
+			checked.set(layer, checked.get(layer) || input.checked);
+		}
+
+		// diff against the map upfront, so layers that event handlers add or remove below keep their state (#9747)
+		const addedLayers = [], removedLayers = [];
+		for (const [layer, on] of checked) {
+			if (on !== this._map.hasLayer(layer)) {
+				(on ? addedLayers : removedLayers).push(layer);
+			}
+		}
 
 		this._handlingClick = true;
 
-		for (const input of inputs) {
-			const layer = this._getLayer(input.layerId).layer;
-
-			if (input.checked) {
-				addedLayers.push(layer);
-			} else if (!input.checked) {
-				removedLayers.push(layer);
-			}
-		}
-
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
 		for (const layer of removedLayers) {
-			if (this._map.hasLayer(layer)) {
-				this._map.removeLayer(layer);
-			}
+			this._map.removeLayer(layer);
 		}
 		for (const layer of addedLayers) {
-			if (!this._map.hasLayer(layer)) {
-				this._map.addLayer(layer);
-			}
+			this._map.addLayer(layer);
 		}
 
 		this._handlingClick = false;
+
+		for (const [layer, on] of checked) {
+			if (on !== this._map.hasLayer(layer)) {
+				this._update();
+				break;
+			}
+		}
 
 		this._refocusOnMap(e);
 	}
