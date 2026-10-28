@@ -76,7 +76,7 @@
 			{% if page.title == 'Tutorials' %}
 				<span>Tutorials</span>
 			{% else %}
-				<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
+				<a href="{{ root }}examples.html"{% if layout.tutorial %} class="active"{% endif %}>Tutorials</a>
 			{% endif %}
 		</li>
 		<li>
@@ -104,7 +104,7 @@
 			{% if page.title == 'Blog' %}
 				<span>Blog</span>
 			{% else %}
-				<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
+				<a href="{{ root }}blog.html"{% if layout.post %} class="active"{% endif %}>Blog</a>
 			{% endif %}
 		</li>
 	</ul>

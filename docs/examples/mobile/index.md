@@ -13,15 +13,16 @@ In this example, you'll learn how to create a fullscreen map tuned for mobile de
 
 First we'll take a look at the HTML &amp; CSS code of the page. To make our map `div` element stretch to all available space (fullscreen), we can use the following CSS code (note: In this example we use percentage for height. While vh is arguably better, due to a bug with Google Chrome on mobile.):
 
-{: .css}
-	body {
-		padding: 0;
-		margin: 0;
-	}
-	html, body, #map {
-		height: 100%;
-		width: 100vw;
-	}
+```css
+body {
+	padding: 0;
+	margin: 0;
+}
+html, body, #map {
+	height: 100%;
+	width: 100vw;
+}
+```
 
 Also, we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the `head` section or our HTML page:
 
