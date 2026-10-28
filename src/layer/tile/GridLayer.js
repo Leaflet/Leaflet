@@ -194,6 +194,8 @@ export class GridLayer extends Layer {
 		this._container = null;
 		this._tileZoom = undefined;
 		clearTimeout(this._pruneTimeout);
+		cancelAnimationFrame(this._fadePruneFrame);
+		this._fadePruneFrame = 0;
 	}
 
 	// @method bringToFront: this
@@ -330,35 +332,6 @@ export class GridLayer extends Layer {
 		if (!this._map) { return; }
 
 		this._container.style.opacity = `${this.options.opacity}`;
-
-		const now = Date.now();
-		let nextFrame = false,
-		willPrune = false;
-
-		for (const tile of Object.values(this._tiles ?? {})) {
-			if (!tile.current || !tile.loaded) { continue; }
-
-			const fade = Math.min(1, (now - tile.loaded) / 200);
-
-			tile.el.style.opacity = `${fade}`;
-			if (fade < 1) {
-				nextFrame = true;
-			} else {
-				if (tile.active) {
-					willPrune = true;
-				} else {
-					this._onOpaqueTile(tile);
-				}
-				tile.active = true;
-			}
-		}
-
-		if (willPrune && !this._noPrune) { this._pruneTiles(); }
-
-		if (nextFrame) {
-			cancelAnimationFrame(this._fadeFrame);
-			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
-		}
 	}
 
 	_onOpaqueTile() {}
@@ -568,7 +541,7 @@ export class GridLayer extends Layer {
 				this._pruneTiles();
 			}
 
-			// Flag to prevent _updateOpacity from pruning tiles during
+			// Flag to prevent finished tile fades from pruning tiles during
 			// a zoom anim or a pinch gesture
 			this._noPrune = !!noPrune;
 		}
@@ -631,7 +604,7 @@ export class GridLayer extends Layer {
 			// tiles can't be shifted by a fraction of a column, so leave those to be reloaded
 			if (dx % tileSize.x === 0) {
 				coords.x -= dx / tileSize.x;
-				DomUtil.setPosition(el, DomUtil.getPosition(el).subtract([dx, 0]));
+				DomUtil.setPosition(el, DomUtil.getPosition(el).subtract([dx, 0]), true);
 			}
 			tiles[this._tileCoordsToKey(coords)] = tile;
 		}
@@ -800,7 +773,9 @@ export class GridLayer extends Layer {
 			requestAnimationFrame(this._tileReady.bind(this, coords, null, tile));
 		}
 
-		DomUtil.setPosition(tile, tilePos);
+		// 2D, so tiles raster into the level's layer: as separate layers they get compositor edge antialiasing,
+		// and the overlapping edge ramps show as light seams under plus-lighter blending
+		DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[key] = {
@@ -830,15 +805,16 @@ export class GridLayer extends Layer {
 		tile = this._tiles[key];
 		if (!tile) { return; }
 
-		tile.loaded = Date.now();
-		if (this._map._fadeAnimated) {
-			tile.el.style.opacity = '0';
-			cancelAnimationFrame(this._fadeFrame);
-			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
-		} else {
+		if (!this._map._fadeAnimated) {
 			tile.active = true;
 			this._pruneTiles();
+		} else if (!tile.loaded) { // with errorTileUrl, a tile is ready twice (on error and on fallback load)
+			// while fading, the tile is a compositor layer of its own where plus-lighter would light up its
+			// antialiased edges, so it's blended normally until the fade ends
+			tile.el.classList.add('leaflet-tile-fading');
+			tile.el.animate({opacity: [0, 1]}, 200).onfinish = this._onTileFaded.bind(this, tile);
 		}
+		tile.loaded = true;
 
 		if (!err) {
 			tile.el.classList.add('leaflet-tile-loaded');
@@ -861,6 +837,22 @@ export class GridLayer extends Layer {
 				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
+	}
+
+	_onTileFaded(tile) {
+		tile.el.classList.remove('leaflet-tile-fading');
+		// the tile's key may have changed after a world copy jump, so look it up again
+		if (this._tiles[this._tileCoordsToKey(tile.coords)] !== tile) { return; }
+
+		tile.active = true;
+		this._onOpaqueTile(tile);
+
+		// one prune for all the tiles that finish fading in the same frame
+		if (this._noPrune || this._fadePruneFrame) { return; }
+		this._fadePruneFrame = requestAnimationFrame(() => {
+			this._fadePruneFrame = 0;
+			if (!this._noPrune) { this._pruneTiles(); }
+		});
 	}
 
 	_getTilePos(coords) {

@@ -1,6 +1,6 @@
 import {SimpleCRS, LeafletMap, TileLayer, LatLng} from 'leaflet';
 import sinon from 'sinon';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createClock, createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('TileLayer', () => {
 	let container, map;
@@ -206,9 +206,7 @@ describe('TileLayer', () => {
 		}
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers({
-				toFake: ['setTimeout', 'clearTimeout', 'Date']
-			});
+			clock = createClock();
 
 			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
