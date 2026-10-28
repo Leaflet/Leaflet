@@ -19,20 +19,33 @@ function openDialog() {
 	dialog.innerHTML = html;
 
 	document.body.insertBefore(dialog, document.body.firstChild);
+
+	// size the frame to its content; the container's max-height makes it scroll when the content doesn't fit
+	const iframe = dialog.querySelector('iframe');
+	iframe.addEventListener('load', () => {
+		const root = iframe.contentDocument.documentElement;
+		new ResizeObserver(() => { iframe.style.height = `${root.offsetHeight}px`; }).observe(root);
+	});
+
 	document.body.classList.add('overflowHidden');
 
 	setTimeout(() => {
 		dialog.focus();
 	}, 100);
 
-	const closeBtn = document.querySelector('.close-dialog');
-	closeBtn.addEventListener('click', () => {
-		const dialog = document.getElementById('dialog');
+	function closeDialog() {
 		document.body.removeChild(dialog);
 		document.body.classList.remove('overflowHidden');
 		if (localStorage) {
 			localStorage.setItem(SESSION_KEY, Date.now());
 		}
+	}
+
+	dialog.querySelector('.close-dialog').addEventListener('click', closeDialog);
+
+	// close on clicks on the backdrop around the popup
+	dialog.addEventListener('click', (e) => {
+		if (e.target === dialog) { closeDialog(); }
 	});
 
 	// keep focus in dialog
