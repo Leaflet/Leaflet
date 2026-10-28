@@ -394,18 +394,10 @@ export class Marker extends Layer {
 		const map = this._map;
 		if (!map) { return; }
 
-		const iconOpts = this.options.icon.options;
-
-		// iconSize/iconAnchor may contain 'auto' (DivIcon), so their rendered
-		// values are unknown; unknown components must not leak into the
-		// padding as NaN (#9253)
-		const safePoint = (value) => {
-			const point = Point.validate(value) ? new Point(value) : new Point(0, 0);
-			return new Point(Number.isFinite(point.x) ? point.x : 0, Number.isFinite(point.y) ? point.y : 0);
-		};
-
-		const size = safePoint(iconOpts.iconSize);
-		const anchor = safePoint(iconOpts.iconAnchor);
+		const icon = this._icon,
+		style = getComputedStyle(icon),
+		anchor = new Point(-parseFloat(style.marginLeft) || 0, -parseFloat(style.marginTop) || 0),
+		size = new Point(icon.offsetWidth, icon.offsetHeight);
 
 		map.panInside(this._latlng, {
 			paddingTopLeft: anchor,

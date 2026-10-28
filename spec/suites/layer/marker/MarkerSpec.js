@@ -223,37 +223,22 @@ describe('Marker', () => {
 			}).to.not.throw();
 		});
 
-		it('pan map to focus marker with auto iconSize (#9253)', () => {
-			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: 'auto'})});
-			map.addLayer(marker);
-
-			expect(() => {
-				marker._panOnFocus();
-			}).to.not.throw();
-		});
-
-		it('pan map to focus marker with partially auto iconSize (#9253)', () => {
-			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: [100, 'auto']})});
-			map.addLayer(marker);
-
-			expect(() => {
-				marker._panOnFocus();
-			}).to.not.throw();
-		});
-
-		it('pan map to focus marker passes finite padding for auto-sized icons (#9253)', () => {
-			const marker = new Marker([70, 0], {icon: new DivIcon({iconSize: [100, 'auto']})});
-			map.addLayer(marker);
-
+		it('pans to fit the rendered icon on focus (#9253)', () => {
 			const spy = sinon.spy(map, 'panInside');
-			marker._panOnFocus();
+			const getPadding = (icon) => {
+				const marker = new Marker([70, 0], {icon}).addTo(map);
+				marker._panOnFocus();
+				const {paddingTopLeft, paddingBottomRight} = spy.lastCall.args[1];
+				return [paddingTopLeft.x, paddingTopLeft.y, paddingBottomRight.x, paddingBottomRight.y];
+			};
+			const html = '<div style="width: 40px; height: 20px;"></div>';
 
-			expect(spy.calledOnce).to.be.true;
-			const [, options] = spy.firstCall.args;
-			expect(Number.isFinite(options.paddingTopLeft.x)).to.be.true;
-			expect(Number.isFinite(options.paddingTopLeft.y)).to.be.true;
-			expect(Number.isFinite(options.paddingBottomRight.x)).to.be.true;
-			expect(Number.isFinite(options.paddingBottomRight.y)).to.be.true;
+			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30], iconAnchor: [5, 10]}))).to.eql([5, 10, 15, 20]);
+			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30]}))).to.eql([10, 15, 10, 15]);
+			expect(getPadding(new DivIcon({className: '', iconSize: 32}))).to.eql([16, 16, 16, 16]);
+			expect(getPadding(new DivIcon({className: '', iconSize: 'auto', html}))[3]).to.equal(20);
+			expect(getPadding(new DivIcon({className: '', iconSize: [100, 'auto'], html}))).to.eql([50, 0, 50, 20]);
+
 			spy.restore();
 		});
 	});
