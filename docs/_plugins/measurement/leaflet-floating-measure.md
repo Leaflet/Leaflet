@@ -1,4 +1,4 @@
-﻿---
+---
 name: leaflet-floating-measure
 category: measurement
 repo: https://github.com

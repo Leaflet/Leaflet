@@ -38,7 +38,7 @@
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
-{% unless page.customMapContainer == "true" %}<div id='map'></div>{% endunless %}
+{% unless page.customMapContainer %}<div id='map'></div>{% endunless %}
 
 {{ content }}
 

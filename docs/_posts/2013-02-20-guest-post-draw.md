@@ -20,7 +20,6 @@ You can download the latest version from the <a href="https://github.com/Leaflet
 
 <div id="map" class="map" style="height: 288px"></div>
 
-{:#plugin-features}
 ### Features
 
 Leaflet.draw is designed to not only be easy for end users to use, but also for developers to integrate.

@@ -10,19 +10,45 @@ env:
   NODE_VERSION: 24
   PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
 jobs:
-  build-docs:
+  build-site:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
 
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/setup-node@v7
         with:
-          bundler-cache: true
-          working-directory: ./docs
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
-      - working-directory: ./docs
-        run: bundle exec jekyll build --strict_front_matter
+      - run: npm ci
+
+      # the checkout is shallow, and the site builds parts of itself from the pinned commits
+      - run: git fetch --depth=1 origin $(node -p "Object.values(require('./build/site.json').refs).join(' ')")
+
+      - run: npm run site
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy-site:
+    if: github.ref == 'refs/heads/main'
+    needs: build-site
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v5
 
   check:
     runs-on: ubuntu-latest

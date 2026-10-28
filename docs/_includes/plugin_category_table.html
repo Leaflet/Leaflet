@@ -9,35 +9,35 @@
 		<th>Demo</th>
 		<th>Maintainer</th>
 	</tr>
-{% for plugin in filteredplugins %}
+{%- for plugin in filteredplugins %}
 	<tr>
 		<td><a class="plugin-repo-url" href="{{ plugin.repo }}">{{ plugin.name }}</a></td>
 		<td>
-			{{ plugin.content }}
+			{{ plugin.content | strip }}
 			<div class="repo-data"></div>
 		</td>
 		<td class="compatible">
-		{% if plugin.compatible-v1 %}
+		{%- if plugin.compatible-v1 == "true" %}
 			<span title="Compatible with V1">✔️</span>
-		{% endif %}
+		{%- endif %}
 		</td>
 		<td class="compatible">
-		{% if plugin.compatible-v2 %}
+		{%- if plugin.compatible-v2 == "true" %}
 			<span title="Compatible with V2">✔️</span>
-		{% endif %}
+		{%- endif %}
 		</td>
 		<td>
-		{% if plugin.demo %}
+		{%- if plugin.demo != blank %}
 			<a href="{{ plugin.demo }}">Demo</a>
-		{% endif %}
+		{%- endif %}
 		</td>
 		<td>
-		{% if plugin.author-url %}
+		{%- if plugin.author-url != blank %}
 			<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>
-		{% else %}
+		{%- else %}
 			{{ plugin.author }}
-		{% endif %}
+		{%- endif %}
 		</td>
 	</tr>
-{% endfor %}
+{%- endfor %}
 </table>
