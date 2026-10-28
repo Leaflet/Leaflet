@@ -56,7 +56,8 @@
     "watch": "npm run build -- --watch",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
-    "serve": "cd docs && bundle exec jekyll serve",
+    "site": "node build/site.js",
+    "serve": "npm run site && http-server _site -c-1",
     "prepare": "husky",
     "version": "node build/version.js && git add src/Leaflet.js"
   },

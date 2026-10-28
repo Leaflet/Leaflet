@@ -1,5 +1,5 @@
 // This script calculates the integrity hashes of the files in dist/ , and
-// **overwrites** the values in the documentation.
+// **overwrites** the values for this version in the site config.
 import {readFileSync, writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import pkg from '../package.json' with {type: 'json'};
@@ -21,12 +21,16 @@ console.log(`dist/leaflet.js:        ${integrityUglified}`);
 console.log(`dist/leaflet-global.js: ${integrityUglifiedGlobal}`);
 console.log(`dist/leaflet.css:       ${integrityCss}`);
 
-let docConfig = readFileSync('docs/_config.yml', 'utf8');
+const configPath = 'build/site.json';
+const config = JSON.parse(readFileSync(configPath, 'utf8'));
 
-docConfig = docConfig
-	.replace(/latest_leaflet_version:.*/,  `latest_leaflet_version: ${pkg.version}`)
-	.replace(/integrity_hash_uglified:.*/, `integrity_hash_uglified: "${integrityUglified}"`)
-	.replace(/integrity_hash_global_uglified:.*/, `integrity_hash_global_uglified: "${integrityUglifiedGlobal}"`)
-	.replace(/integrity_hash_css:.*/,      `integrity_hash_css: "${integrityCss}"`);
+config.version = pkg.version;
+config.versions[pkg.version] = {
+	...config.versions[pkg.version],
+	'latest_leaflet_version': pkg.version,
+	'integrity_hash_css': integrityCss,
+	'integrity_hash_uglified': integrityUglified,
+	'integrity_hash_global_uglified': integrityUglifiedGlobal
+};
 
-writeFileSync('docs/_config.yml', docConfig);
+writeFileSync(configPath, `${JSON.stringify(config, null, '\t')}\n`);
