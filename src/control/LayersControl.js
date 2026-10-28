@@ -375,60 +375,38 @@ export class LayersControl extends Control {
 			return;
 		}
 
-		const inputs = this._layerControlInputs,
-		addedLayers = [],
-		removedLayers = [],
-		toggledInputs = new Set();
+		// a layer can be listed under several inputs, so it should be on the map if any of them is checked
+		const checked = new Map();
+		for (const input of this._layerControlInputs) {
+			const {layer} = this._getLayer(input.layerId);
+			checked.set(layer, checked.get(layer) || input.checked);
+		}
+
+		// diff against the map upfront, so layers that event handlers add or remove below keep their state (#9747)
+		const addedLayers = [], removedLayers = [];
+		for (const [layer, on] of checked) {
+			if (on !== this._map.hasLayer(layer)) {
+				(on ? addedLayers : removedLayers).push(layer);
+			}
+		}
 
 		this._handlingClick = true;
 
-		for (const input of inputs) {
-			// Only act on inputs actually toggled by the user: layers added or
-			// removed by the event handlers fired below must keep their new
-			// state instead of being re-enforced from the stale input (#9747)
-			if (input.checked === input.defaultChecked) {
-				continue;
-			}
-
-			const layer = this._getLayer(input.layerId).layer;
-
-			if (input.checked) {
-				addedLayers.push(layer);
-			} else {
-				removedLayers.push(layer);
-			}
-
-			toggledInputs.add(input);
-
-			// remember the input as enforced until the sync below
-			input.defaultChecked = input.checked;
-		}
-
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
 		for (const layer of removedLayers) {
-			if (this._map.hasLayer(layer)) {
-				this._map.removeLayer(layer);
-			}
+			this._map.removeLayer(layer);
 		}
 		for (const layer of addedLayers) {
-			if (!this._map.hasLayer(layer)) {
-				this._map.addLayer(layer);
-			}
+			this._map.addLayer(layer);
 		}
 
 		this._handlingClick = false;
 
-		// Reflect the final map state on the inputs, as event handlers may
-		// have added or removed layers while this click was handled (#9747).
-		// Inputs sharing their layer with a toggled input are left alone, as
-		// the map state cannot tell which control entry the user selected.
-		const toggledLayers = new Set(Array.from(toggledInputs, input => this._getLayer(input.layerId).layer));
-		for (const input of this._layerControlInputs) {
-			const layer = this._getLayer(input.layerId).layer;
-			if (toggledLayers.has(layer) && !toggledInputs.has(input)) {
-				continue;
+		for (const [layer, on] of checked) {
+			if (on !== this._map.hasLayer(layer)) {
+				this._update();
+				break;
 			}
-			input.checked = this._map.hasLayer(layer);
 		}
 
 		this._refocusOnMap(e);

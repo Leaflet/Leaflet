@@ -87,8 +87,7 @@ describe('LayersControl', () => {
 
 			expect(map.hasLayer(overlays['Layer 1'])).to.be.false;
 			expect(map.hasLayer(overlays['Layer 2'])).to.be.false;
-			// the inputs are rebuilt from the map state, so the checkbox of
-			// the handler-removed layer is unchecked
+			// the control is rebuilt from the map state, so the handler-removed layer gets unchecked
 			expect(layers._overlaysList.getElementsByTagName('input')[1].checked).to.be.false;
 		});
 
