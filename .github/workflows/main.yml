@@ -166,11 +166,7 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run build
-
-      - name: Compress artifacts
-        working-directory: dist
-        run: zip -r leaflet.zip . ../CHANGELOG.md ../LICENSE ../README.md
+      - run: npm run zip
 
       - name: Publish development snapshot
         env:

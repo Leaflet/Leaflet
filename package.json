@@ -48,16 +48,17 @@
   ],
   "scripts": {
     "debug": "http-server -c-1",
-    "docs": "node ./build/docs.js && node ./build/integrity.js",
     "test": "vitest run",
     "test:ui": "vitest --ui --browser.headless=false",
     "coverage": "vitest run --coverage",
     "build": "rolldown --config build/rolldown-config.js",
     "watch": "npm run build -- --watch",
+    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/* CHANGELOG.md LICENSE README.md",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
     "site": "node build/site.js",
     "serve": "npm run site && http-server _site -c-1",
+    "pin-release": "node build/pin-release.js",
     "prepare": "husky",
     "version": "node build/version.js && git add src/Leaflet.js"
   },

@@ -1,6 +1,7 @@
 {
 	"refs": {
-		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21"
+		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21",
+		"v2": "9b7432a8fe3344ed731221e4a1da2cd327dc3383"
 	},
 	"site": {
 		"cartocdn_key": "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
@@ -35,10 +36,13 @@
 				"index.html",
 				"download.md",
 				"edit.html",
-				"examples.md",
-				"reference.html",
-				"reference-2.0.0.html",
-				"reference-versions.html"
+				"examples.md"
+			],
+			"version": "1.9.4"
+		},
+		{
+			"include": [
+				"reference.html"
 			],
 			"version": "1.9.4"
 		}

@@ -1,6 +1,7 @@
-// This script calculates the integrity hashes of the files in dist/ , and
-// **overwrites** the values for this version in the site config.
+// Pins the site config to a published release: its version, the integrity hashes of its files on jsDelivr, and the
+// commit of its tag that the 2.0 API reference is built from.
 import {readFileSync, writeFileSync} from 'node:fs';
+import {execSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import pkg from '../package.json' with {type: 'json'};
 
@@ -24,6 +25,7 @@ console.log(`dist/leaflet.css:       ${integrityCss}`);
 const configPath = 'build/site.json';
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 
+config.refs.v2 = execSync(`git rev-parse v${pkg.version}^{commit}`, {encoding: 'utf8'}).trim();
 config.version = pkg.version;
 config.versions[pkg.version] = {
 	...config.versions[pkg.version],

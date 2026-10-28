@@ -1,5 +1,5 @@
 // Builds leafletjs.com into _site/ from docs/ and the pinned refs in build/site.json. Covers the part of Jekyll the
-// site uses: front matter, Liquid, Markdown, chained layouts, posts and the plugins collection.
+// site uses (front matter, Liquid, Markdown, chained layouts, posts, the plugins collection) and the API references.
 
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, rmSync, renameSync, statSync}
 	from 'node:fs';
@@ -9,6 +9,7 @@ import {Liquid} from 'liquidjs';
 import {Marked} from 'marked';
 import {markedSmartypants} from 'marked-smartypants';
 import {parse as parseYaml} from '@mourner/yeahml';
+import LeafDoc from 'leafdoc';
 
 const SITE_DIR = 'docs';
 const DEST = '_site';
@@ -82,6 +83,7 @@ for (const post of site.posts) {
 }
 for (const [out, {path, engine, site}] of outputs) {
 	const page = readPage(path);
+	if (page?.data.reference) { page.data.api = buildReference(config.refs[page.data.reference]); }
 	if (page) {
 		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
 		write(join(DEST, out), engine.renderLayouts(content, page.data, site));
@@ -164,10 +166,23 @@ function treeDir(sha) {
 		const tmp = `${dir}.tmp`;
 		rmSync(tmp, {recursive: true, force: true});
 		mkdirSync(tmp, {recursive: true});
-		execSync(`git archive ${sha} ${SITE_DIR} | tar -x -C ${tmp}`);
+		execSync(`git archive ${sha} ${SITE_DIR} src build | tar -x -C ${tmp}`);
 		renameSync(tmp, dir);
 	}
 	return dir;
+}
+
+// The API reference of a pinned commit: Leafdoc over its sources and class order, with the checkout's templates
+function buildReference(sha) {
+	const dir = treeDir(sha);
+	const doc = new LeafDoc({templateDir: 'build/leafdoc-templates', showInheritancesWhenEmpty: true, leadingCharacter: '@'});
+	doc.registerDocumentable('pane', 'Map panes');
+	doc.registerDocumentable('projection', 'Defined projections');
+	doc.registerDocumentable('crs', 'Defined CRSs');
+	doc.addFile(join(dir, 'build/docs-index.leafdoc'), false);
+	doc.addDir(join(dir, 'src'));
+	doc.addFile(join(dir, 'build/docs-misc.leafdoc'), false);
+	return doc.outputStr();
 }
 
 function matches(file, paths) {
