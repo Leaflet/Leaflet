@@ -27,6 +27,6 @@
 		{"src": "docs", "dest": "", "exclude": ["examples"]},
 		{"src": "docs/examples", "dest": "examples-v2"},
 		{"ref": "v1", "src": "docs/examples", "dest": "examples", "version": "1.9.4"},
-		{"ref": "v1", "src": "docs", "dest": "", "files": ["index.html", "download.md", "edit.html", "examples.md"], "version": "1.9.4"}
+		{"ref": "v1", "src": "docs", "dest": "", "files": ["index.html", "download.md", "edit.html", "examples.md", "reference.html", "reference-2.0.0.html", "reference-versions.html"], "version": "1.9.4"}
 	]
 }
