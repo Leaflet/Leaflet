@@ -416,6 +416,18 @@ describe('Tooltip', () => {
 		layer.closeTooltip();
 	});
 
+	it('returns the layer from closeTooltip with or without a bound tooltip', () => {
+		const layer = new Marker(center).addTo(map);
+		expect(layer.closeTooltip()).to.equal(layer);
+		layer.bindTooltip('Tooltip').openTooltip();
+		expect(layer.closeTooltip()).to.equal(layer);
+	});
+
+	it('reports a tooltip as closed when none is bound', () => {
+		const layer = new Marker(center).addTo(map);
+		expect(layer.isTooltipOpen()).to.be.false;
+	});
+
 	it('opens a tooltip and follow the pointer (sticky)', () => {
 		const layer = new Rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
 		layer.bindTooltip('Sticky', {sticky: true}).openTooltip();

@@ -231,9 +231,8 @@ export class Layer extends LayerBase {
 	// @method closeTooltip(): this
 	// Closes the tooltip bound to this layer if it is open.
 	closeTooltip() {
-		if (this._tooltip) {
-			return this._tooltip.close();
-		}
+		this._tooltip?.close();
+		return this;
 	}
 
 	// @method toggleTooltip(): this
@@ -246,7 +245,7 @@ export class Layer extends LayerBase {
 	// @method isTooltipOpen(): boolean
 	// Returns `true` if the tooltip bound to this layer is currently open.
 	isTooltipOpen() {
-		return this._tooltip.isOpen();
+		return this._tooltip?.isOpen() ?? false;
 	}
 
 	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
