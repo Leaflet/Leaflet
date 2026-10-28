@@ -157,5 +157,14 @@ describe('LatLng', () => {
 
 			expect(Object.hasOwn(b, 'alt')).to.be.false;
 		});
+
+		it('clones a LatLng that would not pass validation', () => {
+			const a = new LatLng('foo', 'bar');
+			const b = a.clone();
+
+			expect(b).to.not.equal(a);
+			expect(b.lat).to.be.NaN;
+			expect(b.lng).to.be.NaN;
+		});
 	});
 });
