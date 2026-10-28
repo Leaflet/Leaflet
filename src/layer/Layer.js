@@ -1,272 +1,361 @@
-import {Evented} from '../core/Events.js';
-import {LeafletMap} from '../map/Map.js';
+import {LayerBase} from './LayerBase.js';
+import {Popup} from './Popup.js';
+import {Tooltip} from './Tooltip.js';
+import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
-/*
- * @class Layer
- * @inherits Evented
- * @aka ILayer
- *
- * A set of methods from the Layer base class that all Leaflet layers use.
- * Inherits all methods, options and events from `Evented`.
- *
- * @example
- *
- * ```js
- * const layer = new Marker(latlng).addTo(map);
- * layer.addTo(map);
- * layer.remove();
- * ```
- *
- * @event add: Event
- * Fired after the layer is added to a map
- *
- * @event remove: Event
- * Fired after the layer is removed from a map
- */
+export class Layer extends LayerBase {
 
-
-export class Layer extends Evented {
-
-	static {
-		// Classes extending `Layer` will inherit the following options:
-		this.setDefaultOptions({
-			// @option pane: String = 'overlayPane'
-			// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
-			// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
-			pane: 'overlayPane',
-
-			// @option attribution: String = null
-			// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
-			attribution: null,
-
-			bubblingPointerEvents: true
-		});
-	}
-
-	/* @section
-	 * Classes extending `Layer` will inherit the following methods:
+	/*
+	 * @namespace Layer
+	 * @section Popup methods example
 	 *
-	 * @method addTo(map: LeafletMap|LayerGroup): this
-	 * Adds the layer to the given map or layer group.
+	 * All layers share a set of methods convenient for binding popups to it.
+	 *
+	 * ```js
+	 * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
+	 * layer.openPopup();
+	 * layer.closePopup();
+	 * ```
+	 *
+	 * Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.
 	 */
-	addTo(map) {
-		map.addLayer(this);
+
+	// @section Popup methods
+
+	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
+	// Binds a popup to the layer with the passed `content` and sets up the
+	// necessary event listeners. A `String` argument is rendered as HTML; if it
+	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
+	// it will receive the layer as the first argument and should return a
+	// `String` or `HTMLElement`.
+	bindPopup(content, options) {
+		this._popup = this._initOverlay(Popup, this._popup, content, options);
+		this.on({
+			click: this._openPopup,
+			remove: this.closePopup,
+			move: this._movePopup
+		});
+
 		return this;
 	}
 
-	// @method remove: this
-	// Removes the layer from the map it is currently active on.
-	remove() {
-		return this.removeFrom(this._map || this._mapToAdd);
-	}
-
-	// @method removeFrom(map: LeafletMap): this
-	// Removes the layer from the given map
-	//
-	// @alternative
-	// @method removeFrom(group: LayerGroup): this
-	// Removes the layer from the given `LayerGroup`
-	removeFrom(obj) {
-		obj?.removeLayer(this);
+	// @method unbindPopup(): this
+	// Removes the popup previously bound with `bindPopup`.
+	unbindPopup() {
+		if (this._popup) {
+			this.off({
+				click: this._openPopup,
+				remove: this.closePopup,
+				move: this._movePopup
+			});
+			this._popup = null;
+		}
 		return this;
 	}
 
-	// @method getPane(name? : String): HTMLElement
-	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
-	getPane(name) {
-		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
-	}
-
-	addInteractiveTarget(targetEl) {
-		this._map._targets[Util.stamp(targetEl)] = this;
+	// @method openPopup(latlng?: LatLng): this
+	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
+	openPopup(latlng) {
+		if (this._popup) {
+			// groups keep the member layer the popup was last opened on
+			if (this._getOverlaySource() === this) {
+				this._popup._source = this;
+			}
+			if (this._popup._prepareOpen(latlng || this._latlng)) {
+				// open the popup on the map
+				this._popup.openOn(this._map);
+			}
+		}
 		return this;
 	}
 
-	removeInteractiveTarget(targetEl) {
-		delete this._map._targets[Util.stamp(targetEl)];
+	// @method closePopup(): this
+	// Closes the popup bound to this layer if it is open.
+	closePopup() {
+		this._popup?.close();
 		return this;
 	}
 
-	// @method getAttribution: String
-	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
-	getAttribution() {
-		return this.options.attribution;
+	// @method togglePopup(): this
+	// Opens or closes the popup bound to this layer depending on its current state.
+	togglePopup() {
+		this._popup?.toggle(this);
+		return this;
 	}
 
-	_layerAdd(e) {
-		const map = e.target;
+	// @method isPopupOpen(): boolean
+	// Returns `true` if the popup bound to this layer is currently open.
+	isPopupOpen() {
+		return this._popup?.isOpen() ?? false;
+	}
 
-		// check in case layer gets added and then removed before the map is ready
-		if (!map.hasLayer(this)) { return; }
+	// @method setPopupContent(content: String|HTMLElement|Popup): this
+	// Sets the content of the popup bound to this layer.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	setPopupContent(content) {
+		this._popup?.setContent(content);
+		return this;
+	}
 
-		this._map = map;
-		this._zoomAnimated = map._zoomAnimated;
+	// @method getPopup(): Popup
+	// Returns the popup bound to this layer.
+	getPopup() {
+		return this._popup;
+	}
 
-		if (this.getEvents) {
-			const events = this.getEvents();
-			map.on(events, this);
-			this.once('remove', () => map.off(events, this));
+	_openPopup(e) {
+		if (!this._popup || !this._map) {
+			return;
+		}
+		// prevent map click
+		DomEvent.stop(e);
+
+		const target = e.propagatedFrom ?? e.target;
+		if (this._popup._source === target && target._togglesPopupOnClick()) {
+			// treat it like a marker and figure out
+			// if we should toggle it open/closed
+			if (this._map.hasLayer(this._popup)) {
+				this.closePopup();
+			} else {
+				this.openPopup(e.latlng);
+			}
+			return;
+		}
+		this._popup._source = target;
+		this.openPopup(e.latlng);
+	}
+
+	_movePopup(e) {
+		this._popup.setLatLng(e.latlng);
+	}
+
+	/*
+	 * @namespace Layer
+	 * @section Tooltip methods example
+	 *
+	 * All layers share a set of methods convenient for binding tooltips to it.
+	 *
+	 * ```js
+	 * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+	 * layer.openTooltip();
+	 * layer.closeTooltip();
+	 * ```
+	 */
+
+	// @section Tooltip methods
+
+	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
+	// Binds a tooltip to the layer with the passed `content` and sets up the
+	// necessary event listeners. A `String` argument is rendered as HTML; if it
+	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
+	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
+	// it will receive the layer as the first argument and should return a
+	// `String` or `HTMLElement`.
+	bindTooltip(content, options) {
+
+		if (this._tooltip && this.isTooltipOpen()) {
+			this.unbindTooltip();
 		}
 
-		this.onAdd(map);
+		this._tooltip = this._initOverlay(Tooltip, this._tooltip, content, options);
+		this._initTooltipInteractions();
 
-		this.fire('add');
-		map.fire('layeradd', {layer: this});
+		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
+			this.openTooltip();
+		}
+
+		return this;
+	}
+
+	// @method unbindTooltip(): this
+	// Removes the tooltip previously bound with `bindTooltip`.
+	unbindTooltip() {
+		if (this._tooltip) {
+			this._initTooltipInteractions(true);
+			this.closeTooltip();
+			this._tooltip = null;
+		}
+		return this;
+	}
+
+	_initTooltipInteractions(remove) {
+		if (!remove && this._tooltipHandlersAdded) { return; }
+		const onOff = remove ? 'off' : 'on',
+		events = {
+			remove: this.closeTooltip,
+			move: this._moveTooltip
+		};
+		if (!this._tooltip.options.permanent) {
+			events.pointerover = this._openTooltip;
+			events.pointerout = this.closeTooltip;
+			events.click = this._openTooltip;
+			if (this._map) {
+				this._addFocusListeners(remove);
+			} else {
+				events.add = () => this._addFocusListeners(remove);
+			}
+		} else {
+			events.add = this._openTooltip;
+		}
+		if (this._tooltip.options.sticky) {
+			events.pointermove = this._moveTooltip;
+		}
+		this[onOff](events);
+		this._tooltipHandlersAdded = !remove;
+	}
+
+	// @method openTooltip(latlng?: LatLng): this
+	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
+	openTooltip(latlng) {
+		if (this._tooltip) {
+			// groups keep the member layer the tooltip was last opened on
+			if (this._getOverlaySource() === this) {
+				this._tooltip._source = this;
+			}
+			if (this._tooltip._prepareOpen(latlng)) {
+				// open the tooltip on the map
+				this._tooltip.openOn(this._map);
+
+				if (this.getElement) {
+					this._setAriaDescribedByOnLayer(this);
+				} else if (this.eachLayer) {
+					this.eachLayer(this._setAriaDescribedByOnLayer, this);
+				}
+			}
+		}
+		return this;
+	}
+
+	// @method closeTooltip(): this
+	// Closes the tooltip bound to this layer if it is open.
+	closeTooltip() {
+		if (this._tooltip) {
+			return this._tooltip.close();
+		}
+	}
+
+	// @method toggleTooltip(): this
+	// Opens or closes the tooltip bound to this layer depending on its current state.
+	toggleTooltip() {
+		this._tooltip?.toggle(this);
+		return this;
+	}
+
+	// @method isTooltipOpen(): boolean
+	// Returns `true` if the tooltip bound to this layer is currently open.
+	isTooltipOpen() {
+		return this._tooltip.isOpen();
+	}
+
+	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
+	// Sets the content of the tooltip bound to this layer.
+	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	setTooltipContent(content) {
+		this._tooltip?.setContent(content);
+		return this;
+	}
+
+	// @method getTooltip(): Tooltip
+	// Returns the tooltip bound to this layer.
+	getTooltip() {
+		return this._tooltip;
+	}
+
+	_addFocusListeners(remove) {
+		if (this.getElement) {
+			this._addFocusListenersOnLayer(this, remove);
+		} else if (this.eachLayer) {
+			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
+		}
+	}
+
+	_addFocusListenersOnLayer(layer, remove) {
+		const el = typeof layer.getElement === 'function' && layer.getElement();
+		if (el) {
+			const toggle = remove ? DomEvent.off : DomEvent.on;
+			if (!remove) {
+				// Remove focus listener, if already existing
+				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
+
+				// eslint-disable-next-line camelcase
+				el._leaflet_focus_handler = () => {
+					if (this._tooltip) {
+						this._tooltip._source = layer;
+						this.openTooltip();
+					}
+				};
+			}
+
+			el._leaflet_focus_handler && toggle(el, 'focus', el._leaflet_focus_handler, this);
+			toggle(el, 'blur', this.closeTooltip, this);
+
+			if (remove) {
+				delete el._leaflet_focus_handler;
+			}
+		}
+	}
+
+	_setAriaDescribedByOnLayer(layer) {
+		const el = typeof layer.getElement === 'function' && layer.getElement();
+		el?.setAttribute?.('aria-describedby', this._tooltip._container.id);
+	}
+
+
+	_openTooltip(e) {
+		if (!this._tooltip || !this._map) {
+			return;
+		}
+
+		// If the map is moving, we will show the tooltip after it's done.
+		if (this._map.dragging?.moving()) {
+			if (e.type === 'add' && !this._moveEndOpensTooltip) {
+				this._moveEndOpensTooltip = true;
+				this._map.once('moveend', () => {
+					this._moveEndOpensTooltip = false;
+					this._openTooltip(e);
+				});
+			}
+			return;
+		}
+
+		this._tooltip._source = e.propagatedFrom ?? e.target;
+
+		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
+	}
+
+	_moveTooltip(e) {
+		let latlng = e.latlng, containerPoint, layerPoint;
+		if (this._tooltip.options.sticky && e.originalEvent) {
+			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
+			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
+			latlng = this._map.layerPointToLatLng(layerPoint);
+		}
+		this._tooltip.setLatLng(latlng);
+	}
+
+	_initOverlay(OverlayClass, old, content, options) {
+		let overlay = content;
+		if (overlay instanceof OverlayClass) {
+			Util.setOptions(overlay, options);
+			overlay._source = this;
+		} else {
+			overlay = (old && !options) ? old : new OverlayClass(options, this);
+			overlay.setContent(content);
+		}
+		return overlay;
+	}
+
+	// Returns the layer a bound popup or tooltip opens on, or nothing if there's none on the map.
+	// `FeatureGroup` overrides it to pick one of its own layers.
+	_getOverlaySource() {
+		return this;
+	}
+
+	// Whether clicking the layer again closes its open popup. `Path` overrides it to
+	// move the popup to the new click position instead.
+	_togglesPopupOnClick() {
+		return true;
 	}
 }
-
-/* @section Extension methods
- * @uninheritable
- *
- * Every layer should extend from `Layer` and (re-)implement the following methods.
- *
- * @method onAdd(map: LeafletMap): this
- * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
- *
- * @method onRemove(map: LeafletMap): this
- * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
- *
- * @method getEvents(): Object
- * This optional method should return an object like `{ viewreset: this._reset }` for [`on`](#evented-on). The event handlers in this object will be automatically added and removed from the map with your layer.
- *
- * @method getAttribution(): String
- * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
- *
- * @method beforeAdd(map: LeafletMap): this
- * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.
- */
-
-
-/* @namespace LeafletMap
- * @section Layer events
- *
- * @event layeradd: LayerEvent
- * Fired when a new layer is added to the map.
- *
- * @event layerremove: LayerEvent
- * Fired when some layer is removed from the map
- *
- * @section Methods for Layers and Controls
- */
-LeafletMap.include({
-	// @method addLayer(layer: Layer): this
-	// Adds the given layer to the map
-	addLayer(layer) {
-		if (!layer._layerAdd) {
-			throw new Error('The provided object is not a Layer.');
-		}
-
-		const id = Util.stamp(layer);
-		if (this._layers[id]) { return this; }
-		this._layers[id] = layer;
-
-		layer._mapToAdd = this;
-
-		if (layer.beforeAdd) {
-			layer.beforeAdd(this);
-		}
-
-		this.whenReady(layer._layerAdd, layer);
-
-		return this;
-	},
-
-	// @method removeLayer(layer: Layer): this
-	// Removes the given layer from the map.
-	removeLayer(layer) {
-		const id = Util.stamp(layer);
-
-		if (!this._layers[id]) { return this; }
-
-		if (this._loaded) {
-			layer.onRemove(this);
-		}
-
-		delete this._layers[id];
-
-		if (this._loaded) {
-			this.fire('layerremove', {layer});
-			layer.fire('remove');
-		}
-
-		layer._map = layer._mapToAdd = null;
-
-		return this;
-	},
-
-	// @method hasLayer(layer: Layer): Boolean
-	// Returns `true` if the given layer is currently added to the map
-	hasLayer(layer) {
-		return Util.stamp(layer) in this._layers;
-	},
-
-	/* @method eachLayer(fn: Function, context?: Object): this
-	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
-	 * ```
-	 * map.eachLayer(function(layer){
-	 *     layer.bindPopup('Hello');
-	 * });
-	 * ```
-	 */
-	eachLayer(method, context) {
-		for (const layer of Object.values(this._layers)) {
-			method.call(context, layer);
-		}
-		return this;
-	},
-
-	_addLayers(layers) {
-		layers = layers ? (Array.isArray(layers) ? layers : [layers]) : [];
-
-		for (const layer of layers) {
-			this.addLayer(layer);
-		}
-	},
-
-	_addZoomLimit(layer) {
-		if (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
-			this._zoomBoundLayers[Util.stamp(layer)] = layer;
-			this._updateZoomLevels();
-		}
-	},
-
-	_removeZoomLimit(layer) {
-		const id = Util.stamp(layer);
-
-		if (this._zoomBoundLayers[id]) {
-			delete this._zoomBoundLayers[id];
-			this._updateZoomLevels();
-		}
-	},
-
-	_updateZoomLevels() {
-		let minZoom = Infinity,
-		maxZoom = -Infinity;
-		const oldZoomSpan = this._getZoomSpan();
-
-		for (const l of Object.values(this._zoomBoundLayers)) {
-			const options = l.options;
-			minZoom = Math.min(minZoom, options.minZoom ?? Infinity);
-			maxZoom = Math.max(maxZoom, options.maxZoom ?? -Infinity);
-		}
-
-		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
-		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
-
-		// @section Map state change events
-		// @event zoomlevelschange: Event
-		// Fired when the number of zoomlevels on the map is changed due
-		// to adding or removing a layer.
-		if (oldZoomSpan !== this._getZoomSpan()) {
-			this.fire('zoomlevelschange');
-		}
-
-		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
-			this.setZoom(this._layersMaxZoom);
-		}
-		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
-			this.setZoom(this._layersMinZoom);
-		}
-	}
-});

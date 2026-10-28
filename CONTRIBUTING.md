@@ -104,39 +104,35 @@ But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
 In order to create this file, run `npm run build` or `yarn run build`.
 
-You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
-`dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
-development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
-for deployment.
+You'll find `dist/leaflet.js`, a minified ES module, and `dist/leaflet-global.js`,
+a minified script that defines the global `L`, each with a source map that includes
+the original sources. The npm package points bundlers at `src/` directly, so they
+can drop the parts of Leaflet an app doesn't use.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the tests
-in a graphical browser. This requires regenerating the bundled files quickly.
-
-In order to do so, run `npm run watch` or `yarn run watch`. This will keep
-on rebuilding the bundles whenever any source file changes.
+in a graphical browser. The debug pages load `src/` directly, so changes
+show up on reload without a build.
 
 ## Running the Tests
 
-Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider). Make sure the project has been built first (or run `npm run watch` in another terminal).
+Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider), against the sources in `src/`, so no build is needed.
 
 ```
 npm test
 ```
 
-Runs the suite in headless Chromium and stays in watch mode. To override the browser, pass `--project`:
+Runs the suite once in headless Chromium. To run it in another browser, set `TEST_BROWSER`, and pass spec paths to run only those:
 
 ```
-npm test -- --project=firefox
-npm test -- --project=webkit
-npm test -- --project=firefox-retina
+TEST_BROWSER=firefox npm test
+TEST_BROWSER=webkit npm test
+npm test -- spec/suites/layer/PopupSpec.js
 ```
 
-For one-shot CI-style runs, add `--run`. To enable touch event emulation (matching what CI runs as the "touch" pass), set `VITE_TOUCH=1`:
+For watch mode, run `npx vitest`.
 
-```
-VITE_TOUCH=1 npm test -- --run
-```
+To test the minified bundle instead of the sources, as one of the CI jobs does, run `npm run build` and then `TEST_DIST=1 npm test`.
 
 To open the Vitest UI for interactive debugging:
 

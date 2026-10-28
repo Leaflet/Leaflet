@@ -1,5 +1,4 @@
-import {expect} from 'chai';
-import {DomUtil, GridLayer, LeafletMap, Point, Util} from 'leaflet';
+import {DomUtil, GridLayer, LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -25,6 +24,15 @@ describe('GridLayer', () => {
 		it('can be called before map.setView', () => {
 			const grid = new GridLayer().addTo(map);
 			expect(grid.redraw()).to.equal(grid);
+		});
+
+		it('uses integer tile zoom with fractional map zoom', () => {
+			map.options.zoomSnap = 0.1;
+			map.setView([0, 0], 2.4);
+			const grid = new GridLayer().addTo(map);
+			grid._tileZoom = undefined;
+			grid.redraw();
+			expect(grid._tileZoom).to.equal(2);
 		});
 	});
 
@@ -404,8 +412,8 @@ describe('GridLayer', () => {
 			// 	console.log(ev.type, ev.coords, counts);
 			// });
 
-			map.options.fadeAnimation = false;
-			map.options.zoomAnimation = false;
+			map.remove();
+			map = new LeafletMap(container, {fadeAnimation: false, zoomAnimation: false});
 		});
 
 		afterEach(() => {
@@ -463,11 +471,17 @@ describe('GridLayer', () => {
 				grid.on('load', () => {
 					expect(counts.tileloadstart).to.equal(32);
 					expect(counts.tileload).to.equal(32);
-					expect(counts.tileunload).to.equal(16);
-					done();
+
+					// the z10 tiles under the new ones go on the next frame
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(16);
+						done();
+					});
 				});
 
 				map.setZoom(11, {animate: false});
+				// the 4 z10 tiles under the new view stay until the z11 ones load
+				expect(counts.tileunload).to.equal(12);
 				clock.tick(250);
 			});
 
@@ -486,11 +500,17 @@ describe('GridLayer', () => {
 				grid.on('load', () => {
 					expect(counts.tileloadstart).to.equal(32);
 					expect(counts.tileload).to.equal(32);
-					expect(counts.tileunload).to.equal(16);
-					done();
+
+					// the z11 tiles over the new ones go on the next frame
+					requestAnimationFrame(() => {
+						expect(counts.tileunload).to.equal(16);
+						done();
+					});
 				});
 
 				map.setZoom(10, {animate: false});
+				// the z11 tiles stay until the z10 ones load
+				expect(counts.tileunload).to.equal(0);
 				clock.tick(250);
 			});
 
@@ -518,6 +538,33 @@ describe('GridLayer', () => {
 			});
 
 			map.addLayer(grid).setView([0, 0], 18);
+			clock.tick(250);
+		});
+
+		it('keeps the old tiles when zooming after panning a screen away', (done) => {
+			grid.once('load', () => {
+				map.panBy([1000, 0], {animate: false});
+				grid.once('load', () => {
+					const unloaded = counts.tileunload;
+					map.setZoom(11, {animate: false});
+					expect(counts.tileunload - unloaded).to.be.lessThan(16);
+					done();
+				});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it('unloads all tiles at once when zooming to another place', (done) => {
+			grid.once('load', () => {
+				map.setView([60, 60], 11, {animate: false});
+				expect(counts.tileunload).to.equal(16);
+				done();
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
 			clock.tick(250);
 		});
 	});
@@ -567,20 +614,18 @@ describe('GridLayer', () => {
 		}
 		*/
 
-		// animationFrame helper, just runs requestAnimationFrame() a given number of times
-		function runFrames(n) {
-			return _runFrames(n)();
-		}
-
-		function _runFrames(n) {
-			if (n) {
-				return function () {
-					clock.tick(40); // 40msec/frame ~= 25fps
-					map.fire('_frame');
-					requestAnimationFrame(_runFrames(n - 1));
-				};
+		// calls `start`, then synchronously runs up to n frames of 40ms (~25fps) while any animation frame
+		// callbacks are queued, instead of waiting for real frames
+		function runFrames(n, start) {
+			const callbacks = [];
+			const raf = sinon.stub(window, 'requestAnimationFrame').callsFake(cb => callbacks.push(cb));
+			start();
+			for (let i = 0; i < n && callbacks.length; i++) {
+				clock.tick(40);
+				map.fire('_frame');
+				for (const cb of callbacks.splice(0)) { cb(); }
 			}
-			return Util.falseFn;
+			raf.restore();
 		}
 
 		it('Loads 32, unloads 16 tiles zooming in 10-11', (done) => {
@@ -791,7 +836,7 @@ describe('GridLayer', () => {
 			clock.tick(250);
 		});
 
-		it('Loads 224, unloads 209 tiles on MAD-TRD flyTo()', (done) => {
+		it('Loads 290, unloads 275 tiles on MAD-TRD flyTo()', (done) => {
 			const mad = [40.40, -3.7], trd = [63.41, 10.41];
 
 			grid.once('load', () => {
@@ -804,22 +849,16 @@ describe('GridLayer', () => {
 
 				map.on('zoomend', () => {
 					expect(counts).to.deep.equal({
-						tileloadstart: 224,
-						tileload: 224,
-						tileunload: 209,
+						tileloadstart: 290,
+						tileload: 290,
+						tileunload: 275,
 						tileerror: 0,
 					});
 					expect(grid._container.querySelectorAll('div').length).to.equal(16);	// 15 + container
 					done();
 				});
 
-				map.flyTo(trd, 12, {animate: true});
-
-				// map.on('_frame', function () {
-				// 	console.log('frame', counts);
-				// });
-
-				runFrames(500);
+				runFrames(500, () => map.flyTo(trd, 12, {animate: true}));
 			});
 
 			grid.options.keepBuffer = 0;
@@ -1064,6 +1103,31 @@ describe('GridLayer', () => {
 
 			grid.on('load', () => {
 				expect(loadedTileKeys).to.eql(['0:0:0']);
+				done();
+			});
+		});
+
+		it('When false, wraps the columns of non-square tiles by the tile width', (done) => {
+			container.style.width = '512px';
+			container.style.height = '512px';
+
+			const grid = new GridLayer({
+				attribution: 'Grid Layer',
+				tileSize: new Point(256, 512),
+				noWrap: false
+			});
+			const loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(`${coords.x}:${coords.y}:${coords.z}`);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 1);
+
+			grid.on('load', () => {
+				// At zoom 1 the world is 512px wide, i.e. two columns of 256px tiles
+				expect(loadedTileKeys).to.eql(['0:0:1', '1:0:1']);
 				done();
 			});
 		});

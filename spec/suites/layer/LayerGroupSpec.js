@@ -1,4 +1,3 @@
-﻿import {expect} from 'chai';
 import {GeoJSON, Layer, Marker, LayerGroup} from 'leaflet';
 
 describe('LayerGroup', () => {

@@ -1,8 +1,6 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
-import Browser from '../../core/Browser.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
@@ -11,20 +9,6 @@ import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
  */
 
 const tapHoldDelay = 600;
-
-// @namespace LeafletMap
-// @section Interaction Options
-LeafletMap.mergeOptions({
-	// @section Touch interaction options
-	// @option tapHold: Boolean
-	// Enables simulation of `contextmenu` event, default is `true` for mobile Safari.
-	tapHold: Browser.safari && Browser.mobile,
-
-	// @option tapTolerance: Number = 15
-	// The max number of pixels a user can shift his finger during touch
-	// for it to be considered a valid tap.
-	tapTolerance: 15
-});
 
 export class TapHoldHandler extends Handler {
 	addHooks() {
@@ -35,6 +19,7 @@ export class TapHoldHandler extends Handler {
 		DomEvent.off(this._map._container, 'pointerdown', this._onDown, this);
 		this._cancel();
 		this._cancelClickPrevent();
+		this._stopPreventingNative();
 	}
 
 	_onDown(e) {
@@ -51,6 +36,11 @@ export class TapHoldHandler extends Handler {
 			DomEvent.on(el, 'pointerup', DomEvent.preventDefault);
 			DomEvent.on(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
 			this._simulateEvent('contextmenu', e);
+
+			// browsers that fire a native contextmenu on touch may do it later than us (e.g. Android with a longer
+			// touch & hold delay, or Windows on release), so swallow it until the next press
+			el.addEventListener('contextmenu', DomEvent.stop, true);
+			el.addEventListener('pointerdown', this._stopPreventingNative, true);
 		}), tapHoldDelay);
 
 		DomEvent.on(el, 'pointerup pointercancel contextmenu', this._cancel, this);
@@ -61,6 +51,12 @@ export class TapHoldHandler extends Handler {
 		const el = this._map._container;
 		DomEvent.off(el, 'pointerup', DomEvent.preventDefault);
 		DomEvent.off(el, 'pointerup pointercancel', this._cancelClickPrevent, this);
+	};
+
+	_stopPreventingNative = () => {
+		const el = this._map._container;
+		el.removeEventListener('contextmenu', DomEvent.stop, true);
+		el.removeEventListener('pointerdown', this._stopPreventingNative, true);
 	};
 
 	_cancel() {
@@ -97,8 +93,3 @@ export class TapHoldHandler extends Handler {
 		e.target.dispatchEvent(simulatedEvent);
 	}
 }
-
-// @section Handlers
-// @property tapHold: Handler
-// Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
-LeafletMap.addInitHook('addHandler', 'tapHold', TapHoldHandler);

@@ -1,4 +1,3 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
@@ -10,22 +9,17 @@ import {Bounds} from '../../geometry/Bounds.js';
  * (zoom to a selected bounding box), enabled by default.
  */
 
-// @namespace LeafletMap
-// @section Interaction Options
-LeafletMap.mergeOptions({
-	// @option boxZoom: Boolean = true
-	// Whether the map can be zoomed to a rectangular area specified by
-	// dragging the pointer while pressing the shift key.
-	boxZoom: true
-});
-
 export class BoxZoomHandler extends Handler {
-	initialize(map) {
-		super.initialize(map);
+	static initHooks = true;
+
+	constructor(map) {
+		super(map);
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 		this._resetStateTimeout = 0;
 		map.on('unload', this._destroy, this);
+
+		this.callInitHooks();
 	}
 
 	addHooks() {
@@ -65,8 +59,9 @@ export class BoxZoomHandler extends Handler {
 		this._clearDeferredResetState();
 		this._resetState();
 
-		DomUtil.disableTextSelection();
-		DomUtil.disableImageDrag();
+		// stops both text selection and native image drag in every engine without restyling the page; it also
+		// suppresses compatibility mouse events, which is fine for a press that is already a box zoom gesture
+		DomEvent.preventDefault(e);
 
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
@@ -106,9 +101,6 @@ export class BoxZoomHandler extends Handler {
 			this._container.classList.remove('leaflet-crosshair');
 		}
 
-		DomUtil.enableTextSelection();
-		DomUtil.enableImageDrag();
-
 		DomEvent.off(this._container, {
 			contextmenu: DomEvent.stop,
 			pointermove: this._onPointerMove,
@@ -132,9 +124,12 @@ export class BoxZoomHandler extends Handler {
 			this._map.containerPointToLatLng(this._startPoint),
 			this._map.containerPointToLatLng(this._point));
 
-		this._map
-			.fitBounds(bounds)
-			.fire('boxzoomend', {boxZoomBounds: bounds});
+		// a tiny box can collapse to a single LatLng at very high zoom, which fits at an Infinity zoom when no layer
+		// limits it; unlike fitBounds before a tile layer is added, no layer will come along to clamp it (#6709)
+		if (this._map.getBoundsZoom(bounds) !== Infinity) {
+			this._map.fitBounds(bounds);
+		}
+		this._map.fire('boxzoomend', {boxZoomBounds: bounds});
 	}
 
 	_onKeyDown(e) {
@@ -145,8 +140,3 @@ export class BoxZoomHandler extends Handler {
 		}
 	}
 }
-
-// @section Handlers
-// @property boxZoom: Handler
-// Box (shift-drag with pointer) zoom handler.
-LeafletMap.addInitHook('addHandler', 'boxZoom', BoxZoomHandler);

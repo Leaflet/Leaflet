@@ -1,9 +1,7 @@
-import {expect} from 'chai';
 import {DivIcon, DomUtil, FeatureGroup, DefaultIcon, LeafletMap, Marker, Point, Polygon, Popup} from 'leaflet';
-import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer, pointerEventType} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('Popup', () => {
 	let container, map;
@@ -247,10 +245,10 @@ describe('Popup', () => {
 		const latlng = center;
 		const offset = new Point(20, 30);
 
-		const autoPanBefore = Popup.prototype.options.autoPan;
-		Popup.prototype.options.autoPan = false;
-		const popupAnchorBefore = DefaultIcon.prototype.options.popupAnchor;
-		DefaultIcon.prototype.options.popupAnchor = [0, 0];
+		const autoPanBefore = Popup.defaultOptions.autoPan;
+		Popup.defaultOptions.autoPan = false;
+		const popupAnchorBefore = DefaultIcon.defaultOptions.popupAnchor;
+		DefaultIcon.defaultOptions.popupAnchor = [0, 0];
 
 		const icon = new DivIcon({popupAnchor: offset});
 		const marker1 = new Marker(latlng);
@@ -275,8 +273,8 @@ describe('Popup', () => {
 		expect(offsetLeft - offset.x).to.eql(defaultLeft);
 		expect(offsetTop - offset.y).to.eql(defaultTop);
 
-		Popup.prototype.options.autoPan = autoPanBefore;
-		DefaultIcon.prototype.options.popupAnchor = popupAnchorBefore;
+		Popup.defaultOptions.autoPan = autoPanBefore;
+		DefaultIcon.defaultOptions.popupAnchor = popupAnchorBefore;
 	});
 
 	it('prevents an underlying map click for Layer', () => {
@@ -299,13 +297,26 @@ describe('Popup', () => {
 	});
 
 
-	it('can open a popup with enter keypress when marker has focus', () => {
+	it('toggles a popup with Enter when marker has focus', () => {
 		const layer = new Marker(center).addTo(map);
 		layer.bindPopup('layer popup');
 
-		UIEventSimulator.fire('keypress', layer._icon, {
-			code: 'Enter'
-		});
+		UIEventSimulator.fire('keydown', layer._icon, {key: 'Enter'});
+		expect(map.hasLayer(layer._popup)).to.be.true;
+
+		UIEventSimulator.fire('keydown', layer._icon, {key: 'Enter'});
+		expect(map.hasLayer(layer._popup)).to.be.false;
+	});
+
+	it('opens a popup once with Enter on a button inside a DivIcon', () => {
+		const layer = new Marker(center, {icon: new DivIcon({html: '<button>open</button>'})}).addTo(map);
+		layer.bindPopup('layer popup');
+
+		const button = layer._icon.querySelector('button');
+		// browsers click a focused button natively after keydown
+		UIEventSimulator.fire('keydown', button, {key: 'Enter'});
+		UIEventSimulator.fire('keypress', button, {key: 'Enter', code: 'Enter'});
+		UIEventSimulator.fire('click', button);
 
 		expect(map.hasLayer(layer._popup)).to.be.true;
 	});
@@ -373,6 +384,19 @@ describe('Popup', () => {
 				autoPanPadding: new Point(10, 10)
 			});
 		});
+
+		it('does not throw if stopping the current pan removes the popup', () => {
+			const marker = new Marker(center).addTo(map);
+			marker.bindPopup('Popup').openPopup();
+			const popup = marker.getPopup();
+
+			map.panBy([100, 0], {animate: true, duration: 1});
+			// e.g. a clustering plugin removing markers that left the view
+			map.once('moveend', () => marker.remove());
+
+			expect(() => popup.update()).to.not.throw();
+			expect(map.hasLayer(popup)).to.be.false;
+		});
 	});
 
 	it('opens popup with passed latlng position while initializing', () => {
@@ -432,7 +456,7 @@ describe('Popup', () => {
 			expect(map.hasLayer(p2)).to.be.true;
 		});
 
-		it('should not be closen when dragging map', (done) => {
+		it('should not be closen when dragging map', async () => {
 			container.style.position = 'absolute';
 			container.style.left = 0;
 			container.style.top = 0;
@@ -444,17 +468,10 @@ describe('Popup', () => {
 			map.openPopup(p);
 			expect(map.hasLayer(p)).to.be.true;
 			map.on('drag', spy);
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(spy.called).to.be.true;
-					expect(map.hasLayer(p)).to.be.true;
-					done();
-				}
-			});
-			const mouse = hand.growFinger(...pointerEventType);
-			mouse.moveTo(coords.left + 100, coords.left + 100, 0)
-				.down().moveBy(10, 10, 20).up();
+			await new Finger().moveTo(coords.left + 100, coords.top + 100).down().moveBy(10, 10).up();
+
+			expect(spy.called).to.be.true;
+			expect(map.hasLayer(p)).to.be.true;
 		});
 
 		it('moves the map over a short distance to the popup if it is not in the view (keepInView)', (done) => {

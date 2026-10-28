@@ -25,12 +25,9 @@ function disablePointerDetection(el) {
 	el.removeEventListener('pointercancel', _onDelete, {capture: true});
 }
 
-// NOTE: pointers are captured unconditionally, which can become a problem for
-// synthetic events. The prosthetic-hand library does handle pointer capture,
-// but others don't.
-// If this becomers an issue, replace with `e.isTrusted && e.target.setPointerCapture()`
+// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
 function _onSet(e) {
-	e.target.setPointerCapture(e.pointerId);
+	if (e.isTrusted) { e.target.setPointerCapture(e.pointerId); }
 	activePointers.set(e.pointerId, e);
 }
 
@@ -40,9 +37,8 @@ function _onUpdate(e) {
 	}
 }
 
-// NOTE: idem as _onSet.
 function _onDelete(e) {
-	e.target.releasePointerCapture(e.pointerId);
+	if (e.isTrusted) { e.target.releasePointerCapture(e.pointerId); }
 	activePointers.delete(e.pointerId);
 }
 
@@ -52,24 +48,9 @@ function getPointers() {
 	return [...activePointers.values()];
 }
 
-// @function cleanupPointers()
-// Clears the detected pointers on the document.
-// Note: This function should be not necessary to call, as the pointers are automatically cleared with `pointerup`, `pointercancel` and `pointerout` events.
-function cleanupPointers() {
-	for (const e of activePointers.values()) {
-		try {
-			e.target.releasePointerCapture(e.pointerId);
-		} catch {
-			// target may already be detached; capture was on a dead node
-		}
-	}
-	activePointers.clear();
-}
-
 export {
 	enablePointerDetection,
 	disablePointerDetection,
-	getPointers,
-	cleanupPointers
+	getPointers
 };
 

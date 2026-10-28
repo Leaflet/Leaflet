@@ -1,6 +1,5 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
-import Browser from '../core/Browser.js';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap.js';
 import {getScale} from './DomUtil.js';
 
@@ -93,12 +92,6 @@ function batchRemove(obj, filterFn) {
 	}
 }
 
-const pointerSubst = {
-	pointerenter: 'pointerover',
-	pointerleave: 'pointerout',
-	wheel: typeof window === 'undefined' ? false : !('onwheel' in window) && 'mousewheel'
-};
-
 function addOne(obj, type, fn, context) {
 	const id = type + Util.stamp(fn) + (context ? `_${Util.stamp(context)}` : '');
 
@@ -108,29 +101,10 @@ function addOne(obj, type, fn, context) {
 		return fn.call(context || obj, e);
 	};
 
-	const originalHandler = handler;
-
-	if (Browser.touch && (type === 'dblclick')) {
+	if (type === 'dblclick') {
 		handler = addDoubleTapListener(obj, handler);
-
-	} else if ('addEventListener' in obj) {
-
-		if (type === 'wheel' ||  type === 'mousewheel') {
-			obj.addEventListener(pointerSubst[type] || type, handler, {passive: false});
-		} else if (type === 'pointerenter' || type === 'pointerleave') {
-			handler = function (e) {
-				if (isExternalTarget(obj, e)) {
-					originalHandler(e);
-				}
-			};
-			obj.addEventListener(pointerSubst[type], handler, false);
-
-		} else {
-			obj.addEventListener(type, originalHandler, false);
-		}
-
 	} else {
-		obj.attachEvent(`on${type}`, handler);
+		obj.addEventListener(type, handler, type === 'wheel' ? {passive: false} : false);
 	}
 
 	obj[eventsKey] ??= {};
@@ -143,15 +117,10 @@ function removeOne(obj, type, fn, context, id) {
 
 	if (!handler) { return this; }
 
-	if (Browser.touch && (type === 'dblclick')) {
+	if (type === 'dblclick') {
 		removeDoubleTapListener(obj, handler);
-
-	} else if ('removeEventListener' in obj) {
-
-		obj.removeEventListener(pointerSubst[type] || type, handler, false);
-
 	} else {
-		obj.detachEvent(`on${type}`, handler);
+		obj.removeEventListener(type, handler, false);
 	}
 
 	obj[eventsKey][id] = null;
@@ -168,8 +137,6 @@ export function stopPropagation(e) {
 		e.stopPropagation();
 	} else if (e.originalEvent) {  // In case of Leaflet event.
 		e.originalEvent._stopped = true;
-	} else {
-		e.cancelBubble = true;
 	}
 
 	return this;
@@ -211,14 +178,6 @@ export function stop(e) {
 	return this;
 }
 
-// @function getPropagationPath(ev: DOMEvent): Array
-// Returns an array containing the `HTMLElement`s that the given DOM event
-// should propagate to (if not stopped).
-export function getPropagationPath(ev) {
-	return ev.composedPath();
-}
-
-
 // @function getPointerPosition(ev: DOMEvent, container?: HTMLElement): Point
 // Gets normalized pointer position from a DOM event relative to the
 // `container` (border excluded) or to the whole page if not specified.
@@ -241,12 +200,8 @@ export function getPointerPosition(e, container) {
 // @function getWheelPxFactor(): Number
 // Gets the wheel pixel factor based on the devicePixelRatio
 export function getWheelPxFactor() {
-	// We need double the scroll pixels (see #7403 and #4538) for all Browsers
-	// except OSX (Mac) -> 3x, Chrome running on Linux 1x
-	const ratio = window.devicePixelRatio;
-	return Browser.linux && Browser.chrome ? ratio :
-		Browser.mac ? ratio * 3 :
-		ratio > 0 ? 2 * ratio : 1;
+	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
+	return window.devicePixelRatio * 2;
 }
 
 // @function getWheelDelta(ev: DOMEvent): Number
@@ -262,19 +217,7 @@ export function getWheelDelta(e) {
 		0;
 }
 
-// check if element really left/entered the event target (for pointerenter/pointerleave)
+// check if element really left/entered the event target (for pointerover/pointerout)
 export function isExternalTarget(el, e) {
-
-	let related = e.relatedTarget;
-
-	if (!related) { return true; }
-
-	try {
-		while (related && (related !== el)) {
-			related = related.parentNode;
-		}
-	} catch (err) {
-		return false;
-	}
-	return (related !== el);
+	return !el.contains(e.relatedTarget);
 }

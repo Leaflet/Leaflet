@@ -1,11 +1,24 @@
 
 import {Control} from './Control.js';
-import {LeafletMap} from '../map/Map.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
 const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"/><path fill="#FFD500" d="M0 4h12v3H0z"/><path fill="#E0BC00" d="M0 7h12v1H0z"/></svg>';
 
+// @namespace AttributionControl
+
+// @section
+// @aka AttributionControl options
+const defaultOptions = {
+	// @option position: String = 'bottomright'
+	// The position of the control (one of the map corners). Possible values are `'topleft'`,
+	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	position: 'bottomright',
+
+	// @option prefix: String|false = 'Leaflet'
+	// The HTML text shown before the attributions. Pass `false` to disable.
+	prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
+};
 
 /*
  * @class AttributionControl
@@ -17,27 +30,19 @@ const ukrainianFlag = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg
 // @namespace AttributionControl
 // @constructor AttributionControl(options: AttributionControl options)
 // Creates an attribution control.
+
 export class AttributionControl extends Control {
 
-	static {
-		// @section
-		// @aka AttributionControl options
-		this.setDefaultOptions({
-			// @option position: String = 'bottomright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'bottomright',
+	static initHooks = true;
 
-			// @option prefix: String|false = 'Leaflet'
-			// The HTML text shown before the attributions. Pass `false` to disable.
-			prefix: `<a target="_blank" href="https://leafletjs.com" title="A JavaScript library for interactive maps">${ukrainianFlag}Leaflet</a>`
-		});
-	}
+	static defaultOptions = defaultOptions;
 
-	initialize(options) {
-		super.initialize(options);
+	constructor(options) {
+		super(options);
 
 		this._attributions = {};
+		this._layerAttributions = new Map();
+		this.callInitHooks();
 	}
 
 	onAdd(map) {
@@ -45,29 +50,37 @@ export class AttributionControl extends Control {
 		this._container = DomUtil.create('div', 'leaflet-control-attribution');
 		DomEvent.disableClickPropagation(this._container);
 
-		// TODO ugly, refactor
-		for (const layer of Object.values(map._layers)) {
-			if (layer.getAttribution) {
-				this.addAttribution(layer.getAttribution());
-			}
+		// before the map is loaded, layers already added to it will still fire layeradd once it loads
+		if (map._loaded) {
+			map.eachLayer(layer => this._addLayer({layer}));
 		}
 
 		this._update();
 
-		map.on('layeradd', this._addAttribution, this);
+		map.on({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
 
 		return this._container;
 	}
 
 	onRemove(map) {
-		map.off('layeradd', this._addAttribution, this);
+		map.off({layeradd: this._addLayer, layerremove: this._removeLayer}, this);
+
+		for (const layer of this._layerAttributions.keys()) {
+			this._removeLayer({layer});
+		}
 	}
 
-	_addAttribution(ev) {
-		if (ev.layer.getAttribution) {
-			this.addAttribution(ev.layer.getAttribution());
-			ev.layer.once('remove', () => this.removeAttribution(ev.layer.getAttribution()));
-		}
+	_addLayer({layer}) {
+		const text = layer.getAttribution?.();
+		if (!text || this._layerAttributions.has(layer)) { return; }
+
+		this._layerAttributions.set(layer, text);
+		this.addAttribution(text);
+	}
+
+	_removeLayer({layer}) {
+		this.removeAttribution(this._layerAttributions.get(layer));
+		this._layerAttributions.delete(layer);
 	}
 
 	// @method setPrefix(prefix: String|false): this
@@ -123,17 +136,3 @@ export class AttributionControl extends Control {
 		this._container.innerHTML = prefixAndAttribs.join(' <span aria-hidden="true">|</span> ');
 	}
 }
-
-// @namespace LeafletMap
-// @section Control options
-// @option attributionControl: Boolean = true
-// Whether a [attribution control](#control-attribution) is added to the map by default.
-LeafletMap.mergeOptions({
-	attributionControl: true
-});
-
-LeafletMap.addInitHook(function () {
-	if (this.options.attributionControl) {
-		new AttributionControl().addTo(this);
-	}
-});

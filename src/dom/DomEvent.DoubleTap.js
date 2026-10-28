@@ -1,5 +1,3 @@
-import * as DomEvent from './DomEvent.js';
-
 /*
  * Extends the event handling code with double tap support for mobile browsers.
  *
@@ -8,7 +6,7 @@ import * as DomEvent from './DomEvent.js';
  */
 
 function makeDblclick(ev) {
-	let init = {
+	const init = {
 		// EventInit
 		bubbles: ev.bubbles,
 		cancelable: ev.cancelable,
@@ -37,7 +35,7 @@ function makeDblclick(ev) {
 	// The `click` event received should be a PointerEvent - but some
 	// Firefox versions still use MouseEvent.
 	if (ev instanceof PointerEvent) {
-		init = {
+		newEvent = new PointerEvent('dblclick', {
 			...init,
 			pointerId: ev.pointerId,
 			width: ev.width,
@@ -49,8 +47,7 @@ function makeDblclick(ev) {
 			twist: ev.twist,
 			pointerType: ev.pointerType,
 			isPrimary: ev.isPrimary,
-		};
-		newEvent = new PointerEvent('dblclick', init);
+		});
 	} else {
 		newEvent = new MouseEvent('dblclick', init);
 	}
@@ -66,14 +63,22 @@ export function addDoubleTapListener(obj, handler) {
 	// It seems that in all such cases `detail` property of `click` event is always `1`.
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
-	detail;
+	detail,
+	pointerType;
+
+	// iOS Safari reports `pointerType: 'mouse'` on clicks from touch (WebKit bug 282988), so we take it from the
+	// pointerdown instead; capturing so that it's seen even if a child (e.g. a control) stops its propagation.
+	function onPointerDown(ev) {
+		pointerType = ev.pointerType;
+	}
+
 	function simDblclick(ev) {
 		if (ev.detail !== 1) {
 			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
 			return;
 		}
 
-		if (ev.pointerType === 'mouse' ||
+		if (pointerType === 'mouse' ||
 			(ev.sourceCapabilities && !ev.sourceCapabilities.firesTouchEvents)) {
 
 			return;
@@ -84,8 +89,8 @@ export function addDoubleTapListener(obj, handler) {
 		// This ignores clicks on elements which are a label with a 'for'
 		// attribute (or children of such a label), but not children of
 		// a <input>.
-		const path = DomEvent.getPropagationPath(ev);
-		if (path.some(el => el instanceof HTMLLabelElement && el.attributes.for) &&
+		const path = ev.composedPath();
+		if (path.some(el => el instanceof HTMLLabelElement && el.htmlFor) &&
 			!path.some(el => (
 				el instanceof HTMLInputElement ||
 					el instanceof HTMLSelectElement
@@ -106,15 +111,18 @@ export function addDoubleTapListener(obj, handler) {
 		last = now;
 	}
 
+	obj.addEventListener('pointerdown', onPointerDown, true);
 	obj.addEventListener('click', simDblclick);
 
 	return {
 		dblclick: handler,
+		onPointerDown,
 		simDblclick
 	};
 }
 
 export function removeDoubleTapListener(obj, handlers) {
 	obj.removeEventListener('dblclick', handlers.dblclick);
+	obj.removeEventListener('pointerdown', handlers.onPointerDown, true);
 	obj.removeEventListener('click', handlers.simDblclick);
 }

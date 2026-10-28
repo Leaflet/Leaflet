@@ -5,6 +5,30 @@ import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 import * as PointerEvents from './DomEvent.PointerEvents.js';
 
+// @namespace Draggable
+
+const defaultOptions = {
+	// @section
+	// @aka Draggable options
+	// @option clickTolerance: Number = 3
+	// The max number of pixels a user can shift the pointer during a click
+	// for it to be considered a valid click (as opposed to a pointer drag).
+	clickTolerance: 3
+};
+
+// @section
+// @event down: Event
+// Fired when a drag is about to start.
+// @event dragstart: Event
+// Fired when a drag starts
+// @event predrag: Event
+// Fired continuously during dragging *before* each corresponding
+// update of the element's position.
+// @event drag: Event
+// Fired continuously during dragging.
+// @event dragend: DragEndEvent
+// Fired when the drag ends.
+
 /*
  * @class Draggable
  * @inherits Evented
@@ -21,25 +45,24 @@ import * as PointerEvents from './DomEvent.PointerEvents.js';
 
 export class Draggable extends Evented {
 
-	static {
-		this.setDefaultOptions({
-			// @section
-			// @aka Draggable options
-			// @option clickTolerance: Number = 3
-			// The max number of pixels a user can shift the pointer during a click
-			// for it to be considered a valid click (as opposed to a pointer drag).
-			clickTolerance: 3
-		});
-	}
+	static initHooks = true;
 
-	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
+	static defaultOptions = defaultOptions;
+
+	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize(element, dragStartTarget, preventOutline, options) {
+	constructor(element, dragStartTarget, options) {
+		if (typeof options === 'boolean') {
+			throw new Error('Draggable: the preventOutline argument is removed in Leaflet 2. Pass options as the third argument.');
+		}
+		super();
+
 		Util.setOptions(this, options);
 
 		this._element = element;
 		this._dragStartTarget = dragStartTarget ?? element;
-		this._preventOutline = preventOutline;
+
+		this.callInitHooks();
 	}
 
 	// @method enable()
@@ -85,17 +108,10 @@ export class Draggable extends Evented {
 		if (Draggable._dragging || e.shiftKey || (e.button !== 0 && e.pointerType !== 'touch')) { return; }
 		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
-		if (this._preventOutline) {
-			DomUtil.preventOutline(this._element);
-		}
-
 		DomUtil.disableImageDrag();
-		DomUtil.disableTextSelection();
 
 		if (this._moving) { return; }
 
-		// @event down: Event
-		// Fired when a drag is about to start.
 		this.fire('down');
 
 		const sizedParent = DomUtil.getSizedParentNode(this._element);
@@ -107,7 +123,7 @@ export class Draggable extends Evented {
 		this._parentScale = DomUtil.getScale(sizedParent);
 
 		DomEvent.on(this._dragStartTarget, 'pointermove', this._onMove, this);
-		DomEvent.on(this._dragStartTarget, 'pointerup pointercancel', this._onUp, this);
+		DomEvent.on(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);
 	}
 
 	_onMove(e) {
@@ -118,8 +134,9 @@ export class Draggable extends Evented {
 
 		const offset = new Point(e.clientX, e.clientY)._subtract(this._startPoint);
 
-		if (!offset.x && !offset.y) { return; }
-		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
+		// once the drag has started, the pointer must be followed even when it comes back near the start point
+		const dist = Math.abs(offset.x) + Math.abs(offset.y);
+		if (!this._moved && (!dist || dist < this.options.clickTolerance)) { return; }
 
 		// We assume that the parent container's position, border and scale do not change for the duration of the drag.
 		// Therefore there is no need to account for the position and border (they are eliminated by the subtraction)
@@ -132,15 +149,15 @@ export class Draggable extends Evented {
 		}
 
 		if (!this._moved) {
-			// @event dragstart: Event
-			// Fired when a drag starts
 			this.fire('dragstart');
 
 			this._moved = true;
 
-			this._element.ownerDocument.body.classList.add('leaflet-dragging');
+			// on the map container rather than the body, so that toggling it doesn't restyle the whole page
+			this._draggingContainer = this._element.closest('.leaflet-container') ?? this._element;
+			this._draggingContainer.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target ?? e.srcElement;
+			this._lastTarget = e.target;
 			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
@@ -154,23 +171,27 @@ export class Draggable extends Evented {
 	_updatePosition() {
 		const e = {originalEvent: this._lastEvent};
 
-		// @event predrag: Event
-		// Fired continuously during dragging *before* each corresponding
-		// update of the element's position.
 		this.fire('predrag', e);
+
+		// pointer events can have fractional coordinates; snap them to device pixels, since an edge in the middle of
+		// one is drawn partly transparent on both sides and shows a seam between tiles
+		const dpr = window.devicePixelRatio;
+		this._newPos = this._newPos.multiplyBy(dpr)._round()._divideBy(dpr);
 		DomUtil.setPosition(this._element, this._newPos);
 
-		// @event drag: Event
-		// Fired continuously during dragging.
 		this.fire('drag', e);
 	}
 
-	_onUp() {
+	_onUp(e) {
+		// releasing the button outside the window may fire no pointerup, only a lostpointercapture with no buttons;
+		// capture lost while the button is still held (e.g. the pressed element was removed) shouldn't end the drag
+		if (e.type === 'lostpointercapture' && e.buttons) { return; }
 		this.finishDrag();
 	}
 
 	finishDrag(noInertia) {
-		this._element.ownerDocument.body.classList.remove('leaflet-dragging');
+		this._draggingContainer?.classList.remove('leaflet-dragging');
+		this._draggingContainer = null;
 
 		if (this._lastTarget) {
 			this._lastTarget.classList.remove('leaflet-drag-target');
@@ -178,10 +199,9 @@ export class Draggable extends Evented {
 		}
 
 		DomEvent.off(this._dragStartTarget, 'pointermove', this._onMove, this);
-		DomEvent.off(this._dragStartTarget, 'pointerup pointercancel', this._onUp, this);
+		DomEvent.off(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);
 
 		DomUtil.enableImageDrag();
-		DomUtil.enableTextSelection();
 
 		const fireDragend = this._moved && this._moving;
 
@@ -189,8 +209,6 @@ export class Draggable extends Evented {
 		Draggable._dragging = false;
 
 		if (fireDragend) {
-			// @event dragend: DragEndEvent
-			// Fired when the drag ends.
 			this.fire('dragend', {
 				noInertia,
 				distance: this._newPos.distanceTo(this._startPos)

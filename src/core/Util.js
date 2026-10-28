@@ -88,7 +88,8 @@ export function splitWords(str) {
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`.
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
-		obj.options = obj.options ? Object.create(obj.options) : {};
+		const defaults = getDefaultOptions(obj.constructor) ?? obj.options;
+		obj.options = defaults ? Object.create(defaults) : {};
 	}
 	for (const i in options) {
 		if (Object.hasOwn(options, i)) {
@@ -96,6 +97,23 @@ export function setOptions(obj, options) {
 		}
 	}
 	return obj.options;
+}
+
+const chainedDefaults = new WeakMap(); // class -> the defaultOptions object it was chained with
+
+// Links the `defaultOptions` of each class in the chain to its parent's, so defaults are inherited and stay live.
+// Done on first use because a static field can't do it in its initializer and stay tree-shakeable.
+function getDefaultOptions(cls) {
+	const defaults = cls?.defaultOptions;
+	if (defaults && chainedDefaults.get(cls) !== defaults) {
+		for (let c = cls; c.defaultOptions; c = Object.getPrototypeOf(c)) {
+			if (Object.hasOwn(c, 'defaultOptions')) {
+				Object.setPrototypeOf(c.defaultOptions, Object.getPrototypeOf(c).defaultOptions ?? Object.prototype);
+			}
+		}
+		chainedDefaults.set(cls, defaults);
+	}
+	return defaults;
 }
 
 const templateRe = /\{ *([\w_ -]+) *\}/g;

@@ -1,9 +1,7 @@
-import {expect} from 'chai';
 import {CircleMarker, FeatureGroup, LayerGroup, LeafletMap, Marker, Polygon, Polyline, Rectangle, Tooltip} from 'leaflet';
-import Hand from 'prosthetic-hand';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../SpecHelper.js';
 
 describe('Tooltip', () => {
 	let container, map;
@@ -373,7 +371,7 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 	});
 
-	it.skipIfNotTouch('is opened when tapping on touch', () => {
+	it('is opened when tapping on touch', () => {
 		const layer = new Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
@@ -382,7 +380,7 @@ describe('Tooltip', () => {
 		expect(map.hasLayer(layer._tooltip)).to.be.true;
 	});
 
-	it.skipIfNotTouch('is closed if not permanent when clicking on the map elsewhere on touch', () => {
+	it('is closed if not permanent when clicking on the map elsewhere on touch', () => {
 		const layer = new Marker(center).addTo(map);
 
 		layer.bindTooltip('Tooltip');
@@ -429,22 +427,16 @@ describe('Tooltip', () => {
 		expect(tooltip.getLatLng().equals(latlng)).to.be.true;
 	});
 
-	it('opens a permanent tooltip and follow the pointer (sticky)', (done) => {
+	it('opens a permanent tooltip and follow the pointer (sticky)', async () => {
 		const layer = new Rectangle([[58, 39.7], [54, 35.3]]).addTo(map);
 		layer.bindTooltip('Sticky', {sticky: true, permanent: true}).openTooltip();
 		const tooltip = layer.getTooltip();
 		expect(tooltip.getLatLng().equals(layer.getCenter())).to.be.true;
 
-		const hand = new Hand({
-			timing: 'fastframe',
-			onStop() {
-				const latlng = map.containerPointToLatLng([120, 120]);
-				expect(tooltip.getLatLng().equals(latlng)).to.be.true;
-				done();
-			}
-		});
-		const toucher = hand.growFinger('pointer');
-		toucher.wait(100).moveTo(120, 120, 1000).wait(100);
+		await new Finger().moveTo(120, 120);
+
+		const latlng = map.containerPointToLatLng([120, 120]);
+		expect(tooltip.getLatLng().equals(latlng)).to.be.true;
 	});
 
 	it('closes existent tooltip on new bindTooltip call', () => {

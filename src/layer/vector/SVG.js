@@ -56,8 +56,8 @@ export class SVG extends Renderer {
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
 			this._svgSize = size;
-			this._container.setAttribute('width', size.x);
-			this._container.setAttribute('height', size.y);
+			this._container.setAttribute('width', `${size.x}`);
+			this._container.setAttribute('height', `${size.y}`);
 		}
 
 		// Reset the <SVG>'s viewBox as per _update, but skip redrawing paths.
@@ -87,7 +87,8 @@ export class SVG extends Renderer {
 
 		// @namespace Path
 		// @option className: String = null
-		// Custom class name set on an element. Only for SVG renderer.
+		// Custom class name set on an element. Only for SVG renderer. Applied when the
+		// element is created; [`setStyle`](#path-setstyle) does not update it afterwards.
 		if (layer.options.className) {
 			path.classList.add(...splitWords(layer.options.className));
 		}
@@ -125,8 +126,8 @@ export class SVG extends Renderer {
 
 		if (options.stroke) {
 			path.setAttribute('stroke', options.color);
-			path.setAttribute('stroke-opacity', options.opacity);
-			path.setAttribute('stroke-width', options.weight);
+			path.setAttribute('stroke-opacity', `${options.opacity}`);
+			path.setAttribute('stroke-width', `${options.weight}`);
 			path.setAttribute('stroke-linecap', options.lineCap);
 			path.setAttribute('stroke-linejoin', options.lineJoin);
 
@@ -147,7 +148,7 @@ export class SVG extends Renderer {
 
 		if (options.fill) {
 			path.setAttribute('fill', options.fillColor || options.color);
-			path.setAttribute('fill-opacity', options.fillOpacity);
+			path.setAttribute('fill-opacity', `${options.fillOpacity}`);
 			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
 			path.setAttribute('fill', 'none');

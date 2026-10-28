@@ -33,7 +33,13 @@ export function create(tagName, className, container) {
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
 	const parent = el.parentNode;
-	if (parent && parent.lastChild !== el) {
+	if (!parent || parent.lastChild === el) { return; }
+
+	// re-inserting a hovered node (e.g. bringToFront in a pointerover handler) makes Chromium 144+ fire a repeated
+	// pointerover and lose the next pointerout (#10129), so move the nodes after it instead
+	if (el.matches(':hover')) {
+		while (el.nextSibling) { parent.insertBefore(el.nextSibling, el); }
+	} else {
 		parent.appendChild(el);
 	}
 }
@@ -42,7 +48,11 @@ export function toFront(el) {
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
 	const parent = el.parentNode;
-	if (parent && parent.firstChild !== el) {
+	if (!parent || parent.firstChild === el) { return; }
+
+	if (el.matches(':hover')) { // see toFront
+		while (el.previousSibling) { parent.insertBefore(el.previousSibling, el.nextSibling); }
+	} else {
 		parent.insertBefore(el, parent.firstChild);
 	}
 }
@@ -76,37 +86,6 @@ export function getPosition(el) {
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-const documentStyle = typeof document === 'undefined' ? {} : document.documentElement.style;
-// Safari still needs a vendor prefix, we need to detect with property name is supported.
-const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
-let prevUserSelect;
-
-// @function disableTextSelection()
-// Prevents the user from selecting text in the document. Used internally
-// by Leaflet to override the behaviour of any click-and-drag interaction on
-// the map. Affects drag interactions on the whole document.
-export function disableTextSelection() {
-	const value = documentStyle[userSelectProp];
-
-	if (value === 'none') {
-		return;
-	}
-
-	prevUserSelect = value;
-	documentStyle[userSelectProp] = 'none';
-}
-
-// @function enableTextSelection()
-// Cancels the effects of a previous [`DomUtil.disableTextSelection`](#domutil-disabletextselection).
-export function enableTextSelection() {
-	if (typeof prevUserSelect === 'undefined') {
-		return;
-	}
-
-	documentStyle[userSelectProp] = prevUserSelect;
-	prevUserSelect = undefined;
-}
-
 // @function disableImageDrag()
 // Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
@@ -117,34 +96,6 @@ export function disableImageDrag() {
 // Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
-}
-
-let _outlineElement, _outlineStyle;
-// @function preventOutline(el: HTMLElement)
-// Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
-// of the element `el` invisible. Used internally by Leaflet to prevent
-// focusable elements from displaying an outline when the user performs a
-// drag interaction on them.
-export function preventOutline(element) {
-	while (element.tabIndex === -1) {
-		element = element.parentNode;
-	}
-	if (!element.style) { return; }
-	restoreOutline();
-	_outlineElement = element;
-	_outlineStyle = element.style.outlineStyle;
-	element.style.outlineStyle = 'none';
-	DomEvent.on(window, 'keydown', restoreOutline);
-}
-
-// @function restoreOutline()
-// Cancels the effects of a previous [`DomUtil.preventOutline`](#domutil-preventoutline).
-export function restoreOutline() {
-	if (!_outlineElement) { return; }
-	_outlineElement.style.outlineStyle = _outlineStyle;
-	_outlineElement = undefined;
-	_outlineStyle = undefined;
-	DomEvent.off(window, 'keydown', restoreOutline);
 }
 
 // @function getSizedParentNode(el: HTMLElement): HTMLElement

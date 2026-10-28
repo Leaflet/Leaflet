@@ -3,6 +3,16 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
+// @namespace Canvas
+
+// @section
+// @aka Canvas options
+const defaultOptions = {
+	// @option tolerance: Number = 0
+	// How much to extend the click tolerance around a path/object on the map.
+	tolerance: 0
+};
+
 const DASH_SEPARATOR_RE = /[, ]+/;
 
 /*
@@ -34,17 +44,10 @@ const DASH_SEPARATOR_RE = /[, ]+/;
 
 // @constructor Canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
+
 export class Canvas extends Renderer {
 
-	static {
-		// @section
-		// @aka Canvas options
-		this.setDefaultOptions({
-			// @option tolerance: Number = 0
-			// How much to extend the click tolerance around a path/object on the map.
-			tolerance: 0
-		});
-	}
+	static defaultOptions = defaultOptions;
 
 	getEvents() {
 		const events = super.getEvents();

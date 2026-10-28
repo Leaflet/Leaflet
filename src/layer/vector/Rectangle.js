@@ -28,23 +28,26 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 // @constructor Rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export class Rectangle extends Polygon {
-	initialize(latLngBounds, options) {
-		super.initialize(this._boundsToLatLngs(latLngBounds), options);
+	static initHooks = true;
+
+	constructor(latLngBounds, options) {
+		super(boundsToLatLngs(latLngBounds), options);
+		this.callInitHooks();
 	}
 
 	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
 	setBounds(latLngBounds) {
-		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+		return this.setLatLngs(boundsToLatLngs(latLngBounds));
 	}
+}
 
-	_boundsToLatLngs(latLngBounds) {
-		latLngBounds = new LatLngBounds(latLngBounds);
-		return [
-			latLngBounds.getSouthWest(),
-			latLngBounds.getNorthWest(),
-			latLngBounds.getNorthEast(),
-			latLngBounds.getSouthEast()
-		];
-	}
+function boundsToLatLngs(latLngBounds) {
+	latLngBounds = new LatLngBounds(latLngBounds);
+	return [
+		latLngBounds.getSouthWest(),
+		latLngBounds.getNorthWest(),
+		latLngBounds.getNorthEast(),
+		latLngBounds.getSouthEast()
+	];
 }

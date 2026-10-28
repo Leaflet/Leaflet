@@ -997,8 +997,8 @@ tr:target {
 		display: inline-block;
 	}
 
-	.api-page table tr th:last-child {
-		display: none !important;
+	.api-page table tbody tr th:last-child {
+		display: none;
 	}
 
 	.api-page table tbody tr td:last-child {
@@ -1155,7 +1155,7 @@ tr:target {
 }
 
 iframe[src*='youtube.com'] {
-	max-width: 100% !important;
+	max-width: 100%;
 }
 
 .no-break {
@@ -1205,7 +1205,7 @@ https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 }
 
 .overflowHidden {
-	overflow: hidden !important;
+	overflow: hidden;
 }
 
 .close-dialog {

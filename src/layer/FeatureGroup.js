@@ -1,6 +1,13 @@
 import {LayerGroup} from './LayerGroup.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 
+// @namespace FeatureGroup
+// @section
+// @event layeradd: LayerEvent
+// Fired when a layer is added to this `FeatureGroup`
+// @event layerremove: LayerEvent
+// Fired when a layer is removed from this `FeatureGroup`
+
 /*
  * @class FeatureGroup
  * @inherits LayerGroup
@@ -35,8 +42,6 @@ export class FeatureGroup extends LayerGroup {
 
 		super.addLayer(layer);
 
-		// @event layeradd: LayerEvent
-		// Fired when a layer is added to this `FeatureGroup`
 		return this.fire('layeradd', {layer});
 	}
 
@@ -52,8 +57,6 @@ export class FeatureGroup extends LayerGroup {
 
 		super.removeLayer(layer);
 
-		// @event layerremove: LayerEvent
-		// Fired when a layer is removed from this `FeatureGroup`
 		return this.fire('layerremove', {layer});
 	}
 
@@ -84,5 +87,10 @@ export class FeatureGroup extends LayerGroup {
 			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		}
 		return bounds;
+	}
+
+	// bound popups and tooltips open on the first of the group's layers that is on the map
+	_getOverlaySource() {
+		return Object.values(this._layers).find(layer => layer._map);
 	}
 }
