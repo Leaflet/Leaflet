@@ -28,6 +28,28 @@ jobs:
 
       - run: npm run site
 
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy-site:
+    if: github.ref == 'refs/heads/main'
+    needs: build-site
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v5
+
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 5
