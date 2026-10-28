@@ -2,10 +2,6 @@
 	"refs": {
 		"v1": "0412763d42ebba1da6f153e4073f6654e5de8a21"
 	},
-	"exclude": [
-		"CNAME",
-		"reference-tpl.html"
-	],
 	"site": {
 		"cartocdn_key": "cb1_2i38_1_bb6349bf813f7d7c3fe79a8c"
 	},
@@ -28,23 +24,14 @@
 	},
 	"mounts": [
 		{
-			"src": "docs",
-			"dest": "",
 			"exclude": [
 				"examples"
 			]
 		},
 		{
 			"ref": "v1",
-			"src": "docs/examples",
-			"dest": "examples",
-			"version": "1.9.4"
-		},
-		{
-			"ref": "v1",
-			"src": "docs",
-			"dest": "",
-			"files": [
+			"include": [
+				"examples",
 				"index.html",
 				"download.md",
 				"edit.html",

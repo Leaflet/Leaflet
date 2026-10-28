@@ -1,6 +1,5 @@
-// Builds leafletjs.com into _site/ from docs/ and the pinned refs in build/site.json: `node build/site.js [config]`.
-// Covers the part of Jekyll the site uses: front matter, Liquid, Markdown, chained layouts, posts and the plugins
-// collection. Mounts map trees (the checkout or a pinned ref) onto output paths.
+// Builds leafletjs.com into _site/ from docs/ and the pinned refs in build/site.json. Covers the part of Jekyll the
+// site uses: front matter, Liquid, Markdown, chained layouts, posts and the plugins collection.
 
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, rmSync, renameSync, statSync}
 	from 'node:fs';
@@ -12,6 +11,7 @@ import {markedSmartypants} from 'marked-smartypants';
 import {parse as parseYaml} from '@mourner/yeahml';
 
 const SITE_DIR = 'docs';
+const DEST = '_site';
 const CACHE_DIR = 'node_modules/.cache/leaflet-site';
 
 const POST_FILE = /^(\d{4})-(\d\d)-(\d\d)-(.+)\.md$/;
@@ -34,76 +34,68 @@ const marked = new Marked({
 	}
 }, markedSmartypants());
 
-export function buildSite(config) {
-	const dest = config.dest ?? '_site';
-	const rootDir = join(treeDir(config.root?.ref, config.refs), SITE_DIR);
-	const site = {...config.site, ...config.versions?.[config.version], time: new Date()};
+const start = performance.now();
+const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
+const site = {...config.site, ...config.versions[config.version], time: new Date()};
 
-	// pages of a pinned tree look up layouts and includes in that tree first, then in the root one
-	const engines = new Map();
-	const getEngine = (dir) => {
-		if (!engines.has(dir)) { engines.set(dir, createEngine(dir === rootDir ? [rootDir] : [dir, rootDir])); }
-		return engines.get(dir);
-	};
-	const rootEngine = getEngine(rootDir);
+// each tree renders with its own layouts and includes
+const engines = new Map();
+const getEngine = (dir) => {
+	if (!engines.has(dir)) { engines.set(dir, createEngine(dir)); }
+	return engines.get(dir);
+};
+const rootEngine = getEngine(SITE_DIR);
 
-	// the plugins collection: rendered, but not written
-	site.plugins = [];
-	for (const file of walk(join(rootDir, '_plugins'))) {
-		const {data, body} = readPage(join(rootDir, '_plugins', file));
-		data.content = rootEngine.renderContent(body, true, {site, page: data});
-		site.plugins.push(data);
+// the plugins collection: rendered, but not written
+site.plugins = walk(join(SITE_DIR, '_plugins')).map((file) => {
+	const {data, body} = readPage(join(SITE_DIR, '_plugins', file));
+	data.content = rootEngine.renderContent(body, true, {site, page: data});
+	return data;
+});
+
+// posts, newest first
+site.posts = readdirSync(join(SITE_DIR, '_posts')).sort().reverse().map((file) => {
+	const [, y, m, d, slug] = file.match(POST_FILE);
+	const {data, body} = readPage(join(SITE_DIR, '_posts', file));
+	const url = `/${y}/${m}/${d}/${slug}.html`;
+	Object.assign(data, {url, id: url.slice(0, -5), date: new Date(`${y}-${m}-${d}`)});
+	data.content = rootEngine.renderContent(body, true, {site, page: data});
+	return data;
+});
+
+// mounts map files of a tree (the checkout or a pinned ref) onto the site; later mounts override earlier ones
+const outputs = new Map();
+for (const mount of config.mounts) {
+	const dir = join(treeDir(config.refs[mount.ref]), SITE_DIR);
+	const mountSite = {...site, ...config.versions[mount.version]};
+
+	for (const file of walk(dir)) {
+		if (mount.exclude && matches(file, mount.exclude) || mount.include && !matches(file, mount.include)) { continue; }
+		outputs.set(file.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), engine: getEngine(dir), site: mountSite});
 	}
-
-	// posts, newest first; rendered before pages, so that atom.xml can embed them
-	const posts = readdirSync(join(rootDir, '_posts')).sort().reverse().map((file) => {
-		const [, y, m, d, slug] = file.match(POST_FILE);
-		const {data, body} = readPage(join(rootDir, '_posts', file));
-		const url = `/${y}/${m}/${d}/${slug}.html`;
-		return Object.assign(data, {url, id: url.slice(0, -5), date: new Date(`${y}-${m}-${d}`), body});
-	});
-	site.posts = posts;
-	for (const post of posts) {
-		post.content = rootEngine.renderContent(post.body, true, {site, page: post});
-	}
-
-	// later mounts override earlier ones
-	const outputs = new Map();
-	for (const mount of config.mounts) {
-		const tree = treeDir(mount.ref, config.refs);
-		const src = join(tree, mount.src);
-		const engine = getEngine(join(tree, SITE_DIR));
-		const mountSite = {...site, ...config.versions?.[mount.version]};
-		const exclude = [...(mount.src === SITE_DIR ? config.exclude ?? [] : []), ...(mount.exclude ?? [])];
-
-		for (const file of mount.files ?? walk(src, exclude)) {
-			const out = join(mount.dest, file.replace(MARKDOWN_EXT, '.html'));
-			outputs.set(out, {path: join(src, file), engine, site: mountSite});
-		}
-	}
-
-	rmSync(dest, {recursive: true, force: true});
-
-	for (const post of posts) {
-		write(join(dest, post.url), rootEngine.renderLayouts(post.content, post, site));
-	}
-	for (const [out, {path, engine, site}] of outputs) {
-		const page = readPage(path);
-		if (page) {
-			const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
-			write(join(dest, out), engine.renderLayouts(content, page.data, site));
-		} else {
-			mkdirSync(dirname(join(dest, out)), {recursive: true});
-			copyFileSync(path, join(dest, out));
-		}
-	}
-
-	return outputs.size + posts.length;
 }
 
-function createEngine(dirs) {
+rmSync(DEST, {recursive: true, force: true});
+
+for (const post of site.posts) {
+	write(join(DEST, post.url), rootEngine.renderLayouts(post.content, post, site));
+}
+for (const [out, {path, engine, site}] of outputs) {
+	const page = readPage(path);
+	if (page) {
+		const content = engine.renderContent(page.body, MARKDOWN_EXT.test(path), {site, page: page.data});
+		write(join(DEST, out), engine.renderLayouts(content, page.data, site));
+	} else {
+		mkdirSync(dirname(join(DEST, out)), {recursive: true});
+		copyFileSync(path, join(DEST, out));
+	}
+}
+
+console.log(`Built ${outputs.size + site.posts.length} files in ${Math.round(performance.now() - start)} ms`);
+
+function createEngine(dir) {
 	const liquid = new Liquid({
-		root: dirs.map(dir => join(dir, '_includes')),
+		root: join(dir, '_includes'),
 		jekyllInclude: true,
 		dynamicPartials: false,
 		extname: '',
@@ -113,8 +105,7 @@ function createEngine(dirs) {
 	const layouts = new Map();
 	const getLayout = (name) => {
 		if (!layouts.has(name)) {
-			const file = dirs.map(dir => join(dir, '_layouts', `${name}.html`)).find(existsSync);
-			if (!file) { throw new Error(`Layout ${name} not found in ${dirs.join(', ')}`); }
+			const file = join(dir, '_layouts', `${name}.html`);
 			const {data, body} = readPage(file) ?? {data: {}, body: readFileSync(file, 'utf8')};
 			layouts.set(name, {data, template: liquid.parse(body, file)});
 		}
@@ -156,25 +147,18 @@ function readPage(path) {
 	return {data: parseYaml(match[1] ?? '') ?? {}, body: text.slice(match[0].length)};
 }
 
-// Lists files under dir recursively, skipping _ and . prefixed entries and excluded paths, as Jekyll does
-function walk(dir, exclude = [], prefix = '') {
-	const files = [];
-	for (const name of readdirSync(join(dir, prefix)).sort()) {
+// Lists files under dir recursively, skipping _ and . prefixed entries, as Jekyll does
+function walk(dir, prefix = '') {
+	return readdirSync(join(dir, prefix)).sort().flatMap((name) => {
 		const rel = prefix ? `${prefix}/${name}` : name;
-		if (name[0] === '_' || name[0] === '.' || exclude.some(e => rel === e || rel.startsWith(`${e}/`))) { continue; }
-		if (statSync(join(dir, rel)).isDirectory()) {
-			files.push(...walk(dir, exclude, rel));
-		} else {
-			files.push(rel);
-		}
-	}
-	return files;
+		if (name[0] === '_' || name[0] === '.') { return []; }
+		return statSync(join(dir, rel)).isDirectory() ? walk(dir, rel) : [rel];
+	});
 }
 
-// A pinned ref is extracted from git once into the cache; no ref means the checkout itself
-function treeDir(ref, refs) {
-	if (!ref) { return '.'; }
-	const sha = execSync(`git rev-parse ${refs[ref]}^{commit}`, {encoding: 'utf8'}).trim();
+// A pinned commit is extracted from git once into the cache; no commit means the checkout itself
+function treeDir(sha) {
+	if (!sha) { return '.'; }
 	const dir = join(CACHE_DIR, sha);
 	if (!existsSync(dir)) {
 		const tmp = `${dir}.tmp`;
@@ -186,13 +170,11 @@ function treeDir(ref, refs) {
 	return dir;
 }
 
+function matches(file, paths) {
+	return paths.some(p => file === p || file.startsWith(`${p}/`));
+}
+
 function write(path, content) {
 	mkdirSync(dirname(path), {recursive: true});
 	writeFileSync(path, content);
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-	const start = performance.now();
-	const n = buildSite(JSON.parse(readFileSync(process.argv[2] ?? 'build/site.json', 'utf8')));
-	console.log(`Built ${n} files in ${Math.round(performance.now() - start)} ms`);
 }
