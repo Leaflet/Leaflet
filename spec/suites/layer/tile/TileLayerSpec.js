@@ -366,6 +366,16 @@ describe('TileLayer', () => {
 			});
 		});
 
+		it('allows empty subdomains if the URL has no {s}', () => {
+			for (const subdomains of [undefined, null, '', []]) {
+				const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png', {subdomains}).addTo(map);
+				eachImg(layer, (img) => {
+					expect(img.src.startsWith('http://example.com/')).to.eql(true);
+				});
+				layer.remove();
+			}
+		});
+
 		it('uses zoomOffset option', () => {
 			// Map view is set at zoom 2 in beforeEach.
 			const layer = new TileLayer('http://example.com/{z}/{y}/{x}.png', {

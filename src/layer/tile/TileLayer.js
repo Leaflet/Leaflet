@@ -252,8 +252,8 @@ export class TileLayer extends GridLayer {
 	}
 
 	_getSubdomain(tilePoint) {
-		const index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
-		return this.options.subdomains[index];
+		const {subdomains} = this.options;
+		return subdomains?.[Math.abs(tilePoint.x + tilePoint.y) % subdomains.length];
 	}
 
 	// stops loading all tiles in the background layer
