@@ -233,6 +233,7 @@ export class LayersControl extends Control {
 		link.href = '#';
 		link.title = 'Layers';
 		link.setAttribute('role', 'button');
+		section.setAttribute('aria-label', link.title);
 
 		DomEvent.on(link, {
 			keydown(e) {

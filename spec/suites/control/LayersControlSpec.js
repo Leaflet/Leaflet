@@ -234,6 +234,11 @@ describe('LayersControl', () => {
 		});
 	});
 
+	it('labels the layers list', () => {
+		new LayersControl().addTo(map);
+		expect(map._container.querySelector('.leaflet-control-layers-list').getAttribute('aria-label')).to.equal('Layers');
+	});
+
 	describe('collapse when collapsed: true', () => {
 		it('expands on "Enter" keydown when toggle is focused', () => {
 			const layersCtrl = new LayersControl(null, null, {collapsed: true}).addTo(map);
