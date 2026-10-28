@@ -2,11 +2,12 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
-    open-pull-requests-limit: 999
     rebase-strategy: disabled
     versioning-strategy: increase
     schedule:
-      interval: weekly
+      interval: monthly
+    cooldown:
+      default-days: 7
     labels:
       - dependencies
     groups:
@@ -14,19 +15,25 @@ updates:
         patterns:
           - "vitest"
           - "@vitest/*"
+      dev-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: /
-    open-pull-requests-limit: 999
     rebase-strategy: disabled
     schedule:
-      interval: weekly
+      interval: monthly
+    cooldown:
+      default-days: 7
     labels:
       - dependencies
-  - package-ecosystem: bundler
-    directory: ./docs
-    open-pull-requests-limit: 999
-    rebase-strategy: disabled
-    schedule:
-      interval: weekly
-    labels:
-      - dependencies
+    groups:
+      actions:
+        patterns:
+          - "*"
