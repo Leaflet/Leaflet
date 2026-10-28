@@ -419,6 +419,34 @@ describe('Popup', () => {
 		expect(popup.getContent()).to.equal('Test');
 	});
 
+	describe('maxHeight option', () => {
+		it('makes content taller than maxHeight scrollable', async () => {
+			const popup = new Popup(center, {maxHeight: 100, content: '<div style="height: 300px;"></div>'})
+				.openOn(map);
+			const content = popup.getElement().querySelector('.leaflet-popup-content');
+
+			// let the resize observer run
+			await new Promise((resolve) => { requestAnimationFrame(() => requestAnimationFrame(resolve)); });
+
+			expect(content.offsetHeight).to.equal(100);
+			expect(content.classList.contains('leaflet-popup-scrolled')).to.be.true;
+		});
+
+		it('updates the height when the content changes', () => {
+			const popup = new Popup(center, {maxHeight: 100, content: '<div style="height: 20px;"></div>'})
+				.openOn(map);
+			const content = popup.getElement().querySelector('.leaflet-popup-content');
+
+			popup.setContent('<div style="height: 300px;"></div>');
+			expect(content.offsetHeight).to.equal(100);
+			expect(content.classList.contains('leaflet-popup-scrolled')).to.be.true;
+
+			popup.setContent('<div style="height: 20px;"></div>');
+			expect(content.offsetHeight).to.equal(20);
+			expect(content.classList.contains('leaflet-popup-scrolled')).to.be.false;
+		});
+	});
+
 	describe('Map#openPopup', () => {
 		it('adds the popup layer to the map', () => {
 			const popup = new Popup()

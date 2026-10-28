@@ -228,15 +228,12 @@ export class Popup extends DivOverlay {
 
 
 		if (this.options.trackResize) {
-			this._resizeObserver = new ResizeObserver(((entries) => {
+			this._resizeObserver = new ResizeObserver(() => {
 				if (!this._map) { return; }
-				this._containerWidth = entries[0]?.contentRect?.width;
-				this._containerHeight = entries[0]?.contentRect?.height;
-
 				this._updateLayout();
 				this._updatePosition();
 				this._adjustPan();
-			}));
+			});
 
 			this._resizeObserver.observe(this._contentNode);
 		}
@@ -248,8 +245,9 @@ export class Popup extends DivOverlay {
 
 		style.maxWidth = `${this.options.maxWidth}px`;
 		style.minWidth = `${this.options.minWidth}px`;
+		style.height = '';
 
-		const height = this._containerHeight ?? container.offsetHeight,
+		const height = container.offsetHeight,
 		maxHeight = this.options.maxHeight,
 		scrolledClass = 'leaflet-popup-scrolled';
 
