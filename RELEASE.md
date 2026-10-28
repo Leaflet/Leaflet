@@ -19,7 +19,9 @@
 - [ ] [Click here to save a snapshot](https://web.archive.org/save/https://leafletjs.com/reference.html)
 of the version of docs prior to this release to the Internet Archive's Wayback Machine
 (and optionally, add a link to the snapshot in `docs/reference-versions.html`).
-- [ ] Run `npm run docs` to generate the new `docs/reference.html` and update the version and integrity hashes in `build/site.json`
+- [ ] Run `npm run docs` to update the version and integrity hashes in `build/site.json`
+- [ ] Point the API reference at the release: set `refs.v2` in `build/site.json` to the new tag's commit
+(and update the table of contents in `docs/reference-2.0.0.html` if classes were added, removed or renamed)
 - [ ] Update link to latest release in `docs/download.md`
 - [ ] Update the announcement section in `docs/index.html`
 - [ ] Commit all the changes and submit a PR for someone to review

@@ -158,28 +158,19 @@ Once it gets merged, the changes will immediately appear on the website.
 To preview the website locally, run `npm run serve` and open [http://localhost:8080](http://localhost:8080).
 It builds the site into `_site/` (in about a second) and serves it; run `npm run site` to rebuild after changes.
 
-Until Leaflet 2.0 is released, the 1.x tutorials, the front page, the download page and the API reference
+Until Leaflet 2.0 is released, the 1.x tutorials, the front page and the download page
 are taken from a pinned commit of the `v1` branch (see `refs` in [`build/site.json`](./build/site.json)).
 
 ### API documentation
 
-Since Leaflet 1.0.0-rc1, the API documentation in `reference-1.0.0.html` is handled
-via [Leafdoc](https://github.com/Leaflet/Leafdoc). This means that next to the
-code for every method, option or property there is a special code comment documenting
-that feature. In order to edit the API documentation, just edit these comments in the
-source code.
+The API reference is generated with [Leafdoc](https://github.com/Leaflet/Leafdoc) from special code comments
+next to every class, method, option and event in `src/`. To change the API documentation, edit these comments.
 
-In order to generate the documentation, make sure that the development dependencies
-are installed (run either `npm install` or `yarn install`), then just run
-
-```
-npm run docs
-```
-
-and you'll find a `.html` file in the `dist/` directory.
-
-On every release of a new Leaflet version, this file will be generated and copied
-over to `docs/reference.html` - there is no need to send pull requests with changes to this file to update the API documentation.
+The website builds the references from the released code rather than the latest one: `reference.html` documents
+1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release (see `refs` in
+[`build/site.json`](./build/site.json)), so changes to the comments appear there with the next release.
+The pages around them (header and table of contents in `docs/reference.html` and `docs/reference-2.0.0.html`)
+and the templates in `build/leafdoc-templates/` aren't pinned, so changes to them go live on merge.
 
 ## Code of Conduct
 
