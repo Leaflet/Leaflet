@@ -1,34 +1,38 @@
 // Builds leafletjs.com into _site/ from docs/ and the pinned refs in build/site.json: `node build/site.js [config]`.
-// Covers the part of Jekyll the site uses: front matter, Liquid, kramdown-flavored Markdown, chained layouts, posts and
-// the plugins collection. Mounts map trees (the checkout or a pinned ref) onto output paths.
+// Covers the part of Jekyll the site uses: front matter, Liquid, Markdown, chained layouts, posts and the plugins
+// collection. Mounts map trees (the checkout or a pinned ref) onto output paths.
 
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, rmSync, renameSync, statSync}
 	from 'node:fs';
 import {execSync} from 'node:child_process';
 import {join, dirname} from 'node:path';
 import {Liquid} from 'liquidjs';
+import {Marked} from 'marked';
+import {markedSmartypants} from 'marked-smartypants';
 import {parse as parseYaml} from '@mourner/yeahml';
-import {renderMarkdown} from './site-markdown.js';
 
 const SITE_DIR = 'docs';
 const CACHE_DIR = 'node_modules/.cache/leaflet-site';
 
-const POST_FILE = /^(\d{4})-(\d\d)-(\d\d)-(.+)\.(md|markdown|html)$/;
-const MARKDOWN_EXT = /\.(md|markdown)$/;
-const FRONT_MATTER = /^---[ \t]*\r?\n([\s\S]*?\r?\n)?---[ \t]*(?:\r?\n|$)/;
-// Jekyll's closing `---\s*$\n?` also swallows blank lines after it
-const LEADING_BLANK_LINES = /^(?:[ \t]*\r?\n)+/;
-const BOOLEAN_OR_EMPTY = /^([\w-]+):[ \t]*(true|false)?[ \t]*$/gm;
-const XML_SPECIAL = /[&<>"']/g;
-const XML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&apos;'};
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-	'November', 'December'];
+const POST_FILE = /^(\d{4})-(\d\d)-(\d\d)-(.+)\.md$/;
+const MARKDOWN_EXT = /\.md$/;
+const FRONT_MATTER = /^---\r?\n([\s\S]*?\r?\n)?---\r?\n/;
+const HTML_TAG = /<[^>]*>/g;
+const NON_ID_CHAR = /[^\p{L}\p{N}\p{M}_\- ]/gu;
 
-const toDate = d => (d instanceof Date ? d : new Date(d));
-const formatDate = (d, long) => {
-	const month = MONTHS[d.getUTCMonth()];
-	return `${String(d.getUTCDate()).padStart(2, '0')} ${long ? month : month.slice(0, 3)} ${d.getUTCFullYear()}`;
-};
+// GitHub-style header ids, which the site's anchors link to
+let headerIds;
+const marked = new Marked({
+	renderer: {
+		heading({tokens, depth, text}) {
+			let id = text.toLowerCase().replace(HTML_TAG, '').replace(NON_ID_CHAR, '').replace(/ /g, '-');
+			const n = headerIds.get(id) ?? 0;
+			headerIds.set(id, n + 1);
+			if (n) { id += `-${n}`; }
+			return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
+		}
+	}
+}, markedSmartypants());
 
 export function buildSite(config) {
 	const dest = config.dest ?? '_site';
@@ -46,25 +50,21 @@ export function buildSite(config) {
 	// the plugins collection: rendered, but not written
 	site.plugins = [];
 	for (const file of walk(join(rootDir, '_plugins'))) {
-		const doc = readPage(join(rootDir, '_plugins', file));
-		if (!doc) { continue; }
-		doc.data.content = rootEngine.renderContent(doc.body, true, {site, page: doc.data});
-		site.plugins.push(doc.data);
+		const {data, body} = readPage(join(rootDir, '_plugins', file));
+		data.content = rootEngine.renderContent(body, true, {site, page: data});
+		site.plugins.push(data);
 	}
 
 	// posts, newest first; rendered before pages, so that atom.xml can embed them
-	const posts = [];
-	for (const file of readdirSync(join(rootDir, '_posts'))) {
-		const [, y, m, d, slug, ext] = file.match(POST_FILE);
+	const posts = readdirSync(join(rootDir, '_posts')).sort().reverse().map((file) => {
+		const [, y, m, d, slug] = file.match(POST_FILE);
 		const {data, body} = readPage(join(rootDir, '_posts', file));
 		const url = `/${y}/${m}/${d}/${slug}.html`;
-		Object.assign(data, {url, id: url.slice(0, -5), date: new Date(`${y}-${m}-${d}T00:00:00Z`), slug});
-		posts.push({data, body, markdown: ext !== 'html'});
-	}
-	posts.sort((a, b) => b.data.date - a.data.date || (b.data.url < a.data.url ? -1 : 1));
-	site.posts = posts.map(p => p.data);
+		return Object.assign(data, {url, id: url.slice(0, -5), date: new Date(`${y}-${m}-${d}`), body});
+	});
+	site.posts = posts;
 	for (const post of posts) {
-		post.data.content = rootEngine.renderContent(post.body, post.markdown, {site, page: post.data});
+		post.content = rootEngine.renderContent(post.body, true, {site, page: post});
 	}
 
 	// later mounts override earlier ones
@@ -85,7 +85,7 @@ export function buildSite(config) {
 	rmSync(dest, {recursive: true, force: true});
 
 	for (const post of posts) {
-		write(join(dest, post.data.url), rootEngine.renderLayouts(post.data.content, post.data, site));
+		write(join(dest, post.url), rootEngine.renderLayouts(post.content, post, site));
 	}
 	for (const [out, {path, engine, site}] of outputs) {
 		const page = readPage(path);
@@ -106,13 +106,9 @@ function createEngine(dirs) {
 		root: dirs.map(dir => join(dir, '_includes')),
 		jekyllInclude: true,
 		dynamicPartials: false,
-		extname: ''
+		extname: '',
+		timezoneOffset: 0
 	});
-	// Jekyll's filters; the site builds in UTC
-	liquid.registerFilter('date_to_xmlschema', d => `${toDate(d).toISOString().slice(0, 19)}+00:00`);
-	liquid.registerFilter('date_to_string', d => formatDate(toDate(d), false));
-	liquid.registerFilter('date_to_long_string', d => formatDate(toDate(d), true));
-	liquid.registerFilter('xml_escape', s => (s == null ? s : String(s).replace(XML_SPECIAL, c => XML_ESCAPES[c])));
 
 	const layouts = new Map();
 	const getLayout = (name) => {
@@ -129,7 +125,9 @@ function createEngine(dirs) {
 		// Jekyll's order: Liquid first, then Markdown
 		renderContent(body, markdown, scope) {
 			const text = liquid.parseAndRenderSync(body, scope);
-			return markdown ? renderMarkdown(text) : text;
+			if (!markdown) { return text; }
+			headerIds = new Map();
+			return marked.parse(text);
 		},
 		renderLayouts(content, page, site) {
 			const layoutData = {};
@@ -148,19 +146,14 @@ function createEngine(dirs) {
 }
 
 // Splits front matter off a file; returns null for files without it (static files).
-// yeahml has no implicit typing, so top-level unquoted true/false become booleans and empty values null, as in YAML.
+// Values are all strings, so templates compare flags with "true".
 function readPage(path) {
 	const buf = readFileSync(path);
 	if (buf.toString('latin1', 0, 3) !== '---') { return null; }
 	const text = buf.toString('utf8');
 	const match = text.match(FRONT_MATTER);
 	if (!match) { return null; }
-	const yaml = (match[1] ?? '').replace(/\r\n/g, '\n');
-	const data = parseYaml(yaml) ?? {};
-	for (const [, key, value] of yaml.matchAll(BOOLEAN_OR_EMPTY)) {
-		data[key] = value ? value === 'true' : null;
-	}
-	return {data, body: text.slice(match[0].length).replace(LEADING_BLANK_LINES, '')};
+	return {data: parseYaml(match[1] ?? '') ?? {}, body: text.slice(match[0].length)};
 }
 
 // Lists files under dir recursively, skipping _ and . prefixed entries and excluded paths, as Jekyll does
