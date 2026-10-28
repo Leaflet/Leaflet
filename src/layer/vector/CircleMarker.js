@@ -2,35 +2,49 @@ import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
+import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
+// @namespace CircleMarker
+
+// @section
+// @aka CircleMarker options
+const defaultOptions = {
+	fill: true,
+
+	// @option radius: Number = 10
+	// Radius of the circle marker, in CSS pixels
+	radius: 10
+};
+
+
+// @section
+// @event move: Event
+// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 
 /*
  * @class CircleMarker
  * @inherits Path
  *
- * A circle of a fixed size with radius specified in pixels. Extends `Path`.
+ * A circle of a fixed size with radius specified in CSS pixels. Extends `Path`.
  */
 
 // @constructor CircleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
+
 export class CircleMarker extends Path {
 
-	static {
-		// @section
-		// @aka CircleMarker options
-		this.setDefaultOptions({
-			fill: true,
+	static initHooks = true;
 
-			// @option radius: Number = 10
-			// Radius of the circle marker, in pixels
-			radius: 10
-		});
-	}
+	static defaultOptions = defaultOptions;
 
-	initialize(latlng, options) {
+	constructor(latlng, options) {
+		super();
+
 		Util.setOptions(this, options);
 		this._latlng = new LatLng(latlng);
 		this._radius = this.options.radius;
+
+		this.callInitHooks();
 	}
 
 	// @method setLatLng(latLng: LatLng): this
@@ -40,8 +54,6 @@ export class CircleMarker extends Path {
 		this._latlng = new LatLng(latlng);
 		this.redraw();
 
-		// @event move: Event
-		// Fired when the marker is moved via [`setLatLng`](#circlemarker-setlatlng). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 
@@ -52,14 +64,14 @@ export class CircleMarker extends Path {
 	}
 
 	// @method setRadius(radius: Number): this
-	// Sets the radius of a circle marker. Units are in pixels.
+	// Sets the radius of a circle marker. Units are in CSS pixels.
 	setRadius(radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 
 	// @method getRadius(): Number
-	// Returns the current radius of the circle
+	// Returns the current radius of the circle. Units are in CSS pixels.
 	getRadius() {
 		return this._radius;
 	}
@@ -72,14 +84,22 @@ export class CircleMarker extends Path {
 		return this;
 	}
 
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
+	toGeoJSON(precision) {
+		return pointToGeoJSON(this, precision);
+	}
+
 	_project() {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._pxRadius = this._radius;
 		this._updateBounds();
 	}
 
 	_updateBounds() {
-		const r = this._radius,
-		r2 = this._radiusY ?? r,
+		const r = this._pxRadius,
+		r2 = this._pxRadiusY ?? r,
 		w = this._clickTolerance(),
 		p = [r + w, r2 + w];
 		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
@@ -96,11 +116,11 @@ export class CircleMarker extends Path {
 	}
 
 	_empty() {
-		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
+		return this._pxRadius && !this._renderer._bounds.intersects(this._pxBounds);
 	}
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
-		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
+		return p.distanceTo(this._point) <= this._pxRadius + this._clickTolerance();
 	}
 }

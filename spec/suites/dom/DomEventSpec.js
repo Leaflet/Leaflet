@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomEvent, LeafletMap, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
@@ -570,22 +569,33 @@ describe('DomEvent', () => {
 			const mapClickListener = sinon.spy();
 			const mapOtherListener = sinon.spy();
 			map.on('click', mapClickListener);          // control case
-			map.on('keypress', mapOtherListener);       // control case
+			map.on('keydown', mapOtherListener);       // control case
 
 			UIEventSimulator.fire('click', grandChild);
-			UIEventSimulator.fire('keypress', grandChild);
+			UIEventSimulator.fire('keydown', grandChild);
 
 			expect(mapOtherListener.called).to.be.true; // control case
 			expect(listener.called).to.be.true;
 			expect(mapClickListener.notCalled).to.be.true;
 
 			UIEventSimulator.fire('click', child);
-			UIEventSimulator.fire('keypress', child);
+			UIEventSimulator.fire('keydown', child);
 
 			expect(listener.calledTwice).to.be.true;
 			expect(mapClickListener.notCalled).to.be.true;
 
 			map.remove();
+		});
+	});
+
+	describe('#getWheelDelta', () => {
+		it('scales pixel deltas by device pixel ratio', () => {
+			const e = new WheelEvent('wheel', {deltaY: 100, deltaMode: 0});
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			expect(DomEvent.getWheelDelta(e)).to.equal(-50);
+			dpr.value(2);
+			expect(DomEvent.getWheelDelta(e)).to.equal(-25);
+			dpr.restore();
 		});
 	});
 

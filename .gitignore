@@ -6,7 +6,6 @@ tmp/**/*
 *.iml
 _site
 *.sublime-*
-_site
 dist/
 coverage/
 *.js.html
@@ -16,3 +15,5 @@ debug/local/
 yarn.lock
 *.log
 .eslintcache
+.vitest-attachments/
+__screenshots__/

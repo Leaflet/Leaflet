@@ -1,7 +1,5 @@
-import {expect} from 'chai';
 import {Bounds, LineUtil, LeafletMap, LatLng, Point, Polyline} from 'leaflet';
 import sinon from 'sinon';
-import '../SpecHelper.js';
 
 describe('LineUtil', () => {
 	describe('#clipSegment', () => {
@@ -50,6 +48,19 @@ describe('LineUtil', () => {
 
 			expect(segment2[0]).to.eql(new Point(5, 5));
 			expect(segment2[1]).to.eql(b);
+		});
+
+		it('terminates when rounding against fractional bounds', () => {
+			const a = new Point(301.4418194964528, 342.73335686232895);
+			const b = new Point(116, 279);
+			const bounds = new Bounds(
+				new Point(116.30943011350813, 22.55244562255804),
+				new Point(1588.709430113508, 1115.752445622558));
+
+			const segment = LineUtil.clipSegment(a, b, bounds, false, true);
+
+			expect(segment[0]).to.eql(a);
+			expect(segment[1]).to.eql(new Point(116, 279));
 		});
 	});
 
@@ -112,7 +123,7 @@ describe('LineUtil', () => {
 	});
 
 	describe('#polylineCenter', () => {
-		let map, crs, zoom;
+		let map, crs;
 		beforeEach(() => {
 			map = new LeafletMap(document.createElement('div'), {center: [55.8, 37.6], zoom: 6, zoomAnimation: false});
 			crs = map.options.crs;
@@ -151,13 +162,13 @@ describe('LineUtil', () => {
 
 		it('throws error if latlngs not passed', () => {
 			expect(() => {
-				LineUtil.polylineCenter(null, crs, zoom);
+				LineUtil.polylineCenter(null, crs);
 			}).to.throw('latlngs not passed');
 		});
 
 		it('throws error if latlng array is empty', () => {
 			expect(() => {
-				LineUtil.polylineCenter([], crs, zoom);
+				LineUtil.polylineCenter([], crs);
 			}).to.throw('latlngs not passed');
 		});
 

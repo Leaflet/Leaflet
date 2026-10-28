@@ -53,7 +53,7 @@ export function throttle(fn, time, context) {
 
 // @function wrapNum(num: Number, range: Number[], includeMax?: Boolean): Number
 // Returns the number `num` modulo `range` in such a way so it lies within
-// `range[0]` and `range[1]`. The returned value will be always smaller than
+// `range[0]` and `range[1]`. The returned value will always be smaller than
 // `range[1]` unless `includeMax` is set to `true`.
 export function wrapNum(x, range, includeMax) {
 	const max = range[1],
@@ -76,17 +76,20 @@ export function formatNum(num, precision) {
 	return Math.round(num * pow) / pow;
 }
 
+const WHITESPACE_RE = /\s+/;
+
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
 export function splitWords(str) {
-	return str.trim().split(/\s+/);
+	return str.trim().split(WHITESPACE_RE);
 }
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`.
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
-		obj.options = obj.options ? Object.create(obj.options) : {};
+		const defaults = getDefaultOptions(obj.constructor) ?? obj.options;
+		obj.options = defaults ? Object.create(defaults) : {};
 	}
 	for (const i in options) {
 		if (Object.hasOwn(options, i)) {
@@ -94,6 +97,23 @@ export function setOptions(obj, options) {
 		}
 	}
 	return obj.options;
+}
+
+const chainedDefaults = new WeakMap(); // class -> the defaultOptions object it was chained with
+
+// Links the `defaultOptions` of each class in the chain to its parent's, so defaults are inherited and stay live.
+// Done on first use because a static field can't do it in its initializer and stay tree-shakeable.
+function getDefaultOptions(cls) {
+	const defaults = cls?.defaultOptions;
+	if (defaults && chainedDefaults.get(cls) !== defaults) {
+		for (let c = cls; c.defaultOptions; c = Object.getPrototypeOf(c)) {
+			if (Object.hasOwn(c, 'defaultOptions')) {
+				Object.setPrototypeOf(c.defaultOptions, Object.getPrototypeOf(c).defaultOptions ?? Object.prototype);
+			}
+		}
+		chainedDefaults.set(cls, defaults);
+	}
+	return defaults;
 }
 
 const templateRe = /\{ *([\w_ -]+) *\}/g;

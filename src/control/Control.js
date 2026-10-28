@@ -1,8 +1,17 @@
 
 import {Class} from '../core/Class.js';
-import {LeafletMap} from '../map/Map.js';
 import * as Util from '../core/Util.js';
-import * as DomUtil from '../dom/DomUtil.js';
+
+// @namespace Control
+
+// @section
+// @aka Control Options
+const defaultOptions = {
+	// @option position: String = 'topright'
+	// The position of the control (one of the map corners). Possible values are `'topleft'`,
+	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	position: 'topright'
+};
 
 /*
  * @class Control
@@ -14,33 +23,28 @@ import * as DomUtil from '../dom/DomUtil.js';
 
 export class Control extends Class {
 
-	static {
-		// @section
-		// @aka Control Options
-		this.setDefaultOptions({
-			// @option position: String = 'topright'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'topright'
-		});
-	}
+	static initHooks = true;
+
+	static defaultOptions = defaultOptions;
 
 
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	/* @section
 	 * Classes extending Control will inherit the following methods:
 	 *
-	 * @method getPosition: string
+	 * @method getPosition(): String
 	 * Returns the position of the control.
 	 */
 	getPosition() {
 		return this.options.position;
 	}
 
-	// @method setPosition(position: string): this
+	// @method setPosition(position: String): this
 	// Sets the position of the control.
 	setPosition(position) {
 		const map = this._map;
@@ -54,7 +58,7 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method getContainer: HTMLElement
+	// @method getContainer(): HTMLElement
 	// Returns the HTMLElement that contains the control.
 	getContainer() {
 		return this._container;
@@ -83,7 +87,7 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method remove: this
+	// @method remove(): this
 	// Removes the control from the map it is currently active on.
 	remove() {
 		if (!this._map) {
@@ -106,7 +110,7 @@ export class Control extends Class {
 		// We exclude keyboard-click event to keep the focus on the control for accessibility.
 		// The position of keyboard-click events are x=0 and y=0.
 		if (this._map && e && !(e.screenX === 0 && e.screenY === 0)) {
-			this._map.getContainer().focus();
+			this._map.getContainer().focus({preventScroll: true, focusVisible: false});
 		}
 	}
 }
@@ -122,49 +126,3 @@ export class Control extends Class {
  * @method onRemove(map: LeafletMap)
  * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
  */
-
-/* @namespace LeafletMap
- * @section Methods for Layers and Controls
- */
-LeafletMap.include({
-	// @method addControl(control: Control): this
-	// Adds the given control to the map
-	addControl(control) {
-		control.addTo(this);
-		return this;
-	},
-
-	// @method removeControl(control: Control): this
-	// Removes the given control from the map
-	removeControl(control) {
-		control.remove();
-		return this;
-	},
-
-	_initControlPos() {
-		const corners = this._controlCorners = {},
-		l = 'leaflet-',
-		container = this._controlContainer =
-		            DomUtil.create('div', `${l}control-container`, this._container);
-
-		function createCorner(vSide, hSide) {
-			const className = `${l + vSide} ${l}${hSide}`;
-
-			corners[vSide + hSide] = DomUtil.create('div', className, container);
-		}
-
-		createCorner('top', 'left');
-		createCorner('top', 'right');
-		createCorner('bottom', 'left');
-		createCorner('bottom', 'right');
-	},
-
-	_clearControlPos() {
-		for (const c of Object.values(this._controlCorners)) {
-			c.remove();
-		}
-		this._controlContainer.remove();
-		delete this._controlCorners;
-		delete this._controlContainer;
-	}
-});

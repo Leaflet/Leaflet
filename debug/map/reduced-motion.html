@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Leaflet debug page - Reduced motion</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
+		<link rel="stylesheet" href="../css/screen.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"leaflet": "../../src/Leaflet.js"
+				}
+			}
+		</script>
+		<style>
+			body {
+				font: 13px/1.4 sans-serif;
+			}
+			#panel {
+				max-width: 800px;
+			}
+			#panel p {
+				margin: 8px 0;
+			}
+			#log {
+				height: 160px;
+				margin: 8px 0;
+				overflow: auto;
+				font: 12px/1.4 monospace;
+				white-space: pre-wrap;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div id="panel">
+			<p>
+				<label><input type="checkbox" id="reduced"> Emulate reduced motion</label>
+				(add <code>?reduced</code> to the URL to start with it on) — system preference: <b id="system"></b>
+			</p>
+			<p>
+				Zoom:
+				<button data-action="zoom1">setZoom +1</button>
+				<button data-action="zoom2">setZoom +2</button>
+				<button data-action="zoom2anim">setZoom +2, animate: true</button>
+				<button data-action="zoomOut">setZoom −1</button>
+			</p>
+			<p>
+				Pan:
+				<button data-action="panShort">panBy ¼ size</button>
+				<button data-action="panLong">panBy ¾ size</button>
+				<button data-action="panLongAnim">panBy ¾ size, animate: true</button>
+			</p>
+			<p>
+				Fly:
+				<button data-action="flyNear">flyTo nearby, +1 zoom</button>
+				<button data-action="flyFar">flyTo Kyiv</button>
+				<button data-action="flyFarAnim">flyTo Kyiv, animate: true</button>
+				<button data-action="flyFarNoAnim">flyTo Kyiv, animate: false</button>
+				<button data-action="home">reset view</button>
+			</p>
+			<p>
+				Also try wheel, double-click, box zoom (shift-drag), +/- buttons, keyboard arrows, the marker popup
+				(autopan), and fast flings to check the inertia coast. <button id="clear">Clear log</button>
+			</p>
+			<div id="log"></div>
+		</div>
+		<script type="module">
+			import {TileLayer, LeafletMap, Marker} from 'leaflet';
+
+			const query = '(prefers-reduced-motion: reduce)';
+			const matchMedia = window.matchMedia.bind(window);
+			const reducedCheckbox = document.getElementById('reduced');
+			reducedCheckbox.checked = location.search.includes('reduced');
+
+			// Leaflet reads the preference on each pan, zoom, flyTo and fling, so toggling takes effect immediately
+			window.matchMedia = q => (q === query && reducedCheckbox.checked ? {matches: true} : matchMedia(q));
+			document.getElementById('system').textContent = matchMedia(query).matches ? 'reduce' : 'no-preference';
+
+			const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+			const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+			const home = [51.505, -0.09];
+			const map = new LeafletMap('map')
+				.setView(home, 13)
+				.addLayer(new TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}));
+
+			new Marker([51.5, -0.09]).addTo(map).bindPopup('<b>Hello world!</b><br />I am a popup.');
+
+			const logEl = document.getElementById('log');
+			function log(msg) {
+				logEl.textContent += `${msg}\n`;
+				logEl.scrollTop = logEl.scrollHeight;
+			}
+			document.getElementById('clear').addEventListener('click', () => { logEl.textContent = ''; });
+
+			const kyiv = [50.45, 30.52];
+			const actions = {
+				zoom1: () => map.setZoom(map.getZoom() + 1),
+				zoom2: () => map.setZoom(map.getZoom() + 2),
+				zoom2anim: () => map.setZoom(map.getZoom() + 2, {animate: true}),
+				zoomOut: () => map.setZoom(map.getZoom() - 1),
+				panShort: () => map.panBy(map.getSize().divideBy(4)),
+				panLong: () => map.panBy(map.getSize().multiplyBy(0.75)),
+				panLongAnim: () => map.panBy(map.getSize().multiplyBy(0.75), {animate: true}),
+				flyNear: () => map.flyTo(map.containerPointToLatLng(map.getSize().divideBy(3)), map.getZoom() + 1),
+				flyFar: () => map.flyTo(kyiv, 10),
+				flyFarAnim: () => map.flyTo(kyiv, 10, {animate: true}),
+				flyFarNoAnim: () => map.flyTo(kyiv, 10, {animate: false}),
+				home: () => map.setView(home, 13, {animate: false})
+			};
+
+			for (const button of document.querySelectorAll('[data-action]')) {
+				button.addEventListener('click', () => {
+					// instant view changes fire moveend synchronously, animated ones only when they finish
+					let ended = false;
+					const onEnd = () => { ended = true; };
+					map.once('moveend', onEnd);
+					actions[button.dataset.action]();
+					map.off('moveend', onEnd);
+					const mode = reducedCheckbox.checked ? 'reduced' : 'normal';
+					log(`${button.textContent} [${mode}]: ${ended ? 'instant' : 'animated'}`);
+				});
+			}
+
+			// log user-driven zoom animations too
+			map.on('zoomanim', e => log(`zoomanim to ${e.zoom}`));
+
+			// log how far and how long the map coasts after a fling
+			map.on('dragend', () => {
+				const startPos = map._getMapPanePos(),
+				startTime = performance.now();
+				map.once('moveend', () => {
+					const dist = Math.round(map._getMapPanePos().distanceTo(startPos)),
+					time = ((performance.now() - startTime) / 1000).toFixed(2);
+					if (dist) { log(`inertia: ${dist}px in ${time}s (half size: ${map.getSize().divideBy(2)})`); }
+				});
+			});
+		</script>
+	</body>
+</html>

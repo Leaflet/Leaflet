@@ -4,40 +4,40 @@
   "homepage": "https://leafletjs.com/",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
-    "@eslint/css": "^0.14.1",
-    "@mapbox/eslint-plugin-script-tags": "^1.0.0",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-terser": "^0.4.4",
-    "bundlemon": "^3.1.0",
-    "chai": "^6.2.2",
-    "eslint": "^9.39.2",
-    "eslint-config-mourner": "^4.1.0",
-    "eslint-plugin-baseline-js": "^0.5.0",
-    "eslint-plugin-import-x": "^4.16.1",
+    "@e18e/eslint-plugin": "^0.8.1",
+    "@eslint/compat": "^2.1.1",
+    "@eslint/css": "^2.0.1",
+    "@mourner/yeahml": "1.1.0",
+    "@vitest/browser": "^5.0.5",
+    "@vitest/browser-playwright": "^5.0.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/ui": "^5.0.5",
+    "eslint": "^10.13.0",
+    "eslint-config-mourner": "^5.0.2",
+    "eslint-plugin-baseline-js": "^0.7.6",
+    "eslint-plugin-html": "^8.2.1",
+    "eslint-plugin-import-x": "^4.17.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
-    "karma": "^6.4.4",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-coverage": "^2.2.1",
-    "karma-firefox-launcher": "^2.1.3",
-    "karma-mocha": "^2.0.1",
-    "karma-safarinative-launcher": "^1.1.0",
-    "karma-time-stats-reporter": "^0.1.0",
-    "leafdoc": "^2.3.0",
-    "lint-staged": "^16.2.7",
-    "mocha": "^11.7.5",
-    "prosthetic-hand": "^2.0.0",
-    "requirejs": "^2.3.8",
-    "rollup": "^4.57.1",
-    "sinon": "^21.0.1",
-    "ssri": "^13.0.0",
-    "ui-event-simulator": "^2.0.0"
+    "leafdoc": "^2.4.0",
+    "lint-staged": "^17.6.0",
+    "liquidjs": "10.30.0",
+    "marked": "18.1.2",
+    "marked-smartypants": "1.1.12",
+    "playwright": "^1.64.1",
+    "rolldown": "^1.2.15",
+    "sinon": "^22.1.0",
+    "ui-event-simulator": "^2.0.0",
+    "vitest": "^5.0.5"
   },
   "type": "module",
   "exports": {
-    ".": "./dist/leaflet-src.js",
+    ".": "./src/Leaflet.js",
     "./styles.css": "./dist/leaflet.css"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "style": "dist/leaflet.css",
   "files": [
     "dist",
@@ -48,16 +48,19 @@
   ],
   "scripts": {
     "debug": "http-server -c-1",
-    "docs": "node ./build/docs.js && node ./build/integrity.js",
-    "test": "karma start ./spec/karma.conf.cjs",
-    "coverage": "karma start ./spec/karma.conf.cjs --coverage --single-run",
-    "build": "rollup --config build/rollup-config.js",
+    "test": "vitest run",
+    "test:ui": "vitest --ui --browser.headless=false",
+    "coverage": "vitest run --coverage",
+    "build": "rolldown --config build/rolldown-config.js",
     "watch": "npm run build -- --watch",
-    "lint": "eslint .",
+    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/* CHANGELOG.md LICENSE README.md",
+    "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
-    "bundlemon": "bundlemon",
-    "serve": "cd docs && bundle exec jekyll serve",
-    "prepare": "husky"
+    "site": "node build/site.js",
+    "serve": "npm run site && http-server _site -c-1",
+    "pin-release": "node build/pin-release.js",
+    "prepare": "husky",
+    "version": "node build/version.js && git add src/Leaflet.js"
   },
   "repository": {
     "type": "git",
@@ -70,5 +73,9 @@
   "license": "BSD-2-Clause",
   "lint-staged": {
     "*.(js|mjs|md)": "eslint --cache --fix"
+  },
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true,
+    "fsevents@2.3.3": true
   }
 }

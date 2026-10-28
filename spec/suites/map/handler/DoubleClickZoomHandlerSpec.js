@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {LeafletMap} from 'leaflet';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';

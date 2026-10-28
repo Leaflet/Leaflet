@@ -1,6 +1,4 @@
-import {expect} from 'chai';
 import {CRS, EPSG3395, EPSG3857, EPSG4326, EarthCRS, SimpleCRS, Util, LatLng, LatLngBounds, Point} from 'leaflet';
-import '../../SpecHelper.js';
 
 describe('EPSG3857', () => {
 	const crs = EPSG3857;
@@ -242,14 +240,15 @@ describe('CRS', () => {
 });
 
 describe('CRS.ZoomNotPowerOfTwo', () => {
-	const crs = Object.assign({}, CRS, {
+	const crs = {
+		...CRS,
 		scale(zoom) {
 			return 256 * 1.5 ** zoom;
 		},
 		zoom(scale) {
 			return Math.log(scale / 256) / Math.log(1.5);
 		}
-	});
+	};
 
 	describe('#scale', () => {
 		it('of zoom levels are related by a power of 1.5', () => {
@@ -275,8 +274,10 @@ describe('EarthCRS', () => {
 		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
 		// is correct, since that's what International Union of Geodesy and Geophysics recommends,
 		// and that sounds serious.
-		const p1 = new LatLng(36.12, -86.67);
-		const p2 = new LatLng(33.94, -118.40);
-		expect(EarthCRS.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		it('computes great-circle distance between two points', () => {
+			const p1 = new LatLng(36.12, -86.67);
+			const p2 = new LatLng(33.94, -118.40);
+			expect(EarthCRS.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+		});
 	});
 });

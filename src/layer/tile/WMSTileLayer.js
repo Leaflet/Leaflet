@@ -1,7 +1,49 @@
 import {TileLayer} from './TileLayer.js';
-import Browser from '../../core/Browser.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';
+
+// @namespace WMSTileLayer
+
+// @section
+// @aka WMSTileLayer options
+// If any custom options not documented here are used, they will be sent to the
+// WMS server as extra parameters in each request URL. This can be useful for
+// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
+const defaultWmsParams = {
+	service: 'WMS',
+	request: 'GetMap',
+
+	// @option layers: String = ''
+	// **(required)** Comma-separated list of WMS layers to show.
+	layers: '',
+
+	// @option styles: String = ''
+	// Comma-separated list of WMS styles.
+	styles: '',
+
+	// @option format: String = 'image/jpeg'
+	// WMS image format (use `'image/png'` for layers with transparency).
+	format: 'image/jpeg',
+
+	// @option transparent: Boolean = false
+	// If `true`, the WMS service will return images with transparency.
+	transparent: false,
+
+	// @option version: String = '1.1.1'
+	// Version of the WMS service to use
+	version: '1.1.1'
+};
+
+const defaultOptions = {
+	// @option crs: CRS = null
+	// Coordinate Reference System to use for the WMS requests, defaults to
+	// map CRS. Don't change this if you're not sure what it means.
+	crs: null,
+
+	// @option uppercase: Boolean = false
+	// If `true`, WMS request parameter keys will be uppercase.
+	uppercase: false
+};
 
 /*
  * @class WMSTileLayer
@@ -22,81 +64,52 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor WMSTileLayer(baseUrl: String, options: WMSTileLayer options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
+
 export class WMSTileLayer extends TileLayer {
 
-	static {
-		// @section
-		// @aka WMSTileLayer options
-		// If any custom options not documented here are used, they will be sent to the
-		// WMS server as extra parameters in each request URL. This can be useful for
-		// [non-standard vendor WMS parameters](https://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
-		this.prototype.defaultWmsParams = {
-			service: 'WMS',
-			request: 'GetMap',
+	static initHooks = true;
 
-			// @option layers: String = ''
-			// **(required)** Comma-separated list of WMS layers to show.
-			layers: '',
+	static defaultWmsParams = defaultWmsParams;
 
-			// @option styles: String = ''
-			// Comma-separated list of WMS styles.
-			styles: '',
+	static defaultOptions = defaultOptions;
 
-			// @option format: String = 'image/jpeg'
-			// WMS image format (use `'image/png'` for layers with transparency).
-			format: 'image/jpeg',
+	constructor(url, options) {
+		super(url, options);
 
-			// @option transparent: Boolean = false
-			// If `true`, the WMS service will return images with transparency.
-			transparent: false,
+		const wmsParams = {...WMSTileLayer.defaultWmsParams};
 
-			// @option version: String = '1.1.1'
-			// Version of the WMS service to use
-			version: '1.1.1'
-		};
-
-		this.setDefaultOptions({
-			// @option crs: CRS = null
-			// Coordinate Reference System to use for the WMS requests, defaults to
-			// map CRS. Don't change this if you're not sure what it means.
-			crs: null,
-
-			// @option uppercase: Boolean = false
-			// If `true`, WMS request parameter keys will be uppercase.
-			uppercase: false
-		});
-	}
-
-	initialize(url, options) {
-		super.initialize(url, options);
-
-		const wmsParams = {...this.defaultWmsParams};
-
-		// Options that are unknown in the prototype chain are considered WMS params.
+		// Options that are unknown in the defaults chain are considered WMS params.
 		for (const [key, value] of Object.entries(options)) {
-			if (!(key in WMSTileLayer.prototype.options)) {
+			if (!(key in WMSTileLayer.defaultOptions)) {
 				wmsParams[key] = value;
 			}
 		}
 
-		const realRetina = this.options.detectRetina && Browser.retina ? 2 : 1;
+		const realRetina = this.options.detectRetina && window.devicePixelRatio > 1 ? 2 : 1;
 		const tileSize = this.getTileSize();
 
 		wmsParams.width = tileSize.x * realRetina;
 		wmsParams.height = tileSize.y * realRetina;
 
 		this.wmsParams = wmsParams;
+
+		this.callInitHooks();
 	}
 
 	onAdd(map) {
 
 		this._crs = this.options.crs ?? map.options.crs;
-		this._wmsVersion = parseFloat(this.wmsParams.version);
-
-		const projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
-		this.wmsParams[projectionKey] = this._crs.code;
+		this._updateCrsParam();
 
 		super.onAdd(map);
+	}
+
+	_updateCrsParam() {
+		this._wmsVersion = parseFloat(this.wmsParams.version);
+
+		delete this.wmsParams.srs;
+		delete this.wmsParams.crs;
+		this.wmsParams[this._wmsVersion >= 1.3 ? 'crs' : 'srs'] = this._crs.code;
 	}
 
 	getTileUrl(coords) {
@@ -109,9 +122,9 @@ export class WMSTileLayer extends TileLayer {
 		bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 			[min.y, min.x, max.y, max.x] :
 			[min.x, min.y, max.x, max.y]).join(',');
-		const url = new URL(super.getTileUrl(coords));
+		const url = new URL(super.getTileUrl(coords), document.baseURI);
 		for (const [k, v] of Object.entries({...this.wmsParams, bbox})) {
-			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, v);
+			url.searchParams.append(this.options.uppercase ? k.toUpperCase() : k, `${v}`);
 		}
 		return url.toString();
 	}
@@ -121,6 +134,8 @@ export class WMSTileLayer extends TileLayer {
 	setParams(params, noRedraw) {
 
 		Object.assign(this.wmsParams, params);
+
+		if (this._crs) { this._updateCrsParam(); }
 
 		if (!noRedraw) {
 			this.redraw();

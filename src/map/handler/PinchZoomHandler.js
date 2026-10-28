@@ -1,28 +1,12 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
+import * as DomUtil from '../../dom/DomUtil.js';
+import {Point} from '../../geometry/Point.js';
 import * as PointerEvents from '../../dom/DomEvent.PointerEvents.js';
 
 /*
  * Handler.PinchZoom is used by Map to add pinch zoom on supported mobile browsers.
  */
-
-// @namespace LeafletMap
-// @section Interaction Options
-LeafletMap.mergeOptions({
-	// @section Touch interaction options
-	// @option pinchZoom: Boolean|String = *
-	// Whether the map can be zoomed by touch-dragging with two fingers. If
-	// passed `'center'`, it will zoom to the center of the view regardless of
-	// where the touch events (fingers) were. Enabled for touch-capable web
-	// browsers.
-	pinchZoom: true,
-
-	// @option bounceAtZoomLimits: Boolean = true
-	// Set it to false if you don't want the map to zoom beyond min/max zoom
-	// and then bounce back when pinch-zooming.
-	bounceAtZoomLimits: true
-});
 
 export class PinchZoomHandler extends Handler {
 	addHooks() {
@@ -33,6 +17,8 @@ export class PinchZoomHandler extends Handler {
 	removeHooks() {
 		this._map._container.classList.remove('leaflet-touch-zoom');
 		DomEvent.off(this._map._container, 'pointerdown', this._onPointerStart, this);
+		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 	}
 
 	_onPointerStart(e) {
@@ -41,8 +27,13 @@ export class PinchZoomHandler extends Handler {
 		const pointers = PointerEvents.getPointers();
 		if (pointers.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		const p1 = map.pointerEventToContainerPoint(pointers[0]),
-		p2 = map.pointerEventToContainerPoint(pointers[1]);
+		const p1 = map.pointerEventToContainerPoint(pointers[0]);
+		const p2 = map.pointerEventToContainerPoint(pointers[1]);
+		const {x, y} = DomUtil.getScale(map._container);
+
+		// the container doesn't move during a pinch, so keep its client offset and CSS scale to avoid reading layout on every move
+		this._containerScale = new Point(x, y);
+		this._containerOrigin = new Point(pointers[0].clientX, pointers[0].clientY)._subtract(p1.scaleBy(this._containerScale));
 
 		this._centerPoint = map.getSize()._divideBy(2);
 		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
@@ -58,8 +49,8 @@ export class PinchZoomHandler extends Handler {
 
 		map._stop();
 
-		DomEvent.on(document, 'pointermove', this._onPointerMove, this);
-		DomEvent.on(document, 'pointerup pointercancel', this._onPointerEnd, this);
+		DomEvent.on(this._map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.on(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
 
 		e.preventDefault();
 	}
@@ -69,8 +60,8 @@ export class PinchZoomHandler extends Handler {
 		if (pointers.length !== 2 || !this._zooming) { return; }
 
 		const map = this._map,
-		p1 = map.pointerEventToContainerPoint(pointers[0]),
-		p2 = map.pointerEventToContainerPoint(pointers[1]),
+		p1 = this._toContainerPoint(pointers[0]),
+		p2 = this._toContainerPoint(pointers[1]),
 		scale = p1.distanceTo(p2) / this._startDist;
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
@@ -104,7 +95,14 @@ export class PinchZoomHandler extends Handler {
 		e.preventDefault();
 	}
 
+	_toContainerPoint(e) {
+		return new Point(e.clientX, e.clientY)._subtract(this._containerOrigin).unscaleBy(this._containerScale);
+	}
+
 	_onPointerEnd() {
+		DomEvent.off(this._map._container, 'pointermove', this._onPointerMove, this);
+		DomEvent.off(this._map._container, 'pointerup pointercancel', this._onPointerEnd, this);
+
 		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
@@ -113,36 +111,11 @@ export class PinchZoomHandler extends Handler {
 		this._zooming = false;
 		cancelAnimationFrame(this._animRequest);
 
-		DomEvent.off(document, 'pointermove', this._onPointerMove, this);
-		DomEvent.off(document, 'pointerup pointercancel', this._onPointerEnd, this);
-
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
-		if (this._map.options.zoomAnimation) {
+		if (this._map._zoomAnimated) {
 			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap);
 		} else {
 			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
 		}
 	}
 }
-
-// @section Handlers
-// @property pinchZoom: Handler
-// Pinch zoom handler.
-LeafletMap.addInitHook('addHandler', 'pinchZoom', PinchZoomHandler);
-
-// Deprecated - Backward compatibility touchZoom
-LeafletMap.addInitHook(function () {
-	this.touchZoom = this.pinchZoom;
-
-	if (this.options.touchZoom !== undefined) {
-		// To be removed in leaflet 3
-		console.warn('Map: touchZoom option is deprecated and will be removed in future versions. Use pinchZoom instead.');
-		this.options.pinchZoom = this.options.touchZoom;
-		delete this.options.touchZoom;
-	}
-	if (this.options.pinchZoom) {
-		this.pinchZoom.enable();
-	} else {
-		this.pinchZoom.disable();
-	}
-});

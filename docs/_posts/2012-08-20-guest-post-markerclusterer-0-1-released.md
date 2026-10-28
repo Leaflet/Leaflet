@@ -14,7 +14,6 @@ To improve this, many sites use marker clustering, a technique of grouping marke
 
 <div id="map" class="map" style="height: 320px"></div>
 
-{:#plugin-features}
 ### Features
 
 The clusterer has all sorts of great built in behaviour:
@@ -60,10 +59,11 @@ You can download the latest release on the <a href="https://github.com/leaflet/L
 
 The underlying clustering algorithm (`MarkerClusterGroup._cluster`) is plain greedy clustering.
 
-{: .no-highlight}
-    foreach marker
-        if there is a cluster within the clustering distance, join it.
-        else if there is an unclustered marker within the clustering distance, form a cluster with it.
+```no-highlight
+foreach marker
+    if there is a cluster within the clustering distance, join it.
+    else if there is an unclustered marker within the clustering distance, form a cluster with it.
+```
 
 The first clustering step we do for the maximum (bottom most) zoom level, we then cluster all of the resulting markers and clusters to generate the next zoom level up and so on until we have reached the top.
 These clusters are stored in a tree (A cluster contains its child clusters) with good geospatial qualities. We use this tree to optimise identifying what markers and clusters are on screen at any particular zoom level.

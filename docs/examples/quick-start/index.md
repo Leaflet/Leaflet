@@ -134,6 +134,8 @@ polygon.bindPopup("I am a polygon.");
 
 Try clicking on our objects. The `bindPopup` method attaches a popup with the specified HTML content to your marker so the popup appears when you click on the object, and the `openPopup` method (for markers only) immediately opens the attached popup.
 
+Note that popup content is rendered as HTML, so don't pass untrusted user input to it directly.
+
 You can also use popups as layers (when you need something more than attaching a popup to an object):
 
 ```javascript

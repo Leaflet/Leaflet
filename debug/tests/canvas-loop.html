@@ -4,12 +4,12 @@
 		<meta charset="utf-8" />
 		<title>Leaflet debug page - Canvas Loop</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.js"
+					"leaflet": "../../src/Leaflet.js"
 				}
 			}
 		</script>
@@ -17,12 +17,12 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, TileLayer, LayerGroup, CircleMarker} from 'leaflet';
+			import {LeafletMap, TileLayer, LayerGroup, CircleMarker, Canvas} from 'leaflet';
 
 			const map = new LeafletMap('map', {
 				center: [39.84, -96.591],
 				zoom: 4,
-				preferCanvas: true
+				renderer: new Canvas()
 			}).locate();
 
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);

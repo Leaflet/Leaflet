@@ -1,7 +1,5 @@
 import {Point} from './Point.js';
 import {LatLng} from '../geo/LatLng.js';
-import {centroid} from './PolyUtil.js';
-import {LatLngBounds} from '../geo/LatLngBounds.js';
 
 
 /*
@@ -117,6 +115,7 @@ let _lastCode;
 // (modifying the segment points directly!). Used by Leaflet to only show polyline
 // points that are on the screen or near, increasing performance.
 export function clipSegment(a, b, bounds, useLastCode, round) {
+	const a0 = a, b0 = b;
 	let codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
 	codeB = _getBitCode(b, bounds),
 
@@ -128,6 +127,12 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 	while (true) {
 		// if a,b is inside the clip window (trivial accept)
 		if (!(codeA | codeB)) {
+			// round only the endpoints that were replaced by a clipped intersection;
+			// rounding while iterating can push a point back outside and loop forever
+			if (round) {
+				if (a !== a0) { a = a.round(); }
+				if (b !== b0) { b = b.round(); }
+			}
 			return [a, b];
 		}
 
@@ -138,7 +143,7 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 
 		// other cases
 		codeOut = codeA || codeB;
-		p = _getEdgeIntersection(a, b, codeOut, bounds, round);
+		p = _getEdgeIntersection(a, b, codeOut, bounds);
 		newCode = _getBitCode(p, bounds);
 
 		if (codeOut === codeA) {
@@ -241,8 +246,39 @@ export function isFlat(latlngs) {
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
  */
 export function polylineCenter(latlngs, crs) {
-	let i, halfDist, segDist, dist, p1, p2, ratio, center;
+	const points = _projectRing(latlngs, crs),
+	len = points.length;
 
+	let halfDist = 0;
+	for (let i = 1; i < len; i++) {
+		halfDist += points[i - 1].distanceTo(points[i]);
+	}
+	halfDist /= 2;
+
+	// if the line has zero length, the loop below never finds a segment and the first point is the center
+	let center = points[0];
+
+	for (let i = 1, dist = 0; i < len; i++) {
+		const p1 = points[i - 1],
+		p2 = points[i],
+		segDist = p1.distanceTo(p2);
+		dist += segDist;
+
+		if (dist > halfDist) {
+			const ratio = (dist - halfDist) / segDist;
+			center = new Point(
+				p2.x - ratio * (p2.x - p1.x),
+				p2.y - ratio * (p2.y - p1.y)
+			);
+			break;
+		}
+	}
+
+	return crs.unproject(center);
+}
+
+// Projects the first ring of the given latlngs.
+export function _projectRing(latlngs, crs) {
 	if (!latlngs || latlngs.length === 0) {
 		throw new Error('latlngs not passed');
 	}
@@ -252,48 +288,5 @@ export function polylineCenter(latlngs, crs) {
 		latlngs = latlngs[0];
 	}
 
-	let centroidLatLng = new LatLng([0, 0]);
-
-	const bounds = new LatLngBounds(latlngs);
-	const areaBounds = bounds.getNorthWest().distanceTo(bounds.getSouthWest()) * bounds.getNorthEast().distanceTo(bounds.getNorthWest());
-	// tests showed that below 1700 rounding errors are happening
-	if (areaBounds < 1700) {
-		// getting a inexact center, to move the latlngs near to [0, 0] to prevent rounding errors
-		centroidLatLng = centroid(latlngs);
-	}
-
-	const len = latlngs.length;
-	const points = [];
-	for (i = 0; i < len; i++) {
-		const latlng = new LatLng(latlngs[i]);
-		points.push(crs.project(new LatLng([latlng.lat - centroidLatLng.lat, latlng.lng - centroidLatLng.lng])));
-	}
-
-	for (i = 0, halfDist = 0; i < len - 1; i++) {
-		halfDist += points[i].distanceTo(points[i + 1]) / 2;
-	}
-
-	// The line is so small in the current view that all points are on the same pixel.
-	if (halfDist === 0) {
-		center = points[0];
-	} else {
-		for (i = 0, dist = 0; i < len - 1; i++) {
-			p1 = points[i];
-			p2 = points[i + 1];
-			segDist = p1.distanceTo(p2);
-			dist += segDist;
-
-			if (dist > halfDist) {
-				ratio = (dist - halfDist) / segDist;
-				center = [
-					p2.x - ratio * (p2.x - p1.x),
-					p2.y - ratio * (p2.y - p1.y)
-				];
-				break;
-			}
-		}
-	}
-
-	const latlngCenter = crs.unproject(new Point(center));
-	return new LatLng([latlngCenter.lat + centroidLatLng.lat, latlngCenter.lng + centroidLatLng.lng]);
+	return latlngs.map(latlng => crs.project(new LatLng(latlng)));
 }

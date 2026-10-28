@@ -4,12 +4,12 @@
 		<meta charset="utf-8" />
 		<title>Leaflet debug page - Moving Canvas</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.js"
+					"leaflet": "../../src/Leaflet.js"
 				}
 			}
 		</script>
@@ -17,14 +17,14 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {TileLayer, LeafletMap, CircleMarker} from 'leaflet';
+			import {TileLayer, LeafletMap, CircleMarker, Canvas} from 'leaflet';
 
 			const osm = new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				maxZoom: 19,
 				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 			});
 
-			const map = new LeafletMap('map', {preferCanvas: true})
+			const map = new LeafletMap('map', {renderer: new Canvas()})
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 

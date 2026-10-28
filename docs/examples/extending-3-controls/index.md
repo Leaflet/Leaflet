@@ -11,7 +11,7 @@ In Leaflet, a "layer" is anything that moves with the map. In contraposition to 
 
 ## Handlers
 
-Map handlers are a new concept in Leaflet 1.0, and their function is to process DOM events from the browser (like `click`, `dblclick` or `mousewheel`) and change the state of the map.
+Map handlers process DOM events from the browser (like `click`, `dblclick` or `mousewheel`) and change the state of the map.
 
 Handlers are relatively simple: they just need an `addHooks()` method (which runs when the handler is enabled in a map) and a `removeHooks()`, which runs when the handler is disabled. A skeleton for handlers is:
 
@@ -58,7 +58,7 @@ Moreover, if the map has a property named the same as the handler, then that han
 
 	const map = new LeafletMap('mapDiv', { tilt: true });
 
-To see this example, you'll need a mobile browser which [supports the `deviceorientation` event](http://caniuse.com/#search=deviceorientation) - and even so, this event is particularly flaky and ill-specified, so beware.
+To see this example, you'll need a mobile browser that supports the [`deviceorientation` event](https://developer.mozilla.org/docs/Web/API/Window/deviceorientation_event) — support and behavior still vary across devices, so beware.
 
 {% include frame.html url="tilt.html" %}
 

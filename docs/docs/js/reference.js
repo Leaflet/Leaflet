@@ -1,4 +1,4 @@
-if (document.body.className.indexOf('api-page') !== -1) {
+if (document.body.className.includes('api-page')) {
 
 	let elems = document.querySelectorAll('h2, h3, h4, tr');
 
@@ -65,10 +65,10 @@ if (document.body.className.indexOf('api-page') !== -1) {
 			setTimeout(() => {
 				// .closest('.accordion') would be a alternative but is not working in IE
 				const getParentAccordion = function (el) {
-					while (el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') === -1) {
+					while (el.parentNode && !` ${el.parentNode.className} `.includes(' accordion ')) {
 						el = el.parentNode;
 					}
-					return el.parentNode && (` ${el.parentNode.className} `).indexOf(' accordion ') > -1 ? el.parentNode : null;
+					return el.parentNode && ` ${el.parentNode.className} `.includes(' accordion ') ? el.parentNode : null;
 				};
 
 				const elm = document.getElementById(urlAnchor.substring(1));

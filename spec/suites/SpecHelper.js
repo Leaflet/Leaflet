@@ -1,39 +1,4 @@
-import {Assertion, util} from 'chai';
-import {LatLng, Point, DomEvent} from 'leaflet';
-
-util.addMethod(Assertion.prototype, 'near', function (expected, delta = 1) {
-	expected = new Point(expected);
-
-	new Assertion(this._obj.x).to.be.within(expected.x - delta, expected.x + delta);
-	new Assertion(this._obj.y).to.be.within(expected.y - delta, expected.y + delta);
-});
-
-util.addMethod(Assertion.prototype, 'nearLatLng', function (expected, delta = 1e-4) {
-	expected = new LatLng(expected);
-
-	new Assertion(this._obj.lat).to.be.within(expected.lat - delta, expected.lat + delta);
-	new Assertion(this._obj.lng).to.be.within(expected.lng - delta, expected.lng + delta);
-	new Assertion(this._obj.alt).to.eql(expected.alt);
-});
-
-util.addMethod(Assertion.prototype, 'eqlLatLng', function (expected) {
-	expected = new LatLng(expected);
-
-	new Assertion(this._obj.lat).to.eql(expected.lat);
-	new Assertion(this._obj.lng).to.eql(expected.lng);
-	new Assertion(this._obj.alt).to.eql(expected.alt);
-});
-
-const runAsTouchBrowser = window.__karma__.config.runAsTouchBrowser || false;
-
-// A couple of tests need the browser to be touch-capable
-it.skipIfNotTouch = runAsTouchBrowser ? it : it.skip;
-it.skipIfTouch = runAsTouchBrowser ? it.skip : it;
-
-export const pointerType = runAsTouchBrowser ? 'touch' : 'mouse';
-export const pointerEventType = ['pointer', {pointerType}];
-
-console.error('Touch', runAsTouchBrowser);
+import sinon from 'sinon';
 
 export function createContainer(width, height) {
 	width = width ? width : '400px';
@@ -44,7 +9,6 @@ export function createContainer(width, height) {
 	container.style.left = '0px';
 	container.style.height = height;
 	container.style.width = width;
-	container.style.opacity = '0.4';
 	document.body.appendChild(container);
 
 	return container;
@@ -55,7 +19,109 @@ export function removeMapContainer(map, container) {
 	if (container) {
 		document.body.removeChild(container);
 	}
-
-	DomEvent.PointerEvents.cleanupPointers();
 }
 
+// fake timers that also drive element animations: sinon doesn't fake Web Animations, so `animate` is replaced
+// with a stub whose `onfinish` fires on a faked timeout after the animation duration, and the zoom transition is
+// turned off so that its real `transitionend` can't end a zoom before the faked timeout does on a slow runner
+export function createClock() {
+	const clock = sinon.useFakeTimers({
+		toFake: ['setTimeout', 'clearTimeout', 'Date']
+	});
+	const animate = sinon.stub(Element.prototype, 'animate').callsFake((keyframes, duration) => {
+		const animation = {};
+		setTimeout(() => animation.onfinish?.(), duration);
+		return animation;
+	});
+	const style = document.createElement('style');
+	style.textContent = '.leaflet-zoom-anim .leaflet-zoom-animated { transition: none !important; }';
+	document.head.appendChild(style);
+
+	const restore = clock.restore.bind(clock);
+	clock.restore = () => {
+		style.remove();
+		animate.restore();
+		restore();
+	};
+	return clock;
+}
+
+// Simulates a mouse, pen or touch pointer. Steps are queued and dispatched as pointer events, one step per animation
+// frame, with all active fingers stepping in the same frame callback; awaiting a finger waits for its queue to finish.
+
+const active = new Set();
+let frame = 0;
+let lastId = 1000;
+
+// a single loop for all fingers keeps them in lockstep, and runs after any rAF callbacks queued by the previous step
+function tick() {
+	frame = 0;
+	for (const finger of active) {
+		const step = finger.steps.shift();
+		if (step) {
+			finger.dispatch(...step);
+		} else {
+			active.delete(finger);
+			finger.resolve();
+		}
+	}
+	if (active.size) { frame = requestAnimationFrame(tick); }
+}
+
+export class Finger {
+	constructor(pointerType = 'mouse') {
+		this.pointerType = pointerType;
+		this.id = ++lastId;
+		this.x = 0;
+		this.y = 0;
+		this.steps = [];
+		this.done = Promise.resolve();
+	}
+
+	moveTo(x, y, init) { return this.step('move', x, y, init); }
+	moveBy(dx, dy, init) { return this.step('move', this.x + dx, this.y + dy, init); }
+	down(init) { return this.step('down', this.x, this.y, init); }
+	up(init) { return this.step('up', this.x, this.y, init); }
+
+	then(resolve, reject) {
+		return this.done.then(resolve, reject);
+	}
+
+	step(type, x, y, init) {
+		this.x = x;
+		this.y = y;
+		this.steps.push([type, x, y, init]);
+		if (!active.has(this)) {
+			active.add(this);
+			this.done = new Promise((resolve) => { this.resolve = resolve; });
+		}
+		frame ||= requestAnimationFrame(tick);
+		return this;
+	}
+
+	dispatch(type, x, y, init) {
+		const {pointerType, downAt} = this;
+
+		// a pressed pointer sticks to the element it went down on, like with pointer capture
+		const target = downAt && this.downTarget.isConnected ? this.downTarget :
+			document.elementFromPoint(x, y) ?? document;
+
+		if (type === 'down') {
+			this.downAt = {x, y};
+			this.downTarget = target;
+		} else if (type === 'up') {
+			this.downAt = null;
+		}
+
+		const props = {bubbles: true, cancelable: true, clientX: x, clientY: y, screenX: x, screenY: y, ...init};
+		const notCancelled = target.dispatchEvent(new PointerEvent(`pointer${type}`, {
+			...props, pointerId: this.id, pointerType,
+			button: type === 'move' ? -1 : 0, buttons: this.downAt ? 1 : 0
+		}));
+
+		// browsers click after a tap but not after a drag, and never after synthetic pointer events, so do it here
+		if (type === 'up' && notCancelled && Math.hypot(x - downAt.x, y - downAt.y) <= 5) {
+			target.dispatchEvent(new MouseEvent('click', {...props, detail: 1}));
+		}
+	}
+}

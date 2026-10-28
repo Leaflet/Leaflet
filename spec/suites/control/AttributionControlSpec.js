@@ -1,6 +1,5 @@
 import {LeafletMap, AttributionControl, Layer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
-import {expect} from 'chai';
 
 describe('AttributionControl', () => {
 	let map, control, container, controlContainer;
@@ -122,6 +121,86 @@ describe('AttributionControl', () => {
 			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
 			map.removeLayer(fo3Layer);
 			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		// https://github.com/Leaflet/Leaflet/issues/8416
+		it('removes the attribution of a layer that was on the map before the control was added', () => {
+			const fooLayer = dummyLayer();
+			const barLayer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			barLayer.getAttribution = function () { return 'bar'; };
+
+			control.remove();
+			map.addLayer(fooLayer);
+			control.addTo(map);
+			controlContainer = control.getContainer();
+
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			map.removeLayer(fooLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix');
+			map.addLayer(barLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
+		});
+
+		it('keeps count of duplicated attributions of layers that were on the map before the control was added', () => {
+			const fooLayer = dummyLayer();
+			const fo2Layer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			fo2Layer.getAttribution = function () { return 'foo'; };
+
+			control.remove();
+			map.addLayer(fooLayer);
+			map.addLayer(fo2Layer);
+			control.addTo(map);
+			controlContainer = control.getContainer();
+
+			map.removeLayer(fooLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix <span aria-hidden="true">|</span> foo');
+			map.removeLayer(fo2Layer);
+			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		it('keeps count of the attributions when the control is added again', () => {
+			const fooLayer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+
+			map.addLayer(fooLayer);
+			control.remove();
+			control.addTo(map);
+			controlContainer = control.getContainer();
+
+			map.removeLayer(fooLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		it('removes the attribution a layer was added with even if it changed since', () => {
+			const fooLayer = dummyLayer();
+			let text = 'foo';
+			fooLayer.getAttribution = function () { return text; };
+
+			map.addLayer(fooLayer);
+			text = 'bar';
+			map.removeLayer(fooLayer);
+			expect(controlContainer.innerHTML).to.eql('prefix');
+		});
+
+		it('handles layers added and removed before the map is loaded', () => {
+			const map2 = new LeafletMap(createContainer());
+			const control2 = new AttributionControl({prefix: 'prefix'});
+			const fooLayer = dummyLayer();
+			const barLayer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			barLayer.getAttribution = function () { return 'bar'; };
+
+			map2.addLayer(fooLayer).addLayer(barLayer);
+			control2.addTo(map2);
+			map2.removeLayer(fooLayer);
+			map2.setView([0, 0], 1);
+
+			expect(control2.getContainer().innerHTML).to.eql('prefix <span aria-hidden="true">|</span> bar');
+			map2.removeLayer(barLayer);
+			expect(control2.getContainer().innerHTML).to.eql('prefix');
+			removeMapContainer(map2, map2.getContainer());
 		});
 	});
 });

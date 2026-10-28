@@ -1,5 +1,4 @@
 import * as Util from '../core/Util.js';
-import {EarthCRS} from './crs/EarthCRS.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
 /* @class LatLng
@@ -35,7 +34,7 @@ import {LatLngBounds} from './LatLngBounds.js';
 
 // @alternative
 // @constructor LatLng(coords: Object): LatLng
-// Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
+// Expects a plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 //  You can also use `lon` in place of `lng` in the object form.
 export class LatLng {
 	constructor(lat, lng, alt) {
@@ -101,7 +100,7 @@ export class LatLng {
 
 	// eslint-disable-next-line no-unused-vars
 	static validate(lat, lng, alt) {
-		if (lat instanceof LatLng || (typeof lat === 'object' && 'lat' in lat)) {
+		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
 			return true;
 		} else if (lat && Array.isArray(lat) && typeof lat[0] !== 'object') {
 			if (lat.length === 3 || lat.length === 2) {
@@ -138,13 +137,13 @@ export class LatLng {
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula).
 	distanceTo(other) {
-		return EarthCRS.distance(this, new LatLng(other));
+		return haversineDistance(this, new LatLng(other), 6371000);
 	}
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap() {
-		return EarthCRS.wrapLatLng(this);
+		return new LatLng(this.lat, Util.wrapNum(this.lng, [-180, 180], true), this.alt);
 	}
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
@@ -165,7 +164,21 @@ export class LatLng {
 		const latlng = new LatLng(0, 0);
 		latlng.lat = this.lat;
 		latlng.lng = this.lng;
-		latlng.alt = this.alt;
+		if (this.alt !== undefined) {
+			latlng.alt = this.alt;
+		}
 		return latlng;
 	}
 };
+
+// great-circle distance on a sphere of radius R, shared with `EarthCRS.distance`
+export function haversineDistance(latlng1, latlng2, R) {
+	const rad = Math.PI / 180,
+	lat1 = latlng1.lat * rad,
+	lat2 = latlng2.lat * rad,
+	sinDLat = Math.sin((latlng2.lat - latlng1.lat) * rad / 2),
+	sinDLon = Math.sin((latlng2.lng - latlng1.lng) * rad / 2),
+	a = sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
+	c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	return R * c;
+}

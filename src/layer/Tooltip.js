@@ -1,11 +1,40 @@
 import {DivOverlay} from './DivOverlay.js';
 import {Point} from '../geometry/Point.js';
-import {LeafletMap} from '../map/Map.js';
-import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
-import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
-import {FeatureGroup} from './FeatureGroup.js';
+
+// @namespace Tooltip
+
+// @section
+// @aka Tooltip options
+const defaultOptions = {
+	// @option pane: String = 'tooltipPane'
+	// `Map pane` where the tooltip will be added.
+	pane: 'tooltipPane',
+
+	// @option offset: Point = Point(0, 0)
+	// Optional offset of the tooltip position.
+	offset: [0, 0],
+
+	// @option direction: String = 'auto'
+	// Direction where to open the tooltip. Possible values are: `right`, `left`,
+	// `top`, `bottom`, `center`, `auto`.
+	// `auto` will dynamically switch between `right` and `left` according to the tooltip
+	// position on the map.
+	direction: 'auto',
+
+	// @option permanent: Boolean = false
+	// Whether to open the tooltip permanently or only on pointerover.
+	permanent: false,
+
+	// @option sticky: Boolean = false
+	// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
+	sticky: false,
+
+	// @option opacity: Number = 0.9
+	// Tooltip container opacity.
+	opacity: 0.9
+};
 
 /*
  * @class Tooltip
@@ -34,6 +63,16 @@ import {FeatureGroup} from './FeatureGroup.js';
  * 	.addTo(map);
  * ```
  *
+ * **Security note.** Tooltip string content is rendered as HTML. If your content
+ * may include untrusted input (e.g. data from users or external APIs), sanitize
+ * it with a library like [DOMPurify](https://github.com/cure53/DOMPurify), or
+ * build a DOM element using `textContent` to render it as plain text:
+ *
+ * ```js
+ * const el = document.createElement('div');
+ * el.textContent = untrustedString;
+ * marker.bindTooltip(el);
+ * ```
  *
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offsetting:
@@ -51,58 +90,20 @@ import {FeatureGroup} from './FeatureGroup.js';
 // @alternative
 // @constructor Tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
+
 export class Tooltip extends DivOverlay {
 
-	static {
-		// @section
-		// @aka Tooltip options
-		this.setDefaultOptions({
-			// @option pane: String = 'tooltipPane'
-			// `Map pane` where the tooltip will be added.
-			pane: 'tooltipPane',
-
-			// @option offset: Point = Point(0, 0)
-			// Optional offset of the tooltip position.
-			offset: [0, 0],
-
-			// @option direction: String = 'auto'
-			// Direction where to open the tooltip. Possible values are: `right`, `left`,
-			// `top`, `bottom`, `center`, `auto`.
-			// `auto` will dynamically switch between `right` and `left` according to the tooltip
-			// position on the map.
-			direction: 'auto',
-
-			// @option permanent: Boolean = false
-			// Whether to open the tooltip permanently or only on pointerover.
-			permanent: false,
-
-			// @option sticky: Boolean = false
-			// If true, the tooltip will follow the pointer instead of being fixed at the feature center.
-			sticky: false,
-
-			// @option opacity: Number = 0.9
-			// Tooltip container opacity.
-			opacity: 0.9
-		});
-	}
+	static defaultOptions = defaultOptions;
 
 	onAdd(map) {
 		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipopen: TooltipEvent
-		// Fired when a tooltip is opened in the map.
 		map.fire('tooltipopen', {tooltip: this});
 
 		if (this._source) {
 			this.addEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipopen: TooltipEvent
-			// Fired when a tooltip bound to this layer is opened.
 			this._source.fire('tooltipopen', {tooltip: this}, true);
 		}
 	}
@@ -110,19 +111,11 @@ export class Tooltip extends DivOverlay {
 	onRemove(map) {
 		super.onRemove(map);
 
-		// @namespace LeafletMap
-		// @section Tooltip events
-		// @event tooltipclose: TooltipEvent
-		// Fired when a tooltip in the map is closed.
 		map.fire('tooltipclose', {tooltip: this});
 
 		if (this._source) {
 			this.removeEventParent(this._source);
 
-			// @namespace Layer
-			// @section Tooltip events
-			// @event tooltipclose: TooltipEvent
-			// Fired when a tooltip bound to this layer is closed.
 			this._source.fire('tooltipclose', {tooltip: this}, true);
 		}
 	}
@@ -139,7 +132,7 @@ export class Tooltip extends DivOverlay {
 
 	_initLayout() {
 		const prefix = 'leaflet-tooltip',
-		className = `${prefix} ${this.options.className || ''} leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
+		className = `${prefix} ${this.options.className || ''} leaflet-zoom-animated`;
 
 		this._contentNode = this._container = DomUtil.create('div', className);
 
@@ -208,7 +201,7 @@ export class Tooltip extends DivOverlay {
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			this._container.style.opacity = opacity;
+			this._container.style.opacity = `${opacity}`;
 		}
 	}
 
@@ -223,229 +216,3 @@ export class Tooltip extends DivOverlay {
 	}
 
 }
-
-// @namespace LeafletMap
-// @section Methods for Layers and Controls
-LeafletMap.include({
-
-	// @method openTooltip(tooltip: Tooltip): this
-	// Opens the specified tooltip.
-	// @alternative
-	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
-	// Creates a tooltip with the specified content and options and open it.
-	openTooltip(tooltip, latlng, options) {
-		this._initOverlay(Tooltip, tooltip, latlng, options)
-			.openOn(this);
-
-		return this;
-	},
-
-	// @method closeTooltip(tooltip: Tooltip): this
-	// Closes the tooltip given as parameter.
-	closeTooltip(tooltip) {
-		tooltip.close();
-		return this;
-	}
-
-});
-
-/*
- * @namespace Layer
- * @section Tooltip methods example
- *
- * All layers share a set of methods convenient for binding tooltips to it.
- *
- * ```js
- * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
- * layer.openTooltip();
- * layer.closeTooltip();
- * ```
- */
-
-// @section Tooltip methods
-Layer.include({
-
-	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
-	// Binds a tooltip to the layer with the passed `content` and sets up the
-	// necessary event listeners. If a `Function` is passed it will receive
-	// the layer as the first argument and should return a `String` or `HTMLElement`.
-	bindTooltip(content, options) {
-
-		if (this._tooltip && this.isTooltipOpen()) {
-			this.unbindTooltip();
-		}
-
-		this._tooltip = this._initOverlay(Tooltip, this._tooltip, content, options);
-		this._initTooltipInteractions();
-
-		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
-			this.openTooltip();
-		}
-
-		return this;
-	},
-
-	// @method unbindTooltip(): this
-	// Removes the tooltip previously bound with `bindTooltip`.
-	unbindTooltip() {
-		if (this._tooltip) {
-			this._initTooltipInteractions(true);
-			this.closeTooltip();
-			this._tooltip = null;
-		}
-		return this;
-	},
-
-	_initTooltipInteractions(remove) {
-		if (!remove && this._tooltipHandlersAdded) { return; }
-		const onOff = remove ? 'off' : 'on',
-		events = {
-			remove: this.closeTooltip,
-			move: this._moveTooltip
-		};
-		if (!this._tooltip.options.permanent) {
-			events.pointerover = this._openTooltip;
-			events.pointerout = this.closeTooltip;
-			events.click = this._openTooltip;
-			if (this._map) {
-				this._addFocusListeners(remove);
-			} else {
-				events.add = () => this._addFocusListeners(remove);
-			}
-		} else {
-			events.add = this._openTooltip;
-		}
-		if (this._tooltip.options.sticky) {
-			events.pointermove = this._moveTooltip;
-		}
-		this[onOff](events);
-		this._tooltipHandlersAdded = !remove;
-	},
-
-	// @method openTooltip(latlng?: LatLng): this
-	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
-	openTooltip(latlng) {
-		if (this._tooltip) {
-			if (!(this instanceof FeatureGroup)) {
-				this._tooltip._source = this;
-			}
-			if (this._tooltip._prepareOpen(latlng)) {
-				// open the tooltip on the map
-				this._tooltip.openOn(this._map);
-
-				if (this.getElement) {
-					this._setAriaDescribedByOnLayer(this);
-				} else if (this.eachLayer) {
-					this.eachLayer(this._setAriaDescribedByOnLayer, this);
-				}
-			}
-		}
-		return this;
-	},
-
-	// @method closeTooltip(): this
-	// Closes the tooltip bound to this layer if it is open.
-	closeTooltip() {
-		if (this._tooltip) {
-			return this._tooltip.close();
-		}
-	},
-
-	// @method toggleTooltip(): this
-	// Opens or closes the tooltip bound to this layer depending on its current state.
-	toggleTooltip() {
-		this._tooltip?.toggle(this);
-		return this;
-	},
-
-	// @method isTooltipOpen(): boolean
-	// Returns `true` if the tooltip bound to this layer is currently open.
-	isTooltipOpen() {
-		return this._tooltip.isOpen();
-	},
-
-	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
-	// Sets the content of the tooltip bound to this layer.
-	setTooltipContent(content) {
-		this._tooltip?.setContent(content);
-		return this;
-	},
-
-	// @method getTooltip(): Tooltip
-	// Returns the tooltip bound to this layer.
-	getTooltip() {
-		return this._tooltip;
-	},
-
-	_addFocusListeners(remove) {
-		if (this.getElement) {
-			this._addFocusListenersOnLayer(this, remove);
-		} else if (this.eachLayer) {
-			this.eachLayer(layer => this._addFocusListenersOnLayer(layer, remove), this);
-		}
-	},
-
-	_addFocusListenersOnLayer(layer, remove) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
-		if (el) {
-			const onOff = remove ? 'off' : 'on';
-			if (!remove) {
-				// Remove focus listener, if already existing
-				el._leaflet_focus_handler && DomEvent.off(el, 'focus', el._leaflet_focus_handler, this);
-
-				// eslint-disable-next-line camelcase
-				el._leaflet_focus_handler = () => {
-					if (this._tooltip) {
-						this._tooltip._source = layer;
-						this.openTooltip();
-					}
-				};
-			}
-
-			el._leaflet_focus_handler && DomEvent[onOff](el, 'focus', el._leaflet_focus_handler, this);
-			DomEvent[onOff](el, 'blur', this.closeTooltip, this);
-
-			if (remove) {
-				delete el._leaflet_focus_handler;
-			}
-		}
-	},
-
-	_setAriaDescribedByOnLayer(layer) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
-		el?.setAttribute?.('aria-describedby', this._tooltip._container.id);
-	},
-
-
-	_openTooltip(e) {
-		if (!this._tooltip || !this._map) {
-			return;
-		}
-
-		// If the map is moving, we will show the tooltip after it's done.
-		if (this._map.dragging?.moving()) {
-			if (e.type === 'add' && !this._moveEndOpensTooltip) {
-				this._moveEndOpensTooltip = true;
-				this._map.once('moveend', () => {
-					this._moveEndOpensTooltip = false;
-					this._openTooltip(e);
-				});
-			}
-			return;
-		}
-
-		this._tooltip._source = e.propagatedFrom ?? e.target;
-
-		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
-	},
-
-	_moveTooltip(e) {
-		let latlng = e.latlng, containerPoint, layerPoint;
-		if (this._tooltip.options.sticky && e.originalEvent) {
-			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
-			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
-			latlng = this._map.layerPointToLatLng(layerPoint);
-		}
-		this._tooltip.setLatLng(latlng);
-	}
-});

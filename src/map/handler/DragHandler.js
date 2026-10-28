@@ -1,4 +1,3 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
@@ -8,48 +7,6 @@ import {Bounds} from '../../geometry/Bounds.js';
  * Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
-// @namespace LeafletMap
-// @section Interaction Options
-LeafletMap.mergeOptions({
-	// @option dragging: Boolean = true
-	// Whether the map is draggable with pointer or not.
-	dragging: true,
-
-	// @section Panning Inertia Options
-	// @option inertia: Boolean = *
-	// If enabled, panning of the map will have an inertia effect where
-	// the map builds momentum while dragging and continues moving in
-	// the same direction for some time. Feels especially nice on touch
-	// devices. Enabled by default.
-	inertia: true,
-
-	// @option inertiaDeceleration: Number = 3000
-	// The rate with which the inertial movement slows down, in pixels/second².
-	inertiaDeceleration: 3400, // px/s^2
-
-	// @option inertiaMaxSpeed: Number = Infinity
-	// Max speed of the inertial movement, in pixels/second.
-	inertiaMaxSpeed: Infinity, // px/s
-
-	// @option easeLinearity: Number = 0.2
-	easeLinearity: 0.2,
-
-	// TODO refactor, move to CRS
-	// @option worldCopyJump: Boolean = false
-	// With this option enabled, the map tracks when you pan to another "copy"
-	// of the world and seamlessly jumps to the original one so that all overlays
-	// like markers and vector layers are still visible.
-	worldCopyJump: false,
-
-	// @option maxBoundsViscosity: Number = 0.0
-	// If `maxBounds` is set, this option will control how solid the bounds
-	// are when dragging the map around. The default value of `0.0` allows the
-	// user to drag outside the bounds at normal speed, higher values will
-	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
-	// solid, preventing the user from dragging outside the bounds.
-	maxBoundsViscosity: 0.0
-});
-
 export class DragHandler extends Handler {
 	addHooks() {
 		if (!this._draggable) {
@@ -58,6 +15,7 @@ export class DragHandler extends Handler {
 			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
+				down: this._onDown,
 				dragstart: this._onDragStart,
 				drag: this._onDrag,
 				dragend: this._onDragEnd
@@ -66,9 +24,6 @@ export class DragHandler extends Handler {
 			this._draggable.on('predrag', this._onPreDragLimit, this);
 			if (map.options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDragWrap, this);
-				map.on('zoomend', this._onZoomEnd, this);
-
-				map.whenReady(this._onZoomEnd, this);
 			}
 		}
 		this._map._container.classList.add('leaflet-grab', 'leaflet-touch-drag');
@@ -88,6 +43,11 @@ export class DragHandler extends Handler {
 
 	moving() {
 		return this._draggable?._moving;
+	}
+
+	_onDown() {
+		// Stop inertia before Draggable captures _startPos (#10376).
+		this._map._stop();
 	}
 
 	_onDragStart() {
@@ -119,7 +79,7 @@ export class DragHandler extends Handler {
 
 	_onDrag(e) {
 		if (this._map.options.inertia) {
-			const time = this._lastTime = +new Date(),
+			const time = this._lastTime = Date.now(),
 			pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
 
 			this._positions.push(pos);
@@ -138,14 +98,6 @@ export class DragHandler extends Handler {
 			this._positions.shift();
 			this._times.shift();
 		}
-	}
-
-	_onZoomEnd() {
-		const pxCenter = this._map.getSize().divideBy(2),
-		pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
-
-		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
-		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
 	}
 
 	_viscousLimit(value, threshold) {
@@ -167,17 +119,9 @@ export class DragHandler extends Handler {
 	}
 
 	_onPreDragWrap() {
-		// TODO refactor to be able to adjust map pane position after zoom
-		const worldWidth = this._worldWidth,
-		halfWidth = Math.round(worldWidth / 2),
-		dx = this._initialWorldOffset,
-		x = this._draggable._newPos.x,
-		newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
-
-		this._draggable._absPos = this._draggable._newPos.clone();
-		this._draggable._newPos.x = newX;
+		const draggable = this._draggable;
+		draggable._absPos = draggable._newPos;
+		draggable._newPos = this._map._wrapWorldCopy(draggable._newPos);
 	}
 
 	_onDragEnd(e) {
@@ -192,7 +136,7 @@ export class DragHandler extends Handler {
 			map.fire('moveend');
 
 		} else {
-			this._prunePositions(+new Date());
+			this._prunePositions(Date.now());
 
 			const direction = this._lastPos.subtract(this._positions[0]),
 			duration = (this._lastTime - this._times[0]) / 1000,
@@ -204,8 +148,18 @@ export class DragHandler extends Handler {
 			limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease);
-			let offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			maxOffset = map.getSize().divideBy(2);
+
+			let decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
+			offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+
+			// with reduced motion, shorten the coast to fit within half the map size; distance grows with the
+			// square of duration, so scaling the duration by the square root keeps the deceleration the same
+			if (map._prefersReducedMotion() && !maxOffset.contains(offset)) {
+				const k = Math.min(maxOffset.x / Math.abs(offset.x), maxOffset.y / Math.abs(offset.y));
+				offset = offset.multiplyBy(k).round();
+				decelerationDuration *= Math.sqrt(k);
+			}
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');
@@ -225,8 +179,3 @@ export class DragHandler extends Handler {
 		}
 	}
 }
-
-// @section Handlers
-// @property dragging: Handler
-// Map dragging handler.
-LeafletMap.addInitHook('addHandler', 'dragging', DragHandler);

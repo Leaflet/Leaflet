@@ -23,16 +23,19 @@ import {Point} from '../../geometry/Point.js';
  */
 
 export class MarkerDrag extends Handler {
-	initialize(marker) {
-		super.initialize(marker._map);
+	static initHooks = true;
+
+	constructor(marker) {
+		super(marker._map);
 		this._marker = marker;
+		this.callInitHooks();
 	}
 
 	addHooks() {
 		const icon = this._marker._icon;
 
 		if (!this._draggable) {
-			this._draggable = new Draggable(icon, icon, true);
+			this._draggable = new Draggable(icon);
 		}
 
 		this._draggable.on({
@@ -97,13 +100,6 @@ export class MarkerDrag extends Handler {
 	}
 
 	_onDragStart() {
-		// @section Dragging events
-		// @event dragstart: Event
-		// Fired when the user starts dragging the marker.
-
-		// @event movestart: Event
-		// Fired when the marker starts moving (because of dragging).
-
 		this._oldLatLng = this._marker.getLatLng();
 
 		// When using ES6 imports it could not be set when `Popup` was not imported as well
@@ -136,21 +132,14 @@ export class MarkerDrag extends Handler {
 		e.latlng = latlng;
 		e.oldLatLng = this._oldLatLng;
 
-		// @event drag: Event
-		// Fired repeatedly while the user drags the marker.
 		marker
 			.fire('move', e)
 			.fire('drag', e);
 	}
 
 	_onDragEnd(e) {
-		// @event dragend: DragEndEvent
-		// Fired when the user stops dragging the marker.
-
 		cancelAnimationFrame(this._panRequest);
 
-		// @event moveend: Event
-		// Fired when the marker stops moving (because of dragging).
 		delete this._oldLatLng;
 		this._marker
 			.fire('moveend')

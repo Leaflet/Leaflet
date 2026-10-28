@@ -1,15 +1,15 @@
-import {expect} from 'chai';
-import {Browser, LeafletMap, Point} from 'leaflet';
+import {LeafletMap, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('TapHoldHandler', () => {
 	let container, clock, spy, map;
+	let touchFinger, touchFinger2, mouseFinger;
 
-	const posStart = {clientX:1, clientY:1};
-	const posNear = {clientX:10, clientY:10};
-	const posFar = {clientX:100, clientY:100};
+	const posStart = {x: 1, y: 1};
+	const posNear = {x: 10, y: 10};
+	const posFar = {x: 100, y: 100};
 
 	beforeEach(() => {
 		container = createContainer();
@@ -19,30 +19,27 @@ describe('TapHoldHandler', () => {
 			tapHold: true
 		});
 
+		// Tap-Hold depends on timing, so fake the clock and tick it manually between finger steps.
 		clock = sinon.useFakeTimers({
-			toFake: ['setTimeout', 'clearTimeout', 'Date']
+			toFake: ['setTimeout', 'clearTimeout', 'Date', 'performance']
 		});
 		clock.tick(1000);
 		spy = sinon.spy();
 
 		map.on('contextmenu', spy);
 
-		posStart.target = container;
-		posNear.target = container;
-		posFar.target = container;
+		touchFinger = new Finger('touch').moveTo(posStart.x, posStart.y);
+		touchFinger2 = new Finger('touch').moveTo(posStart.x, posStart.y);
+		mouseFinger = new Finger('mouse').moveTo(posStart.x, posStart.y);
 	});
 
 	afterEach(() => {
-		UIEventSimulator.fire('pointerdown', container);
-		for (let id = 0; id <= 2; id++) { // reset pointers (for prosphetic-hand)
-			UIEventSimulator.fire('pointercancel', container, {pointerId:id});
-		}
 		clock.restore();
 		removeMapContainer(map, container);
 	});
 
-	it('fires synthetic contextmenu after hold delay>600', () => {
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
+	it('fires synthetic contextmenu after hold delay>600', async () => {
+		await touchFinger.down();
 		clock.tick(550);
 
 		expect(spy.notCalled).to.be.true;
@@ -55,109 +52,132 @@ describe('TapHoldHandler', () => {
 		const event = spy.lastCall.args[0];
 		expect(event.type).to.equal('contextmenu');
 		expect(event.originalEvent._simulated).to.be.true;
+		await touchFinger.up();
 	});
 
-	it('does not fire contextmenu when multiple pointers touches', () => {
-
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
+	it('does not fire contextmenu when multiple pointers touches', async () => {
+		await Promise.all([touchFinger.down(), touchFinger2.down()]);
 		clock.tick(100);
-		UIEventSimulator.fire('pointerdown', container, {pointerId:1, ...posNear});
+		await touchFinger.up();
+		clock.tick(500);
+		await touchFinger2.up();
+		clock.tick(400);
+
+		expect(spy.notCalled).to.be.true;
+	});
+
+	it('does not fire contextmenu when multiple pointers touches > 1 (case:2)', async () => {
+		expect(spy.notCalled).to.be.true;
+
+		await touchFinger.down();
+		clock.tick(100);
+		await touchFinger2.down();
 		clock.tick(550);
+		await touchFinger.up();
+		clock.tick(100);
 
 		expect(spy.notCalled).to.be.true;
+		await touchFinger2.up();
 	});
 
-	it('does not fire contextmenu when multiple pointers touches > 1 (case:2)', () => {
-
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
-		clock.tick(100);
-		UIEventSimulator.fire('pointerdown', container, {pointerId:1, ...posNear});
-		clock.tick(100);
-		UIEventSimulator.fire('pointerup', container, {pointerId:0, ...posNear});
-		clock.tick(450);
-
-		expect(spy.notCalled).to.be.true;
-	});
-
-	(Browser.pointer ? it : it.skip)('ignores events from mouse', () => {
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, pointerType:'mouse', ...posStart});
+	it('ignores events from mouse', async () => {
+		await mouseFinger.down();
 		clock.tick(650);
+		await mouseFinger.up();
+		clock.tick(100);
 
 		expect(spy.notCalled).to.be.true;
 	});
 
-	it('does not conflict with native contextmenu', () => {
-
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
-		clock.tick(550);
+	it('does not conflict with native contextmenu', async () => {
+		await touchFinger.down();
+		clock.tick(560);
 
 		UIEventSimulator.fire('contextmenu', container);
 
 		clock.tick(100);
+		await touchFinger.up();
 
 		expect(spy.called).to.be.true;
 		expect(spy.calledOnce).to.be.true;
 		expect(spy.lastCall.args[0].originalEvent._simulated).not.to.be.true;
-
-		// Note: depending on tapHoldDelay value it's also possible that native contextmenu may come after simulated one
-		//       and the only way to handle this gracefully - increase tapHoldDelay value.
-		//       Anyway that is edge case, as tapHold is meant for browsers where native contextmenu is not fired on touch.
 	});
 
-	it.skip('prevents native click', () => { // to be performed by hand
-		// Not valid here, as there is no way to initiate native click with fake touch
+	it('swallows native contextmenu that comes after the simulated one', async () => {
+		await touchFinger.down();
+		clock.tick(660);
+
+		const nativeEvent = new MouseEvent('contextmenu', {bubbles: true, cancelable: true});
+		container.dispatchEvent(nativeEvent);
+
+		expect(spy.calledOnce).to.be.true;
+		expect(spy.lastCall.args[0].originalEvent._simulated).to.be.true;
+		expect(nativeEvent.defaultPrevented).to.be.true;
+
+		await touchFinger.up();
+
+		// up to the next press only, e.g. a right click
+		await mouseFinger.down().up();
+		UIEventSimulator.fire('contextmenu', container);
+		expect(spy.calledTwice).to.be.true;
+	});
+
+	it('prevents native click', async () => {
 		const clickSpy = sinon.spy();
 		map.on('click', clickSpy);
 
-
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
+		await touchFinger.down();
 		clock.tick(650);
-		UIEventSimulator.fire('pointerup', container, {pointerId:0, ...posNear});
-
+		await touchFinger.up();
 		expect(clickSpy.notCalled).to.be.true;
+
+		await touchFinger.down();
+		clock.tick(100);
+		await touchFinger.up();
+		expect(clickSpy.called).to.be.true;
 	});
 
-	it('allows short movements', () => {
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
+	it('allows short movements', async () => {
+		await touchFinger.down();
 		clock.tick(550);
-
-		UIEventSimulator.fire('pointermove', container, {pointerId:0, ...posNear});
-
+		await touchFinger.moveTo(posNear.x, posNear.y);
 		clock.tick(100);
+		await touchFinger.up();
 
 		expect(spy.called).to.be.true;
 	});
 
-	it('ignores long movements', () => {
-		expect(new Point(posStart.clientX, posStart.clientY).distanceTo([posFar.clientX, posFar.clientY]))
+	it('ignores long movements', async () => {
+		expect(new Point(posStart.x, posStart.y).distanceTo([posFar.x, posFar.y]))
 			.to.be.above(map.options.tapTolerance);
 
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
+		await touchFinger.down();
 		clock.tick(550);
-
-		UIEventSimulator.fire('pointermove', container, {pointerId:0, ...posFar});
-
+		await touchFinger.moveTo(posFar.x, posFar.y);
 		clock.tick(100);
-
+		await touchFinger.up();
 		expect(spy.notCalled).to.be.true;
+
+		await touchFinger.down();
+		clock.tick(650);
+		await touchFinger.up();
+		expect(spy.called).to.be.true;
 	});
 
-	it('.originalEvent has expected properties', () => {
-		Object.assign(posStart, {
-			screenX: 2,
-			screenY: 2,
-		});
-
-		UIEventSimulator.fire('pointerdown', container, {pointerId:0, ...posStart});
-		clock.tick(650);
+	it('.originalEvent has expected properties', async () => {
+		await touchFinger.moveTo(2, 2).down();
+		clock.tick(625);
+		await touchFinger.up();
 
 		const originalEvent = spy.lastCall.args[0].originalEvent;
-		const expectedProps = Object.assign({
+		const expectedProps = {
 			type: 'contextmenu',
 			bubbles: true,
 			cancelable: true,
-			target: container
-		}, posStart);
+			target: container,
+			screenX: 2,
+			screenY: 2
+		};
 		for (const [prop, expectedValue] of Object.entries(expectedProps)) {
 			expect(originalEvent[prop]).to.equal(expectedValue);
 		}

@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {DomUtil, Point} from 'leaflet';
 import UIEventSimulator from 'ui-event-simulator';
 
@@ -55,9 +54,9 @@ describe('DomUtil', () => {
 			DomUtil.create('div', 'test', el);
 			DomUtil.create('div', 'test1', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
+			expect([...el.children].indexOf(elm)).to.equal(0);
 			DomUtil.toFront(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
+			expect([...el.children].indexOf(elm)).to.equal(2);
 		});
 
 		it('doesn\'t move an element if he\'s already in the front', () => {
@@ -81,9 +80,9 @@ describe('DomUtil', () => {
 			DomUtil.create('div', 'test1', el);
 			const elm = DomUtil.create('div', 'childContainer', el);
 			expect(el.children.length).to.equal(3);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(2);
+			expect([...el.children].indexOf(elm)).to.equal(2);
 			DomUtil.toBack(elm);
-			expect(Array.from(el.children).indexOf(elm)).to.equal(0);
+			expect([...el.children].indexOf(elm)).to.equal(0);
 		});
 
 		it('doesn\'t move an element if it is already in the back', () => {
@@ -235,36 +234,6 @@ describe('DomUtil', () => {
 		});
 	});
 
-	describe('#disableTextSelection, #enableTextSelection', () => {
-		const documentStyle = document.documentElement.style;
-		// Safari still needs a vendor prefix, we need to detect with property name is supported.
-		const userSelectProp = ['userSelect', 'WebkitUserSelect'].find(prop => prop in documentStyle);
-
-		beforeEach(() => expect(documentStyle[userSelectProp]).to.equal(''));
-		afterEach(() => { documentStyle[userSelectProp] = ''; });
-
-		it('disables and enables text selection', () => {
-			DomUtil.disableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('none');
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
-		});
-
-		it('restores the text selection previously set', () => {
-			documentStyle[userSelectProp] = 'text';
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('text');
-		});
-
-		it('restores the text selection previously set when disabling multiple times', () => {
-			DomUtil.disableTextSelection();
-			DomUtil.disableTextSelection();
-			DomUtil.enableTextSelection();
-			expect(documentStyle[userSelectProp]).to.equal('');
-		});
-	});
-
 	describe('#disableImageDrag, #enablerImageDrag', () => {
 		it('disable / enable dragstart DOM events for the user', () => {
 			let selectionPrevented;
@@ -286,29 +255,6 @@ describe('DomUtil', () => {
 			DomUtil.enableImageDrag();
 			UIEventSimulator.fire('dragstart', child);
 			expect(selectionPrevented).to.be.false;
-		});
-	});
-
-	describe('#preventOutline, #restoreOutline', () => {
-		it('prevent / restore outline for the element', () => {
-			const child = document.createElement('div');
-			const originalStyle = child.style.outlineStyle = 'dotted';
-
-			child.tabIndex = 0;
-			el.appendChild(child);
-
-			DomUtil.preventOutline(child);
-			expect(child.style.outlineStyle).to.equal('none');
-
-			// Explicit #restoreOutline through direct call
-			DomUtil.restoreOutline(child);
-			expect(child.style.outlineStyle).to.be.equal(originalStyle);
-
-			// Implicit #restoreOutline test through simulation
-			DomUtil.preventOutline(child);
-			expect(child.style.outlineStyle).to.equal('none');
-			UIEventSimulator.fire('keydown', child);
-			expect(child.style.outlineStyle).to.be.equal(originalStyle);
 		});
 	});
 });

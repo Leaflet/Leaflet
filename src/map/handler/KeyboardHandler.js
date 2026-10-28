@@ -1,42 +1,33 @@
-import {LeafletMap} from '../Map.js';
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';
-
 
 /*
  * KeyboardHandler is handling keyboard interaction with the map, enabled by default.
  */
 
-// @namespace LeafletMap
-// @section Keyboard Navigation Options
-LeafletMap.mergeOptions({
-	// @option keyboard: Boolean = true
-	// Makes the map focusable and allows users to navigate the map with keyboard
-	// arrows and `+`/`-` keys.
-	keyboard: true,
-
-	// @option keyboardPanDelta: Number = 80
-	// Amount of pixels to pan when pressing an arrow key.
-	keyboardPanDelta: 80
-});
-
 export class KeyboardHandler extends Handler {
 
-	static keyCodes = {
-		left:    ['ArrowLeft'],
-		right:   ['ArrowRight'],
-		down:    ['ArrowDown'],
-		up:      ['ArrowUp'],
-		zoomIn:  ['Equal', 'NumpadAdd', 'BracketRight'],
-		zoomOut: ['Minus', 'NumpadSubtract', 'Digit6', 'Slash']
+	static initHooks = true;
+
+	// `KeyboardEvent.key` values, so zoom keys follow the keyboard layout and cover the numpad too;
+	// `=` and `_` keep the US `+` and `-` keys working both with and without Shift
+	static keys = {
+		left: ['ArrowLeft'],
+		right: ['ArrowRight'],
+		down: ['ArrowDown'],
+		up: ['ArrowUp'],
+		zoomIn: ['+', '='],
+		zoomOut: ['-', '_']
 	};
 
-	initialize(map) {
-		super.initialize(map);
+	constructor(map) {
+		super(map);
 
 		this._setPanDelta(map.options.keyboardPanDelta);
 		this._setZoomDelta(map.options.zoomDelta);
+
+		this.callInitHooks();
 	}
 
 	addHooks() {
@@ -44,11 +35,15 @@ export class KeyboardHandler extends Handler {
 
 		// make the container focusable by tabbing
 		if (container.tabIndex <= 0) {
-			container.tabIndex = '0';
+			container.tabIndex = 0;
 		}
 
-		// add aria-attribute for keyboard shortcuts to the container
-		container.ariaKeyShortcuts = Object.values(KeyboardHandler.keyCodes).flat().join(' ');
+		const shortcuts = this._map.options.ariaKeyShortcuts;
+		if (shortcuts) {
+			// ARIA names physical keys by their unshifted character, so the default is for a US layout
+			container.ariaKeyShortcuts = shortcuts === true ?
+				'ArrowLeft ArrowRight ArrowUp ArrowDown = Plus -' : shortcuts;
+		}
 
 		on(container, {
 			focus: this._onFocus,
@@ -64,6 +59,10 @@ export class KeyboardHandler extends Handler {
 
 	removeHooks() {
 		this._removeHooks();
+
+		if (this._map.options.ariaKeyShortcuts) {
+			this._map._container.removeAttribute('aria-keyshortcuts');
+		}
 
 		off(this._map._container, {
 			focus: this._onFocus,
@@ -81,14 +80,8 @@ export class KeyboardHandler extends Handler {
 	_onPointerDown() {
 		if (this._focused) { return; }
 
-		const body = document.body,
-		docEl = document.documentElement,
-		top = body.scrollTop || docEl.scrollTop,
-		left = body.scrollLeft || docEl.scrollLeft;
-
-		this._map._container.focus();
-
-		window.scrollTo(left, top);
+		// script focus matches :focus-visible by default, which would show a focus ring on every click
+		this._map._container.focus({preventScroll: true, focusVisible: false});
 	}
 
 	_onFocus() {
@@ -102,33 +95,21 @@ export class KeyboardHandler extends Handler {
 	}
 
 	_setPanDelta(panDelta) {
-		const keys = this._panKeys = {},
-		codes = KeyboardHandler.keyCodes;
+		const panKeys = this._panKeys = {},
+		{left, right, down, up} = KeyboardHandler.keys;
 
-		for (const code of codes.left) {
-			keys[code] = [-1 * panDelta, 0];
-		}
-		for (const code of codes.right) {
-			keys[code] = [panDelta, 0];
-		}
-		for (const code of codes.down) {
-			keys[code] = [0, panDelta];
-		}
-		for (const code of codes.up) {
-			keys[code] = [0, -1 * panDelta];
-		}
+		for (const key of left) { panKeys[key] = [-panDelta, 0]; }
+		for (const key of right) { panKeys[key] = [panDelta, 0]; }
+		for (const key of down) { panKeys[key] = [0, panDelta]; }
+		for (const key of up) { panKeys[key] = [0, -panDelta]; }
 	}
 
 	_setZoomDelta(zoomDelta) {
-		const keys = this._zoomKeys = {},
-		codes = KeyboardHandler.keyCodes;
+		const zoomKeys = this._zoomKeys = {},
+		{zoomIn, zoomOut} = KeyboardHandler.keys;
 
-		for (const code of codes.zoomIn) {
-			keys[code] = zoomDelta;
-		}
-		for (const code of codes.zoomOut) {
-			keys[code] = -zoomDelta;
-		}
+		for (const key of zoomIn) { zoomKeys[key] = zoomDelta; }
+		for (const key of zoomOut) { zoomKeys[key] = -zoomDelta; }
 	}
 
 	_addHooks() {
@@ -142,7 +123,7 @@ export class KeyboardHandler extends Handler {
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
-		const key = e.code,
+		const key = e.key,
 		map = this._map;
 		let offset;
 
@@ -157,15 +138,12 @@ export class KeyboardHandler extends Handler {
 					offset = map._limitOffset(new Point(offset), map.options.maxBounds);
 				}
 
-				if (map.options.worldCopyJump) {
-					const newLatLng = map.wrapLatLng(map.unproject(map.project(map.getCenter()).add(offset)));
-					map.panTo(newLatLng);
-				} else {
-					map.panBy(offset);
-				}
+				map.panBy(offset);
 			}
 		} else if (key in this._zoomKeys) {
-			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
+			if (!map._zoomInputBlocked()) {
+				map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
+			}
 
 		} else if (key === 'Escape' && map._popup && map._popup.options.closeOnEscapeKey) {
 			map.closePopup();
@@ -177,9 +155,3 @@ export class KeyboardHandler extends Handler {
 		stop(e);
 	}
 }
-
-// @section Handlers
-// @section Handlers
-// @property keyboard: Handler
-// Keyboard navigation handler.
-LeafletMap.addInitHook('addHandler', 'keyboard', KeyboardHandler);

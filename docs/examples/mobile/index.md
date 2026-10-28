@@ -13,15 +13,16 @@ In this example, you'll learn how to create a fullscreen map tuned for mobile de
 
 First we'll take a look at the HTML &amp; CSS code of the page. To make our map `div` element stretch to all available space (fullscreen), we can use the following CSS code:
 
-{: .css}
-	body {
-		padding: 0;
-		margin: 0;
-	}
-	html, body, #map {
-		height: 100vh;
-		width: 100vw;
-	}
+```css
+body {
+	padding: 0;
+	margin: 0;
+}
+html, body, #map {
+	height: 100vh;
+	width: 100vw;
+}
+```
 
 Also, we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the `head` section or our HTML page:
 
@@ -54,7 +55,7 @@ Here we specify 16 as the maximum zoom when setting the map view automatically. 
 		new Marker(e.latlng).addTo(map)
 			.bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-		new Circle(e.latlng, radius).addTo(map);
+		new Circle(e.latlng, {radius}).addTo(map);
 	}
 
 	map.on('locationfound', onLocationFound);

@@ -1,5 +1,4 @@
-import {expect} from 'chai';
-import {DivIcon, DefaultIcon, LatLng, LeafletMap, Marker, Point} from 'leaflet';
+import {DivIcon, DefaultIcon, LatLng, LayerGroup, LeafletMap, Marker, Point} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
@@ -126,6 +125,20 @@ describe('Marker', () => {
 			expect(marker.dragging.enabled()).to.be.true;
 		});
 
+		it('keeps the draggable class on the icon', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true});
+			map.addLayer(marker);
+
+			marker.setIcon(icon2);
+
+			expect(marker._icon.classList.contains('leaflet-marker-draggable')).to.be.true;
+
+			marker.dragging.disable();
+			marker.setIcon(icon1);
+
+			expect(marker._icon.classList.contains('leaflet-marker-draggable')).to.be.false;
+		});
+
 		it('changes the DivIcon to another DivIcon, while re-using the DIV element', () => {
 			const marker = new Marker([0, 0], {icon: new DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
@@ -157,7 +170,7 @@ describe('Marker', () => {
 			expect(oldIcon).to.not.equal(marker._icon); // Check that the _icon is NOT re-used
 			expect(oldIcon.parentNode).to.equal(null);
 
-			expect(marker._icon.src).to.contain('marker-icon.svg');
+			expect(marker._icon.src).to.equal(DefaultIcon.defaultOptions.iconUrl);
 			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
 		});
 
@@ -222,6 +235,50 @@ describe('Marker', () => {
 				marker._panOnFocus();
 			}).to.not.throw();
 		});
+
+		it('pans to fit the rendered icon on focus (#9253)', () => {
+			const spy = sinon.spy(map, 'panInside');
+			const getPadding = (icon) => {
+				const marker = new Marker([70, 0], {icon}).addTo(map);
+				marker._panOnFocus();
+				const {paddingTopLeft, paddingBottomRight} = spy.lastCall.args[1];
+				return [paddingTopLeft.x, paddingTopLeft.y, paddingBottomRight.x, paddingBottomRight.y];
+			};
+			const html = '<div style="width: 40px; height: 20px;"></div>';
+
+			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30], iconAnchor: [5, 10]}))).to.eql([5, 10, 15, 20]);
+			expect(getPadding(new DivIcon({className: '', iconSize: [20, 30]}))).to.eql([10, 15, 10, 15]);
+			expect(getPadding(new DivIcon({className: '', iconSize: 32}))).to.eql([16, 16, 16, 16]);
+			expect(getPadding(new DivIcon({className: '', iconSize: 'auto', html}))).to.eql([0, 0, 40, 20]);
+			expect(getPadding(new DivIcon({className: '', iconSize: [100, 'auto'], html}))).to.eql([50, 0, 50, 20]);
+
+			spy.restore();
+		});
+	});
+
+	describe('dragging', () => {
+		it('keeps dragging switched off when the marker is removed and added again', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true});
+			map.addLayer(marker);
+			expect(marker.dragging.enabled()).to.be.true;
+
+			marker.dragging.disable();
+			map.removeLayer(marker);
+			map.addLayer(marker);
+
+			expect(marker.dragging.enabled()).to.be.false;
+		});
+
+		it('keeps dragging switched off when the layer group of the marker is toggled', () => {
+			const marker = new Marker([0, 0], {icon: icon1, draggable: true}),
+			group = new LayerGroup([marker]).addTo(map);
+
+			marker.dragging.disable();
+			map.removeLayer(group);
+			map.addLayer(group);
+
+			expect(marker.dragging.enabled()).to.be.false;
+		});
 	});
 
 	describe('#setLatLng', () => {
@@ -244,6 +301,66 @@ describe('Marker', () => {
 			expect(eventArgs.oldLatLng).to.equal(beforeLatLng);
 			expect(eventArgs.latlng).to.equal(afterLatLng);
 			expect(marker.getLatLng()).to.equal(afterLatLng);
+		});
+	});
+
+	describe('keyboard', () => {
+		it('is a focusable button when interactive', () => {
+			const marker = new Marker([0, 0]).addTo(map);
+
+			expect(marker._icon.tabIndex).to.equal(0);
+			expect(marker._icon.getAttribute('role')).to.equal('button');
+			expect(marker._icon.alt).to.equal('Marker');
+		});
+
+		it('is not a button when not interactive', () => {
+			const marker = new Marker([0, 0], {interactive: false}).addTo(map);
+
+			expect(marker._icon.tabIndex).to.equal(0);
+			expect(marker._icon.hasAttribute('role')).to.be.false;
+		});
+
+		it('is not focusable with keyboard: false', () => {
+			const marker = new Marker([0, 0], {keyboard: false}).addTo(map);
+
+			expect(marker._icon.hasAttribute('tabindex')).to.be.false;
+			expect(marker._icon.hasAttribute('role')).to.be.false;
+		});
+
+		it('fires click on Enter and Space', () => {
+			const spy = sinon.spy();
+			const mapSpy = sinon.spy();
+			const marker = new Marker([10, 20]).addTo(map);
+			marker.on('click', spy);
+			map.on('click', mapSpy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+			UIEventSimulator.fire('keydown', marker._icon, {key: ' '});
+
+			expect(spy.calledTwice).to.be.true;
+			expect(spy.firstCall.args[0].latlng.equals(marker.getLatLng())).to.be.true;
+			expect(mapSpy.called).to.be.false;
+		});
+
+		it('does not fire click on other or repeated keys', () => {
+			const spy = sinon.spy();
+			const marker = new Marker([0, 0]).addTo(map);
+			marker.on('click', spy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'a'});
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter', repeat: true});
+
+			expect(spy.called).to.be.false;
+		});
+
+		it('fires click on Enter with DivIcon', () => {
+			const spy = sinon.spy();
+			const marker = new Marker([0, 0], {icon: new DivIcon()}).addTo(map);
+			marker.on('click', spy);
+
+			UIEventSimulator.fire('keydown', marker._icon, {key: 'Enter'});
+
+			expect(spy.calledOnce).to.be.true;
 		});
 	});
 

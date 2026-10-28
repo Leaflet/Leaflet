@@ -3,6 +3,18 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
+// @namespace Canvas
+
+// @section
+// @aka Canvas options
+const defaultOptions = {
+	// @option tolerance: Number = 0
+	// How much to extend the click tolerance around a path/object on the map.
+	tolerance: 0
+};
+
+const DASH_SEPARATOR_RE = /[, ]+/;
+
 /*
  * @class Canvas
  * @inherits Renderer
@@ -32,17 +44,10 @@ import {Bounds} from '../../geometry/Bounds.js';
 
 // @constructor Canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
+
 export class Canvas extends Renderer {
 
-	static {
-		// @section
-		// @aka Canvas options
-		this.setDefaultOptions({
-			// @option tolerance: Number = 0
-			// How much to extend the click tolerance around a path/object on the map.
-			tolerance: 0
-		});
-	}
+	static defaultOptions = defaultOptions;
 
 	getEvents() {
 		const events = super.getEvents();
@@ -190,7 +195,7 @@ export class Canvas extends Renderer {
 
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
-			const parts = layer.options.dashArray.split(/[, ]+/);
+			const parts = layer.options.dashArray.split(DASH_SEPARATOR_RE);
 			// Ignore dash array containing invalid lengths
 			layer.options._dashArray = parts.map(n => Number(n)).filter(n => !isNaN(n));
 		} else {
@@ -296,8 +301,8 @@ export class Canvas extends Renderer {
 
 		const p = layer._point,
 		ctx = this._ctx,
-		r = Math.max(Math.round(layer._radius), 1),
-		s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
+		r = Math.max(Math.round(layer._pxRadius), 1),
+		s = (Math.max(Math.round(layer._pxRadiusY), 1) || r) / r;
 
 		if (s !== 1) {
 			ctx.save();
@@ -324,10 +329,8 @@ export class Canvas extends Renderer {
 		}
 
 		if (options.stroke && options.weight !== 0) {
-			if (ctx.setLineDash) {
-				ctx.lineDashOffset = Number(options.dashOffset ?? 0);
-				ctx.setLineDash(options._dashArray ?? []);
-			}
+			ctx.lineDashOffset = Number(options.dashOffset ?? 0);
+			ctx.setLineDash(options._dashArray ?? []);
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;

@@ -1,10 +1,98 @@
 import {Layer} from '../Layer.js';
-import Browser from '../../core/Browser.js';
 import * as Util from '../../core/Util.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
+
+// @namespace GridLayer
+
+// @section
+// @aka GridLayer options
+const defaultOptions = {
+	// @option tileSize: Number|Point = 256
+	// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
+	tileSize: 256,
+
+	// @option opacity: Number = 1.0
+	// Opacity of the tiles. Can be used in the `createTile()` function.
+	opacity: 1,
+
+	// @option updateWhenIdle: Boolean = false
+	// Load new tiles only when panning ends.
+	updateWhenIdle: false,
+
+	// @option updateWhenZooming: Boolean = true
+	// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+	updateWhenZooming: true,
+
+	// @option updateInterval: Number = 200
+	// Tiles will not update more than once every `updateInterval`
+	// milliseconds when panning.
+	updateInterval: 200,
+
+	// @option zIndex: Number = 1
+	// The explicit zIndex of the tile layer.
+	zIndex: 1,
+
+	// @option bounds: LatLngBounds = undefined
+	// If set, tiles will only be loaded inside the set `LatLngBounds`.
+	bounds: null,
+
+	// @option minZoom: Number = 0
+	// The minimum zoom level down to which this layer will be displayed (inclusive).
+	minZoom: 0,
+
+	// @option maxZoom: Number = undefined
+	// The maximum zoom level up to which this layer will be displayed (inclusive).
+	maxZoom: undefined,
+
+	// @option maxNativeZoom: Number = undefined
+	// Maximum zoom number the tile source has available. If it is specified,
+	// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
+	// from `maxNativeZoom` level and auto-scaled.
+	maxNativeZoom: undefined,
+
+	// @option minNativeZoom: Number = undefined
+	// Minimum zoom number the tile source has available. If it is specified,
+	// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
+	// from `minNativeZoom` level and auto-scaled.
+	minNativeZoom: undefined,
+
+	// @option noWrap: Boolean = false
+	// Whether the layer is wrapped around the antimeridian. If `true`, the
+	// GridLayer will only be displayed once at low zoom levels. Has no
+	// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
+	// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
+	// tiles outside the CRS limits.
+	noWrap: false,
+
+	// @option pane: String = 'tilePane'
+	// `Map pane` where the grid layer will be added.
+	pane: 'tilePane',
+
+	// @option className: String = ''
+	// A custom class name to assign to the tile layer. Empty by default.
+	className: '',
+
+	// @option keepBuffer: Number = 2
+	// When panning the map, keep this many rows and columns of tiles before unloading them.
+	keepBuffer: 2
+};
+
+// @section
+// @event loading: Event
+// Fired when the grid layer starts loading tiles.
+// @event tileunload: TileEvent
+// Fired when a tile is removed (e.g. when a tile goes off the screen).
+// @event tileloadstart: TileEvent
+// Fired when a tile is requested and starts loading.
+// @event tileerror: TileErrorEvent
+// Fired when there is an error loading a tile.
+// @event tileload: TileEvent
+// Fired when a tile loads.
+// @event load: Event
+// Fired when the grid layer loaded all visible tiles.
 
 /*
  * @class GridLayer
@@ -73,87 +161,17 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
 // @constructor GridLayer(options?: GridLayer options)
 // Creates a new instance of GridLayer with the supplied options.
+
 export class GridLayer extends Layer {
 
-	static {
-	// @section
-	// @aka GridLayer options
-		this.setDefaultOptions({
-			// @option tileSize: Number|Point = 256
-			// Width and height of tiles in the grid. Use a number if width and height are equal, or `Point(width, height)` otherwise.
-			tileSize: 256,
+	static initHooks = true;
 
-			// @option opacity: Number = 1.0
-			// Opacity of the tiles. Can be used in the `createTile()` function.
-			opacity: 1,
+	static defaultOptions = defaultOptions;
 
-			// @option updateWhenIdle: Boolean = (depends)
-			// Load new tiles only when panning ends.
-			// `true` by default on mobile browsers, in order to avoid too many requests and keep smooth navigation.
-			// `false` otherwise in order to display new tiles _during_ panning, since it is easy to pan outside the
-			// [`keepBuffer`](#gridlayer-keepbuffer) option in desktop browsers.
-			updateWhenIdle: Browser.mobile,
-
-			// @option updateWhenZooming: Boolean = true
-			// By default, a smooth zoom animation (during a [pinch zoom](#map-pinchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
-			updateWhenZooming: true,
-
-			// @option updateInterval: Number = 200
-			// Tiles will not update more than once every `updateInterval` milliseconds when panning.
-			updateInterval: 200,
-
-			// @option zIndex: Number = 1
-			// The explicit zIndex of the tile layer.
-			zIndex: 1,
-
-			// @option bounds: LatLngBounds = undefined
-			// If set, tiles will only be loaded inside the set `LatLngBounds`.
-			bounds: null,
-
-			// @option minZoom: Number = 0
-			// The minimum zoom level down to which this layer will be displayed (inclusive).
-			minZoom: 0,
-
-			// @option maxZoom: Number = undefined
-			// The maximum zoom level up to which this layer will be displayed (inclusive).
-			maxZoom: undefined,
-
-			// @option maxNativeZoom: Number = undefined
-			// Maximum zoom number the tile source has available. If it is specified,
-			// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-			// from `maxNativeZoom` level and auto-scaled.
-			maxNativeZoom: undefined,
-
-			// @option minNativeZoom: Number = undefined
-			// Minimum zoom number the tile source has available. If it is specified,
-			// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
-			// from `minNativeZoom` level and auto-scaled.
-			minNativeZoom: undefined,
-
-			// @option noWrap: Boolean = false
-			// Whether the layer is wrapped around the antimeridian. If `true`, the
-			// GridLayer will only be displayed once at low zoom levels. Has no
-			// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
-			// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
-			// tiles outside the CRS limits.
-			noWrap: false,
-
-			// @option pane: String = 'tilePane'
-			// `Map pane` where the grid layer will be added.
-			pane: 'tilePane',
-
-			// @option className: String = ''
-			// A custom class name to assign to the tile layer. Empty by default.
-			className: '',
-
-			// @option keepBuffer: Number = 2
-			// When panning the map, keep this many rows and columns of tiles before unloading them.
-			keepBuffer: 2
-		});
-	}
-
-	initialize(options) {
+	constructor(options) {
+		super();
 		Util.setOptions(this, options);
+		this.callInitHooks();
 	}
 
 	onAdd() {
@@ -176,9 +194,11 @@ export class GridLayer extends Layer {
 		this._container = null;
 		this._tileZoom = undefined;
 		clearTimeout(this._pruneTimeout);
+		cancelAnimationFrame(this._fadePruneFrame);
+		this._fadePruneFrame = 0;
 	}
 
-	// @method bringToFront: this
+	// @method bringToFront(): this
 	// Brings the tile layer to the top of all tile layers.
 	bringToFront() {
 		if (this._map) {
@@ -188,7 +208,7 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method bringToBack: this
+	// @method bringToBack(): this
 	// Brings the tile layer to the bottom of all tile layers.
 	bringToBack() {
 		if (this._map) {
@@ -198,7 +218,7 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method getContainer: HTMLElement
+	// @method getContainer(): HTMLElement
 	// Returns the HTML element that contains the tiles for this layer.
 	getContainer() {
 		return this._container;
@@ -221,18 +241,18 @@ export class GridLayer extends Layer {
 		return this;
 	}
 
-	// @method isLoading: Boolean
+	// @method isLoading(): Boolean
 	// Returns `true` if any tile in the grid layer has not finished loading.
 	isLoading() {
 		return this._loading;
 	}
 
-	// @method redraw: this
+	// @method redraw(): this
 	// Causes the layer to clear all the tiles and request them again.
 	redraw() {
 		if (this._map) {
 			this._removeAllTiles();
-			const tileZoom = this._clampZoom(this._map.getZoom());
+			const tileZoom = this._clampZoom(Math.round(this._map.getZoom()));
 			if (tileZoom !== this._tileZoom) {
 				this._tileZoom = tileZoom;
 				this._updateLevels();
@@ -247,7 +267,9 @@ export class GridLayer extends Layer {
 			viewprereset: this._invalidateAll,
 			viewreset: this._resetView,
 			zoom: this._resetView,
-			moveend: this._onMoveEnd
+			moveend: this._onMoveEnd,
+			worldcopyjump: this._onWorldCopyJump,
+			zoomanim: this._animateZoom
 		};
 
 		if (!this.options.updateWhenIdle) {
@@ -257,10 +279,6 @@ export class GridLayer extends Layer {
 			}
 
 			events.move = this._onMove;
-		}
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
 		}
 
 		return events;
@@ -277,7 +295,7 @@ export class GridLayer extends Layer {
 	}
 
 	// @section
-	// @method getTileSize: Point
+	// @method getTileSize(): Point
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
 	getTileSize() {
 		const s = this.options.tileSize;
@@ -286,7 +304,7 @@ export class GridLayer extends Layer {
 
 	_updateZIndex() {
 		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
-			this._container.style.zIndex = this.options.zIndex;
+			this._container.style.zIndex = `${this.options.zIndex}`;
 		}
 	}
 
@@ -313,36 +331,7 @@ export class GridLayer extends Layer {
 	_updateOpacity() {
 		if (!this._map) { return; }
 
-		this._container.style.opacity = this.options.opacity;
-
-		const now = +new Date();
-		let nextFrame = false,
-		willPrune = false;
-
-		for (const tile of Object.values(this._tiles ?? {})) {
-			if (!tile.current || !tile.loaded) { continue; }
-
-			const fade = Math.min(1, (now - tile.loaded) / 200);
-
-			tile.el.style.opacity = fade;
-			if (fade < 1) {
-				nextFrame = true;
-			} else {
-				if (tile.active) {
-					willPrune = true;
-				} else {
-					this._onOpaqueTile(tile);
-				}
-				tile.active = true;
-			}
-		}
-
-		if (willPrune && !this._noPrune) { this._pruneTiles(); }
-
-		if (nextFrame) {
-			cancelAnimationFrame(this._fadeFrame);
-			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
-		}
+		this._container.style.opacity = `${this.options.opacity}`;
 	}
 
 	_onOpaqueTile() {}
@@ -370,7 +359,7 @@ export class GridLayer extends Layer {
 		for (let z of Object.keys(this._levels)) {
 			z = Number(z);
 			if (this._levels[z].el.children.length || z === zoom) {
-				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+				this._levels[z].el.style.zIndex = `${maxZoom - Math.abs(zoom - z)}`;
 				this._onUpdateLevel(z);
 			} else {
 				this._levels[z].el.remove();
@@ -387,7 +376,7 @@ export class GridLayer extends Layer {
 			level = this._levels[zoom] = {};
 
 			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = maxZoom;
+			level.el.style.zIndex = `${maxZoom}`;
 
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
@@ -457,7 +446,12 @@ export class GridLayer extends Layer {
 		}
 	}
 
-	_invalidateAll() {
+	_invalidateAll(e) {
+		// a zoom without animation keeps the old levels until new tiles load, like the end of an animated one,
+		// unless the view jumps somewhere else
+		const map = this._map;
+		if (e?.zoom !== undefined && e.zoom !== map.getZoom() && map.getBounds().contains(e.center)) { return; }
+
 		for (const z of Object.keys(this._levels)) {
 			this._levels[z].el.remove();
 			this._onRemoveLevel(Number(z));
@@ -469,54 +463,29 @@ export class GridLayer extends Layer {
 	}
 
 	_retainParent(x, y, z, minZoom) {
-		const x2 = Math.floor(x / 2),
-		y2 = Math.floor(y / 2),
-		z2 = z - 1,
-		coords2 = new Point(+x2, +y2);
-		coords2.z = +z2;
-
-		const key = this._tileCoordsToKey(coords2),
-		tile = this._tiles[key];
-
-		if (tile?.active) {
-			tile.retain = true;
-			return true;
-
-		} else if (tile?.loaded) {
-			tile.retain = true;
+		for (z--; z >= minZoom; z--) {
+			x = Math.floor(x / 2);
+			y = Math.floor(y / 2);
+			if (this._retain(x, y, z)) { return true; }
 		}
-
-		if (z2 > minZoom) {
-			return this._retainParent(x2, y2, z2, minZoom);
-		}
-
 		return false;
 	}
 
 	_retainChildren(x, y, z, maxZoom) {
-
 		for (let i = 2 * x; i < 2 * x + 2; i++) {
 			for (let j = 2 * y; j < 2 * y + 2; j++) {
-
-				const coords = new Point(i, j);
-				coords.z = z + 1;
-
-				const key = this._tileCoordsToKey(coords),
-				tile = this._tiles[key];
-
-				if (tile?.active) {
-					tile.retain = true;
-					continue;
-
-				} else if (tile?.loaded) {
-					tile.retain = true;
-				}
-
-				if (z + 1 < maxZoom) {
+				if (!this._retain(i, j, z + 1) && z + 1 < maxZoom) {
 					this._retainChildren(i, j, z + 1, maxZoom);
 				}
 			}
 		}
+	}
+
+	// retains the tile if it's loaded; returns true if it's active, so there's no need to look further
+	_retain(x, y, z) {
+		const tile = this._tiles[this._tileCoordsToKey({x, y, z})];
+		if (tile?.loaded) { tile.retain = true; }
+		return tile?.active;
 	}
 
 	_resetView(e) {
@@ -572,7 +541,7 @@ export class GridLayer extends Layer {
 				this._pruneTiles();
 			}
 
-			// Flag to prevent _updateOpacity from pruning tiles during
+			// Flag to prevent finished tile fades from pruning tiles during
 			// a zoom anim or a pinch gesture
 			this._noPrune = !!noPrune;
 		}
@@ -607,10 +576,10 @@ export class GridLayer extends Layer {
 
 		this._wrapX = crs.wrapLng && !this.options.noWrap && [
 			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize.x),
-			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.y)
+			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.x)
 		];
 		this._wrapY = crs.wrapLat && !this.options.noWrap && [
-			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.x),
+			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.y),
 			Math.ceil(map.project([crs.wrapLat[1], 0], tileZoom).y / tileSize.y)
 		];
 	}
@@ -619,6 +588,28 @@ export class GridLayer extends Layer {
 		if (!this._map || this._map._animatingZoom) { return; }
 
 		this._update();
+	}
+
+	_onWorldCopyJump({worlds}) {
+		// noWrap tiles cannot be reused in another world copy.
+		if (!this._wrapX) { return; }
+
+		const tileSize = this.getTileSize(),
+		tiles = {};
+
+		for (const tile of Object.values(this._tiles)) {
+			const {coords, el} = tile,
+			dx = worlds * this._map.getPixelWorldBounds(coords.z).getSize().x;
+
+			// tiles can't be shifted by a fraction of a column, so leave those to be reloaded
+			if (dx % tileSize.x === 0) {
+				coords.x -= dx / tileSize.x;
+				DomUtil.setPosition(el, DomUtil.getPosition(el).subtract([dx, 0]), true);
+			}
+			tiles[this._tileCoordsToKey(coords)] = tile;
+		}
+
+		this._tiles = tiles;
 	}
 
 	_getTiledPixelBounds(center) {
@@ -689,8 +680,6 @@ export class GridLayer extends Layer {
 			// if it's the first batch of tiles to load
 			if (!this._loading) {
 				this._loading = true;
-				// @event loading: Event
-				// Fired when the grid layer starts loading tiles.
 				this.fire('loading');
 			}
 
@@ -722,10 +711,6 @@ export class GridLayer extends Layer {
 		return new LatLngBounds(this.options.bounds).overlaps(tileBounds);
 	}
 
-	_keyToBounds(key) {
-		return this._tileCoordsToBounds(this._keyToTileCoords(key));
-	}
-
 	_tileCoordsToNwSe(coords) {
 		const map = this._map,
 		tileSize = this.getTileSize(),
@@ -751,14 +736,6 @@ export class GridLayer extends Layer {
 		return `${coords.x}:${coords.y}:${coords.z}`;
 	}
 
-	// converts tile cache key to coordinates
-	_keyToTileCoords(key) {
-		const k = key.split(':'),
-		coords = new Point(+k[0], +k[1]);
-		coords.z = +k[2];
-		return coords;
-	}
-
 	_removeTile(key) {
 		const tile = this._tiles[key];
 		if (!tile) { return; }
@@ -767,11 +744,9 @@ export class GridLayer extends Layer {
 
 		delete this._tiles[key];
 
-		// @event tileunload: TileEvent
-		// Fired when a tile is removed (e.g. when a tile goes off the screen).
 		this.fire('tileunload', {
 			tile: tile.el,
-			coords: this._keyToTileCoords(key)
+			coords: tile.coords
 		});
 	}
 
@@ -781,9 +756,6 @@ export class GridLayer extends Layer {
 		const tileSize = this.getTileSize();
 		tile.style.width = `${tileSize.x}px`;
 		tile.style.height = `${tileSize.y}px`;
-
-		tile.onselectstart = Util.falseFn;
-		tile.onpointermove = Util.falseFn;
 	}
 
 	_addTile(coords, container) {
@@ -801,7 +773,9 @@ export class GridLayer extends Layer {
 			requestAnimationFrame(this._tileReady.bind(this, coords, null, tile));
 		}
 
-		DomUtil.setPosition(tile, tilePos);
+		// 2D, so tiles raster into the level's layer: as separate layers they get compositor edge antialiasing,
+		// and the overlapping edge ramps show as light seams under plus-lighter blending
+		DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[key] = {
@@ -811,8 +785,6 @@ export class GridLayer extends Layer {
 		};
 
 		container.appendChild(tile);
-		// @event tileloadstart: TileEvent
-		// Fired when a tile is requested and starts loading.
 		this.fire('tileloadstart', {
 			tile,
 			coords
@@ -821,8 +793,6 @@ export class GridLayer extends Layer {
 
 	_tileReady(coords, err, tile) {
 		if (err) {
-			// @event tileerror: TileErrorEvent
-			// Fired when there is an error loading a tile.
 			this.fire('tileerror', {
 				error: err,
 				tile,
@@ -835,32 +805,32 @@ export class GridLayer extends Layer {
 		tile = this._tiles[key];
 		if (!tile) { return; }
 
-		tile.loaded = +new Date();
-		if (this._map._fadeAnimated) {
-			tile.el.style.opacity = 0;
-			cancelAnimationFrame(this._fadeFrame);
-			this._fadeFrame = requestAnimationFrame(this._updateOpacity.bind(this));
-		} else {
+		if (!this._map._fadeAnimated) {
 			tile.active = true;
 			this._pruneTiles();
+		} else if (!tile.loaded) { // with errorTileUrl, a tile is ready twice (on error and on fallback load)
+			// while fading, the tile is a compositor layer of its own where plus-lighter would light up its
+			// antialiased edges, so it's blended normally until the fade ends
+			tile.el.classList.add('leaflet-tile-fading');
+			tile.el.animate({opacity: [0, 1]}, 200).onfinish = this._onTileFaded.bind(this, tile);
 		}
+		tile.loaded = true;
 
 		if (!err) {
 			tile.el.classList.add('leaflet-tile-loaded');
 
-			// @event tileload: TileEvent
-			// Fired when a tile loads.
 			this.fire('tileload', {
 				tile: tile.el,
 				coords
 			});
 		}
 
-		if (this._noTilesToLoad()) {
+		// a tileload listener may have removed the layer, emptying the tile list
+		if (this._map && this._noTilesToLoad()) {
 			this._loading = false;
-			// @event load: Event
-			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
+
+			if (!this._map) { return; } // removed by a load listener
 
 			if (!this._map._fadeAnimated) {
 				requestAnimationFrame(this._pruneTiles.bind(this));
@@ -870,6 +840,22 @@ export class GridLayer extends Layer {
 				this._pruneTimeout = setTimeout(this._pruneTiles.bind(this), 250);
 			}
 		}
+	}
+
+	_onTileFaded(tile) {
+		tile.el.classList.remove('leaflet-tile-fading');
+		// the tile's key may have changed after a world copy jump, so look it up again
+		if (this._tiles[this._tileCoordsToKey(tile.coords)] !== tile) { return; }
+
+		tile.active = true;
+		this._onOpaqueTile(tile);
+
+		// one prune for all the tiles that finish fading in the same frame
+		if (this._noPrune || this._fadePruneFrame) { return; }
+		this._fadePruneFrame = requestAnimationFrame(() => {
+			this._fadePruneFrame = 0;
+			if (!this._noPrune) { this._pruneTiles(); }
+		});
 	}
 
 	_getTilePos(coords) {

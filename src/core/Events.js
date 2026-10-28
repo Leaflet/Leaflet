@@ -1,6 +1,8 @@
 import {Class} from './Class.js';
 import * as Util from './Util.js';
 
+const warnedEvents = new Set();
+
 /*
  * @class Evented
  * @inherits Class
@@ -61,7 +63,7 @@ export class Evented extends Class {
 	 * Removes a set of type/listener pairs.
 	 *
 	 * @alternative
-	 * @method off: this
+	 * @method off(): this
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
 	 */
 	off(types, fn, context) {
@@ -89,13 +91,21 @@ export class Evented extends Class {
 		return this;
 	}
 
-	static __REMOVED_EVENTS = ['mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove'];
+	static __REMOVED_EVENTS = {
+		mousedown: 'pointerdown',
+		mouseup: 'pointerup',
+		mouseover: 'pointerover',
+		mouseout: 'pointerout',
+		mousemove: 'pointermove',
+		keypress: 'keydown'
+	};
 
 	// attach listener (without syntactic sugar now)
 	_on(type, fn, context, _once) {
 		// To be removed in leaflet 3
-		if (Evented.__REMOVED_EVENTS.includes(type)) {
-			console.error(`The event ${type} has been removed. Use the PointerEvent variant instead.`);
+		if (Object.hasOwn(Evented.__REMOVED_EVENTS, type) && !warnedEvents.has(type)) {
+			warnedEvents.add(type);
+			console.error(`The event ${type} has been removed in Leaflet 2. Use ${Evented.__REMOVED_EVENTS[type]} instead.`);
 		}
 
 		if (typeof fn !== 'function') {

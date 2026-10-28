@@ -1,8 +1,34 @@
 
 import {Control} from './Control.js';
-import {LeafletMap} from '../map/Map.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
+
+// @namespace ZoomControl
+
+// @section
+// @aka ZoomControl options
+const defaultOptions = {
+	// @option position: String = 'topleft'
+	// The position of the control (one of the map corners). Possible values are `'topleft'`,
+	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	position: 'topleft',
+
+	// @option zoomInText: String = '<span aria-hidden="true">+</span>'
+	// The text set on the 'zoom in' button.
+	zoomInText: '<span aria-hidden="true">+</span>',
+
+	// @option zoomInTitle: String = 'Zoom in'
+	// The title set on the 'zoom in' button.
+	zoomInTitle: 'Zoom in',
+
+	// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
+	// The text set on the 'zoom out' button.
+	zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
+
+	// @option zoomOutTitle: String = 'Zoom out'
+	// The title set on the 'zoom out' button.
+	zoomOutTitle: 'Zoom out'
+};
 
 /*
  * @class ZoomControl
@@ -14,34 +40,10 @@ import * as DomEvent from '../dom/DomEvent.js';
 // @namespace ZoomControl
 // @constructor ZoomControl(options: ZoomControl options)
 // Creates a zoom control
+
 export class ZoomControl extends Control {
 
-	static {
-		// @section
-		// @aka ZoomControl options
-		this.setDefaultOptions({
-			// @option position: String = 'topleft'
-			// The position of the control (one of the map corners). Possible values are `'topleft'`,
-			// `'topright'`, `'bottomleft'` or `'bottomright'`
-			position: 'topleft',
-
-			// @option zoomInText: String = '<span aria-hidden="true">+</span>'
-			// The text set on the 'zoom in' button.
-			zoomInText: '<span aria-hidden="true">+</span>',
-
-			// @option zoomInTitle: String = 'Zoom in'
-			// The title set on the 'zoom in' button.
-			zoomInTitle: 'Zoom in',
-
-			// @option zoomOutText: String = '<span aria-hidden="true">&#x2212;</span>'
-			// The text set on the 'zoom out' button.
-			zoomOutText: '<span aria-hidden="true">&#x2212;</span>',
-
-			// @option zoomOutTitle: String = 'Zoom out'
-			// The title set on the 'zoom out' button.
-			zoomOutTitle: 'Zoom out'
-		});
-	}
+	static defaultOptions = defaultOptions;
 
 	onAdd(map) {
 		const zoomName = 'leaflet-control-zoom',
@@ -126,23 +128,3 @@ export class ZoomControl extends Control {
 		}
 	}
 }
-
-// @namespace LeafletMap
-// @section Control options
-// @option zoomControl: Boolean = true
-// Whether a [zoom control](#control-zoom) is added to the map by default.
-LeafletMap.mergeOptions({
-	zoomControl: true
-});
-
-LeafletMap.addInitHook(function () {
-	if (this.options.zoomControl) {
-		// @section Controls
-		// @property zoomControl: ZoomControl
-		// The default zoom control (only available if the
-		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new ZoomControl();
-		this.addControl(this.zoomControl);
-	}
-});
-

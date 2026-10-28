@@ -5,9 +5,9 @@ Contributing to Leaflet
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Running the Tests](#running-the-tests)
- 6. [Improving Documentation](#improving-documentation)
- 7. [Code of Conduct](#code-of-conduct)
- 8. [Thank You](#thank-you)
+ 5. [Improving Documentation](#improving-documentation)
+ 6. [Code of Conduct](#code-of-conduct)
+ 7. [Thank You](#thank-you)
 
 ## Getting Involved
 
@@ -34,7 +34,7 @@ here are some tips for creating a helpful report that will make fixing it much e
 
  * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
  * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](http://leafletjs.com/edit.html)).
+ * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet plunker](https://leafletjs.com/edit.html)).
  * Check whether the bug can be reproduced in **other browsers**.
  * Check if the bug occurs in the stable version, main, or both.
  * *Bonus tip:* if the bug only appears in the main version but the stable version is fine,
@@ -65,7 +65,7 @@ please consider submitting another pull request with the corresponding [document
 
 ### Setting up the Build System
 
-The Leaflet build system uses [NodeJS](http://nodejs.org/).
+The Leaflet build system uses [NodeJS](https://nodejs.org/).
 To set up the Leaflet build system, install [NodeJS](https://nodejs.org/).
 Then run the following commands in the project root to install dependencies:
 
@@ -104,43 +104,50 @@ But normally, Leaflet is loaded in a web browser as just one JavaScript file.
 
 In order to create this file, run `npm run build` or `yarn run build`.
 
-You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
-`dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
-development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
-for deployment.
+You'll find `dist/leaflet.js`, a minified ES module, and `dist/leaflet-global.js`,
+a minified script that defines the global `L`, each with a source map that includes
+the original sources. The npm package points bundlers at `src/` directly, so they
+can drop the parts of Leaflet an app doesn't use.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the tests
-in a graphical browser. This requires regenerating the bundled files quickly.
-
-In order to do so, run `npm run watch` or `yarn run watch`. This will keep
-on rebuilding the bundles whenever any source file changes.
+in a graphical browser. The debug pages load `src/` directly, so changes
+show up on reload without a build.
 
 ## Running the Tests
 
-Before running the tests, make sure that the source code has been built (as mentioned above). If you want to run the tests in the background while working on Leaflet, it is recommended you run the build in `watch` mode. This way the tests will automatically re-run when changes to the source code are made. 
-
-To run the tests from the command line, ensure you have [Google Chrome](https://www.google.com/chrome/) installed and then run:
+Tests run in real browsers via [Vitest](https://vitest.dev/) browser mode (Playwright provider), against the sources in `src/`, so no build is needed.
 
 ```
 npm test
 ```
 
-By default the tests will run in Google Chrome headlessly (without a UI), to run the tests in other browsers you can pass in the [`--browsers`](https://karma-runner.github.io/latest/config/configuration-file.html#browsers) flag.
+Runs the suite once in headless Chromium. To run it in another browser, set `TEST_BROWSER`, and pass spec paths to run only those:
 
 ```
-npm test -- --browsers Firefox
+TEST_BROWSER=firefox npm test
+TEST_BROWSER=webkit npm test
+npm test -- spec/suites/layer/PopupSpec.js
 ```
 
-For a list of available browsers see the documentation of the included launcher plugins:
-- [`karma-chrome-launcher`](https://github.com/karma-runner/karma-chrome-launcher#available-browsers)
-- [`karma-firefox-launcher`](https://github.com/karma-runner/karma-firefox-launcher#configuration)
-- [`karma-safarinative-launcher`](https://github.com/muthu90ec/karma-safarinative-launcher#readme)
+For watch mode, run `npx vitest`.
+
+To test the minified bundle instead of the sources, as one of the CI jobs does, run `npm run build` and then `TEST_DIST=1 npm test`.
+
+To open the Vitest UI for interactive debugging:
+
+```
+npm run test:ui
+```
+
+This opens a dashboard at `http://localhost:51204/__vitest__/` and spawns a visible browser window. Open DevTools in that window to set breakpoints in source (sourcemaps work), inspect the test DOM, and step through specs. Use `it.only(...)` to isolate a single test, or `debugger;` statements to pause inline.
+
+Playwright will install its own browser binaries the first time it runs (`npx playwright install chromium firefox webkit`).
 
 ## Improving Documentation
 
 The code of the live Leaflet website that contains all documentation and examples is located in the `docs/` directory of the `main` branch
-and is automatically generated from a set of HTML and Markdown files by [Jekyll](http://jekyllrb.com/).
+and is generated from a set of HTML and Markdown files by a small Node script, [`build/site.js`](./build/site.js).
 
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
@@ -148,40 +155,22 @@ browse the [`docs/ directory`](https://github.com/Leaflet/Leaflet/tree/main/docs
 choose a certain file for editing, click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
 
-To work on the documentation locally ensure you have Ruby installed. You can download it from the [Ruby website](https://www.ruby-lang.org/en/downloads/) or use [`rbenv`](https://github.com/rbenv/rbenv) (recommended).
+To preview the website locally, run `npm run serve` and open [http://localhost:8080](http://localhost:8080).
+It builds the site into `_site/` (in about a second) and serves it; run `npm run site` to rebuild after changes.
 
-You'll need to install the same Ruby version as specified in [`.ruby-version`](./docs/.ruby-version). If you are using `rbenv` you can install this by running `rbenv install` from the `docs/` directory.
-
-If you need to make edits in a local repository to see how it looks in the process, do the following:
-
-1. Open a terminal in the `docs/` directory.
-2. Make sure you are on the `main` branch by running `git checkout main`.
-3. Run `bundle install` to install the dependencies.
-4. Run `npm run serve` to serve the documentation.
-5. Open [http://localhost:4000](http://localhost:4000) in your web browser.
-
-Now any file changes in `docs/` will be applied when you reload pages.
-After committing the changes, just send a pull request.
+Until Leaflet 2.0 is released, the 1.x tutorials, the front page and the download page
+are taken from a pinned commit of the `v1` branch (see `refs` in [`build/site.json`](./build/site.json)).
 
 ### API documentation
 
-Since Leaflet 1.0.0-rc1, the API documentation in `reference-1.0.0.html` is handled
-via [Leafdoc](https://github.com/Leaflet/Leafdoc). This means that next to the
-code for every method, option or property there is a special code comment documenting
-that feature. In order to edit the API documentation, just edit these comments in the
-source code.
+The API reference is generated with [Leafdoc](https://github.com/Leaflet/Leafdoc) from special code comments
+next to every class, method, option and event in `src/`. To change the API documentation, edit these comments.
 
-In order to generate the documentation, make sure that the development dependencies
-are installed (run either `npm install` or `yarn install`), then just run
-
-```
-npm run docs
-```
-
-and you'll find a `.html` file in the `dist/` directory.
-
-On every release of a new Leaflet version, this file will be generated and copied
-over to `docs/reference.html` - there is no need to send pull requests with changes to this file to update the API documentation.
+The website builds the references from the released code rather than the latest one: `reference.html` documents
+1.9.4 from the `v1` branch, and `reference-2.0.0.html` the latest 2.0 release (see `refs` in
+[`build/site.json`](./build/site.json)), so changes to the comments appear there with the next release.
+The pages around them (header and table of contents in `docs/reference.html` and `docs/reference-2.0.0.html`)
+and the templates in `build/leafdoc-templates/` aren't pinned, so changes to them go live on merge.
 
 ## Code of Conduct
 

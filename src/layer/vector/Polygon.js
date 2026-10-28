@@ -4,6 +4,13 @@ import * as LineUtil from '../../geometry/LineUtil.js';
 import {Point} from '../../geometry/Point.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import * as PolyUtil from '../../geometry/PolyUtil.js';
+import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
+
+// @namespace Polygon
+
+const defaultOptions = {
+	fill: true
+};
 
 /*
  * @class Polygon
@@ -51,13 +58,10 @@ import * as PolyUtil from '../../geometry/PolyUtil.js';
  */
 
 // @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
+
 export class Polygon extends Polyline {
 
-	static {
-		this.setDefaultOptions({
-			fill: true
-		});
-	}
+	static defaultOptions = defaultOptions;
 
 	isEmpty() {
 		return !this._latlngs.length || !this._latlngs[0].length;
@@ -71,6 +75,25 @@ export class Polygon extends Polyline {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
 		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
+	}
+
+	// @method toGeoJSON(precision?: Number|false): Object
+	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
+	toGeoJSON(precision) {
+		const holes = !LineUtil.isFlat(this._latlngs),
+		multi = holes && !LineUtil.isFlat(this._latlngs[0]);
+
+		let coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
+
+		if (!holes) {
+			coords = [coords];
+		}
+
+		return getFeature(this, {
+			type: `${multi ? 'Multi' : ''}Polygon`,
+			coordinates: coords
+		});
 	}
 
 	_convertLatLngs(latlngs) {

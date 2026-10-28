@@ -1,5 +1,4 @@
-import {expect} from 'chai';
-import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
+import {Bounds, Canvas, CircleMarker, DivIcon, DomEvent, GridLayer, Handler, LatLngBounds, Layer, LeafletMap, Marker, Point, Polygon, Popup, TileLayer, Util, LayersControl, LatLng} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
@@ -15,6 +14,23 @@ describe('Map', () => {
 
 	afterEach(() => {
 		removeMapContainer(map, container);
+	});
+
+	describe('container classes', () => {
+		it('adds leaflet-retina only on high-DPI screens', () => {
+			const dpr = sinon.stub(window, 'devicePixelRatio').value(1);
+			const container1 = createContainer();
+			const map1 = new LeafletMap(container1);
+			dpr.value(2);
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			dpr.restore();
+
+			expect(container1.classList.contains('leaflet-retina')).to.be.false;
+			expect(container2.classList.contains('leaflet-retina')).to.be.true;
+			removeMapContainer(map1, container1);
+			removeMapContainer(map2, container2);
+		});
 	});
 
 	describe('#remove', () => {
@@ -93,21 +109,23 @@ describe('Map', () => {
 		});
 
 		// For #9575
-		it('does not throw if removed before transition end complete', (done) => {
+		it('does not throw if removed before transition end complete', async () => {
+			const clock = sinon.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+
 			map.setView([0, 0], 1).setMaxBounds([[0, 1], [2, 3]]);
-
 			map._createAnimProxy();
-
-			setTimeout(() => {
-				map.remove();
-				map = null;
-			}, 10);
-
-			setTimeout(() => {
-				done();
-			}, 300);
-
 			map.setZoom(2);
+
+			// let the zoom animation start, then remove the map before its transition end timer fires
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+			map.remove();
+			map = null;
+
+			try {
+				clock.tick(300);
+			} finally {
+				clock.restore();
+			}
 		});
 
 		it('throws error if container is reused by other instance', () => {
@@ -216,16 +234,12 @@ describe('Map', () => {
 		it('prevents firing movestart noMoveStart', (done) => {
 			const movestartSpy = sinon.spy();
 			map.on('movestart', movestartSpy);
-			const moveendSpy = sinon.spy();
-			map.on('moveend', moveendSpy);
+			map.on('moveend', () => {
+				expect(movestartSpy.notCalled).to.eql(true);
+				done();
+			});
 
 			map.setView([51.505, -0.09], 13, {pan: {noMoveStart: true}});
-
-			setTimeout(() => {
-				expect(movestartSpy.notCalled).to.eql(true);
-				expect(moveendSpy.calledOnce).to.eql(true);
-				done();
-			}, 100);
 		});
 	});
 
@@ -508,18 +522,14 @@ describe('Map', () => {
 			expect(map.off.called).not.to.be.true;
 		});
 
-		it('avoid subpixel / floating point related wobble (#8532)', (done) => {
+		it('avoid subpixel / floating point related wobble (#8532)', () => {
 			map.setView([50.450036, 30.5241361], 13);
 
 			const spy = sinon.spy();
-			map.on('moveend', spy);
+			map.on('movestart', spy);
 			map.setMaxBounds(map.getBounds());
 
-			// Unfortunately this is one of those tests where we need to allow at least one animation tick
-			setTimeout(() => {
-				expect(spy.called).to.be.false;
-				done();
-			}, 300);
+			expect(spy.called).to.be.false;
 		});
 	});
 
@@ -728,6 +738,19 @@ describe('Map', () => {
 
 			UIEventSimulator.fire('click', window);
 			expect(spy.callCount).to.eql(1);
+		});
+
+		it('adds a handler from an init hook after the built-in ones', () => {
+			class MyMap extends LeafletMap {}
+			MyMap.mergeOptions({clickHandler: true});
+			MyMap.addInitHook('addHandler', 'clickHandler', getHandler());
+
+			map.remove();
+			map = new MyMap(container);
+
+			expect(map.clickHandler.enabled()).to.be.true;
+			expect(map.dragging.enabled()).to.be.true;
+			expect(map._handlers.at(-1)).to.equal(map.clickHandler);
 		});
 	});
 
@@ -1413,9 +1436,7 @@ describe('Map', () => {
 			container.style.visibility = 'hidden';
 		});
 
-		it('move to requested center and zoom, and call zoomend once', function (done) {
-			this.timeout(10000); // This test takes longer than usual due to frames
-
+		it('move to requested center and zoom, and call zoomend once', (done) => {
 			const newCenter = new LatLng(10, 11),
 			newZoom = 12;
 			const callback = function () {
@@ -1425,11 +1446,9 @@ describe('Map', () => {
 			};
 			map.setView([0, 0], 0);
 			map.on('zoomend', callback).flyTo(newCenter, newZoom, {duration: 0.1});
-		});
+		}, 10000);
 
-		it('flyTo start latlng == end latlng', function (done) {
-			this.timeout(10000); // This test takes longer than usual due to frames
-
+		it('flyTo start latlng == end latlng', (done) => {
 			const dc = new LatLng(38.91, -77.04);
 			map.setView(dc, 14);
 
@@ -1440,7 +1459,7 @@ describe('Map', () => {
 			});
 
 			map.flyTo(dc, 4, {duration: 0.1});
-		});
+		}, 10000);
 
 		it('flyTo should honour maxZoom', (done) => {
 			const newCenter = new LatLng(10, 11),
@@ -1458,12 +1477,29 @@ describe('Map', () => {
 			map.flyTo(newCenter, 22, {animate: true, duration: 0.1});
 		});
 
-		it('should handle parameters leading to Math.log(sq) issue', function (done) {
+		it('flyTo should finish within maxBounds without a corrective pan (#9129)', async () => {
+			const target = new LatLng(19, 19);
+			map.options.maxBoundsViscosity = 1;
+			map.setMaxBounds([[-20, -20], [20, 20]]);
+			map.setView(target, 5, {animate: false});
+			const expected = map.getCenter();
+			map.setView([0, 0], 5, {animate: false});
+			const movestart = sinon.spy();
+			map.on('movestart', movestart);
+
+			const actual = await new Promise((resolve) => {
+				map.once('zoomend', () => resolve(map.getCenter()));
+				map.flyTo(target, 5, {animate: true, duration: 0.1});
+			});
+
+			expect(map.project(actual)).to.be.near(map.project(expected));
+			expect(movestart.calledOnce).to.be.true;
+		});
+
+		it('should handle parameters leading to Math.log(sq) issue', (done) => {
 			container.style.width = '1024px';
 			container.style.height = '1024px';
 			container.style.visibility = 'visible';
-
-			this.timeout(20000);
 
 			const coordinatesA = new LatLng(59.0009, 60.0);
 			const coordinatesB = new LatLng(59, 60.02);
@@ -1478,7 +1514,35 @@ describe('Map', () => {
 				done();
 			});
 
-			map.flyTo(center, 11, {animate: true});
+			map.flyTo(center, 11, {animate: true, duration: 0.1});
+		});
+
+		it('keeps tiles in place on a short same-zoom flight after a pan (#9438)', (done) => {
+			container.style.visibility = 'visible';
+			map.setView([50, 30], 18);
+
+			const grid = new GridLayer();
+			grid.createTile = () => document.createElement('div');
+			grid.addTo(map);
+
+			map.panBy([6, 4], {animate: false});
+
+			map.once('moveend', () => {
+				const {left, top} = container.getBoundingClientRect();
+				for (const {el, coords} of Object.values(grid._tiles)) {
+					const expected = map.latLngToContainerPoint(map.unproject(coords.multiplyBy(256), coords.z));
+					const rect = el.getBoundingClientRect();
+					expect(rect.left - left).to.be.closeTo(expected.x, 1);
+					expect(rect.top - top).to.be.closeTo(expected.y, 1);
+				}
+				done();
+			});
+
+			// skip straight from the first frame to the last one, as when the flight is shorter than a frame
+			const clock = sinon.useFakeTimers({toFake: ['Date']});
+			map.flyTo([50, 30], 18);
+			clock.tick(1000);
+			clock.restore();
 		});
 	});
 
@@ -1712,7 +1776,7 @@ describe('Map', () => {
 		});
 
 		it('does not pan the map when the target is within bounds', () => {
-			map.panInside(tl, {animate:false});
+			map.panInside(tl, {animate: false});
 			expect(center).to.eql(map.getCenter());
 		});
 
@@ -1813,6 +1877,17 @@ describe('Map', () => {
 			const layer = new Marker([1, 2]).addTo(map);
 			UIEventSimulator.fire('pointermove', layer._icon);
 			expect(spy.calledOnce).to.be.true;
+		});
+
+		it('reads the Leaflet 1 bubblingMouseEvents option as bubblingPointerEvents', () => {
+			const mapSpy = sinon.spy();
+			map.on('click', mapSpy);
+			const marker = new Marker([1, 2], {bubblingMouseEvents: true}).on('click', () => {}).addTo(map);
+			const polygon = new Polygon([[1, 2], [3, 4], [5, 6]], {bubblingMouseEvents: false}).on('click', () => {}).addTo(map);
+			UIEventSimulator.fire('click', polygon._path);
+			expect(mapSpy.called).to.be.false;
+			UIEventSimulator.fire('click', marker._icon);
+			expect(mapSpy.calledOnce).to.be.true;
 		});
 
 		it('DOM events fired on marker can be cancelled before being caught by the map', () => {
@@ -1964,11 +2039,22 @@ describe('Map', () => {
 			expect(spy.secondCall.lastArg).to.be.true;
 		});
 
-		it('prints to console.error about deprecated mouse* events', () => {
+		it('prints to console.error about removed mouse* events, once per name', () => {
 			const errorSpy = sinon.spy(console, 'error');
-			map.on('mouseover', () => {});
+			map.on('mouseout', () => {});
+			map.on('mouseout', () => {});
+			new Marker([0, 0]).on('mouseout', () => {});
 			expect(errorSpy.calledOnce).to.be.true;
-			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseover has been removed. Use the PointerEvent variant instead.');
+			expect(errorSpy.firstCall.args[0]).to.eq('The event mouseout has been removed in Leaflet 2. Use pointerout instead.');
+			errorSpy.restore();
+		});
+
+		it('prints to console.error about the removed keypress event', () => {
+			const errorSpy = sinon.spy(console, 'error');
+			map.on('keypress', () => {});
+			expect(errorSpy.calledOnce).to.be.true;
+			expect(errorSpy.firstCall.args[0]).to.eq('The event keypress has been removed in Leaflet 2. Use keydown instead.');
+			errorSpy.restore();
 		});
 	});
 
@@ -2619,6 +2705,111 @@ describe('Map', () => {
 		});
 	});
 
+	describe('with reduced motion', () => {
+		beforeEach(() => {
+			const matchMedia = window.matchMedia.bind(window);
+			const reduced = query => (query === '(prefers-reduced-motion: reduce)' ? {matches: true} : matchMedia(query));
+			sinon.stub(window, 'matchMedia').callsFake(reduced);
+			map.setView([0, 0], 5);
+		});
+
+		afterEach(() => {
+			window.matchMedia.restore();
+		});
+
+		it('keeps zoom and fade animations for user interaction', () => {
+			const container2 = createContainer();
+			const map2 = new LeafletMap(container2);
+			expect(map2._zoomAnimated).to.be.true;
+			expect(map2._fadeAnimated).to.be.true;
+			removeMapContainer(map2, container2);
+		});
+
+		it('animates a pan shorter than half the map size', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			map.panBy([100, 100]);
+			expect(moveend.called).to.be.false;
+			expect(map._panAnim._inProgress).to.be.true;
+		});
+
+		it('pans instantly further than half the map size', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			const center = map.getCenter();
+			map.panBy([300, 0]);
+			expect(moveend.calledOnce).to.be.true;
+			expect(map.getCenter().distanceTo(center)).to.be.greaterThan(1000);
+		});
+
+		it('still animates a long pan with animate: true', () => {
+			const moveend = sinon.spy();
+			map.on('moveend', moveend);
+			map.panBy([300, 0], {animate: true});
+			expect(moveend.called).to.be.false;
+			expect(map._panAnim._inProgress).to.be.true;
+		});
+
+		it('animates a zoom by one level', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(6);
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('zooms instantly by more than one level', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(7);
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(7);
+		});
+
+		it('still animates a zoom by more than one level with animate: true', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.setZoom(7, {animate: true});
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('flies instantly over a long distance', () => {
+			map.flyTo([10, 11], 12);
+			expect(map.getCenter()).to.eqlLatLng(new LatLng(10, 11));
+			expect(map.getZoom()).to.equal(12);
+		});
+
+		it('animates a short flight as a regular zoom', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.flyTo([0.1, 0.1], 6);
+			expect(map._flyToFrame).to.not.be.ok;
+			expect(zoomend.called).to.be.false;
+			expect(map._zoomAnimFrame).to.be.ok;
+		});
+
+		it('flies instantly with animate: false', () => {
+			new GridLayer().addTo(map);
+			const zoomend = sinon.spy();
+			map.on('zoomend', zoomend);
+			map.flyTo([0.1, 0.1], 6, {animate: false});
+			expect(zoomend.calledOnce).to.be.true;
+			expect(map.getZoom()).to.equal(6);
+		});
+
+		it('keeps popup autoPan', () => {
+			const spy = sinon.spy();
+			map.on('autopanstart', spy);
+			new Popup({keepInView: false}).setLatLng(map.containerPointToLatLng([5, 5])).setContent('popup').openOn(map);
+			expect(spy.called).to.be.true;
+		});
+	});
+
 	describe('#unproject', () => {
 
 		it('returns the latitude and langitude with given point', () => {
@@ -2745,6 +2936,19 @@ describe('Map', () => {
 				done();
 			});
 			map.flyToBounds(bounds, {animate: false});
+		});
+	});
+
+	describe('text selection', () => {
+		it('makes the map surface unselectable, but not popups and controls', () => {
+			map.setView([0, 0], 1).openPopup('popup text', [0, 0]);
+			const userSelect = el => getComputedStyle(el).userSelect;
+
+			// only elements with their own rule: Firefox and WebKit report descendants of a `none` element as `auto`
+			expect(userSelect(container)).to.equal('none');
+			expect(userSelect(container.querySelector('.leaflet-popup-pane'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-container'))).to.equal('text');
+			expect(userSelect(container.querySelector('.leaflet-control-zoom-in'))).to.equal('none');
 		});
 	});
 });

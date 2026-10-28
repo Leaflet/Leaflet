@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Circle, CircleMarker, FeatureGroup, GeoJSON, LatLng, Layer, LayerGroup, LeafletMap, Marker, Polygon, Polyline, TileLayer} from 'leaflet';
 import {createContainer, removeMapContainer} from '../SpecHelper.js';
 
@@ -57,7 +56,7 @@ describe('GeoJSON', () => {
 				type: 'Feature',
 				geometry: {
 					type: 'LineString',
-					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
+					coordinates: [[-2.35, 51.38], [-2.38, 51.38]]
 				}
 			};
 			const geojson = new GeoJSON(feature, {weight: 7, color: 'chocolate'});
@@ -75,14 +74,14 @@ describe('GeoJSON', () => {
 				type: 'Feature',
 				geometry: {
 					type: 'LineString',
-					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
+					coordinates: [[-2.35, 51.38], [-2.38, 51.38]]
 				}
 			};
 			const feature2 = {
 				type: 'Feature',
 				geometry: {
 					type: 'LineString',
-					coordinates:[[-3.35, 50.38], [-3.38, 50.38]]
+					coordinates: [[-3.35, 50.38], [-3.38, 50.38]]
 				}
 			};
 			const geojson = new GeoJSON([feature, feature2], {weight: 7, color: 'chocolate'});
@@ -506,6 +505,33 @@ describe('LayerGroup#toGeoJSON', () => {
 			}]
 		};
 		expect(new GeoJSON(json).toGeoJSON()).to.eql(expected);
+	});
+
+	it('roundtrips MultiPoint and GeometryCollection members of a GeometryCollection', () => {
+		const json = {
+			type: 'FeatureCollection',
+			features: [{
+				type: 'Feature',
+				geometry: {
+					type: 'GeometryCollection',
+					geometries: [{
+						type: 'MultiPoint',
+						coordinates: [[10, 20], [30, 40]]
+					}, {
+						type: 'GeometryCollection',
+						geometries: [{
+							type: 'Point',
+							coordinates: [50, 60]
+						}]
+					}]
+				},
+				properties: {
+					name: 'Test'
+				}
+			}]
+		};
+
+		expect(new GeoJSON(json).toGeoJSON()).to.eql(json);
 	});
 
 	it('omits layers which do not implement toGeoJSON', () => {

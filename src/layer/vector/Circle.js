@@ -1,5 +1,4 @@
 import {CircleMarker} from './CircleMarker.js';
-import {Path} from './Path.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 
@@ -8,7 +7,7 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
  * @class Circle
  * @inherits CircleMarker
  *
- * A class for drawing circle overlays on a map. Extends `CircleMarker`.
+ * A class for drawing circle overlays on a map with radius specified in meters. Extends `CircleMarker`.
  *
  * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion).
  *
@@ -24,46 +23,35 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 // which contains the circle radius.
 export class Circle extends CircleMarker {
 
-	initialize(latlng, options) {
-		super.initialize(latlng, options);
+	static initHooks = true;
+
+	constructor(latlng, options) {
+		super(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
 		// @section
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
-		this._mRadius = this.options.radius;
+
+		this.callInitHooks();
 	}
 
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
-	setRadius(radius) {
-		this._mRadius = radius;
-		return this.redraw();
-	}
-
 	// @method getRadius(): Number
 	// Returns the current radius of a circle. Units are in meters.
-	getRadius() {
-		return this._mRadius;
-	}
 
 	// @method getBounds(): LatLngBounds
-	// Returns the `LatLngBounds` of the path.
+	// Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
 	getBounds() {
-		const half = [this._radius, this._radiusY ?? this._radius];
+		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
+
+		const half = [this._pxRadius, this._pxRadiusY ?? this._pxRadius];
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
 			this._map.layerPointToLatLng(this._point.add(half)));
-	}
-
-	setStyle(options) {
-		Path.prototype.setStyle.call(this, options);
-		if (options?.radius !== undefined) {
-			this.setRadius(options.radius);
-		}
-		return this;
 	}
 
 	_project() {
@@ -75,27 +63,30 @@ export class Circle extends CircleMarker {
 
 		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,
-			latR = (this._mRadius / EarthCRS.R) / d,
+			latR = (this._radius / EarthCRS.R) / d,
 			top = map.project([lat + latR, lng]),
 			bottom = map.project([lat - latR, lng]),
 			p = top.add(bottom).divideBy(2),
 			lat2 = map.unproject(p).lat;
-			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
-				        (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+			// Longitude span from the haversine form of the spherical law of cosines. The plain acos() form
+			// loses precision for radii of about a metre and less, where cos(latR) is too close to 1 (#6120).
+			let lngR = 2 * Math.asin(Math.sqrt(
+				(Math.sin(latR * d / 2) ** 2 - Math.sin((lat2 - lat) * d / 2) ** 2) /
+				(Math.cos(lat * d) * Math.cos(lat2 * d)))) / d;
 
 			if (isNaN(lngR) || lngR === 0) {
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
 			}
 
 			this._point = p.subtract(map.getPixelOrigin());
-			this._radius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
-			this._radiusY = p.y - top.y;
+			this._pxRadius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
+			this._pxRadiusY = p.y - top.y;
 
 		} else {
-			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._radius, 0]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
-			this._radius = Math.abs(this._point.x - map.latLngToLayerPoint(latlng2).x);
+			this._pxRadius = Math.abs(this._point.x - map.latLngToLayerPoint(latlng2).x);
 		}
 
 		this._updateBounds();

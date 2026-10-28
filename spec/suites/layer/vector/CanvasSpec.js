@@ -1,9 +1,7 @@
-import {expect} from 'chai';
-import {Canvas, Circle, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
-import Hand from 'prosthetic-hand';
+import {Canvas, Circle, CircleMarker, DomEvent, LayerGroup, LeafletMap, Marker, Polygon, Polyline, SVG, Util} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
-import {createContainer, removeMapContainer} from '../../SpecHelper.js';
+import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
 
 describe('Canvas', () => {
 	let container, map, latLngs;
@@ -14,13 +12,45 @@ describe('Canvas', () => {
 
 	beforeEach(() => {
 		container = createContainer();
-		map = new LeafletMap(container, {preferCanvas: true, zoomControl: false});
+		map = new LeafletMap(container, {renderer: new Canvas(), zoomControl: false});
 		map.setView([0, 0], 6);
 		latLngs = [p2ll(0, 0), p2ll(0, 100), p2ll(100, 100), p2ll(100, 0)];
 	});
 
 	afterEach(() => {
 		removeMapContainer(map, container);
+	});
+
+	describe('on a high-DPI screen', () => {
+		let dpr;
+
+		beforeEach(() => {
+			// the renderer reads the ratio on resize, so recreate the map with the stub in place
+			dpr = sinon.stub(window, 'devicePixelRatio').value(2);
+			removeMapContainer(map, container);
+			container = createContainer();
+			map = new LeafletMap(container, {renderer: new Canvas(), zoomControl: false});
+			map.setView([0, 0], 6);
+		});
+
+		afterEach(() => {
+			dpr.restore();
+		});
+
+		it('renders at device resolution', async () => {
+			const layer = new Polygon([p2ll(0, 0), p2ll(0, 20), p2ll(20, 20), p2ll(20, 0)], {stroke: false, fillOpacity: 1}).addTo(map);
+			await new Promise((resolve) => { requestAnimationFrame(resolve); });
+
+			const renderer = layer._renderer;
+			const canvas = renderer._container;
+			expect(canvas.width).to.equal(2 * canvas.clientWidth);
+			expect(canvas.height).to.equal(2 * canvas.clientHeight);
+
+			const min = renderer._bounds.min;
+			const alphaAt = (x, y) => renderer._ctx.getImageData((x - min.x) * 2, (y - min.y) * 2, 1, 1).data[3];
+			expect(alphaAt(15, 15)).to.equal(255);
+			expect(alphaAt(25, 25)).to.equal(0);
+		});
 	});
 
 	describe('#events', () => {
@@ -114,52 +144,35 @@ describe('Canvas', () => {
 			expect(preclickSpy.callCount).to.eql(1);
 		});
 
-		it('should not fire click when dragging the map on top of it', (done) => {
+		it('should not fire click when dragging the map on top of it', async () => {
 			const downSpy = sinon.spy();
 			const clickSpy = sinon.spy();
 			const preclickSpy = sinon.spy();
 			layer.on('click', clickSpy);
 			layer.on('preclick', preclickSpy);
 			layer.on('pointerdown', downSpy);
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					// Prosthetic does not fire a click when we down+up, but it real world
-					// browsers would, so let's simulate it.
-					UIEventSimulator.fireAt('click', 70, 60);
-					expect(downSpy.called).to.be.true;
-					expect(clickSpy.called).to.be.false;
-					expect(preclickSpy.called).to.be.false;
-					done();
-				}
-			});
-			const mouse = hand.growFinger('pointer');
+			await new Finger().moveTo(50, 50).down().moveBy(20, 10).up();
 
-			// We move 5 pixels first to overcome the 3-pixel threshold of Draggable.
-			mouse.moveTo(50, 50, 0)
-				.down().moveBy(20, 10, 200).up();
+			// Finger doesn't click after a drag, but some browsers do, so simulate it
+			UIEventSimulator.fireAt('click', 70, 60);
+			expect(downSpy.called).to.be.true;
+			expect(clickSpy.called).to.be.false;
+			expect(preclickSpy.called).to.be.false;
 		});
 
-		it('does fire pointerdown on layer after dragging map', (done) => { // #7775
+		it('does fire pointerdown on layer after dragging map', async () => { // #7775
 			const spy = sinon.spy();
 			const center = p2ll(300, 300);
 			const radius = p2ll(200, 200).distanceTo(center);
 			const circle = new Circle(center, {radius}).addTo(map);
 			circle.on('pointerdown', spy);
 
-			const hand = new Hand({
-				timing: 'fastframe',
-				onStop() {
-					expect(spy.callCount).to.eql(2);
-					done();
-				}
-			});
-			const mouse = hand.growFinger('pointer');
+			await new Finger()
+				.moveTo(300, 300).down().moveBy(5, 0).up()  // control case
+				.moveTo(100, 100).down().moveBy(5, 0).up()  // drag the map (outside of circle)
+				.moveTo(300, 300).down().moveBy(5, 0).up(); // expect pointerdown ok
 
-			mouse.wait(100)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up()  // control case
-				.moveTo(100, 100, 0).down().moveBy(5, 0, 20).up()  // drag the map (outside of circle)
-				.moveTo(300, 300, 0).down().moveBy(5, 0, 20).up(); // expect pointerdown ok
+			expect(spy.callCount).to.eql(2);
 		});
 	});
 
@@ -295,6 +308,87 @@ describe('Canvas', () => {
 			map.remove();
 			map = null;
 			requestAnimationFrame(() => { done(); });
+		});
+	});
+
+	describe('#_containsPoint', () => {
+		it('detects point inside polygon', () => {
+			const polygon = new Polygon([
+				[-5, -5],
+				[-5, 5],
+				[5, 5],
+				[5, -5]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([5, 5]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5, -5]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.true;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5, 5]))).to.be.true;
+		});
+
+		it('does not detect point outside polygon', () => {
+			const polygon = new Polygon([
+				[-5, -5],
+				[-5, 5],
+				[5, 5],
+				[5, -5]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([-5.1, 5]))).to.be.false;
+			expect(polygon._containsPoint(map.latLngToLayerPoint([0, 7]))).to.be.false;
+		});
+
+		it('does not detect point which is outside of rendered polygon but is inside of polygon coords', () => {
+			// TODO: Is this a wanted behavior? The point is inside the polygon but outside of the rendered area, so it is not detected as inside. Maybe we should detect it as inside anyway?
+			const polygon = new Polygon([
+				[0, 0],
+				[0, 10],
+				[10, 10], // outside of rendered area
+				[10, 0]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([9, 9]))).to.be.false;
+		});
+
+		it('does detect point in multi-polygon correctly', () => {
+			const polygon = new Polygon([
+				[
+					[-5, -5],
+					[-5, 5],
+					[5, 5],
+					[5, -5]
+				],
+				[
+					[3, 3],
+					[3, 7],
+					[7, 7],
+					[7, 3]
+				]
+			]).addTo(map);
+
+			expect(polygon._containsPoint(map.latLngToLayerPoint([4, 4]))).to.be.false; // inside the hole
+			expect(polygon._containsPoint(map.latLngToLayerPoint([5, 5]))).to.be.true;
+		});
+
+		it('detects point on the line', () => {
+			const line = new Polyline([[-5, -5], [0, -5]]).addTo(map);
+			expect(line._containsPoint(map.latLngToLayerPoint([-5, -5]))).to.be.true;
+			expect(line._containsPoint(map.latLngToLayerPoint([-2.5, -5]))).to.be.true;
+			expect(line._containsPoint(map.latLngToLayerPoint([0, -5]))).to.be.true;
+		});
+
+		it('does not detect point on the line', () => {
+			const line = new Polyline([[-5, -5], [0, -5]]).addTo(map);
+			expect(line._containsPoint(map.latLngToLayerPoint([-10, -5]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([-5.1, -5]))).to.be.false;
+			expect(line._containsPoint(map.latLngToLayerPoint([-5, -5.1]))).to.be.false;
+		});
+
+		it('detects point in circle marker', () => {
+			const circlemarker = new CircleMarker([0, 0], {radius: 10}).addTo(map);
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([0, 0]))).to.be.true;
+			expect(circlemarker._containsPoint(map.latLngToLayerPoint([20, 0]))).to.be.false;
 		});
 	});
 });

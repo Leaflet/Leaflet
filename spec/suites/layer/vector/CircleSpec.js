@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import {Circle, LeafletMap, SimpleCRS, Transformation} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
@@ -30,6 +29,13 @@ describe('Circle', () => {
 			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
 			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
 		});
+
+		it('returns bounds when not added to a map', () => {
+			const bounds = new Circle([50, 30], {radius: 200}).getBounds();
+
+			expect(bounds.getSouthWest()).nearLatLng([49.99820, 29.99720]);
+			expect(bounds.getNorthEast()).nearLatLng([50.00179, 30.00279]);
+		});
 	});
 
 	describe('Legacy factory', () => {
@@ -55,7 +61,88 @@ describe('Circle', () => {
 
 			const circle = new Circle([0, 0], {radius: 200}).addTo(map);
 
-			expect(circle._radius).to.eql(3200);
+			expect(circle._radius).to.eql(200);
+			expect(circle._pxRadius).to.eql(3200);
+		});
+	});
+
+	describe('with a small radius', () => {
+		// Web Mercator is conformal, so a small circle away from the projection limits stays round on the screen.
+		// Radii below about a metre used to come out as ellipses, because acos() lost precision there.
+		const places = [[0, 0], [0.000001, 0.000001], [0.00001, 0.00003], [45.123, 7.456], [-60.5, 170.25]];
+
+		it('stays round for radii from a millimetre to 100 metres', () => {
+			for (const radius of [0.001, 0.01, 0.1, 1, 10, 100]) {
+				for (const place of places) {
+					map.setView(place, 22);
+
+					const small = new Circle(place, {radius}).addTo(map);
+
+					expect(small._pxRadius / small._pxRadiusY, `radius ${radius} m at ${place}`).to.be.closeTo(1, 0.001);
+				}
+			}
+		});
+	});
+
+	describe('#_radius', () => {
+
+		beforeEach(() => {
+			container = createContainer();
+
+			map = new LeafletMap(container, {
+				crs: SimpleCRS
+			});
+			map.setView([0, 0], 4);
+		});
+
+		describe('when a Circle is added to the map ', () => {
+			describe('with a radius set as an option', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20}).addTo(map);
+
+					expect(circle._radius).to.equal(20);
+				});
+			});
+
+			describe('and radius is set before adding it', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.setRadius(15);
+					circle.addTo(map);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and radius is set after adding it', () => {
+				it('takes that radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.addTo(map);
+					circle.setRadius(15);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and setStyle is used to change the radius after adding', () => {
+				it('takes the given radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.addTo(map);
+					circle.setStyle({radius: 15});
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
+
+			describe('and setStyle is used to change the radius before adding', () => {
+				it('takes the given radius', () => {
+					const circle = new Circle([0, 0], {radius: 20});
+					circle.setStyle({radius: 15});
+					circle.addTo(map);
+					expect(circle._radius).to.equal(15);
+					expect(circle._pxRadius).to.equal(240);
+				});
+			});
 		});
 	});
 });

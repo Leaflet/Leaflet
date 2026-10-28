@@ -4,12 +4,12 @@
 		<meta charset="utf-8" />
 		<title>Leaflet debug page - Markers</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-		<link rel="stylesheet" href="../../dist/leaflet.css" />
+		<link rel="stylesheet" href="../../src/leaflet.css" />
 		<link rel="stylesheet" href="../css/screen.css" />
 		<script type="importmap">
 			{
 				"imports": {
-					"leaflet": "../../dist/leaflet-src.js"
+					"leaflet": "../../src/Leaflet.js"
 				}
 			}
 		</script>
@@ -17,7 +17,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {LeafletMap, Marker, Polygon, TileLayer} from 'leaflet';
+			import {DivIcon, LeafletMap, Marker, Polygon, TileLayer} from 'leaflet';
 
 			const map = new LeafletMap('map', {center: [0, 0], zoom: 3, maxZoom: 4});
 
@@ -37,12 +37,29 @@
 			markerDraggable.bindPopup('Draggable');
 			markerDraggable.dragging.enable();
 
+			const markerDivIcon = new Marker([-15, -10], {icon: new DivIcon(), title: 'DivIcon'});
+			map.addLayer(markerDivIcon);
+			markerDivIcon.bindPopup('DivIcon');
+
+			// the button is focusable on its own and clicks natively, so Enter on it should open the popup once
+			const markerButton = new Marker([-15, 10], {
+				icon: new DivIcon({html: '<button>Button</button>', iconSize: [70, 24], className: ''})
+			});
+			map.addLayer(markerButton);
+			markerButton.bindPopup('Button in a DivIcon');
+
+			// focusable but not a button: Enter and Space do nothing
+			const markerNonInteractive = new Marker([15, -10], {interactive: false, alt: 'Not interactive'});
+			map.addLayer(markerNonInteractive);
+
 			const poly = new Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
 			map.addLayer(poly);
 			poly.bindPopup('Polygon');
 
 			markerDraggable.on('click', () => console.log('markerDraggable click'));
 			markerStatic.on('click', () => console.log('markerStatic click'));
+			markerDivIcon.on('click', () => console.log('markerDivIcon click'));
+			markerButton.on('click', () => console.log('markerButton click'));
 			map.on('click', () => console.log('map click'));
 			poly.on('click', () => console.log('poly click'));
 
