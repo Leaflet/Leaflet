@@ -825,9 +825,12 @@ export class GridLayer extends Layer {
 			});
 		}
 
-		if (this._noTilesToLoad()) {
+		// a tileload listener may have removed the layer, emptying the tile list
+		if (this._map && this._noTilesToLoad()) {
 			this._loading = false;
 			this.fire('load');
+
+			if (!this._map) { return; } // removed by a load listener
 
 			if (!this._map._fadeAnimated) {
 				requestAnimationFrame(this._pruneTiles.bind(this));
