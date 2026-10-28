@@ -22,7 +22,8 @@ export function removeMapContainer(map, container) {
 }
 
 // fake timers that also drive element animations: sinon doesn't fake Web Animations, so `animate` is replaced
-// with a stub whose `onfinish` fires on a faked timeout after the animation duration
+// with a stub whose `onfinish` fires on a faked timeout after the animation duration, and the zoom transition is
+// turned off so that its real `transitionend` can't end a zoom before the faked timeout does on a slow runner
 export function createClock() {
 	const clock = sinon.useFakeTimers({
 		toFake: ['setTimeout', 'clearTimeout', 'Date']
@@ -32,8 +33,13 @@ export function createClock() {
 		setTimeout(() => animation.onfinish?.(), duration);
 		return animation;
 	});
+	const style = document.createElement('style');
+	style.textContent = '.leaflet-zoom-anim .leaflet-zoom-animated { transition: none !important; }';
+	document.head.appendChild(style);
+
 	const restore = clock.restore.bind(clock);
 	clock.restore = () => {
+		style.remove();
 		animate.restore();
 		restore();
 	};
