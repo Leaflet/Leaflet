@@ -7,11 +7,9 @@ import {getScale} from './DomUtil.js';
 import * as PointerEvents from './DomEvent.PointerEvents.js';
 export {PointerEvents};
 
-/** @import * as DomEvent from './DomEvent.js' */
-
 /**
- * Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by
- * Leaflet internally. Functions that return `this` return `DomEvent` when called on it, for chaining.
+ * Utility functions to work with the
+ * [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
  * @module DomEvent
  */
 
@@ -47,7 +45,7 @@ export {PointerEvents};
  * @param {K} types
  * @param {DomEventListener<K>} fn
  * @param {any} [context]
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
  * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
@@ -55,15 +53,13 @@ export {PointerEvents};
  * @param {EventTarget} el
  * @param {DomEventListenerMap} eventMap
  * @param {any} [context]
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
- * @this {typeof DomEvent | void}
  * @param {any} obj
  * @param {any} types
  * @param {any} [fn]
  * @param {any} [context]
- * @returns {typeof DomEvent}
  */
 export function on(obj, types, fn, context) {
 
@@ -76,8 +72,6 @@ export function on(obj, types, fn, context) {
 			addOne(obj, type, fn, context);
 		}
 	}
-
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 const eventsKey = '_leaflet_events';
@@ -91,7 +85,7 @@ const eventsKey = '_leaflet_events';
  * @param {K} types
  * @param {DomEventListener<K>} fn
  * @param {any} [context]
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
  * Removes a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
@@ -99,28 +93,26 @@ const eventsKey = '_leaflet_events';
  * @param {EventTarget} el
  * @param {DomEventListenerMap} eventMap
  * @param {any} [context]
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
  * Removes all previously added listeners of given types.
  * @overload
  * @param {EventTarget} el
  * @param {string} types
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
  * Removes all previously added listeners from given element.
  * @overload
  * @param {EventTarget} el
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
- * @this {typeof DomEvent | void}
  * @param {any} obj
  * @param {any} [types]
  * @param {any} [fn]
  * @param {any} [context]
- * @returns {typeof DomEvent}
  */
 export function off(obj, types, fn, context) {
 
@@ -144,8 +136,6 @@ export function off(obj, types, fn, context) {
 			}
 		}
 	}
-
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 const DIGIT_RE = /\d/;
@@ -218,12 +208,10 @@ function removeOne(obj, type, fn, context, id) {
  * ```
  * @overload
  * @param {Event | {originalEvent: Event}} e
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
- * @this {typeof DomEvent | void}
  * @param {any} e
- * @returns {typeof DomEvent}
  */
 export function stopPropagation(e) {
 
@@ -232,63 +220,49 @@ export function stopPropagation(e) {
 	} else if (e.originalEvent) {  // In case of Leaflet event.
 		e.originalEvent._stopped = true;
 	}
-
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 /**
  * Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
- * @this {typeof DomEvent | void}
  * @param {HTMLElement} el
- * @returns {typeof DomEvent}
  */
 export function disableScrollPropagation(el) {
 	addOne(el, 'wheel', stopPropagation);
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 /**
  * Adds `stopPropagation` to the element's `'dblclick'`, `'contextmenu'` and `'pointerdown'`
  * events (plus browser variants). For `'click'` events, prevents the map from handling the
  * click while still allowing the native DOM click event to propagate normally.
- * @this {typeof DomEvent | void}
  * @param {HTMLElement} el
- * @returns {typeof DomEvent}
  */
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	/** @type {any} */ (el)['_leaflet_disable_click'] = true;
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 /**
  * Prevents the default action of the DOM Event `e` from happening (such as following
  * a link in the href of the a element, or doing a POST request with page reload
  * when a `<form>` is submitted). Use it inside listener functions.
- * @this {typeof DomEvent | void}
  * @param {Event} e
- * @returns {typeof DomEvent}
  */
 export function preventDefault(e) {
 	e.preventDefault?.();
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 /**
  * Does `stopPropagation` and `preventDefault` at the same time.
  * @overload
  * @param {Event | {originalEvent: Event}} e
- * @returns {typeof DomEvent}
+ * @returns {void}
  */
 /**
- * @this {typeof DomEvent | void}
  * @param {any} e
- * @returns {typeof DomEvent}
  */
 export function stop(e) {
 	preventDefault(e);
 	stopPropagation(e);
-	return /** @type {typeof DomEvent} */ (this);
 }
 
 /**
