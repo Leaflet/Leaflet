@@ -187,6 +187,16 @@ const defaultOptions = {
 	// pages in other languages; pass a string to set the value for your audience's layout instead.
 	ariaKeyShortcuts: false,
 
+	// @option containerRole: String = 'region'
+	// The accessible role of the map container element. The container is interactive and focusable, so it needs a role.
+	// Don't change this if you're not sure what it does.
+	containerRole: 'region',
+
+	// @option containerLabel: String = 'Map'
+	// The accessible name of the map container element. The container is interactive and focusable, so it needs a name.
+	// Don't change this if you're not sure what it does.
+	containerLabel: 'Map',
+
 	// @section Mouse wheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
@@ -1555,6 +1565,13 @@ export class LeafletMap extends Evented {
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
+		if (!container.hasAttribute('role')) {
+			container.setAttribute('role', this.options.containerRole);
+		}
+
+		if (!container.hasAttribute('aria-label')) {
+			container.setAttribute('aria-label', this.options.containerLabel);
+		}
 	}
 
 	_initLayout() {
