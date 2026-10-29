@@ -1,15 +1,18 @@
+// @ts-check
 import {Point} from './Point.js';
 import {LatLng} from '../geo/LatLng.js';
 
-
-/*
- * @namespace LineUtil
- *
- * Various utility functions for polyline points processing, used by Leaflet internally to make polylines lightning-fast.
+/**
+ * @import {Bounds} from './Bounds.js'
+ * @import {CRS} from '../geo/crs/CRS.js'
+ * @import {LatLngExpression} from '../types.js'
  */
 
-// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
-// Improves rendering performance dramatically by lessening the number of points to draw.
+/**
+ * Various utility functions for polyline points processing, used by Leaflet internally to make polylines
+ * lightning-fast.
+ * @module LineUtil
+ */
 
 /**
  * Dramatically reduces the number of points in a polyline while retaining its shape and returns a new
@@ -55,13 +58,17 @@ export function pointToSegmentDistance(p, p1, p2) {
  * @param {Point} p
  * @param {Point} p1
  * @param {Point} p2
- * @returns {number}
+ * @returns {Point}
  */
 export function closestPointOnSegment(p, p1, p2) {
 	return _sqClosestPointOnSegment(p, p1, p2);
 }
 
 // Ramer-Douglas-Peucker simplification, see https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
+/**
+ * @param {Point[]} points
+ * @param {number} sqTolerance
+ */
 function _simplifyDP(points, sqTolerance) {
 
 	const len = points.length,
@@ -82,6 +89,13 @@ function _simplifyDP(points, sqTolerance) {
 	return newPoints;
 }
 
+/**
+ * @param {Point[]} points
+ * @param {Uint8Array} markers
+ * @param {number} sqTolerance
+ * @param {number} first
+ * @param {number} last
+ */
 function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 
 	let maxSqDist = 0,
@@ -97,14 +111,18 @@ function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 	}
 
 	if (maxSqDist > sqTolerance) {
-		markers[index] = 1;
+		markers[/** @type {number} */ (index)] = 1;
 
-		_simplifyDPStep(points, markers, sqTolerance, first, index);
-		_simplifyDPStep(points, markers, sqTolerance, index, last);
+		_simplifyDPStep(points, markers, sqTolerance, first, /** @type {number} */ (index));
+		_simplifyDPStep(points, markers, sqTolerance, /** @type {number} */ (index), last);
 	}
 }
 
 // reduce points that are too close to each other to a single point
+/**
+ * @param {Point[]} points
+ * @param {number} sqTolerance
+ */
 function _reducePoints(points, sqTolerance) {
 	const reducedPoints = [points[0]];
 	let prev = 0;
@@ -121,6 +139,7 @@ function _reducePoints(points, sqTolerance) {
 	return reducedPoints;
 }
 
+/** @type {number} */
 let _lastCode;
 
 /**
@@ -133,7 +152,7 @@ let _lastCode;
  * @param {Bounds} bounds
  * @param {boolean} [useLastCode]
  * @param {boolean} [round]
- * @returns {Point[] | boolean}
+ * @returns {[Point, Point] | false}
  */
 export function clipSegment(a, b, bounds, useLastCode, round) {
 	const a0 = a, b0 = b;
@@ -177,6 +196,13 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 	}
 }
 
+/**
+ * @param {Point} a
+ * @param {Point} b
+ * @param {number} code
+ * @param {Bounds} bounds
+ * @param {boolean} [round]
+ */
 export function _getEdgeIntersection(a, b, code, bounds, round) {
 	const dx = b.x - a.x,
 	dy = b.y - a.y,
@@ -201,9 +227,13 @@ export function _getEdgeIntersection(a, b, code, bounds, round) {
 		y = a.y + dy * (min.x - a.x) / dx;
 	}
 
-	return new Point(x, y, round);
+	return new Point(/** @type {number} */ (x), /** @type {number} */ (y), round);
 }
 
+/**
+ * @param {Point} p
+ * @param {Bounds} bounds
+ */
 export function _getBitCode(p, bounds) {
 	let code = 0;
 
@@ -223,6 +253,10 @@ export function _getBitCode(p, bounds) {
 }
 
 // square distance (to avoid unnecessary Math.sqrt calls)
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ */
 function _sqDist(p1, p2) {
 	const dx = p2.x - p1.x,
 	dy = p2.y - p1.y;
@@ -230,6 +264,29 @@ function _sqDist(p1, p2) {
 }
 
 // return closest point on segment or distance to that point
+/**
+ * @overload
+ * @param {Point} p
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {true} sqDist
+ * @returns {number}
+ */
+/**
+ * @overload
+ * @param {Point} p
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {false} [sqDist]
+ * @returns {Point}
+ */
+/**
+ * @param {Point} p
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {boolean} [sqDist]
+ * @returns {number | Point}
+ */
 export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 	let x = p1.x,
 	y = p1.y,
@@ -259,7 +316,7 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 
 /**
  * Returns true if `latlngs` is a flat array, false is nested.
- * @param {LatLng[]} latlngs
+ * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
  * @returns {boolean}
  */
 export function isFlat(latlngs) {
@@ -269,8 +326,8 @@ export function isFlat(latlngs) {
 /**
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid))
  * of the passed LatLngs (first ring) from a polyline.
- * @param {LatLng[]} latlngs
- * @param {CRS} crs
+ * @param {LatLngExpression[]} latlngs
+ * @param {typeof CRS} crs
  * @returns {LatLng}
  */
 export function polylineCenter(latlngs, crs) {
@@ -306,6 +363,11 @@ export function polylineCenter(latlngs, crs) {
 }
 
 // Projects the first ring of the given latlngs.
+/**
+ * @param {LatLngExpression[] | LatLngExpression[][]} latlngs
+ * @param {typeof CRS} crs
+ * @returns {Point[]}
+ */
 export function _projectRing(latlngs, crs) {
 	if (!latlngs || latlngs.length === 0) {
 		throw new Error('latlngs not passed');
@@ -313,7 +375,7 @@ export function _projectRing(latlngs, crs) {
 
 	if (!isFlat(latlngs)) {
 		console.warn('latlngs are not flat! Only the first ring will be used');
-		latlngs = latlngs[0];
+		latlngs = /** @type {LatLngExpression[]} */ (latlngs[0]);
 	}
 
 	return latlngs.map(latlng => crs.project(new LatLng(latlng)));

@@ -1,8 +1,11 @@
+// @ts-check
 import {Point} from './Point.js';
 
+/** @import {BoundsExpression, PointExpression} from '../types.js' */
 
 /**
  * Represents a rectangular area in pixel coordinates.
+ *
  * @example
  * ```js
  * const p1 = new Point(10, 10),
@@ -10,27 +13,35 @@ import {Point} from './Point.js';
  * bounds = new Bounds(p1, p2);
  * ```
  *
- * All Leaflet methods that accept `Bounds` objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:
+ * All Leaflet methods that accept `Bounds` objects also accept them in a simple Array form (unless noted
+ * otherwise), so the bounds example above can be passed like this:
  *
  * ```js
  * otherBounds.intersects([[10, 10], [40, 60]]);
  * ```
  *
- * Note that `Bounds` does not inherit from Leaflet's `Class` object,
- * which means new classes can't inherit from it, and new methods
- * can't be added to it with the `include` function.
+ * Note that `Bounds` does not inherit from Leaflet's `Class` object, which means new classes can't inherit from it,
+ * and new methods can't be added to it with the `include` function.
  */
 export class Bounds {
 	/**
 	 * Creates a Bounds object from two corners coordinate pairs.
 	 * @overload
-	 * @param {Point} corner1
-	 * @param {Point} corner2
+	 * @param {PointExpression} corner1
+	 * @param {PointExpression} corner2
 	 */
 	/**
 	 * Creates a Bounds object from the given array of points.
 	 * @overload
-	 * @param {Point[]} points
+	 * @param {BoundsExpression} points
+	 */
+	/**
+	 * Creates an empty Bounds object, to be filled with [`extend`](#bounds-extend).
+	 * @overload
+	 */
+	/**
+	 * @param {any} [a]
+	 * @param {PointExpression} [b]
 	 */
 	constructor(a, b) {
 		if (!a) { return; }
@@ -48,15 +59,13 @@ export class Bounds {
 	}
 
 	/**
-	 * Extends the bounds to contain the given point.
+	 * Extends the bounds to contain the given point or bounds.
 	 * @overload
-	 * @param {Point} point
+	 * @param {PointExpression | BoundsExpression} obj
 	 * @returns {this}
 	 */
 	/**
-	 * Extend the bounds to contain the given bounds
-	 * @overload
-	 * @param {Bounds} otherBounds
+	 * @param {any} obj
 	 * @returns {this}
 	 */
 	extend(obj) {
@@ -70,16 +79,16 @@ export class Bounds {
 			if (!min2) { return this; }
 		}
 
-		/**
-		 * The top left corner of the rectangle.
-		 * @type {Point}
-		 */
-		/**
-		 * The bottom right corner of the rectangle.
-		 * @type {Point}
-		 */
 		if (!this.min) {
+			/**
+			 * The top left corner of the rectangle.
+			 * @type {Point}
+			 */
 			this.min = min2.clone();
+			/**
+			 * The bottom right corner of the rectangle.
+			 * @type {Point}
+			 */
 			this.max = max2.clone();
 		} else {
 			this.min.x = Math.min(min2.x, this.min.x);
@@ -113,7 +122,7 @@ export class Bounds {
 	 * Returns the top-right point of the bounds.
 	 * @returns {Point}
 	 */
-	getTopRight() { // -> Point
+	getTopRight() {
 		return new Point(this.max.x, this.min.y);
 	}
 
@@ -142,15 +151,13 @@ export class Bounds {
 	}
 
 	/**
-	 * Returns `true` if the rectangle contains the given one.
+	 * Returns `true` if the rectangle contains the given point or bounds.
 	 * @overload
-	 * @param {Bounds} otherBounds
+	 * @param {PointExpression | BoundsExpression} obj
 	 * @returns {boolean}
 	 */
 	/**
-	 * Returns `true` if the rectangle contains the given point.
-	 * @overload
-	 * @param {Point} point
+	 * @param {any} obj
 	 * @returns {boolean}
 	 */
 	contains(obj) {
@@ -178,10 +185,10 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
-	 * @param {Bounds} otherBounds
+	 * @param {BoundsExpression} bounds
 	 * @returns {boolean}
 	 */
-	intersects(bounds) { // (Bounds) -> Boolean
+	intersects(bounds) {
 		bounds = new Bounds(bounds);
 
 		const min = this.min,
@@ -197,10 +204,10 @@ export class Bounds {
 	/**
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
-	 * @param {Bounds} otherBounds
+	 * @param {BoundsExpression} bounds
 	 * @returns {boolean}
 	 */
-	overlaps(bounds) { // (Bounds) -> Boolean
+	overlaps(bounds) {
 		bounds = new Bounds(bounds);
 
 		const min = this.min,
@@ -243,7 +250,7 @@ export class Bounds {
 
 	/**
 	 * Returns `true` if the rectangle is equivalent to the given bounds.
-	 * @param {Bounds} otherBounds
+	 * @param {BoundsExpression} [bounds]
 	 * @returns {boolean}
 	 */
 	equals(bounds) {

@@ -1,23 +1,28 @@
+// @ts-check
 import {formatNum} from '../core/Util.js';
+
+/** @import {PointExpression} from '../types.js' */
 
 /**
  * Represents a point with `x` and `y` coordinates in pixels.
+ *
  * @example
  * ```js
  * const point = new Point(200, 300);
  * ```
  *
- * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:
+ * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted
+ * otherwise), so these lines are equivalent:
  *
  * ```js
  * map.panBy([200, 300]);
  * map.panBy(new Point(200, 300));
  * ```
  *
- * Note that `Point` does not inherit from Leaflet's `Class` object,
- * which means new classes can't inherit from it, and new methods
- * can't be added to it with the `include` function.
- * @categoryDescription Methods
+ * Note that `Point` does not inherit from Leaflet's `Class` object, which means new classes can't inherit from it,
+ * and new methods can't be added to it with the `include` function.
+ *
+ * @categoryDescription Functions
  * There are several static functions which can be called without instantiating Point:
  */
 export class Point {
@@ -30,18 +35,18 @@ export class Point {
 	 * @param {boolean} [round]
 	 */
 	/**
-	 * Expects an array of the form `[x, y]` instead.
+	 * Expects an array of the form `[x, y]` or a plain object of the form `{x: Number, y: Number}` instead.
 	 * @overload
-	 * @param {number[]} coords
+	 * @param {PointExpression} coords
 	 */
 	/**
-	 * Expects a plain object of the form `{x: Number, y: Number}` instead.
-	 * @overload
-	 * @param {object} coords
+	 * @param {number | PointExpression} x
+	 * @param {number} [y]
+	 * @param {boolean} [round]
 	 */
 	constructor(x, y, round) {
 
-		const valid = Point.validate(x, y);
+		const valid = Point.validate(/** @type {any} */ (x), y);
 		if (!valid) {
 			throw new Error(`Invalid Point object: (${x}, ${y})`);
 		}
@@ -59,7 +64,7 @@ export class Point {
 			_y = x.y;
 		} else {
 			_x = x;
-			_y = y;
+			_y = /** @type {number} */ (y);
 		}
 
 		/**
@@ -76,21 +81,22 @@ export class Point {
 
 	/**
 	 * Returns `true` if the Point object can be properly initialized.
+	 * @category Functions
 	 * @overload
 	 * @param {number} x
-	 * @param {number} y
+	 * @param {number} [y]
 	 * @returns {boolean}
 	 */
 	/**
-	 * Expects an array of the form `[x, y]`. Returns `true` if the Point object can be properly initialized.
+	 * Expects an array of the form `[x, y]` or a plain object of the form `{x: Number, y: Number}`. Returns `true` if
+	 * the Point object can be properly initialized.
 	 * @overload
-	 * @param {number[]} coords
+	 * @param {PointExpression} coords
 	 * @returns {boolean}
 	 */
 	/**
-	 * Returns `true` if the Point object can be properly initialized.
-	 * @overload
-	 * @param {object} coords
+	 * @param {unknown} x
+	 * @param {unknown} [y]
 	 * @returns {boolean}
 	 */
 	static validate(x, y) {
@@ -118,7 +124,7 @@ export class Point {
 
 	/**
 	 * Returns the result of addition of the current and the given points.
-	 * @param {Point} otherPoint
+	 * @param {PointExpression} point
 	 * @returns {Point}
 	 */
 	add(point) {
@@ -126,6 +132,7 @@ export class Point {
 		return this.clone()._add(new Point(point));
 	}
 
+	/** @param {Point} point */
 	_add(point) {
 		// destructive, used directly for performance in situations where it's safe to modify existing point
 		this.x += point.x;
@@ -135,13 +142,14 @@ export class Point {
 
 	/**
 	 * Returns the result of subtraction of the given point from the current.
-	 * @param {Point} otherPoint
+	 * @param {PointExpression} point
 	 * @returns {Point}
 	 */
 	subtract(point) {
 		return this.clone()._subtract(new Point(point));
 	}
 
+	/** @param {Point} point */
 	_subtract(point) {
 		this.x -= point.x;
 		this.y -= point.y;
@@ -157,6 +165,7 @@ export class Point {
 		return this.clone()._divideBy(num);
 	}
 
+	/** @param {number} num */
 	_divideBy(num) {
 		this.x /= num;
 		this.y /= num;
@@ -172,6 +181,7 @@ export class Point {
 		return this.clone()._multiplyBy(num);
 	}
 
+	/** @param {number} num */
 	_multiplyBy(num) {
 		this.x *= num;
 		this.y *= num;
@@ -185,8 +195,8 @@ export class Point {
 	 * @param {Point} scale
 	 * @returns {Point}
 	 */
-	scaleBy(point) {
-		return new Point(this.x * point.x, this.y * point.y);
+	scaleBy(scale) {
+		return new Point(this.x * scale.x, this.y * scale.y);
 	}
 
 	/**
@@ -194,11 +204,14 @@ export class Point {
 	 * @param {Point} scale
 	 * @returns {Point}
 	 */
-	unscaleBy(point) {
-		return new Point(this.x / point.x, this.y / point.y);
+	unscaleBy(scale) {
+		return new Point(this.x / scale.x, this.y / scale.y);
 	}
 
-	// Returns a copy of the current point with rounded coordinates.
+	/**
+	 * Returns a copy of the current point with rounded coordinates.
+	 * @returns {Point}
+	 */
 	round() {
 		return this.clone()._round();
 	}
@@ -237,7 +250,10 @@ export class Point {
 		return this;
 	}
 
-	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
+	/**
+	 * Returns a copy of the current point with truncated coordinates (rounded towards zero).
+	 * @returns {Point}
+	 */
 	trunc() {
 		return this.clone()._trunc();
 	}
@@ -250,7 +266,7 @@ export class Point {
 
 	/**
 	 * Returns the cartesian distance between the current and the given points.
-	 * @param {Point} otherPoint
+	 * @param {PointExpression} point
 	 * @returns {number}
 	 */
 	distanceTo(point) {
@@ -264,7 +280,7 @@ export class Point {
 
 	/**
 	 * Returns `true` if the given point has the same coordinates.
-	 * @param {Point} otherPoint
+	 * @param {PointExpression} point
 	 * @returns {boolean}
 	 */
 	equals(point) {
@@ -277,7 +293,7 @@ export class Point {
 	/**
 	 * Returns `true` if both coordinates of the given point are less than
 	 * the corresponding current point coordinates (in absolute values).
-	 * @param {Point} otherPoint
+	 * @param {PointExpression} point
 	 * @returns {boolean}
 	 */
 	contains(point) {

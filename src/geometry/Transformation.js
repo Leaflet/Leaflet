@@ -1,8 +1,10 @@
+// @ts-check
 import {Point} from './Point.js';
 
 /**
  * Represents an affine transformation: a set of coefficients `a`, `b`, `c`, `d` for transforming a point of a
  * form `(x, y)` into `(a*x + b, c*y + d)` and doing the reverse. Used by Leaflet in its projections code.
+ *
  * @example
  * ```js
  * const transformation = new Transformation(2, 5, -1, 10),
@@ -23,7 +25,13 @@ export class Transformation {
 	/**
 	 * Expects an coefficients array of the form `[a: Number, b: Number, c: Number, d: Number]`.
 	 * @overload
-	 * @param {Array} coefficients
+	 * @param {[number, number, number, number]} coefficients
+	 */
+	/**
+	 * @param {number | [number, number, number, number]} a
+	 * @param {number} [b]
+	 * @param {number} [c]
+	 * @param {number} [d]
 	 */
 	constructor(a, b, c, d) {
 		if (Array.isArray(a)) {
@@ -35,9 +43,9 @@ export class Transformation {
 			return;
 		}
 		this._a = a;
-		this._b = b;
-		this._c = c;
-		this._d = d;
+		this._b = /** @type {number} */ (b);
+		this._c = /** @type {number} */ (c);
+		this._d = /** @type {number} */ (d);
 	}
 
 	/**
@@ -47,11 +55,15 @@ export class Transformation {
 	 * @param {number} [scale]
 	 * @returns {Point}
 	 */
-	transform(point, scale) { // (Point, Number) -> Point
+	transform(point, scale) {
 		return this._transform(point.clone(), scale);
 	}
 
 	// destructive transform (faster)
+	/**
+	 * @param {Point} point
+	 * @param {number} [scale]
+	 */
 	_transform(point, scale) {
 		scale ||= 1;
 		point.x = scale * (this._a * point.x + this._b);

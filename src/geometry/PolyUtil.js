@@ -1,9 +1,17 @@
+// @ts-check
 import * as LineUtil from './LineUtil.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from './Point.js';
-/*
- * @namespace PolyUtil
+
+/**
+ * @import {Bounds} from './Bounds.js'
+ * @import {CRS} from '../geo/crs/CRS.js'
+ * @import {LatLngExpression} from '../types.js'
+ */
+
+/**
  * Various utility functions for polygon geometries.
+ * @module PolyUtil
  */
 
 /**
@@ -62,8 +70,8 @@ export function clipPolygon(points, bounds, round) {
 /**
  * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid))
  * of the passed LatLngs (first ring) from a polygon.
- * @param {LatLng[]} latlngs
- * @param {CRS} crs
+ * @param {LatLngExpression[]} latlngs
+ * @param {typeof CRS} crs
  * @returns {LatLng}
  */
 export function polygonCenter(latlngs, crs) {
@@ -93,7 +101,7 @@ export function polygonCenter(latlngs, crs) {
 
 /**
  * Returns the 'center of mass' of the passed LatLngs.
- * @param {LatLng[]} latlngs
+ * @param {LatLngExpression[]} coords
  * @returns {LatLng}
  */
 export function centroid(coords) {
@@ -102,8 +110,8 @@ export function centroid(coords) {
 	let len = 0;
 	for (const coord of coords) {
 		const latlng = new LatLng(coord);
-		latSum += latlng.lat;
-		lngSum += latlng.lng;
+		latSum += /** @type {number} */ (latlng.lat);
+		lngSum += /** @type {number} */ (latlng.lng);
 		len++;
 	}
 	return new LatLng([latSum / len, lngSum / len]);

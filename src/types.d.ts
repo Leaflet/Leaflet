@@ -4,6 +4,7 @@
 import type {Evented} from './core/Events.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
+import type {Bounds} from './geometry/Bounds.js';
 import type {Point} from './geometry/Point.js';
 import type {Layer} from './layer/Layer.js';
 import type {Popup} from './layer/Popup.js';
@@ -13,6 +14,16 @@ export type {Listener, ListenerMap} from './core/Events.js';
 
 /** The type of a class's `static defaultOptions`: some of its options, plus anything a subclass adds. */
 export type Defaults<O> = Partial<O> & {[key: string]: unknown};
+
+/** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
+export type PointExpression = Point | [number, number] | {x: number, y: number};
+
+/** A `Bounds`, or an array of the points it should contain (usually two opposite corners). */
+export type BoundsExpression = Bounds | PointExpression[];
+
+/** A `LatLng`, or its array (`[lat, lng]`, `[lat, lng, alt]`) or object (`{lat, lng}`, `{lat, lon}`) form. */
+export type LatLngExpression = LatLng | [number, number, number?] |
+	{lat: number, lng: number, alt?: number} | {lat: number, lon: number, alt?: number};
 
 /** A listener for an event without a known event object type. */
 export type LeafletEventHandlerFn = (event: LeafletEvent & {[key: string]: any}) => void;
@@ -167,6 +178,12 @@ declare module './core/Events.js' {
 		_events?: {[type: string]: Array<{fn: Function, ctx: any, once?: boolean}>};
 		_eventParents?: {[id: number]: Evented<any, any>};
 		_firingCount?: number;
+	}
+}
+
+declare module './geometry/Point.js' {
+	interface Point {
+		_code: number; // clipping bit code, set by `PolyUtil.clipPolygon`
 	}
 }
 
