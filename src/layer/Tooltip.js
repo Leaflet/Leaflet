@@ -1,18 +1,26 @@
+// @ts-check
 import {DivOverlay} from './DivOverlay.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as Util from '../core/Util.js';
 
+/** @import {Defaults, DivOverlayEventMap, PointExpression, TooltipOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+
 const defaultOptions = {
 	/** `Map pane` where the tooltip will be added. */
 	pane: 'tooltipPane',
 
-	/** Optional offset of the tooltip position. */
+	/**
+	 * Optional offset of the tooltip position.
+	 * @type {PointExpression}
+	 */
 	offset: [0, 0],
 
 	/**
 	 * Direction where to open the tooltip. Possible values are: `right`, `left`, `top`, `bottom`, `center`, `auto`.
 	 * `auto` will dynamically switch between `right` and `left` according to the tooltip position on the map.
+	 * @type {'right' | 'left' | 'top' | 'bottom' | 'center' | 'auto'}
 	 */
 	direction: 'auto',
 
@@ -26,22 +34,8 @@ const defaultOptions = {
 	opacity: 0.9
 };
 
+/** @typedef {typeof defaultOptions} TooltipDefaults */
 
-/**
- * Instantiates a `Tooltip` object given an optional `options` object that describes
- * its appearance and location and an optional `source` object that is used to
- * tag the tooltip with a reference to the Layer to which it refers.
- * @overload
- * @param {TooltipOptions} [options]
- * @param {Layer} [source]
- */
-/**
- * Instantiates a `Tooltip` object given `latlng` where the tooltip will open and
- * an optional `options` object that describes its appearance and location.
- * @overload
- * @param {LatLng} latlng
- * @param {TooltipOptions} [options]
- */
 
 /**
  * Used to display small texts on top of map layers.
@@ -85,11 +79,17 @@ const defaultOptions = {
  *   move it to the bottom. Negatives will move to the left and top.
  * - the `tooltipAnchor` Icon option: this will only be considered for Marker. You
  *   should adapt this value if you use a custom icon.
+ *
+ * @template {TooltipOptions} [O=TooltipOptions]
+ * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
+ * @extends {DivOverlay<O, E>}
  */
 export class Tooltip extends DivOverlay {
 
+	/** @type {Defaults<TooltipOptions>} */
 	static defaultOptions = defaultOptions;
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 		super.onAdd(map);
 		this.setOpacity(this.options.opacity);
@@ -103,6 +103,7 @@ export class Tooltip extends DivOverlay {
 		}
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		super.onRemove(map);
 
@@ -139,6 +140,7 @@ export class Tooltip extends DivOverlay {
 
 	_adjustPan() {}
 
+	/** @param {Point} pos */
 	_setPosition(pos) {
 		let subX, subY, direction = this.options.direction;
 		const map = this._map,
@@ -192,6 +194,7 @@ export class Tooltip extends DivOverlay {
 		this._setPosition(pos);
 	}
 
+	/** @param {number} opacity */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
 
@@ -200,6 +203,7 @@ export class Tooltip extends DivOverlay {
 		}
 	}
 
+	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 		this._setPosition(pos);

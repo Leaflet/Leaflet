@@ -7,9 +7,12 @@ import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
 import type {Point} from './geometry/Point.js';
+import type {DivOverlayDefaults, DivOverlayEvents} from './layer/DivOverlay.js';
 import type {Layer} from './layer/Layer.js';
-import type {Popup} from './layer/Popup.js';
-import type {Tooltip} from './layer/Tooltip.js';
+import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
+import type {Popup, PopupDefaults} from './layer/Popup.js';
+import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
+import type {LeafletMap} from './map/Map.js';
 
 export type {Listener, ListenerMap} from './core/Events.js';
 
@@ -18,6 +21,63 @@ export type Defaults<O> = Partial<O> & {[key: string]: unknown};
 
 export interface DraggableOptions extends DraggableDefaults {}
 export interface DraggableEventMap extends DraggableEvents {}
+
+export interface LayerOptions extends LayerDefaults {}
+export interface LayerEventMap extends LayerEvents, LayerPopupEvents, LayerTooltipEvents {}
+
+/**
+ * Some `Layer`s can be made interactive - when the user interacts with such a layer, pointer events like `click`
+ * and `pointerover` can be handled. Use the [event handling methods](#evented-method) to handle these events.
+ */
+export interface InteractiveLayerOptions extends LayerOptions {
+	/**
+	 * If `false`, the layer will not emit pointer events and will act as a part of the underlying map.
+	 * @default true
+	 */
+	interactive: boolean;
+	/**
+	 * When `true`, a pointer event on this layer will trigger the same event on the map (unless
+	 * [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+	 * @default true
+	 */
+	bubblingPointerEvents: boolean;
+}
+
+/** @category Pointer events */
+export interface InteractiveLayerEventMap extends LayerEventMap {
+	/** Fired when the user clicks (or taps) the layer. */
+	click: LeafletPointerEvent;
+	/** Fired when the user double-clicks (or double-taps) the layer. */
+	dblclick: LeafletPointerEvent;
+	/** Fired when the user pushes the pointer on the layer. */
+	pointerdown: LeafletPointerEvent;
+	/** Fired when the user releases the pointer pushed on the layer. */
+	pointerup: LeafletPointerEvent;
+	/** Fired when the pointer enters the layer. */
+	pointerover: LeafletPointerEvent;
+	/** Fired when the pointer leaves the layer. */
+	pointerout: LeafletPointerEvent;
+	/**
+	 * Fired when the user right-clicks on the layer, prevents default browser context menu from showing if there
+	 * are listeners on this event. Also fired on mobile when the user holds a single touch for a second (also
+	 * called long press).
+	 */
+	contextmenu: LeafletPointerEvent;
+}
+
+export interface DivOverlayOptions extends InteractiveLayerOptions, DivOverlayDefaults {}
+export interface DivOverlayEventMap extends InteractiveLayerEventMap, DivOverlayEvents {}
+
+export interface PopupOptions extends DivOverlayOptions, PopupDefaults {
+	/**
+	 * Set it if you want to override the default behavior of the popup closing when user clicks on the map.
+	 * Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
+	 * @default *
+	 */
+	closeOnClick?: boolean;
+}
+
+export interface TooltipOptions extends DivOverlayOptions, TooltipDefaults {}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
@@ -204,6 +264,79 @@ declare module './core/Events.js' {
 		_events?: {[type: string]: Array<{fn: Function, ctx: any, once?: boolean}>};
 		_eventParents?: {[id: number]: Evented<any, any>};
 		_firingCount?: number;
+	}
+}
+
+declare module './layer/LayerBase.js' {
+	interface LayerBase {
+		_map: LeafletMap;
+		_mapToAdd?: LeafletMap | null;
+		_zoomAnimated?: boolean;
+
+		/**
+		 * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should
+		 * belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		onAdd(map: LeafletMap): void;
+		/**
+		 * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners
+		 * previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		onRemove(map: LeafletMap): void;
+		/**
+		 * This optional method should return an object like `{ viewreset: this._reset }` for [`on`](#evented-on).
+		 * The event handlers in this object will be automatically added and removed from the map with your layer.
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		getEvents?(): {[type: string]: (e: any) => void};
+		/**
+		 * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map,
+		 * before events are initialized, without waiting until the map is in a usable state. Use for early
+		 * initialization only.
+		 * @category Extension methods
+		 * @uninheritable
+		 */
+		beforeAdd?(map: LeafletMap): void;
+	}
+}
+
+declare module './layer/Layer.js' {
+	interface Layer {
+		_popup?: Popup | null;
+		_tooltip?: Tooltip | null;
+		// implemented by subclasses, checked by bound popups and tooltips
+		_latlng?: LatLng;
+		_getPopupAnchor?(): PointExpression;
+		_getTooltipAnchor?(): PointExpression;
+		getElement?(): Element | undefined;
+		eachLayer?(fn: (layer: Layer) => void, context?: any): unknown;
+	}
+}
+
+declare module './layer/DivOverlay.js' {
+	interface DivOverlay {
+		// created by the subclass's `_initLayout`
+		_container: HTMLElement;
+		_contentNode: HTMLElement;
+		_containerWidth: number;
+		_containerHeight: number;
+		_containerLeft: number;
+		_containerBottom: number;
+		_initLayout(): void;
+		_updateLayout(): void;
+		_adjustPan(): void;
+		_animateZoom(e: ZoomAnimEvent): void;
+	}
+}
+
+declare module './map/Map.js' {
+	interface LeafletMap {
+		_popup?: Popup; // the last popup opened with `openOn`, set by `Popup`
 	}
 }
 

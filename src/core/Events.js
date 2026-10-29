@@ -6,12 +6,12 @@ import * as Util from './Util.js';
 
 /**
  * A listener for the event type `K` of an object with the event map `E` that fired it as `T`. Events that aren't
- * in the map (space-separated types, events of plugins) get a plain event object.
+ * in the map (space-separated types, events of plugins) get a plain event object. An indexed access rather than a
+ * conditional type, so that `Evented<O, E>` stays covariant in `E` (a `Marker` is assignable to `Layer`).
  * @template {string} K
  * @template {object} E
  * @template [T=Evented<any, any>]
- * @typedef {K extends keyof E ? (e: E[K] & {target: T}) => void :
- *   (e: LeafletEvent & {target: T} & {[key: string]: any}) => void} Listener
+ * @typedef {(e: (E & {[type: string]: LeafletEvent & {[key: string]: any}})[K] & {target: T}) => void} Listener
  */
 
 /**

@@ -1,5 +1,10 @@
+// @ts-check
 import {Evented} from '../core/Events.js';
 import * as Util from '../core/Util.js';
+
+/** @import {Defaults, LayerEventMap, LayerOptions, LeafletEvent, PopupEvent, TooltipEvent} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+/** @import {LayerGroup} from './LayerGroup.js' */
 
 // Classes extending `Layer` will inherit the following options:
 const defaultOptions = {
@@ -13,12 +18,14 @@ const defaultOptions = {
 	/**
 	 * String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes
 	 * the layer data and is often a legal obligation towards copyright holders and tile providers.
-	 * @type {string}
+	 * @type {string | null}
 	 */
 	attribution: null,
 
 	bubblingPointerEvents: true
 };
+
+/** @typedef {typeof defaultOptions} LayerDefaults */
 
 /**
  * @typedef {Object} LayerEvents
@@ -27,34 +34,27 @@ const defaultOptions = {
  */
 
 /**
- * Popup events
+ * @category Popup events
  * @typedef {Object} LayerPopupEvents
  * @property {PopupEvent} popupopen Fired when a popup bound to this layer is opened
  * @property {PopupEvent} popupclose Fired when a popup bound to this layer is closed
  */
 
 /**
- * Tooltip events
+ * @category Tooltip events
  * @typedef {Object} LayerTooltipEvents
  * @property {TooltipEvent} tooltipopen Fired when a tooltip bound to this layer is opened.
  * @property {TooltipEvent} tooltipclose Fired when a tooltip bound to this layer is closed.
  */
 
 /**
- * @example
- * ```js
- * const layer = new Marker(latlng).addTo(map);
- * layer.addTo(map);
- * layer.remove();
- * ```
- * @todo inherits Evented
- * @categoryDescription Methods
- * Classes extending `Layer` will inherit the following methods:
+ * @template {LayerOptions} [O=LayerOptions]
+ * @template {LayerEventMap} [E=LayerEventMap]
+ * @extends {Evented<O, E>}
  */
-
-
 export class LayerBase extends Evented {
 
+	/** @type {Defaults<LayerOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
@@ -87,6 +87,7 @@ export class LayerBase extends Evented {
 	 * @param {LayerGroup} group
 	 * @returns {this}
 	 */
+	/** @param {LeafletMap | LayerGroup} [obj] */
 	removeFrom(obj) {
 		obj?.removeLayer(this);
 		return this;
@@ -99,14 +100,16 @@ export class LayerBase extends Evented {
 	 * @returns {HTMLElement}
 	 */
 	getPane(name) {
-		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
+		return this._map.getPane(name ? (/** @type {any} */ (this.options)[name] || name) : this.options.pane);
 	}
 
+	/** @param {HTMLElement | SVGElement} targetEl */
 	addInteractiveTarget(targetEl) {
 		this._map._targets[Util.stamp(targetEl)] = this;
 		return this;
 	}
 
+	/** @param {HTMLElement | SVGElement} targetEl */
 	removeInteractiveTarget(targetEl) {
 		delete this._map._targets[Util.stamp(targetEl)];
 		return this;
@@ -114,12 +117,13 @@ export class LayerBase extends Evented {
 
 	/**
 	 * Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
-	 * @returns {string}
+	 * @returns {string | null}
 	 */
 	getAttribution() {
 		return this.options.attribution;
 	}
 
+	/** @param {{target: LeafletMap}} e */
 	_layerAdd(e) {
 		const map = e.target;
 
@@ -141,43 +145,3 @@ export class LayerBase extends Evented {
 		map.fire('layeradd', {layer: this});
 	}
 }
-
-/**
- * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should
- * belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
- * @category Extension methods
- * @param {LeafletMap} map
- * @returns {this}
- * @uninheritable
- */
-/**
- * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners
- * previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
- * @category Extension methods
- * @param {LeafletMap} map
- * @returns {this}
- * @uninheritable
- */
-/**
- * This optional method should return an object like `{ viewreset: this._reset }` for [`on`](#evented-on). The
- * event handlers in this object will be automatically added and removed from the map with your layer.
- * @category Extension methods
- * @returns {object}
- * @uninheritable
- */
-/**
- * This optional method should return a string containing HTML to be shown
- * on the `Attribution control` whenever the layer is visible.
- * @category Extension methods
- * @returns {string}
- * @uninheritable
- */
-/**
- * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the
- * layer is added to the map, before events are initialized, without waiting until
- * the map is in a usable state. Use for early initialization only.
- * @category Extension methods
- * @param {LeafletMap} map
- * @returns {this}
- * @uninheritable
- */

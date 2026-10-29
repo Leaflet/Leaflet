@@ -1,50 +1,83 @@
+// @ts-check
 import {LayerBase} from './LayerBase.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
+/** @import {Defaults, DivOverlayEventMap, DivOverlayOptions, LatLngExpression, LeafletEvent, PointExpression, ZoomAnimEvent} from '../types.js' */
+/** @import {LatLngBounds} from '../geo/LatLngBounds.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+/** @import {Layer} from './Layer.js' */
+
+/**
+ * Content of a popup or tooltip: HTML, an element, or a function that gets the layer it's bound to and returns
+ * either.
+ * @typedef {string | HTMLElement | ((layer: Layer) => string | HTMLElement)} OverlayContent
+ */
+
 const defaultOptions = {
 	/** If true, the popup/tooltip will listen to the pointer events. */
 	interactive: false,
 
-	/** The offset of the overlay position. */
+	/**
+	 * The offset of the overlay position.
+	 * @type {PointExpression}
+	 */
 	offset: [0, 0],
 
 	/** A custom CSS class name to assign to the overlay. */
 	className: '',
 
 	/**
-	 * `Map pane` where the overlay will be added.
-	 * @type {string}
-	 */
-	pane: undefined,
-
-	/**
 	 * Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
 	 * passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
 	 * String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent`
 	 * instead.
+	 * @type {OverlayContent}
 	 */
 	content: ''
 };
 
+/** @typedef {typeof defaultOptions} DivOverlayDefaults */
+
 /**
- * DivOverlay events
- * @typedef {Object} DivOverlayDivOverlayEvents
+ * @category DivOverlay events
+ * @typedef {Object} DivOverlayEvents
  * @property {LeafletEvent} contentupdate Fired when the content of the overlay is updated
  */
 
 /**
  * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
- * @todo inherits Interactive layer
+ * @template {DivOverlayOptions} [O=DivOverlayOptions]
+ * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
+ * @extends {LayerBase<O, E>}
  */
 export class DivOverlay extends LayerBase {
 
 	static initHooks = true;
 
+	/** @type {Defaults<DivOverlayOptions>} */
 	static defaultOptions = defaultOptions;
 
+	/**
+	 * Instantiates the overlay given an optional `options` object that describes its appearance and location and
+	 * an optional `source` layer it's bound to.
+	 * @overload
+	 * @param {Partial<O>} [options]
+	 * @param {Layer} [source]
+	 */
+	/**
+	 * Instantiates the overlay given `latlng` where it will open and an optional `options` object that describes
+	 * its appearance and location.
+	 * @overload
+	 * @param {LatLng | [number, number, number?]} latlng
+	 * @param {Partial<O>} [options]
+	 */
+	/**
+	 * @param {Partial<O> | LatLng | [number, number, number?]} [options]
+	 * @param {any} [source]
+	 */
 	constructor(options, source) {
 		super();
 
@@ -53,9 +86,11 @@ export class DivOverlay extends LayerBase {
 			Util.setOptions(this, source);
 		} else {
 			Util.setOptions(this, options);
+			/** @type {Layer | undefined} */
 			this._source = source;
 		}
 		if (this.options.content) {
+			/** @type {OverlayContent | undefined} */
 			this._content = this.options.content;
 		}
 
@@ -68,7 +103,7 @@ export class DivOverlay extends LayerBase {
 	 * @returns {this}
 	 */
 	openOn(map) {
-		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
+		map = arguments.length ? map : /** @type {Layer} */ (this._source)._map; // experimental, not the part of public api
 		if (!map.hasLayer(this)) {
 			map.addLayer(this);
 		}
@@ -103,11 +138,12 @@ export class DivOverlay extends LayerBase {
 			this._prepareOpen();
 
 			// open the overlay on the map
-			this.openOn(layer._map);
+			this.openOn(/** @type {Layer} */ (layer)._map);
 		}
 		return this;
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 		if (!this._container) {
 			this._initLayout();
@@ -133,9 +169,11 @@ export class DivOverlay extends LayerBase {
 		}
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		if (map._fadeAnimated) {
 			this._container.style.opacity = '0';
+			/** @type {ReturnType<typeof setTimeout> | undefined} */
 			this._removeTimeout = setTimeout(() => this._container.remove(), 200);
 		} else {
 			this._container.remove();
@@ -149,7 +187,7 @@ export class DivOverlay extends LayerBase {
 
 	/**
 	 * Returns the geographical point of the overlay.
-	 * @returns {LatLng}
+	 * @returns {LatLng | undefined}
 	 */
 	getLatLng() {
 		return this._latlng;
@@ -157,7 +195,7 @@ export class DivOverlay extends LayerBase {
 
 	/**
 	 * Sets the geographical point where the overlay will open.
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {this}
 	 */
 	setLatLng(latlng) {
@@ -171,7 +209,7 @@ export class DivOverlay extends LayerBase {
 
 	/**
 	 * Returns the content of the overlay.
-	 * @returns {string | HTMLElement | Function}
+	 * @returns {OverlayContent | undefined}
 	 */
 	getContent() {
 		return this._content;
@@ -182,7 +220,7 @@ export class DivOverlay extends LayerBase {
 	 * untrusted input, sanitize it (e.g. with DOMPurify) or pass an `HTMLElement` with safe `textContent`
 	 * instead. If a function is passed the source layer will be passed to the function. The function
 	 * should return a `String` or `HTMLElement` to be used in the overlay.
-	 * @param {string | HTMLElement | Function} htmlContent
+	 * @param {OverlayContent} content
 	 * @returns {this}
 	 */
 	setContent(content) {
@@ -193,7 +231,7 @@ export class DivOverlay extends LayerBase {
 
 	/**
 	 * Returns the HTML container of the overlay.
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement | undefined}
 	 */
 	getElement() {
 		return this._container;
@@ -202,7 +240,6 @@ export class DivOverlay extends LayerBase {
 	/**
 	 * Updates the overlay content, layout and position. Useful for updating
 	 * the overlay after something inside changed, e.g. image loaded.
-	 * @returns {null}
 	 */
 	update() {
 		if (!this._map) { return; }
@@ -218,6 +255,7 @@ export class DivOverlay extends LayerBase {
 		this._adjustPan();
 	}
 
+	/** @returns {{[type: string]: (e: any) => void}} */
 	getEvents() {
 		return {
 			zoom: this._updatePosition,
@@ -257,10 +295,13 @@ export class DivOverlay extends LayerBase {
 	}
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
+	/** @param {LatLngExpression} [latlng] */
 	_prepareOpen(latlng) {
-		if (!this._source._map) { return false; }
+		const layer = /** @type {Layer} */ (this._source);
+		if (!layer._map) { return false; }
 
-		const source = this._source._getOverlaySource();
+		const source = /** @type {Layer & {getCenter?: () => LatLng, getLatLng?: () => LatLng,
+			getBounds?: () => LatLngBounds} | undefined} */ (layer._getOverlaySource());
 		if (!source) { return false; } // Unable to get source layer.
 		this._source = source;
 
@@ -289,13 +330,15 @@ export class DivOverlay extends LayerBase {
 		if (!this._content) { return; }
 
 		const node = this._contentNode;
-		const content = (typeof this._content === 'function') ? this._content(this._source ?? this) : this._content;
+		// a standalone overlay passes itself
+		const content = (typeof this._content === 'function') ?
+			this._content(this._source ?? /** @type {any} */ (this)) : this._content;
 
 		if (typeof content === 'string') {
 			node.innerHTML = content;
 		} else {
 			while (node.hasChildNodes()) {
-				node.removeChild(node.firstChild);
+				node.removeChild(/** @type {ChildNode} */ (node.firstChild));
 			}
 			node.appendChild(content);
 		}
@@ -319,6 +362,7 @@ export class DivOverlay extends LayerBase {
 		this._container.style.left = `${left}px`;
 	}
 
+	/** @returns {PointExpression} */
 	_getAnchor() {
 		return [0, 0];
 	}

@@ -1,9 +1,56 @@
+// @ts-check
 import {LayerBase} from './LayerBase.js';
 import {Popup} from './Popup.js';
 import {Tooltip} from './Tooltip.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
+/** @import {LatLngExpression, LayerEventMap, LayerOptions, LeafletEvent, LeafletPointerEvent, PopupOptions, TooltipOptions} from '../types.js' */
+/** @import {LatLng} from '../geo/LatLng.js' */
+/** @import {OverlayContent} from './DivOverlay.js' */
+
+/**
+ * A set of methods from the Layer base class that all Leaflet layers use. Inherits all methods, options and events
+ * from `Evented`.
+ *
+ * @example
+ * ```js
+ * const layer = new Marker(latlng).addTo(map);
+ * layer.addTo(map);
+ * layer.remove();
+ * ```
+ *
+ * @categoryDescription Methods
+ * Classes extending `Layer` will inherit the following methods:
+ *
+ * @categoryDescription Popup methods
+ * All layers share a set of methods convenient for binding popups to it.
+ *
+ * ```js
+ * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
+ * layer.openPopup();
+ * layer.closePopup();
+ * ```
+ *
+ * Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from
+ * the map or another popup is opened.
+ *
+ * @categoryDescription Tooltip methods
+ * All layers share a set of methods convenient for binding tooltips to it.
+ *
+ * ```js
+ * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
+ * layer.openTooltip();
+ * layer.closeTooltip();
+ * ```
+ *
+ * @categoryDescription Extension methods
+ * Every layer should extend from `Layer` and (re-)implement the following methods.
+ *
+ * @template {LayerOptions} [O=LayerOptions]
+ * @template {LayerEventMap} [E=LayerEventMap]
+ * @extends {LayerBase<O, E>}
+ */
 export class Layer extends LayerBase {
 
 	/**
@@ -12,13 +59,13 @@ export class Layer extends LayerBase {
 	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
 	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
 	 * @category Popup methods
-	 * @param {string | HTMLElement | Function | Popup} content
-	 * @param {PopupOptions} [options]
+	 * @param {OverlayContent | Popup} content
+	 * @param {Partial<PopupOptions>} [options]
 	 * @returns {this}
 	 */
 	bindPopup(content, options) {
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
-		this.on({
+		/** @type {Layer<any, any>} */ (this).on({
 			click: this._openPopup,
 			remove: this.closePopup,
 			move: this._movePopup
@@ -34,7 +81,7 @@ export class Layer extends LayerBase {
 	 */
 	unbindPopup() {
 		if (this._popup) {
-			this.off({
+			/** @type {Layer<any, any>} */ (this).off({
 				click: this._openPopup,
 				remove: this.closePopup,
 				move: this._movePopup
@@ -47,7 +94,7 @@ export class Layer extends LayerBase {
 	/**
 	 * Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	 * @category Popup methods
-	 * @param {LatLng} [latlng]
+	 * @param {LatLngExpression} [latlng]
 	 * @returns {this}
 	 */
 	openPopup(latlng) {
@@ -97,7 +144,7 @@ export class Layer extends LayerBase {
 	 * Sets the content of the popup bound to this layer. String content is rendered as HTML;
 	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	 * @category Popup methods
-	 * @param {string | HTMLElement | Popup} content
+	 * @param {OverlayContent} content
 	 * @returns {this}
 	 */
 	setPopupContent(content) {
@@ -108,12 +155,13 @@ export class Layer extends LayerBase {
 	/**
 	 * Returns the popup bound to this layer.
 	 * @category Popup methods
-	 * @returns {Popup}
+	 * @returns {Popup | null | undefined}
 	 */
 	getPopup() {
 		return this._popup;
 	}
 
+	/** @param {LeafletPointerEvent} e */
 	_openPopup(e) {
 		if (!this._popup || !this._map) {
 			return;
@@ -121,7 +169,7 @@ export class Layer extends LayerBase {
 		// prevent map click
 		DomEvent.stopPropagation(e);
 
-		const target = e.propagatedFrom ?? e.target;
+		const target = /** @type {Layer} */ (e.propagatedFrom ?? e.target);
 		if (this._popup._source === target && target._togglesPopupOnClick()) {
 			// treat it like a marker and figure out
 			// if we should toggle it open/closed
@@ -136,8 +184,9 @@ export class Layer extends LayerBase {
 		this.openPopup(e.latlng);
 	}
 
+	/** @param {{latlng: LatLng}} e */
 	_movePopup(e) {
-		this._popup.setLatLng(e.latlng);
+		/** @type {Popup} */ (this._popup).setLatLng(e.latlng);
 	}
 
 	/**
@@ -146,8 +195,8 @@ export class Layer extends LayerBase {
 	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
 	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
 	 * @category Tooltip methods
-	 * @param {string | HTMLElement | Function | Tooltip} content
-	 * @param {TooltipOptions} [options]
+	 * @param {OverlayContent | Tooltip} content
+	 * @param {Partial<TooltipOptions>} [options]
 	 * @returns {this}
 	 */
 	bindTooltip(content, options) {
@@ -183,12 +232,13 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
+	/** @param {boolean} [remove] */
 	_initTooltipInteractions(remove) {
-		const {permanent, sticky} = this._tooltip.options,
-		events = {
+		const {permanent, sticky} = /** @type {Tooltip} */ (this._tooltip).options,
+		events = /** @type {{[type: string]: (e: any) => void}} */ ({
 			remove: this.closeTooltip,
 			move: this._moveTooltip
-		};
+		});
 		if (permanent) {
 			events.add = this._openTooltip;
 		} else {
@@ -204,13 +254,13 @@ export class Layer extends LayerBase {
 		if (sticky) {
 			events.pointermove = this._moveTooltip;
 		}
-		this[remove ? 'off' : 'on'](events);
+		/** @type {Layer<any, any>} */ (this)[remove ? 'off' : 'on'](events);
 	}
 
 	/**
 	 * Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	 * @category Tooltip methods
-	 * @param {LatLng} [latlng]
+	 * @param {LatLngExpression} [latlng]
 	 * @returns {this}
 	 */
 	openTooltip(latlng) {
@@ -266,7 +316,7 @@ export class Layer extends LayerBase {
 	 * Sets the content of the tooltip bound to this layer. String content is rendered as HTML;
 	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
 	 * @category Tooltip methods
-	 * @param {string | HTMLElement | Tooltip} content
+	 * @param {OverlayContent} content
 	 * @returns {this}
 	 */
 	setTooltipContent(content) {
@@ -277,13 +327,13 @@ export class Layer extends LayerBase {
 	/**
 	 * Returns the tooltip bound to this layer.
 	 * @category Tooltip methods
-	 * @returns {Tooltip}
+	 * @returns {Tooltip | null | undefined}
 	 */
 	getTooltip() {
 		return this._tooltip;
 	}
 
-	// also the `add` listener, so any truthy argument adds
+	/** @param {unknown} add also the `add` listener, so any truthy argument adds */
 	_toggleFocusListeners(add) {
 		if (this.getElement) {
 			this._addFocusListenersOnLayer(this, !add);
@@ -292,8 +342,12 @@ export class Layer extends LayerBase {
 		}
 	}
 
+	/**
+	 * @param {Layer} layer
+	 * @param {boolean} remove
+	 */
 	_addFocusListenersOnLayer(layer, remove) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
+		const el = /** @type {(Element & {_leaflet_focus_handler?: () => void}) | undefined} */ (layer.getElement?.());
 		if (el) {
 			const toggle = remove ? DomEvent.off : DomEvent.on;
 			if (!remove) {
@@ -318,19 +372,21 @@ export class Layer extends LayerBase {
 		}
 	}
 
+	/** @param {Layer} layer */
 	_setAriaDescribedByOnLayer(layer) {
-		const el = typeof layer.getElement === 'function' && layer.getElement();
-		el?.setAttribute?.('aria-describedby', this._tooltip._container.id);
+		const el = layer.getElement?.();
+		el?.setAttribute?.('aria-describedby', /** @type {Tooltip} */ (this._tooltip)._container.id);
 	}
 
 
+	/** @param {LeafletEvent & {latlng?: LatLng}} e */
 	_openTooltip(e) {
 		if (!this._tooltip || !this._map) {
 			return;
 		}
 
 		// If the map is moving, we will show the tooltip after it's done.
-		if (this._map.dragging?.moving()) {
+		if (/** @type {any} */ (this._map).dragging?.moving()) {
 			if (e.type === 'add' && !this._moveEndOpensTooltip) {
 				this._moveEndOpensTooltip = true;
 				this._map.once('moveend', () => {
@@ -341,29 +397,39 @@ export class Layer extends LayerBase {
 			return;
 		}
 
-		this._tooltip._source = e.propagatedFrom ?? e.target;
+		this._tooltip._source = /** @type {Layer} */ (e.propagatedFrom ?? e.target);
 
 		this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
 	}
 
+	/** @param {{latlng: LatLng, originalEvent?: PointerEvent | MouseEvent}} e */
 	_moveTooltip(e) {
 		let latlng = e.latlng, containerPoint, layerPoint;
-		if (this._tooltip.options.sticky && e.originalEvent) {
+		const tooltip = /** @type {Tooltip} */ (this._tooltip);
+		if (tooltip.options.sticky && e.originalEvent) {
 			containerPoint = this._map.pointerEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
 			latlng = this._map.layerPointToLatLng(layerPoint);
 		}
-		this._tooltip.setLatLng(latlng);
+		tooltip.setLatLng(latlng);
 	}
 
+	/**
+	 * @template {Popup | Tooltip} T
+	 * @param {new (options?: any, source?: Layer) => T} OverlayClass
+	 * @param {T | null | undefined} old
+	 * @param {OverlayContent | T} content
+	 * @param {object} [options]
+	 * @returns {T}
+	 */
 	_initOverlay(OverlayClass, old, content, options) {
 		let overlay = content;
 		if (overlay instanceof OverlayClass) {
-			Util.setOptions(overlay, options);
+			Util.setOptions(/** @type {{options: object}} */ (overlay), options);
 			overlay._source = this;
 		} else {
 			overlay = (old && !options) ? old : new OverlayClass(options, this);
-			overlay.setContent(content);
+			overlay.setContent(/** @type {OverlayContent} */ (content));
 		}
 		return overlay;
 	}

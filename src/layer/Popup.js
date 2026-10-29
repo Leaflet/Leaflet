@@ -1,13 +1,21 @@
+// @ts-check
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {Point} from '../geometry/Point.js';
 
+/** @import {Defaults, DivOverlayEventMap, PointExpression, PopupOptions, ZoomAnimEvent} from '../types.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+/** @import {Layer} from './Layer.js' */
+
 const defaultOptions = {
 	/** `Map pane` where the popup will be added. */
 	pane: 'popupPane',
 
-	/** The offset of the popup position. */
+	/**
+	 * The offset of the popup position.
+	 * @type {PointExpression}
+	 */
 	offset: [0, 7],
 
 	/** Max width of the popup, in pixels. */
@@ -19,7 +27,7 @@ const defaultOptions = {
 	/**
 	 * If set, creates a scrollable container of the given height inside a popup if its content exceeds it.
 	 * The scrollable container can be styled using the `leaflet-popup-scrolled` CSS class selector.
-	 * @type {number}
+	 * @type {number | null}
 	 */
 	maxHeight: null,
 
@@ -28,17 +36,20 @@ const defaultOptions = {
 
 	/**
 	 * The margin between the popup and the top left corner of the map view after autopanning was performed.
-	 * @type {Point}
+	 * @type {PointExpression | null}
 	 */
 	autoPanPaddingTopLeft: null,
 
 	/**
 	 * The margin between the popup and the bottom right corner of the map view after autopanning was performed.
-	 * @type {Point}
+	 * @type {PointExpression | null}
 	 */
 	autoPanPaddingBottomRight: null,
 
-	/** Equivalent of setting both top left and bottom right autopan padding to the same value. */
+	/**
+	 * Equivalent of setting both top left and bottom right autopan padding to the same value.
+	 * @type {PointExpression}
+	 */
 	autoPanPadding: [5, 5],
 
 	/** Set it to `true` if you want to prevent users from panning the popup off of the screen while it is open. */
@@ -59,12 +70,6 @@ const defaultOptions = {
 	/** Set it to `false` if you want to override the default behavior of the ESC key for closing of the popup. */
 	closeOnEscapeKey: true,
 
-	/**
-	 * Set it if you want to override the default behavior of the popup closing when user clicks
-	 * on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
-	 * @type {boolean}
-	 */
-
 	/** A custom CSS class name to assign to the popup. */
 	className: '',
 
@@ -75,22 +80,8 @@ const defaultOptions = {
 	trackResize: true,
 };
 
+/** @typedef {typeof defaultOptions} PopupDefaults */
 
-/**
- * Instantiates a `Popup` object given an optional `options` object that describes its appearance and location
- * and an optional `source` object that is used to tag the popup with a reference to the Layer to which it
- * refers.
- * @overload
- * @param {PopupOptions} [options]
- * @param {Layer} [source]
- */
-/**
- * Instantiates a `Popup` object given `latlng` where the popup will open and
- * an optional `options` object that describes its appearance and location.
- * @overload
- * @param {LatLng} latlng
- * @param {PopupOptions} [options]
- */
 
 /**
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup)
@@ -128,9 +119,14 @@ const defaultOptions = {
  * el.textContent = untrustedString;
  * marker.bindPopup(el);
  * ```
+ *
+ * @template {PopupOptions} [O=PopupOptions]
+ * @template {DivOverlayEventMap} [E=DivOverlayEventMap]
+ * @extends {DivOverlay<O, E>}
  */
 export class Popup extends DivOverlay {
 
+	/** @type {Defaults<PopupOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
@@ -139,7 +135,7 @@ export class Popup extends DivOverlay {
 	 * @returns {this}
 	 */
 	openOn(map) {
-		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
+		map = arguments.length ? map : /** @type {Layer} */ (this._source)._map; // experimental, not the part of public api
 
 		if (!map.hasLayer(this) && map._popup && map._popup.options.autoClose) {
 			map.removeLayer(map._popup);
@@ -149,6 +145,7 @@ export class Popup extends DivOverlay {
 		return super.openOn(map);
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 		super.onAdd(map);
 
@@ -159,11 +156,12 @@ export class Popup extends DivOverlay {
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (this._source._togglesPopupOnClick()) {
-				this._source.on('preclick', DomEvent.stopPropagation);
+				/** @type {Layer<any, any>} */ (this._source).on('preclick', DomEvent.stopPropagation);
 			}
 		}
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		super.onRemove(map);
 
@@ -172,7 +170,7 @@ export class Popup extends DivOverlay {
 		if (this._source) {
 			this._source.fire('popupclose', {popup: this}, true);
 			if (this._source._togglesPopupOnClick()) {
-				this._source.off('preclick', DomEvent.stopPropagation);
+				/** @type {Layer<any, any>} */ (this._source).off('preclick', DomEvent.stopPropagation);
 			}
 		}
 	}
@@ -180,7 +178,7 @@ export class Popup extends DivOverlay {
 	getEvents() {
 		const events = super.getEvents();
 
-		if (this.options.closeOnClick ?? this._map.options.closePopupOnClick) {
+		if (this.options.closeOnClick ?? /** @type {any} */ (this._map.options).closePopupOnClick) {
 			events.preclick = this.close;
 		}
 
@@ -255,6 +253,7 @@ export class Popup extends DivOverlay {
 		this._containerHeight = this._container.offsetHeight;
 	}
 
+	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		anchor = this._getAnchor();

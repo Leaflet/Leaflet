@@ -1804,6 +1804,7 @@ export class LeafletMap extends Evented {
 
 	// DOM event handling
 	_initEvents(remove) {
+		/** @type {{[id: number]: Evented}} */
 		this._targets = {};
 		this._targets[Util.stamp(this._container)] = this;
 
