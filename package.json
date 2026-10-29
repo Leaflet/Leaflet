@@ -80,5 +80,8 @@
   "allowScripts": {
     "unrs-resolver@1.12.2": true,
     "fsevents@2.3.3": true
+  },
+  "dependencies": {
+    "@types/geojson": "^7946.0.16"
   }
 }
