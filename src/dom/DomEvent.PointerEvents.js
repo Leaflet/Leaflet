@@ -1,8 +1,15 @@
+// @ts-check
+
+/**
+ * Detects the pointers that are currently active on the document. Available as `DomEvent.PointerEvents`.
+ * @module PointerEvents
+ */
+
+/** @type {Map<number, PointerEvent>} */
 const activePointers = new Map();
 
 /**
  * Enables pointer detection and capture for the document.
- * @category Pointer detection
  * @param {HTMLElement} el
  */
 function enablePointerDetection(el) {
@@ -15,7 +22,6 @@ function enablePointerDetection(el) {
 
 /**
  * Disables pointer detection and capture for the document.
- * @category Pointer detection
  * @param {HTMLElement} el
  */
 function disablePointerDetection(el) {
@@ -26,26 +32,28 @@ function disablePointerDetection(el) {
 }
 
 // capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
+/** @param {PointerEvent} e */
 function _onSet(e) {
-	if (e.isTrusted) { e.target.setPointerCapture(e.pointerId); }
+	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
 	activePointers.set(e.pointerId, e);
 }
 
+/** @param {PointerEvent} e */
 function _onUpdate(e) {
 	if (activePointers.has(e.pointerId)) {
 		activePointers.set(e.pointerId, e);
 	}
 }
 
+/** @param {PointerEvent} e */
 function _onDelete(e) {
-	if (e.isTrusted) { e.target.releasePointerCapture(e.pointerId); }
+	if (e.isTrusted) { /** @type {Element} */ (e.target).releasePointerCapture(e.pointerId); }
 	activePointers.delete(e.pointerId);
 }
 
 /**
  * Returns the active pointers on the document.
- * @category Pointer detection
- * @returns {LeafletPointerEvent[]}
+ * @returns {PointerEvent[]}
  */
 function getPointers() {
 	return [...activePointers.values()];

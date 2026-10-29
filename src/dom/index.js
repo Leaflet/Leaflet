@@ -1,3 +1,4 @@
+// @ts-check
 import * as DomEvent from './DomEvent.js';
 export {DomEvent};
 

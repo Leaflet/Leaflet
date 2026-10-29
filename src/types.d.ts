@@ -2,6 +2,7 @@
 // aliases), since only interfaces merge with a plugin's `declare module 'leaflet'` augmentation.
 
 import type {Evented} from './core/Events.js';
+import type {DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
@@ -14,6 +15,9 @@ export type {Listener, ListenerMap} from './core/Events.js';
 
 /** The type of a class's `static defaultOptions`: some of its options, plus anything a subclass adds. */
 export type Defaults<O> = Partial<O> & {[key: string]: unknown};
+
+export interface DraggableOptions extends DraggableDefaults {}
+export interface DraggableEventMap extends DraggableEvents {}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};

@@ -1,9 +1,12 @@
+// @ts-check
 import {Evented} from '../core/Events.js';
 import * as DomEvent from './DomEvent.js';
 import * as DomUtil from './DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 import * as PointerEvents from './DomEvent.PointerEvents.js';
+
+/** @import {Defaults, DragEndEvent, DraggableEventMap, DraggableOptions, LeafletEvent} from '../types.js' */
 
 const defaultOptions = {
 	/**
@@ -13,11 +16,14 @@ const defaultOptions = {
 	clickTolerance: 3
 };
 
+/** @typedef {typeof defaultOptions} DraggableDefaults */
+
 /**
  * @typedef {Object} DraggableEvents
  * @property {LeafletEvent} down Fired when a drag is about to start.
  * @property {LeafletEvent} dragstart Fired when a drag starts
- * @property {LeafletEvent} predrag Fired continuously during dragging *before* each corresponding update of the element's position.
+ * @property {LeafletEvent} predrag Fired continuously during dragging *before* each corresponding update of the
+ *   element's position.
  * @property {LeafletEvent} drag Fired continuously during dragging.
  * @property {DragEndEvent} dragend Fired when the drag ends.
  */
@@ -30,19 +36,26 @@ const defaultOptions = {
  * const draggable = new Draggable(elementToDrag);
  * draggable.enable();
  * ```
+ *
+ * @extends {Evented<DraggableOptions, DraggableEventMap>}
  */
 export class Draggable extends Evented {
 
 	static initHooks = true;
 
+	/** @type {Defaults<DraggableOptions>} */
 	static defaultOptions = defaultOptions;
 
+	// the draggable being dragged, so that only one is dragged at a time
+	/** @type {Draggable | false} */
+	static _dragging = false;
+
 	/**
-	 * Creates a `Draggable` object for moving `el` when you start dragging
-	 * the `dragHandle` element (equals `el` itself by default).
-	 * @param {HTMLElement} el
-	 * @param {HTMLElement} [dragHandle]
-	 * @param {DraggableOptions} [options]
+	 * Creates a `Draggable` object for moving `element` when you start dragging
+	 * the `dragStartTarget` element (equals `element` itself by default).
+	 * @param {HTMLElement} element
+	 * @param {HTMLElement} [dragStartTarget]
+	 * @param {Partial<DraggableOptions>} [options]
 	 */
 	constructor(element, dragStartTarget, options) {
 		if (typeof options === 'boolean') {
@@ -83,6 +96,7 @@ export class Draggable extends Evented {
 		this._moved = false;
 	}
 
+	/** @param {PointerEvent} e */
 	_onDown(e) {
 		this._moved = false;
 
@@ -107,16 +121,20 @@ export class Draggable extends Evented {
 
 		const sizedParent = DomUtil.getSizedParentNode(this._element);
 
+		/** @type {Point} */
 		this._startPoint = new Point(e.clientX, e.clientY);
+		/** @type {Point} */
 		this._startPos = DomUtil.getPosition(this._element);
 
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
+		/** @type {{x: number, y: number}} */
 		this._parentScale = DomUtil.getScale(sizedParent);
 
 		DomEvent.on(this._dragStartTarget, 'pointermove', this._onMove, this);
 		DomEvent.on(this._dragStartTarget, 'pointerup pointercancel lostpointercapture', this._onUp, this);
 	}
 
+	/** @param {PointerEvent} e */
 	_onMove(e) {
 		if (PointerEvents.getPointers().length > 1) {
 			this._moved = true;
@@ -148,10 +166,12 @@ export class Draggable extends Evented {
 			this._draggingContainer = this._element.closest('.leaflet-container') ?? this._element;
 			this._draggingContainer.classList.add('leaflet-dragging');
 
-			this._lastTarget = e.target;
+			/** @type {Element | null} */
+			this._lastTarget = /** @type {Element} */ (e.target);
 			this._lastTarget.classList.add('leaflet-drag-target');
 		}
 
+		/** @type {Point} */
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
@@ -173,6 +193,7 @@ export class Draggable extends Evented {
 		this.fire('drag', e);
 	}
 
+	/** @param {PointerEvent} e */
 	_onUp(e) {
 		// releasing the button outside the window may fire no pointerup, only a lostpointercapture with no buttons;
 		// capture lost while the button is still held (e.g. the pressed element was removed) shouldn't end the drag
@@ -180,6 +201,7 @@ export class Draggable extends Evented {
 		this.finishDrag();
 	}
 
+	/** @param {boolean} [noInertia] */
 	finishDrag(noInertia) {
 		this._draggingContainer?.classList.remove('leaflet-dragging');
 		this._draggingContainer = null;

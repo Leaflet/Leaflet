@@ -1,3 +1,4 @@
+// @ts-check
 /*
  * Extends the event handling code with double tap support for mobile browsers.
  *
@@ -5,6 +6,7 @@
  * (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386)
  */
 
+/** @param {MouseEvent & {region?: string | null}} ev */
 function makeDblclick(ev) {
 	const init = {
 		// EventInit
@@ -55,6 +57,10 @@ function makeDblclick(ev) {
 }
 
 const delay = 200;
+/**
+ * @param {HTMLElement} obj
+ * @param {EventListener} handler
+ */
 export function addDoubleTapListener(obj, handler) {
 	// Most browsers handle double tap natively
 	obj.addEventListener('dblclick', handler);
@@ -63,15 +69,19 @@ export function addDoubleTapListener(obj, handler) {
 	// It seems that in all such cases `detail` property of `click` event is always `1`.
 	// So here we rely on that fact to avoid excessive 'dblclick' simulation when not needed.
 	let last = 0,
+	/** @type {number} */
 	detail,
+	/** @type {string} */
 	pointerType;
 
 	// iOS Safari reports `pointerType: 'mouse'` on clicks from touch (WebKit bug 282988), so we take it from the
 	// pointerdown instead; capturing so that it's seen even if a child (e.g. a control) stops its propagation.
+	/** @param {PointerEvent} ev */
 	function onPointerDown(ev) {
 		pointerType = ev.pointerType;
 	}
 
+	/** @param {MouseEvent & {sourceCapabilities?: {firesTouchEvents: boolean} | null}} ev */
 	function simDblclick(ev) {
 		if (ev.detail !== 1) {
 			detail = ev.detail; // keep in sync to avoid false dblclick in some cases
@@ -103,7 +113,7 @@ export function addDoubleTapListener(obj, handler) {
 		if (now - last <= delay) {
 			detail++;
 			if (detail === 2) {
-				ev.target.dispatchEvent(makeDblclick(ev));
+				/** @type {EventTarget} */ (ev.target).dispatchEvent(makeDblclick(ev));
 			}
 		} else {
 			detail = 1;
@@ -121,6 +131,10 @@ export function addDoubleTapListener(obj, handler) {
 	};
 }
 
+/**
+ * @param {HTMLElement} obj
+ * @param {ReturnType<typeof addDoubleTapListener>} handlers
+ */
 export function removeDoubleTapListener(obj, handlers) {
 	obj.removeEventListener('dblclick', handlers.dblclick);
 	obj.removeEventListener('pointerdown', handlers.onPointerDown, true);
