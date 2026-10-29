@@ -3,14 +3,20 @@ import {fileURLToPath} from 'node:url';
 import config from 'eslint-config-mourner';
 import css from '@eslint/css';
 import html from 'eslint-plugin-html';
-import {flatConfigs as importX} from 'eslint-plugin-import-x';
+import {flatConfigs as importX, createNodeResolver} from 'eslint-plugin-import-x';
 import baselineJs from 'eslint-plugin-baseline-js';
 import e18e from '@e18e/eslint-plugin';
 
 export default [
 	...config.map(c => ({...c, files: ['**/*.js']})),
 	{...e18e.configs.recommended, files: ['**/*.js']},
-	{...importX.recommended, files: ['**/*.js']},
+	{
+		...importX.recommended,
+		files: ['**/*.js'],
+		// the implicit legacy 'node' resolver gets looked up relative to each parsed package, so it loads
+		// lightningcss's own node/ directory as a resolver and crashes; name the modern one explicitly
+		settings: {'import-x/resolver-next': [createNodeResolver()]}
+	},
 	includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
 	{
 		ignores: [
