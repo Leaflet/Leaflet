@@ -37,7 +37,8 @@ export class KeyboardHandler extends Handler {
 		on(container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			pointerdown: this._onPointerDown
+			pointerdown: this._onPointerDown,
+			keydown: this._onContainerKeyDown
 		}, this);
 	}
 
@@ -51,7 +52,8 @@ export class KeyboardHandler extends Handler {
 		off(this._map._container, {
 			focus: this._onFocus,
 			blur: this._onBlur,
-			pointerdown: this._onPointerDown
+			pointerdown: this._onPointerDown,
+			keydown: this._onContainerKeyDown
 		}, this);
 	}
 
@@ -73,6 +75,26 @@ export class KeyboardHandler extends Handler {
 		this._focused = false;
 		off(document, 'keydown', this._onKeyDown, this);
 		this._map.fire('blur');
+	}
+
+	// on the container rather than the document, so that Escape also works when focus is on a marker or
+	// inside the popup, which blurs the container and removes the document listener (#6551); controls are
+	// left out so that e.g. Escape in a geocoder input doesn't close an unrelated popup
+	_onContainerKeyDown(e) {
+		const map = this._map,
+		popup = map._popup;
+
+		if (e.key !== 'Escape' || e.defaultPrevented || !popup?.options.closeOnEscapeKey ||
+			map._controlContainer.contains(e.target)) { return; }
+
+		const inPopup = popup._container.contains(e.target),
+		icon = popup._source?._icon;
+
+		map.closePopup();
+		e.preventDefault();
+
+		// closing removes the focused element, which would send focus back to the start of the page
+		if (inPopup) { (icon?.tabIndex >= 0 ? icon : map._container).focus(); }
 	}
 
 	_onKeyDown(e) {
@@ -98,9 +120,6 @@ export class KeyboardHandler extends Handler {
 			if (!map._zoomInputBlocked()) {
 				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta);
 			}
-
-		} else if (key === 'Escape' && map._popup && map._popup.options.closeOnEscapeKey) {
-			map.closePopup();
 
 		} else {
 			return;

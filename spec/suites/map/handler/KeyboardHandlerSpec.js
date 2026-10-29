@@ -1,4 +1,4 @@
-import {LeafletMap, Popup} from 'leaflet';
+import {LeafletMap, Marker, Popup} from 'leaflet';
 import sinon from 'sinon';
 import {userEvent} from 'vitest/browser';
 import UIEventSimulator from 'ui-event-simulator';
@@ -166,10 +166,66 @@ describe('KeyboardHandler', () => {
 
 			expect(popup.isOpen()).to.be.true;
 
-			UIEventSimulator.fire('keydown', document,  KEY_ESC);
-			UIEventSimulator.fire('keyup', document,    KEY_ESC);
+			UIEventSimulator.fire('keydown', container, KEY_ESC);
+			UIEventSimulator.fire('keyup', container,   KEY_ESC);
 
 			expect(popup.isOpen()).to.be.false;
+		});
+
+		it('closes a popup when pressing escape with focus on its marker', () => {
+			const marker = new Marker([0, 0]).bindPopup('Null Island').addTo(map);
+
+			container.focus();
+			marker._icon.focus(); // blurs the container
+			marker.openPopup();
+
+			UIEventSimulator.fire('keydown', marker._icon, KEY_ESC);
+
+			expect(marker.isPopupOpen()).to.be.false;
+		});
+
+		it('moves focus to the marker when closing a popup with focus inside it', () => {
+			const marker = new Marker([0, 0]).bindPopup('<button>OK</button>').addTo(map);
+			marker.openPopup();
+
+			const button = marker.getPopup().getElement().querySelector('button');
+			button.focus();
+			UIEventSimulator.fire('keydown', button, KEY_ESC);
+
+			expect(marker.isPopupOpen()).to.be.false;
+			expect(document.activeElement).to.equal(marker._icon);
+		});
+
+		it('moves focus to the map when closing a popup without a focusable source', () => {
+			const popup = new Popup().setLatLng([0, 0]).setContent('<button>OK</button>');
+			map.openPopup(popup);
+
+			const button = popup.getElement().querySelector('button');
+			button.focus();
+			UIEventSimulator.fire('keydown', button, KEY_ESC);
+
+			expect(popup.isOpen()).to.be.false;
+			expect(document.activeElement).to.equal(container);
+		});
+
+		it('does not close a popup when escape is pressed in a control', () => {
+			const popup = new Popup().setLatLng([0, 0]).setContent('Null Island');
+			map.openPopup(popup);
+
+			UIEventSimulator.fire('keydown', map.zoomControl._zoomInButton, KEY_ESC);
+
+			expect(popup.isOpen()).to.be.true;
+		});
+
+		it('does not close a popup when escape is handled inside it', () => {
+			const popup = new Popup().setLatLng([0, 0]).setContent('<input>');
+			map.openPopup(popup);
+
+			const input = popup.getElement().querySelector('input');
+			input.addEventListener('keydown', e => e.preventDefault());
+			UIEventSimulator.fire('keydown', input, KEY_ESC);
+
+			expect(popup.isOpen()).to.be.true;
 		});
 	});
 
@@ -181,8 +237,8 @@ describe('KeyboardHandler', () => {
 
 			expect(popup.isOpen()).to.be.true;
 
-			UIEventSimulator.fire('keydown', document,  KEY_ESC);
-			UIEventSimulator.fire('keyup', document,    KEY_ESC);
+			UIEventSimulator.fire('keydown', container, KEY_ESC);
+			UIEventSimulator.fire('keyup', container,   KEY_ESC);
 
 			expect(popup.isOpen()).to.be.true;
 		});
