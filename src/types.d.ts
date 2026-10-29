@@ -8,7 +8,9 @@ import type {LatLng} from './geo/LatLng.js';
 import type {LatLngBounds} from './geo/LatLngBounds.js';
 import type {Bounds} from './geometry/Bounds.js';
 import type {Point} from './geometry/Point.js';
+import type {BlanketOverlayDefaults} from './layer/BlanketOverlay.js';
 import type {DivOverlayDefaults, DivOverlayEvents} from './layer/DivOverlay.js';
+import type {ImageOverlayDefaults, ImageOverlayEvents} from './layer/ImageOverlay.js';
 import type {Layer} from './layer/Layer.js';
 import type {FeatureGroupEvents} from './layer/FeatureGroup.js';
 import type {DefaultIconDefaults} from './layer/marker/DefaultIcon.js';
@@ -17,6 +19,7 @@ import type {IconDefaults} from './layer/marker/Icon.js';
 import type {MarkerDefaults, MarkerDragEvents, MarkerEvents} from './layer/marker/Marker.js';
 import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
 import type {Popup, PopupDefaults} from './layer/Popup.js';
+import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
 import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
 import type {LeafletMap} from './map/Map.js';
 
@@ -95,6 +98,14 @@ export interface MarkerOptions extends InteractiveLayerOptions, MarkerDefaults {
 export interface MarkerEventMap extends InteractiveLayerEventMap, MarkerEvents, MarkerDragEvents {}
 
 export interface FeatureGroupEventMap extends InteractiveLayerEventMap, FeatureGroupEvents {}
+
+export interface BlanketOverlayOptions extends LayerOptions, BlanketOverlayDefaults {}
+
+export interface ImageOverlayOptions extends InteractiveLayerOptions, ImageOverlayDefaults {}
+export interface ImageOverlayEventMap extends InteractiveLayerEventMap, ImageOverlayEvents {}
+
+export interface VideoOverlayOptions extends ImageOverlayOptions, VideoOverlayDefaults {}
+export interface VideoOverlayEventMap extends ImageOverlayEventMap, VideoOverlayEvents {}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};

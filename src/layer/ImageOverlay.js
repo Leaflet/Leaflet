@@ -1,8 +1,13 @@
+// @ts-check
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import {Bounds} from '../geometry/Bounds.js';
 import * as DomUtil from '../dom/DomUtil.js';
+
+/** @import {Defaults, ImageOverlayEventMap, ImageOverlayOptions, LatLngBoundsExpression, LeafletEvent,
+ *    ZoomAnimEvent} from '../types.js' */
+/** @import {LatLng} from '../geo/LatLng.js' */
 
 const defaultOptions = {
 	/** The opacity of the image overlay. */
@@ -15,10 +20,11 @@ const defaultOptions = {
 	interactive: false,
 
 	/**
-	 * Whether the crossOrigin attribute will be added to the image. If a String is provided,
-	 * the image will have its crossOrigin attribute set to the String provided. This is needed
-	 * if you want to access image pixel data. Refer to [CORS
-	 * Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	 * Whether the crossOrigin attribute will be added to the image. If a String is provided, the image will have
+	 * its crossOrigin attribute set to the String provided. This is needed if you want to access image pixel data.
+	 * Refer to [CORS Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid
+	 * String values.
+	 * @type {boolean | string}
 	 */
 	crossOrigin: false,
 
@@ -38,14 +44,17 @@ const defaultOptions = {
 	 * Tells the browser whether to decode the image in a synchronous fashion, as per the [`decoding`
 	 * HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding). If
 	 * the image overlay is flickering when being added/removed, set this option to `'sync'`.
+	 * @type {'sync' | 'async' | 'auto'}
 	 */
 	decoding: 'auto'
 };
 
+/** @typedef {typeof defaultOptions} ImageOverlayDefaults */
+
 /**
  * @typedef {Object} ImageOverlayEvents
- * @property {LeafletEvent} load Fired when the ImageOverlay layer has loaded its image
- * @property {LeafletEvent} error Fired when the ImageOverlay layer fails to load its image
+ * @property {LeafletEvent} load Fired when the ImageOverlay layer has loaded its image.
+ * @property {LeafletEvent} error Fired when the ImageOverlay layer fails to load its image.
  */
 
 /**
@@ -56,23 +65,30 @@ const defaultOptions = {
  * 	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
  * new ImageOverlay(imageUrl, imageBounds).addTo(map);
  * ```
- * @todo inherits Interactive layer
+ * @template {ImageOverlayOptions} [O=ImageOverlayOptions]
+ * @template {ImageOverlayEventMap} [E=ImageOverlayEventMap]
+ * @template {HTMLElement | SVGElement} [El=HTMLImageElement] the overlay's element
+ * @template [S=string | El] what the overlay is created from
+ * @extends {Layer<O, E>}
  */
 export class ImageOverlay extends Layer {
 
 	static initHooks = true;
 
+	/** @type {Defaults<ImageOverlayOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
-	 * Instantiates an image overlay object given the URL of the image and the geographical bounds it is tied to.
-	 * @param {string} imageUrl
-	 * @param {LatLngBounds} bounds
-	 * @param {ImageOverlayOptions} [options]
+	 * Instantiates an image overlay object given the URL of the image (or an image element) and the geographical
+	 * bounds it is tied to.
+	 * @param {NoInfer<S>} url
+	 * @param {LatLngBoundsExpression} bounds
+	 * @param {Partial<O>} [options]
 	 */
-	constructor(url, bounds, options) { // (String, LatLngBounds, Object)
+	constructor(url, bounds, options) {
 		super();
 
+		/** @type {S | string} */
 		this._url = url;
 		this._bounds = new LatLngBounds(bounds);
 
@@ -120,6 +136,10 @@ export class ImageOverlay extends Layer {
 		return this;
 	}
 
+	/**
+	 * @param {{opacity?: number}} styleOpts
+	 * @returns {this}
+	 */
 	setStyle(styleOpts) {
 		if (styleOpts.opacity) {
 			this.setOpacity(styleOpts.opacity);
@@ -158,14 +178,14 @@ export class ImageOverlay extends Layer {
 		this._url = url;
 
 		if (this._image) {
-			this._image.src = url;
+			/** @type {HTMLImageElement} */ (this._image).src = url;
 		}
 		return this;
 	}
 
 	/**
-	 * Update the bounds that this ImageOverlay covers
-	 * @param {LatLngBounds} bounds
+	 * Update the bounds that this ImageOverlay covers.
+	 * @param {LatLngBoundsExpression} bounds
 	 * @returns {this}
 	 */
 	setBounds(bounds) {
@@ -197,7 +217,7 @@ export class ImageOverlay extends Layer {
 	}
 
 	/**
-	 * Get the bounds that this ImageOverlay covers
+	 * Get the bounds that this ImageOverlay covers.
 	 * @returns {LatLngBounds}
 	 */
 	getBounds() {
@@ -206,16 +226,20 @@ export class ImageOverlay extends Layer {
 
 	/**
 	 * Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
-	 * used by this overlay.
-	 * @returns {HTMLElement}
+	 * used by this overlay (for `VideoOverlay` and `SVGOverlay`, their `<video>` or `<svg>` element).
+	 * @returns {El}
 	 */
 	getElement() {
 		return this._image;
 	}
 
 	_initImage() {
-		const wasElementSupplied = this._url instanceof HTMLImageElement;
-		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
+		const url = /** @type {string | HTMLImageElement} */ (this._url),
+		wasElementSupplied = url instanceof HTMLImageElement,
+		img = wasElementSupplied ? url : DomUtil.create('img');
+
+		/** @type {El} */
+		this._image = /** @type {any} */ (img);
 
 		img.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
@@ -224,7 +248,8 @@ export class ImageOverlay extends Layer {
 		img.onerror = this._overlayOnError.bind(this);
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
-			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
+			// the DOM types leave out '', which is how the attribute spells 'anonymous'
+			img.crossOrigin = /** @type {HTMLImageElement['crossOrigin']} */ (this.options.crossOrigin === true ? '' : this.options.crossOrigin);
 		}
 
 		img.decoding = this.options.decoding;
@@ -238,10 +263,11 @@ export class ImageOverlay extends Layer {
 			return;
 		}
 
-		img.src = this._url;
+		img.src = url;
 		img.alt = this.options.alt;
 	}
 
+	/** @param {ZoomAnimEvent} e */
 	_animateZoom(e) {
 		const scale = this._map.getZoomScale(e.zoom),
 		offset = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center);
@@ -278,7 +304,7 @@ export class ImageOverlay extends Layer {
 		const errorUrl = this.options.errorOverlayUrl;
 		if (errorUrl && this._url !== errorUrl) {
 			this._url = errorUrl;
-			this._image.src = errorUrl;
+			/** @type {HTMLImageElement} */ (this._image).src = errorUrl;
 		}
 	}
 

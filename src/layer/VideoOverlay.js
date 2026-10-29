@@ -1,12 +1,15 @@
+// @ts-check
 import {ImageOverlay} from './ImageOverlay.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
+/** @import {Defaults, LeafletEvent, VideoOverlayEventMap, VideoOverlayOptions} from '../types.js' */
+
 const defaultOptions = {
 	/**
-	 * Whether the video starts playing automatically when loaded. On
-	 * some browsers autoplay will only work with `muted: true`
+	 * Whether the video starts playing automatically when loaded. On some browsers autoplay will only work with
+	 * `muted: true`.
 	 */
 	autoplay: true,
 
@@ -29,37 +32,37 @@ const defaultOptions = {
 	playsInline: true
 };
 
-/**
- * @typedef {Object} VideoOverlayEvents
- * @property {LeafletEvent} load Fired when the video has finished loading the first frame
- */
+/** @typedef {typeof defaultOptions} VideoOverlayDefaults */
 
 /**
- * Instantiates an image overlay object given the URL of the video (or array of
- * URLs, or even a video element) and the geographical bounds it is tied to.
- * @param {string | Array | HTMLVideoElement} video
- * @param {LatLngBounds} bounds
- * @param {VideoOverlayOptions} [options]
+ * @typedef {Object} VideoOverlayEvents
+ * @property {LeafletEvent} load Fired when the video has finished loading the first frame.
  */
 
 /**
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
- * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element.
+ * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element. The
+ * constructor takes the URL of the video (or an array of URLs, or even a video element) in place of the image URL.
  * @example
  * ```js
  * const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
  * 	videoBounds = [[ 32, -130], [ 13, -100]];
  * new VideoOverlay(videoUrl, videoBounds ).addTo(map);
  * ```
+ * @template {VideoOverlayOptions} [O=VideoOverlayOptions]
+ * @template {VideoOverlayEventMap} [E=VideoOverlayEventMap]
+ * @extends {ImageOverlay<O, E, HTMLVideoElement, string | string[] | HTMLVideoElement>}
  */
 export class VideoOverlay extends ImageOverlay {
 
+	/** @type {Defaults<VideoOverlayOptions>} */
 	static defaultOptions = defaultOptions;
 
 	_initImage() {
-		const wasElementSupplied = this._url instanceof HTMLVideoElement;
-		const vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
+		const video = this._url,
+		wasElementSupplied = video instanceof HTMLVideoElement,
+		vid = this._image = wasElementSupplied ? video : DomUtil.create('video');
 
 		vid.classList.add('leaflet-image-layer', 'leaflet-zoom-animated');
 		if (this.options.className) { vid.classList.add(...Util.splitWords(this.options.className)); }
@@ -80,7 +83,7 @@ export class VideoOverlay extends ImageOverlay {
 			return;
 		}
 
-		if (!Array.isArray(this._url)) { this._url = [this._url]; }
+		const urls = this._url = Array.isArray(video) ? video : [video];
 
 		if (!this.options.keepAspectRatio) {
 			vid.style['objectFit'] = 'fill';
@@ -90,16 +93,10 @@ export class VideoOverlay extends ImageOverlay {
 		vid.loop = !!this.options.loop;
 		vid.muted = !!this.options.muted;
 		vid.playsInline = !!this.options.playsInline;
-		for (const url of this._url) {
+		for (const url of urls) {
 			const source = DomUtil.create('source');
 			source.src = url;
 			vid.appendChild(source);
 		}
 	}
-
-	/**
-	 * Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
-	 * used by this overlay.
-	 * @returns {HTMLVideoElement}
-	 */
 }
