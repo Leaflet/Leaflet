@@ -91,8 +91,8 @@ export class Point {
 	 * Expects an array of the form `[x, y]` or a plain object of the form `{x: Number, y: Number}`. Returns `true` if
 	 * the Point object can be properly initialized.
 	 * @overload
-	 * @param {PointExpression} coords
-	 * @returns {boolean}
+	 * @param {unknown} coords
+	 * @returns {coords is PointExpression}
 	 */
 	/**
 	 * @param {unknown} x

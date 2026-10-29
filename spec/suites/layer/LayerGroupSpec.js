@@ -35,6 +35,18 @@ describe('LayerGroup', () => {
 
 			expect(lg.hasLayer(marker)).to.be.false;
 		});
+
+		it('removes a layer by id and ignores an unknown id', () => {
+			const lg = new LayerGroup(),
+			marker = new Marker([0, 0]);
+
+			lg.addLayer(marker);
+			expect(lg.removeLayer(12345)).to.eql(lg);
+			expect(lg.hasLayer(marker)).to.be.true;
+
+			lg.removeLayer(lg.getLayerId(marker));
+			expect(lg.hasLayer(marker)).to.be.false;
+		});
 	});
 
 	describe('#clearLayers', () => {

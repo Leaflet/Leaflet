@@ -436,6 +436,7 @@ export class Layer extends LayerBase {
 
 	// Returns the layer a bound popup or tooltip opens on, or nothing if there's none on the map.
 	// `FeatureGroup` overrides it to pick one of its own layers.
+	/** @returns {Layer | undefined} */
 	_getOverlaySource() {
 		return this;
 	}

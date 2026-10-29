@@ -1,57 +1,88 @@
+// @ts-check
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';
 
-/**
- * **(required)** The URL to the icon image (absolute or relative to your script path).
- * @type {string}
- */
-/**
- * The URL to a retina sized version of the icon image (absolute or
- * relative to your script path). Used for Retina screen devices.
- * @type {string}
- */
-/**
- * Size of the icon image in pixels.
- * @type {Point}
- */
-/**
- * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
- * will be aligned so that this point is at the marker's geographical location. Centered
- * by default if size is specified, also can be set in CSS with negative margins.
- * @type {Point}
- */
-/** The coordinates of the point from which popups will "open", relative to the icon anchor. */
-/** The coordinates of the point from which tooltips will "open", relative to the icon anchor. */
-/**
- * The URL to the icon shadow image. If not specified, no shadow image will be created.
- * @type {string}
- */
-/**
- * @type {string}
- */
-/**
- * Size of the shadow image in pixels.
- * @type {Point}
- */
-/**
- * The coordinates of the "tip" of the shadow (relative to its top
- * left corner) (the same as iconAnchor if not specified).
- * @type {Point}
- */
-/** A custom class name to assign to both icon and shadow images. Empty by default. */
+/** @import {Defaults, IconOptions, PointExpression} from '../../types.js' */
+
 const defaultOptions = {
+	/**
+	 * **(required)** The URL to the icon image (absolute or relative to your script path).
+	 * @type {string | undefined}
+	 */
+	iconUrl: undefined,
+
+	/**
+	 * The URL to a retina sized version of the icon image (absolute or relative to your script path). Used for
+	 * Retina screen devices.
+	 * @type {string | undefined}
+	 */
+	iconRetinaUrl: undefined,
+
+	/**
+	 * Size of the icon image in pixels. A number sets both width and height.
+	 * @type {PointExpression | number | undefined}
+	 */
+	iconSize: undefined,
+
+	/**
+	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that
+	 * this point is at the marker's geographical location. Centered by default if size is specified, also can be
+	 * set in CSS with negative margins.
+	 * @type {PointExpression | undefined}
+	 */
+	iconAnchor: undefined,
+
+	/**
+	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
+	 * @type {PointExpression}
+	 */
 	popupAnchor: [0, 0],
+
+	/**
+	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
+	 * @type {PointExpression}
+	 */
 	tooltipAnchor: [0, 0],
 
 	/**
-	 * Whether the crossOrigin attribute will be added to the tiles. If a String is provided,
-	 * all tiles will have their crossOrigin attribute set to the String provided. This is needed
-	 * if you want to access tile pixel data. Refer to [CORS
+	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
+	 * @type {string | undefined}
+	 */
+	shadowUrl: undefined,
+
+	/**
+	 * The URL to a retina sized version of the shadow image. Used for Retina screen devices.
+	 * @type {string | undefined}
+	 */
+	shadowRetinaUrl: undefined,
+
+	/**
+	 * Size of the shadow image in pixels. A number sets both width and height.
+	 * @type {PointExpression | number | undefined}
+	 */
+	shadowSize: undefined,
+
+	/**
+	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not
+	 * specified).
+	 * @type {PointExpression | undefined}
+	 */
+	shadowAnchor: undefined,
+
+	/** A custom class name to assign to both icon and shadow images. */
+	className: '',
+
+	/**
+	 * Whether the crossOrigin attribute will be added to the icon images. If a String is provided, all images will
+	 * have their crossOrigin attribute set to the String provided. Refer to [CORS
 	 * Settings](https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes) for valid String values.
+	 * @type {boolean | string}
 	 */
 	crossOrigin: false
 };
+
+/** @typedef {typeof defaultOptions} IconDefaults */
 
 /**
  * Represents an icon to provide when creating a marker.
@@ -73,16 +104,19 @@ const defaultOptions = {
  * ```
  *
  * `DefaultIcon` extends `Icon` and is the blue icon Leaflet uses for markers by default.
+ * @template {IconOptions} [O=IconOptions]
+ * @extends {Class<O>}
  */
 export class Icon extends Class {
 
 	static initHooks = true;
 
+	/** @type {Defaults<IconOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Creates an icon instance with the given options.
-	 * @param {IconOptions} options
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(options) {
 		super();
@@ -93,7 +127,7 @@ export class Icon extends Class {
 	/**
 	 * Called internally when the icon has to be shown, returns
 	 * a `<img>` HTML element styled according to the options.
-	 * @param {HTMLElement} [oldIcon]
+	 * @param {HTMLElement | null} [oldIcon]
 	 * @returns {HTMLElement}
 	 */
 	createIcon(oldIcon) {
@@ -102,13 +136,29 @@ export class Icon extends Class {
 
 	/**
 	 * As `createIcon`, but for the shadow beneath it.
-	 * @param {HTMLElement} [oldIcon]
-	 * @returns {HTMLElement}
+	 * @param {HTMLElement | null} [oldIcon]
+	 * @returns {HTMLImageElement | null}
 	 */
 	createShadow(oldIcon) {
 		return this._createIcon('shadow', oldIcon);
 	}
 
+	/**
+	 * @overload
+	 * @param {'icon'} name
+	 * @param {HTMLElement | null} [oldIcon]
+	 * @returns {HTMLImageElement}
+	 */
+	/**
+	 * @overload
+	 * @param {'icon' | 'shadow'} name
+	 * @param {HTMLElement | null} [oldIcon]
+	 * @returns {HTMLImageElement | null}
+	 */
+	/**
+	 * @param {'icon' | 'shadow'} name
+	 * @param {HTMLElement | null} [oldIcon]
+	 */
 	_createIcon(name, oldIcon) {
 		const src = this._getIconUrl(name);
 
@@ -123,12 +173,17 @@ export class Icon extends Class {
 		this._setIconStyles(img, name);
 
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
-			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
+			// the DOM types leave out '', which is how the attribute spells 'anonymous'
+			img.crossOrigin = /** @type {HTMLImageElement['crossOrigin']} */ (this.options.crossOrigin === true ? '' : this.options.crossOrigin);
 		}
 
 		return img;
 	}
 
+	/**
+	 * @param {HTMLElement} img
+	 * @param {'icon' | 'shadow'} name
+	 */
 	_setIconStyles(img, name) {
 		const options = this.options;
 		let sizeOption = options[`${name}Size`];
@@ -139,7 +194,7 @@ export class Icon extends Class {
 
 		const size = Point.validate(sizeOption) && new Point(sizeOption);
 
-		const anchorPosition = name === 'shadow' && options.shadowAnchor || options.iconAnchor || size && size.divideBy(2, true);
+		const anchorPosition = name === 'shadow' && options.shadowAnchor || options.iconAnchor || size && size.divideBy(2);
 		const anchor = Point.validate(anchorPosition) && new Point(anchorPosition);
 
 		img.className = `leaflet-marker-${name} ${options.className || ''}`;
@@ -156,12 +211,20 @@ export class Icon extends Class {
 		}
 	}
 
+	/**
+	 * @param {string} src
+	 * @param {HTMLImageElement | null} el
+	 */
 	_createImg(src, el) {
 		el ??= document.createElement('img');
 		el.src = src;
 		return el;
 	}
 
+	/**
+	 * @param {'icon' | 'shadow'} name
+	 * @returns {string | undefined}
+	 */
 	_getIconUrl(name) {
 		return window.devicePixelRatio > 1 && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}

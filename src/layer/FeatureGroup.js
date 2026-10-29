@@ -1,5 +1,10 @@
+// @ts-check
 import {LayerGroup} from './LayerGroup.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
+
+/** @import {FeatureGroupEventMap, InteractiveLayerOptions, LayerEvent} from '../types.js' */
+/** @import {Layer} from './Layer.js' */
+/** @import {MemberLayer} from './LayerGroup.js' */
 
 /**
  * @typedef {Object} FeatureGroupEvents
@@ -7,11 +12,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * @property {LayerEvent} layerremove Fired when a layer is removed from this `FeatureGroup`
  */
 
-/**
- * Create a feature group, optionally given an initial set of layers and an `options` object.
- * @param {Layer[]} [layers]
- * @param {object} [options]
- */
 /**
  * Extended `LayerGroup` that makes it easier to do the same thing to all its member layers:
  *  * [`bindPopup`](#layer-bindpopup) binds a popup to all of the layers at once (likewise with [`bindTooltip`](#layer-bindtooltip))
@@ -25,9 +25,13 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * 	.on('click', function() { alert('Clicked on a member of the group!'); })
  * 	.addTo(map);
  * ```
+ * @template {InteractiveLayerOptions} [O=InteractiveLayerOptions]
+ * @template {FeatureGroupEventMap} [E=FeatureGroupEventMap]
+ * @extends {LayerGroup<O, E>}
  */
 export class FeatureGroup extends LayerGroup {
 
+	/** @param {Layer} layer */
 	addLayer(layer) {
 		if (this.hasLayer(layer)) {
 			return this;
@@ -40,11 +44,12 @@ export class FeatureGroup extends LayerGroup {
 		return this.fire('layeradd', {layer});
 	}
 
+	/** @param {Layer | number} layer */
 	removeLayer(layer) {
 		if (!this.hasLayer(layer)) {
 			return this;
 		}
-		if (layer in this._layers) {
+		if (typeof layer === 'number') {
 			layer = this._layers[layer];
 		}
 
@@ -57,11 +62,11 @@ export class FeatureGroup extends LayerGroup {
 
 	/**
 	 * Sets the given path options to each layer of the group that has a `setStyle` method.
-	 * @param {PathOptions} style
+	 * @param {object} style
 	 * @returns {this}
 	 */
 	setStyle(style) {
-		return this.eachLayer(l => l.setStyle?.(style));
+		return this.eachLayer(l => /** @type {MemberLayer} */ (l).setStyle?.(style));
 	}
 
 	/**
@@ -69,7 +74,7 @@ export class FeatureGroup extends LayerGroup {
 	 * @returns {this}
 	 */
 	bringToFront() {
-		return this.eachLayer(l => l.bringToFront?.());
+		return this.eachLayer(l => /** @type {MemberLayer} */ (l).bringToFront?.());
 	}
 
 	/**
@@ -77,7 +82,7 @@ export class FeatureGroup extends LayerGroup {
 	 * @returns {this}
 	 */
 	bringToBack() {
-		return this.eachLayer(l => l.bringToBack?.());
+		return this.eachLayer(l => /** @type {MemberLayer} */ (l).bringToBack?.());
 	}
 
 	/**
@@ -88,7 +93,7 @@ export class FeatureGroup extends LayerGroup {
 	getBounds() {
 		const bounds = new LatLngBounds();
 
-		for (const layer of Object.values(this._layers)) {
+		for (const layer of /** @type {MemberLayer[]} */ (Object.values(this._layers))) {
 			if (layer.getBounds) {
 				bounds.extend(layer.getBounds());
 			} else if (layer.getLatLng) {
@@ -101,6 +106,7 @@ export class FeatureGroup extends LayerGroup {
 	}
 
 	// bound popups and tooltips open on the first of the group's layers that is on the map
+	/** @returns {Layer | undefined} */
 	_getOverlaySource() {
 		return Object.values(this._layers).find(layer => layer._map);
 	}

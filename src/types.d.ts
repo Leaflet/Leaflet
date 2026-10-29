@@ -1,6 +1,7 @@
 // Public types that JSDoc can't express. Options and event maps are interfaces rather than JSDoc typedefs (type
 // aliases), since only interfaces merge with a plugin's `declare module 'leaflet'` augmentation.
 
+import type {Feature} from 'geojson';
 import type {Evented} from './core/Events.js';
 import type {DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
@@ -9,6 +10,11 @@ import type {Bounds} from './geometry/Bounds.js';
 import type {Point} from './geometry/Point.js';
 import type {DivOverlayDefaults, DivOverlayEvents} from './layer/DivOverlay.js';
 import type {Layer} from './layer/Layer.js';
+import type {FeatureGroupEvents} from './layer/FeatureGroup.js';
+import type {DefaultIconDefaults} from './layer/marker/DefaultIcon.js';
+import type {DivIconDefaults} from './layer/marker/DivIcon.js';
+import type {IconDefaults} from './layer/marker/Icon.js';
+import type {MarkerDefaults, MarkerDragEvents, MarkerEvents} from './layer/marker/Marker.js';
 import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} from './layer/LayerBase.js';
 import type {Popup, PopupDefaults} from './layer/Popup.js';
 import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
@@ -78,6 +84,17 @@ export interface PopupOptions extends DivOverlayOptions, PopupDefaults {
 }
 
 export interface TooltipOptions extends DivOverlayOptions, TooltipDefaults {}
+
+// Subclass defaults that override inherited options are checked with `@satisfies` and left out here, so that the
+// option keeps the parent's type rather than the narrower one of its default value.
+export interface IconOptions extends IconDefaults {}
+export interface DivIconOptions extends IconOptions, Omit<DivIconDefaults, keyof IconOptions> {}
+export interface DefaultIconOptions extends IconOptions, Omit<DefaultIconDefaults, keyof IconOptions> {}
+
+export interface MarkerOptions extends InteractiveLayerOptions, MarkerDefaults {}
+export interface MarkerEventMap extends InteractiveLayerEventMap, MarkerEvents, MarkerDragEvents {}
+
+export interface FeatureGroupEventMap extends InteractiveLayerEventMap, FeatureGroupEvents {}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
@@ -245,6 +262,13 @@ export interface DragEndEvent extends LeafletEvent {
 	distance: number;
 }
 
+export interface MarkerMoveEvent extends LeafletEvent {
+	/** The previous position of the marker. */
+	oldLatLng: LatLng;
+	/** The new position of the marker. */
+	latlng: LatLng;
+}
+
 export interface ZoomAnimEvent extends LeafletEvent {
 	/** The current center of the map. */
 	center: LatLng;
@@ -313,8 +337,9 @@ declare module './layer/Layer.js' {
 		_latlng?: LatLng;
 		_getPopupAnchor?(): PointExpression;
 		_getTooltipAnchor?(): PointExpression;
-		getElement?(): Element | undefined;
+		getElement?(): Element | null | undefined;
 		eachLayer?(fn: (layer: Layer) => void, context?: any): unknown;
+		feature?: Feature; // set by `GeoJSON` on the layers it creates
 	}
 }
 

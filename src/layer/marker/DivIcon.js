@@ -1,25 +1,29 @@
+// @ts-check
 import {Icon} from './Icon.js';
 import {Point} from '../../geometry/Point.js';
 
+/** @import {Defaults, DivIconOptions, IconOptions, PointExpression} from '../../types.js' */
+
+/** @satisfies {Defaults<IconOptions>} */
 const defaultOptions = {
 	iconSize: [12, 12], // also can be set through CSS
 
-	// iconAnchor: (Point),
-	// popupAnchor: (Point),
-
-	/** Custom HTML code to put inside the div element, empty by default. Alternatively, an instance of `HTMLElement`. */
+	/**
+	 * Custom HTML code to put inside the div element, empty by default. Alternatively, an instance of `HTMLElement`.
+	 * @type {string | HTMLElement | false}
+	 */
 	html: false,
 
-	/** Optional relative position of the background, in pixels */
+	/**
+	 * Optional relative position of the background, in pixels.
+	 * @type {PointExpression | null}
+	 */
 	bgPos: null,
 
 	className: 'leaflet-div-icon'
 };
 
-/**
- * Creates a `DivIcon` instance with the given options.
- * @param {DivIconOptions} options
- */
+/** @typedef {typeof defaultOptions} DivIconDefaults */
 
 /**
  * Represents a lightweight icon for markers that uses a simple `<div>` element instead
@@ -33,11 +37,15 @@ const defaultOptions = {
  * ```
  *
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
+ * @template {DivIconOptions} [O=DivIconOptions]
+ * @extends {Icon<O>}
  */
 export class DivIcon extends Icon {
 
+	/** @type {Defaults<DivIconOptions>} */
 	static defaultOptions = defaultOptions;
 
+	/** @param {HTMLElement | null} [oldIcon] */
 	createIcon(oldIcon) {
 		const div = oldIcon instanceof HTMLDivElement ? oldIcon : document.createElement('div'),
 		options = this.options;
@@ -58,6 +66,7 @@ export class DivIcon extends Icon {
 		return div;
 	}
 
+	/** @returns {null} */
 	createShadow() {
 		return null;
 	}

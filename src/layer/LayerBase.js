@@ -63,7 +63,8 @@ export class LayerBase extends Evented {
 	 * @returns {this}
 	 */
 	addTo(map) {
-		map.addLayer(this);
+		// groups type their members as Layer, which a DivOverlay isn't
+		map.addLayer(/** @type {any} */ (this));
 		return this;
 	}
 
@@ -89,7 +90,7 @@ export class LayerBase extends Evented {
 	 */
 	/** @param {LeafletMap | LayerGroup} [obj] */
 	removeFrom(obj) {
-		obj?.removeLayer(this);
+		obj?.removeLayer(/** @type {any} */ (this));
 		return this;
 	}
 

@@ -1,7 +1,27 @@
-
+// @ts-check
 import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
 import {getFeature, asFeature} from './GeoJSONUtil.js';
+
+/** @import {Feature, FeatureCollection, MultiPoint, Position} from 'geojson' */
+/** @import {InteractiveLayerEventMap, InteractiveLayerOptions} from '../types.js' */
+/** @import {LatLng} from '../geo/LatLng.js' */
+/** @import {LatLngBounds} from '../geo/LatLngBounds.js' */
+/** @import {LeafletMap} from '../map/Map.js' */
+/** @import {Marker} from './marker/Marker.js' */
+
+// a layer with the methods that only some layers have, which groups call when present
+/**
+ * @typedef {Layer & {
+ *   setZIndex?(zIndex: number): unknown,
+ *   setStyle?(style: object): unknown,
+ *   bringToFront?(): unknown,
+ *   bringToBack?(): unknown,
+ *   getBounds?(): LatLngBounds,
+ *   getLatLng?(): LatLng,
+ *   toGeoJSON?(precision?: number | false): Feature | FeatureCollection
+ * }} MemberLayer
+ */
 
 /**
  * Used to group several layers and handle them as one. If you add it to the map, any layers added
@@ -12,7 +32,9 @@ import {getFeature, asFeature} from './GeoJSONUtil.js';
  * 	.addLayer(polyline)
  * 	.addTo(map);
  * ```
- * @todo inherits Interactive layer
+ * @template {InteractiveLayerOptions} [O=InteractiveLayerOptions]
+ * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
+ * @extends {Layer<O, E>}
  */
 export class LayerGroup extends Layer {
 
@@ -21,13 +43,14 @@ export class LayerGroup extends Layer {
 	/**
 	 * Create a layer group, optionally given an initial set of layers and an `options` object.
 	 * @param {Layer[]} [layers]
-	 * @param {object} [options]
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(layers, options) {
 		super();
 
 		Util.setOptions(this, options);
 
+		/** @type {{[id: number]: Layer}} */
 		this._layers = {};
 
 		for (const layer of layers ?? []) {
@@ -53,19 +76,12 @@ export class LayerGroup extends Layer {
 	}
 
 	/**
-	 * Removes the given layer from the group.
-	 * @overload
-	 * @param {Layer} layer
-	 * @returns {this}
-	 */
-	/**
-	 * Removes the layer with the given internal ID from the group.
-	 * @overload
-	 * @param {number} id
+	 * Removes the given layer, or the layer with the given internal ID, from the group.
+	 * @param {Layer | number} layer
 	 * @returns {this}
 	 */
 	removeLayer(layer) {
-		const id = layer in this._layers ? layer : this.getLayerId(layer);
+		const id = typeof layer === 'number' ? layer : this.getLayerId(layer);
 
 		if (this._map && this._layers[id]) {
 			this._map.removeLayer(this._layers[id]);
@@ -77,15 +93,8 @@ export class LayerGroup extends Layer {
 	}
 
 	/**
-	 * Returns `true` if the given layer is currently added to the group.
-	 * @overload
-	 * @param {Layer} layer
-	 * @returns {boolean}
-	 */
-	/**
-	 * Returns `true` if the given internal ID is currently added to the group.
-	 * @overload
-	 * @param {number} id
+	 * Returns `true` if the given layer, or the layer with the given internal ID, is currently added to the group.
+	 * @param {Layer | number} layer
 	 * @returns {boolean}
 	 */
 	hasLayer(layer) {
@@ -101,10 +110,12 @@ export class LayerGroup extends Layer {
 		return this.eachLayer(this.removeLayer, this);
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
 		this.eachLayer(map.addLayer, map);
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		this.eachLayer(map.removeLayer, map);
 	}
@@ -114,8 +125,8 @@ export class LayerGroup extends Layer {
 	 * ```js
 	 * group.eachLayer(layer => layer.bindPopup('Hello'));
 	 * ```
-	 * @param {Function} fn
-	 * @param {object} [context]
+	 * @param {(layer: Layer) => void} method
+	 * @param {any} [context]
 	 * @returns {this}
 	 */
 	eachLayer(method, context) {
@@ -128,7 +139,7 @@ export class LayerGroup extends Layer {
 	/**
 	 * Returns the layer with the given internal ID.
 	 * @param {number} id
-	 * @returns {Layer}
+	 * @returns {Layer | undefined}
 	 */
 	getLayer(id) {
 		return this._layers[id];
@@ -139,6 +150,7 @@ export class LayerGroup extends Layer {
 	 * @returns {Layer[]}
 	 */
 	getLayers() {
+		/** @type {Layer[]} */
 		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
@@ -150,7 +162,7 @@ export class LayerGroup extends Layer {
 	 * @returns {this}
 	 */
 	setZIndex(zIndex) {
-		return this.eachLayer(l => l.setZIndex?.(zIndex));
+		return this.eachLayer(l => /** @type {MemberLayer} */ (l).setZIndex?.(zIndex));
 	}
 
 	/**
@@ -162,11 +174,16 @@ export class LayerGroup extends Layer {
 		return Util.stamp(layer);
 	}
 
+	/**
+	 * @param {number | false} [precision]
+	 * @returns {Feature<MultiPoint>}
+	 */
 	toMultiPoint(precision) {
+		/** @type {Position[]} */
 		const coords = [];
 
 		this.eachLayer((layer) => {
-			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
+			coords.push(/** @type {Marker} */ (layer).toGeoJSON(precision).geometry.coordinates);
 		});
 
 		return getFeature(this, {
@@ -180,7 +197,7 @@ export class LayerGroup extends Layer {
 	 * Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group
 	 * (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	 * @param {number | false} [precision]
-	 * @returns {object}
+	 * @returns {Feature | FeatureCollection}
 	 */
 	toGeoJSON(precision) {
 
@@ -191,13 +208,14 @@ export class LayerGroup extends Layer {
 		}
 
 		const isGeometryCollection = type === 'GeometryCollection',
+		/** @type {any[]} */
 		jsons = [];
 
-		this.eachLayer((layer) => {
+		this.eachLayer((/** @type {MemberLayer} */ layer) => {
 			if (layer.toGeoJSON) {
 				const json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {
-					jsons.push(json.geometry);
+					jsons.push(/** @type {Feature} */ (json).geometry);
 				} else {
 					const feature = asFeature(json);
 					// Squash nested feature collections

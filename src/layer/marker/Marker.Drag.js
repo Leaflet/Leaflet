@@ -1,24 +1,18 @@
+// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
-/*
- * Handler.MarkerDrag is used internally by Marker to make the markers draggable.
- */
+/** @import {DragEndEvent, LeafletEvent, MarkerMoveEvent} from '../../types.js' */
+/** @import {Marker} from './Marker.js' */
 
-
-/**
- * Marker dragging handler. Only valid when the marker is on the map
- * (Otherwise set [`marker.options.draggable`](#marker-draggable)).
- * @category Interaction handlers
- * @type {Handler}
- */
-
+// Used internally by Marker to make the markers draggable.
 export class MarkerDrag extends Handler {
 	static initHooks = true;
 
+	/** @param {Marker} marker */
 	constructor(marker) {
 		super(marker._map);
 		this._marker = marker;
@@ -26,9 +20,10 @@ export class MarkerDrag extends Handler {
 	}
 
 	addHooks() {
-		const icon = this._marker._icon;
+		const icon = /** @type {HTMLElement} */ (this._marker._icon);
 
 		if (!this._draggable) {
+			/** @type {Draggable} */
 			this._draggable = new Draggable(icon);
 		}
 
@@ -57,12 +52,14 @@ export class MarkerDrag extends Handler {
 		return this._draggable?._moved;
 	}
 
+	/** @param {LeafletEvent & Partial<MarkerMoveEvent>} e */
 	_adjustPan(e) {
 		const marker = this._marker,
 		map = marker._map,
 		speed = this._marker.options.autoPanSpeed,
 		padding = this._marker.options.autoPanPadding,
-		iconPos = DomUtil.getPosition(marker._icon),
+		icon = /** @type {HTMLElement} */ (marker._icon),
+		iconPos = DomUtil.getPosition(icon),
 		bounds = map.getPixelBounds(),
 		origin = map.getPixelOrigin();
 
@@ -86,9 +83,10 @@ export class MarkerDrag extends Handler {
 			this._draggable._newPos._add(movement);
 			this._draggable._startPos._add(movement);
 
-			DomUtil.setPosition(marker._icon, this._draggable._newPos);
+			DomUtil.setPosition(icon, this._draggable._newPos);
 			this._onDrag(e);
 
+			/** @type {number} */
 			this._panRequest = requestAnimationFrame(this._adjustPan.bind(this, e));
 		}
 	}
@@ -104,6 +102,7 @@ export class MarkerDrag extends Handler {
 			.fire('dragstart');
 	}
 
+	/** @param {LeafletEvent} e */
 	_onPreDrag(e) {
 		if (this._marker.options.autoPan) {
 			cancelAnimationFrame(this._panRequest);
@@ -111,9 +110,10 @@ export class MarkerDrag extends Handler {
 		}
 	}
 
+	/** @param {LeafletEvent & Partial<MarkerMoveEvent>} e */
 	_onDrag(e) {
 		const marker = this._marker,
-		iconPos = DomUtil.getPosition(marker._icon),
+		iconPos = DomUtil.getPosition(/** @type {HTMLElement} */ (marker._icon)),
 		latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// Draggable only moved the icon and dropped its rotation
@@ -128,6 +128,7 @@ export class MarkerDrag extends Handler {
 			.fire('drag', e);
 	}
 
+	/** @param {DragEndEvent} e */
 	_onDragEnd(e) {
 		cancelAnimationFrame(this._panRequest);
 

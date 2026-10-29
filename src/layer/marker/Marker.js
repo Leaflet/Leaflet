@@ -1,3 +1,4 @@
+// @ts-check
 import {Layer} from '../Layer.js';
 import {DefaultIcon} from './DefaultIcon.js';
 import * as Util from '../../core/Util.js';
@@ -7,6 +8,12 @@ import * as DomUtil from '../../dom/DomUtil.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
+
+/** @import {Feature, Point as GeoJSONPoint} from 'geojson' */
+/** @import {Defaults, DragEndEvent, LatLngExpression, LeafletEvent, MarkerEventMap, MarkerMoveEvent, MarkerOptions,
+ *    PointExpression, ZoomAnimEvent} from '../../types.js' */
+/** @import {LeafletMap} from '../../map/Map.js' */
+/** @import {Icon} from './Icon.js' */
 
 const defaultOptions = {
 	/**
@@ -47,7 +54,7 @@ const defaultOptions = {
 	/**
 	 * Rotation of the marker icon in degrees, clockwise, around the icon anchor. A rotated marker, even at 0°, has
 	 * no shadow, since the shadow of an upright pin looks wrong under a tilted one. `null` means no rotation.
-	 * @type {number}
+	 * @type {number | null}
 	 */
 	rotation: null,
 
@@ -90,6 +97,7 @@ const defaultOptions = {
 	/**
 	 * Distance (in pixels to the left/right and to the top/bottom) of the map edge to start panning the map.
 	 * @category Draggable marker options
+	 * @type {PointExpression}
 	 */
 	autoPanPadding: [50, 50],
 
@@ -100,17 +108,20 @@ const defaultOptions = {
 	autoPanSpeed: 10
 };
 
+/** @typedef {typeof defaultOptions} MarkerDefaults */
+
 /**
  * @typedef {Object} MarkerEvents
- * @property {LeafletEvent} move Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+ * @property {MarkerMoveEvent} move Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by
+ *   [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
  */
 
 /**
- * Dragging events
- * @typedef {Object} MarkerDraggingEvents
+ * @category Dragging events
+ * @typedef {Object} MarkerDragEvents
  * @property {LeafletEvent} dragstart Fired when the user starts dragging the marker.
  * @property {LeafletEvent} movestart Fired when the marker starts moving (because of dragging).
- * @property {LeafletEvent} drag Fired repeatedly while the user drags the marker.
+ * @property {MarkerMoveEvent} drag Fired repeatedly while the user drags the marker.
  * @property {DragEndEvent} dragend Fired when the user stops dragging the marker.
  * @property {LeafletEvent} moveend Fired when the marker stops moving (because of dragging).
  */
@@ -121,21 +132,31 @@ const defaultOptions = {
  * ```js
  * new Marker([50.5, 30.5]).addTo(map);
  * ```
- * @todo inherits Interactive layer
  * @categoryDescription Methods
  * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup
  * methods](#Popup) like bindPopup() you can also use the following methods:
+ * @categoryDescription Interaction handlers
+ * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in
+ * runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
+ *
+ * ```js
+ * marker.dragging.disable();
+ * ```
+ * @template {MarkerOptions} [O=MarkerOptions]
+ * @template {MarkerEventMap} [E=MarkerEventMap]
+ * @extends {Layer<O, E>}
  */
 export class Marker extends Layer {
 
 	static initHooks = true;
 
+	/** @type {Defaults<MarkerOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
 	 * Instantiates a Marker object given a geographical point and optionally an options object.
-	 * @param {LatLng} latlng
-	 * @param {MarkerOptions} [options]
+	 * @param {LatLngExpression} latlng
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(latlng, options) {
 		super();
@@ -146,8 +167,9 @@ export class Marker extends Layer {
 		this.callInitHooks();
 	}
 
+	/** @param {LeafletMap} map */
 	onAdd(map) {
-		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
+		this._zoomAnimated = this._zoomAnimated && /** @type {any} */ (map.options).markerZoomAnimation;
 
 		if (this._zoomAnimated) {
 			map.on('zoomanim', this._animateZoom, this);
@@ -157,6 +179,7 @@ export class Marker extends Layer {
 		this.update();
 	}
 
+	/** @param {LeafletMap} map */
 	onRemove(map) {
 		if (this.dragging) {
 			// remember whether dragging is on or off (`dragging.disable()`) for when the marker is added again
@@ -173,6 +196,7 @@ export class Marker extends Layer {
 		this._removeShadow();
 	}
 
+	/** @returns {{[type: string]: (e: any) => void}} */
 	getEvents() {
 		return {
 			zoom: this.update,
@@ -190,7 +214,7 @@ export class Marker extends Layer {
 
 	/**
 	 * Changes the marker position to the given point.
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {this}
 	 */
 	setLatLng(latlng) {
@@ -239,12 +263,16 @@ export class Marker extends Layer {
 	/**
 	 * Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
 	 * used by Marker layer.
-	 * @returns {HTMLElement}
+	 * @returns {HTMLElement | null | undefined}
 	 */
 	getElement() {
 		return this._icon;
 	}
 
+	/**
+	 * Updates the marker position on the map, e.g. after changing its `zIndexOffset` option directly.
+	 * @returns {this}
+	 */
 	update() {
 
 		if (this._icon && this._map) {
@@ -288,6 +316,7 @@ export class Marker extends Layer {
 			}
 		}
 
+		/** @type {HTMLElement | null | undefined} */
 		this._icon = icon;
 
 		if (options.riseOnHover) {
@@ -313,6 +342,7 @@ export class Marker extends Layer {
 			newShadow.classList.add(classToAdd);
 			newShadow.alt = '';
 		}
+		/** @type {HTMLImageElement | null | undefined} */
 		this._shadow = newShadow;
 
 
@@ -322,11 +352,11 @@ export class Marker extends Layer {
 
 
 		if (addIcon) {
-			this.getPane().appendChild(this._icon);
+			this.getPane().appendChild(icon);
 		}
 		this._initInteraction();
 		if (newShadow && addShadow) {
-			this.getPane(options.shadowPane).appendChild(this._shadow);
+			this.getPane(options.shadowPane).appendChild(newShadow);
 		}
 	}
 
@@ -338,13 +368,14 @@ export class Marker extends Layer {
 			});
 		}
 
+		const icon = /** @type {HTMLElement} */ (this._icon);
 		if (this.options.autoPanOnFocus) {
-			DomEvent.off(this._icon, 'focus', this._panOnFocus, this);
+			DomEvent.off(icon, 'focus', this._panOnFocus, this);
 		}
-		DomEvent.off(this._icon, 'keydown', this._onKeyDown, this);
+		DomEvent.off(icon, 'keydown', this._onKeyDown, this);
 
-		this._icon.remove();
-		this.removeInteractiveTarget(this._icon);
+		icon.remove();
+		this.removeInteractiveTarget(icon);
 
 		this._icon = null;
 	}
@@ -354,14 +385,17 @@ export class Marker extends Layer {
 		this._shadow = null;
 	}
 
+	/** @param {Point} pos */
 	_setPos(pos) {
 		this._positionElements(pos);
 
+		/** @type {number} */
 		this._zIndex = pos.y + this.options.zIndexOffset;
 
 		this._resetZIndex();
 	}
 
+	/** @param {Point} pos */
 	_positionElements(pos) {
 		const rotation = this.options.rotation;
 
@@ -378,12 +412,14 @@ export class Marker extends Layer {
 		}
 	}
 
+	/** @param {number} offset */
 	_updateZIndex(offset) {
 		if (this._icon) {
 			this._icon.style.zIndex = `${this._zIndex + offset}`;
 		}
 	}
 
+	/** @param {ZoomAnimEvent} opt */
 	_animateZoom(opt) {
 		const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
@@ -394,16 +430,17 @@ export class Marker extends Layer {
 
 		if (!this.options.interactive) { return; }
 
-		this._icon.classList.add('leaflet-interactive');
+		const icon = /** @type {HTMLElement} */ (this._icon);
+		icon.classList.add('leaflet-interactive');
 
-		this.addInteractiveTarget(this._icon);
+		this.addInteractiveTarget(icon);
 
 		if (MarkerDrag) {
 			// When the icon element is reused, the drag handler still refers to it. Keep that handler, because
 			// replacing it ends a drag in progress and forgets that the marker has just been dragged.
-			if (this.dragging?._draggable?._element === this._icon) {
+			if (this.dragging?._draggable?._element === icon) {
 				// the icon has reset the class names of the element
-				this._icon.classList.toggle('leaflet-marker-draggable', this.dragging.enabled());
+				icon.classList.toggle('leaflet-marker-draggable', this.dragging.enabled());
 				return;
 			}
 
@@ -413,6 +450,12 @@ export class Marker extends Layer {
 				this.dragging.disable();
 			}
 
+			/**
+			 * Marker dragging handler. Only valid when the marker is on the map (Otherwise set
+			 * [`marker.options.draggable`](#marker-draggable)).
+			 * @category Interaction handlers
+			 * @type {MarkerDrag | undefined}
+			 */
 			this.dragging = new MarkerDrag(this);
 
 			if (draggable) {
@@ -423,7 +466,7 @@ export class Marker extends Layer {
 
 	/**
 	 * Returns the current [rotation](#marker-rotation) of the marker in degrees.
-	 * @returns {number}
+	 * @returns {number | null}
 	 */
 	getRotation() {
 		return this.options.rotation;
@@ -465,7 +508,7 @@ export class Marker extends Layer {
 	 * representation of the marker (as a GeoJSON `Point` Feature).
 	 * @category Other methods
 	 * @param {number | false} [precision]
-	 * @returns {object}
+	 * @returns {Feature<GeoJSONPoint>}
 	 */
 	toGeoJSON(precision) {
 		return pointToGeoJSON(this, precision);
@@ -491,11 +534,12 @@ export class Marker extends Layer {
 		this._updateZIndex(0);
 	}
 
+	/** @param {KeyboardEvent} e */
 	_onKeyDown(e) {
 		// a key pressed on a focusable element inside a DivIcon (e.g. a <button>) already clicks it natively
 		if (e.target === this._icon && !e.repeat && (e.key === 'Enter' || e.key === ' ')) {
 			e.preventDefault(); // stop Space from scrolling the page
-			this._icon.click();
+			this._icon?.click();
 		}
 	}
 
@@ -503,7 +547,7 @@ export class Marker extends Layer {
 		const map = this._map;
 		if (!map) { return; }
 
-		const icon = this._icon,
+		const icon = /** @type {HTMLElement} */ (this._icon),
 		style = getComputedStyle(icon),
 		anchor = new Point(-parseFloat(style.marginLeft) || 0, -parseFloat(style.marginTop) || 0),
 		size = new Point(icon.offsetWidth, icon.offsetHeight);
@@ -522,9 +566,13 @@ export class Marker extends Layer {
 		return this._rotateAnchor(this.options.icon.options.tooltipAnchor);
 	}
 
-	// anchors are offsets from the icon anchor, which is also the rotation origin
+	/**
+	 * Anchors are offsets from the icon anchor, which is also the rotation origin.
+	 * @param {PointExpression} anchor
+	 * @returns {PointExpression}
+	 */
 	_rotateAnchor(anchor) {
-		const angle = this.options.rotation * Math.PI / 180;
+		const angle = (this.options.rotation ?? 0) * Math.PI / 180;
 		if (!angle || !anchor) { return anchor; }
 
 		const {x, y} = new Point(anchor),
