@@ -70,9 +70,9 @@ Let's create a map of the center of London with pretty OpenStreetMap tiles. From
 
 By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.
 
-Note that the `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
+Note that the `setView` call also returns the map object — most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next, we'll add a tile layer to add to our map, in this case it's a OpenStreetMap tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. OpenStreetMap tiles are fine for programming your Leaflet map, but read the [Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/) of OpenStreetMap if you're going to use the tiles in production.
+Next, we'll add a tile layer to add to our map, in this case it's an OpenStreetMap tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#tilelayer-url-template) for the tile images, the attribution text, and the maximum zoom level of the layer. OpenStreetMap tiles are fine for programming your Leaflet map, but read the [Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/) of OpenStreetMap if you're going to use the tiles in production.
 
 ```javascript
 new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -110,7 +110,7 @@ const circle = new Circle([51.508, -0.11], {
 }).addTo(map);
 ```
 
-Adding a polygon is as easy:
+Adding a polygon is just as easy:
 
 ```javascript
 const polygon = new Polygon([
@@ -150,7 +150,7 @@ Here we use `openOn` instead of `addTo` because it handles automatic closing of 
 
 ### Dealing with events
 
-Every time something happens in Leaflet, e.g. user clicks on a marker or map zoom changes, the corresponding object sends an event which you can subscribe to with a function. It allows you to react to user interaction:
+Every time something happens in Leaflet, e.g. a user clicks on a marker or map zoom changes, the corresponding object sends an event which you can subscribe to with a function. It allows you to react to user interaction:
 
 ```javascript
 function onMapClick(e) {
@@ -160,7 +160,7 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 ```
 
-Each object has its own set of events --- see [documentation](/reference.html) for details. The first argument of the listener function is an event object --- it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has `latlng` property which is a location at which the click occurred.
+Each object has its own set of events — see [documentation](/reference.html) for details. The first argument of the listener function is an event object — it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has the `latlng` property which is a location at which the click occurred.
 
 Let's improve our example by using a popup instead of an alert:
 
