@@ -1,12 +1,9 @@
 import {Point} from './Point.js';
 
-/*
- * @class Bounds
- *
+
+/**
  * Represents a rectangular area in pixel coordinates.
- *
  * @example
- *
  * ```js
  * const p1 = new Point(10, 10),
  * p2 = new Point(40, 60),
@@ -23,14 +20,18 @@ import {Point} from './Point.js';
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
-
-
-// @constructor Bounds(corner1: Point, corner2: Point)
-// Creates a Bounds object from two corners coordinate pairs.
-// @alternative
-// @constructor Bounds(points: Point[])
-// Creates a Bounds object from the given array of points.
 export class Bounds {
+	/**
+	 * Creates a Bounds object from two corners coordinate pairs.
+	 * @overload
+	 * @param {Point} corner1
+	 * @param {Point} corner2
+	 */
+	/**
+	 * Creates a Bounds object from the given array of points.
+	 * @overload
+	 * @param {Point[]} points
+	 */
 	constructor(a, b) {
 		if (!a) { return; }
 
@@ -46,12 +47,18 @@ export class Bounds {
 		}
 	}
 
-	// @method extend(point: Point): this
-	// Extends the bounds to contain the given point.
-
-	// @alternative
-	// @method extend(otherBounds: Bounds): this
-	// Extend the bounds to contain the given bounds
+	/**
+	 * Extends the bounds to contain the given point.
+	 * @overload
+	 * @param {Point} point
+	 * @returns {this}
+	 */
+	/**
+	 * Extend the bounds to contain the given bounds
+	 * @overload
+	 * @param {Bounds} otherBounds
+	 * @returns {this}
+	 */
 	extend(obj) {
 		let min2, max2;
 		if (!obj) { return this; }
@@ -63,10 +70,14 @@ export class Bounds {
 			if (!min2) { return this; }
 		}
 
-		// @property min: Point
-		// The top left corner of the rectangle.
-		// @property max: Point
-		// The bottom right corner of the rectangle.
+		/**
+		 * The top left corner of the rectangle.
+		 * @type {Point}
+		 */
+		/**
+		 * The bottom right corner of the rectangle.
+		 * @type {Point}
+		 */
 		if (!this.min) {
 			this.min = min2.clone();
 			this.max = max2.clone();
@@ -79,49 +90,69 @@ export class Bounds {
 		return this;
 	}
 
-	// @method getCenter(round?: Boolean): Point
-	// Returns the center point of the bounds.
+	/**
+	 * Returns the center point of the bounds.
+	 * @param {boolean} [round]
+	 * @returns {Point}
+	 */
 	getCenter(round) {
 		return new Point(
 			(this.min.x + this.max.x) / 2,
 			(this.min.y + this.max.y) / 2, round);
 	}
 
-	// @method getBottomLeft(): Point
-	// Returns the bottom-left point of the bounds.
+	/**
+	 * Returns the bottom-left point of the bounds.
+	 * @returns {Point}
+	 */
 	getBottomLeft() {
 		return new Point(this.min.x, this.max.y);
 	}
 
-	// @method getTopRight(): Point
-	// Returns the top-right point of the bounds.
+	/**
+	 * Returns the top-right point of the bounds.
+	 * @returns {Point}
+	 */
 	getTopRight() { // -> Point
 		return new Point(this.max.x, this.min.y);
 	}
 
-	// @method getTopLeft(): Point
-	// Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
+	/**
+	 * Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
+	 * @returns {Point}
+	 */
 	getTopLeft() {
 		return this.min; // left, top
 	}
 
-	// @method getBottomRight(): Point
-	// Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
+	/**
+	 * Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
+	 * @returns {Point}
+	 */
 	getBottomRight() {
 		return this.max; // right, bottom
 	}
 
-	// @method getSize(): Point
-	// Returns the size of the given bounds
+	/**
+	 * Returns the size of the given bounds
+	 * @returns {Point}
+	 */
 	getSize() {
 		return this.max.subtract(this.min);
 	}
 
-	// @method contains(otherBounds: Bounds): Boolean
-	// Returns `true` if the rectangle contains the given one.
-	// @alternative
-	// @method contains(point: Point): Boolean
-	// Returns `true` if the rectangle contains the given point.
+	/**
+	 * Returns `true` if the rectangle contains the given one.
+	 * @overload
+	 * @param {Bounds} otherBounds
+	 * @returns {boolean}
+	 */
+	/**
+	 * Returns `true` if the rectangle contains the given point.
+	 * @overload
+	 * @param {Point} point
+	 * @returns {boolean}
+	 */
 	contains(obj) {
 		let min, max;
 
@@ -144,9 +175,12 @@ export class Bounds {
 		       (max.y <= this.max.y);
 	}
 
-	// @method intersects(otherBounds: Bounds): Boolean
-	// Returns `true` if the rectangle intersects the given bounds. Two bounds
-	// intersect if they have at least one point in common.
+	/**
+	 * Returns `true` if the rectangle intersects the given bounds. Two
+	 * bounds intersect if they have at least one point in common.
+	 * @param {Bounds} otherBounds
+	 * @returns {boolean}
+	 */
 	intersects(bounds) { // (Bounds) -> Boolean
 		bounds = new Bounds(bounds);
 
@@ -160,9 +194,12 @@ export class Bounds {
 		return xIntersects && yIntersects;
 	}
 
-	// @method overlaps(otherBounds: Bounds): Boolean
-	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
-	// overlap if their intersection is an area.
+	/**
+	 * Returns `true` if the rectangle overlaps the given bounds.
+	 * Two bounds overlap if their intersection is an area.
+	 * @param {Bounds} otherBounds
+	 * @returns {boolean}
+	 */
 	overlaps(bounds) { // (Bounds) -> Boolean
 		bounds = new Bounds(bounds);
 
@@ -176,17 +213,21 @@ export class Bounds {
 		return xOverlaps && yOverlaps;
 	}
 
-	// @method isValid(): Boolean
-	// Returns `true` if the bounds are properly initialized.
+	/**
+	 * Returns `true` if the bounds are properly initialized.
+	 * @returns {boolean}
+	 */
 	isValid() {
 		return !!(this.min && this.max);
 	}
 
 
-	// @method pad(bufferRatio: Number): Bounds
-	// Returns bounds created by extending or retracting the current bounds by a given ratio in each direction.
-	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
-	// Negative values will retract the bounds.
+	/**
+	 * Returns bounds created by extending or retracting the current bounds by a given ratio in each direction. For
+	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values will retract the bounds.
+	 * @param {number} bufferRatio
+	 * @returns {Bounds}
+	 */
 	pad(bufferRatio) {
 		const min = this.min,
 		max = this.max,
@@ -200,8 +241,11 @@ export class Bounds {
 	}
 
 
-	// @method equals(otherBounds: Bounds): Boolean
-	// Returns `true` if the rectangle is equivalent to the given bounds.
+	/**
+	 * Returns `true` if the rectangle is equivalent to the given bounds.
+	 * @param {Bounds} otherBounds
+	 * @returns {boolean}
+	 */
 	equals(bounds) {
 		if (!bounds) { return false; }
 

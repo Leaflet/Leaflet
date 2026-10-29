@@ -11,14 +11,18 @@ import {LatLng} from '../geo/LatLng.js';
 // Simplify polyline with vertex reduction and Douglas-Peucker simplification.
 // Improves rendering performance dramatically by lessening the number of points to draw.
 
-// @function simplify(points: Point[], tolerance: Number): Point[]
-// Dramatically reduces the number of points in a polyline while retaining
-// its shape and returns a new array of simplified points, using the
-// [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm).
-// Used for a huge performance boost when processing/displaying Leaflet polylines for
-// each zoom level and also reducing visual noise. tolerance affects the amount of
-// simplification (lesser value means higher quality but slower and with more points).
-// Also released as a separated micro-library [Simplify.js](https://mourner.github.io/simplify-js/).
+/**
+ * Dramatically reduces the number of points in a polyline while retaining its shape and returns a new
+ * array of simplified points, using the [Ramer-Douglas-Peucker
+ * algorithm](https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm). Used for a huge performance
+ * boost when processing/displaying Leaflet polylines for each zoom level and also reducing visual noise.
+ * tolerance affects the amount of simplification (lesser value means higher quality but slower and with
+ * more points). Also released as a separated micro-library
+ * [Simplify.js](https://mourner.github.io/simplify-js/).
+ * @param {Point[]} points
+ * @param {number} tolerance
+ * @returns {Point[]}
+ */
 export function simplify(points, tolerance) {
 	if (!tolerance || !points.length) {
 		return points.slice();
@@ -35,14 +39,24 @@ export function simplify(points, tolerance) {
 	return points;
 }
 
-// @function pointToSegmentDistance(p: Point, p1: Point, p2: Point): Number
-// Returns the distance between point `p` and segment `p1` to `p2`.
+/**
+ * Returns the distance between point `p` and segment `p1` to `p2`.
+ * @param {Point} p
+ * @param {Point} p1
+ * @param {Point} p2
+ * @returns {number}
+ */
 export function pointToSegmentDistance(p, p1, p2) {
 	return Math.sqrt(_sqClosestPointOnSegment(p, p1, p2, true));
 }
 
-// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
-// Returns the closest point from a point `p` on a segment `p1` to `p2`.
+/**
+ * Returns the closest point from a point `p` on a segment `p1` to `p2`.
+ * @param {Point} p
+ * @param {Point} p1
+ * @param {Point} p2
+ * @returns {number}
+ */
 export function closestPointOnSegment(p, p1, p2) {
 	return _sqClosestPointOnSegment(p, p1, p2);
 }
@@ -109,11 +123,18 @@ function _reducePoints(points, sqTolerance) {
 
 let _lastCode;
 
-// @function clipSegment(a: Point, b: Point, bounds: Bounds, useLastCode?: Boolean, round?: Boolean): Point[]|Boolean
-// Clips the segment a to b by rectangular bounds with the
-// [Cohen-Sutherland algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)
-// (modifying the segment points directly!). Used by Leaflet to only show polyline
-// points that are on the screen or near, increasing performance.
+/**
+ * Clips the segment a to b by rectangular bounds with the [Cohen-Sutherland
+ * algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm) (modifying the segment
+ * points directly!). Used by Leaflet to only show polyline points that are on the screen or near, increasing
+ * performance.
+ * @param {Point} a
+ * @param {Point} b
+ * @param {Bounds} bounds
+ * @param {boolean} [useLastCode]
+ * @param {boolean} [round]
+ * @returns {Point[] | boolean}
+ */
 export function clipSegment(a, b, bounds, useLastCode, round) {
 	const a0 = a, b0 = b;
 	let codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
@@ -236,14 +257,21 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 }
 
 
-// @function isFlat(latlngs: LatLng[]): Boolean
-// Returns true if `latlngs` is a flat array, false is nested.
+/**
+ * Returns true if `latlngs` is a flat array, false is nested.
+ * @param {LatLng[]} latlngs
+ * @returns {boolean}
+ */
 export function isFlat(latlngs) {
 	return !Array.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }
 
-/* @function polylineCenter(latlngs: LatLng[], crs: CRS): LatLng
- * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polyline.
+/**
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid))
+ * of the passed LatLngs (first ring) from a polyline.
+ * @param {LatLng[]} latlngs
+ * @param {CRS} crs
+ * @returns {LatLng}
  */
 export function polylineCenter(latlngs, crs) {
 	const points = _projectRing(latlngs, crs),

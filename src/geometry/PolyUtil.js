@@ -6,11 +6,15 @@ import {Point} from './Point.js';
  * Various utility functions for polygon geometries.
  */
 
-/* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
- * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
- * Used by Leaflet to only show polygon points that are on the screen or near, increasing
- * performance. Note that polygon points needs different algorithm for clipping
- * than polyline, so there's a separate method for it.
+/**
+ * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgman
+ * algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)). Used by Leaflet to only
+ * show polygon points that are on the screen or near, increasing performance. Note that polygon points needs
+ * different algorithm for clipping than polyline, so there's a separate method for it.
+ * @param {Point[]} points
+ * @param {Bounds} bounds
+ * @param {boolean} [round]
+ * @returns {Point[]}
  */
 export function clipPolygon(points, bounds, round) {
 	let clippedPoints,
@@ -55,8 +59,12 @@ export function clipPolygon(points, bounds, round) {
 	return points;
 }
 
-/* @function polygonCenter(latlngs: LatLng[], crs: CRS): LatLng
- * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the passed LatLngs (first ring) from a polygon.
+/**
+ * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid))
+ * of the passed LatLngs (first ring) from a polygon.
+ * @param {LatLng[]} latlngs
+ * @param {CRS} crs
+ * @returns {LatLng}
  */
 export function polygonCenter(latlngs, crs) {
 	// points relative to the first one, to avoid floating point errors on tiny polygons with large projected coordinates
@@ -83,8 +91,10 @@ export function polygonCenter(latlngs, crs) {
 	return crs.unproject(area === 0 ? origin : new Point(x / (3 * area), y / (3 * area))._add(origin));
 }
 
-/* @function centroid(latlngs: LatLng[]): LatLng
+/**
  * Returns the 'center of mass' of the passed LatLngs.
+ * @param {LatLng[]} latlngs
+ * @returns {LatLng}
  */
 export function centroid(coords) {
 	let latSum = 0;
