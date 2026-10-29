@@ -4,12 +4,17 @@
  * Various utility functions, used by Leaflet internally.
  */
 
-// @property lastId: Number
-// Last unique ID used by [`stamp()`](#util-stamp)
+/**
+ * Last unique ID used by [`stamp()`](#util-stamp)
+ * @type {number}
+ */
 export let lastId = 0;
 
-// @function stamp(obj: Object): Number
-// Returns the unique ID of an object, assigning it one if it doesn't have it.
+/**
+ * Returns the unique ID of an object, assigning it one if it doesn't have it.
+ * @param {object} obj
+ * @returns {number}
+ */
 export function stamp(obj) {
 	if (!('_leaflet_id' in obj)) {
 		obj['_leaflet_id'] = ++lastId;
@@ -17,12 +22,16 @@ export function stamp(obj) {
 	return obj._leaflet_id;
 }
 
-// @function throttle(fn: Function, time: Number, context: Object): Function
-// Returns a function which executes function `fn` with the given scope `context`
-// (so that the `this` keyword refers to `context` inside `fn`'s code). The function
-// `fn` will be called no more than one time per given amount of `time`. The arguments
-// received by the bound function will be any arguments passed when binding the
-// function, followed by any arguments passed when invoking the bound function.
+/**
+ * Returns a function which executes function `fn` with the given scope `context` (so that the `this` keyword
+ * refers to `context` inside `fn`'s code). The function `fn` will be called no more than one time per given
+ * amount of `time`. The arguments received by the bound function will be any arguments passed when binding
+ * the function, followed by any arguments passed when invoking the bound function.
+ * @param {Function} fn
+ * @param {number} time
+ * @param {object} context
+ * @returns {Function}
+ */
 export function throttle(fn, time, context) {
 	let lock, queuedArgs;
 
@@ -51,10 +60,14 @@ export function throttle(fn, time, context) {
 	return wrapperFn;
 }
 
-// @function wrapNum(num: Number, range: Number[], includeMax?: Boolean): Number
-// Returns the number `num` modulo `range` in such a way so it lies within
-// `range[0]` and `range[1]`. The returned value will always be smaller than
-// `range[1]` unless `includeMax` is set to `true`.
+/**
+ * Returns the number `num` modulo `range` in such a way so it lies within `range[0]` and `range[1]`.
+ * The returned value will always be smaller than `range[1]` unless `includeMax` is set to `true`.
+ * @param {number} num
+ * @param {number[]} range
+ * @param {boolean} [includeMax]
+ * @returns {number}
+ */
 export function wrapNum(x, range, includeMax) {
 	const max = range[1],
 	min = range[0],
@@ -62,14 +75,19 @@ export function wrapNum(x, range, includeMax) {
 	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 }
 
-// @function falseFn(): Function
-// Returns a function which always returns `false`.
+/**
+ * Returns a function which always returns `false`.
+ * @returns {Function}
+ */
 export function falseFn() { return false; }
 
-// @function formatNum(num: Number, precision?: Number|false): Number
-// Returns the number `num` rounded with specified `precision`.
-// The default `precision` value is 6 decimal places.
-// `false` can be passed to skip any processing (can be useful to avoid round-off errors).
+/**
+ * Returns the number `num` rounded with specified `precision`. The default `precision` value is 6 decimal
+ * places. `false` can be passed to skip any processing (can be useful to avoid round-off errors).
+ * @param {number} num
+ * @param {number | false} [precision]
+ * @returns {number}
+ */
 export function formatNum(num, precision) {
 	if (precision === false) { return num; }
 	const pow = 10 ** (precision === undefined ? 6 : precision);
@@ -78,14 +96,22 @@ export function formatNum(num, precision) {
 
 const WHITESPACE_RE = /\s+/;
 
-// @function splitWords(str: String): String[]
-// Trims and splits the string on whitespace and returns the array of parts.
+/**
+ * Trims and splits the string on whitespace and returns the array of parts.
+ * @param {string} str
+ * @returns {string[]}
+ */
 export function splitWords(str) {
 	return str.trim().split(WHITESPACE_RE);
 }
 
-// @function setOptions(obj: Object, options: Object): Object
-// Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`.
+/**
+ * Merges the given properties to the `options` of the `obj` object,
+ * returning the resulting options. See `Class options`.
+ * @param {object} obj
+ * @param {object} options
+ * @returns {object}
+ */
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
 		const defaults = getDefaultOptions(obj.constructor) ?? obj.options;
@@ -118,11 +144,14 @@ function getDefaultOptions(cls) {
 
 const templateRe = /\{ *([\w_ -]+) *\}/g;
 
-// @function template(str: String, data: Object): String
-// Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
-// and a data object like `{a: 'foo', b: 'bar'}`, returns evaluated string
-// `('Hello foo, bar')`. You can also specify functions instead of strings for
-// data values — they will be evaluated passing `data` as an argument.
+/**
+ * Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'` and a data object
+ * like `{a: 'foo', b: 'bar'}`, returns evaluated string `('Hello foo, bar')`. You can also specify functions
+ * instead of strings for data values — they will be evaluated passing `data` as an argument.
+ * @param {string} str
+ * @param {object} data
+ * @returns {string}
+ */
 export function template(str, data) {
 	return str.replace(templateRe, (str, key) => {
 		let value = data[key];

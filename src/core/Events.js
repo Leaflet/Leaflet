@@ -3,14 +3,11 @@ import * as Util from './Util.js';
 
 const warnedEvents = new Set();
 
-/*
- * @class Evented
- * @inherits Class
- *
- * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire `'click'` event).
- *
+/**
+ * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally,
+ * events allow you to execute some function when something happens with an object (e.g.
+ * the user clicks on the map, causing the map to fire `'click'` event).
  * @example
- *
  * ```js
  * map.on('click', function(e) {
  * 	alert(e.latlng);
@@ -26,14 +23,22 @@ const warnedEvents = new Set();
  * map.off('click', onClick);
  * ```
  */
-
 export class Evented extends Class {
-	/* @method on(type: String, fn: Function, context?: Object): this
-	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
-	 *
-	 * @alternative
-	 * @method on(eventMap: Object): this
+	/**
+	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally
+	 * specify the context of the listener (object the this keyword will point to). You can
+	 * also pass several space-separated types (e.g. `'click dblclick'`).
+	 * @overload
+	 * @param {string} type
+	 * @param {Function} fn
+	 * @param {object} [context]
+	 * @returns {this}
+	 */
+	/**
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
+	 * @overload
+	 * @param {object} eventMap
+	 * @returns {this}
 	 */
 	on(types, fn, context) {
 
@@ -55,16 +60,26 @@ export class Evented extends Class {
 		return this;
 	}
 
-	/* @method off(type: String, fn?: Function, context?: Object): this
-	 * Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to `on`, you must pass the same context to `off` in order to remove the listener.
-	 *
-	 * @alternative
-	 * @method off(eventMap: Object): this
+	/**
+	 * Removes a previously added listener function. If no function is specified, it will remove all
+	 * the listeners of that particular event from the object. Note that if you passed a custom context
+	 * to `on`, you must pass the same context to `off` in order to remove the listener.
+	 * @overload
+	 * @param {string} type
+	 * @param {Function} [fn]
+	 * @param {object} [context]
+	 * @returns {this}
+	 */
+	/**
 	 * Removes a set of type/listener pairs.
-	 *
-	 * @alternative
-	 * @method off(): this
+	 * @overload
+	 * @param {object} eventMap
+	 * @returns {this}
+	 */
+	/**
 	 * Removes all listeners to all events on the object. This includes implicitly attached events.
+	 * @overload
+	 * @returns {this}
 	 */
 	off(types, fn, context) {
 
@@ -176,10 +191,14 @@ export class Evented extends Class {
 		}
 	}
 
-	// @method fire(type: String, data?: Object, propagate?: Boolean): this
-	// Fires an event of the specified type. You can optionally provide a data
-	// object — the first argument of the listener function will contain its
-	// properties. The event can optionally be propagated to event parents.
+	/**
+	 * Fires an event of the specified type. You can optionally provide a data object — the first argument of the
+	 * listener function will contain its properties. The event can optionally be propagated to event parents.
+	 * @param {string} type
+	 * @param {object} [data]
+	 * @param {boolean} [propagate]
+	 * @returns {this}
+	 */
 	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
@@ -215,10 +234,22 @@ export class Evented extends Class {
 		return this;
 	}
 
-	// @method listens(type: String, propagate?: Boolean): Boolean
-	// @method listens(type: String, fn: Function, context?: Object, propagate?: Boolean): Boolean
-	// Returns `true` if a particular event type has any listeners attached to it.
-	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
+	/**
+	 * @overload
+	 * @param {string} type
+	 * @param {boolean} [propagate]
+	 * @returns {boolean}
+	 */
+	/**
+	 * Returns `true` if a particular event type has any listeners attached to it. The verification can
+	 * optionally be propagated, it will return `true` if parents have the listener attached to it.
+	 * @overload
+	 * @param {string} type
+	 * @param {Function} fn
+	 * @param {object} [context]
+	 * @param {boolean} [propagate]
+	 * @returns {boolean}
+	 */
 	listens(type, fn, context, propagate) {
 		if (typeof type !== 'string') {
 			console.warn('"string" type argument expected');
@@ -270,8 +301,11 @@ export class Evented extends Class {
 
 	}
 
-	// @method once(…): this
-	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
+	/**
+	 * Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
+	 * @param {...any} args
+	 * @returns {this}
+	 */
 	once(types, fn, context) {
 
 		// types can be a map of types/handlers
@@ -292,16 +326,22 @@ export class Evented extends Class {
 		return this;
 	}
 
-	// @method addEventParent(obj: Evented): this
-	// Adds an event parent - an `Evented` that will receive propagated events
+	/**
+	 * Adds an event parent - an `Evented` that will receive propagated events
+	 * @param {Evented} obj
+	 * @returns {this}
+	 */
 	addEventParent(obj) {
 		this._eventParents ??= {};
 		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
 	}
 
-	// @method removeEventParent(obj: Evented): this
-	// Removes an event parent, so it will stop receiving propagated events
+	/**
+	 * Removes an event parent, so it will stop receiving propagated events
+	 * @param {Evented} obj
+	 * @returns {this}
+	 */
 	removeEventParent(obj) {
 		if (this._eventParents) {
 			delete this._eventParents[Util.stamp(obj)];

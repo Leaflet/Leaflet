@@ -1,10 +1,5 @@
 import * as Util from './Util.js';
 
-// @class Class
-
-// @section
-// @uninheritable
-
 let hooksVersion = 0;
 const ownHooks = new WeakMap(); // class -> hooks added to that class directly
 const hookPlans = new WeakMap(); // class -> {version, runners, hooks} for its whole chain
@@ -25,13 +20,20 @@ function getHookPlan(cls) {
 }
 
 export class Class {
-	// @property initHooks: Boolean
-	// Marks a class whose constructor ends with `this.callInitHooks()`. Set it as `static initHooks = true` on
-	// a plugin class whose own [constructor hooks](#class-constructor-hooks) need its constructor to run first.
+	/**
+	 * Marks a class whose constructor ends with `this.callInitHooks()`. Set it as `static initHooks = true` on a
+	 * plugin class whose own [constructor hooks](#class-constructor-hooks) need its constructor to run first.
+	 * @type {boolean}
+	 * @uninheritable
+	 */
 	static initHooks = true;
 
-	// @function include(properties: Object): this
-	// [Includes a mixin](#class-includes) into the current class.
+	/**
+	 * [Includes a mixin](#class-includes) into the current class.
+	 * @param {object} properties
+	 * @returns {this}
+	 * @uninheritable
+	 */
 	static include(props) {
 		for (let obj = props; obj && obj !== Object.prototype; obj = Object.getPrototypeOf(obj)) {
 			for (const k of Object.getOwnPropertyNames(obj)) {
@@ -46,8 +48,12 @@ export class Class {
 		return this;
 	}
 
-	// @function mergeOptions(options: Object): this
-	// [Merges `options`](#class-options) into the `defaultOptions` of the class.
+	/**
+	 * [Merges `options`](#class-options) into the `defaultOptions` of the class.
+	 * @param {object} options
+	 * @returns {this}
+	 * @uninheritable
+	 */
 	static mergeOptions(options) {
 		if (!Object.hasOwn(this, 'defaultOptions')) {
 			this.defaultOptions = Object.create(this.defaultOptions ?? Object.prototype);
@@ -56,14 +62,22 @@ export class Class {
 		return this;
 	}
 
-	// @function setDefaultOptions(options: Object): this
-	// Deprecated alias of `mergeOptions`, kept for code written for 2.0.0-alpha.1.
+	/**
+	 * Deprecated alias of `mergeOptions`, kept for code written for 2.0.0-alpha.1.
+	 * @param {object} options
+	 * @returns {this}
+	 * @uninheritable
+	 */
 	static setDefaultOptions(options) {
 		return this.mergeOptions(options);
 	}
 
-	// @function addInitHook(fn: Function): this
-	// Adds a [constructor hook](#class-constructor-hooks) to the class.
+	/**
+	 * Adds a [constructor hook](#class-constructor-hooks) to the class.
+	 * @param {Function} fn
+	 * @returns {this}
+	 * @uninheritable
+	 */
 	static addInitHook(fn, ...args) { // (Function) || (String, args...)
 		const hook = typeof fn === 'function' ? fn : function () {
 			this[fn](...args);
@@ -88,9 +102,11 @@ export class Class {
 		this.callInitHooks();
 	}
 
-	// @method callInitHooks()
-	// Called at the end of the constructor of every class with `static initHooks = true`. The last of these
-	// calls, from the deepest such class, runs all hooks of the chain once, so they see a fully built instance.
+	/**
+	 * Called at the end of the constructor of every class with `static initHooks = true`. The last of these calls,
+	 * from the deepest such class, runs all hooks of the chain once, so they see a fully built instance.
+	 * @uninheritable
+	 */
 	callInitHooks() {
 		if (--this._initHooksLeft === 0) {
 			for (const hook of getHookPlan(this.constructor).hooks) {
