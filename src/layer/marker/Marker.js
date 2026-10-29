@@ -416,9 +416,12 @@ export class Marker extends Layer {
 	// Changes the [rotation](#marker-rotation) of the marker; `null` removes it.
 	setRotation(rotation) {
 		this.options.rotation = rotation;
-		this.update();
-		this._popup?._updatePosition();
-		this._tooltip?._updatePosition();
+		// mid-zoom, the icon is transitioning to a position that update() can't compute yet; the zoom end applies it
+		if (this._icon && !this._map._animatingZoom) {
+			this._positionElements(DomUtil.getPosition(this._icon));
+			this._popup?._updatePosition();
+			this._tooltip?._updatePosition();
+		}
 		return this;
 	}
 
