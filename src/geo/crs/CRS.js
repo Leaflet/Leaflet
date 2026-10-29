@@ -1,29 +1,37 @@
-
+// @ts-check
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLng} from '../LatLng.js';
 import {LatLngBounds} from '../LatLngBounds.js';
 import * as Util from '../../core/Util.js';
 
-/*
- * @namespace CRS
- * @crs CRS.Base
- * Object that defines coordinate reference systems for projecting
- * geographical points into pixel (screen) coordinates and back (and to
- * coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services). See
- * [spatial reference system](https://en.wikipedia.org/wiki/Spatial_reference_system).
- *
- * Leaflet defines the most usual CRSs by default. If you want to use a
- * CRS not defined by default, take a look at the
- * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
- *
- * Note that the CRS instances do not inherit from Leaflet's `Class` object,
- * and can't be instantiated. Also, new classes can't inherit from them,
- * and methods can't be added to them with the `include` function.
+/**
+ * @import {Point} from '../../geometry/Point.js'
+ * @import {Transformation} from '../../geometry/Transformation.js'
+ * @import {LatLngBoundsExpression, LatLngExpression, Projection} from '../../types.js'
  */
 
+/**
+ * Object that defines coordinate reference systems for projecting geographical points into pixel (screen)
+ * coordinates and back (and to coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service)
+ * services). See [spatial reference system](https://en.wikipedia.org/wiki/Spatial_reference_system).
+ *
+ * Leaflet defines the most usual CRSs by default. If you want to use a CRS not defined by default, take a look at
+ * the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
+ *
+ * Note that the CRS instances do not inherit from Leaflet's `Class` object, and can't be instantiated. Also, new
+ * classes can't inherit from them, and methods can't be added to them with the `include` function.
+ */
 export class CRS {
-	static projection = undefined;
-	static transformation = undefined;
+	/**
+	 * The projection the CRS uses to turn geographical coordinates into projected ones.
+	 * @type {Projection}
+	 */
+	static projection = /** @type {any} */ (undefined);
+	/**
+	 * The transformation the CRS uses to turn projected coordinates into pixels at zoom 0.
+	 * @type {Transformation}
+	 */
+	static transformation = /** @type {any} */ (undefined);
 
 	/**
 	 * Projects geographical coordinates into pixel coordinates for a given zoom.
@@ -92,7 +100,7 @@ export class CRS {
 	/**
 	 * Returns the projection's bounds scaled and transformed for the provided `zoom`.
 	 * @param {number} zoom
-	 * @returns {Bounds}
+	 * @returns {Bounds | null}
 	 */
 	static getProjectedBounds(zoom) {
 		if (this.infinite) { return null; }
@@ -106,31 +114,6 @@ export class CRS {
 	}
 
 	/**
-	 * Returns the distance between two geographical coordinates.
-	 * @param {LatLng} latlng1
-	 * @param {LatLng} latlng2
-	 * @returns {number}
-	 */
-
-	/**
-	 * Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
-	 * @type {string}
-	 */
-	/**
-	 * An array of two numbers defining whether the longitude (horizontal) coordinate
-	 * axis wraps around a given range and how. Defaults to `[-180, 180]` in most geographical
-	 * CRSs. If `undefined`, the longitude axis does not wrap around.
-	 * @type {number[]}
-	 */
-	/**
-	 * Like `wrapLng`, but for the latitude (vertical) axis.
-	 * @type {number[]}
-	 */
-
-	// wrapLng: [min, max],
-	// wrapLat: [min, max],
-
-	/**
 	 * If true, the coordinate space will be unbounded (infinite in both axes)
 	 * @type {boolean}
 	 */
@@ -139,7 +122,7 @@ export class CRS {
 	/**
 	 * Returns a `LatLng` where lat and lng has been wrapped according to the CRS's
 	 * `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @returns {LatLng}
 	 */
 	static wrapLatLng(latlng) {
@@ -154,7 +137,7 @@ export class CRS {
 	/**
 	 * Returns a `LatLngBounds` with the same size as the given one,
 	 * ensuring that its center is within the CRS's bounds.
-	 * @param {LatLngBounds} bounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @returns {LatLngBounds}
 	 */
 	static wrapLatLngBounds(bounds) {

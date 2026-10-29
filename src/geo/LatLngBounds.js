@@ -1,9 +1,13 @@
+// @ts-check
 import {LatLng} from './LatLng.js';
+
+/** @import {LatLngBoundsExpression, LatLngExpression} from '../types.js' */
 
 // TODO International date line?
 
 /**
  * Represents a rectangular geographical area on a map.
+ *
  * @example
  * ```js
  * const corner1 = new LatLng(40.712, -74.227),
@@ -11,7 +15,8 @@ import {LatLng} from './LatLng.js';
  * bounds = new LatLngBounds(corner1, corner2);
  * ```
  *
- * All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:
+ * All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted
+ * otherwise), so the bounds example above can be passed like this:
  *
  * ```js
  * map.fitBounds([
@@ -20,26 +25,34 @@ import {LatLng} from './LatLng.js';
  * ]);
  * ```
  *
- * Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners _outside_ the [-180, 180] degrees longitude range.
+ * Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify
+ * corners _outside_ the [-180, 180] degrees longitude range.
  *
- * Note that `LatLngBounds` does not inherit from Leaflet's `Class` object,
- * which means new classes can't inherit from it, and new methods
- * can't be added to it with the `include` function.
+ * Note that `LatLngBounds` does not inherit from Leaflet's `Class` object, which means new classes can't inherit
+ * from it, and new methods can't be added to it with the `include` function.
  */
 export class LatLngBounds {
 	/**
 	 * Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
 	 * @overload
-	 * @param {LatLng} corner1
-	 * @param {LatLng} corner2
+	 * @param {LatLngExpression} corner1
+	 * @param {LatLngExpression} corner2
 	 */
 	/**
 	 * Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for
 	 * zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
 	 * @overload
-	 * @param {LatLng[]} latlngs
+	 * @param {LatLngBoundsExpression} latlngs
 	 */
-	constructor(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
+	/**
+	 * Creates an empty `LatLngBounds` object, to be filled with [`extend`](#latlngbounds-extend).
+	 * @overload
+	 */
+	/**
+	 * @param {any} [corner1]
+	 * @param {LatLngExpression} [corner2]
+	 */
+	constructor(corner1, corner2) {
 		if (!corner1) { return; }
 
 		if (corner1 instanceof LatLngBounds) {
@@ -56,15 +69,13 @@ export class LatLngBounds {
 	}
 
 	/**
-	 * Extend the bounds to contain the given point
+	 * Extend the bounds to contain the given point or bounds.
 	 * @overload
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression | LatLngBoundsExpression} obj
 	 * @returns {this}
 	 */
 	/**
-	 * Extend the bounds to contain the given bounds
-	 * @overload
-	 * @param {LatLngBounds} otherBounds
+	 * @param {any} obj
 	 * @returns {this}
 	 */
 	extend(obj) {
@@ -84,7 +95,9 @@ export class LatLngBounds {
 		}
 
 		if (!sw) {
+			/** @type {LatLng} */
 			this._southWest = new LatLng(sw2.lat, sw2.lng);
+			/** @type {LatLng} */
 			this._northEast = new LatLng(ne2.lat, ne2.lng);
 		} else {
 			sw.lat = Math.min(sw2.lat, sw.lat);
@@ -188,18 +201,16 @@ export class LatLngBounds {
 	}
 
 	/**
-	 * Returns `true` if the rectangle contains the given one.
+	 * Returns `true` if the rectangle contains the given point or bounds.
 	 * @overload
-	 * @param {LatLngBounds} otherBounds
+	 * @param {LatLngExpression | LatLngBoundsExpression} obj
 	 * @returns {boolean}
 	 */
 	/**
-	 * Returns `true` if the rectangle contains the given point.
-	 * @overload
-	 * @param {LatLng} latlng
+	 * @param {any} obj
 	 * @returns {boolean}
 	 */
-	contains(obj) { // (LatLngBounds) or (LatLng) -> Boolean
+	contains(obj) {
 		if (LatLng.validate(obj)) {
 			obj = new LatLng(obj);
 		} else {
@@ -224,7 +235,7 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle intersects the given bounds. Two
 	 * bounds intersect if they have at least one point in common.
-	 * @param {LatLngBounds} otherBounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @returns {boolean}
 	 */
 	intersects(bounds) {
@@ -244,7 +255,7 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle overlaps the given bounds.
 	 * Two bounds overlap if their intersection is an area.
-	 * @param {LatLngBounds} otherBounds
+	 * @param {LatLngBoundsExpression} bounds
 	 * @returns {boolean}
 	 */
 	overlaps(bounds) {
@@ -273,7 +284,7 @@ export class LatLngBounds {
 	/**
 	 * Returns `true` if the rectangle is equivalent (within a small margin of error) to the given
 	 * bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
-	 * @param {LatLngBounds} otherBounds
+	 * @param {LatLngBoundsExpression} [bounds]
 	 * @param {number} [maxMargin]
 	 * @returns {boolean}
 	 */

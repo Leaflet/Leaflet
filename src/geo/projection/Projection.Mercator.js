@@ -1,22 +1,23 @@
+// @ts-check
 import {LatLng} from '../LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
-/*
- * @namespace Projection
- * @projection Projection.Mercator
- *
- * Elliptical Mercator projection — more complex than Spherical Mercator. Assumes that Earth is an ellipsoid. Used by the EPSG:3395 CRS.
- */
+/** @import {LatLngExpression, PointExpression} from '../../types.js' */
 
 const earthRadius = 6378137;
 
+/**
+ * Elliptical Mercator projection — more complex than Spherical Mercator. Assumes that Earth is an ellipsoid. Used by
+ * the EPSG:3395 CRS.
+ */
 export const Mercator = {
 	R: earthRadius,
 	R_MINOR: 6356752.314245179,
 
 	bounds: /* @__PURE__ */ new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
+	/** @param {LatLngExpression} latlng */
 	project(latlng) {
 		latlng = new LatLng(latlng);
 		const d = Math.PI / 180,
@@ -32,6 +33,7 @@ export const Mercator = {
 		return new Point(latlng.lng * d * r, y);
 	},
 
+	/** @param {PointExpression} point */
 	unproject(point) {
 		point = new Point(point);
 		const d = 180 / Math.PI,

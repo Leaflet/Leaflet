@@ -378,5 +378,5 @@ export function _projectRing(latlngs, crs) {
 		latlngs = /** @type {LatLngExpression[]} */ (latlngs[0]);
 	}
 
-	return latlngs.map(latlng => crs.project(new LatLng(latlng)));
+	return /** @type {LatLngExpression[]} */ (latlngs).map(latlng => crs.project(new LatLng(latlng)));
 }

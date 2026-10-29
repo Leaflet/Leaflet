@@ -110,8 +110,8 @@ export function centroid(coords) {
 	let len = 0;
 	for (const coord of coords) {
 		const latlng = new LatLng(coord);
-		latSum += /** @type {number} */ (latlng.lat);
-		lngSum += /** @type {number} */ (latlng.lng);
+		latSum += latlng.lat;
+		lngSum += latlng.lng;
 		len++;
 	}
 	return new LatLng([latSum / len, lngSum / len]);

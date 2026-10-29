@@ -1,20 +1,7 @@
 /**
- * An object with methods for projecting geographical coordinates of the world onto a flat surface
- * (and back). See [Map projection](https://en.wikipedia.org/wiki/Map_projection).
- * @todo property bounds: Bounds
- * The bounds (specified in CRS units) where the projection is valid
- *
- * @todo method project(latlng: LatLng): Point
- * Projects geographical coordinates into a 2D point.
- * Only accepts actual `LatLng` instances, not arrays.
- *
- * @todo method unproject(point: Point): LatLng
- * The inverse of `project`. Projects a 2D point into a geographical location.
- * Only accepts actual `Point` instances, not arrays.
- *
- * Note that the projection instances do not inherit from Leaflet's `Class` object,
- * and can't be instantiated. Also, new classes can't inherit from them,
- * and methods can't be added to them with the `include` function.
+ * Projections turn geographical coordinates into points on a flat surface and back; see the `Projection` interface.
+ * Leaflet comes with a set of already defined projections out of the box.
+ * @module Projection
  */
 
 export {LonLat} from './Projection.LonLat.js';

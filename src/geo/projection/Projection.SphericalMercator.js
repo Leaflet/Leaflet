@@ -1,23 +1,22 @@
+// @ts-check
 import {LatLng} from '../LatLng.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 
-/*
- * @namespace Projection
- * @projection Projection.SphericalMercator
- *
- * Spherical Mercator projection — the most common projection for online maps,
- * used by almost all free and commercial tile providers. Assumes that Earth is
- * a sphere. Used by the `EPSG:3857` CRS.
- */
+/** @import {LatLngExpression, PointExpression} from '../../types.js' */
 
 const earthRadius = 6378137;
 
+/**
+ * Spherical Mercator projection — the most common projection for online maps, used by almost all free and commercial
+ * tile providers. Assumes that Earth is a sphere. Used by the `EPSG:3857` CRS.
+ */
 export const SphericalMercator = {
 
 	R: earthRadius,
 	MAX_LATITUDE: 85.0511287798,
 
+	/** @param {LatLngExpression} latlng */
 	project(latlng) {
 		latlng = new LatLng(latlng);
 		const d = Math.PI / 180,
@@ -30,6 +29,7 @@ export const SphericalMercator = {
 			this.R * Math.log((1 + sin) / (1 - sin)) / 2);
 	},
 
+	/** @param {PointExpression} point */
 	unproject(point) {
 		point = new Point(point);
 		const d = 180 / Math.PI;

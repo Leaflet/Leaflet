@@ -1,47 +1,53 @@
+// @ts-check
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from './LatLngBounds.js';
 
+/** @import {LatLngExpression} from '../types.js' */
+
 /**
  * Represents a geographical point with a certain latitude and longitude.
+ *
  * @example
- * ```
+ * ```js
  * const latlng = new LatLng(50.5, 30.5);
  * ```
  *
- * All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form (unless noted otherwise), so these lines are equivalent:
+ * All Leaflet methods that accept LatLng objects also accept them in a simple Array form and simple object form
+ * (unless noted otherwise), so these lines are equivalent:
  *
- * ```
+ * ```js
  * map.panTo([50, 30]);
  * map.panTo({lat: 50, lng: 30});
  * map.panTo({lat: 50, lon: 30});
  * map.panTo(new LatLng(50, 30));
  * ```
  *
- * Note that `LatLng` does not inherit from Leaflet's `Class` object,
- * which means new classes can't inherit from it, and new methods
- * can't be added to it with the `include` function.
- * @categoryDescription Methods
+ * Note that `LatLng` does not inherit from Leaflet's `Class` object, which means new classes can't inherit from it,
+ * and new methods can't be added to it with the `include` function.
+ *
+ * @categoryDescription Functions
  * There are several static functions which can be called without instantiating LatLng:
  */
 export class LatLng {
 	/**
-	 * Creates an object representing a geographical point with the
-	 * given latitude and longitude (and optionally altitude).
+	 * Creates an object representing a geographical point with the given latitude and longitude (and optionally
+	 * altitude).
 	 * @overload
-	 * @param {number} latitude
-	 * @param {number} longitude
-	 * @param {number} [altitude]
+	 * @param {number} lat
+	 * @param {number} lng
+	 * @param {number} [alt]
 	 */
 	/**
-	 * Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
+	 * Expects an array of the form `[Number, Number]` or `[Number, Number, Number]`, or a plain object of the form
+	 * `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead. You can also use `lon` in
+	 * place of `lng` in the object form.
 	 * @overload
-	 * @param {Array} coords
+	 * @param {LatLngExpression} coords
 	 */
 	/**
-	 * Expects a plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number,
-	 * alt: Number}` instead. You can also use `lon` in place of `lng` in the object form.
-	 * @overload
-	 * @param {object} coords
+	 * @param {any} lat
+	 * @param {number} [lng]
+	 * @param {number} [alt]
 	 */
 	constructor(lat, lng, alt) {
 		const valid = LatLng.validate(lat, lng, alt);
@@ -86,37 +92,37 @@ export class LatLng {
 		 */
 		this.lng = +_lng;
 
-		/**
-		 * Altitude in meters (optional)
-		 * @type {number}
-		 */
 		if (_alt !== undefined) {
+			/**
+			 * Altitude in meters (optional)
+			 * @type {number | undefined}
+			 */
 			this.alt = +_alt;
 		}
 	}
 
 	/**
 	 * Returns `true` if the LatLng object can be properly initialized.
+	 * @category Functions
 	 * @overload
-	 * @param {number} latitude
-	 * @param {number} longitude
-	 * @param {number} [altitude]
+	 * @param {number} lat
+	 * @param {number} [lng]
+	 * @param {number} [alt]
 	 * @returns {boolean}
 	 */
 	/**
-	 * Expects an array of the form `[Number, Number]` or `[Number, Number, Number]`.
-	 * Returns `true` if the LatLng object can be properly initialized.
+	 * Expects an array of the form `[Number, Number]` or `[Number, Number, Number]`, or a plain object of the form
+	 * `{lat: Number, lng: Number}`. Returns `true` if the LatLng object can be properly initialized.
 	 * @overload
-	 * @param {Array} coords
+	 * @param {LatLngExpression} coords
 	 * @returns {boolean}
 	 */
 	/**
-	 * Returns `true` if the LatLng object can be properly initialized.
-	 * @overload
-	 * @param {object} coords
+	 * @param {unknown} lat
+	 * @param {unknown} [lng]
+	 * @param {unknown} [alt]
 	 * @returns {boolean}
 	 */
-
 	// eslint-disable-next-line no-unused-vars
 	static validate(lat, lng, alt) {
 		if (lat instanceof LatLng || (typeof lat === 'object' && lat !== null && 'lat' in lat)) {
@@ -136,7 +142,7 @@ export class LatLng {
 	/**
 	 * Returns `true` if the given `LatLng` point is at the same position (within a small margin of
 	 * error). The margin of error can be overridden by setting `maxMargin` to a small number.
-	 * @param {LatLng} otherLatLng
+	 * @param {LatLngExpression} [obj]
 	 * @param {number} [maxMargin]
 	 * @returns {boolean}
 	 */
@@ -164,7 +170,7 @@ export class LatLng {
 	/**
 	 * Returns the distance (in meters) to the given `LatLng` calculated using the
 	 * [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula).
-	 * @param {LatLng} otherLatLng
+	 * @param {LatLngExpression} other
 	 * @returns {number}
 	 */
 	distanceTo(other) {
@@ -209,7 +215,12 @@ export class LatLng {
 	}
 };
 
-// great-circle distance on a sphere of radius R, shared with `EarthCRS.distance`
+/**
+ * Great-circle distance on a sphere of radius R, shared with `EarthCRS.distance`.
+ * @param {LatLng} latlng1
+ * @param {LatLng} latlng2
+ * @param {number} R
+ */
 export function haversineDistance(latlng1, latlng2, R) {
 	const rad = Math.PI / 180,
 	lat1 = latlng1.lat * rad,

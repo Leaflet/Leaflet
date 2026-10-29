@@ -25,6 +25,28 @@ export type BoundsExpression = Bounds | PointExpression[];
 export type LatLngExpression = LatLng | [number, number, number?] |
 	{lat: number, lng: number, alt?: number} | {lat: number, lon: number, alt?: number};
 
+/** A `LatLngBounds`, or an array of the points it should contain (usually two opposite corners). */
+export type LatLngBoundsExpression = LatLngBounds | LatLngExpression[];
+
+/**
+ * An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See
+ * [Map projection](https://en.wikipedia.org/wiki/Map_projection).
+ *
+ * Note that the projection instances do not inherit from Leaflet's `Class` object, and can't be instantiated. Also,
+ * new classes can't inherit from them, and methods can't be added to them with the `include` function.
+ */
+export interface Projection {
+	/** The bounds (specified in CRS units) where the projection is valid. */
+	bounds: Bounds;
+	/** Projects geographical coordinates into a 2D point. Only accepts actual `LatLng` instances, not arrays. */
+	project(latlng: LatLng): Point;
+	/**
+	 * The inverse of `project`. Projects a 2D point into a geographical location. Only accepts actual `Point`
+	 * instances, not arrays.
+	 */
+	unproject(point: Point): LatLng;
+}
+
 /** A listener for an event without a known event object type. */
 export type LeafletEventHandlerFn = (event: LeafletEvent & {[key: string]: any}) => void;
 
@@ -184,6 +206,23 @@ declare module './core/Events.js' {
 declare module './geometry/Point.js' {
 	interface Point {
 		_code: number; // clipping bit code, set by `PolyUtil.clipPolygon`
+	}
+}
+
+declare module './geo/crs/CRS.js' {
+	namespace CRS {
+		/** Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`). */
+		let code: string | undefined;
+		/**
+		 * An array of two numbers defining whether the longitude (horizontal) coordinate axis wraps around a given
+		 * range and how. Defaults to `[-180, 180]` in most geographical CRSs. If `undefined`, the longitude axis does
+		 * not wrap around.
+		 */
+		let wrapLng: [number, number] | undefined;
+		/** Like `wrapLng`, but for the latitude (vertical) axis. */
+		let wrapLat: [number, number] | undefined;
+		/** Returns the distance between two geographical coordinates. */
+		function distance(latlng1: LatLng, latlng2: LatLng): number;
 	}
 }
 
