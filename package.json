@@ -28,6 +28,7 @@
     "playwright": "^1.64.1",
     "rolldown": "^1.2.15",
     "sinon": "^22.1.0",
+    "typescript": "7.1.0-beta",
     "ui-event-simulator": "^2.0.0",
     "vitest": "^5.0.5"
   },
@@ -57,6 +58,7 @@
     "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/* CHANGELOG.md LICENSE README.md",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
+    "typecheck": "tsc",
     "site": "node build/site.js",
     "serve": "npm run site && http-server _site -c-1",
     "pin-release": "node build/pin-release.js",
