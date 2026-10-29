@@ -206,19 +206,15 @@ function removeOne(obj, type, fn, context, id) {
  * ```js
  * DomEvent.on(div, 'click', DomEvent.stopPropagation);
  * ```
- * @overload
+ * Given a Leaflet event, it stops the map from handling the original DOM event.
  * @param {Event | {originalEvent: Event}} e
- * @returns {void}
- */
-/**
- * @param {any} e
  */
 export function stopPropagation(e) {
 
-	if (e.stopPropagation) {
+	if ('stopPropagation' in e) {
 		e.stopPropagation();
 	} else if (e.originalEvent) {  // In case of Leaflet event.
-		e.originalEvent._stopped = true;
+		/** @type {Event & {_stopped?: boolean}} */ (e.originalEvent)._stopped = true;
 	}
 }
 
@@ -252,16 +248,12 @@ export function preventDefault(e) {
 }
 
 /**
- * Does `stopPropagation` and `preventDefault` at the same time.
- * @overload
+ * Does `stopPropagation` and `preventDefault` at the same time. Given a Leaflet event, it only stops propagation:
+ * the default action of the original DOM event still happens.
  * @param {Event | {originalEvent: Event}} e
- * @returns {void}
- */
-/**
- * @param {any} e
  */
 export function stop(e) {
-	preventDefault(e);
+	if ('preventDefault' in e) { preventDefault(e); }
 	stopPropagation(e);
 }
 

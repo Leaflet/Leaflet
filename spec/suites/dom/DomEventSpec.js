@@ -515,6 +515,32 @@ describe('DomEvent', () => {
 
 			expect(listener.notCalled).to.be.true;
 		});
+
+		it('marks the original event of a Leaflet event as stopped', () => {
+			const originalEvent = new MouseEvent('click');
+			DomEvent.stopPropagation({originalEvent});
+
+			expect(originalEvent._stopped).to.be.true;
+		});
+	});
+
+	describe('#stop', () => {
+		it('stops propagation and prevents the default action of a DOM event', () => {
+			const e = new MouseEvent('click', {cancelable: true});
+			const stopPropagation = sinon.spy(e, 'stopPropagation');
+			DomEvent.stop(e);
+
+			expect(stopPropagation.calledOnce).to.be.true;
+			expect(e.defaultPrevented).to.be.true;
+		});
+
+		it('only stops propagation of a Leaflet event', () => {
+			const originalEvent = new MouseEvent('click', {cancelable: true});
+			DomEvent.stop({originalEvent});
+
+			expect(originalEvent._stopped).to.be.true;
+			expect(originalEvent.defaultPrevented).to.be.false;
+		});
 	});
 
 	describe('#disableScrollPropagation', () => {
