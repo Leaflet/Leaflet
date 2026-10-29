@@ -1,13 +1,11 @@
-/*
- * @namespace Util
- *
- * Various utility functions, used by Leaflet internally.
- */
+// @ts-check
 
 /**
- * Last unique ID used by [`stamp()`](#util-stamp)
- * @type {number}
+ * Various utility functions, used by Leaflet internally.
+ * @module Util
  */
+
+/** Last unique ID used by [`stamp()`](#util-stamp) */
 export let lastId = 0;
 
 /**
@@ -17,9 +15,9 @@ export let lastId = 0;
  */
 export function stamp(obj) {
 	if (!('_leaflet_id' in obj)) {
-		obj['_leaflet_id'] = ++lastId;
+		/** @type {any} */ (obj)['_leaflet_id'] = ++lastId;
 	}
-	return obj._leaflet_id;
+	return /** @type {any} */ (obj)._leaflet_id;
 }
 
 /**
@@ -27,13 +25,17 @@ export function stamp(obj) {
  * refers to `context` inside `fn`'s code). The function `fn` will be called no more than one time per given
  * amount of `time`. The arguments received by the bound function will be any arguments passed when binding
  * the function, followed by any arguments passed when invoking the bound function.
- * @param {Function} fn
+ * @template {any[]} A
+ * @param {(...args: A) => void} fn
  * @param {number} time
- * @param {object} context
- * @returns {Function}
+ * @param {object} [context]
+ * @returns {(...args: A) => void}
  */
 export function throttle(fn, time, context) {
-	let lock, queuedArgs;
+	/** @type {boolean | undefined} */
+	let lock;
+	/** @type {A | false | undefined} */
+	let queuedArgs;
 
 	function later() {
 		// reset lock and call if queued
@@ -44,6 +46,7 @@ export function throttle(fn, time, context) {
 		}
 	}
 
+	/** @param {A} args */
 	function wrapperFn(...args) {
 		if (lock) {
 			// called too soon, queue to call later
@@ -68,16 +71,16 @@ export function throttle(fn, time, context) {
  * @param {boolean} [includeMax]
  * @returns {number}
  */
-export function wrapNum(x, range, includeMax) {
+export function wrapNum(num, range, includeMax) {
 	const max = range[1],
 	min = range[0],
 	d = max - min;
-	return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
+	return num === max && includeMax ? num : ((num - min) % d + d) % d + min;
 }
 
 /**
- * Returns a function which always returns `false`.
- * @returns {Function}
+ * Always returns `false`. Handy as a listener or callback that does nothing.
+ * @returns {false}
  */
 export function falseFn() { return false; }
 
@@ -106,29 +109,35 @@ export function splitWords(str) {
 }
 
 /**
- * Merges the given properties to the `options` of the `obj` object,
- * returning the resulting options. See `Class options`.
- * @param {object} obj
- * @param {object} options
- * @returns {object}
+ * Merges the given properties to the `options` of the `obj` object, returning the resulting options. See
+ * [Class options](#class-options).
+ * @template {object} O
+ * @param {{options?: O}} obj
+ * @param {Partial<O>} [options]
+ * @returns {O}
  */
 export function setOptions(obj, options) {
 	if (!Object.hasOwn(obj, 'options')) {
 		const defaults = getDefaultOptions(obj.constructor) ?? obj.options;
-		obj.options = defaults ? Object.create(defaults) : {};
+		obj.options = defaults ? Object.create(defaults) : /** @type {O} */ ({});
 	}
 	for (const i in options) {
 		if (Object.hasOwn(options, i)) {
-			obj.options[i] = options[i];
+			/** @type {any} */ (obj.options)[i] = options[i];
 		}
 	}
-	return obj.options;
+	return /** @type {O} */ (obj.options);
 }
 
+/** @type {WeakMap<Function, object>} */
 const chainedDefaults = new WeakMap(); // class -> the defaultOptions object it was chained with
 
 // Links the `defaultOptions` of each class in the chain to its parent's, so defaults are inherited and stay live.
 // Done on first use because a static field can't do it in its initializer and stay tree-shakeable.
+/**
+ * @param {Function & {defaultOptions?: object}} cls
+ * @returns {object | undefined}
+ */
 function getDefaultOptions(cls) {
 	const defaults = cls?.defaultOptions;
 	if (defaults && chainedDefaults.get(cls) !== defaults) {
@@ -154,7 +163,7 @@ const templateRe = /\{ *([\w_ -]+) *\}/g;
  */
 export function template(str, data) {
 	return str.replace(templateRe, (str, key) => {
-		let value = data[key];
+		let value = /** @type {Record<string, unknown>} */ (data)[key];
 
 		if (value === undefined) {
 			throw new Error(`No value provided for variable ${str}`);
@@ -162,8 +171,6 @@ export function template(str, data) {
 		} else if (typeof value === 'function') {
 			value = value(data);
 		}
-		return value;
+		return /** @type {string} */ (value);
 	});
 }
-
-

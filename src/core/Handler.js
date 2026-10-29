@@ -1,18 +1,22 @@
+// @ts-check
 import {Class} from './Class.js';
 
-/*
-	Handler is a base class for handler classes that are used internally to inject
-	interaction features like dragging to classes like Map and Marker.
-*/
+/** @import {LeafletMap} from '../map/Map.js' */
 
 /**
- * Abstract class for map interaction handlers
+ * Abstract class for map interaction handlers, used to inject interaction features like dragging into classes
+ * like `Map` and `Marker`.
+ *
  * @categoryDescription Extension methods
  * Classes inheriting from `Handler` must implement the two following methods:
+ *
+ * @categoryDescription Functions
+ * There is static function which can be called without instantiating Handler:
  */
 export class Handler extends Class {
 	static initHooks = true;
 
+	/** @param {LeafletMap} map */
 	constructor(map) {
 		super();
 		this._map = map;
@@ -52,20 +56,13 @@ export class Handler extends Class {
 	}
 
 	/**
-	 * Called when the handler is enabled, should add event hooks.
-	 * @category Extension methods
-	 */
-	/**
-	 * Called when the handler is disabled, should remove the event hooks added previously.
-	 * @category Extension methods
-	 */
-
-	/**
 	 * Adds a new Handler to the given map with the given name.
-	 * @category There is static function which can be called without instantiating Handler:
+	 * @category Functions
+	 * @template {typeof Handler} C
+	 * @this {C}
 	 * @param {LeafletMap} map
 	 * @param {string} name
-	 * @returns {this}
+	 * @returns {C}
 	 */
 	static addTo(map, name) {
 		map.addHandler(name, this);
