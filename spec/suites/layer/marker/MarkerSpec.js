@@ -14,7 +14,7 @@ describe('Marker', () => {
 		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
-		icon1 = new DefaultIcon();
+		icon1 = new DefaultIcon({shadowUrl: DefaultIcon.defaultOptions.iconUrl});
 		icon2 = new DefaultIcon({
 			iconUrl: `${icon1.options.iconUrl}?2`,
 			shadowUrl: `${icon1.options.shadowUrl}?2`
@@ -203,6 +203,14 @@ describe('Marker', () => {
 			expect(marker._shadow.parentNode).to.equal(map._panes.shadowPane);
 		});
 
+		it('accepts an icon without createShadow', () => {
+			const icon = {options: {}, createIcon: () => document.createElement('div')};
+			const marker = new Marker([0, 0], {icon}).addTo(map);
+
+			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
+			expect(marker._shadow).to.be.null;
+		});
+
 		it('sets the alt attribute to a default value when no alt text is passed', () => {
 			const marker = new Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
@@ -278,6 +286,85 @@ describe('Marker', () => {
 			map.addLayer(group);
 
 			expect(marker.dragging.enabled()).to.be.false;
+		});
+	});
+
+	describe('rotation', () => {
+		it('rotates the icon around its anchor and hides the shadow', () => {
+			const marker = new Marker([0, 0], {icon: icon1, rotation: 45}).addTo(map);
+
+			expect(marker._icon.style.transform.endsWith(' rotate(45deg)')).to.be.true;
+			expect(marker._icon.style.transformOrigin.startsWith('12px 41px')).to.be.true;
+			expect(marker._shadow.style.display).to.equal('none');
+
+			// so the shadow doesn't flicker as a rotating marker passes 0°
+			marker.setRotation(0);
+			expect(marker._shadow.style.display).to.equal('none');
+
+			marker.setRotation(null);
+			expect(marker._shadow.style.display).to.equal('');
+		});
+
+		it('keeps the rotation through setLatLng and zoom', () => {
+			const marker = new Marker([0, 0], {rotation: 45}).addTo(map);
+
+			marker.setLatLng([10, 10]);
+			expect(marker._icon.style.transform).to.contain('rotate(45deg)');
+
+			map.setZoom(2, {animate: false});
+			expect(marker._icon.style.transform).to.contain('rotate(45deg)');
+		});
+
+		it('changes with setRotation', () => {
+			const marker = new Marker([0, 0]).addTo(map);
+			expect(marker._icon.style.transform).not.to.contain('rotate');
+
+			expect(marker.setRotation(-90)).to.equal(marker);
+			expect(marker.getRotation()).to.equal(-90);
+			expect(marker._icon.style.transform).to.contain('rotate(-90deg)');
+
+			marker.setRotation(null);
+			expect(marker._icon.style.transform).not.to.contain('rotate');
+		});
+
+		it('rotates the popup and tooltip anchors', () => {
+			const marker = new Marker([0, 0], {rotation: 90}).addTo(map);
+
+			// [1, -34] and [16, -28] turned 90° clockwise
+			expect(marker._getPopupAnchor().distanceTo([34, 1])).to.be.below(1e-9);
+			expect(marker._getTooltipAnchor().distanceTo([28, 16])).to.be.below(1e-9);
+
+			marker.setRotation(0);
+			expect(marker._getPopupAnchor()).to.eql([1, -34]);
+		});
+
+		it('moves an open popup on setRotation', () => {
+			const marker = new Marker([0, 0]).addTo(map).bindPopup('Hi').openPopup();
+			const container = marker.getPopup()._container;
+			const before = container.style.transform;
+
+			marker.setRotation(90);
+			expect(container.style.transform).not.to.equal(before);
+		});
+
+		it('doesn\'t move the icon during a zoom animation', async () => {
+			const marker = new Marker([10, 10], {rotation: 0}).addTo(map);
+			let before, during;
+
+			map.once('zoomanim', () => {
+				before = marker._icon.style.transform;
+				marker.setRotation(90);
+				during = marker._icon.style.transform;
+			});
+			await new Promise((resolve) => { map.once('zoomend', resolve).setZoom(2); });
+
+			expect(during).to.equal(before);
+			expect(marker._icon.style.transform).to.contain('rotate(90deg)');
+		});
+
+		it('can be set before the marker is added', () => {
+			const marker = new Marker([0, 0]).setRotation(30).addTo(map);
+			expect(marker._icon.style.transform).to.contain('rotate(30deg)');
 		});
 	});
 

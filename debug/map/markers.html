@@ -13,57 +13,82 @@
 				}
 			}
 		</script>
+		<style>
+			.arrow {
+				background: #e33;
+				clip-path: polygon(50% 0, 100% 100%, 50% 75%, 0 100%);
+			}
+		</style>
 	</head>
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {DivIcon, LeafletMap, Marker, Polygon, TileLayer} from 'leaflet';
+			import {DefaultIcon, DivIcon, Icon, LeafletMap, Marker, TileLayer} from 'leaflet';
 
-			const map = new LeafletMap('map', {center: [0, 0], zoom: 3, maxZoom: 4});
-
-			const markerStatic = new Marker([0, -10], {
-				draggable: false,
-				title: 'Static'
-			});
-
-			map.addLayer(markerStatic);
-			markerStatic.bindPopup('Static');
-
-			const markerDraggable = new Marker([0, 10], {
-				title: 'Draggable'
-			});
-
-			map.addLayer(markerDraggable);
-			markerDraggable.bindPopup('Draggable');
-			markerDraggable.dragging.enable();
-
-			const markerDivIcon = new Marker([-15, -10], {icon: new DivIcon(), title: 'DivIcon'});
-			map.addLayer(markerDivIcon);
-			markerDivIcon.bindPopup('DivIcon');
-
-			// the button is focusable on its own and clicks natively, so Enter on it should open the popup once
-			const markerButton = new Marker([-15, 10], {
-				icon: new DivIcon({html: '<button>Button</button>', iconSize: [70, 24], className: ''})
-			});
-			map.addLayer(markerButton);
-			markerButton.bindPopup('Button in a DivIcon');
-
-			// focusable but not a button: Enter and Space do nothing
-			const markerNonInteractive = new Marker([15, -10], {interactive: false, alt: 'Not interactive'});
-			map.addLayer(markerNonInteractive);
-
-			const poly = new Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
-			map.addLayer(poly);
-			poly.bindPopup('Polygon');
-
-			markerDraggable.on('click', () => console.log('markerDraggable click'));
-			markerStatic.on('click', () => console.log('markerStatic click'));
-			markerDivIcon.on('click', () => console.log('markerDivIcon click'));
-			markerButton.on('click', () => console.log('markerButton click'));
-			map.on('click', () => console.log('map click'));
-			poly.on('click', () => console.log('poly click'));
+			const map = new LeafletMap('map', {center: [0, 0], zoom: 6});
 
 			new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+			// the previous default icon with its separate diagonal shadow, for comparison (left column)
+			const oldIcon = new Icon({
+				iconUrl: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="403.7 501.87 25.59 41.96"><linearGradient id="a" x2="0" y1="541" y2="503.4" gradientUnits="userSpaceOnUse"><stop stop-color="%23126FC6"/><stop offset="1" stop-color="%234C9CD1"/></linearGradient><linearGradient id="b" x2="0" y1="522.5" y2="503.4" gradientUnits="userSpaceOnUse"><stop stop-color="%232E6C97"/><stop offset="1" stop-color="%233883B7"/></linearGradient><circle cx="416.5" cy="515.5" r="4.7" fill="%23fff"/><path fill="url(%23a)" stroke="url(%23b)" stroke-width="1.1" fill-rule="evenodd" d="M416.54 503.61c-6.57 0-12.04 5.69-12.04 11.87 0 2.78 1.56 6.31 2.69 8.75l9.31 17.87 9.26-17.87c1.13-2.44 2.74-5.79 2.74-8.75 0-6.18-5.38-11.87-11.96-11.87Zm0 7.16a4.71 4.71 0 0 1 4.68 4.71c0 2.59-2.1 4.66-4.68 4.68-2.58-.02-4.68-2.09-4.68-4.68a4.71 4.71 0 0 1 4.68-4.71Z"/></svg>',
+				shadowUrl: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 817 820"><radialGradient id="a" cx="527" cy="487" r="479" fx="276" fy="894" gradientUnits="userSpaceOnUse"><stop stop-color="%235c5c5c" stop-opacity=".95"/><stop offset=".11" stop-color="%23474747" stop-opacity=".78"/><stop offset=".34" stop-color="%23202020" stop-opacity=".44"/><stop offset=".52" stop-color="%23090909" stop-opacity=".17"/><stop offset=".64" stop-opacity="0"/></radialGradient><path fill="url(%23a)" fill-opacity=".7" style="filter:blur(15px)" d="M779 483c-34 53-102 94-150 125L256 820 169 522l171-300 10-17C421 95 585 56 703 133s147 240 76 350"/></svg>',
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+				shadowSize: [41, 41]
+			});
+
+			// seeded, so the crowd looks the same on every reload
+			let seed = 1;
+			const random = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+
+			function addMarkers(lng, options) {
+				new Marker([5, lng - 2], options).addTo(map).bindPopup('Lone');
+
+				const spinning = new Marker([5, lng + 2], options).addTo(map).bindPopup('Spinning');
+				let angle = 0;
+				setInterval(() => spinning.setRotation(angle = (angle + 3) % 360), 50);
+
+				// a sparse crowd with a dense core, as with real-world point data
+				for (let i = 0; i < 150; i++) {
+					const r = i < 110 ? 6 : 1.5;
+					new Marker([-1 + (random() - 0.5) * r, lng + (random() - 0.5) * r * 1.2], options).addTo(map);
+				}
+			}
+
+			addMarkers(-4.5, {icon: oldIcon});
+			addMarkers(4.5, {});
+
+			// the rotation should hold during the drag
+			new Marker([5, 0], {draggable: true, autoPan: true, rotation: 45, title: 'Draggable'})
+				.addTo(map).bindPopup('Draggable, 45°');
+
+			// a DivIcon with a centered anchor, rotated by heading, like a vehicle
+			const arrow = new Marker([3, 0], {
+				icon: new DivIcon({className: 'arrow', iconSize: [20, 24]}),
+				rotation: 120,
+				draggable: true,
+				title: 'Arrow'
+			}).addTo(map).bindPopup('DivIcon, 120°');
+			arrow.on('click', () => {
+				const rotation = (arrow.getRotation() + 30) % 360;
+				arrow.setRotation(rotation).setPopupContent(`DivIcon, ${rotation}°`);
+			});
+
+			// the color template, from named and hex colors to translucent ones
+			const colors = ['crimson', '#e33', 'orange', 'gold', 'seagreen', 'teal', 'rebeccapurple', 'hotpink', '#333', 'white', 'rgb(0 0 255 / 50%)'];
+			colors.forEach((color, i) => {
+				new Marker([-6, (i - (colors.length - 1) / 2) * 1.5], {icon: new DefaultIcon({color})}).addTo(map).bindPopup(color);
+			});
+
+			// the button is focusable on its own and clicks natively, so Enter on it should open the popup once
+			new Marker([-4.5, 0], {
+				icon: new DivIcon({html: '<button>Button</button>', iconSize: [70, 24], className: ''})
+			}).addTo(map).bindPopup('Button in a DivIcon');
+
+			// focusable but not a button: Enter and Space do nothing
+			new Marker([-1, 0], {interactive: false, alt: 'Not interactive'}).addTo(map);
 		</script>
 	</body>
 </html>
