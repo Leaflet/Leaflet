@@ -164,10 +164,7 @@ export class LayersControl extends Control {
 	removeLayer(layer) {
 		layer.off('add remove', this._onLayerChange, this);
 
-		const obj = this._getLayer(Util.stamp(layer));
-		if (obj) {
-			this._layers.splice(this._layers.indexOf(obj), 1);
-		}
+		this._layers = this._layers.filter(o => o.layer !== layer);
 		return (this._map) ? this._update() : this;
 	}
 
@@ -259,14 +256,6 @@ export class LayersControl extends Control {
 		container.appendChild(section);
 	}
 
-	_getLayer(id) {
-		for (const layer of this._layers) {
-			if (layer && Util.stamp(layer.layer) === id) {
-				return layer;
-			}
-		}
-	}
-
 	_addLayer(layer, name, overlay) {
 		if (this._map) {
 			layer.on('add remove', this._onLayerChange, this);
@@ -322,7 +311,7 @@ export class LayersControl extends Control {
 			this._update();
 		}
 
-		const obj = this._getLayer(Util.stamp(e.target));
+		const obj = this._layers.find(o => o.layer === e.target);
 
 		const type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
@@ -346,7 +335,7 @@ export class LayersControl extends Control {
 		}
 
 		this._layerControlInputs.push(input);
-		input.layerId = Util.stamp(obj.layer);
+		input._layer = obj.layer;
 
 		DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -377,7 +366,7 @@ export class LayersControl extends Control {
 		// a layer can be listed under several inputs, so it should be on the map if any of them is checked
 		const checked = new Map();
 		for (const input of this._layerControlInputs) {
-			const {layer} = this._getLayer(input.layerId);
+			const layer = input._layer;
 			checked.set(layer, checked.get(layer) || input.checked);
 		}
 
@@ -416,7 +405,7 @@ export class LayersControl extends Control {
 		zoom = this._map.getZoom();
 
 		for (const input of inputs) {
-			const layer = this._getLayer(input.layerId).layer;
+			const layer = input._layer;
 			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 

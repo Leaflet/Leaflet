@@ -8,8 +8,6 @@ import {Point} from '../../geometry/Point.js';
 
 export class KeyboardHandler extends Handler {
 
-	static initHooks = true;
-
 	// `KeyboardEvent.key` values, so zoom keys follow the keyboard layout and cover the numpad too;
 	// `=` and `_` keep the US `+` and `-` keys working both with and without Shift
 	static keys = {
@@ -20,15 +18,6 @@ export class KeyboardHandler extends Handler {
 		zoomIn: ['+', '='],
 		zoomOut: ['-', '_']
 	};
-
-	constructor(map) {
-		super(map);
-
-		this._setPanDelta(map.options.keyboardPanDelta);
-		this._setZoomDelta(map.options.zoomDelta);
-
-		this.callInitHooks();
-	}
 
 	addHooks() {
 		const container = this._map._container;
@@ -50,15 +39,10 @@ export class KeyboardHandler extends Handler {
 			blur: this._onBlur,
 			pointerdown: this._onPointerDown
 		}, this);
-
-		this._map.on({
-			focus: this._addHooks,
-			blur: this._removeHooks
-		}, this);
 	}
 
 	removeHooks() {
-		this._removeHooks();
+		off(document, 'keydown', this._onKeyDown, this);
 
 		if (this._map.options.ariaKeyShortcuts) {
 			this._map._container.removeAttribute('aria-keyshortcuts');
@@ -68,11 +52,6 @@ export class KeyboardHandler extends Handler {
 			focus: this._onFocus,
 			blur: this._onBlur,
 			pointerdown: this._onPointerDown
-		}, this);
-
-		this._map.off({
-			focus: this._addHooks,
-			blur: this._removeHooks
 		}, this);
 	}
 
@@ -86,63 +65,38 @@ export class KeyboardHandler extends Handler {
 
 	_onFocus() {
 		this._focused = true;
+		on(document, 'keydown', this._onKeyDown, this);
 		this._map.fire('focus');
 	}
 
 	_onBlur() {
 		this._focused = false;
-		this._map.fire('blur');
-	}
-
-	_setPanDelta(panDelta) {
-		const panKeys = this._panKeys = {},
-		{left, right, down, up} = KeyboardHandler.keys;
-
-		for (const key of left) { panKeys[key] = [-panDelta, 0]; }
-		for (const key of right) { panKeys[key] = [panDelta, 0]; }
-		for (const key of down) { panKeys[key] = [0, panDelta]; }
-		for (const key of up) { panKeys[key] = [0, -panDelta]; }
-	}
-
-	_setZoomDelta(zoomDelta) {
-		const zoomKeys = this._zoomKeys = {},
-		{zoomIn, zoomOut} = KeyboardHandler.keys;
-
-		for (const key of zoomIn) { zoomKeys[key] = zoomDelta; }
-		for (const key of zoomOut) { zoomKeys[key] = -zoomDelta; }
-	}
-
-	_addHooks() {
-		on(document, 'keydown', this._onKeyDown, this);
-	}
-
-	_removeHooks() {
 		off(document, 'keydown', this._onKeyDown, this);
+		this._map.fire('blur');
 	}
 
 	_onKeyDown(e) {
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		const key = e.key,
-		map = this._map;
-		let offset;
+		map = this._map,
+		{left, right, down, up, zoomIn, zoomOut} = KeyboardHandler.keys,
+		x = right.includes(key) - left.includes(key),
+		y = down.includes(key) - up.includes(key),
+		dz = zoomIn.includes(key) - zoomOut.includes(key),
+		k = e.shiftKey ? 3 : 1;
 
-		if (key in this._panKeys) {
-			if (!map._panAnim || !map._panAnim._inProgress) {
-				offset = this._panKeys[key];
-				if (e.shiftKey) {
-					offset = new Point(offset).multiplyBy(3);
-				}
-
+		if (x || y) {
+			if (!map._panAnim?._inProgress) {
+				let offset = new Point(x, y).multiplyBy(k * map.options.keyboardPanDelta);
 				if (map.options.maxBounds) {
-					offset = map._limitOffset(new Point(offset), map.options.maxBounds);
+					offset = map._limitOffset(offset, map.options.maxBounds);
 				}
-
 				map.panBy(offset);
 			}
-		} else if (key in this._zoomKeys) {
+		} else if (dz) {
 			if (!map._zoomInputBlocked()) {
-				map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
+				map.setZoom(map.getZoom() + k * dz * map.options.zoomDelta);
 			}
 
 		} else if (key === 'Escape' && map._popup && map._popup.options.closeOnEscapeKey) {

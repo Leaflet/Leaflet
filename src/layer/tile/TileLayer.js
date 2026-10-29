@@ -231,8 +231,10 @@ export class TileLayer extends GridLayer {
 	}
 
 	_tileOnError(done, tile, e) {
-		const errorUrl = this.options.errorTileUrl;
-		if (errorUrl && tile.getAttribute('src') !== errorUrl) {
+		const errorUrl = this.options.errorTileUrl,
+		src = tile.getAttribute('src');
+		// removed tiles get an empty src to cancel their request, which fires error too
+		if (errorUrl && src !== errorUrl && (src || tile.isConnected)) {
 			tile.src = errorUrl;
 		}
 		done(e, tile);

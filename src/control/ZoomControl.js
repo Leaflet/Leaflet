@@ -51,9 +51,9 @@ export class ZoomControl extends Control {
 		options = this.options;
 
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
-			`${zoomName}-in`,  container, this._zoomIn);
+			`${zoomName}-in`,  container, e => this._zoom(e, 1));
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-			`${zoomName}-out`, container, this._zoomOut);
+			`${zoomName}-out`, container, e => this._zoom(e, -1));
 
 		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
@@ -77,15 +77,10 @@ export class ZoomControl extends Control {
 		return this;
 	}
 
-	_zoomIn(e) {
-		if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
-			this._map.zoomIn(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
-		}
-	}
-
-	_zoomOut(e) {
-		if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
-			this._map.zoomOut(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1));
+	_zoom(e, dir) {
+		const map = this._map;
+		if (!this._disabled && (dir > 0 ? map._zoom < map.getMaxZoom() : map._zoom > map.getMinZoom())) {
+			map.zoomIn(dir * map.options.zoomDelta * (e.shiftKey ? 3 : 1));
 		}
 	}
 
@@ -102,29 +97,21 @@ export class ZoomControl extends Control {
 		link.setAttribute('aria-label', title);
 
 		DomEvent.disableClickPropagation(link);
-		DomEvent.on(link, 'click', DomEvent.stop);
-		DomEvent.on(link, 'click', fn, this);
-		DomEvent.on(link, 'click', this._refocusOnMap, this);
+		DomEvent.on(link, 'click', (e) => {
+			DomEvent.stop(e);
+			fn.call(this, e);
+			this._refocusOnMap(e);
+		});
 
 		return link;
 	}
 
 	_updateDisabled() {
-		const map = this._map,
-		className = 'leaflet-disabled';
-
-		this._zoomInButton.classList.remove(className);
-		this._zoomOutButton.classList.remove(className);
-		this._zoomInButton.setAttribute('aria-disabled', 'false');
-		this._zoomOutButton.setAttribute('aria-disabled', 'false');
-
-		if (this._disabled || map._zoom === map.getMinZoom()) {
-			this._zoomOutButton.classList.add(className);
-			this._zoomOutButton.setAttribute('aria-disabled', 'true');
-		}
-		if (this._disabled || map._zoom === map.getMaxZoom()) {
-			this._zoomInButton.classList.add(className);
-			this._zoomInButton.setAttribute('aria-disabled', 'true');
+		const map = this._map;
+		for (const [button, limit] of [[this._zoomInButton, map.getMaxZoom()], [this._zoomOutButton, map.getMinZoom()]]) {
+			const disabled = this._disabled || map._zoom === limit;
+			button.classList.toggle('leaflet-disabled', disabled);
+			button.setAttribute('aria-disabled', disabled);
 		}
 	}
 }

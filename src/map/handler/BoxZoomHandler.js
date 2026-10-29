@@ -10,53 +10,36 @@ import {Bounds} from '../../geometry/Bounds.js';
  */
 
 export class BoxZoomHandler extends Handler {
-	static initHooks = true;
-
-	constructor(map) {
-		super(map);
-		this._container = map._container;
-		this._pane = map._panes.overlayPane;
-		this._resetStateTimeout = 0;
-		map.on('unload', this._destroy, this);
-
-		this.callInitHooks();
-	}
-
 	addHooks() {
-		DomEvent.on(this._container, 'pointerdown', this._onPointerDown, this);
+		DomEvent.on(this._map._container, 'pointerdown', this._onPointerDown, this);
 	}
 
 	removeHooks() {
-		DomEvent.off(this._container, 'pointerdown', this._onPointerDown, this);
+		DomEvent.off(this._map._container, 'pointerdown', this._onPointerDown, this);
 	}
 
 	moved() {
 		return this._moved;
 	}
 
-	_destroy() {
-		this._pane.remove();
-		delete this._pane;
-	}
-
 	_resetState() {
-		this._resetStateTimeout = 0;
+		clearTimeout(this._resetStateTimeout);
 		this._moved = false;
 	}
 
-	_clearDeferredResetState() {
-		if (this._resetStateTimeout !== 0) {
-			clearTimeout(this._resetStateTimeout);
-			this._resetStateTimeout = 0;
-		}
+	_toggleListeners(onOff) {
+		onOff(this._map._container, {
+			contextmenu: DomEvent.stop,
+			pointermove: this._onPointerMove,
+			pointerup: this._onPointerUp
+		}, this);
+		onOff(document, 'keydown', this._onKeyDown, this);
 	}
 
 	_onPointerDown(e) {
 		if (!e.shiftKey || (e.button !== 0)) { return false; }
 
-		// Clear the deferred resetState if it hasn't executed yet, otherwise it
-		// will interrupt the interaction and orphan a box element in the container.
-		this._clearDeferredResetState();
+		// also cancels a deferred reset that hasn't run yet, which would interrupt the interaction and orphan a box
 		this._resetState();
 
 		// stops both text selection and native image drag in every engine without restyling the page; it also
@@ -65,26 +48,22 @@ export class BoxZoomHandler extends Handler {
 
 		this._startPoint = this._map.pointerEventToContainerPoint(e);
 
-		DomEvent.on(this._container, {
-			contextmenu: DomEvent.stop,
-			pointermove: this._onPointerMove,
-			pointerup: this._onPointerUp,
-			keydown: this._onKeyDown
-		}, this);
-		DomEvent.on(document, 'keydown', this._onKeyDown, this);
+		this._toggleListeners(DomEvent.on);
 	}
 
 	_onPointerMove(e) {
+		const map = this._map;
+
 		if (!this._moved) {
 			this._moved = true;
 
-			this._box = DomUtil.create('div', 'leaflet-zoom-box', this._container);
-			this._container.classList.add('leaflet-crosshair');
+			this._box = DomUtil.create('div', 'leaflet-zoom-box', map._container);
+			map._container.classList.add('leaflet-crosshair');
 
-			this._map.fire('boxzoomstart');
+			map.fire('boxzoomstart');
 		}
 
-		this._point = this._map.pointerEventToContainerPoint(e);
+		this._point = map.pointerEventToContainerPoint(e);
 
 		const bounds = new Bounds(this._point, this._startPoint),
 		size = bounds.getSize();
@@ -98,15 +77,10 @@ export class BoxZoomHandler extends Handler {
 	_finish() {
 		if (this._moved) {
 			this._box.remove();
-			this._container.classList.remove('leaflet-crosshair');
+			this._map._container.classList.remove('leaflet-crosshair');
 		}
 
-		DomEvent.off(this._container, {
-			contextmenu: DomEvent.stop,
-			pointermove: this._onPointerMove,
-			pointerup: this._onPointerUp,
-		}, this);
-		DomEvent.off(document, 'keydown', this._onKeyDown, this);
+		this._toggleListeners(DomEvent.off);
 	}
 
 	_onPointerUp(e) {
@@ -117,8 +91,7 @@ export class BoxZoomHandler extends Handler {
 		if (!this._moved) { return; }
 		// Postpone to next JS tick so internal click event handling
 		// still see it as "moved".
-		this._clearDeferredResetState();
-		this._resetStateTimeout = setTimeout(this._resetState.bind(this), 0);
+		this._resetStateTimeout = setTimeout(() => this._resetState(), 0);
 
 		const bounds = new LatLngBounds(
 			this._map.containerPointToLatLng(this._startPoint),
@@ -135,7 +108,6 @@ export class BoxZoomHandler extends Handler {
 	_onKeyDown(e) {
 		if (e.code === 'Escape') {
 			this._finish();
-			this._clearDeferredResetState();
 			this._resetState();
 		}
 	}

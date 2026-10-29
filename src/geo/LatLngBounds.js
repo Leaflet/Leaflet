@@ -66,26 +66,17 @@ export class LatLngBounds {
 		let sw2, ne2;
 
 		if (obj instanceof LatLng) {
-			sw2 = obj;
-			ne2 = obj;
-
+			sw2 = ne2 = obj;
 		} else if (obj instanceof LatLngBounds) {
-			sw2 = obj._southWest;
-			ne2 = obj._northEast;
-
-			if (!sw2 || !ne2) { return this; }
-
+			({_southWest: sw2, _northEast: ne2} = obj);
+			if (!sw2) { return this; }
+		} else if (LatLng.validate(obj)) {
+			sw2 = ne2 = new LatLng(obj);
 		} else {
-			if (!obj) {
-				return this;
-			}
-			if (LatLng.validate(obj)) {
-				return this.extend(new LatLng(obj));
-			}
 			return this.extend(new LatLngBounds(obj));
 		}
 
-		if (!sw && !ne) {
+		if (!sw) {
 			this._southWest = new LatLng(sw2.lat, sw2.lng);
 			this._northEast = new LatLng(ne2.lat, ne2.lng);
 		} else {
