@@ -8,30 +8,30 @@ import {Point} from '../../geometry/Point.js';
 const defaultOptions = {
 	/**
 	 * **(required)** The URL to the icon image (absolute or relative to your script path).
-	 * @type {string | undefined}
+	 * @type {string | null}
 	 */
-	iconUrl: undefined,
+	iconUrl: null,
 
 	/**
 	 * The URL to a retina sized version of the icon image (absolute or relative to your script path). Used for
 	 * Retina screen devices.
-	 * @type {string | undefined}
+	 * @type {string | null}
 	 */
-	iconRetinaUrl: undefined,
+	iconRetinaUrl: null,
 
 	/**
 	 * Size of the icon image in pixels. A number sets both width and height.
-	 * @type {PointExpression | number | undefined}
+	 * @type {PointExpression | number | null}
 	 */
-	iconSize: undefined,
+	iconSize: null,
 
 	/**
 	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that
 	 * this point is at the marker's geographical location. Centered by default if size is specified, also can be
 	 * set in CSS with negative margins.
-	 * @type {PointExpression | undefined}
+	 * @type {PointExpression | null}
 	 */
-	iconAnchor: undefined,
+	iconAnchor: null,
 
 	/**
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
@@ -47,28 +47,28 @@ const defaultOptions = {
 
 	/**
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
-	 * @type {string | undefined}
+	 * @type {string | null}
 	 */
-	shadowUrl: undefined,
+	shadowUrl: null,
 
 	/**
 	 * The URL to a retina sized version of the shadow image. Used for Retina screen devices.
-	 * @type {string | undefined}
+	 * @type {string | null}
 	 */
-	shadowRetinaUrl: undefined,
+	shadowRetinaUrl: null,
 
 	/**
 	 * Size of the shadow image in pixels. A number sets both width and height.
-	 * @type {PointExpression | number | undefined}
+	 * @type {PointExpression | number | null}
 	 */
-	shadowSize: undefined,
+	shadowSize: null,
 
 	/**
 	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same as iconAnchor if not
 	 * specified).
-	 * @type {PointExpression | undefined}
+	 * @type {PointExpression | null}
 	 */
-	shadowAnchor: undefined,
+	shadowAnchor: null,
 
 	/** A custom class name to assign to both icon and shadow images. */
 	className: '',
@@ -223,7 +223,7 @@ export class Icon extends Class {
 
 	/**
 	 * @param {'icon' | 'shadow'} name
-	 * @returns {string | undefined}
+	 * @returns {string | null}
 	 */
 	_getIconUrl(name) {
 		return window.devicePixelRatio > 1 && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];

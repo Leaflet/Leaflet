@@ -23,9 +23,9 @@ const defaultOptions = {
 
 	/**
 	 * Paints the pin in the given CSS color instead of the default blue, overriding `iconUrl`.
-	 * @type {string | undefined}
+	 * @type {string | null}
 	 */
-	color: undefined
+	color: null
 };
 
 /** @typedef {typeof defaultOptions} DefaultIconDefaults */
