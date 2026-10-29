@@ -1,12 +1,10 @@
 import {LatLng} from './LatLng.js';
 
-/*
- * @class LatLngBounds
- *
+// TODO International date line?
+
+/**
  * Represents a rectangular geographical area on a map.
- *
  * @example
- *
  * ```js
  * const corner1 = new LatLng(40.712, -74.227),
  * corner2 = new LatLng(40.774, -74.125),
@@ -28,16 +26,19 @@ import {LatLng} from './LatLng.js';
  * which means new classes can't inherit from it, and new methods
  * can't be added to it with the `include` function.
  */
-
-// TODO International date line?
-
-// @constructor LatLngBounds(corner1: LatLng, corner2: LatLng)
-// Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
-
-// @alternative
-// @constructor LatLngBounds(latlngs: LatLng[])
-// Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
 export class LatLngBounds {
+	/**
+	 * Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
+	 * @overload
+	 * @param {LatLng} corner1
+	 * @param {LatLng} corner2
+	 */
+	/**
+	 * Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for
+	 * zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
+	 * @overload
+	 * @param {LatLng[]} latlngs
+	 */
 	constructor(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
 		if (!corner1) { return; }
 
@@ -54,12 +55,18 @@ export class LatLngBounds {
 		}
 	}
 
-	// @method extend(latlng: LatLng): this
-	// Extend the bounds to contain the given point
-
-	// @alternative
-	// @method extend(otherBounds: LatLngBounds): this
-	// Extend the bounds to contain the given bounds
+	/**
+	 * Extend the bounds to contain the given point
+	 * @overload
+	 * @param {LatLng} latlng
+	 * @returns {this}
+	 */
+	/**
+	 * Extend the bounds to contain the given bounds
+	 * @overload
+	 * @param {LatLngBounds} otherBounds
+	 * @returns {this}
+	 */
 	extend(obj) {
 		const sw = this._southWest,
 		ne = this._northEast;
@@ -89,10 +96,12 @@ export class LatLngBounds {
 		return this;
 	}
 
-	// @method pad(bufferRatio: Number): LatLngBounds
-	// Returns bounds created by extending or retracting the current bounds by a given ratio in each direction.
-	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
-	// Negative values will retract the bounds.
+	/**
+	 * Returns bounds created by extending or retracting the current bounds by a given ratio in each direction. For
+	 * example, a ratio of 0.5 extends the bounds by 50% in each direction. Negative values will retract the bounds.
+	 * @param {number} bufferRatio
+	 * @returns {LatLngBounds}
+	 */
 	pad(bufferRatio) {
 		const sw = this._southWest,
 		ne = this._northEast,
@@ -104,68 +113,92 @@ export class LatLngBounds {
 			new LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	}
 
-	// @method getCenter(): LatLng
-	// Returns the center point of the bounds.
+	/**
+	 * Returns the center point of the bounds.
+	 * @returns {LatLng}
+	 */
 	getCenter() {
 		return new LatLng(
 			(this._southWest.lat + this._northEast.lat) / 2,
 			(this._southWest.lng + this._northEast.lng) / 2);
 	}
 
-	// @method getSouthWest(): LatLng
-	// Returns the south-west point of the bounds.
+	/**
+	 * Returns the south-west point of the bounds.
+	 * @returns {LatLng}
+	 */
 	getSouthWest() {
 		return this._southWest;
 	}
 
-	// @method getNorthEast(): LatLng
-	// Returns the north-east point of the bounds.
+	/**
+	 * Returns the north-east point of the bounds.
+	 * @returns {LatLng}
+	 */
 	getNorthEast() {
 		return this._northEast;
 	}
 
-	// @method getNorthWest(): LatLng
-	// Returns the north-west point of the bounds.
+	/**
+	 * Returns the north-west point of the bounds.
+	 * @returns {LatLng}
+	 */
 	getNorthWest() {
 		return new LatLng(this.getNorth(), this.getWest());
 	}
 
-	// @method getSouthEast(): LatLng
-	// Returns the south-east point of the bounds.
+	/**
+	 * Returns the south-east point of the bounds.
+	 * @returns {LatLng}
+	 */
 	getSouthEast() {
 		return new LatLng(this.getSouth(), this.getEast());
 	}
 
-	// @method getWest(): Number
-	// Returns the west longitude of the bounds
+	/**
+	 * Returns the west longitude of the bounds
+	 * @returns {number}
+	 */
 	getWest() {
 		return this._southWest.lng;
 	}
 
-	// @method getSouth(): Number
-	// Returns the south latitude of the bounds
+	/**
+	 * Returns the south latitude of the bounds
+	 * @returns {number}
+	 */
 	getSouth() {
 		return this._southWest.lat;
 	}
 
-	// @method getEast(): Number
-	// Returns the east longitude of the bounds
+	/**
+	 * Returns the east longitude of the bounds
+	 * @returns {number}
+	 */
 	getEast() {
 		return this._northEast.lng;
 	}
 
-	// @method getNorth(): Number
-	// Returns the north latitude of the bounds
+	/**
+	 * Returns the north latitude of the bounds
+	 * @returns {number}
+	 */
 	getNorth() {
 		return this._northEast.lat;
 	}
 
-	// @method contains(otherBounds: LatLngBounds): Boolean
-	// Returns `true` if the rectangle contains the given one.
-
-	// @alternative
-	// @method contains (latlng: LatLng): Boolean
-	// Returns `true` if the rectangle contains the given point.
+	/**
+	 * Returns `true` if the rectangle contains the given one.
+	 * @overload
+	 * @param {LatLngBounds} otherBounds
+	 * @returns {boolean}
+	 */
+	/**
+	 * Returns `true` if the rectangle contains the given point.
+	 * @overload
+	 * @param {LatLng} latlng
+	 * @returns {boolean}
+	 */
 	contains(obj) { // (LatLngBounds) or (LatLng) -> Boolean
 		if (LatLng.validate(obj)) {
 			obj = new LatLng(obj);
@@ -188,8 +221,12 @@ export class LatLngBounds {
 		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	}
 
-	// @method intersects(otherBounds: LatLngBounds): Boolean
-	// Returns `true` if the rectangle intersects the given bounds. Two bounds intersect if they have at least one point in common.
+	/**
+	 * Returns `true` if the rectangle intersects the given bounds. Two
+	 * bounds intersect if they have at least one point in common.
+	 * @param {LatLngBounds} otherBounds
+	 * @returns {boolean}
+	 */
 	intersects(bounds) {
 		bounds = new LatLngBounds(bounds);
 
@@ -204,8 +241,12 @@ export class LatLngBounds {
 		return latIntersects && lngIntersects;
 	}
 
-	// @method overlaps(otherBounds: LatLngBounds): Boolean
-	// Returns `true` if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.
+	/**
+	 * Returns `true` if the rectangle overlaps the given bounds.
+	 * Two bounds overlap if their intersection is an area.
+	 * @param {LatLngBounds} otherBounds
+	 * @returns {boolean}
+	 */
 	overlaps(bounds) {
 		bounds = new LatLngBounds(bounds);
 
@@ -220,14 +261,22 @@ export class LatLngBounds {
 		return latOverlaps && lngOverlaps;
 	}
 
-	// @method toBBoxString(): String
-	// Returns a string with bounding box coordinates in a 'southwest_lng,southwest_lat,northeast_lng,northeast_lat' format. Useful for sending requests to web services that return geo data.
+	/**
+	 * Returns a string with bounding box coordinates in a 'southwest_lng,southwest_lat,northeast_lng,northeast_lat'
+	 * format. Useful for sending requests to web services that return geo data.
+	 * @returns {string}
+	 */
 	toBBoxString() {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	}
 
-	// @method equals(otherBounds: LatLngBounds, maxMargin?: Number): Boolean
-	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
+	/**
+	 * Returns `true` if the rectangle is equivalent (within a small margin of error) to the given
+	 * bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
+	 * @param {LatLngBounds} otherBounds
+	 * @param {number} [maxMargin]
+	 * @returns {boolean}
+	 */
 	equals(bounds, maxMargin) {
 		if (!bounds) { return false; }
 
@@ -237,8 +286,10 @@ export class LatLngBounds {
 		       this._northEast.equals(bounds.getNorthEast(), maxMargin);
 	}
 
-	// @method isValid(): Boolean
-	// Returns `true` if the bounds are properly initialized.
+	/**
+	 * Returns `true` if the bounds are properly initialized.
+	 * @returns {boolean}
+	 */
 	isValid() {
 		return !!(this._southWest && this._northEast);
 	}
