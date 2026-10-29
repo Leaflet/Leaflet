@@ -6,30 +6,16 @@ import * as Util from '../core/Util.js';
 
 export class Layer extends LayerBase {
 
-	/*
-	 * @namespace Layer
-	 * @section Popup methods example
-	 *
-	 * All layers share a set of methods convenient for binding popups to it.
-	 *
-	 * ```js
-	 * const layer = new Polygon(latlngs).bindPopup('Hi There!').addTo(map);
-	 * layer.openPopup();
-	 * layer.closePopup();
-	 * ```
-	 *
-	 * Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.
+	/**
+	 * Binds a popup to the layer with the passed `content` and sets up the necessary event listeners. A
+	 * `String` argument is rendered as HTML; if it may contain untrusted input, sanitize it (e.g. with
+	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
+	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
+	 * @category Popup methods
+	 * @param {string | HTMLElement | Function | Popup} content
+	 * @param {PopupOptions} [options]
+	 * @returns {this}
 	 */
-
-	// @section Popup methods
-
-	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
-	// Binds a popup to the layer with the passed `content` and sets up the
-	// necessary event listeners. A `String` argument is rendered as HTML; if it
-	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
-	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
-	// it will receive the layer as the first argument and should return a
-	// `String` or `HTMLElement`.
 	bindPopup(content, options) {
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
 		this.on({
@@ -41,8 +27,11 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
-	// @method unbindPopup(): this
-	// Removes the popup previously bound with `bindPopup`.
+	/**
+	 * Removes the popup previously bound with `bindPopup`.
+	 * @category Popup methods
+	 * @returns {this}
+	 */
 	unbindPopup() {
 		if (this._popup) {
 			this.off({
@@ -55,8 +44,12 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
-	// @method openPopup(latlng?: LatLng): this
-	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
+	/**
+	 * Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
+	 * @category Popup methods
+	 * @param {LatLng} [latlng]
+	 * @returns {this}
+	 */
 	openPopup(latlng) {
 		if (this._popup) {
 			// groups keep the member layer the popup was last opened on
@@ -71,36 +64,52 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
-	// @method closePopup(): this
-	// Closes the popup bound to this layer if it is open.
+	/**
+	 * Closes the popup bound to this layer if it is open.
+	 * @category Popup methods
+	 * @returns {this}
+	 */
 	closePopup() {
 		this._popup?.close();
 		return this;
 	}
 
-	// @method togglePopup(): this
-	// Opens or closes the popup bound to this layer depending on its current state.
+	/**
+	 * Opens or closes the popup bound to this layer depending on its current state.
+	 * @category Popup methods
+	 * @returns {this}
+	 */
 	togglePopup() {
 		this._popup?.toggle(this);
 		return this;
 	}
 
-	// @method isPopupOpen(): boolean
-	// Returns `true` if the popup bound to this layer is currently open.
+	/**
+	 * Returns `true` if the popup bound to this layer is currently open.
+	 * @category Popup methods
+	 * @returns {boolean}
+	 */
 	isPopupOpen() {
 		return this._popup?.isOpen() ?? false;
 	}
 
-	// @method setPopupContent(content: String|HTMLElement|Popup): this
-	// Sets the content of the popup bound to this layer.
-	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	/**
+	 * Sets the content of the popup bound to this layer. String content is rendered as HTML;
+	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	 * @category Popup methods
+	 * @param {string | HTMLElement | Popup} content
+	 * @returns {this}
+	 */
 	setPopupContent(content) {
 		this._popup?.setContent(content);
 		return this;
 	}
 
-	// @method getPopup(): Popup
-	// Returns the popup bound to this layer.
+	/**
+	 * Returns the popup bound to this layer.
+	 * @category Popup methods
+	 * @returns {Popup}
+	 */
 	getPopup() {
 		return this._popup;
 	}
@@ -131,28 +140,16 @@ export class Layer extends LayerBase {
 		this._popup.setLatLng(e.latlng);
 	}
 
-	/*
-	 * @namespace Layer
-	 * @section Tooltip methods example
-	 *
-	 * All layers share a set of methods convenient for binding tooltips to it.
-	 *
-	 * ```js
-	 * const layer = new Polygon(latlngs).bindTooltip('Hi There!').addTo(map);
-	 * layer.openTooltip();
-	 * layer.closeTooltip();
-	 * ```
+	/**
+	 * Binds a tooltip to the layer with the passed `content` and sets up the necessary event listeners.
+	 * A `String` argument is rendered as HTML; if it may contain untrusted input, sanitize it (e.g. with
+	 * DOMPurify) or pass an `HTMLElement` with safe `textContent` instead. If a `Function` is passed it
+	 * will receive the layer as the first argument and should return a `String` or `HTMLElement`.
+	 * @category Tooltip methods
+	 * @param {string | HTMLElement | Function | Tooltip} content
+	 * @param {TooltipOptions} [options]
+	 * @returns {this}
 	 */
-
-	// @section Tooltip methods
-
-	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
-	// Binds a tooltip to the layer with the passed `content` and sets up the
-	// necessary event listeners. A `String` argument is rendered as HTML; if it
-	// may contain untrusted input, sanitize it (e.g. with DOMPurify) or pass an
-	// `HTMLElement` with safe `textContent` instead. If a `Function` is passed
-	// it will receive the layer as the first argument and should return a
-	// `String` or `HTMLElement`.
 	bindTooltip(content, options) {
 		// an open tooltip is replaced, a closed one reused
 		const old = this.isTooltipOpen() ? null : this._tooltip;
@@ -172,8 +169,11 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
-	// @method unbindTooltip(): this
-	// Removes the tooltip previously bound with `bindTooltip`.
+	/**
+	 * Removes the tooltip previously bound with `bindTooltip`.
+	 * @category Tooltip methods
+	 * @returns {this}
+	 */
 	unbindTooltip() {
 		if (this._tooltip) {
 			this._initTooltipInteractions(true);
@@ -207,8 +207,12 @@ export class Layer extends LayerBase {
 		this[remove ? 'off' : 'on'](events);
 	}
 
-	// @method openTooltip(latlng?: LatLng): this
-	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
+	/**
+	 * Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
+	 * @category Tooltip methods
+	 * @param {LatLng} [latlng]
+	 * @returns {this}
+	 */
 	openTooltip(latlng) {
 		if (this._tooltip) {
 			// groups keep the member layer the tooltip was last opened on
@@ -229,36 +233,52 @@ export class Layer extends LayerBase {
 		return this;
 	}
 
-	// @method closeTooltip(): this
-	// Closes the tooltip bound to this layer if it is open.
+	/**
+	 * Closes the tooltip bound to this layer if it is open.
+	 * @category Tooltip methods
+	 * @returns {this}
+	 */
 	closeTooltip() {
 		this._tooltip?.close();
 		return this;
 	}
 
-	// @method toggleTooltip(): this
-	// Opens or closes the tooltip bound to this layer depending on its current state.
+	/**
+	 * Opens or closes the tooltip bound to this layer depending on its current state.
+	 * @category Tooltip methods
+	 * @returns {this}
+	 */
 	toggleTooltip() {
 		this._tooltip?.toggle(this);
 		return this;
 	}
 
-	// @method isTooltipOpen(): boolean
-	// Returns `true` if the tooltip bound to this layer is currently open.
+	/**
+	 * Returns `true` if the tooltip bound to this layer is currently open.
+	 * @category Tooltip methods
+	 * @returns {boolean}
+	 */
 	isTooltipOpen() {
 		return this._tooltip?.isOpen() ?? false;
 	}
 
-	// @method setTooltipContent(content: String|HTMLElement|Tooltip): this
-	// Sets the content of the tooltip bound to this layer.
-	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	/**
+	 * Sets the content of the tooltip bound to this layer. String content is rendered as HTML;
+	 * sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	 * @category Tooltip methods
+	 * @param {string | HTMLElement | Tooltip} content
+	 * @returns {this}
+	 */
 	setTooltipContent(content) {
 		this._tooltip?.setContent(content);
 		return this;
 	}
 
-	// @method getTooltip(): Tooltip
-	// Returns the tooltip bound to this layer.
+	/**
+	 * Returns the tooltip bound to this layer.
+	 * @category Tooltip methods
+	 * @returns {Tooltip}
+	 */
 	getTooltip() {
 		return this._tooltip;
 	}

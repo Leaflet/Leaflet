@@ -1,55 +1,55 @@
 import {Evented} from '../core/Events.js';
 import * as Util from '../core/Util.js';
 
-// @namespace Layer
-
 // Classes extending `Layer` will inherit the following options:
 const defaultOptions = {
-	// @option pane: String = 'overlayPane'
-	// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
-	// Not effective if the `renderer` option is set (the `renderer` option will override the `pane` option).
+	/**
+	 * By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding
+	 * this option will cause the layer to be placed on another pane by default. Not effective if
+	 * the `renderer` option is set (the `renderer` option will override the `pane` option).
+	 */
 	pane: 'overlayPane',
 
-	// @option attribution: String = null
-	// String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes the layer data and is often a legal obligation towards copyright holders and tile providers.
+	/**
+	 * String to be shown in the attribution control, e.g. "© OpenStreetMap contributors". It describes
+	 * the layer data and is often a legal obligation towards copyright holders and tile providers.
+	 * @type {string}
+	 */
 	attribution: null,
 
 	bubblingPointerEvents: true
 };
 
-// @section
-// @event add: Event
-// Fired after the layer is added to a map
-// @event remove: Event
-// Fired after the layer is removed from a map
+/**
+ * @typedef {Object} LayerEvents
+ * @property {LeafletEvent} add Fired after the layer is added to a map
+ * @property {LeafletEvent} remove Fired after the layer is removed from a map
+ */
 
-// @section Popup events
-// @event popupopen: PopupEvent
-// Fired when a popup bound to this layer is opened
-// @event popupclose: PopupEvent
-// Fired when a popup bound to this layer is closed
+/**
+ * Popup events
+ * @typedef {Object} LayerPopupEvents
+ * @property {PopupEvent} popupopen Fired when a popup bound to this layer is opened
+ * @property {PopupEvent} popupclose Fired when a popup bound to this layer is closed
+ */
 
-// @section Tooltip events
-// @event tooltipopen: TooltipEvent
-// Fired when a tooltip bound to this layer is opened.
-// @event tooltipclose: TooltipEvent
-// Fired when a tooltip bound to this layer is closed.
+/**
+ * Tooltip events
+ * @typedef {Object} LayerTooltipEvents
+ * @property {TooltipEvent} tooltipopen Fired when a tooltip bound to this layer is opened.
+ * @property {TooltipEvent} tooltipclose Fired when a tooltip bound to this layer is closed.
+ */
 
-/*
- * @class Layer
- * @inherits Evented
- * @aka ILayer
- *
- * A set of methods from the Layer base class that all Leaflet layers use.
- * Inherits all methods, options and events from `Evented`.
- *
+/**
  * @example
- *
  * ```js
  * const layer = new Marker(latlng).addTo(map);
  * layer.addTo(map);
  * layer.remove();
  * ```
+ * @todo inherits Evented
+ * @categoryDescription Methods
+ * Classes extending `Layer` will inherit the following methods:
  */
 
 
@@ -57,36 +57,47 @@ export class LayerBase extends Evented {
 
 	static defaultOptions = defaultOptions;
 
-	/* @section
-	 * Classes extending `Layer` will inherit the following methods:
-	 *
-	 * @method addTo(map: LeafletMap|LayerGroup): this
+	/**
 	 * Adds the layer to the given map or layer group.
+	 * @param {LeafletMap | LayerGroup} map
+	 * @returns {this}
 	 */
 	addTo(map) {
 		map.addLayer(this);
 		return this;
 	}
 
-	// @method remove(): this
-	// Removes the layer from the map it is currently active on.
+	/**
+	 * Removes the layer from the map it is currently active on.
+	 * @returns {this}
+	 */
 	remove() {
 		return this.removeFrom(this._map || this._mapToAdd);
 	}
 
-	// @method removeFrom(map: LeafletMap): this
-	// Removes the layer from the given map
-	//
-	// @alternative
-	// @method removeFrom(group: LayerGroup): this
-	// Removes the layer from the given `LayerGroup`
+	/**
+	 * Removes the layer from the given map
+	 * @overload
+	 * @param {LeafletMap} map
+	 * @returns {this}
+	 */
+	/**
+	 * Removes the layer from the given `LayerGroup`
+	 * @overload
+	 * @param {LayerGroup} group
+	 * @returns {this}
+	 */
 	removeFrom(obj) {
 		obj?.removeLayer(this);
 		return this;
 	}
 
-	// @method getPane(name?: String): HTMLElement
-	// Returns the `HTMLElement` representing the named pane on the map. If `name` is omitted, returns the pane for this layer.
+	/**
+	 * Returns the `HTMLElement` representing the named pane on the
+	 * map. If `name` is omitted, returns the pane for this layer.
+	 * @param {string} [name]
+	 * @returns {HTMLElement}
+	 */
 	getPane(name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	}
@@ -101,8 +112,10 @@ export class LayerBase extends Evented {
 		return this;
 	}
 
-	// @method getAttribution(): String
-	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
+	/**
+	 * Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
+	 * @returns {string}
+	 */
 	getAttribution() {
 		return this.options.attribution;
 	}
@@ -129,23 +142,42 @@ export class LayerBase extends Evented {
 	}
 }
 
-/* @section Extension methods
+/**
+ * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should
+ * belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
+ * @category Extension methods
+ * @param {LeafletMap} map
+ * @returns {this}
  * @uninheritable
- *
- * Every layer should extend from `Layer` and (re-)implement the following methods.
- *
- * @method onAdd(map: LeafletMap): this
- * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
- *
- * @method onRemove(map: LeafletMap): this
- * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
- *
- * @method getEvents(): Object
- * This optional method should return an object like `{ viewreset: this._reset }` for [`on`](#evented-on). The event handlers in this object will be automatically added and removed from the map with your layer.
- *
- * @method getAttribution(): String
- * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
- *
- * @method beforeAdd(map: LeafletMap): this
- * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.
+ */
+/**
+ * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners
+ * previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
+ * @category Extension methods
+ * @param {LeafletMap} map
+ * @returns {this}
+ * @uninheritable
+ */
+/**
+ * This optional method should return an object like `{ viewreset: this._reset }` for [`on`](#evented-on). The
+ * event handlers in this object will be automatically added and removed from the map with your layer.
+ * @category Extension methods
+ * @returns {object}
+ * @uninheritable
+ */
+/**
+ * This optional method should return a string containing HTML to be shown
+ * on the `Attribution control` whenever the layer is visible.
+ * @category Extension methods
+ * @returns {string}
+ * @uninheritable
+ */
+/**
+ * Optional method. Called on [`map.addLayer(layer)`](#map-addlayer), before the
+ * layer is added to the map, before events are initialized, without waiting until
+ * the map is in a usable state. Use for early initialization only.
+ * @category Extension methods
+ * @param {LeafletMap} map
+ * @returns {this}
+ * @uninheritable
  */

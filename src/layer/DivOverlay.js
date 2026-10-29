@@ -4,46 +4,41 @@ import {LatLng} from '../geo/LatLng.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-// @namespace DivOverlay
-
-// @section
-// @aka DivOverlay options
 const defaultOptions = {
-	// @option interactive: Boolean = false
-	// If true, the popup/tooltip will listen to the pointer events.
+	/** If true, the popup/tooltip will listen to the pointer events. */
 	interactive: false,
 
-	// @option offset: Point = Point(0, 0)
-	// The offset of the overlay position.
+	/** The offset of the overlay position. */
 	offset: [0, 0],
 
-	// @option className: String = ''
-	// A custom CSS class name to assign to the overlay.
+	/** A custom CSS class name to assign to the overlay. */
 	className: '',
 
-	// @option pane: String = undefined
-	// `Map pane` where the overlay will be added.
+	/**
+	 * `Map pane` where the overlay will be added.
+	 * @type {string}
+	 */
 	pane: undefined,
 
-	// @option content: String|HTMLElement|Function = ''
-	// Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
-	// passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
-	// String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent` instead.
+	/**
+	 * Sets the HTML content of the overlay while initializing. If a function is passed the source layer will be
+	 * passed to the function. The function should return a `String` or `HTMLElement` to be used in the overlay.
+	 * String content is rendered as HTML; sanitize untrusted input or pass an `HTMLElement` with safe `textContent`
+	 * instead.
+	 */
 	content: ''
 };
 
-// @section DivOverlay events
-// @event contentupdate: Event
-// Fired when the content of the overlay is updated
-
-/*
- * @class DivOverlay
- * @inherits Interactive layer
- * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
+/**
+ * DivOverlay events
+ * @typedef {Object} DivOverlayDivOverlayEvents
+ * @property {LeafletEvent} contentupdate Fired when the content of the overlay is updated
  */
 
-// @namespace DivOverlay
-
+/**
+ * Base model for Popup and Tooltip. Inherit from it for custom overlays like plugins.
+ * @todo inherits Interactive layer
+ */
 export class DivOverlay extends LayerBase {
 
 	static initHooks = true;
@@ -67,9 +62,11 @@ export class DivOverlay extends LayerBase {
 		this.callInitHooks();
 	}
 
-	// @method openOn(map: LeafletMap): this
-	// Adds the overlay to the map.
-	// Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
+	/**
+	 * Adds the overlay to the map. Alternative to `map.openPopup(popup)`/`.openTooltip(tooltip)`.
+	 * @param {LeafletMap} map
+	 * @returns {this}
+	 */
 	openOn(map) {
 		map = arguments.length ? map : this._source._map; // experimental, not the part of public api
 		if (!map.hasLayer(this)) {
@@ -78,19 +75,22 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method close(): this
-	// Closes the overlay.
-	// Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
-	// and `layer.closePopup()`/`.closeTooltip()`.
+	/**
+	 * Closes the overlay. Alternative to `map.closePopup(popup)`/`.closeTooltip(tooltip)`
+	 * and `layer.closePopup()`/`.closeTooltip()`.
+	 * @returns {this}
+	 */
 	close() {
 		this._map?.removeLayer(this);
 		return this;
 	}
 
-	// @method toggle(layer?: Layer): this
-	// Opens or closes the overlay bound to layer depending on its current state.
-	// Argument may be omitted only for overlay bound to layer.
-	// Alternative to `layer.togglePopup()`/`.toggleTooltip()`.
+	/**
+	 * Opens or closes the overlay bound to layer depending on its current state. Argument may be omitted
+	 * only for overlay bound to layer. Alternative to `layer.togglePopup()`/`.toggleTooltip()`.
+	 * @param {Layer} [layer]
+	 * @returns {this}
+	 */
 	toggle(layer) {
 		if (this._map) {
 			this.close();
@@ -147,15 +147,19 @@ export class DivOverlay extends LayerBase {
 		}
 	}
 
-	// @namespace DivOverlay
-	// @method getLatLng(): LatLng
-	// Returns the geographical point of the overlay.
+	/**
+	 * Returns the geographical point of the overlay.
+	 * @returns {LatLng}
+	 */
 	getLatLng() {
 		return this._latlng;
 	}
 
-	// @method setLatLng(latlng: LatLng): this
-	// Sets the geographical point where the overlay will open.
+	/**
+	 * Sets the geographical point where the overlay will open.
+	 * @param {LatLng} latlng
+	 * @returns {this}
+	 */
 	setLatLng(latlng) {
 		this._latlng = new LatLng(latlng);
 		if (this._map) {
@@ -165,32 +169,41 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method getContent(): String|HTMLElement|Function
-	// Returns the content of the overlay.
+	/**
+	 * Returns the content of the overlay.
+	 * @returns {string | HTMLElement | Function}
+	 */
 	getContent() {
 		return this._content;
 	}
 
-	// @method setContent(htmlContent: String|HTMLElement|Function): this
-	// Sets the HTML content of the overlay. A `String` argument is rendered as
-	// HTML; if it may contain untrusted input, sanitize it (e.g. with DOMPurify)
-	// or pass an `HTMLElement` with safe `textContent` instead. If a function is
-	// passed the source layer will be passed to the function. The function should
-	// return a `String` or `HTMLElement` to be used in the overlay.
+	/**
+	 * Sets the HTML content of the overlay. A `String` argument is rendered as HTML; if it may contain
+	 * untrusted input, sanitize it (e.g. with DOMPurify) or pass an `HTMLElement` with safe `textContent`
+	 * instead. If a function is passed the source layer will be passed to the function. The function
+	 * should return a `String` or `HTMLElement` to be used in the overlay.
+	 * @param {string | HTMLElement | Function} htmlContent
+	 * @returns {this}
+	 */
 	setContent(content) {
 		this._content = content;
 		this.update();
 		return this;
 	}
 
-	// @method getElement(): HTMLElement
-	// Returns the HTML container of the overlay.
+	/**
+	 * Returns the HTML container of the overlay.
+	 * @returns {HTMLElement}
+	 */
 	getElement() {
 		return this._container;
 	}
 
-	// @method update(): null
-	// Updates the overlay content, layout and position. Useful for updating the overlay after something inside changed, e.g. image loaded.
+	/**
+	 * Updates the overlay content, layout and position. Useful for updating
+	 * the overlay after something inside changed, e.g. image loaded.
+	 * @returns {null}
+	 */
 	update() {
 		if (!this._map) { return; }
 
@@ -213,14 +226,18 @@ export class DivOverlay extends LayerBase {
 		};
 	}
 
-	// @method isOpen(): Boolean
-	// Returns `true` when the overlay is visible on the map.
+	/**
+	 * Returns `true` when the overlay is visible on the map.
+	 * @returns {boolean}
+	 */
 	isOpen() {
 		return !!this._map && this._map.hasLayer(this);
 	}
 
-	// @method bringToFront(): this
-	// Brings this overlay in front of other overlays (in the same map pane).
+	/**
+	 * Brings this overlay in front of other overlays (in the same map pane).
+	 * @returns {this}
+	 */
 	bringToFront() {
 		if (this._map) {
 			DomUtil.toFront(this._container);
@@ -228,8 +245,10 @@ export class DivOverlay extends LayerBase {
 		return this;
 	}
 
-	// @method bringToBack(): this
-	// Brings this overlay to the back of other overlays (in the same map pane).
+	/**
+	 * Brings this overlay to the back of other overlays (in the same map pane).
+	 * @returns {this}
+	 */
 	bringToBack() {
 		if (this._map) {
 			DomUtil.toBack(this._container);
