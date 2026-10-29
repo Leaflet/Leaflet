@@ -14,7 +14,7 @@ describe('Marker', () => {
 		map = new LeafletMap(container);
 
 		map.setView([0, 0], 0);
-		icon1 = new DefaultIcon();
+		icon1 = new DefaultIcon({shadowUrl: DefaultIcon.defaultOptions.iconUrl});
 		icon2 = new DefaultIcon({
 			iconUrl: `${icon1.options.iconUrl}?2`,
 			shadowUrl: `${icon1.options.shadowUrl}?2`
@@ -203,6 +203,14 @@ describe('Marker', () => {
 			expect(marker._shadow.parentNode).to.equal(map._panes.shadowPane);
 		});
 
+		it('accepts an icon without createShadow', () => {
+			const icon = {options: {}, createIcon: () => document.createElement('div')};
+			const marker = new Marker([0, 0], {icon}).addTo(map);
+
+			expect(marker._icon.parentNode).to.equal(map._panes.markerPane);
+			expect(marker._shadow).to.be.null;
+		});
+
 		it('sets the alt attribute to a default value when no alt text is passed', () => {
 			const marker = new Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
@@ -283,7 +291,7 @@ describe('Marker', () => {
 
 	describe('rotation', () => {
 		it('rotates the icon around its anchor and hides the shadow', () => {
-			const marker = new Marker([0, 0], {rotation: 45}).addTo(map);
+			const marker = new Marker([0, 0], {icon: icon1, rotation: 45}).addTo(map);
 
 			expect(marker._icon.style.transform.endsWith(' rotate(45deg)')).to.be.true;
 			expect(marker._icon.style.transformOrigin).to.equal('12px 41px');
