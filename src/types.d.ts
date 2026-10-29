@@ -1,7 +1,7 @@
 // Public types that JSDoc can't express. Options and event maps are interfaces rather than JSDoc typedefs (type
 // aliases), since only interfaces merge with a plugin's `declare module 'leaflet'` augmentation.
 
-import type {Feature} from 'geojson';
+import type {Feature, Geometry, Point as GeoJSONPoint, Position} from 'geojson';
 import type {Evented} from './core/Events.js';
 import type {DraggableDefaults, DraggableEvents} from './dom/Draggable.js';
 import type {LatLng} from './geo/LatLng.js';
@@ -21,6 +21,11 @@ import type {LayerDefaults, LayerEvents, LayerPopupEvents, LayerTooltipEvents} f
 import type {Popup, PopupDefaults} from './layer/Popup.js';
 import type {VideoOverlayDefaults, VideoOverlayEvents} from './layer/VideoOverlay.js';
 import type {Tooltip, TooltipDefaults} from './layer/Tooltip.js';
+import type {CanvasDefaults, DrawOrder} from './layer/vector/Canvas.js';
+import type {CircleMarker, CircleMarkerDefaults, CircleMarkerEvents} from './layer/vector/CircleMarker.js';
+import type {Path, PathDefaults} from './layer/vector/Path.js';
+import type {Polyline, PolylineDefaults} from './layer/vector/Polyline.js';
+import type {RendererEvents} from './layer/vector/Renderer.js';
 import type {LeafletMap} from './map/Map.js';
 
 export type {Listener, ListenerMap} from './core/Events.js';
@@ -106,6 +111,88 @@ export interface ImageOverlayEventMap extends InteractiveLayerEventMap, ImageOve
 
 export interface VideoOverlayOptions extends ImageOverlayOptions, VideoOverlayDefaults {}
 export interface VideoOverlayEventMap extends ImageOverlayEventMap, VideoOverlayEvents {}
+
+export interface RendererOptions extends BlanketOverlayOptions {}
+export interface RendererEventMap extends LayerEventMap, RendererEvents {}
+export interface CanvasOptions extends RendererOptions, CanvasDefaults {}
+
+export interface PathOptions extends InteractiveLayerOptions, PathDefaults {
+	/**
+	 * Custom class name set on an element. Only for SVG renderer. Applied when the element is created;
+	 * [`setStyle`](#path-setstyle) does not update it afterwards.
+	 */
+	className?: string;
+	_dashArray?: number[] | null; // parsed from `dashArray` by `Canvas`
+}
+
+export interface PolylineOptions extends PathOptions, PolylineDefaults {}
+
+export interface CircleMarkerOptions extends PathOptions, Omit<CircleMarkerDefaults, keyof PathOptions> {}
+export interface CircleMarkerEventMap extends InteractiveLayerEventMap, CircleMarkerEvents {}
+
+export interface CircleOptions extends CircleMarkerOptions {
+	/** Radius of the circle, in meters. */
+	radius: number;
+}
+
+/** A function returning the `Path` options for a GeoJSON feature. */
+export type StyleFunction = (feature: Feature<Geometry, any>) => Partial<PathOptions>;
+
+// The callbacks use method syntax, so a callback typed with the user's own feature properties is accepted.
+export interface GeoJSONOptions extends InteractiveLayerOptions {
+	/**
+	 * A function defining how GeoJSON points spawn Leaflet layers. It is internally called when data is added,
+	 * passing the GeoJSON point feature and its `LatLng`. The default is to spawn a default `Marker`:
+	 * ```js
+	 * function(geoJsonPoint, latlng) {
+	 * 	return new Marker(latlng);
+	 * }
+	 * ```
+	 */
+	pointToLayer?(geoJsonPoint: Feature<GeoJSONPoint, any>, latlng: LatLng): Layer;
+	/**
+	 * `Path` options, or a function returning them for a feature, for styling GeoJSON lines and polygons. Called
+	 * internally when data is added. The default value is to not override any defaults:
+	 * ```js
+	 * function (geoJsonFeature) {
+	 * 	return {}
+	 * }
+	 * ```
+	 */
+	style?: Partial<PathOptions> | StyleFunction;
+	/**
+	 * A function that will be called once for each created `Feature`, after it has been created and styled.
+	 * Useful for attaching events and popups to features. It will receive the `feature` as the first argument and
+	 * its corresponding spawned `layer` from [`asFeature`](#geojson-asFeature) as the second. The default is to do
+	 * nothing with the newly created layers:
+	 * ```js
+	 * function (feature, layer) {}
+	 * ```
+	 */
+	onEachFeature?(feature: Feature<Geometry, any>, layer: Layer): void;
+	/**
+	 * A function that will be used to decide whether to include a feature or not. The default is to include all
+	 * features:
+	 * ```js
+	 * function (geoJsonFeature) {
+	 * 	return true;
+	 * }
+	 * ```
+	 * Note: dynamically changing the `filter` option will have effect only on newly added data. It will _not_
+	 * re-evaluate already included features.
+	 */
+	filter?(geoJsonFeature: Feature<Geometry, any>): boolean;
+	/**
+	 * A function that will be used for converting GeoJSON coordinates to `LatLng`s. The default is the
+	 * `coordsToLatLng` static method.
+	 */
+	coordsToLatLng?(coords: Position): LatLng;
+	/**
+	 * Whether default Markers for "Point" type Features inherit from group options.
+	 * @default false
+	 */
+	markersInheritOptions?: boolean;
+}
 
 /** A `Point`, or its array (`[x, y]`) or object (`{x, y}`) form. */
 export type PointExpression = Point | [number, number] | {x: number, y: number};
@@ -367,6 +454,49 @@ declare module './layer/DivOverlay.js' {
 		_updateLayout(): void;
 		_adjustPan(): void;
 		_animateZoom(e: ZoomAnimEvent): void;
+	}
+}
+
+declare module './layer/vector/Renderer.js' {
+	interface Renderer {
+		_layers: {[id: number]: Path}; // created lazily
+		// implemented by `SVG` and `Canvas`, called by paths
+		_initPath(layer: Path<any, any>): void;
+		_addPath(layer: Path<any, any>): void;
+		_removePath(layer: Path<any, any>): void;
+		_updatePath(layer: Path<any, any>): void;
+		_updateStyle(layer: Path<any, any>): void;
+		_bringToFront(layer: Path<any, any>): void;
+		_bringToBack(layer: Path<any, any>): void;
+		_updatePoly(layer: Polyline<any, any, any>, closed?: boolean): void;
+		_updateCircle(layer: CircleMarker<any, any>): void;
+	}
+}
+
+declare module './layer/vector/Canvas.js' {
+	interface Canvas {
+		_container: HTMLCanvasElement;
+		_ctxScale: number;
+	}
+}
+
+declare module './layer/vector/Path.js' {
+	interface Path {
+		_path: SVGElement; // created by `SVG`
+		_order?: DrawOrder; // created by `Canvas`
+		_pxBounds?: Bounds;
+		// implemented by subclasses
+		_project(): void;
+		_update(): void;
+		_updatePath(): void;
+		_updateBounds(): void;
+		_containsPoint(p: Point): boolean;
+	}
+}
+
+declare module './layer/vector/CircleMarker.js' {
+	interface CircleMarker {
+		_pxRadiusY?: number; // set by `Circle`
 	}
 }
 

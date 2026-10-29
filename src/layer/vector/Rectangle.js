@@ -1,9 +1,8 @@
+// @ts-check
 import {Polygon} from './Polygon.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 
-/*
- * Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
- */
+/** @import {InteractiveLayerEventMap, LatLngBoundsExpression, PolylineOptions} from '../../types.js' */
 
 /**
  * A class for drawing rectangle overlays on a map. Extends `Polygon`.
@@ -18,13 +17,17 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
  * // zoom the map to the rectangle bounds
  * map.fitBounds(bounds);
  * ```
+ * @template {PolylineOptions} [O=PolylineOptions]
+ * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
+ * @extends {Polygon<O, E>}
  */
 export class Rectangle extends Polygon {
 	static initHooks = true;
 
 	/**
-	 * @param {LatLngBounds} latLngBounds
-	 * @param {PolylineOptions} [options]
+	 * Instantiates a rectangle object given geographical bounds, and an optional options object.
+	 * @param {LatLngBoundsExpression} latLngBounds
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(latLngBounds, options) {
 		super(boundsToLatLngs(latLngBounds), options);
@@ -33,7 +36,7 @@ export class Rectangle extends Polygon {
 
 	/**
 	 * Redraws the rectangle with the passed bounds.
-	 * @param {LatLngBounds} latLngBounds
+	 * @param {LatLngBoundsExpression} latLngBounds
 	 * @returns {this}
 	 */
 	setBounds(latLngBounds) {
@@ -41,6 +44,7 @@ export class Rectangle extends Polygon {
 	}
 }
 
+/** @param {LatLngBoundsExpression} latLngBounds */
 function boundsToLatLngs(latLngBounds) {
 	latLngBounds = new LatLngBounds(latLngBounds);
 	return [

@@ -1,7 +1,9 @@
+// @ts-check
 import {CircleMarker} from './CircleMarker.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 
+/** @import {CircleMarkerEventMap, CircleOptions, LatLngExpression, PointExpression} from '../../types.js' */
 
 /**
  * A class for drawing circle overlays on a map with radius specified in meters. Extends `CircleMarker`.
@@ -11,39 +13,27 @@ import {EarthCRS} from '../../geo/crs/EarthCRS.js';
  * ```js
  * new Circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
+ * @template {CircleOptions} [O=CircleOptions]
+ * @template {CircleMarkerEventMap} [E=CircleMarkerEventMap]
+ * @extends {CircleMarker<O, E>}
  */
 export class Circle extends CircleMarker {
 
 	static initHooks = true;
 
 	/**
-	 * Instantiates a circle object given a geographical point,
-	 * and an options object which contains the circle radius.
-	 * @param {LatLng} latlng
-	 * @param {CircleOptions} [options]
+	 * Instantiates a circle object given a geographical point, and an options object which contains the circle
+	 * radius.
+	 * @param {LatLngExpression} latlng
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(latlng, options) {
 		super(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
-		/**
-		 * Radius of the circle, in meters.
-		 * @type {number}
-		 */
-
 		this.callInitHooks();
 	}
-
-	/**
-	 * Sets the radius of a circle. Units are in meters.
-	 * @param {number} radius
-	 * @returns {this}
-	 */
-	/**
-	 * Returns the current radius of a circle. Units are in meters.
-	 * @returns {number}
-	 */
 
 	/**
 	 * Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
@@ -52,7 +42,7 @@ export class Circle extends CircleMarker {
 	getBounds() {
 		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
 
-		const half = [this._pxRadius, this._pxRadiusY ?? this._pxRadius];
+		const half = /** @type {PointExpression} */ ([this._pxRadius, this._pxRadiusY ?? this._pxRadius]);
 
 		return new LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
@@ -64,7 +54,7 @@ export class Circle extends CircleMarker {
 		const lng = this._latlng.lng,
 		lat = this._latlng.lat,
 		map = this._map,
-		crs = map.options.crs;
+		crs = /** @type {any} */ (map.options).crs;
 
 		if (crs.distance === EarthCRS.distance) {
 			const d = Math.PI / 180,

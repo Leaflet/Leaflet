@@ -1,19 +1,26 @@
+// @ts-check
 import {Renderer} from './Renderer.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
+
+/** @import {CanvasOptions, Defaults, RendererEventMap} from '../../types.js' */
+/** @import {Point} from '../../geometry/Point.js' */
+/** @import {CircleMarker} from './CircleMarker.js' */
+/** @import {Path} from './Path.js' */
+/** @import {Polyline} from './Polyline.js' */
 
 const defaultOptions = {
 	/** How much to extend the click tolerance around a path/object on the map. */
 	tolerance: 0
 };
 
-const DASH_SEPARATOR_RE = /[, ]+/;
+/** @typedef {typeof defaultOptions} CanvasDefaults */
 
-/**
- * Creates a Canvas renderer with the given options.
- * @param {RendererOptions} [options]
- */
+// a node of the linked list of paths in drawing order
+/** @typedef {{layer: Path, prev?: DrawOrder | null, next?: DrawOrder | null}} DrawOrder */
+
+const DASH_SEPARATOR_RE = /[, ]+/;
 
 /**
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
@@ -35,9 +42,13 @@ const DASH_SEPARATOR_RE = /[, ]+/;
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );
  * ```
+ * @template {CanvasOptions} [O=CanvasOptions]
+ * @template {RendererEventMap} [E=RendererEventMap]
+ * @extends {Renderer<O, E>}
  */
 export class Canvas extends Renderer {
 
+	/** @type {Defaults<CanvasOptions>} */
 	static defaultOptions = defaultOptions;
 
 	getEvents() {
@@ -48,11 +59,12 @@ export class Canvas extends Renderer {
 
 	_onViewPreReset() {
 		// Set a flag so that a viewprereset+moveend+viewreset only updates&redraws once
+		/** @type {boolean} */
 		this._postponeUpdatePaths = true;
 	}
 
-	onAdd(map) {
-		super.onAdd(map);
+	onAdd() {
+		super.onAdd();
 
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
@@ -71,15 +83,17 @@ export class Canvas extends Renderer {
 		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'pointerout', this._handlePointerOut, this);
-		container['_leaflet_disable_events'] = true;
+		/** @type {any} */ (container)['_leaflet_disable_events'] = true;
 
-		this._ctx = container.getContext('2d');
+		/** @type {CanvasRenderingContext2D} */
+		this._ctx = /** @type {CanvasRenderingContext2D} */ (container.getContext('2d'));
 	}
 
 	_destroyContainer() {
-		cancelAnimationFrame(this._redrawRequest);
+		cancelAnimationFrame(/** @type {number} */ (this._redrawRequest));
+		/** @type {number | null} */
 		this._redrawRequest = null;
-		delete this._ctx;
+		delete /** @type {any} */ (this)._ctx;
 		super._destroyContainer();
 	}
 
@@ -90,11 +104,13 @@ export class Canvas extends Renderer {
 		// set canvas size (also clearing it); use double size on retina
 		this._container.width = m * size.x;
 		this._container.height = m * size.y;
+		return size;
 	}
 
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
 
+		/** @type {Bounds | null} */
 		this._redrawBounds = null;
 		for (const layer of Object.values(this._layers)) {
 			layer._update();
@@ -127,26 +143,31 @@ export class Canvas extends Renderer {
 		}
 	}
 
+	/** @param {Path} layer */
 	_initPath(layer) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
 
+		/** @type {DrawOrder} */
 		const order = layer._order = {
 			layer,
 			prev: this._drawLast,
 			next: null
 		};
 		if (this._drawLast) { this._drawLast.next = order; }
+		/** @type {DrawOrder | null | undefined} */
 		this._drawLast = order;
 		this._drawFirst ??= this._drawLast;
 	}
 
+	/** @param {Path} layer */
 	_addPath(layer) {
 		this._requestRedraw(layer);
 	}
 
+	/** @param {Path} layer */
 	_removePath(layer) {
-		const order = layer._order;
+		const order = /** @type {DrawOrder} */ (layer._order);
 		const next = order.next;
 		const prev = order.prev;
 
@@ -168,6 +189,7 @@ export class Canvas extends Renderer {
 		this._requestRedraw(layer);
 	}
 
+	/** @param {Path} layer */
 	_updatePath(layer) {
 		// Redraw the union of the layer's old pixel
 		// bounds and the new pixel bounds.
@@ -179,11 +201,13 @@ export class Canvas extends Renderer {
 		this._requestRedraw(layer);
 	}
 
+	/** @param {Path} layer */
 	_updateStyle(layer) {
 		this._updateDashArray(layer);
 		this._requestRedraw(layer);
 	}
 
+	/** @param {Path} layer */
 	_updateDashArray(layer) {
 		if (typeof layer.options.dashArray === 'string') {
 			const parts = layer.options.dashArray.split(DASH_SEPARATOR_RE);
@@ -194,6 +218,7 @@ export class Canvas extends Renderer {
 		}
 	}
 
+	/** @param {Path} layer */
 	_requestRedraw(layer) {
 		if (!this._map) { return; }
 
@@ -201,6 +226,7 @@ export class Canvas extends Renderer {
 		this._redrawRequest ??= requestAnimationFrame(this._redraw.bind(this));
 	}
 
+	/** @param {Path} layer */
 	_extendRedrawBounds(layer) {
 		if (layer._pxBounds) {
 			const padding = (layer.options.weight ?? 0) + 1;
@@ -248,6 +274,7 @@ export class Canvas extends Renderer {
 			this._ctx.clip();
 		}
 
+		/** @type {boolean} */
 		this._drawing = true;
 
 		for (let order = this._drawFirst; order; order = order.next) {
@@ -262,6 +289,10 @@ export class Canvas extends Renderer {
 		this._ctx.restore();  // Restore state before clipping.
 	}
 
+	/**
+	 * @param {Polyline} layer
+	 * @param {boolean} [closed]
+	 */
 	_updatePoly(layer, closed) {
 		if (!this._drawing) { return; }
 
@@ -286,6 +317,7 @@ export class Canvas extends Renderer {
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	}
 
+	/** @param {CircleMarker} layer */
 	_updateCircle(layer) {
 
 		if (!this._drawing || layer._empty()) { return; }
@@ -293,7 +325,7 @@ export class Canvas extends Renderer {
 		const {x, y} = layer._point,
 		ctx = this._ctx,
 		r = Math.max(Math.round(layer._pxRadius), 1),
-		ry = Math.max(Math.round(layer._pxRadiusY), 1) || r;
+		ry = Math.max(Math.round(layer._pxRadiusY ?? r), 1);
 
 		ctx.beginPath();
 		// arc is faster for circles in Chrome and Firefox, ellipse for everything else
@@ -306,6 +338,10 @@ export class Canvas extends Renderer {
 		this._fillStroke(ctx, layer);
 	}
 
+	/**
+	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {Path} layer
+	 */
 	_fillStroke(ctx, layer) {
 		const options = layer.options;
 
@@ -330,6 +366,7 @@ export class Canvas extends Renderer {
 	// Canvas obviously doesn't have pointer events for individual drawn objects,
 	// so we emulate that by calculating what's under the pointer on pointermove/click manually
 
+	/** @param {MouseEvent} e */
 	_onClick(e) {
 		const point = this._map.pointerEventToLayerPoint(e);
 		let layer, clickedLayer;
@@ -345,14 +382,16 @@ export class Canvas extends Renderer {
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	}
 
+	/** @param {PointerEvent} e */
 	_onPointerMove(e) {
-		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
+		if (!this._map || /** @type {any} */ (this._map).dragging.moving() || this._map._animatingZoom) { return; }
 
 		const point = this._map.pointerEventToLayerPoint(e);
 		this._handlePointerHover(e, point);
 	}
 
 
+	/** @param {PointerEvent} e */
 	_handlePointerOut(e) {
 		const layer = this._hoveredLayer;
 		if (layer) {
@@ -364,6 +403,10 @@ export class Canvas extends Renderer {
 		}
 	}
 
+	/**
+	 * @param {PointerEvent} e
+	 * @param {Point} point
+	 */
 	_handlePointerHover(e, point) {
 		if (this._pointerHoverThrottled) {
 			return;
@@ -384,22 +427,31 @@ export class Canvas extends Renderer {
 			if (candidateHoveredLayer) {
 				this._container.classList.add('leaflet-interactive'); // change cursor
 				this._fireEvent([candidateHoveredLayer], e, 'pointerover');
+				/** @type {Path | null | undefined} */
 				this._hoveredLayer = candidateHoveredLayer;
 			}
 		}
 
 		this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, e);
 
+		/** @type {boolean | undefined} */
 		this._pointerHoverThrottled = true;
+		/** @type {number | undefined} */
 		this._pointerHoverThrottleTimeout = setTimeout((() => {
 			this._pointerHoverThrottled = false;
 		}), 32);
 	}
 
+	/**
+	 * @param {Path[] | false} layers
+	 * @param {MouseEvent} e
+	 * @param {string} [type]
+	 */
 	_fireEvent(layers, e, type) {
 		this._map._fireDOMEvent(e, type || e.type, layers);
 	}
 
+	/** @param {Path} layer */
 	_bringToFront(layer) {
 		const order = layer._order;
 
@@ -423,7 +475,7 @@ export class Canvas extends Renderer {
 		}
 
 		order.prev = this._drawLast;
-		this._drawLast.next = order;
+		/** @type {DrawOrder} */ (this._drawLast).next = order;
 
 		order.next = null;
 		this._drawLast = order;
@@ -431,6 +483,7 @@ export class Canvas extends Renderer {
 		this._requestRedraw(layer);
 	}
 
+	/** @param {Path} layer */
 	_bringToBack(layer) {
 		const order = layer._order;
 
@@ -456,7 +509,7 @@ export class Canvas extends Renderer {
 		order.prev = null;
 
 		order.next = this._drawFirst;
-		this._drawFirst.prev = order;
+		/** @type {DrawOrder} */ (this._drawFirst).prev = order;
 		this._drawFirst = order;
 
 		this._requestRedraw(layer);

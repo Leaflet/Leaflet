@@ -1,9 +1,18 @@
+// @ts-check
 import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
 
+/** @import {LeafletEvent, RendererEventMap, RendererOptions} from '../../types.js' */
+
 /**
- * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles
- * the DOM container of the renderer, its bounds, and its zoom animation.
+ * @typedef {Object} RendererEvents
+ * @property {LeafletEvent} update Fired when the renderer updates its bounds, center and zoom, for example when its
+ * map has moved.
+ */
+
+/**
+ * Base class for vector renderer implementations (`SVG`, `Canvas`). Handles the DOM container of the renderer,
+ * its bounds, and its zoom animation.
  *
  * A `Renderer` works as an implicit layer group for all `Path`s - the renderer itself can be added or removed
  * to the map. All paths use a renderer, which can be implicit (the map will decide the type of renderer and
@@ -11,25 +20,26 @@ import * as Util from '../../core/Util.js';
  *
  * Do not use this class directly, use `SVG` and `Canvas` instead.
  *
- * The `continuous` option inherited from `BlanketOverlay` cannot be set to `true`
- * (otherwise, renderers get out of place during a pinch-zoom operation).
- * @todo event update: Event
- * Fired when the renderer updates its bounds, center and zoom, for example when
- * its map has moved
+ * The `continuous` option inherited from `BlanketOverlay` cannot be set to `true` (otherwise, renderers get out of
+ * place during a pinch-zoom operation).
+ * @template {RendererOptions} [O=RendererOptions]
+ * @template {RendererEventMap} [E=RendererEventMap]
+ * @extends {BlanketOverlay<O, E>}
  */
 export class Renderer extends BlanketOverlay {
 
 	static initHooks = true;
 
+	/** @param {Partial<O>} [options] */
 	constructor(options) {
-		super({...options, continuous: false});
+		super(/** @type {Partial<O>} */ ({...options, continuous: false}));
 		Util.stamp(this);
 		this._layers ??= {};
 		this.callInitHooks();
 	}
 
-	onAdd(map) {
-		super.onAdd(map);
+	onAdd() {
+		super.onAdd();
 		this.on('update', this._updatePaths, this);
 	}
 

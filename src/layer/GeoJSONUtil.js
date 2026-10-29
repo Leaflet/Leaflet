@@ -22,7 +22,7 @@ export function latLngToCoords(latlng, precision) {
 
 /**
  * @param {any[]} latlngs
- * @param {number} levelsDeep
+ * @param {number} [levelsDeep]
  * @param {boolean} [close]
  * @param {number | false} [precision]
  * @returns {any[]}

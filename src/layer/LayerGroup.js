@@ -14,7 +14,7 @@ import {getFeature, asFeature} from './GeoJSONUtil.js';
 /**
  * @typedef {Layer & {
  *   setZIndex?(zIndex: number): unknown,
- *   setStyle?(style: object): unknown,
+ *   setStyle?(style?: object): unknown,
  *   bringToFront?(): unknown,
  *   bringToBack?(): unknown,
  *   getBounds?(): LatLngBounds,

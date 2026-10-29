@@ -1,14 +1,16 @@
+// @ts-check
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';
 
+/** @import {RendererEventMap, RendererOptions} from '../../types.js' */
+/** @import {Point} from '../../geometry/Point.js' */
+/** @import {CircleMarker} from './CircleMarker.js' */
+/** @import {Path} from './Path.js' */
+/** @import {Polyline} from './Polyline.js' */
+
 /**
- * Creates a SVG renderer with the given options.
- * @param {RendererOptions} [options]
- */
-/**
- * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
- * Inherits `Renderer`.
+ * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG). Inherits `Renderer`.
  * @example
  * Use SVG by default for all paths in the map:
  *
@@ -26,6 +28,9 @@ import {splitWords, stamp} from '../../core/Util.js';
  * const line = new Polyline( coordinates, { renderer: myRenderer } );
  * const circle = new Circle( center, { renderer: myRenderer, radius: 100 } );
  * ```
+ * @template {RendererOptions} [O=RendererOptions]
+ * @template {RendererEventMap} [E=RendererEventMap]
+ * @extends {Renderer<O, E>}
  */
 export class SVG extends Renderer {
 
@@ -35,13 +40,14 @@ export class SVG extends Renderer {
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 
+		/** @type {SVGElement} */
 		this._rootGroup = SVG.create('g');
 		this._container.appendChild(this._rootGroup);
 	}
 
 	_destroyContainer() {
 		super._destroyContainer();
-		delete this._rootGroup;
+		delete /** @type {any} */ (this)._rootGroup;
 		delete this._svgSize;
 	}
 
@@ -50,6 +56,7 @@ export class SVG extends Renderer {
 
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
+			/** @type {Point | undefined} */
 			this._svgSize = size;
 			this._container.setAttribute('width', `${size.x}`);
 			this._container.setAttribute('height', `${size.y}`);
@@ -61,6 +68,7 @@ export class SVG extends Renderer {
 		if (b) {
 			this._container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 		}
+		return size;
 	}
 
 	_update() {
@@ -77,14 +85,10 @@ export class SVG extends Renderer {
 
 	// methods below are called by vector layers implementations
 
+	/** @param {Path} layer */
 	_initPath(layer) {
 		const path = layer._path = SVG.create('path');
 
-		/**
-		 * Custom class name set on an element. Only for SVG renderer. Applied when the element
-		 * is created; [`setStyle`](#path-setstyle) does not update it afterwards.
-		 * @type {string}
-		 */
 		if (layer.options.className) {
 			path.classList.add(...splitWords(layer.options.className));
 		}
@@ -97,23 +101,27 @@ export class SVG extends Renderer {
 		this._layers[stamp(layer)] = layer;
 	}
 
+	/** @param {Path} layer */
 	_addPath(layer) {
 		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	}
 
+	/** @param {Path} layer */
 	_removePath(layer) {
 		layer._path.remove();
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[stamp(layer)];
 	}
 
+	/** @param {Path} layer */
 	_updatePath(layer) {
 		layer._project();
 		layer._update();
 	}
 
+	/** @param {Path} layer */
 	_updateStyle(layer) {
 		const path = layer._path,
 		options = layer.options;
@@ -128,7 +136,7 @@ export class SVG extends Renderer {
 			path.setAttribute('stroke-linejoin', options.lineJoin);
 
 			if (options.dashArray) {
-				path.setAttribute('stroke-dasharray', options.dashArray);
+				path.setAttribute('stroke-dasharray', `${options.dashArray}`);
 			} else {
 				path.removeAttribute('stroke-dasharray');
 			}
@@ -151,14 +159,19 @@ export class SVG extends Renderer {
 		}
 	}
 
+	/**
+	 * @param {Polyline} layer
+	 * @param {boolean} [closed]
+	 */
 	_updatePoly(layer, closed) {
 		this._setPath(layer, SVG.pointsToPath(layer._parts, closed));
 	}
 
+	/** @param {CircleMarker} layer */
 	_updateCircle(layer) {
 		const p = layer._point,
 		r = Math.max(Math.round(layer._pxRadius), 1),
-		r2 = Math.max(Math.round(layer._pxRadiusY), 1) || r,
+		r2 = Math.max(Math.round(layer._pxRadiusY ?? r), 1),
 		arc = `a${r},${r2} 0 1,0 `;
 
 		// drawing a circle with two half-arcs
@@ -170,15 +183,21 @@ export class SVG extends Renderer {
 		this._setPath(layer, d);
 	}
 
+	/**
+	 * @param {Path} layer
+	 * @param {string} path
+	 */
 	_setPath(layer, path) {
 		layer._path.setAttribute('d', path);
 	}
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
+	/** @param {Path} layer */
 	_bringToFront(layer) {
 		DomUtil.toFront(layer._path);
 	}
 
+	/** @param {Path} layer */
 	_bringToBack(layer) {
 		DomUtil.toBack(layer._path);
 	}
@@ -196,8 +215,8 @@ export class SVG extends Renderer {
 
 	/**
 	 * Generates a SVG path string for multiple rings, with each ring turning into "M..L..L.." instructions
-	 * @param {Point[]} rings
-	 * @param {boolean} closed
+	 * @param {Point[][]} rings
+	 * @param {boolean} [closed]
 	 * @returns {string}
 	 */
 	static pointsToPath(rings, closed) {
@@ -215,6 +234,7 @@ export class SVG extends Renderer {
 
 // Formats a pixel coordinate with 0.1px precision. Built from integer parts because V8 stringifies small integers
 // much faster than fractional numbers, and path strings with many vertices are rebuilt on every redraw.
+/** @param {number} v */
 function num(v) {
 	const n = Math.round(v * 10),
 	a = n < 0 ? -n : n,

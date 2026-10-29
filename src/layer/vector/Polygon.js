@@ -1,3 +1,4 @@
+// @ts-check
 import {Polyline} from './Polyline.js';
 import {LatLng} from '../../geo/LatLng.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
@@ -6,14 +7,13 @@ import {Bounds} from '../../geometry/Bounds.js';
 import * as PolyUtil from '../../geometry/PolyUtil.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
+/** @import {Feature, MultiPolygon, Polygon as GeoJSONPolygon} from 'geojson' */
+/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, PolylineOptions} from '../../types.js' */
+
+/** @satisfies {Defaults<PolylineOptions>} */
 const defaultOptions = {
 	fill: true
 };
-
-/**
- * @param {LatLng[]} latlngs
- * @param {PolylineOptions} [options]
- */
 
 /**
  * A class for drawing polygon overlays on a map. Extends `Polyline`.
@@ -53,9 +53,13 @@ const defaultOptions = {
  *   ]
  * ];
  * ```
+ * @template {PolylineOptions} [O=PolylineOptions]
+ * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
+ * @extends {Polyline<O, E, GeoJSONPolygon | MultiPolygon>}
  */
 export class Polygon extends Polyline {
 
+	/** @type {Defaults<PolylineOptions>} */
 	static defaultOptions = defaultOptions;
 
 	isEmpty() {
@@ -71,7 +75,7 @@ export class Polygon extends Polyline {
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
+		return PolyUtil.polygonCenter(this._defaultShape(), /** @type {any} */ (this._map.options).crs);
 	}
 
 	/**
@@ -79,7 +83,7 @@ export class Polygon extends Polyline {
 	 * `precision`. Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation
 	 * of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 	 * @param {number | false} [precision]
-	 * @returns {object}
+	 * @returns {Feature<GeoJSONPolygon | MultiPolygon>}
 	 */
 	toGeoJSON(precision) {
 		const holes = !LineUtil.isFlat(this._latlngs),
@@ -97,6 +101,10 @@ export class Polygon extends Polyline {
 		});
 	}
 
+	/**
+	 * @param {any[]} latlngs
+	 * @returns {any[]}
+	 */
 	_convertLatLngs(latlngs) {
 		const result = super._convertLatLngs(latlngs),
 		len = result.length;
@@ -108,6 +116,7 @@ export class Polygon extends Polyline {
 		return result;
 	}
 
+	/** @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs */
 	_setLatLngs(latlngs) {
 		super._setLatLngs(latlngs);
 		if (LineUtil.isFlat(this._latlngs)) {
@@ -152,6 +161,7 @@ export class Polygon extends Polyline {
 	}
 
 	// Needed by the `Canvas` renderer for interactivity
+	/** @param {Point} p */
 	_containsPoint(p) {
 		let inside = false,
 		part, p1, p2, i, j, k, len, len2;

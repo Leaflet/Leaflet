@@ -1,3 +1,4 @@
+// @ts-check
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import * as LineUtil from '../../geometry/LineUtil.js';
@@ -6,6 +7,9 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {Bounds} from '../../geometry/Bounds.js';
 import {Point} from '../../geometry/Point.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
+
+/** @import {Feature, Geometry, LineString, MultiLineString} from 'geojson' */
+/** @import {Defaults, InteractiveLayerEventMap, LatLngExpression, PolylineOptions} from '../../types.js' */
 
 const defaultOptions = {
 	/**
@@ -17,6 +21,8 @@ const defaultOptions = {
 	/** Disable polyline clipping. */
 	noClip: false
 };
+
+/** @typedef {typeof defaultOptions} PolylineDefaults */
 
 /**
  * A class for drawing polyline overlays on a map. Extends `Path`.
@@ -48,19 +54,24 @@ const defaultOptions = {
  * 	 [32.76, -96.72]]
  * ];
  * ```
+ * @template {PolylineOptions} [O=PolylineOptions]
+ * @template {InteractiveLayerEventMap} [E=InteractiveLayerEventMap]
+ * @template {Geometry} [G=LineString | MultiLineString] the geometry `toGeoJSON` returns
+ * @extends {Path<O, E>}
  */
 export class Polyline extends Path {
 
 	static initHooks = true;
 
+	/** @type {Defaults<PolylineOptions>} */
 	static defaultOptions = defaultOptions;
 
 	/**
-	 * Instantiates a polyline object given an array of geographical points and optionally
-	 * an options object. You can create a `Polyline` object with multiple separate lines
-	 * (`MultiPolyline`) by passing an array of arrays of geographic points.
-	 * @param {LatLng[]} latlngs
-	 * @param {PolylineOptions} [options]
+	 * Instantiates a polyline object given an array of geographical points and optionally an options object. You
+	 * can create a `Polyline` object with multiple separate lines (`MultiPolyline`) by passing an array of arrays
+	 * of geographic points.
+	 * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(latlngs, options) {
 		super();
@@ -73,7 +84,7 @@ export class Polyline extends Path {
 
 	/**
 	 * Returns an array of the points in the path, or nested arrays of points in case of multi-polyline.
-	 * @returns {LatLng[]}
+	 * @returns {LatLng[] | LatLng[][] | LatLng[][][]}
 	 */
 	getLatLngs() {
 		return this._latlngs;
@@ -81,7 +92,7 @@ export class Polyline extends Path {
 
 	/**
 	 * Replaces all the points in the polyline with the given array of geographical points.
-	 * @param {LatLng[]} latlngs
+	 * @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs
 	 * @returns {this}
 	 */
 	setLatLngs(latlngs) {
@@ -98,13 +109,15 @@ export class Polyline extends Path {
 	}
 
 	/**
-	 * Returns the point closest to `p` on the Polyline.
+	 * Returns the point closest to `p` on the Polyline, with its `distance` to `p`, or `null` when the polyline
+	 * has no points on the screen.
 	 * @param {Point} p
-	 * @returns {Point}
+	 * @returns {(Point & {distance: number}) | null}
 	 */
 	closestLayerPoint(p) {
 		p = new Point(p);
 		let minDistance = Infinity,
+		/** @type {(Point & {distance?: number}) | null} */
 		minPoint = null,
 		p1, p2;
 		const closest = LineUtil._sqClosestPointOnSegment;
@@ -125,7 +138,7 @@ export class Polyline extends Path {
 		if (minPoint) {
 			minPoint.distance = Math.sqrt(minDistance);
 		}
-		return minPoint;
+		return /** @type {(Point & {distance: number}) | null} */ (minPoint);
 	}
 
 	/**
@@ -137,7 +150,7 @@ export class Polyline extends Path {
 		if (!this._map) {
 			throw new Error('Must add layer to map before using getCenter()');
 		}
-		return LineUtil.polylineCenter(this._defaultShape(), this._map.options.crs);
+		return LineUtil.polylineCenter(this._defaultShape(), /** @type {any} */ (this._map.options).crs);
 	}
 
 	/**
@@ -152,14 +165,14 @@ export class Polyline extends Path {
 	 * Adds a given point to the polyline. By default, adds to the first ring of the polyline
 	 * in case of a multi-polyline, but can be overridden by passing a specific ring as a LatLng
 	 * array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
-	 * @param {LatLng} latlng
+	 * @param {LatLngExpression} latlng
 	 * @param {LatLng[]} [latlngs]
 	 * @returns {this}
 	 */
 	addLatLng(latlng, latlngs) {
 		latlngs ??= this._defaultShape();
 		latlng = new LatLng(latlng);
-		latlngs.push(latlng);
+		latlngs.push(/** @type {LatLng} */ (latlng));
 		this._bounds.extend(latlng);
 		return this.redraw();
 	}
@@ -169,29 +182,39 @@ export class Polyline extends Path {
 	 * `precision`. Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation
 	 * of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 	 * @param {number | false} [precision]
-	 * @returns {object}
+	 * @returns {Feature<G>}
 	 */
 	toGeoJSON(precision) {
 		const multi = !LineUtil.isFlat(this._latlngs);
 
 		const coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
-		return getFeature(this, {
+		return getFeature(this, /** @type {any} */ ({
 			type: `${multi ? 'Multi' : ''}LineString`,
 			coordinates: coords
-		});
+		}));
 	}
 
+	/** @param {LatLngExpression[] | LatLngExpression[][] | LatLngExpression[][][]} latlngs */
 	_setLatLngs(latlngs) {
+		/** @type {LatLngBounds} */
 		this._bounds = new LatLngBounds();
+		// nested LatLng arrays, as `getLatLngs` returns
+		/** @type {any[]} */
 		this._latlngs = this._convertLatLngs(latlngs);
 	}
+
+	/** @returns {LatLng[]} */
 
 	_defaultShape() {
 		return LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	}
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
+	/**
+	 * @param {any[]} latlngs
+	 * @returns {any[]}
+	 */
 	_convertLatLngs(latlngs) {
 		const result = [],
 		flat = LineUtil.isFlat(latlngs);
@@ -210,10 +233,12 @@ export class Polyline extends Path {
 
 	_project() {
 		const pxBounds = new Bounds();
+		/** @type {Point[][]} */
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
 		if (this._bounds.isValid() && pxBounds.isValid()) {
+			/** @type {Bounds | undefined} */
 			this._rawPxBounds = pxBounds;
 			this._updateBounds();
 		}
@@ -234,6 +259,11 @@ export class Polyline extends Path {
 	}
 
 	// recursively turns latlngs into a set of rings with projected coordinates
+	/**
+	 * @param {any[]} latlngs
+	 * @param {Point[][]} result
+	 * @param {Bounds} projectedBounds
+	 */
 	_projectLatlngs(latlngs, result, projectedBounds) {
 		const flat = latlngs[0] instanceof LatLng;
 
@@ -250,6 +280,7 @@ export class Polyline extends Path {
 	_clipPoints() {
 		const bounds = this._renderer._bounds;
 
+		/** @type {Point[][]} */
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
 			return;
@@ -267,7 +298,7 @@ export class Polyline extends Path {
 			points = this._rings[i];
 
 			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-				segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, j);
+				segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, !!j);
 
 				if (!segment) { continue; }
 
@@ -306,6 +337,10 @@ export class Polyline extends Path {
 	}
 
 	// Needed by the `Canvas` renderer for interactivity
+	/**
+	 * @param {Point} p
+	 * @param {boolean} [closed]
+	 */
 	_containsPoint(p, closed) {
 		let i, j, k, len, len2, part;
 		const w = this._clickTolerance();

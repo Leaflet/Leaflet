@@ -1,3 +1,4 @@
+// @ts-check
 import {FeatureGroup} from './FeatureGroup.js';
 import {Marker} from './marker/Marker.js';
 import {Polyline} from './vector/Polyline.js';
@@ -5,6 +6,13 @@ import {Polygon} from './vector/Polygon.js';
 import {LatLng} from '../geo/LatLng.js';
 import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONUtil.js';
 
+/** @import {Feature, GeoJSON as GeoJSONData, Point as GeoJSONPoint, Position} from 'geojson' */
+/** @import {FeatureGroupEventMap, GeoJSONOptions, PathOptions, StyleFunction} from '../types.js' */
+/** @import {Layer} from './Layer.js' */
+/** @import {MemberLayer} from './LayerGroup.js' */
+
+// GeoJSON keeps each created layer's own options there, for `resetStyle`
+/** @typedef {Layer & {defaultOptions: object}} StyledLayer */
 
 /**
  * Represents a GeoJSON object or an array of GeoJSON objects. Allows you to
@@ -21,65 +29,19 @@ import {latLngToCoords, latLngsToCoords, getFeature, asFeature} from './GeoJSONU
  * ```
  * @categoryDescription Methods
  * There are several static functions which can be called without instantiating GeoJSON:
+ * @template {GeoJSONOptions} [O=GeoJSONOptions]
+ * @template {FeatureGroupEventMap} [E=FeatureGroupEventMap]
+ * @extends {FeatureGroup<O, E>}
  */
 export class GeoJSON extends FeatureGroup {
 
 	static initHooks = true;
 
 	/**
-	 * A `Function` defining how GeoJSON points spawn Leaflet layers. It is internally called when data is added,
-	 * passing the GeoJSON point feature and its `LatLng`. The default is to spawn a default `Marker`:
-	 * ```js
-	 * function(geoJsonPoint, latlng) {
-	 * 	return new Marker(latlng);
-	 * }
-	 * ```
-	 * @type {Function}
-	 */
-	/**
-	 * A `Function` defining the `Path options` for styling GeoJSON lines and polygons, called
-	 * internally when data is added. The default value is to not override any defaults:
-	 * ```js
-	 * function (geoJsonFeature) {
-	 * 	return {}
-	 * }
-	 * ```
-	 * @type {Function}
-	 */
-	/**
-	 * A `Function` that will be called once for each created `Feature`, after it has been created
-	 * and styled. Useful for attaching events and popups to features. It will receive the `feature`
-	 * as the first argument and its corresponding spawned `layer` from [`asFeature`](#geojson-asFeature)
-	 * as the second. The default is to do nothing with the newly created layers:
-	 * ```js
-	 * function (feature, layer) {}
-	 * ```
-	 * @type {Function}
-	 */
-	/**
-	 * A `Function` that will be used to decide whether to include
-	 * a feature or not. The default is to include all features:
-	 * ```js
-	 * function (geoJsonFeature) {
-	 * 	return true;
-	 * }
-	 * ```
-	 * Note: dynamically changing the `filter` option will have effect only on
-	 * newly added data. It will _not_ re-evaluate already included features.
-	 * @type {Function}
-	 */
-	/**
-	 * A `Function` that will be used for converting GeoJSON coordinates
-	 * to `LatLng`s. The default is the `coordsToLatLng` static method.
-	 * @type {Function}
-	 */
-	/** Whether default Markers for "Point" type Features inherit from group options. */
-
-	/**
 	 * Creates a GeoJSON layer. Optionally accepts an object in [GeoJSON format](https://tools.ietf.org/html/rfc7946)
 	 * to display on the map (you can alternatively add it later with `addData` method) and an `options` object.
-	 * @param {object} [geojson]
-	 * @param {GeoJSONOptions} [options]
+	 * @param {GeoJSONData | GeoJSONData[] | null} [geojson]
+	 * @param {Partial<O>} [options]
 	 */
 	constructor(geojson, options) {
 		super(undefined, options);
@@ -93,9 +55,11 @@ export class GeoJSON extends FeatureGroup {
 
 	/**
 	 * Adds a GeoJSON object to the layer.
-	 * @todo param <GeoJSON> data
+	 * @overload
+	 * @param {GeoJSONData | GeoJSONData[]} geojson
 	 * @returns {this}
 	 */
+	/** @param {any} geojson */
 	addData(geojson) {
 		const features = Array.isArray(geojson) ? geojson : geojson.features;
 
@@ -119,7 +83,7 @@ export class GeoJSON extends FeatureGroup {
 		}
 		layer.feature = GeoJSON.asFeature(geojson);
 
-		layer.defaultOptions = layer.options;
+		/** @type {StyledLayer} */ (layer).defaultOptions = layer.options;
 		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
@@ -132,7 +96,7 @@ export class GeoJSON extends FeatureGroup {
 	/**
 	 * Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after
 	 * hover events. If `layer` is omitted, the style of all features in the current layer is reset.
-	 * @todo param <Path> layer?
+	 * @param {Layer} [layer]
 	 * @returns {this}
 	 */
 	resetStyle(layer) {
@@ -140,24 +104,28 @@ export class GeoJSON extends FeatureGroup {
 			return this.eachLayer(this.resetStyle, this);
 		}
 		// reset any custom styles
-		layer.options = Object.create(layer.defaultOptions);
+		layer.options = Object.create(/** @type {StyledLayer} */ (layer).defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
 		return this;
 	}
 
 	/**
 	 * Changes styles of GeoJSON vector layers with the given style function.
-	 * @todo param <Function> style
+	 * @param {Partial<PathOptions> | StyleFunction} style
 	 * @returns {this}
 	 */
 	setStyle(style) {
 		return this.eachLayer(layer => this._setLayerStyle(layer, style));
 	}
 
+	/**
+	 * @param {MemberLayer} layer
+	 * @param {Partial<PathOptions> | StyleFunction} [style]
+	 */
 	_setLayerStyle(layer, style) {
 		if (layer.setStyle) {
 			if (typeof style === 'function') {
-				style = style(layer.feature);
+				style = style(/** @type {Feature} */ (layer.feature));
 			}
 			layer.setStyle(style);
 		}
@@ -165,21 +133,23 @@ export class GeoJSON extends FeatureGroup {
 
 	/**
 	 * Creates a `Layer` from a given GeoJSON feature. Can use a custom [`pointToLayer`](#geojson-pointtolayer)
-	 * and/or [`coordsToLatLng`](#geojson-coordstolatlng) functions if provided as options.
-	 * @param {object} featureData
-	 * @param {GeoJSONOptions} [options]
-	 * @returns {Layer}
+	 * and/or [`coordsToLatLng`](#geojson-coordstolatlng) functions if provided as options. Returns `null` for a
+	 * feature without a geometry.
+	 * @param {GeoJSONData} geojson
+	 * @param {Partial<GeoJSONOptions>} [options]
+	 * @returns {Layer | null}
 	 */
 	static geometryToLayer(geojson, options) {
 
 		const geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-		coords = geometry?.coordinates,
+		coords = /** @type {any} */ (geometry)?.coordinates,
+		/** @type {Layer[]} */
 		layers = [],
 		pointToLayer = options?.pointToLayer,
 		_coordsToLatLng = options?.coordsToLatLng ?? GeoJSON.coordsToLatLng;
 		let latlng, latlngs;
 
-		if (!coords && !geometry) {
+		if (!geometry) {
 			return null;
 		}
 
@@ -210,7 +180,7 @@ export class GeoJSON extends FeatureGroup {
 				const geoLayer = GeoJSON.geometryToLayer({
 					geometry: g,
 					type: 'Feature',
-					properties: geojson.properties
+					properties: /** @type {Feature} */ (geojson).properties
 				}, options);
 
 				if (geoLayer) {
@@ -236,16 +206,23 @@ export class GeoJSON extends FeatureGroup {
 		}
 	}
 
+	/**
+	 * @param {GeoJSONOptions['pointToLayer']} pointToLayerFn
+	 * @param {GeoJSONData} geojson
+	 * @param {LatLng} latlng
+	 * @param {Partial<GeoJSONOptions>} [options]
+	 * @returns {Layer}
+	 */
 	static _pointToLayer(pointToLayerFn, geojson, latlng, options) {
 		return pointToLayerFn ?
-			pointToLayerFn(geojson, latlng) :
-			new Marker(latlng, options?.markersInheritOptions && options);
+			pointToLayerFn(/** @type {Feature<GeoJSONPoint>} */ (geojson), latlng) :
+			new Marker(latlng, /** @type {any} */ (options?.markersInheritOptions && options));
 	}
 
 	/**
 	 * Creates a `LatLng` object from an array of 2 numbers (longitude, latitude)
 	 * or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.
-	 * @param {Array} coords
+	 * @param {Position} coords
 	 * @returns {LatLng}
 	 */
 	static coordsToLatLng(coords) {
@@ -256,23 +233,20 @@ export class GeoJSON extends FeatureGroup {
 	 * Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array. `levelsDeep` specifies
 	 * the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by
 	 * default). Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-	 * @param {Array} coords
+	 * @param {any[]} coords
 	 * @param {number} [levelsDeep]
-	 * @param {Function} [coordsToLatLng]
-	 * @returns {Array}
+	 * @param {(coords: Position) => LatLng} [coordsToLatLng]
+	 * @returns {any[]}
 	 */
-	static coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
+	static coordsToLatLngs(coords, levelsDeep, coordsToLatLng) {
 		return coords.map(coord => (levelsDeep ?
-			GeoJSON.coordsToLatLngs(coord, levelsDeep - 1, _coordsToLatLng) :
-			(_coordsToLatLng || GeoJSON.coordsToLatLng)(coord)));
+			GeoJSON.coordsToLatLngs(coord, levelsDeep - 1, coordsToLatLng) :
+			(coordsToLatLng || GeoJSON.coordsToLatLng)(coord)));
 	}
 
 	/**
 	 * Reverse of [`coordsToLatLng`](#geojson-coordstolatlng) Coordinates
 	 * values are rounded with [`formatNum`](#util-formatnum) function.
-	 * @param {LatLng} latlng
-	 * @param {number | false} [precision]
-	 * @returns {Array}
 	 */
 	static latLngToCoords = latLngToCoords;
 
@@ -280,27 +254,13 @@ export class GeoJSON extends FeatureGroup {
 	 * Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs) `close` determines whether the first point
 	 * should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0.
 	 * False by default. Coordinates values are rounded with [`formatNum`](#util-formatnum) function.
-	 * @param {Array} latlngs
-	 * @param {number} [levelsDeep]
-	 * @param {boolean} [close]
-	 * @param {number | false} [precision]
-	 * @returns {Array}
 	 */
 	static latLngsToCoords = latLngsToCoords;
 
-	/**
-	 * Returns GeoJSON geometries/features of layer with new GeoJSON geometry.
-	 * @param {Layer} layer
-	 * @param {object} newGeometry
-	 * @returns {object}
-	 */
+	/** Returns GeoJSON geometries/features of layer with new GeoJSON geometry. */
 	static getFeature = getFeature;
 
-	/**
-	 * Normalize GeoJSON geometries/features into GeoJSON features.
-	 * @param {object} geojson
-	 * @returns {object}
-	 */
+	/** Normalize GeoJSON geometries/features into GeoJSON features. */
 	static asFeature = asFeature;
 
 }
