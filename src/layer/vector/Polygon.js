@@ -139,7 +139,7 @@ export class Polygon extends Polyline {
 		}
 
 		for (const ring of this._rings) {
-			const clipped = PolyUtil.clipPolygon(ring, bounds, true);
+			const clipped = PolyUtil.clipPolygon(ring, bounds);
 			if (clipped.length) {
 				this._parts.push(clipped);
 			}

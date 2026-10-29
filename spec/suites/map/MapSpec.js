@@ -2322,8 +2322,8 @@ describe('Map', () => {
 			const center = new LatLng(10, 10);
 			map.setView(center);
 			const p = map.latLngToContainerPoint(center);
-			expect(p.x).to.be.equal(200);
-			expect(p.y).to.be.equal(200);
+			expect(p.x).to.be.approximately(200, 0.5);
+			expect(p.y).to.be.approximately(200, 0.5);
 		});
 	});
 
@@ -2413,8 +2413,14 @@ describe('Map', () => {
 			const center = new LatLng([10, 10]);
 			map.setView(center, 0);
 			const p = map.latLngToLayerPoint(center);
-			expect(p.x).to.be.equal(200);
-			expect(p.y).to.be.equal(200);
+			expect(p.x).to.be.approximately(200, 0.5);
+			expect(p.y).to.be.approximately(200, 0.5);
+		});
+
+		it('keeps subpixel precision', () => {
+			map.setView([0, 0], 0);
+			const p = map.latLngToLayerPoint([0, 0.5]);
+			expect(p.x - map.latLngToLayerPoint([0, 0]).x).to.be.approximately(256 / 720, 1e-9);
 		});
 	});
 
