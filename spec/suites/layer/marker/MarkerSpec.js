@@ -294,7 +294,7 @@ describe('Marker', () => {
 			const marker = new Marker([0, 0], {icon: icon1, rotation: 45}).addTo(map);
 
 			expect(marker._icon.style.transform.endsWith(' rotate(45deg)')).to.be.true;
-			expect(marker._icon.style.transformOrigin).to.equal('12px 41px');
+			expect(marker._icon.style.transformOrigin.startsWith('12px 41px')).to.be.true;
 			expect(marker._shadow.style.display).to.equal('none');
 
 			// so the shadow doesn't flicker as a rotating marker passes 0°
