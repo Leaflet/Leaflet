@@ -46,6 +46,19 @@ describe('Marker.Drag', () => {
 			expect(marker.getLatLng()).to.be.nearLatLng([-40.979898069620134, 78.75]);
 		});
 
+		it('keeps the rotation while dragging', async () => {
+			const marker = new MyMarker([0, 0], {draggable: true, rotation: 30}).addTo(map);
+			const transforms = [];
+			marker.on('drag', () => transforms.push(marker._icon.style.transform));
+
+			await new Finger(pointerType).moveTo(300, 280).down().moveBy(5, 0).moveTo(356, 312).up();
+
+			expect(transforms.length).to.be.above(0);
+			for (const t of transforms) { expect(t).to.contain('rotate(30deg)'); }
+			expect(marker._icon.style.transform).to.contain('rotate(30deg)');
+			expect(marker.getOffset().equals(new Point(56, 32))).to.be.true;
+		});
+
 		describe('in CSS scaled container', () => {
 			const scale = new Point(2, 1.5);
 

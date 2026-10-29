@@ -112,7 +112,7 @@ describe('Canvas', () => {
 			circle.on('click', spyCircle);
 
 			UIEventSimulator.fireAt('click', 50, 50);   // polygon (canvas)
-			UIEventSimulator.fireAt('click', 151, 151); // empty space
+			UIEventSimulator.fireAt('click', 151, 156); // empty space
 			UIEventSimulator.fireAt('click', 150, 148); // marker
 			UIEventSimulator.fireAt('click', 200, 200); // circle (svg)
 			expect(spyPolygon.callCount).to.eql(1);
