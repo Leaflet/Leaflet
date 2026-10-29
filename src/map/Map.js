@@ -1459,8 +1459,7 @@ export class LeafletMap extends Evented {
 	// Given a geographical coordinate, returns the corresponding pixel coordinate
 	// relative to the [origin pixel](#map-getpixelorigin).
 	latLngToLayerPoint(latlng) {
-		const projectedPoint = this.project(new LatLng(latlng))._round();
-		return projectedPoint._subtract(this.getPixelOrigin());
+		return this.project(new LatLng(latlng))._subtract(this.getPixelOrigin());
 	}
 
 	// @method wrapLatLng(latlng: LatLng): LatLng
@@ -1989,7 +1988,7 @@ export class LeafletMap extends Evented {
 
 	// offset of the specified place to the current center in pixels
 	_getCenterOffset(latlng) {
-		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
+		return this.latLngToLayerPoint(latlng)._round()._subtract(this._getCenterLayerPoint());
 	}
 
 	// adjust center for view to get inside bounds

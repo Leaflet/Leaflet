@@ -92,7 +92,8 @@ export class CircleMarker extends Path {
 	}
 
 	_project() {
-		this._point = this._map.latLngToLayerPoint(this._latlng);
+		// snapped to whole pixels: subpixel precision is invisible on markers but slows down rendering many of them
+		this._point = this._map.latLngToLayerPoint(this._latlng)._round();
 		this._pxRadius = this._radius;
 		this._updateBounds();
 	}

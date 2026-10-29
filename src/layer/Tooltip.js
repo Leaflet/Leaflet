@@ -193,7 +193,7 @@ export class Tooltip extends DivOverlay {
 	}
 
 	_updatePosition() {
-		const pos = this._map.latLngToLayerPoint(this._latlng);
+		const pos = this._map.latLngToLayerPoint(this._latlng)._round();
 		this._setPosition(pos);
 	}
 
