@@ -39,18 +39,13 @@ const start = performance.now();
 const config = JSON.parse(readFileSync('build/site.json', 'utf8'));
 const site = {...config.site, ...config.versions[config.version], time: new Date()};
 
-// each tree renders with its own layouts and includes
-const engines = new Map();
-const getEngine = (dir) => {
-	if (!engines.has(dir)) { engines.set(dir, createEngine(dir)); }
-	return engines.get(dir);
-};
-const rootEngine = getEngine(SITE_DIR);
+// every page renders with the checkout's layouts and includes, so pinned pages share the current shell
+const engine = createEngine(SITE_DIR);
 
 // the plugins collection: rendered, but not written
 site.plugins = walk(join(SITE_DIR, '_plugins')).map((file) => {
 	const {data, body} = readPage(join(SITE_DIR, '_plugins', file));
-	data.content = rootEngine.renderContent(body, true, {site, page: data});
+	data.content = engine.renderContent(body, true, {site, page: data});
 	return data;
 });
 
@@ -60,7 +55,7 @@ site.posts = readdirSync(join(SITE_DIR, '_posts')).sort().reverse().map((file) =
 	const {data, body} = readPage(join(SITE_DIR, '_posts', file));
 	const url = `/${y}/${m}/${d}/${slug}.html`;
 	Object.assign(data, {url, id: url.slice(0, -5), date: new Date(`${y}-${m}-${d}`)});
-	data.content = rootEngine.renderContent(body, true, {site, page: data});
+	data.content = engine.renderContent(body, true, {site, page: data});
 	return data;
 });
 
@@ -72,16 +67,16 @@ for (const mount of config.mounts) {
 
 	for (const file of walk(dir)) {
 		if (mount.exclude && matches(file, mount.exclude) || mount.include && !matches(file, mount.include)) { continue; }
-		outputs.set(file.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), engine: getEngine(dir), site: mountSite});
+		outputs.set(file.replace(MARKDOWN_EXT, '.html'), {path: join(dir, file), site: mountSite});
 	}
 }
 
 rmSync(DEST, {recursive: true, force: true});
 
 for (const post of site.posts) {
-	write(join(DEST, post.url), rootEngine.renderLayouts(post.content, post, site));
+	write(join(DEST, post.url), engine.renderLayouts(post.content, post, site));
 }
-for (const [out, {path, engine, site}] of outputs) {
+for (const [out, {path, site}] of outputs) {
 	const page = readPage(path);
 	if (page?.data.reference) { page.data.api = buildReference(config.refs[page.data.reference]); }
 	if (page) {
