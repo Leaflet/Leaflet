@@ -3,27 +3,22 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
-// @namespace Canvas
-
-// @section
-// @aka Canvas options
 const defaultOptions = {
-	// @option tolerance: Number = 0
-	// How much to extend the click tolerance around a path/object on the map.
+	/** How much to extend the click tolerance around a path/object on the map. */
 	tolerance: 0
 };
 
 const DASH_SEPARATOR_RE = /[, ]+/;
 
-/*
- * @class Canvas
- * @inherits Renderer
- *
+/**
+ * Creates a Canvas renderer with the given options.
+ * @param {RendererOptions} [options]
+ */
+
+/**
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
- *
  * @example
- *
  * Use Canvas by default for all paths in the map:
  *
  * ```js
@@ -41,10 +36,6 @@ const DASH_SEPARATOR_RE = /[, ]+/;
  * const circle =  new Circle( center, { renderer: myRenderer, radius: 100 } );
  * ```
  */
-
-// @constructor Canvas(options?: Renderer options)
-// Creates a Canvas renderer with the given options.
-
 export class Canvas extends Renderer {
 
 	static defaultOptions = defaultOptions;

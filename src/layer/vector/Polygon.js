@@ -6,23 +6,21 @@ import {Bounds} from '../../geometry/Bounds.js';
 import * as PolyUtil from '../../geometry/PolyUtil.js';
 import {latLngsToCoords, getFeature} from '../GeoJSONUtil.js';
 
-// @namespace Polygon
-
 const defaultOptions = {
 	fill: true
 };
 
-/*
- * @class Polygon
- * @inherits Polyline
- *
+/**
+ * @param {LatLng[]} latlngs
+ * @param {PolylineOptions} [options]
+ */
+
+/**
  * A class for drawing polygon overlays on a map. Extends `Polyline`.
  *
- * Note that points you pass when creating a polygon shouldn't have an additional last point equal to the first one — it's better to filter out such points.
- *
- *
+ * Note that points you pass when creating a polygon shouldn't have an additional
+ * last point equal to the first one — it's better to filter out such points.
  * @example
- *
  * ```js
  * // create a red polygon from an array of LatLng points
  * const latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
@@ -56,9 +54,6 @@ const defaultOptions = {
  * ];
  * ```
  */
-
-// @constructor Polygon(latlngs: LatLng[], options?: Polyline options)
-
 export class Polygon extends Polyline {
 
 	static defaultOptions = defaultOptions;
@@ -67,8 +62,10 @@ export class Polygon extends Polyline {
 		return !this._latlngs.length || !this._latlngs[0].length;
 	}
 
-	// @method getCenter(): LatLng
-	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
+	/**
+	 * Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the Polygon.
+	 * @returns {LatLng}
+	 */
 	getCenter() {
 		// throws error when not yet added to map as this center calculation requires projected coordinates
 		if (!this._map) {
@@ -77,9 +74,13 @@ export class Polygon extends Polyline {
 		return PolyUtil.polygonCenter(this._defaultShape(), this._map.options.crs);
 	}
 
-	// @method toGeoJSON(precision?: Number|false): Object
-	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
+	/**
+	 * Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given
+	 * `precision`. Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation
+	 * of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
+	 * @param {number | false} [precision]
+	 * @returns {object}
+	 */
 	toGeoJSON(precision) {
 		const holes = !LineUtil.isFlat(this._latlngs),
 		multi = holes && !LineUtil.isFlat(this._latlngs[0]);

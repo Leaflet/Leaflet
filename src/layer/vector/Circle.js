@@ -3,47 +3,52 @@ import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {EarthCRS} from '../../geo/crs/EarthCRS.js';
 
 
-/*
- * @class Circle
- * @inherits CircleMarker
- *
+/**
  * A class for drawing circle overlays on a map with radius specified in meters. Extends `CircleMarker`.
  *
  * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion).
- *
  * @example
- *
  * ```js
  * new Circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
  */
-
-// @constructor Circle(latlng: LatLng, options?: Circle options)
-// Instantiates a circle object given a geographical point, and an options object
-// which contains the circle radius.
 export class Circle extends CircleMarker {
 
 	static initHooks = true;
 
+	/**
+	 * Instantiates a circle object given a geographical point,
+	 * and an options object which contains the circle radius.
+	 * @param {LatLng} latlng
+	 * @param {CircleOptions} [options]
+	 */
 	constructor(latlng, options) {
 		super(latlng, options);
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
-		// @section
-		// @aka Circle options
-		// @option radius: Number; Radius of the circle, in meters.
+		/**
+		 * Radius of the circle, in meters.
+		 * @type {number}
+		 */
 
 		this.callInitHooks();
 	}
 
-	// @method setRadius(radius: Number): this
-	// Sets the radius of a circle. Units are in meters.
-	// @method getRadius(): Number
-	// Returns the current radius of a circle. Units are in meters.
+	/**
+	 * Sets the radius of a circle. Units are in meters.
+	 * @param {number} radius
+	 * @returns {this}
+	 */
+	/**
+	 * Returns the current radius of a circle. Units are in meters.
+	 * @returns {number}
+	 */
 
-	// @method getBounds(): LatLngBounds
-	// Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
+	/**
+	 * Returns the `LatLngBounds` of the path. When the circle isn't on a map, they're approximated on a sphere.
+	 * @returns {LatLngBounds}
+	 */
 	getBounds() {
 		if (!this._map) { return this._latlng.toBounds(this._radius * 2); }
 
