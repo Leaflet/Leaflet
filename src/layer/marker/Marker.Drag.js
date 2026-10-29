@@ -119,14 +119,11 @@ export class MarkerDrag extends Handler {
 
 	_onDrag(e) {
 		const marker = this._marker,
-		shadow = marker._shadow,
 		iconPos = DomUtil.getPosition(marker._icon),
 		latlng = marker._map.layerPointToLatLng(iconPos);
 
-		// update shadow position
-		if (shadow) {
-			DomUtil.setPosition(shadow, iconPos);
-		}
+		// Draggable only moved the icon and dropped its rotation
+		marker._positionElements(iconPos);
 
 		marker._latlng = latlng;
 		e.latlng = latlng;

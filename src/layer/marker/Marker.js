@@ -44,6 +44,11 @@ const defaultOptions = {
 	// The opacity of the marker.
 	opacity: 1,
 
+	// @option rotation: Number = null
+	// Rotation of the marker icon in degrees, clockwise, around the icon anchor. A rotated marker, even at 0°, has no
+	// shadow, since the shadow of an upright pin looks wrong under a tilted one. `null` means no rotation.
+	rotation: null,
+
 	// @option riseOnHover: Boolean = false
 	// If `true`, the marker will get on top of others when you hover the pointer over it.
 	riseOnHover: false,
@@ -335,18 +340,27 @@ export class Marker extends Layer {
 	}
 
 	_setPos(pos) {
-
-		if (this._icon) {
-			DomUtil.setPosition(this._icon, pos);
-		}
-
-		if (this._shadow) {
-			DomUtil.setPosition(this._shadow, pos);
-		}
+		this._positionElements(pos);
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
 
 		this._resetZIndex();
+	}
+
+	_positionElements(pos) {
+		const rotation = this.options.rotation;
+
+		if (this._icon) {
+			DomUtil.setPosition(this._icon, pos);
+			if (rotation != null) {
+				this._icon.style.transform += ` rotate(${rotation}deg)`;
+			}
+		}
+
+		if (this._shadow) {
+			DomUtil.setPosition(this._shadow, pos);
+			this._shadow.style.display = rotation == null ? '' : 'none';
+		}
 	}
 
 	_updateZIndex(offset) {
@@ -390,6 +404,22 @@ export class Marker extends Layer {
 				this.dragging.enable();
 			}
 		}
+	}
+
+	// @method getRotation(): Number
+	// Returns the current [rotation](#marker-rotation) of the marker in degrees.
+	getRotation() {
+		return this.options.rotation;
+	}
+
+	// @method setRotation(rotation: Number|null): this
+	// Changes the [rotation](#marker-rotation) of the marker; `null` removes it.
+	setRotation(rotation) {
+		this.options.rotation = rotation;
+		this.update();
+		this._popup?._updatePosition();
+		this._tooltip?._updatePosition();
+		return this;
 	}
 
 	// @method setOpacity(opacity: Number): this
@@ -455,10 +485,21 @@ export class Marker extends Layer {
 	}
 
 	_getPopupAnchor() {
-		return this.options.icon.options.popupAnchor;
+		return this._rotateAnchor(this.options.icon.options.popupAnchor);
 	}
 
 	_getTooltipAnchor() {
-		return this.options.icon.options.tooltipAnchor;
+		return this._rotateAnchor(this.options.icon.options.tooltipAnchor);
+	}
+
+	// anchors are offsets from the icon anchor, which is also the rotation origin
+	_rotateAnchor(anchor) {
+		const angle = this.options.rotation * Math.PI / 180;
+		if (!angle || !anchor) { return anchor; }
+
+		const {x, y} = new Point(anchor),
+		cos = Math.cos(angle),
+		sin = Math.sin(angle);
+		return new Point(x * cos - y * sin, x * sin + y * cos);
 	}
 }
