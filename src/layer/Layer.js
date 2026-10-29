@@ -110,7 +110,7 @@ export class Layer extends LayerBase {
 			return;
 		}
 		// prevent map click
-		DomEvent.stop(e);
+		DomEvent.stopPropagation(e);
 
 		const target = e.propagatedFrom ?? e.target;
 		if (this._popup._source === target && target._togglesPopupOnClick()) {
