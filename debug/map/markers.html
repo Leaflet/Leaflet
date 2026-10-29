@@ -23,7 +23,7 @@
 	<body>
 		<div id="map"></div>
 		<script type="module">
-			import {DivIcon, Icon, LeafletMap, Marker, TileLayer} from 'leaflet';
+			import {DefaultIcon, DivIcon, Icon, LeafletMap, Marker, TileLayer} from 'leaflet';
 
 			const map = new LeafletMap('map', {center: [0, 0], zoom: 6});
 
@@ -53,7 +53,7 @@
 				// a sparse crowd with a dense core, as with real-world point data
 				for (let i = 0; i < 150; i++) {
 					const r = i < 110 ? 6 : 1.5;
-					new Marker([-1.5 + (random() - 0.5) * r, lng + (random() - 0.5) * r * 1.2], options).addTo(map);
+					new Marker([-1 + (random() - 0.5) * r, lng + (random() - 0.5) * r * 1.2], options).addTo(map);
 				}
 			}
 
@@ -76,8 +76,14 @@
 				arrow.setRotation(rotation).setPopupContent(`DivIcon, ${rotation}°`);
 			});
 
+			// the color template, from named and hex colors to translucent ones
+			const colors = ['crimson', '#e33', 'orange', 'gold', 'seagreen', 'teal', 'rebeccapurple', 'hotpink', '#333', 'white', 'rgb(0 0 255 / 50%)'];
+			colors.forEach((color, i) => {
+				new Marker([-6, (i - (colors.length - 1) / 2) * 1.5], {icon: new DefaultIcon({color})}).addTo(map).bindPopup(color);
+			});
+
 			// the button is focusable on its own and clicks natively, so Enter on it should open the popup once
-			new Marker([-5, 0], {
+			new Marker([-4.5, 0], {
 				icon: new DivIcon({html: '<button>Button</button>', iconSize: [70, 24], className: ''})
 			}).addTo(map).bindPopup('Button in a DivIcon');
 

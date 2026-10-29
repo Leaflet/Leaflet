@@ -1,4 +1,4 @@
-import {LeafletMap, Marker} from 'leaflet';
+import {DefaultIcon, LeafletMap, Marker} from 'leaflet';
 import {createContainer, removeMapContainer} from '../../SpecHelper.js';
 
 describe('DefaultIcon', () => {
@@ -24,5 +24,10 @@ describe('DefaultIcon', () => {
 
 	it('has the shadow baked into the icon', () => {
 		expect(map.getPane('shadowPane').childElementCount).to.equal(0);
+	});
+
+	it('paints the pin in the given color', () => {
+		const src = new DefaultIcon({iconUrl: 'blue.png', color: '#c00'})._getIconUrl('icon');
+		expect(src).to.contain('stop-color="%23c00"');
 	});
 });
