@@ -1,17 +1,18 @@
 import {readFileSync} from 'node:fs';
 import {defineConfig} from 'rolldown';
+import {transform as transformCss} from 'lightningcss';
 import pkg from '../package.json' with {type: 'json'};
 
-const STATIC_ASSETS = ['leaflet.css'];
-
 /** @type {import('rolldown').Plugin} */
-const staticAssetsPlugin = {
-	name: 'static-assets',
+const cssPlugin = {
+	name: 'css',
 	generateBundle() {
-		for (const fileName of STATIC_ASSETS) {
-			const source = readFileSync(new URL(`../src/${fileName}`, import.meta.url));
-			this.emitFile({type: 'asset', fileName, source});
-		}
+		const {code} = transformCss({
+			filename: 'leaflet.css',
+			code: readFileSync(new URL('../src/leaflet.css', import.meta.url)),
+			minify: true
+		});
+		this.emitFile({type: 'asset', fileName: 'leaflet.css', source: code});
 	},
 };
 
@@ -34,7 +35,7 @@ const transform = {target: 'es2022'};
 export default defineConfig([
 	{
 		input: './src/Leaflet.js',
-		plugins: [staticAssetsPlugin],
+		plugins: [cssPlugin],
 		transform,
 		output: {
 			...commonOptions,
