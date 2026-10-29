@@ -9,17 +9,11 @@ import {Point} from '../../geometry/Point.js';
  */
 
 
-/* @namespace Marker
- * @section Interaction handlers
- *
- * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
- *
- * ```js
- * marker.dragging.disable();
- * ```
- *
- * @property dragging: Handler
- * Marker dragging handler. Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
+/**
+ * Marker dragging handler. Only valid when the marker is on the map
+ * (Otherwise set [`marker.options.draggable`](#marker-draggable)).
+ * @category Interaction handlers
+ * @type {Handler}
  */
 
 export class MarkerDrag extends Handler {

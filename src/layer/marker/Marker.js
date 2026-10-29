@@ -8,135 +8,135 @@ import * as DomEvent from '../../dom/DomEvent.js';
 import {MarkerDrag} from './Marker.Drag.js';
 import {pointToGeoJSON} from '../GeoJSONUtil.js';
 
-// @namespace Marker
-
-// @section
-// @aka Marker options
 const defaultOptions = {
-	// @option icon: Icon = *
-	// Icon instance to use for rendering the marker.
-	// See [Icon documentation](#Icon) for details on how to customize the marker icon.
-	// If not specified, a common instance of `DefaultIcon` is used.
+	/**
+	 * Icon instance to use for rendering the marker. See [Icon documentation](#Icon) for details on how
+	 * to customize the marker icon. If not specified, a common instance of `DefaultIcon` is used.
+	 * @type {Icon}
+	 */
 	icon: /* @__PURE__ */ new DefaultIcon(),
 
 	// Option inherited from "Interactive layer" abstract class
 	interactive: true,
 
-	// @option keyboard: Boolean = true
-	// Whether the marker can be tabbed to with a keyboard and, if interactive, clicked by pressing Enter or Space.
+	/** Whether the marker can be tabbed to with a keyboard and, if interactive, clicked by pressing Enter or Space. */
 	keyboard: true,
 
-	// @option title: String = ''
-	// Text for the browser tooltip that appear on marker hover (no tooltip by default).
-	// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	/**
+	 * Text for the browser tooltip that appear on marker hover (no tooltip by default). [Useful for
+	 * accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	 */
 	title: '',
 
-	// @option alt: String = 'Marker'
-	// Text for the `alt` attribute of the icon image.
-	// [Useful for accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	/**
+	 * Text for the `alt` attribute of the icon image. [Useful for
+	 * accessibility](https://leafletjs.com/examples/accessibility/#markers-must-be-labelled).
+	 */
 	alt: 'Marker',
 
-	// @option zIndexOffset: Number = 0
-	// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
+	/**
+	 * By default, marker images zIndex is set automatically based on its latitude. Use
+	 * this option if you want to put the marker on top of all others (or below), specifying
+	 * a high value like `1000` (or high negative value, respectively).
+	 */
 	zIndexOffset: 0,
 
-	// @option opacity: Number = 1.0
-	// The opacity of the marker.
+	/** The opacity of the marker. */
 	opacity: 1,
 
-	// @option rotation: Number = null
-	// Rotation of the marker icon in degrees, clockwise, around the icon anchor. A rotated marker, even at 0°, has no
-	// shadow, since the shadow of an upright pin looks wrong under a tilted one. `null` means no rotation.
+	/**
+	 * Rotation of the marker icon in degrees, clockwise, around the icon anchor. A rotated marker, even at 0°, has
+	 * no shadow, since the shadow of an upright pin looks wrong under a tilted one. `null` means no rotation.
+	 * @type {number}
+	 */
 	rotation: null,
 
-	// @option riseOnHover: Boolean = false
-	// If `true`, the marker will get on top of others when you hover the pointer over it.
+	/** If `true`, the marker will get on top of others when you hover the pointer over it. */
 	riseOnHover: false,
 
-	// @option riseOffset: Number = 250
-	// The z-index offset used for the `riseOnHover` feature.
+	/** The z-index offset used for the `riseOnHover` feature. */
 	riseOffset: 250,
 
-	// @option pane: String = 'markerPane'
-	// `Map pane` where the markers icon will be added.
+	/** `Map pane` where the markers icon will be added. */
 	pane: 'markerPane',
 
-	// @option shadowPane: String = 'shadowPane'
-	// `Map pane` where the markers shadow will be added.
+	/** `Map pane` where the markers shadow will be added. */
 	shadowPane: 'shadowPane',
 
-	// @option bubblingPointerEvents: Boolean = false
-	// When `true`, a pointer event on this marker will trigger the same event on the map
-	// (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+	/**
+	 * When `true`, a pointer event on this marker will trigger the same event on the
+	 * map (unless [`DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+	 */
 	bubblingPointerEvents: false,
 
-	// @option autoPanOnFocus: Boolean = true
-	// When `true`, the map will pan whenever the marker is focused (via
-	// e.g. pressing `tab` on the keyboard) to ensure the marker is
-	// visible within the map's bounds
+	/**
+	 * When `true`, the map will pan whenever the marker is focused (via e.g. pressing
+	 * `tab` on the keyboard) to ensure the marker is visible within the map's bounds
+	 */
 	autoPanOnFocus: true,
 
-	// @section Draggable marker options
-	// @option draggable: Boolean = false
-	// Whether the marker is draggable with pointer or not.
+	/**
+	 * Whether the marker is draggable with pointer or not.
+	 * @category Draggable marker options
+	 */
 	draggable: false,
 
-	// @option autoPan: Boolean = false
-	// Whether to pan the map when dragging this marker near its edge or not.
+	/**
+	 * Whether to pan the map when dragging this marker near its edge or not.
+	 * @category Draggable marker options
+	 */
 	autoPan: false,
 
-	// @option autoPanPadding: Point = Point(50, 50)
-	// Distance (in pixels to the left/right and to the top/bottom) of the
-	// map edge to start panning the map.
+	/**
+	 * Distance (in pixels to the left/right and to the top/bottom) of the map edge to start panning the map.
+	 * @category Draggable marker options
+	 */
 	autoPanPadding: [50, 50],
 
-	// @option autoPanSpeed: Number = 10
-	// Number of pixels the map should pan by.
+	/**
+	 * Number of pixels the map should pan by.
+	 * @category Draggable marker options
+	 */
 	autoPanSpeed: 10
 };
 
-// @section
-// @event move: Event
-// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+/**
+ * @typedef {Object} MarkerEvents
+ * @property {LeafletEvent} move Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
+ */
 
-// @section Dragging events
-// @event dragstart: Event
-// Fired when the user starts dragging the marker.
-// @event movestart: Event
-// Fired when the marker starts moving (because of dragging).
-// @event drag: Event
-// Fired repeatedly while the user drags the marker.
-// @event dragend: DragEndEvent
-// Fired when the user stops dragging the marker.
-// @event moveend: Event
-// Fired when the marker stops moving (because of dragging).
+/**
+ * Dragging events
+ * @typedef {Object} MarkerDraggingEvents
+ * @property {LeafletEvent} dragstart Fired when the user starts dragging the marker.
+ * @property {LeafletEvent} movestart Fired when the marker starts moving (because of dragging).
+ * @property {LeafletEvent} drag Fired repeatedly while the user drags the marker.
+ * @property {DragEndEvent} dragend Fired when the user stops dragging the marker.
+ * @property {LeafletEvent} moveend Fired when the marker stops moving (because of dragging).
+ */
 
-/*
- * @class Marker
- * @inherits Interactive layer
+/**
  * Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
- *
  * @example
- *
  * ```js
  * new Marker([50.5, 30.5]).addTo(map);
  * ```
+ * @todo inherits Interactive layer
+ * @categoryDescription Methods
+ * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup
+ * methods](#Popup) like bindPopup() you can also use the following methods:
  */
-
-// @constructor Marker(latlng: LatLng, options? : Marker options)
-// Instantiates a Marker object given a geographical point and optionally an options object.
-
 export class Marker extends Layer {
 
 	static initHooks = true;
 
 	static defaultOptions = defaultOptions;
 
-	/* @section
-	 *
-	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
+	/**
+	 * Instantiates a Marker object given a geographical point and optionally an options object.
+	 * @param {LatLng} latlng
+	 * @param {MarkerOptions} [options]
 	 */
-
 	constructor(latlng, options) {
 		super();
 
@@ -180,14 +180,19 @@ export class Marker extends Layer {
 		};
 	}
 
-	// @method getLatLng(): LatLng
-	// Returns the current geographical position of the marker.
+	/**
+	 * Returns the current geographical position of the marker.
+	 * @returns {LatLng}
+	 */
 	getLatLng() {
 		return this._latlng;
 	}
 
-	// @method setLatLng(latlng: LatLng): this
-	// Changes the marker position to the given point.
+	/**
+	 * Changes the marker position to the given point.
+	 * @param {LatLng} latlng
+	 * @returns {this}
+	 */
 	setLatLng(latlng) {
 		const oldLatLng = this._latlng;
 		this._latlng = new LatLng(latlng);
@@ -196,21 +201,29 @@ export class Marker extends Layer {
 		return this.fire('move', {oldLatLng, latlng: this._latlng});
 	}
 
-	// @method setZIndexOffset(offset: Number): this
-	// Changes the [zIndex offset](#marker-zindexoffset) of the marker.
+	/**
+	 * Changes the [zIndex offset](#marker-zindexoffset) of the marker.
+	 * @param {number} offset
+	 * @returns {this}
+	 */
 	setZIndexOffset(offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	}
 
-	// @method getIcon(): Icon
-	// Returns the current icon used by the marker
+	/**
+	 * Returns the current icon used by the marker
+	 * @returns {Icon}
+	 */
 	getIcon() {
 		return this.options.icon;
 	}
 
-	// @method setIcon(icon: Icon): this
-	// Changes the marker icon.
+	/**
+	 * Changes the marker icon.
+	 * @param {Icon} icon
+	 * @returns {this}
+	 */
 	setIcon(icon) {
 
 		this.options.icon = icon;
@@ -223,9 +236,11 @@ export class Marker extends Layer {
 		return this;
 	}
 
-	// @method getElement(): HTMLElement
-	// Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
-	// used by Marker layer.
+	/**
+	 * Returns the instance of [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement)
+	 * used by Marker layer.
+	 * @returns {HTMLElement}
+	 */
 	getElement() {
 		return this._icon;
 	}
@@ -406,14 +421,19 @@ export class Marker extends Layer {
 		}
 	}
 
-	// @method getRotation(): Number
-	// Returns the current [rotation](#marker-rotation) of the marker in degrees.
+	/**
+	 * Returns the current [rotation](#marker-rotation) of the marker in degrees.
+	 * @returns {number}
+	 */
 	getRotation() {
 		return this.options.rotation;
 	}
 
-	// @method setRotation(rotation: Number|null): this
-	// Changes the [rotation](#marker-rotation) of the marker; `null` removes it.
+	/**
+	 * Changes the [rotation](#marker-rotation) of the marker; `null` removes it.
+	 * @param {number | null} rotation
+	 * @returns {this}
+	 */
 	setRotation(rotation) {
 		this.options.rotation = rotation;
 		// mid-zoom, the icon is transitioning to a position that update() can't compute yet; the zoom end applies it
@@ -425,8 +445,11 @@ export class Marker extends Layer {
 		return this;
 	}
 
-	// @method setOpacity(opacity: Number): this
-	// Changes the opacity of the marker.
+	/**
+	 * Changes the opacity of the marker.
+	 * @param {number} opacity
+	 * @returns {this}
+	 */
 	setOpacity(opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
@@ -436,10 +459,14 @@ export class Marker extends Layer {
 		return this;
 	}
 
-	// @section Other methods
-	// @method toGeoJSON(precision?: Number|false): Object
-	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
+	/**
+	 * Coordinates values are rounded with [`formatNum`](#util-formatnum) function
+	 * with given `precision`. Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON)
+	 * representation of the marker (as a GeoJSON `Point` Feature).
+	 * @category Other methods
+	 * @param {number | false} [precision]
+	 * @returns {object}
+	 */
 	toGeoJSON(precision) {
 		return pointToGeoJSON(this, precision);
 	}

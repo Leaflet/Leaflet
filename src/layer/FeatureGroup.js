@@ -1,26 +1,24 @@
 import {LayerGroup} from './LayerGroup.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 
-// @namespace FeatureGroup
-// @section
-// @event layeradd: LayerEvent
-// Fired when a layer is added to this `FeatureGroup`
-// @event layerremove: LayerEvent
-// Fired when a layer is removed from this `FeatureGroup`
+/**
+ * @typedef {Object} FeatureGroupEvents
+ * @property {LayerEvent} layeradd Fired when a layer is added to this `FeatureGroup`
+ * @property {LayerEvent} layerremove Fired when a layer is removed from this `FeatureGroup`
+ */
 
-/*
- * @class FeatureGroup
- * @inherits LayerGroup
- *
+/**
+ * Create a feature group, optionally given an initial set of layers and an `options` object.
+ * @param {Layer[]} [layers]
+ * @param {object} [options]
+ */
+/**
  * Extended `LayerGroup` that makes it easier to do the same thing to all its member layers:
  *  * [`bindPopup`](#layer-bindpopup) binds a popup to all of the layers at once (likewise with [`bindTooltip`](#layer-bindtooltip))
  *  * Events are propagated to the `FeatureGroup`, so if the group has an event
- * handler, it will handle events from any of the layers. This includes pointer events
- * and custom events.
+ * handler, it will handle events from any of the layers. This includes pointer events and custom events.
  *  * Has `layeradd` and `layerremove` events
- *
  * @example
- *
  * ```js
  * new FeatureGroup([marker1, marker2, polyline])
  * 	.bindPopup('Hello world!')
@@ -28,9 +26,6 @@ import {LatLngBounds} from '../geo/LatLngBounds.js';
  * 	.addTo(map);
  * ```
  */
-
-// @constructor FeatureGroup(layers?: Layer[], options?: Object)
-// Create a feature group, optionally given an initial set of layers and an `options` object.
 export class FeatureGroup extends LayerGroup {
 
 	addLayer(layer) {
@@ -60,27 +55,36 @@ export class FeatureGroup extends LayerGroup {
 		return this.fire('layerremove', {layer});
 	}
 
-	// @method setStyle(style: Path options): this
-	// Sets the given path options to each layer of the group that has a `setStyle` method.
+	/**
+	 * Sets the given path options to each layer of the group that has a `setStyle` method.
+	 * @param {PathOptions} style
+	 * @returns {this}
+	 */
 	setStyle(style) {
 		return this.eachLayer(l => l.setStyle?.(style));
 	}
 
-	// @method bringToFront(): this
-	// Brings the layer group to the top of all other layers
+	/**
+	 * Brings the layer group to the top of all other layers
+	 * @returns {this}
+	 */
 	bringToFront() {
 		return this.eachLayer(l => l.bringToFront?.());
 	}
 
-	// @method bringToBack(): this
-	// Brings the layer group to the back of all other layers
+	/**
+	 * Brings the layer group to the back of all other layers
+	 * @returns {this}
+	 */
 	bringToBack() {
 		return this.eachLayer(l => l.bringToBack?.());
 	}
 
-	// @method getBounds(): LatLngBounds
-	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children,
-	// including the layers of nested layer groups).
+	/**
+	 * Returns the LatLngBounds of the Feature Group (created from bounds and coordinates
+	 * of its children, including the layers of nested layer groups).
+	 * @returns {LatLngBounds}
+	 */
 	getBounds() {
 		const bounds = new LatLngBounds();
 

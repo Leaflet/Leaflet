@@ -3,29 +3,26 @@ import {Layer} from './Layer.js';
 import * as Util from '../core/Util.js';
 import {getFeature, asFeature} from './GeoJSONUtil.js';
 
-/*
- * @class LayerGroup
- * @inherits Interactive layer
- *
- * Used to group several layers and handle them as one. If you add it to the map,
- * any layers added or removed from the group will be added/removed on the map as
- * well. Extends `Layer`.
- *
+/**
+ * Used to group several layers and handle them as one. If you add it to the map, any layers added
+ * or removed from the group will be added/removed on the map as well. Extends `Layer`.
  * @example
- *
  * ```js
  * new LayerGroup([marker1, marker2])
  * 	.addLayer(polyline)
  * 	.addTo(map);
  * ```
+ * @todo inherits Interactive layer
  */
-
-// @constructor LayerGroup(layers?: Layer[], options?: Object)
-// Create a layer group, optionally given an initial set of layers and an `options` object.
 export class LayerGroup extends Layer {
 
 	static initHooks = true;
 
+	/**
+	 * Create a layer group, optionally given an initial set of layers and an `options` object.
+	 * @param {Layer[]} [layers]
+	 * @param {object} [options]
+	 */
 	constructor(layers, options) {
 		super();
 
@@ -40,8 +37,11 @@ export class LayerGroup extends Layer {
 		this.callInitHooks();
 	}
 
-	// @method addLayer(layer: Layer): this
-	// Adds the given layer to the group.
+	/**
+	 * Adds the given layer to the group.
+	 * @param {Layer} layer
+	 * @returns {this}
+	 */
 	addLayer(layer) {
 		const id = this.getLayerId(layer);
 
@@ -52,11 +52,18 @@ export class LayerGroup extends Layer {
 		return this;
 	}
 
-	// @method removeLayer(layer: Layer): this
-	// Removes the given layer from the group.
-	// @alternative
-	// @method removeLayer(id: Number): this
-	// Removes the layer with the given internal ID from the group.
+	/**
+	 * Removes the given layer from the group.
+	 * @overload
+	 * @param {Layer} layer
+	 * @returns {this}
+	 */
+	/**
+	 * Removes the layer with the given internal ID from the group.
+	 * @overload
+	 * @param {number} id
+	 * @returns {this}
+	 */
 	removeLayer(layer) {
 		const id = layer in this._layers ? layer : this.getLayerId(layer);
 
@@ -69,18 +76,27 @@ export class LayerGroup extends Layer {
 		return this;
 	}
 
-	// @method hasLayer(layer: Layer): Boolean
-	// Returns `true` if the given layer is currently added to the group.
-	// @alternative
-	// @method hasLayer(id: Number): Boolean
-	// Returns `true` if the given internal ID is currently added to the group.
+	/**
+	 * Returns `true` if the given layer is currently added to the group.
+	 * @overload
+	 * @param {Layer} layer
+	 * @returns {boolean}
+	 */
+	/**
+	 * Returns `true` if the given internal ID is currently added to the group.
+	 * @overload
+	 * @param {number} id
+	 * @returns {boolean}
+	 */
 	hasLayer(layer) {
 		const layerId = typeof layer === 'number' ? layer : this.getLayerId(layer);
 		return layerId in this._layers;
 	}
 
-	// @method clearLayers(): this
-	// Removes all the layers from the group.
+	/**
+	 * Removes all the layers from the group.
+	 * @returns {this}
+	 */
 	clearLayers() {
 		return this.eachLayer(this.removeLayer, this);
 	}
@@ -93,11 +109,15 @@ export class LayerGroup extends Layer {
 		this.eachLayer(map.removeLayer, map);
 	}
 
-	// @method eachLayer(fn: Function, context?: Object): this
-	// Iterates over the layers of the group, optionally specifying context of the iterator function.
-	// ```js
-	// group.eachLayer(layer => layer.bindPopup('Hello'));
-	// ```
+	/**
+	 * Iterates over the layers of the group, optionally specifying context of the iterator function.
+	 * ```js
+	 * group.eachLayer(layer => layer.bindPopup('Hello'));
+	 * ```
+	 * @param {Function} fn
+	 * @param {object} [context]
+	 * @returns {this}
+	 */
 	eachLayer(method, context) {
 		for (const layer of Object.values(this._layers)) {
 			method.call(context, layer);
@@ -105,28 +125,39 @@ export class LayerGroup extends Layer {
 		return this;
 	}
 
-	// @method getLayer(id: Number): Layer
-	// Returns the layer with the given internal ID.
+	/**
+	 * Returns the layer with the given internal ID.
+	 * @param {number} id
+	 * @returns {Layer}
+	 */
 	getLayer(id) {
 		return this._layers[id];
 	}
 
-	// @method getLayers(): Layer[]
-	// Returns an array of all the layers added to the group.
+	/**
+	 * Returns an array of all the layers added to the group.
+	 * @returns {Layer[]}
+	 */
 	getLayers() {
 		const layers = [];
 		this.eachLayer(layers.push, layers);
 		return layers;
 	}
 
-	// @method setZIndex(zIndex: Number): this
-	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
+	/**
+	 * Calls `setZIndex` on every layer contained in this group, passing the z-index.
+	 * @param {number} zIndex
+	 * @returns {this}
+	 */
 	setZIndex(zIndex) {
 		return this.eachLayer(l => l.setZIndex?.(zIndex));
 	}
 
-	// @method getLayerId(layer: Layer): Number
-	// Returns the internal ID for a layer
+	/**
+	 * Returns the internal ID for a layer
+	 * @param {Layer} layer
+	 * @returns {number}
+	 */
 	getLayerId(layer) {
 		return Util.stamp(layer);
 	}
@@ -144,9 +175,13 @@ export class LayerGroup extends Layer {
 		});
 	}
 
-	// @method toGeoJSON(precision?: Number|false): Object
-	// Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
-	// Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
+	/**
+	 * Coordinates values are rounded with [`formatNum`](#util-formatnum) function with given `precision`.
+	 * Returns a [`GeoJSON`](https://en.wikipedia.org/wiki/GeoJSON) representation of the layer group
+	 * (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
+	 * @param {number | false} [precision]
+	 * @returns {object}
+	 */
 	toGeoJSON(precision) {
 
 		const type = this.feature?.geometry?.type;
