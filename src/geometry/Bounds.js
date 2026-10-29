@@ -59,18 +59,15 @@ export class Bounds {
 		if (obj instanceof Point || typeof obj[0] === 'number' || 'x' in obj) {
 			min2 = max2 = new Point(obj);
 		} else {
-			obj = new Bounds(obj);
-			min2 = obj.min;
-			max2 = obj.max;
-
-			if (!min2 || !max2) { return this; }
+			({min: min2, max: max2} = new Bounds(obj));
+			if (!min2) { return this; }
 		}
 
 		// @property min: Point
 		// The top left corner of the rectangle.
 		// @property max: Point
 		// The bottom right corner of the rectangle.
-		if (!this.min && !this.max) {
+		if (!this.min) {
 			this.min = min2.clone();
 			this.max = max2.clone();
 		} else {

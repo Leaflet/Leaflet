@@ -606,6 +606,37 @@ describe('TileLayer', () => {
 		});
 	});
 
+	describe('errorTileUrl option', () => {
+		const brokenTile = 'data:image/png;base64,broken';
+
+		it('replaces tiles that fail to load', (done) => {
+			const layer = new TileLayer(brokenTile, {errorTileUrl: placeKitten});
+			layer.once('tileerror', ({tile}) => {
+				expect(tile.getAttribute('src')).to.equal(placeKitten);
+				done();
+			});
+			map.addLayer(layer).setView([0, 0], 1);
+		});
+
+		it('doesn\'t fire tileerror for tiles pruned on zoom', (done) => {
+			map.options.fadeAnimation = false;
+			map.options.zoomAnimation = false;
+			const layer = new TileLayer(placeKitten, {errorTileUrl: placeKitten}).addTo(map);
+			map.setView([0, 0], 1);
+
+			layer.once('load', () => {
+				const errorSpy = sinon.spy();
+				layer.on('tileerror', errorSpy);
+				map.setZoom(3);
+
+				setTimeout(() => {
+					expect(errorSpy.called).to.be.false;
+					done();
+				}, 50);
+			});
+		});
+	});
+
 	describe('#setUrl', () => {
 		it('fires only one load event', (done) => {
 			const layer = new TileLayer(placeKitten).addTo(map);

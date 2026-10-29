@@ -1,4 +1,4 @@
-import {LeafletMap, BoxZoomHandler} from 'leaflet';
+import {LeafletMap} from 'leaflet';
 import sinon from 'sinon';
 import UIEventSimulator from 'ui-event-simulator';
 import {createContainer, removeMapContainer, Finger} from '../../SpecHelper.js';
@@ -129,14 +129,8 @@ describe('BoxZoomHandler', () => {
 		expect(map.getZoom()).to.eql(3);
 	});
 
-	it('_clearDeferredResetState', async () => {
-		let resetTimeout = false;
-
-		const stub = sinon.stub(map.boxZoom, '_clearDeferredResetState');
-		stub.callsFake(() => {
-			resetTimeout = map.boxZoom._resetStateTimeout !== 0;
-			BoxZoomHandler.prototype._clearDeferredResetState.call(map.boxZoom);
-		});
+	it('cancels the deferred reset on the next pointerdown', async () => {
+		const clearSpy = sinon.spy(window, 'clearTimeout');
 
 		const clientX = 100;
 		const clientY = 100;
@@ -157,7 +151,9 @@ describe('BoxZoomHandler', () => {
 			clientY,
 		});
 
-		// firing a pointerdown with zero delay triggers the _clearDeferredResetState
+		const resetTimeout = map.boxZoom._resetStateTimeout;
+
+		// firing a pointerdown with zero delay cancels the deferred reset
 		UIEventSimulator.fire('pointerdown', map._container, {
 			pointerId: finger.id,
 			shiftKey: true,
@@ -165,7 +161,8 @@ describe('BoxZoomHandler', () => {
 			clientY,
 		});
 
-		expect(resetTimeout).to.be.true;
+		expect(clearSpy.calledWith(resetTimeout)).to.be.true;
+		clearSpy.restore();
 
 		// cleanup pointerdown - because it breaks other tests
 		await finger.down().up();

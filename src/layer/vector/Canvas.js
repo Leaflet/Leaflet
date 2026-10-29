@@ -299,21 +299,17 @@ export class Canvas extends Renderer {
 
 		if (!this._drawing || layer._empty()) { return; }
 
-		const p = layer._point,
+		const {x, y} = layer._point,
 		ctx = this._ctx,
 		r = Math.max(Math.round(layer._pxRadius), 1),
-		s = (Math.max(Math.round(layer._pxRadiusY), 1) || r) / r;
-
-		if (s !== 1) {
-			ctx.save();
-			ctx.scale(1, s);
-		}
+		ry = Math.max(Math.round(layer._pxRadiusY), 1) || r;
 
 		ctx.beginPath();
-		ctx.arc(p.x, p.y / s, r, 0, Math.PI * 2, false);
-
-		if (s !== 1) {
-			ctx.restore();
+		// arc is faster for circles in Chrome and Firefox, ellipse for everything else
+		if (ry === r) {
+			ctx.arc(x, y, r, 0, Math.PI * 2);
+		} else {
+			ctx.ellipse(x, y, r, ry, 0, 0, Math.PI * 2);
 		}
 
 		this._fillStroke(ctx, layer);

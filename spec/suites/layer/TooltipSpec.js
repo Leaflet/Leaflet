@@ -616,4 +616,37 @@ describe('Tooltip', () => {
 		expect(() => UIEventSimulator.fire('focus', marker.getElement())).to.not.throw();
 		expect(marker.getElement()._leaflet_focus_handler).to.be.undefined;
 	});
+
+	it('switches handlers when rebound with different options', () => {
+		const layer = new Marker(center).addTo(map);
+
+		layer.bindTooltip('Tooltip').bindTooltip('Tooltip', {permanent: true});
+		UIEventSimulator.fire('pointerout', layer._icon, {relatedTarget: map._container});
+		expect(layer.isTooltipOpen()).to.be.true;
+
+		map.removeLayer(layer).addLayer(layer);
+		expect(layer.isTooltipOpen()).to.be.true;
+
+		layer.bindTooltip('Tooltip', {permanent: false});
+		UIEventSimulator.fire('pointerover', layer._icon, {relatedTarget: map._container});
+		expect(layer.isTooltipOpen()).to.be.true;
+	});
+
+	it('opens on focus after the layer is removed and added again', () => {
+		const layer = new Marker(center).addTo(map).bindTooltip('Tooltip');
+
+		map.removeLayer(layer).addLayer(layer);
+		UIEventSimulator.fire('focus', layer.getElement());
+
+		expect(layer.isTooltipOpen()).to.be.true;
+	});
+
+	it('doesn\'t add focus listeners on add after unbinding', () => {
+		const layer = new Marker(center).bindTooltip('Tooltip').addTo(map);
+
+		layer.unbindTooltip();
+		map.removeLayer(layer).addLayer(layer);
+
+		expect(layer.getElement()._leaflet_focus_handler).to.be.undefined;
+	});
 });
