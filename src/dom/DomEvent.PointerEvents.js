@@ -1,13 +1,10 @@
-/*
-/* @namespace DomEvent
- * @section Pointer detection
- * Detects the pointers that are currently active on the document.
- */
-
 const activePointers = new Map();
 
-// @function enablePointerDetection(el: HTMLElement)
-// Enables pointer detection and capture for the document.
+/**
+ * Enables pointer detection and capture for the document.
+ * @category Pointer detection
+ * @param {HTMLElement} el
+ */
 function enablePointerDetection(el) {
 	el.addEventListener('pointerdown', _onSet, {capture: true});
 	el.addEventListener('pointermove', _onUpdate, {capture: true});
@@ -16,8 +13,11 @@ function enablePointerDetection(el) {
 	activePointers.clear();
 }
 
-// @function disablePointerDetection(el: HTMLElement)
-// Disables pointer detection and capture for the document.
+/**
+ * Disables pointer detection and capture for the document.
+ * @category Pointer detection
+ * @param {HTMLElement} el
+ */
 function disablePointerDetection(el) {
 	el.removeEventListener('pointerdown', _onSet, {capture: true});
 	el.removeEventListener('pointermove', _onUpdate, {capture: true});
@@ -42,8 +42,11 @@ function _onDelete(e) {
 	activePointers.delete(e.pointerId);
 }
 
-// @function getPointers(): PointerEvent[]
-// Returns the active pointers on the document.
+/**
+ * Returns the active pointers on the document.
+ * @category Pointer detection
+ * @returns {LeafletPointerEvent[]}
+ */
 function getPointers() {
 	return [...activePointers.values()];
 }

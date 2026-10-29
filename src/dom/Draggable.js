@@ -5,52 +5,45 @@ import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
 import * as PointerEvents from './DomEvent.PointerEvents.js';
 
-// @namespace Draggable
-
 const defaultOptions = {
-	// @section
-	// @aka Draggable options
-	// @option clickTolerance: Number = 3
-	// The max number of pixels a user can shift the pointer during a click
-	// for it to be considered a valid click (as opposed to a pointer drag).
+	/**
+	 * The max number of pixels a user can shift the pointer during a click for
+	 * it to be considered a valid click (as opposed to a pointer drag).
+	 */
 	clickTolerance: 3
 };
 
-// @section
-// @event down: Event
-// Fired when a drag is about to start.
-// @event dragstart: Event
-// Fired when a drag starts
-// @event predrag: Event
-// Fired continuously during dragging *before* each corresponding
-// update of the element's position.
-// @event drag: Event
-// Fired continuously during dragging.
-// @event dragend: DragEndEvent
-// Fired when the drag ends.
+/**
+ * @typedef {Object} DraggableEvents
+ * @property {LeafletEvent} down Fired when a drag is about to start.
+ * @property {LeafletEvent} dragstart Fired when a drag starts
+ * @property {LeafletEvent} predrag Fired continuously during dragging *before* each corresponding update of the element's position.
+ * @property {LeafletEvent} drag Fired continuously during dragging.
+ * @property {DragEndEvent} dragend Fired when the drag ends.
+ */
 
-/*
- * @class Draggable
- * @inherits Evented
- *
- * A class for making DOM elements draggable.
- * Used internally for map and marker dragging. Works on any DOM element
- *
+/**
+ * A class for making DOM elements draggable. Used internally
+ * for map and marker dragging. Works on any DOM element
  * @example
  * ```js
  * const draggable = new Draggable(elementToDrag);
  * draggable.enable();
  * ```
  */
-
 export class Draggable extends Evented {
 
 	static initHooks = true;
 
 	static defaultOptions = defaultOptions;
 
-	// @constructor Draggable(el: HTMLElement, dragHandle?: HTMLElement, options?: Draggable options)
-	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
+	/**
+	 * Creates a `Draggable` object for moving `el` when you start dragging
+	 * the `dragHandle` element (equals `el` itself by default).
+	 * @param {HTMLElement} el
+	 * @param {HTMLElement} [dragHandle]
+	 * @param {DraggableOptions} [options]
+	 */
 	constructor(element, dragStartTarget, options) {
 		if (typeof options === 'boolean') {
 			throw new Error('Draggable: the preventOutline argument is removed in Leaflet 2. Pass options as the third argument.');
@@ -65,8 +58,7 @@ export class Draggable extends Evented {
 		this.callInitHooks();
 	}
 
-	// @method enable()
-	// Enables the dragging ability
+	/** Enables the dragging ability */
 	enable() {
 		if (this._enabled) { return; }
 
@@ -75,8 +67,7 @@ export class Draggable extends Evented {
 		this._enabled = true;
 	}
 
-	// @method disable()
-	// Disables the dragging ability
+	/** Disables the dragging ability */
 	disable() {
 		if (!this._enabled) { return; }
 

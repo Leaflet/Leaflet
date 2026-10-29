@@ -13,15 +13,25 @@ export {PointerEvents};
 
 // Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
 
-// @function on(el: HTMLElement, types: String, fn: Function, context?: Object): this
-// Adds a listener function (`fn`) to a particular DOM event type of the
-// element `el`. You can optionally specify the context of the listener
-// (object the `this` keyword will point to). You can also pass several
-// space-separated types (e.g. `'click dblclick'`).
-
-// @alternative
-// @function on(el: HTMLElement, eventMap: Object, context?: Object): this
-// Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
+/**
+ * Adds a listener function (`fn`) to a particular DOM event type of the element `el`. You
+ * can optionally specify the context of the listener (object the `this` keyword will point
+ * to). You can also pass several space-separated types (e.g. `'click dblclick'`).
+ * @overload
+ * @param {HTMLElement} el
+ * @param {string} types
+ * @param {Function} fn
+ * @param {object} [context]
+ * @returns {this}
+ */
+/**
+ * Adds a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
+ * @overload
+ * @param {HTMLElement} el
+ * @param {object} eventMap
+ * @param {object} [context]
+ * @returns {this}
+ */
 export function on(obj, types, fn, context) {
 
 	if (types && typeof types === 'object') {
@@ -39,22 +49,37 @@ export function on(obj, types, fn, context) {
 
 const eventsKey = '_leaflet_events';
 
-// @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
-// Removes a previously added listener function.
-// Note that if you passed a custom context to on, you must pass the same
-// context to `off` in order to remove the listener.
-
-// @alternative
-// @function off(el: HTMLElement, eventMap: Object, context?: Object): this
-// Removes a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
-
-// @alternative
-// @function off(el: HTMLElement, types: String): this
-// Removes all previously added listeners of given types.
-
-// @alternative
-// @function off(el: HTMLElement): this
-// Removes all previously added listeners from given HTMLElement
+/**
+ * Removes a previously added listener function. Note that if you passed a custom context
+ * to on, you must pass the same context to `off` in order to remove the listener.
+ * @overload
+ * @param {HTMLElement} el
+ * @param {string} types
+ * @param {Function} fn
+ * @param {object} [context]
+ * @returns {this}
+ */
+/**
+ * Removes a set of type/listener pairs, e.g. `{click: onClick, pointermove: onPointerMove}`
+ * @overload
+ * @param {HTMLElement} el
+ * @param {object} eventMap
+ * @param {object} [context]
+ * @returns {this}
+ */
+/**
+ * Removes all previously added listeners of given types.
+ * @overload
+ * @param {HTMLElement} el
+ * @param {string} types
+ * @returns {this}
+ */
+/**
+ * Removes all previously added listeners from given HTMLElement
+ * @overload
+ * @param {HTMLElement} el
+ * @returns {this}
+ */
 export function off(obj, types, fn, context) {
 
 	if (arguments.length === 1) {
@@ -126,11 +151,14 @@ function removeOne(obj, type, fn, context, id) {
 	obj[eventsKey][id] = null;
 }
 
-// @function stopPropagation(ev: DOMEvent): this
-// Stop the given event from propagation to parent elements. Used inside the listener functions:
-// ```js
-// DomEvent.on(div, 'click', DomEvent.stopPropagation);
-// ```
+/**
+ * Stop the given event from propagation to parent elements. Used inside the listener functions:
+ * ```js
+ * DomEvent.on(div, 'click', DomEvent.stopPropagation);
+ * ```
+ * @param {Event} ev
+ * @returns {this}
+ */
 export function stopPropagation(e) {
 
 	if (e.stopPropagation) {
@@ -142,45 +170,59 @@ export function stopPropagation(e) {
 	return this;
 }
 
-// @function disableScrollPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
+/**
+ * Adds `stopPropagation` to the element's `'wheel'` events (plus browser variants).
+ * @param {HTMLElement} el
+ * @returns {this}
+ */
 export function disableScrollPropagation(el) {
 	addOne(el, 'wheel', stopPropagation);
 	return this;
 }
 
-// @function disableClickPropagation(el: HTMLElement): this
-// Adds `stopPropagation` to the element's `'dblclick'`, `'contextmenu'`
-// and `'pointerdown'` events (plus browser variants).
-// For `'click'` events, prevents the map from handling the click
-// while still allowing the native DOM click event to propagate normally.
+/**
+ * Adds `stopPropagation` to the element's `'dblclick'`, `'contextmenu'` and `'pointerdown'`
+ * events (plus browser variants). For `'click'` events, prevents the map from handling the
+ * click while still allowing the native DOM click event to propagate normally.
+ * @param {HTMLElement} el
+ * @returns {this}
+ */
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	el['_leaflet_disable_click'] = true;
 	return this;
 }
 
-// @function preventDefault(ev: DOMEvent): this
-// Prevents the default action of the DOM Event `ev` from happening (such as
-// following a link in the href of the a element, or doing a POST request
-// with page reload when a `<form>` is submitted).
-// Use it inside listener functions.
+/**
+ * Prevents the default action of the DOM Event `ev` from happening (such as following
+ * a link in the href of the a element, or doing a POST request with page reload
+ * when a `<form>` is submitted). Use it inside listener functions.
+ * @param {Event} ev
+ * @returns {this}
+ */
 export function preventDefault(e) {
 	e.preventDefault?.();
 	return this;
 }
 
-// @function stop(ev: DOMEvent): this
-// Does `stopPropagation` and `preventDefault` at the same time.
+/**
+ * Does `stopPropagation` and `preventDefault` at the same time.
+ * @param {Event} ev
+ * @returns {this}
+ */
 export function stop(e) {
 	preventDefault(e);
 	stopPropagation(e);
 	return this;
 }
 
-// @function getPointerPosition(ev: DOMEvent, container?: HTMLElement): Point
-// Gets normalized pointer position from a DOM event relative to the
-// `container` (border excluded) or to the whole page if not specified.
+/**
+ * Gets normalized pointer position from a DOM event relative to the `container`
+ * (border excluded) or to the whole page if not specified.
+ * @param {Event} ev
+ * @param {HTMLElement} [container]
+ * @returns {Point}
+ */
 export function getPointerPosition(e, container) {
 	if (!container) {
 		return new Point(e.clientX, e.clientY);
@@ -197,18 +239,21 @@ export function getPointerPosition(e, container) {
 	);
 }
 
-// @function getWheelPxFactor(): Number
-// Gets the wheel pixel factor based on the devicePixelRatio
+/**
+ * Gets the wheel pixel factor based on the devicePixelRatio
+ * @returns {number}
+ */
 export function getWheelPxFactor() {
 	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
 	return window.devicePixelRatio * 2;
 }
 
-// @function getWheelDelta(ev: DOMEvent): Number
-// Gets normalized wheel delta from a wheel DOM event, in vertical
-// pixels scrolled (negative if scrolling down).
-// Events from pointing devices without precise scrolling are mapped to
-// a best guess of 60 pixels.
+/**
+ * Gets normalized wheel delta from a wheel DOM event, in vertical pixels scrolled (negative if scrolling down).
+ * Events from pointing devices without precise scrolling are mapped to a best guess of 60 pixels.
+ * @param {Event} ev
+ * @returns {number}
+ */
 export function getWheelDelta(e) {
 	return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / getWheelPxFactor() : // Pixels
 		(e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines

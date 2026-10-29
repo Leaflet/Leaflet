@@ -12,15 +12,23 @@ import {Point} from '../geometry/Point.js';
  * in HTML and SVG classes in SVG.
  */
 
-// @function get(id: String|HTMLElement): HTMLElement
-// Returns an element given its DOM id, or returns the element itself
-// if it was passed directly.
+/**
+ * Returns an element given its DOM id, or returns the element itself if it was passed directly.
+ * @param {string | HTMLElement} id
+ * @returns {HTMLElement}
+ */
 export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
-// @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
-// Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
+/**
+ * Creates an HTML element with `tagName`, sets its class to `className`,
+ * and optionally appends it to `container` element.
+ * @param {string} tagName
+ * @param {string} [className]
+ * @param {HTMLElement} [container]
+ * @returns {HTMLElement}
+ */
 export function create(tagName, className, container) {
 	const el = document.createElement(tagName);
 	el.className = className ?? '';
@@ -29,8 +37,10 @@ export function create(tagName, className, container) {
 	return el;
 }
 
-// @function toFront(el: HTMLElement)
-// Makes `el` the last child of its parent, so it renders in front of the other children.
+/**
+ * Makes `el` the last child of its parent, so it renders in front of the other children.
+ * @param {HTMLElement} el
+ */
 export function toFront(el) {
 	const parent = el.parentNode;
 	if (!parent || parent.lastChild === el) { return; }
@@ -44,8 +54,10 @@ export function toFront(el) {
 	}
 }
 
-// @function toBack(el: HTMLElement)
-// Makes `el` the first child of its parent, so it renders behind the other children.
+/**
+ * Makes `el` the first child of its parent, so it renders behind the other children.
+ * @param {HTMLElement} el
+ */
 export function toBack(el) {
 	const parent = el.parentNode;
 	if (!parent || parent.firstChild === el) { return; }
@@ -57,10 +69,13 @@ export function toBack(el) {
 	}
 }
 
-// @function setTransform(el: HTMLElement, offset: Point, scale?: Number)
-// Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
-// and optionally scaled by `scale`. Does not have an effect if the
-// browser doesn't support 3D CSS transforms.
+/**
+ * Resets the 3D CSS transform of `el` so it is translated by `offset` pixels and optionally scaled
+ * by `scale`. Does not have an effect if the browser doesn't support 3D CSS transforms.
+ * @param {HTMLElement} el
+ * @param {Point} offset
+ * @param {number} [scale]
+ */
 export function setTransform(el, offset, scale) {
 	const pos = offset ?? new Point(0, 0);
 
@@ -69,10 +84,14 @@ export function setTransform(el, offset, scale) {
 
 const positions = new WeakMap();
 
-// @function setPosition(el: HTMLElement, position: Point, flat?: Boolean)
-// Sets the position of `el` to coordinates specified by `position` using a CSS translate
-// (used by Leaflet internally to position its layers). With `flat`, the translate is 2D,
-// so `el` is painted into its parent's compositor layer instead of getting a layer of its own.
+/**
+ * Sets the position of `el` to coordinates specified by `position` using a CSS translate (used
+ * by Leaflet internally to position its layers). With `flat`, the translate is 2D, so `el` is
+ * painted into its parent's compositor layer instead of getting a layer of its own.
+ * @param {HTMLElement} el
+ * @param {Point} position
+ * @param {boolean} [flat]
+ */
 export function setPosition(el, point, flat) {
 	positions.set(el, point);
 	if (flat) {
@@ -82,28 +101,32 @@ export function setPosition(el, point, flat) {
 	}
 }
 
-// @function getPosition(el: HTMLElement): Point
-// Returns the coordinates of an element previously positioned with setPosition.
+/**
+ * Returns the coordinates of an element previously positioned with setPosition.
+ * @param {HTMLElement} el
+ * @returns {Point}
+ */
 export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 	return positions.get(el) ?? new Point(0, 0);
 }
 
-// @function disableImageDrag()
-// Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image.
+/** Prevents the user from generating `dragstart` DOM events, usually generated when the user drags an image. */
 export function disableImageDrag() {
 	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
-// @function enableImageDrag()
-// Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag).
+/** Cancels the effects of a previous [`DomUtil.disableImageDrag`](#domutil-disableimagedrag). */
 export function enableImageDrag() {
 	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
 
-// @function getSizedParentNode(el: HTMLElement): HTMLElement
-// Finds the closest parent node which size (width and height) is not null.
+/**
+ * Finds the closest parent node which size (width and height) is not null.
+ * @param {HTMLElement} el
+ * @returns {HTMLElement}
+ */
 export function getSizedParentNode(element) {
 	do {
 		element = element.parentNode;
@@ -111,10 +134,13 @@ export function getSizedParentNode(element) {
 	return element;
 }
 
-// @function getScale(el: HTMLElement): Object
-// Computes the CSS scale currently applied on the element.
-// Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
-// and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
+/**
+ * Computes the CSS scale currently applied on the element. Returns an object with `x` and `y` members as
+ * horizontal and vertical scales respectively, and `boundingClientRect` as the result of
+ * [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
+ * @param {HTMLElement} el
+ * @returns {object}
+ */
 export function getScale(element) {
 	const rect = element.getBoundingClientRect();
 
