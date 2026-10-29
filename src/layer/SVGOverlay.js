@@ -1,16 +1,19 @@
 import {ImageOverlay} from './ImageOverlay.js';
 import * as Util from '../core/Util.js';
 
-/*
- * @class SVGOverlay
- * @inherits ImageOverlay
- *
- * Used to load, display and provide DOM access to an SVG file over specific bounds of the map. Extends `ImageOverlay`.
+/**
+ * Instantiates an image overlay object given an SVG element and the geographical bounds it is
+ * tied to. A viewBox attribute is required on the SVG element to zoom in and out properly.
+ * @param {string | SVGElement} svg
+ * @param {LatLngBounds} bounds
+ * @param {SVGOverlayOptions} [options]
+ */
+/**
+ * Used to load, display and provide DOM access to an SVG file
+ * over specific bounds of the map. Extends `ImageOverlay`.
  *
  * An SVG overlay uses the [`<svg>`](https://developer.mozilla.org/docs/Web/SVG/Element/svg) element.
- *
  * @example
- *
  * ```js
  * const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
  * svgElement.setAttribute('xmlns', "http://www.w3.org/2000/svg");
@@ -20,10 +23,6 @@ import * as Util from '../core/Util.js';
  * new SVGOverlay(svgElement, svgElementBounds).addTo(map);
  * ```
  */
-
-// @constructor SVGOverlay(svg: String|SVGElement, bounds: LatLngBounds, options?: SVGOverlay options)
-// Instantiates an image overlay object given an SVG element and the geographical bounds it is tied to.
-// A viewBox attribute is required on the SVG element to zoom in and out properly.
 export class SVGOverlay extends ImageOverlay {
 	_initImage() {
 		const el = this._image = this._url;
@@ -32,7 +31,9 @@ export class SVGOverlay extends ImageOverlay {
 		if (this.options.className) { el.classList.add(...Util.splitWords(this.options.className)); }
 	}
 
-	// @method getElement(): SVGElement
-	// Returns the instance of [`SVGElement`](https://developer.mozilla.org/docs/Web/API/SVGElement)
-	// used by this overlay.
+	/**
+	 * Returns the instance of [`SVGElement`](https://developer.mozilla.org/docs/Web/API/SVGElement)
+	 * used by this overlay.
+	 * @returns {SVGElement}
+	 */
 }

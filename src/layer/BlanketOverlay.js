@@ -4,35 +4,26 @@ import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import {Bounds} from '../geometry/Bounds.js';
 
-// @namespace BlanketOverlay
-
-// @section
-// @aka BlanketOverlay options
 const defaultOptions = {
-	// @option padding: Number = 0.1
-	// How much to extend the clip area around the map view (relative to its size)
-	// e.g. 0.1 would be 10% of map view in each direction
+	/**
+	 * How much to extend the clip area around the map view (relative to
+	 * its size) e.g. 0.1 would be 10% of map view in each direction
+	 */
 	padding: 0.1,
 
-	// @option continuous: Boolean = false
-	// When `false`, the blanket will update its position only when the
-	// map state settles (*after* a pan/zoom animation). When `true`,
-	// it will update when the map state changes (*during* pan/zoom
-	// animations)
+	/**
+	 * When `false`, the blanket will update its position only when the map state settles (*after* a pan/zoom
+	 * animation). When `true`, it will update when the map state changes (*during* pan/zoom animations)
+	 */
 	continuous: false,
 };
 
-/*
- * @class BlanketOverlay
- * @inherits Layer
+/**
+ * Represents an HTML element that covers ("blankets") the entire surface of the map.
  *
- * Represents an HTML element that covers ("blankets") the entire surface
- * of the map.
- *
- * Do not use this class directly. It's meant for `Renderer`, and for plugins
- * that rely on one single HTML element
+ * Do not use this class directly. It's meant for `Renderer`,
+ * and for plugins that rely on one single HTML element
  */
-
 export class BlanketOverlay extends Layer {
 
 	static initHooks = true;
@@ -117,39 +108,52 @@ export class BlanketOverlay extends Layer {
 		this._onViewReset();
 	}
 
-	/*
-	 * @section Subclass interface
-	 * @uninheritable
-	 * Subclasses must define the following methods:
-	 *
-	 * @method _initContainer(): undefined
+	/**
 	 * Must initialize the HTML element to use as blanket, and store it as
 	 * `this._container`. The base implementation creates a blank `<div>`
+	 * @category Subclass interface
+	 * @returns {undefined}
+	 * @uninheritable
+	 */
+	/**
+	 * Must destroy the HTML element in `this._container` and free any other resources. The base
+	 * implementation destroys the element and removes any event handlers attached to it.
+	 * @category Subclass interface
+	 * @returns {undefined}
+	 * @uninheritable
+	 */
+	/**
+	 * The base implementation resizes the container (based on the map's size and
+	 * taking into account the padding), returning the new size in CSS pixels.
 	 *
-	 * @method _destroyContainer(): undefined
-	 * Must destroy the HTML element in `this._container` and free any other
-	 * resources. The base implementation destroys the element and removes
-	 * any event handlers attached to it.
-	 *
-	 * @method _resizeContainer(): Point
-	 * The base implementation resizes the container (based on the map's size
-	 * and taking into account the padding), returning the new size in CSS pixels.
-	 *
-	 * Subclass implementations shall reset container parameters and data
-	 * structures as needed.
-	 *
-	 * @method _onZoomEnd(ev?: PointerEvent): undefined
+	 * Subclass implementations shall reset container parameters and data structures as needed.
+	 * @category Subclass interface
+	 * @returns {Point}
+	 * @uninheritable
+	 */
+	/**
 	 * (Optional) Runs on the map's `zoomend` event.
-	 *
-	 * @method _onViewReset(ev?: PointerEvent): undefined
+	 * @category Subclass interface
+	 * @param {LeafletPointerEvent} [ev]
+	 * @returns {undefined}
+	 * @uninheritable
+	 */
+	/**
 	 * (Optional) Runs on the map's `viewreset` event.
-	 *
-	 * @method _onSettled(): undefined
+	 * @category Subclass interface
+	 * @param {LeafletPointerEvent} [ev]
+	 * @returns {undefined}
+	 * @uninheritable
+	 */
+	/**
 	 * Runs whenever the map state settles after changing (at the end of pan/zoom
 	 * animations, etc). This should trigger the bulk of any rendering logic.
 	 *
 	 * If the `continuous` option is set to `true`, then this also runs on
 	 * any map state change (including *during* pan/zoom animations).
+	 * @category Subclass interface
+	 * @returns {undefined}
+	 * @uninheritable
 	 */
 	_initContainer() {
 		this._container = DomUtil.create('div');

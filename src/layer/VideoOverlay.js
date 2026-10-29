@@ -3,63 +3,56 @@ import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
 
-// @namespace VideoOverlay
-
-// @section
-// @aka VideoOverlay options
 const defaultOptions = {
-	// @option autoplay: Boolean = true
-	// Whether the video starts playing automatically when loaded.
-	// On some browsers autoplay will only work with `muted: true`
+	/**
+	 * Whether the video starts playing automatically when loaded. On
+	 * some browsers autoplay will only work with `muted: true`
+	 */
 	autoplay: true,
 
-	// @option controls: Boolean = false
-	// Whether the browser will offer controls to allow the user to control video playback, including volume, seeking, and pause/resume playback.
+	/**
+	 * Whether the browser will offer controls to allow the user to control video
+	 * playback, including volume, seeking, and pause/resume playback.
+	 */
 	controls: false,
 
-	// @option loop: Boolean = true
-	// Whether the video will loop back to the beginning when played.
+	/** Whether the video will loop back to the beginning when played. */
 	loop: true,
 
-	// @option keepAspectRatio: Boolean = true
-	// Whether the video will save aspect ratio after the projection.
+	/** Whether the video will save aspect ratio after the projection. */
 	keepAspectRatio: true,
 
-	// @option muted: Boolean = false
-	// Whether the video starts on mute when loaded.
+	/** Whether the video starts on mute when loaded. */
 	muted: false,
 
-	// @option playsInline: Boolean = true
-	// Mobile browsers will play the video right where it is instead of open it up in fullscreen mode.
+	/** Mobile browsers will play the video right where it is instead of open it up in fullscreen mode. */
 	playsInline: true
 };
 
-// @section
-// @event load: Event
-// Fired when the video has finished loading the first frame
+/**
+ * @typedef {Object} VideoOverlayEvents
+ * @property {LeafletEvent} load Fired when the video has finished loading the first frame
+ */
 
-/*
- * @class VideoOverlay
- * @inherits ImageOverlay
- *
+/**
+ * Instantiates an image overlay object given the URL of the video (or array of
+ * URLs, or even a video element) and the geographical bounds it is tied to.
+ * @param {string | Array | HTMLVideoElement} video
+ * @param {LatLngBounds} bounds
+ * @param {VideoOverlayOptions} [options]
+ */
+
+/**
  * Used to load and display a video player over specific bounds of the map. Extends `ImageOverlay`.
  *
- * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video)
- * HTML element.
- *
+ * A video overlay uses the [`<video>`](https://developer.mozilla.org/docs/Web/HTML/Element/video) HTML element.
  * @example
- *
  * ```js
  * const videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
  * 	videoBounds = [[ 32, -130], [ 13, -100]];
  * new VideoOverlay(videoUrl, videoBounds ).addTo(map);
  * ```
  */
-
-// @constructor VideoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
-// Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
-// geographical bounds it is tied to.
-
 export class VideoOverlay extends ImageOverlay {
 
 	static defaultOptions = defaultOptions;
@@ -104,7 +97,9 @@ export class VideoOverlay extends ImageOverlay {
 		}
 	}
 
-	// @method getElement(): HTMLVideoElement
-	// Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
-	// used by this overlay.
+	/**
+	 * Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
+	 * used by this overlay.
+	 * @returns {HTMLVideoElement}
+	 */
 }
