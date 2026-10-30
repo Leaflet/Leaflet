@@ -1,4 +1,3 @@
-// @ts-check
 import * as DomEvent from './DomEvent.js';
 import {Point} from '../geometry/Point.js';
 

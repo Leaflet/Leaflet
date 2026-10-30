@@ -1,4 +1,3 @@
-// @ts-check
 import {Handler} from '../../core/Handler.js';
 import {Draggable} from '../../dom/Draggable.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';

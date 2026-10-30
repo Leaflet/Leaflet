@@ -1,4 +1,3 @@
-// @ts-check
 import * as Util from '../core/Util.js';
 import {Evented} from '../core/Events.js';
 import {EPSG3857} from '../geo/crs/EPSG3857.js';
@@ -595,6 +594,10 @@ export class LeafletMap extends Evented {
 		/** @type {{[id: number]: GridLayer}} */
 		this._zoomBoundLayers = {};
 		this._sizeChanged = true;
+		/** @type {Popup | undefined} */
+		this._popup = undefined; // the last popup opened with `openOn`, set by `Popup`
+		/** @type {Renderer | undefined} */
+		this._renderer = undefined; // the default renderer, created lazily by `getRenderer`
 
 		this._initContainer(id);
 		this._initLayout();
@@ -615,7 +618,14 @@ export class LeafletMap extends Evented {
 		}
 
 		if (options.attributionControl) {
-			new AttributionControl().addTo(this);
+			/**
+			 * The attribution control (only available if the
+			 * [`attributionControl` option](#map-attributioncontrol) was `true` when creating the map).
+			 * @category Controls
+			 * @type {AttributionControl | undefined}
+			 */
+			this.attributionControl = new AttributionControl();
+			this.addControl(this.attributionControl);
 		}
 		if (options.zoomControl) {
 			/**
@@ -639,13 +649,48 @@ export class LeafletMap extends Evented {
 			console.error('Map: preferCanvas option has been removed. Use renderer: new Canvas() instead.');
 		}
 
-		this.addHandler('boxZoom', BoxZoomHandler);
-		this.addHandler('doubleClickZoom', DoubleClickZoomHandler);
-		this.addHandler('dragging', DragHandler);
-		this.addHandler('keyboard', KeyboardHandler);
-		this.addHandler('scrollWheelZoom', ScrollWheelZoomHandler);
-		this.addHandler('tapHold', TapHoldHandler);
-		this.addHandler('pinchZoom', PinchZoomHandler);
+		/**
+		 * Box (shift-drag with pointer) zoom handler.
+		 * @category Handlers
+		 * @type {BoxZoomHandler}
+		 */
+		this.boxZoom = this._addHandler('boxZoom', BoxZoomHandler);
+		/**
+		 * Double click zoom handler.
+		 * @category Handlers
+		 * @type {DoubleClickZoomHandler}
+		 */
+		this.doubleClickZoom = this._addHandler('doubleClickZoom', DoubleClickZoomHandler);
+		/**
+		 * Map dragging handler.
+		 * @category Handlers
+		 * @type {DragHandler}
+		 */
+		this.dragging = this._addHandler('dragging', DragHandler);
+		/**
+		 * Keyboard navigation handler.
+		 * @category Handlers
+		 * @type {KeyboardHandler}
+		 */
+		this.keyboard = this._addHandler('keyboard', KeyboardHandler);
+		/**
+		 * Scroll wheel zoom handler.
+		 * @category Handlers
+		 * @type {ScrollWheelZoomHandler}
+		 */
+		this.scrollWheelZoom = this._addHandler('scrollWheelZoom', ScrollWheelZoomHandler);
+		/**
+		 * Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
+		 * @category Handlers
+		 * @type {TapHoldHandler}
+		 */
+		this.tapHold = this._addHandler('tapHold', TapHoldHandler);
+		/**
+		 * Pinch zoom handler.
+		 * @category Handlers
+		 * @type {PinchZoomHandler}
+		 */
+		this.pinchZoom = this._addHandler('pinchZoom', PinchZoomHandler);
 		/** @deprecated Use `pinchZoom`. */
 		this.touchZoom = this.pinchZoom;
 
@@ -1555,9 +1600,20 @@ export class LeafletMap extends Evented {
 	 * @returns {this}
 	 */
 	addHandler(name, HandlerClass) {
-		if (!HandlerClass) { return this; }
+		if (HandlerClass) {
+			/** @type {any} */ (this)[name] = this._addHandler(name, HandlerClass);
+		}
+		return this;
+	}
 
-		const handler = /** @type {any} */ (this)[name] = new HandlerClass(this);
+	/**
+	 * @template {Handler} H
+	 * @param {string} name
+	 * @param {new (map: LeafletMap) => H} HandlerClass
+	 * @returns {H}
+	 */
+	_addHandler(name, HandlerClass) {
+		const handler = new HandlerClass(this);
 
 		this._handlers.push(handler);
 
@@ -1565,7 +1621,7 @@ export class LeafletMap extends Evented {
 			handler.enable();
 		}
 
-		return this;
+		return handler;
 	}
 
 	/**

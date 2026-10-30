@@ -1,4 +1,3 @@
-// @ts-check
 import {CRS} from './CRS.js';
 import {haversineDistance} from '../LatLng.js';
 

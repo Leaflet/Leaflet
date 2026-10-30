@@ -1,4 +1,3 @@
-// @ts-check
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {LatLng} from '../../geo/LatLng.js';

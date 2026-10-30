@@ -1,4 +1,3 @@
-// @ts-check
 import {CRS} from './CRS.js';
 import {LonLatProjection} from '../projection/LonLatProjection.js';
 import {Transformation} from '../../geometry/Transformation.js';

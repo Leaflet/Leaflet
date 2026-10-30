@@ -1,4 +1,3 @@
-// @ts-check
 import {GridLayer} from './GridLayer.js';
 import * as Util from '../../core/Util.js';
 import * as DomEvent from '../../dom/DomEvent.js';

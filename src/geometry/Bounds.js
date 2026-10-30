@@ -1,4 +1,3 @@
-// @ts-check
 import {Point} from './Point.js';
 
 /** @import {PointExpression} from './Point.js' */

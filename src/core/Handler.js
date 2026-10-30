@@ -1,4 +1,3 @@
-// @ts-check
 import {Class} from './Class.js';
 
 /** @import {LeafletMap} from '../map/Map.js' */

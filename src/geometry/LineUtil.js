@@ -1,4 +1,3 @@
-// @ts-check
 import {Point} from './Point.js';
 import {LatLng} from '../geo/LatLng.js';
 

@@ -1,4 +1,3 @@
-// @ts-check
 import {TileLayer} from './TileLayer.js';
 import {EPSG4326} from '../../geo/crs/EPSG4326.js';
 import {Bounds} from '../../geometry/Bounds.js';

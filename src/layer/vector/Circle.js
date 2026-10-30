@@ -1,4 +1,3 @@
-// @ts-check
 import {CircleMarker} from './CircleMarker.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 import {EarthCRS} from '../../geo/crs/EarthCRS.js';

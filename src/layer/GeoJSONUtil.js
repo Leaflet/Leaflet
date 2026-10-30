@@ -1,4 +1,3 @@
-// @ts-check
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';
 import * as LineUtil from '../geometry/LineUtil.js';

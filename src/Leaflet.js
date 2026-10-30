@@ -1,4 +1,12 @@
-// @ts-check
+/**
+ * The Leaflet version in use.
+ * @example
+ * ```js
+ * import {version} from 'leaflet';
+ *
+ * console.log(version); // "2.0.0", or whatever version is in use
+ * ```
+ */
 export const version = '2.0.0-alpha.1';
 
 // control

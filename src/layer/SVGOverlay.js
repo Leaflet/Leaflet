@@ -1,4 +1,3 @@
-// @ts-check
 import {ImageOverlay} from './ImageOverlay.js';
 import * as Util from '../core/Util.js';
 

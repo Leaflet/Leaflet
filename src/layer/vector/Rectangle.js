@@ -1,4 +1,3 @@
-// @ts-check
 import {Polygon} from './Polygon.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
 

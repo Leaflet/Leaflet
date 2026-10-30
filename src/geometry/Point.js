@@ -1,4 +1,3 @@
-// @ts-check
 import {formatNum} from '../core/Util.js';
 
 /**

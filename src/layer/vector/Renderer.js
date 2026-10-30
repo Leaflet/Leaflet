@@ -1,4 +1,3 @@
-// @ts-check
 import {BlanketOverlay} from '../BlanketOverlay.js';
 import * as Util from '../../core/Util.js';
 

@@ -1,4 +1,3 @@
-// @ts-check
 import {Icon} from './Icon.js';
 import {Point} from '../../geometry/Point.js';
 

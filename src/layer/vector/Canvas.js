@@ -1,4 +1,3 @@
-// @ts-check
 import {Renderer} from './Renderer.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 import {mapHandlingDisabled} from '../../dom/DomEventUtil.js';

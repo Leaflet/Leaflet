@@ -1,4 +1,3 @@
-// @ts-check
 import {LayerBase} from './LayerBase.js';
 import * as Util from '../core/Util.js';
 import {LatLng} from '../geo/LatLng.js';

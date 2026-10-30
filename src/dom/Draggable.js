@@ -1,4 +1,3 @@
-// @ts-check
 import {Evented} from '../core/Events.js';
 import * as DomEvent from './DomEvent.js';
 import {getPointers} from './DomEventUtil.js';

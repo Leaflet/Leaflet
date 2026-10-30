@@ -1,4 +1,3 @@
-// @ts-check
 import {EarthCRS} from './EarthCRS.js';
 import {SphericalMercatorProjection} from '../projection/SphericalMercatorProjection.js';
 import {Transformation} from '../../geometry/Transformation.js';

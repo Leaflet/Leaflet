@@ -5,9 +5,11 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "allowJs": true,
-    "checkJs": false,
+    "checkJs": true,
     "strict": true,
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist/types",
     "rootDir": "src",
     "types": []
   },

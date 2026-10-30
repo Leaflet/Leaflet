@@ -1,4 +1,3 @@
-// @ts-check
 import {Layer} from '../Layer.js';
 import {SVG} from './SVG.js';
 import * as Util from '../../core/Util.js';

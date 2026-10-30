@@ -1,4 +1,3 @@
-// @ts-check
 import * as Util from '../core/Util.js';
 import {LatLngBounds} from './LatLngBounds.js';
 

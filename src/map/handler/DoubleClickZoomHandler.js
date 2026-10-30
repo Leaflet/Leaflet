@@ -1,4 +1,3 @@
-// @ts-check
 import {Handler} from '../../core/Handler.js';
 
 /** @import {LeafletPointerEvent} from '../../types.js' */

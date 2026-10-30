@@ -1,4 +1,3 @@
-// @ts-check
 import {DivOverlay} from './DivOverlay.js';
 import {Point} from '../geometry/Point.js';
 import * as DomUtil from '../dom/DomUtil.js';

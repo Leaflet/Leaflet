@@ -1,4 +1,3 @@
-// @ts-check
 import * as Util from './Util.js';
 
 /**

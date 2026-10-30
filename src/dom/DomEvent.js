@@ -1,4 +1,3 @@
-// @ts-check
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
 import {getScale} from './DomUtil.js';

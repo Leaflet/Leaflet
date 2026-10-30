@@ -1,4 +1,3 @@
-// @ts-check
 import {Layer} from '../Layer.js';
 import {DefaultIcon} from './DefaultIcon.js';
 import * as Util from '../../core/Util.js';

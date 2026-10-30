@@ -1,5 +1,3 @@
-// @ts-check
-
 // Internal DOM event helpers, kept out of the public `DomEvent` namespace.
 
 // native events of Leaflet events that `DomEvent.stopPropagation` was called on, so the map stops firing them on

@@ -1,4 +1,3 @@
-// @ts-check
 import {Control} from './Control.js';
 import * as Util from '../core/Util.js';
 import * as DomEvent from '../dom/DomEvent.js';

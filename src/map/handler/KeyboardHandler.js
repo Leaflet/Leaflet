@@ -1,4 +1,3 @@
-// @ts-check
 import {Handler} from '../../core/Handler.js';
 import {on, off, stop} from '../../dom/DomEvent.js';
 import {Point} from '../../geometry/Point.js';

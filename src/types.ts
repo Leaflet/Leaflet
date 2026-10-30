@@ -257,11 +257,13 @@ export interface MarkerMoveEvent extends LeafletEvent, MarkerMoveEventProps {}
 export interface ZoomAnimEvent extends LeafletEvent, ZoomAnimEventProps {}
 export interface WorldCopyJumpEvent extends LeafletEvent, WorldCopyJumpEventProps {}
 
+// Members the classes can't declare in JS, added through `./Leaflet.js`, which plugins augment as `'leaflet'`:
+// once a class is augmented through its own module, augmenting it through a re-export no longer merges. The one
+// exception is `LayerBase`, which isn't exported, so plugins can't augment it either way.
 declare module './layer/LayerBase.js' {
 	interface LayerBase {
 		_map: LeafletMap;
 		_mapToAdd?: LeafletMap | null;
-		_zoomAnimated?: boolean;
 
 		/**
 		 * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should
@@ -295,10 +297,8 @@ declare module './layer/LayerBase.js' {
 	}
 }
 
-declare module './layer/Layer.js' {
+declare module './Leaflet.js' {
 	interface Layer {
-		_popup?: Popup | null;
-		_tooltip?: Tooltip | null;
 		// implemented by subclasses, checked by bound popups and tooltips
 		_latlng?: LatLng;
 		_getPopupAnchor?(): PointExpression;
@@ -309,7 +309,7 @@ declare module './layer/Layer.js' {
 	}
 }
 
-declare module './layer/DivOverlay.js' {
+declare module './Leaflet.js' {
 	interface DivOverlay {
 		// created by the subclass's `_initLayout`
 		_container: HTMLElement;
@@ -325,7 +325,7 @@ declare module './layer/DivOverlay.js' {
 	}
 }
 
-declare module './layer/tile/GridLayer.js' {
+declare module './Leaflet.js' {
 	interface GridLayer {
 		_abortLoading?(): void; // implemented by `TileLayer`
 		// hooks for subclasses
@@ -336,7 +336,7 @@ declare module './layer/tile/GridLayer.js' {
 	}
 }
 
-declare module './layer/vector/Renderer.js' {
+declare module './Leaflet.js' {
 	interface Renderer {
 		_layers: {[id: number]: Path}; // created lazily
 		// implemented by `SVG` and `Canvas`, called by paths
@@ -352,14 +352,14 @@ declare module './layer/vector/Renderer.js' {
 	}
 }
 
-declare module './layer/vector/Canvas.js' {
+declare module './Leaflet.js' {
 	interface Canvas {
 		_container: HTMLCanvasElement;
 		_ctxScale: number;
 	}
 }
 
-declare module './layer/vector/Path.js' {
+declare module './Leaflet.js' {
 	interface Path {
 		_path: SVGElement; // created by `SVG`
 		_order?: DrawOrder; // created by `Canvas`
@@ -374,70 +374,19 @@ declare module './layer/vector/Path.js' {
 	}
 }
 
-declare module './layer/vector/CircleMarker.js' {
+declare module './Leaflet.js' {
 	interface CircleMarker {
 		_pxRadiusY?: number; // set by `Circle`
 	}
 }
 
-declare module './map/Map.js' {
-	interface LeafletMap {
-		_popup?: Popup; // the last popup opened with `openOn`, set by `Popup`
-		_renderer?: Renderer; // the default renderer, created lazily by `getRenderer`
-
-		/**
-		 * The attribution control (only available if the [`attributionControl` option](#map-attributioncontrol)
-		 * was `true` when creating the map).
-		 * @category Controls
-		 */
-		attributionControl?: AttributionControl;
-
-		// created by `addHandler` in the constructor
-		/**
-		 * Box (shift-drag with pointer) zoom handler.
-		 * @category Handlers
-		 */
-		boxZoom: BoxZoomHandler;
-		/**
-		 * Double click zoom handler.
-		 * @category Handlers
-		 */
-		doubleClickZoom: DoubleClickZoomHandler;
-		/**
-		 * Map dragging handler.
-		 * @category Handlers
-		 */
-		dragging: DragHandler;
-		/**
-		 * Keyboard navigation handler.
-		 * @category Handlers
-		 */
-		keyboard: KeyboardHandler;
-		/**
-		 * Scroll wheel zoom handler.
-		 * @category Handlers
-		 */
-		scrollWheelZoom: ScrollWheelZoomHandler;
-		/**
-		 * Long tap handler to simulate `contextmenu` event (useful in mobile Safari).
-		 * @category Handlers
-		 */
-		tapHold: TapHoldHandler;
-		/**
-		 * Pinch zoom handler.
-		 * @category Handlers
-		 */
-		pinchZoom: PinchZoomHandler;
-	}
-}
-
-declare module './dom/Draggable.js' {
+declare module './Leaflet.js' {
 	interface Draggable {
 		_absPos?: Point; // the unwrapped position, set by the map drag handler with `worldCopyJump`
 	}
 }
 
-declare module './control/Control.js' {
+declare module './Leaflet.js' {
 	interface Control<O extends ControlOptions = ControlOptions> {
 		_map: LeafletMap;
 		_container: HTMLElement;

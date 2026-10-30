@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Various utility functions, used by Leaflet internally.
  * @module Util

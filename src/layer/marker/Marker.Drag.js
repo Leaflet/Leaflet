@@ -1,4 +1,3 @@
-// @ts-check
 import {Handler} from '../../core/Handler.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {Draggable} from '../../dom/Draggable.js';

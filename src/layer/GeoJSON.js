@@ -1,4 +1,3 @@
-// @ts-check
 import {FeatureGroup} from './FeatureGroup.js';
 import {Marker} from './marker/Marker.js';
 import {Polyline} from './vector/Polyline.js';

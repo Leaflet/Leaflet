@@ -1,4 +1,3 @@
-// @ts-check
 import {Evented} from '../core/Events.js';
 import * as Util from '../core/Util.js';
 

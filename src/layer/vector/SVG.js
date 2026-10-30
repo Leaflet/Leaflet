@@ -1,4 +1,3 @@
-// @ts-check
 import {Renderer} from './Renderer.js';
 import * as DomUtil from '../../dom/DomUtil.js';
 import {splitWords, stamp} from '../../core/Util.js';

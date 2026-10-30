@@ -1,4 +1,3 @@
-// @ts-check
 import {LatLng} from './LatLng.js';
 
 /** @import {LatLngExpression} from './LatLng.js' */

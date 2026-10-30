@@ -1,4 +1,3 @@
-// @ts-check
 import {Class} from '../../core/Class.js';
 import {setOptions} from '../../core/Util.js';
 import {Point} from '../../geometry/Point.js';

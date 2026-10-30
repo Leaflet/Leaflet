@@ -1,4 +1,3 @@
-// @ts-check
 import {Class} from './Class.js';
 import * as Util from './Util.js';
 

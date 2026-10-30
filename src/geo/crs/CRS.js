@@ -1,4 +1,3 @@
-// @ts-check
 import {Bounds} from '../../geometry/Bounds.js';
 import {LatLng} from '../LatLng.js';
 import {LatLngBounds} from '../LatLngBounds.js';

@@ -1,4 +1,3 @@
-// @ts-check
 import {DivOverlay} from './DivOverlay.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as DomUtil from '../dom/DomUtil.js';

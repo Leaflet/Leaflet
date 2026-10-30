@@ -55,6 +55,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       size: ${{ steps.size.outputs.summary }}
+      api: ${{ steps.api.outputs.summary }}
     env:
       BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
     steps:
@@ -69,6 +70,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
+      - run: npm run test:types
 
       - run: node ./spec/ssr/ssr_node.js
       - run: node ./spec/tree_shaking.js
@@ -80,9 +82,9 @@ jobs:
 
       - run: deno run ./spec/ssr/ssr_deno.js
 
-      # keep the head build, sources and script out of git's way so they survive the base checkout; the script
-      # stays in the repo root to resolve rolldown from node_modules
-      - run: mkdir head && mv dist head/ && cp -r src package.json head/ && cp build/size.js size.js
+      # keep the head build, sources and scripts out of git's way so they survive the base checkout; the scripts
+      # stay in the repo root to resolve rolldown from node_modules
+      - run: mkdir head && mv dist head/ && cp -r src package.json head/ && cp build/size.js build/api-diff.js .
 
       - name: Build base
         if: env.BASE_SHA && !startsWith(env.BASE_SHA, '0000000')
@@ -93,10 +95,22 @@ jobs:
       - id: size
         run: node size.js . head >> "$GITHUB_OUTPUT"
 
+      - id: api
+        run: node api-diff.js . head >> "$GITHUB_OUTPUT"
+
   size-report:
     needs: check
     if: always() && needs.check.outputs.size
     name: 'size: ${{ needs.check.outputs.size }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: 'true'
+
+  api-report:
+    needs: check
+    if: always() && needs.check.outputs.api
+    name: ${{ needs.check.outputs.api }}
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
@@ -177,7 +191,7 @@ jobs:
             gh release create dev --prerelease --title "Development snapshot" --target "$GITHUB_SHA" --notes ""
           gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/dev" -f sha="$GITHUB_SHA" -F force=true > /dev/null
           gh release edit dev --notes "Latest build of \`main\` at $GITHUB_SHA ($(date -u +'%Y-%m-%d %H:%M UTC')), updated automatically on every push. Not a stable release."
-          gh release upload dev dist/* --clobber
+          gh release upload dev dist/leaflet* --clobber
           # drop assets the build no longer produces
           for name in $(gh release view dev --json assets -q '.assets[].name'); do
             [ -e "dist/$name" ] || gh release delete-asset dev "$name" --yes

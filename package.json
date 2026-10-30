@@ -34,12 +34,16 @@
   },
   "type": "module",
   "exports": {
-    ".": "./src/Leaflet.js",
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./src/Leaflet.js"
+    },
     "./styles.css": "./dist/leaflet.css"
   },
   "sideEffects": [
     "*.css"
   ],
+  "types": "dist/types/index.d.ts",
   "style": "dist/leaflet.css",
   "files": [
     "dist",
@@ -53,12 +57,15 @@
     "test": "vitest run",
     "test:ui": "vitest --ui --browser.headless=false",
     "coverage": "vitest run --coverage",
-    "build": "rolldown --config build/rolldown-config.js",
-    "watch": "npm run build -- --watch",
-    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/* CHANGELOG.md LICENSE README.md",
+    "build": "npm run build:js && npm run build:types",
+    "build:js": "rolldown --config build/rolldown-config.js",
+    "build:types": "tsc",
+    "watch": "npm run build:js -- --watch",
+    "zip": "npm run build && rm -f dist/leaflet.zip && zip -j dist/leaflet.zip dist/leaflet* CHANGELOG.md LICENSE README.md",
     "lint": "eslint . --cache",
     "lintfix": "npm run lint -- --fix",
-    "typecheck": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test:types": "tsc -p spec/types",
     "site": "node build/site.js",
     "serve": "npm run site && http-server _site -c-1",
     "pin-release": "node build/pin-release.js",

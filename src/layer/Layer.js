@@ -1,4 +1,3 @@
-// @ts-check
 import {LayerBase} from './LayerBase.js';
 import {Popup} from './Popup.js';
 import {Tooltip} from './Tooltip.js';
@@ -92,6 +91,7 @@ export class Layer extends LayerBase {
 	 * @returns {this}
 	 */
 	bindPopup(content, options) {
+		/** @type {Popup | null | undefined} */
 		this._popup = this._initOverlay(Popup, this._popup, content, options);
 		/** @type {Layer<any, any>} */ (this).on({
 			click: this._openPopup,
@@ -236,6 +236,7 @@ export class Layer extends LayerBase {
 			this.unbindTooltip();
 		}
 
+		/** @type {Tooltip | null | undefined} */
 		this._tooltip = this._initOverlay(Tooltip, old, content, options);
 		this._initTooltipInteractions();
 
