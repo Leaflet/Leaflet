@@ -1,6 +1,6 @@
 // @ts-check
 import {CRS} from './CRS.js';
-import {LonLat} from '../projection/Projection.LonLat.js';
+import {LonLatProjection} from '../projection/LonLatProjection.js';
 import {Transformation} from '../../geometry/Transformation.js';
 
 /** @import {LatLng} from '../LatLng.js' */
@@ -11,7 +11,7 @@ import {Transformation} from '../../geometry/Transformation.js';
  * simple euclidean distance.
  */
 export class SimpleCRS extends CRS {
-	static projection = LonLat;
+	static projection = LonLatProjection;
 	static transformation = /* @__PURE__ */ new Transformation(1, 0, -1, 0);
 
 	/** @param {number} zoom */

@@ -1,7 +1,7 @@
-import {Projection, LatLng, Point} from 'leaflet';
+import {LatLng, MercatorProjection, Point, SphericalMercatorProjection} from 'leaflet';
 
-describe('Projection.Mercator', () => {
-	const p = Projection.Mercator;
+describe('MercatorProjection', () => {
+	const p = MercatorProjection;
 
 	describe('#project', () => {
 		it('projects a center point', () => {
@@ -49,8 +49,8 @@ describe('Projection.Mercator', () => {
 	});
 });
 
-describe('Projection.SphericalMercator', () => {
-	const p = Projection.SphericalMercator;
+describe('SphericalMercatorProjection', () => {
+	const p = SphericalMercatorProjection;
 
 	describe('#project', () => {
 		it('projects a center point', () => {

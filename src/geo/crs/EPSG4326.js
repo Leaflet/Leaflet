@@ -1,6 +1,6 @@
 // @ts-check
 import {EarthCRS} from './EarthCRS.js';
-import {LonLat} from '../projection/Projection.LonLat.js';
+import {LonLatProjection} from '../projection/LonLatProjection.js';
 import {Transformation} from '../../geometry/Transformation.js';
 
 /**
@@ -14,6 +14,6 @@ import {Transformation} from '../../geometry/Transformation.js';
  */
 export class EPSG4326 extends EarthCRS {
 	static code = 'EPSG:4326';
-	static projection = LonLat;
+	static projection = LonLatProjection;
 	static transformation = /* @__PURE__ */ new Transformation(1 / 180, 1, -1 / 180, 0.5);
 }

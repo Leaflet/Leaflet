@@ -395,7 +395,8 @@ export type LatLngBoundsExpression = LatLngBounds | LatLngExpression[];
 
 /**
  * An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See
- * [Map projection](https://en.wikipedia.org/wiki/Map_projection).
+ * [Map projection](https://en.wikipedia.org/wiki/Map_projection). Leaflet comes with `LonLatProjection`,
+ * `MercatorProjection` and `SphericalMercatorProjection` out of the box.
  *
  * Note that the projection instances do not inherit from Leaflet's `Class` object, and can't be instantiated. Also,
  * new classes can't inherit from them, and methods can't be added to them with the `include` function.

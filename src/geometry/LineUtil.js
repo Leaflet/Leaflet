@@ -144,9 +144,10 @@ let _lastCode;
 
 /**
  * Clips the segment a to b by rectangular bounds with the [Cohen-Sutherland
- * algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm) (modifying the segment
- * points directly!). Used by Leaflet to only show polyline points that are on the screen or near, increasing
- * performance.
+ * algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm). Used by Leaflet to only show
+ * polyline points that are on the screen or near, increasing performance. Returns the clipped endpoints (new points
+ * where clipped, rounded with `round`), or `false` if the segment is entirely outside the bounds. `useLastCode`
+ * reuses the bit code of `b` from the previous call as the code of `a`, for clipping consecutive segments of a line.
  * @param {Point} a
  * @param {Point} b
  * @param {Bounds} bounds

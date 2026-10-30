@@ -10,7 +10,7 @@ import {Point} from '../../geometry/Point.js';
  * maps `x` as longitude, and `y` as latitude. Also suitable for flat worlds, e.g. game maps. Used by the `EPSG:4326`
  * and `Simple` CRS.
  */
-export const LonLat = {
+export const LonLatProjection = {
 	/** @param {LatLngExpression} latlng */
 	project(latlng) {
 		latlng = new LatLng(latlng);

@@ -11,7 +11,7 @@ const earthRadius = 6378137;
  * Elliptical Mercator projection — more complex than Spherical Mercator. Assumes that Earth is an ellipsoid. Used by
  * the EPSG:3395 CRS.
  */
-export const Mercator = {
+export const MercatorProjection = {
 	R: earthRadius,
 	R_MINOR: 6356752.314245179,
 

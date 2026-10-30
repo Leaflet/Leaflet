@@ -11,7 +11,7 @@ const earthRadius = 6378137;
  * Spherical Mercator projection — the most common projection for online maps, used by almost all free and commercial
  * tile providers. Assumes that Earth is a sphere. Used by the `EPSG:3857` CRS.
  */
-export const SphericalMercator = {
+export const SphericalMercatorProjection = {
 
 	R: earthRadius,
 	MAX_LATITUDE: 85.0511287798,
