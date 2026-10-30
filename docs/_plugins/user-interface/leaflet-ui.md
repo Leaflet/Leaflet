@@ -10,4 +10,6 @@ compatible-v1: true
 compatible-v2: false
 ---
 
-Presets for common Leaflet user interface customizations.
+Instantly configure a new L.map with all the essential layers and controls.
+
+Bundles popular community plugins, including: Geocoding, Geolocation, Fullscreen, Minimap, 3D Rotation and Multi-language support.
