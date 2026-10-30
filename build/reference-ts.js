@@ -19,6 +19,7 @@ const CAPTION = /^<caption>(.*?)<\/caption>\s*/;
 const PROPERTY_DEFAULT = /^@property\s*\{.*?\}\s*\[[\w$]+\s*=\s*(.*?)\]/s;
 const PARAM_MARKS = /^…|\?$/g;
 const BLOCK_COMMENT = /\/\*.*?\*\/\s*/g;
+const FENCE = /```.*?```/gs;
 
 let checker, config, pages, ownerOfInterface, lookup;
 
@@ -282,7 +283,7 @@ function valuePage(name, decl) {
 
 function examples(ns, doc) {
 	for (const t of tagsOf(doc).filter(t => tagName(t) === 'example')) {
-		const raw = text(t.comment);
+		const raw = text(t.comment, t);
 		const caption = CAPTION.exec(raw);
 		const body = caption ? raw.slice(caption[0].length) : raw;
 		addItem(sectionOf(ns, 'example', caption?.[1]), {key: '__default', name: '__default',
@@ -712,8 +713,14 @@ function isExported(s) {
 	return (s.modifiers ?? []).some(m => m.kind === SK.ExportKeyword);
 }
 
-function text(comment) {
-	return (typeof comment === 'string' ? comment : getTextOfJSDocComment(comment) ?? '').trim();
+// TS drops the leading whitespace of comment lines depending on how many backticks precede them, so code fences are
+// restored from the comment's source
+function text(comment, node) {
+	const str = (typeof comment === 'string' ? comment : getTextOfJSDocComment(comment) ?? '').trim();
+	if (!node || !str.includes('```')) { return str; }
+	const fences = sourceText(node).replace(/^[ \t]*\* ?/gm, '').match(FENCE) ?? [];
+	let i = 0;
+	return str.replace(FENCE, fence => fences[i++] ?? fence);
 }
 
 function tagName(tag) {
@@ -742,7 +749,7 @@ function moduleDoc(sf) {
 }
 
 function descriptionOf(doc) {
-	return doc ? text(doc.comment) || null : null;
+	return doc ? text(doc.comment, doc) || null : null;
 }
 
 function categoryOf(doc) {
@@ -756,7 +763,7 @@ function sourceText(node) {
 function categoryDescriptions(doc) {
 	const out = {};
 	for (const t of tagsOf(doc).filter(t => tagName(t) === 'categoryDescription')) {
-		const [name, ...rest] = text(t.comment).split('\n');
+		const [name, ...rest] = text(t.comment, t).split('\n');
 		out[name.trim()] = rest.join('\n').trim() || null;
 	}
 	return out;

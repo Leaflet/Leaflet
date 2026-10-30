@@ -47,7 +47,16 @@ let akas; // link name → anchor, for the reference being rendered
 const liquid = new Liquid({root: 'build/reference', extname: '.liquid'});
 
 // links a type name that has an anchor on the page
-liquid.registerFilter('type', str => (str && str in akas ? `<a href='#${akas[str]}'>${str}</a>` : str ?? ''));
+const link = str => (str in akas ? `<a href='#${akas[str]}'>${str}</a>` : str);
+
+// unions may only wrap after a `|`, so a long one doesn't force a wide signature column; `pre`/`post` (the param
+// type's angle brackets) stay attached to the first and last member
+liquid.registerFilter('type', (str, pre = '', post = '') => {
+	if (!str) { return ''; }
+	if (!pre && (str in akas || !str.includes('|'))) { return link(str); }
+	const members = str in akas ? [str] : str.split('|');
+	return members.map((m, i) => `<nobr>${i ? '' : pre}${link(m)}${i < members.length - 1 ? '|' : post}</nobr>`).join('<wbr>');
+});
 
 // `block` keeps the paragraphs; otherwise the first paragraph's tags are dropped so a one-liner sits in a table cell
 liquid.registerFilter('markdown', (str, block) => {
