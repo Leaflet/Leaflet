@@ -1,6 +1,7 @@
 // @ts-check
 import {Renderer} from './Renderer.js';
 import * as DomEvent from '../../dom/DomEvent.js';
+import {mapHandlingDisabled} from '../../dom/DomEventUtil.js';
 import * as Util from '../../core/Util.js';
 import {Bounds} from '../../geometry/Bounds.js';
 
@@ -86,7 +87,7 @@ export class Canvas extends Renderer {
 		DomEvent.on(container, 'pointermove', this._onPointerMove, this);
 		DomEvent.on(container, 'click dblclick pointerdown pointerup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'pointerout', this._handlePointerOut, this);
-		DomEvent.disableMapHandling(container);
+		mapHandlingDisabled.add(container);
 
 		/** @type {CanvasRenderingContext2D} */
 		this._ctx = /** @type {CanvasRenderingContext2D} */ (container.getContext('2d'));

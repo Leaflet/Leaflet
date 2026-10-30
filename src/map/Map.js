@@ -7,6 +7,8 @@ import {Bounds} from '../geometry/Bounds.js';
 import {LatLng} from '../geo/LatLng.js';
 import {LatLngBounds} from '../geo/LatLngBounds.js';
 import * as DomEvent from '../dom/DomEvent.js';
+import {stoppedEvents, clickDisabledElements, mapHandlingDisabled, isExternalTarget,
+	enablePointerDetection, disablePointerDetection} from '../dom/DomEventUtil.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import {PosAnimation} from '../dom/PosAnimation.js';
 import {AttributionControl} from '../control/AttributionControl.js';
@@ -1459,7 +1461,7 @@ export class LeafletMap extends Evented {
 
 		this._stop();
 
-		DomEvent.disablePointerDetection(this._container);
+		disablePointerDetection(this._container);
 		this._mapPane.remove();
 
 		this._controlContainer.remove();
@@ -1892,7 +1894,7 @@ export class LeafletMap extends Evented {
 		/** @type {HTMLElement & {_leaflet_id?: number}} */
 		this._container = container;
 
-		DomEvent.enablePointerDetection(container);
+		enablePointerDetection(container);
 		DomEvent.on(container, 'scroll', this._onScroll, this);
 		this._containerId = Util.stamp(container);
 
@@ -2226,7 +2228,7 @@ export class LeafletMap extends Evented {
 				break;
 			}
 			if (target && target.listens(type, true)) {
-				if (isHover && !DomEvent.isExternalTarget(src, /** @type {MouseEvent} */ (e))) { break; }
+				if (isHover && !isExternalTarget(src, /** @type {MouseEvent} */ (e))) { break; }
 				targets.push(target);
 				if (isHover) { break; }
 			}
@@ -2242,7 +2244,7 @@ export class LeafletMap extends Evented {
 	/** @param {Node | null} el */
 	_isClickDisabled(el) {
 		while (el && el !== this._container) {
-			if (DomEvent.isClickPropagationDisabled(el) || !el.parentNode) { return true; }
+			if (clickDisabledElements.has(el) || !el.parentNode) { return true; }
 			el = el.parentNode;
 		}
 	}
@@ -2250,7 +2252,7 @@ export class LeafletMap extends Evented {
 	/** @param {Event} e */
 	_handleDOMEvent(e) {
 		const el = /** @type {Element} */ (e.target);
-		if (!this._loaded || DomEvent.isMapHandlingDisabled(el) || e.type === 'click' && this._isClickDisabled(el)) {
+		if (!this._loaded || mapHandlingDisabled.has(el) || e.type === 'click' && this._isClickDisabled(el)) {
 			return;
 		}
 
@@ -2304,7 +2306,7 @@ export class LeafletMap extends Evented {
 			t.fire(type, data, true);
 			// bubblingMouseEvents is the Leaflet 1 name of the option
 			const bubbling = t.options.bubblingMouseEvents ?? t.options.bubblingPointerEvents;
-			if (DomEvent.isPropagationStopped(e) ||
+			if (stoppedEvents.has(e) ||
 				(bubbling === false && LeafletMap._pointerEvents.includes(type))) { return; }
 		}
 	}

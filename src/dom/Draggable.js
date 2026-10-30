@@ -1,6 +1,7 @@
 // @ts-check
 import {Evented} from '../core/Events.js';
 import * as DomEvent from './DomEvent.js';
+import {getPointers} from './DomEventUtil.js';
 import * as DomUtil from './DomUtil.js';
 import * as Util from '../core/Util.js';
 import {Point} from '../geometry/Point.js';
@@ -101,7 +102,7 @@ export class Draggable extends Evented {
 
 		if (this._element.classList.contains('leaflet-zoom-anim')) { return; }
 
-		if (DomEvent.getPointers().length !== 1) {
+		if (getPointers().length !== 1) {
 			// Finish dragging to avoid conflict with touchZoom
 			if (Draggable._dragging === this) {
 				this.finishDrag();
@@ -135,7 +136,7 @@ export class Draggable extends Evented {
 
 	/** @param {PointerEvent} e */
 	_onMove(e) {
-		if (DomEvent.getPointers().length > 1) {
+		if (getPointers().length > 1) {
 			this._moved = true;
 			return;
 		}

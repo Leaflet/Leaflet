@@ -26,6 +26,9 @@ const bundles = {
 	'LeafletMap, TileLayer, Marker': ['layer/vector/'],
 	'LeafletMap, TileLayer, Polygon': [
 		'layer/marker/', 'layer/vector/Circle.js', 'layer/vector/CircleMarker.js', 'layer/vector/Rectangle.js'
+	],
+	'DomUtil, DomEvent, Util, LineUtil, PolyUtil': [
+		'core/Class.js', 'core/Events.js', 'control/', 'layer/', 'map/', 'geo/crs/', 'geo/projection/'
 	]
 };
 
@@ -44,9 +47,10 @@ async function bundle(code) {
 		}]
 	});
 	const {output: [{code: output}]} = await build.generate({format: 'es', comments: false});
-	// per-module info in the chunk is taken before the last pass of dead code removal, so read the region markers
-	const included = Array.from(output.matchAll(/^\/\/#region .*?src\/(.+)\n(?!\/\/#endregion)/gm), m => m[1]);
-	return {code: output.replaceAll(/^\/\/#(end)?region.*$/gm, '').trim(), included};
+	// per-module info in the chunk is taken before the last pass of dead code removal, so read the comments that mark
+	// where each module's code starts (the only comments left with `comments: false`)
+	const included = Array.from(output.matchAll(/^\/\/ .*?src\/(.+)$/gm), m => m[1]);
+	return {code: output.replaceAll(/^\/\/ .*$/gm, '').trim(), included};
 }
 
 const empty = await bundle(modules.map(file => `import '${srcDir}${file}';`).join('\n'));
@@ -61,6 +65,7 @@ if (empty.code) {
 for (const [imports, absent] of Object.entries(bundles)) {
 	// eslint-disable-next-line no-await-in-loop
 	const {included} = await bundle(`import {${imports}} from '${srcDir}Leaflet.js'; console.log(${imports});`);
+	if (!included.length) { throw new Error('No module comments in the bundle; did the Rolldown output format change?'); }
 	const unexpected = included.filter(file => [...alwaysAbsent, ...absent].some(prefix => file.startsWith(prefix)));
 
 	if (unexpected.length) {

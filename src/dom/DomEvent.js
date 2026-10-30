@@ -2,9 +2,33 @@
 import {Point} from '../geometry/Point.js';
 import * as Util from '../core/Util.js';
 import {getScale} from './DomUtil.js';
+import {stoppedEvents, clickDisabledElements, getWheelPxFactor} from './DomEventUtil.js';
 
-// DOM event utilities; `DomEvent.public.js` picks the public ones for the `DomEvent` namespace
-/** @import {DomEventListener, DomEventListenerMap} from './DomEvent.public.js' */
+/**
+ * Utility functions to work with the
+ * [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
+ * @module DomEvent
+ */
+
+/**
+ * The event object type for the DOM event type `K`, or for any of them if `K` holds space-separated types. Types
+ * that aren't in `HTMLElementEventMap` (custom events) get a plain `Event`.
+ * @template {string} K
+ * @typedef {K extends `${infer A} ${infer B}` ? DomEventOf<A> | DomEventOf<B> :
+ *   K extends keyof HTMLElementEventMap ? HTMLElementEventMap[K] : Event} DomEventOf
+ */
+
+/**
+ * A listener for the DOM event type `K` (or several space-separated types).
+ * @template {string} K
+ * @typedef {(e: DomEventOf<K>) => void} DomEventListener
+ */
+
+/**
+ * An object with DOM event types as keys and listeners as values, as taken by [`DomEvent.on`](#domevent-on).
+ * @typedef {{[K in keyof HTMLElementEventMap]?: (e: HTMLElementEventMap[K]) => void} &
+ *   {[type: string]: (e: any) => void}} DomEventListenerMap
+ */
 
 // Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
 
@@ -181,16 +205,6 @@ function removeOne(obj, type, fn, context, id) {
 	objHandlers.delete(id);
 }
 
-// native events of Leaflet events that `stopPropagation` was called on, so the map stops firing them on more targets
-/** @type {WeakSet<Event>} */
-const stoppedEvents = new WeakSet();
-
-/** @type {WeakSet<Node>} */
-const clickDisabledElements = new WeakSet();
-
-/** @type {WeakSet<EventTarget>} */
-const mapHandlingDisabled = new WeakSet();
-
 /**
  * Stop the given event from propagation to parent elements. Used inside the listener functions:
  * ```js
@@ -225,39 +239,6 @@ export function disableScrollPropagation(el) {
 export function disableClickPropagation(el) {
 	on(el, 'pointerdown dblclick contextmenu', stopPropagation);
 	clickDisabledElements.add(el);
-}
-
-/**
- * Whether `stopPropagation` was called on a Leaflet event wrapping `e`.
- * @param {Event} e
- */
-export function isPropagationStopped(e) {
-	return stoppedEvents.has(e);
-}
-
-/**
- * Whether `disableClickPropagation` was called on `el`.
- * @param {Node} el
- */
-export function isClickPropagationDisabled(el) {
-	return clickDisabledElements.has(el);
-}
-
-/**
- * Makes the map ignore DOM events on `el`, for elements that handle them and fire them on the map's layers
- * themselves (like the `Canvas` renderer).
- * @param {EventTarget} el
- */
-export function disableMapHandling(el) {
-	mapHandlingDisabled.add(el);
-}
-
-/**
- * Whether `disableMapHandling` was called on `el`.
- * @param {EventTarget} el
- */
-export function isMapHandlingDisabled(el) {
-	return mapHandlingDisabled.has(el);
 }
 
 /**
@@ -304,15 +285,6 @@ export function getPointerPosition(e, container) {
 }
 
 /**
- * Gets the wheel pixel factor based on the devicePixelRatio
- * @returns {number}
- */
-export function getWheelPxFactor() {
-	// a wheel notch gives 100-120px in most browsers, so halving it fits the default 60px per zoom level (see #7403)
-	return window.devicePixelRatio * 2;
-}
-
-/**
  * Gets normalized wheel delta from a wheel DOM event, in vertical pixels scrolled (negative if scrolling down).
  * Events from pointing devices without precise scrolling are mapped to a best guess of 60 pixels.
  * @param {WheelEvent} e
@@ -326,68 +298,8 @@ export function getWheelDelta(e) {
 		0;
 }
 
-// check if element really left/entered the event target (for pointerover/pointerout)
-/**
- * @param {Node} el
- * @param {MouseEvent} e
- */
-export function isExternalTarget(el, e) {
-	return !el.contains(/** @type {Node | null} */ (e.relatedTarget));
-}
+export {enablePointerDetection, disablePointerDetection} from './DomEventUtil.js';
 
-/** @type {Map<number, PointerEvent>} */
-const activePointers = new Map();
-
-/**
- * Enables pointer detection and capture for the document.
- * @param {HTMLElement} el
- */
-export function enablePointerDetection(el) {
-	el.addEventListener('pointerdown', _onSet, {capture: true});
-	el.addEventListener('pointermove', _onUpdate, {capture: true});
-	el.addEventListener('pointerup', _onDelete, {capture: true});
-	el.addEventListener('pointercancel', _onDelete, {capture: true});
-	activePointers.clear();
-}
-
-/**
- * Disables pointer detection and capture for the document.
- * @param {HTMLElement} el
- */
-export function disablePointerDetection(el) {
-	el.removeEventListener('pointerdown', _onSet, {capture: true});
-	el.removeEventListener('pointermove', _onUpdate, {capture: true});
-	el.removeEventListener('pointerup', _onDelete, {capture: true});
-	el.removeEventListener('pointercancel', _onDelete, {capture: true});
-}
-
-// capturing throws for synthetic pointers the browser doesn't know about, so only capture real ones
-/** @param {PointerEvent} e */
-function _onSet(e) {
-	if (e.isTrusted) { /** @type {Element} */ (e.target).setPointerCapture(e.pointerId); }
-	activePointers.set(e.pointerId, e);
-}
-
-/** @param {PointerEvent} e */
-function _onUpdate(e) {
-	if (activePointers.has(e.pointerId)) {
-		activePointers.set(e.pointerId, e);
-	}
-}
-
-/** @param {PointerEvent} e */
-function _onDelete(e) {
-	if (e.isTrusted) { /** @type {Element} */ (e.target).releasePointerCapture(e.pointerId); }
-	activePointers.delete(e.pointerId);
-}
-
-/**
- * Returns the pointers that are currently active on the document.
- * @returns {PointerEvent[]}
- */
-export function getPointers() {
-	return [...activePointers.values()];
-}
 // Double tap support for mobile browsers. Most browsers fire native dblclick, with only a few exceptions
 // (see https://github.com/Leaflet/Leaflet/issues/7012#issuecomment-595087386).
 
