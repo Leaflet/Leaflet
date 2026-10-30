@@ -2,25 +2,20 @@
 import {Class} from '../core/Class.js';
 import * as Util from '../core/Util.js';
 
-// @namespace Control
-
-// @section
-// @aka Control Options
 const defaultOptions = {
-	// @option position: String = 'topright'
-	// The position of the control (one of the map corners). Possible values are `'topleft'`,
-	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	/**
+	 * The position of the control (one of the map corners). Possible values
+	 * are `'topleft'`, `'topright'`, `'bottomleft'` or `'bottomright'`
+	 */
 	position: 'topright'
 };
 
-/*
- * @class Control
- * @inherits Class
- *
- * Control is a base class for implementing map controls. Handles positioning.
- * All other controls extend from this class.
+/**
+ * Control is a base class for implementing map controls. Handles
+ * positioning. All other controls extend from this class.
+ * @categoryDescription Methods
+ * Classes extending Control will inherit the following methods:
  */
-
 export class Control extends Class {
 
 	static initHooks = true;
@@ -34,18 +29,19 @@ export class Control extends Class {
 		this.callInitHooks();
 	}
 
-	/* @section
-	 * Classes extending Control will inherit the following methods:
-	 *
-	 * @method getPosition(): String
+	/**
 	 * Returns the position of the control.
+	 * @returns {string}
 	 */
 	getPosition() {
 		return this.options.position;
 	}
 
-	// @method setPosition(position: String): this
-	// Sets the position of the control.
+	/**
+	 * Sets the position of the control.
+	 * @param {string} position
+	 * @returns {this}
+	 */
 	setPosition(position) {
 		const map = this._map;
 
@@ -58,14 +54,19 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method getContainer(): HTMLElement
-	// Returns the HTMLElement that contains the control.
+	/**
+	 * Returns the HTMLElement that contains the control.
+	 * @returns {HTMLElement}
+	 */
 	getContainer() {
 		return this._container;
 	}
 
-	// @method addTo(map: LeafletMap): this
-	// Adds the control to the given map.
+	/**
+	 * Adds the control to the given map.
+	 * @param {LeafletMap} map
+	 * @returns {this}
+	 */
 	addTo(map) {
 		this.remove();
 		this._map = map;
@@ -87,8 +88,10 @@ export class Control extends Class {
 		return this;
 	}
 
-	// @method remove(): this
-	// Removes the control from the map it is currently active on.
+	/**
+	 * Removes the control from the map it is currently active on.
+	 * @returns {this}
+	 */
 	remove() {
 		if (!this._map) {
 			return this;
@@ -115,14 +118,18 @@ export class Control extends Class {
 	}
 }
 
-/* @section Extension methods
+/**
+ * Should return the container DOM element for the control and add listeners on
+ * relevant map events. Called on [`control.addTo(map)`](#control-addTo).
+ * @category Extension methods
+ * @param {LeafletMap} map
+ * @returns {HTMLElement}
  * @uninheritable
- *
- * Every control should extend from `Control` and (re-)implement the following methods.
- *
- * @method onAdd(map: LeafletMap): HTMLElement
- * Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).
- *
- * @method onRemove(map: LeafletMap)
- * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
+ */
+/**
+ * Optional method. Should contain all clean up code that removes the listeners previously
+ * added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
+ * @category Extension methods
+ * @param {LeafletMap} map
+ * @uninheritable
  */

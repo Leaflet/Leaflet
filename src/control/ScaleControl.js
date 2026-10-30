@@ -2,49 +2,45 @@
 import {Control} from './Control.js';
 import * as DomUtil from '../dom/DomUtil.js';
 
-// @namespace ScaleControl
-
-// @section
-// @aka ScaleControl options
 const defaultOptions = {
-	// @option position: String = 'bottomleft'
-	// The position of the control (one of the map corners). Possible values are `'topleft'`,
-	// `'topright'`, `'bottomleft'` or `'bottomright'`
+	/**
+	 * The position of the control (one of the map corners). Possible values
+	 * are `'topleft'`, `'topright'`, `'bottomleft'` or `'bottomright'`
+	 */
 	position: 'bottomleft',
 
-	// @option maxWidth: Number = 100
-	// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
+	/**
+	 * Maximum width of the control in pixels. The width is set
+	 * dynamically to show round values (e.g. 100, 200, 500).
+	 */
 	maxWidth: 100,
 
-	// @option metric: Boolean = True
-	// Whether to show the metric scale line (m/km).
+	/** Whether to show the metric scale line (m/km). */
 	metric: true,
 
-	// @option imperial: Boolean = True
-	// Whether to show the imperial scale line (mi/ft).
+	/** Whether to show the imperial scale line (mi/ft). */
 	imperial: true,
 
-	// @option updateWhenIdle: Boolean = false
-	// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
+	/**
+	 * If `true`, the control is updated on [`moveend`](#map-moveend), otherwise
+	 * it's always up-to-date (updated on [`move`](#map-move)).
+	 */
 	updateWhenIdle: false
 };
 
-/*
- * @class ScaleControl
- * @inherits Control
- *
- * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
- *
+/**
+ * Creates an scale control with the given options.
+ * @param {ScaleControlOptions} [options]
+ */
+
+/**
+ * A simple scale control that shows the scale of the current center of screen
+ * in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
  * @example
- *
  * ```js
  * new ScaleControl().addTo(map);
  * ```
  */
-
-// @constructor ScaleControl(options?: ScaleControl options)
-// Creates an scale control with the given options.
-
 export class ScaleControl extends Control {
 
 	static defaultOptions = defaultOptions;
